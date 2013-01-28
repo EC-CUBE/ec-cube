@@ -88,7 +88,7 @@
      * アンインストール(削除)
      */
     function uninstall(plugin_id, plugin_code) {
-        if (window.confirm('<!--{t string="tpl_462" escape="j"}-->')){
+        if (window.confirm('<!--{t string="tpl_Data that has been erased cannot be restored.Do you want to delete the plug-in?_01" escape="j"}-->')){
             fnSetFormValue('plugin_id', plugin_id);
             fnModeSubmit('uninstall', 'plugin_code', plugin_code);
         }

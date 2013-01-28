@@ -28,7 +28,7 @@
     <li id="navi-ownersstore-module" class="<!--{if $tpl_subno == 'module'}-->on<!--{/if}-->">
         <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/module.php"><span><!--{t string="tpl_Module management_01"}--></span></a></li>
     <li id="navi-ownersstore-settings" class="<!--{if $tpl_subno == 'settings'}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/settings.php"><span><!--{t string="tpl_485"}--></span></a></li>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/settings.php"><span><!--{t string="tpl_Authentication key settings_01"}--></span></a></li>
     <li id="navi-ownersstore-log" class="<!--{if $tpl_subno == 'log'}-->on<!--{/if}-->">
-        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php"><span><!--{t string="tpl_486"}--></span></a></li>
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php"><span><!--{t string="tpl_Log management_01"}--></span></a></li>
 </ul>

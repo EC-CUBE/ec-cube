@@ -30,7 +30,7 @@
 
     <table>
         <tr>
-            <th><!--{t string="tpl_492_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Standard name<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.name}-->
                     <span class="attention"><!--{$arrErr.name}--></span>
@@ -53,8 +53,8 @@
         <col width="10%" />
         <col width="15%" />
         <tr>
-            <th><!--{t string="tpl_494"}--></th>
-            <th><!--{t string="tpl_495"}--></th>
+            <th><!--{t string="tpl_Standard name (registered number)_01"}--></th>
+            <th><!--{t string="tpl_Category registration_01"}--></th>
             <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
             <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             <th><!--{t string="tpl_Move_01"}--></th>
@@ -63,7 +63,7 @@
             <tr style="background:<!--{if $tpl_class_id != $arrClass[cnt].class_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
                 <!--{assign var=class_id value=$arrClass[cnt].class_id}-->
                 <td><!--{* 規格名 *}--><!--{$arrClass[cnt].name|h}--> (<!--{$arrClassCatCount[$class_id]|default:0}-->)</td>
-                <td align="center"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_495"}--></a></td>
+                <td align="center"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_Category registration_01"}--></a></td>
                 <td align="center">
                     <!--{if $tpl_class_id != $arrClass[cnt].class_id}-->
                         <a href="?" onclick="fnModeSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;"><!--{t string="tpl_Edit_01"}--></a>

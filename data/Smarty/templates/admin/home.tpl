@@ -47,61 +47,61 @@
         <h2><!--{t string="tpl_682"}--></h2>
         <table summary="System information" class="shop-info">
             <tr>
-                <th><!--{t string="tpl_525"}--></th>
+                <th><!--{t string="tpl_EC-CUBE version_01"}--></th>
                 <td><!--{$smarty.const.ECCUBE_VERSION}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_526"}--></th>
+                <th><!--{t string="tpl_PHP version_01"}--></th>
                 <td><!--{$php_version}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_527"}--></th>
+                <th><!--{t string="tpl_DB version_01"}--></th>
                 <td><!--{$db_version}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_449"}--></th>
-                <td><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->system/system.php"><!--{t string="tpl_524"}--></a></td>
+                <td><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->system/system.php"><!--{t string="tpl_System settings > System information_01"}--></a></td>
             </tr>
         </table>
         <!--{* システム情報ここまで *}-->
 
         <!--{* ショップの状況ここから *}-->
-        <h2><!--{t string="tpl_528"}--></h2>
+        <h2><!--{t string="tpl_Shop status_01"}--></h2>
         <table summary="Shop status" class="shop-info">
             <tr>
-                <th><!--{t string="tpl_529"}--></th>
+                <th><!--{t string="tpl_Current number of members_01"}--></th>
                 <td><!--{t string="tpl_725" %s1=$customer_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_530"}--></th>
+                <th><!--{t string="tpl_Yesterday's sales_01"}--></th>
                 <td><!--{t string="tpl_500" escape="none" %s1=$order_yesterday_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_531"}--></th>
+                <th><!--{t string="tpl_Number of items sold yesterday_01"}--></th>
                 <td><!--{t string="tpl_701" %s1=$order_yesterday_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_532" escape="none"}--></th>
+                <th><!--{t string="tpl_<span>Sales for this month </span><span>(up to yesterday) </span>_01" escape="none"}--></th>
                 <td><!--{t string="tpl_500" escape="none" %s1=$order_month_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_533" escape="none"}--></th>
+                <th><!--{t string="tpl_<span>Number of items sold this month </span><span>(up to yesterday) </span>_01" escape="none"}--></th>
                 <td><!--{t string="tpl_701" %s1=$order_month_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_534"}--></th>
+                <th><!--{t string="tpl_Number of reviews from yesterday_01"}--></th>
                 <td><!--{t string="tpl_701" %s1=$review_yesterday_cnt|default:"0"}--></th>
             </tr>
             <tr>
-                <th><!--{t string="tpl_535"}--></th>
+                <th><!--{t string="tpl_Member's total registered points_01"}--></th>
                 <td><!--{t string="pt_prefix"}--><!--{$customer_point|default:"0"}--><!--{t string="pt_suffix"}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_536"}--></th>
+                <th><!--{t string="tpl_Number of reviews not displayed_01"}--></th>
                 <td><!--{t string="tpl_701" %s1=$review_nondisp_cnt|default:"0"}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_537"}--></th>
+                <th><!--{t string="tpl_Sold-out products_01"}--></th>
                 <td>
                 <!--{section name=i loop=$arrSoldout}-->
                 <!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name|h}--><br />
@@ -112,7 +112,7 @@
         <!--{* ショップの状況ここまで *}-->
 
         <!--{* 新規受付一覧ここから *}-->
-        <h2><!--{t string="tpl_538"}--></h2>
+        <h2><!--{t string="tpl_List of new orders received_01"}--></h2>
         <table summary="List of new orders received" id="home-order">
             <tr>
                 <th class="center"><!--{t string="tpl_Date of order receipt_01"}--></th>

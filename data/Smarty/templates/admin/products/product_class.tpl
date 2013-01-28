@@ -193,11 +193,11 @@
         <col width="8%" />
         <col width="8%" />
         <tr>
-            <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br><!--{t string="tpl_488"}--></label></th>
+            <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br><!--{t string="tpl_Register_02"}--></label></th>
             <th><!--{t string="tpl_Standard 1_01"}--><br>(<!--{$arrClass[$class_id1]|default_t:"t_Not selected_01"|h}-->)</th>
             <th><!--{t string="tpl_Standard 2_01"}--><br>(<!--{$arrClass[$class_id2]|default_t:"t_Not selected_01"|h}-->)</th>
             <th><!--{t string="tpl_Product code_01"}--></th>
-            <th><!--{t string="tpl_557_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Inventory count<span class='attention'> *</span>_01" escape="none"}--></th>
             <th><!--{t string="tpl_603" escape="none" %s1=$smarty.const.NORMAL_PRICE_TITLE}--></th>
             <th><!--{t string="tpl_603" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--><span class="attention">*</span></th>
             <th><!--{t string="tpl_Product type<span class='attention'> *</span>_01" escape="none"}--></th>

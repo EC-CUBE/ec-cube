@@ -5030,7 +5030,7 @@ msgstr "An error occurred during transmission."
 msgid "tpl_Do you want to install the plug-in?_01"
 msgstr "Do you want to install the plug-in?"
 
-msgid "tpl_462"
+msgid "tpl_Data that has been erased cannot be restored.Do you want to delete the plug-in?_01"
 msgstr ""
 "Data that has been erased cannot be restored. \n"
 "Do you want to delete the plug-in?"
@@ -5101,245 +5101,245 @@ msgstr "Plug-in management"
 msgid "tpl_Module management_01"
 msgstr "Module management"
 
-msgid "tpl_485"
+msgid "tpl_Authentication key settings_01"
 msgstr "Authentication key settings"
 
-msgid "tpl_486"
+msgid "tpl_Log management_01"
 msgstr "Log management"
 
-msgid "tpl_487"
+msgid "tpl_Home_01"
 msgstr "Home"
 
-msgid "tpl_488"
+msgid "tpl_Register_02"
 msgstr "Register"
 
 msgid "tpl_489"
 msgstr "(max %s1 characters)"
 
-msgid "tpl_490"
+msgid "tpl_Category name_01"
 msgstr "Category name"
 
-msgid "tpl_491"
+msgid "tpl_No categories are registered for this hierarchy._01"
 msgstr "No categories are registered for this hierarchy."
 
-msgid "tpl_492"
+msgid "tpl_Standard name_01"
 msgstr "Standard name"
 
-msgid "tpl_492_1"
+msgid "tpl_Standard name<span class='attention'> *</span>_01"
 msgstr "Standard name<span class='attention'> *</span>"
 
-msgid "tpl_493"
+msgid "tpl_Category name_02"
 msgstr "Category name"
 
-msgid "tpl_493_1"
+msgid "tpl_Category name<span class='attention'> *</span>_01"
 msgstr "Category name<span class='attention'> *</span>"
 
-msgid "tpl_494"
+msgid "tpl_Standard name (registered number)_01"
 msgstr "Standard name (registered number)"
 
-msgid "tpl_495"
+msgid "tpl_Category registration_01"
 msgstr "Category registration"
 
-msgid "tpl_496"
+msgid "tpl_Return to the standard list_01"
 msgstr "Return to the standard list"
 
-msgid "tpl_497"
+msgid "tpl_Finalize registration_01"
 msgstr "Finalize registration"
 
-msgid "tpl_498"
+msgid "tpl_Product category_01"
 msgstr "Product category"
 
-msgid "tpl_498_1"
+msgid "tpl_Product category<span class='attention'> *</span>_01"
 msgstr "Product category<span class='attention'> *</span>"
 
-msgid "tpl_499"
+msgid "tpl_Disclosed/not disclosed_01"
 msgstr "Disclosed/not disclosed"
 
-msgid "tpl_499_1"
+msgid "tpl_Disclosed/not disclosed<span class='attention'> *</span>_01"
 msgstr "Disclosed/not disclosed<span class='attention'> *</span>"
 
 msgid "tpl_500"
 msgstr "&#36; %s1"
 
-msgid "tpl_501"
+msgid "tpl_Category_02"
 msgstr "Category"
 
-msgid "tpl_502"
+msgid "tpl_Amount_01"
 msgstr "Amount"
 
-msgid "tpl_503"
+msgid "tpl_Period_01"
 msgstr "Period"
 
-msgid "tpl_504"
+msgid "tpl_Male_01"
 msgstr "Male"
 
-msgid "tpl_505"
+msgid "tpl_Female_01"
 msgstr "Female"
 
-msgid "tpl_506"
+msgid "tpl_Male (member)_01"
 msgstr "Male (member)"
 
-msgid "tpl_507"
+msgid "tpl_Male (non-member)_01"
 msgstr "Male (non-member)"
 
-msgid "tpl_508"
+msgid "tpl_Female (member)_01"
 msgstr "Female (member)"
 
-msgid "tpl_509"
+msgid "tpl_Female (non-member)_01"
 msgstr "Female (non-member)"
 
-msgid "tpl_510"
+msgid "tpl_Sales by period_01"
 msgstr "Sales by period"
 
-msgid "tpl_511"
+msgid "tpl_Sales by product_01"
 msgstr "Sales by product"
 
-msgid "tpl_512"
+msgid "tpl_Sales by age group_01"
 msgstr "Sales by age group"
 
-msgid "tpl_513"
+msgid "tpl_Sales by occupation_01"
 msgstr "Sales by occupation"
 
-msgid "tpl_514"
+msgid "tpl_Sales by member_01"
 msgstr "Sales by member"
 
-msgid "tpl_515"
+msgid "tpl_By date_01"
 msgstr "By date"
 
-msgid "tpl_516"
+msgid "tpl_By month_01"
 msgstr "By month"
 
-msgid "tpl_517"
+msgid "tpl_By year_01"
 msgstr "By year"
 
-msgid "tpl_518"
+msgid "tpl_By day_01"
 msgstr "By day"
 
-msgid "tpl_519"
+msgid "tpl_By time_01"
 msgstr "By time"
 
-msgid "tpl_520"
+msgid "tpl_Overall_01"
 msgstr "Overall"
 
-msgid "tpl_521"
+msgid "tpl_Member_01"
 msgstr "Member"
 
-msgid "tpl_522"
+msgid "tpl_Non-member_01"
 msgstr "Non-member"
 
-msgid "tpl_523"
+msgid "tpl_Enable JavaScript_01"
 msgstr "Enable JavaScript"
 
-msgid "tpl_524"
+msgid "tpl_System settings > System information_01"
 msgstr "System settings > System information"
 
-msgid "tpl_525"
+msgid "tpl_EC-CUBE version_01"
 msgstr "EC-CUBE version"
 
-msgid "tpl_526"
+msgid "tpl_PHP version_01"
 msgstr "PHP version"
 
-msgid "tpl_527"
+msgid "tpl_DB version_01"
 msgstr "DB version"
 
-msgid "tpl_528"
+msgid "tpl_Shop status_01"
 msgstr "Shop status"
 
-msgid "tpl_529"
+msgid "tpl_Current number of members_01"
 msgstr "Current number of members"
 
-msgid "tpl_530"
+msgid "tpl_Yesterday's sales_01"
 msgstr "Yesterday's sales"
 
-msgid "tpl_531"
+msgid "tpl_Number of items sold yesterday_01"
 msgstr "Number of items sold yesterday"
 
-msgid "tpl_532"
+msgid "tpl_<span>Sales for this month </span><span>(up to yesterday) </span>_01"
 msgstr "<span>Sales for this month </span><span>(up to yesterday) </span>"
 
-msgid "tpl_533"
+msgid "tpl_<span>Number of items sold this month </span><span>(up to yesterday) </span>_01"
 msgstr ""
 "<span>Number of items sold this month </span><span>(up to yesterday) </span>"
 
-msgid "tpl_534"
+msgid "tpl_Number of reviews from yesterday_01"
 msgstr "Number of reviews from yesterday"
 
-msgid "tpl_535"
+msgid "tpl_Member's total registered points_01"
 msgstr "Member's total registered points"
 
-msgid "tpl_536"
+msgid "tpl_Number of reviews not displayed_01"
 msgstr "Number of reviews not displayed"
 
-msgid "tpl_537"
+msgid "tpl_Sold-out products_01"
 msgstr "Sold-out products"
 
-msgid "tpl_538"
+msgid "tpl_List of new orders received_01"
 msgstr "List of new orders received"
 
-msgid "tpl_539"
+msgid "tpl_Return to login page_01"
 msgstr "Return to login page"
 
-msgid "tpl_540"
+msgid "tpl_Management area_01"
 msgstr "Management area"
 
-msgid "tpl_541"
+msgid "tpl_ADMIN_MODE ON_01"
 msgstr "ADMIN_MODE ON"
 
 msgid "tpl_542"
 msgstr "<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;"
 
-msgid "tpl_543"
+msgid "tpl_LOGOUT_01"
 msgstr "LOGOUT"
 
-msgid "tpl_544"
+msgid "tpl_Basic information_02"
 msgstr "Basic information"
 
-msgid "tpl_545"
+msgid "tpl_Sales history_01"
 msgstr "Sales history"
 
-msgid "tpl_546"
+msgid "tpl_Mail magazine_02"
 msgstr "Mail magazine"
 
-msgid "tpl_547"
+msgid "tpl_Edit contents_01"
 msgstr "Edit contents"
 
-msgid "tpl_548"
+msgid "tpl_Edit design_01"
 msgstr "Edit design"
 
-msgid "tpl_549"
+msgid "tpl_System settings_01"
 msgstr "System settings"
 
-msgid "tpl_550"
+msgid "tpl_Owners store_01"
 msgstr "Owners store"
 
 msgid "tpl_551"
 msgstr "Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved."
 
-msgid "tpl_552"
+msgid "tpl_PAGE TOP_01"
 msgstr "PAGE TOP"
 
-msgid "tpl_553"
+msgid "tpl_CHECK SITE_01"
 msgstr "CHECK SITE"
 
-msgid "tpl_554"
+msgid "tpl_Product status_01"
 msgstr "Product status"
 
-msgid "tpl_555"
+msgid "tpl_Downloaded product file name_01"
 msgstr "Downloaded product file name"
 
-msgid "tpl_555_1"
+msgid "tpl_Downloaded product file name<span class='attention'> *</span>_01"
 msgstr "Downloaded product file name<span class='attention'> *</span>"
 
-msgid "tpl_556"
+msgid "tpl_File for downloaded product_01"
 msgstr "File for downloaded product"
 
-msgid "tpl_557"
+msgid "tpl_Inventory count_01"
 msgstr "Inventory count"
 
-msgid "tpl_557_1"
+msgid "tpl_Inventory count<span class='attention'> *</span>_01"
 msgstr "Inventory count<span class='attention'> *</span>"
 
-msgid "tpl_558"
+msgid "tpl_Product shipping fee_01"
 msgstr "Product shipping fee"
 
 msgid "tpl_559"

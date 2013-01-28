@@ -4986,7 +4986,7 @@ msgstr "通信中にエラーが発生しました。"
 msgid "tpl_Do you want to install the plug-in?_01"
 msgstr "プラグインをインストールしても宜しいでしょうか？"
 
-msgid "tpl_462"
+msgid "tpl_Data that has been erased cannot be restored.Do you want to delete the plug-in?_01"
 msgstr ""
 "一度削除したデータは元に戻せません。\n"
 "プラグインを削除しても宜しいですか？"
@@ -5057,244 +5057,244 @@ msgstr "プラグイン管理"
 msgid "tpl_Module management_01"
 msgstr "モジュール管理"
 
-msgid "tpl_485"
+msgid "tpl_Authentication key settings_01"
 msgstr "認証キー設定"
 
-msgid "tpl_486"
+msgid "tpl_Log management_01"
 msgstr "ログ管理"
 
-msgid "tpl_487"
+msgid "tpl_Home_01"
 msgstr "ホーム"
 
-msgid "tpl_488"
+msgid "tpl_Register_02"
 msgstr "登録"
 
 msgid "tpl_489"
 msgstr "（上限%s1文字）"
 
-msgid "tpl_490"
+msgid "tpl_Category name_01"
 msgstr "カテゴリ名"
 
-msgid "tpl_491"
+msgid "tpl_No categories are registered for this hierarchy._01"
 msgstr "この階層には、カテゴリが登録されていません。"
 
-msgid "tpl_492"
+msgid "tpl_Standard name_01"
 msgstr "規格名"
 
-msgid "tpl_492_1"
+msgid "tpl_Standard name<span class='attention'> *</span>_01"
 msgstr "規格名<span class='attention'> *</span>"
 
-msgid "tpl_493"
+msgid "tpl_Category name_02"
 msgstr "分類名"
 
-msgid "tpl_493_1"
+msgid "tpl_Category name<span class='attention'> *</span>_01"
 msgstr "分類名<span class='attention'> *</span>"
 
-msgid "tpl_494"
+msgid "tpl_Standard name (registered number)_01"
 msgstr "規格名 (登録数)"
 
-msgid "tpl_495"
+msgid "tpl_Category registration_01"
 msgstr "分類登録"
 
-msgid "tpl_496"
+msgid "tpl_Return to the standard list_01"
 msgstr "規格一覧に戻る"
 
-msgid "tpl_497"
+msgid "tpl_Finalize registration_01"
 msgstr "この商品の規格を登録する"
 
-msgid "tpl_498"
+msgid "tpl_Product category_01"
 msgstr "商品カテゴリ"
 
-msgid "tpl_498_1"
+msgid "tpl_Product category<span class='attention'> *</span>_01"
 msgstr "商品カテゴリ<span class='attention'> *</span>"
 
-msgid "tpl_499"
+msgid "tpl_Disclosed/not disclosed_01"
 msgstr "公開・非公開"
 
-msgid "tpl_499_1"
+msgid "tpl_Disclosed/not disclosed<span class='attention'> *</span>_01"
 msgstr "公開・非公開<span class='attention'> *</span>"
 
 msgid "tpl_500"
 msgstr "%s1円"
 
-msgid "tpl_501"
+msgid "tpl_Category_02"
 msgstr "区分"
 
-msgid "tpl_502"
+msgid "tpl_Amount_01"
 msgstr "金額"
 
-msgid "tpl_503"
+msgid "tpl_Period_01"
 msgstr "期間"
 
-msgid "tpl_504"
+msgid "tpl_Male_01"
 msgstr "男性"
 
-msgid "tpl_505"
+msgid "tpl_Female_01"
 msgstr "女性"
 
-msgid "tpl_506"
+msgid "tpl_Male (member)_01"
 msgstr "男性(会員)"
 
-msgid "tpl_507"
+msgid "tpl_Male (non-member)_01"
 msgstr "男性<br />(非会員)"
 
-msgid "tpl_508"
+msgid "tpl_Female (member)_01"
 msgstr "女性(会員)"
 
-msgid "tpl_509"
+msgid "tpl_Female (non-member)_01"
 msgstr "女性<br />(非会員)"
 
-msgid "tpl_510"
+msgid "tpl_Sales by period_01"
 msgstr "期間別集計"
 
-msgid "tpl_511"
+msgid "tpl_Sales by product_01"
 msgstr "商品別集計"
 
-msgid "tpl_512"
+msgid "tpl_Sales by age group_01"
 msgstr "年代別集計"
 
-msgid "tpl_513"
+msgid "tpl_Sales by occupation_01"
 msgstr "職業別集計"
 
-msgid "tpl_514"
+msgid "tpl_Sales by member_01"
 msgstr "会員別集計"
 
-msgid "tpl_515"
+msgid "tpl_By date_01"
 msgstr "日別"
 
-msgid "tpl_516"
+msgid "tpl_By month_01"
 msgstr "月別"
 
-msgid "tpl_517"
+msgid "tpl_By year_01"
 msgstr "年別"
 
-msgid "tpl_518"
+msgid "tpl_By day_01"
 msgstr "曜日別"
 
-msgid "tpl_519"
+msgid "tpl_By time_01"
 msgstr "時間別"
 
-msgid "tpl_520"
+msgid "tpl_Overall_01"
 msgstr "全体"
 
-msgid "tpl_521"
+msgid "tpl_Member_01"
 msgstr "会員"
 
-msgid "tpl_522"
+msgid "tpl_Non-member_01"
 msgstr "非会員"
 
-msgid "tpl_523"
+msgid "tpl_Enable JavaScript_01"
 msgstr "JavaScript を有効にしてご利用下さい."
 
-msgid "tpl_524"
+msgid "tpl_System settings > System information_01"
 msgstr "システム設定＞システム情報"
 
-msgid "tpl_525"
+msgid "tpl_EC-CUBE version_01"
 msgstr "EC-CUBEバージョン"
 
-msgid "tpl_526"
+msgid "tpl_PHP version_01"
 msgstr "PHPバージョン"
 
-msgid "tpl_527"
+msgid "tpl_DB version_01"
 msgstr "DBバージョン"
 
-msgid "tpl_528"
+msgid "tpl_Shop status_01"
 msgstr "ショップの状況"
 
-msgid "tpl_529"
+msgid "tpl_Current number of members_01"
 msgstr "現在の会員数"
 
-msgid "tpl_530"
+msgid "tpl_Yesterday's sales_01"
 msgstr "昨日の売上高"
 
-msgid "tpl_531"
+msgid "tpl_Number of items sold yesterday_01"
 msgstr "昨日の売上件数"
 
-msgid "tpl_532"
+msgid "tpl_<span>Sales for this month </span><span>(up to yesterday) </span>_01"
 msgstr "<span>今月の売上高</span><span>(昨日まで) </span>"
 
-msgid "tpl_533"
+msgid "tpl_<span>Number of items sold this month </span><span>(up to yesterday) </span>_01"
 msgstr "<span>今月の売上件数 </span><span>(昨日まで) </span>"
 
-msgid "tpl_534"
+msgid "tpl_Number of reviews from yesterday_01"
 msgstr "昨日のレビュー書き込み数"
 
-msgid "tpl_535"
+msgid "tpl_Member's total registered points_01"
 msgstr "会員の保持ポイント合計"
 
-msgid "tpl_536"
+msgid "tpl_Number of reviews not displayed_01"
 msgstr "レビュー書き込み非表示数"
 
-msgid "tpl_537"
+msgid "tpl_Sold-out products_01"
 msgstr "品切れ商品"
 
-msgid "tpl_538"
+msgid "tpl_List of new orders received_01"
 msgstr "新規受付一覧"
 
-msgid "tpl_539"
+msgid "tpl_Return to login page_01"
 msgstr "ログインページに戻る"
 
-msgid "tpl_540"
+msgid "tpl_Management area_01"
 msgstr "管理機能"
 
-msgid "tpl_541"
+msgid "tpl_ADMIN_MODE ON_01"
 msgstr "ADMIN_MODE ON"
 
 msgid "tpl_542"
 msgstr "<span>ログイン&nbsp;:&nbsp;%s1</span>&nbsp;様&nbsp;"
 
-msgid "tpl_543"
+msgid "tpl_LOGOUT_01"
 msgstr "LOGOUT"
 
-msgid "tpl_544"
+msgid "tpl_Basic information_02"
 msgstr "基本情報管理"
 
-msgid "tpl_545"
+msgid "tpl_Sales history_01"
 msgstr "売上集計"
 
-msgid "tpl_546"
+msgid "tpl_Mail magazine_02"
 msgstr "メルマガ管理"
 
-msgid "tpl_547"
+msgid "tpl_Edit contents_01"
 msgstr "コンテンツ管理"
 
-msgid "tpl_548"
+msgid "tpl_Edit design_01"
 msgstr "デザイン管理"
 
-msgid "tpl_549"
+msgid "tpl_System settings_01"
 msgstr "システム設定"
 
-msgid "tpl_550"
+msgid "tpl_Owners store_01"
 msgstr "オーナーズストア"
 
 msgid "tpl_551"
 msgstr "Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved."
 
-msgid "tpl_552"
+msgid "tpl_PAGE TOP_01"
 msgstr "PAGE TOP"
 
-msgid "tpl_553"
+msgid "tpl_CHECK SITE_01"
 msgstr "SITE CHECK"
 
-msgid "tpl_554"
+msgid "tpl_Product status_01"
 msgstr "商品ステータス"
 
-msgid "tpl_555"
+msgid "tpl_Downloaded product file name_01"
 msgstr "ダウンロード商品ファイル名"
 
-msgid "tpl_555_1"
+msgid "tpl_Downloaded product file name<span class='attention'> *</span>_01"
 msgstr "ダウンロード商品ファイル名<span class='attention'> *</span>"
 
-msgid "tpl_556"
+msgid "tpl_File for downloaded product_01"
 msgstr "ダウンロード商品用<BR />ファイル"
 
-msgid "tpl_557"
+msgid "tpl_Inventory count_01"
 msgstr "在庫数"
 
-msgid "tpl_557_1"
+msgid "tpl_Inventory count<span class='attention'> *</span>_01"
 msgstr "在庫数<span class='attention'> *</span>"
 
-msgid "tpl_558"
+msgid "tpl_Product shipping fee_01"
 msgstr "商品送料"
 
 msgid "tpl_559"

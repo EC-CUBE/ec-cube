@@ -42,7 +42,7 @@
 
     <!--{* ▼画面左 *}-->
     <div id="products-rank-left">
-        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">&nbsp;<!--{t string="tpl_487"}--></a><br />
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">&nbsp;<!--{t string="tpl_Home_01"}--></a><br />
         <!--{section name=cnt loop=$arrTree}-->
             <!--{assign var=level value="`$arrTree[cnt].level`}-->
 

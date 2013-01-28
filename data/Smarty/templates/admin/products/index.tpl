@@ -291,7 +291,7 @@ $("*[name=search_endday]").val(dates[2]);
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_554"}--></th>
+            <th><!--{t string="tpl_Product status_01"}--></th>
             <td colspan="3">
             <!--{assign var=key value="search_product_statuses"}-->
             <span class="attention"><!--{$arrErr[$key]|h}--></span>

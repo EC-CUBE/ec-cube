@@ -34,7 +34,7 @@
     <body>
         <!--{$GLOBAL_ERR}-->
         <noscript>
-            <p><!--{t string="tpl_523"}--></p>
+            <p><!--{t string="tpl_Enable JavaScript_01"}--></p>
         </noscript>
         <div id="outside">
             <div id="out-wrap">

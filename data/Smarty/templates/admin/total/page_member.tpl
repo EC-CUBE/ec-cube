@@ -24,7 +24,7 @@
 
 <table id="total-member" class="list">
     <tr>
-        <th><!--{t string="tpl_501"}--></th>
+        <th><!--{t string="tpl_Category_02"}--></th>
         <th><!--{t string="tpl_692"}--></th>
         <th><!--{t string="tpl_693"}--></th>
         <th><!--{t string="tpl_700"}--></th>
@@ -50,7 +50,7 @@
     <!--{/section}-->
 
     <tr>
-        <th><!--{t string="tpl_501"}--></th>
+        <th><!--{t string="tpl_Category_02"}--></th>
         <th><!--{t string="tpl_692"}--></th>
         <th><!--{t string="tpl_693"}--></th>
         <th><!--{t string="tpl_700"}--></th>

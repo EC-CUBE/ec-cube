@@ -57,7 +57,7 @@ $(function(){
 
 <body id="popup">
 <noscript>
-    <p><!--{t string="tpl_523"}--></p>
+    <p><!--{t string="tpl_Enable JavaScript_01"}--></p>
 </noscript>
 <div id="popup-header">
     <div id="popup-logo"><img src="<!--{$TPL_URLPATH}-->img/header/logo_popup.jpg" width="99" height="15" alt="EC-CUBE" /></div>

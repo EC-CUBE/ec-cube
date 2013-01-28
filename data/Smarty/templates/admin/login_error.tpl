@@ -38,7 +38,7 @@
             <div class="btn-area">
                 <ul>
                     <li>
-                        <a class="btn-action" href="<!--{$smarty.const.ADMIN_LOGIN_URLPATH}-->"><span class="btn-prev"><!--{t string="tpl_539"}--></span></a>
+                        <a class="btn-action" href="<!--{$smarty.const.ADMIN_LOGIN_URLPATH}-->"><span class="btn-prev"><!--{t string="tpl_Return to login page_01"}--></span></a>
                     </li>
                 </ul>
             </div>

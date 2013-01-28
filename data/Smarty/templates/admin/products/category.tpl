@@ -44,7 +44,7 @@
 
     <!--{* ▼画面左 *}-->
     <div id="products-category-left">
-        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">&nbsp;<!--{t string="tpl_487"}--></a><br />
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="Folder">&nbsp;<!--{t string="tpl_Home_01"}--></a><br />
         <!--{section name=cnt loop=$arrTree}-->
             <!--{assign var=level value="`$arrTree[cnt].level`}-->
 
@@ -96,7 +96,7 @@
                 <span class="attention"><!--{$arrErr.category_name}--></span>
                 <!--{/if}-->
                 <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next"><!--{t string="tpl_488"}--></span></a><span class="attention">&nbsp;<!--{t string="tpl_489" %s1=$smarty.const.STEXT_LEN}--></span>
+                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next"><!--{t string="tpl_Register_02"}--></span></a><span class="attention">&nbsp;<!--{t string="tpl_489" %s1=$smarty.const.STEXT_LEN}--></span>
         </div>
 
         <h2><!--{* jQuery で挿入される *}--></h2>
@@ -110,7 +110,7 @@
             <col width="25%" />
             <tr class="nodrop nodrag">
                 <th><!--{t string="tpl_ID_01"}--></th>
-                <th><!--{t string="tpl_490"}--></th>
+                <th><!--{t string="tpl_Category name_01"}--></th>
                 <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
                 <th><!--{t string="tpl_Move_01"}--></th>
@@ -150,7 +150,7 @@
             <!--{/section}-->
         </table>
         <!--{else}-->
-        <p><!--{t string="tpl_491"}--></p>
+        <p><!--{t string="tpl_No categories are registered for this hierarchy._01"}--></p>
         <!--{/if}-->
     </div>
     <!--{* ▲画面右 *}-->

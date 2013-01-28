@@ -30,7 +30,7 @@
         <th><!--{t string="tpl_692"}--></th>
         <th><!--{t string="tpl_Quantity_01"}--></th>
         <th><!--{t string="tpl_Unit price_01"}--></th>
-        <th><!--{t string="tpl_502"}--></th>
+        <th><!--{t string="tpl_Amount_01"}--></th>
     </tr>
 
     <!--{section name=cnt loop=$arrResults}-->
@@ -62,6 +62,6 @@
         <th><!--{t string="tpl_692"}--></th>
         <th><!--{t string="tpl_Quantity_01"}--></th>
         <th><!--{t string="tpl_Unit price_01"}--></th>
-        <th><!--{t string="tpl_502"}--></th>
+        <th><!--{t string="tpl_Amount_01"}--></th>
     </tr>
 </table>

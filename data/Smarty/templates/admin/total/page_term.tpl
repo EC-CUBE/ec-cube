@@ -24,14 +24,14 @@
 
 <table id="total-term" class="list">
     <tr>
-        <th><!--{t string="tpl_503"}--></th>
+        <th><!--{t string="tpl_Period_01"}--></th>
         <th><!--{t string="tpl_692"}--></th>
-        <th><!--{t string="tpl_504"}--></th>
-        <th><!--{t string="tpl_505"}--></th>
-        <th><!--{t string="tpl_506"}--></th>
-        <th><!--{t string="tpl_507" escape="none"}--></th>
-        <th><!--{t string="tpl_508"}--></th>
-        <th><!--{t string="tpl_509" escape="none"}--></th>
+        <th><!--{t string="tpl_Male_01"}--></th>
+        <th><!--{t string="tpl_Female_01"}--></th>
+        <th><!--{t string="tpl_Male (member)_01"}--></th>
+        <th><!--{t string="tpl_Male (non-member)_01" escape="none"}--></th>
+        <th><!--{t string="tpl_Female (member)_01"}--></th>
+        <th><!--{t string="tpl_Female (non-member)_01" escape="none"}--></th>
         <th><!--{t string="tpl_693"}--></th>
         <th><!--{t string="tpl_700"}--></th>
     </tr>
@@ -74,14 +74,14 @@
     <!--{/section}-->
 
     <tr>
-        <th><!--{t string="tpl_503"}--></th>
+        <th><!--{t string="tpl_Period_01"}--></th>
         <th><!--{t string="tpl_692"}--></th>
-        <th><!--{t string="tpl_504"}--></th>
-        <th><!--{t string="tpl_505"}--></th>
-        <th><!--{t string="tpl_506"}--></th>
-        <th><!--{t string="tpl_507" escape="none"}--></th>
-        <th><!--{t string="tpl_508"}--></th>
-        <th><!--{t string="tpl_509" escape="none"}--></th>
+        <th><!--{t string="tpl_Male_01"}--></th>
+        <th><!--{t string="tpl_Female_01"}--></th>
+        <th><!--{t string="tpl_Male (member)_01"}--></th>
+        <th><!--{t string="tpl_Male (non-member)_01" escape="none"}--></th>
+        <th><!--{t string="tpl_Female (member)_01"}--></th>
+        <th><!--{t string="tpl_Female (non-member)_01" escape="none"}--></th>
         <th><!--{t string="tpl_693"}--></th>
         <th><!--{t string="tpl_700"}--></th>
     </tr>

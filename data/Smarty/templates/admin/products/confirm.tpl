@@ -57,7 +57,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_498"}--></th>
+            <th><!--{t string="tpl_Product category_01"}--></th>
             <td>
                 <!--{section name=cnt loop=$arrForm.arrCategoryId}-->
                     <!--{assign var=key value=$arrForm.arrCategoryId[cnt]}-->
@@ -66,13 +66,13 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_499"}--></th>
+            <th><!--{t string="tpl_Disclosed/not disclosed_01"}--></th>
             <td>
                 <!--{$arrDISP[$arrForm.status]}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_554"}--></th>
+            <th><!--{t string="tpl_Product status_01"}--></th>
             <td>
                 <!--{if count($arrForm.product_status) > 0}-->
                     <ul class="status_icon clearfix">
@@ -95,13 +95,13 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_555"}--></th>
+                <th><!--{t string="tpl_Downloaded product file name_01"}--></th>
                 <td>
                     <!--{$arrForm.down_filename|h}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_556" escape="none"}--></th>
+                <th><!--{t string="tpl_File for downloaded product_01" escape="none"}--></th>
                 <td>
                     <!--{if $arrForm.down_realfilename != ""}-->
                         <!--{$arrForm.down_realfilename|h}-->
@@ -127,7 +127,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_557"}--></th>
+                <th><!--{t string="tpl_Inventory count_01"}--></th>
                 <td>
                     <!--{if $arrForm.stock_unlimited == 1}-->
                         <!--{t string="tpl_No limit"}-->
@@ -139,7 +139,7 @@
         <!--{/if}-->
 
         <tr>
-            <th><!--{t string="tpl_558"}--></th>
+            <th><!--{t string="tpl_Product shipping fee_01"}--></th>
             <td>
                 <!--{if strlen($arrForm.deliv_fee) >= 1}--><!--{t string="currency_prefix"}--><!--{$arrForm.deliv_fee|h}--><!--{t string="currency_suffix"}--><!--{/if}-->
             </td>

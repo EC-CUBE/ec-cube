@@ -98,7 +98,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_498_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Product category<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.category_id}--></span>
                 <table class="layout">
@@ -108,7 +108,7 @@ function selectAll(target) {
                             </select>
                         </td>
                         <td style="padding: 15px;">
-                            <a class="btn-normal" href="javascript:;" name="on_select" onclick="fnMoveSelect('category_id_unselect','category_id'); return false;">&nbsp;&nbsp;&lt;-&nbsp;<!--{t string="tpl_488"}-->&nbsp;&nbsp;</a><br /><br />
+                            <a class="btn-normal" href="javascript:;" name="on_select" onclick="fnMoveSelect('category_id_unselect','category_id'); return false;">&nbsp;&nbsp;&lt;-&nbsp;<!--{t string="tpl_Register_02"}-->&nbsp;&nbsp;</a><br /><br />
                             <a class="btn-normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect'); return false;">&nbsp;&nbsp;<!--{t string="tpl_Remove_01"}-->&nbsp;-&gt;&nbsp;&nbsp;</a>
                         </td>
                         <td>
@@ -121,13 +121,13 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_499_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Disclosed/not disclosed<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{html_radios name="status" options=$arrDISP selected=$arrForm.status separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_554"}--></th>
+            <th><!--{t string="tpl_Product status_01"}--></th>
             <td>
                 <!--{html_checkboxes name="product_status" options=$arrSTATUS selected=$arrForm.product_status separator='&nbsp;&nbsp;'}-->
             </td>
@@ -140,7 +140,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_555_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Downloaded product file name<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
                 <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
@@ -188,7 +188,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_557_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Inventory count<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.stock}--></span>
                 <input type="text" name="stock" value="<!--{$arrForm.stock|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
@@ -198,7 +198,7 @@ function selectAll(target) {
         <!--{/if}-->
 
         <tr>
-            <th><!--{t string="tpl_558"}--></th>
+            <th><!--{t string="tpl_Product shipping fee_01"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.deliv_fee}--></span>
                 <!--{t string="currency_prefix"}-->

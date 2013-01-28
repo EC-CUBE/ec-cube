@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
-<title><!--{t string="tpl_540"}--></title>
+<title><!--{t string="tpl_Management area_01"}--></title>
 <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <script type="text/javascript">//<![CDATA[
@@ -47,7 +47,7 @@
 <body>
 <!--{$GLOBAL_ERR}-->
 <noscript>
-    <p><!--{t string="tpl_523"}--></p>
+    <p><!--{t string="tpl_Enable JavaScript_01"}--></p>
 </noscript>
 <div id="login">
 

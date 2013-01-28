@@ -33,11 +33,11 @@
 
     <table>
         <tr>
-            <th><!--{t string="tpl_492"}--></th>
+            <th><!--{t string="tpl_Standard name_01"}--></th>
             <td><!--{$tpl_class_name}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_493_1" escape="none"}--></th>
+            <th><!--{t string="tpl_Category name<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <!--{if $arrErr.name}-->
                     <span class="attention"><!--{$arrErr.name}--></span>
@@ -59,7 +59,7 @@
         <col width="10%" />
         <col width="15%" />
         <tr>
-            <th><!--{t string="tpl_493"}--></th>
+            <th><!--{t string="tpl_Category name_02"}--></th>
             <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
             <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             <th><!--{t string="tpl_Move_01"}--></th>
@@ -89,7 +89,7 @@
         <!--{/section}-->
     </table>
     <div class="btn">
-        <a class="btn-action" href="./class.php"><span class="btn-prev"><!--{t string="tpl_496"}--></span></a>
+        <a class="btn-action" href="./class.php"><span class="btn-prev"><!--{t string="tpl_Return to the standard list_01"}--></span></a>
     </div>
 </div>
 </form>
