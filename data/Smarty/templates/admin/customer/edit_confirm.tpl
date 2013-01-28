@@ -69,7 +69,7 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_Name_02"}--></th>
-                <td><!--{t string="tpl_%s1 %s2_01" %s1=$arrForm.name01|h %s2=$arrForm.name02|h}--></td>
+                <td><!--{t string="tpl_T_ARG1 T_ARG2_01" T_ARG1=$arrForm.name01|h T_ARG2=$arrForm.name02|h}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Postal code_01"}--></th>
@@ -108,7 +108,7 @@ function func_return(){
                 <th><!--{t string="tpl_Date of birth_01"}--></th>
                 <td>
                     <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
-                        <!--{t string="tpl_s1Year%s2Month%s3Day_01" %s1=$arrForm.year|h %s2=$arrForm.month|h %s3=$arrForm.day|h }-->
+                        <!--{t string="tpl_s1YearT_ARG2MonthT_ARG3Day_01" T_ARG1=$arrForm.year|h T_ARG2=$arrForm.month|h T_ARG3=$arrForm.day|h }-->
                     <!--{else}-->
                         <!--{t string="tpl_Not registered_01"}-->
                     <!--{/if}-->

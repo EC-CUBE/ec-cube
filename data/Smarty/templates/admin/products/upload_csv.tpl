@@ -32,7 +32,7 @@
             <!--{foreach key=key item=item from=$arrCSVErr}-->
                 <span class="attention"><!--{$item}-->
                 <!--{if $key != 'blank'}-->
-                    <!--{t string="tpl_[Value:%s1]_01" %s1=$arrParam[$key]}-->
+                    <!--{t string="tpl_[Value:T_ARG1]_01" T_ARG1=$arrParam[$key]}-->
                 <!--{/if}-->
                 </span><br />
             <!--{/foreach}-->
@@ -54,7 +54,7 @@
             <th><!--{t string="tpl_Registration information_01"}--></th>
             <td>
                 <!--{foreach name=title key=key item=item from=$arrTitle}-->
-                    <!--{t string="tpl_%s1 Item: %s2_01" %s1=$smarty.foreach.title.iteration %s2=$item}--><br />
+                    <!--{t string="tpl_T_ARG1 Item: T_ARG2_01" T_ARG1=$smarty.foreach.title.iteration T_ARG2=$item}--><br />
                 <!--{/foreach}-->
             </td>
         </tr>

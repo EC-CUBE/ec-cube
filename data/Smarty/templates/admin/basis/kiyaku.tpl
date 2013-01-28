@@ -34,7 +34,7 @@
                 <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != "" || $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.SMTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.SMTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -42,7 +42,7 @@
             <td>
             <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
             <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{"\n"}--><!--{$arrForm.kiyaku_text|h}--></textarea>
-            <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.MLTEXT_LEN}--></span>
+            <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.MLTEXT_LEN}--></span>
             </td>
         </tr>
     </table>

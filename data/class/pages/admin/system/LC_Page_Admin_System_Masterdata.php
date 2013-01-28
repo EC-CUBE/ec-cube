@@ -167,7 +167,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
             if ($arrId[$i] != '') {
                 for ($j = $i + 1; $j < count($arrId); $j++) {
                     if ($id == $arrId[$j]) {
-                        return t('LC_Page_Admin_System_Masterdata_002', array('%s1' => $id));
+                        return t('LC_Page_Admin_System_Masterdata_002', array('T_ARG1' => $id));
                         
                     }
                 }

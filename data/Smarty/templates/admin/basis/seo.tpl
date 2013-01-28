@@ -42,19 +42,19 @@
                                 <th><!--{t string="tpl_Meta tag: Author_01"}--></th>
                                 <td>
                                 <span class="attention"><!--{$arrErr[$item.device_type_id][$item.page_id].author}--></span>
-                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][author]" value="<!--{$item.author|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].author != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span></td>
+                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][author]" value="<!--{$item.author|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].author != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span></td>
                             </tr>
                             <tr>
                                 <th><!--{t string="tpl_Meta tag: Description_01"}--></th>
                                 <td>
                                 <span class="attention"><!--{$arrErr[$item.device_type_id][$item.page_id].description}--></span>
-                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][description]" value="<!--{$item.description|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].description != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span></td>
+                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][description]" value="<!--{$item.description|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].description != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span></td>
                             </tr>
                             <tr>
                                 <th><!--{t string="tpl_Meta tag: Keywords_01"}--></th>
                                 <td>
                                 <span class="attention"><!--{$arrErr[$item.device_type_id][$item.page_id].keyword}--></span>
-                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span></td>
+                                <input type="text" name="meta[<!--{$item.device_type_id}-->][<!--{$item.page_id}-->][keyword]" value="<!--{$item.keyword|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style='<!--{if $arrErr[$item.page_id].keyword != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->' /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span></td>
                             </tr>
                         </table>
 

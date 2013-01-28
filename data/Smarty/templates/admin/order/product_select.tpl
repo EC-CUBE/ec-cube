@@ -156,7 +156,7 @@
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->
     <p>
-        <!--{t string="tpl_%s1 items were found._01" %s1=$tpl_linemax}-->
+        <!--{t string="tpl_T_ARG1 items were found._01" T_ARG1=$tpl_linemax}-->
         <!--{$tpl_strnavi}-->
     </p>
 
@@ -199,13 +199,13 @@
                         <!--{assign var=class2 value=classcategory_id`$id`_2}-->
                         <!--{if $tpl_classcat_find1[$id]}-->
                         <dl>
-                            <dt><!--{t string="tpl_%s1:_01" %s1=$tpl_class_name1[$id]|h}--></dt>
+                            <dt><!--{t string="tpl_T_ARG1:_01" T_ARG1=$tpl_class_name1[$id]|h}--></dt>
                             <dd>
                                 <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"    onchange="fnSetClassCategories(this.form);">
                                     <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
                                 </select>
                                 <!--{if $arrErr[$class1] != ""}-->
-                                <br /><span class="attention"><!--{t string="tpl_ Enter %s1._01" %s1=$tpl_class_name1[$id]}--></span>
+                                <br /><span class="attention"><!--{t string="tpl_ Enter T_ARG1._01" T_ARG1=$tpl_class_name1[$id]}--></span>
                                 <!--{/if}-->
                             </dd>
                         </dl>
@@ -215,11 +215,11 @@
 
                         <!--{if $tpl_classcat_find2[$id]}-->
                         <dl>
-                            <dt><!--{t string="tpl_%s1:_01" %s1=$tpl_class_name2[$id]|h}--></dt>
+                            <dt><!--{t string="tpl_T_ARG1:_01" T_ARG1=$tpl_class_name2[$id]|h}--></dt>
                             <dd>
                                 <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
                                 <!--{if $arrErr[$class2] != ""}-->
-                                <br /><span class="attention"><!--{t string="tpl_ Enter %s1._01" %s1=$tpl_class_name2[$id]}--></span>
+                                <br /><span class="attention"><!--{t string="tpl_ Enter T_ARG1._01" T_ARG1=$tpl_class_name2[$id]}--></span>
                                 <!--{/if}-->
                             </dd>
                         </dl>

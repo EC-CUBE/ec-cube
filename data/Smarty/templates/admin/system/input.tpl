@@ -63,7 +63,7 @@ self.moveTo(20,20);self.focus();
             <!--{if $arrErr.login_id}--><span class="attention"><!--{$arrErr.login_id}--></span><!--{/if}-->
             <input type="text" name="login_id" size="20" class="box20"    value="<!--{$arrForm.login_id|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
             <span class="attention"><!--{t string="tpl_* Enter required_01"}--></span><br />
-            <!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}-->
+            <!--{t string="tpl_* Alphanumeric characters T_ARG1 to T_ARG2 _01" T_ARG1=$smarty.const.ID_MIN_LEN T_ARG2=$smarty.const.ID_MAX_LEN}-->
         </td>
     </tr>
     <tr>
@@ -72,7 +72,7 @@ self.moveTo(20,20);self.focus();
             <!--{if $arrErr.password}--><span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><!--{/if}-->
             <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
             <span class="attention"><!--{t string="tpl_* Enter required_01"}--></span><br />
-            <!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}-->
+            <!--{t string="tpl_* Alphanumeric characters T_ARG1 to T_ARG2 _01" T_ARG1=$smarty.const.ID_MIN_LEN T_ARG2=$smarty.const.ID_MAX_LEN}-->
             <br />
             <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
             <p><span class="attention mini"><!--{t string="tpl_Enter twice for confirmation_01"}--></span></p>

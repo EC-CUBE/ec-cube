@@ -43,7 +43,7 @@
             <td>
                 <!--{assign var=key value="css_name"}-->
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />.css
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$arrForm[$key].length}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$arrForm[$key].length}--></span>
                 <!--{if $arrErr[$key] != ""}--> <div class="attention"><!--{$arrErr[$key]}--></div> <!--{/if}-->
             </td>
         </tr>

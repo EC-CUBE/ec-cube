@@ -94,7 +94,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.name}--></span>
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -144,7 +144,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
                 <input type="text" name="down_filename" value="<!--{$arrForm.down_filename|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.down_filename != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" size="60" class="box60" />
-                <span class="red"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="red"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -158,7 +158,7 @@ function selectAll(target) {
                         <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_[Erase file]_01"}--></a><br>
                     <!--{/if}-->
                     <input type="file" name="down_file" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_Upload_01"}--></a><br /><!--{t string="tpl_Extensions for uploaded files: %s1 (Parameter DOWNLOAD_EXTENSION)_01" %s1=$smarty.const.DOWNLOAD_EXTENSION}-->
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;"><!--{t string="tpl_Upload_01"}--></a><br /><!--{t string="tpl_Extensions for uploaded files: T_ARG1 (Parameter DOWNLOAD_EXTENSION)_01" T_ARG1=$smarty.const.DOWNLOAD_EXTENSION}-->
             </td>
         </tr>
         <tr>
@@ -166,7 +166,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.product_code}--></span>
                 <input type="text" name="product_code" value="<!--{$arrForm.product_code|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{if $arrErr.product_code != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -178,7 +178,7 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_%s1<span class='attention'> *</span>_01" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--></th>
+            <th><!--{t string="tpl_T_ARG1<span class='attention'> *</span>_01" escape="none" T_ARG1=$smarty.const.SALE_PRICE_TITLE}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.price02}--></span>
                 <!--{t string="currency_prefix"}-->
@@ -249,7 +249,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.comment1}--></span>
                 <input type="text" name="comment1" value="<!--{$arrForm.comment1|h}-->" maxlength="<!--{$smarty.const.URL_LEN}-->" size="60" class="box60" style="<!--{$arrErr.comment1|sfGetErrorColor}-->" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.URL_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.URL_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -257,7 +257,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.comment3}--></span>
                 <textarea name="comment3" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.comment3|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.comment3|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -265,7 +265,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.note}--></span>
                 <textarea name="note" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr.note|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm.note|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -273,7 +273,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.main_list_comment}--></span>
                 <textarea name="main_list_comment" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" style="<!--{if $arrErr.main_list_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_list_comment|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.MTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -281,12 +281,12 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.main_comment}--></span>
                 <textarea name="main_comment" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{if $arrErr.main_comment != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" cols="60" rows="8" class="area60"><!--{"\n"}--><!--{$arrForm.main_comment|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
             <!--{assign var=key value="main_list_image"}-->
-            <th><!--{t string="tpl_List - Main images<br />[%s1 x %s2]_01" escape="none" %s1=$smarty.const.SMALL_IMAGE_WIDTH %s2=$smarty.const.SMALL_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_List - Main images<br />[T_ARG1 x T_ARG2]_01" escape="none" T_ARG1=$smarty.const.SMALL_IMAGE_WIDTH T_ARG2=$smarty.const.SMALL_IMAGE_HEIGHT }--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <a name="main_image"></a>
@@ -301,7 +301,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_image"}-->
-            <th><!--{t string="tpl_Details - Main image<br />[%s1 x %s2]_01" escape="none" %s1=$smarty.const.NORMAL_IMAGE_WIDTH %s2=$smarty.const.NORMAL_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_Details - Main image<br />[T_ARG1 x T_ARG2]_01" escape="none" T_ARG1=$smarty.const.NORMAL_IMAGE_WIDTH T_ARG2=$smarty.const.NORMAL_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -313,7 +313,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="main_large_image"}-->
-            <th><!--{t string="tpl_Details - Main enlarged image<br />[%s1 x %s2]_01" escape="none" %s1=$smarty.const.LARGE_IMAGE_WIDTH %s2=$smarty.const.LARGE_IMAGE_HEIGHT }--></th>
+            <th><!--{t string="tpl_Details - Main enlarged image<br />[T_ARG1 x T_ARG2]_01" escape="none" T_ARG1=$smarty.const.LARGE_IMAGE_WIDTH T_ARG2=$smarty.const.LARGE_IMAGE_HEIGHT }--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -344,26 +344,26 @@ function selectAll(target) {
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
         <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
         <tr>
-            <th><!--{t string="tpl_Details - Sub title(%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
+            <th><!--{t string="tpl_Details - Sub title(T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--></th>
             <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <input type="text" name="sub_title<!--{$smarty.section.cnt.iteration}-->" value="<!--{$arrForm[$key]|h}-->" size="60" class="box60" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_Details - Sub comment(%s1)_01" %s1=$smarty.section.cnt.iteration}--><span class="attention"><!--{t string="tpl_(Tags permitted)_01"}--></span></th>
+            <th><!--{t string="tpl_Details - Sub comment(T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--><span class="attention"><!--{t string="tpl_(Tags permitted)_01"}--></span></th>
             <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="sub_comment<!--{$smarty.section.cnt.iteration}-->" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.LLTEXT_LEN}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
             <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
-            <th><!--{t string="tpl_Details - Sub image(%s1)<br />[%s2 x %s3]_01" escape="none" %s1=$smarty.section.cnt.iteration %s2=$smarty.const.NORMAL_SUBIMAGE_WIDTH %s3=$smarty.const.NORMAL_SUBIMAGE_HEIGHT}--></th>
+            <th><!--{t string="tpl_Details - Sub image(T_ARG1)<br />[T_ARG2 x T_ARG3]_01" escape="none" T_ARG1=$smarty.section.cnt.iteration T_ARG2=$smarty.const.NORMAL_SUBIMAGE_WIDTH T_ARG3=$smarty.const.NORMAL_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <a name="<!--{$key}-->"></a>
                 <!--{assign var=largekey value="sub_large_image`$smarty.section.cnt.iteration`"}-->
@@ -378,7 +378,7 @@ function selectAll(target) {
         </tr>
         <tr>
             <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
-            <th><!--{t string="tpl_Details - Sub enlarged image(%s1)<br />[%s2 x %s3]_01" escape="none" %s1=$smarty.section.cnt.iteration %s2=$smarty.const.LARGE_SUBIMAGE_WIDTH %s3=$smarty.const.LARGE_SUBIMAGE_HEIGHT}--></th>
+            <th><!--{t string="tpl_Details - Sub enlarged image(T_ARG1)<br />[T_ARG2 x T_ARG3]_01" escape="none" T_ARG1=$smarty.section.cnt.iteration T_ARG2=$smarty.const.LARGE_SUBIMAGE_WIDTH T_ARG3=$smarty.const.LARGE_SUBIMAGE_HEIGHT}--></th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -411,7 +411,7 @@ function selectAll(target) {
         <tr>
             <!--{assign var=key value="recommend_id`$smarty.section.cnt.iteration`"}-->
             <!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
-            <th><!--{t string="tpl_Related products(%s1)_01" %s1=$smarty.section.cnt.iteration}--><br />
+            <th><!--{t string="tpl_Related products(T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--><br />
                 <!--{if $arrRecommend[$recommend_no].product_id}-->
                     <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                 <!--{/if}-->
@@ -427,7 +427,7 @@ function selectAll(target) {
                 <!--{t string="tpl_Product code_01"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
                 <!--{t string="tpl_Product name_01"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LTEXT_LEN}--></span>
             </td>
         </tr>
         <!--{/section}-->

@@ -36,7 +36,7 @@
                     <span class="attention"><!--{$arrErr.name}--></span>
                 <!--{/if}-->
                 <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
     </table>

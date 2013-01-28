@@ -126,7 +126,7 @@ class SC_Helper_Mail {
         $arrOrder = $objQuery->getRow('*', 'dtb_order', $where, array($order_id));
 
         if (empty($arrOrder)) {
-            trigger_error(t('SC_Helper_Mail_001', array('%s1' => $order_id)), E_USER_ERROR);
+            trigger_error(t('SC_Helper_Mail_001', array('T_ARG1' => $order_id)), E_USER_ERROR);
         }
 
         $where = 'order_id = ?';
@@ -199,7 +199,7 @@ class SC_Helper_Mail {
         $tosubject = $this->sfMakeSubject($tmp_subject, $objMailView);
 
         $objSendMail->setItem('', $tosubject, $body, $from, $arrInfo['shop_name'], $from, $error, $error, $bcc);
-        $objSendMail->setTo($arrOrder['order_email'], t('FORMAT_NAME_FULL_SIR', array('%s1' => $arrOrder['order_name01'], '%s2' => $arrOrder['order_name02'])));
+        $objSendMail->setTo($arrOrder['order_email'], t('FORMAT_NAME_FULL_SIR', array('T_ARG1' => $arrOrder['order_name01'], 'T_ARG2' => $arrOrder['order_name02'])));
 
         // 送信フラグ:trueの場合は、送信する。
         if ($send) {
@@ -358,7 +358,7 @@ class SC_Helper_Mail {
         } else {
             $to_addr = $arrCustomerData['email'];
         }
-        $objMail->setTo($to_addr, t('FORMAT_NAME_FULL_SIR', array('%s1' => $arrCustomerData['name01'], '%s2' => $arrCustomerData['name02'])));
+        $objMail->setTo($to_addr, t('FORMAT_NAME_FULL_SIR', array('T_ARG1' => $arrCustomerData['name01'], 'T_ARG2' => $arrCustomerData['name02'])));
 
         $objMail->sendMail();
         return true;

@@ -96,7 +96,7 @@
                 <span class="attention"><!--{$arrErr.category_name}--></span>
                 <!--{/if}-->
                 <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next"><!--{t string="tpl_Register_02"}--></span></a><span class="attention">&nbsp;<!--{t string="tpl_(max %s1 characters)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next"><!--{t string="tpl_Register_02"}--></span></a><span class="attention">&nbsp;<!--{t string="tpl_(max T_ARG1 characters)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
         </div>
 
         <h2><!--{* jQuery で挿入される *}--></h2>

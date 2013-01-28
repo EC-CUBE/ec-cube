@@ -53,8 +53,8 @@ class SC_Image {
             }
         } else {
             $tokens = array(
-                '%s1' => $from_path,
-                '%s2' => $to_path
+                'T_ARG1' => $from_path,
+                'T_ARG2' => $to_path
             );
             GC_Utils_Ex::gfDebugLog(t('SC_Image_002', $tokens));
         }

@@ -81,7 +81,7 @@ function checkFlagAndSubmit(){
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <textarea name="header" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
-            <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LTEXT_LEN}-->
+            <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LTEXT_LEN}-->
             </span>
             <div>
                 <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span><!--{t string="tpl_Text count_01"}--></span></a>
@@ -101,7 +101,7 @@ function checkFlagAndSubmit(){
             <span class="attention"><!--{$arrErr[$key]}--></span>
             <!--{/if}-->
             <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
-            <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LTEXT_LEN}--></span>
+            <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LTEXT_LEN}--></span>
             <div>
                 <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span><!--{t string="tpl_Text count_01"}--></span></a>
                 <!--{t string="tpl_Character count_01"}-->

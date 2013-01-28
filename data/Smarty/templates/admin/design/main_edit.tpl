@@ -50,7 +50,7 @@ function fnTargetSelf(){
                 <!--{if $arrForm.edit_flg.value == 2}-->
                     <!--{$arrForm[$key].value|h}--><input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$arrForm[$key].length|h}--></span>
+                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$arrForm[$key].length|h}--></span>
                 <!--{/if}-->
                 <!--{if $arrErr[$key] != ""}-->
                     <div class="message">
@@ -67,7 +67,7 @@ function fnTargetSelf(){
                     <!--{$smarty.const.HTTP_URL|h}--><!--{$arrForm[$key].value|h}-->.php
                     <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />.php<span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$arrForm[$key].length|h}--></span>
+                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />.php<span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$arrForm[$key].length|h}--></span>
                 <!--{/if}-->
                 <!--{if $arrErr[$key] != ""}-->
                     <div class="attention">

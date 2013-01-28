@@ -62,7 +62,7 @@ $objDb = new SC_Helper_DB_Ex();
 $temp_dir = $ownDir . 'temp';
 
 if (!is_writable($temp_dir)) {
-    SC_Utils_Ex::sfErrorHeader(t('LC_Page_Install_001', array('%s1' => $temp_dir)), true);
+    SC_Utils_Ex::sfErrorHeader(t('LC_Page_Install_001', array('T_ARG1' => $temp_dir)), true);
     exit;
 }
 
@@ -348,21 +348,21 @@ function lfDispStep0($objPage) {
                 // ディレクトリの場合
                 if (is_dir($path)) {
                     if (!is_writable($path)) {
-                        $mess .= t('LC_Page_Install_012', array('%s1' => $real_path, '%s2' => $filemode));
+                        $mess .= t('LC_Page_Install_012', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 } else {
                     if (!is_writable($path)) {
-                        $mess .= t('LC_Page_Install_013', array('%s1' => $real_path, '%s2' => $filemode));
+                        $mess .= t('LC_Page_Install_013', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 }
             } else {
-                $mess .= t('LC_Page_Install_014', array('%s1' => $path));
+                $mess .= t('LC_Page_Install_014', array('T_ARG1' => $path));
                 $hasErr = true;
             }
         }
@@ -1115,7 +1115,7 @@ function renameAdminDir($adminDir) {
         return t('LC_Page_Install_047');
     }
     if (!rename(HTML_REALDIR . $oldAdminDir, HTML_REALDIR . $adminDir)) {
-        return  t('LC_Page_Install_048', array('%s1' => HTML_REALDIR . $adminDir));
+        return  t('LC_Page_Install_048', array('T_ARG1' => HTML_REALDIR . $adminDir));
     }
     return true;
 }

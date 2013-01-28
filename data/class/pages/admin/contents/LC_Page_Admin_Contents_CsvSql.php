@@ -255,9 +255,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrRet = array();
         foreach ($arrTable as $table) {
             if (substr($table, 0, 4) == 'dtb_') {
-                $arrRet[ $table ] = t('LC_Page_Admin_Contents_CsvSql_006', array('%s1' => $table));
+                $arrRet[ $table ] = t('LC_Page_Admin_Contents_CsvSql_006', array('T_ARG1' => $table));
             } else if (substr($table, 0, 4) == 'mtb_') {
-                $arrRet[ $table ] = t('LC_Page_Admin_Contents_CsvSql_007', array('%s1' => $table));
+                $arrRet[ $table ] = t('LC_Page_Admin_Contents_CsvSql_007', array('T_ARG1' => $table));
             }
         }
         return $arrRet;

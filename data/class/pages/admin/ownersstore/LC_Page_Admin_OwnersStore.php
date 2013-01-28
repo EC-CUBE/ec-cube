@@ -102,7 +102,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                         unset($GLOBALS['_SC_Helper_Plugin_instance']);
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
-                        $this->tpl_onload = "alert('" . t('ALERT_017', array('%s1' => $plugin['plugin_name'])) . "');";
+                        $this->tpl_onload = "alert('" . t('ALERT_017', array('T_ARG1' => $plugin['plugin_name'])) . "');";
                     }
                 }
                 break;
@@ -120,7 +120,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                         unset($GLOBALS['_SC_Helper_Plugin_instance']);
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
-                        $this->tpl_onload = "alert('" . t('ALERT_018', array('%s1' => $plugin['plugin_name'])) . "');";
+                        $this->tpl_onload = "alert('" . t('ALERT_018', array('T_ARG1' => $plugin['plugin_name'])) . "');";
                     }
                 }
                 break;
@@ -139,7 +139,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                         // コンパイルファイルのクリア処理
                         SC_Utils_Ex::clearCompliedTemplate();
                         var_dump($plugin['plugin_name']);
-                        $this->tpl_onload = "alert('" . t('ALERT_019', array('%s1' => $plugin['plugin_name'])) . "');";
+                        $this->tpl_onload = "alert('" . t('ALERT_019', array('T_ARG1' => $plugin['plugin_name'])) . "');";
                     }
                 }
                 break;
@@ -376,7 +376,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // 既にインストールされていないかを判定.
         if ($this->isInstalledPlugin($arrPluginInfo['PLUGIN_CODE']) === true) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_002', array('%s1' => $arrPluginInfo['PLUGIN_NAME']));
+            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_002', array('T_ARG1' => $arrPluginInfo['PLUGIN_NAME']));
             return $arrErr;
         }
 
@@ -810,7 +810,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         if (file_exists($file_path)) {
             require_once $file_path; 
         } else {
-            $arrErr[$key] = t('LC_Page_Admin_OwnersStore_014', array('%s1' => $file_path));
+            $arrErr[$key] = t('LC_Page_Admin_OwnersStore_014', array('T_ARG1' => $file_path));
         }
         return $arrErr;
     }
@@ -832,7 +832,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                 $arrErr[$obj['plugin_code']] = $ret;
             }
         } else {
-            $arrErr['plugin_error'] = t('LC_Page_Admin_OwnersStore_015', array('%s1' => $class_name, '%s2' => $exec_func));
+            $arrErr['plugin_error'] = t('LC_Page_Admin_OwnersStore_015', array('T_ARG1' => $class_name, 'T_ARG2' => $exec_func));
         }
         return $arrErr;
     }
@@ -985,7 +985,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
         // メッセージをセットします.
         foreach ($arrConflictPluginName as $conflictPluginName) {
-            $conflict_alert_message .= t('LC_Page_Admin_OwnersStore_017', array('%s1' => $conflictPluginName));
+            $conflict_alert_message .= t('LC_Page_Admin_OwnersStore_017', array('T_ARG1' => $conflictPluginName));
         }
         return $conflict_alert_message;
     }

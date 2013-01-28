@@ -264,7 +264,7 @@
                 <th><!--{t string="tpl_Password<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span>
-                    <input type="password" name="password" value="<!--{$arrForm.password|h}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;<!--{t string="tpl_Lower-case alphanumeric characters %s1 to %s2 (Symbols cannot be used)_01" %s1=$smarty.const.PASSWORD_MIN_LEN %s2=$smarty.const.PASSWORD_MAX_LEN}--><br />
+                    <input type="password" name="password" value="<!--{$arrForm.password|h}-->" size="30" class="box30" <!--{if $arrErr.password != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;<!--{t string="tpl_Lower-case alphanumeric characters T_ARG1 to T_ARG2 (Symbols cannot be used)_01" T_ARG1=$smarty.const.PASSWORD_MIN_LEN T_ARG2=$smarty.const.PASSWORD_MAX_LEN}--><br />
                     <input type="password" name="password02" value="<!--{$arrForm.password02|h}-->" size="30" class="box30" <!--{if $arrErr.password02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
                     <p><span class="attention mini"><!--{t string="tpl_Enter twice for confirmation_01"}--></span></p>
                 </td>
@@ -320,7 +320,7 @@
 
         <h2><!--{t string="tpl_Purchase history list_01"}--></h2>
         <!--{if $tpl_linemax > 0}-->
-        <p><!--購入履歴一覧--><!--{t string="tpl_<span class='attention'>%s1 items</span>&nbsp; were found._01" escape="none" %s1=$tpl_linemax}--></p>
+        <p><!--購入履歴一覧--><!--{t string="tpl_<span class='attention'>T_ARG1 items</span>&nbsp; were found._01" escape="none" T_ARG1=$tpl_linemax}--></p>
 
         <!--{include file=$tpl_pager}-->
 
@@ -337,7 +337,7 @@
                     <tr>
                         <td><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
                         <td class="center"><a href="../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
-                        <td class="center"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrPurchaseHistory[cnt].payment_total|number_format}--></td>
+                        <td class="center"><!--{t string="tpl_&#36; T_ARG1_01" escape="none" T_ARG1=$arrPurchaseHistory[cnt].payment_total|number_format}--></td>
                         <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}--><!--{t string="tpl_Not shipped_01"}--><!--{/if}--></td>
                         <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
                         <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>

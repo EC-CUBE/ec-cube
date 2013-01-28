@@ -45,7 +45,7 @@
                 <!--{if $arrErr.bkup_name}-->
                 <span class="attention"><!--{$arrErr.bkup_name}--></span>
                 <!--{/if}-->
-                <input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <input type="text" name="bkup_name" value="<!--{$arrForm.bkup_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.bkup_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> ime-mode: disabled;" /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -55,7 +55,7 @@
                     <span class="attention"><!--{$arrErr.bkup_memo}--></span>
                 <!--{/if}-->
                 <textarea name="bkup_memo" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" cols="60" rows="5" class="area60" style="<!--{if $arrErr.bkup_memo != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"><!--{"\n"}--><!--{$arrForm.bkup_memo|h}--></textarea>
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.MTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
     </table>

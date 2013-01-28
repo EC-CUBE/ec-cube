@@ -121,7 +121,7 @@ $(function() {
             <td>
                 <span class="attention"><!--{$arrErr.company_name}--></span>
                 <input type="text" name="company_name" value="<!--{$arrForm.company_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.company_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -129,7 +129,7 @@ $(function() {
             <td>
                 <span class="attention"><!--{$arrErr.shop_name}--></span>
                 <input type="text" name="shop_name" value="<!--{$arrForm.shop_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -137,7 +137,7 @@ $(function() {
             <td>
                 <span class="attention"><!--{$arrErr.shop_name_eng}--></span>
                 <input type="text" name="shop_name_eng" value="<!--{$arrForm.shop_name_eng|h}-->" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.shop_name_eng != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.MTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.MTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -157,12 +157,12 @@ $(function() {
             <td>
                 <p>
                     <span class="attention"><!--{$arrErr.addr01}--></span>
-                    <input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span><br />
+                    <input type="text" name="addr01" value="<!--{$arrForm.addr01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr01" /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS1}-->
                 </p>
                 <p>
                     <span class="attention"><!--{$arrErr.addr02}--></span>
-                    <input type="text" name="addr02" value="<!--{$arrForm.addr02|h}-->"    maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr02" /><span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span><br />
+                    <input type="text" name="addr02" value="<!--{$arrForm.addr02|h}-->"    maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.addr02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="addr02" /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span><br />
                     <!--{$smarty.const.SAMPLE_ADDRESS2}-->
                 </p>
             </td>
@@ -190,7 +190,7 @@ $(function() {
             <td>
                 <span class="attention"><!--{$arrErr.business_hour}--></span>
                 <input type="text" name="business_hour" value="<!--{$arrForm.business_hour|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="60" class="box60" style="<!--{if $arrErr.business_hour != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.STEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.STEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -227,7 +227,7 @@ $(function() {
                 <!--{assign var=key value="good_traded"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
         <tr>
@@ -236,7 +236,7 @@ $(function() {
                 <!--{assign var=key value="message"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
-                <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LLTEXT_LEN}--></span>
+                <span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$smarty.const.LLTEXT_LEN}--></span>
             </td>
         </tr>
     </table>

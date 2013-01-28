@@ -203,7 +203,7 @@ class LC_Page_Contact extends LC_Page_Ex {
         $helperMail->setPage($this);
         $helperMail->sfSendTemplateMail(
             $objPage->arrForm['email']['value'],            // to
-            t('LC_Page_Contact_004', array('%s1' => $objPage->arrForm['name01']['value'])), // to_name
+            t('LC_Page_Contact_004', array('T_ARG1' => $objPage->arrForm['name01']['value'])), // to_name
             5,                                              // template_id
             $objPage,                                       // objPage
             $CONF['email03'],                               // from_address

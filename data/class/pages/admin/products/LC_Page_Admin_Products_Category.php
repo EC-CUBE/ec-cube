@@ -317,7 +317,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
 
             // 階層上限チェック
             if ($this->isOverLevel($parent_category_id)) {
-                $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_005', array('%s1' => LEVEL_MAX));
+                $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_005', array('T_ARG1' => LEVEL_MAX));
                 return $arrErr;
             }
         }

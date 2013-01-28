@@ -61,8 +61,8 @@
                 <th><!--{t string="tpl_Standard 2_01"}-->(<!--{$arrClass[$class_id2]|default_t:"tpl_Not selected_01"|h}-->)</th>
                 <th><!--{t string="tpl_Product code_01"}--></th>
                 <th><!--{t string="tpl_Inventory count_01"}--></th>
-                <th><!--{t string="tpl_%s1(&#36;)_01" escape="none" %s1=$smarty.const.NORMAL_PRICE_TITLE}--></th>
-                <th><!--{t string="tpl_%s1(&#36;)_01" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_T_ARG1(&#36;)_01" escape="none" T_ARG1=$smarty.const.NORMAL_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_T_ARG1(&#36;)_01" escape="none" T_ARG1=$smarty.const.SALE_PRICE_TITLE}--></th>
                 <th><!--{t string="tpl_Product type_01"}--></th>
                 <th><!--{t string="tpl_Downloaded file name_02"}--></th>
                 <th><!--{t string="tpl_File upload for downloaded product_01"}--></th>

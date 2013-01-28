@@ -52,7 +52,7 @@ function lfnCheckSetItem( rank ){
     var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
         if ( rank != checkRank ){
-            if( ! window.confirm('<!--{t string="tpl_The selected field %s1 will be discarded. Continue? _01" %s1=$checkRank|h}-->')){
+            if( ! window.confirm('<!--{t string="tpl_The selected field T_ARG1 will be discarded. Continue? _01" T_ARG1=$checkRank|h}-->')){
                 flag = false;
             }
         }
@@ -67,7 +67,7 @@ function lfnSortItem(mode,data){
     var flag = true;
     var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
-        if( ! window.confirm('<!--{t string="tpl_The selected field %s1 will be discarded. Continue? _01" %s1=$checkRank|h}-->')){
+        if( ! window.confirm('<!--{t string="tpl_The selected field T_ARG1 will be discarded. Continue? _01" T_ARG1=$checkRank|h}-->')){
             flag = false;
         }
     }

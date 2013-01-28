@@ -83,7 +83,7 @@
         <h2><!--{* jQuery で挿入される *}--></h2>
         <!--{if count($arrProductsList) > 0}-->
 
-            <p class="remark"><!--{t string="tpl_<span class='attention'>%s1 items</span> were found._01" escape="none" %s1=$tpl_linemax}--></p>
+            <p class="remark"><!--{t string="tpl_<span class='attention'>T_ARG1 items</span> were found._01" escape="none" T_ARG1=$tpl_linemax}--></p>
             <div class="pager">
                 <!--{$tpl_strnavi}-->
             </div>

@@ -245,12 +245,12 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
 
         // 利用条件(下限)チェック
         if ($arrRet['rule_max'] < $arrPaymentData['rule_min'] and $arrPaymentData['rule_min'] != '') {
-            $objErr->arrErr['rule'] = t('LC_Page_Admin_Basis_PaymentInput_003', array('%s1', $arrPaymentData['rule_min']));
+            $objErr->arrErr['rule'] = t('LC_Page_Admin_Basis_PaymentInput_003', array('T_ARG1', $arrPaymentData['rule_min']));
         }
 
         // 利用条件(上限)チェック
         if ($arrRet['upper_rule'] > $arrPaymentData['upper_rule_max'] and $arrPaymentData['upper_rule_max'] != '') {
-            $objErr->arrErr['rule'] = t('LC_Page_Admin_Basis_PaymentInput_004', array('%s1', $arrPaymentData['upper_rule_max']));
+            $objErr->arrErr['rule'] = t('LC_Page_Admin_Basis_PaymentInput_004', array('T_ARG1', $arrPaymentData['upper_rule_max']));
         }
 
         // 利用条件チェック

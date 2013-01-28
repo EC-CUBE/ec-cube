@@ -66,7 +66,7 @@ class SC_Helper_Transform {
             if ($encoding === false) {
                 $encoding = t("SC_Helper_Transform_001");
             }
-            $msg = t('SC_Helper_Transform_002', array('%s1' => $encoding));
+            $msg = t('SC_Helper_Transform_002', array('T_ARG1' => $encoding));
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
         }
 
@@ -326,7 +326,7 @@ class SC_Helper_Transform {
                 }
             }
             // エラー画面表示
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t('SC_Helper_Transform_004', array('%s1' => $err_msg)));
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t('SC_Helper_Transform_004', array('T_ARG1' => $err_msg)));
         } elseif ($this->snip_count) {
             $html = $this->objDOM->saveHTML();
             $html = preg_replace('/^.*(<html[^>]*>)/s', '$1', $html);

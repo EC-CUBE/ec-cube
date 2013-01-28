@@ -12,191 +12,191 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 msgid "SC_CheckError_001"
-msgstr "* %s2 contains the tag %s1 which is not allowed. <br />"
+msgstr "* T_ARG2 contains the tag T_ARG1 which is not allowed. <br />"
 
 msgid "SC_CheckError_002"
-msgstr "* %s1 is blank. <br />"
+msgstr "* T_ARG1 is blank. <br />"
 
 msgid "SC_CheckError_003"
-msgstr "* %s1 is not selected. <br />"
+msgstr "* T_ARG1 is not selected. <br />"
 
 msgid "SC_CheckError_004"
-msgstr "* %s1 is blank. <br />"
+msgstr "* T_ARG1 is blank. <br />"
 
 msgid "SC_CheckError_005"
-msgstr "* Spaces, tabs and line breaks are not possible in %s1. <br />"
+msgstr "* Spaces, tabs and line breaks are not possible in T_ARG1. <br />"
 
 msgid "SC_CheckError_006"
-msgstr "* Do not include spaces, tabs or line breaks in %s1. <br />"
+msgstr "* Do not include spaces, tabs or line breaks in T_ARG1. <br />"
 
 msgid "SC_CheckError_007"
 msgstr ""
-"* A numerical value that starts with 0 has been entered for %s1. <br />"
+"* A numerical value that starts with 0 has been entered for T_ARG1. <br />"
 
 msgid "SC_CheckError_008"
-msgstr "* %s1 is not selected. <br />"
+msgstr "* T_ARG1 is not selected. <br />"
 
 msgid "SC_CheckError_009"
-msgstr "* %s1 and %s2 do not match. <br />"
+msgstr "* T_ARG1 and T_ARG2 do not match. <br />"
 
 msgid "SC_CheckError_010"
 msgstr ""
-"* The same value cannot be used for %s1 and %s2. <br />"
+"* The same value cannot be used for T_ARG1 and T_ARG2. <br />"
 
 msgid "SC_CheckError_011"
 msgstr ""
-"* It is not possible to enter a value for %s1 thats larger than "
-"%s2. <br />"
+"* It is not possible to enter a value for T_ARG1 thats larger than "
+"T_ARG2. <br />"
 
 msgid "SC_CheckError_012"
-msgstr "* For %s1, enter %s2  characters or less. <br />"
+msgstr "* For T_ARG1, enter T_ARG2  characters or less. <br />"
 
 msgid "SC_CheckError_013_SINGLE"
 msgid_plural "SC_CheckError_013_PLURAL"
-msgstr[0] "* For %s1, enter T_COUNT characters or more. <br />"
-msgstr[1] "* For %s1, input T_COUNT characters or more. <br />"
+msgstr[0] "* For T_ARG1, enter T_COUNT characters or more. <br />"
+msgstr[1] "* For T_ARG1, input T_COUNT characters or more. <br />"
 
 msgid "SC_CheckError_014"
-msgstr "* For %s1, enter %s2 or smaller. <br />"
+msgstr "* For T_ARG1, enter T_ARG2 or smaller. <br />"
 
 msgid "SC_CheckError_015_SINGLE"
 msgid_plural "SC_CheckError_015_PLURAL"
-msgstr[0] "* Enter T_COUNT or higher for %s1. <br />"
-msgstr[1] "* Input T_COUNT or higher for %s1. <br />"
+msgstr[0] "* Enter T_COUNT or higher for T_ARG1. <br />"
+msgstr[1] "* Input T_COUNT or higher for T_ARG1. <br />"
 
 msgid "SC_CheckError_016"
-msgstr "* Enter only numbers for %s1. <br />"
+msgstr "* Enter only numbers for T_ARG1. <br />"
 
 msgid "SC_CheckError_017"
-msgstr "* Enter only numbers for %s1. <br />"
+msgstr "* Enter only numbers for T_ARG1. <br />"
 
 msgid "SC_CheckError_018"
-msgstr "* Enter alphabetical characters for %s1. <br />"
+msgstr "* Enter alphabetical characters for T_ARG1. <br />"
 
 msgid "SC_CheckError_019"
-msgstr "* Enter all items for %s1. <br />"
+msgstr "* Enter all items for T_ARG1. <br />"
 
 msgid "SC_CheckError_020"
-msgstr "* %s1 must be %s2 characters or less. <br />"
+msgstr "* T_ARG1 must be T_ARG2 characters or less. <br />"
 
 msgid "SC_CheckError_021"
-msgstr "* Enter numbers for %s1. <br />"
+msgstr "* Enter numbers for T_ARG1. <br />"
 
 msgid "SC_CheckError_022"
-msgstr "* For %s1, enter within a text length of %s2. <br />"
+msgstr "* For T_ARG1, enter within a text length of T_ARG2. <br />"
 
 msgid "SC_CheckError_023"
-msgstr "* %s1 is blank. <br />"
+msgstr "* T_ARG1 is blank. <br />"
 
 msgid "SC_CheckError_024"
-msgstr "* Enter all items for %s1. <br />"
+msgstr "* Enter all items for T_ARG1. <br />"
 
 msgid "SC_CheckError_025"
-msgstr "* %s1 is blank. <br />"
+msgstr "* T_ARG1 is blank. <br />"
 
 msgid "SC_CheckError_026"
 msgstr "* Enter items in order, starting at the beginning. <br />"
 
 msgid "SC_CheckError_027"
-msgstr "* For %s1, enter katakana characters. <br />"
+msgstr "* For T_ARG1, enter katakana characters. <br />"
 
 msgid "SC_CheckError_028"
-msgstr "* For %s1, enter katakana characters. <br />"
+msgstr "* For T_ARG1, enter katakana characters. <br />"
 
 msgid "SC_CheckError_029"
-msgstr "* Enter alphanumeric characters for %s1. <br />"
+msgstr "* Enter alphanumeric characters for T_ARG1. <br />"
 
 msgid "SC_CheckError_030"
-msgstr "* Enter alphanumeric symbols for %s1. <br />"
+msgstr "* Enter alphanumeric symbols for T_ARG1. <br />"
 
 msgid "SC_CheckError_031"
-msgstr "* Enter at least 1 for %s1. <br />"
+msgstr "* Enter at least 1 for T_ARG1. <br />"
 
 msgid "SC_CheckError_032_SINGLE"
 msgid_plural "SC_CheckError_032_PLURAL"
-msgstr[0] "*  %s1 must be  between T_COUNT - %s2 digits. <br />"
-msgstr[1] "* For %s1, input between T_COUNT to %s2 digits. <br />"
+msgstr[0] "*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />"
+msgstr[1] "* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />"
 
 msgid "SC_CheckError_033_SINGLE"
 msgid_plural "SC_CheckError_033_PLURAL"
-msgstr[0] "* For %s1, enter T_COUNT digit(s). <br />"
-msgstr[1] "* For %s1, input T_COUNT digit(s). <br />"
+msgstr[0] "* For T_ARG1, enter T_COUNT digit(s). <br />"
+msgstr[1] "* For T_ARG1, input T_COUNT digit(s). <br />"
 
 msgid "SC_CheckError_034"
-msgstr "* The %s1 format is incorrect. <br />"
+msgstr "* The T_ARG1 format is incorrect. <br />"
 
 msgid "SC_CheckError_035"
-msgstr "* Enter the characters to be used in %s1 correctly. <br />"
+msgstr "* Enter the characters to be used in T_ARG1 correctly. <br />"
 
 msgid "SC_CheckError_036"
-msgstr "* Enter %s1 correctly. <br />"
+msgstr "* Enter T_ARG1 correctly. <br />"
 
 msgid "SC_CheckError_037"
-msgstr "* Enter an IP address in the proper format in %s1. <br />"
+msgstr "* Enter an IP address in the proper format in T_ARG1. <br />"
 
 msgid "SC_CheckError_038"
-msgstr "* The format permitted for %s1 is %s2. <br />"
+msgstr "* The format permitted for T_ARG1 is T_ARG2. <br />"
 
 msgid "SC_CheckError_039"
-msgstr "* %s1 cannot be found. <br />"
+msgstr "* T_ARG1 cannot be found. <br />"
 
 msgid "SC_CheckError_040"
-msgstr "* Upload %s1. <br />"
+msgstr "* Upload T_ARG1. <br />"
 
 msgid "SC_CheckError_041"
 msgstr ""
-"* For the %s1 file size, use a size that is %s2%s3 or less. <br />"
+"* For the T_ARG1 file size, use a size that is T_ARG2T_ARG3 or less. <br />"
 
 msgid "SC_CheckError_042"
-msgstr "* Do not use Japanese or spaces in the file name for %s1. <br />"
+msgstr "* Do not use Japanese or spaces in the file name for T_ARG1. <br />"
 
 msgid "SC_CheckError_043"
-msgstr "* Enter all items for %s1. <br />"
+msgstr "* Enter all items for T_ARG1. <br />"
 
 msgid "SC_CheckError_044"
-msgstr "* %s1 is not correct. <br />"
+msgstr "* T_ARG1 is not correct. <br />"
 
 msgid "SC_CheckError_045"
-msgstr "* Specify %s1 correctly. <br />"
+msgstr "* Specify T_ARG1 correctly. <br />"
 
 msgid "SC_CheckError_046"
 msgstr ""
-"* The period specification for %s1 and %s2 is not correct. <br />"
+"* The period specification for T_ARG1 and T_ARG2 is not correct. <br />"
 
 msgid "SC_CheckError_047"
-msgstr "* The designated %s1 does not exist. <br />"
+msgstr "* The designated T_ARG1 does not exist. <br />"
 
 msgid "SC_CheckError_048"
-msgstr "* The %s1 format is incorrect. <br />"
+msgstr "* The T_ARG1 format is incorrect. <br />"
 
 msgid "SC_CheckError_049"
-msgstr "* %s1 is not for mobile phones. <br />"
+msgstr "* T_ARG1 is not for mobile phones. <br />"
 
 msgid "SC_CheckError_050"
-msgstr "* %s1 already used in member registration. <br />"
+msgstr "* T_ARG1 already used in member registration. <br />"
 
 msgid "SC_CheckError_051"
 msgstr ""
 "* For a certain period of time after membership withdrawal, it is not "
-"possible to use the same %s1. <br />"
+"possible to use the same T_ARG1. <br />"
 
 msgid "SC_CheckError_052"
-msgstr "* %s1 cannot be entered. <br />"
+msgstr "* T_ARG1 cannot be entered. <br />"
 
 msgid "SC_CheckError_053"
-msgstr "* The %s1 format is incorrect. <br />"
+msgstr "* The T_ARG1 format is incorrect. <br />"
 
 msgid "SC_FormParam_001"
-msgstr "* The file %s1 does not exist. <br />"
+msgstr "* The file T_ARG1 does not exist. <br />"
 
 msgid "SC_FormParam_002"
-msgstr "* Does not support the error check format (%s1) **<br />"
+msgstr "* Does not support the error check format (T_ARG1) **<br />"
 
 msgid "SC_FormParam_003"
-msgstr "%s1<span class=\"red\">(* Required)</span>"
+msgstr "T_ARG1<span class=\"red\">(* Required)</span>"
 
 msgid "SC_FormParam_004"
-msgstr " [Default value: %s1]"
+msgstr " [Default value: T_ARG1]"
 
 msgid "SC_FormParam_005"
 msgstr " [Registration/update not possible] "
@@ -211,17 +211,17 @@ msgstr ""
 
 msgid "SC_CartSession_003"
 msgstr ""
-"* Delivery preparations are not ready  for %s1. Please access the "
+"* Delivery preparations are not ready  for T_ARG1. Please access the "
 "inquiry page for more details."
 
 msgid "SC_CartSession_004"
 msgstr ""
-"* There is a sale restriction (or inventory shortage) for %s1. It is "
-"not possible to purchase a quantity that exceeds %s2 in a single "
+"* There is a sale restriction (or inventory shortage) for T_ARG1. It is "
+"not possible to purchase a quantity that exceeds T_ARG2 in a single "
 "purchase."
 
 msgid "SC_CartSession_005"
-msgstr "* %s1 is sold out."
+msgstr "* T_ARG1 is sold out."
 
 msgid "SC_Fpdf_001"
 msgstr "Product name / Product code / [Specification]"
@@ -272,13 +272,13 @@ msgid "SC_Fpdf_016"
 msgstr "Please confirm."
 
 msgid "SC_Fpdf_017"
-msgstr "Creation date: %s1/%s2/%s3"
+msgstr "Creation date: T_ARG1/T_ARG2/T_ARG3"
 
 msgid "SC_Fpdf_018"
-msgstr "%s1 %s2"
+msgstr "T_ARG1 T_ARG2"
 
 msgid "SC_Fpdf_019"
-msgstr "$ %s1"
+msgstr "$ T_ARG1"
 
 msgid "SC_Fpdf_020"
 msgstr "Pts"
@@ -290,7 +290,7 @@ msgid "SC_Image_001"
 msgstr "File copying failed."
 
 msgid "SC_Image_002"
-msgstr "Copying of %s1->%s2 failed."
+msgstr "Copying of T_ARG1->T_ARG2 failed."
 
 msgid "SC_Image_003"
 msgstr ""
@@ -309,11 +309,11 @@ msgstr "Image output failed."
 msgid "SC_Initial_001"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
-"align: center\">Please grant %s1 user write access (777, etc.)</"
+"align: center\">Please grant T_ARG1 user write access (777, etc.)</"
 "div>"
 
 msgid "SC_Initial_002"
-msgstr "%s1../mtb_constants_init.php does not exist"
+msgstr "T_ARG1../mtb_constants_init.php does not exist"
 
 msgid "SC_PageNavi_001"
 msgstr "&lt;&lt;Back"
@@ -337,20 +337,20 @@ msgid "SC_SendMail_001"
 msgstr "A method for upward compatibility was used."
 
 msgid "SC_SendMail_002"
-msgstr "Unknown backend.[$backend = %s1]"
+msgstr "Unknown backend.[$backend = T_ARG1]"
 
 msgid "SC_SendMail_003"
-msgstr "E-mail sending failed.[%s1]"
+msgstr "E-mail sending failed.[T_ARG1]"
 
 msgid "SC_View_001"
 msgstr "Processing time: T_TIME seconds"
 
 msgid "SC_UploadFile_001"
-msgstr "* %s1 is not uploaded. <br />"
+msgstr "* T_ARG1 is not uploaded. <br />"
 
 msgid "SC_UploadFile_002"
 msgstr ""
-"* %s1 is not uploaded. (If you cannot upload the file, adjust "
+"* T_ARG1 is not uploaded. (If you cannot upload the file, adjust "
 "php_value upload_max_filesize for the .htaccess file)<br />"
 
 msgid "SC_UploadFile_003"
@@ -419,7 +419,7 @@ msgid "SC_Helper_DB_001"
 msgstr "The file exists but cannot be read"
 
 msgid "SC_Helper_Mail_001"
-msgstr "No order exists. (Order number: %s1)"
+msgstr "No order exists. (Order number: T_ARG1)"
 
 msgid "SC_Helper_Mail_002"
 msgstr "The e-mail below has been sent."
@@ -1766,37 +1766,37 @@ msgid "PARAM_LABEL_END"
 msgstr "Complete"
 
 msgid "PARAM_LABEL_DETAIL_SUBTITLE_COUNT"
-msgstr "Details - Sub title %s1"
+msgstr "Details - Sub title T_ARG1"
 
 msgid "PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT"
-msgstr "Details - Sub comment %s1"
+msgstr "Details - Sub comment T_ARG1"
 
 msgid "PARAM_LABEL_SAVE_SUB_IMAGE_CNT_ALP"
-msgstr "save_sub_image%s1"
+msgstr "save_sub_imageT_ARG1"
 
 msgid "PARAM_LABEL_SAVE_SUB_LARGE_IMAGE_CNT_ALP"
-msgstr "save_sub_large_image%s1"
+msgstr "save_sub_large_imageT_ARG1"
 
 msgid "PARAM_LABEL_TEMP_SUB_IMAGE_CNT_ALP"
-msgstr "temp_sub_image%s1"
+msgstr "temp_sub_imageT_ARG1"
 
 msgid "PARAM_LABEL_TEMP_SUB_LARGE_IMAGE_CNT_ALP"
-msgstr "temp_sub_large_image%s1"
+msgstr "temp_sub_large_imageT_ARG1"
 
 msgid "PARAM_LABEL_RECOMMEND_COMMENT_CNT"
 msgstr "Related product comment T_FILED"
 
 msgid "PARAM_LABEL_RECOMMEND_ID_CNT"
-msgstr "Related product ID%s1"
+msgstr "Related product IDT_ARG1"
 
 msgid "PARAM_LABEL_RECOMMEND_DELETE_CNT"
-msgstr "recommend_delete%s1"
+msgstr "recommend_deleteT_ARG1"
 
 msgid "PARAM_LABEL_DETAIL_SUB_IMAGE_CNT"
-msgstr "Details - Sub image %s1"
+msgstr "Details - Sub image T_ARG1"
 
 msgid "PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT"
-msgstr "Details - Sub enlarged image %s1"
+msgstr "Details - Sub enlarged image T_ARG1"
 
 msgid "PARAM_LABEL_CSV_SQL"
 msgstr ""
@@ -1847,7 +1847,7 @@ msgid "ALERT_013"
 msgstr "The e-mail sending ID is not correct."
 
 msgid "ALERT_014"
-msgstr "The selected item was moved to %s1."
+msgstr "The selected item was moved to T_ARG1."
 
 msgid "ALERT_015"
 msgstr "The selected item was deleted."
@@ -1856,13 +1856,13 @@ msgid "ALERT_016"
 msgstr "The plug-in was installed."
 
 msgid "ALERT_017"
-msgstr "%s1 was deleted."
+msgstr "T_ARG1 was deleted."
 
 msgid "ALERT_018"
-msgstr "%s1 was activated."
+msgstr "T_ARG1 was activated."
 
 msgid "ALERT_019"
-msgstr "%s1 was invalidated."
+msgstr "T_ARG1 was invalidated."
 
 msgid "ALERT_020"
 msgstr "The plug-in was updated."
@@ -1933,7 +1933,7 @@ msgid "FORMAT_DATE_LONG"
 msgstr "Y-m-d H:i"
 
 msgid "FORMAT_NAME_FULL_SIR"
-msgstr "%s1 %s2"
+msgstr "T_ARG1 T_ARG2"
 
 msgid "LC_Page_Abouts_001"
 msgstr "About this site"
@@ -1956,7 +1956,7 @@ msgid "LC_Page_Contact_003"
 msgstr "Inquiry"
 
 msgid "LC_Page_Contact_004"
-msgstr "%s1)"
+msgstr "T_ARG1)"
 
 msgid "LC_Page_Contact_Complete_001"
 msgstr "Inquiry"
@@ -1980,7 +1980,7 @@ msgid "LC_Page_Entry_006"
 msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_Entry_007"
-msgstr "%s1 %s2"
+msgstr "T_ARG1 T_ARG2"
 
 msgid "LC_Page_InputZip_001"
 msgstr "The address is being searched."
@@ -2149,7 +2149,7 @@ msgid "LC_Page_Forgot_006"
 msgstr "The password has been changed."
 
 msgid "LC_Page_Forgot_007"
-msgstr "%s1"
+msgstr "T_ARG1"
 
 msgid "LC_Page_FrontParts_LoginCheck_001"
 msgstr ""
@@ -2264,7 +2264,7 @@ msgid "LC_Page_Regist_004"
 msgstr "Member registration is complete."
 
 msgid "LC_Page_Regist_005"
-msgstr "%s1 %s2"
+msgstr "T_ARG1 T_ARG2"
 
 msgid "LC_Page_Regist_Complete_001"
 msgstr "Member registration"
@@ -2325,7 +2325,7 @@ msgid "LC_Page_Shopping_Multiple_004"
 msgstr "* The shipping destination has not been entered.<br />"
 
 msgid "LC_Page_Shopping_Multiple_005"
-msgstr "* Use %s1 for the total quantity.<br />"
+msgstr "* Use T_ARG1 for the total quantity.<br />"
 
 msgid "LC_Page_Shopping_Payment_001"
 msgstr "Payment method and delivery time"
@@ -2342,8 +2342,8 @@ msgstr ""
 
 msgid "LC_Page_Shopping_Payment_004"
 msgstr ""
-"* Based on the selected payment method, it is possible to use (%s1 - "
-"%s2) points.<br />"
+"* Based on the selected payment method, it is possible to use (T_ARG1 - "
+"T_ARG2) points.<br />"
 
 msgid "LC_Page_Unsupported_001"
 msgstr "Devices not supported"
@@ -2355,7 +2355,7 @@ msgid "LC_Page_001"
 msgstr "A method for upward compatibility was used."
 
 msgid "LC_Page_Install_001"
-msgstr "Please grant user write access (777, 707, etc.) for %s1"
+msgstr "Please grant user write access (777, 707, etc.) for T_ARG1"
 
 msgid "LC_Page_Install_002"
 msgstr "○: The table was successfully created.<br />"
@@ -2389,16 +2389,16 @@ msgstr "×: The sequence was not deleted.<br />"
 
 msgid "LC_Page_Install_012"
 msgstr ""
-">> ×:%s1(%s2)\n"
+">> ×:T_ARG1(T_ARG2)\n"
 "Please grant user write access (777, 707, etc.)"
 
 msgid "LC_Page_Install_013"
 msgstr ""
-">> ×:%s1(%s2)\n"
+">> ×:T_ARG1(T_ARG2)\n"
 "Please grant user write access (666, 606, etc.)"
 
 msgid "LC_Page_Install_014"
-msgstr ">> ×:%s1 cannot be found."
+msgstr ">> ×:T_ARG1 cannot be found."
 
 msgid "LC_Page_Install_015"
 msgstr ">> ×:PHP safe mode is active."
@@ -2504,7 +2504,7 @@ msgstr ""
 "different name."
 
 msgid "LC_Page_Install_048"
-msgstr "* Renaming to %s1 failed. Check directory access."
+msgstr "* Renaming to T_ARG1 failed. Check directory access."
 
 msgid "LC_Page_Install_049"
 msgstr "Administrator"
@@ -2558,10 +2558,10 @@ msgid "LC_Page_Admin_Basis_DeliveryInput_002"
 msgstr "Delivery method settings"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_004"
-msgstr "Delivery time %s1"
+msgstr "Delivery time T_ARG1"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_005"
-msgstr "Delivery charge %s1"
+msgstr "Delivery charge T_ARG1"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_006"
 msgstr "* It is not possible register a combination of the same name.<br>"
@@ -2606,10 +2606,10 @@ msgid "LC_Page_Admin_Basis_PaymentInput_002"
 msgstr "Payment method settings"
 
 msgid "LC_Page_Admin_Basis_PaymentInput_003"
-msgstr "Make the usage conditions (lower limit) &#036; %s1 or more.<br>"
+msgstr "Make the usage conditions (lower limit) &#036; T_ARG1 or more.<br>"
 
 msgid "LC_Page_Admin_Basis_PaymentInput_004"
-msgstr "Make the usage conditions (max) &#036; %s1 or less.<br>"
+msgstr "Make the usage conditions (max) &#036; T_ARG1 or less.<br>"
 
 msgid "LC_Page_Admin_Basis_Point_001"
 msgstr "Basic information management"
@@ -2654,31 +2654,31 @@ msgid "LC_Page_Admin_Basis_ZipInstall_005"
 msgstr "<p><a href='?' target='_top'>Go back</a></p>"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_006"
-msgstr "%s1 reading failed."
+msgstr "T_ARG1 reading failed."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_007"
-msgstr "%s1 cannot be opened."
+msgstr "T_ARG1 cannot be opened."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_008"
-msgstr "%s1 retrieval failed."
+msgstr "T_ARG1 retrieval failed."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_009"
-msgstr "%s1 writing failed."
+msgstr "T_ARG1 writing failed."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_010"
 msgstr " cannot be opened."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_011"
-msgstr "The target file was not found in %s1."
+msgstr "The target file was not found in T_ARG1."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_012"
-msgstr "%s1 decompression failed."
+msgstr "T_ARG1 decompression failed."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_013"
 msgstr " cannot be deleted."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_014"
-msgstr "The file name cannot be changed.: %s1 -> TFIELF2"
+msgstr "The file name cannot be changed.: T_ARG1 -> TFIELF2"
 
 msgid "LC_Page_Admin_Contents_001"
 msgstr "Contents management"
@@ -2702,10 +2702,10 @@ msgid "LC_Page_Admin_Contents_CsvSql_005"
 msgstr "'* The SQL text is not correct. Please revise the SQL text'"
 
 msgid "LC_Page_Admin_Contents_CsvSql_006"
-msgstr "Data table: %s1"
+msgstr "Data table: T_ARG1"
 
 msgid "LC_Page_Admin_Contents_CsvSql_007"
-msgstr "Master table: %s1"
+msgstr "Master table: T_ARG1"
 
 msgid "LC_Page_Admin_Contents_FileManager_001"
 msgstr "Contents management"
@@ -2717,7 +2717,7 @@ msgid "LC_Page_Admin_Contents_FileManager_003"
 msgstr "'* It is not possible to download the directory.<br/>'"
 
 msgid "LC_Page_Admin_Contents_FileManager_005"
-msgstr "* %s1 creation failed.<br/>"
+msgstr "* T_ARG1 creation failed.<br/>"
 
 msgid "LC_Page_Admin_Contents_Recommend_001"
 msgstr "Contents management"
@@ -2741,10 +2741,10 @@ msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "Member registration"
 
 msgid "LC_Page_Admin_Customer_Edit_003"
-msgstr "* This address is already used by another member (ID:%s1)."
+msgstr "* This address is already used by another member (ID:T_ARG1)."
 
 msgid "LC_Page_Admin_Customer_Edit_004"
-msgstr "* This mobile address is already used by another member (ID:%s1)."
+msgstr "* This mobile address is already used by another member (ID:T_ARG1)."
 
 msgid "LC_Page_Admin_Customer_SearchCustomer_001"
 msgstr "Member search"
@@ -2835,7 +2835,7 @@ msgid "LC_Page_Admin_Design_Template_004"
 msgstr "* The template could not be deleted<br />"
 
 msgid "LC_Page_Admin_Design_Template_005"
-msgstr "* %s1 cannot be found.<br />"
+msgstr "* T_ARG1 cannot be found.<br />"
 
 msgid "LC_Page_Admin_Design_Template_006"
 msgstr "* Directory creation failed<br />"
@@ -2873,7 +2873,7 @@ msgid "LC_Page_Admin_Design_UpDown_009"
 msgstr "* Decompression of the template file failed.<br/>"
 
 msgid "LC_Page_Admin_Design_UpDown_010"
-msgstr "* %s1 creation failed.<br/>"
+msgstr "* T_ARG1 creation failed.<br/>"
 
 msgid "LC_Page_Admin_Mail_001"
 msgstr "Mail magazine management"
@@ -2891,7 +2891,7 @@ msgid "LC_Page_Admin_Mail_006"
 msgstr "TEXT"
 
 msgid "LC_Page_Admin_Mail_007"
-msgstr "[%s1]"
+msgstr "[T_ARG1]"
 
 msgid "LC_Page_Admin_Mail_History_001"
 msgstr "Mail magazine management"
@@ -2934,8 +2934,8 @@ msgstr "None"
 
 msgid "LC_Page_Admin_Order_Edit_005"
 msgstr ""
-"There is an inventory shortage for %s1/(%s2)/(%s3). Up to "
-"%s4 can be set for the quantity.<br />"
+"There is an inventory shortage for T_ARG1/(T_ARG2)/(T_ARG3). Up to "
+"T_ARG4 can be set for the quantity.<br />"
 
 msgid "LC_Page_Admin_Order_Edit_006"
 msgstr "Adjust so that the total amount is not a negative number.<br />"
@@ -3008,7 +3008,7 @@ msgid "LC_Page_Admin_OwnersStore_001"
 msgstr "Plug-in management"
 
 msgid "LC_Page_Admin_OwnersStore_002"
-msgstr "* %s1 is already installed.<br/>"
+msgstr "* T_ARG1 is already installed.<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_003"
 msgstr "* DB registration failed.<br/>"
@@ -3044,16 +3044,16 @@ msgid "LC_Page_Admin_OwnersStore_013"
 msgstr "* Decompression failed.<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_014"
-msgstr "* %s1 reading failed.<br/>"
+msgstr "* T_ARG1 reading failed.<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_015"
-msgstr "* %s2 was not found in %s1.php.<br/>"
+msgstr "* T_ARG2 was not found in T_ARG1.php.<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_016"
 msgstr "Decompression:"
 
 msgid "LC_Page_Admin_OwnersStore_017"
-msgstr "*There is the possibility of competition with %s1.<br/>"
+msgstr "*There is the possibility of competition with T_ARG1.<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_Log_001"
 msgstr "Log management"
@@ -3085,7 +3085,7 @@ msgstr ""
 
 msgid "LC_Page_Admin_Products_Category_005"
 msgstr ""
-"* Registration of the %s1 hierarchy or higher is not possible.<br/>"
+"* Registration of the T_ARG1 hierarchy or higher is not possible.<br/>"
 
 msgid "LC_Page_Admin_Products_Category_006"
 msgstr "* Registration of the same contents already exists.<br/>"
@@ -3124,7 +3124,7 @@ msgid "LC_Page_Admin_Products_ProductClass_002"
 msgstr "* A standard is not selected.<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_003"
-msgstr "* %s1 is blank. <br />"
+msgstr "* T_ARG1 is blank. <br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_004"
 msgstr "* Inventory count is not entered.<br />"
@@ -3156,13 +3156,13 @@ msgstr "* The file is not uploaded."
 msgid "LC_Page_Admin_Products_ProductClass_011"
 msgstr ""
 "* For the file size of the file name for download sales, use one that is "
-"%s1%s2 or less <br />'"
+"T_ARG1T_ARG2 or less <br />'"
 
 msgid "LC_Page_Admin_Products_ProductClass_012"
 msgstr "File name for download sales"
 
 msgid "LC_Page_Admin_Products_ProductClass_013"
-msgstr "* The format permitted for %s1 is %s2.<br />"
+msgstr "* The format permitted for T_ARG1 is T_ARG2.<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_014"
 msgstr "* File upload failed. <br />"
@@ -3183,14 +3183,14 @@ msgid "LC_Page_Admin_Products_UploadCSV_001"
 msgstr "Product registration CSV"
 
 msgid "LC_Page_Admin_Products_UploadCSV_002"
-msgstr "Line %s1: %s2"
+msgstr "Line T_ARG1: T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSV_003"
 msgstr ""
-"* %s1 was detected for the item quantity. The item quantity is %s2."
+"* T_ARG1 was detected for the item quantity. The item quantity is T_ARG2."
 
 msgid "LC_Page_Admin_Products_UploadCSV_004"
-msgstr "Product ID: %s1 / Product name: %s2"
+msgstr "Product ID: T_ARG1 / Product name: T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSV_005"
 msgstr "* The designated product specification ID is not registered."
@@ -3218,10 +3218,10 @@ msgid "LC_Page_Admin_Products_UploadCSV_011"
 msgstr "* The specified product ID does not exist."
 
 msgid "LC_Page_Admin_Products_UploadCSV_012"
-msgstr "* The designated relevant product ID (%s1) is not registered."
+msgstr "* The designated relevant product ID (T_ARG1) is not registered."
 
 msgid "LC_Page_Admin_Products_UploadCSV_013"
-msgstr "* The designated relevant product ID (%s1) is already registered."
+msgstr "* The designated relevant product ID (T_ARG1) is already registered."
 
 msgid "LC_Page_Admin_Products_UploadCSV_014"
 msgstr "* The designated category ID is not registered."
@@ -3254,17 +3254,17 @@ msgid "LC_Page_Admin_Products_UploadCSVCategory_001"
 msgstr "Category registration CSV"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_002"
-msgstr "Line %s1: %s2"
+msgstr "Line T_ARG1: T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_003"
 msgstr ""
-"* %s1 was detected for the item quantity. The item quantity is %s2."
+"* T_ARG1 was detected for the item quantity. The item quantity is T_ARG2."
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_004"
-msgstr "Category ID: %s1 /Category name: %s2"
+msgstr "Category ID: T_ARG1 /Category name: T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_005"
-msgstr "* The designated new category ID (%s1) does not exist."
+msgstr "* The designated new category ID (T_ARG1) does not exist."
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_006"
 msgstr ""
@@ -3278,7 +3278,7 @@ msgstr ""
 "* The maximum number of categories that can be registered has been exceeded."
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_009"
-msgstr "* Registration of the %s1 hierarchy or higher is not possible."
+msgstr "* Registration of the T_ARG1 hierarchy or higher is not possible."
 
 msgid "LC_Page_Admin_System_001"
 msgstr "Member management"
@@ -3293,28 +3293,28 @@ msgid "LC_Page_Admin_System_AdminArea_001"
 msgstr "Management screen settings"
 
 msgid "LC_Page_Admin_System_AdminArea_002"
-msgstr "You do not have access to change %s1."
+msgstr "You do not have access to change T_ARG1."
 
 msgid "LC_Page_Admin_System_AdminArea_003"
-msgstr "%s1 already exists. Please designate a different directory name."
+msgstr "T_ARG1 already exists. Please designate a different directory name."
 
 msgid "LC_Page_Admin_System_AdminArea_004"
-msgstr "You do not have access to change the %s1 directory name."
+msgstr "You do not have access to change the T_ARG1 directory name."
 
 msgid "LC_Page_Admin_System_AdminArea_005"
-msgstr "The %s1 directory name could not be changed."
+msgstr "The T_ARG1 directory name could not be changed."
 
 msgid "LC_Page_Admin_System_Bkup_001"
 msgstr "Backup management"
 
 msgid "LC_Page_Admin_System_Bkup_002"
-msgstr "Backup failed.(%s1)"
+msgstr "Backup failed.(T_ARG1)"
 
 msgid "LC_Page_Admin_System_Bkup_003"
-msgstr "Restoration of '%s1' will begin."
+msgstr "Restoration of 'T_ARG1' will begin."
 
 msgid "LC_Page_Admin_System_Bkup_004-1"
-msgstr "[%s1] "
+msgstr "[T_ARG1] "
 
 msgid "LC_Page_Admin_System_Bkup_004-2"
 msgstr "Restoration is complete."
@@ -3338,17 +3338,17 @@ msgstr ""
 
 msgid "LC_Page_Admin_System_Bkup_009"
 msgstr ""
-"Decompression source: %s1 \n"
+"Decompression source: T_ARG1 \n"
 " "
 
 msgid "LC_Page_Admin_System_Bkup_010"
-msgstr "Decompression destination: %s1"
+msgstr "Decompression destination: T_ARG1"
 
 msgid "LC_Page_Admin_System_Bkup_011"
-msgstr "Opening the %s1 file failed."
+msgstr "Opening the T_ARG1 file failed."
 
 msgid "LC_Page_Admin_System_Bkup_012"
-msgstr "Restoration execution: %s1"
+msgstr "Restoration execution: T_ARG1"
 
 msgid "LC_Page_Admin_System_Editdb_001"
 msgstr "Advanced database management"
@@ -3393,7 +3393,7 @@ msgid "LC_Page_Admin_System_Masterdata_001"
 msgstr "Master data management"
 
 msgid "LC_Page_Admin_System_Masterdata_002"
-msgstr "Since %s1 is duplicated, registration is not possible."
+msgstr "Since T_ARG1 is duplicated, registration is not possible."
 
 msgid "LC_Page_Admin_System_Parameter"
 msgstr "Parameter settings"
@@ -3444,10 +3444,10 @@ msgid "LC_Page_Admin_Total_006"
 msgstr "Sales by member"
 
 msgid "LC_Page_Admin_Total_007"
-msgstr "%s1/%s2/%s3"
+msgstr "T_ARG1/T_ARG2/T_ARG3"
 
 msgid "LC_Page_Admin_Total_008"
-msgstr "Sales period: %s1 - %s2"
+msgstr "Sales period: T_ARG1 - T_ARG2"
 
 msgid "LC_Page_Admin_Total_009"
 msgstr "Member"
@@ -3459,7 +3459,7 @@ msgid "LC_Page_Admin_Total_011"
 msgstr "Not answered"
 
 msgid "LC_Page_Admin_Total_012"
-msgstr "%s1's"
+msgstr "T_ARG1's"
 
 msgid "LC_Page_Admin_Total_013"
 msgstr "(Age)"
@@ -3568,29 +3568,29 @@ msgid "SC_Helper_Transform_001"
 msgstr "Not detectable"
 
 msgid "C_Helper_Transform_003"
-msgstr "<br />%s1 does not exist"
+msgstr "<br />T_ARG1 does not exist"
 
 msgid "SC_Helper_Transform_004"
-msgstr "Template operation failed. %s1"
+msgstr "Template operation failed. T_ARG1"
 
 msgid "SC_Helper_Transform_005"
 msgstr "Template operation failed."
 
 msgid "SC_Utils_001"
 msgstr ""
-"&gt;&gt; /install/%s1, delete this file after completing installation."
+"&gt;&gt; /install/T_ARG1, delete this file after completing installation."
 
 msgid "SC_Utils_002"
 msgstr "A method for upward compatibility was used."
 
 msgid "SC_Utils_003"
-msgstr "%s1%s2: File exists"
+msgstr "T_ARG1T_ARG2: File exists"
 
 msgid "SC_Utils_004"
-msgstr "%s1%s2: Copy success"
+msgstr "T_ARG1T_ARG2: Copy success"
 
 msgid "SC_Utils_005"
-msgstr "%s1%s2: Copy failure"
+msgstr "T_ARG1T_ARG2: Copy failure"
 
 msgid "GC_Utils_001"
 msgstr "A method for upward compatibility was used."
@@ -3631,8 +3631,8 @@ msgstr "Explanation"
 msgid "tpl_Voucher No. URL_01"
 msgstr "Voucher No. URL"
 
-msgid "tpl_Delivery time %s1_01"
-msgstr "Delivery time %s1"
+msgid "tpl_Delivery time T_ARG1_01"
+msgstr "Delivery time T_ARG1"
 
 msgid "tpl_Available product types_01"
 msgstr "Available product types"
@@ -3670,8 +3670,8 @@ msgstr "Title"
 msgid "tpl_Title<span class='attention'> *</span>_01"
 msgstr "Title<span class='attention'> *</span>"
 
-msgid "tpl_(%s1 characters max)_01"
-msgstr "(%s1 characters max)"
+msgid "tpl_(T_ARG1 characters max)_01"
+msgstr "(T_ARG1 characters max)"
 
 msgid "tpl_Date_01"
 msgstr "Date"
@@ -3986,14 +3986,14 @@ msgstr "Delivery period<span class='attention'> *</span>"
 msgid "tpl_Returns and exchanges<span class='attention'> *</span>_01"
 msgstr "Returns and exchanges<span class='attention'> *</span>"
 
-msgid "tpl_Date and time of saved postal code CSV update: %s1_01"
-msgstr "Date and time of saved postal code CSV update: %s1"
+msgid "tpl_Date and time of saved postal code CSV update: T_ARG1_01"
+msgstr "Date and time of saved postal code CSV update: T_ARG1"
 
-msgid "tpl_Postal code There are %s1 lines of data in the CSV._01"
-msgstr "Postal code There are %s1 lines of data in the CSV."
+msgid "tpl_Postal code There are T_ARG1 lines of data in the CSV._01"
+msgstr "Postal code There are T_ARG1 lines of data in the CSV."
 
-msgid "tpl_Postal code There are %s1 lines of data in the DB._01"
-msgstr "Postal code There are %s1 lines of data in the DB."
+msgid "tpl_Postal code There are T_ARG1 lines of data in the DB._01"
+msgstr "Postal code There are T_ARG1 lines of data in the DB."
 
 msgid "tpl_Please carry out registration._01"
 msgstr "Please carry out registration."
@@ -4175,8 +4175,8 @@ msgstr "Currently, there is no data."
 msgid "tpl_Enter a comment._01"
 msgstr "Enter a comment."
 
-msgid "tpl_The selected field %s1 will be discarded. Continue? _01"
-msgstr "The selected field %s1 will be discarded. Continue? "
+msgid "tpl_The selected field T_ARG1 will be discarded. Continue? _01"
+msgstr "The selected field T_ARG1 will be discarded. Continue? "
 
 msgid "tpl_Product/comment_01"
 msgstr "Product/comment"
@@ -4205,8 +4205,8 @@ msgstr "Product code<span class='attention'> *</span>"
 msgid "tpl_Search_01"
 msgstr "Search"
 
-msgid "tpl_%s1 items were found._01"
-msgstr "%s1 items were found."
+msgid "tpl_T_ARG1 items were found._01"
+msgstr "T_ARG1 items were found."
 
 msgid "tpl_Product image_01"
 msgstr "Product image"
@@ -4298,8 +4298,8 @@ msgstr "Password"
 msgid "tpl_Password<span class='attention'> *</span>_01"
 msgstr "Password<span class='attention'> *</span>"
 
-msgid "tpl_Lower-case alphanumeric characters %s1 to %s2 (Symbols cannot be used)_01"
-msgstr "Lower-case alphanumeric characters %s1 to %s2 (Symbols cannot be used)"
+msgid "tpl_Lower-case alphanumeric characters T_ARG1 to T_ARG2 (Symbols cannot be used)_01"
+msgstr "Lower-case alphanumeric characters T_ARG1 to T_ARG2 (Symbols cannot be used)"
 
 msgid "tpl_Enter twice for confirmation_01"
 msgstr "Enter twice for confirmation"
@@ -4337,8 +4337,8 @@ msgstr "Confirmation page"
 msgid "tpl_Purchase history list_01"
 msgstr "Purchase history list"
 
-msgid "tpl_<span class='attention'>%s1 items</span>&nbsp; were found._01"
-msgstr "<span class='attention'>%s1 items</span>&nbsp; were found."
+msgid "tpl_<span class='attention'>T_ARG1 items</span>&nbsp; were found._01"
+msgstr "<span class='attention'>T_ARG1 items</span>&nbsp; were found."
 
 msgid "tpl_Order number_01"
 msgstr "Order number"
@@ -4367,8 +4367,8 @@ msgstr "Temporary member"
 msgid "tpl_full member_01"
 msgstr "full member"
 
-msgid "tpl_%s1 %s2_01"
-msgstr "%s1 %s2"
+msgid "tpl_T_ARG1 T_ARG2_01"
+msgstr "T_ARG1 T_ARG2"
 
 msgid "tpl_Not registered_01"
 msgstr "Not registered"
@@ -4802,8 +4802,8 @@ msgstr "Delivery date"
 msgid "tpl_No designation_01"
 msgstr "No designation"
 
-msgid "tpl_%s1 information_01"
-msgstr "%s1 information"
+msgid "tpl_T_ARG1 information_01"
+msgstr "T_ARG1 information"
 
 msgid "tpl_Memo_01"
 msgstr "Memo"
@@ -4820,8 +4820,8 @@ msgstr "Add new delivery destination"
 msgid "tpl_ Multiple delivery destinations_01"
 msgstr " Multiple delivery destinations"
 
-msgid "tpl_* When %s1 is selected, restore the inventory count manually._01"
-msgstr "* When %s1 is selected, restore the inventory count manually."
+msgid "tpl_* When T_ARG1 is selected, restore the inventory count manually._01"
+msgstr "* When T_ARG1 is selected, restore the inventory count manually."
 
 msgid "tpl_Ledger output_01"
 msgstr "Ledger output"
@@ -4931,8 +4931,8 @@ msgstr "* Even if 'Yes' is selected, it is not displayed unless the customer is 
 msgid "tpl_Create using these contents_01"
 msgstr "Create using these contents"
 
-msgid "tpl_ Enter %s1._01"
-msgstr "* Enter %s1."
+msgid "tpl_ Enter T_ARG1._01"
+msgstr "* Enter T_ARG1."
 
 msgid "tpl_No applicable data exists._01"
 msgstr "No applicable data exists."
@@ -4946,8 +4946,8 @@ msgstr "Extraction conditions"
 msgid "tpl_Response status change_01"
 msgstr "Response status change"
 
-msgid "tpl_* When %s1 or when changing to delete, restore the inventory count manually._01"
-msgstr "* When %s1 or when changing to delete, restore the inventory count manually."
+msgid "tpl_* When T_ARG1 or when changing to delete, restore the inventory count manually._01"
+msgstr "* When T_ARG1 or when changing to delete, restore the inventory count manually."
 
 msgid "tpl_Purchase amount(&#36;)_01"
 msgstr "Purchase amount(&#36;)"
@@ -5092,8 +5092,8 @@ msgstr "Home"
 msgid "tpl_Register_02"
 msgstr "Register"
 
-msgid "tpl_(max %s1 characters)_01"
-msgstr "(max %s1 characters)"
+msgid "tpl_(max T_ARG1 characters)_01"
+msgstr "(max T_ARG1 characters)"
 
 msgid "tpl_Category name_01"
 msgstr "Category name"
@@ -5137,8 +5137,8 @@ msgstr "Disclosed/not disclosed"
 msgid "tpl_Disclosed/not disclosed<span class='attention'> *</span>_01"
 msgstr "Disclosed/not disclosed<span class='attention'> *</span>"
 
-msgid "tpl_&#36; %s1_01"
-msgstr "&#36; %s1"
+msgid "tpl_&#36; T_ARG1_01"
+msgstr "&#36; T_ARG1"
 
 msgid "tpl_Category_02"
 msgstr "Category"
@@ -5264,8 +5264,8 @@ msgstr "Management area"
 msgid "tpl_ADMIN_MODE ON_01"
 msgstr "ADMIN_MODE ON"
 
-msgid "tpl_<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;_01"
-msgstr "<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;"
+msgid "tpl_<span>Login&nbsp;:&nbsp;T_ARG1</span>&nbsp;_01"
+msgstr "<span>Login&nbsp;:&nbsp;T_ARG1</span>&nbsp;"
 
 msgid "tpl_LOGOUT_01"
 msgstr "LOGOUT"
@@ -5291,8 +5291,8 @@ msgstr "System settings"
 msgid "tpl_Owners store_01"
 msgstr "Owners store"
 
-msgid "tpl_Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved._01"
-msgstr "Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved."
+msgid "tpl_Copyright &copy; 2000-T_ARG1 LOCKON CO.,LTD. All Rights Reserved._01"
+msgstr "Copyright &copy; 2000-T_ARG1 LOCKON CO.,LTD. All Rights Reserved."
 
 msgid "tpl_PAGE TOP_01"
 msgstr "PAGE TOP"
@@ -5363,20 +5363,20 @@ msgstr "Details - Main image"
 msgid "tpl_Details - Main enlarged image_01"
 msgstr "Details - Main enlarged image"
 
-msgid "tpl_Details - Sub title(%s1)_01"
-msgstr "Details - Sub title(%s1)"
+msgid "tpl_Details - Sub title(T_ARG1)_01"
+msgstr "Details - Sub title(T_ARG1)"
 
-msgid "tpl_Details - Sub comment(%s1)_01"
-msgstr "Details - Sub comment(%s1)"
+msgid "tpl_Details - Sub comment(T_ARG1)_01"
+msgstr "Details - Sub comment(T_ARG1)"
 
-msgid "tpl_Details - Sub image (%s1)_01"
-msgstr "Details - Sub image (%s1)"
+msgid "tpl_Details - Sub image (T_ARG1)_01"
+msgstr "Details - Sub image (T_ARG1)"
 
-msgid "tpl_Details - Sub enlarged image(%s1)_01"
-msgstr "Details - Sub enlarged image(%s1)"
+msgid "tpl_Details - Sub enlarged image(T_ARG1)_01"
+msgstr "Details - Sub enlarged image(T_ARG1)"
 
-msgid "tpl_Related products(%s1)_01"
-msgstr "Related products(%s1)"
+msgid "tpl_Related products(T_ARG1)_01"
+msgstr "Related products(T_ARG1)"
 
 msgid "tpl_Comment:_01"
 msgstr "Comment:"
@@ -5414,8 +5414,8 @@ msgstr "File upload for downloaded product<span class='attention'> *</span>"
 msgid "tpl_[Erase file]_01"
 msgstr "[Erase file]"
 
-msgid "tpl_Extensions for uploaded files: %s1 (Parameter DOWNLOAD_EXTENSION)_01"
-msgstr "Extensions for uploaded files: %s1 (Parameter DOWNLOAD_EXTENSION)"
+msgid "tpl_Extensions for uploaded files: T_ARG1 (Parameter DOWNLOAD_EXTENSION)_01"
+msgstr "Extensions for uploaded files: T_ARG1 (Parameter DOWNLOAD_EXTENSION)"
 
 msgid "tpl_(Numbers only)_01"
 msgstr "(Numbers only)"
@@ -5453,20 +5453,20 @@ msgstr "Display"
 msgid "tpl_Delete_01"
 msgstr "Delete"
 
-msgid "tpl_<span class='bold'>Extension that can be uploaded:</span>%s1(Parameter DOWNLOAD_EXTENSION)_01"
-msgstr "<span class='bold'>Extension that can be uploaded:</span>%s1(Parameter DOWNLOAD_EXTENSION)"
+msgid "tpl_<span class='bold'>Extension that can be uploaded:</span>T_ARG1(Parameter DOWNLOAD_EXTENSION)_01"
+msgstr "<span class='bold'>Extension that can be uploaded:</span>T_ARG1(Parameter DOWNLOAD_EXTENSION)"
 
 msgid "tpl_Copy the data on the 1st line_01"
 msgstr "Copy the data on the 1st line"
 
-msgid "tpl_%s1(&#36;)_01"
-msgstr "%s1(&#36;)"
+msgid "tpl_T_ARG1(&#36;)_01"
+msgstr "T_ARG1(&#36;)"
 
 msgid "tpl_Downloaded file name_01"
 msgstr "Downloaded file name"
 
-msgid "tpl_Max %s1 characters_01"
-msgstr "Max %s1 characters"
+msgid "tpl_Max T_ARG1 characters_01"
+msgstr "Max T_ARG1 characters"
 
 msgid "tpl_Downloaded file name_02"
 msgstr "Downloaded file name"
@@ -5480,8 +5480,8 @@ msgstr "* A standard is not selected."
 msgid "tpl_Go back_01"
 msgstr "Go back"
 
-msgid "tpl_<span class='attention'>%s1 items</span> were found._01"
-msgstr "<span class='attention'>%s1 items</span> were found."
+msgid "tpl_<span class='attention'>T_ARG1 items</span> were found._01"
+msgstr "<span class='attention'>T_ARG1 items</span> were found."
 
 msgid "tpl_Reallocation of internal ranking_01"
 msgstr "Reallocation of internal ranking"
@@ -5540,8 +5540,8 @@ msgstr "Product rearrangement"
 msgid "tpl_Review management_01"
 msgstr "Review management"
 
-msgid "tpl_[Value:%s1]_01"
-msgstr "[Value:%s1]"
+msgid "tpl_[Value:T_ARG1]_01"
+msgstr "[Value:T_ARG1]"
 
 msgid "tpl_CSV file_01"
 msgstr "CSV file"
@@ -5552,8 +5552,8 @@ msgstr "(First line is title)"
 msgid "tpl_Registration information_01"
 msgstr "Registration information"
 
-msgid "tpl_%s1 Item: %s2_01"
-msgstr "%s1 Item: %s2"
+msgid "tpl_T_ARG1 Item: T_ARG2_01"
+msgstr "T_ARG1 Item: T_ARG2"
 
 msgid "tpl_Register with these contents_01"
 msgstr "Register with these contents"
@@ -5648,8 +5648,8 @@ msgstr "* Enter required"
 msgid "tpl_Login ID_01"
 msgstr "Login ID"
 
-msgid "tpl_* Alphanumeric characters %s1 to %s2 _01"
-msgstr "* Alphanumeric characters %s1 to %s2 "
+msgid "tpl_* Alphanumeric characters T_ARG1 to T_ARG2 _01"
+msgstr "* Alphanumeric characters T_ARG1 to T_ARG2 "
 
 msgid "tpl_Operating/Not operating_01"
 msgstr "Operating/Not operating"
@@ -5729,35 +5729,35 @@ msgstr "Purchase total"
 msgid "tpl_Purchase average_01"
 msgstr "Purchase average"
 
-msgid "tpl_%s1 item_01"
-msgstr "%s1 item"
+msgid "tpl_T_ARG1 item_01"
+msgstr "T_ARG1 item"
 
-msgid "tpl_SQL settings (being edited:%s1)_01"
-msgstr "SQL settings (being edited:%s1)"
+msgid "tpl_SQL settings (being edited:T_ARG1)_01"
+msgstr "SQL settings (being edited:T_ARG1)"
 
 msgid "tpl_SQL settings (Newly input)_01"
 msgstr "SQL settings (Newly input)"
 
-msgid "tpl_Details - Sub image(%s1)<br />[%s2 x %s3]_01"
-msgstr "Details - Sub image(%s1)<br />[%s2 x %s3]"
+msgid "tpl_Details - Sub image(T_ARG1)<br />[T_ARG2 x T_ARG3]_01"
+msgstr "Details - Sub image(T_ARG1)<br />[T_ARG2 x T_ARG3]"
 
-msgid "tpl_Details - Sub enlarged image(%s1)<br />[%s2 x %s3]_01"
-msgstr "Details - Sub enlarged image(%s1)<br />[%s2 x %s3]"
+msgid "tpl_Details - Sub enlarged image(T_ARG1)<br />[T_ARG2 x T_ARG3]_01"
+msgstr "Details - Sub enlarged image(T_ARG1)<br />[T_ARG2 x T_ARG3]"
 
 msgid "tpl_*  Uniform shipping rates(&#036;):_01"
 msgstr "*  Uniform shipping rates(&#036;):"
 
-msgid "tpl_%s1<span class='attention'> *</span>_01"
-msgstr "%s1<span class='attention'> *</span>"
+msgid "tpl_T_ARG1<span class='attention'> *</span>_01"
+msgstr "T_ARG1<span class='attention'> *</span>"
 
-msgid "tpl_List - Main images<br />[%s1 x %s2]_01"
-msgstr "List - Main images<br />[%s1 x %s2]"
+msgid "tpl_List - Main images<br />[T_ARG1 x T_ARG2]_01"
+msgstr "List - Main images<br />[T_ARG1 x T_ARG2]"
 
-msgid "tpl_Details - Main image<br />[%s1 x %s2]_01"
-msgstr "Details - Main image<br />[%s1 x %s2]"
+msgid "tpl_Details - Main image<br />[T_ARG1 x T_ARG2]_01"
+msgstr "Details - Main image<br />[T_ARG1 x T_ARG2]"
 
-msgid "tpl_Details - Main enlarged image<br />[%s1 x %s2]_01"
-msgstr "Details - Main enlarged image<br />[%s1 x %s2]"
+msgid "tpl_Details - Main enlarged image<br />[T_ARG1 x T_ARG2]_01"
+msgstr "Details - Main enlarged image<br />[T_ARG1 x T_ARG2]"
 
 msgid "tpl_The first_01"
 msgstr "The first"
@@ -5792,17 +5792,17 @@ msgstr "Add product"
 msgid "tpl_Find users_01"
 msgstr "Find users"
 
-msgid "tpl_%s1_01"
-msgstr "%s1"
+msgid "tpl_T_ARG1_01"
+msgstr "T_ARG1"
 
-msgid "tpl_s1Year%s2Month%s3Day_01"
-msgstr "%s1Year%s2Month%s3Day"
+msgid "tpl_s1YearT_ARG2MonthT_ARG3Day_01"
+msgstr "T_ARG1YearT_ARG2MonthT_ARG3Day"
 
-msgid "tpl_%s1/%s2_01"
-msgstr "%s1/%s2"
+msgid "tpl_T_ARG1/T_ARG2_01"
+msgstr "T_ARG1/T_ARG2"
 
-msgid "tpl_%s1_02"
-msgstr "%s1"
+msgid "tpl_T_ARG1_02"
+msgstr "T_ARG1"
 
 msgid "tpl_(None)_01"
 msgstr "(None)"
@@ -6075,27 +6075,27 @@ msgstr "No"
 msgid "tpl_EC-CUBE installation will begin._01"
 msgstr "EC-CUBE installation will begin."
 
-msgid "tpl_<span class='attention'>* The authentication key can be obtained from <a href='%s1' target='_blank'>the EC-CUBE Owners Store</a>.</span>_01"
+msgid "tpl_<span class='attention'>* The authentication key can be obtained from <a href='T_ARG1' target='_blank'>the EC-CUBE Owners Store</a>.</span>_01"
 msgstr ""
 "<span class='attention'>* The authentication key can be obtained from <a "
-"href='%s1' target='_blank'>the EC-CUBE Owners Store</a>.</span>"
+"href='T_ARG1' target='_blank'>the EC-CUBE Owners Store</a>.</span>"
 
-msgid "tpl_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01"
+msgid "tpl_You can log in to <a href='T_ARG1T_ARG2T_ARG3'>the management screen</a>._01"
 msgstr ""
-"You can log in to <a href='%s1%s2%s3'>the management "
+"You can log in to <a href='T_ARG1T_ARG2T_ARG3'>the management "
 "screen</a>."
 
 msgid "tpl_Monthly (end of month)_01"
 msgstr "Monthly (end of month)"
 
-msgid "tpl_Monthly (by %s1)_01"
-msgstr "Monthly (by %s1)"
+msgid "tpl_Monthly (by T_ARG1)_01"
+msgstr "Monthly (by T_ARG1)"
 
 msgid "tpl_ID:_01"
 msgstr "ID:"
 
-msgid "tpl_%s1:_01"
-msgstr "%s1:"
+msgid "tpl_T_ARG1:_01"
+msgstr "T_ARG1:"
 
 msgid "-"
 msgstr " - "

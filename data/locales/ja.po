@@ -12,185 +12,185 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 msgid "SC_CheckError_001"
-msgstr "※ %s1に許可されていないタグ %s2 が含まれています。<br />"
+msgstr "※ T_ARG1に許可されていないタグ T_ARG2 が含まれています。<br />"
 
 msgid "SC_CheckError_002"
-msgstr "※ %s1が入力されていません。<br />"
+msgstr "※ T_ARG1が入力されていません。<br />"
 
 msgid "SC_CheckError_003"
-msgstr "※ %s1が選択されていません。<br />"
+msgstr "※ T_ARG1が選択されていません。<br />"
 
 msgid "SC_CheckError_004"
-msgstr "※ %s1が入力されていません。<br />"
+msgstr "※ T_ARG1が入力されていません。<br />"
 
 msgid "SC_CheckError_005"
-msgstr "※ %s1にスペース、タブ、改行のみの入力はできません。<br />"
+msgstr "※ T_ARG1にスペース、タブ、改行のみの入力はできません。<br />"
 
 msgid "SC_CheckError_006"
-msgstr "※ %s1にスペース、タブ、改行は含めないで下さい。<br />"
+msgstr "※ T_ARG1にスペース、タブ、改行は含めないで下さい。<br />"
 
 msgid "SC_CheckError_007"
-msgstr "※ %s1に0で始まる数値が入力されています。<br />"
+msgstr "※ T_ARG1に0で始まる数値が入力されています。<br />"
 
 msgid "SC_CheckError_008"
-msgstr "※ %s1が選択されていません。<br />"
+msgstr "※ T_ARG1が選択されていません。<br />"
 
 msgid "SC_CheckError_009"
-msgstr "※ %s1と%s2が一致しません。<br />"
+msgstr "※ T_ARG1とT_ARG2が一致しません。<br />"
 
 msgid "SC_CheckError_010"
-msgstr "※ %s1と%s2は、同じ値を使用できません。<br />"
+msgstr "※ T_ARG1とT_ARG2は、同じ値を使用できません。<br />"
 
 msgid "SC_CheckError_011"
-msgstr "※ %s1は%s2より大きい値を入力できません。<br />"
+msgstr "※ T_ARG1はT_ARG2より大きい値を入力できません。<br />"
 
 msgid "SC_CheckError_012"
-msgstr "※ %s1は%s2字以下で入力してください。<br />"
+msgstr "※ T_ARG1はT_ARG2字以下で入力してください。<br />"
 
 msgid "SC_CheckError_013_SINGLE"
 msgid_plural "SC_CheckError_013_PLURAL"
-msgstr[0] "※ %s1はT_COUNT字以上で入力してください。<br />"
-msgstr[1] "※ %s1はT_COUNT字以上で入力してください。<br />"
+msgstr[0] "※ T_ARG1はT_COUNT字以上で入力してください。<br />"
+msgstr[1] "※ T_ARG1はT_COUNT字以上で入力してください。<br />"
 
 msgid "SC_CheckError_014"
-msgstr "※ %s1は%s2以下で入力してください。<br />"
+msgstr "※ T_ARG1はT_ARG2以下で入力してください。<br />"
 
 msgid "SC_CheckError_015_SINGLE"
 msgid_plural "SC_CheckError_015_PLURAL"
-msgstr[0] "※ %s1はT_COUNT以上で入力してください。<br />"
-msgstr[1] "※ %s1はT_COUNT以上で入力してください。<br />"
+msgstr[0] "※ T_ARG1はT_COUNT以上で入力してください。<br />"
+msgstr[1] "※ T_ARG1はT_COUNT以上で入力してください。<br />"
 
 msgid "SC_CheckError_016"
-msgstr "※ %s1は数字で入力してください。<br />"
+msgstr "※ T_ARG1は数字で入力してください。<br />"
 
 msgid "SC_CheckError_017"
-msgstr "※ %s1は数字で入力してください。<br />"
+msgstr "※ T_ARG1は数字で入力してください。<br />"
 
 msgid "SC_CheckError_018"
-msgstr "※ %s1は半角英字で入力してください。<br />"
+msgstr "※ T_ARG1は半角英字で入力してください。<br />"
 
 msgid "SC_CheckError_019"
-msgstr "※ %s1はすべての項目を入力してください。<br />"
+msgstr "※ T_ARG1はすべての項目を入力してください。<br />"
 
 msgid "SC_CheckError_020"
-msgstr "※ %s1は%s2字以内で入力してください。<br />"
+msgstr "※ T_ARG1はT_ARG2字以内で入力してください。<br />"
 
 msgid "SC_CheckError_021"
-msgstr "※ %s1は数字で入力してください。<br />"
+msgstr "※ T_ARG1は数字で入力してください。<br />"
 
 msgid "SC_CheckError_022"
-msgstr "※ %s1は%s2文字以内で入力してください。<br />"
+msgstr "※ T_ARG1はT_ARG2文字以内で入力してください。<br />"
 
 msgid "SC_CheckError_023"
-msgstr "※ %s1が入力されていません。<br />"
+msgstr "※ T_ARG1が入力されていません。<br />"
 
 msgid "SC_CheckError_024"
-msgstr "※ %s1はすべての項目を入力して下さい。<br />"
+msgstr "※ T_ARG1はすべての項目を入力して下さい。<br />"
 
 msgid "SC_CheckError_025"
-msgstr "※ %s1が入力されていません。<br />"
+msgstr "※ T_ARG1が入力されていません。<br />"
 
 msgid "SC_CheckError_026"
-msgstr "※ %s1は先頭の項目から順番に入力して下さい。<br />"
+msgstr "※ T_ARG1は先頭の項目から順番に入力して下さい。<br />"
 
 msgid "SC_CheckError_027"
-msgstr "※ %s1はカタカナで入力してください。<br />"
+msgstr "※ T_ARG1はカタカナで入力してください。<br />"
 
 msgid "SC_CheckError_028"
-msgstr "※ %s1はカタカナで入力してください。<br />"
+msgstr "※ T_ARG1はカタカナで入力してください。<br />"
 
 msgid "SC_CheckError_029"
-msgstr "※ %s1は英数字で入力してください。<br />"
+msgstr "※ T_ARG1は英数字で入力してください。<br />"
 
 msgid "SC_CheckError_030"
-msgstr "※ %s1は英数記号で入力してください。<br />"
+msgstr "※ T_ARG1は英数記号で入力してください。<br />"
 
 msgid "SC_CheckError_031"
-msgstr "※ %s1は1以上を入力してください。<br />"
+msgstr "※ T_ARG1は1以上を入力してください。<br />"
 
 msgid "SC_CheckError_032_SINGLE"
 msgid_plural "SC_CheckError_032_PLURAL"
-msgstr[0] "※ %s1はT_COUNT桁～%s2桁で入力して下さい。<br />"
-msgstr[1] "※ %s1はT_COUNT桁～%s2桁で入力して下さい。<br />"
+msgstr[0] "※ T_ARG1はT_COUNT桁～T_ARG2桁で入力して下さい。<br />"
+msgstr[1] "※ T_ARG1はT_COUNT桁～T_ARG2桁で入力して下さい。<br />"
 
 msgid "SC_CheckError_033_SINGLE"
 msgid_plural "SC_CheckError_033_PLURAL"
-msgstr[0] "※ %s1はT_COUNT桁で入力して下さい。<br />"
-msgstr[1] "※ %s1はT_COUNT桁で入力して下さい。<br />"
+msgstr[0] "※ T_ARG1はT_COUNT桁で入力して下さい。<br />"
+msgstr[1] "※ T_ARG1はT_COUNT桁で入力して下さい。<br />"
 
 msgid "SC_CheckError_034"
-msgstr "※ %s1の形式が不正です。<br />"
+msgstr "※ T_ARG1の形式が不正です。<br />"
 
 msgid "SC_CheckError_035"
-msgstr "※ %s1に使用する文字を正しく入力してください。<br />"
+msgstr "※ T_ARG1に使用する文字を正しく入力してください。<br />"
 
 msgid "SC_CheckError_036"
-msgstr "※ %s1を正しく入力してください。<br />"
+msgstr "※ T_ARG1を正しく入力してください。<br />"
 
 msgid "SC_CheckError_037"
-msgstr "※ %s1に正しい形式のIPアドレスを入力してください。<br />"
+msgstr "※ T_ARG1に正しい形式のIPアドレスを入力してください。<br />"
 
 msgid "SC_CheckError_038"
-msgstr "※ %s1で許可されている形式は、%s2です。<br />"
+msgstr "※ T_ARG1で許可されている形式は、T_ARG2です。<br />"
 
 msgid "SC_CheckError_039"
-msgstr "※ %s1が見つかりません。<br />"
+msgstr "※ T_ARG1が見つかりません。<br />"
 
 msgid "SC_CheckError_040"
-msgstr "※ %s1をアップロードして下さい。<br />"
+msgstr "※ T_ARG1をアップロードして下さい。<br />"
 
 msgid "SC_CheckError_041"
 msgstr ""
-"※ %s1のファイルサイズは%s2%s3以下のものを使用してください。<br />"
+"※ T_ARG1のファイルサイズはT_ARG2T_ARG3以下のものを使用してください。<br />"
 
 msgid "SC_CheckError_042"
-msgstr "※ %s1のファイル名に日本語やスペースは使用しないで下さい。<br />"
+msgstr "※ T_ARG1のファイル名に日本語やスペースは使用しないで下さい。<br />"
 
 msgid "SC_CheckError_043"
-msgstr "※ %s1はすべての項目を入力して下さい。<br />"
+msgstr "※ T_ARG1はすべての項目を入力して下さい。<br />"
 
 msgid "SC_CheckError_044"
-msgstr "※ %s1が正しくありません。<br />"
+msgstr "※ T_ARG1が正しくありません。<br />"
 
 msgid "SC_CheckError_045"
-msgstr "※ %s1を正しく指定してください。<br />"
+msgstr "※ T_ARG1を正しく指定してください。<br />"
 
 msgid "SC_CheckError_046"
-msgstr "※ %s1と%s2の期間指定が不正です。<br />"
+msgstr "※ T_ARG1とT_ARG2の期間指定が不正です。<br />"
 
 msgid "SC_CheckError_047"
-msgstr "※ 指定した%s1は存在しません。<br />"
+msgstr "※ 指定したT_ARG1は存在しません。<br />"
 
 msgid "SC_CheckError_048"
-msgstr "※ %s1の形式が不正です。<br />"
+msgstr "※ T_ARG1の形式が不正です。<br />"
 
 msgid "SC_CheckError_049"
-msgstr "※ %s1は携帯電話のものではありません。<br />"
+msgstr "※ T_ARG1は携帯電話のものではありません。<br />"
 
 msgid "SC_CheckError_050"
-msgstr "※ すでに会員登録で使用されている%s1です。<br />"
+msgstr "※ すでに会員登録で使用されているT_ARG1です。<br />"
 
 msgid "SC_CheckError_051"
 msgstr ""
-"※ 退会から一定期間の間は、同じ%s1を使用することはできません。<br />"
+"※ 退会から一定期間の間は、同じT_ARG1を使用することはできません。<br />"
 
 msgid "SC_CheckError_052"
-msgstr "※ %s1は入力できません。<br />"
+msgstr "※ T_ARG1は入力できません。<br />"
 
 msgid "SC_CheckError_053"
-msgstr "※ %s1の形式が不正です。<br />"
+msgstr "※ T_ARG1の形式が不正です。<br />"
 
 msgid "SC_FormParam_001"
-msgstr "※ %s1のファイルが存在しません。<br />"
+msgstr "※ T_ARG1のファイルが存在しません。<br />"
 
 msgid "SC_FormParam_002"
-msgstr "※※　エラーチェック形式(%s1)には対応していません　※※ <br />"
+msgstr "※※　エラーチェック形式(T_ARG1)には対応していません　※※ <br />"
 
 msgid "SC_FormParam_003"
-msgstr "%s1<span class=\"red\">(※ 必須)</span>"
+msgstr "T_ARG1<span class=\"red\">(※ 必須)</span>"
 
 msgid "SC_FormParam_004"
-msgstr " [省略時初期値: %s1]"
+msgstr " [省略時初期値: T_ARG1]"
 
 msgid "SC_FormParam_005"
 msgstr " [登録・更新不可] "
@@ -205,16 +205,16 @@ msgstr ""
 
 msgid "SC_CartSession_003"
 msgstr ""
-"※「%s1」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
+"※「T_ARG1」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
 "ページよりお問い合わせください。"
 
 msgid "SC_CartSession_004"
 msgstr ""
-"※「%s1」は販売制限(または在庫が不足)しております。一度に数量%s2を超"
+"※「T_ARG1」は販売制限(または在庫が不足)しております。一度に数量T_ARG2を超"
 "える購入はできません。"
 
 msgid "SC_CartSession_005"
-msgstr "※「%s1」は売り切れました。"
+msgstr "※「T_ARG1」は売り切れました。"
 
 msgid "SC_Fpdf_001"
 msgstr "商品名 / 商品コード / [ 規格 ]"
@@ -265,13 +265,13 @@ msgid "SC_Fpdf_016"
 msgstr "ご確認くださいますよう、お願いいたします。"
 
 msgid "SC_Fpdf_017"
-msgstr "作成日: %s1年%s2月%s3日"
+msgstr "作成日: T_ARG1年T_ARG2月T_ARG3日"
 
 msgid "SC_Fpdf_018"
-msgstr "%s1　%s2 様"
+msgstr "T_ARG1　T_ARG2 様"
 
 msgid "SC_Fpdf_019"
-msgstr "%s1 円"
+msgstr "T_ARG1 円"
 
 msgid "SC_Fpdf_020"
 msgstr "Pt"
@@ -283,7 +283,7 @@ msgid "SC_Image_001"
 msgstr "ファイルのコピーに失敗しました。"
 
 msgid "SC_Image_002"
-msgstr "%s1->%s2のcopyに失敗しました。"
+msgstr "T_ARG1->T_ARG2のcopyに失敗しました。"
 
 msgid "SC_Image_003"
 msgstr "出力元画像パス、または出力先フォルダが指定されていません。"
@@ -300,11 +300,11 @@ msgstr "画像の出力に失敗しました。"
 msgid "SC_Initial_001"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
-"align: center\">%s1 にユーザ書込み権限(777等)を付与して下さい。</"
+"align: center\">T_ARG1 にユーザ書込み権限(777等)を付与して下さい。</"
 "div>"
 
 msgid "SC_Initial_002"
-msgstr "%s1../mtb_constants_init.php が存在しません"
+msgstr "T_ARG1../mtb_constants_init.php が存在しません"
 
 msgid "SC_PageNavi_001"
 msgstr "&lt;&lt;前へ"
@@ -328,20 +328,20 @@ msgid "SC_SendMail_001"
 msgstr "前方互換用メソッドが使用されました。"
 
 msgid "SC_SendMail_002"
-msgstr "不明なバックエンド。[$backend = %s1]"
+msgstr "不明なバックエンド。[$backend = T_ARG1]"
 
 msgid "SC_SendMail_003"
-msgstr "メール送信に失敗しました。[%s1]"
+msgstr "メール送信に失敗しました。[T_ARG1]"
 
 msgid "SC_View_001"
 msgstr "処理時間: T_TIME秒"
 
 msgid "SC_UploadFile_001"
-msgstr "※ %s1がアップロードされていません。<br />"
+msgstr "※ T_ARG1がアップロードされていません。<br />"
 
 msgid "SC_UploadFile_002"
 msgstr ""
-"※ %s1がアップロードされていません。(ファイルがアップロードできない場合"
+"※ T_ARG1がアップロードされていません。(ファイルがアップロードできない場合"
 "は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
 
 msgid "SC_UploadFile_003"
@@ -408,7 +408,7 @@ msgid "SC_Helper_DB_001"
 msgstr "ファイルは存在するが読み込めない"
 
 msgid "SC_Helper_Mail_001"
-msgstr "該当する受注が存在しない。(注文番号: %s1)"
+msgstr "該当する受注が存在しない。(注文番号: T_ARG1)"
 
 msgid "SC_Helper_Mail_002"
 msgstr "下記メールの配信が完了しました。"
@@ -1755,37 +1755,37 @@ msgid "PARAM_LABEL_END"
 msgstr "終了"
 
 msgid "PARAM_LABEL_DETAIL_SUBTITLE_COUNT"
-msgstr "詳細-サブタイトル%s1"
+msgstr "詳細-サブタイトルT_ARG1"
 
 msgid "PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT"
-msgstr "詳細-サブコメント%s1"
+msgstr "詳細-サブコメントT_ARG1"
 
 msgid "PARAM_LABEL_SAVE_SUB_IMAGE_CNT_ALP"
-msgstr "save_sub_image%s1"
+msgstr "save_sub_imageT_ARG1"
 
 msgid "PARAM_LABEL_SAVE_SUB_LARGE_IMAGE_CNT_ALP"
-msgstr "save_sub_large_image%s1"
+msgstr "save_sub_large_imageT_ARG1"
 
 msgid "PARAM_LABEL_TEMP_SUB_IMAGE_CNT_ALP"
-msgstr "temp_sub_image%s1"
+msgstr "temp_sub_imageT_ARG1"
 
 msgid "PARAM_LABEL_TEMP_SUB_LARGE_IMAGE_CNT_ALP"
-msgstr "temp_sub_large_image%s1"
+msgstr "temp_sub_large_imageT_ARG1"
 
 msgid "PARAM_LABEL_RECOMMEND_COMMENT_CNT"
-msgstr "関連商品コメント%s1"
+msgstr "関連商品コメントT_ARG1"
 
 msgid "PARAM_LABEL_RECOMMEND_ID_CNT"
-msgstr "関連商品ID%s1"
+msgstr "関連商品IDT_ARG1"
 
 msgid "PARAM_LABEL_RECOMMEND_DELETE_CNT"
-msgstr "recommend_delete%s1"
+msgstr "recommend_deleteT_ARG1"
 
 msgid "PARAM_LABEL_DETAIL_SUB_IMAGE_CNT"
-msgstr "詳細-サブ画像%s1"
+msgstr "詳細-サブ画像T_ARG1"
 
 msgid "PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT"
-msgstr "詳細-サブ拡大画像%s1"
+msgstr "詳細-サブ拡大画像T_ARG1"
 
 msgid "PARAM_LABEL_CSV_SQL"
 msgstr "SQL文には読み込み関係以外のSQLコマンドおよび\";\"記号"
@@ -1833,7 +1833,7 @@ msgid "ALERT_013"
 msgstr "メール送信IDが正しくありません"
 
 msgid "ALERT_014"
-msgstr "選択項目を%s1へ移動しました。"
+msgstr "選択項目をT_ARG1へ移動しました。"
 
 msgid "ALERT_015"
 msgstr "選択項目を削除しました。"
@@ -1842,13 +1842,13 @@ msgid "ALERT_016"
 msgstr "プラグインをインストールしました。"
 
 msgid "ALERT_017"
-msgstr "%s1を削除しました。"
+msgstr "T_ARG1を削除しました。"
 
 msgid "ALERT_018"
-msgstr "%s1を有効にしました。"
+msgstr "T_ARG1を有効にしました。"
 
 msgid "ALERT_019"
-msgstr "%s1を無効にしました。"
+msgstr "T_ARG1を無効にしました。"
 
 msgid "ALERT_020"
 msgstr "プラグインをアップデートしました。"
@@ -1919,7 +1919,7 @@ msgid "FORMAT_DATE_LONG"
 msgstr "Y年m月d日H時i分"
 
 msgid "FORMAT_NAME_FULL_SIR"
-msgstr "%s1 %s2 様"
+msgstr "T_ARG1 T_ARG2 様"
 
 msgid "LC_Page_Abouts_001"
 msgstr "当サイトについて"
@@ -1942,7 +1942,7 @@ msgid "LC_Page_Contact_003"
 msgstr "お問い合わせ(確認ページ)"
 
 msgid "LC_Page_Contact_004"
-msgstr "%s1 様)"
+msgstr "T_ARG1 様)"
 
 msgid "LC_Page_Contact_Complete_001"
 msgstr "お問い合わせ(完了ページ)"
@@ -1966,7 +1966,7 @@ msgid "LC_Page_Entry_006"
 msgstr "※ 入力形式が不正です。<br />"
 
 msgid "LC_Page_Entry_007"
-msgstr "%s1 %s2 様"
+msgstr "T_ARG1 T_ARG2 様"
 
 msgid "LC_Page_InputZip_001"
 msgstr "住所を検索しています。"
@@ -2138,7 +2138,7 @@ msgid "LC_Page_Forgot_006"
 msgstr "パスワードを変更いたしました。"
 
 msgid "LC_Page_Forgot_007"
-msgstr "%s1 様"
+msgstr "T_ARG1 様"
 
 msgid "LC_Page_FrontParts_LoginCheck_001"
 msgstr ""
@@ -2253,7 +2253,7 @@ msgid "LC_Page_Regist_004"
 msgstr "会員登録が完了しました。"
 
 msgid "LC_Page_Regist_005"
-msgstr "%s1 %s2 様"
+msgstr "T_ARG1 T_ARG2 様"
 
 msgid "LC_Page_Regist_Complete_001"
 msgstr "会員登録(完了ページ)"
@@ -2313,7 +2313,7 @@ msgid "LC_Page_Shopping_Multiple_004"
 msgstr "※ お届け先が入力されていません。<br />"
 
 msgid "LC_Page_Shopping_Multiple_005"
-msgstr "※ 数量合計を「%s1」にしてください。<br />"
+msgstr "※ 数量合計を「T_ARG1」にしてください。<br />"
 
 msgid "LC_Page_Shopping_Payment_001"
 msgstr "お支払方法・お届け時間等の指定"
@@ -2326,7 +2326,7 @@ msgstr "※ ご利用ポイントがご購入金額を超えています。<br /
 
 msgid "LC_Page_Shopping_Payment_004"
 msgstr ""
-"※ 選択した支払方法では、ポイントは(%s1 - %s2)ポイントまでご利用い"
+"※ 選択した支払方法では、ポイントは(T_ARG1 - T_ARG2)ポイントまでご利用い"
 "ただけます。<br />"
 
 msgid "LC_Page_Unsupported_001"
@@ -2339,7 +2339,7 @@ msgid "LC_Page_001"
 msgstr "前方互換用メソッドが使用されました。"
 
 msgid "LC_Page_Install_001"
-msgstr "%s1にユーザ書込み権限(777, 707等)を付与して下さい"
+msgstr "T_ARG1にユーザ書込み権限(777, 707等)を付与して下さい"
 
 msgid "LC_Page_Install_002"
 msgstr "○：テーブルの作成に成功しました。<br />"
@@ -2373,16 +2373,16 @@ msgstr "×：シーケンスの削除に失敗しました。<br />"
 
 msgid "LC_Page_Install_012"
 msgstr ""
-">> ×：%s1(%s2)\n"
+">> ×：T_ARG1(T_ARG2)\n"
 "ユーザ書込み権限(777, 707等)を付与して下さい。"
 
 msgid "LC_Page_Install_013"
 msgstr ""
-">> ×：%s1(%s2)\n"
+">> ×：T_ARG1(T_ARG2)\n"
 "ユーザ書込み権限(666, 606等)を付与して下さい。"
 
 msgid "LC_Page_Install_014"
-msgstr ">> ×：%s1 が見つかりません。"
+msgstr ">> ×：T_ARG1 が見つかりません。"
 
 msgid "LC_Page_Install_015"
 msgstr ">> ×：PHPのセーフモードが有効になっています。"
@@ -2490,7 +2490,7 @@ msgstr ""
 
 msgid "LC_Page_Install_048"
 msgstr ""
-"※ %s1へのリネームに失敗しました。ディレクトリの権限を確認してください。"
+"※ T_ARG1へのリネームに失敗しました。ディレクトリの権限を確認してください。"
 
 msgid "LC_Page_Install_049"
 msgstr "管理者"
@@ -2544,10 +2544,10 @@ msgid "LC_Page_Admin_Basis_DeliveryInput_002"
 msgstr "配送方法設定"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_004"
-msgstr "お届け時間%s1"
+msgstr "お届け時間T_ARG1"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_005"
-msgstr "配送料金%s1"
+msgstr "配送料金T_ARG1"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_006"
 msgstr "※ 同じ名称の組み合わせは登録できません。<br>"
@@ -2592,10 +2592,10 @@ msgid "LC_Page_Admin_Basis_PaymentInput_002"
 msgstr "支払方法設定"
 
 msgid "LC_Page_Admin_Basis_PaymentInput_003"
-msgstr "利用条件(下限)は%s1円以上にしてください。<br>"
+msgstr "利用条件(下限)はT_ARG1円以上にしてください。<br>"
 
 msgid "LC_Page_Admin_Basis_PaymentInput_004"
-msgstr "利用条件(上限)は%s1円以下にしてください。<br>"
+msgstr "利用条件(上限)はT_ARG1円以下にしてください。<br>"
 
 msgid "LC_Page_Admin_Basis_Point_001"
 msgstr "基本情報管理"
@@ -2640,31 +2640,31 @@ msgid "LC_Page_Admin_Basis_ZipInstall_005"
 msgstr "<p><a href='?' target='_top'>戻る</a></p>"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_006"
-msgstr "%s1 の読み込みに失敗しました。"
+msgstr "T_ARG1 の読み込みに失敗しました。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_007"
-msgstr "%s1 を開けません。"
+msgstr "T_ARG1 を開けません。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_008"
-msgstr "%s1 の取得に失敗しました。"
+msgstr "T_ARG1 の取得に失敗しました。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_009"
-msgstr "%s1 への書き込みに失敗しました。"
+msgstr "T_ARG1 への書き込みに失敗しました。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_010"
 msgstr " をオープンできません。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_011"
-msgstr "%s1 に対象ファイルが見つかりません。"
+msgstr "T_ARG1 に対象ファイルが見つかりません。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_012"
-msgstr "%s1 の展開に失敗しました。"
+msgstr "T_ARG1 の展開に失敗しました。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_013"
 msgstr " を削除できません。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_014"
-msgstr "ファイル名を変更できません。: %s1 -> TFIELF2"
+msgstr "ファイル名を変更できません。: T_ARG1 -> TFIELF2"
 
 msgid "LC_Page_Admin_Contents_001"
 msgstr "コンテンツ管理"
@@ -2688,10 +2688,10 @@ msgid "LC_Page_Admin_Contents_CsvSql_005"
 msgstr "'※ SQL文が不正です。SQL文を見直してください'"
 
 msgid "LC_Page_Admin_Contents_CsvSql_006"
-msgstr "データテーブル: %s1"
+msgstr "データテーブル: T_ARG1"
 
 msgid "LC_Page_Admin_Contents_CsvSql_007"
-msgstr "マスターテーブル: %s1"
+msgstr "マスターテーブル: T_ARG1"
 
 msgid "LC_Page_Admin_Contents_FileManager_001"
 msgstr "コンテンツ管理"
@@ -2703,7 +2703,7 @@ msgid "LC_Page_Admin_Contents_FileManager_003"
 msgstr "'※ ディレクトリをダウンロードすることは出来ません。<br/>'"
 
 msgid "LC_Page_Admin_Contents_FileManager_005"
-msgstr "※ %s1の作成に失敗しました。<br/>"
+msgstr "※ T_ARG1の作成に失敗しました。<br/>"
 
 msgid "LC_Page_Admin_Contents_Recommend_001"
 msgstr "コンテンツ管理"
@@ -2727,10 +2727,10 @@ msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "会員登録"
 
 msgid "LC_Page_Admin_Customer_Edit_003"
-msgstr "※ すでに他の会員(ID:%s1)が使用しているアドレスです。"
+msgstr "※ すでに他の会員(ID:T_ARG1)が使用しているアドレスです。"
 
 msgid "LC_Page_Admin_Customer_Edit_004"
-msgstr "※ すでに他の会員(ID:%s1)が使用している携帯アドレスです。"
+msgstr "※ すでに他の会員(ID:T_ARG1)が使用している携帯アドレスです。"
 
 msgid "LC_Page_Admin_Customer_SearchCustomer_001"
 msgstr "会員検索"
@@ -2820,7 +2820,7 @@ msgid "LC_Page_Admin_Design_Template_004"
 msgstr "※ テンプレートの削除ができませんでした<br />"
 
 msgid "LC_Page_Admin_Design_Template_005"
-msgstr "※ %s1が見つかりません<br />"
+msgstr "※ T_ARG1が見つかりません<br />"
 
 msgid "LC_Page_Admin_Design_Template_006"
 msgstr "※ ディレクトリの作成に失敗しました<br />"
@@ -2858,7 +2858,7 @@ msgid "LC_Page_Admin_Design_UpDown_009"
 msgstr "※ テンプレートファイルの解凍に失敗しました。<br/>"
 
 msgid "LC_Page_Admin_Design_UpDown_010"
-msgstr "※ %s1 の作成に失敗しました。<br/>"
+msgstr "※ T_ARG1 の作成に失敗しました。<br/>"
 
 msgid "LC_Page_Admin_Mail_001"
 msgstr "メルマガ管理"
@@ -2876,7 +2876,7 @@ msgid "LC_Page_Admin_Mail_006"
 msgstr "TEXT"
 
 msgid "LC_Page_Admin_Mail_007"
-msgstr "【%s1】"
+msgstr "【T_ARG1】"
 
 msgid "LC_Page_Admin_Mail_History_001"
 msgstr "メルマガ管理"
@@ -2919,8 +2919,8 @@ msgstr "なし"
 
 msgid "LC_Page_Admin_Order_Edit_005"
 msgstr ""
-"%s1/(%s2)/(%s3) の在庫が不足しています。 設定できる数量は"
-"「%s4」までです。<br />"
+"T_ARG1/(T_ARG2)/(T_ARG3) の在庫が不足しています。 設定できる数量は"
+"「T_ARG4」までです。<br />"
 
 msgid "LC_Page_Admin_Order_Edit_006"
 msgstr "合計額がマイナス表示にならないように調整して下さい。<br />"
@@ -2989,7 +2989,7 @@ msgid "LC_Page_Admin_OwnersStore_001"
 msgstr "プラグイン管理"
 
 msgid "LC_Page_Admin_OwnersStore_002"
-msgstr "※ %s1は既にインストールされています。<br/>"
+msgstr "※ T_ARG1は既にインストールされています。<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_003"
 msgstr "※ DB登録に失敗しました。<br/>"
@@ -3025,16 +3025,16 @@ msgid "LC_Page_Admin_OwnersStore_013"
 msgstr "※ 解凍に失敗しました。<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_014"
-msgstr "※ %s1の読み込みに失敗しました。<br/>"
+msgstr "※ T_ARG1の読み込みに失敗しました。<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_015"
-msgstr "※ %s1.php に%s2が見つかりません。<br/>"
+msgstr "※ T_ARG1.php にT_ARG2が見つかりません。<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_016"
 msgstr "解凍："
 
 msgid "LC_Page_Admin_OwnersStore_017"
-msgstr "* %s1と競合する可能性があります。<br/>"
+msgstr "* T_ARG1と競合する可能性があります。<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_Log_001"
 msgstr "ログ管理"
@@ -3061,7 +3061,7 @@ msgid "LC_Page_Admin_Products_Category_004"
 msgstr "※ カテゴリの登録最大数を超えました。<br/>"
 
 msgid "LC_Page_Admin_Products_Category_005"
-msgstr "※ %s1階層以上の登録はできません。<br/>"
+msgstr "※ T_ARG1階層以上の登録はできません。<br/>"
 
 msgid "LC_Page_Admin_Products_Category_006"
 msgstr "※ 既に同じ内容の登録が存在します。<br/>"
@@ -3100,7 +3100,7 @@ msgid "LC_Page_Admin_Products_ProductClass_002"
 msgstr "※ 規格が選択されていません。<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_003"
-msgstr "※ %s1が入力されていません。<br />"
+msgstr "※ T_ARG1が入力されていません。<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_004"
 msgstr "※ 在庫数が入力されていません。<br />"
@@ -3130,14 +3130,14 @@ msgstr "※ ファイルがアップロードされていません"
 
 msgid "LC_Page_Admin_Products_ProductClass_011"
 msgstr ""
-"※ ダウンロード販売用ファイル名のファイルサイズは%s1%s2以下のものを"
+"※ ダウンロード販売用ファイル名のファイルサイズはT_ARG1T_ARG2以下のものを"
 "使用してください。<br />'"
 
 msgid "LC_Page_Admin_Products_ProductClass_012"
 msgstr "ダウンロード販売用ファイル名"
 
 msgid "LC_Page_Admin_Products_ProductClass_013"
-msgstr "※ %s1で許可されている形式は、%s2です。<br />"
+msgstr "※ T_ARG1で許可されている形式は、T_ARG2です。<br />"
 
 msgid "LC_Page_Admin_Products_ProductClass_014"
 msgstr "※ ファイルのアップロードに失敗しました。<br />"
@@ -3158,13 +3158,13 @@ msgid "LC_Page_Admin_Products_UploadCSV_001"
 msgstr "商品登録CSV"
 
 msgid "LC_Page_Admin_Products_UploadCSV_002"
-msgstr "%s1行目：%s2"
+msgstr "T_ARG1行目：T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSV_003"
-msgstr "※ 項目数が%s1個検出されました。項目数は%s2個になります。"
+msgstr "※ 項目数がT_ARG1個検出されました。項目数はT_ARG2個になります。"
 
 msgid "LC_Page_Admin_Products_UploadCSV_004"
-msgstr "商品ID：%s1 / 商品名：%s2"
+msgstr "商品ID：T_ARG1 / 商品名：T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSV_005"
 msgstr "※ 指定の商品規格IDは、登録されていません。"
@@ -3188,10 +3188,10 @@ msgid "LC_Page_Admin_Products_UploadCSV_011"
 msgstr "※ 指定の商品種別IDは、登録されていません。"
 
 msgid "LC_Page_Admin_Products_UploadCSV_012"
-msgstr "※ 指定の関連商品ID(%s1)は、登録されていません。"
+msgstr "※ 指定の関連商品ID(T_ARG1)は、登録されていません。"
 
 msgid "LC_Page_Admin_Products_UploadCSV_013"
-msgstr "※ 指定の関連商品ID(%s1)は、すでに登録されています。"
+msgstr "※ 指定の関連商品ID(T_ARG1)は、すでに登録されています。"
 
 msgid "LC_Page_Admin_Products_UploadCSV_014"
 msgstr "※ 指定のカテゴリIDは、登録されていません。"
@@ -3220,16 +3220,16 @@ msgid "LC_Page_Admin_Products_UploadCSVCategory_001"
 msgstr "カテゴリ登録CSV"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_002"
-msgstr "%s1行目：%s2"
+msgstr "T_ARG1行目：T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_003"
-msgstr "※ 項目数が%s1個検出されました。項目数は%s2個になります。"
+msgstr "※ 項目数がT_ARG1個検出されました。項目数はT_ARG2個になります。"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_004"
-msgstr "カテゴリID：%s1 / カテゴリ名：%s2"
+msgstr "カテゴリID：T_ARG1 / カテゴリ名：T_ARG2"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_005"
-msgstr "※ 指定の親カテゴリID(%s1)は、存在しません。"
+msgstr "※ 指定の親カテゴリID(T_ARG1)は、存在しません。"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_006"
 msgstr "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。"
@@ -3241,7 +3241,7 @@ msgid "LC_Page_Admin_Products_UploadCSVCategory_008"
 msgstr "※ カテゴリの登録最大数を超えました。"
 
 msgid "LC_Page_Admin_Products_UploadCSVCategory_009"
-msgstr "※ %s1階層以上の登録はできません。"
+msgstr "※ T_ARG1階層以上の登録はできません。"
 
 msgid "LC_Page_Admin_System_001"
 msgstr "メンバー管理"
@@ -3256,28 +3256,28 @@ msgid "LC_Page_Admin_System_AdminArea_001"
 msgstr "管理画面設定"
 
 msgid "LC_Page_Admin_System_AdminArea_002"
-msgstr "%s1 を変更する権限がありません。"
+msgstr "T_ARG1 を変更する権限がありません。"
 
 msgid "LC_Page_Admin_System_AdminArea_003"
-msgstr "%s1は既に存在しています。別のディレクトリ名を指定してください。"
+msgstr "T_ARG1は既に存在しています。別のディレクトリ名を指定してください。"
 
 msgid "LC_Page_Admin_System_AdminArea_004"
-msgstr "%s1のディレクトリ名を変更する権限がありません。"
+msgstr "T_ARG1のディレクトリ名を変更する権限がありません。"
 
 msgid "LC_Page_Admin_System_AdminArea_005"
-msgstr "%s1のディレクトリ名を変更できませんでした。"
+msgstr "T_ARG1のディレクトリ名を変更できませんでした。"
 
 msgid "LC_Page_Admin_System_Bkup_001"
 msgstr "バックアップ管理"
 
 msgid "LC_Page_Admin_System_Bkup_002"
-msgstr "バックアップに失敗しました。(%s1)"
+msgstr "バックアップに失敗しました。(T_ARG1)"
 
 msgid "LC_Page_Admin_System_Bkup_003"
-msgstr "「%s1」のリストアを開始します。"
+msgstr "「T_ARG1」のリストアを開始します。"
 
 msgid "LC_Page_Admin_System_Bkup_004-1"
-msgstr "「%s1」の"
+msgstr "「T_ARG1」の"
 
 msgid "LC_Page_Admin_System_Bkup_004-2"
 msgstr "リストアを終了しました。"
@@ -3302,17 +3302,17 @@ msgstr ""
 
 msgid "LC_Page_Admin_System_Bkup_009"
 msgstr ""
-"展開元: %s1 \n"
+"展開元: T_ARG1 \n"
 " "
 
 msgid "LC_Page_Admin_System_Bkup_010"
-msgstr "展開先: %s1"
+msgstr "展開先: T_ARG1"
 
 msgid "LC_Page_Admin_System_Bkup_011"
-msgstr "%s1 のファイルオープンに失敗しました。"
+msgstr "T_ARG1 のファイルオープンに失敗しました。"
 
 msgid "LC_Page_Admin_System_Bkup_012"
-msgstr "リストア実行: %s1"
+msgstr "リストア実行: T_ARG1"
 
 msgid "LC_Page_Admin_System_Editdb_001"
 msgstr "高度なデータベース管理"
@@ -3357,7 +3357,7 @@ msgid "LC_Page_Admin_System_Masterdata_001"
 msgstr "マスターデータ管理"
 
 msgid "LC_Page_Admin_System_Masterdata_002"
-msgstr "%s1 が重複しているため登録できません."
+msgstr "T_ARG1 が重複しているため登録できません."
 
 msgid "LC_Page_Admin_System_Parameter"
 msgstr "パラメーター設定"
@@ -3408,10 +3408,10 @@ msgid "LC_Page_Admin_Total_006"
 msgstr "会員別集計"
 
 msgid "LC_Page_Admin_Total_007"
-msgstr "%s1年%s2月%s3日'"
+msgstr "T_ARG1年T_ARG2月T_ARG3日'"
 
 msgid "LC_Page_Admin_Total_008"
-msgstr "集計期間：%s1 - %s2"
+msgstr "集計期間：T_ARG1 - T_ARG2"
 
 msgid "LC_Page_Admin_Total_009"
 msgstr "会員"
@@ -3423,7 +3423,7 @@ msgid "LC_Page_Admin_Total_011"
 msgstr "未回答"
 
 msgid "LC_Page_Admin_Total_012"
-msgstr "%s1代'"
+msgstr "T_ARG1代'"
 
 msgid "LC_Page_Admin_Total_013"
 msgstr "(年齢)"
@@ -3531,29 +3531,29 @@ msgid "SC_Helper_Transform_001"
 msgstr "検出不能"
 
 msgid "C_Helper_Transform_003"
-msgstr "<br />%s1 が存在しません"
+msgstr "<br />T_ARG1 が存在しません"
 
 msgid "SC_Helper_Transform_004"
-msgstr "テンプレートの操作に失敗しました。%s1"
+msgstr "テンプレートの操作に失敗しました。T_ARG1"
 
 msgid "SC_Helper_Transform_005"
 msgstr "テンプレートの操作に失敗しました。"
 
 msgid "SC_Utils_001"
 msgstr ""
-">> /install/%s1 は、インストール完了後にファイルを削除してください。"
+">> /install/T_ARG1 は、インストール完了後にファイルを削除してください。"
 
 msgid "SC_Utils_002"
 msgstr "前方互換用メソッドが使用されました。"
 
 msgid "SC_Utils_003"
-msgstr "%s1%s2：ファイルが存在します"
+msgstr "T_ARG1T_ARG2：ファイルが存在します"
 
 msgid "SC_Utils_004"
-msgstr "%s1%s2：コピー成功"
+msgstr "T_ARG1T_ARG2：コピー成功"
 
 msgid "SC_Utils_005"
-msgstr "%s1%s2：コピー失敗"
+msgstr "T_ARG1T_ARG2：コピー失敗"
 
 msgid "GC_Utils_001"
 msgstr "前方互換用メソッドが使用されました。"
@@ -3594,8 +3594,8 @@ msgstr "説明"
 msgid "tpl_Voucher No. URL_01"
 msgstr "伝票No.URL"
 
-msgid "tpl_Delivery time %s1_01"
-msgstr "お届け時間%s1"
+msgid "tpl_Delivery time T_ARG1_01"
+msgstr "お届け時間T_ARG1"
 
 msgid "tpl_Available product types_01"
 msgstr "取扱商品種別"
@@ -3633,8 +3633,8 @@ msgstr "タイトル"
 msgid "tpl_Title<span class='attention'> *</span>_01"
 msgstr "タイトル<span class='attention'> *</span>"
 
-msgid "tpl_(%s1 characters max)_01"
-msgstr "(上限%s1文字)"
+msgid "tpl_(T_ARG1 characters max)_01"
+msgstr "(上限T_ARG1文字)"
 
 msgid "tpl_Date_01"
 msgstr "日付"
@@ -3940,14 +3940,14 @@ msgstr "引き渡し時期<span class='attention'> *</span>"
 msgid "tpl_Returns and exchanges<span class='attention'> *</span>_01"
 msgstr "返品・交換について<span class='attention'> *</span>"
 
-msgid "tpl_Date and time of saved postal code CSV update: %s1_01"
-msgstr "保存されている郵便番号CSVの更新日時: %s1"
+msgid "tpl_Date and time of saved postal code CSV update: T_ARG1_01"
+msgstr "保存されている郵便番号CSVの更新日時: T_ARG1"
 
-msgid "tpl_Postal code There are %s1 lines of data in the CSV._01"
-msgstr "郵便番号CSVには %s1 行のデータがあります。"
+msgid "tpl_Postal code There are T_ARG1 lines of data in the CSV._01"
+msgstr "郵便番号CSVには T_ARG1 行のデータがあります。"
 
-msgid "tpl_Postal code There are %s1 lines of data in the DB._01"
-msgstr "郵便番号DBには %s1 行のデータがあります。"
+msgid "tpl_Postal code There are T_ARG1 lines of data in the DB._01"
+msgstr "郵便番号DBには T_ARG1 行のデータがあります。"
 
 msgid "tpl_Please carry out registration._01"
 msgstr "登録を行なってください。"
@@ -4128,8 +4128,8 @@ msgstr "現在データはありません。"
 msgid "tpl_Enter a comment._01"
 msgstr "コメントを入力して下さい。"
 
-msgid "tpl_The selected field %s1 will be discarded. Continue? _01"
-msgstr "さきほど選択した%s1位の情報は破棄されます。宜しいでしょうか"
+msgid "tpl_The selected field T_ARG1 will be discarded. Continue? _01"
+msgstr "さきほど選択したT_ARG1位の情報は破棄されます。宜しいでしょうか"
 
 msgid "tpl_Ranking_01"
 msgstr "順位"
@@ -4161,8 +4161,8 @@ msgstr "商品コード<span class='attention'> *</span>"
 msgid "tpl_Search_01"
 msgstr "検索を開始"
 
-msgid "tpl_%s1 items were found._01"
-msgstr "%s1件が該当しました。"
+msgid "tpl_T_ARG1 items were found._01"
+msgstr "T_ARG1件が該当しました。"
 
 msgid "tpl_Product image_01"
 msgstr "商品画像"
@@ -4254,8 +4254,8 @@ msgstr "パスワード"
 msgid "tpl_Password<span class='attention'> *</span>_01"
 msgstr "パスワード<span class='attention'> *</span>"
 
-msgid "tpl_Lower-case alphanumeric characters %s1 to %s2 (Symbols cannot be used)_01"
-msgstr "半角英数小文字%s1～%s2文字（記号不可）"
+msgid "tpl_Lower-case alphanumeric characters T_ARG1 to T_ARG2 (Symbols cannot be used)_01"
+msgstr "半角英数小文字T_ARG1～T_ARG2文字（記号不可）"
 
 msgid "tpl_Enter twice for confirmation_01"
 msgstr "確認のために2度入力してください。"
@@ -4293,8 +4293,8 @@ msgstr "確認ページへ"
 msgid "tpl_Purchase history list_01"
 msgstr "購入履歴一覧"
 
-msgid "tpl_<span class='attention'>%s1 items</span>&nbsp; were found._01"
-msgstr "<span class='attention'>%s1件</span>&nbsp;が該当しました。"
+msgid "tpl_<span class='attention'>T_ARG1 items</span>&nbsp; were found._01"
+msgstr "<span class='attention'>T_ARG1件</span>&nbsp;が該当しました。"
 
 msgid "tpl_Order number_01"
 msgstr "注文番号"
@@ -4323,8 +4323,8 @@ msgstr "仮会員"
 msgid "tpl_full member_01"
 msgstr "本会員"
 
-msgid "tpl_%s1 %s2_01"
-msgstr "%s1%s2　様"
+msgid "tpl_T_ARG1 T_ARG2_01"
+msgstr "T_ARG1T_ARG2　様"
 
 msgid "tpl_Not registered_01"
 msgstr "未登録"
@@ -4758,8 +4758,8 @@ msgstr "お届け日"
 msgid "tpl_No designation_01"
 msgstr "指定無し"
 
-msgid "tpl_%s1 information_01"
-msgstr "%s1情報"
+msgid "tpl_T_ARG1 information_01"
+msgstr "T_ARG1情報"
 
 msgid "tpl_Memo_01"
 msgstr "メモ"
@@ -4776,8 +4776,8 @@ msgstr "お届け先を新規追加"
 msgid "tpl_ Multiple delivery destinations_01"
 msgstr "複数のお届け先を指定する"
 
-msgid "tpl_* When %s1 is selected, restore the inventory count manually._01"
-msgstr "※ %s1に変更時には、在庫数を手動で戻してください。"
+msgid "tpl_* When T_ARG1 is selected, restore the inventory count manually._01"
+msgstr "※ T_ARG1に変更時には、在庫数を手動で戻してください。"
 
 msgid "tpl_Ledger output_01"
 msgstr "帳票出力"
@@ -4887,8 +4887,8 @@ msgstr "※「する」を選択されても、お客様が非会員の場合は
 msgid "tpl_Create using these contents_01"
 msgstr "この内容で作成する"
 
-msgid "tpl_ Enter %s1._01"
-msgstr "※ %s1を入力して下さい。"
+msgid "tpl_ Enter T_ARG1._01"
+msgstr "※ T_ARG1を入力して下さい。"
 
 msgid "tpl_No applicable data exists._01"
 msgstr "該当するデータはありません。"
@@ -4902,8 +4902,8 @@ msgstr "抽出条件"
 msgid "tpl_Response status change_01"
 msgstr "対応状況変更"
 
-msgid "tpl_* When %s1 or when changing to delete, restore the inventory count manually._01"
-msgstr "※ %s1もしくは、削除に変更時には、在庫数を手動で戻してください。"
+msgid "tpl_* When T_ARG1 or when changing to delete, restore the inventory count manually._01"
+msgstr "※ T_ARG1もしくは、削除に変更時には、在庫数を手動で戻してください。"
 
 msgid "tpl_Purchase amount(&#36;)_01"
 msgstr "購入金額（円）"
@@ -5048,8 +5048,8 @@ msgstr "ホーム"
 msgid "tpl_Register_02"
 msgstr "登録"
 
-msgid "tpl_(max %s1 characters)_01"
-msgstr "（上限%s1文字）"
+msgid "tpl_(max T_ARG1 characters)_01"
+msgstr "（上限T_ARG1文字）"
 
 msgid "tpl_Category name_01"
 msgstr "カテゴリ名"
@@ -5093,8 +5093,8 @@ msgstr "公開・非公開"
 msgid "tpl_Disclosed/not disclosed<span class='attention'> *</span>_01"
 msgstr "公開・非公開<span class='attention'> *</span>"
 
-msgid "tpl_&#36; %s1_01"
-msgstr "%s1円"
+msgid "tpl_&#36; T_ARG1_01"
+msgstr "T_ARG1円"
 
 msgid "tpl_Category_02"
 msgstr "区分"
@@ -5219,8 +5219,8 @@ msgstr "管理機能"
 msgid "tpl_ADMIN_MODE ON_01"
 msgstr "ADMIN_MODE ON"
 
-msgid "tpl_<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;_01"
-msgstr "<span>ログイン&nbsp;:&nbsp;%s1</span>&nbsp;様&nbsp;"
+msgid "tpl_<span>Login&nbsp;:&nbsp;T_ARG1</span>&nbsp;_01"
+msgstr "<span>ログイン&nbsp;:&nbsp;T_ARG1</span>&nbsp;様&nbsp;"
 
 msgid "tpl_LOGOUT_01"
 msgstr "LOGOUT"
@@ -5246,8 +5246,8 @@ msgstr "システム設定"
 msgid "tpl_Owners store_01"
 msgstr "オーナーズストア"
 
-msgid "tpl_Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved._01"
-msgstr "Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved."
+msgid "tpl_Copyright &copy; 2000-T_ARG1 LOCKON CO.,LTD. All Rights Reserved._01"
+msgstr "Copyright &copy; 2000-T_ARG1 LOCKON CO.,LTD. All Rights Reserved."
 
 msgid "tpl_PAGE TOP_01"
 msgstr "PAGE TOP"
@@ -5318,20 +5318,20 @@ msgstr "詳細-メイン画像"
 msgid "tpl_Details - Main enlarged image_01"
 msgstr "詳細-メイン拡大画像"
 
-msgid "tpl_Details - Sub title(%s1)_01"
-msgstr "詳細-サブタイトル（%s1）"
+msgid "tpl_Details - Sub title(T_ARG1)_01"
+msgstr "詳細-サブタイトル（T_ARG1）"
 
-msgid "tpl_Details - Sub comment(%s1)_01"
-msgstr "詳細-サブコメント（%s1）"
+msgid "tpl_Details - Sub comment(T_ARG1)_01"
+msgstr "詳細-サブコメント（T_ARG1）"
 
-msgid "tpl_Details - Sub image (%s1)_01"
-msgstr "詳細-サブ画像（%s1）"
+msgid "tpl_Details - Sub image (T_ARG1)_01"
+msgstr "詳細-サブ画像（T_ARG1）"
 
-msgid "tpl_Details - Sub enlarged image(%s1)_01"
-msgstr "詳細-サブ拡大画像（%s1）"
+msgid "tpl_Details - Sub enlarged image(T_ARG1)_01"
+msgstr "詳細-サブ拡大画像（T_ARG1）"
 
-msgid "tpl_Related products(%s1)_01"
-msgstr "関連商品(%s1)"
+msgid "tpl_Related products(T_ARG1)_01"
+msgstr "関連商品(T_ARG1)"
 
 msgid "tpl_Comment:_01"
 msgstr "コメント:"
@@ -5370,8 +5370,8 @@ msgstr ""
 msgid "tpl_[Erase file]_01"
 msgstr "[ファイルの取り消し]"
 
-msgid "tpl_Extensions for uploaded files: %s1 (Parameter DOWNLOAD_EXTENSION)_01"
-msgstr "登録可能拡張子：%s1　(パラメーター DOWNLOAD_EXTENSION)"
+msgid "tpl_Extensions for uploaded files: T_ARG1 (Parameter DOWNLOAD_EXTENSION)_01"
+msgstr "登録可能拡張子：T_ARG1　(パラメーター DOWNLOAD_EXTENSION)"
 
 msgid "tpl_(Numbers only)_01"
 msgstr "(半角数字で入力)"
@@ -5409,20 +5409,20 @@ msgstr "表示する"
 msgid "tpl_Delete_01"
 msgstr "削除する"
 
-msgid "tpl_<span class='bold'>Extension that can be uploaded:</span>%s1(Parameter DOWNLOAD_EXTENSION)_01"
-msgstr "<span class='bold'>アップロード可能な拡張子：</span>%s1(パラメーター DOWNLOAD_EXTENSION)"
+msgid "tpl_<span class='bold'>Extension that can be uploaded:</span>T_ARG1(Parameter DOWNLOAD_EXTENSION)_01"
+msgstr "<span class='bold'>アップロード可能な拡張子：</span>T_ARG1(パラメーター DOWNLOAD_EXTENSION)"
 
 msgid "tpl_Copy the data on the 1st line_01"
 msgstr "一行目のデータをコピーする"
 
-msgid "tpl_%s1(&#36;)_01"
-msgstr "%s1(円)"
+msgid "tpl_T_ARG1(&#36;)_01"
+msgstr "T_ARG1(円)"
 
 msgid "tpl_Downloaded file name_01"
 msgstr "ダウンロード<br>ファイル名"
 
-msgid "tpl_Max %s1 characters_01"
-msgstr "上限%s1文字"
+msgid "tpl_Max T_ARG1 characters_01"
+msgstr "上限T_ARG1文字"
 
 msgid "tpl_Downloaded file name_02"
 msgstr "ダウンロードファイル名"
@@ -5436,8 +5436,8 @@ msgstr "規格が選択されていません。"
 msgid "tpl_Go back_01"
 msgstr "戻る"
 
-msgid "tpl_<span class='attention'>%s1 items</span> were found._01"
-msgstr "<span class='attention'>%s1件</span>が該当しました。"
+msgid "tpl_<span class='attention'>T_ARG1 items</span> were found._01"
+msgstr "<span class='attention'>T_ARG1件</span>が該当しました。"
 
 msgid "tpl_Reallocation of internal ranking_01"
 msgstr "内部順位再割り当て"
@@ -5496,8 +5496,8 @@ msgstr "商品並び替え"
 msgid "tpl_Review management_01"
 msgstr "レビュー管理"
 
-msgid "tpl_[Value:%s1]_01"
-msgstr "[値：%s1]"
+msgid "tpl_[Value:T_ARG1]_01"
+msgstr "[値：T_ARG1]"
 
 msgid "tpl_CSV file_01"
 msgstr "CSVファイル"
@@ -5508,8 +5508,8 @@ msgstr "(1行目タイトル行)"
 msgid "tpl_Registration information_01"
 msgstr "登録情報"
 
-msgid "tpl_%s1 Item: %s2_01"
-msgstr "%s1項目：%s2"
+msgid "tpl_T_ARG1 Item: T_ARG2_01"
+msgstr "T_ARG1項目：T_ARG2"
 
 msgid "tpl_Register with these contents_01"
 msgstr "この内容で登録する"
@@ -5604,8 +5604,8 @@ msgstr "※必須入力"
 msgid "tpl_Login ID_01"
 msgstr "ログインＩＤ"
 
-msgid "tpl_* Alphanumeric characters %s1 to %s2 _01"
-msgstr "※半角英数字%s1～%s2文字"
+msgid "tpl_* Alphanumeric characters T_ARG1 to T_ARG2 _01"
+msgstr "※半角英数字T_ARG1～T_ARG2文字"
 
 msgid "tpl_Operating/Not operating_01"
 msgstr "稼働/非稼働"
@@ -5685,35 +5685,35 @@ msgstr "購入合計"
 msgid "tpl_Purchase average_01"
 msgstr "購入平均"
 
-msgid "tpl_%s1 item_01"
-msgstr "%s1件"
+msgid "tpl_T_ARG1 item_01"
+msgstr "T_ARG1件"
 
-msgid "tpl_SQL settings (being edited:%s1)_01"
-msgstr "SQL設定(編集中:%s1)"
+msgid "tpl_SQL settings (being edited:T_ARG1)_01"
+msgstr "SQL設定(編集中:T_ARG1)"
 
 msgid "tpl_SQL settings (Newly input)_01"
 msgstr "SQL設定(新規入力)"
 
-msgid "tpl_Details - Sub image(%s1)<br />[%s2 x %s3]_01"
-msgstr "詳細-サブ画像(%s1)<br />[%s2×%s3]"
+msgid "tpl_Details - Sub image(T_ARG1)<br />[T_ARG2 x T_ARG3]_01"
+msgstr "詳細-サブ画像(T_ARG1)<br />[T_ARG2×T_ARG3]"
 
-msgid "tpl_Details - Sub enlarged image(%s1)<br />[%s2 x %s3]_01"
-msgstr "詳細-サブ拡大画像(%s1)<br />[%s2×%s3]"
+msgid "tpl_Details - Sub enlarged image(T_ARG1)<br />[T_ARG2 x T_ARG3]_01"
+msgstr "詳細-サブ拡大画像(T_ARG1)<br />[T_ARG2×T_ARG3]"
 
 msgid "tpl_*  Uniform shipping rates(&#036;):_01"
 msgstr "※全国一律送料設定(円):"
 
-msgid "tpl_%s1<span class='attention'> *</span>_01"
-msgstr "%s1<span class='attention'> *</span>"
+msgid "tpl_T_ARG1<span class='attention'> *</span>_01"
+msgstr "T_ARG1<span class='attention'> *</span>"
 
-msgid "tpl_List - Main images<br />[%s1 x %s2]_01"
-msgstr "一覧-メイン画像<br />[%s1×%s2]"
+msgid "tpl_List - Main images<br />[T_ARG1 x T_ARG2]_01"
+msgstr "一覧-メイン画像<br />[T_ARG1×T_ARG2]"
 
-msgid "tpl_Details - Main image<br />[%s1 x %s2]_01"
-msgstr "詳細-メイン画像<br />[%s1×%s2]"
+msgid "tpl_Details - Main image<br />[T_ARG1 x T_ARG2]_01"
+msgstr "詳細-メイン画像<br />[T_ARG1×T_ARG2]"
 
-msgid "tpl_Details - Main enlarged image<br />[%s1 x %s2]_01"
-msgstr "詳細-メイン拡大画像<br />[%s1×%s2]"
+msgid "tpl_Details - Main enlarged image<br />[T_ARG1 x T_ARG2]_01"
+msgstr "詳細-メイン拡大画像<br />[T_ARG1×T_ARG2]"
 
 msgid "tpl_The first_01"
 msgstr "番目へ"
@@ -5748,17 +5748,17 @@ msgstr "商品の追加"
 msgid "tpl_Find users_01"
 msgstr "会員検索"
 
-msgid "tpl_%s1_01"
-msgstr "%s1名"
+msgid "tpl_T_ARG1_01"
+msgstr "T_ARG1名"
 
-msgid "tpl_s1Year%s2Month%s3Day_01"
-msgstr "%s1年%s2月%s3日"
+msgid "tpl_s1YearT_ARG2MonthT_ARG3Day_01"
+msgstr "T_ARG1年T_ARG2月T_ARG3日"
 
-msgid "tpl_%s1/%s2_01"
-msgstr "%s1月%s2日"
+msgid "tpl_T_ARG1/T_ARG2_01"
+msgstr "T_ARG1月T_ARG2日"
 
-msgid "tpl_%s1_02"
-msgstr "%s1月"
+msgid "tpl_T_ARG1_02"
+msgstr "T_ARG1月"
 
 msgid "tpl_(None)_01"
 msgstr "(なし)"
@@ -6023,26 +6023,26 @@ msgstr "いいえ"
 msgid "tpl_EC-CUBE installation will begin._01"
 msgstr "EC-CUBEのインストールを開始します。"
 
-msgid "tpl_<span class='attention'>* The authentication key can be obtained from <a href='%s1' target='_blank'>the EC-CUBE Owners Store</a>.</span>_01"
+msgid "tpl_<span class='attention'>* The authentication key can be obtained from <a href='T_ARG1' target='_blank'>the EC-CUBE Owners Store</a>.</span>_01"
 msgstr ""
-"<span class='attention'>※認証キーは<a href='%s1' target='_blank'>EC-CUBE"
+"<span class='attention'>※認証キーは<a href='T_ARG1' target='_blank'>EC-CUBE"
 "オーナーズストア</a>で取得できます。</span>"
 
-msgid "tpl_You can log in to <a href='%s1%s2%s3'>the management screen</a>._01"
+msgid "tpl_You can log in to <a href='T_ARG1T_ARG2T_ARG3'>the management screen</a>._01"
 msgstr ""
-"<a href='%s1%s2%s3'>管理画面</a>にログインできます。"
+"<a href='T_ARG1T_ARG2T_ARG3'>管理画面</a>にログインできます。"
 
 msgid "tpl_Monthly (end of month)_01"
 msgstr "月度 (末日締め)"
 
-msgid "tpl_Monthly (by %s1)_01"
-msgstr "月度 (%s1日締め)"
+msgid "tpl_Monthly (by T_ARG1)_01"
+msgstr "月度 (T_ARG1日締め)"
 
 msgid "tpl_ID:_01"
 msgstr "ID："
 
-msgid "tpl_%s1:_01"
-msgstr "%s1："
+msgid "tpl_T_ARG1:_01"
+msgstr "T_ARG1："
 
 msgid "-"
 msgstr "～"

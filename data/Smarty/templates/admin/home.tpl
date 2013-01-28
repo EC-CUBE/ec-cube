@@ -70,27 +70,27 @@
         <table summary="Shop status" class="shop-info">
             <tr>
                 <th><!--{t string="tpl_Current number of members_01"}--></th>
-                <td><!--{t string="tpl_%s1_01" %s1=$customer_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_T_ARG1_01" T_ARG1=$customer_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Yesterday's sales_01"}--></th>
-                <td><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$order_yesterday_amount|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_&#36; T_ARG1_01" escape="none" T_ARG1=$order_yesterday_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Number of items sold yesterday_01"}--></th>
-                <td><!--{t string="tpl_%s1 item_01" %s1=$order_yesterday_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_T_ARG1 item_01" T_ARG1=$order_yesterday_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_<span>Sales for this month </span><span>(up to yesterday) </span>_01" escape="none"}--></th>
-                <td><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$order_month_amount|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_&#36; T_ARG1_01" escape="none" T_ARG1=$order_month_amount|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_<span>Number of items sold this month </span><span>(up to yesterday) </span>_01" escape="none"}--></th>
-                <td><!--{t string="tpl_%s1 item_01" %s1=$order_month_cnt|default:"0"|number_format}--></td>
+                <td><!--{t string="tpl_T_ARG1 item_01" T_ARG1=$order_month_cnt|default:"0"|number_format}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Number of reviews from yesterday_01"}--></th>
-                <td><!--{t string="tpl_%s1 item_01" %s1=$review_yesterday_cnt|default:"0"}--></th>
+                <td><!--{t string="tpl_T_ARG1 item_01" T_ARG1=$review_yesterday_cnt|default:"0"}--></th>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Member's total registered points_01"}--></th>
@@ -98,7 +98,7 @@
             </tr>
             <tr>
                 <th><!--{t string="tpl_Number of reviews not displayed_01"}--></th>
-                <td><!--{t string="tpl_%s1 item_01" %s1=$review_nondisp_cnt|default:"0"}--></td>
+                <td><!--{t string="tpl_T_ARG1 item_01" T_ARG1=$review_nondisp_cnt|default:"0"}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Sold-out products_01"}--></th>
@@ -127,7 +127,7 @@
                 <td><!--{$arrNewOrder[i].name01|h}--> <!--{$arrNewOrder[i].name02|h}--></td>
                 <td><!--{$arrNewOrder[i].product_name|h}--></td>
                 <td><!--{$arrNewOrder[i].payment_method|h}--></td>
-                <td class="right"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrNewOrder[i].total|number_format}--></td>
+                <td class="right"><!--{t string="tpl_&#36; T_ARG1_01" escape="none" T_ARG1=$arrNewOrder[i].total|number_format}--></td>
             </tr>
             <!--{/section}-->
         </table>

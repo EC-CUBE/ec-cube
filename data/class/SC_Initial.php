@@ -189,7 +189,7 @@ class SC_Initial {
         } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
 
             $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
-            $errorMessage = t('SC_Initial_001', array('%s1' => CACHE_REALDIR), array('device_type_id' => FALSE));
+            $errorMessage = t('SC_Initial_001', array('T_ARG1' => CACHE_REALDIR), array('device_type_id' => FALSE));
             if (is_writable(CACHE_REALDIR)) {
                 $handle = fopen(CACHE_REALDIR . 'mtb_constants.php', 'w');
                 if (!$handle) {
@@ -205,7 +205,7 @@ class SC_Initial {
                 die($errorMessage);
             }
         } else {
-            die(t('SC_Initial_002', array('%s1' => CACHE_REALDIR), array('device_type_id' => FALSE)));
+            die(t('SC_Initial_002', array('T_ARG1' => CACHE_REALDIR), array('device_type_id' => FALSE)));
         }
     }
 

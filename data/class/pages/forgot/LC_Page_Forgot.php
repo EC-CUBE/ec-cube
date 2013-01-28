@@ -304,7 +304,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
             , $CONF['email04'] //return_path
             , $CONF['email04'] // errors_to
             );
-        $objMail->setTo($email, t('LC_Page_Forgot_007', array('%s1' => $customer_name)));
+        $objMail->setTo($email, t('LC_Page_Forgot_007', array('T_ARG1' => $customer_name)));
         $objMail->sendMail();
         return;
     }

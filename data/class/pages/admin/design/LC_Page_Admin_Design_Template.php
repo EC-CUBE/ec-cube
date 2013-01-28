@@ -270,7 +270,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         $tpl_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         if (!is_dir($tpl_dir)) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_005', array('%s1' => $tpl_dir));
+            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_005', array('T_ARG1' => $tpl_dir));
             return false;
         }
 

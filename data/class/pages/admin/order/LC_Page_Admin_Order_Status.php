@@ -207,7 +207,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
         $objQuery->commit();
 
-        $this->tpl_onload = "window.alert('" . t('ALERT_014', array('%s1' => $arrORDERSTATUS[$statusId])) . "');";
+        $this->tpl_onload = "window.alert('" . t('ALERT_014', array('T_ARG1' => $arrORDERSTATUS[$statusId])) . "');";
         return true;
     }
 

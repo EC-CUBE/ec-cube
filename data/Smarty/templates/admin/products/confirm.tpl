@@ -234,21 +234,21 @@
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
             <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
             <tr>
-                <th><!--{t string="tpl_Details - Sub title(%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub title(T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
                     <!--{$arrForm[$key]|h}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_Details - Sub comment(%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub comment(T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
                     <!--{$arrForm[$key]|nl2br_html}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_Details - Sub image (%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub image (T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
                     <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -257,7 +257,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_Details - Sub enlarged image(%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub enlarged image(T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
                     <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -273,7 +273,7 @@
             <!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->
             <!--{assign var=recommend_no value="`$smarty.section.cnt.iteration`"}-->
                 <tr>
-                    <th><!--{t string="tpl_Related products(%s1)_01" %s1=$smarty.section.cnt.iteration}--><br />
+                    <th><!--{t string="tpl_Related products(T_ARG1)_01" T_ARG1=$smarty.section.cnt.iteration}--><br />
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->">
                         <!--{/if}-->

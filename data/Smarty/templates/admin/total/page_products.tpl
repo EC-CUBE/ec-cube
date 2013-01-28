@@ -48,10 +48,10 @@
             <td class="center"><!--{*順位*}--><!--{$smarty.section.cnt.iteration}--></td>
             <td class="right"><!--{*商品コード*}--><!--{$arrResults[cnt].product_code|h}--></td>
             <td class="left"><!--{*商品名*}--><!--{$arrResults[cnt].product_name|sfCutString:40:false|h}--></td>
-            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_%s1 item_01" %s1=$arrResults[cnt].order_count}--></td>
+            <td class="right"><!--{*購入件数*}--><!--{t string="tpl_T_ARG1 item_01" T_ARG1=$arrResults[cnt].order_count}--></td>
             <td class="right"><!--{*数量*}--><!--{$arrResults[cnt].products_count}--></td>
-            <td class="right"><!--{*単価*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].price|number_format}--></td>
-            <td class="right"><!--{*金額*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
+            <td class="right"><!--{*単価*}--><!--{t string="tpl_&#36; T_ARG1_01" escape="none" T_ARG1=$arrResults[cnt].price|number_format}--></td>
+            <td class="right"><!--{*金額*}--><!--{t string="tpl_&#36; T_ARG1_01" escape="none" T_ARG1=$arrResults[cnt].total|number_format}--></td>
         </tr>
     <!--{/section}-->
 

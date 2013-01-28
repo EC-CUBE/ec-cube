@@ -139,7 +139,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowResult($line_count, $message) {
-        $this->arrRowResult[] = t('LC_Page_Admin_Products_UploadCSVCategory_002', array('%s1' => $line_count, '%s2' => $message));
+        $this->arrRowResult[] = t('LC_Page_Admin_Products_UploadCSVCategory_002', array('T_ARG1' => $line_count, 'T_ARG2' => $message));
     }
 
     /**
@@ -150,7 +150,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowErr($line_count, $message) {
-        $this->arrRowErr[] = t('LC_Page_Admin_Products_UploadCSVCategory_002', array('%s1' => $line_count, '%s2' => $message));
+        $this->arrRowErr[] = t('LC_Page_Admin_Products_UploadCSVCategory_002', array('T_ARG1' => $line_count, 'T_ARG2' => $message));
     }
 
     /**
@@ -211,7 +211,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             // 列数が異なる場合はエラー
             $col_count = count($arrCSV);
             if ($col_max_count != $col_count) {
-                $this->addRowErr($line_count, t('LC_Page_Admin_Products_UploadCSVCategory_003', array('%s1' => $col_count, '%s2' => $col_max_count)));
+                $this->addRowErr($line_count, t('LC_Page_Admin_Products_UploadCSVCategory_003', array('T_ARG1' => $col_count, 'T_ARG2' => $col_max_count)));
                 
                 $errFlag = true;
                 break;
@@ -235,7 +235,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             }
 
             $category_id = $this->lfRegistCategory($objQuery, $line_count, $objFormParam);
-            $this->addRowResult($line_count, t('LC_Page_Admin_Products_UploadCSVCategory_004', array('%s1' => $category_id, '%s2' => $objFormParam->getValue('category_name'))));
+            $this->addRowResult($line_count, t('LC_Page_Admin_Products_UploadCSVCategory_004', array('T_ARG1' => $category_id, 'T_ARG2' => $objFormParam->getValue('category_name'))));
         }
 
         // 実行結果画面を表示
@@ -461,7 +461,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             && $item['parent_category_id'] != '0'
             && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', array($item['parent_category_id']))
         ) {
-            $arrErr['parent_category_id'] = t('LC_Page_Admin_Products_UploadCSVCategory_005', array('%s1' => $item['parent_category_id']));
+            $arrErr['parent_category_id'] = t('LC_Page_Admin_Products_UploadCSVCategory_005', array('T_ARG1' => $item['parent_category_id']));
         }
         // 削除フラグのチェック
         if (array_search('del_flg', $this->arrFormKeyList) !== FALSE
@@ -500,7 +500,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
                 and $item['parent_category_id'] != '') {
             $level = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($parent_category_id));
             if ($level >= LEVEL_MAX) {
-                $arrErr['parent_category_id'] = t('LC_Page_Admin_Products_UploadCSVCategory_009', array('%s1' => LEVEL_MAX));
+                $arrErr['parent_category_id'] = t('LC_Page_Admin_Products_UploadCSVCategory_009', array('T_ARG1' => LEVEL_MAX));
             }
         }
         return $arrErr;
