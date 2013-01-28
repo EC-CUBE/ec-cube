@@ -90,7 +90,7 @@
     <div id="header-contents">
         <div id="logo"><a href="<!--{$smarty.const.ADMIN_HOME_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
         <div id="site-check">
-            <p class="info"><!--{t string="tpl_542" escape="none" %s1=$smarty.session.login_name|h}--></p>
+            <p class="info"><!--{t string="tpl_<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;_01" escape="none" %s1=$smarty.session.login_name|h}--></p>
             <ul>
                 <li class="bt_forum"><a href="http://en.ec-cube.net/forum/" class="btn-tool-format02" target="_blank"><span>USER FORUMS</span></a></li>
                 <li class="bt_checksite"><a href="<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.DIR_INDEX_PATH}-->" class="btn-tool-format" target="_blank"><span><!--{t string="tpl_CHECK SITE_01"}--></span></a></li>
@@ -159,7 +159,7 @@
 <!--{* ▼FOOTER *}-->
 <div id="footer">
     <div id="footer-contents">
-        <div id="copyright"><!--{t string="tpl_551" escape="none" %s1=$smarty.now|date_format:"%Y"}--></div>
+        <div id="copyright"><!--{t string="tpl_Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved._01" escape="none" %s1=$smarty.now|date_format:"%Y"}--></div>
         <div id="topagetop">
             <ul class="sites">
                 <li><a href="#top" class="btn-tool-format"><!--{t string="tpl_PAGE TOP_01"}--></a></li>

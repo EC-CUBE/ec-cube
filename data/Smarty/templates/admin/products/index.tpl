@@ -37,7 +37,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "none");
 
-            $('#' + inner_id).html('    URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_578"}--><\/a>');
+            $('#' + inner_id).html('    URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_Category display_01"}--><\/a>');
         }
     }else{
         for (i = 1; i <= cnt; i++) {
@@ -47,7 +47,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "");
 
-            $('#' + inner_id).html('    <!--{t string="tpl_Category_01"}--> <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_579"}--><\/a>');
+            $('#' + inner_id).html('    <!--{t string="tpl_Category_01"}--> <a href="#" onClick="lfnDispChange();"> &gt;&gt; <!--{t string="tpl_URL display_01"}--><\/a>');
         }
     }
 
@@ -224,7 +224,7 @@ $("*[name=search_endday]").val(dates[2]);
     <!--検索条件設定テーブルここから-->
     <table>
         <tr>
-            <th><!--{t string="tpl_577"}--></th>
+            <th><!--{t string="tpl_Product ID_01"}--></th>
             <td colspan="3">
                 <!--{assign var=key value="search_product_id"}-->
                 <!--{if $arrErr[$key]}-->
@@ -369,23 +369,23 @@ $("*[name=search_endday]").val(dates[2]);
             <col width="5%" />
             <col width="5%" />
             <tr>
-                <th rowspan="2"><!--{t string="tpl_577"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Product ID_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Product image_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Product code_01"}--></th>
-                <th rowspan="2"><!--{t string="tpl_580" escape="none"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Price(&#36;)_01" escape="none"}--></th>
                 <th><!--{t string="tpl_Product name_01"}--></th>
-                <th rowspan="2"><!--{t string="tpl_581"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Inventory_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Type_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Edit_01"}--></th>
                 <th rowspan="2"><!--{t string="tpl_Confirm_02"}--></th>
                 <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-                <th rowspan="2"><!--{t string="tpl_582"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Standard_01"}--></th>
                 <!--{/if}-->
                 <th rowspan="2"><!--{t string="tpl_Remove_01"}--></th>
-                <th rowspan="2"><!--{t string="tpl_583"}--></th>
+                <th rowspan="2"><!--{t string="tpl_Duplication_01"}--></th>
             </tr>
             <tr>
-                <th nowrap><a href="#" onClick="lfnDispChange(); return false;"><!--{t string="tpl_584"}--></a></th>
+                <th nowrap><a href="#" onClick="lfnDispChange(); return false;"><!--{t string="tpl_Category <> URL_01"}--></a></th>
             </tr>
 
             <!--{section name=cnt loop=$arrProducts}-->
@@ -420,10 +420,10 @@ $("*[name=search_endday]").val(dates[2]);
                     <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_Edit_01"}--></a></span></td>
                     <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank"><!--{t string="tpl_Confirm_02"}--></a></span></td>
                     <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
-                    <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_582"}--></a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_Standard_01"}--></a></span></td>
                     <!--{/if}-->
                     <td class="menu" rowspan="2"><span class="icon_delete"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnSetFormValue('category_id', '<!--{$arrProducts[cnt].category_id}-->'); fnModeSubmit('delete', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;"><!--{t string="tpl_Remove_01"}--></a></span></td>
-                    <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_583"}--></a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_copy"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('copy', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" ><!--{t string="tpl_Duplication_01"}--></a></span></td>
                 </tr>
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                     <td>

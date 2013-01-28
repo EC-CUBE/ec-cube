@@ -44,8 +44,8 @@
         <tr class="<!--{$color}-->">
             <td class="center"><!--{*区分*}--><!--{$arrResults[cnt].member_name}--></td>
             <td class="right"><!--{*購入件数*}--><!--{t string="tpl_701" %s1=$arrResults[cnt].order_count}--></td>
-            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_500" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
-            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_500" escape="none" %s1=$arrResults[cnt].total_average|number_format}--></td>
+            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
+            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total_average|number_format}--></td>
         </tr>
     <!--{/section}-->
 

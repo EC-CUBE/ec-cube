@@ -30,7 +30,7 @@
 
         <table class="form">
             <tr>
-                <th><!--{t string="tpl_585" escape="none"}--></th>
+                <th><!--{t string="tpl_Manufacturer name<span class='attention'> *</span>_01" escape="none"}--></th>
                 <td>
                     <!--{if $arrErr.maker_id}--><span class="attention"><!--{$arrErr.maker_id}--></span><br /><!--{/if}-->
                     <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
@@ -54,7 +54,7 @@
             <col width="20%" />
             <tr>
                 <th><!--{t string="tpl_ID_01"}--></th>
-                <th><!--{t string="tpl_562"}--></th>
+                <th><!--{t string="tpl_Manufacturer_01"}--></th>
                 <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
                 <th><!--{t string="tpl_Move_01"}--></th>

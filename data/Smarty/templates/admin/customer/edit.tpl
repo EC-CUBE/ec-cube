@@ -337,7 +337,7 @@
                     <tr>
                         <td><!--{$arrPurchaseHistory[cnt].create_date|sfDispDBDate}--></td>
                         <td class="center"><a href="../order/edit.php?order_id=<!--{$arrPurchaseHistory[cnt].order_id}-->" ><!--{$arrPurchaseHistory[cnt].order_id}--></a></td>
-                        <td class="center"><!--{t string="tpl_500" escape="none" %s1=$arrPurchaseHistory[cnt].payment_total|number_format}--></td>
+                        <td class="center"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrPurchaseHistory[cnt].payment_total|number_format}--></td>
                         <td class="center"><!--{if $arrPurchaseHistory[cnt].status eq 5}--><!--{$arrPurchaseHistory[cnt].commit_date|sfDispDBDate}--><!--{else}--><!--{t string="tpl_Not shipped_01"}--><!--{/if}--></td>
                         <!--{assign var=payment_id value="`$arrPurchaseHistory[cnt].payment_id`"}-->
                         <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>

@@ -145,61 +145,61 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_559"}--></th>
+            <th><!--{t string="tpl_Point grant rate_01"}--></th>
             <td>
                 <!--{if strlen($arrForm.point_rate) >= 1}--><!--{$arrForm.point_rate|h}--> <!--{t string="%"}--><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_560"}--></th>
+            <th><!--{t string="tpl_Shipment date Target_01"}--></th>
             <td>
                 <!--{$arrDELIVERYDATE[$arrForm.deliv_date_id]|h}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_561"}--></th>
+            <th><!--{t string="tpl_Number of sales restrictions_01"}--></th>
             <td>
                 <!--{$arrForm.sale_limit|default_t:"tpl_No limit"|h}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_562"}--></th>
+            <th><!--{t string="tpl_Manufacturer_01"}--></th>
             <td>
                 <!--{$arrMaker[$arrForm.maker_id]|h}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_563"}--></th>
+            <th><!--{t string="tpl_Manufacturer URL_01"}--></th>
             <td style="word-break: break-all;">
                 <!--{$arrForm.comment1|h}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_564"}--></th>
+            <th><!--{t string="tpl_Search word_01"}--></th>
             <td>
                 <!--{$arrForm.comment3|h}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_565"}--></th>
+            <th><!--{t string="tpl_Remarks column (for SHOP)_01"}--></th>
             <td>
                 <!--{$arrForm.note|h|nl2br}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_566"}--></th>
+            <th><!--{t string="tpl_List - Main comments_01"}--></th>
             <td>
                 <!--{$arrForm.main_list_comment|h|nl2br}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_567"}--></th>
+            <th><!--{t string="tpl_Details - Main comment_01"}--></th>
             <td>
                 <!--{$arrForm.main_comment|nl2br_html}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_568"}--></th>
+            <th><!--{t string="tpl_List - Main images_01"}--></th>
             <td>
                 <!--{assign var=key value="main_list_image"}-->
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -208,7 +208,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_569"}--></th>
+            <th><!--{t string="tpl_Details - Main image_01"}--></th>
             <td>
                 <!--{assign var=key value="main_image"}-->
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -217,7 +217,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_570"}--></th>
+            <th><!--{t string="tpl_Details - Main enlarged image_01"}--></th>
             <td>
                 <!--{assign var=key value="main_large_image"}-->
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -234,21 +234,21 @@
         <!--{section name=cnt loop=$smarty.const.PRODUCTSUB_MAX}-->
             <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
             <tr>
-                <th><!--{t string="tpl_571" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub title(%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_title`$smarty.section.cnt.iteration`"}-->
                     <!--{$arrForm[$key]|h}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_572" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub comment(%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_comment`$smarty.section.cnt.iteration`"}-->
                     <!--{$arrForm[$key]|nl2br_html}-->
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_573" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub image (%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_image`$smarty.section.cnt.iteration`"}-->
                     <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -257,7 +257,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_574" %s1=$smarty.section.cnt.iteration}--></th>
+                <th><!--{t string="tpl_Details - Sub enlarged image(%s1)_01" %s1=$smarty.section.cnt.iteration}--></th>
                 <td>
                     <!--{assign var=key value="sub_large_image`$smarty.section.cnt.iteration`"}-->
                     <!--{if $arrForm.arrFile[$key].filepath != ""}-->
@@ -273,7 +273,7 @@
             <!--{section name=cnt loop=$smarty.const.RECOMMEND_PRODUCT_MAX}-->
             <!--{assign var=recommend_no value="`$smarty.section.cnt.iteration`"}-->
                 <tr>
-                    <th><!--{t string="tpl_575" %s1=$smarty.section.cnt.iteration}--><br />
+                    <th><!--{t string="tpl_Related products(%s1)_01" %s1=$smarty.section.cnt.iteration}--><br />
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
                             <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->">
                         <!--{/if}-->
@@ -282,7 +282,7 @@
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
                             <!--{t string="tpl_Product code_01"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
                             <!--{t string="tpl_Product name_01"}-->:<!--{$arrRecommend[$recommend_no].name|h}--><br />
-                            <!--{t string="tpl_576"}--><br />
+                            <!--{t string="tpl_Comment:_01"}--><br />
                             <!--{$arrRecommend[$recommend_no].comment|h|nl2br}-->
                         <!--{/if}-->
                     </td>

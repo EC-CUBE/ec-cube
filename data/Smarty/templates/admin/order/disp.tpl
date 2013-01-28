@@ -144,19 +144,19 @@ self.moveTo(20,20);self.focus();
         <!--{/section}-->
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Subtotal_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.subtotal.value|number_format}--></td>
+            <td class="right"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Discount_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.discount.value|h}--></td>
+            <td class="right"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrForm.discount.value|h}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Shipping fee_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.deliv_fee.value|h}--></td>
+            <td class="right"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrForm.deliv_fee.value|h}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Processing fee_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.charge.value|h}--></td>
+            <td class="right"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrForm.charge.value|h}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Total_01"}--></th>
@@ -216,7 +216,7 @@ self.moveTo(20,20);self.focus();
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
-                                <!--{t string="tpl_500" escape="none" %s1=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
+                                <!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_quantity"}-->

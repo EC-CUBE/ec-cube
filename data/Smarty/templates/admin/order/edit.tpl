@@ -406,12 +406,12 @@
             <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
             <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
             <td class="right"><!--{t string="currency_prefix"}--><!--{$price|sfCalcIncTax|number_format}--><!--{t string="currency_suffix"}--></td>
-            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
+            <td class="right"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$price|sfCalcIncTax|sfMultiply:$quantity|number_format}--></td>
         </tr>
         <!--{/section}-->
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Subtotal_01"}--></th>
-            <td class="right"><!--{t string="tpl_500" escape="none" %s1=$arrForm.subtotal.value|number_format}--></td>
+            <td class="right"><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrForm.subtotal.value|number_format}--></td>
         </tr>
         <tr>
             <th colspan="5" class="column right"><!--{t string="tpl_Discount_01"}--></th>
@@ -542,7 +542,7 @@
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
-                                <!--{t string="tpl_500" escape="none" %s1=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
+                                <!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrShipping[$key][$item_index]|sfCalcIncTax|number_format}-->
                                 <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                             </td>
                             <td class="right">

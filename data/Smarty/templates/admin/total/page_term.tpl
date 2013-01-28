@@ -68,8 +68,8 @@
             <td class="right"><!--{*男性(非会員)*}--><!--{$arrResults[cnt].men_nonmember|number_format}--></td>
             <td class="right"><!--{*女性(会員)*}--><!--{$arrResults[cnt].women_member|number_format}--></td>
             <td class="right"><!--{*女性(非会員)*}--><!--{$arrResults[cnt].women_nonmember|number_format}--></td>
-            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_500" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
-            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_500" escape="none" %s1=$arrResults[cnt].total_average|number_format}--></td>
+            <td class="right"><!--{*購入合計*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total|number_format}--></td>
+            <td class="right"><!--{*購入平均*}--><!--{t string="tpl_&#36; %s1_01" escape="none" %s1=$arrResults[cnt].total_average|number_format}--></td>
         </tr>
     <!--{/section}-->
 

@@ -5113,7 +5113,7 @@ msgstr "Home"
 msgid "tpl_Register_02"
 msgstr "Register"
 
-msgid "tpl_489"
+msgid "tpl_(max %s1 characters)_01"
 msgstr "(max %s1 characters)"
 
 msgid "tpl_Category name_01"
@@ -5158,7 +5158,7 @@ msgstr "Disclosed/not disclosed"
 msgid "tpl_Disclosed/not disclosed<span class='attention'> *</span>_01"
 msgstr "Disclosed/not disclosed<span class='attention'> *</span>"
 
-msgid "tpl_500"
+msgid "tpl_&#36; %s1_01"
 msgstr "&#36; %s1"
 
 msgid "tpl_Category_02"
@@ -5285,7 +5285,7 @@ msgstr "Management area"
 msgid "tpl_ADMIN_MODE ON_01"
 msgstr "ADMIN_MODE ON"
 
-msgid "tpl_542"
+msgid "tpl_<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;_01"
 msgstr "<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;"
 
 msgid "tpl_LOGOUT_01"
@@ -5312,7 +5312,7 @@ msgstr "System settings"
 msgid "tpl_Owners store_01"
 msgstr "Owners store"
 
-msgid "tpl_551"
+msgid "tpl_Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved._01"
 msgstr "Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved."
 
 msgid "tpl_PAGE TOP_01"
@@ -5342,133 +5342,133 @@ msgstr "Inventory count<span class='attention'> *</span>"
 msgid "tpl_Product shipping fee_01"
 msgstr "Product shipping fee"
 
-msgid "tpl_559"
+msgid "tpl_Point grant rate_01"
 msgstr "Point grant rate"
 
-msgid "tpl_559_1"
+msgid "tpl_Point grant rate<span class='attention'> *</span>_01"
 msgstr "Point grant rate<span class='attention'> *</span>"
 
-msgid "tpl_560"
+msgid "tpl_Shipment date Target_01"
 msgstr "Shipment date Target"
 
-msgid "tpl_561"
+msgid "tpl_Number of sales restrictions_01"
 msgstr "Number of sales restrictions"
 
-msgid "tpl_562"
+msgid "tpl_Manufacturer_01"
 msgstr "Manufacturer"
 
-msgid "tpl_563"
+msgid "tpl_Manufacturer URL_01"
 msgstr "Manufacturer URL"
 
-msgid "tpl_564"
+msgid "tpl_Search word_01"
 msgstr "Search word"
 
-msgid "tpl_565"
+msgid "tpl_Remarks column (for SHOP)_01"
 msgstr "Remarks column (for SHOP)"
 
-msgid "tpl_566"
+msgid "tpl_List - Main comments_01"
 msgstr "List - Main comments"
 
-msgid "tpl_566_1"
+msgid "tpl_List - Main comments<span class='attention'> *</span>_01"
 msgstr "List - Main comments<span class='attention'> *</span>"
 
-msgid "tpl_567"
+msgid "tpl_Details - Main comment_01"
 msgstr "Details - Main comment"
 
-msgid "tpl_568"
+msgid "tpl_List - Main images_01"
 msgstr "List - Main images"
 
-msgid "tpl_569"
+msgid "tpl_Details - Main image_01"
 msgstr "Details - Main image"
 
-msgid "tpl_570"
+msgid "tpl_Details - Main enlarged image_01"
 msgstr "Details - Main enlarged image"
 
-msgid "tpl_571"
+msgid "tpl_Details - Sub title(%s1)_01"
 msgstr "Details - Sub title(%s1)"
 
-msgid "tpl_572"
+msgid "tpl_Details - Sub comment(%s1)_01"
 msgstr "Details - Sub comment(%s1)"
 
-msgid "tpl_573"
+msgid "tpl_Details - Sub image (%s1)_01"
 msgstr "Details - Sub image (%s1)"
 
-msgid "tpl_574"
+msgid "tpl_Details - Sub enlarged image(%s1)_01"
 msgstr "Details - Sub enlarged image(%s1)"
 
-msgid "tpl_575"
+msgid "tpl_Related products(%s1)_01"
 msgstr "Related products(%s1)"
 
-msgid "tpl_576"
+msgid "tpl_Comment:_01"
 msgstr "Comment:"
 
-msgid "tpl_577"
+msgid "tpl_Product ID_01"
 msgstr "Product ID"
 
-msgid "tpl_578"
+msgid "tpl_Category display_01"
 msgstr "Category display"
 
-msgid "tpl_579"
+msgid "tpl_URL display_01"
 msgstr "URL display"
 
-msgid "tpl_580"
+msgid "tpl_Price(&#36;)_01"
 msgstr "Price(&#36;)"
 
-msgid "tpl_581"
+msgid "tpl_Inventory_01"
 msgstr "Inventory"
 
-msgid "tpl_582"
+msgid "tpl_Standard_01"
 msgstr "Standard"
 
-msgid "tpl_583"
+msgid "tpl_Duplication_01"
 msgstr "Duplication"
 
-msgid "tpl_584"
+msgid "tpl_Category <> URL_01"
 msgstr "Category <> URL"
 
-msgid "tpl_585"
+msgid "tpl_Manufacturer name<span class='attention'> *</span>_01"
 msgstr "Manufacturer name<span class='attention'> *</span>"
 
-msgid "tpl_586"
+msgid "tpl_File upload for downloaded product<span class='attention'> *</span>_01"
 msgstr "File upload for downloaded product<span class='attention'> *</span>"
 
-msgid "tpl_587"
+msgid "tpl_[Erase file]_01"
 msgstr "[Erase file]"
 
-msgid "tpl_588"
+msgid "tpl_Extensions for uploaded files: %s1 (Parameter DOWNLOAD_EXTENSION)_01"
 msgstr "Extensions for uploaded files: %s1 (Parameter DOWNLOAD_EXTENSION)"
 
-msgid "tpl_589"
+msgid "tpl_(Numbers only)_01"
 msgstr "(Numbers only)"
 
-msgid "tpl_590"
+msgid "tpl_* Currently invalid_01"
 msgstr "* Currently invalid"
 
-msgid "tpl_591"
+msgid "tpl_(Parameter OPTION_PRODUCT_DELIV_FEE)_01"
 msgstr "(Parameter OPTION_PRODUCT_DELIV_FEE)"
 
-msgid "tpl_592"
+msgid "tpl_Search word *If multiple words, separate using a comma (,)_01"
 msgstr "Search word *If multiple words, separate using a comma (,)"
 
-msgid "tpl_593"
+msgid "tpl_Subinformation_01"
 msgstr "Subinformation"
 
-msgid "tpl_594"
+msgid "tpl_(Tags permitted)_01"
 msgstr "(Tags permitted)"
 
-msgid "tpl_595"
+msgid "tpl_Toggle display of subinformation_01"
 msgstr "Toggle display of subinformation"
 
-msgid "tpl_596"
+msgid "tpl_Toggle display of related products_01"
 msgstr "Toggle display of related products"
 
-msgid "tpl_597"
+msgid "tpl_Related products_01"
 msgstr "Related products"
 
-msgid "tpl_598"
+msgid "tpl_Product specification registration_01"
 msgstr "Product specification registration"
 
-msgid "tpl_599"
+msgid "tpl_Display_02"
 msgstr "Display"
 
 msgid "tpl_Delete_01"

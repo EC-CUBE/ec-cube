@@ -5069,7 +5069,7 @@ msgstr "ホーム"
 msgid "tpl_Register_02"
 msgstr "登録"
 
-msgid "tpl_489"
+msgid "tpl_(max %s1 characters)_01"
 msgstr "（上限%s1文字）"
 
 msgid "tpl_Category name_01"
@@ -5114,7 +5114,7 @@ msgstr "公開・非公開"
 msgid "tpl_Disclosed/not disclosed<span class='attention'> *</span>_01"
 msgstr "公開・非公開<span class='attention'> *</span>"
 
-msgid "tpl_500"
+msgid "tpl_&#36; %s1_01"
 msgstr "%s1円"
 
 msgid "tpl_Category_02"
@@ -5240,7 +5240,7 @@ msgstr "管理機能"
 msgid "tpl_ADMIN_MODE ON_01"
 msgstr "ADMIN_MODE ON"
 
-msgid "tpl_542"
+msgid "tpl_<span>Login&nbsp;:&nbsp;%s1</span>&nbsp;_01"
 msgstr "<span>ログイン&nbsp;:&nbsp;%s1</span>&nbsp;様&nbsp;"
 
 msgid "tpl_LOGOUT_01"
@@ -5267,7 +5267,7 @@ msgstr "システム設定"
 msgid "tpl_Owners store_01"
 msgstr "オーナーズストア"
 
-msgid "tpl_551"
+msgid "tpl_Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved._01"
 msgstr "Copyright &copy; 2000-%s1 LOCKON CO.,LTD. All Rights Reserved."
 
 msgid "tpl_PAGE TOP_01"
@@ -5297,134 +5297,134 @@ msgstr "在庫数<span class='attention'> *</span>"
 msgid "tpl_Product shipping fee_01"
 msgstr "商品送料"
 
-msgid "tpl_559"
+msgid "tpl_Point grant rate_01"
 msgstr "ポイント付与率"
 
-msgid "tpl_559_1"
+msgid "tpl_Point grant rate<span class='attention'> *</span>_01"
 msgstr "ポイント付与率<span class='attention'> *</span>"
 
-msgid "tpl_560"
+msgid "tpl_Shipment date Target_01"
 msgstr "発送日目安"
 
-msgid "tpl_561"
+msgid "tpl_Number of sales restrictions_01"
 msgstr "販売制限数"
 
-msgid "tpl_562"
+msgid "tpl_Manufacturer_01"
 msgstr "メーカー"
 
-msgid "tpl_563"
+msgid "tpl_Manufacturer URL_01"
 msgstr "メーカーURL"
 
-msgid "tpl_564"
+msgid "tpl_Search word_01"
 msgstr "検索ワード"
 
-msgid "tpl_565"
+msgid "tpl_Remarks column (for SHOP)_01"
 msgstr "備考欄(SHOP専用)"
 
-msgid "tpl_566"
+msgid "tpl_List - Main comments_01"
 msgstr "一覧-メインコメント"
 
-msgid "tpl_566_1"
+msgid "tpl_List - Main comments<span class='attention'> *</span>_01"
 msgstr "一覧-メインコメント<span class='attention'> *</span>"
 
-msgid "tpl_567"
+msgid "tpl_Details - Main comment_01"
 msgstr "詳細-メインコメント"
 
-msgid "tpl_568"
+msgid "tpl_List - Main images_01"
 msgstr "一覧-メイン画像"
 
-msgid "tpl_569"
+msgid "tpl_Details - Main image_01"
 msgstr "詳細-メイン画像"
 
-msgid "tpl_570"
+msgid "tpl_Details - Main enlarged image_01"
 msgstr "詳細-メイン拡大画像"
 
-msgid "tpl_571"
+msgid "tpl_Details - Sub title(%s1)_01"
 msgstr "詳細-サブタイトル（%s1）"
 
-msgid "tpl_572"
+msgid "tpl_Details - Sub comment(%s1)_01"
 msgstr "詳細-サブコメント（%s1）"
 
-msgid "tpl_573"
+msgid "tpl_Details - Sub image (%s1)_01"
 msgstr "詳細-サブ画像（%s1）"
 
-msgid "tpl_574"
+msgid "tpl_Details - Sub enlarged image(%s1)_01"
 msgstr "詳細-サブ拡大画像（%s1）"
 
-msgid "tpl_575"
+msgid "tpl_Related products(%s1)_01"
 msgstr "関連商品(%s1)"
 
-msgid "tpl_576"
+msgid "tpl_Comment:_01"
 msgstr "コメント:"
 
-msgid "tpl_577"
+msgid "tpl_Product ID_01"
 msgstr "商品ID"
 
-msgid "tpl_578"
+msgid "tpl_Category display_01"
 msgstr "カテゴリ表示"
 
-msgid "tpl_579"
+msgid "tpl_URL display_01"
 msgstr "URL表示"
 
-msgid "tpl_580"
+msgid "tpl_Price(&#36;)_01"
 msgstr "価格(円)"
 
-msgid "tpl_581"
+msgid "tpl_Inventory_01"
 msgstr "在庫"
 
-msgid "tpl_582"
+msgid "tpl_Standard_01"
 msgstr "規格"
 
-msgid "tpl_583"
+msgid "tpl_Duplication_01"
 msgstr "複製"
 
-msgid "tpl_584"
+msgid "tpl_Category <> URL_01"
 msgstr "カテゴリ ⇔ URL"
 
-msgid "tpl_585"
+msgid "tpl_Manufacturer name<span class='attention'> *</span>_01"
 msgstr "メーカー名<span class='attention'> *</span>"
 
-msgid "tpl_586"
+msgid "tpl_File upload for downloaded product<span class='attention'> *</span>_01"
 msgstr ""
 "ダウンロード商品用<br />ファイルアップロード<span class='attention'> *</span>"
 
-msgid "tpl_587"
+msgid "tpl_[Erase file]_01"
 msgstr "[ファイルの取り消し]"
 
-msgid "tpl_588"
+msgid "tpl_Extensions for uploaded files: %s1 (Parameter DOWNLOAD_EXTENSION)_01"
 msgstr "登録可能拡張子：%s1　(パラメーター DOWNLOAD_EXTENSION)"
 
-msgid "tpl_589"
+msgid "tpl_(Numbers only)_01"
 msgstr "(半角数字で入力)"
 
-msgid "tpl_590"
+msgid "tpl_* Currently invalid_01"
 msgstr "※現在無効です"
 
-msgid "tpl_591"
+msgid "tpl_(Parameter OPTION_PRODUCT_DELIV_FEE)_01"
 msgstr "(パラメーター OPTION_PRODUCT_DELIV_FEE)"
 
-msgid "tpl_592"
+msgid "tpl_Search word *If multiple words, separate using a comma (,)_01"
 msgstr "検索ワード<br />※複数の場合は、カンマ( , )区切りで入力して下さい"
 
-msgid "tpl_593"
+msgid "tpl_Subinformation_01"
 msgstr "サブ情報"
 
-msgid "tpl_594"
+msgid "tpl_(Tags permitted)_01"
 msgstr "(タグ許可)"
 
-msgid "tpl_595"
+msgid "tpl_Toggle display of subinformation_01"
 msgstr "サブ情報表示/非表示"
 
-msgid "tpl_596"
+msgid "tpl_Toggle display of related products_01"
 msgstr "関連商品表示/非表示"
 
-msgid "tpl_597"
+msgid "tpl_Related products_01"
 msgstr "関連商品"
 
-msgid "tpl_598"
+msgid "tpl_Product specification registration_01"
 msgstr "商品規格登録"
 
-msgid "tpl_599"
+msgid "tpl_Display_02"
 msgstr "表示する"
 
 msgid "tpl_Delete_01"

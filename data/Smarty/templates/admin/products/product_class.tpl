@@ -102,7 +102,7 @@
         });
     });
 //]]></script>
-<h2><!--{t string="tpl_598"}--></h2>
+<h2><!--{t string="tpl_Product specification registration_01"}--></h2>
 <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <!--{foreach key=key item=item from=$arrSearchHidden}-->
@@ -157,7 +157,7 @@
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev"><!--{t string="tpl_Return_01"}--></span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','',''); return false;"><span class="btn-next"><!--{t string="tpl_599"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','',''); return false;"><span class="btn-next"><!--{t string="tpl_Display_02"}--></span></a></li>
         <!--{if $arrForm.total.value > 0}-->
             <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','',''); return false;"><span class="btn-next"><!--{t string="tpl_Delete_01"}--></span></a></li>
         <!--{/if}-->
@@ -294,7 +294,7 @@
                     <!--{if $arrForm[$key].value[$index] != ""}-->
                         <!--{$arrForm[$key].value[$index]|h}--><br />
                         <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                        <a href="?" onclick="fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_587}--></a>
+                        <a href="?" onclick="fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_[Erase file]_01"}--></a>
                     <!--{else}-->
                     <input type="file" name="<!--{$key}-->[<!--{$index}-->]" size="10" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
                     <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;"><!--{t string="tpl_Upload_01"}--></a>
