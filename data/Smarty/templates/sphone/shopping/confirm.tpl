@@ -168,8 +168,7 @@
         </section>
 
         <!--★お届け先の確認★-->
-        <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
-        <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+        <!--{if $arrShipping}-->
             <section class="delivconfirm_area">
                 <h3 class="subtitle">お届け先</h3>
 

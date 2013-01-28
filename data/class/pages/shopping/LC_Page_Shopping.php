@@ -350,6 +350,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
     function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase, &$objSiteSess) {
         switch ($product_type_id) {
             case PRODUCT_TYPE_DOWNLOAD:
+                $objPurchase->unsetAllShippingTemp(true);
                 $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
                 $objSiteSess->setRegistFlag();
                 return 'payment.php';

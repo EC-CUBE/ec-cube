@@ -68,8 +68,7 @@
             <br>
         <!--{/if}-->
 
-        <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
-        <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+        <!--{if $arrShipping}-->
             【お届け先】<br>
             <!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->
                 <!--{if $is_multiple}-->
