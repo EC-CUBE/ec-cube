@@ -69,7 +69,7 @@ $(function(){
             date = $.datepicker.parseDate(dateFormat, dateText);
             year  = date.getFullYear();
             month = date.getMonth() + 1;
-            day   = date.getDay();
+            day   = date.getDate();
         } catch (e) {
             // console.log(e);
             // clear date text
@@ -121,7 +121,7 @@ $(function(){
             date = $.datepicker.parseDate(dateFormat, dateText);
             year  = date.getFullYear();
             month = date.getMonth() + 1;
-            day   = date.getDay();
+            day   = date.getDate();
         } catch (e) {
             // console.log(e);
             // clear date text
@@ -173,7 +173,7 @@ $(function(){
             date = $.datepicker.parseDate(dateFormat, dateText);
             year  = date.getFullYear();
             month = date.getMonth() + 1;
-            day   = date.getDay();
+            day   = date.getDate();
         } catch (e) {
             // console.log(e);
             // clear date text
