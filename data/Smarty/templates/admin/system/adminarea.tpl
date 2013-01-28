@@ -35,7 +35,7 @@ jQuery(function(){
 <!--{* ▼登録テーブルここから *}-->
 <div id="system" class="contents-main">
     <div class="notice">
-        <p class="remark"><span class="attention"><!--{t string="tpl_639" escape="none"}--></span></p>
+        <p class="remark"><span class="attention"><!--{t string="tpl_When incorrect settings are applied, it may no longer be possible to access the management screen.<br/>Do not change these settings if you are not familiar with them._01" escape="none"}--></span></p>
         <!--{if $arrErr.all}-->
             <p class="error"><!--{$arrErr.all|h}--></p>
         <!--{/if}-->
@@ -43,7 +43,7 @@ jQuery(function(){
     <h2><!--{t string="t_Management area settings_01"}--></h2>
     <table id="basis-index-admin">
         <tr>
-            <th><!--{t string="tpl_641"}--></th>
+            <th><!--{t string="tpl_Directory name_01"}--></th>
             <td>
                 <!--{assign var=key value="admin_dir"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -51,7 +51,7 @@ jQuery(function(){
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_642"}--></th>
+            <th><!--{t string="tpl_SSL restrictions_01"}--></th>
             <td>
                 <!--{assign var=key value="admin_force_ssl"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -59,14 +59,14 @@ jQuery(function(){
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_643"}--></th>
+            <th><!--{t string="tpl_IP restriction_01"}--></th>
             <td>
                 <!--{assign var=key value="admin_allow_hosts"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
                 <span class="attention"> <!--{t string="tpl_(%s1 characters max)_01" %s1=$smarty.const.LTEXT_LEN}--></span><br />
                 
-                <span><!--{t string="tpl_645" escape="none"}--></span><br />
+                <span><!--{t string="tpl_* Access to the management area is limited to only connections from a designated IP address._01" escape="none"}--></span><br />
             </td>
         </tr>
     </table>

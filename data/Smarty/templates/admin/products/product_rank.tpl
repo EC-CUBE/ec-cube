@@ -83,13 +83,13 @@
         <h2><!--{* jQuery で挿入される *}--></h2>
         <!--{if count($arrProductsList) > 0}-->
 
-            <p class="remark"><!--{t string="tpl_611" escape="none" %s1=$tpl_linemax}--></p>
+            <p class="remark"><!--{t string="tpl_<span class='attention'>%s1 items</span> were found._01" escape="none" %s1=$tpl_linemax}--></p>
             <div class="pager">
                 <!--{$tpl_strnavi}-->
             </div>
 
             <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-                <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;"><!--{t string="tpl_612"}--></a></p>
+                <p class="right"><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('renumber', '', ''); return false;"><!--{t string="tpl_Reallocation of internal ranking_01"}--></a></p>
             <!--{/if}-->
 
             <table class="list" id="categoryTable">
@@ -120,7 +120,7 @@
                         <!--{assign var=rank value=`$rank+1`}-->
                         <td align="center">
                             <!--{$rank}-->
-                            <!--{if $arrProductsList[cnt].status == "2"}--><br /><!--{t string="tpl_613"}--><!--{/if}-->
+                            <!--{if $arrProductsList[cnt].status == "2"}--><br /><!--{t string="tpl_(Not disclosed)_01"}--><!--{/if}-->
                         </td>
                         <td align="center">
                         <!--{* 移動 *}-->
@@ -138,7 +138,7 @@
                 <!--{/section}-->
             </table>
         <!--{else}-->
-            <p><!--{t string="tpl_614"}--></p>
+            <p><!--{t string="tpl_Select a category._01"}--></p>
         <!--{/if}-->
     </div>
     <!--▲画面右-->

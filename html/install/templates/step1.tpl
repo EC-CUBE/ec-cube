@@ -75,7 +75,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="t_Login ID <span class='attention'>*</span>_01" escape="none"}--><br/><!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="t_Login ID <span class='attention'>*</span>_01" escape="none"}--><br/><!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_id"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -84,7 +84,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_Password<span class='attention'> *</span>_01" escape="none"}--><br/><!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_Password<span class='attention'> *</span>_01" escape="none"}--><br/><!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="login_pass"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -99,7 +99,7 @@ $(function() {
             <col width="30%" />
             <col width="70%" />
             <tr>
-                <th><!--{t string="tpl_755"}--><br/><!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
+                <th><!--{t string="tpl_755"}--><br/><!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}--></th>
                 <td>
                 <!--{assign var=key value="admin_dir"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -114,16 +114,16 @@ $(function() {
                 <td>
                 <!--{assign var=key value="admin_force_ssl"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="checkbox" name="<!--{$key}-->" id="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value == 1}-->checked="checked"<!--{/if}--> /><label for="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;"><!--{t string="tpl_644"}--></label><br />
+                <input type="checkbox" name="<!--{$key}-->" id="<!--{$key}-->" value="1" <!--{if $arrForm[$key].value == 1}-->checked="checked"<!--{/if}--> /><label for="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;"><!--{t string="tpl_Make SSL mandatory._01"}--></label><br />
                 <span class="ex-text"><!--{t string="tpl_760"}--></span><br />
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_643"}--><br/></th>
+                <th><!--{t string="tpl_IP restriction_01"}--><br/></th>
                 <td>
                 <!--{assign var=key value="admin_allow_hosts"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <span class="ex-text"><!--{t string="tpl_645" escape="none"}--></span><br />
+                <span class="ex-text"><!--{t string="tpl_* Access to the management area is limited to only connections from a designated IP address._01" escape="none"}--></span><br />
                 <textarea name="<!--{$key}-->" class="box280" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;"><!--{$arrForm[$key].value|h}--></textarea>
                 </td>
             </tr>
@@ -218,7 +218,7 @@ $(function() {
 <div class="btn-area-top"></div>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step0';document.form1.submit();return false;"><span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1['mode'].value='return_step0';document.form1.submit();return false;"><span class="btn-prev"><!--{t string="tpl_Go back_01"}--></span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next"><!--{t string="tpl_736"}--></span></a></li>
         </ul>
     </div>

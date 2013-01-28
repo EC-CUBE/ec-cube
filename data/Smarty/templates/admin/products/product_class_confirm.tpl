@@ -61,11 +61,11 @@
                 <th><!--{t string="tpl_Standard 2_01"}-->(<!--{$arrClass[$class_id2]|default_t:"t_Not selected_01"|h}-->)</th>
                 <th><!--{t string="tpl_Product code_01"}--></th>
                 <th><!--{t string="tpl_Inventory count_01"}--></th>
-                <th><!--{t string="tpl_603" escape="none" %s1=$smarty.const.NORMAL_PRICE_TITLE}--></th>
-                <th><!--{t string="tpl_603" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_%s1(&#36;)_01" escape="none" %s1=$smarty.const.NORMAL_PRICE_TITLE}--></th>
+                <th><!--{t string="tpl_%s1(&#36;)_01" escape="none" %s1=$smarty.const.SALE_PRICE_TITLE}--></th>
                 <th><!--{t string="tpl_Product type_01"}--></th>
-                <th><!--{t string="tpl_607"}--></th>
-                <th><!--{t string="tpl_608"}--></th>
+                <th><!--{t string="tpl_Downloaded file name_02"}--></th>
+                <th><!--{t string="tpl_File upload for downloaded product_01"}--></th>
             </tr>
             <!--{section name=cnt loop=$arrForm.total.value}-->
                 <!--{assign var=index value=$smarty.section.cnt.index}-->
@@ -106,12 +106,12 @@
             <!--{/section}-->
         </table>
     <!--{else}-->
-        <div class="message"><!--{t string="tpl_609"}--></div>
+        <div class="message"><!--{t string="tpl_* A standard is not selected._01"}--></div>
     <!--{/if}-->
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm_return','',''); return false"><span class="btn-prev"><!--{t string="tpl_610"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm_return','',''); return false"><span class="btn-prev"><!--{t string="tpl_Go back_01"}--></span></a></li>
         <!--{if count($arrForm.check.value) > 0}-->
             <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete','',''); return false;"><span class="btn-next"><!--{t string="tpl_Save and continue_01"}--></span></a></li>
         <!--{/if}-->

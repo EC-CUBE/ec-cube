@@ -308,7 +308,7 @@ $("*[name=search_endday]").val(dates[2]);
                     <input type="hidden" name="search_endyear" value="<!--{$arrForm.search_endyear.value|h}-->" />
                     <input type="hidden" name="search_endmonth" value="<!--{$arrForm.search_endmonth.value|h}-->" />
                     <input type="hidden" name="search_endday" value="<!--{$arrForm.search_endday.value|h}-->" />
-                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form2', 'search', '', ''); return false;" name="subm"><!--{t string="tpl_690"}--></a>
+                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form2', 'search', '', ''); return false;" name="subm"><!--{t string="tpl_Sales by period_02"}--></a>
                 </form>
             </td>
         </tr>

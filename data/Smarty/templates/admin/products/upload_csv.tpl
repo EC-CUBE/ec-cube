@@ -32,7 +32,7 @@
             <!--{foreach key=key item=item from=$arrCSVErr}-->
                 <span class="attention"><!--{$item}-->
                 <!--{if $key != 'blank'}-->
-                    <!--{t string="tpl_631" %s1=$arrParam[$key]}-->
+                    <!--{t string="tpl_[Value:%s1]_01" %s1=$arrParam[$key]}-->
                 <!--{/if}-->
                 </span><br />
             <!--{/foreach}-->
@@ -42,19 +42,19 @@
     <!--▼登録テーブルここから-->
     <table>
         <tr>
-            <th><!--{t string="tpl_632"}--></th>
+            <th><!--{t string="tpl_CSV file_01"}--></th>
             <td>
                 <!--{if $arrErr.csv_file}-->
                     <span class="attention"><!--{$arrErr.csv_file}--></span>
                 <!--{/if}-->
-                <input type="file" name="csv_file" size="40" /><span class="attention"><!--{t string="tpl_633"}--></span>
+                <input type="file" name="csv_file" size="40" /><span class="attention"><!--{t string="tpl_(First line is title)_01"}--></span>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_634"}--></th>
+            <th><!--{t string="tpl_Registration information_01"}--></th>
             <td>
                 <!--{foreach name=title key=key item=item from=$arrTitle}-->
-                    <!--{t string="tpl_635" %s1=$smarty.foreach.title.iteration %s2=$item}--><br />
+                    <!--{t string="tpl_%s1 Item: %s2_01" %s1=$smarty.foreach.title.iteration %s2=$item}--><br />
                 <!--{/foreach}-->
             </td>
         </tr>
@@ -62,7 +62,7 @@
     <!--▲登録テーブルここまで-->
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_636"}--></span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next"><!--{t string="tpl_Register with these contents_01"}--></span></a></li>
         </ul>
     </div>
 </div>

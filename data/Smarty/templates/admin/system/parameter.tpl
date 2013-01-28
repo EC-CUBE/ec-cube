@@ -27,13 +27,13 @@
 <input type="hidden" name="mode" value="update" />
 <div id="basis" class="contents-main">
     <p class="remark attention">
-        <!--{t string="tpl_674" escape="none"}-->
+        <!--{t string="tpl_The parameter value is set as a PHP constant._01" escape="none"}-->
     </p>
 
     <table class="list">
         <tr>
-            <th><!--{t string="tpl_675"}--></th>
-            <th><!--{t string="tpl_676"}--></th>
+            <th><!--{t string="tpl_Constant name_01"}--></th>
+            <th><!--{t string="tpl_Parameter value_01"}--></th>
         </tr>
         <!--{section name=cnt loop=$arrKeys}-->
             <tr>

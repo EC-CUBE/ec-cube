@@ -5427,265 +5427,244 @@ msgstr "商品規格登録"
 msgid "tpl_599"
 msgstr "表示する"
 
-msgid "tpl_600"
+msgid "tpl_Delete_01"
 msgstr "削除する"
 
-msgid "tpl_601"
-msgstr ""
-"<span class='bold'>アップロード可能な拡張子：</span>%s1(パラメーター "
-"DOWNLOAD_EXTENSION)"
+msgid "tpl_<span class='bold'>Extension that can be uploaded:</span>%s1(Parameter DOWNLOAD_EXTENSION)_01"
+msgstr "<span class='bold'>アップロード可能な拡張子：</span>%s1(パラメーター DOWNLOAD_EXTENSION)"
 
-msgid "tpl_602"
+msgid "tpl_Copy the data on the 1st line_01"
 msgstr "一行目のデータをコピーする"
 
-msgid "tpl_603"
+msgid "tpl_%s1(&#36;)_01"
 msgstr "%s1(円)"
 
-msgid "tpl_604"
+msgid "tpl_Downloaded file name_01"
 msgstr "ダウンロード<br>ファイル名"
 
-msgid "tpl_605"
-msgstr "ダウンロード商品用<br>ファイル"
-
-msgid "tpl_606"
+msgid "tpl_Max %s1 characters_01"
 msgstr "上限%s1文字"
 
-msgid "tpl_607"
+msgid "tpl_Downloaded file name_02"
 msgstr "ダウンロードファイル名"
 
-msgid "tpl_608"
+msgid "tpl_File upload for downloaded product_01"
 msgstr "ダウンロード商品用ファイルアップロード"
 
-msgid "tpl_609"
+msgid "tpl_* A standard is not selected._01"
 msgstr "規格が選択されていません。"
 
-msgid "tpl_610"
-msgstr "前へ戻る"
-
-msgid "tpl_611"
-msgstr "<span class='attention'>%s1件</span>が該当しました。"
-
-msgid "tpl_612"
-msgstr "内部順位再割り当て"
-
-msgid "tpl_613"
-msgstr "(非公開)"
-
-msgid "tpl_614"
-msgstr "カテゴリを選択してください。"
-
-msgid "tpl_615"
-msgstr "投稿者名"
-
-msgid "tpl_616"
-msgstr "投稿者URL"
-
-msgid "tpl_617"
-msgstr "おすすめレベル"
-
-msgid "tpl_618"
-msgstr "投稿日"
-
-msgid "tpl_619"
-msgstr "表示・非表示"
-
-msgid "tpl_620"
-msgstr "非表示"
-
-msgid "tpl_621"
-msgstr "レビュー表示"
-
-msgid "tpl_622"
-msgstr "商品マスター"
-
-msgid "tpl_623"
-msgstr "商品登録"
-
-msgid "tpl_624"
-msgstr "商品登録CSV"
-
-msgid "tpl_625"
-msgstr "規格管理"
-
-msgid "tpl_626"
-msgstr "カテゴリ登録"
-
-msgid "tpl_627"
-msgstr "カテゴリ登録CSV"
-
-msgid "tpl_628"
-msgstr "メーカー登録"
-
-msgid "tpl_629"
-msgstr "商品並び替え"
-
-msgid "tpl_630"
-msgstr "レビュー管理"
-
-msgid "tpl_631"
-msgstr "[値：%s1]"
-
-msgid "tpl_632"
-msgstr "CSVファイル"
-
-msgid "tpl_633"
-msgstr "(1行目タイトル行)"
-
-msgid "tpl_634"
-msgstr "登録情報"
-
-msgid "tpl_635"
-msgstr "%s1項目：%s2"
-
-msgid "tpl_636"
-msgstr "この内容で登録する"
-
-msgid "tpl_637"
+msgid "tpl_Go back_01"
 msgstr "戻る"
 
-msgid "tpl_638"
+msgid "tpl_<span class='attention'>%s1 items</span> were found._01"
+msgstr "<span class='attention'>%s1件</span>が該当しました。"
+
+msgid "tpl_Reallocation of internal ranking_01"
+msgstr "内部順位再割り当て"
+
+msgid "tpl_(Not disclosed)_01"
+msgstr "(非公開)"
+
+msgid "tpl_Select a category._01"
+msgstr "カテゴリを選択してください。"
+
+msgid "tpl_Poster name_01"
+msgstr "投稿者名"
+
+msgid "tpl_Poster URL_01"
+msgstr "投稿者URL"
+
+msgid "tpl_Recommendation level_01"
+msgstr "おすすめレベル"
+
+msgid "tpl_Post date_01"
+msgstr "投稿日"
+
+msgid "tpl_Display/Not display_01"
+msgstr "表示・非表示"
+
+msgid "tpl_Not displayed_01"
+msgstr "非表示"
+
+msgid "tpl_Review display_01"
+msgstr "レビュー表示"
+
+msgid "tpl_Product master_01"
+msgstr "商品マスター"
+
+msgid "tpl_Product registration_01"
+msgstr "商品登録"
+
+msgid "tpl_Product registration CSV"
+msgstr "商品登録CSV"
+
+msgid "tpl_Standard management_01"
+msgstr "規格管理"
+
+msgid "tpl_Category registration_02"
+msgstr "カテゴリ登録"
+
+msgid "tpl_Category registration CSV_01"
+msgstr "カテゴリ登録CSV"
+
+msgid "tpl_Manufacturer registration_01"
+msgstr "メーカー登録"
+
+msgid "tpl_Product rearrangement_01"
+msgstr "商品並び替え"
+
+msgid "tpl_Review management_01"
+msgstr "レビュー管理"
+
+msgid "tpl_[Value:%s1]_01"
+msgstr "[値：%s1]"
+
+msgid "tpl_CSV file_01"
+msgstr "CSVファイル"
+
+msgid "tpl_(First line is title)_01"
+msgstr "(1行目タイトル行)"
+
+msgid "tpl_Registration information_01"
+msgstr "登録情報"
+
+msgid "tpl_%s1 Item: %s2_01"
+msgstr "%s1項目：%s2"
+
+msgid "tpl_Register with these contents_01"
+msgstr "この内容で登録する"
+
+msgid "tpl_CSV registration has been executed._01"
 msgstr "CSV登録を実行しました。"
 
-msgid "tpl_639"
-msgstr ""
-"間違った設定を適用すると管理画面にアクセス出来なくなる可能性があります。<br/>"
-"良く解らない場合はこの設定は変更しないでください。"
+msgid "tpl_When incorrect settings are applied, it may no longer be possible to access the management screen.<br/>Do not change these settings if you are not familiar with them._01"
+msgstr "間違った設定を適用すると管理画面にアクセス出来なくなる可能性があります。<br/>良く解らない場合はこの設定は変更しないでください。"
 
-msgid "tpl_641"
+msgid "tpl_Directory name_01"
 msgstr "ディレクトリ名"
 
-msgid "tpl_642"
+msgid "tpl_SSL restrictions_01"
 msgstr "SSL制限"
 
-msgid "tpl_643"
+msgid "tpl_IP restriction_01"
 msgstr "IP制限"
 
-msgid "tpl_644"
+msgid "tpl_Make SSL mandatory._01"
 msgstr "SSLを強制する。"
 
-msgid "tpl_645"
-msgstr ""
-"※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />アク"
-"セスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを"
-"許可します。"
+msgid "tpl_* Access to the management area is limited to only connections from a designated IP address._01"
+msgstr "※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。<br />アクセスを許可するIPアドレスを1行づつ入力してください。何も入力しない場合は全てを許可します。"
 
-msgid "tpl_646"
+msgid "tpl_Do you want to restore?_01"
 msgstr "リストアしますか?"
 
-msgid "tpl_647"
-msgstr ""
-"データベースのバックアップを行います。<br />テンプレートファイル等はバック"
-"アップされません。"
+msgid "tpl_The database will be backed up.<br />The template file, etc. has not been backed up._01"
+msgstr "データベースのバックアップを行います。<br />テンプレートファイル等はバックアップされません。"
 
-msgid "tpl_648"
+msgid "tpl_Backup name_01"
 msgstr "バックアップ名"
 
-msgid "tpl_648_1"
+msgid "tpl_Backup name<span class='attention'> *</span>_01"
 msgstr "バックアップ名<span class='attention'> *</span>"
 
-msgid "tpl_649"
+msgid "tpl_Backup memo_01"
 msgstr "バックアップメモ"
 
-msgid "tpl_650"
+msgid "tpl_Create backup data_01"
 msgstr "バックアップデータを作成する"
 
-msgid "tpl_651"
+msgid "tpl_Backup list_01"
 msgstr "バックアップ一覧"
 
-msgid "tpl_652"
+msgid "tpl_Restore_01"
 msgstr "リストア"
 
-msgid "tpl_653"
+msgid "tpl_Execution results_01"
 msgstr "実行結果"
 
-msgid "tpl_654"
+msgid "tpl_Ignore the error and restore_01"
 msgstr "エラーを無視してリストアする"
 
-msgid "tpl_655"
+msgid "tpl_Change_02"
 msgstr "変更する"
 
-msgid "tpl_656"
+msgid "tpl_Index_01"
 msgstr "インデックス"
 
-msgid "tpl_657"
+msgid "tpl_Table name_01"
 msgstr "テーブル名"
 
-msgid "tpl_658"
+msgid "tpl_Column name_01"
 msgstr "カラム名"
 
-msgid "tpl_659"
+msgid "tpl_ON_01"
 msgstr "ON"
 
-msgid "tpl_660"
+msgid "tpl_OFF_01"
 msgstr "OFF"
 
-msgid "tpl_661"
+msgid "tpl_Add member_01"
 msgstr "メンバーを新規入力"
 
-msgid "tpl_662"
+msgid "tpl_Access_01"
 msgstr "権限"
 
-msgid "tpl_663"
+msgid "tpl_Affiliation_01"
 msgstr "所属"
 
-msgid "tpl_664"
+msgid "tpl_Operating_01"
 msgstr "稼働"
 
-msgid "tpl_665"
+msgid "tpl_Member registration/editing_01"
 msgstr "メンバー登録/編集"
 
-msgid "tpl_666"
+msgid "tpl_* Enter required_01"
 msgstr "※必須入力"
 
-msgid "tpl_667"
+msgid "tpl_Login ID_01"
 msgstr "ログインＩＤ"
 
-msgid "tpl_668"
+msgid "tpl_* Alphanumeric characters %s1 to %s2 _01"
 msgstr "※半角英数字%s1～%s2文字"
 
-msgid "tpl_669"
+msgid "tpl_Operating/Not operating_01"
 msgstr "稼働/非稼働"
 
-msgid "tpl_670"
+msgid "tpl_Not operating_01"
 msgstr "非稼働"
 
-msgid "tpl_671"
-msgstr ""
-"マスターデータの値を設定できます。<br />重複したIDを登録することはできませ"
-"ん。<br />空のIDを登録すると、値は削除されます。<br />設定値によってはサイト"
-"が機能しなくなる場合もありますので、十分ご注意下さい。"
+msgid "tpl_It is possible to set master data values._01"
+msgstr "マスターデータの値を設定できます。<br />重複したIDを登録することはできません。<br />空のIDを登録すると、値は削除されます。<br />設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。"
 
-msgid "tpl_672"
+msgid "tpl_Value:_01"
 msgstr "値："
 
-msgid "tpl_673"
+msgid "tpl_Additional data_01"
 msgstr "追加のデータ"
 
-msgid "tpl_674"
-msgstr ""
-"パラメーターの値がPHP定数として設定されます。<br />文字列は「&quot;」で囲んで"
-"下さい。<br />設定値によってはサイトが機能しなくなる場合もありますので、十分"
-"ご注意下さい。"
+msgid "tpl_The parameter value is set as a PHP constant._01"
+msgstr "パラメーターの値がPHP定数として設定されます。<br />文字列は「&quot;」で囲んで下さい。<br />設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。"
 
-msgid "tpl_675"
+msgid "tpl_Constant name_01"
 msgstr "定数名"
 
-msgid "tpl_676"
+msgid "tpl_Parameter value_01"
 msgstr "パラメーター値"
 
-msgid "tpl_677"
+msgid "tpl_Member management_01"
 msgstr "メンバー管理"
 
-msgid "tpl_678"
+msgid "tpl_Backup management_01"
 msgstr "バックアップ管理"
 
-msgid "tpl_679"
+msgid "tpl_Parameter settings_01"
 msgstr "パラメーター設定"
 
-msgid "tpl_680"
+msgid "tpl_Master data management_01"
 msgstr "マスターデータ管理"
 
-msgid "tpl_681"
+msgid "tpl_Management screen settings_01"
 msgstr "管理画面設定"
 
 msgid "tpl_682"
@@ -5712,7 +5691,7 @@ msgstr "月度で集計する"
 msgid "tpl_689"
 msgstr "期間集計"
 
-msgid "tpl_690"
+msgid "tpl_Sales by period_02"
 msgstr "期間で集計する"
 
 msgid "tpl_691"

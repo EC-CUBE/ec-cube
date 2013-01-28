@@ -37,7 +37,7 @@ self.moveTo(20,20);self.focus();
 <input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->">
 <input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->">
 
-<h2><!--{t string="tpl_665"}--></h2>
+<h2><!--{t string="tpl_Member registration/editing_01"}--></h2>
 
 <table>
     <col width="20%" />
@@ -47,23 +47,23 @@ self.moveTo(20,20);self.focus();
         <td>
             <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
             <input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-            <span class="attention"><!--{t string="tpl_666"}--></span>
+            <span class="attention"><!--{t string="tpl_* Enter required_01"}--></span>
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_663"}--></th>
+        <th><!--{t string="tpl_Affiliation_01"}--></th>
         <td>
             <!--{if $arrErr.department}--><span class="attention"><!--{$arrErr.department}--></span><!--{/if}-->
             <input type="text" name="department" size="30" class="box30" value="<!--{$arrForm.department|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_667"}--></th>
+        <th><!--{t string="tpl_Login ID_01"}--></th>
         <td>
             <!--{if $arrErr.login_id}--><span class="attention"><!--{$arrErr.login_id}--></span><!--{/if}-->
             <input type="text" name="login_id" size="20" class="box20"    value="<!--{$arrForm.login_id|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-            <span class="attention"><!--{t string="tpl_666"}--></span><br />
-            <!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}-->
+            <span class="attention"><!--{t string="tpl_* Enter required_01"}--></span><br />
+            <!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}-->
         </td>
     </tr>
     <tr>
@@ -71,32 +71,32 @@ self.moveTo(20,20);self.focus();
         <td>
             <!--{if $arrErr.password}--><span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><!--{/if}-->
             <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
-            <span class="attention"><!--{t string="tpl_666"}--></span><br />
-            <!--{t string="tpl_668" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}-->
+            <span class="attention"><!--{t string="tpl_* Enter required_01"}--></span><br />
+            <!--{t string="tpl_* Alphanumeric characters %s1 to %s2 _01" %s1=$smarty.const.ID_MIN_LEN %s2=$smarty.const.ID_MAX_LEN}-->
             <br />
             <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
             <p><span class="attention mini"><!--{t string="tpl_Enter twice for confirmation_01"}--></span></p>
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_662"}--></th>
+        <th><!--{t string="tpl_Access_01"}--></th>
         <td>
             <!--{if $arrErr.authority}--><span class="attention"><!--{$arrErr.authority}--></span><!--{/if}-->
             <select name="authority">
                 <option value=""><!--{t string="tpl_Please make a selection_01"}--></option>
                 <!--{html_options options=$arrAUTHORITY selected=$arrForm.authority}-->
             </select>
-            <span class="attention"><!--{t string="tpl_666"}--></span>
+            <span class="attention"><!--{t string="tpl_* Enter required_01"}--></span>
         </td>
     </tr>
     <tr>
-        <th><!--{t string="tpl_669"}--></th>
+        <th><!--{t string="tpl_Operating/Not operating_01"}--></th>
         <td>
             <!--{if $arrErr.work}--><span class="attention"><!--{$arrErr.work}--></span><!--{/if}-->
             <!--{assign var=key value="work"}-->
-            <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1"><!--{t string="tpl_664"}--></label>
-            <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0"><!--{t string="tpl_670"}--></label>
-            <span class="attention"><!--{t string="tpl_666"}--></span>
+            <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1"><!--{t string="tpl_Operating_01"}--></label>
+            <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0"><!--{t string="tpl_Not operating_01"}--></label>
+            <span class="attention"><!--{t string="tpl_* Enter required_01"}--></span>
         </td>
     </tr>
 </table>

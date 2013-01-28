@@ -41,27 +41,27 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_618"}--></th>
+            <th><!--{t string="tpl_Post date_01"}--></th>
             <td><!--{$arrForm.create_date|sfDispDBDate}-->
             <input type="hidden" name="create_date" value="<!--{$arrForm.create_date|h}-->">
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_621"}--></th>
+            <th><!--{t string="tpl_Review display_01"}--></th>
             <td>
                 <!--{if $arrErr.status}--><span class="attention"><!--{$arrErr.status}--></span><!--{/if}-->
-                <input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->><!--{t string="tpl_620"}--><!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->><!--{t string="tpl_Display_01"}--><!--{/if}-->
+                <input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->><!--{t string="tpl_Not displayed_01"}--><!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->><!--{t string="tpl_Display_01"}--><!--{/if}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_615"}--> <span class="attention">*</span></th>
+            <th><!--{t string="tpl_Poster name_01"}--> <span class="attention">*</span></th>
             <td>
                 <!--{if $arrErr.reviewer_name}--><span class="attention"><!--{$arrErr.reviewer_name}--></span><!--{/if}-->
                 <input type="text" class="box60" name="reviewer_name" value="<!--{$arrForm.reviewer_name|h}-->" style="<!--{$arrErr.reviewer_name|sfGetErrorColor}-->" size=30>
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_616"}--></th>
+            <th><!--{t string="tpl_Poster URL_01"}--></th>
             <td>
                 <!--{if $arrErr.reviewer_url}--><span class="attention"><!--{$arrErr.reviewer_url}--></span><!--{/if}-->
                 <input type="text" class="box60" name="reviewer_url" maxlength="<!--{$smarty.const.URL_LEN}-->" value="<!--{$arrForm.reviewer_url|h}-->" style="<!--{$arrErr.reviewer_url|sfGetErrorColor}-->" size=30>
@@ -72,7 +72,7 @@
             <td><!--{html_radios_ex name="sex" options=$arrSex selected=$arrForm.sex}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_617"}--> <span class="attention">*</span></th>
+            <th><!--{t string="tpl_Recommendation level_01"}--> <span class="attention">*</span></th>
             <td>
                 <!--{assign var=key value="recommend_level"}-->
                 <!--{if $arrErr[$key]}-->

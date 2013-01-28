@@ -41,13 +41,13 @@
         <col width="7.5%" />
         <col width="20%" />
         <div class="btn">
-            <a class="btn-action" href="javascript:;" onclick="win02('./input.php','input','620','450'); return false;"><span class="btn-next"><!--{t string="tpl_661"}--></span></a>
+            <a class="btn-action" href="javascript:;" onclick="win02('./input.php','input','620','450'); return false;"><span class="btn-next"><!--{t string="tpl_Add member_01"}--></span></a>
         </div>
         <tr>
-            <th><!--{t string="tpl_662"}--></th>
+            <th><!--{t string="tpl_Access_01"}--></th>
             <th><!--{t string="tpl_Name_03"}--></th>
-            <th><!--{t string="tpl_663"}--></th>
-            <th><!--{t string="tpl_664"}--></th>
+            <th><!--{t string="tpl_Affiliation_01"}--></th>
+            <th><!--{t string="tpl_Operating_01"}--></th>
             <th><!--{t string="tpl_Edit_01"}--></th>
             <th><!--{t string="tpl_Remove_01"}--></th>
             <th><!--{t string="tpl_Move_01"}--></th>

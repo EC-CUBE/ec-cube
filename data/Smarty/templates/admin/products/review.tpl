@@ -192,9 +192,9 @@ $("*[name=search_endday]").val(dates[2]);
     <!--検索条件設定テーブルここから-->
     <table>
         <tr>
-            <th><!--{t string="tpl_615"}--></th>
+            <th><!--{t string="tpl_Poster name_01"}--></th>
             <td><input type="text" name="search_reviewer_name" value="<!--{$arrForm.search_reviewer_name|h}-->" size="30" class="box30" /></td>
-            <th><!--{t string="tpl_616"}--></th>
+            <th><!--{t string="tpl_Poster URL_01"}--></th>
             <td><input type="text" name="search_reviewer_url" value="<!--{$arrForm.search_reviewer_url|h}-->" size="30" class="box30" /></td>
         </tr>
         <tr>
@@ -207,7 +207,7 @@ $("*[name=search_endday]").val(dates[2]);
             <th><!--{t string="tpl_Gender_01"}--></th>
             <!--{assign var=key value=search_sex}-->
             <td><!--{html_checkboxes name="$key" options=$arrSex selected=$arrForm[$key]}--></td>
-            <th><!--{t string="tpl_617"}--></th>
+            <th><!--{t string="tpl_Recommendation level_01"}--></th>
             <td>
                 <!--{assign var=key value=search_recommend_level}-->
                 <select name="<!--{$key}-->">
@@ -217,7 +217,7 @@ $("*[name=search_endday]").val(dates[2]);
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_618"}--></th>
+            <th><!--{t string="tpl_Post date_01"}--></th>
             <td colspan="3">
                 <!--{if $arrErr.search_startyear || $arrErr.search_endyear}-->
                     <span class="attention"><!--{$arrErr.search_startyear}--></span>
@@ -290,11 +290,11 @@ $("*[name=search_endday]").val(dates[2]);
         <!--検索結果表示テーブル-->
         <table id="products-review-result" class="list">
             <tr>
-                <th><!--{t string="tpl_618"}--></th>
-                <th><!--{t string="tpl_615"}--></th>
+                <th><!--{t string="tpl_Post date_01"}--></th>
+                <th><!--{t string="tpl_Poster name_01"}--></th>
                 <th><!--{t string="tpl_Product name_01"}--></th>
-                <th><!--{t string="tpl_617"}--></th>
-                <th><!--{t string="tpl_619"}--></th>
+                <th><!--{t string="tpl_Recommendation level_01"}--></th>
+                <th><!--{t string="tpl_Display/Not display_01"}--></th>
                 <th class="edit"><!--{t string="tpl_Edit_01"}--></th>
                 <th class="delete"><!--{t string="tpl_Remove_01"}--></th>
             </tr>
@@ -306,7 +306,7 @@ $("*[name=search_endday]").val(dates[2]);
                     <td><!--{$arrReview[cnt].name|h}--></td>
                     <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
                     <td><!--{$arrRECOMMEND[$key]|h}--></td>
-                    <td class="menu"><!--{if $arrReview[cnt].status eq 1}--><!--{t string="tpl_Display_01"}--><!--{elseif $arrReview[cnt].status eq 2}--><!--{t string="tpl_620"}--><!--{/if}--></td>
+                    <td class="menu"><!--{if $arrReview[cnt].status eq 1}--><!--{t string="tpl_Display_01"}--><!--{elseif $arrReview[cnt].status eq 2}--><!--{t string="tpl_Not displayed_01"}--><!--{/if}--></td>
                     <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_Edit_01"}--></a></td>
                     <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;"><!--{t string="tpl_Remove_01"}--></a></td>
                 </tr>

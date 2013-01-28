@@ -41,7 +41,7 @@
         <input type="hidden" name="mode" value="edit" />
         <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
         <p class="remark attention">
-            <!--{t string="tpl_671" escape="none"}-->
+            <!--{t string="tpl_It is possible to set master data values._01" escape="none"}-->
         </p>
         <!--{if $errorMessage != ""}-->
             <div class="message">
@@ -53,16 +53,16 @@
             <!--{foreach from=$arrMasterData item=val key=key}-->
                 <tr>
                     <th><!--{t string="t_ID:_01"}--><input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
-                    <td><!--{t string="tpl_672"}--><input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
+                    <td><!--{t string="tpl_Value:_01"}--><input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
                 </tr>
             <!--{/foreach}-->
         </table>
 
-        <h2><!--{t string="tpl_673"}--></h2>
+        <h2><!--{t string="tpl_Additional data_01"}--></h2>
         <table class="form">
             <tr>
                 <th><!--{t string="t_ID:_01"}--><input type="text" name="id[]" size="6" /></th>
-                <td><!--{t string="tpl_672"}--><input type="text" name="name[]" style="" size="60" class="box60" /></td>
+                <td><!--{t string="tpl_Value:_01"}--><input type="text" name="name[]" style="" size="60" class="box60" /></td>
             </tr>
         </table>
         <div class="btn-area">

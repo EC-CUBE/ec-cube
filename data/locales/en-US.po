@@ -5471,271 +5471,247 @@ msgstr "Product specification registration"
 msgid "tpl_599"
 msgstr "Display"
 
-msgid "tpl_600"
+msgid "tpl_Delete_01"
 msgstr "Delete"
 
-msgid "tpl_601"
-msgstr ""
-"<span class='bold'>Extension that can be uploaded:</span>%s1(Parameter "
-"DOWNLOAD_EXTENSION)"
+msgid "tpl_<span class='bold'>Extension that can be uploaded:</span>%s1(Parameter DOWNLOAD_EXTENSION)_01"
+msgstr "<span class='bold'>Extension that can be uploaded:</span>%s1(Parameter DOWNLOAD_EXTENSION)"
 
-msgid "tpl_602"
+msgid "tpl_Copy the data on the 1st line_01"
 msgstr "Copy the data on the 1st line"
 
-msgid "tpl_603"
+msgid "tpl_%s1(&#36;)_01"
 msgstr "%s1(&#36;)"
 
-msgid "tpl_604"
+msgid "tpl_Downloaded file name_01"
 msgstr "Downloaded file name"
 
-msgid "tpl_605"
-msgstr "File for downloaded product"
-
-msgid "tpl_606"
+msgid "tpl_Max %s1 characters_01"
 msgstr "Max %s1 characters"
 
-msgid "tpl_607"
+msgid "tpl_Downloaded file name_02"
 msgstr "Downloaded file name"
 
-msgid "tpl_608"
+msgid "tpl_File upload for downloaded product_01"
 msgstr "File upload for downloaded product"
 
-msgid "tpl_609"
+msgid "tpl_* A standard is not selected._01"
 msgstr "* A standard is not selected."
 
-msgid "tpl_610"
+msgid "tpl_Go back_01"
 msgstr "Go back"
 
-msgid "tpl_611"
+msgid "tpl_<span class='attention'>%s1 items</span> were found._01"
 msgstr "<span class='attention'>%s1 items</span> were found."
 
-msgid "tpl_612"
+msgid "tpl_Reallocation of internal ranking_01"
 msgstr "Reallocation of internal ranking"
 
-msgid "tpl_613"
+msgid "tpl_(Not disclosed)_01"
 msgstr "(Not disclosed)"
 
-msgid "tpl_614"
+msgid "tpl_Select a category._01"
 msgstr "Select a category."
 
-msgid "tpl_615"
+msgid "tpl_Poster name_01"
 msgstr "Poster name"
 
-msgid "tpl_616"
+msgid "tpl_Poster URL_01"
 msgstr "Poster URL"
 
-msgid "tpl_617"
+msgid "tpl_Recommendation level_01"
 msgstr "Recommendation level"
 
-msgid "tpl_618"
+msgid "tpl_Post date_01"
 msgstr "Post date"
 
-msgid "tpl_619"
+msgid "tpl_Display/Not display_01"
 msgstr "Display/Not display"
 
-msgid "tpl_620"
+msgid "tpl_Not displayed_01"
 msgstr "Not displayed"
 
-msgid "tpl_621"
+msgid "tpl_Review display_01"
 msgstr "Review display"
 
-msgid "tpl_622"
+msgid "tpl_Product master_01"
 msgstr "Product master"
 
-msgid "tpl_623"
+msgid "tpl_Product registration_01"
 msgstr "Product registration"
 
-msgid "tpl_624"
+msgid "tpl_Product registration CSV"
 msgstr "Product registration CSV"
 
-msgid "tpl_625"
+msgid "tpl_Standard management_01"
 msgstr "Standard management"
 
-msgid "tpl_626"
+msgid "tpl_Category registration_02"
 msgstr "Category registration"
 
-msgid "tpl_627"
+msgid "tpl_Category registration CSV_01"
 msgstr "Category registration CSV"
 
-msgid "tpl_628"
+msgid "tpl_Manufacturer registration_01"
 msgstr "Manufacturer registration"
 
-msgid "tpl_629"
+msgid "tpl_Product rearrangement_01"
 msgstr "Product rearrangement"
 
-msgid "tpl_630"
+msgid "tpl_Review management_01"
 msgstr "Review management"
 
-msgid "tpl_631"
+msgid "tpl_[Value:%s1]_01"
 msgstr "[Value:%s1]"
 
-msgid "tpl_632"
+msgid "tpl_CSV file_01"
 msgstr "CSV file"
 
-msgid "tpl_633"
+msgid "tpl_(First line is title)_01"
 msgstr "(First line is title)"
 
-msgid "tpl_634"
+msgid "tpl_Registration information_01"
 msgstr "Registration information"
 
-msgid "tpl_635"
+msgid "tpl_%s1 Item: %s2_01"
 msgstr "%s1 Item: %s2"
 
-msgid "tpl_636"
+msgid "tpl_Register with these contents_01"
 msgstr "Register with these contents"
 
-msgid "tpl_637"
-msgstr "Go back"
-
-msgid "tpl_638"
+msgid "tpl_CSV registration has been executed._01"
 msgstr "CSV registration has been executed."
 
-msgid "tpl_639"
-msgstr ""
-"When incorrect settings are applied, it may no longer be possible to access "
-"the management screen.<br/>Do not change these settings if you are not "
-"familiar with them."
+msgid "tpl_When incorrect settings are applied, it may no longer be possible to access the management screen.<br/>Do not change these settings if you are not familiar with them._01"
+msgstr "When incorrect settings are applied, it may no longer be possible to access the management screen.<br/>Do not change these settings if you are not familiar with them."
 
 msgid "tpl_640"
 msgstr "Management area settings"
 
-msgid "tpl_641"
+msgid "tpl_Directory name_01"
 msgstr "Directory name"
 
-msgid "tpl_642"
+msgid "tpl_SSL restrictions_01"
 msgstr "SSL restrictions"
 
-msgid "tpl_643"
+msgid "tpl_IP restriction_01"
 msgstr "IP restriction"
 
-msgid "tpl_644"
+msgid "tpl_Make SSL mandatory._01"
 msgstr "Make SSL mandatory."
 
-msgid "tpl_645"
-msgstr ""
-"* Access to the management area is limited to only connections from a "
-"designated IP address.<br />You may enter an IP address per line to gain "
-"access to the page. If nothing is entered, access will be permitted to all "
-"IP addresses."
+msgid "tpl_* Access to the management area is limited to only connections from a designated IP address._01"
+msgstr "* Access to the management area is limited to only connections from a designated IP address.<br />You may enter an IP address per line to gain access to the page. If nothing is entered, access will be permitted to all IP addresses."
 
-msgid "tpl_646"
+msgid "tpl_Do you want to restore?_01"
 msgstr "Do you want to restore?"
 
-msgid "tpl_647"
-msgstr ""
-"The database will be backed up.<br />The template file, etc. has not been "
-"backed up."
+msgid "tpl_The database will be backed up.<br />The template file, etc. has not been backed up._01"
+msgstr "The database will be backed up.<br />The template file, etc. has not been backed up."
 
-msgid "tpl_648"
+msgid "tpl_Backup name_01"
 msgstr "Backup name"
 
-msgid "tpl_648_1"
+msgid "tpl_Backup name<span class='attention'> *</span>_01"
 msgstr "Backup name<span class='attention'> *</span>"
 
-msgid "tpl_649"
+msgid "tpl_Backup memo_01"
 msgstr "Backup memo"
 
-msgid "tpl_650"
+msgid "tpl_Create backup data_01"
 msgstr "Create backup data"
 
-msgid "tpl_651"
+msgid "tpl_Backup list_01"
 msgstr "Backup list"
 
-msgid "tpl_652"
+msgid "tpl_Restore_01"
 msgstr "Restore"
 
-msgid "tpl_653"
+msgid "tpl_Execution results_01"
 msgstr "Execution results"
 
-msgid "tpl_654"
+msgid "tpl_Ignore the error and restore_01"
 msgstr "Ignore the error and restore"
 
-msgid "tpl_655"
+msgid "tpl_Change_02"
 msgstr "Change"
 
-msgid "tpl_656"
+msgid "tpl_Index_01"
 msgstr "Index"
 
-msgid "tpl_657"
+msgid "tpl_Table name_01"
 msgstr "Table name"
 
-msgid "tpl_658"
+msgid "tpl_Column name_01"
 msgstr "Column name"
 
-msgid "tpl_659"
+msgid "tpl_ON_01"
 msgstr "ON"
 
-msgid "tpl_660"
+msgid "tpl_OFF_01"
 msgstr "OFF"
 
-msgid "tpl_661"
+msgid "tpl_Add member_01"
 msgstr "Add member"
 
-msgid "tpl_662"
+msgid "tpl_Access_01"
 msgstr "Access"
 
-msgid "tpl_663"
+msgid "tpl_Affiliation_01"
 msgstr "Affiliation"
 
-msgid "tpl_664"
+msgid "tpl_Operating_01"
 msgstr "Operating"
 
-msgid "tpl_665"
+msgid "tpl_Member registration/editing_01"
 msgstr "Member registration/editing"
 
-msgid "tpl_666"
+msgid "tpl_* Enter required_01"
 msgstr "* Enter required"
 
-msgid "tpl_667"
+msgid "tpl_Login ID_01"
 msgstr "Login ID"
 
-msgid "tpl_668"
+msgid "tpl_* Alphanumeric characters %s1 to %s2 _01"
 msgstr "* Alphanumeric characters %s1 to %s2 "
 
-msgid "tpl_669"
+msgid "tpl_Operating/Not operating_01"
 msgstr "Operating/Not operating"
 
-msgid "tpl_670"
+msgid "tpl_Not operating_01"
 msgstr "Not operating"
 
-msgid "tpl_671"
-msgstr ""
-"It is possible to set master data values.<br />It is not possible to "
-"register a duplicate ID.<br />When a blank ID is registered, the value is "
-"deleted.<br />Be careful as the site may no longer function depending on the "
-"settings values."
+msgid "tpl_It is possible to set master data values._01"
+msgstr "It is possible to set master data values.<br />It is not possible to register a duplicate ID.<br />When a blank ID is registered, the value is deleted.<br />Be careful as the site may no longer function depending on the settings values."
 
-msgid "tpl_672"
+msgid "tpl_Value:_01"
 msgstr "Value:"
 
-msgid "tpl_673"
+msgid "tpl_Additional data_01"
 msgstr "Additional data"
 
-msgid "tpl_674"
-msgstr ""
-"The parameter value is set as a PHP constant.<br />Surround character "
-"strings with [&quot;].<br />Be careful as the site may no longer function "
-"depending on the settings values."
+msgid "tpl_The parameter value is set as a PHP constant._01"
+msgstr "The parameter value is set as a PHP constant.<br />Surround character strings with [&quot;].<br />Be careful as the site may no longer function depending on the settings values."
 
-msgid "tpl_675"
+msgid "tpl_Constant name_01"
 msgstr "Constant name"
 
-msgid "tpl_676"
+msgid "tpl_Parameter value_01"
 msgstr "Parameter value"
 
-msgid "tpl_677"
+msgid "tpl_Member management_01"
 msgstr "Member management"
 
-msgid "tpl_678"
+msgid "tpl_Backup management_01"
 msgstr "Backup management"
 
-msgid "tpl_679"
+msgid "tpl_Parameter settings_01"
 msgstr "Parameter settings"
 
-msgid "tpl_680"
+msgid "tpl_Master data management_01"
 msgstr "Master data management"
 
-msgid "tpl_681"
+msgid "tpl_Management screen settings_01"
 msgstr "Management screen settings"
 
 msgid "tpl_682"
@@ -5762,7 +5738,7 @@ msgstr "Sales by month"
 msgid "tpl_689"
 msgstr "Period sales"
 
-msgid "tpl_690"
+msgid "tpl_Sales by period_02"
 msgstr "Sales by period"
 
 msgid "tpl_691"
@@ -5839,7 +5815,7 @@ msgstr "(Due to changes in payment, please manually select a fee.)"
 msgid "tpl_722"
 msgstr "Add product"
 
-msgid "tpl_723"
+msgid "tpl_Change"
 msgstr "Change"
 
 msgid "tpl_724"
