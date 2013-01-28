@@ -69,7 +69,7 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_Name_02"}--></th>
-                <td><!--{t string="tpl_240" %s1=$arrForm.name01|h %s2=$arrForm.name02|h}--></td>
+                <td><!--{t string="tpl_%s1 %s2_01" %s1=$arrForm.name01|h %s2=$arrForm.name02|h}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_Postal code_01"}--></th>
@@ -89,7 +89,7 @@ function func_return(){
                 <td><!--{$arrForm.email_mobile|h}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_241"}--></th>
+                <th><!--{t string="tpl_Telephone number_01"}--></th>
                 <td><!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}--></td>
             </tr>
             <tr>

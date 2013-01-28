@@ -25,7 +25,7 @@
     function fnModeSubmit(mode) {
         switch(mode) {
         case 'drop':
-            if(!window.confirm('<!--{t string="tpl_783" escape="j"}-->')){
+            if(!window.confirm('<!--{t string="tpl_Are you sure you want to remove this item?It can not be restored._01" escape="j"}-->')){
                 return;
             }
             break;
@@ -48,16 +48,16 @@
 
 <div class="contents">
     <div class="message">
-        <h2><!--{t string="tpl_784"}--></h2>
+        <h2><!--{t string="tpl_Database initialization_01"}--></h2>
     </div>
     <div class="result-info02">
     <p class="action-message">
-        <!--{if $tpl_db_version != ""}--><span class="bold"><!--{t string="tpl_785"}--></span><br />
+        <!--{if $tpl_db_version != ""}--><span class="bold"><!--{t string="tpl_Connection information_01"}--></span><br />
             <!--{$tpl_db_version}-->
         <!--{/if}-->
-        <!--{t string="tpl_786" escape="none"}--></P>
+        <!--{t string="tpl_Database initialization will begin.<br />* Will be suspended if a table, etc. is already created._01" escape="none"}--></P>
         <!--{if $tpl_mode != 'complete'}-->
-            <input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked="checked"<!--{/if}--> /> <label for="skip"><!--{t string="tpl_787"}--></label>
+            <input type="checkbox" id="skip" name="db_skip" <!--{if $tpl_db_skip == "on"}-->checked="checked"<!--{/if}--> /> <label for="skip"><!--{t string="tpl_Do not carry out the database initialization process_01"}--></label>
         <!--{/if}-->
     </div>
     <div class="result-info02">
@@ -66,7 +66,7 @@
             <span class="attention top"><!--{$arrErr.all}--></span>
             <!--{if $arrErr.all != ""}-->
                 <ul class="btn-area">
-                    <li><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('drop'); return false;"><!--{t string="tpl_788"}--></a></li>
+                    <li><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('drop'); return false;"><!--{t string="tpl_Delete all existing data_01"}--></a></li>
                 </ul>
             <!--{/if}-->
         <!--{/if}-->

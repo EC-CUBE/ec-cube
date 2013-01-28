@@ -26,7 +26,7 @@
 <!--{/foreach}-->
 <div class="contents">
     <div class="message">
-        <!--{t string="tpl_799"}-->
+        <!--{t string="tpl_EC-CUBE installation will begin._01"}-->
     </div>
 </div>
 <div class="btn-area-top"></div>

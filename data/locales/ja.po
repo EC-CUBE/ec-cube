@@ -3654,14 +3654,8 @@ msgstr "基本情報"
 msgid "tpl_Company name_01"
 msgstr "会社名"
 
-msgid "tpl_029"
-msgstr "会社名(フリガナ)"
-
 msgid "tpl_Store name<span class='attention'> *</span>_01"
 msgstr "店名<span class='attention'> *</span>"
-
-msgid "tpl_031"
-msgstr "店名(フリガナ)"
 
 msgid "tpl_Store name (in English)_01"
 msgstr "店名(英語表記)"
@@ -4224,13 +4218,7 @@ msgstr "会員状態"
 msgid "tpl_Member status<span class='attention'> *</span>_01"
 msgstr "会員状態<span class='attention'> *</span>"
 
-msgid "tpl_210"
-msgstr "お名前(フリガナ)"
-
-msgid "tpl_210_1"
-msgstr "お名前(フリガナ)<span class='attention'> *</span>"
-
-msgid "tpl_211"
+msgid "tpl_Address input_01"
 msgstr "住所入力"
 
 msgid "tpl_Address_01"
@@ -4323,7 +4311,7 @@ msgstr "未発送"
 msgid "tpl_There is no purchase history_01"
 msgstr "購入履歴はありません。"
 
-msgid "tpl_236"
+msgid "tpl_Registration is complete._01"
 msgstr "登録が完了致しました。"
 
 msgid "tpl_Register new item_01"
@@ -4335,11 +4323,8 @@ msgstr "仮会員"
 msgid "tpl_full member_01"
 msgstr "本会員"
 
-msgid "tpl_240"
+msgid "tpl_%s1 %s2_01"
 msgstr "%s1%s2　様"
-
-msgid "tpl_241"
-msgstr "お電話番号"
 
 msgid "tpl_Not registered_01"
 msgstr "未登録"
@@ -4385,9 +4370,6 @@ msgstr "CSV 出力項目設定"
 
 msgid "tpl_Type_01"
 msgstr "種別"
-
-msgid "tpl_257"
-msgstr "お名前/(フリガナ)"
 
 msgid "tpl_Prefecture_01"
 msgstr "都道府県"
@@ -4704,9 +4686,6 @@ msgstr "注文者情報"
 msgid "tpl_(Non-member)_01"
 msgstr "(非会員)"
 
-msgid "tpl_364"
-msgstr "お名前(カナ)"
-
 msgid "tpl_Remarks_01"
 msgstr "備考"
 
@@ -4923,7 +4902,7 @@ msgstr "抽出条件"
 msgid "tpl_Response status change_01"
 msgstr "対応状況変更"
 
-msgid "* When %s1 or when changing to delete, restore the inventory count manually."
+msgid "tpl_* When %s1 or when changing to delete, restore the inventory count manually._01"
 msgstr "※ %s1もしくは、削除に変更時には、在庫数を手動で戻してください。"
 
 msgid "tpl_Purchase amount(&#36;)_01"
@@ -5766,9 +5745,6 @@ msgstr "(お支払方法の変更に伴う手数料の変更は手動にてお�
 msgid "tpl_Add product_01"
 msgstr "商品の追加"
 
-msgid "tpl_723"
-msgstr "変更"
-
 msgid "tpl_Find users_01"
 msgstr "会員検索"
 
@@ -5901,153 +5877,153 @@ msgstr "管理機能にログインするためのパスワードです。"
 msgid "tpl_Management area settings_01"
 msgstr "管理機能の設定"
 
-msgid "tpl_755"
+msgid "tpl_Directory_01"
 msgstr "ディレクトリ"
 
-msgid "tpl_756"
+msgid "tpl_(Example) eccube@example.com_01"
 msgstr "(例) eccube@example.com"
 
-msgid "tpl_757"
+msgid "tpl_Directory name for management area._01"
 msgstr "管理機能のディレクトリ名です。"
 
-msgid "tpl_758"
+msgid "tpl_Access the management area with link below._01"
 msgstr "下記で管理機能にアクセスする場合の[管理機能]の部分です。"
 
-msgid "tpl_759"
+msgid "tpl_https://[Host name].[Domain name]/[Shop directory]/<span class='bold'>[Directory]</span>/_01"
 msgstr ""
 "https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/<span class='bold'>"
 "[ディレクトリ]</span>/"
 
-msgid "tpl_760"
+msgid "tpl_Access to the management area is limited to SSL (https) connections._01"
 msgstr "管理機能へのアクセスをSSL経由(https)の接続に制限します。"
 
-msgid "tpl_761"
+msgid "tpl_WEB server settings_01"
 msgstr "WEBサーバーの設定"
 
-msgid "tpl_762"
+msgid "tpl_URL (normal) <span class='attention'>*</span>_01"
 msgstr "URL(通常)<span class='attention'>*</span>"
 
-msgid "tpl_763"
+msgid "tpl_URL (secure) <span class='attention'>*</span>_01"
 msgstr "URL(セキュア)<span class='attention'>*</span>"
 
-msgid "tpl_764"
+msgid "tpl_Common domain_01"
 msgstr "共通ドメイン"
 
-msgid "tpl_765"
+msgid "tpl_Designated when the subdomain differs based on normal URL and secure URL._01"
 msgstr "通常URLとセキュアURLでサブドメインが異なる場合に指定します。"
 
-msgid "tpl_766"
+msgid "tpl_&gt;&gt; Option settings_01"
 msgstr "&gt;&gt; オプション設定"
 
-msgid "tpl_767"
+msgid "tpl_E-mail server settings (option)_01"
 msgstr "メールサーバーの設定(オプション)"
 
-msgid "tpl_768"
+msgid "tpl_Mailer backend <span class='attention'>*</span>_01"
 msgstr "メーラーバックエンド<span class='attention'>*</span>"
 
-msgid "tpl_769"
+msgid "tpl_mail - PHP built-in function  mail() is used to send.<br />SMTP - E-mails are sent by directly connecting to the SMTP server.<br />sendmail - Sent through the sendmail program._01"
 msgstr ""
 "mail - PHP の組込関数 mail() を使用して送信します。<br />SMTP - SMTP サーバに"
 "直接接続してメールを送信します。<br />sendmail - sendmail プログラムにより送"
 "信します。"
 
-msgid "tpl_770"
+msgid "tpl_SMTP host_01"
 msgstr "SMTP ホスト"
 
-msgid "tpl_771"
+msgid "tpl_Use only when the mailer backend is SMTP._01"
 msgstr "メーラーバックエンドが SMTP の場合のみ指定します。"
 
-msgid "tpl_772"
+msgid "tpl_SMTP port_01"
 msgstr "SMTP ポート"
 
-msgid "tpl_773"
+msgid "tpl_SMTP user_01"
 msgstr "SMTP ユーザー"
 
-msgid "tpl_774"
+msgid "tpl_Use only when the mailer backend is SMTP and SMTP-AUTH is also used._01"
 msgstr "メーラーバックエンドが SMTP の場合で、SMTP-AUTH 使用時のみ指定します。"
 
-msgid "tpl_775"
+msgid "tpl_SMTP password_01"
 msgstr "SMTP パスワード"
 
-msgid "tpl_776"
+msgid "tpl_Database settings_01"
 msgstr "データベースの設定"
 
-msgid "tpl_777"
+msgid "tpl_* You must create a new database before installation._01"
 msgstr "※インストールの前に新しくDBを作成しておく必要があります。"
 
-msgid "tpl_778"
+msgid "tpl_DB type <span class='attention'>*</span>_01"
 msgstr "DBの種類<span class='attention'>*</span>"
 
-msgid "tpl_779"
+msgid "tpl_Port_01"
 msgstr "ポート"
 
-msgid "tpl_780"
+msgid "tpl_DB name <span class='attention'>*</span>_01"
 msgstr "DB名<span class='attention'>*</span>"
 
-msgid "tpl_781"
+msgid "tpl_DB user <span class='attention'>*</span>_01"
 msgstr "DBユーザ<span class='attention'>*</span>"
 
-msgid "tpl_782"
+msgid "tpl_DB password <span class='attention'>*</span>_01"
 msgstr "DBパスワード<span class='attention'>*</span>"
 
-msgid "tpl_783"
+msgid "tpl_Are you sure you want to remove this item?It can not be restored._01"
 msgstr ""
 "一度削除したデータは、元に戻せません。\n"
 "削除しても宜しいですか？"
 
-msgid "tpl_784"
+msgid "tpl_Database initialization_01"
 msgstr "データベースの初期化"
 
-msgid "tpl_785"
+msgid "tpl_Connection information_01"
 msgstr "接続情報："
 
-msgid "tpl_786"
+msgid "tpl_Database initialization will begin.<br />* Will be suspended if a table, etc. is already created._01"
 msgstr ""
 "データベースの初期化を開始します。<br />※すでにテーブル等が作成されている場合"
 "は中断されます。"
 
-msgid "tpl_787"
+msgid "tpl_Do not carry out the database initialization process_01"
 msgstr "データベースの初期化処理を行わない"
 
-msgid "tpl_788"
+msgid "tpl_Delete all existing data_01"
 msgstr "既存データをすべて削除する"
 
-msgid "tpl_789"
+msgid "tpl_Site information_01"
 msgstr "サイト情報について"
 
-msgid "tpl_790"
+msgid "tpl_Please provide the information below for the purpose of debugging and improving the EC-CUBE system._01"
 msgstr ""
 "EC-CUBEのシステム向上及び、デバッグのため以下の情報のご提供をお願いいたしま"
 "す。"
 
-msgid "tpl_791"
+msgid "tpl_Site URL: _01"
 msgstr "サイトURL："
 
-msgid "tpl_792"
+msgid "tpl_Store name: _01"
 msgstr "店名："
 
-msgid "tpl_793"
+msgid "tpl_EC-CUBE version: _01"
 msgstr "EC-CUBEバージョン："
 
-msgid "tpl_794"
+msgid "tpl_PHP information: _01"
 msgstr "PHP情報："
 
-msgid "tpl_795"
+msgid "tpl_DB information: _01"
 msgstr "DB情報："
 
-msgid "tpl_796"
+msgid "tpl_OS information: _01"
 msgstr "OS情報："
 
-msgid "tpl_797"
+msgid "tpl_Yes (recommended)_01"
 msgstr "はい(推奨)"
 
-msgid "tpl_798"
+msgid "tpl_No_02"
 msgstr "いいえ"
 
-msgid "tpl_799"
+msgid "tpl_EC-CUBE installation will begin._01"
 msgstr "EC-CUBEのインストールを開始します。"
 
-msgid "tpl_800"
+msgid "tpl_<span class='attention'>* The authentication key can be obtained from <a href='%s1' target='_blank'>the EC-CUBE Owners Store</a>.</span>_01"
 msgstr ""
 "<span class='attention'>※認証キーは<a href='%s1' target='_blank'>EC-CUBE"
 "オーナーズストア</a>で取得できます。</span>"

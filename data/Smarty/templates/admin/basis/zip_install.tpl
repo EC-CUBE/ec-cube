@@ -68,7 +68,7 @@
                     <p class="attention"><!--{t string="tpl_* PHP extension module 'zip' is invalid._01"}--></p>
                 <!--{/if}-->
                 <!--{if $tpl_zip_function_not_exists}-->
-                    <p class="attention"><!--{t string="tpl_138"}--></p>
+                    <p class="attention"><!--{t string="tpl_* PHP extension module 'zip' is invalid._01"}--></p>
                 <!--{/if}-->
             <!--{else}-->
                 <p><!--{t string="tpl_A postal code CSV will be obtained from the Japan Post Web site._01"}--></p>

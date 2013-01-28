@@ -3693,14 +3693,8 @@ msgstr "Basic information"
 msgid "tpl_Company name_01"
 msgstr "Company name"
 
-msgid "tpl_029"
-msgstr "会社名(フリガナ)"
-
 msgid "tpl_Store name<span class='attention'> *</span>_01"
 msgstr "Store name<span class='attention'> *</span>"
-
-msgid "tpl_031"
-msgstr "店名(フリガナ)"
 
 msgid "tpl_Store name (in English)_01"
 msgstr "Store name (in English)"
@@ -4268,13 +4262,7 @@ msgstr "Member status"
 msgid "tpl_Member status<span class='attention'> *</span>_01"
 msgstr "Member status<span class='attention'> *</span>"
 
-msgid "tpl_210"
-msgstr "お名前(フリガナ)"
-
-msgid "tpl_210_1"
-msgstr "お名前(フリガナ)<span class='attention'> *</span>"
-
-msgid "tpl_211"
+msgid "tpl_Address input_01"
 msgstr "Address input"
 
 msgid "tpl_Address_01"
@@ -4379,11 +4367,8 @@ msgstr "Temporary member"
 msgid "tpl_full member_01"
 msgstr "full member"
 
-msgid "tpl_240"
+msgid "tpl_%s1 %s2_01"
 msgstr "%s1 %s2"
-
-msgid "tpl_241"
-msgstr "Telephone number"
 
 msgid "tpl_Not registered_01"
 msgstr "Not registered"
@@ -4429,9 +4414,6 @@ msgstr "CSV output settings"
 
 msgid "tpl_Type_01"
 msgstr "Type"
-
-msgid "tpl_257"
-msgstr "お名前/(フリガナ)"
 
 msgid "tpl_Prefecture_01"
 msgstr "Prefecture"
@@ -4748,9 +4730,6 @@ msgstr "Orderer information"
 msgid "tpl_(Non-member)_01"
 msgstr "(Non-member)"
 
-msgid "tpl_364"
-msgstr "お名前(カナ)"
-
 msgid "tpl_Remarks_01"
 msgstr "Remarks"
 
@@ -4967,7 +4946,7 @@ msgstr "Extraction conditions"
 msgid "tpl_Response status change_01"
 msgstr "Response status change"
 
-msgid "tpl_441"
+msgid "tpl_* When %s1 or when changing to delete, restore the inventory count manually._01"
 msgstr "* When %s1 or when changing to delete, restore the inventory count manually."
 
 msgid "tpl_Purchase amount(&#36;)_01"
@@ -5585,9 +5564,6 @@ msgstr "CSV registration has been executed."
 msgid "tpl_When incorrect settings are applied, it may no longer be possible to access the management screen.<br/>Do not change these settings if you are not familiar with them._01"
 msgstr "When incorrect settings are applied, it may no longer be possible to access the management screen.<br/>Do not change these settings if you are not familiar with them."
 
-msgid "tpl_640"
-msgstr "Management area settings"
-
 msgid "tpl_Directory name_01"
 msgstr "Directory name"
 
@@ -5813,9 +5789,6 @@ msgstr "(Due to changes in payment, please manually select a fee.)"
 msgid "tpl_Add product_01"
 msgstr "Add product"
 
-msgid "tpl_723"
-msgstr "Change"
-
 msgid "tpl_Find users_01"
 msgstr "Find users"
 
@@ -5955,154 +5928,154 @@ msgstr "Password for logging in to the management area."
 msgid "tpl_Management area settings_01"
 msgstr "Management area settings"
 
-msgid "tpl_755"
+msgid "tpl_Directory_01"
 msgstr "Directory"
 
-msgid "tpl_756"
+msgid "tpl_(Example) eccube@example.com_01"
 msgstr "(Example) eccube@example.com"
 
-msgid "tpl_757"
+msgid "tpl_Directory name for management area._01"
 msgstr "Directory name for management area."
 
-msgid "tpl_758"
+msgid "tpl_Access the management area with link below._01"
 msgstr "Access the management area with link below."
 
-msgid "tpl_759"
+msgid "tpl_https://[Host name].[Domain name]/[Shop directory]/<span class='bold'>[Directory]</span>/_01"
 msgstr ""
 "https://[Host name].[Domain name]/[Shop directory]/<span class='bold'>"
 "[Directory]</span>/"
 
-msgid "tpl_760"
+msgid "tpl_Access to the management area is limited to SSL (https) connections._01"
 msgstr "Access to the management area is limited to SSL (https) connections."
 
-msgid "tpl_761"
+msgid "tpl_WEB server settings_01"
 msgstr "WEB server settings"
 
-msgid "tpl_762"
+msgid "tpl_URL (normal) <span class='attention'>*</span>_01"
 msgstr "URL (normal) <span class='attention'>*</span>"
 
-msgid "tpl_763"
+msgid "tpl_URL (secure) <span class='attention'>*</span>_01"
 msgstr "URL (secure) <span class='attention'>*</span>"
 
-msgid "tpl_764"
+msgid "tpl_Common domain_01"
 msgstr "Common domain"
 
-msgid "tpl_765"
+msgid "tpl_Designated when the subdomain differs based on normal URL and secure URL._01"
 msgstr ""
 "Designated when the subdomain differs based on normal URL and secure URL."
 
-msgid "tpl_766"
+msgid "tpl_&gt;&gt; Option settings_01"
 msgstr "&gt;&gt; Option settings"
 
-msgid "tpl_767"
+msgid "tpl_E-mail server settings (option)_01"
 msgstr "E-mail server settings (option)"
 
-msgid "tpl_768"
+msgid "tpl_Mailer backend <span class='attention'>*</span>_01"
 msgstr "Mailer backend <span class='attention'>*</span>"
 
-msgid "tpl_769"
+msgid "tpl_mail - PHP built-in function  mail() is used to send.<br />SMTP - E-mails are sent by directly connecting to the SMTP server.<br />sendmail - Sent through the sendmail program._01"
 msgstr ""
 "mail - PHP built-in function  mail() is used to send.<br />SMTP - E-mails "
 "are sent by directly connecting to the SMTP server.<br />sendmail - Sent "
 "through the sendmail program."
 
-msgid "tpl_770"
+msgid "tpl_SMTP host_01"
 msgstr "SMTP host"
 
-msgid "tpl_771"
+msgid "tpl_Use only when the mailer backend is SMTP._01"
 msgstr "Use only when the mailer backend is SMTP."
 
-msgid "tpl_772"
+msgid "tpl_SMTP port_01"
 msgstr "SMTP port"
 
-msgid "tpl_773"
+msgid "tpl_SMTP user_01"
 msgstr "SMTP user"
 
-msgid "tpl_774"
+msgid "tpl_Use only when the mailer backend is SMTP and SMTP-AUTH is also used._01"
 msgstr "Use only when the mailer backend is SMTP and SMTP-AUTH is also used."
 
-msgid "tpl_775"
+msgid "tpl_SMTP password_01"
 msgstr "SMTP password"
 
-msgid "tpl_776"
+msgid "tpl_Database settings_01"
 msgstr "Database settings"
 
-msgid "tpl_777"
+msgid "tpl_* You must create a new database before installation._01"
 msgstr "* You must create a new database before installation."
 
-msgid "tpl_778"
+msgid "tpl_DB type <span class='attention'>*</span>_01"
 msgstr "DB type <span class='attention'>*</span>"
 
-msgid "tpl_779"
+msgid "tpl_Port_01"
 msgstr "Port"
 
-msgid "tpl_780"
+msgid "tpl_DB name <span class='attention'>*</span>_01"
 msgstr "DB name <span class='attention'>*</span>"
 
-msgid "tpl_781"
+msgid "tpl_DB user <span class='attention'>*</span>_01"
 msgstr "DB user <span class='attention'>*</span>"
 
-msgid "tpl_782"
+msgid "tpl_DB password <span class='attention'>*</span>_01"
 msgstr "DB password <span class='attention'>*</span>"
 
-msgid "tpl_783"
+msgid "tpl_Are you sure you want to remove this item?It can not be restored._01"
 msgstr ""
 "Are you sure you want to remove this item? \n"
 "It can not be restored."
 
-msgid "tpl_784"
+msgid "tpl_Database initialization_01"
 msgstr "Database initialization"
 
-msgid "tpl_785"
+msgid "tpl_Connection information_01"
 msgstr "Connection information"
 
-msgid "tpl_786"
+msgid "tpl_Database initialization will begin.<br />* Will be suspended if a table, etc. is already created._01"
 msgstr ""
 "Database initialization will begin.<br />* Will be suspended if a table, "
 "etc. is already created."
 
-msgid "tpl_787"
+msgid "tpl_Do not carry out the database initialization process_01"
 msgstr "Do not carry out the database initialization process"
 
-msgid "tpl_788"
+msgid "tpl_Delete all existing data_01"
 msgstr "Delete all existing data"
 
-msgid "tpl_789"
+msgid "tpl_Site information_01"
 msgstr "Site information"
 
-msgid "tpl_790"
+msgid "tpl_Please provide the information below for the purpose of debugging and improving the EC-CUBE system._01"
 msgstr ""
 "Please provide the information below for the purpose of debugging and "
 "improving the EC-CUBE system."
 
-msgid "tpl_791"
+msgid "tpl_Site URL: _01"
 msgstr "Site URL: "
 
-msgid "tpl_792"
+msgid "tpl_Store name: _01"
 msgstr "Store name: "
 
-msgid "tpl_793"
+msgid "tpl_EC-CUBE version: _01"
 msgstr "EC-CUBE version: "
 
-msgid "tpl_794"
+msgid "tpl_PHP information: _01"
 msgstr "PHP information: "
 
-msgid "tpl_795"
+msgid "tpl_DB information: _01"
 msgstr "DB information: "
 
-msgid "tpl_796"
+msgid "tpl_OS information: _01"
 msgstr "OS information: "
 
-msgid "tpl_797"
+msgid "tpl_Yes (recommended)_01"
 msgstr "Yes (recommended)"
 
-msgid "tpl_798"
+msgid "tpl_No_02"
 msgstr "No"
 
-msgid "tpl_799"
+msgid "tpl_EC-CUBE installation will begin._01"
 msgstr "EC-CUBE installation will begin."
 
-msgid "tpl_800"
+msgid "tpl_<span class='attention'>* The authentication key can be obtained from <a href='%s1' target='_blank'>the EC-CUBE Owners Store</a>.</span>_01"
 msgstr ""
 "<span class='attention'>* The authentication key can be obtained from <a "
 "href='%s1' target='_blank'>the EC-CUBE Owners Store</a>.</span>"

@@ -59,7 +59,7 @@
                 <td><!--{$db_version}--></td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_449"}--></th>
+                <th><!--{t string="tpl_Details_01"}--></th>
                 <td><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->system/system.php"><!--{t string="tpl_System settings > System information_01"}--></a></td>
             </tr>
         </table>
