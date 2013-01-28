@@ -3761,46 +3761,46 @@ msgstr "Consumption sales tax rate<span class='attention'> *</span>"
 msgid "tpl_Taxation rules<span class='attention'> *</span>_01"
 msgstr "Taxation rules<span class='attention'> *</span>"
 
-msgid "tpl_Conditions for free shipping"
+msgid "tpl_Conditions for free shipping_01"
 msgstr "Conditions for free shipping"
 
-msgid "tpl_Number of days during which download is possible"
+msgid "tpl_Number of days during which download is possible_01"
 msgstr "Number of days during which download is possible"
 
-msgid "tpl_No limit"
+msgid "tpl_No limit_01"
 msgstr "No limit"
 
-msgid "tpl_Map settings"
+msgid "tpl_Map settings_01"
 msgstr "Map settings"
 
-msgid "tpl_Latitude/longitude information"
+msgid "tpl_Latitude/longitude information_01"
 msgstr "Latitude/longitude information"
 
-msgid "tpl_Latitude : "
+msgid "tpl_Latitude : _01"
 msgstr "Latitude : "
 
-msgid "tpl_Longitude: "
+msgid "tpl_Longitude: _01"
 msgstr "Longitude: "
 
-msgid "tpl_Automatic retrieval from location"
+msgid "tpl_Automatic retrieval from location_01"
 msgstr "Automatic retrieval from location"
 
-msgid "tpl_Set using map"
+msgid "tpl_Set using map_01"
 msgstr "Set using map"
 
-msgid "tpl_Enter this position."
+msgid "tpl_Enter this position._01"
 msgstr "Enter this position."
 
-msgid "tpl_The address was not found."
+msgid "tpl_The address was not found._01"
 msgstr "The address was not found."
 
 msgid "tpl_Agreement title_01"
 msgstr "Agreement title"
 
-msgid "tpl_Agreement title_02"
+msgid "tpl_Agreement title<span class='attention'> *</span>_01"
 msgstr "Agreement title<span class='attention'> *</span>"
 
-msgid "tpl_Agreement contents"
+msgid "tpl_Agreement contents<span class='attention'> *</span>_01"
 msgstr "Agreement contents<span class='attention'> *</span>"
 
 msgid "tpl_The contents are revised. _01"

@@ -3720,46 +3720,46 @@ msgstr "消費税率<span class='attention'> *</span>"
 msgid "tpl_Taxation rules<span class='attention'> *</span>_01"
 msgstr "課税規則<span class='attention'> *</span>"
 
-msgid "tpl_Conditions for free shipping"
+msgid "tpl_Conditions for free shipping_01"
 msgstr "送料無料条件"
 
-msgid "tpl_Number of days during which download is possible"
+msgid "tpl_Number of days during which download is possible_01"
 msgstr "ダウンロード可能日数"
 
-msgid "tpl_No limit"
+msgid "tpl_No limit_01"
 msgstr "無制限"
 
-msgid "tpl_Map settings"
+msgid "tpl_Map settings_01"
 msgstr "地図設定"
 
-msgid "tpl_Latitude/longitude information"
+msgid "tpl_Latitude/longitude information_01"
 msgstr "緯度/経度情報"
 
-msgid "tpl_Latitude : "
+msgid "tpl_Latitude : _01"
 msgstr "緯度: "
 
-msgid "tpl_Longitude: "
+msgid "tpl_Longitude: _01"
 msgstr "経度: "
 
-msgid "tpl_Automatic retrieval from location"
+msgid "tpl_Automatic retrieval from location_01"
 msgstr "所在地より自動取得"
 
-msgid "tpl_Set using map"
+msgid "tpl_Set using map_01"
 msgstr "地図で設定"
 
-msgid "tpl_Enter this position."
+msgid "tpl_Enter this position._01"
 msgstr "この位置を入力"
 
-msgid "tpl_The address was not found."
+msgid "tpl_The address was not found._01"
 msgstr "所在地の場所が見つかりません"
 
 msgid "tpl_Agreement title_01"
 msgstr "規約タイトル"
 
-msgid "tpl_Agreement title_02"
+msgid "tpl_Agreement title<span class='attention'> *</span>_01"
 msgstr "規約タイトル<span class='attention'> *</span>"
 
-msgid "tpl_Agreement contents"
+msgid "tpl_Agreement contents<span class='attention'> *</span>_01"
 msgstr "規約内容<span class='attention'> *</span>"
 
 msgid "tpl_The contents are revised. _01"

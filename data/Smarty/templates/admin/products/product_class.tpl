@@ -254,7 +254,7 @@
                     <!--{if $arrErr[$key][$index]}-->
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
-                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="chk_<!--{$key}-->_<!--{$index}-->" /><label for="chk_<!--{$key}-->_<!--{$index}-->"><!--{t string="tpl_No limit"}--></label>
+                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == "1"}-->checked="checked"<!--{/if}--> id="chk_<!--{$key}-->_<!--{$index}-->" /><label for="chk_<!--{$key}-->_<!--{$index}-->"><!--{t string="tpl_No limit_01"}--></label>
                 </td>
                 <td class="center">
                     <!--{assign var=key value="price01"}-->

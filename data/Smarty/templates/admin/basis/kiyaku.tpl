@@ -29,7 +29,7 @@
 <div id="basis" class="contents-main">
     <table class="form">
         <tr>
-            <th><!--{t string="tpl_Agreement title_02" escape="none"}--></th>
+            <th><!--{t string="tpl_Agreement title<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
                 <span class="attention"><!--{$arrErr.name}--></span>
@@ -38,7 +38,7 @@
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_Agreement contents" escape="none"}--></th>
+            <th><!--{t string="tpl_Agreement contents<span class='attention'> *</span>_01" escape="none"}--></th>
             <td>
             <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
             <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{"\n"}--><!--{$arrForm.kiyaku_text|h}--></textarea>

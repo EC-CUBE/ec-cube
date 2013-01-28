@@ -410,9 +410,9 @@ $("*[name=search_endday]").val(dates[2]);
                     <!--{* 在庫 *}-->
                     <!--{* XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 *}-->
                     <td class="menu" rowspan="2">
-                        <!--{if $arrProducts[cnt].stock_unlimited_min}--><!--{t string="tpl_No limit"}--><!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
+                        <!--{if $arrProducts[cnt].stock_unlimited_min}--><!--{t string="tpl_No limit_01"}--><!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
                         <!--{if $arrProducts[cnt].stock_unlimited_min != $arrProducts[cnt].stock_unlimited_max || $arrProducts[cnt].stock_min != $arrProducts[cnt].stock_max}-->
-                            <br /><!--{t string="-"}--> <!--{if $arrProducts[cnt].stock_unlimited_max}--><!--{t string="tpl_No limit"}--><!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
+                            <br /><!--{t string="-"}--> <!--{if $arrProducts[cnt].stock_unlimited_max}--><!--{t string="tpl_No limit_01"}--><!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
                         <!--{/if}-->            </td>
                     <!--{* 表示 *}-->
                     <!--{assign var=key value=$arrProducts[cnt].status}-->

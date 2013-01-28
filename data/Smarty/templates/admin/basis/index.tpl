@@ -42,11 +42,11 @@ $(function() {
                     $("#latitude").val(latlng.lat());
                     $("#longitude").val(latlng.lng());
                 } else {
-                    alert('<!--{t string="tpl_The address was not found."}-->');
+                    alert('<!--{t string="tpl_The address was not found._01"}-->');
                 }
             });
         } else {
-            alert('<!--{t string="tpl_The address was not found."}-->');
+            alert('<!--{t string="tpl_The address was not found._01"}-->');
         }
     });
 
@@ -269,33 +269,33 @@ $(function() {
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_Conditions for free shipping"}--> </th>
+            <th><!--{t string="tpl_Conditions for free shipping_01"}--> </th>
             <td>
                 <span class="attention"><!--{$arrErr.free_rule}--></span>
                 <input type="text" name="free_rule" value="<!--{$arrForm.free_rule|h}-->" maxlength="<!--{$smarty.const.PRICE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.free_rule != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> <!--{t string="tpl_ and above is free!_01"}-->
             </td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_Number of days during which download is possible"}--></th>
+            <th><!--{t string="tpl_Number of days during which download is possible_01"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.downloadable_days}--></span>
                 <input type="text" name="downloadable_days" value="<!--{$arrForm.downloadable_days|h}-->" maxlength="<!--{$smarty.const.DOWNLOAD_DAYS_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.downloadable_days != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}--><!--{/if}-->" /> <!--{t string="tpl_Days active_01"}-->
-                <input type="checkbox" name="downloadable_days_unlimited" value="1" <!--{if $arrForm.downloadable_days_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '<!--{$smarty.const.DISABLED_RGB}-->');"/><!--{t string="tpl_No limit"}-->
+                <input type="checkbox" name="downloadable_days_unlimited" value="1" <!--{if $arrForm.downloadable_days_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '<!--{$smarty.const.DISABLED_RGB}-->');"/><!--{t string="tpl_No limit_01"}-->
             </td>
         </tr>
     </table>
 
-    <h2><!--{t string="tpl_Map settings"}--></h2>
+    <h2><!--{t string="tpl_Map settings_01"}--></h2>
     <table>
         <tr>
-            <th><!--{t string="tpl_Latitude/longitude information"}--></th>
+            <th><!--{t string="tpl_Latitude/longitude information_01"}--></th>
             <td>
                 <span class="attention"><!--{$arrErr.latitude}--></span>
                 <span class="attention"><!--{$arrErr.longitude}--></span>
-                <!--{t string="tpl_Latitude : "}--><input type="text" name="latitude" value="<!--{$arrForm.latitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.latitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="latitude" />
-                <!--{t string="tpl_Longitude: "}--><input type="text" name="longitude" value="<!--{$arrForm.longitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.longitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="longitude" />
-                <a class="btn-normal" href="javascript:;" name="codeAddress" id="codeAddress" onclick=""><!--{t string="tpl_Automatic retrieval from location"}--></a>
-                <a href="#maparea" id="mapAddress"><!--{t string="tpl_Set using map"}--></a>
+                <!--{t string="tpl_Latitude : _01"}--><input type="text" name="latitude" value="<!--{$arrForm.latitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.latitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="latitude" />
+                <!--{t string="tpl_Longitude: _01"}--><input type="text" name="longitude" value="<!--{$arrForm.longitude|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" style="<!--{if $arrErr.longitude != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" id="longitude" />
+                <a class="btn-normal" href="javascript:;" name="codeAddress" id="codeAddress" onclick=""><!--{t string="tpl_Automatic retrieval from location_01"}--></a>
+                <a href="#maparea" id="mapAddress"><!--{t string="tpl_Set using map_01"}--></a>
             </td>
         </tr>
     </table>
@@ -309,7 +309,7 @@ $(function() {
 <div style="display: none">
     <div id="maparea">
         <div id="maps" style="width: 300px; height: 300px"></div>
-        <a class="btn-normal" href="javascript:;" id="inputPoint"><!--{t string="tpl_Enter this position."}--></a>
+        <a class="btn-normal" href="javascript:;" id="inputPoint"><!--{t string="tpl_Enter this position._01"}--></a>
     </div>
 </div>
 <!--{* ▲登録テーブルここまで *}-->
