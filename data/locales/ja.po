@@ -5721,7 +5721,7 @@ msgstr "詳細-メイン画像<br />[T_ARG1×T_ARG2]"
 msgid "tpl_Details - Main enlarged image<br />[T_ARG1 x T_ARG2]_01"
 msgstr "詳細-メイン拡大画像<br />[T_ARG1×T_ARG2]"
 
-msgid "tpl_The first_01"
+msgid "tpl_Line(s)_01"
 msgstr "番目へ"
 
 msgid "tpl_ and above is free!_01"

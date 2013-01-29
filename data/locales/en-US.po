@@ -5765,8 +5765,8 @@ msgstr "Details - Main image<br />[T_ARG1 x T_ARG2]"
 msgid "tpl_Details - Main enlarged image<br />[T_ARG1 x T_ARG2]_01"
 msgstr "Details - Main enlarged image<br />[T_ARG1 x T_ARG2]"
 
-msgid "tpl_The first_01"
-msgstr "The first"
+msgid "tpl_Line(s)_01"
+msgstr "Line(s)"
 
 msgid "tpl_ and above is free!_01"
 msgstr " and above is free!"
