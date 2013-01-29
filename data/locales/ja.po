@@ -2236,6 +2236,12 @@ msgstr "指定なし"
 msgid "LC_Page_Products_List_003"
 msgstr "指定なし"
 
+msgid "LC_Page_Products_List_004"
+msgstr "検索結果"
+
+msgid "LC_Page_Products_List_005"
+msgstr "全商品"
+
 msgid "LC_Page_Products_Review_001"
 msgstr "重複したタイトルは登録できません。"
 

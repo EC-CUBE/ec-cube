@@ -2247,6 +2247,12 @@ msgstr "No designation"
 msgid "LC_Page_Products_List_003"
 msgstr "No designation"
 
+msgid "LC_Page_Products_List_004"
+msgstr "Search results"
+
+msgid "LC_Page_Products_List_005"
+msgstr "All products"
+
 msgid "LC_Page_Products_Review_001"
 msgstr "It is not possible to register a duplicate title."
 

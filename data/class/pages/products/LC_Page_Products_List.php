@@ -281,9 +281,9 @@ __EOS__;
      */
     function lfGetPageTitle($mode, $category_id = 0) {
         if ($mode == 'search') {
-            return '検索結果';
+            return t('LC_Page_Products_List_004');
         } elseif ($category_id == 0) {
-            return '全商品';
+            return t('LC_Page_Products_List_005');
         } else {
             $arrCat = SC_Helper_DB_Ex::sfGetCat($category_id);
             return $arrCat['name'];
