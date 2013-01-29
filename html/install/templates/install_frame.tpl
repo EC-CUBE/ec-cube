@@ -47,7 +47,7 @@
                 </div>
                 <!--{if strlen($install_info_url) != 0}-->
                 <div id="info-area">
-                            <iframe src="<!--{$install_info_url}-->" width="562" height="550" frameborder="no" scrolling="no">
+                            <iframe src="<!--{$install_info_url}-->?lang=<!--{$smarty.const.LANG_CODE}-->" width="562" height="550" frameborder="no" scrolling="no">
                                                          <!--{t string="tpl_This is a notice from EC-CUBE. Please use a browser that supports iframe for this section._01"}-->
                             </iframe>
                  </div>
