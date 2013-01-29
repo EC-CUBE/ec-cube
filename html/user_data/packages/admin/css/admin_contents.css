@@ -378,19 +378,18 @@ a.btn-action-m:visited {
     -moz-border-radius: 5px;
 }
 
-/*ツールボタン (オレンジ)*/
+/*ツールボタン (みどり)*/
 .btn-tool-format02,
 a.btn-tool-format02:link,
 a.btn-tool-format02:visited {
     padding: 0 6px;
-    border: solid 1px #FFA801;
+    border: solid 1px #696E84;
     display: inline-block;
     color: #393B57;
-    background: url('../img/button/orange-grad.png') repeat-x #eee;
+    background: url('../img/button/green-grad.png') repeat-x #BDDC8D;
     background-origin: padding-box;
     background-attachment: scroll;
     background-clip: border-box;
-    background-color: #c9cbcb;
     font-weight: bold;
     font-size: 90%;
     text-decoration: none;
@@ -442,8 +441,8 @@ a.btn-tool-format:hover {
     color: #6b728b;
 }
 a.btn-tool-format02:hover {
-    border: solid 1px #977742;
-    color: #6b5f53;
+    border: solid 1px #4b4e59;
+    color: #5a675c;
 }
 
 a.btn:active,

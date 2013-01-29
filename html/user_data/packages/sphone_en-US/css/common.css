@@ -459,7 +459,7 @@ header h1 img {
 .popup_cart {
     font-size: small;
     width: auto;
-    min-width: 130px;
+    min-width: 150px;
     padding: 10px;
     display: none;
     position: absolute;

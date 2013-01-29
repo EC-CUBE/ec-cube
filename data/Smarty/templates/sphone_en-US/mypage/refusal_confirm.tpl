@@ -36,7 +36,7 @@
             <p>Do you want to cancel your membership?</p>
             <ul class="btn_refuse">
                 <li><a class="btn" href="./refusal.php" rel="external">No</a></li>
-                <li><input class="btn data-role-none" type="submit" value="Yes, I want to withdraw my membership" name="refuse_do" id="refuse_do" /></li>
+                <li><input class="btn data-role-none" type="submit" value="Yes, I want to cancel my membership" name="refuse_do" id="refuse_do" /></li>
             </ul>
         </div>
     </form>

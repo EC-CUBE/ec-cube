@@ -448,6 +448,17 @@ ul.status_icon li {
     background-color: #333;
 }
 
+/*レビュー*/
+
+#review_bloc_area {
+    clear: both;
+	padding: 0 10px 10px;
+}
+#review_bloc_area .review_btn {
+	margin: 10px 0;
+}
+
+
 /*その他オススメ商品スライド*/
 #product_detail .title_box_sub:last-child {
     margin-top: 20px;

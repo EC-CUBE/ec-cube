@@ -24,9 +24,8 @@
 <div id="header_wrap">
     <div id="header" class="clearfix">
         <div id="logo_area">
-            <p id="site_description">The Cube Captain has traveled around the world to bring you Cubic gourmet food. Buy it directly from the Captain! Made possible only with EC-CUBE!</p>
             <h1>
-                <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/common/logo.gif" alt="EC-CUBE ONLINE SHOPPING SITE" /><span><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></span></a>
+                <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/common/logo.png" alt="<!--{$arrSiteInfo.shop_name|h}-->" /><span><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></span></a>
             </h1>
         </div>
         <div id="header_utility">
