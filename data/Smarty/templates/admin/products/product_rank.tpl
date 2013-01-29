@@ -109,7 +109,12 @@
                 <!--{assign var=rank value=$tpl_start_row}-->
                 <!--{section name=cnt loop=$arrProductsList}-->
                     <tr>
-                        <td><!--{from_to from=$arrProductsList[cnt].product_code_min to=$arrProductsList[cnt].product_code_max separator="～<br />"}--></td>
+                        <td>
+                            <!--{$arrProductsList[cnt].product_code_min|h}-->
+                            <!--{if $arrProductsList[cnt].product_code_min != $arrProductsList[cnt].product_code_max}-->
+                                <br /><!--{t string="-"}--> <!--{$arrProductsList[cnt].product_code_max|h}-->
+                            <!--{/if}-->
+                        </td>
                         <td>
                             <!--{$arrProductsList[cnt].name|h}-->
                         </td>
