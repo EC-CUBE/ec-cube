@@ -646,9 +646,9 @@
             <input id="datepickershipping_date<!--{$shipping_index}-->"
                    type="text"
                    value="" <!--{if $arrErr[$key1][$shipping_index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
-            <input type="hidden" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|default:""}-->" />
-            <input type="hidden" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|default:""}-->" />
-            <input type="hidden" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|default:""}-->" />
+            <input type="hidden" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|default:""|h}-->" />
+            <input type="hidden" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|default:""|h}-->" />
+            <input type="hidden" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|default:""|h}-->" />
                 </td>
             </tr>
 
