@@ -131,7 +131,7 @@ function lfPopwinSubmit(formName) {
     <input type="hidden" name="order_id[]" value="<!--{$order_id|h}-->">
 <!--{/foreach}-->
 
-<h2><!--コンチE��チE��イトル--><!--{t string="tpl_Ledger creation_01"}--></h2>
+<h2><!--コンテンツタイトル--><!--{t string="tpl_Ledger creation_01"}--></h2>
 
 <table class="form">
     <col width="20%" />
