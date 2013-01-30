@@ -58,7 +58,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         // HTMLに含まれているタグを抽出する
-        preg_match_all('/<\/?([a-z]+)/i', $this->arrParam[$value[1]], $arrTagIncludedHtml = array());
+        preg_match_all('/<\/?([a-z]+)/i', $this->arrParam[$value[1]], $arrTagIncludedHtml);
 
         $arrDiffTag = array_diff($arrTagIncludedHtml[1], $value[2]);
 
