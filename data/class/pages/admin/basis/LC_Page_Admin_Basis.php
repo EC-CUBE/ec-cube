@@ -79,12 +79,13 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      */
     function action() {
         $objDb = new SC_Helper_DB_Ex();
+        $objFormParam = new SC_FormParam_Ex();
 
+
+        $this->lfInitParam($objFormParam, $_POST);
         $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
 
         if ($this->getMode() === 'confirm') {
-            $objFormParam = new SC_FormParam_Ex();
-            $this->lfInitParam($objFormParam, $_POST);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
 
