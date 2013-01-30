@@ -544,25 +544,33 @@ __EOS__;
      * この関数は, 主にスマートフォンで使用します.
      *
      * @param array $arrProducts 商品情報の配列
-     * @return array 税込金額を設定した商品情報の配列
+     * @return array 旧バージョン互換用のデータ
      */
-    function setPriceTaxTo($arrProducts) {
-        foreach ($arrProducts as $key => $value) {
-            $arrProducts[$key]['price01_min_format'] = number_format($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_format'] = number_format($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
+    static function setPriceTaxTo(&$arrProducts) {
+        foreach ($arrProducts as &$arrProduct) {
+            $arrProduct['price01_min_format'] = number_format($arrProduct['price01_min']);
+            $arrProduct['price01_max_format'] = number_format($arrProduct['price01_max']);
+            $arrProduct['price02_min_format'] = number_format($arrProduct['price02_min']);
+            $arrProduct['price02_max_format'] = number_format($arrProduct['price02_max']);
 
-            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price02_max']);
+            SC_Product_Ex::setIncTaxToProduct($arrProduct);
 
-            $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
-            $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
-            $arrProducts[$key]['price02_min_tax_format'] = number_format($arrProducts[$key]['price02_min_tax']);
-            $arrProducts[$key]['price02_max_tax_format'] = number_format($arrProducts[$key]['price02_max_tax']);
+            $arrProduct['price01_min_inctax_format'] = number_format($arrProduct['price01_min_inctax']);
+            $arrProduct['price01_max_inctax_format'] = number_format($arrProduct['price01_max_inctax']);
+            $arrProduct['price02_min_inctax_format'] = number_format($arrProduct['price02_min_inctax']);
+            $arrProduct['price02_max_inctax_format'] = number_format($arrProduct['price02_max_inctax']);
+
+            // @deprecated 2.12.4
+            // 旧バージョン互換用
+            // 本来は、税額の代入で使用すべきキー名。
+            $arrProduct['price01_min_tax_format'] =& $arrProduct['price01_min_inctax_format'];
+            $arrProduct['price01_max_tax_format'] =& $arrProduct['price01_max_inctax_format'];
+            $arrProduct['price02_min_tax_format'] =& $arrProduct['price02_min_inctax_format'];
+            $arrProduct['price02_max_tax_format'] =& $arrProduct['price02_max_inctax_format'];
         }
+        // @deprecated 2.12.4
+        // 旧バージョン互換用
+        // 現在は参照渡しで戻せる
         return $arrProducts;
     }
 

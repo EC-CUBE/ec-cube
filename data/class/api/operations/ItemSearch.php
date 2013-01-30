@@ -67,7 +67,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
 
             if (!SC_Utils_Ex::isBlank($arrProducts)) {
                 $arrProducts = $this->setStatusDataTo($arrProducts, $arrSTATUS, $arrSTATUS_IMAGE);
-                $arrProducts = $objProduct->setPriceTaxTo($arrProducts);
+                SC_Product_Ex::setPriceTaxTo($arrProducts);
                 foreach ($arrProducts as $key=>$val) {
                     $arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
                 }

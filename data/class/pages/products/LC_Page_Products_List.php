@@ -445,12 +445,11 @@ __EOS__;
 
     /**
      *
-     * @param type $objProduct 
      * @return void
      */
-    function doJson(&$objProduct) {
+    function doJson() {
         $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
-        $this->arrProducts = $objProduct->setPriceTaxTo($this->arrProducts);
+        SC_Product_Ex::setPriceTaxTo($this->arrProducts);
 
         // 一覧メイン画像の指定が無い商品のための処理
         foreach ($this->arrProducts as $key=>$val) {

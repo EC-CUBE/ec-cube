@@ -67,9 +67,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      * @return void
      */
     function action() {
-
-        $objProduct  = new SC_Product_Ex();
         $objCustomer = new SC_Customer_Ex();
+
         $customer_id = $objCustomer->getValue('customer_id');
 
         switch ($this->getMode()) {
@@ -77,6 +76,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
                 // お気に入り削除
                 $this->lfDeleteFavoriteProduct($customer_id, intval($_POST['product_id']));
                 break;
+
             case 'getList':
                 // スマートフォン版のもっと見るボタン用
                 // ページ送り用
@@ -84,11 +84,13 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
                     $this->tpl_pageno = intval($_POST['pageno']);
                 }
                 $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
-                $this->arrFavorite = $objProduct->setPriceTaxTo($this->arrFavorite);
-
+                SC_Product_Ex::setPriceTaxTo($this->arrFavorite);
 
                 echo SC_Utils_Ex::jsonEncode($this->arrFavorite);
                 SC_Response_Ex::actionExit();
+                break;
+
+            default:
                 break;
         }
 
