@@ -553,10 +553,10 @@ __EOS__;
             $arrProducts[$key]['price02_min_format'] = number_format($arrProducts[$key]['price02_min']);
             $arrProducts[$key]['price02_max_format'] = number_format($arrProducts[$key]['price02_max']);
 
-            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_min']);
-            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price01_max']);
-            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_min']);
-            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB::sfCalcIncTax($arrProducts[$key]['price02_max']);
+            $arrProducts[$key]['price01_min_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price01_min']);
+            $arrProducts[$key]['price01_max_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price01_max']);
+            $arrProducts[$key]['price02_min_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price02_min']);
+            $arrProducts[$key]['price02_max_tax'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProducts[$key]['price02_max']);
 
             $arrProducts[$key]['price01_min_tax_format'] = number_format($arrProducts[$key]['price01_min_tax']);
             $arrProducts[$key]['price01_max_tax_format'] = number_format($arrProducts[$key]['price01_max_tax']);
@@ -585,10 +585,10 @@ __EOS__;
      * @return void
      */
     static function setIncTaxToProduct(&$arrProduct) {
-        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_min']) : null;
-        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price01_max']) : null;
-        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_min']) : null;
-        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_DB::sfCalcIncTax($arrProduct['price02_max']) : null;
+        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price01_min']) : null;
+        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price01_max']) : null;
+        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price02_min']) : null;
+        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price02_max']) : null;
     }
 
     /**
