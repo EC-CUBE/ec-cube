@@ -41,7 +41,7 @@
                     value="<!--{$arrForm.name02|default:''|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
                     style="<!--{$arrErr.name02|sfGetErrorColor}-->;"
-                    class="boxHarf text data-role-none" placeholder="Name"/>
+                    class="boxHarf text data-role-none" placeholder="First name"/>
             </p>
             <hr />
             <p>

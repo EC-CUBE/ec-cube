@@ -66,7 +66,7 @@
                     value="<!--{$arrForm[$key2].value|h}-->"
                     maxlength="<!--{$arrForm[$key2].length}-->"
                     style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
-                    class="boxHarf text data-role-none" placeholder="Name"/>
+                    class="boxHarf text data-role-none" placeholder="First name"/>
             </dd>
 
             <dt>Postal code&nbsp;<span class="attention">*</span></dt>
@@ -238,7 +238,7 @@
                         value="<!--{$arrForm[$key2].value|h}-->"
                         maxlength="<!--{$arrForm[$key2].length}-->"
                         style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
-                        class="boxHarf text data-role-none" placeholder="Name"/>
+                        class="boxHarf text data-role-none" placeholder="First name"/>
                 </dd>
 
                 <dt>Postal code&nbsp;<span class="attention">*</span></dt>

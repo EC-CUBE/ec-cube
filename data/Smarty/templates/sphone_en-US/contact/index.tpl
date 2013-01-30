@@ -52,7 +52,7 @@
                 <input type="text" name="name02"
                     value="<!--{$arrForm.name02.value|default:$arrData.name02|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.name02|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="Name" />
+                    style="<!--{$arrErr.name02|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="First name" />
             </dd>
 			
             <dt>Postal code</dt>
