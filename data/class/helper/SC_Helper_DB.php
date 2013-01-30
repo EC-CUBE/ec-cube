@@ -1467,4 +1467,34 @@ __EOS__;
 
         return $exists;
     }
+
+    /**
+     * 店舗基本情報を登録する
+     *
+     * @param array $arrData 登録するデータ
+     * @return void
+     */
+    static function registerBasisData($arrData) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $arrData = $objQuery->extractOnlyColsOf('dtb_baseinfo', $arrData);
+
+        if (isset($arrData['regular_holiday_ids']) && is_array($arrData['regular_holiday_ids'])) {
+            // 定休日をパイプ区切りの文字列に変換
+            $arrData['regular_holiday_ids'] = implode('|', $arrData['regular_holiday_ids']);
+        }
+
+        $arrData['update_date'] = 'CURRENT_TIMESTAMP';
+
+        // UPDATEの実行
+        $ret = $objQuery->update('dtb_baseinfo', $arrData);
+        GC_Utils_Ex::gfPrintLog('dtb_baseinfo に UPDATE を実行しました。');
+
+        // UPDATE できなかった場合、INSERT
+        if ($ret == 0) {
+            $arrData['id'] = 1;
+            $ret = $objQuery->insert('dtb_baseinfo', $arrData);
+            GC_Utils_Ex::gfPrintLog('dtb_baseinfo に INSERT を実行しました。');
+        }
+    }
 }

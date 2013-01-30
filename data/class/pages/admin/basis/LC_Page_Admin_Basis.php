@@ -78,58 +78,33 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-
         $objDb = new SC_Helper_DB_Ex();
 
-        if ($objDb->sfGetBasisExists()) {
-            $this->tpl_mode = 'update';
-        } else {
-            $this->tpl_mode = 'insert';
-        }
+        $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
 
-        if (!empty($_POST)) {
-
+        if ($this->getMode() === 'confirm') {
             $objFormParam = new SC_FormParam_Ex();
             $this->lfInitParam($objFormParam, $_POST);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
 
             $this->arrErr = $this->lfCheckError($objFormParam);
-            $post = $objFormParam->getHashArray();
 
-            $this->arrForm = $post;
-
-            if (count($this->arrErr) == 0) {
-                switch ($this->getMode()) {
-                    // 既存編集
-                    case 'update':
-                        $this->lfUpdateData($this->arrForm);
-                        break;
-                    // 新規作成
-                    case 'insert':
-                        $this->lfInsertData($this->arrForm);
-                        break;
-                    default:
-                        break;
-                }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert('SHOPマスターの登録が完了しました。');";
+            if (!empty($this->arrErr)) {
+                $this->arrForm = $objFormParam->getHashArray();
+                return;
             }
-            if (empty($this->arrForm['regular_holiday_ids'])) {
-                $this->arrSel = array();
-            } else {
-                $this->arrSel = $this->arrForm['regular_holiday_ids'];
-            }
-        } else {
-            $arrCol = $this->lfGetCol();
-            $col    = SC_Utils_Ex::sfGetCommaList($arrCol);
-            $arrRet = $objDb->sfGetBasisData(true, $col);
-            $this->arrForm = $arrRet;
 
-            $regular_holiday_ids = explode('|', $this->arrForm['regular_holiday_ids']);
-            $this->arrForm['regular_holiday_ids'] = $regular_holiday_ids;
-            $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
+            $arrData = $objFormParam->getDbArray();
+            SC_Helper_DB_Ex::registerBasisData($arrData);
+
+            $this->tpl_onload .= "window.alert('SHOPマスターの登録が完了しました。');";
         }
 
+        $arrRet = $objDb->sfGetBasisData(true);
+        $objFormParam->setParam($arrRet);
+        $this->arrForm = $objFormParam->getHashArray();
+        $this->arrForm['regular_holiday_ids'] = explode('|', $this->arrForm['regular_holiday_ids']);
     }
 
     /**
@@ -141,74 +116,24 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         parent::destroy();
     }
 
-    // 基本情報用のカラムを取り出す。
-    function lfGetCol() {
-        $arrCol = array(
-            'company_name',
-            'company_kana',
-            'shop_name',
-            'shop_kana',
-            'shop_name_eng',
-            'zip01',
-            'zip02',
-            'pref',
-            'addr01',
-            'addr02',
-            'tel01',
-            'tel02',
-            'tel03',
-            'fax01',
-            'fax02',
-            'fax03',
-            'business_hour',
-            'email01',
-            'email02',
-            'email03',
-            'email04',
-            'tax',
-            'tax_rule',
-            'free_rule',
-            'good_traded',
-            'message',
-            'regular_holiday_ids',
-            'latitude',
-            'longitude',
-            'downloadable_days',
-            'downloadable_days_unlimited'
-        );
-        return $arrCol;
+    /**
+     * 前方互換用
+     *
+     * @deprecated 2.12.4
+     */
+    function lfUpdateData($arrData) {
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        SC_Helper_DB_Ex::registerBasisData($arrData);
     }
 
-    function lfUpdateData($array) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrCol = $this->lfGetCol();
-        foreach ($arrCol as $val) {
-            //配列の場合は、パイプ区切りの文字列に変換
-            if (is_array($array[$val])) {
-                $sqlval[$val] = implode('|', $array[$val]);
-            } else {
-                $sqlval[$val] = $array[$val];
-            }
-        }
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        // UPDATEの実行
-        $ret = $objQuery->update('dtb_baseinfo', $sqlval);
-
-        GC_Utils_Ex::gfPrintLog('dtb_baseinfo に UPDATE を実行しました。');
-    }
-
-    function lfInsertData($array) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrCol = $this->lfGetCol();
-        foreach ($arrCol as $val) {
-            $sqlval[$val] = $array[$val];
-        }
-        $sqlval['id'] = 1;
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        // INSERTの実行
-        $ret = $objQuery->insert('dtb_baseinfo', $sqlval);
-
-        GC_Utils_Ex::gfPrintLog('dtb_baseinfo に INSERT を実行しました。');
+    /**
+     * 前方互換用
+     *
+     * @deprecated 2.12.4
+     */
+    function lfInsertData($arrData) {
+        trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+        SC_Helper_DB_Ex::registerBasisData($arrData);
     }
 
     function lfInitParam(&$objFormParam, $post) {
