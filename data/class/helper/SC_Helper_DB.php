@@ -152,6 +152,71 @@ class SC_Helper_DB {
     }
 
     /**
+     * 基本情報のキャッシュデータを取得する
+     *
+     * @param boolean $generate キャッシュファイルが無い時、DBのデータを基にキャッシュを生成するか
+     * @return array 店舗基本情報の配列
+     */
+    function sfGetBasisDataCache($generate = false){
+        // テーブル名
+        $name = 'dtb_baseinfo';
+        // キャッシュファイルパス
+        $filepath = MASTER_DATA_REALDIR . $name . '.serial';
+        // ファイル存在確認
+        if (!file_exists($filepath) && $generate) {
+            // 存在していなければキャッシュ生成
+            $this->sfCreateBasisDataCache();
+        }
+        // 戻り値初期化
+        $cacheData = array();
+        // キャッシュファイルが存在すれば読み込む
+        if (file_exists($filepath)) {
+            // キャッシュデータファイルを読み込みアンシリアライズした配列を取得
+            $cacheData = unserialize(file_get_contents($filepath));
+        }
+        // return
+        return $cacheData;
+    }
+
+    /**
+     * 基本情報のキャッシュデータファイルを生成する
+     * データはsfGetBasisDataより取得。
+     * 
+     * このメソッドが直接呼ばれるのは、
+     *「基本情報管理＞SHOPマスター」の更新完了後。
+     * sfGetBasisDataCacheでは、
+     * キャッシュデータファイルが無い場合に呼ばれます。
+     *
+     * @return bool キャッシュデータファイル生成結果
+     */
+    function sfCreateBasisDataCache() {
+        // テーブル名
+        $name = 'dtb_baseinfo';
+        // キャッシュファイルパス
+        $filepath = MASTER_DATA_REALDIR . $name . '.serial';
+        // データ取得
+        $arrData = $this->sfGetBasisData(true);
+        // シリアライズ
+        $data = serialize($arrData);
+        // ファイルを書き出しモードで開く
+        $handle = fopen($filepath, 'w');
+        if (!$handle) {
+            // ファイル生成失敗
+            return false;
+        }
+        // ファイルの内容を書き出す.
+        $res = fwrite($handle, $data);
+        // ファイルを閉じる
+        fclose($handle);
+        if ( $res === false) {
+            // ファイル生成失敗
+            return false;
+        }
+        // ファイル生成成功
+        return true;
+    }
+
+    /**
      * 基本情報の登録数を取得する
      *
      * @return int
