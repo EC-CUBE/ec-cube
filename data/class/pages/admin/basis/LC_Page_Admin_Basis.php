@@ -255,8 +255,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         } else {
             $objFormParam->addParam('ダウンロード無制限', 'downloadable_days_unlimited', array('EXIST_CHECK'));
         }
-        $objFormParam->addParam('緯度', 'latitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('軽度', 'longitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('緯度', 'latitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK', 'NUM_POINT_CHECK'));
+        $objFormParam->addParam('軽度', 'longitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK', 'NUM_POINT_CHECK'));
 
         $objFormParam->addParam('定休日', 'regular_holiday_ids', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
@@ -272,9 +272,6 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // 電話番号チェック
         $objErr->doFunc(array('TEL', 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));
         $objErr->doFunc(array('FAX', 'fax01', 'fax02', 'fax03'), array('TEL_CHECK'));
-
-        $objErr->doFunc(array('緯度', 'latitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array('経度', 'longitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
 
         return array_merge((array)$arrErr, (array)$objErr->arrErr);
     }

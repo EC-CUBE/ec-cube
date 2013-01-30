@@ -217,6 +217,7 @@ class SC_FormParam {
                     case 'KANABLANK_CHECK':
                     case 'SELECT_CHECK':
                     case 'FILE_NAME_CHECK_BY_NOUPLOAD':
+                    case 'NUM_POINT_CHECK':
                         $this->recursionCheck($this->disp_name[$index], $func,
                             $value, $arrErr, $key, $this->length[$index]);
                         break;
