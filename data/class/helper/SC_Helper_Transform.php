@@ -64,7 +64,7 @@ class SC_Helper_Transform {
         $encoding = mb_detect_encoding($source);
         if (!in_array($encoding, array('ASCII', 'UTF-8'))) {
             if ($encoding === false) {
-                $encoding = t("SC_Helper_Transform_001");
+                $encoding = t("c_Not detectable_01");
             }
             $msg = t('SC_Helper_Transform_002', array('T_ARG1' => $encoding));
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
@@ -326,7 +326,7 @@ class SC_Helper_Transform {
                 }
             }
             // エラー画面表示
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t('SC_Helper_Transform_004', array('T_ARG1' => $err_msg)));
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t('c_Template operation failed. T_ARG1_01', array('T_ARG1' => $err_msg)));
         } elseif ($this->snip_count) {
             $html = $this->objDOM->saveHTML();
             $html = preg_replace('/^.*(<html[^>]*>)/s', '$1', $html);
@@ -619,7 +619,7 @@ class SC_Helper_Transform {
             $this->snip_count++;
         }
         catch (Exception $e) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t("SC_Helper_Transform_005"));
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t("c_Template operation failed._01"));
         }
 
         return true;

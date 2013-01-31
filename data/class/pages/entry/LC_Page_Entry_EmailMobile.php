@@ -105,7 +105,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_EMAIL'), 'email_mobile', null, 'a',
+        $objFormParam->addParam(t('c_E-mail address_01'), 'email_mobile', null, 'a',
                                 array('NO_SPTAB', 'EXIST_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'EMAIL_CHECK', 'MOBILE_EMAIL_CHECK'));
     }
 
@@ -123,7 +123,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
         $objErr->arrErr = $objFormParam->checkError();
 
         // FIXME: lfInitParam() で設定すれば良いように感じる
-        $objErr->doFunc(array(t('PARAM_LABEL_EMAIL'), 'email_mobile'), array('CHECK_REGIST_CUSTOMER_EMAIL'));
+        $objErr->doFunc(array(t('c_E-mail address_01'), 'email_mobile'), array('CHECK_REGIST_CUSTOMER_EMAIL'));
 
         return $objErr->arrErr;
     }

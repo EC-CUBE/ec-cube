@@ -64,12 +64,12 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $this->arrDay               = $objDate->getDay();
 
         // ページタイトル todo あとでなおす
-        $this->arrTitle['']         = t('LC_Page_Admin_Total_001');
-        $this->arrTitle['term']     = t('LC_Page_Admin_Total_002');
-        $this->arrTitle['products'] = t('LC_Page_Admin_Total_003');
-        $this->arrTitle['age']      = t('LC_Page_Admin_Total_004');
-        $this->arrTitle['job']      = t('LC_Page_Admin_Total_005');
-        $this->arrTitle['member']   = t('LC_Page_Admin_Total_006');
+        $this->arrTitle['']         = t('c_Sales by period_01');
+        $this->arrTitle['term']     = t('c_Sales by period_01');
+        $this->arrTitle['products'] = t('c_Sales by product_01');
+        $this->arrTitle['age']      = t('c_Sales by age group_01');
+        $this->arrTitle['job']      = t('c_Sales  by occupation_01');
+        $this->arrTitle['member']   = t('c_Sales by member_01');
 
         // 月度集計のkey名
         $this->arrSearchForm1       = array('search_startyear_m', 'search_startmonth_m');
@@ -334,9 +334,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = t('LC_Page_Admin_Total_007', array('T_ARG1' => $sy, 'T_ARG2' => $sm, 'T_ARG3' => $sd));
-            $end_date = t('LC_Page_Admin_Total_007', array('T_ARG1' => $ey, 'T_ARG2' => $em, 'T_ARG3' => $ed));
-            $objGraphLine->drawTitle(t('LC_Page_Admin_Total_008', array('T_ARG1' => $start_date, 'T_ARG2' => $end_date)));
+            $start_date = t('c_T_ARG1/T_ARG2/T_ARG3_01', array('T_ARG1' => $sy, 'T_ARG2' => $sm, 'T_ARG3' => $sd));
+            $end_date = t('c_T_ARG1/T_ARG2/T_ARG3_01', array('T_ARG1' => $ey, 'T_ARG2' => $em, 'T_ARG3' => $ed));
+            $objGraphLine->drawTitle(t('c_Sales period: T_ARG1 - T_ARG2_01', array('T_ARG1' => $start_date, 'T_ARG2' => $end_date)));
 
             // グラフ描画
             $objGraphLine->drawGraph();
@@ -378,10 +378,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             // メインタイトル作成
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = t('LC_Page_Admin_Total_007', array('T_ARG1' => $sy, 'T_ARG2' => $sm, 'T_ARG3' => $sd));
-            $end_date = t('LC_Page_Admin_Total_007', array('T_ARG1' => $ey, 'T_ARG2' => $em, 'T_ARG3' => $ed));
+            $start_date = t('c_T_ARG1/T_ARG2/T_ARG3_01', array('T_ARG1' => $sy, 'T_ARG2' => $sm, 'T_ARG3' => $sd));
+            $end_date = t('c_T_ARG1/T_ARG2/T_ARG3_01', array('T_ARG1' => $ey, 'T_ARG2' => $em, 'T_ARG3' => $ed));
             
-            $objGraphPie->drawTitle(t('LC_Page_Admin_Total_008', array('T_ARG1' => $start_date, 'T_ARG2' => $end_date)));
+            $objGraphPie->drawTitle(t('c_Sales period: T_ARG1 - T_ARG2_01', array('T_ARG1' => $start_date, 'T_ARG2' => $end_date)));
 
             // 円グラフ描画
             $objGraphPie->drawGraph();
@@ -427,9 +427,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
             $arrKey = array_keys($arrList);
             list($sy, $sm, $sd) = preg_split('|[/ ]|' , $sdate);
             list($ey, $em, $ed) = preg_split('|[/ ]|' , $edate);
-            $start_date = t('LC_Page_Admin_Total_007', array('T_ARG1' => $sy, 'T_ARG2' => $sm, 'T_ARG3' => $sd));
-            $end_date = t('LC_Page_Admin_Total_007', array('T_ARG1' => $ey, 'T_ARG2' => $em, 'T_ARG3' => $ed));
-            $objGraphBar->drawTitle(t('LC_Page_Admin_Total_008', array('T_ARG1' => $start_date, 'T_ARG2' => $end_date)));
+            $start_date = t('c_T_ARG1/T_ARG2/T_ARG3_01', array('T_ARG1' => $sy, 'T_ARG2' => $sm, 'T_ARG3' => $sd));
+            $end_date = t('c_T_ARG1/T_ARG2/T_ARG3_01', array('T_ARG1' => $ey, 'T_ARG2' => $em, 'T_ARG3' => $ed));
+            $objGraphBar->drawTitle(t('c_Sales period: T_ARG1 - T_ARG2_01', array('T_ARG1' => $start_date, 'T_ARG2' => $end_date)));
 
             $objGraphBar->drawGraph();
 
@@ -528,13 +528,13 @@ __EOS__;
             $arrResult =& $arrTotalResults[$key];
             $member_key = $arrResult['order_sex'];
             if ($member_key != '') {
-                $arrResult['member_name'] = (($arrResult['member']) ? t('LC_Page_Admin_Total_009') : t('LC_Page_Admin_Total_010')) . $this->arrSex[$member_key];
+                $arrResult['member_name'] = (($arrResult['member']) ? t('c_Member_01') : t('c_Non-member_01')) . $this->arrSex[$member_key];
             } else {
-                $arrResult['member_name'] = t('LC_Page_Admin_Total_011');
+                $arrResult['member_name'] = t('c_Not answered_01');
             }
         }
 
-        $tpl_image = $this->lfGetGraphPie($arrTotalResults, 'member_name', 'member', t('LC_Page_Admin_Total_039'), $sdate, $edate);
+        $tpl_image = $this->lfGetGraphPie($arrTotalResults, 'member_name', 'member', t('c_(Sales ratio)_01'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -571,7 +571,7 @@ __EOS__;
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
-        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, t('LC_Page_Admin_Total_039'), $sdate, $edate);
+        $tpl_image  = $this->lfGetGraphPie($arrTotalResults, 'product_name', 'products_' . $type, t('c_(Sales ratio)_01'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -603,11 +603,11 @@ __EOS__;
             if ($job_key != '') {
                 $arrResult['job_name'] = $this->arrJob[$job_key];
             } else {
-                $arrResult['job_name'] = t('LC_Page_Admin_Total_011');
+                $arrResult['job_name'] = t('c_Not answered_01');
             }
 
         }
-        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, 'job_name', 'job_' . $type, t('LC_Page_Admin_Total_039'), $sdate, $edate);
+        $tpl_image     = $this->lfGetGraphPie($arrTotalResults, 'job_name', 'job_' . $type, t('c_(Sales ratio)_01'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -638,13 +638,13 @@ __EOS__;
             $arrResult =& $arrTotalResults[$key];
             $age_key = $arrResult['age'];
             if ($age_key != '') {
-                $arrResult['age_name'] = t('LC_Page_Admin_Total_012', array('T_ARG1' => $arrResult['age']));
+                $arrResult['age_name'] = t('c_T_ARG1s_01', array('T_ARG1' => $arrResult['age']));
             } else {
-                $arrResult['age_name'] = t('LC_Page_Admin_Total_011');
+                $arrResult['age_name'] = t('c_Not answered_01');
             }
 
         }
-        $tpl_image = $this->lfGetGraphBar($arrTotalResults, 'age_name', 'age_' . $type, t('LC_Page_Admin_Total_013'), t('LC_Page_Admin_Total_014'), $sdate, $edate);
+        $tpl_image = $this->lfGetGraphBar($arrTotalResults, 'age_name', 'age_' . $type, t('c_(Age)_01'), t('c_(Total sales)_01'), $sdate, $edate);
 
         return array($arrTotalResults, $tpl_image);
     }
@@ -660,28 +660,28 @@ __EOS__;
 
         switch ($type) {
             case 'month':
-                $xtitle = t('LC_Page_Admin_Total_015');
-                $ytitle = t('LC_Page_Admin_Total_014');
+                $xtitle = t('c_(By month)_01');
+                $ytitle = t('c_(Total sales)_01');
                 $format = '%m';
                 break;
             case 'year':
-                $xtitle = t('LC_Page_Admin_Total_016');
-                $ytitle = t('LC_Page_Admin_Total_014');
+                $xtitle = t('c_(By year)_01');
+                $ytitle = t('c_(Total sales)_01');
                 $format = '%Y';
                 break;
             case 'wday':
-                $xtitle = t('LC_Page_Admin_Total_017');
-                $ytitle = t('LC_Page_Admin_Total_014');
+                $xtitle = t('c_(By day)_01');
+                $ytitle = t('c_(Total sales)_01');
                 $format = '%a';
                 break;
             case 'hour':
-                $xtitle = t('LC_Page_Admin_Total_018');
-                $ytitle = t('LC_Page_Admin_Total_014');
+                $xtitle = t('c_(By time)_01');
+                $ytitle = t('c_(Total sales)_01');
                 $format = '%H';
                 break;
             default:
-                $xtitle = t('LC_Page_Admin_Total_019');
-                $ytitle = t('LC_Page_Admin_Total_014');
+                $xtitle = t('c_(By date)_01');
+                $ytitle = t('c_(Total sales)_01');
                 $format = '%Y-%m-%d';
                 $xincline = true;
                 break;
@@ -802,7 +802,7 @@ __EOS__;
             }
             // 期間別集計の合計行の「期間」項目に不要な値が表示されてしまわない様、'合計'と表示する
             if (($i === $max -1) && isset($arrRet[$i]['str_date'])) {
-                $arrRet[$i]['str_date'] = t('LC_Page_Admin_Total_020');
+                $arrRet[$i]['str_date'] = t('c_Total_01');
             }
             $csv_data.= SC_Utils_Ex::sfGetCSVList($arrRet[$i]);
         }
@@ -814,12 +814,12 @@ __EOS__;
             // 商品別集計
             case 'products':
                 $arrTitleCol = array(
-                    t('LC_Page_Admin_Total_021'),
-                    t('LC_Page_Admin_Total_022'),
-                    t('LC_Page_Admin_Total_023'),
-                    t('LC_Page_Admin_Total_024'),
-                    t('LC_Page_Admin_Total_025'),
-                    t('LC_Page_Admin_Total_026'),
+                    t('c_Product code_01'),
+                    t('c_Product name_01'),
+                    t('c_Number of items purchased_01'),
+                    t('c_Quantity_01'),
+                    t('c_Unit price_01'),
+                    t('c_Amount_01'),
                 );
                 $arrDataCol = array(
                     'product_code',
@@ -833,10 +833,10 @@ __EOS__;
             // 職業別集計
             case 'job':
                 $arrTitleCol = array(
-                    t('LC_Page_Admin_Total_027'),
-                    t('LC_Page_Admin_Total_023'),
-                    t('LC_Page_Admin_Total_028'),
-                    t('LC_Page_Admin_Total_029'),
+                    t('c_Occupation_01'),
+                    t('c_Number of items purchased_01'),
+                    t('c_Purchase total_01'),
+                    t('c_Purchase average_01'),
                 );
                 $arrDataCol = array(
                     'job_name',
@@ -848,10 +848,10 @@ __EOS__;
             // 会員別集計
             case 'member':
                 $arrTitleCol = array(
-                    t('LC_Page_Admin_Total_030'),
-                    t('LC_Page_Admin_Total_023'),
-                    t('LC_Page_Admin_Total_028'),
-                    t('LC_Page_Admin_Total_029'),
+                    t('c_Member_01'),
+                    t('c_Number of items purchased_01'),
+                    t('c_Purchase total_01'),
+                    t('c_Purchase average_01'),
                 );
                 $arrDataCol = array(
                     'member_name',
@@ -863,10 +863,10 @@ __EOS__;
             // 年代別集計
             case 'age':
                 $arrTitleCol = array(
-                    t('LC_Page_Admin_Total_031'),
-                    t('LC_Page_Admin_Total_023'),
-                    t('LC_Page_Admin_Total_028'),
-                    t('LC_Page_Admin_Total_029'),
+                    t('c_Age_01'),
+                    t('c_Number of items purchased_01'),
+                    t('c_Purchase total_01'),
+                    t('c_Purchase average_01'),
                 );
                 $arrDataCol = array(
                     'age_name',
@@ -878,16 +878,16 @@ __EOS__;
             // 期間別集計
             default:
                 $arrTitleCol = array(
-                    t('LC_Page_Admin_Total_032'),
-                    t('LC_Page_Admin_Total_023'),
-                    t('LC_Page_Admin_Total_033'),
-                    t('LC_Page_Admin_Total_034'),
-                    t('LC_Page_Admin_Total_035'),
-                    t('LC_Page_Admin_Total_036'),
-                    t('LC_Page_Admin_Total_037'),
-                    t('LC_Page_Admin_Total_038'),
-                    t('LC_Page_Admin_Total_028'),
-                    t('LC_Page_Admin_Total_029'),
+                    t('c_Period_01'),
+                    t('c_Number of items purchased_01'),
+                    t('c_Male_01'),
+                    t('c_Female_01'),
+                    t('c_Male (member)_01'),
+                    t('c_Male (non-member)_01'),
+                    t('c_Female (member)_01'),
+                    t('c_Female (non-member)_01'),
+                    t('c_Purchase total_01'),
+                    t('c_Purchase average_01'),
                 );
                 $arrDataCol = array(
                     'str_date',

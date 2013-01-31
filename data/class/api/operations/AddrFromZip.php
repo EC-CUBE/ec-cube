@@ -41,7 +41,7 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex {
 
     public function __construct() {
         parent::__construct();
-        $this->operation_description = t('API_AddrFromZip_001');
+        $this->operation_description = t('c_Search for an address from the postal code._01');
     }
 
     public function doAction($arrParam) {
@@ -63,8 +63,8 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex {
     }
 
     protected function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP1'), 'zip1', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP2'), 'zip2', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Postal code 1_01'), 'zip1', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Postal code 2_01'), 'zip2', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     public function getResponseGroupName() {

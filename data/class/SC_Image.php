@@ -56,7 +56,7 @@ class SC_Image {
                 'T_ARG1' => $from_path,
                 'T_ARG2' => $to_path
             );
-            GC_Utils_Ex::gfDebugLog(t('SC_Image_002', $tokens));
+            GC_Utils_Ex::gfDebugLog(t('c_Copying of T_FROM->T_TO failed._01', $tokens));
         }
     }
 
@@ -98,11 +98,11 @@ class SC_Image {
         if ($tmpMH) $MH = $tmpMH; // $MHに最大縦幅セット
 
         if (empty($FromImgPath) || empty($ToImgPath)) {
-            return array(0,  t('SC_Image_003'));
+            return array(0,  t('c_The output source image path or the output destination folder has not been designated._01'));
         }
 
         if (!file_exists($FromImgPath)) {
-            return array(0,  t('SC_Image_004'));
+            return array(0,  t('c_The output source image was not found._01'));
         }
 
         $size = @GetImageSize($FromImgPath);
@@ -110,7 +110,7 @@ class SC_Image {
 
         // 画像の種類が不明 or swf
         if (!$size[2] || $size[2] > 3) {
-            return array(0,  t('SC_Image_005'));
+            return array(0,  t('c_The image format is not supported._01'));
         }
 
         //アスペクト比固定処理
@@ -155,7 +155,7 @@ class SC_Image {
                         $ToFile .= '.gif';
                     }
                     if (!@copy($FromImgPath , $ToImgPath.$ToFile)) { // エラー処理
-                        return array(0,  t('SC_Image_001'));
+                        return array(0,  t('c_File copying failed._01'));
                     }
                     ImageDestroy($ImgNew);
                     return array(1,$ToFile);
@@ -178,7 +178,7 @@ class SC_Image {
                 @Imagepng($ImgNew,$TmpPath);
                 // 画像が作成されていない場合
                 if (!@file_exists($TmpPath)) {
-                    return array(0,  t('SC_Image_006'));
+                    return array(0,  t('c_Image output failed._01'));
                 }
                 ImageDestroy($ImgNew);
                 return array(1,$ToFile);
@@ -205,7 +205,7 @@ class SC_Image {
                 @ImageJpeg($ImgNew,$TmpPath);
                 // 画像が作成されていない場合
                 if (!@file_exists($TmpPath)) {
-                    return array(0,  t('SC_Image_006')."<br>${ImgNew}<br>${TmpPath}");
+                    return array(0,  t('c_Image output failed._01')."<br>${ImgNew}<br>${TmpPath}");
                 }
                 $RetVal = $ToFile;
                 break;
@@ -226,7 +226,7 @@ class SC_Image {
                 @ImagePNG($ImgNew,$TmpPath);
                 // 画像が作成されていない場合
                 if (!@file_exists($TmpPath)) {
-                    return array(0,  t('SC_Image_006'));
+                    return array(0,  t('c_Image output failed._01'));
                 }
                 $RetVal = $ToFile;
                 break;

@@ -1154,7 +1154,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_PLUG
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', 'DATA_REALDIR . "downloads/tmp/plugin_install/"', 613, 'Temporary decompression directory for plug-in (for installing)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_URLPATH', 'ROOT_URLPATH . "plugin/"', 614, 'Plug-in URL');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_DAYS_LEN', '3', 700, 'Number of days Number of digits');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'Extensions possible for registration of downloaded files (comma-delimited)"');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'Extensions possible for registration of downloaded files (comma-delimited)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SIZE', '50000', 702, 'Size limitation for download sales file (KB)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PRODUCT_DOWN', '1', 703, '1: Actual product 2: Download');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_TEMP_REALDIR', 'DATA_REALDIR . "download/temp/"', 704, 'Temporary saving of downloaded file');

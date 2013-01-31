@@ -127,9 +127,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $arrForm['day']   = date('d');
 
         // メッセージ
-        $arrForm['msg1'] = t('LC_Page_Admin_Order_Pdf_006');
-        $arrForm['msg2'] = t('LC_Page_Admin_Order_Pdf_007');
-        $arrForm['msg3'] = t('LC_Page_Admin_Order_Pdf_008');
+        $arrForm['msg1'] = t('c_Thank you for your purchase._01');
+        $arrForm['msg2'] = t('c_Delivery will be based on the following below._01');
+        $arrForm['msg3'] = t('c_Please confirm._01');
 
         // 注文番号があったら、セットする
         if (SC_Utils_Ex::sfIsInt($order_id)) {

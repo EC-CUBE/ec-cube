@@ -11,478 +11,439 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-msgid "SC_CheckError_001"
+msgid "c_* T_ARG2 contains the tag T_ARG1 which is not allowed. <br />_01"
 msgstr "※ T_ARG1に許可されていないタグ T_ARG2 が含まれています。<br />"
 
-msgid "SC_CheckError_002"
+msgid "c_* T_ARG1 is blank. <br />_01"
 msgstr "※ T_ARG1が入力されていません。<br />"
 
-msgid "SC_CheckError_003"
+msgid "c_* T_ARG1 is not selected. <br />_01"
 msgstr "※ T_ARG1が選択されていません。<br />"
 
-msgid "SC_CheckError_004"
-msgstr "※ T_ARG1が入力されていません。<br />"
-
-msgid "SC_CheckError_005"
+msgid "c_* Spaces, tabs and line breaks are not possible in T_ARG1. <br />_01"
 msgstr "※ T_ARG1にスペース、タブ、改行のみの入力はできません。<br />"
 
-msgid "SC_CheckError_006"
+msgid "c_* Do not include spaces, tabs or line breaks in T_ARG1. <br />_01"
 msgstr "※ T_ARG1にスペース、タブ、改行は含めないで下さい。<br />"
 
-msgid "SC_CheckError_007"
+msgid "c_* A numerical value that starts with 0 has been entered for T_ARG1. <br />_01"
 msgstr "※ T_ARG1に0で始まる数値が入力されています。<br />"
 
-msgid "SC_CheckError_008"
-msgstr "※ T_ARG1が選択されていません。<br />"
-
-msgid "SC_CheckError_009"
+msgid "c_* T_ARG1 and T_ARG2 do not match. <br />_01"
 msgstr "※ T_ARG1とT_ARG2が一致しません。<br />"
 
-msgid "SC_CheckError_010"
+msgid "c_* The same value cannot be used for T_ARG1 and T_ARG2. <br />_01"
 msgstr "※ T_ARG1とT_ARG2は、同じ値を使用できません。<br />"
 
-msgid "SC_CheckError_011"
+msgid "c_* It is not possible to enter a larger value for T_ARG1 than for T_ARG2. <br />_01"
 msgstr "※ T_ARG1はT_ARG2より大きい値を入力できません。<br />"
 
-msgid "SC_CheckError_012"
+msgid "c_* For T_ARG1, enter T_ARG2  characters or less. <br />_01"
 msgstr "※ T_ARG1はT_ARG2字以下で入力してください。<br />"
 
-msgid "SC_CheckError_013_SINGLE"
-msgid_plural "SC_CheckError_013_PLURAL"
+msgid "c_* For T_ARG1, enter T_COUNT characters or more. <br />_01"
+msgid_plural "c_* For T_ARG1, input T_COUNT characters or more. <br />_01"
 msgstr[0] "※ T_ARG1はT_COUNT字以上で入力してください。<br />"
 msgstr[1] "※ T_ARG1はT_COUNT字以上で入力してください。<br />"
 
-msgid "SC_CheckError_014"
+msgid "c_* For T_ARG1, enter T_ARG2 or smaller. <br />_01"
 msgstr "※ T_ARG1はT_ARG2以下で入力してください。<br />"
 
-msgid "SC_CheckError_015_SINGLE"
-msgid_plural "SC_CheckError_015_PLURAL"
+msgid "c_* Enter T_COUNT or higher for T_ARG1. <br />_01"
+msgid_plural "c_* Input T_COUNT or higher for T_ARG1. <br />_01"
 msgstr[0] "※ T_ARG1はT_COUNT以上で入力してください。<br />"
 msgstr[1] "※ T_ARG1はT_COUNT以上で入力してください。<br />"
 
-msgid "SC_CheckError_016"
+msgid "c_* Enter only numbers for T_ARG1. <br />_01"
 msgstr "※ T_ARG1は数字で入力してください。<br />"
 
-msgid "SC_CheckError_017"
+msgid "c_* Enter only numbers for T_ARG1. <br />_02"
 msgstr "※ T_ARG1は数字で入力してください。<br />"
 
-msgid "SC_CheckError_018"
+msgid "c_* Enter alphabetical characters for T_ARG1. <br />_01"
 msgstr "※ T_ARG1は半角英字で入力してください。<br />"
 
-msgid "SC_CheckError_019"
+msgid "c_* Enter all items for T_ARG1. <br />_01"
 msgstr "※ T_ARG1はすべての項目を入力してください。<br />"
 
-msgid "SC_CheckError_020"
+msgid "c_* T_ARG1 must be T_ARG2 characters or less. <br />_01"
 msgstr "※ T_ARG1はT_ARG2字以内で入力してください。<br />"
 
-msgid "SC_CheckError_021"
+msgid "c_* Enter numbers for T_ARG1. <br />_01"
 msgstr "※ T_ARG1は数字で入力してください。<br />"
 
-msgid "SC_CheckError_022"
+msgid "c_* For T_ARG1, enter within a text length of T_ARG2. <br />_01"
 msgstr "※ T_ARG1はT_ARG2文字以内で入力してください。<br />"
 
-msgid "SC_CheckError_023"
-msgstr "※ T_ARG1が入力されていません。<br />"
-
-msgid "SC_CheckError_024"
-msgstr "※ T_ARG1はすべての項目を入力して下さい。<br />"
-
-msgid "SC_CheckError_025"
-msgstr "※ T_ARG1が入力されていません。<br />"
-
-msgid "SC_CheckError_026"
+msgid "c_* Enter items in order, starting at the beginning. <br />_01"
 msgstr "※ T_ARG1は先頭の項目から順番に入力して下さい。<br />"
 
-msgid "SC_CheckError_027"
+msgid "c_* For T_ARG1, enter katakana characters. <br />_01"
 msgstr "※ T_ARG1はカタカナで入力してください。<br />"
 
-msgid "SC_CheckError_028"
+msgid "c_* For T_ARG1, enter katakana characters. <br />_02"
 msgstr "※ T_ARG1はカタカナで入力してください。<br />"
 
-msgid "SC_CheckError_029"
+msgid "c_* Enter alphanumeric characters for T_ARG1. <br />_01"
 msgstr "※ T_ARG1は英数字で入力してください。<br />"
 
-msgid "SC_CheckError_030"
+msgid "c_* Enter alphanumeric symbols for T_ARG1. <br />_01"
 msgstr "※ T_ARG1は英数記号で入力してください。<br />"
 
-msgid "SC_CheckError_031"
+msgid "c_* Enter at least 1 for T_ARG1. <br />_01"
 msgstr "※ T_ARG1は1以上を入力してください。<br />"
 
-msgid "SC_CheckError_032_SINGLE"
-msgid_plural "SC_CheckError_032_PLURAL"
+msgid "c_*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />_01"
+msgid_plural "c_* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />_01"
 msgstr[0] "※ T_ARG1はT_COUNT桁～T_ARG2桁で入力して下さい。<br />"
 msgstr[1] "※ T_ARG1はT_COUNT桁～T_ARG2桁で入力して下さい。<br />"
 
-msgid "SC_CheckError_033_SINGLE"
-msgid_plural "SC_CheckError_033_PLURAL"
+msgid "c_* For T_ARG1, enter T_COUNT digit(s). <br />_01"
+msgid_plural "c_* For T_ARG1, input T_COUNT digit(s). <br />_01"
 msgstr[0] "※ T_ARG1はT_COUNT桁で入力して下さい。<br />"
 msgstr[1] "※ T_ARG1はT_COUNT桁で入力して下さい。<br />"
 
-msgid "SC_CheckError_034"
+msgid "c_* The T_ARG1 format is incorrect. <br />_01"
 msgstr "※ T_ARG1の形式が不正です。<br />"
 
-msgid "SC_CheckError_035"
+msgid "c_* Enter the characters to be used in T_ARG1 correctly. <br />_01"
 msgstr "※ T_ARG1に使用する文字を正しく入力してください。<br />"
 
-msgid "SC_CheckError_036"
+msgid "c_* Enter T_ARG1 correctly. <br />_01"
 msgstr "※ T_ARG1を正しく入力してください。<br />"
 
-msgid "SC_CheckError_037"
+msgid "c_* Enter an IP address in the proper format in T_ARG1. <br />_01"
 msgstr "※ T_ARG1に正しい形式のIPアドレスを入力してください。<br />"
 
-msgid "SC_CheckError_038"
+msgid "c_* The format permitted for T_ARG1 is T_ARG2. <br />_01"
 msgstr "※ T_ARG1で許可されている形式は、T_ARG2です。<br />"
 
-msgid "SC_CheckError_039"
+msgid "c_* T_ARG1 cannot be found. <br />_01"
 msgstr "※ T_ARG1が見つかりません。<br />"
 
-msgid "SC_CheckError_040"
+msgid "c_* Upload T_ARG1. <br />_01"
 msgstr "※ T_ARG1をアップロードして下さい。<br />"
 
-msgid "SC_CheckError_041"
+msgid "c_* For the T_ARG1 file size, use a size that is T_ARG2T_ARG3 or less. <br />_01"
 msgstr ""
 "※ T_ARG1のファイルサイズはT_ARG2T_ARG3以下のものを使用してください。<br />"
 
-msgid "SC_CheckError_042"
+msgid "c_* Do not use Japanese or spaces in the file name for T_ARG1. <br />_01"
 msgstr "※ T_ARG1のファイル名に日本語やスペースは使用しないで下さい。<br />"
 
-msgid "SC_CheckError_043"
-msgstr "※ T_ARG1はすべての項目を入力して下さい。<br />"
-
-msgid "SC_CheckError_044"
+msgid "c_* T_ARG1 is not correct. <br />_01"
 msgstr "※ T_ARG1が正しくありません。<br />"
 
-msgid "SC_CheckError_045"
+msgid "c_* Specify T_ARG1 correctly. <br />_01"
 msgstr "※ T_ARG1を正しく指定してください。<br />"
 
-msgid "SC_CheckError_046"
+msgid "c_* The period specification for T_ARG1 and T_ARG2 is not correct. <br />_01"
 msgstr "※ T_ARG1とT_ARG2の期間指定が不正です。<br />"
 
-msgid "SC_CheckError_047"
+msgid "c_* The designated T_ARG1 does not exist. <br />_01"
 msgstr "※ 指定したT_ARG1は存在しません。<br />"
 
-msgid "SC_CheckError_048"
-msgstr "※ T_ARG1の形式が不正です。<br />"
-
-msgid "SC_CheckError_049"
+msgid "c_* T_ARG1 is not for mobile phones. <br />_01"
 msgstr "※ T_ARG1は携帯電話のものではありません。<br />"
 
-msgid "SC_CheckError_050"
+msgid "c_* T_ARG1 already used in member registration. <br />_01"
 msgstr "※ すでに会員登録で使用されているT_ARG1です。<br />"
 
-msgid "SC_CheckError_051"
+msgid "c_* For a certain period of time after membership withdrawal, it is not possible to use the same T_ARG1. <br />_01"
 msgstr ""
 "※ 退会から一定期間の間は、同じT_ARG1を使用することはできません。<br />"
 
-msgid "SC_CheckError_052"
+msgid "c_* T_ARG1 cannot be entered. <br />_01"
 msgstr "※ T_ARG1は入力できません。<br />"
 
-msgid "SC_CheckError_053"
-msgstr "※ T_ARG1の形式が不正です。<br />"
-
-msgid "SC_FormParam_001"
+msgid "c_* The file T_NAME does not exist. <br />_01"
 msgstr "※ T_ARG1のファイルが存在しません。<br />"
 
-msgid "SC_FormParam_002"
+msgid "c_* Does not support the error check format (T_FUNCTION) **<br />_01"
 msgstr "※※　エラーチェック形式(T_ARG1)には対応していません　※※ <br />"
 
-msgid "SC_FormParam_003"
+msgid "c_T_NAME<span class=\"red\">(* Required)</span>_01"
 msgstr "T_ARG1<span class=\"red\">(※ 必須)</span>"
 
-msgid "SC_FormParam_004"
+msgid "c_[Default value: T_DEFAULT]_01"
 msgstr " [省略時初期値: T_ARG1]"
 
-msgid "SC_FormParam_005"
+msgid "c_ [Registration/update not possible] _01"
 msgstr " [登録・更新不可] "
 
-msgid "SC_CartSession_001"
+msgid "c_A method that is not operating properly has been called._01"
 msgstr "正しく動作しないメソッドが呼び出されました。"
 
-msgid "SC_CartSession_002"
+msgid "c_* A product in your cart is no longer being sold at this time. The item was deleted from your cart._01"
 msgstr ""
 "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除し"
 "ました。"
 
-msgid "SC_CartSession_003"
+msgid "c_* Delivery preparations are not ready  for T_PRODUCT. Please access the " "inquiry page for more details._01"
 msgstr ""
 "※「T_ARG1」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
 "ページよりお問い合わせください。"
 
-msgid "SC_CartSession_004"
+msgid "c_* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is not possible to purchase a quantity that exceeds T_LIMIT in a single " "purchase._01"
 msgstr ""
 "※「T_ARG1」は販売制限(または在庫が不足)しております。一度に数量T_ARG2を超"
 "える購入はできません。"
 
-msgid "SC_CartSession_005"
+msgid "c_* T_PRODUCT is sold out._01"
 msgstr "※「T_ARG1」は売り切れました。"
 
-msgid "SC_Fpdf_001"
+msgid "c_Product name / Product code / [Specification]_01"
 msgstr "商品名 / 商品コード / [ 規格 ]"
 
-msgid "SC_Fpdf_002"
+msgid "c_Quantity_01"
 msgstr "数量"
 
-msgid "SC_Fpdf_003"
+msgid "c_Unit price_01"
 msgstr "単価"
 
-msgid "SC_Fpdf_004"
+msgid "c_Amount with tax_01"
 msgstr "金額(税込)"
 
-msgid "SC_Fpdf_005"
+msgid "c_Product total_01"
 msgstr "商品合計"
 
-msgid "SC_Fpdf_006"
+msgid "c_Shipping fee_01"
 msgstr "送料"
 
-msgid "SC_Fpdf_007"
+msgid "c_Processing fee_01"
 msgstr "手数料"
 
-msgid "SC_Fpdf_008"
+msgid "c_Discount_01"
 msgstr "値引き"
 
-msgid "SC_Fpdf_009"
+msgid "c_Billing amount_01"
 msgstr "請求金額"
 
-msgid "SC_Fpdf_010"
+msgid "c_Used points_01"
 msgstr "利用ポイント"
 
-msgid "SC_Fpdf_011"
+msgid "c_Points added_01"
 msgstr "加算ポイント"
 
-msgid "SC_Fpdf_012"
+msgid "c_<Remarks>_01"
 msgstr "＜ 備 考 ＞"
 
-msgid "SC_Fpdf_013"
+msgid "c_Payment_01"
 msgstr "お支払い"
 
-msgid "SC_Fpdf_014"
+msgid "c_Thank you for your purchase._01"
 msgstr "このたびはお買上げいただきありがとうございます。"
 
-msgid "SC_Fpdf_015"
+msgid "c_Delivery will be based on the following below._01"
 msgstr "下記の内容にて納品させていただきます。"
 
-msgid "SC_Fpdf_016"
+msgid "c_Please confirm._01"
 msgstr "ご確認くださいますよう、お願いいたします。"
 
-msgid "SC_Fpdf_017"
+msgid "c_Creation date: T_YEAR/T_MONTH/T_DAY_01"
 msgstr "作成日: T_ARG1年T_ARG2月T_ARG3日"
 
-msgid "SC_Fpdf_018"
-msgstr "T_ARG1　T_ARG2 様"
-
-msgid "SC_Fpdf_019"
+msgid "c_$ T_ARG1_01"
 msgstr "T_ARG1 円"
 
-msgid "SC_Fpdf_020"
+msgid "c_Pts_01"
 msgstr "Pt"
 
-msgid "SC_Fpdf_021"
+msgid "c_postal code mark_01"
 msgstr "〒"
 
-msgid "SC_Image_001"
+msgid "c_File copying failed._01"
 msgstr "ファイルのコピーに失敗しました。"
 
-msgid "SC_Image_002"
+msgid "c_Copying of T_FROM->T_TO failed._01"
 msgstr "T_ARG1->T_ARG2のcopyに失敗しました。"
 
-msgid "SC_Image_003"
+msgid "c_The output source image path or the output destination folder has not been designated._01"
 msgstr "出力元画像パス、または出力先フォルダが指定されていません。"
 
-msgid "SC_Image_004"
+msgid "c_The output source image was not found._01"
 msgstr "出力元画像が見つかりません。"
 
-msgid "SC_Image_005"
+msgid "c_The image format is not supported._01"
 msgstr "画像形式がサポートされていません。"
 
-msgid "SC_Image_006"
+msgid "c_Image output failed._01"
 msgstr "画像の出力に失敗しました。"
 
-msgid "SC_Initial_001"
+msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</div>_01"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
 "align: center\">T_ARG1 にユーザ書込み権限(777等)を付与して下さい。</"
 "div>"
 
-msgid "SC_Initial_002"
+msgid "c_T_CACHE_REALDIR../mtb_constants_init.php does not exist_01"
 msgstr "T_ARG1../mtb_constants_init.php が存在しません"
 
-msgid "SC_PageNavi_001"
+msgid "c_&lt;&lt;Back_01"
 msgstr "&lt;&lt;前へ"
 
-msgid "SC_PageNavi_002"
+msgid "c_Next&gt;&gt;_01"
 msgstr "次へ&gt;&gt;"
 
-msgid "SC_Product_001"
+msgid "c_Please make a selection_01"
 msgstr "選択してください"
 
-msgid "SC_Product_002"
+msgid "c_(Sold out)_01"
 msgstr "(品切れ中)"
 
-msgid "SC_Query_001"
-msgstr "DB処理でエラーが発生しました。"
+msgid "c_An error occurred in DB processing._01"
+    msgstr "DB処理でエラーが発生しました。"
 
-msgid "SC_SelectSql_001"
+msgid "c_Unknown_01"
 msgstr "不明"
 
-msgid "SC_SendMail_001"
+msgid "c_A method for upward compatibility was used._01"
 msgstr "前方互換用メソッドが使用されました。"
 
-msgid "SC_SendMail_002"
+msgid "c_Unknown backend.[$backend = T_BACKEND]_01"
 msgstr "不明なバックエンド。[$backend = T_ARG1]"
 
-msgid "SC_SendMail_003"
+msgid "c_E-mail sending failed.[T_MESSAGE]_01"
 msgstr "メール送信に失敗しました。[T_ARG1]"
 
-msgid "SC_View_001"
+msgid "c_Processing time: T_TIME seconds_01"
 msgstr "処理時間: T_TIME秒"
 
-msgid "SC_UploadFile_001"
+msgid "c_* T_DISPNAME is not uploaded. <br />_01"
 msgstr "※ T_ARG1がアップロードされていません。<br />"
 
-msgid "SC_UploadFile_002"
+msgid "c_* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
 msgstr ""
 "※ T_ARG1がアップロードされていません。(ファイルがアップロードできない場合"
 "は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
 
-msgid "SC_UploadFile_003"
+msgid "c_* File upload failed. <br />_01"
 msgstr "※ ファイルのアップロードに失敗しました。<br />"
 
-msgid "SC_Api_Operation_001"
+msgid "c_The operation could not be loaded._01"
 msgstr "オペレーションをロード出来ませんでした。"
 
-msgid "SC_Api_Operation_002"
+msgid "c_You do not have execution authority for the operation._01"
 msgstr "オペレーションの実行権限がありません。"
 
-msgid "SC_Batch_Update_001"
+msgid "c_Creation of backup directory failed_01"
 msgstr "バックアップディレクトリの作成に失敗しました"
 
-msgid "SC_Batch_Update_002"
+msgid "c_The following file was excluded: _01"
 msgstr "次のファイルは除外されました: "
 
-msgid "SC_Batch_Update_003"
+msgid "c_The hash value does not match and the copy destination cannot be retrieved: _01"
 msgstr "ハッシュ値が一致しないため, コピー先が取得できません: "
 
-msgid "SC_Batch_Update_004"
+msgid "c_Files with the same contents were skipped: _01"
 msgstr "同じ内容のファイルをスキップしました: "
 
-msgid "SC_Batch_Update_005"
+msgid "c_Creation of backup file failed: _01"
 msgstr "バックアップファイルの作成に失敗しました: "
 
-msgid "SC_Batch_Update_006"
+msgid "c_The copying destination does not have write access: _01"
 msgstr "コピー先に書き込み権限がありません: "
 
-msgid "SC_Batch_Update_007"
+msgid "c_File copying was successful: _01"
 msgstr "ファイルのコピーに成功しました: "
 
-msgid "SC_Batch_Update_008"
+msgid "c_distinfo file creation was successful: _01"
 msgstr "distinfoファイルの作成に成功しました: "
 
-msgid "SC_Batch_Update_009"
+msgid "c_distinfo file creation failed: _01"
 msgstr "distinfoファイルの作成に失敗しました: "
 
-msgid "SC_Helper_CSV_001"
+msgid "c_Product management_01"
 msgstr "商品管理"
 
-msgid "SC_Helper_CSV_002"
+msgid "c_Member management_01"
 msgstr "会員管理"
 
-msgid "SC_Helper_CSV_003"
+msgid "c_Orders_01"
 msgstr "受注管理"
 
-msgid "SC_Helper_CSV_004"
+msgid "c_Review_01"
 msgstr "レビュー"
 
-msgid "SC_Helper_CSV_005"
-msgstr "カテゴリ"
-
-msgid "SC_Helper_Customer_001"
+msgid "c_* This is an e-mail address already used in member registration. <br />_01"
 msgstr "※ すでに会員登録で使用されているメールアドレスです。<br />"
 
-msgid "SC_Helper_Customer_002"
+msgid "c_* The specified range for the purchase amount is inadequate._01"
 msgstr "※ 購入金額の指定範囲が不正です。"
 
-msgid "SC_Helper_Customer_003"
+msgid "c_* The specified range for number of purchases is inadequate._01"
 msgstr "※ 購入回数の指定範囲が不正です。"
 
-msgid "SC_Helper_DB_001"
+msgid "c_The file exists but cannot be read_01"
 msgstr "ファイルは存在するが読み込めない"
 
-msgid "SC_Helper_Mail_001"
+msgid "c_No order exists. (Order number: T_ORDER_ID)_01"
 msgstr "該当する受注が存在しない。(注文番号: T_ARG1)"
 
-msgid "SC_Helper_Mail_002"
+msgid "c_The e-mail below has been sent._01"
 msgstr "下記メールの配信が完了しました。"
 
-msgid "SC_Helper_Mail_003"
+msgid "c_Confirmation of member registration_01"
 msgstr "会員登録のご確認"
 
-msgid "SC_Helper_Mail_004"
+msgid "c_Completion of member registration_01"
 msgstr "会員登録のご完了"
 
-msgid "SC_Helper_PageLayout_001"
+msgid "c_The block cannot be found_01"
 msgstr "ブロックが見つかりません"
 
-msgid "API_AddrFromZip_001"
+msgid "c_Search for an address from the postal code._01"
 msgstr "郵便番号から住所を検索します。"
 
-msgid "API_BrowseNodeLookup_001"
+msgid "c_Category retrieval_01"
 msgstr "カテゴリ取得"
 
-msgid "API_CartAdd_001"
+msgid "c_Add product to cart_01"
 msgstr "カートへの商品追加"
 
-msgid "API_CartClear_001"
+msgid "c_Empty cart_01"
 msgstr "カートのクリア"
 
-msgid "API_CartCreate_001"
+msgid "c_Newly create cart_01"
 msgstr "カートの新規作成"
 
-msgid "API_CartGet_001"
+msgid "c_Cart retrieval_01"
 msgstr "カートの取得"
 
-msgid "API_CartModify_001"
+msgid "c_Cart repair_01"
 msgstr "カートの修正"
 
-msgid "API_ItemLookup_001"
+msgid "c_Product details information will be retrieved_01"
 msgstr "商品詳細情報を取得します。"
 
-msgid "API_ItemLookup_002"
+msgid "c_* The requested information was not found._01"
 msgstr "※ 要求された情報は見つかりませんでした。"
 
-msgid "API_ItemSearch_001"
+msgid "c_Product search and product list information are retrieved._01"
 msgstr "商品検索・商品一覧情報を取得します。"
 
-msgid "API_ItemSearch_002"
-msgstr "※ 要求された情報は見つかりませんでした。"
-
-msgid "PARAM_LABEL_EMAIL"
+msgid "c_E-mail address_01"
 msgstr "メールアドレス"
 
-msgid "PARAM_LABEL_EMAIL_CONFIRM"
+msgid "c_E-mail address (confirmation)_01"
 msgstr "メールアドレス(確認)"
 
-msgid "PARAM_LABEL_EMAIL_MOBILE"
+msgid "Mobile e-mail address"
 msgstr "携帯メールアドレス"
 
-msgid "PARAM_LABEL_EMAIL_MOBILE_CONFIRM"
+msgid "c_Mobile e-mail address (confirmation)_01"
 msgstr "携帯メールアドレス(確認)"
 
-msgid "PARAM_LABEL_NAME"
+msgid "c_Name_01"
 msgstr "名前"
 
-msgid "PARAM_LABEL_CUSTOMER_NAME"
+msgid "c_Name_02"
 msgstr "お名前"
 
-msgid "PARAM_LABEL_CUSTOMER_NAME1"
-msgstr "お名前1"
-
-msgid "PARAM_LABEL_CUSTOMER_NAME2"
-msgstr "お名前2"
-
-msgid "PARAM_LABEL_CUSTOMER_LASTNAME"
+msgid "c_Name (last name)_01"
 msgstr "お名前(姓)"
 
-msgid "PARAM_LABEL_CUSTOMER_FIRSTNAME"
+msgid "c_Name (first name)_01"
 msgstr "お名前(名)"
 
 msgid "PARAM_LABEL_CUSTOMER_KANA"
@@ -494,10 +455,10 @@ msgstr "お名前(フリガナ・姓)"
 msgid "PARAM_LABEL_CUSTOMER_FIRSTKANA"
 msgstr "お名前(フリガナ・名)"
 
-msgid "PARAM_LABEL_ORDER_LASTNAME"
+msgid "c_Name of orderer (last name)_01"
 msgstr "注文者 お名前(姓)"
 
-msgid "PARAM_LABEL_ORDER_FIRSTNAME"
+msgid "c_Name of orderer (first name)_01"
 msgstr "注文者 お名前(名)"
 
 msgid "PARAM_LABEL_ORDER_LASTKANA"
@@ -506,290 +467,266 @@ msgstr "注文者 お名前(フリガナ・姓)"
 msgid "PARAM_LABEL_ORDER_FIRSTKANA"
 msgstr "注文者 お名前(フリガナ・名)"
 
-msgid "PARAM_LABEL_ORDER_NAME"
+msgid "c_Name of orderer_01"
 msgstr "注文者 お名前"
 
 msgid "PARAM_LABEL_ORDER_KANA"
 msgstr "注文者 お名前(フリガナ)"
 
-msgid "PARAM_LABEL_PREF"
+msgid "c_Prefecture_01"
 msgstr "都道府県"
 
-msgid "PARAM_LABEL_ADDR1"
+msgid "c_Address 1_01"
 msgstr "住所1"
 
-msgid "PARAM_LABEL_ADDR2"
+msgid "c_Address 2_01"
 msgstr "住所2"
 
-msgid "PARAM_LABEL_TEL"
+msgid "c_TEL_01"
 msgstr "TEL"
 
-msgid "PARAM_LABEL_TEL_NUMBER"
+msgid "c_Telephone number_01"
 msgstr "電話番号"
 
-msgid "PARAM_LABEL_TEL1"
+msgid "c_Telephone number 1_01"
 msgstr "電話番号1"
 
-msgid "PARAM_LABEL_TEL2"
+msgid "c_Telephone number 2_01"
 msgstr "電話番号2"
 
-msgid "PARAM_LABEL_TEL3"
+msgid "c_Telephone number 3_01"
 msgstr "電話番号3"
 
-msgid "PARAM_LABEL_CUSTOMER_TEL1"
-msgstr "お電話番号1"
-
-msgid "PARAM_LABEL_CUSTOMER_TEL2"
-msgstr "お電話番号2"
-
-msgid "PARAM_LABEL_CUSTOMER_TEL3"
-msgstr "お電話番号3"
-
-msgid "PARAM_LABEL_FAX"
+msgid "c_FAX_01"
 msgstr "FAX"
 
-msgid "PARAM_LABEL_FAX_NUMBER"
+msgid "c_Fax number_01"
 msgstr "FAX番号"
 
-msgid "PARAM_LABEL_FAX1"
+msgid "c_Fax number 1_01"
 msgstr "FAX番号1"
 
-msgid "PARAM_LABEL_FAX2"
+msgid "c_Fax number 2_01"
 msgstr "FAX番号2"
 
-msgid "PARAM_LABEL_FAX3"
+msgid "c_Fax number 3_01"
 msgstr "FAX番号3"
 
-msgid "PARAM_LABEL_ZIP"
+msgid "c_Postal code_01"
 msgstr "郵便番号"
 
-msgid "PARAM_LABEL_ZIP1"
+msgid "c_Postal code 1_01"
 msgstr "郵便番号1"
 
-msgid "PARAM_LABEL_ZIP2"
+msgid "c_Postal code 2_01"
 msgstr "郵便番号2"
 
-msgid "PARAM_LABEL_PASSWORD"
+msgid "c_Password_01"
 msgstr "パスワード"
 
-msgid "PARAM_LABEL_PASSWORD_CONFIRM"
+msgid "c_Password (confirmation)_01"
 msgstr "パスワード(確認)"
 
-msgid "PARAM_LABEL_REMINDER"
+msgid "c_Question for confirming password_01"
 msgstr "パスワード確認用の質問"
 
-msgid "PARAM_LABEL_REMINDER_ANSWER"
+msgid "c_Answer to question for confirming password_01"
 msgstr "パスワード確認用の質問の答え"
 
-msgid "PARAM_LABEL_SEX"
+msgid "c_Gender_01"
 msgstr "性別"
 
-msgid "PARAM_LABEL_JOB"
+msgid "c_Occupation_01"
 msgstr "職業"
 
-msgid "PARAM_LABEL_BIRTHDAY"
+msgid "c_Date of birth_01"
 msgstr "生年月日"
 
-msgid "PARAM_LABEL_YEAR"
+msgid "c_Year_01"
 msgstr "年"
 
-msgid "PARAM_LABEL_MONTH"
+msgid "c_Month_01"
 msgstr "月"
 
-msgid "PARAM_LABEL_DAY"
+msgid "c_Day_01"
 msgstr "日"
 
 msgid "PARAM_LABEL_MAILMAGAZINE"
 msgstr "メールマガジン"
 
-msgid "PARAM_LABEL_BROWSENODEID"
-msgstr "対象カテゴリID"
-
-msgid "PARAM_LABEL_RESPONSEGROUP"
+msgid "c_Response type_01"
 msgstr "返答種別"
 
-msgid "PARAM_LABEL_CONDITION"
+msgid "c_Product condition_01"
 msgstr "商品コンディション"
 
-msgid "PARAM_LABEL_IDTYPE"
+msgid "c_Product ID type_01"
 msgstr "商品ID種別"
 
-msgid "PARAM_LABEL_ITEMID"
+msgid "c_Designated ID_01"
 msgstr "指定ID"
 
-msgid "PARAM_LABEL_CSV_FILE"
+msgid "c_CSV file_01"
 msgstr "CSVファイル"
 
-msgid "PARAM_LABEL_RELATEDITEMSPAGE"
+msgid "c_Related product quantity_01"
 msgstr "関連商品数"
 
-msgid "PARAM_LABEL_RELATIONSHIPTYPE"
+msgid "c_Related product type_01"
 msgstr "関連商品種別"
 
-msgid "PARAM_LABEL_REVIEWPAGE"
+msgid "c_Review page number_01"
 msgstr "レビューページ番号"
 
-msgid "PARAM_LABEL_REVIEWSORT"
+msgid "c_Review page sort_01"
 msgstr "レビューページソート"
 
-msgid "PARAM_LABEL_TAGPAGE"
+msgid "c_Related tag pages_01"
 msgstr "関連タグページ"
 
-msgid "PARAM_LABEL_TAGSPERPAGE"
+msgid "c_Number of related tag pages_01"
 msgstr "関連タグページ数"
 
-msgid "PARAM_LABEL_TAGSORT"
+msgid "c_ Sort related tags_01"
 msgstr "関連タグソート"
 
-msgid "PARAM_LABEL_CATEGORY_ID"
+msgid "c_Category ID_01"
 msgstr "カテゴリID"
 
-msgid "PARAM_LABEL_KEYWORDS"
+msgid "c_Keyword_01"
 msgstr "キーワード"
 
-msgid "PARAM_LABEL_MANUFACTURER"
+msgid "c_Manufacturer name_01"
 msgstr "メーカー名"
 
-msgid "PARAM_LABEL_ITEMPAGE"
+msgid "c_Page number_01"
 msgstr "ページ番号"
 
-msgid "PARAM_LABEL_SORT"
+msgid "c_Sort_01"
 msgstr "ソート"
 
-msgid "PARAM_LABEL_CUSTOMER_ID"
+msgid "c_Member ID_01"
 msgstr "会員ID"
 
-msgid "PARAM_LABEL_CUSTOMER_STATUS"
+msgid "c_Member status_01"
 msgstr "会員状態"
 
-msgid "PARAM_LABEL_CUSTOMER_NOTE"
+msgid "c_Memo for SHOP_01"
 msgstr "SHOP用メモ"
 
-msgid "PARAM_LABEL_CUSTOMER_POINT"
+msgid "c_Points in possession_01"
 msgstr "所持ポイント"
 
-msgid "PARAM_LABEL_ADD_POINT"
-msgstr "加算ポイント"
-
-msgid "PARAM_LABEL_BIRTH_POINT"
+msgid "c_Birthday points_01"
 msgstr "お誕生日ポイント"
 
-msgid "PARAM_LABEL_TOTAL_POINT"
+msgid "c_Final number of points registered_01"
 msgstr "最終保持ポイント"
 
-msgid "PARAM_LABEL_NOW_POINT"
+msgid "c_Current points_01"
 msgstr "現在のポイント"
 
-msgid "PARAM_LABEL_RETURN"
+msgid "c_Go back_01"
 msgstr "戻る"
 
-msgid "PARAM_LABEL_BD_START_YEAR"
+msgid "c_Birthday (start year)_01"
 msgstr "誕生日(開始年)"
 
-msgid "PARAM_LABEL_BD_START_MONTH"
+msgid "c_Birthday (start month)_01"
 msgstr "誕生日(開始月)"
 
-msgid "PARAM_LABEL_BD_START_DAY"
+msgid "c_Birthday (start date)_01"
 msgstr "誕生日(開始日)"
 
-msgid "PARAM_LABEL_BD_END_YEAR"
+msgid "c_Birthday (end year)_01"
 msgstr "誕生日(終了年)"
 
-msgid "PARAM_LABEL_BD_END_MONTH"
+msgid "c_Birthday (end month)_01"
 msgstr "誕生日(終了月)"
 
-msgid "PARAM_LABEL_BD_END_DAY"
+msgid "c_Birthday (end date)_01"
 msgstr "誕生日(終了日)"
 
-msgid "PARAM_LABEL_BIRTH_MONTH"
+msgid "c_Birth month_01"
 msgstr "誕生月"
 
-msgid "PARAM_LABEL_BUY_TOTAL_FROM"
+msgid "c_Purchase amount (start)_01"
 msgstr "購入金額(開始)"
 
-msgid "PARAM_LABEL_BUY_TOTAL_TO"
+msgid "c_Purchase amount (end)_01"
 msgstr "購入金額(終了)"
 
-msgid "PARAM_LABEL_BUY_TIMES_FROM"
+msgid "c_Purchase frequency (start)_01"
 msgstr "購入回数(開始)"
 
-msgid "PARAM_LABEL_BUY_TIMES_TO"
+msgid "c_Purchase frequency (end)_01"
 msgstr "購入回数(終了)"
 
-msgid "PARAM_LABEL_UPDATE_START_YEAR"
+msgid "c_Registration/update date (start year)_01"
 msgstr "登録・更新日(開始年)"
 
-msgid "PARAM_LABEL_UPDATE_START_MONTH"
+msgid "c_Registration/update date (start month)_01"
 msgstr "登録・更新日(開始月)"
 
-msgid "PARAM_LABEL_UPDATE_START_DAY"
+msgid "c_Registration/update date (start date)_01"
 msgstr "登録・更新日(開始日)"
 
-msgid "PARAM_LABEL_UPDATE_END_YEAR"
+msgid "c_Registration/update date (end year)_01"
 msgstr "登録・更新日(終了年)"
 
-msgid "PARAM_LABEL_UPDATE_END_MONTH"
+msgid "c_Registration/update date (end month)_01"
 msgstr "登録・更新日(終了月)"
 
-msgid "PARAM_LABEL_UPDATE_END_DAY"
+msgid "c_Registration/update date (end date)_01"
 msgstr "登録・更新日(終了日)"
 
-msgid "PARAM_LABEL_PAGE_MAX"
+msgid "c_Number of items displayed_01"
 msgstr "表示件数"
 
-msgid "PARAM_LABEL_PAGE_NO"
-msgstr "ページ番号"
-
-msgid "PARAM_LABEL_BUY_START_YEAR"
+msgid "c_Final purchase date (start year)_01"
 msgstr "最終購入日(開始年)"
 
-msgid "PARAM_LABEL_BUY_START_MONTH"
+msgid "c_Final purchase date (start month)_01"
 msgstr "最終購入日(開始月)"
 
-msgid "PARAM_LABEL_BUY_START_DAY"
+msgid "c_Final purchase date (start day)_01"
 msgstr "最終購入日(開始日)"
 
-msgid "PARAM_LABEL_BUY_END_YEAR"
+msgid "c_Final purchase date (end year)_01"
 msgstr "最終購入日(終了年)"
 
-msgid "PARAM_LABEL_BUY_END_MONTH"
+msgid "c_Final purchase date (end month)_01"
 msgstr "最終購入日(終了月)"
 
-msgid "PARAM_LABEL_BUY_END_DAY"
+msgid "c_Final purchase date (end day)_01"
 msgstr "最終購入日(終了日)"
 
-msgid "PARAM_LABEL_BUY_PRODUCT"
+msgid "c_Purchased product_01"
 msgstr "購入商品"
 
-msgid "PARAM_LABEL_BUY_PRODUCT_NAME"
+msgid "c_Purchased product name_01"
 msgstr "購入商品名"
 
-msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
+msgid "c_Purchased product code_01"
 msgstr "購入商品コード"
 
-msgid "PARAM_LABEL_CATEGORY"
+msgid "c_Category_01"
 msgstr "カテゴリ"
 
-msgid "PARAM_LABEL_COMPANY_NAME"
+msgid "c_Company name_01"
 msgstr "会社名"
 
 msgid "PARAM_LABEL_COMPANY_KANA"
 msgstr "会社名(フリガナ)"
 
-msgid "PARAM_LABEL_SHOP_NAME"
+msgid "c_Store name_01"
 msgstr "店名"
 
 msgid "PARAM_LABEL_SHOP_KANA"
 msgstr "店名(フリガナ)"
 
-msgid "PARAM_LABEL_SHOP_NAME_ENG"
+msgid "c_Store name (in English)_01"
 msgstr "店名(英語表記)"
-
-msgid "PARAM_LABEL_ZIP01"
-msgstr "郵便番号1"
-
-msgid "PARAM_LABEL_ZIP02"
-msgstr "郵便番号2"
 
 msgid "PARAM_LABEL_ADDR01"
 msgstr "所在地1"
@@ -890,20 +827,8 @@ msgstr "お支払い方法"
 msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
 msgstr "お支払方法名称"
 
-msgid "PARAM_LABEL_CHARGE"
-msgstr "手数料"
-
-msgid "PARAM_LABEL_DELIV_FEE"
-msgstr "送料"
-
 msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
 msgstr "商品送料"
-
-msgid "PARAM_LABEL_DISCOUNT"
-msgstr "値引き"
-
-msgid "PARAM_LABEL_USE_POINT"
-msgstr "利用ポイント"
 
 msgid "PARAM_LABEL_POINT"
 msgstr "ポイント"
@@ -983,12 +908,6 @@ msgstr "対応状況"
 msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
 msgstr "商品種別ID"
 
-msgid "PARAM_LABEL_PRICE"
-msgstr "単価"
-
-msgid "PARAM_LABEL_QUANTITY"
-msgstr "数量"
-
 msgid "PARAM_LABEL_SELL_PRICE"
 msgstr "販売価格"
 
@@ -1012,9 +931,6 @@ msgstr "メイン画像"
 
 msgid "PARAM_LABEL_DETAIL_MAIN_IMAGE"
 msgstr "詳細-メイン画像"
-
-msgid "PARAM_LABEL_PRODUCT_NAME"
-msgstr "商品名"
 
 msgid "PARAM_LABEL_PRODUCT_CLASS_ID_ALP"
 msgstr "product_class_id"
@@ -1093,9 +1009,6 @@ msgstr "チェックボックス"
 
 msgid "PARAM_LABEL_FILE_UPLOAD_KEY"
 msgstr "ファイルアップロード用キー"
-
-msgid "PARAM_LABEL_PRODUCT_CODE"
-msgstr "商品コード"
 
 msgid "PARAM_LABEL_PRODUCT_ID"
 msgstr "商品ID"
@@ -1189,9 +1102,6 @@ msgstr "カートキー"
 
 msgid "PARAM_LABEL_MONTHLY"
 msgstr "月度"
-
-msgid "PARAM_LABEL_PERIOD"
-msgstr "期間"
 
 msgid "PARAM_LABEL_PERIOD_1"
 msgstr "期間(開始日)"
@@ -1303,9 +1213,6 @@ msgstr "メーカー"
 
 msgid "PARAM_LABEL_MAKER_ID"
 msgstr "メーカーID"
-
-msgid "PARAM_LABEL_MAKER_NAME"
-msgstr "メーカー名"
 
 msgid "PARAM_LABEL_MAKER_URL"
 msgstr "メーカーURL"
@@ -1529,9 +1436,6 @@ msgstr "削除用項番"
 msgid "PARAM_LABEL_SUBTOTAL"
 msgstr "小計"
 
-msgid "PARAM_LABEL_TOTAL"
-msgstr "合計"
-
 msgid "PARAM_LABEL_PAYMENT_TOTAL"
 msgstr "支払い合計"
 
@@ -1696,12 +1600,6 @@ msgstr "稼働/非稼働"
 
 msgid "PARAM_LABEL_PAGE"
 msgstr "ページ"
-
-msgid "PARAM_LABEL_PASSWORD_REMINDER"
-msgstr "パスワード確認用の質問"
-
-msgid "PARAM_LABEL_PASSWORD_REMINDER_ANSWER"
-msgstr "パスワード確認用の質問の答え"
 
 msgid "PARAM_LABEL_IMG_FILE_NAME"
 msgstr "画像ファイル名"
@@ -1918,7 +1816,7 @@ msgstr "売上集計"
 msgid "FORMAT_DATE_LONG"
 msgstr "Y年m月d日H時i分"
 
-msgid "FORMAT_NAME_FULL_SIR"
+msgid "f_NAME_FULL_SIR_01"
 msgstr "T_ARG1 T_ARG2 様"
 
 msgid "LC_Page_Abouts_001"
@@ -2188,15 +2086,6 @@ msgstr "お届け先追加･変更"
 msgid "LC_Page_Mypage_DeliveryAddr_001"
 msgstr "お届け先の追加･変更"
 
-msgid "LC_Page_Mypage_DeliveryAddr_002"
-msgstr "別のお届け先最大登録数に達しています。"
-
-msgid "LC_Page_Mypage_DeliveryAddr_003"
-msgstr "一致する別のお届け先がありません。"
-
-msgid "LC_Page_Mypage_DeliveryAddr_004"
-msgstr "別のお届け先最大登録数に達しています。"
-
 msgid "LC_Page_MyPage_Favorite_001"
 msgstr "お気に入り一覧"
 
@@ -2341,9 +2230,6 @@ msgstr "未対応デバイス"
 msgid "LC_Page_Upgrade_Download_001"
 msgstr "インストール/アップデートに成功しました。"
 
-msgid "LC_Page_001"
-msgstr "前方互換用メソッドが使用されました。"
-
 msgid "LC_Page_Install_001"
 msgstr "T_ARG1にユーザ書込み権限(777, 707等)を付与して下さい"
 
@@ -2400,9 +2286,6 @@ msgstr ""
 msgid "LC_Page_Install_017"
 msgstr ">> ○：アクセス権限は正常です。"
 
-msgid "LC_Page_Install_018"
-msgstr "店名"
-
 msgid "LC_Page_Install_019"
 msgstr "管理者：メールアドレス"
 
@@ -2447,9 +2330,6 @@ msgstr "SMTPパスワード"
 
 msgid "LC_Page_Install_033"
 msgstr "DBの種類"
-
-msgid "LC_Page_Install_034"
-msgstr "DBサーバー"
 
 msgid "LC_Page_Install_035"
 msgstr "DBポート"
@@ -2726,9 +2606,6 @@ msgstr "会員管理"
 msgid "LC_Page_Admin_Customer_002"
 msgstr "会員マスター"
 
-msgid "LC_Page_Admin_Customer_Edit_001"
-msgstr "会員管理"
-
 msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "会員登録"
 
@@ -2961,15 +2838,6 @@ msgstr "ファイルに保存"
 msgid "LC_Page_Admin_Order_Pdf_005"
 msgstr "お買上げ明細書(納品書)"
 
-msgid "LC_Page_Admin_Order_Pdf_006"
-msgstr "このたびはお買上げいただきありがとうございます。"
-
-msgid "LC_Page_Admin_Order_Pdf_007"
-msgstr "下記の内容にて納品させていただきます。"
-
-msgid "LC_Page_Admin_Order_Pdf_008"
-msgstr "ご確認くださいますよう、お願いいたします。"
-
 msgid "LC_Page_Admin_Order_Pdf_009"
 msgstr "発行年は数値で入力してください。"
 
@@ -3144,9 +3012,6 @@ msgstr "ダウンロード販売用ファイル名"
 
 msgid "LC_Page_Admin_Products_ProductClass_013"
 msgstr "※ T_ARG1で許可されている形式は、T_ARG2です。<br />"
-
-msgid "LC_Page_Admin_Products_ProductClass_014"
-msgstr "※ ファイルのアップロードに失敗しました。<br />"
 
 msgid "LC_Page_Admin_Products_ProductRank_001"
 msgstr "商品並び替え"
@@ -3368,189 +3233,168 @@ msgstr "T_ARG1 が重複しているため登録できません."
 msgid "LC_Page_Admin_System_Parameter"
 msgstr "パラメーター設定"
 
-msgid "LC_Page_Admin_System_System_001"
+msgid "c_System information_01"
 msgstr "システム情報"
 
-msgid "LC_Page_Admin_System_System_002"
+msgid "c_EC-CUBE_01"
 msgstr "EC-CUBE"
 
-msgid "LC_Page_Admin_System_System_003"
+msgid "c_Server OS_01"
 msgstr "サーバーOS"
 
-msgid "LC_Page_Admin_System_System_004"
+msgid "c_DB server_01"
 msgstr "DBサーバー"
 
-msgid "LC_Page_Admin_System_System_005"
+msgid "c_WEB server_01"
 msgstr "WEBサーバー"
 
-msgid "LC_Page_Admin_System_System_006"
+msgid "c_Enabled_01"
 msgstr "有効"
 
-msgid "LC_Page_Admin_System_System_007"
+msgid "c_Inactive_01"
 msgstr "無効"
 
-msgid "LC_Page_Admin_System_System_008"
+msgid "c_GD_01"
 msgstr "GD"
 
-msgid "LC_Page_Admin_System_System_009"
+msgid "c_HTTP user agent_01"
 msgstr "HTTPユーザーエージェント"
 
-msgid "LC_Page_Admin_Total_001"
+msgid "c_Sales by period_01"
 msgstr "期間別集計"
 
-msgid "LC_Page_Admin_Total_002"
-msgstr "期間別集計"
-
-msgid "LC_Page_Admin_Total_003"
+msgid "c_Sales by product_01"
 msgstr "商品別集計"
 
-msgid "LC_Page_Admin_Total_004"
+msgid "c_Sales by age group_01"
 msgstr "年代別集計"
 
-msgid "LC_Page_Admin_Total_005"
+msgid "c_Sales  by occupation_01"
 msgstr "職業別集計"
 
-msgid "LC_Page_Admin_Total_006"
+msgid "c_Sales by member_01"
 msgstr "会員別集計"
 
-msgid "LC_Page_Admin_Total_007"
+msgid "c_T_ARG1/T_ARG2/T_ARG3_01"
 msgstr "T_ARG1年T_ARG2月T_ARG3日'"
 
-msgid "LC_Page_Admin_Total_008"
+msgid "c_Sales period: T_ARG1 - T_ARG2_01"
 msgstr "集計期間：T_ARG1 - T_ARG2"
 
-msgid "LC_Page_Admin_Total_009"
-msgstr "会員"
-
-msgid "LC_Page_Admin_Total_010"
+msgid "c_Non-member_01"
 msgstr "非会員"
 
-msgid "LC_Page_Admin_Total_011"
+msgid "c_Not answered_01"
 msgstr "未回答"
 
-msgid "LC_Page_Admin_Total_012"
-msgstr "T_ARG1代'"
+msgid "c_T_ARG1s_01"
+msgstr "T_ARG1代"
 
-msgid "LC_Page_Admin_Total_013"
+msgid "c_(Age)_01"
 msgstr "(年齢)"
 
-msgid "LC_Page_Admin_Total_014"
+msgid "c_(Total sales)_01"
 msgstr "(売上合計)"
 
-msgid "LC_Page_Admin_Total_015"
+msgid "c_(By month)_01"
 msgstr "(月別)"
 
-msgid "LC_Page_Admin_Total_016"
+msgid "c_(By year)_01"
 msgstr "(年別)"
 
-msgid "LC_Page_Admin_Total_017"
+msgid "c_(By day)_01"
 msgstr "(曜日別)"
 
-msgid "LC_Page_Admin_Total_018"
+msgid "c_(By time)_01"
 msgstr "(時間別)"
 
-msgid "LC_Page_Admin_Total_019"
+msgid "c_(By date)_01"
 msgstr "(日別)"
 
-msgid "LC_Page_Admin_Total_020"
+msgid "c_Total_01"
 msgstr "合計"
 
-msgid "LC_Page_Admin_Total_021"
+msgid "c_Product code_01"
 msgstr "商品コード"
 
-msgid "LC_Page_Admin_Total_022"
+msgid "c_Product name_01"
 msgstr "商品名"
 
-msgid "LC_Page_Admin_Total_023"
+msgid "c_Number of items purchased_01"
 msgstr "購入件数"
 
-msgid "LC_Page_Admin_Total_024"
-msgstr "数量"
-
-msgid "LC_Page_Admin_Total_025"
-msgstr "単価"
-
-msgid "LC_Page_Admin_Total_026"
+msgid "c_Amount_01"
 msgstr "金額"
 
-msgid "LC_Page_Admin_Total_027"
-msgstr "職業"
-
-msgid "LC_Page_Admin_Total_028"
+msgid "c_Purchase total_01"
 msgstr "購入合計"
 
-msgid "LC_Page_Admin_Total_029"
+msgid "c_Purchase average_01"
 msgstr "購入平均"
 
-msgid "LC_Page_Admin_Total_030"
+msgid "c_Member_01"
 msgstr "会員"
 
-msgid "LC_Page_Admin_Total_031"
+msgid "c_Age_01"
 msgstr "年齢"
 
-msgid "LC_Page_Admin_Total_032"
+msgid "c_Period_01"
 msgstr "期間"
 
-msgid "LC_Page_Admin_Total_033"
+msgid "c_Male_01"
 msgstr "男性"
 
-msgid "LC_Page_Admin_Total_034"
+msgid "c_Female_01"
 msgstr "女性"
 
-msgid "LC_Page_Admin_Total_035"
+msgid "c_Male (member)_01"
 msgstr "男性(会員)"
 
-msgid "LC_Page_Admin_Total_036"
+msgid "c_Male (non-member)_01"
 msgstr "男性(非会員)"
 
-msgid "LC_Page_Admin_Total_037"
+msgid "c_Female (member)_01"
 msgstr "女性(会員)"
 
-msgid "LC_Page_Admin_Total_038"
+msgid "c_Female (non-member)_01"
 msgstr "女性(非会員)"
 
-msgid "LC_Page_Admin_Total_039"
+msgid "c_(Sales ratio)_01"
 msgstr "(売上比率)"
 
-msgid "LC_Page_Admin_001"
-msgstr "前方互換用メソッドが使用されました。"
-
-msgid "LC_Page_Admin_Home_001"
+msgid "c_Home_01"
 msgstr "ホーム"
 
-msgid "LC_Page_Admin_Home_002"
+msgid "c_>> Update information was not obtained._01"
 msgstr ">> 更新情報の取得に失敗しました。"
 
-msgid "LC_Page_Admin_Index_001"
+msgid "c_You cannot log in._01"
 msgstr "ログイン出来ません。"
 
-msgid "SC_Helper_Address_001"
+msgid "Correctly designate the customer ID"
 msgstr "顧客IDを正しく指定して下さい"
 
-msgid "SC_Helper_Address_002"
+msgid "c_The maximum number of separate shipping destinations registered has been met._01"
 msgstr "別のお届け先最大登録数に達しています。"
 
-msgid "SC_Helper_Address_003"
+msgid "c_There is no separate delivery destination that matches._01"
 msgstr "一致する別のお届け先がありません。"
 
-msgid "SC_Helper_Transform_001"
+msgid "c_Not detectable_01"
 msgstr "検出不能"
 
-msgid "C_Helper_Transform_003"
+msgid "c_<br />T_ARG1 does not exist_01"
 msgstr "<br />T_ARG1 が存在しません"
 
-msgid "SC_Helper_Transform_004"
+msgid "c_Template operation failed. T_ARG1_01"
 msgstr "テンプレートの操作に失敗しました。T_ARG1"
 
-msgid "SC_Helper_Transform_005"
+msgid "c_Template operation failed._01"
 msgstr "テンプレートの操作に失敗しました。"
 
 msgid "SC_Utils_001"
 msgstr ""
 ">> /install/T_ARG1 は、インストール完了後にファイルを削除してください。"
-
-msgid "SC_Utils_002"
-msgstr "前方互換用メソッドが使用されました。"
 
 msgid "SC_Utils_003"
 msgstr "T_ARG1T_ARG2：ファイルが存在します"
@@ -3560,9 +3404,6 @@ msgstr "T_ARG1T_ARG2：コピー成功"
 
 msgid "SC_Utils_005"
 msgstr "T_ARG1T_ARG2：コピー失敗"
-
-msgid "GC_Utils_001"
-msgstr "前方互換用メソッドが使用されました。"
 
 msgid "tpl_Delivery company_01"
 msgstr "配送業者"

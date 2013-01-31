@@ -213,19 +213,19 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
     }
 
     function lfInitParam(&$objFormParam, $post) {
-        $objFormParam->addParam(t('PARAM_LABEL_COMPANY_NAME'), 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Company name_01'), 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_COMPANY_KANA'), 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK','MAX_LENGTH_CHECK'));
 
-        $objFormParam->addParam(t('PARAM_LABEL_SHOP_NAME'), 'shop_name', STEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Store name_01'), 'shop_name', STEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_SHOP_KANA'), 'shop_kana',  STEXT_LEN, 'KVC', array('KANA_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SHOP_NAME_ENG'), 'shop_name_eng',MTEXT_LEN, 'a', array('GRAPH_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Store name (in English)_01'), 'shop_name_eng',MTEXT_LEN, 'a', array('GRAPH_CHECK','MAX_LENGTH_CHECK'));
         // 郵便番号チェック
-//        $objFormParam->addParam(t('PARAM_LABEL_ZIP01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
-//        $objFormParam->addParam(t('PARAM_LABEL_ZIP02'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ZIP'), 'zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','MAX_LENGTH_CHECK'));
+//        $objFormParam->addParam(t('c_Postal code 1_01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
+//        $objFormParam->addParam(t('c_Postal code 2_01'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
+        $objFormParam->addParam(t('c_Postal code_01'), 'zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','MAX_LENGTH_CHECK'));
 
         // 所在地チェック
-        $objFormParam->addParam(t('PARAM_LABEL_PREF'), 'pref', '', 'n');
+        $objFormParam->addParam(t('c_Prefecture_01'), 'pref', '', 'n');
         $objFormParam->addParam(t('PARAM_LABEL_ADDR01'), 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ADDR02'), 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         // メールチェック
@@ -270,11 +270,11 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $post = $objFormParam->getHashArray();
 
         $objErr = new SC_CheckError_Ex($post);
-//        $objErr->doFunc(array(t('PARAM_LABEL_ZIP'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
+//        $objErr->doFunc(array(t('c_Postal code_01'), 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
 
         // 電話番号チェック
-        $objErr->doFunc(array(t('PARAM_LABEL_TEL'), 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_FAX_NUMBER'), 'fax01', 'fax02', 'fax03'), array('TEL_CHECK'));
+        $objErr->doFunc(array(t('c_TEL_01'), 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));
+        $objErr->doFunc(array(t('c_Fax number_01'), 'fax01', 'fax02', 'fax03'), array('TEL_CHECK'));
 
         $objErr->doFunc(array(t('PARAM_LABEL_LATITUDE'), 'latitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array(t('PARAM_LABEL_LONGITUDE'), 'longitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));

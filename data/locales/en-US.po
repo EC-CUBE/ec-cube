@@ -11,489 +11,450 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-msgid "SC_CheckError_001"
+msgid "c_* T_ARG2 contains the tag T_ARG1 which is not allowed. <br />_01"
 msgstr "* T_ARG2 contains the tag T_ARG1 which is not allowed. <br />"
 
-msgid "SC_CheckError_002"
+msgid "c_* T_ARG1 is blank. <br />_01"
 msgstr "* T_ARG1 is blank. <br />"
 
-msgid "SC_CheckError_003"
+msgid "c_* T_ARG1 is not selected. <br />_01"
 msgstr "* T_ARG1 is not selected. <br />"
 
-msgid "SC_CheckError_004"
-msgstr "* T_ARG1 is blank. <br />"
-
-msgid "SC_CheckError_005"
+msgid "c_* Spaces, tabs and line breaks are not possible in T_ARG1. <br />_01"
 msgstr "* Spaces, tabs and line breaks are not possible in T_ARG1. <br />"
 
-msgid "SC_CheckError_006"
+msgid "c_* Do not include spaces, tabs or line breaks in T_ARG1. <br />_01"
 msgstr "* Do not include spaces, tabs or line breaks in T_ARG1. <br />"
 
-msgid "SC_CheckError_007"
+msgid "c_* A numerical value that starts with 0 has been entered for T_ARG1. <br />_01"
 msgstr ""
 "* A numerical value that starts with 0 has been entered for T_ARG1. <br />"
 
-msgid "SC_CheckError_008"
-msgstr "* T_ARG1 is not selected. <br />"
-
-msgid "SC_CheckError_009"
+msgid "c_* T_ARG1 and T_ARG2 do not match. <br />_01"
 msgstr "* T_ARG1 and T_ARG2 do not match. <br />"
 
-msgid "SC_CheckError_010"
+msgid "c_* The same value cannot be used for T_ARG1 and T_ARG2. <br />_01"
 msgstr ""
 "* The same value cannot be used for T_ARG1 and T_ARG2. <br />"
 
-msgid "SC_CheckError_011"
+msgid "c_* It is not possible to enter a larger value for T_ARG1 than for T_ARG2. <br />_01"
 msgstr ""
 "* It is not possible to enter a value for T_ARG1 thats larger than "
 "T_ARG2. <br />"
 
-msgid "SC_CheckError_012"
+msgid "c_* For T_ARG1, enter T_ARG2  characters or less. <br />_01"
 msgstr "* For T_ARG1, enter T_ARG2  characters or less. <br />"
 
-msgid "SC_CheckError_013_SINGLE"
-msgid_plural "SC_CheckError_013_PLURAL"
+msgid "c_* For T_ARG1, enter T_COUNT characters or more. <br />_01"
+msgid_plural "c_* For T_ARG1, input T_COUNT characters or more. <br />_01"
 msgstr[0] "* For T_ARG1, enter T_COUNT characters or more. <br />"
 msgstr[1] "* For T_ARG1, input T_COUNT characters or more. <br />"
 
-msgid "SC_CheckError_014"
+msgid "c_* For T_ARG1, enter T_ARG2 or smaller. <br />_01"
 msgstr "* For T_ARG1, enter T_ARG2 or smaller. <br />"
 
-msgid "SC_CheckError_015_SINGLE"
-msgid_plural "SC_CheckError_015_PLURAL"
+msgid "c_* Enter T_COUNT or higher for T_ARG1. <br />_01"
+msgid_plural "c_* Input T_COUNT or higher for T_ARG1. <br />_01"
 msgstr[0] "* Enter T_COUNT or higher for T_ARG1. <br />"
 msgstr[1] "* Input T_COUNT or higher for T_ARG1. <br />"
 
-msgid "SC_CheckError_016"
+msgid "c_* Enter only numbers for T_ARG1. <br />_01"
 msgstr "* Enter only numbers for T_ARG1. <br />"
 
-msgid "SC_CheckError_017"
+msgid "c_* Enter only numbers for T_ARG1. <br />_02"
 msgstr "* Enter only numbers for T_ARG1. <br />"
 
-msgid "SC_CheckError_018"
+msgid "c_* Enter alphabetical characters for T_ARG1. <br />_01"
 msgstr "* Enter alphabetical characters for T_ARG1. <br />"
 
-msgid "SC_CheckError_019"
+msgid "c_* Enter all items for T_ARG1. <br />_01"
 msgstr "* Enter all items for T_ARG1. <br />"
 
-msgid "SC_CheckError_020"
+msgid "c_* T_ARG1 must be T_ARG2 characters or less. <br />_01"
 msgstr "* T_ARG1 must be T_ARG2 characters or less. <br />"
 
-msgid "SC_CheckError_021"
+msgid "c_* Enter numbers for T_ARG1. <br />_01"
 msgstr "* Enter numbers for T_ARG1. <br />"
 
-msgid "SC_CheckError_022"
+msgid "c_* For T_ARG1, enter within a text length of T_ARG2. <br />_01"
 msgstr "* For T_ARG1, enter within a text length of T_ARG2. <br />"
 
-msgid "SC_CheckError_023"
-msgstr "* T_ARG1 is blank. <br />"
-
-msgid "SC_CheckError_024"
-msgstr "* Enter all items for T_ARG1. <br />"
-
-msgid "SC_CheckError_025"
-msgstr "* T_ARG1 is blank. <br />"
-
-msgid "SC_CheckError_026"
+msgid "c_* Enter items in order, starting at the beginning. <br />_01"
 msgstr "* Enter items in order, starting at the beginning. <br />"
 
-msgid "SC_CheckError_027"
+msgid "c_* For T_ARG1, enter katakana characters. <br />_01"
 msgstr "* For T_ARG1, enter katakana characters. <br />"
 
-msgid "SC_CheckError_028"
+msgid "c_* For T_ARG1, enter katakana characters. <br />_02"
 msgstr "* For T_ARG1, enter katakana characters. <br />"
 
-msgid "SC_CheckError_029"
+msgid "c_* Enter alphanumeric characters for T_ARG1. <br />_01"
 msgstr "* Enter alphanumeric characters for T_ARG1. <br />"
 
-msgid "SC_CheckError_030"
+msgid "c_* Enter alphanumeric symbols for T_ARG1. <br />_01"
 msgstr "* Enter alphanumeric symbols for T_ARG1. <br />"
 
-msgid "SC_CheckError_031"
+msgid "c_* Enter at least 1 for T_ARG1. <br />_01"
 msgstr "* Enter at least 1 for T_ARG1. <br />"
 
-msgid "SC_CheckError_032_SINGLE"
-msgid_plural "SC_CheckError_032_PLURAL"
+msgid "c_*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />_01"
+msgid_plural "c_* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />_01"
 msgstr[0] "*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />"
 msgstr[1] "* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />"
 
-msgid "SC_CheckError_033_SINGLE"
-msgid_plural "SC_CheckError_033_PLURAL"
+msgid "c_* For T_ARG1, enter T_COUNT digit(s). <br />_01"
+msgid_plural "c_* For T_ARG1, input T_COUNT digit(s). <br />_01"
 msgstr[0] "* For T_ARG1, enter T_COUNT digit(s). <br />"
 msgstr[1] "* For T_ARG1, input T_COUNT digit(s). <br />"
 
-msgid "SC_CheckError_034"
+msgid "c_* The T_ARG1 format is incorrect. <br />_01"
 msgstr "* The T_ARG1 format is incorrect. <br />"
 
-msgid "SC_CheckError_035"
+msgid "c_* Enter the characters to be used in T_ARG1 correctly. <br />_01"
 msgstr "* Enter the characters to be used in T_ARG1 correctly. <br />"
 
-msgid "SC_CheckError_036"
+msgid "c_* Enter T_ARG1 correctly. <br />_01"
 msgstr "* Enter T_ARG1 correctly. <br />"
 
-msgid "SC_CheckError_037"
+msgid "c_* Enter an IP address in the proper format in T_ARG1. <br />_01"
 msgstr "* Enter an IP address in the proper format in T_ARG1. <br />"
 
-msgid "SC_CheckError_038"
+msgid "c_* The format permitted for T_ARG1 is T_ARG2. <br />_01"
 msgstr "* The format permitted for T_ARG1 is T_ARG2. <br />"
 
-msgid "SC_CheckError_039"
+msgid "c_* T_ARG1 cannot be found. <br />_01"
 msgstr "* T_ARG1 cannot be found. <br />"
 
-msgid "SC_CheckError_040"
+msgid "c_* Upload T_ARG1. <br />_01"
 msgstr "* Upload T_ARG1. <br />"
 
-msgid "SC_CheckError_041"
+msgid "c_* For the T_ARG1 file size, use a size that is T_ARG2T_ARG3 or less. <br />_01"
 msgstr ""
 "* For the T_ARG1 file size, use a size that is T_ARG2T_ARG3 or less. <br />"
 
-msgid "SC_CheckError_042"
+msgid "c_* Do not use Japanese or spaces in the file name for T_ARG1. <br />_01"
 msgstr "* Do not use Japanese or spaces in the file name for T_ARG1. <br />"
 
-msgid "SC_CheckError_043"
-msgstr "* Enter all items for T_ARG1. <br />"
-
-msgid "SC_CheckError_044"
+msgid "c_* T_ARG1 is not correct. <br />_01"
 msgstr "* T_ARG1 is not correct. <br />"
 
-msgid "SC_CheckError_045"
+msgid "c_* Specify T_ARG1 correctly. <br />_01"
 msgstr "* Specify T_ARG1 correctly. <br />"
 
-msgid "SC_CheckError_046"
+msgid "c_* The period specification for T_ARG1 and T_ARG2 is not correct. <br />_01"
 msgstr ""
 "* The period specification for T_ARG1 and T_ARG2 is not correct. <br />"
 
-msgid "SC_CheckError_047"
+msgid "c_* The designated T_ARG1 does not exist. <br />_01"
 msgstr "* The designated T_ARG1 does not exist. <br />"
 
-msgid "SC_CheckError_048"
-msgstr "* The T_ARG1 format is incorrect. <br />"
-
-msgid "SC_CheckError_049"
+msgid "c_* T_ARG1 is not for mobile phones. <br />_01"
 msgstr "* T_ARG1 is not for mobile phones. <br />"
 
-msgid "SC_CheckError_050"
+msgid "c_* T_ARG1 already used in member registration. <br />_01"
 msgstr "* T_ARG1 already used in member registration. <br />"
 
-msgid "SC_CheckError_051"
+msgid "c_* For a certain period of time after membership withdrawal, it is not possible to use the same T_ARG1. <br />_01"
 msgstr ""
 "* For a certain period of time after membership withdrawal, it is not "
 "possible to use the same T_ARG1. <br />"
 
-msgid "SC_CheckError_052"
+msgid "c_* T_ARG1 cannot be entered. <br />_01"
 msgstr "* T_ARG1 cannot be entered. <br />"
 
-msgid "SC_CheckError_053"
-msgstr "* The T_ARG1 format is incorrect. <br />"
-
-msgid "SC_FormParam_001"
+msgid "c_* The file T_NAME does not exist. <br />_01"
 msgstr "* The file T_ARG1 does not exist. <br />"
 
-msgid "SC_FormParam_002"
+msgid "c_* Does not support the error check format (T_FUNCTION) **<br />_01"
 msgstr "* Does not support the error check format (T_ARG1) **<br />"
 
-msgid "SC_FormParam_003"
+msgid "c_T_NAME<span class=\"red\">(* Required)</span>_01"
 msgstr "T_ARG1<span class=\"red\">(* Required)</span>"
 
-msgid "SC_FormParam_004"
+msgid "c_[Default value: T_DEFAULT]_01"
 msgstr " [Default value: T_ARG1]"
 
-msgid "SC_FormParam_005"
+msgid "c_ [Registration/update not possible] _01"
 msgstr " [Registration/update not possible] "
 
-msgid "SC_CartSession_001"
+msgid "c_A method that is not operating properly has been called._01"
 msgstr "A method that is not operating properly has been called."
 
-msgid "SC_CartSession_002"
+msgid "c_* A product in your cart is no longer being sold at this time. The item was deleted from your cart._01"
 msgstr ""
 "* A product in your cart is no longer being sold at this time. The item was "
 "deleted from your cart."
 
-msgid "SC_CartSession_003"
+msgid "c_* Delivery preparations are not ready  for T_PRODUCT. Please access the " "inquiry page for more details._01"
 msgstr ""
 "* Delivery preparations are not ready  for T_ARG1. Please access the "
 "inquiry page for more details."
 
-msgid "SC_CartSession_004"
+msgid "c_* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is not possible to purchase a quantity that exceeds T_LIMIT in a single " "purchase._01"
 msgstr ""
 "* There is a sale restriction (or inventory shortage) for T_ARG1. It is "
 "not possible to purchase a quantity that exceeds T_ARG2 in a single "
 "purchase."
 
-msgid "SC_CartSession_005"
+msgid "c_* T_PRODUCT is sold out._01"
 msgstr "* T_ARG1 is sold out."
 
-msgid "SC_Fpdf_001"
+msgid "c_Product name / Product code / [Specification]_01"
 msgstr "Product name / Product code / [Specification]"
 
-msgid "SC_Fpdf_002"
+msgid "c_Quantity_01"
 msgstr "Quantity"
 
-msgid "SC_Fpdf_003"
+msgid "c_Unit price_01"
 msgstr "Unit price"
 
-msgid "SC_Fpdf_004"
+msgid "c_Amount with tax_01"
 msgstr "Amount with tax"
 
-msgid "SC_Fpdf_005"
+msgid "c_Product total_01"
 msgstr "Product total"
 
-msgid "SC_Fpdf_006"
+msgid "c_Shipping fee_01"
 msgstr "Shipping fee"
 
-msgid "SC_Fpdf_007"
+msgid "c_Processing fee_01"
 msgstr "Processing fee"
 
-msgid "SC_Fpdf_008"
+msgid "c_Discount_01"
 msgstr "Discount"
 
-msgid "SC_Fpdf_009"
+msgid "c_Billing amount_01"
 msgstr "Billing amount"
 
-msgid "SC_Fpdf_010"
+msgid "c_Used points_01"
 msgstr "Used points"
 
-msgid "SC_Fpdf_011"
+msgid "c_Points added_01"
 msgstr "Points added"
 
-msgid "SC_Fpdf_012"
+msgid "c_<Remarks>_01"
 msgstr "<Remarks>"
 
-msgid "SC_Fpdf_013"
+msgid "c_Payment_01"
 msgstr "Payment"
 
-msgid "SC_Fpdf_014"
+msgid "c_Thank you for your purchase._01"
 msgstr "Thank you for your purchase."
 
-msgid "SC_Fpdf_015"
+msgid "c_Delivery will be based on the following below._01"
 msgstr "Delivery will be based on the following below."
 
-msgid "SC_Fpdf_016"
+msgid "c_Please confirm._01"
 msgstr "Please confirm."
 
-msgid "SC_Fpdf_017"
+msgid "c_Creation date: T_YEAR/T_MONTH/T_DAY_01"
 msgstr "Creation date: T_ARG1/T_ARG2/T_ARG3"
 
-msgid "SC_Fpdf_018"
-msgstr "T_ARG1 T_ARG2"
-
-msgid "SC_Fpdf_019"
+msgid "c_$ T_ARG1_01"
 msgstr "$ T_ARG1"
 
-msgid "SC_Fpdf_020"
+msgid "c_Pts_01"
 msgstr "Pts"
 
-msgid "SC_Fpdf_021"
+msgid "c_postal code mark_01"
 msgstr " "
 
-msgid "SC_Image_001"
+msgid "c_File copying failed._01"
 msgstr "File copying failed."
 
-msgid "SC_Image_002"
+msgid "c_Copying of T_FROM->T_TO failed._01"
 msgstr "Copying of T_ARG1->T_ARG2 failed."
 
-msgid "SC_Image_003"
+msgid "c_The output source image path or the output destination folder has not been designated._01"
 msgstr ""
 "The output source image path or the output destination folder has not been "
 "designated."
 
-msgid "SC_Image_004"
+msgid "c_The output source image was not found._01"
 msgstr "The output source image was not found."
 
-msgid "SC_Image_005"
+msgid "c_The image format is not supported._01"
 msgstr "The image format is not supported."
 
-msgid "SC_Image_006"
+msgid "c_Image output failed._01"
 msgstr "Image output failed."
 
-msgid "SC_Initial_001"
+msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</div>_01"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
 "align: center\">Please grant T_ARG1 user write access (777, etc.)</"
 "div>"
 
-msgid "SC_Initial_002"
+msgid "c_T_CACHE_REALDIR../mtb_constants_init.php does not exist_01"
 msgstr "T_ARG1../mtb_constants_init.php does not exist"
 
-msgid "SC_PageNavi_001"
+msgid "c_&lt;&lt;Back_01"
 msgstr "&lt;&lt;Back"
 
-msgid "SC_PageNavi_002"
+msgid "c_Next&gt;&gt;_01"
 msgstr "Next&gt;&gt;"
 
-msgid "SC_Product_001"
+msgid "c_Please make a selection_01"
 msgstr "Please make a selection"
 
-msgid "SC_Product_002"
+msgid "c_(Sold out)_01"
 msgstr "(Sold out)"
 
-msgid "SC_Query_001"
+msgid "c_An error occurred in DB processing._01"
 msgstr "An error occurred in DB processing."
 
-msgid "SC_SelectSql_001"
+msgid "c_Unknown_01"
 msgstr "Unknown"
 
-msgid "SC_SendMail_001"
+msgid "c_A method for upward compatibility was used._01"
 msgstr "A method for upward compatibility was used."
 
-msgid "SC_SendMail_002"
+msgid "c_Unknown backend.[$backend = T_BACKEND]_01"
 msgstr "Unknown backend.[$backend = T_ARG1]"
 
-msgid "SC_SendMail_003"
+msgid "c_E-mail sending failed.[T_MESSAGE]_01"
 msgstr "E-mail sending failed.[T_ARG1]"
 
-msgid "SC_View_001"
+msgid "c_Processing time: T_TIME seconds_01"
 msgstr "Processing time: T_TIME seconds"
 
-msgid "SC_UploadFile_001"
+msgid "c_* T_DISPNAME is not uploaded. <br />_01"
 msgstr "* T_ARG1 is not uploaded. <br />"
 
-msgid "SC_UploadFile_002"
+msgid "c_* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
 msgstr ""
 "* T_ARG1 is not uploaded. (If you cannot upload the file, adjust "
 "php_value upload_max_filesize for the .htaccess file)<br />"
 
-msgid "SC_UploadFile_003"
+msgid "c_* File upload failed. <br />_01"
 msgstr "* File upload failed. <br />"
 
-msgid "SC_Api_Operation_001"
+msgid "c_The operation could not be loaded._01"
 msgstr "The operation could not be loaded."
 
-msgid "SC_Api_Operation_002"
+msgid "c_You do not have execution authority for the operation._01"
 msgstr "You do not have execution authority for the operation."
 
-msgid "SC_Batch_Update_001"
+msgid "c_Creation of backup directory failed_01"
 msgstr "Creation of backup directory failed"
 
-msgid "SC_Batch_Update_002"
+msgid "c_The following file was excluded: _01"
 msgstr "The following file was excluded: "
 
-msgid "SC_Batch_Update_003"
+msgid "c_The hash value does not match and the copy destination cannot be retrieved: _01"
 msgstr ""
 "The hash value does not match and the copy destination cannot be retrieved: "
 
-msgid "SC_Batch_Update_004"
+msgid "c_Files with the same contents were skipped: _01"
 msgstr "Files with the same contents were skipped: "
 
-msgid "SC_Batch_Update_005"
+msgid "c_Creation of backup file failed: _01"
 msgstr "Creation of backup file failed: "
 
-msgid "SC_Batch_Update_006"
+msgid "c_The copying destination does not have write access: _01"
 msgstr "The copying destination does not have write access: "
 
-msgid "SC_Batch_Update_007"
+msgid "c_File copying was successful: _01"
 msgstr "File copying was successful: "
 
-msgid "SC_Batch_Update_008"
+msgid "c_distinfo file creation was successful: _01"
 msgstr "distinfo file creation was successful: "
 
-msgid "SC_Batch_Update_009"
+msgid "c_distinfo file creation failed: _01"
 msgstr "distinfo file creation failed: "
 
-msgid "SC_Helper_CSV_001"
+msgid "c_Product management_01"
 msgstr "Product management"
 
-msgid "SC_Helper_CSV_002"
+msgid "c_Member management_01"
 msgstr "Member management"
 
-msgid "SC_Helper_CSV_003"
+msgid "c_Orders_01"
 msgstr "Orders"
 
-msgid "SC_Helper_CSV_004"
+msgid "c_Review_01"
 msgstr "Review"
 
-msgid "SC_Helper_CSV_005"
-msgstr "Category"
-
-msgid "SC_Helper_Customer_001"
+msgid "c_* This is an e-mail address already used in member registration. <br />_01"
 msgstr ""
 "* This is an e-mail address already used in member registration. <br />"
 
-msgid "SC_Helper_Customer_002"
+msgid "c_* The specified range for the purchase amount is inadequate._01"
 msgstr "* The specified range for the purchase amount is inadequate."
 
-msgid "SC_Helper_Customer_003"
+msgid "c_* The specified range for number of purchases is inadequate._01"
 msgstr "* The specified range for number of purchases is inadequate."
 
-msgid "SC_Helper_DB_001"
+msgid "c_The file exists but cannot be read_01"
 msgstr "The file exists but cannot be read"
 
-msgid "SC_Helper_Mail_001"
+msgid "c_No order exists. (Order number: T_ORDER_ID)_01"
 msgstr "No order exists. (Order number: T_ARG1)"
 
-msgid "SC_Helper_Mail_002"
+msgid "c_The e-mail below has been sent._01"
 msgstr "The e-mail below has been sent."
 
-msgid "SC_Helper_Mail_003"
+msgid "c_Confirmation of member registration_01"
 msgstr "Confirmation of member registration"
 
-msgid "SC_Helper_Mail_004"
+msgid "c_Completion of member registration_01"
 msgstr "Completion of member registration"
 
-msgid "SC_Helper_PageLayout_001"
+msgid "c_The block cannot be found_01"
 msgstr "The block cannot be found"
 
-msgid "API_AddrFromZip_001"
+msgid "c_Search for an address from the postal code._01"
 msgstr "Search for an address from the postal code."
 
-msgid "API_BrowseNodeLookup_001"
+msgid "c_Category retrieval_01"
 msgstr "Category retrieval"
 
-msgid "API_CartAdd_001"
+msgid "c_Add product to cart_01"
 msgstr "Add product to cart"
 
-msgid "API_CartClear_001"
+msgid "c_Empty cart_01"
 msgstr "Empty cart"
 
-msgid "API_CartCreate_001"
+msgid "c_Newly create cart_01"
 msgstr "Newly create cart"
 
-msgid "API_CartGet_001"
+msgid "c_Cart retrieval_01"
 msgstr "Cart retrieval"
 
-msgid "API_CartModify_001"
+msgid "c_Cart repair_01"
 msgstr "Cart repair"
 
-msgid "API_ItemLookup_001"
+msgid "c_Product details information will be retrieved_01"
 msgstr "Product details information will be retrieved"
 
-msgid "API_ItemLookup_002"
+msgid "c_* The requested information was not found._01"
 msgstr "* The requested information was not found."
 
-msgid "API_ItemSearch_001"
+msgid "c_Product search and product list information are retrieved._01"
 msgstr "Product search and product list information are retrieved."
 
-msgid "API_ItemSearch_002"
-msgstr "* The requested information was not found."
-
-msgid "PARAM_LABEL_EMAIL"
+msgid "c_E-mail address_01"
 msgstr "E-mail address"
 
-msgid "PARAM_LABEL_EMAIL_CONFIRM"
+msgid "c_E-mail address (confirmation)_01"
 msgstr "E-mail address (confirmation)"
 
-msgid "PARAM_LABEL_EMAIL_MOBILE"
+msgid "Mobile e-mail address"
 msgstr "Mobile e-mail address"
 
-msgid "PARAM_LABEL_EMAIL_MOBILE_CONFIRM"
+msgid "c_Mobile e-mail address (confirmation)_01"
 msgstr "Mobile e-mail address (confirmation)"
 
-msgid "PARAM_LABEL_NAME"
+msgid "c_Name_01"
 msgstr "Name"
 
-msgid "PARAM_LABEL_CUSTOMER_NAME"
+msgid "c_Name_02"
 msgstr "Name"
 
-msgid "PARAM_LABEL_CUSTOMER_NAME1"
-msgstr "Name 1"
-
-msgid "PARAM_LABEL_CUSTOMER_NAME2"
-msgstr "Name 2"
-
-msgid "PARAM_LABEL_CUSTOMER_LASTNAME"
+msgid "c_Name (last name)_01"
 msgstr "Name (last name)"
 
-msgid "PARAM_LABEL_CUSTOMER_FIRSTNAME"
+msgid "c_Name (first name)_01"
 msgstr "Name (first name)"
 
 msgid "PARAM_LABEL_CUSTOMER_KANA"
@@ -505,10 +466,10 @@ msgstr "お名前(フリガナ・姓)"
 msgid "PARAM_LABEL_CUSTOMER_FIRSTKANA"
 msgstr "お名前(フリガナ・名)"
 
-msgid "PARAM_LABEL_ORDER_LASTNAME"
+msgid "c_Name of orderer (last name)_01"
 msgstr "Name of orderer (last name)"
 
-msgid "PARAM_LABEL_ORDER_FIRSTNAME"
+msgid "c_Name of orderer (first name)_01"
 msgstr "Name of orderer (first name)"
 
 msgid "PARAM_LABEL_ORDER_LASTKANA"
@@ -517,290 +478,266 @@ msgstr "注文者 お名前(フリガナ・姓)"
 msgid "PARAM_LABEL_ORDER_FIRSTKANA"
 msgstr "注文者 お名前(フリガナ・名)"
 
-msgid "PARAM_LABEL_ORDER_NAME"
+msgid "c_Name of orderer_01"
 msgstr "Name of orderer"
 
 msgid "PARAM_LABEL_ORDER_KANA"
 msgstr "注文者 お名前(フリガナ)"
 
-msgid "PARAM_LABEL_PREF"
+msgid "c_Prefecture_01"
 msgstr "Prefecture"
 
-msgid "PARAM_LABEL_ADDR1"
+msgid "c_Address 1_01"
 msgstr "Address 1"
 
-msgid "PARAM_LABEL_ADDR2"
+msgid "c_Address 2_01"
 msgstr "Address 2"
 
-msgid "PARAM_LABEL_TEL"
+msgid "c_TEL_01"
 msgstr "TEL"
 
-msgid "PARAM_LABEL_TEL_NUMBER"
+msgid "c_Telephone number_01"
 msgstr "Telephone number"
 
-msgid "PARAM_LABEL_TEL1"
+msgid "c_Telephone number 1_01"
 msgstr "Telephone number 1"
 
-msgid "PARAM_LABEL_TEL2"
+msgid "c_Telephone number 2_01"
 msgstr "Telephone number 2"
 
-msgid "PARAM_LABEL_TEL3"
+msgid "c_Telephone number 3_01"
 msgstr "Telephone number 3"
 
-msgid "PARAM_LABEL_CUSTOMER_TEL1"
-msgstr "Telephone number 1"
-
-msgid "PARAM_LABEL_CUSTOMER_TEL2"
-msgstr "Telephone number 2"
-
-msgid "PARAM_LABEL_CUSTOMER_TEL3"
-msgstr "Telephone number 3"
-
-msgid "PARAM_LABEL_FAX"
+msgid "c_FAX_01"
 msgstr "FAX"
 
-msgid "PARAM_LABEL_FAX_NUMBER"
+msgid "c_Fax number_01"
 msgstr "Fax number"
 
-msgid "PARAM_LABEL_FAX1"
+msgid "c_Fax number 1_01"
 msgstr "Fax number 1"
 
-msgid "PARAM_LABEL_FAX2"
+msgid "c_Fax number 2_01"
 msgstr "Fax number 2"
 
-msgid "PARAM_LABEL_FAX3"
+msgid "c_Fax number 3_01"
 msgstr "Fax number 3"
 
-msgid "PARAM_LABEL_ZIP"
+msgid "c_Postal code_01"
 msgstr "Postal code"
 
-msgid "PARAM_LABEL_ZIP1"
+msgid "c_Postal code 1_01"
 msgstr "Postal code 1"
 
-msgid "PARAM_LABEL_ZIP2"
+msgid "c_Postal code 2_01"
 msgstr "Postal code 2"
 
-msgid "PARAM_LABEL_PASSWORD"
+msgid "c_Password_01"
 msgstr "Password"
 
-msgid "PARAM_LABEL_PASSWORD_CONFIRM"
+msgid "c_Password (confirmation)_01"
 msgstr "Password (confirmation)"
 
-msgid "PARAM_LABEL_REMINDER"
+msgid "c_Question for confirming password_01"
 msgstr "Question for confirming password"
 
-msgid "PARAM_LABEL_REMINDER_ANSWER"
+msgid "c_Answer to question for confirming password_01"
 msgstr "Answer to question for confirming password"
 
-msgid "PARAM_LABEL_SEX"
+msgid "c_Gender_01"
 msgstr "Gender"
 
-msgid "PARAM_LABEL_JOB"
+msgid "c_Occupation_01"
 msgstr "Occupation"
 
-msgid "PARAM_LABEL_BIRTHDAY"
+msgid "c_Date of birth_01"
 msgstr "Date of birth"
 
-msgid "PARAM_LABEL_YEAR"
+msgid "c_Year_01"
 msgstr "Year"
 
-msgid "PARAM_LABEL_MONTH"
+msgid "c_Month_01"
 msgstr "Month"
 
-msgid "PARAM_LABEL_DAY"
+msgid "c_Day_01"
 msgstr "Day"
 
-msgid "PARAM_LABEL_MAILMAGAZINE"
+msgid "c_Mail magazine_01"
 msgstr "Mail magazine"
 
-msgid "PARAM_LABEL_BROWSENODEID"
-msgstr "Applicable category ID"
-
-msgid "PARAM_LABEL_RESPONSEGROUP"
+msgid "c_Response type_01"
 msgstr "Response type"
 
-msgid "PARAM_LABEL_CONDITION"
+msgid "c_Product condition_01"
 msgstr "Product condition"
 
-msgid "PARAM_LABEL_IDTYPE"
+msgid "c_Product ID type_01"
 msgstr "Product ID type"
 
-msgid "PARAM_LABEL_ITEMID"
+msgid "c_Designated ID_01"
 msgstr "Designated ID"
 
-msgid "PARAM_LABEL_CSV_FILE"
+msgid "c_CSV file_01"
 msgstr "CSV file"
 
-msgid "PARAM_LABEL_RELATEDITEMSPAGE"
+msgid "c_Related product quantity_01"
 msgstr "Related product quantity"
 
-msgid "PARAM_LABEL_RELATIONSHIPTYPE"
+msgid "c_Related product type_01"
 msgstr "Related product type"
 
-msgid "PARAM_LABEL_REVIEWPAGE"
+msgid "c_Review page number_01"
 msgstr "Review page number"
 
-msgid "PARAM_LABEL_REVIEWSORT"
+msgid "c_Review page sort_01"
 msgstr "Review page sort"
 
-msgid "PARAM_LABEL_TAGPAGE"
+msgid "c_Related tag pages_01"
 msgstr "Related tag pages"
 
-msgid "PARAM_LABEL_TAGSPERPAGE"
+msgid "c_Number of related tag pages_01"
 msgstr "Number of related tag pages"
 
-msgid "PARAM_LABEL_TAGSORT"
+msgid "c_ Sort related tags_01"
 msgstr " Sort related tags"
 
-msgid "PARAM_LABEL_CATEGORY_ID"
+msgid "c_Category ID_01"
 msgstr "Category ID"
 
-msgid "PARAM_LABEL_KEYWORDS"
+msgid "c_Keyword_01"
 msgstr "Keyword"
 
-msgid "PARAM_LABEL_MANUFACTURER"
+msgid "c_Manufacturer name_01"
 msgstr "Manufacturer name"
 
-msgid "PARAM_LABEL_ITEMPAGE"
+msgid "c_Page number_01"
 msgstr "Page number"
 
-msgid "PARAM_LABEL_SORT"
+msgid "c_Sort_01"
 msgstr "Sort"
 
-msgid "PARAM_LABEL_CUSTOMER_ID"
+msgid "c_Member ID_01"
 msgstr "Member ID"
 
-msgid "PARAM_LABEL_CUSTOMER_STATUS"
+msgid "c_Member status_01"
 msgstr "Member status"
 
-msgid "PARAM_LABEL_CUSTOMER_NOTE"
+msgid "c_Memo for SHOP_01"
 msgstr "Memo for SHOP"
 
-msgid "PARAM_LABEL_CUSTOMER_POINT"
+msgid "c_Points in possession_01"
 msgstr "Points in possession"
 
-msgid "PARAM_LABEL_ADD_POINT"
-msgstr "Points added"
-
-msgid "PARAM_LABEL_BIRTH_POINT"
+msgid "c_Birthday points_01"
 msgstr "Birthday points"
 
-msgid "PARAM_LABEL_TOTAL_POINT"
+msgid "c_Final number of points registered_01"
 msgstr "Final number of points registered"
 
-msgid "PARAM_LABEL_NOW_POINT"
+msgid "c_Current points_01"
 msgstr "Current points"
 
-msgid "PARAM_LABEL_RETURN"
+msgid "c_Go back_01"
 msgstr "Go back"
 
-msgid "PARAM_LABEL_BD_START_YEAR"
+msgid "c_Birthday (start year)_01"
 msgstr "Birthday (start year)"
 
-msgid "PARAM_LABEL_BD_START_MONTH"
+msgid "c_Birthday (start month)_01"
 msgstr "Birthday (start month)"
 
-msgid "PARAM_LABEL_BD_START_DAY"
+msgid "c_Birthday (start date)_01"
 msgstr "Birthday (start date)"
 
-msgid "PARAM_LABEL_BD_END_YEAR"
+msgid "c_Birthday (end year)_01"
 msgstr "Birthday (end year)"
 
-msgid "PARAM_LABEL_BD_END_MONTH"
+msgid "c_Birthday (end month)_01"
 msgstr "Birthday (end month)"
 
-msgid "PARAM_LABEL_BD_END_DAY"
+msgid "c_Birthday (end date)_01"
 msgstr "Birthday (end date)"
 
-msgid "PARAM_LABEL_BIRTH_MONTH"
+msgid "c_Birth month_01"
 msgstr "Birth month"
 
-msgid "PARAM_LABEL_BUY_TOTAL_FROM"
+msgid "c_Purchase amount (start)_01"
 msgstr "Purchase amount (start)"
 
-msgid "PARAM_LABEL_BUY_TOTAL_TO"
+msgid "c_Purchase amount (end)_01"
 msgstr "Purchase amount (end)"
 
-msgid "PARAM_LABEL_BUY_TIMES_FROM"
+msgid "c_Purchase frequency (start)_01"
 msgstr "Purchase frequency (start)"
 
-msgid "PARAM_LABEL_BUY_TIMES_TO"
+msgid "c_Purchase frequency (end)_01"
 msgstr "Purchase frequency (end)"
 
-msgid "PARAM_LABEL_UPDATE_START_YEAR"
+msgid "c_Registration/update date (start year)_01"
 msgstr "Registration/update date (start year)"
 
-msgid "PARAM_LABEL_UPDATE_START_MONTH"
+msgid "c_Registration/update date (start month)_01"
 msgstr "Registration/update date (start month)"
 
-msgid "PARAM_LABEL_UPDATE_START_DAY"
+msgid "c_Registration/update date (start date)_01"
 msgstr "Registration/update date (start date)"
 
-msgid "PARAM_LABEL_UPDATE_END_YEAR"
+msgid "c_Registration/update date (end year)_01"
 msgstr "Registration/update date (end year)"
 
-msgid "PARAM_LABEL_UPDATE_END_MONTH"
+msgid "c_Registration/update date (end month)_01"
 msgstr "Registration/update date (end month)"
 
-msgid "PARAM_LABEL_UPDATE_END_DAY"
+msgid "c_Registration/update date (end date)_01"
 msgstr "Registration/update date (end date)"
 
-msgid "PARAM_LABEL_PAGE_MAX"
+msgid "c_Number of items displayed_01"
 msgstr "Number of items displayed"
 
-msgid "PARAM_LABEL_PAGE_NO"
-msgstr "Page number"
-
-msgid "PARAM_LABEL_BUY_START_YEAR"
+msgid "c_Final purchase date (start year)_01"
 msgstr "Final purchase date (start year)"
 
-msgid "PARAM_LABEL_BUY_START_MONTH"
+msgid "c_Final purchase date (start month)_01"
 msgstr "Final purchase date (start month)"
 
-msgid "PARAM_LABEL_BUY_START_DAY"
+msgid "c_Final purchase date (start day)_01"
 msgstr "Final purchase date (start day)"
 
-msgid "PARAM_LABEL_BUY_END_YEAR"
+msgid "c_Final purchase date (end year)_01"
 msgstr "Final purchase date (end year)"
 
-msgid "PARAM_LABEL_BUY_END_MONTH"
+msgid "c_Final purchase date (end month)_01"
 msgstr "Final purchase date (end month)"
 
-msgid "PARAM_LABEL_BUY_END_DAY"
+msgid "c_Final purchase date (end day)_01"
 msgstr "Final purchase date (end day)"
 
-msgid "PARAM_LABEL_BUY_PRODUCT"
+msgid "c_Purchased product_01"
 msgstr "Purchased product"
 
-msgid "PARAM_LABEL_BUY_PRODUCT_NAME"
+msgid "c_Purchased product name_01"
 msgstr "Purchased product name"
 
-msgid "PARAM_LABEL_BUY_PRODUCT_CODE"
+msgid "c_Purchased product code_01"
 msgstr "Purchased product code"
 
-msgid "PARAM_LABEL_CATEGORY"
+msgid "c_Category_01"
 msgstr "Category"
 
-msgid "PARAM_LABEL_COMPANY_NAME"
+msgid "c_Company name_01"
 msgstr "Company name"
 
 msgid "PARAM_LABEL_COMPANY_KANA"
 msgstr "会社名(フリガナ)"
 
-msgid "PARAM_LABEL_SHOP_NAME"
+msgid "c_Store name_01"
 msgstr "Store name"
 
 msgid "PARAM_LABEL_SHOP_KANA"
 msgstr "店名(フリガナ)"
 
-msgid "PARAM_LABEL_SHOP_NAME_ENG"
+msgid "c_Store name (in English)_01"
 msgstr "Store name (in English)"
-
-msgid "PARAM_LABEL_ZIP01"
-msgstr "Postal code 1"
-
-msgid "PARAM_LABEL_ZIP02"
-msgstr "Postal code 2"
 
 msgid "PARAM_LABEL_ADDR01"
 msgstr "Location 1"
@@ -901,20 +838,8 @@ msgstr "Payment method"
 msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
 msgstr "Payment method name"
 
-msgid "PARAM_LABEL_CHARGE"
-msgstr "Processing fee"
-
-msgid "PARAM_LABEL_DELIV_FEE"
-msgstr "Shipping fee"
-
 msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
 msgstr "Product shipping fee"
-
-msgid "PARAM_LABEL_DISCOUNT"
-msgstr "Discount"
-
-msgid "PARAM_LABEL_USE_POINT"
-msgstr "Used points"
 
 msgid "PARAM_LABEL_POINT"
 msgstr "Points"
@@ -994,12 +919,6 @@ msgstr "Response status"
 msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
 msgstr "Product type ID"
 
-msgid "PARAM_LABEL_PRICE"
-msgstr "Unit price"
-
-msgid "PARAM_LABEL_QUANTITY"
-msgstr "Quantity"
-
 msgid "PARAM_LABEL_SELL_PRICE"
 msgstr "Sales price"
 
@@ -1023,9 +942,6 @@ msgstr "Main image"
 
 msgid "PARAM_LABEL_DETAIL_MAIN_IMAGE"
 msgstr "Details - Main image"
-
-msgid "PARAM_LABEL_PRODUCT_NAME"
-msgstr "Product name"
 
 msgid "PARAM_LABEL_PRODUCT_CLASS_ID_ALP"
 msgstr "product_class_id"
@@ -1104,9 +1020,6 @@ msgstr "Checkbox"
 
 msgid "PARAM_LABEL_FILE_UPLOAD_KEY"
 msgstr "File upload key"
-
-msgid "PARAM_LABEL_PRODUCT_CODE"
-msgstr "Product code"
 
 msgid "PARAM_LABEL_PRODUCT_ID"
 msgstr "Product ID"
@@ -1200,9 +1113,6 @@ msgstr "Cart key"
 
 msgid "PARAM_LABEL_MONTHLY"
 msgstr "Monthly"
-
-msgid "PARAM_LABEL_PERIOD"
-msgstr "Period"
 
 msgid "PARAM_LABEL_PERIOD_1"
 msgstr "Period (Start day)"
@@ -1314,9 +1224,6 @@ msgstr "Manufacturer"
 
 msgid "PARAM_LABEL_MAKER_ID"
 msgstr "Manufacturer ID"
-
-msgid "PARAM_LABEL_MAKER_NAME"
-msgstr "Manufacturer name"
 
 msgid "PARAM_LABEL_MAKER_URL"
 msgstr "Manufacturer URL"
@@ -1540,9 +1447,6 @@ msgstr "Item number for deletion"
 msgid "PARAM_LABEL_SUBTOTAL"
 msgstr "Subtotal"
 
-msgid "PARAM_LABEL_TOTAL"
-msgstr "Total"
-
 msgid "PARAM_LABEL_PAYMENT_TOTAL"
 msgstr "Payment total"
 
@@ -1707,12 +1611,6 @@ msgstr "Operating/Not operating"
 
 msgid "PARAM_LABEL_PAGE"
 msgstr "Page"
-
-msgid "PARAM_LABEL_PASSWORD_REMINDER"
-msgstr "Question for confirming password"
-
-msgid "PARAM_LABEL_PASSWORD_REMINDER_ANSWER"
-msgstr "Answer to question for confirming password"
 
 msgid "PARAM_LABEL_IMG_FILE_NAME"
 msgstr "Image file name"
@@ -1932,7 +1830,7 @@ msgstr "Sales (history)"
 msgid "FORMAT_DATE_LONG"
 msgstr "Y-m-d H:i"
 
-msgid "FORMAT_NAME_FULL_SIR"
+msgid "f_NAME_FULL_SIR_01"
 msgstr "T_ARG1 T_ARG2"
 
 msgid "LC_Page_Abouts_001"
@@ -2199,15 +2097,6 @@ msgstr "Add or change delivery destination"
 msgid "LC_Page_Mypage_DeliveryAddr_001"
 msgstr "Add or change delivery destination"
 
-msgid "LC_Page_Mypage_DeliveryAddr_002"
-msgstr "The maximum number of separate shipping destinations has been met."
-
-msgid "LC_Page_Mypage_DeliveryAddr_003"
-msgstr "There is no separate delivery destination that matches."
-
-msgid "LC_Page_Mypage_DeliveryAddr_004"
-msgstr "The maximum number of separate shipping destinations has been met."
-
 msgid "LC_Page_MyPage_Favorite_001"
 msgstr "List of Favorites"
 
@@ -2357,9 +2246,6 @@ msgstr "Devices not supported"
 msgid "LC_Page_Upgrade_Download_001"
 msgstr "Installation/update was successful."
 
-msgid "LC_Page_001"
-msgstr "A method for upward compatibility was used."
-
 msgid "LC_Page_Install_001"
 msgstr "Please grant user write access (777, 707, etc.) for T_ARG1"
 
@@ -2415,9 +2301,6 @@ msgstr ">> ×:PHP settings directive 'magic_quotes_gpc' is active."
 msgid "LC_Page_Install_017"
 msgstr ">> ○:Access authority is normal."
 
-msgid "LC_Page_Install_018"
-msgstr "Store name"
-
 msgid "LC_Page_Install_019"
 msgstr "Administrator: E-mail address"
 
@@ -2462,9 +2345,6 @@ msgstr "SMTP password"
 
 msgid "LC_Page_Install_033"
 msgstr "DB type"
-
-msgid "LC_Page_Install_034"
-msgstr "DB server"
 
 msgid "LC_Page_Install_035"
 msgstr "DB port"
@@ -2740,9 +2620,6 @@ msgstr "Members"
 msgid "LC_Page_Admin_Customer_002"
 msgstr "Member master"
 
-msgid "LC_Page_Admin_Customer_Edit_001"
-msgstr "Member management"
-
 msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "Member registration"
 
@@ -2980,15 +2857,6 @@ msgstr "Save to file"
 msgid "LC_Page_Admin_Order_Pdf_005"
 msgstr "Detailed purchase statement (delivery slip)"
 
-msgid "LC_Page_Admin_Order_Pdf_006"
-msgstr "Thank you for your purchase."
-
-msgid "LC_Page_Admin_Order_Pdf_007"
-msgstr "Delivery will be based on the following below."
-
-msgid "LC_Page_Admin_Order_Pdf_008"
-msgstr "Please confirm."
-
 msgid "LC_Page_Admin_Order_Pdf_009"
 msgstr "Enter a number for the issuance year."
 
@@ -3169,9 +3037,6 @@ msgstr "File name for download sales"
 
 msgid "LC_Page_Admin_Products_ProductClass_013"
 msgstr "* The format permitted for T_ARG1 is T_ARG2.<br />"
-
-msgid "LC_Page_Admin_Products_ProductClass_014"
-msgstr "* File upload failed. <br />"
 
 msgid "LC_Page_Admin_Products_ProductRank_001"
 msgstr "Product rearrangement"
@@ -3404,190 +3269,169 @@ msgstr "Since T_ARG1 is duplicated, registration is not possible."
 msgid "LC_Page_Admin_System_Parameter"
 msgstr "Parameter settings"
 
-msgid "LC_Page_Admin_System_System_001"
+msgid "c_System information_01"
 msgstr "System information"
 
-msgid "LC_Page_Admin_System_System_002"
+msgid "c_EC-CUBE_01"
 msgstr "EC-CUBE"
 
-msgid "LC_Page_Admin_System_System_003"
+msgid "c_Server OS_01"
 msgstr "Server OS"
 
-msgid "LC_Page_Admin_System_System_004"
+msgid "c_DB server_01"
 msgstr "DB server"
 
-msgid "LC_Page_Admin_System_System_005"
+msgid "c_WEB server_01"
 msgstr "WEB server"
 
-msgid "LC_Page_Admin_System_System_006"
+msgid "c_Enabled_01"
 msgstr "Enabled"
 
-msgid "LC_Page_Admin_System_System_007"
+msgid "c_Inactive_01"
 msgstr "Inactive"
 
-msgid "LC_Page_Admin_System_System_008"
+msgid "c_GD_01"
 msgstr "GD"
 
-msgid "LC_Page_Admin_System_System_009"
+msgid "c_HTTP user agent_01"
 msgstr "HTTP user agent"
 
-msgid "LC_Page_Admin_Total_001"
+msgid "c_Sales by period_01"
 msgstr "Sales by period"
 
-msgid "LC_Page_Admin_Total_002"
-msgstr "Sales by period"
-
-msgid "LC_Page_Admin_Total_003"
+msgid "c_Sales by product_01"
 msgstr "Sales by product"
 
-msgid "LC_Page_Admin_Total_004"
+msgid "c_Sales by age group_01"
 msgstr "Sales by age group"
 
-msgid "LC_Page_Admin_Total_005"
+msgid "c_Sales  by occupation_01"
 msgstr "Sales  by occupation"
 
-msgid "LC_Page_Admin_Total_006"
+msgid "c_Sales by member_01"
 msgstr "Sales by member"
 
-msgid "LC_Page_Admin_Total_007"
+msgid "c_T_ARG1/T_ARG2/T_ARG3_01"
 msgstr "T_ARG1/T_ARG2/T_ARG3"
 
-msgid "LC_Page_Admin_Total_008"
+msgid "c_Sales period: T_ARG1 - T_ARG2_01"
 msgstr "Sales period: T_ARG1 - T_ARG2"
 
-msgid "LC_Page_Admin_Total_009"
-msgstr "Member"
-
-msgid "LC_Page_Admin_Total_010"
+msgid "c_Non-member_01"
 msgstr "Non-member"
 
-msgid "LC_Page_Admin_Total_011"
+msgid "c_Not answered_01"
 msgstr "Not answered"
 
-msgid "LC_Page_Admin_Total_012"
+msgid "c_T_ARG1s_01"
 msgstr "T_ARG1's"
 
-msgid "LC_Page_Admin_Total_013"
+msgid "c_(Age)_01"
 msgstr "(Age)"
 
-msgid "LC_Page_Admin_Total_014"
+msgid "c_(Total sales)_01"
 msgstr "(Total sales)"
 
-msgid "LC_Page_Admin_Total_015"
+msgid "c_(By month)_01"
 msgstr "(By month)"
 
-msgid "LC_Page_Admin_Total_016"
+msgid "c_(By year)_01"
 msgstr "(By year)"
 
-msgid "LC_Page_Admin_Total_017"
+msgid "c_(By day)_01"
 msgstr "(By day)"
 
-msgid "LC_Page_Admin_Total_018"
+msgid "c_(By time)_01"
 msgstr "(By time)"
 
-msgid "LC_Page_Admin_Total_019"
+msgid "c_(By date)_01"
 msgstr "(By date)"
 
-msgid "LC_Page_Admin_Total_020"
+msgid "c_Total_01"
 msgstr "Total"
 
-msgid "LC_Page_Admin_Total_021"
+msgid "c_Product code_01"
 msgstr "Product code"
 
-msgid "LC_Page_Admin_Total_022"
+msgid "c_Product name_01"
 msgstr "Product name"
 
-msgid "LC_Page_Admin_Total_023"
+msgid "c_Number of items purchased_01"
 msgstr "Number of items purchased"
 
-msgid "LC_Page_Admin_Total_024"
-msgstr "Quantity"
-
-msgid "LC_Page_Admin_Total_025"
-msgstr "Unit price"
-
-msgid "LC_Page_Admin_Total_026"
+msgid "c_Amount_01"
 msgstr "Amount"
 
-msgid "LC_Page_Admin_Total_027"
-msgstr "Occupation"
-
-msgid "LC_Page_Admin_Total_028"
+msgid "c_Purchase total_01"
 msgstr "Purchase total"
 
-msgid "LC_Page_Admin_Total_029"
+msgid "c_Purchase average_01"
 msgstr "Purchase average"
 
-msgid "LC_Page_Admin_Total_030"
+msgid "c_Member_01"
 msgstr "Member"
 
-msgid "LC_Page_Admin_Total_031"
+msgid "c_Age_01"
 msgstr "Age"
 
-msgid "LC_Page_Admin_Total_032"
+msgid "c_Period_01"
 msgstr "Period"
 
-msgid "LC_Page_Admin_Total_033"
+msgid "c_Male_01"
 msgstr "Male"
 
-msgid "LC_Page_Admin_Total_034"
+msgid "c_Female_01"
 msgstr "Female"
 
-msgid "LC_Page_Admin_Total_035"
+msgid "c_Male (member)_01"
 msgstr "Male (member)"
 
-msgid "LC_Page_Admin_Total_036"
+msgid "c_Male (non-member)_01"
 msgstr "Male (non-member)"
 
-msgid "LC_Page_Admin_Total_037"
+msgid "c_Female (member)_01"
 msgstr "Female (member)"
 
-msgid "LC_Page_Admin_Total_038"
+msgid "c_Female (non-member)_01"
 msgstr "Female (non-member)"
 
-msgid "LC_Page_Admin_Total_039"
+msgid "c_(Sales ratio)_01"
 msgstr "(Sales ratio)"
 
-msgid "LC_Page_Admin_001"
-msgstr "A method for upward compatibility was used."
-
-msgid "LC_Page_Admin_Home_001"
+msgid "c_Home_01"
 msgstr "Home"
 
-msgid "LC_Page_Admin_Home_002"
+msgid "c_>> Update information was not obtained._01"
 msgstr ">> Update information was not obtained."
 
-msgid "LC_Page_Admin_Index_001"
+msgid "c_You cannot log in._01"
 msgstr "You cannot log in."
 
-msgid "SC_Helper_Address_001"
+msgid "c_Correctly designate the customer ID_01"
 msgstr "Correctly designate the customer ID"
 
-msgid "SC_Helper_Address_002"
+msgid "c_The maximum number of separate shipping destinations registered has been met._01"
 msgstr ""
 "The maximum number of separate shipping destinations registered has been met."
 
-msgid "SC_Helper_Address_003"
+msgid "c_There is no separate delivery destination that matches._01"
 msgstr "There is no separate delivery destination that matches."
 
-msgid "SC_Helper_Transform_001"
+msgid "c_Not detectable_01"
 msgstr "Not detectable"
 
-msgid "C_Helper_Transform_003"
+msgid "c_<br />T_ARG1 does not exist_01"
 msgstr "<br />T_ARG1 does not exist"
 
-msgid "SC_Helper_Transform_004"
+msgid "c_Template operation failed. T_ARG1_01"
 msgstr "Template operation failed. T_ARG1"
 
-msgid "SC_Helper_Transform_005"
+msgid "c_Template operation failed._01"
 msgstr "Template operation failed."
 
 msgid "SC_Utils_001"
 msgstr ""
 "&gt;&gt; /install/T_ARG1, delete this file after completing installation."
-
-msgid "SC_Utils_002"
-msgstr "A method for upward compatibility was used."
 
 msgid "SC_Utils_003"
 msgstr "T_ARG1T_ARG2: File exists"
@@ -3597,9 +3441,6 @@ msgstr "T_ARG1T_ARG2: Copy success"
 
 msgid "SC_Utils_005"
 msgstr "T_ARG1T_ARG2: Copy failure"
-
-msgid "GC_Utils_001"
-msgstr "A method for upward compatibility was used."
 
 msgid "tpl_Delivery company_01"
 msgstr "Delivery company"
