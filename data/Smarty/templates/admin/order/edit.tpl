@@ -391,6 +391,8 @@
             <tr>
                 <th colspan="5" class="column right">お誕生日ポイント</th>
                 <td class="right">
+                    <!--{assign var=key value="birth_point"}-->
+                    <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->"/>
                     <!--{$arrForm.birth_point.value|number_format}-->
                     pt
                 </td>
