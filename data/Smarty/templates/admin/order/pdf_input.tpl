@@ -36,7 +36,7 @@ function lfPopwinSubmit(formName) {
 }
 
 	$(function(){
-        console.log(ymd);
+        //console.log(ymd);
         var dateFormat = $.datepicker.regional['<!--{$smarty.const.LANG_CODE}-->'].dateFormat;
 
         <!--{if $arrForm.year != '' && $arrForm.month != '' && $arrForm.day != ''}-->

@@ -30,7 +30,7 @@ $(function(){
     var search_startyear_m = '<!--{$arrForm.search_startyear_m.value|h}-->';
     var search_startmonth_m   = '<!--{$arrForm.search_startmonth_m.value|h}-->';
     var search_start_m_ymd = $.datepicker.formatDate(dateFormat, new Date(search_startyear_m, search_startmonth_m - 1));
-    console.log(search_start_m_ymd);
+    //console.log(search_start_m_ymd);
     $("#datepickersearch_start_m").val(search_start_m_ymd);
     <!--{/if}-->
 
