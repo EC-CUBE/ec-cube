@@ -122,7 +122,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
     function lfInitUploadFile($objForm) {
         $pkg_dir = SMARTY_TEMPLATES_REALDIR . $objForm->getValue('template_code');
         $objUpFile = new SC_UploadFile_Ex(TEMPLATE_TEMP_REALDIR, $pkg_dir);
-        $objUpFile->addFile(t('PARAM_LABEL_TEMPLATE_FILE'), 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
+        $objUpFile->addFile(t('c_Template file_01'), 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
         return $objUpFile;
     }
 
@@ -133,9 +133,9 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE_CODE'), 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE_NAME'), 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Template code_01'), 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam(t('c_Template name_01'), 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Terminal type ID_01'), 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

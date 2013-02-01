@@ -131,10 +131,10 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Terminal type ID_01'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_HEADER_DATA'), 'header');
-        $objFormParam->addParam(t('PARAM_LABEL_FOOTER_DATA'), 'footer');
+        $objFormParam->addParam(t('c_Header data_01'), 'header');
+        $objFormParam->addParam(t('c_Footer data_01'), 'footer');
     }
 
     /**

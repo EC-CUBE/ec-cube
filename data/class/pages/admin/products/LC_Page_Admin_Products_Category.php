@@ -402,9 +402,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      * @return void
      */
     function initParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_PARENT_CATEGORY_ID'), 'parent_category_id', null, null, array());
+        $objFormParam->addParam(t('c_New category ID_01'), 'parent_category_id', null, null, array());
         $objFormParam->addParam(t('c_Category ID_01'), 'category_id', null, null, array());
-        $objFormParam->addParam(t('PARAM_LABEL_CATEGORY_NAME'), 'category_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Category name_01'), 'category_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

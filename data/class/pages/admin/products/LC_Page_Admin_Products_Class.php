@@ -149,8 +149,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_CLASS_NAME'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CLASS_ID'), 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam(t('c_Standard name_01'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Standard ID_01'), 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
     }
 
     /**

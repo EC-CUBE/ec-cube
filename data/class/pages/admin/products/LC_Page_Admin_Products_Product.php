@@ -306,7 +306,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFormParam_PreEdit(&$objFormParam, $arrPost) {
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product ID_01'), 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrPost);
         $objFormParam->convParam();
     }
@@ -319,39 +319,39 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFormParam(&$objFormParam, $arrPost) {
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product ID_01'), 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Product name_01'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CATEGORY'), 'category_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_PUBLIC_STATUS'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_STATUS'), 'product_status', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product category_01'), 'category_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Disclosed/not disclosed_01'), 'status', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product status_01'), 'product_status', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         if (!$arrPost['has_product_class']) {
             // 新規登録, 規格なし商品の編集の場合
-            $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_TYPE'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_DOWN_PRODUCT_FILENAME'), 'down_filename', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_DOWN_PRODUCT_REAL_FILENAME'), 'down_realfilename', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_TEMP_DOWN_FILE'), 'temp_down_file', '', '', array());
-            $objFormParam->addParam(t('PARAM_LABEL_SAVE_DOWN_FILE'), 'save_down_file', '', '', array());
+            $objFormParam->addParam(t('c_Product type_01'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Downloaded product file name_01'), 'down_filename', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Downloaded product actual file name_01'), 'down_realfilename', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_temp_down_file_01'), 'temp_down_file', '', '', array());
+            $objFormParam->addParam(t('c_save_down_file_01'), 'save_down_file', '', '', array());
             $objFormParam->addParam(t('c_Product code_01'), 'product_code', STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
             $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_STOCK'), 'stock', AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-            $objFormParam->addParam(t('PARAM_LABEL_STOCK_UNLIMITED'), 'stock_unlimited', INT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Inventory count_01'), 'stock', AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Unlimited inventory_01'), 'stock_unlimited', INT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_DELIV_FEE'), 'deliv_fee', PRICE_LEN, 'n', array('NUM_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_POINT_RATE'), 'point_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DELIV_DATE'), 'deliv_date_id', INT_LEN, 'n', array('NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SALE_LIMIT'), 'sale_limit', AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MAKER'), 'maker_id', INT_LEN, 'n', array('NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MAKER_URL'), 'comment1', URL_LEN, 'a', array('SPTAB_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SEARCH_WORD'), 'comment3', LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SHOP_NOTE'), 'note', LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MAIN_LIST_COMMENT'), 'main_list_comment', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MAIN_COMMENT'), 'main_comment', LLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SAVE_MAIN_LIST_IMAGE'), 'save_main_list_image', '', '', array());
-        $objFormParam->addParam(t('PARAM_LABEL_SAVE_MAIN_IMAGE'), 'save_main_image', '', '', array());
-        $objFormParam->addParam(t('PARAM_LABEL_SAVE_MAIN_LARGE_IMAGE'), 'save_main_large_image', '', '', array());
-        $objFormParam->addParam(t('PARAM_LABEL_TEMP_MAIN_LIST_IMAGE'), 'temp_main_list_image', '', '', array());
+        $objFormParam->addParam(t('c_Product shipping fee_01'), 'deliv_fee', PRICE_LEN, 'n', array('NUM_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Point grant rate_01'), 'point_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Delivery company_01_DATE'), 'deliv_date_id', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam(t('c_Number of sales restrictions_01'), 'sale_limit', AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Manufacturer_01'), 'maker_id', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam(t('c_Manufacturer URL_01'), 'comment1', URL_LEN, 'a', array('SPTAB_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Search word_01'), 'comment3', LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Remarks column (for SHOP)_01'), 'note', LLTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_List - Main comments_01'), 'main_list_comment', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Details - Main comment_01'), 'main_comment', LLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_save_main_list_image_01'), 'save_main_list_image', '', '', array());
+        $objFormParam->addParam(t('c_save_main_image_01'), 'save_main_image', '', '', array());
+        $objFormParam->addParam(t('c_save_main_large_image_01'), 'save_main_large_image', '', '', array());
+        $objFormParam->addParam(t('c_temp_main_list_image_01'), 'temp_main_list_image', '', '', array());
         $objFormParam->addParam(t('PARAM_LABEL_TEMP_MAIN_IMAGE'), 'temp_main_image', '', '', array());
         $objFormParam->addParam(t('PARAM_LABEL_TEMP_MAIN_LARGE_IMAGE'), 'temp_main_large_image', '', '', array());
 
@@ -370,10 +370,10 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
             $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_DELETE_CNT', array('T_ARG1' => $cnt)), 'recommend_delete' . $cnt, '', 'n', array());
         }
 
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'copy_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product ID_01'), 'copy_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objFormParam->addParam(t('PARAM_LABEL_HAS_PRODUCT_CLASS'), 'has_product_class', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID_ALP'), 'product_class_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_product_class_id_01'), 'product_class_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objFormParam->setParam($arrPost);
         $objFormParam->convParam();
@@ -421,8 +421,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitFile(&$objUpFile) {
-        $objUpFile->addFile(t('PARAM_LABEL_LIST_MAIN_IMAGE'), 'main_list_image', array('jpg', 'gif', 'png'),IMAGE_SIZE, false, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
-        $objUpFile->addFile(t('PARAM_LABEL_DETAIL_MAIN_IMAGE'), 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
+        $objUpFile->addFile(t('c_List - Main images_01'), 'main_list_image', array('jpg', 'gif', 'png'),IMAGE_SIZE, false, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
+        $objUpFile->addFile(t('c_Details - Main image_01'), 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
         $objUpFile->addFile(t('PARAM_LABEL_MAIN_LARGE_IMAGE'), 'main_large_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_IMAGE_WIDTH, LARGE_IMAGE_HEIGHT);
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('T_ARG1' => $cnt)), "sub_image$cnt", array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_SUBIMAGE_WIDTH, NORMAL_SUBIMAGE_HEIGHT);
@@ -438,7 +438,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      * @return void
      */
     function lfInitDownFile(&$objDownFile) {
-        $objDownFile->addFile(t('PARAM_LABEL_DOWN_FILE'), 'down_file', explode(',', DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+        $objDownFile->addFile(t('c_File for download sales_01'), 'down_file', explode(',', DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
     }
 
     /**
@@ -461,7 +461,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $arrErr = array_merge((array)$arrErr, (array)$objUpFile->checkExists());
 
         // HTMLタグ許可チェック
-        $objErr->doFunc(array(t('PARAM_LABEL_MAIN_COMMENT'), 'main_comment', $this->arrAllowedTag), array('HTML_TAG_CHECK'));
+        $objErr->doFunc(array(t('c_Details - Main comment_01'), 'main_comment', $this->arrAllowedTag), array('HTML_TAG_CHECK'));
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objErr->doFunc(array(t('PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT', array('T_ARG1' => $cnt)), 'sub_comment' . $cnt, $this->arrAllowedTag), array('HTML_TAG_CHECK'));
         }
@@ -470,12 +470,12 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         if ($arrForm['has_product_class'] != true) {
             // 在庫必須チェック(在庫無制限ではない場合)
             if ($arrForm['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
-                $objErr->doFunc(array(t('PARAM_LABEL_STOCK'), 'stock'), array('EXIST_CHECK'));
+                $objErr->doFunc(array(t('c_Inventory count_01'), 'stock'), array('EXIST_CHECK'));
             }
             // ダウンロード商品ファイル必須チェック(ダウンロード商品の場合)
             if ($arrForm['product_type_id'] == PRODUCT_TYPE_DOWNLOAD) {
                 $arrErr = array_merge((array)$arrErr, (array)$objDownFile->checkExists());
-                $objErr->doFunc(array(t('PARAM_LABEL_DOWN_PRODUCT_FILENAME'), 'down_filename'), array('EXIST_CHECK'));
+                $objErr->doFunc(array(t('c_Downloaded product file name_01'), 'down_filename'), array('EXIST_CHECK'));
             }
         }
 

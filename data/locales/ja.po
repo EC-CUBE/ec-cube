@@ -156,16 +156,16 @@ msgstr ""
 msgid "c_* T_ARG1 cannot be entered. <br />_01"
 msgstr "※ T_ARG1は入力できません。<br />"
 
-msgid "c_* The file T_NAME does not exist. <br />_01"
+msgid "c_* The file T_ARG1 does not exist. <br />_01"
 msgstr "※ T_ARG1のファイルが存在しません。<br />"
 
-msgid "c_* Does not support the error check format (T_FUNCTION) **<br />_01"
+msgid "c_** Does not support the error check format (T_ARG1) **<br />_01"
 msgstr "※※　エラーチェック形式(T_ARG1)には対応していません　※※ <br />"
 
-msgid "c_T_NAME<span class=\"red\">(* Required)</span>_01"
+msgid "c_T_ARG1<span class=\"red\">(* Required)</span>_01"
 msgstr "T_ARG1<span class=\"red\">(※ 必須)</span>"
 
-msgid "c_[Default value: T_DEFAULT]_01"
+msgid "c_[Default value: T_ARG1]_01"
 msgstr " [省略時初期値: T_ARG1]"
 
 msgid "c_ [Registration/update not possible] _01"
@@ -179,17 +179,17 @@ msgstr ""
 "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除し"
 "ました。"
 
-msgid "c_* Delivery preparations are not ready  for T_PRODUCT. Please access the " "inquiry page for more details._01"
+msgid "c_* Delivery preparations are not ready  for T_ARG1. Please access the inquiry page for more details._01"
 msgstr ""
 "※「T_ARG1」はまだ配送の準備ができておりません。恐れ入りますがお問い合わせ"
 "ページよりお問い合わせください。"
 
-msgid "c_* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is not possible to purchase a quantity that exceeds T_LIMIT in a single " "purchase._01"
+msgid "c_* There is a sale restriction (or inventory shortage) for T_ARG1. It is not possible to purchase a quantity that exceeds T_ARG2 in a single purchase._01"
 msgstr ""
 "※「T_ARG1」は販売制限(または在庫が不足)しております。一度に数量T_ARG2を超"
 "える購入はできません。"
 
-msgid "c_* T_PRODUCT is sold out._01"
+msgid "c_* T_ARG1 is sold out._01"
 msgstr "※「T_ARG1」は売り切れました。"
 
 msgid "c_Product name / Product code / [Specification]_01"
@@ -240,7 +240,7 @@ msgstr "下記の内容にて納品させていただきます。"
 msgid "c_Please confirm._01"
 msgstr "ご確認くださいますよう、お願いいたします。"
 
-msgid "c_Creation date: T_YEAR/T_MONTH/T_DAY_01"
+msgid "c_Creation date: T_ARG1/T_ARG2/T_ARG3_01"
 msgstr "作成日: T_ARG1年T_ARG2月T_ARG3日"
 
 msgid "c_$ T_ARG1_01"
@@ -255,7 +255,7 @@ msgstr "〒"
 msgid "c_File copying failed._01"
 msgstr "ファイルのコピーに失敗しました。"
 
-msgid "c_Copying of T_FROM->T_TO failed._01"
+msgid "c_Copying of T_ARG1->T_ARG2 failed._01"
 msgstr "T_ARG1->T_ARG2のcopyに失敗しました。"
 
 msgid "c_The output source image path or the output destination folder has not been designated._01"
@@ -270,13 +270,13 @@ msgstr "画像形式がサポートされていません。"
 msgid "c_Image output failed._01"
 msgstr "画像の出力に失敗しました。"
 
-msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</div>_01"
+msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_ARG1 user write access (777, etc.)</div>_01"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
 "align: center\">T_ARG1 にユーザ書込み権限(777等)を付与して下さい。</"
 "div>"
 
-msgid "c_T_CACHE_REALDIR../mtb_constants_init.php does not exist_01"
+msgid "c_T_ARG1../mtb_constants_init.php does not exist_01"
 msgstr "T_ARG1../mtb_constants_init.php が存在しません"
 
 msgid "c_&lt;&lt;Back_01"
@@ -300,19 +300,19 @@ msgstr "不明"
 msgid "c_A method for upward compatibility was used._01"
 msgstr "前方互換用メソッドが使用されました。"
 
-msgid "c_Unknown backend.[$backend = T_BACKEND]_01"
+msgid "c_Unknown backend.[$backend = T_ARG1]_01"
 msgstr "不明なバックエンド。[$backend = T_ARG1]"
 
-msgid "c_E-mail sending failed.[T_MESSAGE]_01"
+msgid "c_E-mail sending failed.[T_ARG1]_01"
 msgstr "メール送信に失敗しました。[T_ARG1]"
 
 msgid "c_Processing time: T_TIME seconds_01"
 msgstr "処理時間: T_TIME秒"
 
-msgid "c_* T_DISPNAME is not uploaded. <br />_01"
+msgid "c_* T_ARG1 is not uploaded. <br />_01"
 msgstr "※ T_ARG1がアップロードされていません。<br />"
 
-msgid "c_* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
+msgid "c_* T_ARG1 is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
 msgstr ""
 "※ T_ARG1がアップロードされていません。(ファイルがアップロードできない場合"
 "は、.htaccessファイルのphp_value upload_max_filesizeを調整してください)<br />"
@@ -377,7 +377,7 @@ msgstr "※ 購入回数の指定範囲が不正です。"
 msgid "c_The file exists but cannot be read_01"
 msgstr "ファイルは存在するが読み込めない"
 
-msgid "c_No order exists. (Order number: T_ORDER_ID)_01"
+msgid "c_No order exists. (Order number: T_ARG1)_01"
 msgstr "該当する受注が存在しない。(注文番号: T_ARG1)"
 
 msgid "c_The e-mail below has been sent._01"
@@ -728,91 +728,91 @@ msgstr "店名(フリガナ)"
 msgid "c_Store name (in English)_01"
 msgstr "店名(英語表記)"
 
-msgid "PARAM_LABEL_ADDR01"
+msgid "c_Location 1_01"
 msgstr "所在地1"
 
-msgid "PARAM_LABEL_ADDR02"
+msgid "c_Location 2_01"
 msgstr "所在地2"
 
-msgid "PARAM_LABEL_EMAIL01"
+msgid "c_Product order receipt e-mail address_01"
 msgstr "商品注文受付メールアドレス"
 
-msgid "PARAM_LABEL_EMAIL02"
+msgid "c_E-mail address for receiving inquiries_01"
 msgstr "問い合わせ受付メールアドレス"
 
-msgid "PARAM_LABEL_EMAIL03"
+msgid "c_E-mail address of sender_01"
 msgstr "メール送信元メールアドレス"
 
-msgid "PARAM_LABEL_EMAIL04"
+msgid "c_E-mail address for receiving sending errors_01"
 msgstr "送信エラー受付メールアドレス"
 
-msgid "PARAM_LABEL_TAX"
+msgid "c_Consumption sales tax rate_01"
 msgstr "消費税率"
 
-msgid "PARAM_LABEL_TAX_RULE"
+msgid "c_Taxation rules_01"
 msgstr "課税規則"
 
-msgid "PARAM_LABEL_FREE_RULE"
+msgid "c_Conditions for free shipping_01"
 msgstr "送料無料条件"
 
-msgid "PARAM_LABEL_BUSINESS_HOUR"
+msgid "c_Store business hours_01"
 msgstr "店舗営業時間"
 
-msgid "PARAM_LABEL_GOOD_TRADED"
+msgid "c_Available products_01"
 msgstr "取扱商品"
 
-msgid "PARAM_LABEL_MESSAGE"
+msgid "c_Message_01"
 msgstr "メッセージ"
 
-msgid "PARAM_LABEL_DOWNLOADABLE_DAYS"
+msgid "c_Number of days during which download is possible_01"
 msgstr "ダウンロード可能日数"
 
-msgid "PARAM_LABEL_DOWNLOADABLE_DAYS_UNLIMITED"
+msgid "c_Unlimited downloads_01"
 msgstr "ダウンロード無制限"
 
-msgid "PARAM_LABEL_LATITUDE"
+msgid "c_Latitude_01"
 msgstr "緯度"
 
-msgid "PARAM_LABEL_LONGITUDE"
+msgid "c_Longitude_01"
 msgstr "経度"
 
-msgid "PARAM_LABEL_REGULAR_HOLIDAY"
+msgid "c_Regular holiday_01"
 msgstr "定休日"
 
-msgid "PARAM_LABEL_REGULAR_HOLIDAY_ID"
+msgid "c_Regular holiday ID_01"
 msgstr "定休日ID"
 
-msgid "PARAM_LABEL_CONTACT"
+msgid "c_Details of inquiry_01"
 msgstr "お問い合わせ内容"
 
-msgid "PARAM_LABEL_CONTACT_MESSAGE"
+msgid "c_Other inquiries_01"
 msgstr "その他お問い合わせ"
 
-msgid "PARAM_LABEL_MEMORY"
+msgid "c_Record_01"
 msgstr "記憶する"
 
-msgid "PARAM_LABEL_LOGIN_ID"
+msgid "c_Login ID_01"
 msgstr "ログインID"
 
-msgid "PARAM_LABEL_SELLER"
+msgid "c_Distributor_01"
 msgstr "販売業者"
 
-msgid "PARAM_LABEL_MANAGER"
+msgid "c_Operation director_01"
 msgstr "運営責任者"
 
-msgid "PARAM_LABEL_URL"
+msgid "c_URL_01"
 msgstr "URL"
 
-msgid "PARAM_LABEL_TITLE"
+msgid "c_Title_01"
 msgstr "タイトル"
 
-msgid "PARAM_LABEL_REQUIRED_FEE"
+msgid "c_Necessary fees_01"
 msgstr "必要料金"
 
-msgid "PARAM_LABEL_TO_ORDER"
+msgid "c_Order method_01"
 msgstr "注文方法"
 
-msgid "PARAM_LABEL_PAYMENT_METHOD_ID"
+msgid "c_Payment method ID_01"
 msgstr "支払方法ID"
 
 msgid "PARAM_LABEL_PAYMENT_METHOD"
@@ -824,91 +824,91 @@ msgstr "支払い方法"
 msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD"
 msgstr "お支払い方法"
 
-msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
+msgid "c_Payment method name_01"
 msgstr "お支払方法名称"
 
-msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
+msgid "c_Product shipping fee_01"
 msgstr "商品送料"
 
-msgid "PARAM_LABEL_POINT"
+msgid "c_Points_01"
 msgstr "ポイント"
 
-msgid "PARAM_LABEL_USING_POINT"
+msgid "c_Use points_01"
 msgstr "ポイントを使用する"
 
-msgid "PARAM_LABEL_DELIV"
+msgid "c_Delivery company_01"
 msgstr "配送業者"
 
-msgid "PARAM_LABEL_RULE_MAX"
+msgid "c_Usage conditions(-$ Above)_01"
 msgstr "利用条件(～円以上)"
 
-msgid "PARAM_LABEL_UPPER_RULE"
+msgid "c_Usage conditions(-$ Less than)_01"
 msgstr "利用条件(～円以下)"
 
-msgid "PARAM_LABEL_FIX"
+msgid "c_Fixed_01"
 msgstr "固定"
 
-msgid "PARAM_LABEL_LOGO_IMG"
+msgid "c_Logo image_01"
 msgstr "ロゴ画像"
 
-msgid "PARAM_LABEL_IMG_KEY"
+msgid "c_Image key_01"
 msgstr "画像キー"
 
-msgid "PARAM_LABEL_PAYMENT_ID"
+msgid "c_Payment ID_01"
 msgstr "支払いID"
 
-msgid "PARAM_LABEL_CHARGE_FLG"
+msgid "c_Billing flag_01"
 msgstr "課金フラグ"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_ID"
+msgid "c_Delivery destination ID_01"
 msgstr "お届け先ID"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE"
+msgid "c_Delivery destination_01"
 msgstr "お届け先"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME"
+msgid "c_Delivery time_01"
 msgstr "お届け時間"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE"
+msgid "c_Delivery date_01"
 msgstr "お届け日"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME_ID"
+msgid "c_Delivery time ID_01"
 msgstr "お届け時間ID"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_YEAR"
+msgid "c_Delivery date (Year)_01"
 msgstr "お届け日(年)"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_MONTH"
+msgid "c_Delivery date (Month)_01"
 msgstr "お届け日(月)"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_DAY"
+msgid "c_Delivery date (Date)_01"
 msgstr "お届け日(日)"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_CHECK"
+msgid "c_Delivery destination check_01"
 msgstr "お届け先チェック"
 
-msgid "PARAM_LABEL_OTHER_DELIV_ID"
+msgid "c_Other delivery destination IDs_01"
 msgstr "その他のお届け先ID"
 
-msgid "PARAM_LABEL_OTHER_DELIV"
+msgid "c_Separate shipping destination_01"
 msgstr "別のお届け先"
 
-msgid "PARAM_LABEL_SHIPPING_PRODUCT_QUANTITY"
+msgid "c_Quantity of delivered products_01"
 msgstr "配送商品数量"
 
-msgid "PARAM_LABEL_SHIPPING_ID"
+msgid "c_Delivery ID_01"
 msgstr "配送ID"
 
-msgid "PARAM_LABEL_SHIPPING_QUANTITY"
+msgid "c_Delivery quantity_01"
 msgstr "配送数"
 
-msgid "PARAM_LABEL_ORDER_STATUS"
+msgid "c_Response status_01"
 msgstr "対応状況"
 
-msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
+msgid "c_Product type ID_01"
 msgstr "商品種別ID"
 
-msgid "PARAM_LABEL_SELL_PRICE"
+msgid "c_Sales price_01"
 msgstr "販売価格"
 
 msgid "PARAM_LABEL_CART_NO"
@@ -917,331 +917,331 @@ msgstr "カート番号"
 msgid "PARAM_LABEL_CART_NUMBER"
 msgstr "カートナンバー"
 
-msgid "PARAM_LABEL_LINE_NUM"
+msgid "c_Number of lines_01"
 msgstr "行数"
 
-msgid "PARAM_LABEL_MAIN_LIST_IMAGE"
+msgid "c_Main list image_01"
 msgstr "メイン一覧画像"
 
-msgid "PARAM_LABEL_LIST_MAIN_IMAGE"
+msgid "c_List - Main images_01"
 msgstr "一覧-メイン画像"
 
-msgid "PARAM_LABEL_MAIN_IMAGE"
+msgid "c_Main image_01"
 msgstr "メイン画像"
 
-msgid "PARAM_LABEL_DETAIL_MAIN_IMAGE"
+msgid "c_Details - Main image_01"
 msgstr "詳細-メイン画像"
 
-msgid "PARAM_LABEL_PRODUCT_CLASS_ID_ALP"
+msgid "c_product_class_id_01"
 msgstr "product_class_id"
 
-msgid "PARAM_LABEL_PRODUCT_CLASS_ID"
+msgid "c_Product specification ID_01"
 msgstr "商品規格ID"
 
-msgid "PARAM_LABEL_CLASS"
+msgid "c_Standard_01"
 msgstr "規格"
 
-msgid "PARAM_LABEL_CLASS1"
+msgid "c_Standard 1_01"
 msgstr "規格1"
 
-msgid "PARAM_LABEL_CLASS2"
+msgid "c_Standard 2_01"
 msgstr "規格2"
 
-msgid "PARAM_LABEL_CLASS_ID"
+msgid "c_Standard ID_01"
 msgstr "規格ID"
 
-msgid "PARAM_LABEL_CLASS_ID1"
+msgid "c_Standard ID 1_01"
 msgstr "規格ID1"
 
-msgid "PARAM_LABEL_CLASS_ID2"
+msgid "c_Standard ID 2_01"
 msgstr "規格ID2"
 
-msgid "PARAM_LABEL_CLASS_NAME"
+msgid "c_Standard name_01"
 msgstr "規格名"
 
-msgid "PARAM_LABEL_CLASS_NAME1"
+msgid "c_Standard name 1_01"
 msgstr "規格名1"
 
-msgid "PARAM_LABEL_CLASS_NAME2"
+msgid "c_Standard name 2_01"
 msgstr "規格名2"
 
-msgid "PARAM_LABEL_CLASSCATEGORY1"
+msgid "c_Standard category 1_01"
 msgstr "規格分類1"
 
-msgid "PARAM_LABEL_CLASSCATEGORY2"
+msgid "c_Standard category 2_01"
 msgstr "規格分類2"
 
-msgid "PARAM_LABEL_CLASSCATEGORY_NAME"
+msgid "c_Standard category name_01"
 msgstr "規格分類名"
 
-msgid "PARAM_LABEL_CLASSCATEGORY_ID"
+msgid "c_New specification category ID_01"
 msgstr "規格分類ID"
 
-msgid "PARAM_LABEL_CLASS_TOTAL"
+msgid "c_Product specification number_01"
 msgstr "商品規格数"
 
-msgid "PARAM_LABEL_ADD_PRODUCT_CLASS_ID"
+msgid "c_Additional product specification ID_01"
 msgstr "追加商品規格ID"
 
-msgid "PARAM_LABEL_EDIT_PRODUCT_CLASS_ID"
+msgid "c_Repair product specification ID_01"
 msgstr "修正商品規格ID"
 
-msgid "PARAM_LABEL_STOCK"
+msgid "c_Inventory count_01"
 msgstr "在庫数"
 
-msgid "PARAM_LABEL_PRODUCT_TYPE"
+msgid "c_Product type_01"
 msgstr "商品種別"
 
-msgid "PARAM_LABEL_DEL_FLG"
+msgid "c_Deletion flag_01"
 msgstr "削除フラグ"
 
-msgid "PARAM_LABEL_DOWN_FILENAME"
+msgid "c_File name for download sales_01"
 msgstr "ダウンロード販売用ファイル名"
 
-msgid "PARAM_LABEL_DOWN_FILE"
+msgid "c_File for download sales_01"
 msgstr "ダウンロード販売用ファイル"
 
-msgid "PARAM_LABEL_DOWN_PRODUCT_FILENAME"
+msgid "c_Downloaded product file name_01"
 msgstr "ダウンロード商品ファイル名"
 
-msgid "PARAM_LABEL_CHECK_BOX"
+msgid "c_Checkbox_01"
 msgstr "チェックボックス"
 
-msgid "PARAM_LABEL_FILE_UPLOAD_KEY"
+msgid "c_File upload key_01"
 msgstr "ファイルアップロード用キー"
 
-msgid "PARAM_LABEL_PRODUCT_ID"
+msgid "c_Product ID_01"
 msgstr "商品ID"
 
-msgid "PARAM_LABEL_PRODUCT_CATEGORY"
+msgid "c_Product category_01"
 msgstr "商品カテゴリ"
 
-msgid "PARAM_LABEL_PRODUCT_PUBLIC_STATUS"
+msgid "c_Disclosed/not disclosed_01"
 msgstr "公開・非公開"
 
-msgid "PARAM_LABEL_PRODUCT_STATUS"
+msgid "c_Product status_01"
 msgstr "商品ステータス"
 
-msgid "PARAM_LABEL_AGE1"
+msgid "c_Age 1_01"
 msgstr "年齢1"
 
-msgid "PARAM_LABEL_AGE2"
+msgid "c_Age 2_01"
 msgstr "年齢2"
 
-msgid "PARAM_LABEL_TOTAL_PRICE1"
+msgid "c_Purchase amount 1_01"
 msgstr "購入金額1"
 
-msgid "PARAM_LABEL_TOTAL_PRICE2"
+msgid "c_Purchase amount 2_01"
 msgstr "購入金額2"
 
-msgid "PARAM_LABEL_START_YEAR"
+msgid "c_Start year_01"
 msgstr "開始年"
 
-msgid "PARAM_LABEL_START_MONTH"
+msgid "c_Start month_01"
 msgstr "開始月"
 
-msgid "PARAM_LABEL_START_DAY"
+msgid "c_Start day_01"
 msgstr "開始日"
 
-msgid "PARAM_LABEL_END_YEAR"
+msgid "c_Completion year_01"
 msgstr "終了年"
 
-msgid "PARAM_LABEL_END_MONTH"
+msgid "c_Completion month_01"
 msgstr "終了月"
 
-msgid "PARAM_LABEL_END_DAY"
+msgid "c_Completion date_01"
 msgstr "終了日"
 
-msgid "PARAM_LABEL_PAGENO"
+msgid "c_Page feed number_01"
 msgstr "ページ送り番号"
 
-msgid "PARAM_LABEL_FOOTER"
+msgid "c_Footer_01"
 msgstr "フッター"
 
-msgid "PARAM_LABEL_HEADER"
+msgid "c_Header_01"
 msgstr "ヘッダー"
 
-msgid "PARAM_LABEL_TEMPLATE"
+msgid "c_Template_01"
 msgstr "テンプレート"
 
-msgid "PARAM_LABEL_TEMPLATE_NAME"
+msgid "c_Template name_01"
 msgstr "テンプレート名"
 
-msgid "PARAM_LABEL_TEMPLATE_CODE"
+msgid "c_Template code_01"
 msgstr "テンプレートコード"
 
-msgid "PARAM_LABEL_TPL_CODE"
+msgid "c_template_code_01"
 msgstr "template_code"
 
-msgid "PARAM_LABEL_TEMPLATE_FILE"
+msgid "c_Template file_01"
 msgstr "テンプレートファイル"
 
-msgid "PARAM_LABEL_MAIL_SUBJECT"
+msgid "c_E-mail title_01"
 msgstr "メールタイトル"
 
-msgid "PARAM_LABEL_PARENT_CATEGORY_ID"
+msgid "c_New category ID_01"
 msgstr "親カテゴリID"
 
-msgid "PARAM_LABEL_CATEGORY_NAME"
+msgid "c_Category name_01"
 msgstr "カテゴリ名"
 
 msgid "PARAM_LABEL_CURRENT"
 msgstr "現在ページ"
 
-msgid "PARAM_LABEL_NEW_ID"
+msgid "c_New ID_01"
 msgstr "新着ID"
 
-msgid "PARAM_LABEL_ADMIN_LOGIN"
+msgid "c_Administrator login_01"
 msgstr "管理者ログイン"
 
-msgid "PARAM_LABEL_FAVORITE_PRODUCT_ID"
+msgid "c_Favorite product ID_01"
 msgstr "お気に入り商品ID"
 
-msgid "PARAM_LABEL_CARTKEY"
+msgid "c_Cart key_01"
 msgstr "カートキー"
 
-msgid "PARAM_LABEL_MONTHLY"
+msgid "c_Monthly_01"
 msgstr "月度"
 
-msgid "PARAM_LABEL_PERIOD_1"
+msgid "c_Period (Start day)_01"
 msgstr "期間(開始日)"
 
-msgid "PARAM_LABEL_PERIOD_2"
+msgid "c_Period (end day)_01"
 msgstr "期間(終了日)"
 
 msgid "PARAM_LABEL_THE_NAME"
 msgstr "名称"
 
-msgid "PARAM_LABEL_PAGE_ID"
+msgid "c_Page ID_01"
 msgstr "ページID"
 
-msgid "PARAM_LABEL_DEVICE_TYPE_ID"
+msgid "c_Terminal type ID_01"
 msgstr "端末種別ID"
 
-msgid "PARAM_LABEL_DEVICE_TYPE"
+msgid "c_Terminal type_01"
 msgstr "端末種別"
 
-msgid "PARAM_LABEL_HEADER_DATA"
+msgid "c_Header data_01"
 msgstr "ヘッダデータ"
 
-msgid "PARAM_LABEL_FOOTER_DATA"
+msgid "c_Footer data_01"
 msgstr "フッタデータ"
 
-msgid "PARAM_LABEL_CSS_FILE_NAME"
+msgid "c_CSS file name_01"
 msgstr "CSSファイル名"
 
-msgid "PARAM_LABEL_CSS_OLD_FILE_NAME"
+msgid "c_Old CSS file name_01"
 msgstr "旧CSSファイル名"
 
 msgid "PARAM_LABEL_"
 msgstr "CSSデータ"
 
-msgid "PARAM_LABEL_BLOC_ID"
+msgid "c_Block ID_01"
 msgstr "ブロックID"
 
-msgid "PARAM_LABEL_BLOC_NAME"
+msgid "c_Block name_01"
 msgstr "ブロック名"
 
-msgid "PARAM_LABEL_BLOC_CNT"
+msgid "c_Block number_01"
 msgstr "ブロック数"
 
-msgid "PARAM_LABEL_BLOC_DATA"
+msgid "c_Block data_01"
 msgstr "ブロックデータ"
 
-msgid "PARAM_LABEL_TARGET_ID"
+msgid "c_Target ID_01"
 msgstr "ターゲットID"
 
-msgid "PARAM_LABEL_TOP"
+msgid "c_TOP coordinate_01"
 msgstr "TOP座標"
 
-msgid "PARAM_LABEL_FULL_PAGE"
+msgid "c_All pages_01"
 msgstr "全ページ"
 
-msgid "PARAM_LABEL_FILE_NAME"
+msgid "c_File name_01"
 msgstr "ファイル名"
 
-msgid "PARAM_LABEL_DELIVERY_ID"
+msgid "c_Delivery company ID_01"
 msgstr "配送業者ID"
 
-msgid "PARAM_LABEL_DELIVERY_NAME"
+msgid "c_Delivery company name_01"
 msgstr "配送業者名"
 
-msgid "PARAM_LABEL_DESCRIPTION"
+msgid "c_Explanation_01"
 msgstr "説明"
 
-msgid "PARAM_LABEL_SLIP_CONFIRM_URL"
+msgid "c_Voucher No. confirmation URL_01"
 msgstr "伝票No.確認URL"
 
-msgid "PARAM_LABEL_HANDLE_PRODUCT_TYPE"
+msgid "c_Available product types_01"
 msgstr "取扱商品種別"
 
-msgid "PARAM_LABEL_HANDLE_PAYMENT_METHOD"
+msgid "c_Available payment methods_01"
 msgstr "取扱支払方法"
 
-msgid "PARAM_LABEL_KIYAKU_TITLE"
+msgid "c_Agreement title_01"
 msgstr "規約タイトル"
 
-msgid "PARAM_LABEL_KIYAKU_TEXT"
+msgid "c_Agreement contents_01"
 msgstr "規約内容"
 
-msgid "PARAM_LABEL_KIYAKU_ID"
+msgid "c_Agreement ID_01"
 msgstr "規約ID"
 
-msgid "PARAM_LABEL_POINT_RATE"
+msgid "c_Point grant rate_01"
 msgstr "ポイント付与率"
 
-msgid "PARAM_LABEL_WELCOME_POINT"
+msgid "c_Points granted during member registration_01"
 msgstr "会員登録時付与ポイント"
 
-msgid "PARAM_LABEL_DOWN_PRODUCT_REAL_FILENAME"
+msgid "c_Downloaded product actual file name_01"
 msgstr "ダウンロード商品実ファイル名"
 
-msgid "PARAM_LABEL_STOCK_UNLIMITED"
+msgid "c_Unlimited inventory_01"
 msgstr "在庫無制限"
 
-msgid "PARAM_LABEL_TEMP_DOWN_FILE"
+msgid "c_temp_down_file_01"
 msgstr "temp_down_file"
 
-msgid "PARAM_LABEL_SAVE_DOWN_FILE"
+msgid "c_save_down_file_01"
 msgstr "save_down_file"
 
-msgid "PARAM_LABEL_DELIV_DATE"
+msgid "c_Shipment date Target_01"
 msgstr "発送日目安"
 
-msgid "PARAM_LABEL_MAKER"
+msgid "c_Manufacturer_01"
 msgstr "メーカー"
 
-msgid "PARAM_LABEL_MAKER_ID"
+msgid "c_Manufacturer ID_01"
 msgstr "メーカーID"
 
-msgid "PARAM_LABEL_MAKER_URL"
+msgid "c_Manufacturer URL_01"
 msgstr "メーカーURL"
 
-msgid "PARAM_LABEL_SALE_LIMIT"
+msgid "c_Number of sales restrictions_01"
 msgstr "販売制限数"
 
-msgid "PARAM_LABEL_SEARCH_WORD"
+msgid "c_Search word_01"
 msgstr "検索ワード"
 
-msgid "PARAM_LABEL_SHOP_NOTE"
+msgid "c_Remarks column (for SHOP)_01"
 msgstr "備考欄(SHOP専用)"
 
-msgid "PARAM_LABEL_MAIN_LIST_COMMENT"
+msgid "c_List - Main comments_01"
 msgstr "一覧-メインコメント"
 
-msgid "PARAM_LABEL_MAIN_COMMENT"
+msgid "c_Details - Main comment_01"
 msgstr "詳細-メインコメント"
 
-msgid "PARAM_LABEL_SAVE_MAIN_LIST_IMAGE"
+msgid "c_save_main_list_image_01"
 msgstr "save_main_list_image"
 
-msgid "PARAM_LABEL_SAVE_MAIN_IMAGE"
+msgid "c_save_main_image_01"
 msgstr "save_main_image"
 
-msgid "PARAM_LABEL_SAVE_MAIN_LARGE_IMAGE"
+msgid "c_save_main_large_image_01"
 msgstr "save_main_large_image"
 
-msgid "PARAM_LABEL_TEMP_MAIN_LIST_IMAGE"
+msgid "c_temp_main_list_image_01"
 msgstr "temp_main_list_image"
 
 msgid "PARAM_LABEL_TEMP_MAIN_IMAGE"

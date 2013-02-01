@@ -152,14 +152,14 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
 
         switch ($this->getMode()) {
             case 'search':
-                $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-                $objErr->doFunc(array(t('PARAM_LABEL_END_DAY'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-                $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), t('PARAM_LABEL_END_DAY'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+                $objErr->doFunc(array(t('c_Start day_01'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+                $objErr->doFunc(array(t('c_Completion date_01'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+                $objErr->doFunc(array(t('c_Start day_01'), t('c_Completion date_01'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
                 break;
 
             case 'complete':
                 $objErr->doFunc(array(t('PARAM_LABEL_RECOMMEND_LEVEL'), 'recommend_level'), array('SELECT_CHECK'));
-                $objErr->doFunc(array(t('PARAM_LABEL_TITLE'), 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+                $objErr->doFunc(array(t('c_Title_01'), 'title', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
                 $objErr->doFunc(array(t('PARAM_LABEL_COMMENT'), 'comment', LTEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
             default:

@@ -1107,7 +1107,7 @@ class SC_CheckError {
      * value[0] = 項目名 value[1] = 判定対象文字列
      * value[2] = 入力を禁止する文字列(配列)
      *
-     * @example $objErr->doFunc(array(t('PARAM_LABEL_URL'), 'contents', $arrReviewDenyURL), array('PROHIBITED_STR_CHECK'));
+     * @example $objErr->doFunc(array(t('c_URL_01'), 'contents', $arrReviewDenyURL), array('PROHIBITED_STR_CHECK'));
      */
     function PROHIBITED_STR_CHECK($value) {
         if (isset($this->arrErr[$value[1]]) || empty($this->arrParam[$value[1]])) {

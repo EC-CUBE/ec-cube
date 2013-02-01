@@ -152,9 +152,9 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_TYPE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CSS_OLD_FILE_NAME'), 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Terminal type ID_01'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_CSS file name_01'), 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Old CSS file name_01'), 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_CSS_DATA'), 'css_data');
 
     }
@@ -234,7 +234,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array(t('PARAM_LABEL_CSS_FILE_NAME'), 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objErr->doFunc(array(t('c_CSS file name_01'), 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
 
         $device_type_id = $objFormParam->getValue('device_type_id');
         $css_name = $objFormParam->getValue('css_name');

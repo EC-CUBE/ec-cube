@@ -95,7 +95,7 @@ class SC_UploadFile {
         $arrKeyname = array_flip($this->keyname);
 
         if (!($_FILES[$keyname]['size'] > 0)) {
-            $objErr->arrErr[$keyname] = t('c_* T_DISPNAME is not uploaded. <br />_01', array('T_DISPNAME' => $this->disp_name[$arrKeyname[$keyname]]));
+            $objErr->arrErr[$keyname] = t('c_* T_ARG1 is not uploaded. <br />_01', array('T_ARG1' => $this->disp_name[$arrKeyname[$keyname]]));
         } else {
             foreach ($this->keyname as $val) {
                 // 一致したキーのファイルに情報を保存する。
@@ -141,7 +141,7 @@ class SC_UploadFile {
         $cnt = 0;
         $arrKeyname = array_flip($this->keyname);
         if (!($_FILES[$keyname]['size'] > 0)) {
-            $objErr->arrErr[$keyname] = t('c_* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01', array('T_DISPNAME' => $this->disp_name[$arrKeyname[$keyname]]));
+            $objErr->arrErr[$keyname] = t('c_* T_ARG1 is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01', array('T_ARG1' => $this->disp_name[$arrKeyname[$keyname]]));
         } else {
             foreach ($this->keyname as $val) {
                 // 一致したキーのファイルに情報を保存する。
@@ -456,7 +456,7 @@ class SC_UploadFile {
                     if ($this->save_file[$cnt] == ''
                         &&  $this->temp_file[$cnt] == ''
                     ) {
-                        $arrRet[$val] = t('c_* T_DISPNAME is not uploaded. <br />_01', array('T_DISPNAME' => $this->disp_name[$cnt]));
+                        $arrRet[$val] = t('c_* T_ARG1 is not uploaded. <br />_01', array('T_ARG1' => $this->disp_name[$cnt]));
                     }
                 }
             }

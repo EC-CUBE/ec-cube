@@ -273,10 +273,10 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam, $deliv_only, &$arrShipping) {
-        $objFormParam->addParam(t('PARAM_LABEL_DELIV'), 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_POINT'), 'use_point', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK', 'ZERO_START'));
-        $objFormParam->addParam(t('PARAM_LABEL_CONTACT_MESSAGE'), 'message', LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_USING_POINT'), 'point_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '2');
+        $objFormParam->addParam(t('c_Delivery company_01'), 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Points_01'), 'use_point', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK', 'ZERO_START'));
+        $objFormParam->addParam(t('c_Other inquiries_01'), 'message', LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Use points_01'), 'point_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '2');
 
         if ($deliv_only) {
             $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_PAYMENT_METHOD'), 'payment_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -284,8 +284,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_PAYMENT_METHOD'), 'payment_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
             foreach ($arrShipping as $val) {
-                $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_TIME'), 'deliv_time_id' . $val['shipping_id'], INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-                $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_DATE'), 'deliv_date' . $val['shipping_id'], STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Delivery time_01'), 'deliv_time_id' . $val['shipping_id'], INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+                $objFormParam->addParam(t('c_Delivery date_01'), 'deliv_date' . $val['shipping_id'], STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
             }
         }
 
@@ -313,8 +313,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         }
 
         if ($arrForm['point_check'] == '1') {
-            $objErr->doFunc(array(t('PARAM_LABEL_USING_POINT'), 'point_check'), array('EXIST_CHECK'));
-            $objErr->doFunc(array(t('PARAM_LABEL_POINT'), 'use_point'), array('EXIST_CHECK'));
+            $objErr->doFunc(array(t('c_Use points_01'), 'point_check'), array('EXIST_CHECK'));
+            $objErr->doFunc(array(t('c_Points_01'), 'use_point'), array('EXIST_CHECK'));
             if ($max_point == '') {
                 $max_point = 0;
             }

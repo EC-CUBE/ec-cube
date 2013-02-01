@@ -215,7 +215,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     function lfInitParam($mode, &$objFormParam) {
         switch ($mode) {
             case 'edit':
-                $objFormParam->addParam(t('PARAM_LABEL_TITLE'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Title_01'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('c_Month_01'), 'month', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('c_Day_01'), 'day', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 // breakしない
@@ -223,7 +223,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
             case 'pre_edit':
             case 'down':
             case 'up':
-                $objFormParam->addParam(t('PARAM_LABEL_REGULAR_HOLIDAY_ID'), 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Regular holiday ID_01'), 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
             default:
                 break;

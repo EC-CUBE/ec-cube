@@ -226,13 +226,13 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
 
         // 所在地チェック
         $objFormParam->addParam(t('c_Prefecture_01'), 'pref', '', 'n');
-        $objFormParam->addParam(t('PARAM_LABEL_ADDR01'), 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ADDR02'), 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Location 1_01'), 'addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Location 2_01'), 'addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         // メールチェック
-        $objFormParam->addParam(t('PARAM_LABEL_EMAIL01'), 'email01', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_EMAIL02'), 'email02', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_EMAIL03'), 'email03', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_EMAIL04'), 'email04', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('c_Product order receipt e-mail address_01'), 'email01', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('c_E-mail address for receiving inquiries_01'), 'email02', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('c_E-mail address of sender_01'), 'email03', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam(t('c_E-mail address for receiving sending errors_01'), 'email04', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
 
         // 電話番号
         $objFormParam->addParam(t('PARAM_LABEL_TEL01'), 'tel01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -245,23 +245,23 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('PARAM_LABEL_FAX03'), 'fax03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         // その他
-        $objFormParam->addParam(t('PARAM_LABEL_TAX'), 'tax', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TAX_RULE'), 'tax_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_FREE_RULE'), 'free_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_BUSINESS_HOUR'), 'business_hour', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Consumption sales tax rate_01'), 'tax', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Taxation rules_01'), 'tax_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Conditions for free shipping_01'), 'free_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Store business hours_01'), 'business_hour', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
 
-        $objFormParam->addParam(t('PARAM_LABEL_GOOD_TRADED'), 'good_traded', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MESSAGE'), 'message', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Available products_01'), 'good_traded', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Message_01'), 'message', LLTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
 
         if (!isset($post['downloadable_days_unlimited']) && $post['downloadable_days_unlimited'] != '1') {
-            $objFormParam->addParam(t('PARAM_LABEL_DOWNLOADABLE_DAYS'), 'downloadable_days', DOWNLOAD_DAYS_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Number of days during which download is possible_01'), 'downloadable_days', DOWNLOAD_DAYS_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         } else {
-            $objFormParam->addParam(t('PARAM_LABEL_DOWNLOADABLE_DAYS_UNLIMITED'), 'downloadable_days_unlimited', array('EXIST_CHECK'));
+            $objFormParam->addParam(t('c_Unlimited downloads_01'), 'downloadable_days_unlimited', array('EXIST_CHECK'));
         }
-        $objFormParam->addParam(t('PARAM_LABEL_LATITUDE'), 'latitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_LONGITUDE'), 'longitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Latitude_01'), 'latitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Longitude_01'), 'longitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK'));
 
-        $objFormParam->addParam(t('PARAM_LABEL_REGULAR_HOLIDAY'), 'regular_holiday_ids', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Regular holiday_01'), 'regular_holiday_ids', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
 
     // 入力エラーチェック
@@ -276,8 +276,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objErr->doFunc(array(t('c_TEL_01'), 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));
         $objErr->doFunc(array(t('c_Fax number_01'), 'fax01', 'fax02', 'fax03'), array('TEL_CHECK'));
 
-        $objErr->doFunc(array(t('PARAM_LABEL_LATITUDE'), 'latitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_LONGITUDE'), 'longitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('c_Latitude_01'), 'latitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('c_Longitude_01'), 'longitude', STEXT_LEN), array('NUM_POINT_CHECK', 'MAX_LENGTH_CHECK'));
 
         return array_merge((array)$arrErr, (array)$objErr->arrErr);
     }

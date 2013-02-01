@@ -104,7 +104,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_FILE'), 'log', null, '', array());
-        $objFormParam->addParam(t('PARAM_LABEL_LINE_NUM'), 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), 50);
+        $objFormParam->addParam(t('c_Number of lines_01'), 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), 50);
     }
 
     /**

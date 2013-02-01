@@ -263,7 +263,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* ファイル情報の初期化 */
     function lfInitFile($objUpFile) {
-        $objUpFile->addFile(t('PARAM_LABEL_DETAIL_MAIN_IMAGE'), 'main_image', array('jpg'), IMAGE_SIZE);
+        $objUpFile->addFile(t('c_Details - Main image_01'), 'main_image', array('jpg'), IMAGE_SIZE);
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objUpFile->addFile(t('PARAM_LABEL_DETAIL_SUB_IMAGE_CNT', array('T_ARG1' => $cnt)), "sub_image$cnt", array('jpg'), IMAGE_SIZE);
         }
@@ -343,13 +343,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_CLASS1'), 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CLASS2'), 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Standard 1_01'), 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Standard 2_01'), 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Quantity_01'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ADMIN_LOGIN'), 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_FAVORITE_PRODUCT_ID'), 'favorite_product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_CLASS_ID'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Administrator login_01'), 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product ID_01'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Favorite product ID_01'), 'favorite_product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product specification ID_01'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($_REQUEST);
         // 入力値の変換
@@ -409,10 +409,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
 
             // 複数項目チェック
             if ($tpl_classcat_find1) {
-                $objErr->doFunc(array(t('PARAM_LABEL_CLASS1'), 'classcategory_id1'), array('EXIST_CHECK'));
+                $objErr->doFunc(array(t('c_Standard 1_01'), 'classcategory_id1'), array('EXIST_CHECK'));
             }
             if ($tpl_classcat_find2) {
-                $objErr->doFunc(array(t('PARAM_LABEL_CLASS2'), 'classcategory_id2'), array('EXIST_CHECK'));
+                $objErr->doFunc(array(t('c_Standard 2_01'), 'classcategory_id2'), array('EXIST_CHECK'));
             }
             break;
         }

@@ -162,16 +162,16 @@ msgstr ""
 msgid "c_* T_ARG1 cannot be entered. <br />_01"
 msgstr "* T_ARG1 cannot be entered. <br />"
 
-msgid "c_* The file T_NAME does not exist. <br />_01"
+msgid "c_* The file T_ARG1 does not exist. <br />_01"
 msgstr "* The file T_ARG1 does not exist. <br />"
 
-msgid "c_* Does not support the error check format (T_FUNCTION) **<br />_01"
-msgstr "* Does not support the error check format (T_ARG1) **<br />"
+msgid "c_** Does not support the error check format (T_ARG1) **<br />_01"
+msgstr "** Does not support the error check format (T_ARG1) **<br />"
 
-msgid "c_T_NAME<span class=\"red\">(* Required)</span>_01"
+msgid "c_T_ARG1<span class=\"red\">(* Required)</span>_01"
 msgstr "T_ARG1<span class=\"red\">(* Required)</span>"
 
-msgid "c_[Default value: T_DEFAULT]_01"
+msgid "c_[Default value: T_ARG1]_01"
 msgstr " [Default value: T_ARG1]"
 
 msgid "c_ [Registration/update not possible] _01"
@@ -185,18 +185,18 @@ msgstr ""
 "* A product in your cart is no longer being sold at this time. The item was "
 "deleted from your cart."
 
-msgid "c_* Delivery preparations are not ready  for T_PRODUCT. Please access the " "inquiry page for more details._01"
+msgid "c_* Delivery preparations are not ready  for T_ARG1. Please access the inquiry page for more details._01"
 msgstr ""
 "* Delivery preparations are not ready  for T_ARG1. Please access the "
 "inquiry page for more details."
 
-msgid "c_* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is not possible to purchase a quantity that exceeds T_LIMIT in a single " "purchase._01"
+msgid "c_* There is a sale restriction (or inventory shortage) for T_ARG1. It is not possible to purchase a quantity that exceeds T_ARG2 in a single purchase._01"
 msgstr ""
 "* There is a sale restriction (or inventory shortage) for T_ARG1. It is "
 "not possible to purchase a quantity that exceeds T_ARG2 in a single "
 "purchase."
 
-msgid "c_* T_PRODUCT is sold out._01"
+msgid "c_* T_ARG1 is sold out._01"
 msgstr "* T_ARG1 is sold out."
 
 msgid "c_Product name / Product code / [Specification]_01"
@@ -247,7 +247,7 @@ msgstr "Delivery will be based on the following below."
 msgid "c_Please confirm._01"
 msgstr "Please confirm."
 
-msgid "c_Creation date: T_YEAR/T_MONTH/T_DAY_01"
+msgid "c_Creation date: T_ARG1/T_ARG2/T_ARG3_01"
 msgstr "Creation date: T_ARG1/T_ARG2/T_ARG3"
 
 msgid "c_$ T_ARG1_01"
@@ -262,7 +262,7 @@ msgstr " "
 msgid "c_File copying failed._01"
 msgstr "File copying failed."
 
-msgid "c_Copying of T_FROM->T_TO failed._01"
+msgid "c_Copying of T_ARG1->T_ARG2 failed._01"
 msgstr "Copying of T_ARG1->T_ARG2 failed."
 
 msgid "c_The output source image path or the output destination folder has not been designated._01"
@@ -279,13 +279,13 @@ msgstr "The image format is not supported."
 msgid "c_Image output failed._01"
 msgstr "Image output failed."
 
-msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_CACHE_REALDIR user write access (777, etc.)</div>_01"
+msgid "c_<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-align: center\">Please grant T_ARG1 user write access (777, etc.)</div>_01"
 msgstr ""
 "<div style=\"color: #F00; font-weight: bold; background-color: #FEB; text-"
 "align: center\">Please grant T_ARG1 user write access (777, etc.)</"
 "div>"
 
-msgid "c_T_CACHE_REALDIR../mtb_constants_init.php does not exist_01"
+msgid "c_T_ARG1../mtb_constants_init.php does not exist_01"
 msgstr "T_ARG1../mtb_constants_init.php does not exist"
 
 msgid "c_&lt;&lt;Back_01"
@@ -309,19 +309,19 @@ msgstr "Unknown"
 msgid "c_A method for upward compatibility was used._01"
 msgstr "A method for upward compatibility was used."
 
-msgid "c_Unknown backend.[$backend = T_BACKEND]_01"
+msgid "c_Unknown backend.[$backend = T_ARG1]_01"
 msgstr "Unknown backend.[$backend = T_ARG1]"
 
-msgid "c_E-mail sending failed.[T_MESSAGE]_01"
+msgid "c_E-mail sending failed.[T_ARG1]_01"
 msgstr "E-mail sending failed.[T_ARG1]"
 
 msgid "c_Processing time: T_TIME seconds_01"
 msgstr "Processing time: T_TIME seconds"
 
-msgid "c_* T_DISPNAME is not uploaded. <br />_01"
+msgid "c_* T_ARG1 is not uploaded. <br />_01"
 msgstr "* T_ARG1 is not uploaded. <br />"
 
-msgid "c_* T_DISPNAME is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
+msgid "c_* T_ARG1 is not uploaded. (If you cannot upload the file, adjust php_value upload_max_filesize for the .htaccess file)<br />_01"
 msgstr ""
 "* T_ARG1 is not uploaded. (If you cannot upload the file, adjust "
 "php_value upload_max_filesize for the .htaccess file)<br />"
@@ -388,7 +388,7 @@ msgstr "* The specified range for number of purchases is inadequate."
 msgid "c_The file exists but cannot be read_01"
 msgstr "The file exists but cannot be read"
 
-msgid "c_No order exists. (Order number: T_ORDER_ID)_01"
+msgid "c_No order exists. (Order number: T_ARG1)_01"
 msgstr "No order exists. (Order number: T_ARG1)"
 
 msgid "c_The e-mail below has been sent._01"
@@ -739,91 +739,91 @@ msgstr "店名(フリガナ)"
 msgid "c_Store name (in English)_01"
 msgstr "Store name (in English)"
 
-msgid "PARAM_LABEL_ADDR01"
+msgid "c_Location 1_01"
 msgstr "Location 1"
 
-msgid "PARAM_LABEL_ADDR02"
+msgid "c_Location 2_01"
 msgstr "Location 2"
 
-msgid "PARAM_LABEL_EMAIL01"
+msgid "c_Product order receipt e-mail address_01"
 msgstr "Product order receipt e-mail address"
 
-msgid "PARAM_LABEL_EMAIL02"
+msgid "c_E-mail address for receiving inquiries_01"
 msgstr "E-mail address for receiving inquiries"
 
-msgid "PARAM_LABEL_EMAIL03"
+msgid "c_E-mail address of sender_01"
 msgstr "E-mail address of sender"
 
-msgid "PARAM_LABEL_EMAIL04"
+msgid "c_E-mail address for receiving sending errors_01"
 msgstr "E-mail address for receiving sending errors"
 
-msgid "PARAM_LABEL_TAX"
+msgid "c_Consumption sales tax rate_01"
 msgstr "Consumption sales tax rate"
 
-msgid "PARAM_LABEL_TAX_RULE"
+msgid "c_Taxation rules_01"
 msgstr "Taxation rules"
 
-msgid "PARAM_LABEL_FREE_RULE"
+msgid "c_Conditions for free shipping_01"
 msgstr "Conditions for free shipping"
 
-msgid "PARAM_LABEL_BUSINESS_HOUR"
+msgid "c_Store business hours_01"
 msgstr "Store business hours"
 
-msgid "PARAM_LABEL_GOOD_TRADED"
+msgid "c_Available products_01"
 msgstr "Available products"
 
-msgid "PARAM_LABEL_MESSAGE"
+msgid "c_Message_01"
 msgstr "Message"
 
-msgid "PARAM_LABEL_DOWNLOADABLE_DAYS"
+msgid "c_Number of days during which download is possible_01"
 msgstr "Number of days during which download is possible"
 
-msgid "PARAM_LABEL_DOWNLOADABLE_DAYS_UNLIMITED"
+msgid "c_Unlimited downloads_01"
 msgstr "Unlimited downloads"
 
-msgid "PARAM_LABEL_LATITUDE"
+msgid "c_Latitude_01"
 msgstr "Latitude"
 
-msgid "PARAM_LABEL_LONGITUDE"
+msgid "c_Longitude_01"
 msgstr "Longitude"
 
-msgid "PARAM_LABEL_REGULAR_HOLIDAY"
+msgid "c_Regular holiday_01"
 msgstr "Regular holiday"
 
-msgid "PARAM_LABEL_REGULAR_HOLIDAY_ID"
+msgid "c_Regular holiday ID_01"
 msgstr "Regular holiday ID"
 
-msgid "PARAM_LABEL_CONTACT"
+msgid "c_Details of inquiry_01"
 msgstr "Details of inquiry"
 
-msgid "PARAM_LABEL_CONTACT_MESSAGE"
+msgid "c_Other inquiries_01"
 msgstr "Other inquiries"
 
-msgid "PARAM_LABEL_MEMORY"
+msgid "c_Record_01"
 msgstr "Record"
 
-msgid "PARAM_LABEL_LOGIN_ID"
+msgid "c_Login ID_01"
 msgstr "Login ID"
 
-msgid "PARAM_LABEL_SELLER"
+msgid "c_Distributor_01"
 msgstr "Distributor"
 
-msgid "PARAM_LABEL_MANAGER"
+msgid "c_Operation director_01"
 msgstr "Operation director"
 
-msgid "PARAM_LABEL_URL"
+msgid "c_URL_01"
 msgstr "URL"
 
-msgid "PARAM_LABEL_TITLE"
+msgid "c_Title_01"
 msgstr "Title"
 
-msgid "PARAM_LABEL_REQUIRED_FEE"
+msgid "c_Necessary fees_01"
 msgstr "Necessary fees"
 
-msgid "PARAM_LABEL_TO_ORDER"
+msgid "c_Order method_01"
 msgstr "Order method"
 
-msgid "PARAM_LABEL_PAYMENT_METHOD_ID"
+msgid "c_Payment method ID_01"
 msgstr "Payment method ID"
 
 msgid "PARAM_LABEL_PAYMENT_METHOD"
@@ -835,91 +835,91 @@ msgstr "Payment method"
 msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD"
 msgstr "Payment method"
 
-msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD_NAME"
+msgid "c_Payment method name_01"
 msgstr "Payment method name"
 
-msgid "PARAM_LABEL_PRODUCT_DELIV_FEE"
+msgid "c_Product shipping fee_01"
 msgstr "Product shipping fee"
 
-msgid "PARAM_LABEL_POINT"
+msgid "c_Points_01"
 msgstr "Points"
 
-msgid "PARAM_LABEL_USING_POINT"
+msgid "c_Use points_01"
 msgstr "Use points"
 
-msgid "PARAM_LABEL_DELIV"
+msgid "c_Delivery company_01"
 msgstr "Delivery company"
 
-msgid "PARAM_LABEL_RULE_MAX"
+msgid "c_Usage conditions(-$ Above)_01"
 msgstr "Usage conditions(-$ Above)"
 
-msgid "PARAM_LABEL_UPPER_RULE"
+msgid "c_Usage conditions(-$ Less than)_01"
 msgstr "Usage conditions(-$ Less than)"
 
-msgid "PARAM_LABEL_FIX"
+msgid "c_Fixed_01"
 msgstr "Fixed"
 
-msgid "PARAM_LABEL_LOGO_IMG"
+msgid "c_Logo image_01"
 msgstr "Logo image"
 
-msgid "PARAM_LABEL_IMG_KEY"
+msgid "c_Image key_01"
 msgstr "Image key"
 
-msgid "PARAM_LABEL_PAYMENT_ID"
+msgid "c_Payment ID_01"
 msgstr "Payment ID"
 
-msgid "PARAM_LABEL_CHARGE_FLG"
+msgid "c_Billing flag_01"
 msgstr "Billing flag"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_ID"
+msgid "c_Delivery destination ID_01"
 msgstr "Delivery destination ID"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_ADDRESSEE"
+msgid "c_Delivery destination_01"
 msgstr "Delivery destination"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME"
+msgid "c_Delivery time_01"
 msgstr "Delivery time"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE"
+msgid "c_Delivery date_01"
 msgstr "Delivery date"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_TIME_ID"
+msgid "c_Delivery time ID_01"
 msgstr "Delivery time ID"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_YEAR"
+msgid "c_Delivery date (Year)_01"
 msgstr "Delivery date (Year)"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_MONTH"
+msgid "c_Delivery date (Month)_01"
 msgstr "Delivery date (Month)"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_DATE_DAY"
+msgid "c_Delivery date (Date)_01"
 msgstr "Delivery date (Date)"
 
-msgid "PARAM_LABEL_CUSTOMER_DELIV_CHECK"
+msgid "c_Delivery destination check_01"
 msgstr "Delivery destination check"
 
-msgid "PARAM_LABEL_OTHER_DELIV_ID"
+msgid "c_Other delivery destination IDs_01"
 msgstr "Other delivery destination IDs"
 
-msgid "PARAM_LABEL_OTHER_DELIV"
+msgid "c_Separate shipping destination_01"
 msgstr "Separate shipping destination"
 
-msgid "PARAM_LABEL_SHIPPING_PRODUCT_QUANTITY"
+msgid "c_Quantity of delivered products_01"
 msgstr "Quantity of delivered products"
 
-msgid "PARAM_LABEL_SHIPPING_ID"
+msgid "c_Delivery ID_01"
 msgstr "Delivery ID"
 
-msgid "PARAM_LABEL_SHIPPING_QUANTITY"
+msgid "c_Delivery quantity_01"
 msgstr "Delivery quantity"
 
-msgid "PARAM_LABEL_ORDER_STATUS"
+msgid "c_Response status_01"
 msgstr "Response status"
 
-msgid "PARAM_LABEL_PRODUCT_TYPE_ID"
+msgid "c_Product type ID_01"
 msgstr "Product type ID"
 
-msgid "PARAM_LABEL_SELL_PRICE"
+msgid "c_Sales price_01"
 msgstr "Sales price"
 
 msgid "PARAM_LABEL_CART_NO"
@@ -928,331 +928,331 @@ msgstr "Cart number"
 msgid "PARAM_LABEL_CART_NUMBER"
 msgstr "Cart number"
 
-msgid "PARAM_LABEL_LINE_NUM"
+msgid "c_Number of lines_01"
 msgstr "Number of lines"
 
-msgid "PARAM_LABEL_MAIN_LIST_IMAGE"
+msgid "c_Main list image_01"
 msgstr "Main list image"
 
-msgid "PARAM_LABEL_LIST_MAIN_IMAGE"
+msgid "c_List - Main images_01"
 msgstr "List - Main images"
 
-msgid "PARAM_LABEL_MAIN_IMAGE"
+msgid "c_Main image_01"
 msgstr "Main image"
 
-msgid "PARAM_LABEL_DETAIL_MAIN_IMAGE"
+msgid "c_Details - Main image_01"
 msgstr "Details - Main image"
 
-msgid "PARAM_LABEL_PRODUCT_CLASS_ID_ALP"
+msgid "c_product_class_id_01"
 msgstr "product_class_id"
 
-msgid "PARAM_LABEL_PRODUCT_CLASS_ID"
+msgid "c_Product specification ID_01"
 msgstr "Product specification ID"
 
-msgid "PARAM_LABEL_CLASS"
+msgid "c_Standard_01"
 msgstr "Standard"
 
-msgid "PARAM_LABEL_CLASS1"
+msgid "c_Standard 1_01"
 msgstr "Standard 1"
 
-msgid "PARAM_LABEL_CLASS2"
+msgid "c_Standard 2_01"
 msgstr "Standard 2"
 
-msgid "PARAM_LABEL_CLASS_ID"
+msgid "c_Standard ID_01"
 msgstr "Standard ID"
 
-msgid "PARAM_LABEL_CLASS_ID1"
+msgid "c_Standard ID 1_01"
 msgstr "Standard ID 1"
 
-msgid "PARAM_LABEL_CLASS_ID2"
+msgid "c_Standard ID 2_01"
 msgstr "Standard ID 2"
 
-msgid "PARAM_LABEL_CLASS_NAME"
+msgid "c_Standard name_01"
 msgstr "Standard name"
 
-msgid "PARAM_LABEL_CLASS_NAME1"
+msgid "c_Standard name 1_01"
 msgstr "Standard name 1"
 
-msgid "PARAM_LABEL_CLASS_NAME2"
+msgid "c_Standard name 2_01"
 msgstr "Standard name 2"
 
-msgid "PARAM_LABEL_CLASSCATEGORY1"
+msgid "c_Standard category 1_01"
 msgstr "Standard category 1"
 
-msgid "PARAM_LABEL_CLASSCATEGORY2"
+msgid "c_Standard category 2_01"
 msgstr "Standard category 2"
 
-msgid "PARAM_LABEL_CLASSCATEGORY_NAME"
+msgid "c_Standard category name_01"
 msgstr "Standard category name"
 
-msgid "PARAM_LABEL_CLASSCATEGORY_ID"
+msgid "c_New specification category ID_01"
 msgstr "New specification category ID"
 
-msgid "PARAM_LABEL_CLASS_TOTAL"
+msgid "c_Product specification number_01"
 msgstr "Product specification number"
 
-msgid "PARAM_LABEL_ADD_PRODUCT_CLASS_ID"
+msgid "c_Additional product specification ID_01"
 msgstr "Additional product specification ID"
 
-msgid "PARAM_LABEL_EDIT_PRODUCT_CLASS_ID"
+msgid "c_Repair product specification ID_01"
 msgstr "Repair product specification ID"
 
-msgid "PARAM_LABEL_STOCK"
+msgid "c_Inventory count_01"
 msgstr "Inventory count"
 
-msgid "PARAM_LABEL_PRODUCT_TYPE"
+msgid "c_Product type_01"
 msgstr "Product type"
 
-msgid "PARAM_LABEL_DEL_FLG"
+msgid "c_Deletion flag_01"
 msgstr "Deletion flag"
 
-msgid "PARAM_LABEL_DOWN_FILENAME"
+msgid "c_File name for download sales_01"
 msgstr "File name for download sales"
 
-msgid "PARAM_LABEL_DOWN_FILE"
+msgid "c_File for download sales_01"
 msgstr "File for download sales"
 
-msgid "PARAM_LABEL_DOWN_PRODUCT_FILENAME"
+msgid "c_Downloaded product file name_01"
 msgstr "Downloaded product file name"
 
-msgid "PARAM_LABEL_CHECK_BOX"
+msgid "c_Checkbox_01"
 msgstr "Checkbox"
 
-msgid "PARAM_LABEL_FILE_UPLOAD_KEY"
+msgid "c_File upload key_01"
 msgstr "File upload key"
 
-msgid "PARAM_LABEL_PRODUCT_ID"
+msgid "c_Product ID_01"
 msgstr "Product ID"
 
-msgid "PARAM_LABEL_PRODUCT_CATEGORY"
+msgid "c_Product category_01"
 msgstr "Product category"
 
-msgid "PARAM_LABEL_PRODUCT_PUBLIC_STATUS"
+msgid "c_Disclosed/not disclosed_01"
 msgstr "Disclosed/not disclosed"
 
-msgid "PARAM_LABEL_PRODUCT_STATUS"
+msgid "c_Product status_01"
 msgstr "Product status"
 
-msgid "PARAM_LABEL_AGE1"
+msgid "c_Age 1_01"
 msgstr "Age 1"
 
-msgid "PARAM_LABEL_AGE2"
+msgid "c_Age 2_01"
 msgstr "Age 2"
 
-msgid "PARAM_LABEL_TOTAL_PRICE1"
+msgid "c_Purchase amount 1_01"
 msgstr "Purchase amount 1"
 
-msgid "PARAM_LABEL_TOTAL_PRICE2"
+msgid "c_Purchase amount 2_01"
 msgstr "Purchase amount 2"
 
-msgid "PARAM_LABEL_START_YEAR"
+msgid "c_Start year_01"
 msgstr "Start year"
 
-msgid "PARAM_LABEL_START_MONTH"
+msgid "c_Start month_01"
 msgstr "Start month"
 
-msgid "PARAM_LABEL_START_DAY"
+msgid "c_Start day_01"
 msgstr "Start day"
 
-msgid "PARAM_LABEL_END_YEAR"
+msgid "c_Completion year_01"
 msgstr "Completion year"
 
-msgid "PARAM_LABEL_END_MONTH"
+msgid "c_Completion month_01"
 msgstr "Completion month"
 
-msgid "PARAM_LABEL_END_DAY"
+msgid "c_Completion date_01"
 msgstr "Completion date"
 
-msgid "PARAM_LABEL_PAGENO"
+msgid "c_Page feed number_01"
 msgstr "Page feed number"
 
-msgid "PARAM_LABEL_FOOTER"
+msgid "c_Footer_01"
 msgstr "Footer"
 
-msgid "PARAM_LABEL_HEADER"
+msgid "c_Header_01"
 msgstr "Header"
 
-msgid "PARAM_LABEL_TEMPLATE"
+msgid "c_Template_01"
 msgstr "Template"
 
-msgid "PARAM_LABEL_TEMPLATE_NAME"
+msgid "c_Template name_01"
 msgstr "Template name"
 
-msgid "PARAM_LABEL_TEMPLATE_CODE"
+msgid "c_Template code_01"
 msgstr "Template code"
 
-msgid "PARAM_LABEL_TPL_CODE"
+msgid "c_template_code_01"
 msgstr "template_code"
 
-msgid "PARAM_LABEL_TEMPLATE_FILE"
+msgid "c_Template file_01"
 msgstr "Template file"
 
-msgid "PARAM_LABEL_MAIL_SUBJECT"
+msgid "c_E-mail title_01"
 msgstr "E-mail title"
 
-msgid "PARAM_LABEL_PARENT_CATEGORY_ID"
+msgid "c_New category ID_01"
 msgstr "New category ID"
 
-msgid "PARAM_LABEL_CATEGORY_NAME"
+msgid "c_Category name_01"
 msgstr "Category name"
 
 msgid "PARAM_LABEL_CURRENT"
 msgstr "Current page"
 
-msgid "PARAM_LABEL_NEW_ID"
+msgid "c_New ID_01"
 msgstr "New ID"
 
-msgid "PARAM_LABEL_ADMIN_LOGIN"
+msgid "c_Administrator login_01"
 msgstr "Administrator login"
 
-msgid "PARAM_LABEL_FAVORITE_PRODUCT_ID"
+msgid "c_Favorite product ID_01"
 msgstr "Favorite product ID"
 
-msgid "PARAM_LABEL_CARTKEY"
+msgid "c_Cart key_01"
 msgstr "Cart key"
 
-msgid "PARAM_LABEL_MONTHLY"
+msgid "c_Monthly_01"
 msgstr "Monthly"
 
-msgid "PARAM_LABEL_PERIOD_1"
+msgid "c_Period (Start day)_01"
 msgstr "Period (Start day)"
 
-msgid "PARAM_LABEL_PERIOD_2"
+msgid "c_Period (end day)_01"
 msgstr "Period (end day)"
 
 msgid "PARAM_LABEL_THE_NAME"
 msgstr "Name"
 
-msgid "PARAM_LABEL_PAGE_ID"
+msgid "c_Page ID_01"
 msgstr "Page ID"
 
-msgid "PARAM_LABEL_DEVICE_TYPE_ID"
+msgid "c_Terminal type ID_01"
 msgstr "Terminal type ID"
 
-msgid "PARAM_LABEL_DEVICE_TYPE"
+msgid "c_Terminal type_01"
 msgstr "Terminal type"
 
-msgid "PARAM_LABEL_HEADER_DATA"
+msgid "c_Header data_01"
 msgstr "Header data"
 
-msgid "PARAM_LABEL_FOOTER_DATA"
+msgid "c_Footer data_01"
 msgstr "Footer data"
 
-msgid "PARAM_LABEL_CSS_FILE_NAME"
+msgid "c_CSS file name_01"
 msgstr "CSS file name"
 
-msgid "PARAM_LABEL_CSS_OLD_FILE_NAME"
+msgid "c_Old CSS file name_01"
 msgstr "Old CSS file name"
 
 msgid "PARAM_LABEL_"
 msgstr "CSS data"
 
-msgid "PARAM_LABEL_BLOC_ID"
+msgid "c_Block ID_01"
 msgstr "Block ID"
 
-msgid "PARAM_LABEL_BLOC_NAME"
+msgid "c_Block name_01"
 msgstr "Block name"
 
-msgid "PARAM_LABEL_BLOC_CNT"
+msgid "c_Block number_01"
 msgstr "Block number"
 
-msgid "PARAM_LABEL_BLOC_DATA"
+msgid "c_Block data_01"
 msgstr "Block data"
 
-msgid "PARAM_LABEL_TARGET_ID"
+msgid "c_Target ID_01"
 msgstr "Target ID"
 
-msgid "PARAM_LABEL_TOP"
+msgid "c_TOP coordinate_01"
 msgstr "TOP coordinate"
 
-msgid "PARAM_LABEL_FULL_PAGE"
+msgid "c_All pages_01"
 msgstr "All pages"
 
-msgid "PARAM_LABEL_FILE_NAME"
+msgid "c_File name_01"
 msgstr "File name"
 
-msgid "PARAM_LABEL_DELIVERY_ID"
+msgid "c_Delivery company ID_01"
 msgstr "Delivery company ID"
 
-msgid "PARAM_LABEL_DELIVERY_NAME"
+msgid "c_Delivery company name_01"
 msgstr "Delivery company name"
 
-msgid "PARAM_LABEL_DESCRIPTION"
+msgid "c_Explanation_01"
 msgstr "Explanation"
 
-msgid "PARAM_LABEL_SLIP_CONFIRM_URL"
+msgid "c_Voucher No. confirmation URL_01"
 msgstr "Voucher No. confirmation URL"
 
-msgid "PARAM_LABEL_HANDLE_PRODUCT_TYPE"
+msgid "c_Available product types_01"
 msgstr "Available product types"
 
-msgid "PARAM_LABEL_HANDLE_PAYMENT_METHOD"
+msgid "c_Available payment methods_01"
 msgstr "Available payment methods"
 
-msgid "PARAM_LABEL_KIYAKU_TITLE"
+msgid "c_Agreement title_01"
 msgstr "Agreement title"
 
-msgid "PARAM_LABEL_KIYAKU_TEXT"
+msgid "c_Agreement contents_01"
 msgstr "Agreement contents"
 
-msgid "PARAM_LABEL_KIYAKU_ID"
+msgid "c_Agreement ID_01"
 msgstr "Agreement ID"
 
-msgid "PARAM_LABEL_POINT_RATE"
+msgid "c_Point grant rate_01"
 msgstr "Point grant rate"
 
-msgid "PARAM_LABEL_WELCOME_POINT"
+msgid "c_Points granted during member registration_01"
 msgstr "Points granted during member registration"
 
-msgid "PARAM_LABEL_DOWN_PRODUCT_REAL_FILENAME"
+msgid "c_Downloaded product actual file name_01"
 msgstr "Downloaded product actual file name"
 
-msgid "PARAM_LABEL_STOCK_UNLIMITED"
+msgid "c_Unlimited inventory_01"
 msgstr "Unlimited inventory"
 
-msgid "PARAM_LABEL_TEMP_DOWN_FILE"
+msgid "c_temp_down_file_01"
 msgstr "temp_down_file"
 
-msgid "PARAM_LABEL_SAVE_DOWN_FILE"
+msgid "c_save_down_file_01"
 msgstr "save_down_file"
 
-msgid "PARAM_LABEL_DELIV_DATE"
+msgid "c_Shipment date Target_01"
 msgstr "Shipment date Target"
 
-msgid "PARAM_LABEL_MAKER"
+msgid "c_Manufacturer_01"
 msgstr "Manufacturer"
 
-msgid "PARAM_LABEL_MAKER_ID"
+msgid "c_Manufacturer ID_01"
 msgstr "Manufacturer ID"
 
-msgid "PARAM_LABEL_MAKER_URL"
+msgid "c_Manufacturer URL_01"
 msgstr "Manufacturer URL"
 
-msgid "PARAM_LABEL_SALE_LIMIT"
+msgid "c_Number of sales restrictions_01"
 msgstr "Number of sales restrictions"
 
-msgid "PARAM_LABEL_SEARCH_WORD"
+msgid "c_Search word_01"
 msgstr "Search word"
 
-msgid "PARAM_LABEL_SHOP_NOTE"
+msgid "c_Remarks column (for SHOP)_01"
 msgstr "Remarks column (for SHOP)"
 
-msgid "PARAM_LABEL_MAIN_LIST_COMMENT"
+msgid "c_List - Main comments_01"
 msgstr "List - Main comments"
 
-msgid "PARAM_LABEL_MAIN_COMMENT"
+msgid "c_Details - Main comment_01"
 msgstr "Details - Main comment"
 
-msgid "PARAM_LABEL_SAVE_MAIN_LIST_IMAGE"
+msgid "c_save_main_list_image_01"
 msgstr "save_main_list_image"
 
-msgid "PARAM_LABEL_SAVE_MAIN_IMAGE"
+msgid "c_save_main_image_01"
 msgstr "save_main_image"
 
-msgid "PARAM_LABEL_SAVE_MAIN_LARGE_IMAGE"
+msgid "c_save_main_large_image_01"
 msgstr "save_main_large_image"
 
-msgid "PARAM_LABEL_TEMP_MAIN_LIST_IMAGE"
+msgid "c_temp_main_list_image_01"
 msgstr "temp_main_list_image"
 
 msgid "PARAM_LABEL_TEMP_MAIN_IMAGE"
@@ -1713,7 +1713,7 @@ msgid "ALERT_003"
 msgstr "Update successful."
 
 msgid "ALERT_004"
-msgstr "Registration is complete."
+    msgstr "Registration is complete."
 
 msgid "ALERT_005"
 msgstr "Delivery method settings are complete."

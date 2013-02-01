@@ -71,7 +71,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex {
 
         if (!empty($_POST)) {
             $objFormParam = new SC_FormParam_Ex();
-            $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD_ID'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam(t('c_Payment method ID_01'), 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();
 

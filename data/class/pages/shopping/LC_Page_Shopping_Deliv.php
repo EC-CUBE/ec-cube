@@ -202,8 +202,8 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_OTHER_DELIV_ID'), 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_DELIV_CHECK'), 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Other delivery destination IDs_01'), 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Delivery destination check_01'), 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
 
     /**

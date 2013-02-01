@@ -533,7 +533,7 @@ class SC_CartSession {
                  */
                 $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
                 if (SC_Utils_Ex::isBlank($arrDeliv)) {
-                    $tpl_message .= t('c_* Delivery preparations are not ready  for T_PRODUCT. Please access the " "inquiry page for more details._01', array('T_PRODUCT' => $product['name']));
+                    $tpl_message .= t('c_* Delivery preparations are not ready  for T_ARG1. Please access the inquiry page for more details._01', array('T_ARG1' => $product['name']));
                     $this->delProduct($arrItem['cart_no'], $productTypeId);
                 }
 
@@ -546,10 +546,10 @@ class SC_CartSession {
                         $this->setProductValue($arrItem['id'], 'quantity', $limit, $productTypeId);
                         $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItem['price']) * $limit;
                         $this->setProductValue($arrItem['id'], 'total_inctax', $total_inctax, $productTypeId);
-                        $tpl_message .= t('c_* There is a sale restriction (or inventory shortage) for T_PRODUCT. It is not possible to purchase a quantity that exceeds T_LIMIT in a single " "purchase._01', array('T_PRODUCT' => $product['name'], 'T_LIMIT' => $limit));
+                        $tpl_message .= t('c_* There is a sale restriction (or inventory shortage) for T_ARG1. It is not possible to purchase a quantity that exceeds T_ARG2 in a single purchase._01', array('T_ARG1' => $product['name'], 'T_ARG2' => $limit));
                     } else {
                         $this->delProduct($arrItem['cart_no'], $productTypeId);
-                        $tpl_message .= t('c_* T_PRODUCT is sold out._01', array('T_PRODUCT' => $product['name']));
+                        $tpl_message .= t('c_* T_ARG1 is sold out._01', array('T_ARG1' => $product['name']));
                         continue;
                     }
                 }

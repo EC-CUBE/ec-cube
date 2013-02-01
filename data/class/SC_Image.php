@@ -56,7 +56,7 @@ class SC_Image {
                 'T_ARG1' => $from_path,
                 'T_ARG2' => $to_path
             );
-            GC_Utils_Ex::gfDebugLog(t('c_Copying of T_FROM->T_TO failed._01', $tokens));
+            GC_Utils_Ex::gfDebugLog(t('c_Copying of T_ARG1->T_ARG2 failed._01', $tokens));
         }
     }
 

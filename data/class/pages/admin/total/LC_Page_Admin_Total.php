@@ -206,15 +206,15 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
         $arrList = $this->lfGetDateDefault();
 
         // 月度集計
-        $objFormParam->addParam(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
-        $objFormParam->addParam(t('PARAM_LABEL_MONTHLY'), 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
+        $objFormParam->addParam(t('c_Monthly_01'), 'search_startyear_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear_m']);
+        $objFormParam->addParam(t('c_Monthly_01'), 'search_startmonth_m', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth_m']);
         // 期間集計
-        $objFormParam->addParam(t('PARAM_LABEL_START_DAY'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
-        $objFormParam->addParam(t('PARAM_LABEL_START_DAY'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
-        $objFormParam->addParam(t('PARAM_LABEL_START_DAY'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
-        $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
-        $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
-        $objFormParam->addParam(t('PARAM_LABEL_END_DAY'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
+        $objFormParam->addParam(t('c_Start day_01'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startyear']);
+        $objFormParam->addParam(t('c_Start day_01'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startmonth']);
+        $objFormParam->addParam(t('c_Start day_01'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['startday']);
+        $objFormParam->addParam(t('c_Completion date_01'), 'search_endyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endyear']);
+        $objFormParam->addParam(t('c_Completion date_01'), 'search_endmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endmonth']);
+        $objFormParam->addParam(t('c_Completion date_01'), 'search_endday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $arrList['endday']);
 
         // hiddenデータの取得用
         $objFormParam->addParam('', 'page');
@@ -234,21 +234,21 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex {
 
         // 月度集計
         if ($objFormParam->getValue('search_form') == 1) {
-            $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('c_Monthly_01'), 'search_startyear_m', 'search_startmonth_m'), array('FULL_EXIST_CHECK'));
         }
 
         // 期間集計
         if ($objFormParam->getValue('search_form') == 2) {
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1'), 'search_startyear', 'search_startmonth', 'search_startday'), array('FULL_EXIST_CHECK'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2'), 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_2'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-            $objErr->doFunc(array(t('PARAM_LABEL_PERIOD_1'), t('PARAM_LABEL_PERIOD_2'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+            $objErr->doFunc(array(t('c_Period (Start day)_01'), 'search_startyear', 'search_startmonth', 'search_startday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('c_Period (end day)_01'), 'search_endyear', 'search_endmonth', 'search_endday'), array('FULL_EXIST_CHECK'));
+            $objErr->doFunc(array(t('c_Period (Start day)_01'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+            $objErr->doFunc(array(t('c_Period (end day)_01'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+            $objErr->doFunc(array(t('c_Period (Start day)_01'), t('c_Period (end day)_01'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         }
-        $objErr->doFunc(array(t('PARAM_LABEL_MONTHLY'), 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_END_DAY'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_START_DAY'), t('PARAM_LABEL_END_DAY'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array(t('c_Monthly_01'), 'search_startyear_m', 'search_startmonth_m'), array('ALL_EXIST_CHECK'));
+        $objErr->doFunc(array(t('c_Start day_01'), 'search_startyear', 'search_startmonth', 'search_startday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Completion date_01'), 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Start day_01'), t('c_Completion date_01'), 'search_startyear', 'search_startmonth', 'search_startday', 'search_endyear', 'search_endmonth', 'search_endday'), array('CHECK_SET_TERM'));
         return $objErr->arrErr;
     }
 

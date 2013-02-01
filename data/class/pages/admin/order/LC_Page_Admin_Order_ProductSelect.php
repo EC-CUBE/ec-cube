@@ -284,6 +284,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_Product name_01'), 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Category ID_01'), 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam(t('c_Product code_01'), 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_FOOTER'), 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam(t('c_Footer_01'), 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
     }
 }

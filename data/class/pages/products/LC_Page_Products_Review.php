@@ -148,12 +148,12 @@ class LC_Page_Products_Review extends LC_Page_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('PARAM_LABEL_REVIEW_ID'), 'review_id', INT_LEN, 'aKV');
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID'), 'product_id', INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Product ID_01'), 'product_id', INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_NAME'), 'reviewer_name', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_URL'), 'reviewer_url', MTEXT_LEN, 'a', array('NO_SPTAB', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'URL_CHECK'));
         $objFormParam->addParam(t('c_Gender_01'), 'sex', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_LEVEL'), 'recommend_level', INT_LEN, 'n', array('EXIST_CHECK', 'SELECT_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TITLE'), 'title', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Title_01'), 'title', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_COMMENT'), 'comment', LTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
@@ -178,7 +178,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         if (REVIEW_ALLOW_URL == false) {
             $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
             // コメント欄へのURLの入力を禁止
-            $objErr->doFunc(array(t('PARAM_LABEL_URL'), 'comment', $this->arrReviewDenyURL), array('PROHIBITED_STR_CHECK'));
+            $objErr->doFunc(array(t('c_URL_01'), 'comment', $this->arrReviewDenyURL), array('PROHIBITED_STR_CHECK'));
             $arrErr += $objErr->arrErr;
         }
 

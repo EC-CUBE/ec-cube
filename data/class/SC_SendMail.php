@@ -280,7 +280,7 @@ class SC_SendMail {
         if (PEAR::isError($result)) {
             // XXX Windows 環境では SJIS でメッセージを受け取るようなので変換する。
             $tokens = array('T_ARG1' => mb_convert_encoding($result->getMessage(), CHAR_CODE, 'auto'));
-            $msg = t('c_E-mail sending failed.[T_MESSAGE]_01', $tokens);
+            $msg = t('c_E-mail sending failed.[T_ARG1]_01', $tokens);
             trigger_error($msg, E_USER_WARNING);
             GC_Utils_Ex::gfDebugLog($header);
             return false;
@@ -332,7 +332,7 @@ class SC_SendMail {
                 break;
 
             default:
-                trigger_error(t('c_Unknown backend.[$backend = T_BACKEND]_01', array('T_BACKEND' => var_export($backend, true))), E_USER_ERROR);
+                trigger_error(t('c_Unknown backend.[$backend = T_ARG1]_01', array('T_ARG1' => var_export($backend, true))), E_USER_ERROR);
                 exit;
         }
         return $arrParams;
