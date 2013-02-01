@@ -36,6 +36,7 @@
 
         var class1_id = document.getElementById(class1).value;
         var class2_id = document.getElementById(class2).value;
+
         var product_class_id = document.getElementById("product_class_id" + product_id).value;
         var opner_product_id = 'add_product_id';
         var opner_product_class_id = 'add_product_class_id';
@@ -52,6 +53,15 @@
         if (document.getElementById(class2).type == 'select-one' && class2_id == '') {
             err_text = err_text + class_name2 + "を選択してください。\n";
         }
+
+        if(!class1_id){
+            err_text = productsClassCategories[product_id]['__unselected2']['#0']['stock_find'] ? '' : '只今品切れ中です';
+        }else if(class1_id && !class2_id){
+            err_text = productsClassCategories[product_id][class1_id]['#0']['stock_find'] ? '' : '只今品切れ中です';
+        }else{
+            err_text = productsClassCategories[product_id][class1_id]['#' + class2_id]['stock_find'] ? '' : '只今品切れ中です';
+        }
+
         if (err_text != '') {
             alert(err_text);
             return false;
@@ -193,42 +203,44 @@
                         <!--{/if}-->
                     </td>
                     <td>
-                        <!--{$arrProducts[cnt].name|h}-->
+                    <!--{$arrProducts[cnt].name|h}-->
+                    <!--{assign var=class1 value=classcategory_id`$id`_1}-->
+                    <!--{assign var=class2 value=classcategory_id`$id`_2}-->
+                    <!--{if $tpl_classcat_find1[$id]}-->
+                    <dl>
+                        <dt><!--{$tpl_class_name1[$id]|h}-->：</dt>
+                        <dd>
+                            <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"    onchange="fnSetClassCategories(this.form);">
+                                <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
+                            </select>
+                            <!--{if $arrErr[$class1] != ""}-->
+                            <br /><span class="attention">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。</span>
+                            <!--{/if}-->
+                        </dd>
+                    </dl>
+                    <!--{else}-->
+                    <input type="hidden" name="<!--{$class1}-->" id="<!--{$class1}-->" value="" />
+                    <!--{/if}-->
 
-                        <!--{assign var=class1 value=classcategory_id`$id`_1}-->
-                        <!--{assign var=class2 value=classcategory_id`$id`_2}-->
-                        <!--{if $tpl_classcat_find1[$id]}-->
-                        <dl>
-                            <dt><!--{$tpl_class_name1[$id]|h}-->：</dt>
-                            <dd>
-                                <select name="classcategory_id1" id="<!--{$class1}-->" style="<!--{$arrErr[$class1]|sfGetErrorColor}-->"    onchange="fnSetClassCategories(this.form);">
-                                    <!--{html_options options=$arrClassCat1[$id] selected=$arrForm[$class1]}-->
-                                </select>
-                                <!--{if $arrErr[$class1] != ""}-->
-                                <br /><span class="attention">※ <!--{$tpl_class_name1[$id]}-->を入力して下さい。</span>
-                                <!--{/if}-->
-                            </dd>
-                        </dl>
-                        <!--{else}-->
-                        <input type="hidden" name="<!--{$class1}-->" id="<!--{$class1}-->" value="" />
-                        <!--{/if}-->
-
-                        <!--{if $tpl_classcat_find2[$id]}-->
-                        <dl>
-                            <dt><!--{$tpl_class_name2[$id]|h}-->：</dt>
-                            <dd>
-                                <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
-                                <!--{if $arrErr[$class2] != ""}-->
-                                <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
-                                <!--{/if}-->
-                            </dd>
-                        </dl>
-                        <!--{else}-->
-                        <input type="hidden" name="<!--{$class2}-->" id="<!--{$class2}-->" value="" />
-                        <!--{/if}-->
-                        <input type="hidden" name="product_id" value="<!--{$id|h}-->" />
-                        <input type="hidden" name="product_class_id<!--{$id|h}-->" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
-                        <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
+                    <!--{if $tpl_classcat_find2[$id]}-->
+                    <dl>
+                        <dt><!--{$tpl_class_name2[$id]|h}-->：</dt>
+                        <dd>
+                            <select name="classcategory_id2" id="<!--{$class2}-->" style="<!--{$arrErr[$class2]|sfGetErrorColor}-->" onchange="fnCheckStock(this.form);"></select>
+                            <!--{if $arrErr[$class2] != ""}-->
+                            <br /><span class="attention">※ <!--{$tpl_class_name2[$id]}-->を入力して下さい。</span>
+                            <!--{/if}-->
+                        </dd>
+                    </dl>
+                    <!--{else}-->
+                    <input type="hidden" name="<!--{$class2}-->" id="<!--{$class2}-->" value="" />
+                    <!--{/if}-->
+                    <!--{if !$tpl_stock_find[$id]}-->
+                        <div class="attention">只今品切れ中です。</div>
+                    <!--{/if}-->
+                    <input type="hidden" name="product_id" value="<!--{$id|h}-->" />
+                    <input type="hidden" name="product_class_id<!--{$id|h}-->" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
+                    <input type="hidden" name="product_type" id="product_type<!--{$id|h}-->" value="<!--{$tpl_product_type[$id]}-->" />
                     </td>
                     <td class="center"><a href="javascript:;" onclick="return func_submit('<!--{$arrProducts[cnt].product_id}-->', '<!--{$tpl_class_name1[$id]}-->', '<!--{$tpl_class_name2[$id]}-->'); return false;">決定</a></td>
                 </tr>
