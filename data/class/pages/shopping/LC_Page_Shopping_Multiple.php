@@ -64,7 +64,6 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @return void
      */
     function action() {
-
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
@@ -114,8 +113,6 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             $objFormParam->setParam($_SESSION['multiple_temp']);
         }
         $this->arrForm = $objFormParam->getFormParamList();
-
-
     }
 
     /**
@@ -142,7 +139,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objFormParam->addParam('規格分類2', 'classcategory_name2');
         $objFormParam->addParam('メイン画像', 'main_image');
         $objFormParam->addParam('メイン一覧画像', 'main_list_image');
-        $objFormParam->addParam('販売価格', 'price');
+        $objFormParam->addParam(SALE_PRICE_TITLE, 'price');
         $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam('お届け先', 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('カート番号', 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -228,6 +225,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                     . $val['shipping_addr01'] . $val['shipping_addr02'];
             }
         }
+
         return $arrResults;
     }
 
@@ -283,6 +281,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 }
             }
         }
+
         return $arrErr;
     }
 
