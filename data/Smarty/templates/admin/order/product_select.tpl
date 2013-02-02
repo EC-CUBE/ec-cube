@@ -41,11 +41,15 @@
         var opner_product_id = 'add_product_id';
         var opner_product_class_id = 'add_product_class_id';
         var tpl_no = '<!--{$tpl_no}-->';
+        var shipping_id = '<!--{$shipping_id}-->';
 
         if (tpl_no != '') {
             opner_product_id = 'edit_product_id';
             opner_product_class_id = 'edit_product_class_id';
             fm1.getElementById("no").value = escape('<!--{$tpl_no}-->');
+        }
+        if (shipping_id != '') {
+            fm1.getElementById("select_shipping_id").value = escape('<!--{$shipping_id}-->');
         }
         if (document.getElementById(class1).type == 'select-one' && class1_id == '__unselected') {
             err_text = class_name1 + "を選択してください。\n";
@@ -135,6 +139,7 @@
 <input name="mode" type="hidden" value="search" />
 <input name="anchor_key" type="hidden" value="" />
 <input name="search_pageno" type="hidden" value="" />
+<input name="shipping_id" type="hidden" value="<!--{$shipping_id}-->" />
 <input name="no" type="hidden" value="<!--{$tpl_no|h}-->" />
 <table class="form">
     <col width="20%" />

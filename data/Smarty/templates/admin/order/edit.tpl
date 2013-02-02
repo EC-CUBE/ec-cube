@@ -38,7 +38,7 @@
         // お届け先名のinputタグのnameを取得
         var shipping_data = $('input[name^=shipping_name01]').attr('name'); 
         var shipping_slt  = shipping_data.split("shipping_name01");
-        
+
         var shipping_key = "[0]";
         if(shipping_slt.length > 1) {
             shipping_key = shipping_slt[1];
@@ -81,6 +81,12 @@
         return false;
     }
 
+    $(document).ready(function() {
+        if(<!--{$arrForm.shipping_quantity.value}--> > 1){
+            $("input[name^='quantity[']").attr("disabled","disabled");
+        }
+    });
+
 //-->
 </script>
 <form name="form1" id="form1" method="post" action="?">
@@ -91,6 +97,7 @@
 <input type="hidden" name="anchor_key" value="" />
 <input type="hidden" id="add_product_id" name="add_product_id" value="" />
 <input type="hidden" id="add_product_class_id" name="add_product_class_id" value="" />
+<input type="hidden" id="select_shipping_id" name="select_shipping_id" value="" />
 <input type="hidden" id="edit_product_id" name="edit_product_id" value="" />
 <input type="hidden" id="edit_product_class_id" name="edit_product_class_id" value="" />
 <input type="hidden" id="no" name="no" value="" />
@@ -273,7 +280,9 @@
     <h2 id="order_products">
         受注商品情報
         <a class="btn-normal" href="javascript:;" name="recalculate" onclick="fnModeSubmit('recalculate','anchor_key','order_products');">計算結果の確認</a>
-        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;">商品の追加</a>
+        <!--{if $arrForm.shipping_quantity.value <= 1}-->
+        <a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->&amp;shipping_id=<!--{$top_shipping_id}-->', 'search', '615', '500'); return false;">商品の追加</a>
+        <!--{/if}-->
     </h2>
 
     <!--{if $arrErr.product_id}-->
@@ -302,9 +311,11 @@
                 <input type="hidden" name="classcategory_name1[<!--{$product_index}-->]" value="<!--{$arrForm.classcategory_name1.value[$product_index]|h}-->" id="classcategory_name1_<!--{$product_index}-->" />
                 <input type="hidden" name="classcategory_name2[<!--{$product_index}-->]" value="<!--{$arrForm.classcategory_name2.value[$product_index]|h}-->" id="classcategory_name2_<!--{$product_index}-->" />
                 <br />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$product_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->', 'search', '615', '500'); return false;">変更</a>
-                <!--{if count($arrForm.quantity.value) > 1}-->
-                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
+                <!--{if $arrForm.shipping_quantity.value <= 1}-->
+                    <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$product_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->&amp;shipping_id=<!--{$top_shipping_id}-->', 'search', '615', '500'); return false;">変更</a>
+                    <!--{if count($arrForm.quantity.value) > 1}-->
+                        <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnSetFormVal('form1', 'select_shipping_id', '<!--{$top_shipping_id}-->'); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
+                    <!--{/if}-->
                 <!--{/if}-->
             <input type="hidden" name="product_type_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_type_id.value[$product_index]|h}-->" id="product_type_id_<!--{$product_index}-->" />
             <input type="hidden" name="product_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_id.value[$product_index]|h}-->" id="product_id_<!--{$product_index}-->" />
@@ -428,6 +439,8 @@
         <!--{assign var=key value="shipping_id"}-->
         <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key]|default:"0"|h}-->" id="<!--{$key}-->_<!--{$shipping_index}-->" />
         <!--{if $arrForm.shipping_quantity.value > 1}-->
+            <h2>届け先商品情報&nbsp;<a class="btn-normal" href="javascript:;" name="add_product" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->&shipping_id=<!--{$shipping_index}-->', 'search', '615', '500'); return false;">商品の追加</a>
+            </h2>
             <!--{assign var=product_quantity value="shipping_product_quantity"}-->
             <input type="hidden" name="<!--{$product_quantity}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$product_quantity]|h}-->" />
 
@@ -458,6 +471,11 @@
                                 <input type="hidden" name="<!--{$key2}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key2][$item_index]|h}-->" />
                                 <input type="hidden" name="<!--{$key3}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key3][$item_index]|h}-->" />
                                 <!--{$arrShipping[$key1][$item_index]|h}-->/<!--{$arrShipping[$key2][$item_index]|default:"(なし)"|h}-->/<!--{$arrShipping[$key3][$item_index]|default:"(なし)"|h}-->
+                                <br />
+                                <a class="btn-normal" href="javascript:;" name="change" onclick="win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$item_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->&amp;shipping_id=<!--{$shipping_index}-->', 'search', '615', '500'); return false;">変更</a>
+                                <!--{if count($arrForm.quantity.value) > 1}-->
+                                <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$item_index}-->);fnSetFormVal('form1', 'select_shipping_id', <!--{$shipping_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
+                                <!--{/if}-->
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
@@ -466,13 +484,34 @@
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_quantity"}-->
-                                <!--{$arrShipping[$key][$item_index]|h}-->
-                                <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
+                                <span class="attention"><!--{$arrErr[$key][$shipping_index][$item_index]}--></span>
+                                <input type="text" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->"　size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" />
                             </td>
                         </tr>
                     <!--{/section}-->
                 </table>
             <!--{/if}-->
+        <!--{else}-->
+            <!-- 配送先が１つでも、shipment_itemを更新するために必要 -->
+            <!--{assign var=product_quantity value="shipping_product_quantity"}-->
+            <input type="hidden" name="<!--{$product_quantity}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$product_quantity]|h}-->" />
+            <!--{section name=item loop=$arrShipping.shipment_product_class_id|@count}-->
+                <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
+                        <!--{assign var=key value="shipment_product_class_id"}-->
+                        <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
+                        <!--{assign var=key value="shipment_product_code"}-->
+                        <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
+                        <!--{assign var=key1 value="shipment_product_name"}-->
+                        <!--{assign var=key2 value="shipment_classcategory_name1"}-->
+                        <!--{assign var=key3 value="shipment_classcategory_name2"}-->
+                        <input type="hidden" name="<!--{$key1}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key1][$item_index]|h}-->" />
+                        <input type="hidden" name="<!--{$key2}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key2][$item_index]|h}-->" />
+                        <input type="hidden" name="<!--{$key3}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key3][$item_index]|h}-->" />
+                        <!--{assign var=key value="shipment_price"}-->
+                        <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
+                        <!--{assign var=key value="shipment_quantity"}-->
+                        <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
+            <!--{/section}-->
         <!--{/if}-->
 
         <table class="form">
