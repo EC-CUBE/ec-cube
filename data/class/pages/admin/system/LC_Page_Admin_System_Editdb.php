@@ -47,7 +47,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $this->tpl_subno    = 'editdb';
         $this->tpl_mainno   = 'system';
         $this->tpl_maintitle = t('c_System_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_Editdb_001');
+        $this->tpl_subtitle = t('c_Advanced database management_01');
     }
 
     /**

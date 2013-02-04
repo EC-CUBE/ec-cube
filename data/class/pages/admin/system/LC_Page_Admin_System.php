@@ -56,8 +56,8 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
-        $this->arrWORK[0]   = t('LC_Page_Admin_System_002');
-        $this->arrWORK[1]   = t('LC_Page_Admin_System_003');
+        $this->arrWORK[0]   = t('c_Not operating_01');
+        $this->arrWORK[1]   = t('c_Operating_01');
     }
 
     /**

@@ -47,7 +47,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'masterdata';
         $this->tpl_mainno = 'system';
         $this->tpl_maintitle = t('c_System_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_Masterdata_001');
+        $this->tpl_subtitle = t('c_Master data management_01');
     }
 
     /**
@@ -167,7 +167,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
             if ($arrId[$i] != '') {
                 for ($j = $i + 1; $j < count($arrId); $j++) {
                     if ($id == $arrId[$j]) {
-                        return t('LC_Page_Admin_System_Masterdata_002', array('T_ARG1' => $id));
+                        return t('c_Since T_ARG1 is duplicated, registration is not possible._01', array('T_ARG1' => $id));
                         
                     }
                 }

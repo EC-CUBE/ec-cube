@@ -50,7 +50,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
 
-        $this->tpl_subtitle = t('LC_Page_Admin_System_Input_001');
+        $this->tpl_subtitle = t('c_Member registration/editing_01');
         $this->httpCacheControl('nocache');
     }
 
@@ -242,11 +242,11 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
         case 'new':
             // 管理者名が登録済みでないか
             if ($this->memberDataExists('name = ? AND del_flg = 0', $arrParams['name'])) {
-                $arrErr['name'] = t('LC_Page_Admin_System_Input_002');
+                $arrErr['name'] = t('c_This name is already registered and cannot be used.<br>_01');
             }
             // ログインIDが登録済みでないか
             if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                $arrErr['login_id'] = t('LC_Page_Admin_System_Input_003');
+                $arrErr['login_id'] = t('c_This ID is already registered and cannot be used.<br>_01');
             }
             break;
         case 'edit':
@@ -254,7 +254,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             if ($arrParams['login_id'] != $arrParams['old_login_id']) {
                 // ログインIDが登録済みでないか
                 if ($this->memberDataExists('login_id = ? AND del_flg = 0', $arrParams['login_id'])) {
-                    $arrErr['login_id'] = t('LC_Page_Admin_System_Input_004');
+                    $arrErr['login_id'] = t('c_This ID is already registered and cannot be used.<br>_01');
                 }
             }
             break;

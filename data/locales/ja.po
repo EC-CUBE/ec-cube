@@ -3046,179 +3046,173 @@ msgstr "※ 指定の発送日目安IDは、登録されていません。"
 msgid "LC_Page_Admin_Products_UploadCSV_011"
 msgstr "※ 指定の商品種別IDは、登録されていません。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_012"
+msgid "c_* The designated relevant product ID (T_ARG1) is not registered._01"
 msgstr "※ 指定の関連商品ID(T_ARG1)は、登録されていません。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_013"
+msgid "c_* The designated relevant product ID (T_ARG1) is already registered._01"
 msgstr "※ 指定の関連商品ID(T_ARG1)は、すでに登録されています。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_014"
+msgid "c_* The designated category ID is not registered._01"
 msgstr "※ 指定のカテゴリIDは、登録されていません。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_015"
+msgid "c_* The designated product status ID is not registered._01"
 msgstr "※ 指定の商品ステータスIDは、登録されていません。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_016"
+msgid "c_* Only '0' (active) and '1' (delete) are effective for the deletion flag. _01"
 msgstr "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_017"
+msgid "c_* For actual products, a download file name cannot be used._01"
 msgstr "※ 実商品の場合はダウンロードファイル名は入力できません。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_018"
+msgid "c_* For actual products,  file upload for the downloaded product cannot be used._01"
 msgstr ""
 "※ 実商品の場合はダウンロード商品用ファイルアップロードは入力できません。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_019"
+msgid "c_* For downloaded products, the name of the downloaded file is required._01"
 msgstr "※ ダウンロード商品の場合はダウンロードファイル名は必須です。"
 
-msgid "LC_Page_Admin_Products_UploadCSV_020"
+msgid "c_* For downloaded products, it is necessary to upload the file for the downloaded product._01"
 msgstr ""
 "※ ダウンロード商品の場合はダウンロード商品用ファイルアップロードは必須です。"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_001"
+msgid "c_Category registration CSV_01"
 msgstr "カテゴリ登録CSV"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_002"
+msgid "c_Line T_ARG1: T_ARG2_01"
 msgstr "T_ARG1行目：T_ARG2"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_003"
+msgid "c_* T_ARG1 was detected for the item quantity. The item quantity is T_ARG2._01"
 msgstr "※ 項目数がT_ARG1個検出されました。項目数はT_ARG2個になります。"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_004"
+msgid "c_Category ID: T_ARG1 /Category name: T_ARG2_01"
 msgstr "カテゴリID：T_ARG1 / カテゴリ名：T_ARG2"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_005"
+msgid "c_* The designated new category ID (T_ARG1) does not exist._01"
 msgstr "※ 指定の親カテゴリID(T_ARG1)は、存在しません。"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_006"
-msgstr "※ 削除フラグは「0」(有効)、「1」(削除)のみが有効な値です。"
-
-msgid "LC_Page_Admin_Products_UploadCSVCategory_007"
+msgid "c_* A category of the same name already exists._01"
 msgstr "※ 既に同名のカテゴリが存在します。"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_008"
+msgid "c_* The maximum number of categories that can be registered has been exceeded._01"
 msgstr "※ カテゴリの登録最大数を超えました。"
 
-msgid "LC_Page_Admin_Products_UploadCSVCategory_009"
+msgid "c_* Registration of the T_ARG1 hierarchy or higher is not possible._01"
 msgstr "※ T_ARG1階層以上の登録はできません。"
 
 msgid "LC_Page_Admin_System_001"
 msgstr "メンバー管理"
 
-msgid "LC_Page_Admin_System_002"
+msgid "c_Not operating_01"
 msgstr "非稼働"
 
-msgid "LC_Page_Admin_System_003"
+msgid "c_Operating_01"
 msgstr "稼働"
 
-msgid "LC_Page_Admin_System_AdminArea_001"
+msgid "c_Management screen settings_01"
 msgstr "管理画面設定"
 
-msgid "LC_Page_Admin_System_AdminArea_002"
+msgid "c_You do not have access to change T_ARG1._01"
 msgstr "T_ARG1 を変更する権限がありません。"
 
-msgid "LC_Page_Admin_System_AdminArea_003"
+msgid "c_T_ARG1 already exists. Please designate a different directory name._01"
 msgstr "T_ARG1は既に存在しています。別のディレクトリ名を指定してください。"
 
-msgid "LC_Page_Admin_System_AdminArea_004"
+msgid "c_You do not have access to change the T_ARG1 directory name._01"
 msgstr "T_ARG1のディレクトリ名を変更する権限がありません。"
 
-msgid "LC_Page_Admin_System_AdminArea_005"
+msgid "c_The T_ARG1 directory name could not be changed._01"
 msgstr "T_ARG1のディレクトリ名を変更できませんでした。"
 
-msgid "LC_Page_Admin_System_Bkup_001"
+msgid "c_Backup management_01"
 msgstr "バックアップ管理"
 
-msgid "LC_Page_Admin_System_Bkup_002"
+msgid "c_Backup failed.(T_ARG1)_01"
 msgstr "バックアップに失敗しました。(T_ARG1)"
 
-msgid "LC_Page_Admin_System_Bkup_003"
+msgid "c_Restoration of 'T_ARG1' will begin._01"
 msgstr "「T_ARG1」のリストアを開始します。"
 
-msgid "LC_Page_Admin_System_Bkup_004-1"
+msgid "c_[T_ARG1] _01"
 msgstr "「T_ARG1」の"
 
-msgid "LC_Page_Admin_System_Bkup_004-2"
+msgid "c_Restoration is complete._01"
 msgstr "リストアを終了しました。"
 
-msgid "LC_Page_Admin_System_Bkup_004-3"
+msgid "c_Restoration failed._01"
 msgstr "リストアに失敗しました。"
 
-msgid "LC_Page_Admin_System_Bkup_005"
+msgid "c_The backup name is duplicated. Enter a different name._01"
 msgstr "バックアップ名が重複しています。別名を入力してください。"
 
-msgid "LC_Page_Admin_System_Bkup_006"
+msgid "c_The selected data was not found. It may already have been deleted._01"
 msgstr ""
 "選択されたデータがみつかりませんでした。既に削除されている可能性があります。"
 
-msgid "LC_Page_Admin_System_Bkup_007"
+msgid "c_(No record. Only backup file available.)_01"
 msgstr "(記録なし。バックアップファイルのみ。)"
 
-msgid "LC_Page_Admin_System_Bkup_008"
+msgid "c_Decompression of backup file failed.\n_01"
 msgstr ""
 "バックアップファイルの展開に失敗しました。\n"
 " "
 
-msgid "LC_Page_Admin_System_Bkup_009"
+msgid "c_Decompression source: T_ARG1 \n_01"
 msgstr ""
 "展開元: T_ARG1 \n"
 " "
 
-msgid "LC_Page_Admin_System_Bkup_010"
+msgid "c_Decompression destination: T_ARG1_01"
 msgstr "展開先: T_ARG1"
 
-msgid "LC_Page_Admin_System_Bkup_011"
+msgid "c_Opening the T_ARG1 file failed._01"
 msgstr "T_ARG1 のファイルオープンに失敗しました。"
 
-msgid "LC_Page_Admin_System_Bkup_012"
+msgid "c_Restoration execution: T_ARG1_01"
 msgstr "リストア実行: T_ARG1"
 
-msgid "LC_Page_Admin_System_Editdb_001"
+msgid "c_Advanced database management_01"
 msgstr "高度なデータベース管理"
 
-msgid "LC_Page_Admin_System_Input_001"
+msgid "c_Member registration/editing_01"
 msgstr "メンバー登録/編集"
 
-msgid "LC_Page_Admin_System_Input_002"
+msgid "c_This name is already registered and cannot be used.<br>_01"
 msgstr "既に登録されている名前なので利用できません。<br>"
 
-msgid "LC_Page_Admin_System_Input_003"
+msgid "c_This ID is already registered and cannot be used.<br>_01"
 msgstr "既に登録されているIDなので利用できません。<br>"
 
-msgid "LC_Page_Admin_System_Input_004"
-msgstr "既に登録されているIDなので利用できません。<br>"
-
-msgid "LC_Page_Admin_System_Log_001"
+msgid "c_EC-CUBE log display_01"
 msgstr "EC-CUBE ログ表示"
 
-msgid "LC_Page_Admin_System_Log_002"
+msgid "c_An illegal log was designated._01"
 msgstr "不正なログが指定されました。"
 
-msgid "LC_Page_Admin_System_Log_003"
+msgid "c_Standard log file_01"
 msgstr "標準ログファイル"
 
-msgid "LC_Page_Admin_System_Log_004"
+msgid "c_Member login log file_01"
 msgstr "会員ログイン ログファイル"
 
-msgid "LC_Page_Admin_System_Log_005"
+msgid "c_Management area log file_01"
 msgstr "管理機能ログファイル"
 
-msgid "LC_Page_Admin_System_Log_006"
+msgid "c_Debug log file_01"
 msgstr "デバッグログファイル"
 
-msgid "LC_Page_Admin_System_Log_007"
+msgid "c_Error log file_01"
 msgstr "エラーログファイル"
 
-msgid "LC_Page_Admin_System_Log_008"
+msgid "c_DB log file_01"
 msgstr "DBログファイル"
 
-msgid "LC_Page_Admin_System_Masterdata_001"
+msgid "c_Master data management_01"
 msgstr "マスターデータ管理"
 
-msgid "LC_Page_Admin_System_Masterdata_002"
+msgid "c_Since T_ARG1 is duplicated, registration is not possible._01"
 msgstr "T_ARG1 が重複しているため登録できません."
 
-msgid "LC_Page_Admin_System_Parameter"
+msgid "c_Parameter settings_01"
 msgstr "パラメーター設定"
 
 msgid "c_System information_01"

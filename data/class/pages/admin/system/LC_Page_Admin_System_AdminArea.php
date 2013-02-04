@@ -47,7 +47,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'adminarea';
         $this->tpl_mainno = 'system';
         $this->tpl_maintitle = t('c_System_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_AdminArea_001');
+        $this->tpl_subtitle = t('c_Management screen settings_01');
         $this->tpl_enable_ssl = FALSE;
     }
 
@@ -86,7 +86,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
             //設定ファイルの権限チェック
             if (!is_writable(CONFIG_REALFILE)) {
-                $arrErr['all'] = t('LC_Page_Admin_System_AdminArea_002', array('T_ARG1' => CONFIG_REALFILE));
+                $arrErr['all'] = t('c_You do not have access to change T_ARG1._01', array('T_ARG1' => CONFIG_REALFILE));
             }
 
             //管理画面ディレクトリのチェック
@@ -154,12 +154,12 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 //既存ディレクトリのチェック
                 if (file_exists(HTML_REALDIR.$admin_dir) and $admin_dir != 'admin/') {
-                    $arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_003', array('T_ARG1' => ROOT_URLPATH . $admin_dir));
+                    $arrErr['admin_dir'] .= t('c_T_ARG1 already exists. Please designate a different directory name._01', array('T_ARG1' => ROOT_URLPATH . $admin_dir));
                     
                 }
                 //権限チェック
                 if (!is_writable(HTML_REALDIR . ADMIN_DIR)) {
-                    $arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_004', array('T_ARG1' => ROOT_URLPATH . ADMIN_DIR));
+                    $arrErr['admin_dir'] .= t('c_You do not have access to change the T_ARG1 directory name._01', array('T_ARG1' => ROOT_URLPATH . ADMIN_DIR));
                     
                 }
             }
@@ -192,7 +192,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
                 $installData[$key] = 'define("ADMIN_DIR", "' . $admin_dir . '");';
                 //管理機能ディレクトリのリネーム
                 if (!rename(HTML_REALDIR.ADMIN_DIR,HTML_REALDIR.$admin_dir)) {
-                    $this->arrErr['admin_dir'] .= t('LC_Page_Admin_System_AdminArea_005', array('T_ARG1' => ROOT_URLPATH . ADMIN_DIR));
+                    $this->arrErr['admin_dir'] .= t('c_The T_ARG1 directory name could not be changed._01', array('T_ARG1' => ROOT_URLPATH . ADMIN_DIR));
                     
                     return false;
                 }

@@ -58,7 +58,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'parameter';
         $this->tpl_mainno = 'system';
         $this->tpl_maintitle = t('c_System_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_Parameter');
+        $this->tpl_subtitle = t('c_Parameter settings_01');
     }
 
     /**

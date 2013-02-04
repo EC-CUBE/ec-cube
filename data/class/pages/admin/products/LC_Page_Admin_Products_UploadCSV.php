@@ -660,13 +660,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
 
                 // 商品IDの存在チェック
                 if (!$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item[$recommend_product_id_key])) {
-                    $arrErr[$recommend_product_id_key] = t('LC_Page_Admin_Products_UploadCSV_012', array('T_ARG1' => $i));
+                    $arrErr[$recommend_product_id_key] = t('c_* The designated relevant product ID (T_ARG1) is not registered._01', array('T_ARG1' => $i));
                     continue;
                 }
                 // 商品IDの重複チェック
                 $recommend_product_id = $item[$recommend_product_id_key];
                 if (isset($arrRecommendProductUnique[$recommend_product_id])) {
-                    $arrErr[$recommend_product_id_key] = t('LC_Page_Admin_Products_UploadCSV_013', array('T_ARG1' => $i));
+                    $arrErr[$recommend_product_id_key] = t('c_* The designated relevant product ID (T_ARG1) is already registered._01', array('T_ARG1' => $i));
                     
                 } else {
                     $arrRecommendProductUnique[$recommend_product_id] = true;
@@ -675,18 +675,18 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         }
         // カテゴリIDの存在チェック
         if (!$this->lfIsDbRecordMulti('dtb_category', 'category_id', 'category_ids', $item, ',')) {
-            $arrErr['category_ids'] = t('LC_Page_Admin_Products_UploadCSV_014');
+            $arrErr['category_ids'] = t('c_* The designated category ID is not registered._01');
         }
         // 商品ステータスIDの存在チェック
         if (!$this->lfIsArrayRecordMulti($this->arrSTATUS, 'product_statuses', $item, ',')) {
-            $arrErr['product_statuses'] = t('LC_Page_Admin_Products_UploadCSV_015');
+            $arrErr['product_statuses'] = t('c_* The designated product status ID is not registered._01');
         }
         // 削除フラグのチェック
         if (array_search('del_flg', $this->arrFormKeyList) !== FALSE
             && $item['del_flg'] != ''
         ) {
             if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
-                $arrErr['del_flg'] = t('LC_Page_Admin_Products_UploadCSV_016');
+                $arrErr['del_flg'] = t('c_* Only '0' (active) and '1' (delete) are effective for the deletion flag. _01');
             }
         }
 /*
@@ -706,20 +706,20 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         ) {
             //実商品の場合
             if ($item['down_filename'] != '') {
-                $arrErr['down_filename'] = t('LC_Page_Admin_Products_UploadCSV_017');
+                $arrErr['down_filename'] = t('c_* For actual products, a download file name cannot be used._01');
             }
             if ($item['down_realfilename'] != '') {
-                $arrErr['down_realfilename'] = t('LC_Page_Admin_Products_UploadCSV_018');
+                $arrErr['down_realfilename'] = t('c_* For actual products,  file upload for the downloaded product cannot be used._01');
             }
         } elseif (array_search('product_type_id', $this->arrFormKeyList) !== FALSE
                   && $item['product_type_id'] == PRODUCT_TYPE_DOWNLOAD
         ) {
             //ダウンロード商品の場合
             if ($item['down_filename'] == '') {
-                $arrErr['down_filename'] = t('LC_Page_Admin_Products_UploadCSV_019');
+                $arrErr['down_filename'] = t('c_* For downloaded products, the name of the downloaded file is required._01');
             }
             if ($item['down_realfilename'] == '') {
-                $arrErr['down_realfilename'] = t('LC_Page_Admin_Products_UploadCSV_020');
+                $arrErr['down_realfilename'] = t('c_* For downloaded products, it is necessary to upload the file for the downloaded product._01');
             }
         }
         return $arrErr;

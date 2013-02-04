@@ -46,7 +46,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
         $this->tpl_subno    = 'log';
         $this->tpl_mainno   = 'system';
         $this->tpl_maintitle = t('c_System_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_Log_001');
+        $this->tpl_subtitle = t('c_EC-CUBE log display_01');
         $this->line_max     = 50;
     }
 
@@ -166,7 +166,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
         if (defined($const_name = $log_name . '_LOG_REALFILE')) {
             return constant($const_name);
         }
-        trigger_error(t('LC_Page_Admin_System_Log_002'), E_USER_ERROR);
+        trigger_error(t('c_An illegal log was designated._01'), E_USER_ERROR);
     }
 
     /**
@@ -176,20 +176,20 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
      * @return void
      */
     function loadLogList() {
-        $this->arrLogList[''] = t('LC_Page_Admin_System_Log_003');
-        $this->arrLogList['CUSTOMER'] = t('LC_Page_Admin_System_Log_004');
-        $this->arrLogList['ADMIN'] = t('LC_Page_Admin_System_Log_005');
+        $this->arrLogList[''] = t('c_Standard log file_01');
+        $this->arrLogList['CUSTOMER'] = t('c_Member login log file_01');
+        $this->arrLogList['ADMIN'] = t('c_Management area log file_01');
 
         if (defined('DEBUG_LOG_REALFILE') && strlen(DEBUG_LOG_REALFILE) >= 1) {
-            $this->arrLogList['DEBUG'] = t('LC_Page_Admin_System_Log_006');
+            $this->arrLogList['DEBUG'] = t('c_Debug log file_01');
         }
 
         if (defined('ERROR_LOG_REALFILE') && strlen(ERROR_LOG_REALFILE) >= 1) {
-            $this->arrLogList['ERROR'] = t('LC_Page_Admin_System_Log_007');
+            $this->arrLogList['ERROR'] = t('c_Error log file_01');
         }
 
         if (defined('DB_LOG_REALFILE') && strlen(DB_LOG_REALFILE) >= 1) {
-            $this->arrLogList['DB'] = t('LC_Page_Admin_System_Log_008');
+            $this->arrLogList['DB'] = t('c_DB log file_01');
         }
     }
 }

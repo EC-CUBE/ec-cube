@@ -56,7 +56,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'system';
         $this->tpl_subno = 'bkup';
         $this->tpl_maintitle = t('c_System_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_Bkup_001');
+        $this->tpl_subtitle = t('c_Backup management_01');
 
         $this->bkup_dir = DATA_REALDIR . 'downloads/backup/';
         $this->bkup_ext = '.tar.gz';
@@ -117,7 +117,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
 
                     $arrErrTmp[3] = array();
                     if ($res !== true) {
-                        $arrErrTmp[3]['bkup_name'] = t('LC_Page_Admin_System_Bkup_002', array('T_ARG1' => $res));
+                        $arrErrTmp[3]['bkup_name'] = t('c_Backup failed.(T_ARG1)_01', array('T_ARG1' => $res));
                     }
 
                     // DBにデータ更新
@@ -145,13 +145,13 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($arrErr)) {
                     $arrData = $objFormParam->getHashArray();
 
-                    $msg = t('LC_Page_Admin_System_Bkup_003', array('T_ARG1' => $arrData['list_name']));
+                    $msg = t("c_Restoration of 'T_ARG1' will begin._01", array('T_ARG1' => $arrData['list_name']));
                     GC_Utils_Ex::gfPrintLog($msg);
 
                     $success = $this->lfRestore($arrData['list_name'], $this->bkup_dir, $this->bkup_ext, $this->mode);
 
-                    $msg = t('LC_Page_Admin_System_Bkup_004-1', array('T_ARG1' => $arrData['list_name']));
-                    $msg .= $success ? t('LC_Page_Admin_System_Bkup_004-2') : t('LC_Page_Admin_System_Bkup_004-3');
+                    $msg = t('c_[T_ARG1] _01', array('T_ARG1' => $arrData['list_name']));
+                    $msg .= $success ? t('c_Restoration is complete._01') : t('c_Restoration failed._01');
 
                     $this->tpl_restore_msg .= $msg . "\n";
                     GC_Utils_Ex::gfPrintLog($msg);
@@ -269,9 +269,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         // 重複・存在チェック
         $ret = $this->lfGetBkupData('', $name);
         if (count($ret) > 0 && $mode == 'bkup') {
-            $arrErr['bkup_name'] = t('LC_Page_Admin_System_Bkup_005');
+            $arrErr['bkup_name'] = t('c_The backup name is duplicated. Enter a different name._01');
         } elseif (count($ret) <= 0 && $mode != 'bkup') {
-            $arrErr['list_name'] = t('LC_Page_Admin_System_Bkup_006');
+            $arrErr['list_name'] = t('c_The selected data was not found. It may already have been deleted._01');
         }
 
         return $arrErr;
@@ -456,7 +456,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                     $ret[] = array();
                     $row =& $ret[array_pop(array_keys($ret))];
                     $row['bkup_name'] = $bkup_name;
-                    $row['bkup_memo'] = t('LC_Page_Admin_System_Bkup_007');
+                    $row['bkup_memo'] = t('c_(No record. Only backup file available.)_01');
                     $row['create_date'] = date('Y-m-d H:i:s', filemtime($path));
                 }
             }
@@ -486,9 +486,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $success = $tar->extract($work_dir);
 
         if (!$success) {
-            $msg = t('LC_Page_Admin_System_Bkup_008');
-            $msg .= t('LC_Page_Admin_System_Bkup_009', array('T_ARG1' => $bkup_filepath));
-            $msg .= t('LC_Page_Admin_System_Bkup_010', array('T_ARG1' => $work_dir));
+            $msg = t('c_Decompression of backup file failed.\n_01');
+            $msg .= t('c_Decompression source: T_ARG1 \n_01', array('T_ARG1' => $bkup_filepath));
+            $msg .= t('c_Decompression destination: T_ARG1_01', array('T_ARG1' => $work_dir));
             trigger_error($msg, E_USER_ERROR);
         }
 
@@ -554,10 +554,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
             // csvファイルからデータの取得
             $fp = fopen($file_path, 'r');
             if ($fp === false) {
-                trigger_error(t('LC_Page_Admin_System_Bkup_011', array('T_ARG1' => $file_name)), E_USER_ERROR);
+                trigger_error(t('c_Opening the T_ARG1 file failed._01', array('T_ARG1' => $file_name)), E_USER_ERROR);
             }
 
-            GC_Utils_Ex::gfPrintLog(t('LC_Page_Admin_System_Bkup_012', array('T_ARG1' => $table)));
+            GC_Utils_Ex::gfPrintLog(t('c_Restoration execution: T_ARG1_01', array('T_ARG1' => $table)));
             $objQuery->delete($table);
 
             $line = 0;
