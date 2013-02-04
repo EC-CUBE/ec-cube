@@ -130,7 +130,7 @@ class SC_FormParam {
             }
 
             if ($find) {
-                $this->html_disp_name[$index] = t('c_T_ARG1<span class=\"red\">(* Required)</span>_01', array('T_ARG1' => $this->disp_name[$index]));
+                $this->html_disp_name[$index] = t("c_T_ARG1<span class='red'>(* Required)</span>_01", array('T_ARG1' => $this->disp_name[$index]));
             } else {
                 $this->html_disp_name[$index] = $this->disp_name[$index];
             }

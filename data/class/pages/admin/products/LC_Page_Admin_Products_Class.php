@@ -46,7 +46,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/class.tpl';
         $this->tpl_subno = 'class';
         $this->tpl_subtitle = t('LC_Page_Admin_Products_Class_001');
-        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_maintitle = t('c_Products_01');
         $this->tpl_mainno = 'products';
     }
 

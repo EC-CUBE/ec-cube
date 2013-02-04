@@ -46,7 +46,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/pdf_input.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'pdf';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_maintitle = t('c_Orders_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Order_Pdf_001');
 
         $this->SHORTTEXT_MAX = STEXT_LEN;
@@ -184,21 +184,21 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_OUTPUT_DATE'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_OUTPUT_DATE'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_OUTPUT_DATE'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_TYPE'), 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_HOW_TO_DOWNLOAD'), 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_TITLE'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG1'), 'msg1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG2'), 'msg2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_MSG3'), 'msg3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE1'), 'etc1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE2'), 'etc2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_PDF_NOTE3'), 'etc3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DISP_POINT'), 'disp_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Order number_01'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Order number_01'), 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Issuance date_01'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Issuance date_01'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Issuance date_01'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Ledger type_01'), 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Download method_01'), 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Ledger title_01'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Ledger message line 1_01'), 'msg1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Ledger message line 2_01'), 'msg2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Ledger message line 3_01'), 'msg3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Remarks line 1_01'), 'etc1', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Remarks line 2_01'), 'etc2', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Remarks line 3_01'), 'etc3', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Point notation_01'), 'disp_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

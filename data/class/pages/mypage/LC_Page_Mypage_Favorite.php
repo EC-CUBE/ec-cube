@@ -48,7 +48,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = t('LC_Page_MyPage_Favorite_001');
+        $this->tpl_subtitle = t('c_List of Favorites_01');
         $this->tpl_mypageno = 'favorite';
     }
 

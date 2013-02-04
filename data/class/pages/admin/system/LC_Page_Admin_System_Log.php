@@ -45,7 +45,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/log.tpl';
         $this->tpl_subno    = 'log';
         $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('LC_Page_Admin_System_Log_001');
         $this->line_max     = 50;
     }
@@ -103,7 +103,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_FILE'), 'log', null, '', array());
+        $objFormParam->addParam(t('c_File_01'), 'log', null, '', array());
         $objFormParam->addParam(t('c_Number of lines_01'), 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), 50);
     }
 

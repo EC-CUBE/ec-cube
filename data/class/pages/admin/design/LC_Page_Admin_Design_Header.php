@@ -48,7 +48,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->footer_row = 13;
         $this->tpl_subno = 'header';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_maintitle = t('c_Design_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Design_Header_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -86,7 +86,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doRegister($objFormParam)) {
-                        $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                        $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                     }
                 }
                 break;
@@ -132,7 +132,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('c_Terminal type ID_01'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_division_01'), 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Header data_01'), 'header');
         $objFormParam->addParam(t('c_Footer data_01'), 'footer');
     }
@@ -147,7 +147,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array(t('PARAM_LABEL_DIVISION_ALP'), 'division', STEXT_LEN), array('EXIST_CHECK'));
+        $objErr->doFunc(array(t('c_division_01'), 'division', STEXT_LEN), array('EXIST_CHECK'));
         return $objErr->arrErr;
     }
 

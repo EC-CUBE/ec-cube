@@ -46,7 +46,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/system.tpl';
         $this->tpl_subno    = 'system';
         $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('c_System information_01');
     }
 
@@ -103,7 +103,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      * @return void
      */
     function initForm(&$objFormParam, &$arrParams) {
-        $objFormParam->addParam(t('PARAM_LABEL_MODE_ALP'), 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_mode_01'), 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
     }
 

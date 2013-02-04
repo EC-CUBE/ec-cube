@@ -46,7 +46,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         $this->tpl_mainpage = 'order/mail.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_maintitle = t('c_Orders_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Order_Mail_001');
 
         $masterData = new SC_DB_MasterData_Ex();

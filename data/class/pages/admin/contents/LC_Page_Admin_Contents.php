@@ -51,7 +51,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             'month' => date('n'),
             'day' => date('j'),
         );
-        $this->tpl_maintitle = t('TPL_MAINTITLE_005');
+        $this->tpl_maintitle = t('c_Edit contents_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Contents_002');
         //---- 日付プルダウン設定
         $objDate = new SC_Date_Ex(ADMIN_NEWS_STARTYEAR);
@@ -102,7 +102,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                         $this->lfNewsInsert($arrPost,$member_id);
                     }
                     $news_id = '';
-                    $this->tpl_onload = "window.alert('" . t('ALERT_001') . "');";
+                    $this->tpl_onload = "window.alert('" . t('c_Editing is complete_01') . "');";
                 } else {
                     $this->arrForm = $arrPost;
                 }
@@ -173,7 +173,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
     function lfCheckError(&$objFormParam) {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
-        $objErr->doFunc(array(t('PARAM_LABEL_DATE'), 'year', 'month', 'day'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Date_01'), 'year', 'month', 'day'), array('CHECK_DATE'));
         return $objErr->arrErr;
     }
 
@@ -182,15 +182,15 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_NEWS_ID'), 'news_id');
-        $objFormParam->addParam(t('PARAM_LABEL_DATE_YEAR'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DATE_MONTH'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DATE_DAY'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_news_id_01'), 'news_id');
+        $objFormParam->addParam(t('c_Date (year)_01'), 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Date (month)_01'), 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Date (day)_01'), 'day', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Title_01'), 'news_title', MTEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK','SPTAB_CHECK'));
         $objFormParam->addParam(t('c_URL_01'), 'news_url', URL_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_BODY_TEXT'), 'news_comment', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_OPEN_OTHER_WINDOW'), 'link_method', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_MOVE_RANK'), 'term', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Text_01'), 'news_comment', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Open in separate window_01'), 'link_method', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Rank shift_01'), 'term', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

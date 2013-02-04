@@ -47,7 +47,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $this->area_row = 30;
         $this->tpl_subno = 'css';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_maintitle = t('c_Design_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Design_CSS_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -95,7 +95,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
                         if ($this->doRegister($css_dir, $this->css_name, $this->old_css_name, $css_path,
                                               $objFormParam->getValue('css_data'))) {
-                            $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                            $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                         }
                     }
                 }
@@ -115,7 +115,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                 }
                 break;
         }

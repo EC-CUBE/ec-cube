@@ -265,11 +265,11 @@ class SC_Api_Operation {
      * @return void
      */
     protected function setApiBaseParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_OPERATION'), 'Operation', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SERVICE'), 'Service', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_STYLE'), 'Style', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_VALIDATE'), 'Validate', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_VERSION'), 'Version', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Operation_01'), 'Operation', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Service_01'), 'Service', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Style_01'), 'Style', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Validate_01'), 'Validate', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Version_01'), 'Version', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

@@ -32,7 +32,7 @@
         <!--{foreach name=device key=device_key item=arrDevicePageData from=$arrPageData}-->
             <!--{if count($arrDevicePageData) > 0}-->
                 <!--{foreach name=page key=key item=item from=$arrDevicePageData}-->
-                    <!-- <!--{$item.page_name}--> �����܂� -->
+                    <!-- <!--{$item.page_name}-->ここから -->
                     <!--{if $smarty.foreach.page.first == true}--><h1><span class="subtitle"><!--{$arrDeviceTypeName[$item.device_type_id]}--></span></h1><!--{/if}-->
                     <h2><!--{$item.page_name}--> <!--{$item.url}--></h2>
 
@@ -65,7 +65,7 @@
                         </div>
 
                     </div>
-                    <!-- <!--{$item.page_name}--> �����܂� -->
+                    <!-- <!--{$item.page_name}--> ここまで -->
                 <!--{/foreach}-->
             <!--{/if}-->
         <!--{/foreach}-->

@@ -46,7 +46,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/up_down.tpl';
         $this->tpl_subno    = 'up_down';
         $this->tpl_mainno   = 'design';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_maintitle = t('c_Design_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Design_UpDown_002');
         $this->arrErr  = array();
         $this->arrForm = array();
@@ -88,7 +88,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
                 $this->arrErr = $this->lfCheckError($objFormParam, $objUpFile);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doUpload($objFormParam, $objUpFile)) {
-                        $this->tpl_onload = "alert('" . t('ALERT_012') . "');";
+                        $this->tpl_onload = "alert('" . t('c_The template file was uploaded._01') . "');";
                         $objFormParam->setValue('template_name', '');
                         $objFormParam->setValue('template_code', '');
                     }

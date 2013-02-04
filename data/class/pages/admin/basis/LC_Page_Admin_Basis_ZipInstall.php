@@ -69,7 +69,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'basis/zip_install.tpl';
         $this->tpl_subno = 'zip_install';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_ZipInstall_002');
         $this->tpl_mainno = 'basis';
 
@@ -200,7 +200,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
      */
     function lfInitParam($tpl_mode, &$objFormParam) {
         if ($tpl_mode == 'manual') {
-            $objFormParam->addParam(t('PARAM_LABEL_STARTROWNUM'), 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam(t('c_Start line_01'), 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 

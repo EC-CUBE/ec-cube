@@ -79,7 +79,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_PC) {
             $this->setTemplate('mypage/mail_view.tpl');
         } else {
-            $this->tpl_title    = t('LC_Page_Mypage_MailView_001');
+            $this->tpl_title    = t('c_E-mail history details_01');
             $this->tpl_mainpage = 'mypage/mail_view.tpl';
         }
 

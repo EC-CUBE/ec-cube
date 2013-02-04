@@ -47,7 +47,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'customer';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_004');
+        $this->tpl_maintitle = t('c_Member_02');
         $this->tpl_subtitle = t('LC_Page_Admin_Customer_002');
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -158,7 +158,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
      */
     function lfInitParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
-        $objFormParam->addParam(t('PARAM_LABEL_EDIT_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Member ID subject to editing_01'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
 
     /**

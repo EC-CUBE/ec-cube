@@ -46,7 +46,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/mail.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'mail';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_Mail_002');
     }
 
@@ -104,7 +104,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                         $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
 
                         // 完了メッセージ
-                        $this->tpl_onload = "window.alert('" .t('ALERT_006'). "');";
+                        $this->tpl_onload = "window.alert('" .t('c_E-mail settings are complete. Select a template and check the contents._01'). "');";
                         unset($this->arrForm);
                     }
                 break;

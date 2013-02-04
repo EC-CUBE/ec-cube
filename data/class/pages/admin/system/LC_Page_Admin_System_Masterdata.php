@@ -46,7 +46,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/masterdata.tpl';
         $this->tpl_subno = 'masterdata';
         $this->tpl_mainno = 'system';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('LC_Page_Admin_System_Masterdata_001');
     }
 
@@ -79,7 +79,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex {
                 if (empty($this->errorMessage)) {
                     // 取得したデータからマスターデータを生成
                     $this->registMasterData($_POST, $masterData, $this->masterDataName);
-                    $this->tpl_onload = "window.alert('" . t('ALERT_028') . "');";
+                    $this->tpl_onload = "window.alert('" . t('c_Master data settings are complete._01') . "');";
                 }
                 // FIXME break 入れ忘れと思われる。そうでないなら、要コメント。
 

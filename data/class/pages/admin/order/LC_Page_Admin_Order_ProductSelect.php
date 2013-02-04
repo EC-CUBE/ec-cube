@@ -46,7 +46,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/product_select.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = '';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_maintitle = t('c_Orders_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Order_ProductSelect_001');
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -280,7 +280,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_ORDERID'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Order ID_01'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Product name_01'), 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Category ID_01'), 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam(t('c_Product code_01'), 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));

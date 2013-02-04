@@ -46,7 +46,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/editdb.tpl';
         $this->tpl_subno    = 'editdb';
         $this->tpl_mainno   = 'system';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('LC_Page_Admin_System_Editdb_001');
     }
 
@@ -106,11 +106,11 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      */
     function initForm(&$objFormParam, &$arrParams) {
 
-        $objFormParam->addParam(t('PARAM_LABEL_MODE'), 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TABLE_NAME'), 'table_name');
-        $objFormParam->addParam(t('PARAM_LABEL_COLUMN_NAME'), 'column_name');
-        $objFormParam->addParam(t('PARAM_LABEL_INDEX'), 'indexflag');
-        $objFormParam->addParam(t('PARAM_LABEL_INDEX_CHANGE'), 'indexflag_new');
+        $objFormParam->addParam(t('c_mode_01'), 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Table name_01'), 'table_name');
+        $objFormParam->addParam(t('c_Column name_01'), 'column_name');
+        $objFormParam->addParam(t('c_Index_01'), 'indexflag');
+        $objFormParam->addParam(t('c_Index (after change)_01'), 'indexflag_new');
         $objFormParam->setParam($arrParams);
 
     }
@@ -120,7 +120,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
         $arrTarget = $this->lfGetTargetData($objFormParam);
         $message = '';
         if (is_array($arrTarget) && count($arrTarget) == 0) {
-            $message = "window.alert('" . t('ALERT_025') . "');";
+            $message = "window.alert('" . t('c_There was no data subject to change._01') . "');";
             return $message;
         } elseif (!is_array($arrTarget) && $arrTarget != '') {
             return $arrTarget; // window.alert が返ってきているはず。
@@ -136,7 +136,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
                 $objQuery->dropIndex($item['table_name'], $index_name);
             }
         }
-        $message = "window.alert('" . t('ALERT_026') . "');";
+        $message = "window.alert('" . t('c_The index was successfully changed._01') . "');";
         return $message;
     }
 
@@ -165,7 +165,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             $arrErr = $objErr->arrErr;
             if (count($arrErr) != 0) {
                 // 通常の送信ではエラーにならないはずです。
-                $message = "window.alert('" . t('ALERT_027') . "');";
+                $message = "window.alert('" . t('c_Processing was suspended due to there being illegal data._01') . "');";
                 return $message;
             }
             if ($param['indexflag'] != $param['indexflag_new']) {

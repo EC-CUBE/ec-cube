@@ -113,7 +113,7 @@ class LC_Page_Entry extends LC_Page_Ex {
 
                             // 該当無し
                         } else {
-                            $this->arrErr['zipcode'] = t('LC_Page_Entry_001');
+                            $this->arrErr['zipcode'] = t('c_* The corresponding address was not found.<br />_01');
                         }
                     }
                     $this->arrForm  = $objFormParam->getHashArray();
@@ -129,7 +129,7 @@ class LC_Page_Entry extends LC_Page_Ex {
                     $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
                     $this->tpl_mainpage = 'entry/confirm.tpl';
-                    $this->tpl_title    = t('LC_Page_Entry_002');
+                    $this->tpl_title    = t('c_Member registration_01');
                 }
                 break;
             case 'complete':

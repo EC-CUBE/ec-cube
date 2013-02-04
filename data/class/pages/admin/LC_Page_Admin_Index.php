@@ -110,8 +110,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_ID'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PASSWORD_ALP'), 'password', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_ID_01'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK' ,'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_PASSWORD_01'), 'password', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

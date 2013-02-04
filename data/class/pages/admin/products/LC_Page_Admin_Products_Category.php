@@ -45,7 +45,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_maintitle = t('c_Products_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Products_Category_001');
         $this->tpl_mainpage = 'products/category.tpl';
         $this->tpl_mainno = 'products';

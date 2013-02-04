@@ -43,7 +43,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = t('LC_Page_Mypage_ChangeComplete_001');
+        $this->tpl_subtitle = t('c_Revision of member registration details (completion page)_01');
         $this->tpl_mypageno = 'change';
     }
 

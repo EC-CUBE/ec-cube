@@ -56,7 +56,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'ownersstore/settings.tpl';
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'settings';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_008');
+        $this->tpl_maintitle = t('c_Owners Store_01');
         $this->tpl_subtitle = t('LC_Page_Admin_OwnersStore_Settings_001');
         $this->httpCacheControl('nocache');
     }
@@ -123,7 +123,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
 
         $this->arrForm = $arrForm;
 
-        $this->tpl_onload = "alert('" . t('ALERT_021') . "')";
+        $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "')";
     }
 
     /**
@@ -140,7 +140,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
         }
 
         $objForm = new SC_FormParam_Ex();
-        $objForm->addParam(t('PARAM_LABEL_PUBLIC_KEY'), 'public_key', LTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objForm->addParam(t('c_Authentication key_01'), 'public_key', LTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_POST);
 
         $this->objForm = $objForm;

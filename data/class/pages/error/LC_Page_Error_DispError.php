@@ -47,7 +47,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
     function init() {
         $this->template = LOGIN_FRAME;
         $this->tpl_mainpage = 'login_error.tpl';
-        $this->tpl_title = t('LC_Page_Error_DispError_001');
+        $this->tpl_title = t('c_Login error_01');
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
@@ -75,20 +75,20 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
 
         switch ($this->type) {
             case LOGIN_ERROR:
-                $this->tpl_error=t('LC_Page_Error_DispError_002');
+                $this->tpl_error=t('c_The ID or password is not correct.<br />Check and reenter the ID and password._01');
                 break;
             case ACCESS_ERROR:
-                $this->tpl_error=t('LC_Page_Error_DispError_003');
+                $this->tpl_error=t('c_Your login session has expired.<br /> Please log in again._01');
                 break;
             case AUTH_ERROR:
-                $this->tpl_error=t('LC_Page_Error_DispError_004');
+                $this->tpl_error=t('c_You cannot access this page_01');
                 SC_Response_Ex::sendHttpStatus(403);
                 break;
             case INVALID_MOVE_ERRORR:
-                $this->tpl_error=t('LC_Page_Error_DispError_005');
+                $this->tpl_error=t('c_Illegal page migration.<br />Check page again._01');
                 break;
             default:
-                $this->tpl_error=t('LC_Page_Error_DispError_006');
+                $this->tpl_error=t('c_An error has occurred.<br />Check and log in again._01');
                 break;
         }
 

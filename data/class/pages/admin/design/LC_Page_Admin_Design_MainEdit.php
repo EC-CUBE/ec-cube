@@ -47,7 +47,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->text_row     = 13;
         $this->tpl_subno = 'main_edit';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_maintitle = t('c_Design_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Design_MainEdit_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -114,7 +114,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
 
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                 }
                 break;
         }
@@ -157,10 +157,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_Terminal type ID_01'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_THE_NAME'), 'page_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_URL_01'), 'filename', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_HEADER_CHK'), 'header_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_FOOTER_CHK'), 'footer_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_EDIT_FLG'), 'edit_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TPL_DATA'), 'tpl_data');
+        $objFormParam->addParam(t('c_Header check_01'), 'header_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Footer check_01'), 'footer_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Repair flag_01'), 'edit_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_TPL data_01'), 'tpl_data');
     }
 
     /**

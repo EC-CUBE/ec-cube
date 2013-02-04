@@ -51,7 +51,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/payment_input.tpl';
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'payment';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_PaymentInput_002');
     }
 

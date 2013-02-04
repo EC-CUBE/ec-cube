@@ -46,7 +46,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/product_class.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_maintitle = t('c_Products_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Products_ProductClass_001');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
@@ -184,7 +184,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_Product code_01'), 'search_product_code', STEXT_LEN, 'KVna', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Product name_01'), 'search_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Category_01'), 'search_category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TYPE'), 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Type_01'), 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Start year_01'), 'search_startyear', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Start month_01'), 'search_startmonth', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Start day_01'), 'search_startday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));

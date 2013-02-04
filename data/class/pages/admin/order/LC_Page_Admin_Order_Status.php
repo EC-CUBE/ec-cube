@@ -46,7 +46,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/status.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'status';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_maintitle = t('c_Orders_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Order_Status_001');
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -122,12 +122,12 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *  @param SC_FormParam
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER'), 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_BEFORE_ORDER_STATUS'), 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Order number_01'), 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Response status before change_01'), 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Page number_01'), 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 		if ($this->getMode() == 'update') {
-        	$objFormParam->addParam(t('PARAM_LABEL_AFTER_ORDER_STATUS'), 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        	$objFormParam->addParam(t('PARAM_LABEL_MOVE_ORDER_NUMBER'), 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        	$objFormParam->addParam(t('c_Response status after change_01'), 'change_status', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        	$objFormParam->addParam(t('c_Move order number_01'), 'move', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         }
     }
 
@@ -207,7 +207,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
         $objQuery->commit();
 
-        $this->tpl_onload = "window.alert('" . t('ALERT_014', array('T_ARG1' => $arrORDERSTATUS[$statusId])) . "');";
+        $this->tpl_onload = "window.alert('" . t('c_The selected item was moved to T_ARG1._01', array('T_ARG1' => $arrORDERSTATUS[$statusId])) . "');";
         return true;
     }
 
@@ -234,7 +234,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
 
         $objQuery->commit();
 
-        $this->tpl_onload = "window.alert('" . t('ALERT_015') . "');";
+        $this->tpl_onload = "window.alert('" . t('c_The selected item was deleted._01') . "');";
         return true;
     }
 }

@@ -44,7 +44,7 @@ class LC_Page_Contact_Complete extends LC_Page_Ex {
     function init() {
         parent::init();
         //$this->tpl_title = 'お問い合わせ(完了ページ)';
-        $this->tpl_title = t('LC_Page_Contact_Complete_001');
+        $this->tpl_title = t('c_Inquiry_03');
         $this->tpl_mainno = 'contact';
     }
 

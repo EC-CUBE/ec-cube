@@ -45,7 +45,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'products/maker.tpl';
         $this->tpl_subno = 'maker';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_maintitle = t('c_Products_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Products_Maker_001');
         $this->tpl_mainno = 'products';
     }

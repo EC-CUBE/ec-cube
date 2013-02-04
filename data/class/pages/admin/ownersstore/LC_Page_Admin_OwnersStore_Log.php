@@ -47,7 +47,7 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'ownersstore/log.tpl';
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'log';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_008');
+        $this->tpl_maintitle = t('c_Owners Store_01');
         $this->tpl_subtitle = t('LC_Page_Admin_OwnersStore_Log_001');
     }
 

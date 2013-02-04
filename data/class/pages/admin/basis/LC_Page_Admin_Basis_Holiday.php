@@ -45,7 +45,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'basis/holiday.tpl';
         $this->tpl_subno = 'holiday';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_Holiday_002');
         $this->tpl_mainno = 'basis';
     }

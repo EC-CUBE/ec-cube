@@ -47,7 +47,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'mail';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_002');
+        $this->tpl_maintitle = t('c_Mail magazine_02');
         $this->tpl_subtitle = t('LC_Page_Admin_Mail_002');
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -165,7 +165,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
 
                     SC_Response_Ex::sendRedirect('./history.php');
                 } else {
-                    $this->tpl_onload = "window.alert('" . t('ALERT_013') . "');";
+                    $this->tpl_onload = "window.alert('" . t('c_The e-mail sending ID is not correct._01') . "');";
                 }
                 break;
             default:
@@ -192,8 +192,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      */
     function lfInitParamSearchCustomer(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
-        $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_MAIL_FORMAT'), 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_MAIL_TYPE'), 'search_mail_type', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Delivery format_01'), 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Type of delivery e-mail address_01'), 'search_mail_type', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -203,10 +203,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfAddParamSelectTemplate(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_MAIL_METHOD'), 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SUBJECT'), 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_BODY_TEXT'), 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE_ID'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_E-mail format_01'), 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
+        $objFormParam->addParam(t('c_Subject_01'), 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Text_01'), 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Template ID_01'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
 
     /**

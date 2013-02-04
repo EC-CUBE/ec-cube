@@ -53,7 +53,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      */
     function init() {
         parent::init();
-        $this->tpl_title = t('LC_Page_Error_SystemError_001');
+        $this->tpl_title = t('c_System error_01');
     }
 
     /**
@@ -73,7 +73,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      */
     function action() {
 
-        $this->tpl_error = t('LC_Page_Error_SystemError_002');
+        $this->tpl_error = t('c_A system error has occurred. <br /> Please contact the site administrator._01');
 
         if (DEBUG_MODE) {
             echo '<div class="debug">';

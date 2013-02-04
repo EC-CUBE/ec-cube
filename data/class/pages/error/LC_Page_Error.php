@@ -62,7 +62,7 @@ class LC_Page_Error extends LC_Page_Ex {
      */
     function init() {
         $this->tpl_mainpage = 'error.tpl';
-        $this->tpl_title = t('LC_Page_Error_001');
+        $this->tpl_title = t('c_Error_01');
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
@@ -91,23 +91,23 @@ class LC_Page_Error extends LC_Page_Ex {
 
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
-                $this->tpl_error=t('LC_Page_Error_002');
+                $this->tpl_error=t('c_The page you specified does not exist._01');
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case PAGE_ERROR:
                 $this->tpl_error=t('LC_Page_Error_003');
                 break;
             case CART_EMPTY:
-                $this->tpl_error=t('LC_Page_Error_004');
+                $this->tpl_error=t('c_There are no products in your cart._01');
                 break;
             case CART_ADD_ERROR:
-                $this->tpl_error=t('LC_Page_Error_005');
+                $this->tpl_error=t('c_It is not possible to add products to your cart during purchase processing._01');
                 break;
             case CANCEL_PURCHASE:
                 $this->tpl_error=t('LC_Page_Error_006');
                 break;
             case CATEGORY_NOT_FOUND:
-                $this->tpl_error=t('LC_Page_Error_007');
+                $this->tpl_error=t('c_The category you specified does not exist._01');
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case SITE_LOGIN_ERROR:
@@ -117,7 +117,7 @@ class LC_Page_Error extends LC_Page_Ex {
                 $this->tpl_error=t('LC_Page_Error_009');
                 break;
             case CUSTOMER_ERROR:
-                $this->tpl_error=t('LC_Page_Error_010');
+                $this->tpl_error=t('c_Unauthorized access._01');
                 break;
             case SOLD_OUT:
                 $this->tpl_error=t('LC_Page_Error_011');
@@ -129,13 +129,13 @@ class LC_Page_Error extends LC_Page_Ex {
                 $this->tpl_error=t('LC_Page_Error_013');
                 break;
             case FAVORITE_ERROR:
-                $this->tpl_error=t('LC_Page_Error_014');
+                $this->tpl_error=t('c_This product is already added to your favorites_01');
                 break;
             case EXTRACT_ERROR:
                 $this->tpl_error=t('LC_Page_Error_015');
                 break;
             case FTP_DOWNLOAD_ERROR:
-                $this->tpl_error=t('LC_Page_Error_016');
+                $this->tpl_error=t('c_FTP download of file failed._01');
                 break;
             case FTP_LOGIN_ERROR:
                 $this->tpl_error=t('LC_Page_Error_017');
@@ -162,7 +162,7 @@ class LC_Page_Error extends LC_Page_Ex {
                 $this->tpl_error=$this->err_msg;
                 break;
             default:
-                $this->tpl_error=t('LC_Page_Error_024');
+                $this->tpl_error=t('c_An error has occurred._01');
                 break;
         }
 

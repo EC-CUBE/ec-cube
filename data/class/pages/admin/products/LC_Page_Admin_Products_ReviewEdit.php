@@ -51,7 +51,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
-        $this->tpl_maintitle = t('TPL_MAINTITLE_007');
+        $this->tpl_maintitle = t('c_Products_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Products_ReviewEdit_001');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
     }
@@ -92,7 +92,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
                     $this->lfRegistReviewData($this->arrForm['review_id'], $objFormParam);
                     // レビュー情報のDB取得
                     $this->arrForm = $this->lfGetReviewData($this->arrForm['review_id']);
-                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                 }
                 break;
             default:
@@ -121,18 +121,18 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
     function lfInitParam(&$objFormParam) {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEW_ID'), 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Review ID_01'), 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Product name_01'), 'name', '', '', array(), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_POST_DATE'), 'create_date', '', '', array(), '', false);
+        $objFormParam->addParam(t('c_Post date_01'), 'create_date', '', '', array(), '', false);
 
         // 登録情報
-        $objFormParam->addParam(t('PARAM_LABEL_DISP_REVIEWE'), 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_NAME'), 'reviewer_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_URL'), 'reviewer_url', URL_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Review display_01'), 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Poster name_01'), 'reviewer_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Poster URL_01'), 'reviewer_url', URL_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Gender_01'), 'sex', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_LEVEL'), 'recommend_level', INT_LEN, 'n', array('SELECT_CHECK'));
+        $objFormParam->addParam(t('c_Recommendation level_01'), 'recommend_level', INT_LEN, 'n', array('SELECT_CHECK'));
         $objFormParam->addParam(t('c_Title_01'), 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_COMMENT'), 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Comment_01'), 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

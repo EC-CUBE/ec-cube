@@ -43,7 +43,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = t('LC_Page_Mypage_Refusal_001');
+        $this->tpl_subtitle = t('c_Cancel membership_01');
         $this->tpl_mypageno = 'refusal';
     }
 
@@ -66,7 +66,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
         switch ($this->getMode()) {
             case 'confirm':
                 $this->tpl_mainpage     = 'mypage/refusal_confirm.tpl';
-                $this->tpl_subtitle     = t('LC_Page_Mypage_Refusal_002');
+                $this->tpl_subtitle     = t('c_Confirm account cancellation_01');
                 break;
 
             case 'complete':

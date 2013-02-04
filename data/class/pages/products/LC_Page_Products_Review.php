@@ -147,14 +147,14 @@ class LC_Page_Products_Review extends LC_Page_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEW_ID'), 'review_id', INT_LEN, 'aKV');
+        $objFormParam->addParam(t('c_Review ID_01'), 'review_id', INT_LEN, 'aKV');
         $objFormParam->addParam(t('c_Product ID_01'), 'product_id', INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_NAME'), 'reviewer_name', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_REVIEWER_URL'), 'reviewer_url', MTEXT_LEN, 'a', array('NO_SPTAB', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'URL_CHECK'));
+        $objFormParam->addParam(t('c_Poster name_01'), 'reviewer_name', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Poster URL_01'), 'reviewer_url', MTEXT_LEN, 'a', array('NO_SPTAB', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'URL_CHECK'));
         $objFormParam->addParam(t('c_Gender_01'), 'sex', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_RECOMMEND_LEVEL'), 'recommend_level', INT_LEN, 'n', array('EXIST_CHECK', 'SELECT_CHECK'));
+        $objFormParam->addParam(t('c_Recommendation level_01'), 'recommend_level', INT_LEN, 'n', array('EXIST_CHECK', 'SELECT_CHECK'));
         $objFormParam->addParam(t('c_Title_01'), 'title', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_COMMENT'), 'comment', LTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Comment_01'), 'comment', LTEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

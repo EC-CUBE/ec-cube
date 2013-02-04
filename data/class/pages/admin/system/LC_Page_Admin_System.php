@@ -51,7 +51,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $this->tpl_mainno   = 'system';
         $this->tpl_subno    = 'index';
         $this->tpl_onload   = 'fnGetRadioChecked();';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('LC_Page_Admin_System_001');
 
         $masterData = new SC_DB_MasterData_Ex();

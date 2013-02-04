@@ -49,7 +49,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_Tradelaw_002');
     }
 
@@ -99,7 +99,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
                         break;
                 }
                 // 再表示
-                $this->tpl_onload = "window.alert('" . t('ALERT_008') . "');";
+                $this->tpl_onload = "window.alert('" . t('c_Registration of the Act on Specified Commercial Transactions is complete._01') . "');";
             }
         } else {
             $arrCol = $objFormParam->getKeyList(); // キー名一覧を取得
@@ -141,9 +141,9 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_Necessary fees_01'), 'law_term01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Order method_01'), 'law_term02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_METHOD'), 'law_term03', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PAYMENT_LIMIT'), 'law_term04', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DELIVERY_TIME'), 'law_term05', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ABOUT_RETURNED_PRODUCTS'), 'law_term06', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Payment deadline_01'), 'law_term04', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Delivery period_01'), 'law_term05', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Returns and exchanges_01'), 'law_term06', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     function lfUpdateData($sqlval) {

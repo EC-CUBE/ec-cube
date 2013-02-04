@@ -162,7 +162,7 @@ msgstr "※ T_ARG1のファイルが存在しません。<br />"
 msgid "c_** Does not support the error check format (T_ARG1) **<br />_01"
 msgstr "※※　エラーチェック形式(T_ARG1)には対応していません　※※ <br />"
 
-msgid "c_T_ARG1<span class=\"red\">(* Required)</span>_01"
+msgid "c_T_ARG1<span class='red'>(* Required)</span>_01"
 msgstr "T_ARG1<span class=\"red\">(※ 必須)</span>"
 
 msgid "c_[Default value: T_ARG1]_01"
@@ -551,7 +551,7 @@ msgstr "月"
 msgid "c_Day_01"
 msgstr "日"
 
-msgid "PARAM_LABEL_MAILMAGAZINE"
+msgid "c_Mail magazine_01"
 msgstr "メールマガジン"
 
 msgid "c_Response type_01"
@@ -1244,181 +1244,178 @@ msgstr "save_main_large_image"
 msgid "c_temp_main_list_image_01"
 msgstr "temp_main_list_image"
 
-msgid "PARAM_LABEL_TEMP_MAIN_IMAGE"
+msgid "c_temp_main_image_01"
 msgstr "temp_main_image"
 
-msgid "PARAM_LABEL_TEMP_MAIN_LARGE_IMAGE"
+msgid "c_temp_main_large_image_01"
 msgstr "temp_main_large_image"
 
-msgid "PARAM_LABEL_HAS_PRODUCT_CLASS"
+msgid "c_has_product_class_01"
 msgstr "has_product_class"
 
-msgid "PARAM_LABEL_IMAGE_KEY"
+msgid "c_image_key_01"
 msgstr "image_key"
 
-msgid "PARAM_LABEL_DOWN_KEY"
+msgid "c_down_key_01"
 msgstr "down_key"
 
-msgid "PARAM_LABEL_SELECT_RECOMMEND_NO"
+msgid "c_select_recommend_no_01"
 msgstr "select_recommend_no"
 
-msgid "PARAM_LABEL_MAIN_LARGE_IMAGE"
+msgid "c_Details - Main enlarged image_01"
 msgstr "詳細-メイン拡大画像"
 
-msgid "PARAM_LABEL_DEVICE_ID"
+msgid "c_Device ID_01"
 msgstr "デバイスID"
 
-msgid "PARAM_LABEL_META_AUTHOR"
+msgid "c_Meta tag: Author_01"
 msgstr "メタタグ:Author"
 
-msgid "PARAM_LABEL_META_DESCRIPTION"
+msgid "c_Meta tag: Description_01"
 msgstr "メタタグ:Description"
 
-msgid "PARAM_LABEL_META_KEYWORDS"
+msgid "c_Meta tag: Keywords_01"
 msgstr "メタタグ:Keywords"
 
-msgid "PARAM_LABEL_PAYMENT_LIMIT"
+msgid "c_Payment deadline_01"
 msgstr "支払期限"
 
-msgid "PARAM_LABEL_DELIVERY_TIME"
+msgid "c_Delivery period_01"
 msgstr "引き渡し時期"
 
-msgid "PARAM_LABEL_ABOUT_RETURNED_PRODUCTS"
+msgid "c_Returns and exchanges_01"
 msgstr "返品・交換について"
 
-msgid "PARAM_LABEL_STARTROWNUM"
+msgid "c_Start line_01"
 msgstr "開始行"
 
-msgid "PARAM_LABEL_NEWS_ID"
+msgid "c_news_id_01"
 msgstr "news_id"
 
-msgid "PARAM_LABEL_DATE"
+msgid "c_Date_01"
 msgstr "日付"
 
-msgid "PARAM_LABEL_DATE_YEAR"
+msgid "c_Date (year)_01"
 msgstr "日付(年)"
 
-msgid "PARAM_LABEL_DATE_MONTH"
+msgid "c_Date (month)_01"
 msgstr "日付(月)"
 
-msgid "PARAM_LABEL_DATE_DAY"
+msgid "c_Date (day)_01"
 msgstr "日付(日)"
 
-msgid "PARAM_LABEL_BODY_TEXT"
+msgid "c_Text_01"
 msgstr "本文"
 
-msgid "PARAM_LABEL_OPEN_OTHER_WINDOW"
+msgid "c_Open in separate window_01"
 msgstr "別ウィンドウで開く"
 
-msgid "PARAM_LABEL_MOVE_RANK"
+msgid "c_Rank shift_01"
 msgstr "ランク移動"
 
-msgid "PARAM_LABEL_EDIT_TYPE"
+msgid "c_Edit type_01"
 msgstr "編集種別"
 
-msgid "PARAM_LABEL_OUTPUT_SETTINGS_LIST"
+msgid "c_Output settings list_01"
 msgstr "出力設定リスト"
 
-msgid "PARAM_LABEL_SQL_ID"
+msgid "c_SQL ID_01"
 msgstr "SQL ID"
 
-msgid "PARAM_LABEL_CSV_OUTPUT_ID"
+msgid "c_SQL ID subject to CSV output_01"
 msgstr "CSV出力対象SQL ID"
 
-msgid "PARAM_LABEL_SELECT_TABLE"
+msgid "c_Selected table_01"
 msgstr "選択テーブル"
 
-msgid "PARAM_LABEL_SQL"
+msgid "c_SQL text_01"
 msgstr "SQL文"
 
-msgid "PARAM_LABEL_SELECT_FILE"
+msgid "c_Selected file_01"
 msgstr "選択ファイル"
 
-msgid "PARAM_LABEL_CREATE_FILE"
+msgid "c_Created file name_01"
 msgstr "作成ファイル名"
 
-msgid "PARAM_LABEL_FILE"
+msgid "c_File_01"
 msgstr "ファイル"
 
-msgid "PARAM_LABEL_ROOT_DIR"
+msgid "c_Root directory_01"
 msgstr "ルートディレクトリ"
 
-msgid "PARAM_LABEL_NOW_DIR"
+msgid "c_Current hierarchy directory_01"
 msgstr "現在の階層ディレクトリ"
 
-msgid "PARAM_LABEL_NOW_FILE"
+msgid "c_Current hierarchy file_01"
 msgstr "現在の階層ファイル"
 
-msgid "PARAM_LABEL_TREE_STATUS"
+msgid "c_Tree selection status_01"
 msgstr "ツリー選択状態"
 
-msgid "PARAM_LABEL_TREE_SELECT_FILE"
-msgstr "'ツリー選択ディレクトリ'"
+msgid "c_Tree selection directory_01"
+msgstr "ツリー選択ディレクトリ"
 
-msgid "PARAM_LABEL_RANK"
+msgid "c_Rank_01"
 msgstr "ランク"
 
-msgid "PARAM_LABEL_COMMENT"
+msgid "c_Comment_01"
 msgstr "コメント"
 
-msgid "PARAM_LABEL_EDIT_CUSTOMER_ID"
+msgid "c_Member ID subject to editing_01"
 msgstr "編集対象会員ID"
 
-msgid "PARAM_LABEL_SEARCH_DATA"
+msgid "c_Data for searching_01"
 msgstr "検索用データ"
 
-msgid "PARAM_LABEL_HEADER_CHK"
+msgid "c_Header check_01"
 msgstr "ヘッダチェック"
 
-msgid "PARAM_LABEL_FOOTER_CHK"
+msgid "c_Footer check_01"
 msgstr "フッタチェック"
 
-msgid "PARAM_LABEL_EDIT_FLG"
+msgid "c_Repair flag_01"
 msgstr "修正フラグ"
 
-msgid "PARAM_LABEL_TPL_DATA"
+msgid "c_TPL data_01"
 msgstr "TPLデータ"
 
-msgid "PARAM_LABEL_ID"
+msgid "c_ID_01"
 msgstr "ID"
 
-msgid "PARAM_LABEL_PASSWORD_ALP"
+msgid "c_PASSWORD_01"
 msgstr "PASSWORD"
 
-msgid "PARAM_LABEL_DELIVERY_MAIL_FORMAT"
+msgid "c_Delivery format_01"
 msgstr "配信形式"
 
-msgid "PARAM_LABEL_DELIVERY_MAIL_TYPE"
+msgid "c_Type of delivery e-mail address_01"
 msgstr "配信メールアドレス種別"
 
-msgid "PARAM_LABEL_MAIL_METHOD"
+msgid "c_E-mail format_01"
 msgstr "メール形式"
 
-msgid "PARAM_LABEL_SUBJECT"
+msgid "c_Subject_01"
 msgstr "Subject"
 
-msgid "PARAM_LABEL_TEMPLATE_ID"
+msgid "c_Template ID_01"
 msgstr "テンプレートID"
 
-msgid "PARAM_LABEL_ORDER_NUMBER"
+msgid "c_Order number_01"
 msgstr "注文番号"
 
-msgid "PARAM_LABEL_ORDER_NUMBER1"
+msgid "c_Order number 1_01"
 msgstr "注文番号1"
 
-msgid "PARAM_LABEL_ORDER_NUMBER2"
+msgid "c_Order number 2_01"
 msgstr "注文番号2"
 
-msgid "PARAM_LABEL_ORDER_ID"
+msgid "c_Order ID_01"
 msgstr "受注ID"
 
-msgid "PARAM_LABEL_ORDERID"
-msgstr "オーダーID"
-
-msgid "PARAM_LABEL_MEMBER_NAME1"
+msgid "c_Member name 1_01"
 msgstr "会員名1"
 
-msgid "PARAM_LABEL_MEMBER_NAME2"
+msgid "c_Member name 2_01"
 msgstr "会員名2"
 
 msgid "PARAM_LABEL_MEMBER_KANA1"
@@ -1427,390 +1424,381 @@ msgstr "会員名カナ1"
 msgid "PARAM_LABEL_MEMBER_KANA2"
 msgstr "会員名カナ2"
 
-msgid "PARAM_LABEL_NOTE"
+msgid "c_Memo_01"
 msgstr "メモ"
 
-msgid "PARAM_LABEL_DELETE_NO"
+msgid "c_Item number for deletion_01"
 msgstr "削除用項番"
 
-msgid "PARAM_LABEL_SUBTOTAL"
+msgid "c_Subtotal_01"
 msgstr "小計"
 
-msgid "PARAM_LABEL_PAYMENT_TOTAL"
+msgid "c_Payment total_01"
 msgstr "支払い合計"
 
-msgid "PARAM_LABEL_TAX_TOTAL"
+msgid "c_Total consumption sales tax_01"
 msgstr "消費税合計"
 
-msgid "PARAM_LABEL_BEFORE_POINT"
+msgid "c_Points before order receipt_01"
 msgstr "受注前ポイント"
 
-msgid "PARAM_LABEL_ORDER_DATE"
+msgid "c_Date of order receipt_01"
 msgstr "受注日"
 
-msgid "PARAM_LABEL_SHIPPING_DATE"
+msgid "c_Shipment date_01"
 msgstr "発送日"
 
-msgid "PARAM_LABEL_REMARKS"
+msgid "c_Remarks_01"
 msgstr "備考"
 
-msgid "PARAM_LABEL_PAYMENT_DATE"
+msgid "c_Date of deposit_01"
 msgstr "入金日"
 
-msgid "PARAM_LABEL_PRODUCT_NO"
+msgid "c_Product item number_01"
 msgstr "商品項番"
 
-msgid "PARAM_LABEL_ANCHOR_KEY_ALP"
+msgid "c_anchor_key_01"
 msgstr "anchor_key"
 
-msgid "PARAM_LABEL_ANCHOR_KEY"
+msgid "c_Anchor key_01"
 msgstr "アンカーキー"
 
-msgid "PARAM_LABEL_HOW_TO_DOWNLOAD"
+msgid "c_Download method_01"
 msgstr "ダウンロード方法"
 
-msgid "PARAM_LABEL_OUTPUT_DATE"
+msgid "c_Issuance date_01"
 msgstr "発行日"
 
-msgid "PARAM_LABEL_ORDER_PDF_TYPE"
+msgid "c_Ledger type_01"
 msgstr "帳票の種類"
 
-msgid "PARAM_LABEL_ORDER_PDF_TITLE"
+msgid "c_Ledger title_01"
 msgstr "帳票タイトル"
 
-msgid "PARAM_LABEL_ORDER_PDF_MSG1"
+msgid "c_Ledger message line 1_01"
 msgstr "帳票メッセージ1行目"
 
-msgid "PARAM_LABEL_ORDER_PDF_MSG2"
+msgid "c_Ledger message line 2_01"
 msgstr "帳票メッセージ2行目"
 
-msgid "PARAM_LABEL_ORDER_PDF_MSG3"
+msgid "c_Ledger message line 3_01"
 msgstr "帳票メッセージ3行目"
 
-msgid "PARAM_LABEL_ORDER_PDF_NOTE1"
+msgid "c_Remarks line 1_01"
 msgstr "備考1行目"
 
-msgid "PARAM_LABEL_ORDER_PDF_NOTE2"
+msgid "c_Remarks line 2_01"
 msgstr "備考2行目"
 
-msgid "PARAM_LABEL_ORDER_PDF_NOTE3"
+msgid "c_Remarks line 3_01"
 msgstr "備考3行目"
 
-msgid "PARAM_LABEL_DISP_POINT"
+msgid "c_Point notation_01"
 msgstr "ポイント表記"
 
-msgid "PARAM_LABEL_BEFORE_ORDER_STATUS"
+msgid "c_Response status before change_01"
 msgstr "変更前対応状況"
 
-msgid "PARAM_LABEL_AFTER_ORDER_STATUS"
+msgid "c_Response status after change_01"
 msgstr "変更後対応状況"
 
-msgid "PARAM_LABEL_MOVE_ORDER_NUMBER"
+msgid "c_Move order number_01"
 msgstr "移動注文番号"
 
-msgid "PARAM_LABEL_MODE"
-msgstr "モード"
-
-msgid "PARAM_LABEL_MODE_ALP"
+msgid "c_mode_01"
 msgstr "mode"
 
-msgid "PARAM_LABEL_PLUGIN_ID"
+msgid "c_plugin_id_01"
 msgstr "plugin_id"
 
-msgid "PARAM_LABEL_PRIORITY"
+msgid "c_Priority_01"
 msgstr "優先度"
 
-msgid "PARAM_LABEL_TYPE"
+msgid "c_Type_01"
 msgstr "種別"
 
-msgid "PARAM_LABEL_REVIEWER_NAME"
+msgid "c_Poster name_01"
 msgstr "投稿者名"
 
-msgid "PARAM_LABEL_REVIEWER_URL"
+msgid "c_Poster URL_01"
 msgstr "投稿者URL"
 
-msgid "PARAM_LABEL_RECOMMEND_LEVEL"
+msgid "c_Recommendation level_01"
 msgstr "おすすめレベル"
 
-msgid "PARAM_LABEL_REVIEW_ID"
+msgid "c_Review ID_01"
 msgstr "レビューID"
 
-msgid "PARAM_LABEL_POST_DATE"
+msgid "c_Post date_01"
 msgstr "投稿日"
 
-msgid "PARAM_LABEL_DISP_REVIEWE"
+msgid "c_Review display_01"
 msgstr "レビュー表示"
 
-msgid "PARAM_LABEL_POST_YEAR"
+msgid "c_Post year_01"
 msgstr "投稿年"
 
-msgid "PARAM_LABEL_POST_MONTH"
+msgid "c_Post month_01"
 msgstr "投稿月"
 
-msgid "PARAM_LABEL_MAX_DISP_NUM"
+msgid "c_Maximum number of items that can be displayed_01"
 msgstr "最大表示件数"
 
-msgid "PARAM_LABEL_PAGE_NUM"
+msgid "c_Number of page number items_01"
 msgstr "ページ番号件数"
 
-msgid "PARAM_LABEL_DIR_NAME"
+msgid "c_Directory name_01"
 msgstr "ディレクトリ名"
 
-msgid "PARAM_LABEL_SSL_LIMIT"
+msgid "c_SSL restrictions_01"
 msgstr "SSL制限"
 
-msgid "PARAM_LABEL_IP_LIMIT"
+msgid "c_IP restriction_01"
 msgstr "IP制限"
 
-msgid "PARAM_LABEL_BACKUP_NAME"
+msgid "c_Backup name_01"
 msgstr "バックアップ名"
 
-msgid "PARAM_LABEL_BACKUP_MEMO"
+msgid "c_Backup memo_01"
 msgstr "バックアップメモ"
 
-msgid "PARAM_LABEL_BACKUP_NAME_LIST"
+msgid "c_Backup name (list)_01"
 msgstr "バックアップ名(リスト)"
 
-msgid "PARAM_LABEL_TABLE_NAME"
+msgid "c_Table name_01"
 msgstr "テーブル名"
 
-msgid "PARAM_LABEL_COLUMN_NAME"
+msgid "c_Column name_01"
 msgstr "カラム名"
 
-msgid "PARAM_LABEL_INDEX"
+msgid "c_Index_01"
 msgstr "インデックス"
 
-msgid "PARAM_LABEL_INDEX_CHANGE"
+msgid "c_Index (after change)_01"
 msgstr "インデックス（変更後）"
 
 msgid "PARAM_LABEL_MEMBER_ID"
 msgstr "メンバーID"
 
-msgid "PARAM_LABEL_DEPARTMENT"
+msgid "c_Affiliation_01"
 msgstr "所属"
 
-msgid "PARAM_LABEL_OLD_LOGIN_ID"
+msgid "c_Login ID before change_01"
 msgstr "変更前ログインID"
 
-msgid "PARAM_LABEL_AUTHORITY"
+msgid "c_Access_01"
 msgstr "権限"
 
-msgid "PARAM_LABEL_WORK"
+msgid "c_Operating/Not operating_01"
 msgstr "稼働/非稼働"
 
-msgid "PARAM_LABEL_PAGE"
+msgid "c_Page_01"
 msgstr "ページ"
 
-msgid "PARAM_LABEL_IMG_FILE_NAME"
+msgid "c_Image file name_01"
 msgstr "画像ファイル名"
 
-msgid "PARAM_LABEL_IMG_WIDTH"
+msgid "c_Image width_01"
 msgstr "画像の幅"
 
-msgid "PARAM_LABEL_HEIGHT"
+msgid "c_Image height_01"
 msgstr "画像の高さ"
 
-msgid "PARAM_LABEL_DIVISION_ALP"
+msgid "c_division_01"
 msgstr "division"
 
-msgid "PARAM_LABEL_SEARCH_PAGENO_ALP"
+msgid "c_pageno_01"
 msgstr "pageno"
 
 msgid "PARAM_LABEL_ID_ALP"
 msgstr "id"
 
-msgid "PARAM_LABEL_CUSTOMER_ID_ALP"
+msgid "c_customer_id_01"
 msgstr "customer_id"
 
-msgid "PARAM_LABEL_ORDER_ID_ALP"
+msgid "c_order_id_01"
 msgstr "order_id"
 
-msgid "PARAM_LABEL_PRODUCT_ID_ALP"
+msgid "c_product_id_01"
 msgstr "product_id"
 
-msgid "PARAM_LABEL_OPERATION"
+msgid "c_Operation_01"
 msgstr "Operation"
 
-msgid "PARAM_LABEL_SERVICE"
+msgid "c_Service_01"
 msgstr "Service"
 
-msgid "PARAM_LABEL_STYLE"
+msgid "c_Style_01"
 msgstr "Style"
 
-msgid "PARAM_LABEL_VALIDATE"
+msgid "c_Validate_01"
 msgstr "Validate"
 
-msgid "PARAM_LABEL_VERSION"
+msgid "c_Version_01"
 msgstr "Version"
 
-msgid "PARAM_LABEL_PLUGIN_FILE"
+msgid "c_Plug-in file_01"
 msgstr "プラグインファイル"
 
-msgid "PARAM_LABEL_START"
+msgid "c_Start_01"
 msgstr "開始"
 
-msgid "PARAM_LABEL_END"
+msgid "c_Complete_01"
 msgstr "終了"
 
-msgid "PARAM_LABEL_DETAIL_SUBTITLE_COUNT"
+msgid "c_Details - Sub title T_ARG1_01"
 msgstr "詳細-サブタイトルT_ARG1"
 
-msgid "PARAM_LABEL_DETAIL_SUBCOMMENT_COUNT"
+msgid "c_Details - Sub comment T_ARG1_01"
 msgstr "詳細-サブコメントT_ARG1"
 
-msgid "PARAM_LABEL_SAVE_SUB_IMAGE_CNT_ALP"
+msgid "c_save_sub_imageT_ARG1_01"
 msgstr "save_sub_imageT_ARG1"
 
-msgid "PARAM_LABEL_SAVE_SUB_LARGE_IMAGE_CNT_ALP"
+msgid "c_save_sub_large_imageT_ARG1_01"
 msgstr "save_sub_large_imageT_ARG1"
 
-msgid "PARAM_LABEL_TEMP_SUB_IMAGE_CNT_ALP"
+msgid "c_temp_sub_imageT_ARG1_01"
 msgstr "temp_sub_imageT_ARG1"
 
-msgid "PARAM_LABEL_TEMP_SUB_LARGE_IMAGE_CNT_ALP"
+msgid "c_temp_sub_large_imageT_ARG1_01"
 msgstr "temp_sub_large_imageT_ARG1"
 
-msgid "PARAM_LABEL_RECOMMEND_COMMENT_CNT"
+msgid "c_Related product comment_01"
 msgstr "関連商品コメントT_ARG1"
 
-msgid "PARAM_LABEL_RECOMMEND_ID_CNT"
+msgid "c_Related product IDT_ARG1_01"
 msgstr "関連商品IDT_ARG1"
 
-msgid "PARAM_LABEL_RECOMMEND_DELETE_CNT"
+msgid "c_recommend_deleteT_ARG1_01"
 msgstr "recommend_deleteT_ARG1"
 
-msgid "PARAM_LABEL_DETAIL_SUB_IMAGE_CNT"
+msgid "c_Details - Sub image T_ARG1_01"
 msgstr "詳細-サブ画像T_ARG1"
 
-msgid "PARAM_LABEL_DETAIL_SUB_LARGE_IMAGE_CNT"
+msgid "c_Details - Sub enlarged image T_ARG1_01"
 msgstr "詳細-サブ拡大画像T_ARG1"
 
 msgid "PARAM_LABEL_CSV_SQL"
 msgstr "SQL文には読み込み関係以外のSQLコマンドおよび\";\"記号"
 
-msgid "PARAM_LABEL_PUBLIC_KEY"
+msgid "c_Authentication key_01"
 msgstr "認証キー"
 
-msgid "ALERT_001"
+msgid "c_Editing is complete_01"
 msgstr "編集が完了しました"
 
-msgid "ALERT_002"
+msgid "c_Deletion was successful_01"
 msgstr "削除しました"
 
-msgid "ALERT_003"
+msgid "c_Update successful._01"
 msgstr "正常に更新されました。"
 
-msgid "ALERT_004"
+msgid "c_Registration is complete._01"
 msgstr "登録が完了しました。"
 
-msgid "ALERT_005"
+msgid "c_Delivery method settings are complete._01"
 msgstr "配送方法設定が完了しました。"
 
-msgid "ALERT_006"
+msgid "c_E-mail settings are complete. Select a template and check the contents._01"
 msgstr "メール設定が完了しました。テンプレートを選択して内容をご確認ください。"
 
-msgid "ALERT_007"
+msgid "c_Point settings are complete._01"
 msgstr "ポイント設定が完了しました。"
 
-msgid "ALERT_008"
+msgid "c_Registration of the Act on Specified Commercial Transactions is complete._01"
 msgstr "特定商取引法の登録が完了しました。"
 
-msgid "ALERT_009"
+msgid "c_The folder was created._01"
 msgstr "フォルダを作成しました。"
 
-msgid "ALERT_010"
+msgid "c_The file was uploaded._01"
 msgstr "ファイルをアップロードしました。"
 
-msgid "ALERT_011"
+msgid "c_Deletion is complete._01"
 msgstr "削除が完了しました。"
 
-msgid "ALERT_012"
+msgid "c_The template file was uploaded._01"
 msgstr "テンプレートファイルをアップロードしました。"
 
-msgid "ALERT_013"
+msgid "c_The e-mail sending ID is not correct._01"
 msgstr "メール送信IDが正しくありません"
 
-msgid "ALERT_014"
+msgid "c_The selected item was moved to T_ARG1._01"
 msgstr "選択項目をT_ARG1へ移動しました。"
 
-msgid "ALERT_015"
+msgid "c_The selected item was deleted._01"
 msgstr "選択項目を削除しました。"
 
-msgid "ALERT_016"
+msgid "c_The plug-in was installed._01"
 msgstr "プラグインをインストールしました。"
 
-msgid "ALERT_017"
+msgid "c_T_ARG1 was deleted._01"
 msgstr "T_ARG1を削除しました。"
 
-msgid "ALERT_018"
+msgid "c_T_ARG1 was activated._01"
 msgstr "T_ARG1を有効にしました。"
 
-msgid "ALERT_019"
+msgid "c_T_ARG1 was invalidated._01"
 msgstr "T_ARG1を無効にしました。"
 
-msgid "ALERT_020"
+msgid "c_The plug-in was updated._01"
 msgstr "プラグインをアップデートしました。"
 
-msgid "ALERT_021"
-msgstr "登録しました。"
-
-msgid "ALERT_022"
+msgid "c_Management area settings were revised. If the URL was changed, access the new URL._01"
 msgstr ""
 "管理機能の設定を変更しました。URLを変更した場合は、新しいURLにアクセスしてく"
 "ださい。"
 
-msgid "ALERT_023"
+msgid "c_There is an error in the settings details. Check the settings details._01"
 msgstr "設定内容に誤りがあります。設定内容を確認してください。"
 
-msgid "ALERT_024"
+msgid "c_Backup is complete_01"
 msgstr "バックアップ完了しました"
 
-msgid "ALERT_025"
+msgid "c_There was no data subject to change._01"
 msgstr "変更対象となるデータはありませんでした。"
 
-msgid "ALERT_026"
+msgid "c_The index was successfully changed._01"
 msgstr "インデックスの変更が完了しました。"
 
-msgid "ALERT_027"
+msgid "c_Processing was suspended due to there being illegal data._01"
 msgstr "不正なデータがあったため処理を中断しました。"
 
-msgid "ALERT_028"
+msgid "c_Master data settings are complete._01"
 msgstr "マスターデータの設定が完了しました。"
 
-msgid "ALERT_029"
+msgid "c_Parameter settings is complete._01"
 msgstr "パラメーターの設定が完了しました。"
 
-msgid "ALERT_030"
+msgid "c_An error has occurred. Please check entered data._01"
 msgstr "エラーが発生しました。入力内容をご確認下さい。"
 
-msgid "TPL_MAINTITLE_001"
-msgstr "受注管理"
-
-msgid "TPL_MAINTITLE_002"
+msgid "c_Mail magazine_02"
 msgstr "メルマガ管理"
 
-msgid "TPL_MAINTITLE_003"
+msgid "c_Design_01"
 msgstr "デザイン管理"
 
-msgid "TPL_MAINTITLE_004"
+msgid "c_Member_02"
 msgstr "会員管理"
 
-msgid "TPL_MAINTITLE_005"
+msgid "c_Edit contents_01"
 msgstr "コンテンツ管理"
 
-msgid "TPL_MAINTITLE_006"
+msgid "c_Basic information_01"
 msgstr "基本情報管理"
 
-msgid "TPL_MAINTITLE_007"
+msgid "c_Products_01"
 msgstr "商品管理"
 
-msgid "TPL_MAINTITLE_008"
+msgid "c_Owners Store_01"
 msgstr "オーナーズストア"
 
-msgid "TPL_MAINTITLE_009"
+msgid "c_System_01"
 msgstr "システム設定"
 
-msgid "TPL_MAINTITLE_010"
+msgid "c_Sales (history)_01"
 msgstr "売上集計"
 
 msgid "FORMAT_DATE_LONG"
@@ -1819,36 +1807,36 @@ msgstr "Y年m月d日H時i分"
 msgid "f_NAME_FULL_SIR_01"
 msgstr "T_ARG1 T_ARG2 様"
 
-msgid "LC_Page_Abouts_001"
+msgid "c_About this site_01"
 msgstr "当サイトについて"
 
-msgid "LC_Page_Cart_001"
+msgid "c_Items in cart_01"
 msgstr "現在のカゴの中"
 
-msgid "LC_Page_Cart_002"
+msgid "c_The contents of your cart were modified during product purchase. Please restart the purchasing procedure._01"
 msgstr ""
 "商品購入中にカート内容が変更されましたので、お手数ですが購入手続きをやり直し"
 "て下さい。"
 
-msgid "LC_Page_Contact_001"
+msgid "c_Inquiry_01"
 msgstr "お問い合わせ"
 
-msgid "LC_Page_Contact_002"
+msgid "c_Inquiries_01"
 msgstr "お問い合わせ(入力ページ)"
 
-msgid "LC_Page_Contact_003"
+msgid "c_Inquiry_02"
 msgstr "お問い合わせ(確認ページ)"
 
 msgid "LC_Page_Contact_004"
-msgstr "T_ARG1 様)"
+msgstr "T_ARG1 様"
 
-msgid "LC_Page_Contact_Complete_001"
+msgid "c_Inquiry_03"
 msgstr "お問い合わせ(完了ページ)"
 
-msgid "LC_Page_Entry_001"
+msgid "c_* The corresponding address was not found.<br />_01"
 msgstr "※該当する住所が見つかりませんでした。<br />"
 
-msgid "LC_Page_Entry_002"
+msgid "c_Member registration_01"
 msgstr "会員登録(確認ページ)"
 
 msgid "LC_Page_Entry_003"
@@ -1866,10 +1854,10 @@ msgstr "※ 入力形式が不正です。<br />"
 msgid "LC_Page_Entry_007"
 msgstr "T_ARG1 T_ARG2 様"
 
-msgid "LC_Page_InputZip_001"
+msgid "c_The address is being searched._01"
 msgstr "住所を検索しています。"
 
-msgid "LC_Page_InputZip_002"
+msgid "c_No applicable address was found._01"
 msgstr "該当する住所が見つかりませんでした。"
 
 msgid "LC_Page_InputZip_003"
@@ -1878,25 +1866,25 @@ msgstr "※ 入力形式が不正です。<br />"
 msgid "LC_Page_InputZip_004"
 msgstr "※ 入力形式が不正です。<br />"
 
-msgid "LC_Page_Entry_EmailMobile_001"
+msgid "c_Mobile e-mail registration complete_01"
 msgstr "携帯メール登録完了"
 
-msgid "LC_Page_Entry_Kiyaku_001"
+msgid "c_Usage agreement_01"
 msgstr "ご利用規約"
 
-msgid "LC_Page_Error_001"
+msgid "c_Error_01"
 msgstr "エラー"
 
-msgid "LC_Page_Error_002"
+msgid "c_The page you specified does not exist._01"
 msgstr "ご指定のページはございません。"
 
 msgid "LC_Page_Error_003"
 msgstr "不正なページ移動です。"
 
-msgid "LC_Page_Error_004"
+msgid "c_There are no products in your cart._01"
 msgstr "カートに商品ががありません。"
 
-msgid "LC_Page_Error_005"
+msgid "c_It is not possible to add products to your cart during purchase processing._01"
 msgstr "購入処理中は、カートに商品を追加することはできません。"
 
 msgid "LC_Page_Error_006"
@@ -1905,7 +1893,7 @@ msgstr ""
 "報の有効期限が切れてる場合<br />・購入手続き中に新しい購入手続きを実行した場"
 "合<br />・すでに購入手続きを完了している場合"
 
-msgid "LC_Page_Error_007"
+msgid "c_The category you specified does not exist._01"
 msgstr "ご指定のカテゴリは存在しません。"
 
 msgid "LC_Page_Error_008"
@@ -1916,7 +1904,7 @@ msgstr ""
 "メールアドレスもしくはパスワードが正しくありません。<br />本登録がお済みでな"
 "い場合は、仮登録メールに記載されている<br />URLより本登録を行ってください。"
 
-msgid "LC_Page_Error_010"
+msgid "c_Unauthorized access._01"
 msgstr "不正なアクセスです。"
 
 msgid "LC_Page_Error_011"
@@ -1934,7 +1922,7 @@ msgstr ""
 "申し訳ございませんが、ポイントが不足しております。この手続きは無効となりまし"
 "た。"
 
-msgid "LC_Page_Error_014"
+msgid "c_This product is already added to your favorites_01"
 msgstr "既にお気に入りに追加されている商品です"
 
 msgid "LC_Page_Error_015"
@@ -1942,7 +1930,7 @@ msgstr ""
 "ファイルの解凍に失敗しました。\n"
 "指定のディレクトリに書き込み権限が与えられていない可能性があります。"
 
-msgid "LC_Page_Error_016"
+msgid "c_FTP download of file failed._01"
 msgstr "ファイルのFTPダウンロードに失敗しました。"
 
 msgid "LC_Page_Error_017"
@@ -1974,37 +1962,37 @@ msgstr ""
 "ダウンロードファイルが存在しません。<br />申し訳ございませんが、店舗までお問"
 "合わせ下さい。"
 
-msgid "LC_Page_Error_024"
+msgid "c_An error has occurred._01"
 msgstr "エラーが発生しました。"
 
-msgid "LC_Page_Error_DispError_001"
+msgid "c_Login error_01"
 msgstr "ログインエラー"
 
-msgid "LC_Page_Error_DispError_002"
+msgid "c_The ID or password is not correct.<br />Check and reenter the ID and password._01"
 msgstr ""
 "ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力"
 "してください。"
 
-msgid "LC_Page_Error_DispError_003"
+msgid "c_Your login session has expired.<br /> Please log in again._01"
 msgstr ""
 "ログイン認証の有効期限切れの可能性があります。<br />もう一度ご確認のうえ、再"
 "度ログインしてください。"
 
-msgid "LC_Page_Error_DispError_004"
+msgid "c_You cannot access this page_01"
 msgstr "このページにはアクセスできません"
 
-msgid "LC_Page_Error_DispError_005"
+msgid "c_Illegal page migration.<br />Check page again._01"
 msgstr ""
 "不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。"
 
-msgid "LC_Page_Error_DispError_006"
+msgid "c_An error has occurred.<br />Check and log in again._01"
 msgstr ""
 "エラーが発生しました。<br />もう一度ご確認のうえ、再度ログインしてください。"
 
-msgid "LC_Page_Error_SystemError_001"
+msgid "c_System error_01"
 msgstr "システムエラー"
 
-msgid "LC_Page_Error_SystemError_002"
+msgid "c_A system error has occurred. <br /> Please contact the site administrator._01"
 msgstr ""
 "システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡"
 "ください。"
@@ -2077,7 +2065,7 @@ msgstr "※ 入力形式が不正です。<br />"
 msgid "LC_Page_Mypage_Change_006"
 msgstr "※ 入力形式が不正です。<br />"
 
-msgid "LC_Page_Mypage_ChangeComplete_001"
+msgid "c_Revision of member registration details (completion page)_01"
 msgstr "会員登録内容変更(完了ページ)"
 
 msgid "LC_Page_Mypage_Delivery_001"
@@ -2086,19 +2074,19 @@ msgstr "お届け先追加･変更"
 msgid "LC_Page_Mypage_DeliveryAddr_001"
 msgstr "お届け先の追加･変更"
 
-msgid "LC_Page_MyPage_Favorite_001"
+msgid "c_List of Favorites_01"
 msgstr "お気に入り一覧"
 
-msgid "LC_Page_Mypage_History_001"
+msgid "c_Purchase history details_01"
 msgstr "購入履歴詳細"
 
-msgid "LC_Page_Mypage_MailView_001"
+msgid "c_E-mail history details_01"
 msgstr "メール履歴詳細"
 
-msgid "LC_Page_Mypage_Refusal_001"
+msgid "c_Cancel membership_01"
 msgstr "退会手続き(入力ページ)"
 
-msgid "LC_Page_Mypage_Refusal_002"
+msgid "c_Confirm account cancellation_01"
 msgstr "退会手続き(確認ページ)"
 
 msgid "LC_Page_Mypage_RefusalComplete_001"

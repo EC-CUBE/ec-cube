@@ -196,9 +196,9 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
 
         $objFormParam->addParam(t('PARAM_LABEL_MEMBER_ID'), 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam(t('c_Name_01'), 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_DEPARTMENT'), 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Affiliation_01'), 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Login ID_01'), 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_OLD_LOGIN_ID'), 'old_login_id', '' , '', array('ALNUM_CHECK'));
+        $objFormParam->addParam(t('c_Login ID before change_01'), 'old_login_id', '' , '', array('ALNUM_CHECK'));
         if ($mode == 'edit' && $arrParams['password'] == DEFAULT_PASSWORD) {
             $objFormParam->addParam(t('c_Password_01'), 'password', '' , '', array('EXIST_CHECK'));
             $objFormParam->addParam(t('c_Password (confirmation)_01'), 'password02', '' , '', array('EXIST_CHECK'));
@@ -206,9 +206,9 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
             $objFormParam->addParam(t('c_Password_01'), 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
             $objFormParam->addParam(t('c_Password (confirmation)_01'), 'password02', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
         }
-        $objFormParam->addParam(t('PARAM_LABEL_AUTHORITY'), 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_WORK'), 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PAGE'), 'pageno', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Access_01'), 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Operating/Not operating_01'), 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Page_01'), 'pageno', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();

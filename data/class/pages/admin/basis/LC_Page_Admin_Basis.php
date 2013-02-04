@@ -49,7 +49,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_002');;
 
         //定休日用配列

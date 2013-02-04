@@ -51,7 +51,7 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/seo.tpl';
         $this->tpl_subno = 'seo';
         $this->tpl_mainno = 'basis';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_Seo_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -160,11 +160,11 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
     }
 
     function lfInitParam($mode, &$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_DEVICE_ID'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Device ID_01'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Page ID_01'), 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_META_AUTHOR'), 'author', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_META_DESCRIPTION'), 'description', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('c_Keyword_01'), 'keyword', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Meta tag: Author_01'), 'author', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Meta tag: Description_01'), 'description', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Meta tag: Keywords_01'), 'keyword', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
     }
 
     /**

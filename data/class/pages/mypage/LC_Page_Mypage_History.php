@@ -44,7 +44,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
     function init() {
         parent::init();
         $this->tpl_mypageno     = 'index';
-        $this->tpl_subtitle     = t('LC_Page_Mypage_History_001');
+        $this->tpl_subtitle     = t('c_Purchase history details_01');
         $this->httpCacheControl('nocache');
 
         $masterData             = new SC_DB_MasterData_Ex();

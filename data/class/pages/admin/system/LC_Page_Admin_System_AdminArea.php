@@ -46,7 +46,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/adminarea.tpl';
         $this->tpl_subno = 'adminarea';
         $this->tpl_mainno = 'system';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('LC_Page_Admin_System_AdminArea_001');
         $this->tpl_enable_ssl = FALSE;
     }
@@ -94,9 +94,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
             if (SC_Utils_Ex::isBlank($arrErr) && $this->lfUpdateAdminData($this->arrForm)) {
 
-                $this->tpl_onload = "window.alert('" . t('ALERT_022') . "');";
+                $this->tpl_onload = "window.alert('" . t('c_Management area settings were revised. If the URL was changed, access the new URL._01') . "');";
             } else {
-                $this->tpl_onload = "window.alert('" . t('ALERT_023') . "');";
+                $this->tpl_onload = "window.alert('" . t('c_There is an error in the settings details. Check the settings details._01') . "');";
                 $this->arrErr = array_merge($arrErr, $this->arrErr);
             }
 
@@ -131,9 +131,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      */
     function initParam(&$objFormParam, &$arrParams) {
 
-        $objFormParam->addParam(t('PARAM_LABEL_DIR_NAME'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SSL_LIMIT'), 'admin_force_ssl', 1, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_IP_LIMIT'), 'admin_allow_hosts', LTEXT_LEN, 'a', array('IP_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Directory name_01'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam(t('c_SSL restrictions_01'), 'admin_force_ssl', 1, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_IP restriction_01'), 'admin_allow_hosts', LTEXT_LEN, 'a', array('IP_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
 

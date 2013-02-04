@@ -45,7 +45,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/template.tpl';
         $this->tpl_subno    = 'template';
         $this->tpl_mainno   = 'design';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_maintitle = t('c_Design_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Design_Template_002');
         $this->arrErr  = array();
         $this->arrForm = array();
@@ -88,7 +88,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doRegister($template_code, $this->device_type_id)) {
                         $this->tpl_select = $template_code;
-                        $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                        $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                     }
                 }
                 break;
@@ -101,7 +101,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if ($this->doDelete($template_code, $this->device_type_id)) {
-                        $this->tpl_onload = "alert('" . t('ALERT_011') . "');";
+                        $this->tpl_onload = "alert('" . t('c_Deletion is complete._01') . "');";
                     }
                 }
                 break;

@@ -55,7 +55,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/bkup.tpl';
         $this->tpl_mainno = 'system';
         $this->tpl_subno = 'bkup';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('LC_Page_Admin_System_Bkup_001');
 
         $this->bkup_dir = DATA_REALDIR . 'downloads/backup/';
@@ -128,7 +128,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
                         $arrErr = $arrErrTmp[3];
                     }
 
-                    $this->tpl_onload = "alert('" . t('ALERT_024') . "');";
+                    $this->tpl_onload = "alert('" . t('c_Backup is complete_01') . "');";
                 } else {
                     $arrForm = $objFormParam->getHashArray();
                     $arrErr = array_merge((array)$arrErrTmp[1],(array)$arrErrTmp[2]);
@@ -232,9 +232,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
      */
     function initParam(&$objFormParam, &$arrParams) {
 
-        $objFormParam->addParam(t('PARAM_LABEL_BACKUP_NAME'), 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
-        $objFormParam->addParam(t('PARAM_LABEL_BACKUP_MEMO'), 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_BACKUP_NAME_LIST'), 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(t('c_Backup name_01'), 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objFormParam->addParam(t('c_Backup memo_01'), 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Backup name (list)_01'), 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
 

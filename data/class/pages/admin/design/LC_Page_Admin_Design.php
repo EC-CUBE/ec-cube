@@ -46,7 +46,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'design/index.tpl';
         $this->tpl_subno = 'layout';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_maintitle = t('c_Design_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Design_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrTarget = $masterData->getMasterData('mtb_target');
@@ -126,7 +126,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
             default:
                 // 完了メッセージ表示
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
-                    $this->tpl_onload="alert('" . t('ALERT_004') . "');";
+                    $this->tpl_onload="alert('" . t('c_Registration is complete._01') . "');";
                 }
                 break;
         }

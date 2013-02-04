@@ -47,7 +47,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'csv';
         $this->tpl_subno_csv = 'csv_sql';
         $this->tpl_mainno = 'contents';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_005');
+        $this->tpl_maintitle = t('c_Edit contents_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Contents_CsvSql_002');
     }
 
@@ -83,7 +83,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
                     // データの更新
                     $this->arrForm['sql_id'] = $this->lfUpdData($objFormParam->getValue('sql_id'), $objFormParam->getDbArray());
                     // 完了メッセージ表示
-                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                 }
                 break;
             // 確認画面
@@ -142,11 +142,11 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_SQL_ID'), 'sql_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CSV_OUTPUT_ID'), 'csv_output_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_SELECT_TABLE'), 'select_table', STEXT_LEN, 'KVa', array('GRAPH_CHECK','MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_SQL ID_01'), 'sql_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_SQL ID subject to CSV output_01'), 'csv_output_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_Selected table_01'), 'select_table', STEXT_LEN, 'KVa', array('GRAPH_CHECK','MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam(t('PARAM_LABEL_THE_NAME'), 'sql_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SQL'), 'csv_sql', '30000', 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
+        $objFormParam->addParam(t('c_SQL text_01'), 'csv_sql', '30000', 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
     }
 
     /**
@@ -161,7 +161,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->doFunc(array(t('PARAM_LABEL_THE_NAME'), 'sql_name'), array('EXIST_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_SQL'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array(t('c_SQL text_01'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array(t('PARAM_LABEL_CSV_SQL'), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
@@ -187,7 +187,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array(t('PARAM_LABEL_SQL'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objErr->doFunc( array(t('c_SQL text_01'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc( array(t('PARAM_LABEL_CSV_SQL'), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
@@ -206,7 +206,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array(t('PARAM_LABEL_SQL_ID'), 'sql_id'), array('EXIST_CHECK'));
+        $objErr->doFunc( array(t('c_SQL ID_01'), 'sql_id'), array('EXIST_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -224,7 +224,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc( array(t('PARAM_LABEL_CSV_OUTPUT_ID'), 'csv_output_id'), array('EXIST_CHECK'));
+        $objErr->doFunc( array(t('c_SQL ID subject to CSV output_01'), 'csv_output_id'), array('EXIST_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }

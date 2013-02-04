@@ -44,7 +44,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
     function init() {
         parent::init();
         $this->tpl_message = '住所を検索しています。';
-        $this->tpl_message = t('LC_Page_InputZip_001');
+        $this->tpl_message = t('c_The address is being searched._01');
     }
 
     /**
@@ -81,7 +81,7 @@ class LC_Page_InputZip extends LC_Page_Ex {
             // 該当無し
             } else {
                 //echo '該当する住所が見つかりませんでした。';
-                echo t('LC_Page_InputZip_002');
+                echo t('c_No applicable address was found._01');
                 
             }
         }

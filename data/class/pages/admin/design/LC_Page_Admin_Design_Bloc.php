@@ -48,7 +48,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->text_row = 13;
         $this->tpl_subno = 'bloc';
         $this->tpl_mainno = 'design';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_003');
+        $this->tpl_maintitle = t('c_Design_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Design_Bloc_002');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -122,7 +122,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                 }
                 break;
         }

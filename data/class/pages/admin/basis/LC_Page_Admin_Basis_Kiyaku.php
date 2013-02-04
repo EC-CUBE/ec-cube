@@ -45,7 +45,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'basis/kiyaku.tpl';
         $this->tpl_subno = 'kiyaku';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');
+        $this->tpl_maintitle = t('c_Basic information_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_Kiyaku_002');
         $this->tpl_mainno = 'basis';
     }
@@ -130,7 +130,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             default:
                 if (isset($_GET['msg']) && $_GET['msg'] == 'on') {
                     // 完了メッセージ
-                    $this->tpl_onload = "alert('" . t('ALERT_004') . "');";
+                    $this->tpl_onload = "alert('" . t('c_Registration is complete._01') . "');";
                 }
                 break;
         }

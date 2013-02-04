@@ -57,7 +57,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'system/parameter.tpl';
         $this->tpl_subno = 'parameter';
         $this->tpl_mainno = 'system';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_009');
+        $this->tpl_maintitle = t('c_System_01');
         $this->tpl_subtitle = t('LC_Page_Admin_System_Parameter');
     }
 
@@ -93,10 +93,10 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
                 // エラーの無い場合は update
                 if (empty($this->arrErr)) {
                     $this->update($this->arrKeys, $this->arrForm);
-                    $this->tpl_onload = "window.alert('" . t('ALERT_029') . "');";
+                    $this->tpl_onload = "window.alert('" . t('c_Parameter settings is complete._01') . "');";
                 } else {
                     $this->arrValues = SC_Utils_Ex::getHash2Array($this->arrForm, $this->arrKeys);
-                    $this->tpl_onload = "window.alert('" . t('ALERT_030') . "');";
+                    $this->tpl_onload = "window.alert('" . t('c_An error has occurred. Please check entered data._01') . "');";
                 }
                 break;
             default:

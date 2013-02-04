@@ -45,7 +45,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         parent::init();
         $this->tpl_mainpage = 'mail/template_input.tpl';
         $this->tpl_mainno = 'mail';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_002');
+        $this->tpl_maintitle = t('c_Mail magazine_02');
         $this->tpl_subtitle = t('LC_Page_Admin_Mail_TemplateInput_002');
         $this->tpl_subno = 'template';
         $this->mode = 'regist';
@@ -154,10 +154,10 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_MAIL_METHOD'), 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SUBJECT'), 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_BODY_TEXT'), 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TEMPLATE_ID'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
+        $objFormParam->addParam(t('c_E-mail format_01'), 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
+        $objFormParam->addParam(t('c_Subject_01'), 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Text_01'), 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Template ID_01'), 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
 
 }

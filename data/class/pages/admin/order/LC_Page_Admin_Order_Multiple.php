@@ -47,7 +47,7 @@ class LC_Page_Admin_Order_Multiple extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'order/multiple.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_subno = '';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_maintitle = t('c_Orders_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Order_Multiple_001');
     }
 

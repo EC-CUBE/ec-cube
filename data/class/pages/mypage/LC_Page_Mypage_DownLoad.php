@@ -194,9 +194,9 @@ __EOS__;
 
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_CUSTOMER_ID_ALP'), 'customer_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_ID_ALP'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_PRODUCT_ID_ALP'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('c_customer_id_01'), 'customer_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
+        $objFormParam->addParam(t('c_order_id_01'), 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_product_id_01'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
         $objFormParam->addParam(t('c_product_class_id_01'), 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
     }
 

@@ -47,7 +47,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'customer';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_004');
+        $this->tpl_maintitle = t('c_Member_02');
         $this->tpl_subtitle = t('LC_Page_Admin_Customer_Edit_002');
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -211,7 +211,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
-        $objFormParam->addParam(t('PARAM_LABEL_SEARCH_DATA'), 'search_data', '', '', array(), '', false);
+        $objFormParam->addParam(t('c_Data for searching_01'), 'search_data', '', '', array(), '', false);
         // 会員購入履歴ページング用
         $objFormParam->addParam('', 'search_pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
@@ -225,7 +225,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
     function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
-        $objFormParam->addParam(t('PARAM_LABEL_EDIT_CUSTOMER_ID'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Member ID subject to editing_01'), 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

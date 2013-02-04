@@ -43,7 +43,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = t('LC_Page_Entry_Kiyaku_001');
+        $this->tpl_title = t('c_Usage agreement_01');
     }
 
     /**

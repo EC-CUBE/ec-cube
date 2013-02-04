@@ -47,7 +47,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_001');
+        $this->tpl_maintitle = t('c_Orders_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Order_001');
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -185,8 +185,8 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
      * @return void
      */
     function lfInitParam(&$objFormParam) {
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER1'), 'search_order_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_NUMBER2'), 'search_order_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Order number 1_01'), 'search_order_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Order number 2_01'), 'search_order_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Response status_01'), 'search_order_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Name of orderer_01'), 'search_order_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('PARAM_LABEL_ORDER_KANA'), 'search_order_kana', STEXT_LEN, 'KVCa', array('KANA_CHECK','MAX_LENGTH_CHECK'));
@@ -222,7 +222,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_Completion date_01'), 'search_ebirthday', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Purchased product_01'),'search_product_name',STEXT_LEN,'KVa',array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Page feed number_01'),'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ORDER_ID'), 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam(t('c_Order ID_01'), 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**
@@ -236,21 +236,21 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $objErr->arrErr = $objFormParam->checkError();
 
         // 相関チェック
-        $objErr->doFunc(array(t('PARAM_LABEL_ORDER_NUMBER1'), t('PARAM_LABEL_ORDER_NUMBER2'), 'search_order_id1', 'search_order_id2'), array('GREATER_CHECK'));
+        $objErr->doFunc(array(t('c_Order number 1_01'), t('c_Order number 2_01'), 'search_order_id1', 'search_order_id2'), array('GREATER_CHECK'));
         $objErr->doFunc(array(t('c_Age 1_01'), t('c_Age 2_01'), 'search_age1', 'search_age2'), array('GREATER_CHECK'));
         $objErr->doFunc(array(t('c_Purchase amount 1_01'), t('c_Purchase amount 2_01'), 'search_total1', 'search_total2'), array('GREATER_CHECK'));
         // 受注日
-        $objErr->doFunc(array(t('PARAM_LABEL_START'), 'search_sorderyear', 'search_sordermonth', 'search_sorderday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_END'), 'search_eorderyear', 'search_eordermonth', 'search_eorderday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_START'), t('PARAM_LABEL_END'), 'search_sorderyear', 'search_sordermonth', 'search_sorderday', 'search_eorderyear', 'search_eordermonth', 'search_eorderday'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array(t('c_Start_01'), 'search_sorderyear', 'search_sordermonth', 'search_sorderday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Complete_01'), 'search_eorderyear', 'search_eordermonth', 'search_eorderday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Start_01'), t('c_Complete_01'), 'search_sorderyear', 'search_sordermonth', 'search_sorderday', 'search_eorderyear', 'search_eordermonth', 'search_eorderday'), array('CHECK_SET_TERM'));
         // 更新日
-        $objErr->doFunc(array(t('PARAM_LABEL_START'), 'search_supdateyear', 'search_supdatemonth', 'search_supdateday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_END'), 'search_eupdateyear', 'search_eupdatemonth', 'search_eupdateday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_START'), t('PARAM_LABEL_END'), 'search_supdateyear', 'search_supdatemonth', 'search_supdateday', 'search_eupdateyear', 'search_eupdatemonth', 'search_eupdateday'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array(t('c_Start_01'), 'search_supdateyear', 'search_supdatemonth', 'search_supdateday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Complete_01'), 'search_eupdateyear', 'search_eupdatemonth', 'search_eupdateday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Start_01'), t('c_Complete_01'), 'search_supdateyear', 'search_supdatemonth', 'search_supdateday', 'search_eupdateyear', 'search_eupdatemonth', 'search_eupdateday'), array('CHECK_SET_TERM'));
         // 生年月日
-        $objErr->doFunc(array(t('PARAM_LABEL_START'), 'search_sbirthyear', 'search_sbirthmonth', 'search_sbirthday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_END'), 'search_ebirthyear', 'search_ebirthmonth', 'search_ebirthday'), array('CHECK_DATE'));
-        $objErr->doFunc(array(t('PARAM_LABEL_START'), t('PARAM_LABEL_END'), 'search_sbirthyear', 'search_sbirthmonth', 'search_sbirthday', 'search_ebirthyear', 'search_ebirthmonth', 'search_ebirthday'), array('CHECK_SET_TERM'));
+        $objErr->doFunc(array(t('c_Start_01'), 'search_sbirthyear', 'search_sbirthmonth', 'search_sbirthday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Complete_01'), 'search_ebirthyear', 'search_ebirthmonth', 'search_ebirthday'), array('CHECK_DATE'));
+        $objErr->doFunc(array(t('c_Start_01'), t('c_Complete_01'), 'search_sbirthyear', 'search_sbirthmonth', 'search_sbirthday', 'search_ebirthyear', 'search_ebirthmonth', 'search_ebirthday'), array('CHECK_SET_TERM'));
 
         return $objErr->arrErr;
     }

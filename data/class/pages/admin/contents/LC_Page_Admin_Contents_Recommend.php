@@ -46,7 +46,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'contents/recommend.tpl';
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = 'recommend';
-        $this->tpl_maintitle = t('TPL_MAINTITLE_005');
+        $this->tpl_maintitle = t('c_Edit contents_01');
         $this->tpl_subtitle = t('LC_Page_Admin_Contents_Recommend_002');
         //最大登録数の表示
         $this->tpl_disp_max = RECOMMEND_NUM;
@@ -104,7 +104,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
                     $arrItems = $this->setProducts($arrPost, $arrItems);
                     $this->checkRank = $arrPost['rank'];
                 }
-                $this->tpl_onload = "window.alert('" . t('ALERT_001') . "');";
+                $this->tpl_onload = "window.alert('" . t('c_Editing is complete_01') . "');";
                 break;
             case 'delete': // 商品を削除する。
                 $this->arrErr = $this->lfCheckError($objFormParam);
@@ -113,7 +113,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
                     $this->deleteProduct($arrPost);
                     $arrItems = $this->getRecommendProducts();
                 }
-                $this->tpl_onload = "window.alert('" . t('ALERT_002') . "');";
+                $this->tpl_onload = "window.alert('" . t('c_Deletion was successful_01') . "');";
                 break;
             case 'set_item': // 商品を選択する。
                 $this->arrErr = $this->lfCheckError($objFormParam);
@@ -153,8 +153,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
     function lfInitParam(&$objFormParam) {
         $objFormParam->addParam(t('c_Product ID_01'), 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Category ID_01'), 'category_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_RANK'), 'rank', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_COMMENT'), 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Rank_01'), 'rank', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Comment_01'), 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**

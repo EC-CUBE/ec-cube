@@ -49,7 +49,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
-        $this->tpl_maintitle = t('TPL_MAINTITLE_006');;
+        $this->tpl_maintitle = t('c_Basic information_01');;
         $this->tpl_subtitle = t('LC_Page_Admin_Basis_DeliveryInput_002');;
         $this->mode = $this->getMode();
     }
@@ -82,7 +82,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             case 'edit':
                 if (count($this->arrErr) == 0) {
                     $objFormParam->setValue('deliv_id', $this->lfRegistData($objFormParam->getHashArray(), $_SESSION['member_id']));
-                    $this->tpl_onload = "window.alert('" . t('ALERT_005') ."');";
+                    $this->tpl_onload = "window.alert('" . t('c_Delivery method settings are complete._01') ."');";
                 }
                 break;
             case 'pre_edit':

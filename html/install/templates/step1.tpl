@@ -110,7 +110,7 @@ $(function() {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="PARAM_LABEL_SSL_LIMIT"}--><br/></th>
+                <th><!--{t string="c_SSL restrictions_01"}--><br/></th>
                 <td>
                 <!--{assign var=key value="admin_force_ssl"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
