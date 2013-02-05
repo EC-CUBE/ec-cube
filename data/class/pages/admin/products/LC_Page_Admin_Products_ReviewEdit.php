@@ -52,7 +52,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_ReviewEdit_001');
+        $this->tpl_subtitle = t('c_Review management_01');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
     }
 

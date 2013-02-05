@@ -48,7 +48,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'review';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_Review_001');
+        $this->tpl_subtitle = t('c_Review management_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPageMax = $masterData->getMasterData('mtb_page_max');

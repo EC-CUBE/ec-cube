@@ -47,7 +47,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_Product_001');
+        $this->tpl_subtitle = t('c_Product registration_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
@@ -505,7 +505,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
                 if ($select_recommend_id == $arrForm[$key]) {
                     // 重複した場合、選択されたデータをリセットする
                     $arrForm['recommend_id' . $select_recommend_no] = '';
-                    $arrErr['recommend_comment' . $select_recommend_no] = t('LC_Page_Admin_Products_Product_002');
+                    $arrErr['recommend_comment' . $select_recommend_no] = t('c_* This is a related product that is already registered.<br />_01');
                     break;
                 }
             }

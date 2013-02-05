@@ -46,7 +46,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/classcategory.tpl';
         $this->tpl_subno = 'class';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_ClassCategory_001');
+        $this->tpl_subtitle = t('c_Standard management>category registration_01');
         $this->tpl_mainno = 'products';
     }
 
@@ -265,7 +265,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
         $arrRet = $objQuery->select('classcategory_id, name', 'dtb_classcategory', $where, array($arrForm['class_id'], $arrForm['name']));
         // 編集中のレコード以外に同じ名称が存在する場合
         if ($arrRet[0]['classcategory_id'] != $arrForm['classcategory_id'] && $arrRet[0]['name'] == $arrForm['name']) {
-            $arrErr['name'] = t('LC_Page_Admin_Products_ClassCategory_002');
+            $arrErr['name'] = t('c_* Registration of the same contents already exists.<br>_03');
         }
         return $arrErr;
     }

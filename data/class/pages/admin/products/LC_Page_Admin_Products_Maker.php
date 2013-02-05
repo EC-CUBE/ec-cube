@@ -46,7 +46,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'products/maker.tpl';
         $this->tpl_subno = 'maker';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_Maker_001');
+        $this->tpl_subtitle = t('c_Manufacturer registration_01');
         $this->tpl_mainno = 'products';
     }
 
@@ -294,7 +294,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
                 || !$objDb->sfIsRecord('dtb_maker', 'maker_id', array($arrForm['maker_id']))
             ) {
                 // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
-                $arrErr['maker_id'] = t('LC_Page_Admin_Products_Maker_002');
+                $arrErr['maker_id'] = t('c_* The manufacturer ID is inadequate<br />_01');
             }
         }
         if (!isset($arrErr['name'])) {
@@ -304,7 +304,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
 
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrMaker[0]['maker_id'] != $arrForm['maker_id'] && $arrMaker[0]['name'] == $arrForm['name']) {
-                $arrErr['name'] = t('LC_Page_Admin_Products_Maker_003');
+                $arrErr['name'] = t('c_* Registration of the same contents already exists.<br />_01');
             }
         }
 

@@ -47,7 +47,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'product_rank';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_ProductRank_001');
+        $this->tpl_subtitle = t('c_Product rearrangement_01');
     }
 
     /**

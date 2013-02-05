@@ -52,7 +52,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex {
         $this->tpl_subno    = 'index';
         $this->tpl_onload   = 'fnGetRadioChecked();';
         $this->tpl_maintitle = t('c_System_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_System_001');
+        $this->tpl_subtitle = t('c_Admin management_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');

@@ -255,7 +255,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
         $arrClass = $objQuery->select('class_id, name', 'dtb_class', $where, array($arrForm['name']));
         // 編集中のレコード以外に同じ名称が存在する場合
         if ($arrClass[0]['class_id'] != $arrForm['class_id'] && $arrClass[0]['name'] == $arrForm['name']) {
-            $arrErr['name'] = t('LC_Page_Admin_Products_Class_002');
+            $arrErr['name'] = t('c_* Registration of the same contents already exists.<br>_02');
         }
         return $arrErr;
     }

@@ -65,7 +65,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = 'upload_csv';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_UploadCSV_001');
+        $this->tpl_subtitle = t('c_Product registration CSV_01');
         $this->csv_id = '1';
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -142,7 +142,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowResult($line_count, $message) {
-        $this->arrRowResult[] = t('LC_Page_Admin_Products_UploadCSV_002', array('T_ARG1' => $line_count, 'T_ARG2' => $message));
+        $this->arrRowResult[] = t('c_Line T_ARG1: T_ARG2_01', array('T_ARG1' => $line_count, 'T_ARG2' => $message));
     }
 
     /**
@@ -153,7 +153,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
      * @return void
      */
     function addRowErr($line_count, $message) {
-        $this->arrRowErr[] = t('LC_Page_Admin_Products_UploadCSV_002', array('T_ARG1' => $line_count, 'T_ARG2' => $message));
+        $this->arrRowErr[] = t('c_Line T_ARG1: T_ARG2_01', array('T_ARG1' => $line_count, 'T_ARG2' => $message));
     }
 
     /**
@@ -224,7 +224,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
             // 列数が異なる場合はエラー
             $col_count = count($arrCSV);
             if ($col_max_count != $col_count) {
-                $this->addRowErr($line_count, t('LC_Page_Admin_Products_UploadCSV_003', array('T_ARG1' => $col_count, 'T_ARG2' => $col_max_count)));
+                $this->addRowErr($line_count, t('c_* T_ARG1 was detected for the item quantity. The item quantity is T_ARG2._01', array('T_ARG1' => $col_count, 'T_ARG2' => $col_max_count)));
                 $errFlag = true;
                 break;
             }
@@ -250,7 +250,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
                 $this->lfRegistProduct($objQuery, $line_count, $objFormParam);
                 $arrParam = $objFormParam->getHashArray();
 
-                $this->addRowResult($line_count, t('LC_Page_Admin_Products_UploadCSV_004', array('T_ARG1' => $arrParam['product_id'], 'T_ARG2' => $arrParam['name'])));
+                $this->addRowResult($line_count, t('c_Product ID: T_ARG1 / Product name: T_ARG2_01', array('T_ARG1' => $arrParam['product_id'], 'T_ARG2' => $arrParam['name'])));
             }
             SC_Utils_Ex::extendTimeOut();
         }
@@ -619,37 +619,37 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex {
         // 規格IDの存在チェック
         // FIXME 規格分類ID自体のが有効かを主眼においたチェックをすべきと感じる。
         if (!$this->lfIsDbRecord('dtb_products_class', 'product_class_id', $item)) {
-            $arrErr['product_class_id'] = t('LC_Page_Admin_Products_UploadCSV_005');
+            $arrErr['product_class_id'] = t('c_* The designated product specification ID is not registered._01');
         }
         // 商品ID、規格IDの組合せチェック
         if (array_search('product_class_id', $this->arrFormKeyList) !== FALSE
             && $item['product_class_id'] != ''
         ) {
             if ($item['product_id'] == '') {
-                $arrErr['product_class_id'] = t('LC_Page_Admin_Products_UploadCSV_006');
+                $arrErr['product_class_id'] = t('c_* During product specification ID designation, it is necessary to designate a product ID._01');
             } else {
                 if (!$this->objDb->sfIsRecord('dtb_products_class', 'product_id, product_class_id'
                         , array($item['product_id'], $item['product_class_id']))
                 ) {
-                    $arrErr['product_class_id'] = t('LC_Page_Admin_Products_UploadCSV_007');
+                    $arrErr['product_class_id'] = t('c_* The designated product ID and production specification ID combination is not correct._01');
                 }
             }
         }
         // 表示ステータスの存在チェック
         if (!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {
-            $arrErr['status'] = t('LC_Page_Admin_Products_UploadCSV_008');
+            $arrErr['status'] = t('c_* The designated display status is not registered._01');
         }
         // メーカーIDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrMaker, 'maker_id', $item)) {
-            $arrErr['maker_id'] = t('LC_Page_Admin_Products_UploadCSV_009');
+            $arrErr['maker_id'] = t('c_* The designated manufacturer ID is not registered._01');
         }
         // 発送日目安IDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrDELIVERYDATE, 'deliv_date_id', $item)) {
-            $arrErr['deliv_date_id'] = t('LC_Page_Admin_Products_UploadCSV_010');
+            $arrErr['deliv_date_id'] = t('c_* The designated target delivery date ID is not registered._01');
         }
         // 発送日目安IDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrProductType, 'product_type_id', $item)) {
-            $arrErr['product_type_id'] = t('LC_Page_Admin_Products_UploadCSV_011');
+            $arrErr['product_type_id'] = t('c_* The specified product ID does not exist._01');
         }
         // 関連商品IDのチェック
         $arrRecommendProductUnique = array();
