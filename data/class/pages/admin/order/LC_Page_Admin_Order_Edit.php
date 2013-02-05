@@ -80,7 +80,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $this->tpl_mainpage = 'order/edit.tpl';
         $this->tpl_mainno = 'order';
         $this->tpl_maintitle = t('c_Orders_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Order_Edit_001');
+        $this->tpl_subtitle = t('c_Order receipt registration_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -166,7 +166,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                 $objFormParam->convParam();
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    $message = t('LC_Page_Admin_Order_Edit_003');
+                    $message = t('c_Order receipt has been edited._01');
                     $order_id = $this->doRegister($order_id, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                     if ($order_id >= 0) {
                         $this->setOrderToFormParam($objFormParam, $order_id);
@@ -181,7 +181,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
                     $objFormParam->convParam();
                     $this->arrErr = $this->lfCheckError($objFormParam);
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                        $message = t('LC_Page_Admin_Order_Edit_002');
+                        $message = t('c_Order receipt has been registered._01');
                         $order_id = $this->doRegister(null, $objPurchase, $objFormParam, $message, $arrValuesBefore);
                         if ($order_id >= 0) {
                             $this->tpl_mode = 'edit';
@@ -595,10 +595,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
             if ($arrProduct['stock_unlimited'] != '1'
                 && $arrProduct['stock'] < $arrValues['quantity'][$i] - $arrOrderDetail['quantity'][$i]) {
                 $class_name1 = $arrValues['classcategory_name1'][$i];
-                $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? t('LC_Page_Admin_Order_Edit_004') : $class_name1;
+                $class_name1 = SC_Utils_Ex::isBlank($class_name1) ? t('c_None_01') : $class_name1;
                 $class_name2 = $arrValues['classcategory_name2'][$i];
-                $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? t('LC_Page_Admin_Order_Edit_004') : $class_name2;                
-                $arrErr['quantity'][$i] .= t('LC_Page_Admin_Order_Edit_005', array('T_ARG1' => $arrValues['product_name'][$i], 'T_ARG2' => $class_name1,'T_ARG3' => $class_name2, 'T_ARG4' => ($arrOrderDetail['quantity'][$i] + $arrProduct['stock'])));
+                $class_name2 = SC_Utils_Ex::isBlank($class_name2) ? t('c_None_01') : $class_name2;                
+                $arrErr['quantity'][$i] .= t('c_There is an inventory shortage for T_ARG1/(T_ARG2)/(T_ARG3). Up to T_ARG4 can be set for the quantity.<br />_1', array('T_ARG1' => $arrValues['product_name'][$i], 'T_ARG2' => $class_name1,'T_ARG3' => $class_name2, 'T_ARG4' => ($arrOrderDetail['quantity'][$i] + $arrProduct['stock'])));
             }
         }
 
@@ -618,15 +618,15 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $arrValues['total_point'] = $objFormParam->getValue('point') - $arrValues['use_point'];
 
         if ($arrValues['total'] < 0) {
-            $arrErr['total'] = t('LC_Page_Admin_Order_Edit_006');
+            $arrErr['total'] = t('c_Adjust so that the total amount is not a negative number.<br />_01');
         }
 
         if ($arrValues['payment_total'] < 0) {
-            $arrErr['payment_total'] = t('LC_Page_Admin_Order_Edit_007');
+            $arrErr['payment_total'] = t('c_Adjust so that a negative number is not displayed for the payment total.<br />_01');
         }
 
         if ($arrValues['total_point'] < 0) {
-            $arrErr['use_point'] = t('LC_Page_Admin_Order_Edit_008');
+            $arrErr['use_point'] = t('c_Adjust the final number of points registered so that it does not become a negative number.<br />_01');
         }
 
         $objFormParam->setParam($arrValues);

@@ -48,7 +48,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_001');
+        $this->tpl_subtitle = t('c_Product master_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPageMax = $masterData->getMasterData('mtb_page_max');

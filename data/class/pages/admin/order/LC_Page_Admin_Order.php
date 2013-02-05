@@ -48,7 +48,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_maintitle = t('c_Orders_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Order_001');
+        $this->tpl_subtitle = t('c_Order master_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');

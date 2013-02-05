@@ -52,13 +52,13 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'seo';
         $this->tpl_mainno = 'basis';
         $this->tpl_maintitle = t('c_Basic information_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Seo_002');
+        $this->tpl_subtitle = t('c_SEO management_01');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
-        $this->arrDeviceTypeName[DEVICE_TYPE_PC] = t('LC_Page_Admin_Basis_Seo_003');
-        $this->arrDeviceTypeName[DEVICE_TYPE_MOBILE] = t('LC_Page_Admin_Basis_Seo_004');
-        $this->arrDeviceTypeName[DEVICE_TYPE_SMARTPHONE] = t('LC_Page_Admin_Basis_Seo_005');
+        $this->arrDeviceTypeName[DEVICE_TYPE_PC] = t('c_PC site_01');
+        $this->arrDeviceTypeName[DEVICE_TYPE_MOBILE] = t('c_Mobile site_01');
+        $this->arrDeviceTypeName[DEVICE_TYPE_SMARTPHONE] = t('c_Smartphone_01');
     }
 
     /**

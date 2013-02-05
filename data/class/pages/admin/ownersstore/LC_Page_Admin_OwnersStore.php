@@ -47,7 +47,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $this->tpl_subno    = 'index';
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_maintitle = t('c_Owners Store_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_OwnersStore_001');
+        $this->tpl_subtitle = t('c_Plug-in management_01');
     }
 
     /**
@@ -376,14 +376,14 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // 既にインストールされていないかを判定.
         if ($this->isInstalledPlugin($arrPluginInfo['PLUGIN_CODE']) === true) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_002', array('T_ARG1' => $arrPluginInfo['PLUGIN_NAME']));
+            $arrErr['plugin_file'] = t('c_* T_ARG1 is already installed.<br/>_01', array('T_ARG1' => $arrPluginInfo['PLUGIN_NAME']));
             return $arrErr;
         }
 
         // プラグイン情報をDB登録
         if ($this->registerData($arrPluginInfo) === false) {
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_003');
+            $arrErr['plugin_file'] = t('c_* DB registration failed.<br/>_01');
             return $arrErr;
         }
 
@@ -488,11 +488,11 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $arrPluginInfo = $this->getPluginInfo($objReflection);
 
         if (!isset($arrPluginInfo['PLUGIN_CODE'])) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_004');
+            $arrErr['plugin_file'] = t('c_* PLUGIN_CODE is not defined.<br/>_01');
             return $arrErr;
         }
         if (!isset($arrPluginInfo['PLUGIN_NAME'])) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_005');
+            $arrErr['plugin_file'] = t('c_* PLUGIN_NAME is not defined.<br/>_01');
             return $arrErr;
         }
         if (!isset($arrPluginInfo['CLASS_NAME'])) {
@@ -501,23 +501,23 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
         $plugin_class_file_path = $dir_path . $arrPluginInfo['CLASS_NAME'] . '.php';
         if (file_exists($plugin_class_file_path) === false) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_007');
+            $arrErr['plugin_file'] = t('c_* CLASS_NAME is not properly defined.<br/>_01');
             return $arrErr;
         }
         if (!isset($arrPluginInfo['PLUGIN_VERSION'])) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_008');
+            $arrErr['plugin_file'] = t('c_* PLUGIN_VERSION is not defined.<br/>_01');
             return $arrErr;
         }
         if (!isset($arrPluginInfo['COMPLIANT_VERSION'])) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_009');
+            $arrErr['plugin_file'] = t('c_* COMPLIANT_VERSION is not defined.<br/>_01');
             return $arrErr;
         }
         if (!isset($arrPluginInfo['AUTHOR'])) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_010');
+            $arrErr['plugin_file'] = t('c_* AUTHOR is not defined.<br/>_01');
             return $arrErr;
         }
         if (!isset($arrPluginInfo['DESCRIPTION'])) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_011');
+            $arrErr['plugin_file'] = t('c_* DESCRIPTION is not defined.<br/>_01');
             return $arrErr;
         }
         $objErr = new SC_CheckError_Ex($arrPluginInfo);
@@ -572,7 +572,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         $objReflection = new ReflectionClass('plugin_info');
         $arrPluginInfo = $this->getPluginInfo($objReflection);
         if ($arrPluginInfo['PLUGIN_CODE'] != $target_plugin['plugin_code']) {
-            $arrErr[$target_plugin['plugin_code']] = t('LC_Page_Admin_OwnersStore_012');
+            $arrErr[$target_plugin['plugin_code']] = t('c_* The plug-in code does not match<br/>_01');
             return $arrErr;
         }
 
@@ -618,7 +618,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         // 解凍
         $unpack_file_path = $unpack_dir_path . $unpack_file_name;
         if (!$this->unpackPluginArchive($unpack_file_path)) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_013');
+            $arrErr['plugin_file'] = t('c_* Decompression failed.<br/>_01');
             return $arrErr;
         }
         return $arrErr;
@@ -810,7 +810,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         if (file_exists($file_path)) {
             require_once $file_path; 
         } else {
-            $arrErr[$key] = t('LC_Page_Admin_OwnersStore_014', array('T_ARG1' => $file_path));
+            $arrErr[$key] = t('c_* T_ARG1 reading failed.<br/>_01', array('T_ARG1' => $file_path));
         }
         return $arrErr;
     }
@@ -832,7 +832,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
                 $arrErr[$obj['plugin_code']] = $ret;
             }
         } else {
-            $arrErr['plugin_error'] = t('LC_Page_Admin_OwnersStore_015', array('T_ARG1' => $class_name, 'T_ARG2' => $exec_func));
+            $arrErr['plugin_error'] = t('c_* T_ARG2 was not found in T_ARG1.php.<br/>_01', array('T_ARG1' => $class_name, 'T_ARG2' => $exec_func));
         }
         return $arrErr;
     }
@@ -855,7 +855,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
 
         // 指定されたフォルダ内に解凍する
         $result = $tar->extractModify($dir. '/', $unpacking_name);
-        GC_Utils_Ex::gfPrintLog(t('LC_Page_Admin_OwnersStore_016') . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
+        GC_Utils_Ex::gfPrintLog(t('c_Decompression:_01') . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
         // 解凍元のファイルを削除する.
         unlink($path);
 
@@ -985,7 +985,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
         }
         // メッセージをセットします.
         foreach ($arrConflictPluginName as $conflictPluginName) {
-            $conflict_alert_message .= t('LC_Page_Admin_OwnersStore_017', array('T_ARG1' => $conflictPluginName));
+            $conflict_alert_message .= t('c_*There is the possibility of competition with T_ARG1.<br/>_01', array('T_ARG1' => $conflictPluginName));
         }
         return $conflict_alert_message;
     }

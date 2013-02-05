@@ -81,7 +81,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $this->tpl_mainno = 'order';
         $this->tpl_subnavi = '';
         $this->tpl_subno = '';
-        $this->tpl_subtitle = t('LC_Page_Admin_Order_Disp_001');
+        $this->tpl_subtitle = t('c_Order receipt information display_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');

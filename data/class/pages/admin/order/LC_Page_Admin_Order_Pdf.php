@@ -47,16 +47,16 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'pdf';
         $this->tpl_maintitle = t('c_Orders_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Order_Pdf_001');
+        $this->tpl_subtitle = t('c_Ledger output_01');
 
         $this->SHORTTEXT_MAX = STEXT_LEN;
         $this->MIDDLETEXT_MAX = MTEXT_LEN;
         $this->LONGTEXT_MAX = LTEXT_LEN;
 
-        $this->arrType[0]  = t('LC_Page_Admin_Order_Pdf_002');
+        $this->arrType[0]  = t('c_Delivery slip_01');
 
-        $this->arrDownload[0] = t('LC_Page_Admin_Order_Pdf_003');
-        $this->arrDownload[1] = t('LC_Page_Admin_Order_Pdf_004');
+        $this->arrDownload[0] = t('c_Open in browser_01');
+        $this->arrDownload[1] = t('c_Save to file_01');
     }
 
     /**
@@ -119,7 +119,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
-        $arrForm['title'] = t('LC_Page_Admin_Order_Pdf_005');
+        $arrForm['title'] = t('c_Detailed purchase statement (delivery slip)_01');
 
         // 今日の日付をセット
         $arrForm['year']  = date('Y');
@@ -213,23 +213,23 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
 
         $year = $objFormParam->getValue('year');
         if (!is_numeric($year)) {
-            $arrErr['year'] = t('LC_Page_Admin_Order_Pdf_009');
+            $arrErr['year'] = t('c_Enter a number for the issuance year._01');
         }
 
         $month = $objFormParam->getValue('month');
         if (!is_numeric($month)) {
-            $arrErr['month'] = t('LC_Page_Admin_Order_Pdf_010');
+            $arrErr['month'] = t('c_Enter a number for the issuance month._01');
         } else if (0 >= $month && 12 < $month) {
 
-            $arrErr['month'] = t('LC_Page_Admin_Order_Pdf_011');
+            $arrErr['month'] = t('c_Enter between 1 - 12 for the issuance month_01');
         }
 
         $day = $objFormParam->getValue('day');
         if (!is_numeric($day)) {
-            $arrErr['day'] = t('LC_Page_Admin_Order_Pdf_012');
+            $arrErr['day'] = t('c_Enter a number for the issuance date._01');
         } else if (0 >= $day && 31 < $day) {
 
-            $arrErr['day'] = t('LC_Page_Admin_Order_Pdf_013');
+            $arrErr['day'] = t('c_Enter a number between 1- 31 for the issuance date._01');
         }
 
         return $arrErr;

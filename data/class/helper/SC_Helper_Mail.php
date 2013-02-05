@@ -499,7 +499,7 @@ class SC_Helper_Mail {
                           array($send_id));
 
         // 送信完了　報告メール
-        $compSubject = date(t('FORMAT_DATE_LONG')) . ' '. t('c_The e-mail below has been sent._01');
+        $compSubject = date(t('f_DATE_LONG_01')) . ' '. t('c_The e-mail below has been sent._01');
         // 管理者宛に変更
         $objMail->setTo($objSite['email03']);
         $objMail->setSubject($compSubject);

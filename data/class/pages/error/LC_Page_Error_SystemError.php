@@ -77,11 +77,11 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
 
         if (DEBUG_MODE) {
             echo '<div class="debug">';
-            echo '<div>' . t('LC_Page_Error_SystemError_003') .'</div>';
+            echo '<div>' . t('c_▼▼▼ Start of debug information ▼▼▼_01') .'</div>';
             echo '<pre>';
             echo htmlspecialchars($this->sfGetErrMsg(), ENT_QUOTES, CHAR_CODE);
             echo '</pre>';
-            echo '<div>' . t('LC_Page_Error_SystemError_004') . '</div>';
+            echo '<div>' . t('c_▲▲▲ End of debug information▲▲▲_01') . '</div>';
             echo '</div>';
         }
 

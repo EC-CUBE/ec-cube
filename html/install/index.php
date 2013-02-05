@@ -62,7 +62,7 @@ $objDb = new SC_Helper_DB_Ex();
 $temp_dir = $ownDir . 'temp';
 
 if (!is_writable($temp_dir)) {
-    SC_Utils_Ex::sfErrorHeader(t('LC_Page_Install_001', array('T_ARG1' => $temp_dir)), true);
+    SC_Utils_Ex::sfErrorHeader(t('c_Please grant user write access (777, 707, etc.) for T_ARG1_01', array('T_ARG1' => $temp_dir)), true);
     exit;
 }
 
@@ -136,18 +136,18 @@ switch ($mode) {
         // テーブルの作成
         $objPage->arrErr = lfExecuteSQL('./sql/create_table_' . $arrDsn['phptype'] . '.sql', $arrDsn);
         if (count($objPage->arrErr) == 0) {
-            $objPage->tpl_message .= t('LC_Page_Install_002');
+            $objPage->tpl_message .= t('c_○: The table was successfully created.<br />_01');
         } else {
-            $objPage->tpl_message .= t('LC_Page_Install_003');
+            $objPage->tpl_message .= t('c_×: The table was not created.<br />_01');
         }
 
         // 初期データの作成
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfExecuteSQL('./sql/insert_data.sql', $arrDsn);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= t('LC_Page_Install_004');
+                $objPage->tpl_message .= t('c_○: Initial data was successfully created.<br />_01');
             } else {
-                $objPage->tpl_message .= t('LC_Page_Install_005');
+                $objPage->tpl_message .= t('c_×: Initial data was not created.<br />_01');
             }
         }
 
@@ -155,9 +155,9 @@ switch ($mode) {
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfCreateSequence(getSequences(), $arrDsn);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= t('LC_Page_Install_006');
+                $objPage->tpl_message .= t('c_○: The sequence was successfully created.<br />_01');
             } else {
-                $objPage->tpl_message .= t('LC_Page_Install_007');
+                $objPage->tpl_message .= t('c_×: The sequence was not created.<br />_01');
             }
         }
 
@@ -180,9 +180,9 @@ switch ($mode) {
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfExecuteSQL('./sql/drop_table.sql', $arrDsn, false);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= t('LC_Page_Install_008');
+                $objPage->tpl_message .= t('c_○: The table was successfully deleted.<br />_01');
             } else {
-                $objPage->tpl_message .= t('LC_Page_Install_009');
+                $objPage->tpl_message .= t('c_×: The table was not deleted.<br />_01');
             }
         }
 
@@ -190,9 +190,9 @@ switch ($mode) {
         if (count($objPage->arrErr) == 0) {
             $objPage->arrErr = lfDropSequence(getSequences(), $arrDsn);
             if (count($objPage->arrErr) == 0) {
-                $objPage->tpl_message .= t('LC_Page_Install_010');
+                $objPage->tpl_message .= t('c_○: The sequence was successfully deleted.<br />_01');
             } else {
-                $objPage->tpl_message .= t('LC_Page_Install_011');
+                $objPage->tpl_message .= t('c_×: The sequence was not deleted.<br />_01');
             }
         }
 
@@ -688,16 +688,16 @@ function lfInitWebParam($objWebParam) {
     $objWebParam->addParam(t('LC_Page_Install_020'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('LC_Page_Install_021'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('LC_Page_Install_022'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
-    $objWebParam->addParam(t('LC_Page_Install_023'), 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), $admin_force_ssl);
-    $objWebParam->addParam(t('LC_Page_Install_024'), 'admin_allow_hosts', LTEXT_LEN, 'an', array('IP_CHECK', 'MAX_LENGTH_CHECK'), $admin_allow_hosts);
-    $objWebParam->addParam(t('LC_Page_Install_025'), 'normal_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $normal_url);
-    $objWebParam->addParam(t('LC_Page_Install_026'), 'secure_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $secure_url);
-    $objWebParam->addParam(t('LC_Page_Install_027'), 'domain', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
-    $objWebParam->addParam(t('LC_Page_Install_028'), 'mail_backend', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'EXIST_CHECK'), $mail_backend);
-    $objWebParam->addParam(t('LC_Page_Install_029'), 'smtp_host', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_host);
-    $objWebParam->addParam(t('LC_Page_Install_030'), 'smtp_port', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $smtp_port);
-    $objWebParam->addParam(t('LC_Page_Install_031'), 'smtp_user', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_user);
-    $objWebParam->addParam(t('LC_Page_Install_032'), 'smtp_password', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_password);
+    $objWebParam->addParam(t('c_Management area: SSL restriction_01'), 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), $admin_force_ssl);
+    $objWebParam->addParam(t('c_Management area: IP restriction_01'), 'admin_allow_hosts', LTEXT_LEN, 'an', array('IP_CHECK', 'MAX_LENGTH_CHECK'), $admin_allow_hosts);
+    $objWebParam->addParam(t('c_URL (normal)_01'), 'normal_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $normal_url);
+    $objWebParam->addParam(t('c_URL (secure)_01'), 'secure_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $secure_url);
+    $objWebParam->addParam(t('c_Domain_01'), 'domain', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+    $objWebParam->addParam(t('c_Mailer backend_01'), 'mail_backend', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'EXIST_CHECK'), $mail_backend);
+    $objWebParam->addParam(t('c_SMTP host_01'), 'smtp_host', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_host);
+    $objWebParam->addParam(t('c_SMTP port_01'), 'smtp_port', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), $smtp_port);
+    $objWebParam->addParam(t('c_SMTP user_01'), 'smtp_user', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_user);
+    $objWebParam->addParam(t('c_SMTP password_01'), 'smtp_password', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'), $smtp_password);
 
     return $objWebParam;
 }
@@ -735,7 +735,7 @@ function lfInitDBParam($objDBParam) {
         $db_user = 'eccube_db_user';
     }
 
-    $objDBParam->addParam(t('LC_Page_Install_033'), 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
+    $objDBParam->addParam(t('c_DB type_01'), 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
     $objDBParam->addParam(t('c_DB server_01'), 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
     $objDBParam->addParam(t('LC_Page_Install_035'), 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
     $objDBParam->addParam(t('LC_Page_Install_036'), 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);

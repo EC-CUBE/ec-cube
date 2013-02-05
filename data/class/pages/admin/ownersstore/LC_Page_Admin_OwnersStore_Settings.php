@@ -57,7 +57,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'settings';
         $this->tpl_maintitle = t('c_Owners Store_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_OwnersStore_Settings_001');
+        $this->tpl_subtitle = t('c_Authentication key settings_01');
         $this->httpCacheControl('nocache');
     }
 

@@ -95,7 +95,7 @@ class LC_Page_Error extends LC_Page_Ex {
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case PAGE_ERROR:
-                $this->tpl_error=t('LC_Page_Error_003');
+                $this->tpl_error=t('c_Illegal page migration._01');
                 break;
             case CART_EMPTY:
                 $this->tpl_error=t('c_There are no products in your cart._01');
@@ -104,59 +104,59 @@ class LC_Page_Error extends LC_Page_Ex {
                 $this->tpl_error=t('c_It is not possible to add products to your cart during purchase processing._01');
                 break;
             case CANCEL_PURCHASE:
-                $this->tpl_error=t('LC_Page_Error_006');
+                $this->tpl_error=t('c_This procedure has been voided. The following factors may be attributable. <br />- The expiration date of the session information has passed <br /> - A new purchasing procedure was executed during an existing purchasing procedure <br />- The purchasing procedure has already been completed_01');
                 break;
             case CATEGORY_NOT_FOUND:
                 $this->tpl_error=t('c_The category you specified does not exist._01');
                 SC_Response_Ex::sendHttpStatus(404);
                 break;
             case SITE_LOGIN_ERROR:
-                $this->tpl_error=t('LC_Page_Error_008');
+                $this->tpl_error=t('c_The e-mail address or password is not correct._01');
                 break;
             case TEMP_LOGIN_ERROR:
-                $this->tpl_error=t('LC_Page_Error_009');
+                $this->tpl_error=t('c_The e-mail address or password is not correct.<br />If you have not completed registration, complete registration from the URL given in the temporary registration e-mail._01');
                 break;
             case CUSTOMER_ERROR:
                 $this->tpl_error=t('c_Unauthorized access._01');
                 break;
             case SOLD_OUT:
-                $this->tpl_error=t('LC_Page_Error_011');
+                $this->tpl_error=t('c_There is a product that sold out immediately before your purchase. This procedure has been voided. We apologize for the inconvenience._01');
                 break;
             case CART_NOT_FOUND:
-                $this->tpl_error=t('LC_Page_Error_012');
+                $this->tpl_error=t('c_Retrieval of information regarding products in your cart failed. This procedure has been voided. We apologize for the inconvenience._01');
                 break;
             case LACK_POINT:
-                $this->tpl_error=t('LC_Page_Error_013');
+                $this->tpl_error=t('c_You do not have enough points. This procedure has been voided. We apologize for the inconvenience._01');
                 break;
             case FAVORITE_ERROR:
                 $this->tpl_error=t('c_This product is already added to your favorites_01');
                 break;
             case EXTRACT_ERROR:
-                $this->tpl_error=t('LC_Page_Error_015');
+                $this->tpl_error=t('c_File decompression failed.\nWrite access may not have been granted to the designated directory._01');
                 break;
             case FTP_DOWNLOAD_ERROR:
                 $this->tpl_error=t('c_FTP download of file failed._01');
                 break;
             case FTP_LOGIN_ERROR:
-                $this->tpl_error=t('LC_Page_Error_017');
+                $this->tpl_error=t('c_FTP login failed._01');
                 break;
             case FTP_CONNECT_ERROR:
-                $this->tpl_error=t('LC_Page_Error_018');
+                $this->tpl_error=t('c_FTP login failed._02');
                 break;
             case CREATE_DB_ERROR:
-                $this->tpl_error=t('LC_Page_Error_019');
+                $this->tpl_error=t('c_DB creation failed. \nThe user designated by may not have been granted DB creation access._01');
                 break;
             case DB_IMPORT_ERROR:
-                $this->tpl_error=t('LC_Page_Error_020');
+                $this->tpl_error=t('c_Import of the database structure failed. \nThe sql file may be damaged._01');
                 break;
             case FILE_NOT_FOUND:
-                $this->tpl_error=t('LC_Page_Error_021');
+                $this->tpl_error=t('c_The settings file does not exist in the designated path._01');
                 break;
             case WRITE_FILE_ERROR:
-                $this->tpl_error=t('LC_Page_Error_022');
+                $this->tpl_error=t('c_It is not possible to write to the file settings.\nGrant write access to file settings._01');
                 break;
             case DOWNFILE_NOT_FOUND:
-                $this->tpl_error=t('LC_Page_Error_023');
+                $this->tpl_error=t('c_The download file does not exist. <br /> Please inquire at the store._01');
                 break;
             case FREE_ERROR_MSG:
                 $this->tpl_error=$this->err_msg;

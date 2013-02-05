@@ -49,7 +49,7 @@ class LC_Page_Admin_OwnersStore_Module extends LC_Page_Admin_Ex {
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_subno    = 'module';
         $this->tpl_maintitle = t('c_Owners Store_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_OwnersStore_Module_001');
+        $this->tpl_subtitle = t('c_Module management_01');
     }
 
     /**

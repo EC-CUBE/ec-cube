@@ -1815,7 +1815,7 @@ msgstr "System"
 msgid "c_Sales (history)_01"
 msgstr "Sales (history)"
 
-msgid "FORMAT_DATE_LONG"
+msgid "f_DATE_LONG_01"
 msgstr "Y-m-d H:i"
 
 msgid "f_NAME_FULL_SIR_01"
@@ -1892,7 +1892,7 @@ msgstr "Error"
 msgid "c_The page you specified does not exist._01"
 msgstr "The page you specified does not exist."
 
-msgid "LC_Page_Error_003"
+msgid "c_Illegal page migration._01"
 msgstr "Illegal page migration."
 
 msgid "c_There are no products in your cart._01"
@@ -1902,7 +1902,7 @@ msgid "c_It is not possible to add products to your cart during purchase process
 msgstr ""
 "It is not possible to add products to your cart during purchase processing."
 
-msgid "LC_Page_Error_006"
+msgid "c_This procedure has been voided. The following factors may be attributable. <br />- The expiration date of the session information has passed <br /> - A new purchasing procedure was executed during an existing purchasing procedure <br />- The purchasing procedure has already been completed_01"
 msgstr ""
 "This procedure has been voided. The following factors may be attributable. "
 "<br />- The expiration date of the session information has passed <br /> - A "
@@ -1912,10 +1912,10 @@ msgstr ""
 msgid "c_The category you specified does not exist._01"
 msgstr "The category you specified does not exist."
 
-msgid "LC_Page_Error_008"
+msgid "c_The e-mail address or password is not correct._01"
 msgstr "The e-mail address or password is not correct."
 
-msgid "LC_Page_Error_009"
+msgid "c_The e-mail address or password is not correct.<br />If you have not completed registration, complete registration from the URL given in the temporary registration e-mail._01"
 msgstr ""
 "The e-mail address or password is not correct.<br />If you have not "
 "completed registration, complete registration from the URL given in the "
@@ -1924,17 +1924,17 @@ msgstr ""
 msgid "c_Unauthorized access._01"
 msgstr "Unauthorized access."
 
-msgid "LC_Page_Error_011"
+msgid "c_There is a product that sold out immediately before your purchase. This procedure has been voided. We apologize for the inconvenience._01"
 msgstr ""
 "There is a product that sold out immediately before your purchase. This "
 "procedure has been voided. We apologize for the inconvenience."
 
-msgid "LC_Page_Error_012"
+msgid "c_Retrieval of information regarding products in your cart failed. This procedure has been voided. We apologize for the inconvenience._01"
 msgstr ""
 "Retrieval of information regarding products in your cart failed. This "
 "procedure has been voided. We apologize for the inconvenience."
 
-msgid "LC_Page_Error_013"
+msgid "c_You do not have enough points. This procedure has been voided. We apologize for the inconvenience._01"
 msgstr ""
 "You do not have enough points. This procedure has been voided. We apologize "
 "for the inconvenience."
@@ -1942,7 +1942,7 @@ msgstr ""
 msgid "c_This product is already added to your favorites_01"
 msgstr "This product is already added to your favorites"
 
-msgid "LC_Page_Error_015"
+msgid "c_File decompression failed.\nWrite access may not have been granted to the designated directory._01"
 msgstr ""
 "File decompression failed.\n"
 "Write access may not have been granted to the designated directory."
@@ -1950,31 +1950,31 @@ msgstr ""
 msgid "c_FTP download of file failed._01"
 msgstr "FTP download of file failed."
 
-msgid "LC_Page_Error_017"
+msgid "c_FTP login failed._01"
 msgstr "FTP login failed."
 
-msgid "LC_Page_Error_018"
+msgid "c_FTP login failed._02"
 msgstr "FTP login failed."
 
-msgid "LC_Page_Error_019"
+msgid "c_DB creation failed. \nThe user designated by may not have been granted DB creation access._01"
 msgstr ""
 "DB creation failed. \n"
 "The user designated by may not have been granted DB creation access."
 
-msgid "LC_Page_Error_020"
+msgid "c_Import of the database structure failed. \nThe sql file may be damaged._01"
 msgstr ""
 "Import of the database structure failed. \n"
 "The sql file may be damaged."
 
-msgid "LC_Page_Error_021"
+msgid "c_The settings file does not exist in the designated path._01"
 msgstr "The settings file does not exist in the designated path."
 
-msgid "LC_Page_Error_022"
+msgid "c_It is not possible to write to the file settings.\nGrant write access to file settings._01"
 msgstr ""
 "It is not possible to write to the file settings.\n"
 "Grant write access to file settings."
 
-msgid "LC_Page_Error_023"
+msgid "c_The download file does not exist. <br /> Please inquire at the store._01"
 msgstr "The download file does not exist. <br /> Please inquire at the store."
 
 msgid "c_An error has occurred._01"
@@ -2007,22 +2007,22 @@ msgid "c_A system error has occurred. <br /> Please contact the site administrat
 msgstr ""
 "A system error has occurred. <br /> Please contact the site administrator."
 
-msgid "LC_Page_Error_SystemError_003"
+msgid "c_▼▼▼ Start of debug information ▼▼▼_01"
 msgstr "▼▼▼ Start of debug information ▼▼▼"
 
-msgid "LC_Page_Error_SystemError_004"
+msgid "c_▲▲▲ End of debug information▲▲▲_01"
 msgstr "▲▲▲ End of debug information▲▲▲"
 
-msgid "LC_Page_Forgot_001"
+msgid "c_If you have forgotten your password_01"
 msgstr "If you have forgotten your password"
 
-msgid "LC_Page_Forgot_002"
+msgid "c_The e-mail address you registered is currently temporarily active.<br/>Please access the URL that was sent at the time of registration to complete member registration._01"
 msgstr ""
 "The e-mail address you registered is currently temporarily active.<br/"
 ">Please access the URL that was sent at the time of registration to complete "
 "member registration."
 
-msgid "LC_Page_Forgot_003"
+msgid "c_There is an error with your name or the e-mail address is not correct._01"
 msgstr "There is an error with your name or the e-mail address is not correct."
 
 msgid "LC_Page_Forgot_004"
@@ -2234,37 +2234,37 @@ msgstr "Devices not supported"
 msgid "LC_Page_Upgrade_Download_001"
 msgstr "Installation/update was successful."
 
-msgid "LC_Page_Install_001"
+msgid "c_Please grant user write access (777, 707, etc.) for T_ARG1_01"
 msgstr "Please grant user write access (777, 707, etc.) for T_ARG1"
 
-msgid "LC_Page_Install_002"
+msgid "c_○: The table was successfully created.<br />_01"
 msgstr "○: The table was successfully created.<br />"
 
-msgid "LC_Page_Install_003"
+msgid "c_×: The table was not created.<br />_01"
 msgstr "×: The table was not created.<br />"
 
-msgid "LC_Page_Install_004"
+msgid "c_○: Initial data was successfully created.<br />_01"
 msgstr "○: Initial data was successfully created.<br />"
 
-msgid "LC_Page_Install_005"
+msgid "c_×: Initial data was not created.<br />_01"
 msgstr "×: Initial data was not created.<br />"
 
-msgid "LC_Page_Install_006"
+msgid "c_○: The sequence was successfully created.<br />_01"
 msgstr "○: The sequence was successfully created.<br />"
 
-msgid "LC_Page_Install_007"
+msgid "c_×: The sequence was not created.<br />_01"
 msgstr "×: The sequence was not created.<br />"
 
-msgid "LC_Page_Install_008"
+msgid "c_○: The table was successfully deleted.<br />_01"
 msgstr "○: The table was successfully deleted.<br />"
 
-msgid "LC_Page_Install_009"
+msgid "c_×: The table was not deleted.<br />_01"
 msgstr "×: The table was not deleted.<br />"
 
-msgid "LC_Page_Install_010"
+msgid "c_○: The sequence was successfully deleted.<br />_01"
 msgstr "○: The sequence was successfully deleted.<br />"
 
-msgid "LC_Page_Install_011"
+msgid "c_×: The sequence was not deleted.<br />_01"
 msgstr "×: The sequence was not deleted.<br />"
 
 msgid "LC_Page_Install_012"
@@ -2301,37 +2301,37 @@ msgstr "Administrator: Password"
 msgid "LC_Page_Install_022"
 msgstr "Management area: Directory"
 
-msgid "LC_Page_Install_023"
+msgid "c_Management area: SSL restriction_01"
 msgstr "Management area: SSL restriction"
 
-msgid "LC_Page_Install_024"
+msgid "c_Management area: IP restriction_01"
 msgstr "Management area: IP restriction"
 
-msgid "LC_Page_Install_025"
+msgid "c_URL (normal)_01"
 msgstr "URL (normal)"
 
-msgid "LC_Page_Install_026"
+msgid "c_URL (secure)_01"
 msgstr "URL (secure)"
 
-msgid "LC_Page_Install_027"
+msgid "c_Domain_01"
 msgstr "Domain"
 
-msgid "LC_Page_Install_028"
+msgid "c_Mailer backend_01"
 msgstr "Mailer backend"
 
-msgid "LC_Page_Install_029"
+msgid "c_SMTP host_01"
 msgstr "SMTP host"
 
-msgid "LC_Page_Install_030"
+msgid "c_SMTP port_01"
 msgstr "SMTP port"
 
-msgid "LC_Page_Install_031"
+msgid "c_SMTP user_01"
 msgstr "SMTP user"
 
-msgid "LC_Page_Install_032"
+msgid "c_SMTP password_01"
 msgstr "SMTP password"
 
-msgid "LC_Page_Install_033"
+msgid "c_DB type_01"
 msgstr "DB type"
 
 msgid "LC_Page_Install_035"
@@ -2386,37 +2386,37 @@ msgstr "Administrator"
 msgid "LC_Page_Admin_Basis_001"
 msgstr "Basic information"
 
-msgid "LC_Page_Admin_Basis_002"
+msgid "c_SHOP master_01"
 msgstr "SHOP master"
 
-msgid "LC_Page_Admin_Basis_003"
+msgid "c_Sunday_01"
 msgstr "Sunday"
 
-msgid "LC_Page_Admin_Basis_004"
+msgid "c_Monday_01"
 msgstr "Monday"
 
-msgid "LC_Page_Admin_Basis_005"
+msgid "c_Tuesday_01"
 msgstr "Tuesday"
 
-msgid "LC_Page_Admin_Basis_006"
+msgid "c_Wednesday_01"
 msgstr "Wednesday"
 
-msgid "LC_Page_Admin_Basis_007"
+msgid "c_Thursday_01"
 msgstr "Thursday"
 
-msgid "LC_Page_Admin_Basis_008"
+msgid "c_Friday_01"
 msgstr "Friday"
 
-msgid "LC_Page_Admin_Basis_009"
+msgid "c_Saturday_01"
 msgstr "Saturday"
 
-msgid "LC_Page_Admin_Basis_011"
+msgid "c_SHOP master registration is complete._01"
 msgstr "SHOP master registration is complete."
 
-msgid "LC_Page_Admin_Basis_012"
+msgid "c_UPDATE was executed for dtb_baseinfo._01"
 msgstr "UPDATE was executed for dtb_baseinfo."
 
-msgid "LC_Page_Admin_Basis_013"
+msgid "c_INSERT was executed for dtb_baseinfo._01"
 msgstr "INSERT was executed for dtb_baseinfo."
 
 msgid "LC_Page_Admin_Basis_Delivery_001"
@@ -2443,10 +2443,10 @@ msgstr "* It is not possible register a combination of the same name.<br>"
 msgid "LC_Page_Admin_Basis_Holiday_001"
 msgstr "Basic information management"
 
-msgid "LC_Page_Admin_Basis_Holiday_002"
+msgid "c_Holiday management_01"
 msgstr "Holiday management"
 
-msgid "LC_Page_Admin_Basis_Holiday_003"
+msgid "c_* That day has already been registered. <br>_01"
 msgstr "* That day has already been registered. <br>"
 
 msgid "LC_Page_Admin_Basis_Kiyaku_001"
@@ -2494,16 +2494,16 @@ msgstr "Point settings"
 msgid "LC_Page_Admin_Basis_Seo_001"
 msgstr "Basic information management"
 
-msgid "LC_Page_Admin_Basis_Seo_002"
+msgid "c_SEO management_01"
 msgstr "SEO management"
 
-msgid "LC_Page_Admin_Basis_Seo_003"
+msgid "c_PC site_01"
 msgstr "PC site"
 
-msgid "LC_Page_Admin_Basis_Seo_004"
+msgid "c_Mobile site_01"
 msgstr "Mobile site"
 
-msgid "LC_Page_Admin_Basis_Seo_005"
+msgid "c_Smartphone_01"
 msgstr "Smartphone"
 
 msgid "LC_Page_Admin_Basis_Tradelaw_001"
@@ -2515,7 +2515,7 @@ msgstr "Transaction rules"
 msgid "LC_Page_Admin_Basis_ZipInstall_001"
 msgstr "Basic information management"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_002"
+msgid "c_Postal code registration_01"
 msgstr "Postal code registration"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_003"
@@ -2527,19 +2527,19 @@ msgstr " items were added.</p>"
 msgid "LC_Page_Admin_Basis_ZipInstall_005"
 msgstr "<p><a href='?' target='_top'>Go back</a></p>"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_006"
+msgid "c_T_ARG1 reading failed._01"
 msgstr "T_ARG1 reading failed."
 
-msgid "LC_Page_Admin_Basis_ZipInstall_007"
+msgid "c_T_ARG1 cannot be opened._01"
 msgstr "T_ARG1 cannot be opened."
 
-msgid "LC_Page_Admin_Basis_ZipInstall_008"
+msgid "c_T_ARG1 retrieval failed._01"
 msgstr "T_ARG1 retrieval failed."
 
-msgid "LC_Page_Admin_Basis_ZipInstall_009"
+msgid "c_T_ARG1 writing failed._01"
 msgstr "T_ARG1 writing failed."
 
-msgid "LC_Page_Admin_Basis_ZipInstall_010"
+msgid "c_cannot be opened._01"
 msgstr " cannot be opened."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_011"
@@ -2785,79 +2785,79 @@ msgstr "Mail magazine management"
 msgid "LC_Page_Admin_Mail_TemplateInput_002"
 msgstr "Template settings"
 
-msgid "LC_Page_Admin_Order_001"
-msgstr "Order search"
+msgid "c_Order master_01"
+msgstr "Order master"
 
-msgid "LC_Page_Admin_Order_Disp_001"
+msgid "c_Order receipt information display_01"
 msgstr "Order receipt information display"
 
-msgid "LC_Page_Admin_Order_Edit_001"
+msgid "c_Order receipt registration_01"
 msgstr "Order receipt registration"
 
-msgid "LC_Page_Admin_Order_Edit_002"
+msgid "c_Order receipt has been registered._01"
 msgstr "Order receipt has been registered."
 
-msgid "LC_Page_Admin_Order_Edit_003"
+msgid "c_Order receipt has been edited._01"
 msgstr "Order receipt has been edited."
 
-msgid "LC_Page_Admin_Order_Edit_004"
+msgid "c_None_01"
 msgstr "None"
 
-msgid "LC_Page_Admin_Order_Edit_005"
+msgid "c_There is an inventory shortage for T_ARG1/(T_ARG2)/(T_ARG3). Up to T_ARG4 can be set for the quantity.<br />_1"
 msgstr ""
 "There is an inventory shortage for T_ARG1/(T_ARG2)/(T_ARG3). Up to "
 "T_ARG4 can be set for the quantity.<br />"
 
-msgid "LC_Page_Admin_Order_Edit_006"
+msgid "c_Adjust so that the total amount is not a negative number.<br />_01"
 msgstr "Adjust so that the total amount is not a negative number.<br />"
 
-msgid "LC_Page_Admin_Order_Edit_007"
+msgid "c_Adjust so that a negative number is not displayed for the payment total.<br />_01"
 msgstr ""
 "Adjust so that a negative number is not displayed for the payment total.<br /"
 ">"
 
-msgid "LC_Page_Admin_Order_Edit_008"
+msgid "c_Adjust the final number of points registered so that it does not become a negative number.<br />_01"
 msgstr ""
 "Adjust the final number of points registered so that it does not become a "
 "negative number.<br />"
 
-msgid "LC_Page_Admin_Order_Mail_001"
+msgid "c_Order receipt management_01"
 msgstr "Order receipt management"
 
-msgid "LC_Page_Admin_Order_MailView_001"
+msgid "c_Order receipt management mail confirmation_01"
 msgstr "Order receipt management mail confirmation"
 
-msgid "LC_Page_Admin_Order_Multiple_001"
+msgid "c_Multiple shipping settings_01"
 msgstr "Multiple shipping settings"
 
-msgid "LC_Page_Admin_Order_Pdf_001"
+msgid "c_Ledger output_01"
 msgstr "Ledger output"
 
-msgid "LC_Page_Admin_Order_Pdf_002"
+msgid "c_Delivery slip_01"
 msgstr "Delivery slip"
 
-msgid "LC_Page_Admin_Order_Pdf_003"
+msgid "c_Open in browser_01"
 msgstr "Open in browser"
 
-msgid "LC_Page_Admin_Order_Pdf_004"
+msgid "c_Save to file_01"
 msgstr "Save to file"
 
-msgid "LC_Page_Admin_Order_Pdf_005"
+msgid "c_Detailed purchase statement (delivery slip)_01"
 msgstr "Detailed purchase statement (delivery slip)"
 
-msgid "LC_Page_Admin_Order_Pdf_009"
+msgid "c_Enter a number for the issuance year._01"
 msgstr "Enter a number for the issuance year."
 
-msgid "LC_Page_Admin_Order_Pdf_010"
+msgid "c_Enter a number for the issuance month._01"
 msgstr "Enter a number for the issuance month."
 
-msgid "LC_Page_Admin_Order_Pdf_011"
+msgid "c_Enter between 1 - 12 for the issuance month_01"
 msgstr "Enter between 1 - 12 for the issuance month"
 
-msgid "LC_Page_Admin_Order_Pdf_012"
+msgid "c_Enter a number for the issuance date._01"
 msgstr "Enter a number for the issuance date."
 
-msgid "LC_Page_Admin_Order_Pdf_013"
+msgid "c_Enter a number between 1- 31 for the issuance date._01"
 msgstr "Enter a number between 1- 31 for the issuance date."
 
 msgid "LC_Page_Admin_Order_ProductSelect_001"
@@ -2866,90 +2866,90 @@ msgstr "Product selection"
 msgid "LC_Page_Admin_Order_Status_001"
 msgstr "Response status"
 
-msgid "LC_Page_Admin_OwnersStore_001"
+msgid "c_Plug-in management_01"
 msgstr "Plug-in management"
 
-msgid "LC_Page_Admin_OwnersStore_002"
+msgid "c_* T_ARG1 is already installed.<br/>_01"
 msgstr "* T_ARG1 is already installed.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_003"
+msgid "c_* DB registration failed.<br/>_01"
 msgstr "* DB registration failed.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_004"
+msgid "c_* PLUGIN_CODE is not defined.<br/>_01"
 msgstr "* PLUGIN_CODE is not defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_005"
+msgid "c_* PLUGIN_NAME is not defined.<br/>_01"
 msgstr "* PLUGIN_NAME is not defined.<br/>"
 
 msgid "LC_Page_Admin_OwnersStore_006"
 msgstr "* CLASS_NAME is not defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_007"
+msgid "c_* CLASS_NAME is not properly defined.<br/>_01"
 msgstr "* CLASS_NAME is not properly defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_008"
+msgid "c_* PLUGIN_VERSION is not defined.<br/>_01"
 msgstr "* PLUGIN_VERSION is not defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_009"
+msgid "c_* COMPLIANT_VERSION is not defined.<br/>_01"
 msgstr "* COMPLIANT_VERSION is not defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_010"
+msgid "c_* AUTHOR is not defined.<br/>_01"
 msgstr "* AUTHOR is not defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_011"
+msgid "c_* DESCRIPTION is not defined.<br/>_01"
 msgstr "* DESCRIPTION is not defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_012"
+msgid "c_* The plug-in code does not match<br/>_01"
 msgstr "* The plug-in code does not match<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_013"
+msgid "c_* Decompression failed.<br/>_01"
 msgstr "* Decompression failed.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_014"
+msgid "c_* T_ARG1 reading failed.<br/>_01"
 msgstr "* T_ARG1 reading failed.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_015"
+msgid "c_* T_ARG2 was not found in T_ARG1.php.<br/>_01"
 msgstr "* T_ARG2 was not found in T_ARG1.php.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_016"
+msgid "c_Decompression:_01"
 msgstr "Decompression:"
 
-msgid "LC_Page_Admin_OwnersStore_017"
+msgid "c_*There is the possibility of competition with T_ARG1.<br/>_01"
 msgstr "*There is the possibility of competition with T_ARG1.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_Log_001"
+msgid "c_Log management_01"
 msgstr "Log management"
 
-msgid "LC_Page_Admin_OwnersStore_Module_001"
+msgid "c_Module management_01"
 msgstr "Module management"
 
-msgid "LC_Page_Admin_OwnersStore_Settings_001"
+msgid "c_Authentication key settings_01"
 msgstr "Authentication key settings"
 
-msgid "LC_Page_Admin_Products_001"
+msgid "c_Product master_01"
 msgstr "Product master"
 
-msgid "LC_Page_Admin_Products_Category_001"
+msgid "c_Category registration_01"
 msgstr "Category registration"
 
-msgid "LC_Page_Admin_Products_Category_002"
+msgid "c_* Cannot be deleted since a subcategory exists.<br/>_01"
 msgstr "* Cannot be deleted since a subcategory exists.<br/>"
 
-msgid "LC_Page_Admin_Products_Category_003"
+msgid "c_* The category cannot be deleted since there are products in the category.<br/>_01"
 msgstr ""
 "* The category cannot be deleted since there are products in the category."
 "<br/>"
 
-msgid "LC_Page_Admin_Products_Category_004"
+msgid "c_* The maximum number of categories that can be registered has been exceeded.<br/>_01"
 msgstr ""
 "* The maximum number of categories that can be registered has been exceeded."
 "<br/>"
 
-msgid "LC_Page_Admin_Products_Category_005"
+msgid "c_* Registration of the T_ARG1 hierarchy or higher is not possible.<br/>_01"
 msgstr ""
 "* Registration of the T_ARG1 hierarchy or higher is not possible.<br/>"
 
-msgid "LC_Page_Admin_Products_Category_006"
+msgid "c_* Registration of the same contents already exists.<br/>_01"
 msgstr "* Registration of the same contents already exists.<br/>"
 
 msgid "LC_Page_Admin_Products_Class_001"

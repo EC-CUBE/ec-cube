@@ -57,7 +57,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = t('LC_Page_Forgot_001');
+        $this->tpl_title = t('c_If you have forgotten your password_01');
         $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
         $masterData = new SC_DB_MasterData_Ex();
@@ -159,10 +159,10 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $arrForm['reminder'] = $result[0]['reminder'];
             } else if ($result[0]['status'] == '1') {
                 // 仮会員
-                $errmsg = t('LC_Page_Forgot_002');
+                $errmsg = t('c_The e-mail address you registered is currently temporarily active.<br/>Please access the URL that was sent at the time of registration to complete member registration._01');
             }
         } else {
-            $errmsg = t('LC_Page_Forgot_003');
+            $errmsg = t('c_There is an error with your name or the e-mail address is not correct._01');
         }
         return $errmsg;
     }

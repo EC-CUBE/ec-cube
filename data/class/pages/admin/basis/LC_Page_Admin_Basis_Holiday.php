@@ -46,7 +46,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/holiday.tpl';
         $this->tpl_subno = 'holiday';
         $this->tpl_maintitle = t('c_Basic information_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Holiday_002');
+        $this->tpl_subtitle = t('c_Holiday management_01');
         $this->tpl_mainno = 'basis';
     }
 
@@ -253,7 +253,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
 
             // 編集中のレコード以外に同じ日付が存在する場合
             if ($arrRet[0]['count'] > 0) {
-                $arrErr['date'] = t('LC_Page_Admin_Basis_Holiday_003');
+                $arrErr['date'] = t('c_* That day has already been registered. <br>_01');
             }
         }
         return $arrErr;

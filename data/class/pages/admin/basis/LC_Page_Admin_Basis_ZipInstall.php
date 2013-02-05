@@ -70,7 +70,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'basis/zip_install.tpl';
         $this->tpl_subno = 'zip_install';
         $this->tpl_maintitle = t('c_Basic information_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Basis_ZipInstall_002');
+        $this->tpl_subtitle = t('c_Postal code registration_01');
         $this->tpl_mainno = 'basis';
 
         $this->tpl_mode = $this->getMode();
@@ -294,7 +294,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $this->convertZipCsv();
         $fp = fopen(ZIP_CSV_UTF8_REALFILE, 'r');
         if (!$fp) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_006', array('T_ARG1', ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 reading failed._01', array('T_ARG1', ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
         }
         return $fp;
     }
@@ -304,12 +304,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         $fpr = fopen(ZIP_CSV_REALFILE, 'r');
         if (!$fpr) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_006', array('T_ARG1', ZIP_CSV_REALFILE)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 reading failed._01', array('T_ARG1', ZIP_CSV_REALFILE)), E_USER_ERROR);
         }
 
         $fpw = fopen(ZIP_CSV_UTF8_REALFILE, 'w');
         if (!$fpw) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_007', array('T_ARG1' => ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 cannot be opened._01', array('T_ARG1' => ZIP_CSV_UTF8_REALFILE)), E_USER_ERROR);
         }
 
         while (!feof($fpr)) {
@@ -360,17 +360,17 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // 郵便番号CSVをdownloadする。
         $res = $req->sendRequest();
         if (!$res || strlen($res) > 1) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_008', array('T_ARG1', ZIP_DOWNLOAD_URL)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 retrieval failed._01', array('T_ARG1', ZIP_DOWNLOAD_URL)), E_USER_ERROR);
         }
 
         // 郵便番号CSV(zip file)を保存する。
         $fp = fopen($this->zip_csv_temp_realfile, 'w');
         if (!$fp) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_007', array('T_ARG1' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 cannot be opened._01', array('T_ARG1' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
         }
         $res = fwrite($fp, $req->getResponseBody());
         if (!$res) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_009', array('T_ARG1' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 writing failed._01', array('T_ARG1' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
         }
     }
 
@@ -382,7 +382,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function lfExtractZipFile() {
         $zip = zip_open($this->zip_csv_temp_realfile);
         if (!is_resource($zip)) {
-            trigger_error(t(t('LC_Page_Admin_Basis_ZipInstall_010', array('T_ARG1' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
+            trigger_error(t(t('c_cannot be opened._01', array('T_ARG1' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
         }
 
         do {
@@ -404,12 +404,12 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         $fp = fopen($tmp_csv_realfile, 'w');
         if (!$fp) {
             
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_007', array('T_ARG1' => $tmp_csv_realfile)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 cannot be opened._01', array('T_ARG1' => $tmp_csv_realfile)), E_USER_ERROR);
         }
 
         $res = fwrite($fp, zip_entry_read($entry, zip_entry_filesize($entry)));
         if ($res === FALSE) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_009', array('T_ARG1' => $tmp_csv_realfile)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 writing failed._01', array('T_ARG1' => $tmp_csv_realfile)), E_USER_ERROR);
         }
 
         fclose($fp);

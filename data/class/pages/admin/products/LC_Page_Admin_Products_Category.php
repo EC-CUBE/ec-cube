@@ -46,7 +46,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
     function init() {
         parent::init();
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_Category_001');
+        $this->tpl_subtitle = t('c_Category registration_01');
         $this->tpl_mainpage = 'products/category.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno  = 'category';
@@ -208,7 +208,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $where = 'parent_category_id = ? AND del_flg = 0';
         $exists = $objQuery->exists('dtb_category', $where, array($category_id));
         if ($exists) {
-            $this->arrErr['category_name'] = t('LC_Page_Admin_Products_Category_002');
+            $this->arrErr['category_name'] = t('c_* Cannot be deleted since a subcategory exists.<br/>_01');
             return;
         }
         // 登録商品のチェック
@@ -216,7 +216,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         $where = 'T1.category_id = ? AND T2.del_flg = 0';
         $exists = $objQuery->exists($table, $where, array($category_id));
         if ($exists) {
-            $this->arrErr['category_name'] = t('LC_Page_Admin_Products_Category_003');
+            $this->arrErr['category_name'] = t('c_* The category cannot be deleted since there are products in the category.<br/>_01');
             return;
         }
 
@@ -311,13 +311,13 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
             $where = 'del_flg = 0';
             $count = $objQuery->count('dtb_category', $where);
             if ($count >= CATEGORY_MAX) {
-                $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_004');
+                $arrErr['category_name'] = t('c_* The maximum number of categories that can be registered has been exceeded.<br/>_01');
                 return $arrErr;
             }
 
             // 階層上限チェック
             if ($this->isOverLevel($parent_category_id)) {
-                $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_005', array('T_ARG1' => LEVEL_MAX));
+                $arrErr['category_name'] = t('c_* Registration of the T_ARG1 hierarchy or higher is not possible.<br/>_01', array('T_ARG1' => LEVEL_MAX));
                 return $arrErr;
             }
         }
@@ -334,7 +334,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
         }
         $exists = $objQuery->exists('dtb_category', $where, $arrWhereVal);
         if ($exists) {
-            $arrErr['category_name'] = t('LC_Page_Admin_Products_Category_006');
+            $arrErr['category_name'] = t('c_* Registration of the same contents already exists.<br/>_01');
             return $arrErr;
         }
 

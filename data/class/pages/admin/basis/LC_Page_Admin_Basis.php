@@ -50,16 +50,16 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
         $this->tpl_maintitle = t('c_Basic information_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Basis_002');;
+        $this->tpl_subtitle = t('c_SHOP master_01');;
 
         //定休日用配列
-        $this->arrRegularHoliday[0] = t('LC_Page_Admin_Basis_003');
-        $this->arrRegularHoliday[1] = t('LC_Page_Admin_Basis_004');
-        $this->arrRegularHoliday[2] = t('LC_Page_Admin_Basis_005');
-        $this->arrRegularHoliday[3] = t('LC_Page_Admin_Basis_006');
-        $this->arrRegularHoliday[4] = t('LC_Page_Admin_Basis_007');
-        $this->arrRegularHoliday[5] = t('LC_Page_Admin_Basis_008');
-        $this->arrRegularHoliday[6] = t('LC_Page_Admin_Basis_009');
+        $this->arrRegularHoliday[0] = t('c_Sunday_01');
+        $this->arrRegularHoliday[1] = t('c_Monday_01');
+        $this->arrRegularHoliday[2] = t('c_Tuesday_01');
+        $this->arrRegularHoliday[3] = t('c_Wednesday_01');
+        $this->arrRegularHoliday[4] = t('c_Thursday_01');
+        $this->arrRegularHoliday[5] = t('c_Friday_01');
+        $this->arrRegularHoliday[6] = t('c_Saturday_01');
     }
 
     /**
@@ -112,7 +112,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
                     default:
                         break;
                 }
-                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert(\"" . t('LC_Page_Admin_Basis_011') . "\");";
+                $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "'); window.alert(\"" . t('c_SHOP master registration is complete._01') . "\");";
             }
             if (empty($this->arrForm['regular_holiday_ids'])) {
                 $this->arrSel = array();
@@ -195,7 +195,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // UPDATEの実行
         $ret = $objQuery->update('dtb_baseinfo', $sqlval);
 
-        GC_Utils_Ex::gfPrintLog(t('LC_Page_Admin_Basis_012'));
+        GC_Utils_Ex::gfPrintLog(t('c_UPDATE was executed for dtb_baseinfo._01'));
     }
 
     function lfInsertData($array) {
@@ -209,7 +209,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // INSERTの実行
         $ret = $objQuery->insert('dtb_baseinfo', $sqlval);
 
-        GC_Utils_Ex::gfPrintLog(t('LC_Page_Admin_Basis_013'));
+        GC_Utils_Ex::gfPrintLog(t('c_INSERT was executed for dtb_baseinfo._01'));
     }
 
     function lfInitParam(&$objFormParam, $post) {
