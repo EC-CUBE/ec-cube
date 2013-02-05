@@ -246,7 +246,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $from_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
         $to_dir = USER_REALDIR . 'packages/' . $template_code . '/';
         if (!SC_Utils_Ex::recursiveMkdir($to_dir)) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_010', array('T_ARG1' => $to_dir));
+            $this->arrErr['err'] = t('c_* T_ARG1 creation failed.<br/>_01', array('T_ARG1' => $to_dir));
             
             $objQuery->rollback();
             return false;

@@ -253,7 +253,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
                 }
             }
             if ($is_error) {
-                $objErr->arrErr['css_name'] = t('LC_Page_Admin_Design_CSS_006');
+                $objErr->arrErr['css_name'] = t('c_* Data for the same file name exists. Enter a different file name.<br />_01');
             }
         }
         return $objErr->arrErr;

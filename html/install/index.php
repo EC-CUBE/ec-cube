@@ -685,7 +685,7 @@ function lfInitWebParam($objWebParam) {
 
     $objWebParam->addParam(t('c_Store name_01'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
     $objWebParam->addParam(t('c_Administrator: E-mail address_01'), 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
-    $objWebParam->addParam(t('LC_Page_Install_020'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam(t('c_Administrator: Login ID_01'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('LC_Page_Install_021'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('c_Management area: Directory_01'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
     $objWebParam->addParam(t('c_Management area: SSL restriction_01'), 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), $admin_force_ssl);
@@ -762,7 +762,7 @@ function lfCheckWebError($objWebParam) {
     }
 
     // ログインIDチェック
-    $objErr->doFunc(array(t('LC_Page_Install_041'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array(t('c_Administrator: Login ID_01'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     // パスワードのチェック
     $objErr->doFunc(array(t('LC_Page_Install_042'), 'login_pass', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));

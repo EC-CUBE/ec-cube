@@ -47,7 +47,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'mail';
         $this->tpl_subno = 'template';
         $this->tpl_maintitle = t('c_Mail magazine_02');
-        $this->tpl_subtitle = t('LC_Page_Admin_Mail_Template_002');
+        $this->tpl_subtitle = t('c_Template settings_02');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMagazineType = $masterData->getMasterData('mtb_magazine_type');

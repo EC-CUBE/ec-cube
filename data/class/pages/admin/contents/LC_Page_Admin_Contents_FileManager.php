@@ -158,7 +158,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if (!$this->tryCreateDir($objFileManager, $objFormParam)) {
-                        $disp_error = t('LC_Page_Admin_Contents_FileManager_005', array('T_FILED', htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)));
+                        $disp_error = t('c_* T_ARG1 creation failed.<br/>_01', array('T_FILED', htmlspecialchars($objFormParam->getValue('create_file'), ENT_QUOTES)));
                         $this->setDispError('create_file', $disp_error);
                     } else {
                         $tpl_onload = "alert('" . t('c_The folder was created._01') . "');";

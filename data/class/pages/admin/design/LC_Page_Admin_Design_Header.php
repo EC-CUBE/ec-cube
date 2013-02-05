@@ -165,7 +165,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $tpl_path = $this->getTemplatePath($objFormParam->getValue('device_type_id'), $division);
         if ($tpl_path === false
             || !SC_Helper_FileManager_Ex::sfWriteFile($tpl_path, $contents)) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Header_004');
+            $this->arrErr['err'] = t('c_* File writing failed<br />_01');
             return false;
         }
         return true;

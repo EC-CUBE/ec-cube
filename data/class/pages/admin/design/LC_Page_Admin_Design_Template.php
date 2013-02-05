@@ -46,7 +46,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $this->tpl_subno    = 'template';
         $this->tpl_mainno   = 'design';
         $this->tpl_maintitle = t('c_Design_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Design_Template_002');
+        $this->tpl_subtitle = t('c_Template settings_01');
         $this->arrErr  = array();
         $this->arrForm = array();
         ini_set('max_execution_time', 300);

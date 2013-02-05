@@ -48,7 +48,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $this->tpl_subno_csv = 'csv_sql';
         $this->tpl_mainno = 'contents';
         $this->tpl_maintitle = t('c_Edit contents_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Contents_CsvSql_002');
+        $this->tpl_subtitle = t('c_CSV output settings_01');
     }
 
     /**

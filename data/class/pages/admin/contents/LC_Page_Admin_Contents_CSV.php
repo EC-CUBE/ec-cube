@@ -47,7 +47,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'csv';
         $this->tpl_mainno = 'contents';
         $this->tpl_maintitle = t('c_Edit contents_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Contents_CSV_002');
+        $this->tpl_subtitle = t('c_CSV output settings_01');
 
         $objCSV = new SC_Helper_CSV_Ex();
         $this->arrSubnavi = $objCSV->arrSubnavi; // 別名

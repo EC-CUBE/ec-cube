@@ -46,7 +46,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
         $this->tpl_mainpage = 'mail/template_input.tpl';
         $this->tpl_mainno = 'mail';
         $this->tpl_maintitle = t('c_Mail magazine_02');
-        $this->tpl_subtitle = t('LC_Page_Admin_Mail_TemplateInput_002');
+        $this->tpl_subtitle = t('c_Template settings_02');
         $this->tpl_subno = 'template';
         $this->mode = 'regist';
         $masterData = new SC_DB_MasterData_Ex();

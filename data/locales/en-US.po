@@ -2247,7 +2247,7 @@ msgstr ">> ○:Access authority is normal."
 msgid "c_Administrator: E-mail address_01"
 msgstr "Administrator: E-mail address"
 
-msgid "LC_Page_Install_020"
+msgid "c_Administrator: Login ID_01"
 msgstr "Administrator: Login ID"
 
 msgid "LC_Page_Install_021"
@@ -2306,9 +2306,6 @@ msgstr "* It is not possible to designate a different hierarchy for the URL."
 
 msgid "LC_Page_Install_040"
 msgstr "* It is not possible to designate a different hierarchy for the URL."
-
-msgid "LC_Page_Install_041"
-msgstr "Administrator: Login ID"
 
 msgid "LC_Page_Install_042"
 msgstr "Administrator: Password"
@@ -2374,14 +2371,8 @@ msgstr "UPDATE was executed for dtb_baseinfo."
 msgid "c_INSERT was executed for dtb_baseinfo._01"
 msgstr "INSERT was executed for dtb_baseinfo."
 
-msgid "LC_Page_Admin_Basis_Delivery_001"
-msgstr "Basic information management"
-
 msgid "LC_Page_Admin_Basis_Delivery_002"
 msgstr "Delivery method settings"
-
-msgid "LC_Page_Admin_Basis_DeliveryInput_001"
-msgstr "Basic information management"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_002"
 msgstr "Delivery method settings"
@@ -2395,17 +2386,11 @@ msgstr "Delivery charge T_ARG1"
 msgid "c_* It is not possible register a combination of the same name.<br>_01"
 msgstr "* It is not possible register a combination of the same name.<br>"
 
-msgid "LC_Page_Admin_Basis_Holiday_001"
-msgstr "Basic information management"
-
 msgid "c_Holiday management_01"
 msgstr "Holiday management"
 
 msgid "c_* That day has already been registered. <br>_01"
 msgstr "* That day has already been registered. <br>"
-
-msgid "LC_Page_Admin_Basis_Kiyaku_001"
-msgstr "Basic information management"
 
 msgid "c_Membership terms and conditions_01"
 msgstr "Membership terms and conditions"
@@ -2413,23 +2398,14 @@ msgstr "Membership terms and conditions"
 msgid "LC_Page_Admin_Basis_Kiyaku_004"
 msgstr "* Registration of the same contents already exists.<br>"
 
-msgid "LC_Page_Admin_Basis_Mail_001"
-msgstr "Basic information management"
-
 msgid "c_E-mail settings_01"
 msgstr "E-mail settings"
 
 msgid "c_An error has occurred_01"
 msgstr "An error has occurred"
 
-msgid "LC_Page_Admin_Basis_Payment_001"
-msgstr "Basic information management"
-
 msgid "LC_Page_Admin_Basis_Payment_002"
 msgstr "Payment method settings"
-
-msgid "LC_Page_Admin_Basis_PaymentInput_001"
-msgstr "Basic information management"
 
 msgid "LC_Page_Admin_Basis_PaymentInput_002"
 msgstr "Payment method settings"
@@ -2440,14 +2416,8 @@ msgstr "Make the usage conditions (lower limit) &#036; T_ARG1 or more.<br>"
 msgid "c_Make the usage conditions (max) &#036; T_ARG1 or less.<br>_01"
 msgstr "Make the usage conditions (max) &#036; T_ARG1 or less.<br>"
 
-msgid "LC_Page_Admin_Basis_Point_001"
-msgstr "Basic information management"
-
 msgid "c_Point settings_01"
 msgstr "Point settings"
-
-msgid "LC_Page_Admin_Basis_Seo_001"
-msgstr "Basic information management"
 
 msgid "c_SEO management_01"
 msgstr "SEO management"
@@ -2461,14 +2431,8 @@ msgstr "Mobile site"
 msgid "c_Smartphone_01"
 msgstr "Smartphone"
 
-msgid "LC_Page_Admin_Basis_Tradelaw_001"
-msgstr "Basic information management"
-
 msgid "c_Transaction rules_01"
 msgstr "Transaction rules"
-
-msgid "LC_Page_Admin_Basis_ZipInstall_001"
-msgstr "Basic information management"
 
 msgid "c_Postal code registration_01"
 msgstr "Postal code registration"
@@ -2509,22 +2473,10 @@ msgstr " cannot be deleted."
 msgid "c_The file name cannot be changed.: T_ARG1 -> TFIELF2_01"
 msgstr "The file name cannot be changed.: T_ARG1 -> TFIELF2"
 
-msgid "LC_Page_Admin_Contents_001"
-msgstr "Contents management"
-
 msgid "c_Management of new information_01"
 msgstr "Management of new information"
 
-msgid "LC_Page_Admin_Contents_CSV_001"
-msgstr "Contents management"
-
-msgid "LC_Page_Admin_Contents_CSV_002"
-msgstr "CSV output settings"
-
-msgid "LC_Page_Admin_Contents_CsvSql_001"
-msgstr "Contents management"
-
-msgid "LC_Page_Admin_Contents_CsvSql_002"
+msgid "c_CSV output settings_01"
 msgstr "CSV output settings"
 
 msgid "c_* The SQL text is not correct. Please revise the SQL text_01"
@@ -2536,20 +2488,14 @@ msgstr "Data table: T_ARG1"
 msgid "c_Master table: T_ARG1_01"
 msgstr "Master table: T_ARG1"
 
-msgid "LC_Page_Admin_Contents_FileManager_001"
-msgstr "Contents management"
-
 msgid "c_File management_01"
 msgstr "File management"
 
 msgid "c_* It is not possible to download the directory.<br/>_01"
 msgstr "* It is not possible to download the directory.<br/>"
 
-msgid "LC_Page_Admin_Contents_FileManager_005"
+msgid "c_* T_ARG1 creation failed.<br/>_01"
 msgstr "* T_ARG1 creation failed.<br/>"
-
-msgid "LC_Page_Admin_Contents_Recommend_001"
-msgstr "Contents management"
 
 msgid "c_Recommended products_01"
 msgstr "Recommended products"
@@ -2557,10 +2503,7 @@ msgstr "Recommended products"
 msgid "c_Product search_01"
 msgstr "Product search"
 
-msgid "LC_Page_Admin_Customer_001"
-msgstr "Members"
-
-msgid "LC_Page_Admin_Customer_002"
+msgid "c_Member master_01"
 msgstr "Member master"
 
 msgid "LC_Page_Admin_Customer_Edit_002"
@@ -2575,14 +2518,8 @@ msgstr "* This mobile address is already used by another member (ID:T_ARG1)."
 msgid "c_Member search_01"
 msgstr "Member search"
 
-msgid "LC_Page_Admin_Design_001"
-msgstr "Design management"
-
 msgid "c_Layout settings_01"
 msgstr "Layout settings"
-
-msgid "LC_Page_Admin_Design_Bloc_001"
-msgstr "Design management"
 
 msgid "c_Block settings_01"
 msgstr "Block settings"
@@ -2593,12 +2530,9 @@ msgstr "* Block writing failed<br />"
 msgid "c_* Block deletion failed<br />_01"
 msgstr "* Block deletion failed<br />"
 
-msgid "LC_Page_Admin_Design_Bloc_005"
+msgid "c_* Data for the same file name exists. Enter a different file name.<br />_01"
 msgstr ""
 "* Data for the same file name exists. Enter a different file name.<br />"
-
-msgid "LC_Page_Admin_Design_CSS_001"
-msgstr "Design management"
 
 msgid "c_CSS settings_01"
 msgstr "CSS settings"
@@ -2612,24 +2546,14 @@ msgstr "* CSS writing failed<br />"
 msgid "c_* CSS deletion failed<br />_01"
 msgstr "* CSS deletion failed<br />"
 
-msgid "LC_Page_Admin_Design_CSS_006"
-msgstr ""
-"* Data for the same file name exists. Enter a different file name.<br />"
-
-msgid "LC_Page_Admin_Design_Header_001"
-msgstr "Design management"
-
 msgid "c_Header/footer settings_01"
 msgstr "Header/footer settings"
 
 msgid "c_* File retrieval failed<br />_01"
 msgstr "* File retrieval failed<br />"
 
-msgid "LC_Page_Admin_Design_Header_004"
+msgid "c_* File writing failed<br />_01"
 msgstr "* File writing failed<br />"
-
-msgid "LC_Page_Admin_Design_MainEdit_001"
-msgstr "Design management"
 
 msgid "c_Page detail settings_01"
 msgstr "Page detail settings"
@@ -2646,10 +2570,7 @@ msgstr "* Enter the URL again.<br />"
 msgid "c_* Data for the same URL exists. Enter a different URL.<br />_01"
 msgstr "* Data for the same URL exists. Enter a different URL.<br />"
 
-msgid "LC_Page_Admin_Design_Template_001"
-msgstr "Design management"
-
-msgid "LC_Page_Admin_Design_Template_002"
+msgid "c_Template settings_01"
 msgstr "Template settings"
 
 msgid "c_* The default template and template that is currently selected cannot be deleted<br />_01"
@@ -2668,9 +2589,6 @@ msgstr "* Directory creation failed<br />"
 
 msgid "c_* Archive file creation failed<br />_01"
 msgstr "* Archive file creation failed<br />"
-
-msgid "LC_Page_Admin_Design_UpDown_001"
-msgstr "Design management"
 
 msgid "c_Template addition_01"
 msgstr "Template addition"
@@ -2698,12 +2616,6 @@ msgstr "* Smarty compile folder could not be created.<br/>"
 msgid "c_* Decompression of the template file failed.<br/>_01"
 msgstr "* Decompression of the template file failed.<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_010"
-msgstr "* T_ARG1 creation failed.<br/>"
-
-msgid "LC_Page_Admin_Mail_001"
-msgstr "Mail magazine management"
-
 msgid "c_Delivery content settings_01"
 msgstr "Delivery content settings"
 
@@ -2719,25 +2631,13 @@ msgstr "TEXT"
 msgid "c_[T_ARG1]_01"
 msgstr "[T_ARG1]"
 
-msgid "LC_Page_Admin_Mail_History_001"
-msgstr "Mail magazine management"
-
 msgid "c_Delivery history_01"
 msgstr "Delivery history"
 
 msgid "c_Preview_01"
 msgstr "Preview"
 
-msgid "LC_Page_Admin_Mail_Template_001"
-msgstr "Mail magazine management"
-
-msgid "LC_Page_Admin_Mail_Template_002"
-msgstr "Template settings"
-
-msgid "LC_Page_Admin_Mail_TemplateInput_001"
-msgstr "Mail magazine management"
-
-msgid "LC_Page_Admin_Mail_TemplateInput_002"
+msgid "c_Template settings_02"
 msgstr "Template settings"
 
 msgid "c_Order master_01"

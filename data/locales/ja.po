@@ -2232,7 +2232,7 @@ msgstr ">> ○：アクセス権限は正常です。"
 msgid "c_Administrator: E-mail address_01"
 msgstr "管理者：メールアドレス"
 
-msgid "LC_Page_Install_020"
+msgid "c_Administrator: Login ID_01"
 msgstr "管理者：ログインID"
 
 msgid "LC_Page_Install_021"
@@ -2291,9 +2291,6 @@ msgstr "※ URLに異なる階層を指定することはできません。"
 
 msgid "LC_Page_Install_040"
 msgstr "※ URLに異なる階層を指定することはできません。"
-
-msgid "LC_Page_Install_041"
-msgstr "管理者：ログインID"
 
 msgid "LC_Page_Install_042"
 msgstr "管理者：パスワード"
@@ -2360,14 +2357,8 @@ msgstr "dtb_baseinfo に UPDATE を実行しました。"
 msgid "c_INSERT was executed for dtb_baseinfo._01"
 msgstr "dtb_baseinfo に INSERT を実行しました。"
 
-msgid "LC_Page_Admin_Basis_Delivery_001"
-msgstr "基本情報管理"
-
 msgid "LC_Page_Admin_Basis_Delivery_002"
 msgstr "配送方法設定"
-
-msgid "LC_Page_Admin_Basis_DeliveryInput_001"
-msgstr "基本情報管理"
 
 msgid "LC_Page_Admin_Basis_DeliveryInput_002"
 msgstr "配送方法設定"
@@ -2381,17 +2372,11 @@ msgstr "配送料金T_ARG1"
 msgid "c_* It is not possible register a combination of the same name.<br>_01"
 msgstr "※ 同じ名称の組み合わせは登録できません。<br>"
 
-msgid "LC_Page_Admin_Basis_Holiday_001"
-msgstr "基本情報管理"
-
 msgid "c_Holiday management_01"
 msgstr "定休日管理"
 
 msgid "c_* That day has already been registered. <br>_01"
 msgstr "※ 既に同じ日付の登録が存在します。<br>"
-
-msgid "LC_Page_Admin_Basis_Kiyaku_001"
-msgstr "基本情報管理"
 
 msgid "c_Membership terms and conditions_01"
 msgstr "会員規約設定"
@@ -2399,23 +2384,14 @@ msgstr "会員規約設定"
 msgid "LC_Page_Admin_Basis_Kiyaku_004"
 msgstr "※ 既に同じ内容の登録が存在します。<br>"
 
-msgid "LC_Page_Admin_Basis_Mail_001"
-msgstr "基本情報管理"
-
 msgid "c_E-mail settings_01"
 msgstr "メール設定"
 
 msgid "c_An error has occurred_01"
 msgstr "エラーが発生しました"
 
-msgid "LC_Page_Admin_Basis_Payment_001"
-msgstr "基本情報管理"
-
 msgid "LC_Page_Admin_Basis_Payment_002"
 msgstr "支払方法設定"
-
-msgid "LC_Page_Admin_Basis_PaymentInput_001"
-msgstr "基本情報管理"
 
 msgid "LC_Page_Admin_Basis_PaymentInput_002"
 msgstr "支払方法設定"
@@ -2426,14 +2402,8 @@ msgstr "利用条件(下限)はT_ARG1円以上にしてください。<br>"
 msgid "c_Make the usage conditions (max) &#036; T_ARG1 or less.<br>_01"
 msgstr "利用条件(上限)はT_ARG1円以下にしてください。<br>"
 
-msgid "LC_Page_Admin_Basis_Point_001"
-msgstr "基本情報管理"
-
 msgid "c_Point settings_01"
 msgstr "ポイント設定"
-
-msgid "LC_Page_Admin_Basis_Seo_001"
-msgstr "基本情報管理"
 
 msgid "c_SEO management_01"
 msgstr "SEO管理"
@@ -2447,14 +2417,8 @@ msgstr "モバイルサイト"
 msgid "c_Smartphone_01"
 msgstr "スマートフォン"
 
-msgid "LC_Page_Admin_Basis_Tradelaw_001"
-msgstr "基本情報管理"
-
 msgid "c_Transaction rules_01"
 msgstr "特定商取引法"
-
-msgid "LC_Page_Admin_Basis_ZipInstall_001"
-msgstr "基本情報管理"
 
 msgid "c_Postal code registration_01"
 msgstr "郵便番号DB登録"
@@ -2481,7 +2445,7 @@ msgid "c_T_ARG1 writing failed._01"
 msgstr "T_ARG1 への書き込みに失敗しました。"
 
 msgid "c_cannot be opened._01"
-msgstr " をオープンできません。"
+msgstr "T_ARG1 をオープンできません。"
 
 msgid "c_The target file was not found in T_ARG1._01"
 msgstr "T_ARG1 に対象ファイルが見つかりません。"
@@ -2490,27 +2454,15 @@ msgid "c_T_ARG1 decompression failed._01"
 msgstr "T_ARG1 の展開に失敗しました。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_013"
-msgstr " を削除できません。"
+msgstr "T_ARG1 を削除できません。"
 
 msgid "c_The file name cannot be changed.: T_ARG1 -> TFIELF2_01"
 msgstr "ファイル名を変更できません。: T_ARG1 -> TFIELF2"
 
-msgid "LC_Page_Admin_Contents_001"
-msgstr "コンテンツ管理"
-
 msgid "c_Management of new information_01"
 msgstr "新着情報管理"
 
-msgid "LC_Page_Admin_Contents_CSV_001"
-msgstr "コンテンツ管理"
-
-msgid "LC_Page_Admin_Contents_CSV_002"
-msgstr "CSV出力設定"
-
-msgid "LC_Page_Admin_Contents_CsvSql_001"
-msgstr "コンテンツ管理"
-
-msgid "LC_Page_Admin_Contents_CsvSql_002"
+msgid "c_CSV output settings_01"
 msgstr "CSV出力設定"
 
 msgid "c_* The SQL text is not correct. Please revise the SQL text_01"
@@ -2522,20 +2474,14 @@ msgstr "データテーブル: T_ARG1"
 msgid "c_Master table: T_ARG1_01"
 msgstr "マスターテーブル: T_ARG1"
 
-msgid "LC_Page_Admin_Contents_FileManager_001"
-msgstr "コンテンツ管理"
-
 msgid "c_File management_01"
 msgstr "ファイル管理"
 
 msgid "c_* It is not possible to download the directory.<br/>_01"
 msgstr "※ ディレクトリをダウンロードすることは出来ません。<br/>"
 
-msgid "LC_Page_Admin_Contents_FileManager_005"
+msgid "c_* T_ARG1 creation failed.<br/>_01"
 msgstr "※ T_ARG1の作成に失敗しました。<br/>"
-
-msgid "LC_Page_Admin_Contents_Recommend_001"
-msgstr "コンテンツ管理"
 
 msgid "c_Recommended products_01"
 msgstr "おすすめ商品管理"
@@ -2543,10 +2489,7 @@ msgstr "おすすめ商品管理"
 msgid "c_Product search_01"
 msgstr "商品検索"
 
-msgid "LC_Page_Admin_Customer_001"
-msgstr "会員管理"
-
-msgid "LC_Page_Admin_Customer_002"
+msgid "c_Member master_01"
 msgstr "会員マスター"
 
 msgid "LC_Page_Admin_Customer_Edit_002"
@@ -2561,14 +2504,8 @@ msgstr "※ すでに他の会員(ID:T_ARG1)が使用している携帯アドレ
 msgid "c_Member search_01"
 msgstr "会員検索"
 
-msgid "LC_Page_Admin_Design_001"
-msgstr "デザイン管理"
-
 msgid "c_Layout settings_01"
 msgstr "レイアウト設定"
-
-msgid "LC_Page_Admin_Design_Bloc_001"
-msgstr "デザイン管理"
 
 msgid "c_Block settings_01"
 msgstr "ブロック設定"
@@ -2579,13 +2516,10 @@ msgstr "※ ブロックの書き込みに失敗しました<br />"
 msgid "c_* Block deletion failed<br />_01"
 msgstr "※ ブロックの削除に失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_Bloc_005"
+msgid "c_* Data for the same file name exists. Enter a different file name.<br />_01"
 msgstr ""
 "※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。"
 "<br />"
-
-msgid "LC_Page_Admin_Design_CSS_001"
-msgstr "デザイン管理"
 
 msgid "c_CSS settings_01"
 msgstr "CSS設定"
@@ -2599,24 +2533,14 @@ msgstr "※ CSSの書き込みに失敗しました<br />"
 msgid "c_* CSS deletion failed<br />_01"
 msgstr "※ CSSの削除に失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_CSS_006"
-msgstr ""
-"※ 同じファイル名のデータが存在しています。別の名称を付けてください。<br />"
-
-msgid "LC_Page_Admin_Design_Header_001"
-msgstr "デザイン管理"
-
 msgid "c_Header/footer settings_01"
 msgstr "ヘッダー/フッター設定"
 
 msgid "c_* File retrieval failed<br />_01"
 msgstr "※ ファイルの取得に失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_Header_004"
+msgid "c_* File writing failed<br />_01"
 msgstr "※ ファイルの書き込みに失敗しました<br />"
-
-msgid "LC_Page_Admin_Design_MainEdit_001"
-msgstr "デザイン管理"
 
 msgid "c_Page detail settings_01"
 msgstr "ページ詳細設定"
@@ -2633,10 +2557,7 @@ msgstr "※ URLを正しく入力してください。<br />"
 msgid "c_* Data for the same URL exists. Enter a different URL.<br />_01"
 msgstr "※ 同じURLのデータが存在しています。別のURLを入力してください。<br />"
 
-msgid "LC_Page_Admin_Design_Template_001"
-msgstr "デザイン管理"
-
-msgid "LC_Page_Admin_Design_Template_002"
+msgid "c_Template settings_01"
 msgstr "テンプレート設定"
 
 msgid "c_* The default template and template that is currently selected cannot be deleted<br />_01"
@@ -2653,9 +2574,6 @@ msgstr "※ ディレクトリの作成に失敗しました<br />"
 
 msgid "c_* Archive file creation failed<br />_01"
 msgstr "※ アーカイブファイルの作成に失敗しました<br />"
-
-msgid "LC_Page_Admin_Design_UpDown_001"
-msgstr "デザイン管理"
 
 msgid "c_Template addition_01"
 msgstr "テンプレート追加"
@@ -2683,12 +2601,6 @@ msgstr "※ Smarty コンパイルフォルダが作成できませんでした�
 msgid "c_* Decompression of the template file failed.<br/>_01"
 msgstr "※ テンプレートファイルの解凍に失敗しました。<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_010"
-msgstr "※ T_ARG1 の作成に失敗しました。<br/>"
-
-msgid "LC_Page_Admin_Mail_001"
-msgstr "メルマガ管理"
-
 msgid "c_Delivery content settings_01"
 msgstr "配信内容設定"
 
@@ -2704,25 +2616,13 @@ msgstr "TEXT"
 msgid "c_[T_ARG1]_01"
 msgstr "【T_ARG1】"
 
-msgid "LC_Page_Admin_Mail_History_001"
-msgstr "メルマガ管理"
-
 msgid "c_Delivery history_01"
 msgstr "配信履歴"
 
 msgid "c_Preview_01"
 msgstr "プレビュー"
 
-msgid "LC_Page_Admin_Mail_Template_001"
-msgstr "メルマガ管理"
-
-msgid "LC_Page_Admin_Mail_Template_002"
-msgstr "テンプレート設定"
-
-msgid "LC_Page_Admin_Mail_TemplateInput_001"
-msgstr "メルマガ管理"
-
-msgid "LC_Page_Admin_Mail_TemplateInput_002"
+msgid "c_Template settings_02"
 msgstr "テンプレート設定"
 
 msgid "c_Order master_01"

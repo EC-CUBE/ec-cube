@@ -315,7 +315,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
         $arrBloc = $objLayout->getBlocs($arrParams['device_type_id'], $where, $arrValues);
         if (!SC_Utils_Ex::isBlank($arrBloc)) {
-            $objErr->arrErr['filename'] = t('LC_Page_Admin_Design_Bloc_005');
+            $objErr->arrErr['filename'] = t('c_* Data for the same file name exists. Enter a different file name.<br />_01');
         }
         return $objErr->arrErr;
     }
