@@ -390,7 +390,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         } while ($entry && zip_entry_name($entry) != 'KEN_ALL.CSV');
 
         if (!$entry) {
-            trigger_error(t(t('LC_Page_Admin_Basis_ZipInstall_011', array('T_ARG1' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
+            trigger_error(t(t('c_The target file was not found in T_ARG1._01', array('T_ARG1' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
         }
 
         // 展開時の破損を考慮し、別名で一旦展開する。
@@ -398,7 +398,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
 
         $res = zip_entry_open($zip, $entry, 'rb');
         if (!$res) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_012', array('T_ARG1' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 decompression failed._01', array('T_ARG1' => $this->zip_csv_temp_realfile)), E_USER_ERROR);
         }
 
         $fp = fopen($tmp_csv_realfile, 'w');
@@ -424,7 +424,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // CSV ファイル名変更
         $res = rename($tmp_csv_realfile, ZIP_CSV_REALFILE);
         if (!$res) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_014', array('T_ARG1' => $tmp_csv_realfile, 'T_ARG2' => ZIP_CSV_REALFILE)), E_USER_ERROR);
+            trigger_error(t('c_The file name cannot be changed.: T_ARG1 -> TFIELF2_01', array('T_ARG1' => $tmp_csv_realfile, 'T_ARG2' => ZIP_CSV_REALFILE)), E_USER_ERROR);
         }
     }
 

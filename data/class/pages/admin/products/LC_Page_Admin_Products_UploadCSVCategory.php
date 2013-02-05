@@ -468,7 +468,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex {
             && $item['del_flg'] != ''
         ) {
             if (!($item['del_flg'] == '0' or $item['del_flg'] == '1')) {
-                $arrErr['del_flg'] = t('c_* Only '0' (active) and '1' (delete) are effective for the deletion flag. _01');
+                $arrErr['del_flg'] = t("c_* Only '0' (active) and '1' (delete) are effective for the deletion flag. _01");
             }
         }
         // 重複チェック 同じカテゴリ内に同名の存在は許可されない

@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'bloc';
         $this->tpl_mainno = 'design';
         $this->tpl_maintitle = t('c_Design_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Design_Bloc_002');
+        $this->tpl_subtitle = t('c_Block settings_01');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -240,7 +240,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
 
         $bloc_path = $bloc_dir . $arrValues['tpl_path'];
         if (!SC_Helper_FileManager_Ex::sfWriteFile($bloc_path, $arrParams['bloc_html'])) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Bloc_003');
+            $this->arrErr['err'] = t('c_* Block writing failed<br />_01');
             $objQuery->rollback();
             return false;
         }
@@ -284,7 +284,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex {
         }
 
         if ($is_error) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Bloc_004');
+            $this->arrErr['err'] = t('c_* Block deletion failed<br />_01');
             $objQuery->rollback();
             return false;
         }

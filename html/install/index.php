@@ -593,7 +593,7 @@ function lfDispComplete($objPage) {
     if (strlen($member_id) == 0) {
         $member_id = $objQuery->nextVal('dtb_member_member_id');
         $arrVal['member_id'] = $member_id;
-        $arrVal['name'] = t('LC_Page_Install_049');
+        $arrVal['name'] = t('c_Administrator_01');
         $arrVal['creator_id'] = 0;
         $arrVal['authority'] = 0;
         $arrVal['rank'] = 1;
@@ -684,10 +684,10 @@ function lfInitWebParam($objWebParam) {
     }
 
     $objWebParam->addParam(t('c_Store name_01'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
-    $objWebParam->addParam(t('LC_Page_Install_019'), 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
+    $objWebParam->addParam(t('c_Administrator: E-mail address_01'), 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
     $objWebParam->addParam(t('LC_Page_Install_020'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('LC_Page_Install_021'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
-    $objWebParam->addParam(t('LC_Page_Install_022'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
+    $objWebParam->addParam(t('c_Management area: Directory_01'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
     $objWebParam->addParam(t('c_Management area: SSL restriction_01'), 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), $admin_force_ssl);
     $objWebParam->addParam(t('c_Management area: IP restriction_01'), 'admin_allow_hosts', LTEXT_LEN, 'an', array('IP_CHECK', 'MAX_LENGTH_CHECK'), $admin_allow_hosts);
     $objWebParam->addParam(t('c_URL (normal)_01'), 'normal_url', MTEXT_LEN, '', array('EXIST_CHECK', 'URL_CHECK', 'MAX_LENGTH_CHECK'), $normal_url);
@@ -737,10 +737,10 @@ function lfInitDBParam($objDBParam) {
 
     $objDBParam->addParam(t('c_DB type_01'), 'db_type', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_type);
     $objDBParam->addParam(t('c_DB server_01'), 'db_server', MTEXT_LEN, '', array('MAX_LENGTH_CHECK'), $db_server);
-    $objDBParam->addParam(t('LC_Page_Install_035'), 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
-    $objDBParam->addParam(t('LC_Page_Install_036'), 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);
-    $objDBParam->addParam(t('LC_Page_Install_037'), 'db_user', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_user);
-    $objDBParam->addParam(t('LC_Page_Install_038'), 'db_password', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+    $objDBParam->addParam(t('c_DB port_01'), 'db_port', INT_LEN, '', array('MAX_LENGTH_CHECK'), $db_port);
+    $objDBParam->addParam(t('c_DB name_01'), 'db_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_name);
+    $objDBParam->addParam(t('c_DB user_01'), 'db_user', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $db_user);
+    $objDBParam->addParam(t('c_DB password_01'), 'db_password', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
 
     return $objDBParam;
 }
@@ -773,7 +773,7 @@ function lfCheckWebError($objWebParam) {
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objWebParam->getValue('admin_dir');
     if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
-        $objErr->arrErr['admin_dir'] = t('LC_Page_Install_044');
+        $objErr->arrErr['admin_dir'] = t('c_* The designated management directory already exists. Please use a different name._01');
     }
 
     return $objErr->arrErr;
@@ -1112,10 +1112,10 @@ function renameAdminDir($adminDir) {
         return true;
     }
     if (file_exists(HTML_REALDIR . $adminDir)) {
-        return t('LC_Page_Install_047');
+        return t('c_* The designated management directory already exists. Please use  a different name._01');
     }
     if (!rename(HTML_REALDIR . $oldAdminDir, HTML_REALDIR . $adminDir)) {
-        return  t('LC_Page_Install_048', array('T_ARG1' => HTML_REALDIR . $adminDir));
+        return  t('c_* Renaming to T_ARG1 failed. Check directory access._01', array('T_ARG1' => HTML_REALDIR . $adminDir));
     }
     return true;
 }

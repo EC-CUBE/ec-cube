@@ -46,9 +46,9 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page_Ex {
         $this->tpl_title    = t('LC_Page_Mypage_RefusalComplete_001');
 
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-            $this->tpl_title .= t('LC_Page_Mypage_RefusalComplete_002');
+            $this->tpl_title .= t('c_/Withdrawal procedure (completion page)_01');
         } else {
-            $this->tpl_subtitle = t('LC_Page_Mypage_RefusalComplete_003');
+            $this->tpl_subtitle = t('c_Withdrawal procedure (completion page)_01');
         }
         $this->tpl_navi     = SC_Helper_PageLayout::getTemplatePath(SC_Display_Ex::detectDevice()) . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';

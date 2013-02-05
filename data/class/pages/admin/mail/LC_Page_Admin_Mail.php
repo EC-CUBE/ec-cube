@@ -48,7 +48,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_maintitle = t('c_Mail magazine_02');
-        $this->tpl_subtitle = t('LC_Page_Admin_Mail_002');
+        $this->tpl_subtitle = t('c_Delivery content settings_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -56,7 +56,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
         $this->arrJob[t('c_Unknown_01')] = t('c_Unknown_01');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageRows = $masterData->getMasterData('mtb_page_max');
-        $this->arrHtmlmail = array('' => t('LC_Page_Admin_Mail_004'),  1 => t('LC_Page_Admin_Mail_005'), 2 => t('LC_Page_Admin_Mail_006'));
+        $this->arrHtmlmail = array('' => t('c_Both_01'),  1 => t('c_HTML_01'), 2 => t('c_TEXT_02'));
         $this->arrMailType = $masterData->getMasterData('mtb_mail_type');
 
         // 日付プルダウン設定
@@ -218,7 +218,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
     function lfGetMailTemplateList($arrTemplate) {
         if (is_array($arrTemplate)) {
             foreach ($arrTemplate as $line) {
-                $return[$line['template_id']] = t('LC_Page_Admin_Mail_007', array('T_ARG1' => $this->arrHtmlmail[$line['mail_method']])) . $line['subject'];
+                $return[$line['template_id']] = t('c_[T_ARG1]_01', array('T_ARG1' => $this->arrHtmlmail[$line['mail_method']])) . $line['subject'];
             }
         }
         return $return;

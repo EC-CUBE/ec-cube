@@ -296,7 +296,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
             '' //宛先
-            , $objHelperMail->sfMakeSubject(t('LC_Page_Forgot_006'))
+            , $objHelperMail->sfMakeSubject(t('c_The password has been changed._01'))
             , $toCustomerMail //本文
             , $CONF['email03'] //配送元アドレス
             , $CONF['shop_name'] // 配送元名

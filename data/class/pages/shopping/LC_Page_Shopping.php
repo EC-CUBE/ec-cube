@@ -43,7 +43,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = t('LC_Page_Shopping_001');
+        $this->tpl_title = t('c_Login_01');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
@@ -84,7 +84,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         $objFormParam = new SC_FormParam_Ex();
 
         $nonmember_mainpage = 'shopping/nonmember_input.tpl';
-        $nonmember_title = t('LC_Page_Shopping_002');
+        $nonmember_title = t('c_Enter customer information_01');
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
@@ -103,7 +103,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
         // 非会員かつ, ダウンロード商品の場合はエラー表示
         else {
             if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
-                $msg = t('LC_Page_Shopping_003');
+                $msg = t('c_For shopping that includes downloaded products, member registration is necessary.<br />Please carry out member registration._01');
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, $msg);
                 SC_Response_Ex::actionExit();
             }
@@ -500,7 +500,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
     function lfGetErrorMessage($error) {
         switch ($error) {
             case TEMP_LOGIN_ERROR:
-                $msg = t('LC_Page_Shopping_004');
+                $msg = t('c_The e-mail address or password is not correct.\nIf you have not completed registration, complete registration from the URL given in the temporary registration e-mail._01');
                 break;
             case SITE_LOGIN_ERROR:
             default:

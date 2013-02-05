@@ -221,7 +221,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
     function doDelete($template_code, $device_type_id) {
         if ($template_code == $this->getTemplateName($device_type_id)
                 || $template_code == $this->getTemplateName($device_type_id, true)) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_003');
+            $this->arrErr['err'] = t('c_* The default template and template that is currently selected cannot be deleted<br />_01');
             return false;
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -229,7 +229,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
             $objQuery->delete('dtb_templates', 'template_code = ? AND device_type_id = ?',
                               array($template_code, $device_type_id));
 
-            $error =  t('LC_Page_Admin_Design_Template_004');
+            $error =  t('c_* The template could not be deleted<br />_01');
             // テンプレート削除
             $templates_dir = SMARTY_TEMPLATES_REALDIR . $template_code. '/';
             if (SC_Helper_FileManager_Ex::deleteFile($templates_dir) === false) {
@@ -270,7 +270,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
         $tpl_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         if (!is_dir($tpl_dir)) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_005', array('T_ARG1' => $tpl_dir));
+            $this->arrErr['err'] = t('c_* T_ARG1 cannot be found.<br />_01', array('T_ARG1' => $tpl_dir));
             return false;
         }
 
@@ -300,12 +300,12 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
         $from_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
         if (SC_Utils_Ex::recursiveMkdir($to_dir) === false) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_006');
+            $this->arrErr['err'] = t('c_* Directory creation failed<br />_01');
             return false;
         }
         SC_Utils_Ex::sfCopyDir($from_dir, $to_dir);
         if (SC_Helper_FileManager_Ex::downloadArchiveFiles(SMARTY_TEMPLATES_REALDIR . $template_code, $template_code) === false) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_Template_007');
+            $this->arrErr['err'] = t('c_* Archive file creation failed<br />_01');
             return false;
         }
         return true;

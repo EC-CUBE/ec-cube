@@ -53,7 +53,7 @@ class SC_Helper_CSV {
         $this->arrSubnaviName = array(
             1 => t('c_Product management_01'),
             2 => t('c_Member management_01'),
-            3 => t('c_Orders_01'),
+            3 => t('c_Order master_01'),
             4 => t('c_Review_01'),
             5 => t('c_Category_01'),
         );

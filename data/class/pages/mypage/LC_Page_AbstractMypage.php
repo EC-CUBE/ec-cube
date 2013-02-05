@@ -81,7 +81,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex {
             if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
                 $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
             }
-            $this->tpl_title        = t('LC_Page_AbstractMypage_002');
+            $this->tpl_title        = t('c_MY page (login)_01');
             $this->tpl_mainpage     = 'mypage/login.tpl';
 
         } else {

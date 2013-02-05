@@ -47,7 +47,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $this->tpl_subno    = 'up_down';
         $this->tpl_mainno   = 'design';
         $this->tpl_maintitle = t('c_Design_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Design_UpDown_002');
+        $this->tpl_subtitle = t('c_Template addition_01');
         $this->arrErr  = array();
         $this->arrForm = array();
         ini_set('max_execution_time', 300);
@@ -151,7 +151,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         // 同名のフォルダが存在する場合はエラー
         if (file_exists(USER_TEMPLATE_REALDIR . $template_code)) {
-            $arrErr['template_code'] = t('LC_Page_Admin_Design_UpDown_003');
+            $arrErr['template_code'] = t('c_* A file with the same name already exists.<br/>_01');
         }
 
         // 登録不可の文字列チェック
@@ -160,14 +160,14 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
                                SMARTPHONE_DEFAULT_TEMPLATE_NAME,
                                DEFAULT_TEMPLATE_NAME);
         if (in_array($template_code, $arrIgnoreCode)) {
-            $arrErr['template_code'] = t('LC_Page_Admin_Design_UpDown_004');
+            $arrErr['template_code'] = t('c_* This template code cannot be used.<br/>_01');
         }
 
         // DBにすでに登録されていないかチェック
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_templates', 'template_code = ?', array($template_code));
         if ($exists) {
-            $arrErr['template_code'] = t('LC_Page_Admin_Design_UpDown_005');
+            $arrErr['template_code'] = t('c_* This template code is already registered.<br/>_01');
         }
 
         /*
@@ -177,7 +177,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         $tar = new Archive_Tar($_FILES['template_file']['tmp_name'], true);
         $arrArchive = $tar->listContent();
         if (!is_array($arrArchive)) {
-            $arrErr['template_file'] = t('LC_Page_Admin_Design_UpDown_006');
+            $arrErr['template_file'] = t('c_* The template file could not be decompressed. The permissible formats are tar/tar.gz.<br />_01');
         } else {
             $make_temp_error = $objUpFile->makeTempFile('template_file', false);
             if (!SC_Utils_Ex::isBlank($make_temp_error)) {
@@ -220,14 +220,14 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
         // フォルダ作成
         if (!file_exists($template_dir)) {
             if (!mkdir($template_dir)) {
-                $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_007');
+                $this->arrErr['err'] = t('c_* The template folder could not be created.<br/>_01');
                 $objQuery->rollback();
                 return false;
             }
         }
         if (!file_exists($compile_dir)) {
             if (!mkdir($compile_dir)) {
-                $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_008');
+                $this->arrErr['err'] = t('c_* Smarty compile folder could not be created.<br/>_01');
                 $objQuery->rollback();
                 return false;
             }
@@ -238,7 +238,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
         // 解凍
         if (!SC_Helper_FileManager_Ex::unpackFile($template_dir . '/' . $_FILES['template_file']['name'])) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_UpDown_009');
+            $this->arrErr['err'] = t('c_* Decompression of the template file failed.<br/>_01');
             $objQuery->rollback();
             return false;
         }

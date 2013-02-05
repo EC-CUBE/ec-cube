@@ -101,7 +101,7 @@ class SC_View {
         if (ADMIN_MODE == '1') {
             $time_end = microtime(true);
             $time = $time_end - $this->time_start;
-            $res .= t('c_Processing time: T_TIME seconds_01', array('T_TIME' => sprintf('%.3f', $time)));
+            $res .= t('c_Processing time: T_ARG1 seconds_01', array('T_ARG1' => sprintf('%.3f', $time)));
         }
         return $res;
     }
@@ -169,7 +169,7 @@ class SC_View {
         if (ADMIN_MODE == '1') {
             $time_end = microtime(true);
             $time = $time_end - $this->time_start;
-            echo t('c_Processing time: T_TIME seconds_01', array('T_TIME' => sprintf('%.3f', $time)));
+            echo t('c_Processing time: T_ARG1 seconds_01', array('T_ARG1' => sprintf('%.3f', $time)));
         }
     }
 

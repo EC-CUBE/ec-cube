@@ -48,7 +48,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'main_edit';
         $this->tpl_mainno = 'design';
         $this->tpl_maintitle = t('c_Design_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Design_MainEdit_002');
+        $this->tpl_subtitle = t('c_Page detail settings_01');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -219,7 +219,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::isBlank($arrParams['page_id'])
             || $objLayout->isEditablePage($arrParams['device_type_id'], $arrParams['page_id'])) {
             if (!$this->createPHPFile($filename)) {
-                $this->arrErr['err'] = t('LC_Page_Admin_Design_MainEdit_003');
+                $this->arrErr['err'] = t('c_* PHP file creation failed<br />_01');
                 $objQuery->rollback();
                 return false;
             }
@@ -234,7 +234,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         }
 
         if (!SC_Helper_FileManager_Ex::sfWriteFile($tpl_path, $arrParams['tpl_data'])) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_MainEdit_004');
+            $this->arrErr['err'] = t('c_* TPL file writing failed<br />_01');
             $objQuery->rollback();
             return false;
         }
@@ -316,7 +316,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
             }
         }
         if (!$valid_url) {
-            $objErr->arrErr['filename'] = t('LC_Page_Admin_Design_MainEdit_005');
+            $objErr->arrErr['filename'] = t('c_* Enter the URL again.<br />_01');
         }
         // 同一URLの存在チェック
         $where = 'page_id <> 0 AND device_type_id = ? AND filename = ?';
@@ -330,7 +330,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_pagelayout', $where, $arrValues);
         if ($exists) {
-            $objErr->arrErr['filename'] = t('LC_Page_Admin_Design_MainEdit_006');
+            $objErr->arrErr['filename'] = t('c_* Data for the same URL exists. Enter a different URL.<br />_01');
         }
         return $objErr->arrErr;
     }

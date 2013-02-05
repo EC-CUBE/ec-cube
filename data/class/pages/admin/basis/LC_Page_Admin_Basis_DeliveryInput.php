@@ -123,12 +123,12 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 $objFormParam->addParam(t('c_Available payment methods_01'), 'payment_ids', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
                 for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                    $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_004', array('T_ARG1' => $cnt)), "deliv_time$cnt", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+                    $objFormParam->addParam(t('c_Delivery time T_ARG1_01', array('T_ARG1' => $cnt)), "deliv_time$cnt", STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
                 }
 
                 if (INPUT_DELIV_FEE) {
                     for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                        $objFormParam->addParam(t('LC_Page_Admin_Basis_DeliveryInput_005', array('T_ARG1' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+                        $objFormParam->addParam(t('c_Delivery charge T_ARG1_01', array('T_ARG1' => $cnt)), "fee$cnt", PRICE_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
                     }
                 }
                 break;
@@ -315,7 +315,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrRet['deliv_id'], $arrRet['service_name'])) > 0)? true : false);
             }
             if ($ret) {
-                $objErr->arrErr['service_name'] = t('LC_Page_Admin_Basis_DeliveryInput_006');
+                $objErr->arrErr['service_name'] = t('c_* It is not possible register a combination of the same name.<br>_01');
             }
         }
 

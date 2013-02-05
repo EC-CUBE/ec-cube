@@ -315,8 +315,8 @@ msgstr "Unknown backend.[$backend = T_ARG1]"
 msgid "c_E-mail sending failed.[T_ARG1]_01"
 msgstr "E-mail sending failed.[T_ARG1]"
 
-msgid "c_Processing time: T_TIME seconds_01"
-msgstr "Processing time: T_TIME seconds"
+msgid "c_Processing time: T_ARG1 seconds_01"
+msgstr "Processing time: T_ARG1 seconds"
 
 msgid "c_* T_ARG1 is not uploaded. <br />_01"
 msgstr "* T_ARG1 is not uploaded. <br />"
@@ -1690,9 +1690,9 @@ msgstr "Details - Sub image T_ARG1"
 msgid "c_Details - Sub enlarged image T_ARG1_01"
 msgstr "Details - Sub enlarged image T_ARG1"
 
-msgid "PARAM_LABEL_CSV_SQL"
+msgid "c_In SQL text, commands other than those related to reading and ';' symbols_01"
 msgstr ""
-"In SQL text, commands other than those related to reading and \";\" symbols"
+"In SQL text, commands other than those related to reading and ';' symbols"
 
 msgid "c_Authentication key_01"
 msgstr "Authentication key"
@@ -2031,13 +2031,13 @@ msgstr "The secret question did not match."
 msgid "LC_Page_Forgot_005"
 msgstr "The secret question did not match."
 
-msgid "LC_Page_Forgot_006"
+msgid "c_The password has been changed._01"
 msgstr "The password has been changed."
 
 msgid "LC_Page_Forgot_007"
 msgstr "T_ARG1"
 
-msgid "LC_Page_FrontParts_LoginCheck_001"
+msgid "c_The e-mail address or password is not correct.\nIf you have not completed registration, access the registration page from the URL given to you in an e-mail._01"
 msgstr ""
 "The e-mail address or password is not correct.\n"
 "If you have not completed registration, access the registration page from "
@@ -2049,13 +2049,13 @@ msgstr "The e-mail address or password is not correct."
 msgid "LC_Page_AbstractMypage_001"
 msgstr "MY page"
 
-msgid "LC_Page_AbstractMypage_002"
+msgid "c_MY page (login)_01"
 msgstr "MY page (login)"
 
 msgid "LC_Page_MyPage_001"
 msgstr "MY page"
 
-msgid "LC_Page_MyPage_002"
+msgid "c_Purchase history list_01"
 msgstr "Purchase history list"
 
 msgid "LC_Page_Mypage_Change_001"
@@ -2103,16 +2103,16 @@ msgstr "Confirm account cancellation"
 msgid "LC_Page_Mypage_RefusalComplete_001"
 msgstr "MY page"
 
-msgid "LC_Page_Mypage_RefusalComplete_002"
+msgid "c_/Withdrawal procedure (completion page)_01"
 msgstr "/Withdrawal procedure (completion page)"
 
-msgid "LC_Page_Mypage_RefusalComplete_003"
+msgid "c_Withdrawal procedure (completion page)_01"
 msgstr "Withdrawal procedure (completion page)"
 
-msgid "LC_Page_Order_001"
+msgid "c_Shipping and legal information_01"
 msgstr "Shipping and legal information"
 
-msgid "LC_Page_Products_Detail_001"
+msgid "c_* This product has already been added to Favorites.<br />_01"
 msgstr "* This product has already been added to Favorites.<br />"
 
 msgid "LC_Page_Products_List_001"
@@ -2124,26 +2124,26 @@ msgstr "No designation"
 msgid "LC_Page_Products_List_003"
 msgstr "No designation"
 
-msgid "LC_Page_Products_List_004"
+msgid "c_Search results_01"
 msgstr "Search results"
 
-msgid "LC_Page_Products_List_005"
+msgid "c_All products_01"
 msgstr "All products"
 
-msgid "LC_Page_Products_Review_001"
+msgid "c_It is not possible to register a duplicate title._01"
 msgstr "It is not possible to register a duplicate title."
 
-msgid "LC_Page_Regist_001"
+msgid "c_Void access._01"
 msgstr "Void access."
 
-msgid "LC_Page_Regist_002"
+msgid "c_* Member registration is already complete or the URL is invalid.<br />_01"
 msgstr "* Member registration is already complete or the URL is invalid.<br />"
 
-msgid "LC_Page_Regist_003"
+msgid "c_* The URL is invalid. Check the member registration URL listed in the e-mail._01"
 msgstr ""
 "* The URL is invalid. Check the member registration URL listed in the e-mail."
 
-msgid "LC_Page_Regist_004"
+msgid "c_Member registration is complete._01"
 msgstr "Member registration is complete."
 
 msgid "LC_Page_Regist_005"
@@ -2152,27 +2152,27 @@ msgstr "T_ARG1 T_ARG2"
 msgid "LC_Page_Regist_Complete_001"
 msgstr "Member registration"
 
-msgid "LC_Page_RSS_001"
-msgstr "New information "
+msgid "c_New information_01"
+msgstr "New information"
 
-msgid "LC_Page_Rss_Products_001"
+msgid "c_Product list information_01"
 msgstr "Product list information"
 
 msgid "LC_Page_Rss_Products_002"
 msgstr "Unlimited inventory"
 
-msgid "LC_Page_Shopping_001"
+msgid "c_Login_01"
 msgstr "Login"
 
-msgid "LC_Page_Shopping_002"
+msgid "c_Enter customer information_01"
 msgstr "Enter customer information"
 
-msgid "LC_Page_Shopping_003"
+msgid "c_For shopping that includes downloaded products, member registration is necessary.<br />Please carry out member registration._01"
 msgstr ""
 "For shopping that includes downloaded products, member registration is "
 "necessary.<br />Please carry out member registration."
 
-msgid "LC_Page_Shopping_004"
+msgid "c_The e-mail address or password is not correct.\nIf you have not completed registration, complete registration from the URL given in the temporary registration e-mail._01"
 msgstr ""
 "The e-mail address or password is not correct.\n"
 "If you have not completed registration, complete registration from the URL "
@@ -2181,57 +2181,57 @@ msgstr ""
 msgid "LC_Page_Shopping_005"
 msgstr "The e-mail address or password is not correct."
 
-msgid "LC_Page_Shopping_Complete_001"
+msgid "c_Order complete_01"
 msgstr "Order complete"
 
-msgid "LC_Page_Shopping_Confirm_001"
+msgid "c_Confirmation_01"
 msgstr "Confirmation"
 
 msgid "LC_Page_Shopping_Deliv_001"
 msgstr "Delivery destination"
 
-msgid "LC_Page_Shopping_LoadPaymentModule_001"
+msgid "c_Module file retrieval failed. <br /> This procedure has been voided._01"
 msgstr "Module file retrieval failed. <br /> This procedure has been voided."
 
-msgid "LC_Page_Shopping_Multiple_001"
+msgid "c_Designation of multiple delivery destinations_01"
 msgstr "Designation of multiple delivery destinations"
 
 msgid "LC_Page_Shopping_Multiple_002"
 msgstr "Please make a selection"
 
-msgid "LC_Page_Shopping_Multiple_003"
+msgid "c_* When the quantity is 0, it is not possible to enter a shipping destination.<br />_01"
 msgstr ""
 "* When the quantity is 0, it is not possible to enter a shipping destination."
 "<br />"
 
-msgid "LC_Page_Shopping_Multiple_004"
+msgid "c_* The shipping destination has not been entered.<br />_01"
 msgstr "* The shipping destination has not been entered.<br />"
 
-msgid "LC_Page_Shopping_Multiple_005"
+msgid "c_* Use T_ARG1 for the total quantity.<br />_01"
 msgstr "* Use T_ARG1 for the total quantity.<br />"
 
-msgid "LC_Page_Shopping_Payment_001"
+msgid "c_Payment method and delivery time_01"
 msgstr "Payment method and delivery time"
 
-msgid "LC_Page_Shopping_Payment_002"
+msgid "c_* The number of points you want to use exceeds the number of points you have.<br />_01"
 msgstr ""
 "* The number of points you want to use exceeds the number of points you have."
 "<br />"
 
-msgid "LC_Page_Shopping_Payment_003"
+msgid "c_* The number of points you want to use exceeds the amount of your purchase.<br />_01"
 msgstr ""
 "* The number of points you want to use exceeds the amount of your purchase."
 "<br />"
 
-msgid "LC_Page_Shopping_Payment_004"
+msgid "c_* Based on the selected payment method, it is possible to use (T_ARG1 - T_ARG2) points.<br />_01"
 msgstr ""
 "* Based on the selected payment method, it is possible to use (T_ARG1 - "
 "T_ARG2) points.<br />"
 
-msgid "LC_Page_Unsupported_001"
+msgid "c_Devices not supported_01"
 msgstr "Devices not supported"
 
-msgid "LC_Page_Upgrade_Download_001"
+msgid "c_Installation/update was successful._01"
 msgstr "Installation/update was successful."
 
 msgid "c_Please grant user write access (777, 707, etc.) for T_ARG1_01"
@@ -2289,7 +2289,7 @@ msgstr ">> ×:PHP settings directive 'magic_quotes_gpc' is active."
 msgid "LC_Page_Install_017"
 msgstr ">> ○:Access authority is normal."
 
-msgid "LC_Page_Install_019"
+msgid "c_Administrator: E-mail address_01"
 msgstr "Administrator: E-mail address"
 
 msgid "LC_Page_Install_020"
@@ -2298,7 +2298,7 @@ msgstr "Administrator: Login ID"
 msgid "LC_Page_Install_021"
 msgstr "Administrator: Password"
 
-msgid "LC_Page_Install_022"
+msgid "c_Management area: Directory_01"
 msgstr "Management area: Directory"
 
 msgid "c_Management area: SSL restriction_01"
@@ -2334,16 +2334,16 @@ msgstr "SMTP password"
 msgid "c_DB type_01"
 msgstr "DB type"
 
-msgid "LC_Page_Install_035"
+msgid "c_DB port_01"
 msgstr "DB port"
 
-msgid "LC_Page_Install_036"
+msgid "c_DB name_01"
 msgstr "DB name"
 
-msgid "LC_Page_Install_037"
+msgid "c_DB user_01"
 msgstr "DB user"
 
-msgid "LC_Page_Install_038"
+msgid "c_DB password_01"
 msgstr "DB password"
 
 msgid "LC_Page_Install_039"
@@ -2361,7 +2361,7 @@ msgstr "Administrator: Password"
 msgid "LC_Page_Install_043"
 msgstr "Management area: Directory"
 
-msgid "LC_Page_Install_044"
+msgid "c_* The designated management directory already exists. Please use a different name._01"
 msgstr ""
 "* The designated management directory already exists. Please use a different "
 "name."
@@ -2372,15 +2372,15 @@ msgstr ">> The script file cannot be found"
 msgid "LC_Page_Install_046"
 msgstr ">> Table structure was not changed.<br />"
 
-msgid "LC_Page_Install_047"
+msgid "c_* The designated management directory already exists. Please use  a different name._01"
 msgstr ""
 "* The designated management directory already exists. Please use  a "
 "different name."
 
-msgid "LC_Page_Install_048"
+msgid "c_* Renaming to T_ARG1 failed. Check directory access._01"
 msgstr "* Renaming to T_ARG1 failed. Check directory access."
 
-msgid "LC_Page_Install_049"
+msgid "c_Administrator_01"
 msgstr "Administrator"
 
 msgid "LC_Page_Admin_Basis_001"
@@ -2431,13 +2431,13 @@ msgstr "Basic information management"
 msgid "LC_Page_Admin_Basis_DeliveryInput_002"
 msgstr "Delivery method settings"
 
-msgid "LC_Page_Admin_Basis_DeliveryInput_004"
+msgid "c_Delivery time T_ARG1_01"
 msgstr "Delivery time T_ARG1"
 
-msgid "LC_Page_Admin_Basis_DeliveryInput_005"
+msgid "c_Delivery charge T_ARG1_01"
 msgstr "Delivery charge T_ARG1"
 
-msgid "LC_Page_Admin_Basis_DeliveryInput_006"
+msgid "c_* It is not possible register a combination of the same name.<br>_01"
 msgstr "* It is not possible register a combination of the same name.<br>"
 
 msgid "LC_Page_Admin_Basis_Holiday_001"
@@ -2452,7 +2452,7 @@ msgstr "* That day has already been registered. <br>"
 msgid "LC_Page_Admin_Basis_Kiyaku_001"
 msgstr "Basic information management"
 
-msgid "LC_Page_Admin_Basis_Kiyaku_002"
+msgid "c_Membership terms and conditions_01"
 msgstr "Membership terms and conditions"
 
 msgid "LC_Page_Admin_Basis_Kiyaku_004"
@@ -2461,10 +2461,10 @@ msgstr "* Registration of the same contents already exists.<br>"
 msgid "LC_Page_Admin_Basis_Mail_001"
 msgstr "Basic information management"
 
-msgid "LC_Page_Admin_Basis_Mail_002"
+msgid "c_E-mail settings_01"
 msgstr "E-mail settings"
 
-msgid "LC_Page_Admin_Basis_Mail_003"
+msgid "c_An error has occurred_01"
 msgstr "An error has occurred"
 
 msgid "LC_Page_Admin_Basis_Payment_001"
@@ -2479,16 +2479,16 @@ msgstr "Basic information management"
 msgid "LC_Page_Admin_Basis_PaymentInput_002"
 msgstr "Payment method settings"
 
-msgid "LC_Page_Admin_Basis_PaymentInput_003"
+msgid "c_Make the usage conditions (lower limit) &#036; T_ARG1 or more.<br>_01"
 msgstr "Make the usage conditions (lower limit) &#036; T_ARG1 or more.<br>"
 
-msgid "LC_Page_Admin_Basis_PaymentInput_004"
+msgid "c_Make the usage conditions (max) &#036; T_ARG1 or less.<br>_01"
 msgstr "Make the usage conditions (max) &#036; T_ARG1 or less.<br>"
 
 msgid "LC_Page_Admin_Basis_Point_001"
 msgstr "Basic information management"
 
-msgid "LC_Page_Admin_Basis_Point_002"
+msgid "c_Point settings_01"
 msgstr "Point settings"
 
 msgid "LC_Page_Admin_Basis_Seo_001"
@@ -2509,7 +2509,7 @@ msgstr "Smartphone"
 msgid "LC_Page_Admin_Basis_Tradelaw_001"
 msgstr "Basic information management"
 
-msgid "LC_Page_Admin_Basis_Tradelaw_002"
+msgid "c_Transaction rules_01"
 msgstr "Transaction rules"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_001"
@@ -2542,22 +2542,22 @@ msgstr "T_ARG1 writing failed."
 msgid "c_cannot be opened._01"
 msgstr " cannot be opened."
 
-msgid "LC_Page_Admin_Basis_ZipInstall_011"
+msgid "c_The target file was not found in T_ARG1._01"
 msgstr "The target file was not found in T_ARG1."
 
-msgid "LC_Page_Admin_Basis_ZipInstall_012"
+msgid "c_T_ARG1 decompression failed._01"
 msgstr "T_ARG1 decompression failed."
 
 msgid "LC_Page_Admin_Basis_ZipInstall_013"
 msgstr " cannot be deleted."
 
-msgid "LC_Page_Admin_Basis_ZipInstall_014"
+msgid "c_The file name cannot be changed.: T_ARG1 -> TFIELF2_01"
 msgstr "The file name cannot be changed.: T_ARG1 -> TFIELF2"
 
 msgid "LC_Page_Admin_Contents_001"
 msgstr "Contents management"
 
-msgid "LC_Page_Admin_Contents_002"
+msgid "c_Management of new information_01"
 msgstr "Management of new information"
 
 msgid "LC_Page_Admin_Contents_CSV_001"
@@ -2572,23 +2572,23 @@ msgstr "Contents management"
 msgid "LC_Page_Admin_Contents_CsvSql_002"
 msgstr "CSV output settings"
 
-msgid "LC_Page_Admin_Contents_CsvSql_005"
-msgstr "'* The SQL text is not correct. Please revise the SQL text'"
+msgid "c_* The SQL text is not correct. Please revise the SQL text_01"
+msgstr "* The SQL text is not correct. Please revise the SQL text"
 
-msgid "LC_Page_Admin_Contents_CsvSql_006"
+msgid "c_Data table: T_ARG1_01"
 msgstr "Data table: T_ARG1"
 
-msgid "LC_Page_Admin_Contents_CsvSql_007"
+msgid "c_Master table: T_ARG1_01"
 msgstr "Master table: T_ARG1"
 
 msgid "LC_Page_Admin_Contents_FileManager_001"
 msgstr "Contents management"
 
-msgid "LC_Page_Admin_Contents_FileManager_002"
+msgid "c_File management_01"
 msgstr "File management"
 
-msgid "LC_Page_Admin_Contents_FileManager_003"
-msgstr "'* It is not possible to download the directory.<br/>'"
+msgid "c_* It is not possible to download the directory.<br/>_01"
+msgstr "* It is not possible to download the directory.<br/>"
 
 msgid "LC_Page_Admin_Contents_FileManager_005"
 msgstr "* T_ARG1 creation failed.<br/>"
@@ -2596,10 +2596,10 @@ msgstr "* T_ARG1 creation failed.<br/>"
 msgid "LC_Page_Admin_Contents_Recommend_001"
 msgstr "Contents management"
 
-msgid "LC_Page_Admin_Contents_Recommend_002"
+msgid "c_Recommended products_01"
 msgstr "Recommended products"
 
-msgid "LC_Page_Admin_Contents_RecommendSearch_001"
+msgid "c_Product search_01"
 msgstr "Product search"
 
 msgid "LC_Page_Admin_Customer_001"
@@ -2611,31 +2611,31 @@ msgstr "Member master"
 msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "Member registration"
 
-msgid "LC_Page_Admin_Customer_Edit_003"
+msgid "c_* This address is already used by another member (ID:T_ARG1)._01"
 msgstr "* This address is already used by another member (ID:T_ARG1)."
 
-msgid "LC_Page_Admin_Customer_Edit_004"
+msgid "c_* This mobile address is already used by another member (ID:T_ARG1)._01"
 msgstr "* This mobile address is already used by another member (ID:T_ARG1)."
 
-msgid "LC_Page_Admin_Customer_SearchCustomer_001"
+msgid "c_Member search_01"
 msgstr "Member search"
 
 msgid "LC_Page_Admin_Design_001"
 msgstr "Design management"
 
-msgid "LC_Page_Admin_Design_002"
+msgid "c_Layout settings_01"
 msgstr "Layout settings"
 
 msgid "LC_Page_Admin_Design_Bloc_001"
 msgstr "Design management"
 
-msgid "LC_Page_Admin_Design_Bloc_002"
+msgid "c_Block settings_01"
 msgstr "Block settings"
 
-msgid "LC_Page_Admin_Design_Bloc_003"
+msgid "c_* Block writing failed<br />_01"
 msgstr "* Block writing failed<br />"
 
-msgid "LC_Page_Admin_Design_Bloc_004"
+msgid "c_* Block deletion failed<br />_01"
 msgstr "* Block deletion failed<br />"
 
 msgid "LC_Page_Admin_Design_Bloc_005"
@@ -2645,16 +2645,16 @@ msgstr ""
 msgid "LC_Page_Admin_Design_CSS_001"
 msgstr "Design management"
 
-msgid "LC_Page_Admin_Design_CSS_002"
+msgid "c_CSS settings_01"
 msgstr "CSS settings"
 
-msgid "LC_Page_Admin_Design_CSS_003"
+msgid "c_* Deletion of the old file failed<br />_01"
 msgstr "* Deletion of the old file failed<br />"
 
-msgid "LC_Page_Admin_Design_CSS_004"
+msgid "c_* CSS writing failed<br />_01"
 msgstr "* CSS writing failed<br />"
 
-msgid "LC_Page_Admin_Design_CSS_005"
+msgid "c_* CSS deletion failed<br />_01"
 msgstr "* CSS deletion failed<br />"
 
 msgid "LC_Page_Admin_Design_CSS_006"
@@ -2664,10 +2664,10 @@ msgstr ""
 msgid "LC_Page_Admin_Design_Header_001"
 msgstr "Design management"
 
-msgid "LC_Page_Admin_Design_Header_002"
+msgid "c_Header/footer settings_01"
 msgstr "Header/footer settings"
 
-msgid "LC_Page_Admin_Design_Header_003"
+msgid "c_* File retrieval failed<br />_01"
 msgstr "* File retrieval failed<br />"
 
 msgid "LC_Page_Admin_Design_Header_004"
@@ -2676,19 +2676,19 @@ msgstr "* File writing failed<br />"
 msgid "LC_Page_Admin_Design_MainEdit_001"
 msgstr "Design management"
 
-msgid "LC_Page_Admin_Design_MainEdit_002"
+msgid "c_Page detail settings_01"
 msgstr "Page detail settings"
 
-msgid "LC_Page_Admin_Design_MainEdit_003"
+msgid "c_* PHP file creation failed<br />_01"
 msgstr "* PHP file creation failed<br />"
 
-msgid "LC_Page_Admin_Design_MainEdit_004"
+msgid "c_* TPL file writing failed<br />_01"
 msgstr "* TPL file writing failed<br />"
 
-msgid "LC_Page_Admin_Design_MainEdit_005"
+msgid "c_* Enter the URL again.<br />_01"
 msgstr "* Enter the URL again.<br />"
 
-msgid "LC_Page_Admin_Design_MainEdit_006"
+msgid "c_* Data for the same URL exists. Enter a different URL.<br />_01"
 msgstr "* Data for the same URL exists. Enter a different URL.<br />"
 
 msgid "LC_Page_Admin_Design_Template_001"
@@ -2697,50 +2697,50 @@ msgstr "Design management"
 msgid "LC_Page_Admin_Design_Template_002"
 msgstr "Template settings"
 
-msgid "LC_Page_Admin_Design_Template_003"
+msgid "c_* The default template and template that is currently selected cannot be deleted<br />_01"
 msgstr ""
 "* The default template and template that is currently selected cannot be "
 "deleted<br />"
 
-msgid "LC_Page_Admin_Design_Template_004"
+msgid "c_* The template could not be deleted<br />_01"
 msgstr "* The template could not be deleted<br />"
 
-msgid "LC_Page_Admin_Design_Template_005"
+msgid "c_* T_ARG1 cannot be found.<br />_01"
 msgstr "* T_ARG1 cannot be found.<br />"
 
-msgid "LC_Page_Admin_Design_Template_006"
+msgid "c_* Directory creation failed<br />_01"
 msgstr "* Directory creation failed<br />"
 
-msgid "LC_Page_Admin_Design_Template_007"
+msgid "c_* Archive file creation failed<br />_01"
 msgstr "* Archive file creation failed<br />"
 
 msgid "LC_Page_Admin_Design_UpDown_001"
 msgstr "Design management"
 
-msgid "LC_Page_Admin_Design_UpDown_002"
+msgid "c_Template addition_01"
 msgstr "Template addition"
 
-msgid "LC_Page_Admin_Design_UpDown_003"
+msgid "c_* A file with the same name already exists.<br/>_01"
 msgstr "* A file with the same name already exists.<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_004"
+msgid "c_* This template code cannot be used.<br/>_01"
 msgstr "* This template code cannot be used.<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_005"
+msgid "c_* This template code is already registered.<br/>_01"
 msgstr "* This template code is already registered.<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_006"
+msgid "c_* The template file could not be decompressed. The permissible formats are tar/tar.gz.<br />_01"
 msgstr ""
 "* The template file could not be decompressed. The permissible formats are "
 "tar/tar.gz.<br />"
 
-msgid "LC_Page_Admin_Design_UpDown_007"
+msgid "c_* The template folder could not be created.<br/>_01"
 msgstr "* The template folder could not be created.<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_008"
+msgid "c_* Smarty compile folder could not be created.<br/>_01"
 msgstr "* Smarty compile folder could not be created.<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_009"
+msgid "c_* Decompression of the template file failed.<br/>_01"
 msgstr "* Decompression of the template file failed.<br/>"
 
 msgid "LC_Page_Admin_Design_UpDown_010"
@@ -2749,28 +2749,28 @@ msgstr "* T_ARG1 creation failed.<br/>"
 msgid "LC_Page_Admin_Mail_001"
 msgstr "Mail magazine management"
 
-msgid "LC_Page_Admin_Mail_002"
+msgid "c_Delivery content settings_01"
 msgstr "Delivery content settings"
 
-msgid "LC_Page_Admin_Mail_004"
+msgid "c_Both_01"
 msgstr "Both"
 
-msgid "LC_Page_Admin_Mail_005"
+msgid "c_HTML_01"
 msgstr "HTML"
 
-msgid "LC_Page_Admin_Mail_006"
+msgid "c_TEXT_02"
 msgstr "TEXT"
 
-msgid "LC_Page_Admin_Mail_007"
+msgid "c_[T_ARG1]_01"
 msgstr "[T_ARG1]"
 
 msgid "LC_Page_Admin_Mail_History_001"
 msgstr "Mail magazine management"
 
-msgid "LC_Page_Admin_Mail_History_002"
+msgid "c_Delivery history_01"
 msgstr "Delivery history"
 
-msgid "LC_Page_Admin_Mail_Preview_001"
+msgid "c_Preview_01"
 msgstr "Preview"
 
 msgid "LC_Page_Admin_Mail_Template_001"

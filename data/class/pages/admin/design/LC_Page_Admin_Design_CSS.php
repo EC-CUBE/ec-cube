@@ -48,7 +48,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'css';
         $this->tpl_mainno = 'design';
         $this->tpl_maintitle = t('c_Design_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Design_CSS_002');
+        $this->tpl_subtitle = t('c_CSS settings_01');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -177,13 +177,13 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         if (!SC_Utils_Ex::isBlank($old_css_name)
             && $old_css_name != $css_name) {
             if (!unlink($css_dir . $old_css_name . '.css')) {
-                $this->arrErr['err'] = t('LC_Page_Admin_Design_CSS_003');
+                $this->arrErr['err'] = t('c_* Deletion of the old file failed<br />_01');
                 return false;
             }
         }
 
         if (!SC_Helper_FileManager_Ex::sfWriteFile($css_path, $css_data)) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_CSS_004');
+            $this->arrErr['err'] = t('c_* CSS writing failed<br />_01');
             return false;
         }
         return true;
@@ -197,7 +197,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      */
     function doDelete($css_path) {
         if (!unlink($css_path)) {
-            $this->arrErr['err'] = t('LC_Page_Admin_Design_CSS_005');
+            $this->arrErr['err'] = t('c_* CSS deletion failed<br />_01');
             return false;
         }
         return true;

@@ -45,7 +45,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         parent::init();
         $this->tpl_mainpage = 'rss/products.tpl';
         $this->encode = 'UTF-8';
-        $this->title = t('LC_Page_Rss_Products_001');
+        $this->title = t('c_Product list information_01');
     }
 
     /**

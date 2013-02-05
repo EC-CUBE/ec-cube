@@ -49,7 +49,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'header';
         $this->tpl_mainno = 'design';
         $this->tpl_maintitle = t('c_Design_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Design_Header_002');
+        $this->tpl_subtitle = t('c_Header/footer settings_01');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -100,7 +100,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
             $header_path = $this->getTemplatePath($this->device_type_id, 'header');
             $footer_path = $this->getTemplatePath($this->device_type_id, 'footer');
             if ($header_path === false || $footer_path === false) {
-                $this->arrErr['err'] = t('LC_Page_Admin_Design_Header_003');
+                $this->arrErr['err'] = t('c_* File retrieval failed<br />_01');
             } else {
                 $this->header_data = file_get_contents($header_path);
                 $this->footer_data = file_get_contents($footer_path);

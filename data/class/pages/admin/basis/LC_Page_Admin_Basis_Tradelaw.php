@@ -50,7 +50,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
         $this->tpl_maintitle = t('c_Basic information_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Tradelaw_002');
+        $this->tpl_subtitle = t('c_Transaction rules_01');
     }
 
     /**

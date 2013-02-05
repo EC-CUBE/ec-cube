@@ -52,7 +52,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
             'day' => date('j'),
         );
         $this->tpl_maintitle = t('c_Edit contents_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Contents_002');
+        $this->tpl_subtitle = t('c_Management of new information_01');
         //---- 日付プルダウン設定
         $objDate = new SC_Date_Ex(ADMIN_NEWS_STARTYEAR);
         $this->arrYear = $objDate->getYear();

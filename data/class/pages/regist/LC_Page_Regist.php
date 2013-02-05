@@ -79,7 +79,7 @@ class LC_Page_Regist extends LC_Page_Ex {
                 break;
             //--　それ以外のアクセスは無効とする
             default:
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t('LC_Page_Regist_001'));
+                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, t('c_Void access._01'));
                 break;
         }
 
@@ -128,11 +128,11 @@ class LC_Page_Regist extends LC_Page_Ex {
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
 
             if (!is_numeric(SC_Helper_Customer_Ex::sfGetCustomerId($array['id'], true))) {
-                $objErr->arrErr['id'] = t('LC_Page_Regist_002');
+                $objErr->arrErr['id'] = t('c_* Member registration is already complete or the URL is invalid.<br />_01');
             }
 
         } else {
-            $objErr->arrErr['id'] = t('LC_Page_Regist_003');
+            $objErr->arrErr['id'] = t('c_* The URL is invalid. Check the member registration URL listed in the e-mail._01');
         }
         return $objErr->arrErr;
     }
@@ -163,7 +163,7 @@ class LC_Page_Regist extends LC_Page_Ex {
         $objMailText->assign('name01', $data['name01']);
         $objMailText->assign('name02', $data['name02']);
         $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
-        $subject = $objHelperMail->sfMakesubject(t('LC_Page_Regist_004'));
+        $subject = $objHelperMail->sfMakesubject(t('c_Member registration is complete._01'));
         $objMail = new SC_SendMail_Ex();
 
         $objMail->setItem(

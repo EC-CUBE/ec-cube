@@ -54,7 +54,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
 
 
         } else {
-            $this->tpl_subtitle = t('LC_Page_MyPage_002');
+            $this->tpl_subtitle = t('c_Purchase history list_01');
         }
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrCustomerOrderStatus = $masterData->getMasterData('mtb_customer_order_status');

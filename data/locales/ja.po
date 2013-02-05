@@ -306,8 +306,8 @@ msgstr "不明なバックエンド。[$backend = T_ARG1]"
 msgid "c_E-mail sending failed.[T_ARG1]_01"
 msgstr "メール送信に失敗しました。[T_ARG1]"
 
-msgid "c_Processing time: T_TIME seconds_01"
-msgstr "処理時間: T_TIME秒"
+msgid "c_Processing time: T_ARG1 seconds_01"
+msgstr "処理時間: T_ARG1秒"
 
 msgid "c_* T_ARG1 is not uploaded. <br />_01"
 msgstr "※ T_ARG1がアップロードされていません。<br />"
@@ -1679,8 +1679,8 @@ msgstr "詳細-サブ画像T_ARG1"
 msgid "c_Details - Sub enlarged image T_ARG1_01"
 msgstr "詳細-サブ拡大画像T_ARG1"
 
-msgid "PARAM_LABEL_CSV_SQL"
-msgstr "SQL文には読み込み関係以外のSQLコマンドおよび\";\"記号"
+msgid "c_In SQL text, commands other than those related to reading and ';' symbols_01"
+msgstr "SQL文には読み込み関係以外のSQLコマンドおよび';'記号"
 
 msgid "c_Authentication key_01"
 msgstr "認証キー"
@@ -2020,13 +2020,13 @@ msgstr "秘密の質問が一致しませんでした。"
 msgid "LC_Page_Forgot_005"
 msgstr "秘密の質問が一致しませんでした。"
 
-msgid "LC_Page_Forgot_006"
+msgid "c_The password has been changed._01"
 msgstr "パスワードを変更いたしました。"
 
 msgid "LC_Page_Forgot_007"
 msgstr "T_ARG1 様"
 
-msgid "LC_Page_FrontParts_LoginCheck_001"
+msgid "c_The e-mail address or password is not correct.\nIf you have not completed registration, access the registration page from the URL given to you in an e-mail._01"
 msgstr ""
 "メールアドレスもしくはパスワードが正しくありません。\n"
 "本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
@@ -2038,13 +2038,13 @@ msgstr "メールアドレスもしくはパスワードが正しくありませ
 msgid "LC_Page_AbstractMypage_001"
 msgstr "MYページ"
 
-msgid "LC_Page_AbstractMypage_002"
+msgid "c_MY page (login)_01"
 msgstr "MYページ(ログイン)"
 
 msgid "LC_Page_MyPage_001"
 msgstr "MYページ"
 
-msgid "LC_Page_MyPage_002"
+msgid "c_Purchase history list_01"
 msgstr "購入履歴一覧"
 
 msgid "LC_Page_Mypage_Change_001"
@@ -2092,16 +2092,16 @@ msgstr "退会手続き(確認ページ)"
 msgid "LC_Page_Mypage_RefusalComplete_001"
 msgstr "MYページ"
 
-msgid "LC_Page_Mypage_RefusalComplete_002"
+msgid "c_/Withdrawal procedure (completion page)_01"
 msgstr "/退会手続き(完了ページ)"
 
-msgid "LC_Page_Mypage_RefusalComplete_003"
+msgid "c_Withdrawal procedure (completion page)_01"
 msgstr "退会手続き(完了ページ)"
 
-msgid "LC_Page_Order_001"
+msgid "c_Shipping and legal information_01"
 msgstr "特定商取引に関する法律に基づく表記"
 
-msgid "LC_Page_Products_Detail_001"
+msgid "c_* This product has already been added to Favorites.<br />_01"
 msgstr "※ この商品は既にお気に入りに追加されています。<br />"
 
 msgid "LC_Page_Products_List_001"
@@ -2113,26 +2113,26 @@ msgstr "指定なし"
 msgid "LC_Page_Products_List_003"
 msgstr "指定なし"
 
-msgid "LC_Page_Products_List_004"
+msgid "c_Search results_01"
 msgstr "検索結果"
 
-msgid "LC_Page_Products_List_005"
+msgid "c_All products_01"
 msgstr "全商品"
 
-msgid "LC_Page_Products_Review_001"
+msgid "c_It is not possible to register a duplicate title._01"
 msgstr "重複したタイトルは登録できません。"
 
-msgid "LC_Page_Regist_001"
+msgid "c_Void access._01"
 msgstr "無効なアクセスです。"
 
-msgid "LC_Page_Regist_002"
+msgid "c_* Member registration is already complete or the URL is invalid.<br />_01"
 msgstr "※ 既に会員登録が完了しているか、無効なURLです。<br />"
 
-msgid "LC_Page_Regist_003"
+msgid "c_* The URL is invalid. Check the member registration URL listed in the e-mail._01"
 msgstr ""
 "※ 無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。"
 
-msgid "LC_Page_Regist_004"
+msgid "c_Member registration is complete._01"
 msgstr "会員登録が完了しました。"
 
 msgid "LC_Page_Regist_005"
@@ -2141,27 +2141,27 @@ msgstr "T_ARG1 T_ARG2 様"
 msgid "LC_Page_Regist_Complete_001"
 msgstr "会員登録(完了ページ)"
 
-msgid "LC_Page_RSS_001"
+msgid "c_New information_01"
 msgstr "新着情報"
 
-msgid "LC_Page_Rss_Products_001"
+msgid "c_Product list information_01"
 msgstr "商品一覧情報"
 
 msgid "LC_Page_Rss_Products_002"
 msgstr "在庫無制限"
 
-msgid "LC_Page_Shopping_001"
+msgid "c_Login_01"
 msgstr "ログイン"
 
-msgid "LC_Page_Shopping_002"
+msgid "c_Enter customer information_01"
 msgstr "お客様情報入力"
 
-msgid "LC_Page_Shopping_003"
+msgid "c_For shopping that includes downloaded products, member registration is necessary.<br />Please carry out member registration._01"
 msgstr ""
 "ダウンロード商品を含むお買い物は、会員登録が必要です。<br />お手数ですが、会"
 "員登録をお願いします。"
 
-msgid "LC_Page_Shopping_004"
+msgid "c_The e-mail address or password is not correct.\nIf you have not completed registration, complete registration from the URL given in the temporary registration e-mail._01"
 msgstr ""
 "メールアドレスもしくはパスワードが正しくありません。\n"
 "本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
@@ -2170,52 +2170,52 @@ msgstr ""
 msgid "LC_Page_Shopping_005"
 msgstr "メールアドレスもしくはパスワードが正しくありません。"
 
-msgid "LC_Page_Shopping_Complete_001"
+msgid "c_Order complete_01"
 msgstr "ご注文完了"
 
-msgid "LC_Page_Shopping_Confirm_001"
+msgid "c_Confirmation_01"
 msgstr "ご入力内容のご確認"
 
 msgid "LC_Page_Shopping_Deliv_001"
 msgstr "お届け先の指定"
 
-msgid "LC_Page_Shopping_LoadPaymentModule_001"
+msgid "c_Module file retrieval failed. <br /> This procedure has been voided._01"
 msgstr ""
 "モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。"
 
-msgid "LC_Page_Shopping_Multiple_001"
+msgid "c_Designation of multiple delivery destinations_01"
 msgstr "お届け先の複数指定"
 
 msgid "LC_Page_Shopping_Multiple_002"
 msgstr "選択してください"
 
-msgid "LC_Page_Shopping_Multiple_003"
+msgid "c_* When the quantity is 0, it is not possible to enter a shipping destination.<br />_01"
 msgstr "※ 数量が0の場合、お届け先を入力できません。<br />"
 
-msgid "LC_Page_Shopping_Multiple_004"
+msgid "c_* The shipping destination has not been entered.<br />_01"
 msgstr "※ お届け先が入力されていません。<br />"
 
-msgid "LC_Page_Shopping_Multiple_005"
+msgid "c_* Use T_ARG1 for the total quantity.<br />_01"
 msgstr "※ 数量合計を「T_ARG1」にしてください。<br />"
 
-msgid "LC_Page_Shopping_Payment_001"
+msgid "c_Payment method and delivery time_01"
 msgstr "お支払方法・お届け時間等の指定"
 
-msgid "LC_Page_Shopping_Payment_002"
+msgid "c_* The number of points you want to use exceeds the number of points you have.<br />_01"
 msgstr "※ ご利用ポイントが所持ポイントを超えています。<br />"
 
-msgid "LC_Page_Shopping_Payment_003"
+msgid "c_* The number of points you want to use exceeds the amount of your purchase.<br />_01"
 msgstr "※ ご利用ポイントがご購入金額を超えています。<br />"
 
-msgid "LC_Page_Shopping_Payment_004"
+msgid "c_* Based on the selected payment method, it is possible to use (T_ARG1 - T_ARG2) points.<br />_01"
 msgstr ""
 "※ 選択した支払方法では、ポイントは(T_ARG1 - T_ARG2)ポイントまでご利用い"
 "ただけます。<br />"
 
-msgid "LC_Page_Unsupported_001"
+msgid "c_Devices not supported_01"
 msgstr "未対応デバイス"
 
-msgid "LC_Page_Upgrade_Download_001"
+msgid "c_Installation/update was successful._01"
 msgstr "インストール/アップデートに成功しました。"
 
 msgid "c_Please grant user write access (777, 707, etc.) for T_ARG1_01"
@@ -2274,7 +2274,7 @@ msgstr ""
 msgid "LC_Page_Install_017"
 msgstr ">> ○：アクセス権限は正常です。"
 
-msgid "LC_Page_Install_019"
+msgid "c_Administrator: E-mail address_01"
 msgstr "管理者：メールアドレス"
 
 msgid "LC_Page_Install_020"
@@ -2283,7 +2283,7 @@ msgstr "管理者：ログインID"
 msgid "LC_Page_Install_021"
 msgstr "管理者：パスワード"
 
-msgid "LC_Page_Install_022"
+msgid "c_Management area: Directory_01"
 msgstr "管理機能：ディレクトリ"
 
 msgid "c_Management area: SSL restriction_01"
@@ -2319,16 +2319,16 @@ msgstr "SMTPパスワード"
 msgid "c_DB type_01"
 msgstr "DBの種類"
 
-msgid "LC_Page_Install_035"
+msgid "c_DB port_01"
 msgstr "DBポート"
 
-msgid "LC_Page_Install_036"
+msgid "c_DB name_01"
 msgstr "DB名"
 
-msgid "LC_Page_Install_037"
+msgid "c_DB user_01"
 msgstr "DBユーザ"
 
-msgid "LC_Page_Install_038"
+msgid "c_DB password_01"
 msgstr "DBパスワード"
 
 msgid "LC_Page_Install_039"
@@ -2346,7 +2346,7 @@ msgstr "管理者：パスワード"
 msgid "LC_Page_Install_043"
 msgstr "管理機能：ディレクトリ"
 
-msgid "LC_Page_Install_044"
+msgid "c_* The designated management directory already exists. Please use a different name._01"
 msgstr ""
 "※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してくださ"
 "い。"
@@ -2357,16 +2357,16 @@ msgstr ">> スクリプトファイルが見つかりません"
 msgid "LC_Page_Install_046"
 msgstr ">> テーブル構成の変更に失敗しました。<br />"
 
-msgid "LC_Page_Install_047"
+msgid "c_* The designated management directory already exists. Please use  a different name._01"
 msgstr ""
 "※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してくださ"
 "い。"
 
-msgid "LC_Page_Install_048"
+msgid "c_* Renaming to T_ARG1 failed. Check directory access._01"
 msgstr ""
 "※ T_ARG1へのリネームに失敗しました。ディレクトリの権限を確認してください。"
 
-msgid "LC_Page_Install_049"
+msgid "c_Administrator_01"
 msgstr "管理者"
 
 msgid "LC_Page_Admin_Basis_001"
@@ -2417,13 +2417,13 @@ msgstr "基本情報管理"
 msgid "LC_Page_Admin_Basis_DeliveryInput_002"
 msgstr "配送方法設定"
 
-msgid "LC_Page_Admin_Basis_DeliveryInput_004"
+msgid "c_Delivery time T_ARG1_01"
 msgstr "お届け時間T_ARG1"
 
-msgid "LC_Page_Admin_Basis_DeliveryInput_005"
+msgid "c_Delivery charge T_ARG1_01"
 msgstr "配送料金T_ARG1"
 
-msgid "LC_Page_Admin_Basis_DeliveryInput_006"
+msgid "c_* It is not possible register a combination of the same name.<br>_01"
 msgstr "※ 同じ名称の組み合わせは登録できません。<br>"
 
 msgid "LC_Page_Admin_Basis_Holiday_001"
@@ -2438,7 +2438,7 @@ msgstr "※ 既に同じ日付の登録が存在します。<br>"
 msgid "LC_Page_Admin_Basis_Kiyaku_001"
 msgstr "基本情報管理"
 
-msgid "LC_Page_Admin_Basis_Kiyaku_002"
+msgid "c_Membership terms and conditions_01"
 msgstr "会員規約設定"
 
 msgid "LC_Page_Admin_Basis_Kiyaku_004"
@@ -2447,10 +2447,10 @@ msgstr "※ 既に同じ内容の登録が存在します。<br>"
 msgid "LC_Page_Admin_Basis_Mail_001"
 msgstr "基本情報管理"
 
-msgid "LC_Page_Admin_Basis_Mail_002"
+msgid "c_E-mail settings_01"
 msgstr "メール設定"
 
-msgid "LC_Page_Admin_Basis_Mail_003"
+msgid "c_An error has occurred_01"
 msgstr "エラーが発生しました"
 
 msgid "LC_Page_Admin_Basis_Payment_001"
@@ -2465,16 +2465,16 @@ msgstr "基本情報管理"
 msgid "LC_Page_Admin_Basis_PaymentInput_002"
 msgstr "支払方法設定"
 
-msgid "LC_Page_Admin_Basis_PaymentInput_003"
+msgid "c_Make the usage conditions (lower limit) &#036; T_ARG1 or more.<br>_01"
 msgstr "利用条件(下限)はT_ARG1円以上にしてください。<br>"
 
-msgid "LC_Page_Admin_Basis_PaymentInput_004"
+msgid "c_Make the usage conditions (max) &#036; T_ARG1 or less.<br>_01"
 msgstr "利用条件(上限)はT_ARG1円以下にしてください。<br>"
 
 msgid "LC_Page_Admin_Basis_Point_001"
 msgstr "基本情報管理"
 
-msgid "LC_Page_Admin_Basis_Point_002"
+msgid "c_Point settings_01"
 msgstr "ポイント設定"
 
 msgid "LC_Page_Admin_Basis_Seo_001"
@@ -2495,7 +2495,7 @@ msgstr "スマートフォン"
 msgid "LC_Page_Admin_Basis_Tradelaw_001"
 msgstr "基本情報管理"
 
-msgid "LC_Page_Admin_Basis_Tradelaw_002"
+msgid "c_Transaction rules_01"
 msgstr "特定商取引法"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_001"
@@ -2528,22 +2528,22 @@ msgstr "T_ARG1 への書き込みに失敗しました。"
 msgid "c_cannot be opened._01"
 msgstr " をオープンできません。"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_011"
+msgid "c_The target file was not found in T_ARG1._01"
 msgstr "T_ARG1 に対象ファイルが見つかりません。"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_012"
+msgid "c_T_ARG1 decompression failed._01"
 msgstr "T_ARG1 の展開に失敗しました。"
 
 msgid "LC_Page_Admin_Basis_ZipInstall_013"
 msgstr " を削除できません。"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_014"
+msgid "c_The file name cannot be changed.: T_ARG1 -> TFIELF2_01"
 msgstr "ファイル名を変更できません。: T_ARG1 -> TFIELF2"
 
 msgid "LC_Page_Admin_Contents_001"
 msgstr "コンテンツ管理"
 
-msgid "LC_Page_Admin_Contents_002"
+msgid "c_Management of new information_01"
 msgstr "新着情報管理"
 
 msgid "LC_Page_Admin_Contents_CSV_001"
@@ -2558,23 +2558,23 @@ msgstr "コンテンツ管理"
 msgid "LC_Page_Admin_Contents_CsvSql_002"
 msgstr "CSV出力設定"
 
-msgid "LC_Page_Admin_Contents_CsvSql_005"
-msgstr "'※ SQL文が不正です。SQL文を見直してください'"
+msgid "c_* The SQL text is not correct. Please revise the SQL text_01"
+msgstr "※ SQL文が不正です。SQL文を見直してください"
 
-msgid "LC_Page_Admin_Contents_CsvSql_006"
+msgid "c_Data table: T_ARG1_01"
 msgstr "データテーブル: T_ARG1"
 
-msgid "LC_Page_Admin_Contents_CsvSql_007"
+msgid "c_Master table: T_ARG1_01"
 msgstr "マスターテーブル: T_ARG1"
 
 msgid "LC_Page_Admin_Contents_FileManager_001"
 msgstr "コンテンツ管理"
 
-msgid "LC_Page_Admin_Contents_FileManager_002"
+msgid "c_File management_01"
 msgstr "ファイル管理"
 
-msgid "LC_Page_Admin_Contents_FileManager_003"
-msgstr "'※ ディレクトリをダウンロードすることは出来ません。<br/>'"
+msgid "c_* It is not possible to download the directory.<br/>_01"
+msgstr "※ ディレクトリをダウンロードすることは出来ません。<br/>"
 
 msgid "LC_Page_Admin_Contents_FileManager_005"
 msgstr "※ T_ARG1の作成に失敗しました。<br/>"
@@ -2582,10 +2582,10 @@ msgstr "※ T_ARG1の作成に失敗しました。<br/>"
 msgid "LC_Page_Admin_Contents_Recommend_001"
 msgstr "コンテンツ管理"
 
-msgid "LC_Page_Admin_Contents_Recommend_002"
+msgid "c_Recommended products_01"
 msgstr "おすすめ商品管理"
 
-msgid "LC_Page_Admin_Contents_RecommendSearch_001"
+msgid "c_Product search_01"
 msgstr "商品検索"
 
 msgid "LC_Page_Admin_Customer_001"
@@ -2597,31 +2597,31 @@ msgstr "会員マスター"
 msgid "LC_Page_Admin_Customer_Edit_002"
 msgstr "会員登録"
 
-msgid "LC_Page_Admin_Customer_Edit_003"
+msgid "c_* This address is already used by another member (ID:T_ARG1)._01"
 msgstr "※ すでに他の会員(ID:T_ARG1)が使用しているアドレスです。"
 
-msgid "LC_Page_Admin_Customer_Edit_004"
+msgid "c_* This mobile address is already used by another member (ID:T_ARG1)._01"
 msgstr "※ すでに他の会員(ID:T_ARG1)が使用している携帯アドレスです。"
 
-msgid "LC_Page_Admin_Customer_SearchCustomer_001"
+msgid "c_Member search_01"
 msgstr "会員検索"
 
 msgid "LC_Page_Admin_Design_001"
 msgstr "デザイン管理"
 
-msgid "LC_Page_Admin_Design_002"
+msgid "c_Layout settings_01"
 msgstr "レイアウト設定"
 
 msgid "LC_Page_Admin_Design_Bloc_001"
 msgstr "デザイン管理"
 
-msgid "LC_Page_Admin_Design_Bloc_002"
+msgid "c_Block settings_01"
 msgstr "ブロック設定"
 
-msgid "LC_Page_Admin_Design_Bloc_003"
+msgid "c_* Block writing failed<br />_01"
 msgstr "※ ブロックの書き込みに失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_Bloc_004"
+msgid "c_* Block deletion failed<br />_01"
 msgstr "※ ブロックの削除に失敗しました<br />"
 
 msgid "LC_Page_Admin_Design_Bloc_005"
@@ -2632,16 +2632,16 @@ msgstr ""
 msgid "LC_Page_Admin_Design_CSS_001"
 msgstr "デザイン管理"
 
-msgid "LC_Page_Admin_Design_CSS_002"
+msgid "c_CSS settings_01"
 msgstr "CSS設定"
 
-msgid "LC_Page_Admin_Design_CSS_003"
+msgid "c_* Deletion of the old file failed<br />_01"
 msgstr "※ 旧ファイルの削除に失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_CSS_004"
+msgid "c_* CSS writing failed<br />_01"
 msgstr "※ CSSの書き込みに失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_CSS_005"
+msgid "c_* CSS deletion failed<br />_01"
 msgstr "※ CSSの削除に失敗しました<br />"
 
 msgid "LC_Page_Admin_Design_CSS_006"
@@ -2651,10 +2651,10 @@ msgstr ""
 msgid "LC_Page_Admin_Design_Header_001"
 msgstr "デザイン管理"
 
-msgid "LC_Page_Admin_Design_Header_002"
+msgid "c_Header/footer settings_01"
 msgstr "ヘッダー/フッター設定"
 
-msgid "LC_Page_Admin_Design_Header_003"
+msgid "c_* File retrieval failed<br />_01"
 msgstr "※ ファイルの取得に失敗しました<br />"
 
 msgid "LC_Page_Admin_Design_Header_004"
@@ -2663,19 +2663,19 @@ msgstr "※ ファイルの書き込みに失敗しました<br />"
 msgid "LC_Page_Admin_Design_MainEdit_001"
 msgstr "デザイン管理"
 
-msgid "LC_Page_Admin_Design_MainEdit_002"
+msgid "c_Page detail settings_01"
 msgstr "ページ詳細設定"
 
-msgid "LC_Page_Admin_Design_MainEdit_003"
+msgid "c_* PHP file creation failed<br />_01"
 msgstr "※ PHPファイルの作成に失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_MainEdit_004"
+msgid "c_* TPL file writing failed<br />_01"
 msgstr "※ TPLファイルの書き込みに失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_MainEdit_005"
+msgid "c_* Enter the URL again.<br />_01"
 msgstr "※ URLを正しく入力してください。<br />"
 
-msgid "LC_Page_Admin_Design_MainEdit_006"
+msgid "c_* Data for the same URL exists. Enter a different URL.<br />_01"
 msgstr "※ 同じURLのデータが存在しています。別のURLを入力してください。<br />"
 
 msgid "LC_Page_Admin_Design_Template_001"
@@ -2684,48 +2684,48 @@ msgstr "デザイン管理"
 msgid "LC_Page_Admin_Design_Template_002"
 msgstr "テンプレート設定"
 
-msgid "LC_Page_Admin_Design_Template_003"
+msgid "c_* The default template and template that is currently selected cannot be deleted<br />_01"
 msgstr "※ デフォルトテンプレートと、選択中のテンプレートは削除出来ません<br />"
 
-msgid "LC_Page_Admin_Design_Template_004"
+msgid "c_* The template could not be deleted<br />_01"
 msgstr "※ テンプレートの削除ができませんでした<br />"
 
-msgid "LC_Page_Admin_Design_Template_005"
+msgid "c_* T_ARG1 cannot be found.<br />_01"
 msgstr "※ T_ARG1が見つかりません<br />"
 
-msgid "LC_Page_Admin_Design_Template_006"
+msgid "c_* Directory creation failed<br />_01"
 msgstr "※ ディレクトリの作成に失敗しました<br />"
 
-msgid "LC_Page_Admin_Design_Template_007"
+msgid "c_* Archive file creation failed<br />_01"
 msgstr "※ アーカイブファイルの作成に失敗しました<br />"
 
 msgid "LC_Page_Admin_Design_UpDown_001"
 msgstr "デザイン管理"
 
-msgid "LC_Page_Admin_Design_UpDown_002"
+msgid "c_Template addition_01"
 msgstr "テンプレート追加"
 
-msgid "LC_Page_Admin_Design_UpDown_003"
+msgid "c_* A file with the same name already exists.<br/>_01"
 msgstr "※ 同名のファイルがすでに存在します。<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_004"
+msgid "c_* This template code cannot be used.<br/>_01"
 msgstr "※ このテンプレートコードは使用できません。<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_005"
+msgid "c_* This template code is already registered.<br/>_01"
 msgstr "※ すでに登録されているテンプレートコードです。<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_006"
+msgid "c_* The template file could not be decompressed. The permissible formats are tar/tar.gz.<br />_01"
 msgstr ""
 "※ テンプレートファイルが解凍できません。許可されている形式は、tar/tar.gzで"
 "す。<br />"
 
-msgid "LC_Page_Admin_Design_UpDown_007"
+msgid "c_* The template folder could not be created.<br/>_01"
 msgstr "※ テンプレートフォルダが作成できませんでした。<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_008"
+msgid "c_* Smarty compile folder could not be created.<br/>_01"
 msgstr "※ Smarty コンパイルフォルダが作成できませんでした。<br/>"
 
-msgid "LC_Page_Admin_Design_UpDown_009"
+msgid "c_* Decompression of the template file failed.<br/>_01"
 msgstr "※ テンプレートファイルの解凍に失敗しました。<br/>"
 
 msgid "LC_Page_Admin_Design_UpDown_010"
@@ -2734,28 +2734,28 @@ msgstr "※ T_ARG1 の作成に失敗しました。<br/>"
 msgid "LC_Page_Admin_Mail_001"
 msgstr "メルマガ管理"
 
-msgid "LC_Page_Admin_Mail_002"
+msgid "c_Delivery content settings_01"
 msgstr "配信内容設定"
 
-msgid "LC_Page_Admin_Mail_004"
+msgid "c_Both_01"
 msgstr "両方"
 
-msgid "LC_Page_Admin_Mail_005"
+msgid "c_HTML_01"
 msgstr "HTML"
 
-msgid "LC_Page_Admin_Mail_006"
+msgid "c_TEXT_02"
 msgstr "TEXT"
 
-msgid "LC_Page_Admin_Mail_007"
+msgid "c_[T_ARG1]_01"
 msgstr "【T_ARG1】"
 
 msgid "LC_Page_Admin_Mail_History_001"
 msgstr "メルマガ管理"
 
-msgid "LC_Page_Admin_Mail_History_002"
+msgid "c_Delivery history_01"
 msgstr "配信履歴"
 
-msgid "LC_Page_Admin_Mail_Preview_001"
+msgid "c_Preview_01"
 msgstr "プレビュー"
 
 msgid "LC_Page_Admin_Mail_Template_001"
@@ -2833,13 +2833,13 @@ msgid "c_Enter a number for the issuance month._01"
 msgstr "発行月は数値で入力してください。"
 
 msgid "c_Enter between 1 - 12 for the issuance month_01"
-msgstr "発行月は1012の間で入力してください。"
+msgstr "発行月は1～12の間で入力してください。"
 
 msgid "c_Enter a number for the issuance date._01"
 msgstr "発行日は数値で入力してください。"
 
 msgid "c_Enter a number between 1- 31 for the issuance date._01"
-msgstr "発行日は1031の間で入力してください。"
+msgstr "発行日は1～31の間で入力してください。"
 
 msgid "c_Product selection_01"
 msgstr "商品選択"

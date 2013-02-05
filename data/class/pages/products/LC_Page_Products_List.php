@@ -281,9 +281,9 @@ __EOS__;
      */
     function lfGetPageTitle($mode, $category_id = 0) {
         if ($mode == 'search') {
-            return t('LC_Page_Products_List_004');
+            return t('c_Search results_01');
         } elseif ($category_id == 0) {
-            return t('LC_Page_Products_List_005');
+            return t('c_All products_01');
         } else {
             $arrCat = SC_Helper_DB_Ex::sfGetCat($category_id);
             return $arrCat['name'];

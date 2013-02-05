@@ -47,7 +47,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'basis';
         $this->tpl_subno = 'mail';
         $this->tpl_maintitle = t('c_Basic information_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Mail_002');
+        $this->tpl_subtitle = t('c_E-mail settings_01');
     }
 
     /**
@@ -97,7 +97,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                     $this->arrForm = $post;
                     if ($this->arrErr) {
                         // エラーメッセージ
-                        $this->tpl_msg = t('LC_Page_Admin_Basis_Mail_003');
+                        $this->tpl_msg = t('c_An error has occurred_01');
 
                     } else {
                         // 正常

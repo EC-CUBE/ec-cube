@@ -47,7 +47,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = 'file';
         $this->tpl_maintitle = t('c_Edit contents_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Contents_FileManager_002');
+        $this->tpl_subtitle = t('c_File management_01');
 
     }
 
@@ -126,7 +126,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     if (is_dir($objFormParam->getValue('select_file'))) {
-                        $disp_error = t('LC_Page_Admin_Contents_FileManager_003');
+                        $disp_error = t('c_* It is not possible to download the directory.<br/>_01');
                         $this->setDispError('select_file', $disp_error);
                     } else {
 

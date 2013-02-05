@@ -43,7 +43,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = t('LC_Page_Shopping_Multiple_001');
+        $this->tpl_title = t('c_Designation of multiple delivery destinations_01');
         $this->httpCacheControl('nocache');
     }
 
@@ -253,11 +253,11 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
             foreach ($arrParams as $index => $arrParam) {
                 // 数量0で、お届け先を選択している場合
                 if ($arrParam['quantity'] == 0 && !SC_Utils_Ex::isBlank($arrParam['shipping'])) {
-                    $arrErr['shipping'][$index] = t('LC_Page_Shopping_Multiple_003');
+                    $arrErr['shipping'][$index] = t('c_* When the quantity is 0, it is not possible to enter a shipping destination.<br />_01');
                 }
                 // 数量の入力があり、お届け先を選択していない場合
                 if ($arrParam['quantity'] > 0 && SC_Utils_Ex::isBlank($arrParam['shipping'])) {
-                    $arrErr['shipping'][$index] = t('LC_Page_Shopping_Multiple_004');
+                    $arrErr['shipping'][$index] = t('c_* The shipping destination has not been entered.<br />_01');
                 }
             }
         }
@@ -278,7 +278,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
                 if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
                     foreach ($arrParams as $index => $arrParam) {
                         if ($arrParam['product_class_id'] == $product_class_id) {
-                            $arrErr['quantity'][$index] = t('LC_Page_Shopping_Multiple_005', array('T_ARG1' => $arrCartRow['quantity']));
+                            $arrErr['quantity'][$index] = t('c_* Use T_ARG1 for the total quantity.<br />_01', array('T_ARG1' => $arrCartRow['quantity']));
                             
                         }
                     }

@@ -47,7 +47,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = 'recommend';
         $this->tpl_maintitle = t('c_Edit contents_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Contents_Recommend_002');
+        $this->tpl_subtitle = t('c_Recommended products_01');
         //最大登録数の表示
         $this->tpl_disp_max = RECOMMEND_NUM;
     }

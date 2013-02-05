@@ -172,7 +172,7 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_review','product_id = ? AND title = ? ', array($arrForm['product_id'], $arrForm['title']));
         if ($exists) {
-            $arrErr['title'] .= t('LC_Page_Products_Review_001');
+            $arrErr['title'] .= t('c_It is not possible to register a duplicate title._01');
         }
 
         if (REVIEW_ALLOW_URL == false) {

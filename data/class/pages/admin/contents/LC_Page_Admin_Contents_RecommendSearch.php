@@ -46,7 +46,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = '';
 
-        $this->tpl_subtitle = t('LC_Page_Admin_Contents_RecommendSearch_001');
+        $this->tpl_subtitle = t('c_Product search_01');
     }
 
     /**

@@ -63,7 +63,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
 
         $module_path = $this->getModulePath($order_id);
         if ($module_path === false) {
-            $msg = t('LC_Page_Shopping_LoadPaymentModule_001');
+            $msg = t('c_Module file retrieval failed. <br /> This procedure has been voided._01');
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
             return;
         }

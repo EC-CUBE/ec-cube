@@ -47,7 +47,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'point';
         $this->tpl_mainno = 'basis';
         $this->tpl_maintitle = t('c_Basic information_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Basis_Point_002');
+        $this->tpl_subtitle = t('c_Point settings_01');
     }
 
     /**

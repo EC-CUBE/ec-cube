@@ -260,17 +260,17 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $arrData = $objQuery->getRow($col, $table, $where, $arrVal);
         if (!SC_Utils_Ex::isBlank($arrData['email'])) {
             if ($arrData['email'] == $objFormParam->getValue('email')) {
-                $arrErr['email'] = t('LC_Page_Admin_Customer_Edit_003', array('T_ARG1' => $arrData['customer_id']));
+                $arrErr['email'] = t('c_* This address is already used by another member (ID:T_ARG1)._01', array('T_ARG1' => $arrData['customer_id']));
             } else if ($arrData['email'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = t('LC_Page_Admin_Customer_Edit_003', array('T_ARG1' => $arrData['customer_id']));
+                $arrErr['email_mobile'] = t('c_* This address is already used by another member (ID:T_ARG1)._01', array('T_ARG1' => $arrData['customer_id']));
             }
         }
         if (!SC_Utils_Ex::isBlank($arrData['email_mobile'])) {
             if ($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
-                $arrErr['email_mobile'] = t('LC_Page_Admin_Customer_Edit_004', array('T_ARG1' => $arrData['customer_id']));
+                $arrErr['email_mobile'] = t('c_* This mobile address is already used by another member (ID:T_ARG1)._01', array('T_ARG1' => $arrData['customer_id']));
             } else if ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
     if ($arrErr['email'] == '') {
-                    $arrErr['email'] = t('LC_Page_Admin_Customer_Edit_004', array('T_ARG1' => $arrData['customer_id']));
+                    $arrErr['email'] = t('c_* This mobile address is already used by another member (ID:T_ARG1)._01', array('T_ARG1' => $arrData['customer_id']));
                 }
             }
         }

@@ -52,7 +52,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
     function init() {
         parent::init();
         $this->tpl_onload = 'fnCheckInputPoint();';
-        $this->tpl_title = t('LC_Page_Shopping_Payment_001');
+        $this->tpl_title = t('c_Payment method and delivery time_01');
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
@@ -320,15 +320,15 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
             }
             // FIXME mobile 互換のため br は閉じない...
             if ($arrForm['use_point'] > $max_point) {
-                $objErr->arrErr['use_point'] = t('LC_Page_Shopping_Payment_002');
+                $objErr->arrErr['use_point'] = t('c_* The number of points you want to use exceeds the number of points you have.<br />_01');
             }
             if (($arrForm['use_point'] * POINT_VALUE) > $subtotal) {
-                $objErr->arrErr['use_point'] = t('LC_Page_Shopping_Payment_003');
+                $objErr->arrErr['use_point'] = t('c_* The number of points you want to use exceeds the amount of your purchase.<br />_01');
             }
             // ポイント差し引き後の決済方法チェック
             $arrPayments = $objPurchase->getPaymentsByPaymentsId($arrForm['payment_id']);
             if ($arrPayments['rule_max'] > $subtotal - $arrForm['use_point'] * POINT_VALUE) {
-                $objErr->arrErr['use_point'] = t('LC_Page_Shopping_Payment_004', array('T_ARG1' => $subtotal, 'T_ARG2' => $arrPayments['rule_max']));
+                $objErr->arrErr['use_point'] = t('c_* Based on the selected payment method, it is possible to use (T_ARG1 - T_ARG2) points.<br />_01', array('T_ARG1' => $subtotal, 'T_ARG2' => $arrPayments['rule_max']));
             }
         }
         return $objErr->arrErr;

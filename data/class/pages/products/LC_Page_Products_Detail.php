@@ -398,7 +398,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex {
             $objErr = new SC_CheckError_Ex();
             $customer_id = $objCustomer->getValue('customer_id');
             if (SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
-                $objErr->arrErr['add_favorite'.$favorite_product_id] = t('LC_Page_Products_Detail_001');
+                $objErr->arrErr['add_favorite'.$favorite_product_id] = t('c_* This product has already been added to Favorites.<br />_01');
             }
             break;
         default:

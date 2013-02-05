@@ -162,7 +162,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->doFunc(array(t('PARAM_LABEL_THE_NAME'), 'sql_name'), array('EXIST_CHECK'));
         $objErr->doFunc(array(t('c_SQL text_01'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array(t('PARAM_LABEL_CSV_SQL'), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
+        $objErr->doFunc(array(t("c_In SQL text, commands other than those related to reading and ';' symbols_01"), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -170,7 +170,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         if (SC_Utils_Ex::isBlank($arrErr)) {
             $sql_error = $this->lfCheckSQL($objFormParam->getValue('csv_sql'));
             if (!SC_Utils_Ex::isBlank($sql_error)) {
-                $arrErr['csv_sql'] = t('LC_Page_Admin_Contents_CsvSql_005');
+                $arrErr['csv_sql'] = t('c_* The SQL text is not correct. Please revise the SQL text_01');
             }
         }
         return $arrErr;
@@ -188,7 +188,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->doFunc( array(t('c_SQL text_01'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc( array(t('PARAM_LABEL_CSV_SQL'), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
+        $objErr->doFunc( array(t("c_In SQL text, commands other than those related to reading and ';' symbols_01"), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
@@ -255,9 +255,9 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrRet = array();
         foreach ($arrTable as $table) {
             if (substr($table, 0, 4) == 'dtb_') {
-                $arrRet[ $table ] = t('LC_Page_Admin_Contents_CsvSql_006', array('T_ARG1' => $table));
+                $arrRet[ $table ] = t('c_Data table: T_ARG1_01', array('T_ARG1' => $table));
             } else if (substr($table, 0, 4) == 'mtb_') {
-                $arrRet[ $table ] = t('LC_Page_Admin_Contents_CsvSql_007', array('T_ARG1' => $table));
+                $arrRet[ $table ] = t('c_Master table: T_ARG1_01', array('T_ARG1' => $table));
             }
         }
         return $arrRet;
