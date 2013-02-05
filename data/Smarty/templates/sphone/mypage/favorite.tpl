@@ -165,7 +165,7 @@
                         price.append(priceVale);
 
                         //削除ボタンをセット
-                        $($(".favoriteBox p.btn_delete a").get(maxCnt)).attr("href", "javascript:fnModeSubmit('delete_favorite','product_id','" + product.product_id + "');");
+                        $($(".favoriteBox p.btn_delete img").get(maxCnt)).attr("onclick", "javascript:fnModeSubmit('delete_favorite','product_id','" + product.product_id + "');");
 
                     }
                 }
