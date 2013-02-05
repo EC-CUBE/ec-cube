@@ -922,10 +922,7 @@ msgstr "Product type ID"
 msgid "c_Sales price_01"
 msgstr "Sales price"
 
-msgid "PARAM_LABEL_CART_NO"
-msgstr "Cart number"
-
-msgid "PARAM_LABEL_CART_NUMBER"
+msgid "c_Cart number_01"
 msgstr "Cart number"
 
 msgid "c_Number of lines_01"
@@ -1120,7 +1117,7 @@ msgstr "Period (Start day)"
 msgid "c_Period (end day)_01"
 msgstr "Period (end day)"
 
-msgid "PARAM_LABEL_THE_NAME"
+msgid "c_Name_03"
 msgstr "Name"
 
 msgid "c_Page ID_01"
@@ -1588,7 +1585,7 @@ msgstr "Index"
 msgid "c_Index (after change)_01"
 msgstr "Index (after change)"
 
-msgid "PARAM_LABEL_MEMBER_ID"
+msgid "c_Admin ID_01"
 msgstr "Member ID"
 
 msgid "c_Affiliation_01"
@@ -1853,16 +1850,13 @@ msgstr "* The corresponding address was not found.<br />"
 msgid "c_Member registration_01"
 msgstr "Member registration"
 
-msgid "LC_Page_Entry_003"
+msgid "c_Confirmation of member registration_02"
 msgstr "Confirmation of member registration"
 
-msgid "LC_Page_Entry_004"
+msgid "c_Completion of member registration_02"
 msgstr "Completion of member registration"
 
-msgid "LC_Page_Entry_005"
-msgstr "* Format is inadequate.<br />"
-
-msgid "LC_Page_Entry_006"
+msgid "c_* Format is inadequate.<br />_01"
 msgstr "* Format is inadequate.<br />"
 
 msgid "LC_Page_Entry_007"
@@ -1873,12 +1867,6 @@ msgstr "The address is being searched."
 
 msgid "c_No applicable address was found._01"
 msgstr "No applicable address was found."
-
-msgid "LC_Page_InputZip_003"
-msgstr "* Format is inadequate.<br />"
-
-msgid "LC_Page_InputZip_004"
-msgstr "* Format is inadequate.<br />"
 
 msgid "c_Mobile e-mail registration complete_01"
 msgstr "Mobile e-mail registration complete"
@@ -2025,10 +2013,7 @@ msgstr ""
 msgid "c_There is an error with your name or the e-mail address is not correct._01"
 msgstr "There is an error with your name or the e-mail address is not correct."
 
-msgid "LC_Page_Forgot_004"
-msgstr "The secret question did not match."
-
-msgid "LC_Page_Forgot_005"
+msgid "c_The secret question did not match._01"
 msgstr "The secret question did not match."
 
 msgid "c_The password has been changed._01"
@@ -2043,17 +2028,11 @@ msgstr ""
 "If you have not completed registration, access the registration page from "
 "the URL given to you in an e-mail."
 
-msgid "LC_Page_FrontParts_LoginCheck_002"
-msgstr "The e-mail address or password is not correct."
-
-msgid "LC_Page_AbstractMypage_001"
+msgid "c_MY page_01"
 msgstr "MY page"
 
 msgid "c_MY page (login)_01"
 msgstr "MY page (login)"
-
-msgid "LC_Page_MyPage_001"
-msgstr "MY page"
 
 msgid "c_Purchase history list_01"
 msgstr "Purchase history list"
@@ -2061,28 +2040,16 @@ msgstr "Purchase history list"
 msgid "LC_Page_Mypage_Change_001"
 msgstr "Edit registration details"
 
-msgid "LC_Page_Mypage_Change_002"
-msgstr "* The corresponding address was not found.<br />"
-
 msgid "LC_Page_Mypage_Change_003"
 msgstr "Member registration"
 
 msgid "LC_Page_Mypage_Change_004"
 msgstr "Edit registration details"
 
-msgid "LC_Page_Mypage_Change_005"
-msgstr "* Format is inadequate.<br />"
-
-msgid "LC_Page_Mypage_Change_006"
-msgstr "* Format is inadequate.<br />"
-
 msgid "c_Revision of member registration details (completion page)_01"
 msgstr "Revision of member registration details (completion page)"
 
-msgid "LC_Page_Mypage_Delivery_001"
-msgstr "Add or change delivery destination"
-
-msgid "LC_Page_Mypage_DeliveryAddr_001"
+msgid "c_Add or change delivery destination_01"
 msgstr "Add or change delivery destination"
 
 msgid "c_List of Favorites_01"
@@ -2100,9 +2067,6 @@ msgstr "Cancel membership"
 msgid "c_Confirm account cancellation_01"
 msgstr "Confirm account cancellation"
 
-msgid "LC_Page_Mypage_RefusalComplete_001"
-msgstr "MY page"
-
 msgid "c_/Withdrawal procedure (completion page)_01"
 msgstr "/Withdrawal procedure (completion page)"
 
@@ -2115,13 +2079,7 @@ msgstr "Shipping and legal information"
 msgid "c_* This product has already been added to Favorites.<br />_01"
 msgstr "* This product has already been added to Favorites.<br />"
 
-msgid "LC_Page_Products_List_001"
-msgstr "No designation"
-
-msgid "LC_Page_Products_List_002"
-msgstr "No designation"
-
-msgid "LC_Page_Products_List_003"
+msgid "c_No designation_01"
 msgstr "No designation"
 
 msgid "c_Search results_01"
@@ -2158,7 +2116,7 @@ msgstr "New information"
 msgid "c_Product list information_01"
 msgstr "Product list information"
 
-msgid "LC_Page_Rss_Products_002"
+msgid "c_Unlimited inventory_02"
 msgstr "Unlimited inventory"
 
 msgid "c_Login_01"
@@ -2178,16 +2136,13 @@ msgstr ""
 "If you have not completed registration, complete registration from the URL "
 "given in the temporary registration e-mail."
 
-msgid "LC_Page_Shopping_005"
-msgstr "The e-mail address or password is not correct."
-
 msgid "c_Order complete_01"
 msgstr "Order complete"
 
 msgid "c_Confirmation_01"
 msgstr "Confirmation"
 
-msgid "LC_Page_Shopping_Deliv_001"
+msgid "c_Delivery destination_02"
 msgstr "Delivery destination"
 
 msgid "c_Module file retrieval failed. <br /> This procedure has been voided._01"
@@ -2267,26 +2222,26 @@ msgstr "○: The sequence was successfully deleted.<br />"
 msgid "c_×: The sequence was not deleted.<br />_01"
 msgstr "×: The sequence was not deleted.<br />"
 
-msgid "LC_Page_Install_012"
+msgid "c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (777, 707, etc.)_01"
 msgstr ""
 ">> ×:T_ARG1(T_ARG2)\n"
 "Please grant user write access (777, 707, etc.)"
 
-msgid "LC_Page_Install_013"
+msgid "c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (666, 606, etc.)_01"
 msgstr ""
 ">> ×:T_ARG1(T_ARG2)\n"
 "Please grant user write access (666, 606, etc.)"
 
-msgid "LC_Page_Install_014"
+msgid "c_>> ×:T_ARG1 cannot be found._01"
 msgstr ">> ×:T_ARG1 cannot be found."
 
-msgid "LC_Page_Install_015"
+msgid "c_>> ×:PHP safe mode is active._01"
 msgstr ">> ×:PHP safe mode is active."
 
-msgid "LC_Page_Install_016"
+msgid "c_>> ×:PHP settings directive 'magic_quotes_gpc' is active._01"
 msgstr ">> ×:PHP settings directive 'magic_quotes_gpc' is active."
 
-msgid "LC_Page_Install_017"
+msgid "c_>> ○:Access authority is normal._01"
 msgstr ">> ○:Access authority is normal."
 
 msgid "c_Administrator: E-mail address_01"

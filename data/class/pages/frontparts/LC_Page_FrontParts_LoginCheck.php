@@ -241,7 +241,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
                 break;
             case SITE_LOGIN_ERROR:
             default:
-                $msg = t('LC_Page_FrontParts_LoginCheck_002');
+                $msg = t('c_The e-mail address or password is not correct._01');
         }
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }

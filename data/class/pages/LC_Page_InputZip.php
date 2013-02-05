@@ -115,11 +115,11 @@ class LC_Page_InputZip extends LC_Page_Ex {
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         if (!$this->lfInputNameCheck($arrRequest['input1'])) {
             //$arrErr['input1'] = '※ 入力形式が不正です。<br />';
-            $arrErr['input1'] = t('LC_Page_InputZip_003');
+            $arrErr['input1'] = t('c_* Format is inadequate.<br />_01');
         }
         if (!$this->lfInputNameCheck($arrRequest['input2'])) {
             //$arrErr['input2'] = '※ 入力形式が不正です。<br />';
-            $arrErr['input2'] = t('LC_Page_InputZip_004');
+            $arrErr['input2'] = t('c_* Format is inadequate.<br />_01');
         }
 
         return $arrErr;

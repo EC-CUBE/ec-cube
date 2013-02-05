@@ -234,13 +234,13 @@ class LC_Page_Forgot extends LC_Page_Ex {
                 $arrForm['new_password'] = $new_password;
             } else {
                 // 秘密の答えが一致しなかった
-                $errmsg = t('LC_Page_Forgot_004');
+                $errmsg = t('c_The secret question did not match._01');
             }
         } else {
             //不正なアクセス リマインダー値が前画面と異なる。
             // 新リファクタリング基準ではここで遷移は不許可なのでエラー表示
             //SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-            $errmsg = t('LC_Page_Forgot_005');
+            $errmsg = t('c_The secret question did not match._01');
         }
         return $errmsg;
     }

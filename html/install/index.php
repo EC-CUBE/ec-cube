@@ -348,33 +348,33 @@ function lfDispStep0($objPage) {
                 // ディレクトリの場合
                 if (is_dir($path)) {
                     if (!is_writable($path)) {
-                        $mess .= t('LC_Page_Install_012', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
+                        $mess .= t('c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (777, 707, etc.)_01', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 } else {
                     if (!is_writable($path)) {
-                        $mess .= t('LC_Page_Install_013', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
+                        $mess .= t('c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (666, 606, etc.)_01', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 }
             } else {
-                $mess .= t('LC_Page_Install_014', array('T_ARG1' => $path));
+                $mess .= t('c_>> ×:T_ARG1 cannot be found._01', array('T_ARG1' => $path));
                 $hasErr = true;
             }
         }
     }
 
     if (ini_get('safe_mode')) {
-        $mess .= t('LC_Page_Install_015');
+        $mess .= t('c_>> ×:PHP safe mode is active._01');
         $hasErr = true;
     }
 
     if (get_magic_quotes_gpc()) {
-        $mess .= t('LC_Page_Install_016');
+        $mess .= t("c_>> ×:PHP settings directive 'magic_quotes_gpc' is active._01");
         $hasErr = true;
     }
 
@@ -438,7 +438,7 @@ function lfDispStep0($objPage) {
         if (!file_exists($path)) {
             mkdir($path);
         }
-        $mess .= t('LC_Page_Install_017');
+        $mess .= t('c_>> ○:Access authority is normal._01');
     }
 
     $objPage->mess = $mess;

@@ -194,7 +194,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex {
      */
     function initForm(&$objFormParam, &$arrParams, $mode = '') {
 
-        $objFormParam->addParam(t('PARAM_LABEL_MEMBER_ID'), 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam(t('c_Admin ID_01'), 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam(t('c_Name_01'), 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Affiliation_01'), 'department', STEXT_LEN, 'KV', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Login ID_01'), 'login_id', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));

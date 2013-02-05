@@ -116,7 +116,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
             case 'edit':
                 $objFormParam->addParam(t('c_Delivery company ID_01'), 'deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('c_Delivery company name_01'), 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-                $objFormParam->addParam(t('PARAM_LABEL_THE_NAME'), 'service_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+                $objFormParam->addParam(t('c_Name_03'), 'service_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('c_Explanation_01'), 'remark', LLTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
                 $objFormParam->addParam(t('c_Voucher No. confirmation URL_01'), 'confirm_url', URL_LEN, 'n', array('URL_CHECK', 'MAX_LENGTH_CHECK'), 'http://');
                 $objFormParam->addParam(t('c_Available product types_01'), 'product_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

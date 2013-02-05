@@ -43,7 +43,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title    = t('LC_Page_Mypage_DeliveryAddr_001');
+        $this->tpl_title    = t('c_Add or change delivery destination_01');
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->httpCacheControl('nocache');

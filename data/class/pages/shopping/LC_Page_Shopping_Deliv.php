@@ -45,7 +45,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
-        $this->tpl_title = t('LC_Page_Shopping_Deliv_001');
+        $this->tpl_title = t('c_Delivery destination_02');
         $this->httpCacheControl('nocache');
     }
 

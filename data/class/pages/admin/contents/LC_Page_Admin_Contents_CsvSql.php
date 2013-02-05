@@ -145,7 +145,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_SQL ID_01'), 'sql_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_SQL ID subject to CSV output_01'), 'csv_output_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam(t('c_Selected table_01'), 'select_table', STEXT_LEN, 'KVa', array('GRAPH_CHECK','MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam(t('PARAM_LABEL_THE_NAME'), 'sql_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
+        $objFormParam->addParam(t('c_Name_03'), 'sql_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
         $objFormParam->addParam(t('c_SQL text_01'), 'csv_sql', '30000', 'KVa', array('MAX_LENGTH_CHECK','SPTAB_CHECK'));
     }
 
@@ -160,7 +160,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex {
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
-        $objErr->doFunc(array(t('PARAM_LABEL_THE_NAME'), 'sql_name'), array('EXIST_CHECK'));
+        $objErr->doFunc(array(t('c_Name_03'), 'sql_name'), array('EXIST_CHECK'));
         $objErr->doFunc(array(t('c_SQL text_01'), 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array(t("c_In SQL text, commands other than those related to reading and ';' symbols_01"), 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {

@@ -113,8 +113,8 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                         }
                         // 該当無し
                         else {
-//                            $this->arrErr['zip01'] =  t('LC_Page_Mypage_Change_002');
-                            $this->arrErr['zipcode'] =  t('LC_Page_Mypage_Change_002');
+//                            $this->arrErr['zip01'] =  t('c_* The corresponding address was not found.<br />_01');
+                            $this->arrErr['zipcode'] =  t('c_* The corresponding address was not found.<br />_01');
                         }
                     }
                     $this->arrForm  = $objFormParam->getHashArray();
@@ -211,14 +211,14 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         /*
         if (!$this->lfInputNameCheck($addData['zip01'])) {
-            $arrErr['zip01'] =  t('LC_Page_Mypage_Change_005');
+            $arrErr['zip01'] =  t('c_* Format is inadequate.<br />_01');
         }
         if (!$this->lfInputNameCheck($arrdata['zip02'])) {
-            $arrErr['zip02'] =  t('LC_Page_Mypage_Change_006');
+            $arrErr['zip02'] =  t('c_* Format is inadequate.<br />_01');
         }
         */
         if (!$this->lfInputNameCheck($arrData['zipcode'])) {
-            $arrErr['zipcode'] =  t('LC_Page_Mypage_Change_005');
+            $arrErr['zipcode'] =  t('c_* Format is inadequate.<br />_01');
         }
 
         return $arrErr;

@@ -246,10 +246,10 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         // 仮会員が有効の場合
         if (CUSTOMER_CONFIRM_MAIL == true) {
-            $subject        = $objHelperMail->sfMakeSubject(t('LC_Page_Entry_003'));
+            $subject        = $objHelperMail->sfMakeSubject(t('c_Confirmation of member registration_02'));
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_mail.tpl');
         } else {
-            $subject        = $objHelperMail->sfMakeSubject(t('LC_Page_Entry_004'));
+            $subject        = $objHelperMail->sfMakeSubject(t('c_Completion of member registration_02'));
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
@@ -319,14 +319,14 @@ class LC_Page_Entry extends LC_Page_Ex {
         // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
         /*
         if (!$this->lfInputNameCheck($addData['zip01'])) {
-            $arrErr['zip01'] = t('LC_Page_Entry_005');
+            $arrErr['zip01'] = t('c_* Format is inadequate.<br />_01');
         }
         if (!$this->lfInputNameCheck($arrdata['zip02'])) {
-            $arrErr['zip02'] = t('LC_Page_Entry_006');
+            $arrErr['zip02'] = t('c_* Format is inadequate.<br />_01');
         }
         */
         if (!$this->lfInputNameCheck($arrData['zipcode'])) {
-            $arrErr['zipcode'] = t('LC_Page_Entry_005');
+            $arrErr['zipcode'] = t('c_* Format is inadequate.<br />_01');
         }
 
         return $arrErr;

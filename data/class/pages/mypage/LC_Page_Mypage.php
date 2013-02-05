@@ -50,7 +50,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         parent::init();
         $this->tpl_mypageno = 'index';
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-            $this->tpl_subtitle = t('LC_Page_MyPage_001');
+            $this->tpl_subtitle = t('c_MY page_01');
 
 
         } else {

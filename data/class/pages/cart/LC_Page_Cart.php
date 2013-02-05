@@ -202,7 +202,7 @@ class LC_Page_Cart extends LC_Page_Ex {
     function lfInitParam($arrRequest) {
         $objFormParam = new SC_FormParam_Ex();
         $objFormParam->addParam(t('c_Cart key_01'), 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CART_NUMBER'), 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Cart number_01'), 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // PC版での値引き継ぎ用
         $objFormParam->addParam(t('c_Category ID_01'), 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用

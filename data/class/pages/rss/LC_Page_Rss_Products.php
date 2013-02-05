@@ -170,7 +170,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             );
             // 在庫無制限
             if ($arrProduct[$key]['stock_unlimited'] == 1) {
-                $arrProduct[$key]['stock_unlimited'] = t('LC_Page_Rss_Products_002');
+                $arrProduct[$key]['stock_unlimited'] = t('c_Unlimited inventory_02');
             } else {
                 $arrProduct[$key]['stock_unlimited'] = NULL;
             }

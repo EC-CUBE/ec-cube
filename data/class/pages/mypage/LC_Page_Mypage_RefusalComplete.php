@@ -43,7 +43,7 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title    = t('LC_Page_Mypage_RefusalComplete_001');
+        $this->tpl_title    = t('c_MY page_01');
 
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_title .= t('c_/Withdrawal procedure (completion page)_01');

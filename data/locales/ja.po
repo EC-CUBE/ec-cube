@@ -911,10 +911,7 @@ msgstr "商品種別ID"
 msgid "c_Sales price_01"
 msgstr "販売価格"
 
-msgid "PARAM_LABEL_CART_NO"
-msgstr "カート番号"
-
-msgid "PARAM_LABEL_CART_NUMBER"
+msgid "c_Cart number_01"
 msgstr "カートナンバー"
 
 msgid "c_Number of lines_01"
@@ -1109,7 +1106,7 @@ msgstr "期間(開始日)"
 msgid "c_Period (end day)_01"
 msgstr "期間(終了日)"
 
-msgid "PARAM_LABEL_THE_NAME"
+msgid "c_Name_03"
 msgstr "名称"
 
 msgid "c_Page ID_01"
@@ -1577,7 +1574,7 @@ msgstr "インデックス"
 msgid "c_Index (after change)_01"
 msgstr "インデックス（変更後）"
 
-msgid "PARAM_LABEL_MEMBER_ID"
+msgid "c_Admin ID_01"
 msgstr "メンバーID"
 
 msgid "c_Affiliation_01"
@@ -1839,16 +1836,13 @@ msgstr "※該当する住所が見つかりませんでした。<br />"
 msgid "c_Member registration_01"
 msgstr "会員登録(確認ページ)"
 
-msgid "LC_Page_Entry_003"
+msgid "c_Confirmation of member registration_02"
 msgstr "会員登録のご確認"
 
-msgid "LC_Page_Entry_004"
+msgid "c_Completion of member registration_02"
 msgstr "会員登録のご完了"
 
-msgid "LC_Page_Entry_005"
-msgstr "※ 入力形式が不正です。<br />"
-
-msgid "LC_Page_Entry_006"
+msgid "c_* Format is inadequate.<br />_01"
 msgstr "※ 入力形式が不正です。<br />"
 
 msgid "LC_Page_Entry_007"
@@ -1859,12 +1853,6 @@ msgstr "住所を検索しています。"
 
 msgid "c_No applicable address was found._01"
 msgstr "該当する住所が見つかりませんでした。"
-
-msgid "LC_Page_InputZip_003"
-msgstr "※ 入力形式が不正です。<br />"
-
-msgid "LC_Page_InputZip_004"
-msgstr "※ 入力形式が不正です。<br />"
 
 msgid "c_Mobile e-mail registration complete_01"
 msgstr "携帯メール登録完了"
@@ -2014,10 +2002,7 @@ msgstr ""
 msgid "c_There is an error with your name or the e-mail address is not correct._01"
 msgstr "お名前に間違いがあるか、このメールアドレスは登録されていません。"
 
-msgid "LC_Page_Forgot_004"
-msgstr "秘密の質問が一致しませんでした。"
-
-msgid "LC_Page_Forgot_005"
+msgid "c_The secret question did not match._01"
 msgstr "秘密の質問が一致しませんでした。"
 
 msgid "c_The password has been changed._01"
@@ -2032,17 +2017,11 @@ msgstr ""
 "本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
 "ください。"
 
-msgid "LC_Page_FrontParts_LoginCheck_002"
-msgstr "メールアドレスもしくはパスワードが正しくありません。"
-
-msgid "LC_Page_AbstractMypage_001"
+msgid "c_MY page_01"
 msgstr "MYページ"
 
 msgid "c_MY page (login)_01"
 msgstr "MYページ(ログイン)"
-
-msgid "LC_Page_MyPage_001"
-msgstr "MYページ"
 
 msgid "c_Purchase history list_01"
 msgstr "購入履歴一覧"
@@ -2050,28 +2029,16 @@ msgstr "購入履歴一覧"
 msgid "LC_Page_Mypage_Change_001"
 msgstr "会員登録内容変更(入力ページ)"
 
-msgid "LC_Page_Mypage_Change_002"
-msgstr "※該当する住所が見つかりませんでした。<br />"
-
 msgid "LC_Page_Mypage_Change_003"
 msgstr "会員登録(確認ページ)"
 
 msgid "LC_Page_Mypage_Change_004"
 msgstr "会員登録内容変更(確認ページ)"
 
-msgid "LC_Page_Mypage_Change_005"
-msgstr "※ 入力形式が不正です。<br />"
-
-msgid "LC_Page_Mypage_Change_006"
-msgstr "※ 入力形式が不正です。<br />"
-
 msgid "c_Revision of member registration details (completion page)_01"
 msgstr "会員登録内容変更(完了ページ)"
 
-msgid "LC_Page_Mypage_Delivery_001"
-msgstr "お届け先追加･変更"
-
-msgid "LC_Page_Mypage_DeliveryAddr_001"
+msgid "c_Add or change delivery destination_01"
 msgstr "お届け先の追加･変更"
 
 msgid "c_List of Favorites_01"
@@ -2089,9 +2056,6 @@ msgstr "退会手続き(入力ページ)"
 msgid "c_Confirm account cancellation_01"
 msgstr "退会手続き(確認ページ)"
 
-msgid "LC_Page_Mypage_RefusalComplete_001"
-msgstr "MYページ"
-
 msgid "c_/Withdrawal procedure (completion page)_01"
 msgstr "/退会手続き(完了ページ)"
 
@@ -2104,13 +2068,7 @@ msgstr "特定商取引に関する法律に基づく表記"
 msgid "c_* This product has already been added to Favorites.<br />_01"
 msgstr "※ この商品は既にお気に入りに追加されています。<br />"
 
-msgid "LC_Page_Products_List_001"
-msgstr "指定なし"
-
-msgid "LC_Page_Products_List_002"
-msgstr "指定なし"
-
-msgid "LC_Page_Products_List_003"
+msgid "c_No designation_01"
 msgstr "指定なし"
 
 msgid "c_Search results_01"
@@ -2147,7 +2105,7 @@ msgstr "新着情報"
 msgid "c_Product list information_01"
 msgstr "商品一覧情報"
 
-msgid "LC_Page_Rss_Products_002"
+msgid "c_Unlimited inventory_02"
 msgstr "在庫無制限"
 
 msgid "c_Login_01"
@@ -2167,16 +2125,13 @@ msgstr ""
 "本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行って"
 "ください。"
 
-msgid "LC_Page_Shopping_005"
-msgstr "メールアドレスもしくはパスワードが正しくありません。"
-
 msgid "c_Order complete_01"
 msgstr "ご注文完了"
 
 msgid "c_Confirmation_01"
 msgstr "ご入力内容のご確認"
 
-msgid "LC_Page_Shopping_Deliv_001"
+msgid "c_Delivery destination_02"
 msgstr "お届け先の指定"
 
 msgid "c_Module file retrieval failed. <br /> This procedure has been voided._01"
@@ -2251,27 +2206,27 @@ msgstr "○：シーケンスの削除に成功しました。<br />"
 msgid "c_×: The sequence was not deleted.<br />_01"
 msgstr "×：シーケンスの削除に失敗しました。<br />"
 
-msgid "LC_Page_Install_012"
+msgid "c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (777, 707, etc.)_01"
 msgstr ""
 ">> ×：T_ARG1(T_ARG2)\n"
 "ユーザ書込み権限(777, 707等)を付与して下さい。"
 
-msgid "LC_Page_Install_013"
+msgid "c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (666, 606, etc.)_01"
 msgstr ""
 ">> ×：T_ARG1(T_ARG2)\n"
 "ユーザ書込み権限(666, 606等)を付与して下さい。"
 
-msgid "LC_Page_Install_014"
+msgid "c_>> ×:T_ARG1 cannot be found._01"
 msgstr ">> ×：T_ARG1 が見つかりません。"
 
-msgid "LC_Page_Install_015"
+msgid "c_>> ×:PHP safe mode is active._01"
 msgstr ">> ×：PHPのセーフモードが有効になっています。"
 
-msgid "LC_Page_Install_016"
+msgid "c_>> ×:PHP settings directive 'magic_quotes_gpc' is active._01"
 msgstr ""
 ">> ×：PHPの設定ディレクティブ「magic_quotes_gpc」が有効になっています。"
 
-msgid "LC_Page_Install_017"
+msgid "c_>> ○:Access authority is normal._01"
 msgstr ">> ○：アクセス権限は正常です。"
 
 msgid "c_Administrator: E-mail address_01"
