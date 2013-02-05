@@ -48,7 +48,7 @@ class SC_Utils {
         }
         $path = HTML_REALDIR . 'install/' . DIR_INDEX_FILE;
         if (file_exists($path)) {
-            SC_Utils_Ex::sfErrorHeader(t('SC_Utils_001', array('T_ARG1' => DIR_INDEX_FILE)));
+            SC_Utils_Ex::sfErrorHeader(t('c_&gt;&gt; /install/T_ARG1, delete this file after completing installation._01', array('T_ARG1' => DIR_INDEX_FILE)));
         }
     }
 
@@ -1147,12 +1147,12 @@ class SC_Utils {
                     $mess = SC_Utils_Ex::sfCopyDir($data_.'/', $des.$data.'/', $mess);
                 } else {
                     if (!$override && file_exists($des.$data)) {
-                        $mess.= t('SC_Utils_003', array('T_ARG1' => $des, 'T_ARG2' => $data));
+                        $mess.= t('c_T_ARG1T_ARG2: File exists_01', array('T_ARG1' => $des, 'T_ARG2' => $data));
                     } else {
                         if (@copy($data_, $des.$data)) {
-                            $mess.= t('SC_Utils_004', array('T_ARG1' => $des, 'T_ARG2' => $data));
+                            $mess.= t('c_T_ARG1T_ARG2: Copy success_01', array('T_ARG1' => $des, 'T_ARG2' => $data));
                         } else {
-                            $mess.= t('SC_Utils_005', array('T_ARG1' => $des, 'T_ARG2' => $data));
+                            $mess.= t('c_T_ARG1T_ARG2: Copy failure_01', array('T_ARG1' => $des, 'T_ARG2' => $data));
                         }
                     }
                     $mod=stat($data_);

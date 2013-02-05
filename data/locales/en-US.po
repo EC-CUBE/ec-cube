@@ -2860,10 +2860,10 @@ msgstr "Enter a number for the issuance date."
 msgid "c_Enter a number between 1- 31 for the issuance date._01"
 msgstr "Enter a number between 1- 31 for the issuance date."
 
-msgid "LC_Page_Admin_Order_ProductSelect_001"
+msgid "c_Product selection_01"
 msgstr "Product selection"
 
-msgid "LC_Page_Admin_Order_Status_001"
+msgid "c_Response status_02"
 msgstr "Response status"
 
 msgid "c_Plug-in management_01"
@@ -2881,7 +2881,7 @@ msgstr "* PLUGIN_CODE is not defined.<br/>"
 msgid "c_* PLUGIN_NAME is not defined.<br/>_01"
 msgstr "* PLUGIN_NAME is not defined.<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_006"
+msgid "c_* CLASS_NAME is not defined.<br/>_01"
 msgstr "* CLASS_NAME is not defined.<br/>"
 
 msgid "c_* CLASS_NAME is not properly defined.<br/>_01"
@@ -3017,17 +3017,11 @@ msgstr ""
 "* For the file size of the file name for download sales, use one that is "
 "T_ARG1T_ARG2 or less <br />"
 
-msgid "LC_Page_Admin_Products_ProductClass_012"
-msgstr "File name for download sales"
-
 msgid "c_* The format permitted for T_ARG1 is T_ARG2.<br />_01"
 msgstr "* The format permitted for T_ARG1 is T_ARG2.<br />"
 
 msgid "c_Product rearrangement_01"
 msgstr "Product rearrangement"
-
-msgid "LC_Page_Admin_Products_ProductSelect_001"
-msgstr "Product selection"
 
 msgid "c_Review management_01"
 msgstr "Review management"
@@ -3397,17 +3391,17 @@ msgstr "Template operation failed. T_ARG1"
 msgid "c_Template operation failed._01"
 msgstr "Template operation failed."
 
-msgid "SC_Utils_001"
+msgid "c_&gt;&gt; /install/T_ARG1, delete this file after completing installation._01"
 msgstr ""
 "&gt;&gt; /install/T_ARG1, delete this file after completing installation."
 
-msgid "SC_Utils_003"
+msgid "c_T_ARG1T_ARG2: File exists_01"
 msgstr "T_ARG1T_ARG2: File exists"
 
-msgid "SC_Utils_004"
+msgid "c_T_ARG1T_ARG2: Copy success_01"
 msgstr "T_ARG1T_ARG2: Copy success"
 
-msgid "SC_Utils_005"
+msgid "c_T_ARG1T_ARG2: Copy failure_01"
 msgstr "T_ARG1T_ARG2: Copy failure"
 
 msgid "tpl_Delivery company_01"

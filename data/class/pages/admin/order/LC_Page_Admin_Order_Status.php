@@ -47,7 +47,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'order';
         $this->tpl_subno = 'status';
         $this->tpl_maintitle = t('c_Orders_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Order_Status_001');
+        $this->tpl_subtitle = t('c_Response status_02');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');

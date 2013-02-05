@@ -2841,10 +2841,10 @@ msgstr "発行日は数値で入力してください。"
 msgid "c_Enter a number between 1- 31 for the issuance date._01"
 msgstr "発行日は1031の間で入力してください。"
 
-msgid "LC_Page_Admin_Order_ProductSelect_001"
+msgid "c_Product selection_01"
 msgstr "商品選択"
 
-msgid "LC_Page_Admin_Order_Status_001"
+msgid "c_Response status_02"
 msgstr "対応状況管理"
 
 msgid "c_Plug-in management_01"
@@ -2862,7 +2862,7 @@ msgstr "※ PLUGIN_CODEが定義されていません。<br/>"
 msgid "c_* PLUGIN_NAME is not defined.<br/>_01"
 msgstr "※ PLUGIN_NAMEが定義されていません。<br/>"
 
-msgid "LC_Page_Admin_OwnersStore_006"
+msgid "c_* CLASS_NAME is not defined.<br/>_01"
 msgstr "※ CLASS_NAMEが定義されていません。<br/>"
 
 msgid "c_* CLASS_NAME is not properly defined.<br/>_01"
@@ -2992,17 +2992,11 @@ msgstr ""
 "※ ダウンロード販売用ファイル名のファイルサイズはT_ARG1T_ARG2以下のものを"
 "使用してください。<br />"
 
-msgid "LC_Page_Admin_Products_ProductClass_012"
-msgstr "ダウンロード販売用ファイル名"
-
 msgid "c_* The format permitted for T_ARG1 is T_ARG2.<br />_01"
 msgstr "※ T_ARG1で許可されている形式は、T_ARG2です。<br />"
 
 msgid "c_Product rearrangement_01"
 msgstr "商品並び替え"
-
-msgid "LC_Page_Admin_Products_ProductSelect_001"
-msgstr "商品選択"
 
 msgid "c_Review management_01"
 msgstr "レビュー管理"
@@ -3362,17 +3356,17 @@ msgstr "テンプレートの操作に失敗しました。T_ARG1"
 msgid "c_Template operation failed._01"
 msgstr "テンプレートの操作に失敗しました。"
 
-msgid "SC_Utils_001"
+msgid "c_&gt;&gt; /install/T_ARG1, delete this file after completing installation._01"
 msgstr ""
-">> /install/T_ARG1 は、インストール完了後にファイルを削除してください。"
+"&gt;&gt; /install/T_ARG1 は、インストール完了後にファイルを削除してください。"
 
-msgid "SC_Utils_003"
+msgid "c_T_ARG1T_ARG2: File exists_01"
 msgstr "T_ARG1T_ARG2：ファイルが存在します"
 
-msgid "SC_Utils_004"
+msgid "c_T_ARG1T_ARG2: Copy success_01"
 msgstr "T_ARG1T_ARG2：コピー成功"
 
-msgid "SC_Utils_005"
+msgid "c_T_ARG1T_ARG2: Copy failure_01"
 msgstr "T_ARG1T_ARG2：コピー失敗"
 
 msgid "tpl_Delivery company_01"

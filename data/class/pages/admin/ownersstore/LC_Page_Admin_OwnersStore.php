@@ -496,7 +496,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex {
             return $arrErr;
         }
         if (!isset($arrPluginInfo['CLASS_NAME'])) {
-            $arrErr['plugin_file'] = t('LC_Page_Admin_OwnersStore_006');
+            $arrErr['plugin_file'] = t('c_* CLASS_NAME is not defined.<br/>_01');
             return $arrErr;
         }
         $plugin_class_file_path = $dir_path . $arrPluginInfo['CLASS_NAME'] . '.php';

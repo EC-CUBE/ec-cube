@@ -579,7 +579,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex {
         } else {
             // SC_CheckError::FILE_EXT_CHECK とのソース互換を強めるための配列
             $value = array(
-                0 => t('LC_Page_Admin_Products_ProductClass_012'),
+                0 => t('c_File name for download sales_01'),
                 1 => 'down_realfilename',
                 2 => explode(',', DOWNLOAD_EXTENSION),
             );

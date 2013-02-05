@@ -47,7 +47,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
         $this->tpl_mainno = 'products';
         $this->tpl_subno = '';
         $this->tpl_maintitle = t('c_Products_01');
-        $this->tpl_subtitle = t('LC_Page_Admin_Products_ProductSelect_001');
+        $this->tpl_subtitle = t('c_Product selection_01');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
