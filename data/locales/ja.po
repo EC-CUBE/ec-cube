@@ -195,35 +195,14 @@ msgstr "※「T_ARG1」は売り切れました。"
 msgid "c_Product name / Product code / [Specification]_01"
 msgstr "商品名 / 商品コード / [ 規格 ]"
 
-msgid "c_Quantity_01"
-msgstr "数量"
-
-msgid "c_Unit price_01"
-msgstr "単価"
-
 msgid "c_Amount with tax_01"
 msgstr "金額(税込)"
 
 msgid "c_Product total_01"
 msgstr "商品合計"
 
-msgid "c_Shipping fee_01"
-msgstr "送料"
-
-msgid "c_Processing fee_01"
-msgstr "手数料"
-
-msgid "c_Discount_01"
-msgstr "値引き"
-
 msgid "c_Billing amount_01"
 msgstr "請求金額"
-
-msgid "c_Used points_01"
-msgstr "利用ポイント"
-
-msgid "c_Points added_01"
-msgstr "加算ポイント"
 
 msgid "c_<Remarks>_01"
 msgstr "＜ 備 考 ＞"
@@ -446,13 +425,13 @@ msgstr "お名前(姓)"
 msgid "c_Name (first name)_01"
 msgstr "お名前(名)"
 
-msgid "PARAM_LABEL_CUSTOMER_KANA"
+msgid "c_Name KANA_01"
 msgstr "お名前(フリガナ)"
 
-msgid "PARAM_LABEL_CUSTOMER_LASTKANA"
+msgid "c_Name (last name) KANA_01"
 msgstr "お名前(フリガナ・姓)"
 
-msgid "PARAM_LABEL_CUSTOMER_FIRSTKANA"
+msgid "c_Name (first name) KANA_01"
 msgstr "お名前(フリガナ・名)"
 
 msgid "c_Name of orderer (last name)_01"
@@ -461,16 +440,16 @@ msgstr "注文者 お名前(姓)"
 msgid "c_Name of orderer (first name)_01"
 msgstr "注文者 お名前(名)"
 
-msgid "PARAM_LABEL_ORDER_LASTKANA"
+msgid "c_Name of orderer (last name) KANA_01"
 msgstr "注文者 お名前(フリガナ・姓)"
 
-msgid "PARAM_LABEL_ORDER_FIRSTKANA"
+msgid "c_Name of orderer (first name) KANA_01"
 msgstr "注文者 お名前(フリガナ・名)"
 
 msgid "c_Name of orderer_01"
 msgstr "注文者 お名前"
 
-msgid "PARAM_LABEL_ORDER_KANA"
+msgid "c_Name of orderer KANA_01"
 msgstr "注文者 お名前(フリガナ)"
 
 msgid "c_Prefecture_01"
@@ -617,6 +596,9 @@ msgstr "SHOP用メモ"
 msgid "c_Points in possession_01"
 msgstr "所持ポイント"
 
+msgid "c_Points added_01"
+msgstr "加算ポイント"
+
 msgid "c_Birthday points_01"
 msgstr "お誕生日ポイント"
 
@@ -716,13 +698,13 @@ msgstr "カテゴリ"
 msgid "c_Company name_01"
 msgstr "会社名"
 
-msgid "PARAM_LABEL_COMPANY_KANA"
+msgid "c_Company name KANA_01"
 msgstr "会社名(フリガナ)"
 
 msgid "c_Store name_01"
 msgstr "店名"
 
-msgid "PARAM_LABEL_SHOP_KANA"
+msgid "c_Store name KANA_01"
 msgstr "店名(フリガナ)"
 
 msgid "c_Store name (in English)_01"
@@ -815,20 +797,29 @@ msgstr "注文方法"
 msgid "c_Payment method ID_01"
 msgstr "支払方法ID"
 
-msgid "PARAM_LABEL_PAYMENT_METHOD"
+msgid "c_Payment method_01"
 msgstr "支払方法"
 
-msgid "PARAM_LABEL_PAYMENT_METHOD2"
-msgstr "支払い方法"
-
-msgid "PARAM_LABEL_CUSTOMER_PAYMENT_METHOD"
+msgid "c_Payment method_02"
 msgstr "お支払い方法"
 
 msgid "c_Payment method name_01"
 msgstr "お支払方法名称"
 
+msgid "c_Processing fee_01"
+msgstr "手数料"
+
+msgid "c_Shipping fee_01"
+msgstr "送料"
+
 msgid "c_Product shipping fee_01"
 msgstr "商品送料"
+
+msgid "c_Discount_01"
+msgstr "値引き"
+
+msgid "c_Used points_01"
+msgstr "利用ポイント"
 
 msgid "c_Points_01"
 msgstr "ポイント"
@@ -907,6 +898,12 @@ msgstr "対応状況"
 
 msgid "c_Product type ID_01"
 msgstr "商品種別ID"
+
+msgid "c_Unit price_01"
+msgstr "単価"
+
+msgid "c_Quantity_01"
+msgstr "数量"
 
 msgid "c_Sales price_01"
 msgstr "販売価格"
@@ -1082,7 +1079,7 @@ msgstr "親カテゴリID"
 msgid "c_Category name_01"
 msgstr "カテゴリ名"
 
-msgid "PARAM_LABEL_CURRENT"
+msgid "c_Current page_01"
 msgstr "現在ページ"
 
 msgid "c_New ID_01"
@@ -1130,7 +1127,7 @@ msgstr "CSSファイル名"
 msgid "c_Old CSS file name_01"
 msgstr "旧CSSファイル名"
 
-msgid "PARAM_LABEL_"
+msgid "c_CSS data_01"
 msgstr "CSSデータ"
 
 msgid "c_Block ID_01"
@@ -1415,10 +1412,10 @@ msgstr "会員名1"
 msgid "c_Member name 2_01"
 msgstr "会員名2"
 
-msgid "PARAM_LABEL_MEMBER_KANA1"
+msgid "c_Member name KANA 1_01"
 msgstr "会員名カナ1"
 
-msgid "PARAM_LABEL_MEMBER_KANA2"
+msgid "c_Member name KANA 2_01"
 msgstr "会員名カナ2"
 
 msgid "c_Memo_01"
@@ -1824,9 +1821,6 @@ msgstr "お問い合わせ(入力ページ)"
 msgid "c_Inquiry_02"
 msgstr "お問い合わせ(確認ページ)"
 
-msgid "LC_Page_Contact_004"
-msgstr "T_ARG1 様"
-
 msgid "c_Inquiry_03"
 msgstr "お問い合わせ(完了ページ)"
 
@@ -1844,9 +1838,6 @@ msgstr "会員登録のご完了"
 
 msgid "c_* Format is inadequate.<br />_01"
 msgstr "※ 入力形式が不正です。<br />"
-
-msgid "LC_Page_Entry_007"
-msgstr "T_ARG1 T_ARG2 様"
 
 msgid "c_The address is being searched._01"
 msgstr "住所を検索しています。"
@@ -2008,9 +1999,6 @@ msgstr "秘密の質問が一致しませんでした。"
 msgid "c_The password has been changed._01"
 msgstr "パスワードを変更いたしました。"
 
-msgid "LC_Page_Forgot_007"
-msgstr "T_ARG1 様"
-
 msgid "c_The e-mail address or password is not correct.\nIf you have not completed registration, access the registration page from the URL given to you in an e-mail._01"
 msgstr ""
 "メールアドレスもしくはパスワードが正しくありません。\n"
@@ -2093,9 +2081,6 @@ msgstr ""
 msgid "c_Member registration is complete._01"
 msgstr "会員登録が完了しました。"
 
-msgid "LC_Page_Regist_005"
-msgstr "T_ARG1 T_ARG2 様"
-
 msgid "LC_Page_Regist_Complete_001"
 msgstr "会員登録(完了ページ)"
 
@@ -2141,7 +2126,7 @@ msgstr ""
 msgid "c_Designation of multiple delivery destinations_01"
 msgstr "お届け先の複数指定"
 
-msgid "LC_Page_Shopping_Multiple_002"
+msgid "c_Please make a selection_02"
 msgstr "選択してください"
 
 msgid "c_* When the quantity is 0, it is not possible to enter a shipping destination.<br />_01"
@@ -2235,7 +2220,7 @@ msgstr "管理者：メールアドレス"
 msgid "c_Administrator: Login ID_01"
 msgstr "管理者：ログインID"
 
-msgid "LC_Page_Install_021"
+msgid "c_Administrator: Password_01"
 msgstr "管理者：パスワード"
 
 msgid "c_Management area: Directory_01"
@@ -2286,27 +2271,18 @@ msgstr "DBユーザ"
 msgid "c_DB password_01"
 msgstr "DBパスワード"
 
-msgid "LC_Page_Install_039"
+msgid "c_* It is not possible to designate a different hierarchy for the URL._01"
 msgstr "※ URLに異なる階層を指定することはできません。"
-
-msgid "LC_Page_Install_040"
-msgstr "※ URLに異なる階層を指定することはできません。"
-
-msgid "LC_Page_Install_042"
-msgstr "管理者：パスワード"
-
-msgid "LC_Page_Install_043"
-msgstr "管理機能：ディレクトリ"
 
 msgid "c_* The designated management directory already exists. Please use a different name._01"
 msgstr ""
 "※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してくださ"
 "い。"
 
-msgid "LC_Page_Install_045"
+msgid "c_>> The script file cannot be found_01"
 msgstr ">> スクリプトファイルが見つかりません"
 
-msgid "LC_Page_Install_046"
+msgid "c_>> Table structure was not changed.<br />_01"
 msgstr ">> テーブル構成の変更に失敗しました。<br />"
 
 msgid "c_* The designated management directory already exists. Please use  a different name._01"
@@ -2320,9 +2296,6 @@ msgstr ""
 
 msgid "c_Administrator_01"
 msgstr "管理者"
-
-msgid "LC_Page_Admin_Basis_001"
-msgstr "基本情報管理"
 
 msgid "c_SHOP master_01"
 msgstr "SHOPマスター"
@@ -2357,10 +2330,7 @@ msgstr "dtb_baseinfo に UPDATE を実行しました。"
 msgid "c_INSERT was executed for dtb_baseinfo._01"
 msgstr "dtb_baseinfo に INSERT を実行しました。"
 
-msgid "LC_Page_Admin_Basis_Delivery_002"
-msgstr "配送方法設定"
-
-msgid "LC_Page_Admin_Basis_DeliveryInput_002"
+msgid "c_Delivery method settings_01"
 msgstr "配送方法設定"
 
 msgid "c_Delivery time T_ARG1_01"
@@ -2381,7 +2351,7 @@ msgstr "※ 既に同じ日付の登録が存在します。<br>"
 msgid "c_Membership terms and conditions_01"
 msgstr "会員規約設定"
 
-msgid "LC_Page_Admin_Basis_Kiyaku_004"
+msgid "c_* Registration of the same contents already exists.<br>_01"
 msgstr "※ 既に同じ内容の登録が存在します。<br>"
 
 msgid "c_E-mail settings_01"
@@ -2390,10 +2360,7 @@ msgstr "メール設定"
 msgid "c_An error has occurred_01"
 msgstr "エラーが発生しました"
 
-msgid "LC_Page_Admin_Basis_Payment_002"
-msgstr "支払方法設定"
-
-msgid "LC_Page_Admin_Basis_PaymentInput_002"
+msgid "c_Payment method settings_01"
 msgstr "支払方法設定"
 
 msgid "c_Make the usage conditions (lower limit) &#036; T_ARG1 or more.<br>_01"
@@ -2423,13 +2390,10 @@ msgstr "特定商取引法"
 msgid "c_Postal code registration_01"
 msgstr "郵便番号DB登録"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_003"
-msgstr "'<p>完了しました。<br />'"
+msgid "c_<p>Completed.<br /> T_ARG1 items were added.</p>_01"
+msgstr "<p>完了しました。<br />T_ARG1 件を追加しました。</p>"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_004"
-msgstr "件を追加しました。</p>"
-
-msgid "LC_Page_Admin_Basis_ZipInstall_005"
+msgid "c_<p><a href='?' target='_top'>Go back</a></p>_01"
 msgstr "<p><a href='?' target='_top'>戻る</a></p>"
 
 msgid "c_T_ARG1 reading failed._01"
@@ -2444,7 +2408,7 @@ msgstr "T_ARG1 の取得に失敗しました。"
 msgid "c_T_ARG1 writing failed._01"
 msgstr "T_ARG1 への書き込みに失敗しました。"
 
-msgid "c_cannot be opened._01"
+msgid "c_T_ARG1 cannot be opened._02"
 msgstr "T_ARG1 をオープンできません。"
 
 msgid "c_The target file was not found in T_ARG1._01"
@@ -2453,7 +2417,7 @@ msgstr "T_ARG1 に対象ファイルが見つかりません。"
 msgid "c_T_ARG1 decompression failed._01"
 msgstr "T_ARG1 の展開に失敗しました。"
 
-msgid "LC_Page_Admin_Basis_ZipInstall_013"
+msgid "c_T_ARG1 cannot be deleted._01"
 msgstr "T_ARG1 を削除できません。"
 
 msgid "c_The file name cannot be changed.: T_ARG1 -> TFIELF2_01"

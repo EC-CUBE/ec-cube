@@ -191,7 +191,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
 
-        $arrResults = array('' => t('LC_Page_Shopping_Multiple_002'));
+        $arrResults = array('' => t('c_Please make a selection_02'));
         // 会員ログイン時
         if ($objCustomer->isLoginSuccess(true)) {
             $addr = array(

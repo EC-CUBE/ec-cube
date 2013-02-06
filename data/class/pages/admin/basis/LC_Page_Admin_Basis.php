@@ -214,10 +214,10 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
 
     function lfInitParam(&$objFormParam, $post) {
         $objFormParam->addParam(t('c_Company name_01'), 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_COMPANY_KANA'), 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Company name KANA_01'), 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK','MAX_LENGTH_CHECK'));
 
         $objFormParam->addParam(t('c_Store name_01'), 'shop_name', STEXT_LEN, 'KVa', array('EXIST_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_SHOP_KANA'), 'shop_kana',  STEXT_LEN, 'KVC', array('KANA_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Store name KANA_01'), 'shop_kana',  STEXT_LEN, 'KVC', array('KANA_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Store name (in English)_01'), 'shop_name_eng',MTEXT_LEN, 'a', array('GRAPH_CHECK','MAX_LENGTH_CHECK'));
         // 郵便番号チェック
 //        $objFormParam->addParam(t('c_Postal code 1_01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));

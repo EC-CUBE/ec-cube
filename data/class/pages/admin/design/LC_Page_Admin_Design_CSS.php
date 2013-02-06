@@ -155,7 +155,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_Terminal type ID_01'), 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_CSS file name_01'), 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Old CSS file name_01'), 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_CSS_DATA'), 'css_data');
+        $objFormParam->addParam(t('c_CSS data_01'), 'css_data');
 
     }
 

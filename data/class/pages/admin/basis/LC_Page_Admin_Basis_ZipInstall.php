@@ -276,9 +276,8 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                 function complete() {
                     document.open('text/html','replace');
                     document.clear();
-                    document.write(t('LC_Page_Admin_Basis_ZipInstall_003'));
-                    document.write("<?php echo $cntInsert ?> " . t('LC_Page_Admin_Basis_ZipInstall_004'));
-                    document.write(t('LC_Page_Admin_Basis_ZipInstall_005'));
+                    document.write('<?php t("c_<p>Completed.<br /> T_ARG1 items were added.</p>_01", array("T_ARG1" => $cntInsert))?>');
+                    document.write('<?php t("c_<p><a href='?' target='_top'>Go back</a></p>_01"); ?>');
                     document.close();
                 }
                 // コンテンツを削除するため、タイムアウトで呼び出し。
@@ -382,7 +381,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
     function lfExtractZipFile() {
         $zip = zip_open($this->zip_csv_temp_realfile);
         if (!is_resource($zip)) {
-            trigger_error(t(t('c_cannot be opened._01', array('T_ARG1' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
+            trigger_error(t(t('c_T_ARG1 cannot be opened._02', array('T_ARG1' => $this->zip_csv_temp_realfile))), E_USER_ERROR);
         }
 
         do {
@@ -418,7 +417,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
         // CSV 削除
         $res = unlink(ZIP_CSV_REALFILE);
         if (!$res) {
-            trigger_error(t('LC_Page_Admin_Basis_ZipInstall_013', array('T_ARG1' => ZIP_CSV_REALFILE)), E_USER_ERROR);
+            trigger_error(t('c_T_ARG1 cannot be deleted._01', array('T_ARG1' => ZIP_CSV_REALFILE)), E_USER_ERROR);
         }
 
         // CSV ファイル名変更

@@ -177,7 +177,7 @@ class LC_Page_Regist extends LC_Page_Ex {
                             , $CONF['email04']          // Errors_to
         );
         // 宛先の設定
-        $name = t('LC_Page_Regist_005',
+        $name = t('f_NAME_FULL_SIR_01',
                               array('T_ARG1' => $data['name01'],
                                     'T_ARG2' => $data['name02']));
         $objMail->setTo($data['email'], $name);

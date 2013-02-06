@@ -686,7 +686,7 @@ function lfInitWebParam($objWebParam) {
     $objWebParam->addParam(t('c_Store name_01'), 'shop_name', MTEXT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'), $shop_name);
     $objWebParam->addParam(t('c_Administrator: E-mail address_01'), 'admin_mail', null, '', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), $admin_mail);
     $objWebParam->addParam(t('c_Administrator: Login ID_01'), 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
-    $objWebParam->addParam(t('LC_Page_Install_021'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
+    $objWebParam->addParam(t('c_Administrator: Password_01'), 'login_pass', ID_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
     $objWebParam->addParam(t('c_Management area: Directory_01'), 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'), $oldAdminDir);
     $objWebParam->addParam(t('c_Management area: SSL restriction_01'), 'admin_force_ssl', 1, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), $admin_force_ssl);
     $objWebParam->addParam(t('c_Management area: IP restriction_01'), 'admin_allow_hosts', LTEXT_LEN, 'an', array('IP_CHECK', 'MAX_LENGTH_CHECK'), $admin_allow_hosts);
@@ -757,7 +757,7 @@ function lfCheckWebError($objWebParam) {
     $secure_dir = preg_replace('|^https?://[a-zA-Z0-9_~=&\?\.\-]+|', '', $arrRet['secure_url']);
 
     if ($normal_dir != $secure_dir) {
-        $objErr->arrErr['normal_url'] = t('LC_Page_Install_039');
+        $objErr->arrErr['normal_url'] = t('c_* It is not possible to designate a different hierarchy for the URL._01');
         $objErr->arrErr['secure_url'] = t('LC_Page_Install_040');
     }
 
@@ -765,10 +765,10 @@ function lfCheckWebError($objWebParam) {
     $objErr->doFunc(array(t('c_Administrator: Login ID_01'), 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     // パスワードのチェック
-    $objErr->doFunc(array(t('LC_Page_Install_042'), 'login_pass', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array(t('c_Administrator: Password_01'), 'login_pass', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     // 管理機能ディレクトリのチェック
-    $objErr->doFunc(array(t('LC_Page_Install_043'), 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
+    $objErr->doFunc(array(t('c_Management area: Directory_01'), 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objWebParam->getValue('admin_dir');
@@ -815,7 +815,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
     $arrErr = array();
 
     if (!file_exists($filepath)) {
-        $arrErr['all'] = t('LC_Page_Install_045');
+        $arrErr['all'] = t('c_>> The script file cannot be found_01');
     } else {
         if ($fp = fopen($filepath, 'r')) {
             $sql = fread($fp, filesize($filepath));
@@ -845,7 +845,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
                         // エラー文を取得する
                         preg_match('/\[(.*)\]/', $ret->userinfo, $arrKey);
                         $arrErr['all'] .= $arrKey[0] . '<br />';
-                        $objPage->update_mess .= t('LC_Page_Install_046');
+                        $objPage->update_mess .= t('c_>> Table structure was not changed.<br />_01');
                         GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
                         break;
                     } else {

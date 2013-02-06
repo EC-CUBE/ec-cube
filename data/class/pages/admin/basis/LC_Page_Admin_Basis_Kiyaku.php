@@ -240,7 +240,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
             $arrRet = $objQuery->select('kiyaku_id, kiyaku_title', 'dtb_kiyaku', 'del_flg = 0 AND kiyaku_title = ?', array($post['kiyaku_title']));
             // 編集中のレコード以外に同じ名称が存在する場合
             if ($arrRet[0]['kiyaku_id'] != $post['kiyaku_id'] && $arrRet[0]['kiyaku_title'] == $post['kiyaku_title']) {
-                $arrErr['name'] = t('LC_Page_Admin_Basis_Kiyaku_004');
+                $arrErr['name'] = t('c_* Registration of the same contents already exists.<br>_01');
             }
         }
         return $arrErr;
