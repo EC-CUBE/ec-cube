@@ -374,13 +374,13 @@ __EOS__;
             $searchCondition['arrval'][] = $arrSearchData['maker_id'];
         }
 
-        $searchCondition['where_for_count'] = $searchCondition['where'];
-
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN) {
             $searchCondition['where'] .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = alldtl.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
-            $searchCondition['where_for_count'] .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = alldtl.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
         }
+
+        // XXX 一時期内容が異なっていたことがあるので別要素にも格納している。
+        $searchCondition['where_for_count'] = $searchCondition['where'];
 
         return $searchCondition;
     }

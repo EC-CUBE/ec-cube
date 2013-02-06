@@ -73,9 +73,8 @@ class SC_Product {
      * @return array 商品IDの配列
      */
     function findProductIdsOrder(&$objQuery, $arrVal = array()) {
-        $table = <<< __EOS__
-            dtb_products AS alldtl
-__EOS__;
+        $table = 'dtb_products AS alldtl';
+
         $objQuery->setGroupBy('alldtl.product_id');
         if (is_array($this->arrOrderData) and $objQuery->order == '') {
             $o_col = $this->arrOrderData['col'];
@@ -93,12 +92,9 @@ __EOS__;
 __EOS__;
             $objQuery->setOrder($order);
         }
-        $results = $objQuery->select('alldtl.product_id', $table, '', $arrVal, MDB2_FETCHMODE_ORDERED);
-        $resultValues = array();
-        foreach ($results as $val) {
-            $resultValues[] = $val[0];
-        }
-        return $resultValues;
+        $arrReturn = $objQuery->getCol('alldtl.product_id', $table, '', $arrVal);
+
+        return $arrReturn;
     }
 
     /**
@@ -111,9 +107,8 @@ __EOS__;
      * @return array 対象商品ID数
      */
     function findProductCount(&$objQuery, $arrVal = array()) {
-        $table = <<< __EOS__
-            dtb_products AS alldtl
-__EOS__;
+        $table = 'dtb_products AS alldtl';
+
         return $objQuery->count($table, '', $arrVal);
     }
 
@@ -153,6 +148,7 @@ __EOS__;
             ,update_date
 __EOS__;
         $res = $objQuery->select($col, $this->alldtlSQL());
+
         return $res;
     }
 
@@ -231,6 +227,7 @@ __EOS__;
     function getDetailAndProductsClass($productClassId) {
         $result = $this->getProductsClass($productClassId);
         $result = array_merge($result, $this->getDetail($result['product_id']));
+
         return $result;
     }
 
@@ -403,6 +400,7 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
         $arrRes = $this->getProductsClassByQuery($objQuery, $productClassId);
+
         return (array)$arrRes[0];
     }
 
@@ -423,6 +421,7 @@ __EOS__;
             $where .= ' AND T1.del_flg = 0';
         }
         $objQuery->setWhere($where);
+
         return $this->getProductsClassByQuery($objQuery, $productIds);
     }
 
@@ -435,6 +434,7 @@ __EOS__;
      */
     function getProductsClassFullByProductId($productId, $has_deleted = false) {
         $arrRet = $this->getProductsClassByProductIds(array($productId), $has_deleted);
+
         return $arrRet;
     }
 
@@ -457,6 +457,7 @@ __EOS__;
         foreach ($productStatus as $status) {
             $results[$status['product_id']][] = $status['product_status_id'];
         }
+
         return $results;
     }
 
@@ -503,6 +504,7 @@ __EOS__;
         } elseif ($p['stock_unlimited'] != '1') {
             $limit = $p['stock'];
         }
+
         return $limit;
     }
 
@@ -700,6 +702,7 @@ __EOS__;
                         ON dtb_products.maker_id = dtb_maker.maker_id
             ) AS alldtl
 __EOS__;
+
         return $sql;
     }
 
@@ -749,6 +752,7 @@ __EOS__;
             $where_clause
         ) as prdcls
 __EOS__;
+
         return $sql;
     }
 }
