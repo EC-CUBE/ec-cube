@@ -106,7 +106,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex {
     function initParam(&$objFormParam, &$arrParams) {
 
         $objFormParam->addParam(t('c_pageno_01'), 'pageno', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_ID_ALP'), 'id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_id_01'), 'id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
 
     }

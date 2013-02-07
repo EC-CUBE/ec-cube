@@ -45,18 +45,18 @@ msgstr ""
 msgid "c_* For T_ARG1, enter T_ARG2  characters or less. <br />_01"
 msgstr "* For T_ARG1, enter T_ARG2  characters or less. <br />"
 
-msgid "c_* For T_ARG1, enter T_COUNT characters or more. <br />_01"
-msgid_plural "c_* For T_ARG1, input T_COUNT characters or more. <br />_01"
-msgstr[0] "* For T_ARG1, enter T_COUNT characters or more. <br />"
-msgstr[1] "* For T_ARG1, input T_COUNT characters or more. <br />"
+msgid "c_* For T_ARG1, enter T_COUNT character or more. <br />_01"
+msgid_plural "c_* For T_ARG1, enter T_COUNT characters or more. <br />_01"
+msgstr[0] "* For T_ARG1, enter T_COUNT character or more. <br />"
+msgstr[1] "* For T_ARG1, enter T_COUNT characters or more. <br />"
 
 msgid "c_* For T_ARG1, enter T_ARG2 or smaller. <br />_01"
 msgstr "* For T_ARG1, enter T_ARG2 or smaller. <br />"
 
 msgid "c_* Enter T_COUNT or higher for T_ARG1. <br />_01"
-msgid_plural "c_* Input T_COUNT or higher for T_ARG1. <br />_01"
+msgid_plural "c_* Enter T_COUNT or higher for T_ARG1. <br />_02"
 msgstr[0] "* Enter T_COUNT or higher for T_ARG1. <br />"
-msgstr[1] "* Input T_COUNT or higher for T_ARG1. <br />"
+msgstr[1] "* Enter T_COUNT or higher for T_ARG1. <br />"
 
 msgid "c_* Enter only numbers for T_ARG1. <br />_01"
 msgstr "* Enter only numbers for T_ARG1. <br />"
@@ -97,15 +97,13 @@ msgstr "* Enter alphanumeric symbols for T_ARG1. <br />"
 msgid "c_* Enter at least 1 for T_ARG1. <br />_01"
 msgstr "* Enter at least 1 for T_ARG1. <br />"
 
-msgid "c_*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />_01"
-msgid_plural "c_* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />_01"
-msgstr[0] "*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />"
-msgstr[1] "* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />"
+msgid "c_*  T_ARG1 must be  between T_ARG2 - T_ARG3 digits. <br />_01"
+msgstr "*  T_ARG1 must be  between T_ARG2 - T_ARG3 digits. <br />"
 
-msgid "c_* For T_ARG1, enter T_COUNT digit(s). <br />_01"
-msgid_plural "c_* For T_ARG1, input T_COUNT digit(s). <br />_01"
-msgstr[0] "* For T_ARG1, enter T_COUNT digit(s). <br />"
-msgstr[1] "* For T_ARG1, input T_COUNT digit(s). <br />"
+msgid "c_* For T_ARG1, enter T_COUNT digit. <br />_01"
+msgid_plural "c_* For T_ARG1, enter T_COUNT digits. <br />_01"
+msgstr[0] "* For T_ARG1, enter T_COUNT digit. <br />"
+msgstr[1] "* For T_ARG1, enter T_COUNT digit(s). <br />"
 
 msgid "c_* The T_ARG1 format is incorrect. <br />_01"
 msgstr "* The T_ARG1 format is incorrect. <br />"
@@ -1615,7 +1613,7 @@ msgstr "division"
 msgid "c_pageno_01"
 msgstr "pageno"
 
-msgid "PARAM_LABEL_ID_ALP"
+msgid "c_id_01"
 msgstr "id"
 
 msgid "c_customer_id_01"
@@ -1832,13 +1830,13 @@ msgstr ""
 msgid "c_Inquiry_01"
 msgstr "Inquiry"
 
-msgid "c_Inquiries_01"
-msgstr "Inquiries"
-
 msgid "c_Inquiry_02"
-msgstr "Inquiry"
+msgstr "Inquiriy"
 
 msgid "c_Inquiry_03"
+msgstr "Inquiry"
+
+msgid "c_Inquiry_04"
 msgstr "Inquiry"
 
 msgid "c_* The corresponding address was not found.<br />_01"
@@ -2028,13 +2026,13 @@ msgstr "MY page (login)"
 msgid "c_Purchase history list_01"
 msgstr "Purchase history list"
 
-msgid "LC_Page_Mypage_Change_001"
+msgid "c_Edit registration details_01"
 msgstr "Edit registration details"
 
-msgid "LC_Page_Mypage_Change_003"
-msgstr "Member registration"
+msgid "c_MY page_02"
+msgstr "MY page"
 
-msgid "LC_Page_Mypage_Change_004"
+msgid "c_Edit registration details_02"
 msgstr "Edit registration details"
 
 msgid "c_Revision of member registration details (completion page)_01"
@@ -2094,9 +2092,6 @@ msgstr ""
 
 msgid "c_Member registration is complete._01"
 msgstr "Member registration is complete."
-
-msgid "LC_Page_Regist_Complete_001"
-msgstr "Member registration"
 
 msgid "c_New information_01"
 msgstr "New information"
@@ -2374,9 +2369,6 @@ msgstr "* Registration of the same contents already exists.<br>"
 msgid "c_E-mail settings_01"
 msgstr "E-mail settings"
 
-msgid "c_An error has occurred_01"
-msgstr "An error has occurred"
-
 msgid "c_Payment method settings_01"
 msgstr "Payment method settings"
 
@@ -2473,7 +2465,7 @@ msgstr "Product search"
 msgid "c_Member master_01"
 msgstr "Member master"
 
-msgid "LC_Page_Admin_Customer_Edit_002"
+msgid "c_Member registration_02"
 msgstr "Member registration"
 
 msgid "c_* This address is already used by another member (ID:T_ARG1)._01"
@@ -5306,8 +5298,8 @@ msgstr "Constant name"
 msgid "tpl_Parameter value_01"
 msgstr "Parameter value"
 
-msgid "tpl_Member management_01"
-msgstr "Member management"
+msgid "tpl_Admin management_01"
+msgstr "Admin management"
 
 msgid "tpl_Backup management_01"
 msgstr "Backup management"

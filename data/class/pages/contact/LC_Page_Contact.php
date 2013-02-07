@@ -45,10 +45,8 @@ class LC_Page_Contact extends LC_Page_Ex {
         parent::init();
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->tpl_title = t('c_Inquiry_01');
-            //$this->tpl_title = 'お問い合わせ';
         } else {
-            $this->tpl_title = t('c_Inquiries_01');
-            //$this->tpl_title = 'お問い合わせ(入力ページ)';
+            $this->tpl_title = t('c_Inquiry_02');
         }
         $this->tpl_page_category = 'contact';
         $this->httpCacheControl('nocache');
@@ -101,7 +99,7 @@ class LC_Page_Contact extends LC_Page_Ex {
                     // エラー無しで完了画面
                     $this->tpl_mainpage = 'contact/confirm.tpl';
                     //$this->tpl_title = 'お問い合わせ(確認ページ)';
-                    $this->tpl_title = t('c_Inquiry_02');
+                    $this->tpl_title = t('c_Inquiry_03');
                 }
 
                 break;

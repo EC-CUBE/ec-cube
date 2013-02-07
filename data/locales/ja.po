@@ -41,8 +41,8 @@ msgstr "※ T_ARG1はT_ARG2より大きい値を入力できません。<br />"
 msgid "c_* For T_ARG1, enter T_ARG2  characters or less. <br />_01"
 msgstr "※ T_ARG1はT_ARG2字以下で入力してください。<br />"
 
-msgid "c_* For T_ARG1, enter T_COUNT characters or more. <br />_01"
-msgid_plural "c_* For T_ARG1, input T_COUNT characters or more. <br />_01"
+msgid "c_* For T_ARG1, enter T_COUNT character or more. <br />_01"
+msgid_plural "c_* For T_ARG1, enter T_COUNT characters or more. <br />_01"
 msgstr[0] "※ T_ARG1はT_COUNT字以上で入力してください。<br />"
 msgstr[1] "※ T_ARG1はT_COUNT字以上で入力してください。<br />"
 
@@ -50,7 +50,7 @@ msgid "c_* For T_ARG1, enter T_ARG2 or smaller. <br />_01"
 msgstr "※ T_ARG1はT_ARG2以下で入力してください。<br />"
 
 msgid "c_* Enter T_COUNT or higher for T_ARG1. <br />_01"
-msgid_plural "c_* Input T_COUNT or higher for T_ARG1. <br />_01"
+msgid_plural "c_* Enter T_COUNT or higher for T_ARG1. <br />_02"
 msgstr[0] "※ T_ARG1はT_COUNT以上で入力してください。<br />"
 msgstr[1] "※ T_ARG1はT_COUNT以上で入力してください。<br />"
 
@@ -93,13 +93,11 @@ msgstr "※ T_ARG1は英数記号で入力してください。<br />"
 msgid "c_* Enter at least 1 for T_ARG1. <br />_01"
 msgstr "※ T_ARG1は1以上を入力してください。<br />"
 
-msgid "c_*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />_01"
-msgid_plural "c_* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />_01"
-msgstr[0] "※ T_ARG1はT_COUNT桁～T_ARG2桁で入力して下さい。<br />"
-msgstr[1] "※ T_ARG1はT_COUNT桁～T_ARG2桁で入力して下さい。<br />"
+msgid "c_*  T_ARG1 must be  between T_ARG2 - T_ARG3 digits. <br />_01"
+msgstr "※ T_ARG1はT_ARG2桁～T_ARG3桁で入力して下さい。<br />"
 
-msgid "c_* For T_ARG1, enter T_COUNT digit(s). <br />_01"
-msgid_plural "c_* For T_ARG1, input T_COUNT digit(s). <br />_01"
+msgid "c_* For T_ARG1, enter T_COUNT digit. <br />_01"
+msgid_plural "c_* For T_ARG1, enter T_COUNT digits. <br />_01"
 msgstr[0] "※ T_ARG1はT_COUNT桁で入力して下さい。<br />"
 msgstr[1] "※ T_ARG1はT_COUNT桁で入力して下さい。<br />"
 
@@ -1604,7 +1602,7 @@ msgstr "division"
 msgid "c_pageno_01"
 msgstr "pageno"
 
-msgid "PARAM_LABEL_ID_ALP"
+msgid "c_id_01"
 msgstr "id"
 
 msgid "c_customer_id_01"
@@ -1815,13 +1813,13 @@ msgstr ""
 msgid "c_Inquiry_01"
 msgstr "お問い合わせ"
 
-msgid "c_Inquiries_01"
+msgid "c_Inquiry_02"
 msgstr "お問い合わせ(入力ページ)"
 
-msgid "c_Inquiry_02"
+msgid "c_Inquiry_03"
 msgstr "お問い合わせ(確認ページ)"
 
-msgid "c_Inquiry_03"
+msgid "c_Inquiry_04"
 msgstr "お問い合わせ(完了ページ)"
 
 msgid "c_* The corresponding address was not found.<br />_01"
@@ -2014,13 +2012,13 @@ msgstr "MYページ(ログイン)"
 msgid "c_Purchase history list_01"
 msgstr "購入履歴一覧"
 
-msgid "LC_Page_Mypage_Change_001"
+msgid "c_Edit registration details_01"
 msgstr "会員登録内容変更(入力ページ)"
 
-msgid "LC_Page_Mypage_Change_003"
-msgstr "会員登録(確認ページ)"
+msgid "c_MY page_02"
+msgstr "MYページ"
 
-msgid "LC_Page_Mypage_Change_004"
+msgid "c_Edit registration details_02"
 msgstr "会員登録内容変更(確認ページ)"
 
 msgid "c_Revision of member registration details (completion page)_01"
@@ -2080,9 +2078,6 @@ msgstr ""
 
 msgid "c_Member registration is complete._01"
 msgstr "会員登録が完了しました。"
-
-msgid "LC_Page_Regist_Complete_001"
-msgstr "会員登録(完了ページ)"
 
 msgid "c_New information_01"
 msgstr "新着情報"
@@ -2357,9 +2352,6 @@ msgstr "※ 既に同じ内容の登録が存在します。<br>"
 msgid "c_E-mail settings_01"
 msgstr "メール設定"
 
-msgid "c_An error has occurred_01"
-msgstr "エラーが発生しました"
-
 msgid "c_Payment method settings_01"
 msgstr "支払方法設定"
 
@@ -2456,7 +2448,7 @@ msgstr "商品検索"
 msgid "c_Member master_01"
 msgstr "会員マスター"
 
-msgid "LC_Page_Admin_Customer_Edit_002"
+msgid "c_Member registration_02"
 msgstr "会員登録"
 
 msgid "c_* This address is already used by another member (ID:T_ARG1)._01"
@@ -5261,7 +5253,7 @@ msgstr "定数名"
 msgid "tpl_Parameter value_01"
 msgstr "パラメーター値"
 
-msgid "tpl_Member management_01"
+msgid "tpl_Admin management_01"
 msgstr "メンバー管理"
 
 msgid "tpl_Backup management_01"

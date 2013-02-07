@@ -43,7 +43,7 @@ class LC_Page_Regist_Complete extends LC_Page_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_title = t('LC_Page_Regist_Complete_001');
+        $this->tpl_title = t('c_Member registration_01');
     }
 
     /**

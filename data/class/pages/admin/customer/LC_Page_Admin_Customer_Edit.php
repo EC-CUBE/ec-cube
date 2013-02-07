@@ -48,7 +48,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->tpl_subno = 'index';
         $this->tpl_pager = 'pager.tpl';
         $this->tpl_maintitle = t('c_Member_02');
-        $this->tpl_subtitle = t('LC_Page_Admin_Customer_Edit_002');
+        $this->tpl_subtitle = t('c_Member registration_02');
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');

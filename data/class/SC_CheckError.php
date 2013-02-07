@@ -257,7 +257,7 @@ class SC_CheckError {
         $this->createParam($value);
         // 文字数の取得
         if (mb_strlen($this->arrParam[$value[1]]) < $value[2]) {
-            $this->arrErr[$value[1]] = t_plural($value[2], 'c_* For T_ARG1, enter T_COUNT characters or more. <br />_01', 'c_* For T_ARG1, input T_COUNT characters or more. <br />_01', array('T_ARG1' => $value[0]));
+            $this->arrErr[$value[1]] = t_plural($value[2], 'c_* For T_ARG1, enter T_COUNT character or more. <br />_01', 'c_* For T_ARG1, enter T_COUNT characters or more. <br />_01', array('T_ARG1' => $value[0]));
         }
     }
 
@@ -292,7 +292,7 @@ class SC_CheckError {
         }
         $this->createParam($value);
         if ($this->arrParam[$value[1]] < $value[2]) {
-            $this->arrErr[$value[1]] = t_plural($value[2], 'c_* Enter T_COUNT or higher for T_ARG1. <br />_01', 'c_* Input T_COUNT or higher for T_ARG1. <br />_01', array('T_ARG1' => $value[0]));
+            $this->arrErr[$value[1]] = t_plural($value[2], 'c_* Enter T_COUNT or higher for T_ARG1. <br />_01', 'c_* Enter T_COUNT or higher for T_ARG1. <br />_02', array('T_ARG1' => $value[0]));
         }
     }
 
@@ -584,7 +584,7 @@ class SC_CheckError {
         // $this->arrParam[$value[0]] = mb_convert_kana($this->arrParam[$value[0]], 'n');
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $value[2] > $count || $value[3] < $count) {
-            $this->arrErr[$value[1]] =  t_plural($value[2], 'c_*  T_ARG1 must be  between T_COUNT - T_ARG2 digits. <br />_01', 'c_* For T_ARG1, input between T_COUNT to T_ARG2 digits. <br />_01', array('T_ARG1' => $value[0], 'T_ARG2' => $value[3]));
+            $this->arrErr[$value[1]] =  t('c_*  T_ARG1 must be  between T_ARG2 - T_ARG3 digits. <br />_01', array('T_ARG1' => $value[0], 'T_ARG2' => $value[2], 'T_ARG3' => $value[3]));
         }
     }
 
@@ -598,7 +598,7 @@ class SC_CheckError {
         $this->createParam($value);
         $count = strlen($this->arrParam[$value[1]]);
         if (($count > 0) && $count != $value[2]) {
-            $this->arrErr[$value[1]] =  t_plural($value[2], 'c_* For T_ARG1, enter T_COUNT digit(s). <br />_01', 'c_* For T_ARG1, input T_COUNT digit(s). <br />_01', array('T_ARG1' => $value[0]));
+            $this->arrErr[$value[1]] =  t_plural($value[2], 'c_* For T_ARG1, enter T_COUNT digit. <br />_01', 'c_* For T_ARG1, enter T_COUNT digits. <br />_01', array('T_ARG1' => $value[0]));
         }
     }
 

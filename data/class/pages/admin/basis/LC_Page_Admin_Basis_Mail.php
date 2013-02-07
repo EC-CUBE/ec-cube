@@ -97,7 +97,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                     $this->arrForm = $post;
                     if ($this->arrErr) {
                         // エラーメッセージ
-                        $this->tpl_msg = t('c_An error has occurred_01');
+                        $this->tpl_msg = t('c_An error has occurred._01');
 
                     } else {
                         // 正常

@@ -43,7 +43,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
      */
     function init() {
         parent::init();
-        $this->tpl_subtitle = t('LC_Page_Mypage_Change_001');
+        $this->tpl_subtitle = t('c_Edit registration details_01');
         $this->tpl_mypageno = 'change';
 
         $masterData         = new SC_DB_MasterData_Ex();
@@ -129,8 +129,8 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
                     $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
 
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
-                    $this->tpl_title    = t('LC_Page_Mypage_Change_003');
-                    $this->tpl_subtitle = t('LC_Page_Mypage_Change_004');
+                    $this->tpl_title    = t('c_MY page_02');
+                    $this->tpl_subtitle = t('c_Edit registration details_02');
                 }
                 break;
             // 会員登録と完了画面
