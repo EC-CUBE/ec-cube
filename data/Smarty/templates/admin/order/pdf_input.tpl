@@ -200,7 +200,7 @@ function lfPopwinSubmit(formName) {
         <tr>
             <th><!--{t string="tpl_Point notation_01"}--></th>
             <td>
-                <input type="radio" name="disp_point" value="1" checked="checked" /><!--{t string="tpl_Yes_01"}-->&nbsp;<input type="radio" name="disp_point" value="0" /><!--{t string="tpl_No_01"}--><br />
+                <label><input type="radio" name="disp_point" value="1" checked="checked" /><!--{t string="tpl_Yes_01"}--></label>&nbsp;<label><input type="radio" name="disp_point" value="0" /><!--{t string="tpl_No_01"}--></label><br />
                 <span style="font-size: 80%;"><!--{t string="tpl_* Even if 'Yes' is selected, it is not displayed unless the customer is a member._01"}--></span>
             </td>
         </tr>

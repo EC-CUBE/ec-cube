@@ -192,7 +192,7 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr.stock}--></span>
                 <input type="text" name="stock" value="<!--{$arrForm.stock|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-                <input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/><!--{t string="tpl_No limit_01"}-->
+                <label><input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/><!--{t string="tpl_No limit_01"}--></label>
             </td>
         </tr>
         <!--{/if}-->
@@ -421,7 +421,7 @@ function selectAll(target) {
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|h}-->" />
                 <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;"><!--{t string="tpl_Change_01"}--></a>
                 <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
-                <input type="checkbox" name="<!--{$key}-->" value="1" /><!--{t string="tpl_Remove_01"}--><br />
+                <label><input type="checkbox" name="<!--{$key}-->" value="1" /><!--{t string="tpl_Remove_01"}--></label><br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{t string="tpl_Product code_01"}-->:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
