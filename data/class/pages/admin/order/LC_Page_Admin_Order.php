@@ -286,11 +286,11 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
                 break;
             case 'search_order_name':
                 $where .= ' AND ' . $dbFactory->concatColumn(array('order_name01', 'order_name02')) . ' LIKE ?';
-                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+                $arrValues[] = sprintf('%%%s%%', preg_replace('/[ 　]/u', '', $objFormParam->getValue($key)));
                 break;
             case 'search_order_kana':
                 $where .= ' AND ' . $dbFactory->concatColumn(array('order_kana01', 'order_kana02')) . ' LIKE ?';
-                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
+                $arrValues[] = sprintf('%%%s%%', preg_replace('/[ 　]/u', '', $objFormParam->getValue($key)));
                 break;
             case 'search_order_id1':
                 $where .= ' AND order_id >= ?';
