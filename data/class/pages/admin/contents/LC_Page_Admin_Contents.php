@@ -141,9 +141,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
                 $input_pos = $this->getPostRank($news_id);
                 if (SC_Utils_Ex::sfIsInt($input_pos)) {
                     $objDb->sfMoveRank('dtb_news', 'news_id', $news_id, $input_pos);
-
-                    $this->objDisplay->reload();
                 }
+                $this->objDisplay->reload();
                 break;
             default:
                 break;
