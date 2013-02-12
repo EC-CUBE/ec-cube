@@ -50,6 +50,45 @@
                 <input class="btn_reorder btn data-role-none" type="submit" name="submit" value="再注文">
             </form>
         </div>
+        <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
+            <h3>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
+        <div id="historyBox">	
+        <p>
+            <!--{if $isMultiple}-->
+                    <!--{foreach item=item from=$shippingItem.shipment_item}-->
+                        <em>商品コード：&nbsp;</em><!--{$item.productsClass.product_code|h}--><br />
+                        <em>商品名：&nbsp;</em>
+                                <!--{$item.productsClass.name|h}--><br />
+                                <!--{if $item.productsClass.classcategory_name1 != ""}-->
+                                    <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
+                                <!--{/if}-->
+                                <!--{if $item.productsClass.classcategory_name2 != ""}-->
+                                    <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br />
+                                <!--{/if}-->
+                        
+                        <em>単価：&nbsp;</em><!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|number_format}-->円<br />
+                        <em>数量：&nbsp;</em><!--{$item.quantity}--><br />
+                        <!--{* XXX 購入小計と誤差が出るためコメントアウト
+                        <em>小計</em><!--{$item.total_inctax|number_format}-->円
+                        *}-->
+                        <br />
+                    <!--{/foreach}-->
+            <!--{/if}-->
+
+            <em>お名前</em>：&nbsp;<!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--><br />
+            <em>お名前(フリガナ)</em>：&nbsp;<!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--><br />
+            <em>郵便番号</em>：&nbsp;〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--><br />
+            <em>住所</em>：&nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br />
+            <em>電話番号</em>：&nbsp;<!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--><br />
+                            <!--{if $shippingItem.shipping_fax01 > 0}-->
+            <em>FAX番号</em>：&nbsp;<!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br />
+                            <!--{/if}-->            
+            <em>お届け日</em>：&nbsp;<!--{$shippingItem.shipping_date|default:'指定なし'|h}--><br />
+            <em>お届け時間</em>：&nbsp;<!--{$shippingItem.shipping_time|default:'指定なし'|h}--><br />
+</p>
+</div>
+
+        <!--{/foreach}-->
 
         <div class="formBox">
             <!--▼カートの中の商品一覧 -->
