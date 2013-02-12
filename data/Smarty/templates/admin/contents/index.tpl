@@ -39,6 +39,7 @@ function func_edit(news_id) {
     document.form1.mode.value = "search";
     document.form1.news_id.value = news_id;
     document.form1.submit();
+    return false;
 }
 
 function func_del(news_id) {
@@ -56,55 +57,10 @@ function func_rankMove(term,news_id) {
     document.form1.news_id.value = news_id;
     document.form1.term.value = term;
     document.form1.submit();
+    return false;
 }
 
-function moving(news_id,rank, max_rank) {
-
-    var val;
-    var ml;
-    var len;
-
-    ml = document.move;
-    len = document.move.elements.length;
-    j = 0;
-    for( var i = 0 ; i < len ; i++) {
-            if ( ml.elements[i].name == 'position' && ml.elements[i].value != "" ) {
-            val = ml.elements[i].value;
-            j ++;
-            }
-    }
-
-    if ( j > 1) {
-        alert( '移動順位は１つだけ入力してください。' );
-        return false;
-    } else if( ! val ) {
-        alert( '移動順位を入力してください。' );
-        return false;
-    } else if( val.length > 4){
-        alert( '移動順位は4桁以内で入力してください。' );
-        return false;
-    } else if( val.match(/[0-9]+/g) != val){
-        alert( '移動順位は数字で入力してください。' );
-        return false;
-    } else if( val == rank ){
-        alert( '移動させる番号が重複しています。' );
-        return false;
-    } else if( val == 0 ){
-        alert( '移動順位は0以上で入力してください。' );
-        return false;
-    } else if( val > max_rank ){
-        alert( '入力された順位は、登録数の最大値を超えています。' );
-        return false;
-    } else {
-        ml.moveposition.value = val;
-        ml.rank.value = rank;
-        ml.news_id.value = news_id;
-        ml.submit();
-        return false;
-    }
-}
-
-//-->
+-->
 </script>
 
 
