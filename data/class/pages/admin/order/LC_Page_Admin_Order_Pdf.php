@@ -208,8 +208,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
 
     function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
-        $arrRet = $objFormParam->getHashArray();
+        $arrParams = $objFormParam->getHashArray();
         $arrErr = $objFormParam->checkError();
+        $objError = new SC_CheckError_Ex($arrParams);
 
         $year = $objFormParam->getValue('year');
         if (!is_numeric($year)) {
@@ -231,7 +232,10 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
 
             $arrErr['day'] = '発行日は1〜31の間で入力してください。';
         }
-
+        
+        $objError->doFunc(array('発行日', 'year', 'month', 'day'), array('CHECK_DATE'));
+        $arrErr = array_merge($arrErr, $objError->arrErr);
+        
         return $arrErr;
     }
 
