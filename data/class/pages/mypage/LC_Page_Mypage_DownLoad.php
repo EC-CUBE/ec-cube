@@ -252,8 +252,7 @@ __EOS__;
             header('Content-Length: ' . $content_length);
         }
         echo fread($fp, $content_length) ;
-        ob_flush();
-        flush();
+        SC_Utils_Ex::sfFlush();
     }
 
     /**
@@ -305,8 +304,8 @@ __EOS__;
             while (!feof($realpath) && (!connection_aborted()) && ($bytes_send<$new_length)) {
                 $buffer = fread($realpath, $chunksize);
                 print($buffer);
-                ob_flush();
-                flush();
+                SC_Utils_Ex::sfFlush();
+                SC_Utils_Ex::extendTimeOut();
                 $bytes_send += strlen($buffer);
             }
             fclose($realpath);

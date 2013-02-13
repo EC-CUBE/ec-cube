@@ -109,7 +109,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         switch ($this->getMode()) {
             // 削除
             case 'delete':
-                $objAddress->delete($arrForm['other_deliv_id']);
+                $objAddress->deleteAddress($arrForm['other_deliv_id']);
                 break;
 
             // 会員登録住所に送る
@@ -228,7 +228,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex {
         }
         // 別のお届け先がチェックされている場合
         else {
-            $arrOtherDeliv = $objAddress->get($other_deliv_id);
+            $arrOtherDeliv = $objAddress->getAddress($other_deliv_id);
             if (!$arrOtherDeliv) {
                 return false;
             }
