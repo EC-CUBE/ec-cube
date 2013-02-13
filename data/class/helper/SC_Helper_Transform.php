@@ -66,7 +66,7 @@ class SC_Helper_Transform {
             if ($encoding === false) {
                 $encoding = t("c_Not detectable_01");
             }
-            $msg = t('SC_Helper_Transform_002', array('T_ARG1' => $encoding));
+            $msg = t('c_The templates character code is T_ARG1. UTF 8 can only be used._01', array('T_ARG1' => $encoding));
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
         }
 

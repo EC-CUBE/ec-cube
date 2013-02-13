@@ -758,7 +758,7 @@ function lfCheckWebError($objWebParam) {
 
     if ($normal_dir != $secure_dir) {
         $objErr->arrErr['normal_url'] = t('c_* It is not possible to designate a different hierarchy for the URL._01');
-        $objErr->arrErr['secure_url'] = t('LC_Page_Install_040');
+        $objErr->arrErr['secure_url'] = t('c_* It is not possible to designate a different hierarchy for the URL._01');
     }
 
     // ログインIDチェック

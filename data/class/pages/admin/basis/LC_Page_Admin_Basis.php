@@ -235,14 +235,14 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_E-mail address for receiving sending errors_01'), 'email04', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
 
         // 電話番号
-        $objFormParam->addParam(t('PARAM_LABEL_TEL01'), 'tel01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TEL02'), 'tel02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_TEL03'), 'tel03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Telephone number 1_01'), 'tel01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Telephone number 2_01'), 'tel02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Telephone number 3_01'), 'tel03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         // FAX番号
-        $objFormParam->addParam(t('PARAM_LABEL_FAX01'), 'fax01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_FAX02'), 'fax02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam(t('PARAM_LABEL_FAX03'), 'fax03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Fax number 1_01'), 'fax01', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Fax number 2_01'), 'fax02', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Fax number 3_01'), 'fax03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         // その他
         $objFormParam->addParam(t('c_Consumption sales tax rate_01'), 'tax', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

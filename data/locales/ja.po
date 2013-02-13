@@ -2739,7 +2739,7 @@ msgstr "※ T_ARG1階層以上の登録はできません。<br/>"
 msgid "c_* Registration of the same contents already exists.<br/>_01"
 msgstr "※ 既に同じ内容の登録が存在します。<br/>"
 
-msgid "LC_Page_Admin_Products_Class_001"
+msgid "c_Standard management_01"
 msgstr "規格管理"
 
 msgid "c_* Registration of the same contents already exists.<br>_02"
@@ -3157,6 +3157,9 @@ msgstr "一致する別のお届け先がありません。"
 
 msgid "c_Not detectable_01"
 msgstr "検出不能"
+
+msgid "c_The templates character code is T_ARG1. UTF 8 can only be used._01"
+msgstr "テンプレートの文字コードが「T_ARG1」です。「UTF-8」のみ利用できます。"
 
 msgid "c_<br />T_ARG1 does not exist_01"
 msgstr "<br />T_ARG1 が存在しません"

@@ -2766,7 +2766,7 @@ msgstr ""
 msgid "c_* Registration of the same contents already exists.<br/>_01"
 msgstr "* Registration of the same contents already exists.<br/>"
 
-msgid "LC_Page_Admin_Products_Class_001"
+msgid "c_Standard management_01"
 msgstr "Standard management"
 
 msgid "c_* Registration of the same contents already exists.<br>_02"
@@ -3195,6 +3195,9 @@ msgstr "There is no separate delivery destination that matches."
 
 msgid "c_Not detectable_01"
 msgstr "Not detectable"
+
+msgid "c_The templates character code is T_ARG1. UTF 8 can only be used._01"
+msgstr "The templates character code is T_ARG1. UTF 8 can only be used."
 
 msgid "c_<br />T_ARG1 does not exist_01"
 msgstr "<br />T_ARG1 does not exist"

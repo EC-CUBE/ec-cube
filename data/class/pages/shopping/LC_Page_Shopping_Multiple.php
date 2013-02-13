@@ -142,7 +142,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
         $objFormParam->addParam(t('c_Standard category 2_01'), 'classcategory_name2');
         $objFormParam->addParam(t('c_Main image_01'), 'main_image');
         $objFormParam->addParam(t('c_Main list image_01'), 'main_list_image');
-        $objFormParam->addParam(t('PARAM_LABEL_SELLPRICE'), 'price');
+        $objFormParam->addParam(t('c_Sales price_01'), 'price');
         $objFormParam->addParam(t('c_Quantity_01'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam(t('c_Delivery destination_01'), 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Cart number_01'), 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
