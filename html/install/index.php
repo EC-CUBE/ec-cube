@@ -348,14 +348,14 @@ function lfDispStep0($objPage) {
                 // ディレクトリの場合
                 if (is_dir($path)) {
                     if (!is_writable($path)) {
-                        $mess .= t('c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (777, 707, etc.)_01', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
+                        $mess .= t('c_>> ×:T_ARG1(T_ARG2)Please grant user write access (777, 707, etc.)_01', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 } else {
                     if (!is_writable($path)) {
-                        $mess .= t('c_>> ×:T_ARG1(T_ARG2)\nPlease grant user write access (666, 606, etc.)_01', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
+                        $mess .= t('c_>> ×:T_ARG1(T_ARG2)Please grant user write access (666, 606, etc.)_01', array('T_ARG1' => $real_path, 'T_ARG2' => $filemode));
                         $hasErr = true;
                     } else {
                         GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);

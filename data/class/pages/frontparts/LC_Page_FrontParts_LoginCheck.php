@@ -237,7 +237,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
     function lfGetErrorMessage($error) {
         switch ($error) {
             case TEMP_LOGIN_ERROR:
-                $msg = t('c_The e-mail address or password is not correct.\nIf you have not completed registration, access the registration page from the URL given to you in an e-mail._01');
+                $msg = t('c_The e-mail address or password is not correct.If you have not completed registration, access the registration page from the URL given to you in an e-mail._01');
                 break;
             case SITE_LOGIN_ERROR:
             default:

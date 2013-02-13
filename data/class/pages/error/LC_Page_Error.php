@@ -132,7 +132,7 @@ class LC_Page_Error extends LC_Page_Ex {
                 $this->tpl_error=t('c_This product is already added to your favorites_01');
                 break;
             case EXTRACT_ERROR:
-                $this->tpl_error=t('c_File decompression failed.\nWrite access may not have been granted to the designated directory._01');
+                $this->tpl_error=t('c_File decompression failed.Write access may not have been granted to the designated directory._01');
                 break;
             case FTP_DOWNLOAD_ERROR:
                 $this->tpl_error=t('c_FTP download of file failed._01');
@@ -144,16 +144,16 @@ class LC_Page_Error extends LC_Page_Ex {
                 $this->tpl_error=t('c_FTP login failed._02');
                 break;
             case CREATE_DB_ERROR:
-                $this->tpl_error=t('c_DB creation failed. \nThe user designated by may not have been granted DB creation access._01');
+                $this->tpl_error=t('c_DB creation failed. The user designated by may not have been granted DB creation access._01');
                 break;
             case DB_IMPORT_ERROR:
-                $this->tpl_error=t('c_Import of the database structure failed. \nThe sql file may be damaged._01');
+                $this->tpl_error=t('c_Import of the database structure failed. The sql file may be damaged._01');
                 break;
             case FILE_NOT_FOUND:
                 $this->tpl_error=t('c_The settings file does not exist in the designated path._01');
                 break;
             case WRITE_FILE_ERROR:
-                $this->tpl_error=t('c_It is not possible to write to the file settings.\nGrant write access to file settings._01');
+                $this->tpl_error=t('c_It is not possible to write to the file settings.Grant write access to file settings._01');
                 break;
             case DOWNFILE_NOT_FOUND:
                 $this->tpl_error=t('c_The download file does not exist. <br /> Please inquire at the store._01');
