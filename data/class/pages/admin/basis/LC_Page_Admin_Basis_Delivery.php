@@ -70,7 +70,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      */
     function action() {
 
-        $objDb = new SC_Helper_DB_Ex();
+        $objDeliv = new SC_Helper_Delivery_Ex();
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
@@ -87,41 +87,25 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         switch ($mode) {
             case 'delete':
                 // ランク付きレコードの削除
-                $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $objDeliv->delete($_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'up':
-                $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $objDeliv->rankUp($_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'down':
-                $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $objDeliv->rankDown($_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             default:
                 break;
         }
-        $this->arrDelivList = $this->lfGetDelivList();
+        $this->arrDelivList = $objDeliv->getList();
 
-    }
-
-    /**
-     * 配送業者一覧の取得
-     *
-     * @return array
-     */
-    function lfGetDelivList() {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $col = 'deliv_id, name, service_name';
-        $where = 'del_flg = 0';
-        $table = 'dtb_deliv';
-        $objQuery->setOrder('rank DESC');
-
-        return $objQuery->select($col, $table, $where);
     }
 
     /**

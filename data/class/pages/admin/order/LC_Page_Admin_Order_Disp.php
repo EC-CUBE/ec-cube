@@ -91,7 +91,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
 
         // 配送業者の取得
-        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', 'name');
+        $this->arrDeliv = SC_Helper_Delivery_Ex::getIDValueList();
     }
 
     /**
