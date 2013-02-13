@@ -251,7 +251,7 @@
                 <!--▼フォームボックスここから -->
                 <div class="formBox">
                     <div class="innerBox">
-                        <em>Quantity:</em>:<!--{$arrDeliv[$arrForm.deliv_id]|h}-->
+                        <em>Delivery method:</em><!--{$arrDeliv[$arrForm.deliv_id]|h}-->
                     </div>
                     <div class="innerBox">
                         <em>Payment method:</em><!--{$arrForm.payment_method|h}-->
