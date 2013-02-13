@@ -44,15 +44,39 @@ class SC_Utils_sfGetProductClassIdTest extends Common_TestCase {
   }
 
   /////////////////////////////////////////
-  public function testSfGetProductClassId_存在するIDを指定した場合_対応する製品クラスが取得できる() {
+  public function testSfGetProductClassId_存在する製品IDのみを指定した場合_カテゴリ0の対応する製品クラスが取得できる() {
     
-    $this->expected = '1001';
-    $this->actual = SC_Utils::sfGetProductClassId('1001');
+    $this->expected = '2001';
+    $this->actual = SC_Utils::sfGetProductClassId('2001');
 
     $this->verify('取得した製品クラス');
   }
 
-  public function testSfGetProductClassId_存在しないIDを指定した場合_nullが返る() {
+  public function testSfGetProductClassId_存在する製品IDのみを指定してカテゴリ0の製品クラスが存在しなければ_nullが返る() {
+    
+    $this->expected = null;
+    $this->actual = SC_Utils::sfGetProductClassId('1001');
+
+    $this->verify('取得結果が空');
+  }
+
+  public function testSfGetProductClassId_存在する製品IDとカテゴリIDを指定した場合_対応する製品クラスが取得できる() {
+    
+    $this->expected = '1002';
+    $this->actual = SC_Utils::sfGetProductClassId('1001', '2');
+
+    $this->verify('取得した製品クラス');
+  }
+
+  public function testSfGetProductClassId_存在する製品IDと存在しないカテゴリIDを指定した場合_nullが返る() {
+    
+    $this->expected = null;
+    $this->actual = SC_Utils::sfGetProductClassId('1001', '999');
+
+    $this->verify('取得結果が空');
+  }
+
+  public function testSfGetProductClassId_存在しない製品IDを指定した場合_nullが返る() {
     $this->expected = null;
     $this->actual = SC_Utils::sfGetProductClassId('9999');
 
@@ -76,8 +100,7 @@ class SC_Utils_sfGetProductClassIdTest extends Common_TestCase {
         'classcategory_id1' => '1',
         'creator_id' => '1',
         'update_date' => 'CURRENT_TIMESTAMP'
-      )
-      /** 同じproduct_idが2つあるケースは現状failするのでいったんコメントアウト
+      ),
       array(
         'product_class_id' => '1002',
         'product_id' => '1001',
@@ -86,7 +109,6 @@ class SC_Utils_sfGetProductClassIdTest extends Common_TestCase {
         'creator_id' => '1',
         'update_date' => 'CURRENT_TIMESTAMP'
       )
-      */
     );
 
     $this->objQuery->delete('dtb_products_class');
