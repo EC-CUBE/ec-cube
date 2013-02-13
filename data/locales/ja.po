@@ -2382,6 +2382,9 @@ msgstr "特定商取引法"
 msgid "c_Postal code registration_01"
 msgstr "郵便番号DB登録"
 
+msgid "c_DB registration in progress_01"
+msgstr "DB 登録進捗状況"
+
 msgid "c_<p>Completed.<br /> T_ARG1 items were added.</p>_01"
 msgstr "<p>完了しました。<br />T_ARG1 件を追加しました。</p>"
 

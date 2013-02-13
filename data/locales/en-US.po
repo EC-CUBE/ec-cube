@@ -2399,6 +2399,9 @@ msgstr "Transaction rules"
 msgid "c_Postal code registration_01"
 msgstr "Postal code registration"
 
+msgid "c_DB registration in progress_01"
+msgstr "DB registration in progress"
+
 msgid "c_<p>Completed.<br /> T_ARG1 items were added.</p>_01"
 msgstr "<p>Completed.<br /> T_ARG1 items were added.</p>"
 

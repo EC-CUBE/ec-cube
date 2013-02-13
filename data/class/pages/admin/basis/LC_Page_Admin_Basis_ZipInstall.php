@@ -220,7 +220,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
             <meta http-equiv='Content-Type' content='text/html; charset=<?php echo CHAR_CODE ?>' />
         </head>
         <body>
-        <p>DB 登録進捗状況</p>
+        <p><?php echo t("c_DB registration in progress_01"); ?></p>
         <div style='background-color: #494E5F;'>
         <?php
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
