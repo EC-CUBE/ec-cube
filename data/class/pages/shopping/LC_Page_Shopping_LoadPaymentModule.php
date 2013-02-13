@@ -90,15 +90,13 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      *                        失敗した場合 false
      */
     function getModulePath($order_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = <<< __EOS__
-            SELECT module_path
-            FROM dtb_payment T1
-                JOIN dtb_order T2
-                    ON T1.payment_id = T2.payment_id
-            WHERE order_id = ?
-__EOS__;
-        $module_path = $objQuery->getOne($sql, array($order_id));
+        $objPurchase = new SC_Helper_Purchase_Ex();
+        $objPayment = new SC_Helper_Payment_Ex();
+
+        $order = $objPurchase->getOrder($order_id);
+        $payment = $objPayment->get($order['payment_id']);
+        $module_path = $payment['module_path'];
+
         if (file_exists($module_path)) {
             return $module_path;
         }
