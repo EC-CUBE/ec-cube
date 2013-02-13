@@ -84,7 +84,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->arrForm = $objFormParam->getHashArray();
 
         //支払方法の取得
-        $this->arrPayment = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
 
         switch ($this->getMode()) {
             case 'update':

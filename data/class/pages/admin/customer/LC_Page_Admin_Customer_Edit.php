@@ -65,8 +65,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
         $this->arrDay = $objDate->getDay();
 
         // 支払い方法種別
-        $objDb = new SC_Helper_DB_Ex();
-        $this->arrPayment = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
     }
 
     /**

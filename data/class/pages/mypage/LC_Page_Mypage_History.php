@@ -93,7 +93,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
 
         $this->isMultiple       = count($this->arrShipping) > 1;
         // 支払い方法の取得
-        $this->arrPayment       = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment       = SC_Helper_Payment_Ex::getIDValueList();
         // 受注商品明細の取得
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
         foreach ($this->tpl_arrOrderDetail as $product_index => $arrOrderProductDetail) {

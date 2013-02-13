@@ -88,7 +88,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
 
         // 支払い方法の取得
-        $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
 
         // 配送業者の取得
         $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', 'name');

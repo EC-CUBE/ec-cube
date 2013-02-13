@@ -99,7 +99,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
                 break;
         }
         // 支払い方法の取得
-        $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
     }

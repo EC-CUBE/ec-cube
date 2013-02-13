@@ -326,7 +326,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
                 $objErr->arrErr['use_point'] = '※ ご利用ポイントがご購入金額を超えています。<br>';
             }
             // ポイント差し引き後の決済方法チェック
-            $arrPayments = $objPurchase->getPaymentsByPaymentsId($arrForm['payment_id']);
+            $objPayment = new SC_Helper_Payment_Ex();
+            $arrPayments = $objPayment->get($arrForm['payment_id']);
             if ($arrPayments['rule_max'] > $subtotal - $arrForm['use_point'] * POINT_VALUE) {
                 $objErr->arrErr['use_point'] = '※ 選択した支払方法では、ポイントは'.($subtotal - $arrPayments['rule_max']).'ポイントまでご利用いただけます。<br>';
             }
