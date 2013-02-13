@@ -5582,6 +5582,9 @@ msgstr "※インストールの前に新しくDBを作成しておく必要が�
 msgid "tpl_DB type <span class='attention'>*</span>_01"
 msgstr "DBの種類<span class='attention'>*</span>"
 
+msgid "tpl_DB server_01"
+msgstr "DBサーバー"
+
 msgid "tpl_Port_01"
 msgstr "ポート"
 

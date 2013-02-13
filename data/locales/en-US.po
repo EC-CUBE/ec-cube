@@ -5635,6 +5635,9 @@ msgstr "* You must create a new database before installation."
 msgid "tpl_DB type <span class='attention'>*</span>_01"
 msgstr "DB type <span class='attention'>*</span>"
 
+msgid "tpl_DB server_01"
+msgstr "DB server"
+
 msgid "tpl_Port_01"
 msgstr "Port"
 
