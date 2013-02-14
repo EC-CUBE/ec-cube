@@ -36,7 +36,7 @@ class SC_Helper_Address
      * @param array $sqlval
      * @return array()
      */
-    function save($sqlval) {
+    function registAddress($sqlval) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $customer_id = $sqlval['customer_id'];
         $other_deliv_id = $sqlval['other_deliv_id'];
@@ -76,7 +76,7 @@ class SC_Helper_Address
      * @param integer $other_deliv_id
      * @return array()
      */
-    function get($other_deliv_id) {
+    function getAddress($other_deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $address = $objQuery->select('*', 'dtb_other_deliv', 'other_deliv_id = ?', array($other_deliv_id));
         return $address ? $address[0] : FALSE;
@@ -105,7 +105,7 @@ class SC_Helper_Address
      * @param integer $delivId
      * @return void
      */
-    function delete($other_deliv_id) {
+    function deleteAddress($other_deliv_id) {
         $where      = 'other_deliv_id = ?';
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete('dtb_other_deliv', $where, array($other_deliv_id));
