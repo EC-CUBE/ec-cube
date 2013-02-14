@@ -36,7 +36,7 @@
             <!--{html_options options=$arrClassCat2 selected=$arrForm.classcategory_id2.value}-->
         </select><br>
         <input type="hidden" name="mode" value="selectItem">
-        <input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value}-->">
+        <input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value|h}-->">
         <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
         <center><input type="submit" name="submit" value="次へ"></center>
     </form>
