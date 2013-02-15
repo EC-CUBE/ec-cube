@@ -80,6 +80,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objCustomer = new SC_Customer_Ex();
         $objFormParam = new SC_FormParam_Ex();
+        $objDelivery = new SC_Helper_Delivery_Ex();
 
         $this->is_multiple = $objPurchase->isMultiple();
 
@@ -92,7 +93,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
 
         // 配送業者を取得
-        $this->arrDeliv = $objPurchase->getDeliv($cart_key);
+        $this->arrDeliv = $objDelivery->getList($cart_key);
         $this->is_single_deliv = $this->isSingleDeliv($this->arrDeliv);
 
         // 会員情報の取得

@@ -148,10 +148,10 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      * @return $deliv_id
      */
     function lfRegistData($arrRet, $member_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
+        $objDelivery = new SC_Helper_Delivery_Ex();
 
         // 入力データを渡す。
+        $sqlval['deliv_id'] = $arrRet['deliv_id'];
         $sqlval['name'] = $arrRet['name'];
         $sqlval['service_name'] = $arrRet['service_name'];
         $sqlval['remark'] = $arrRet['remark'];
@@ -160,142 +160,71 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $sqlval['creator_id'] = $member_id;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
-        // deliv_id が決まっていた場合
-        if ($arrRet['deliv_id'] != '') {
-            $deliv_id = $arrRet['deliv_id'];
-            $where = 'deliv_id = ?';
-            $objQuery->update('dtb_deliv', $sqlval, $where, array($deliv_id));
-
-            // お届け時間の登録
-            $table = 'dtb_delivtime';
-            $where = 'deliv_id = ? AND time_id = ?';
-            for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                $sqlval = array();
-                $keyname = 'deliv_time'.$cnt;
-                $arrWhereVal = array($deliv_id, $cnt);
-                // 既存データの有無を確認
-                $curData = $objQuery->select('*', $table, $where, $arrWhereVal);
-
-                if (strcmp($arrRet[$keyname], '') != 0) {
-                    $sqlval['deliv_time'] = $arrRet[$keyname];
-
-                    // 入力が空ではなく、DBに情報があれば更新
-                    if (count($curData)) {
-                        $objQuery->update($table, $sqlval, $where, $arrWhereVal);
-                    }
-                    // DBに情報がなければ登録
-                    else {
-                        $sqlval['deliv_id'] = $deliv_id;
-                        $sqlval['time_id'] = $cnt;
-                        $objQuery->insert($table, $sqlval);
-                    }
-                }
-                // 入力が空で、DBに情報がある場合は削除
-                else if (count($curData)) {
-                    $objQuery->delete($table, $where, $arrWhereVal);
-                }
+        // お届け時間
+        $sqlval['deliv_time'] = array();
+        for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
+            $keyname = "deliv_time$cnt";
+            if ($arrRet[$keyname] != '') {
+                $deliv_time = array();
+                $deliv_time['deliv_time'] = $arrRet[$keyname];
+                $sqlval['deliv_time'][$cnt] = $deliv_time;
             }
+        }
 
-            // 配送料の登録
-            if (INPUT_DELIV_FEE) {
-                for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                    $keyname = 'fee'.$cnt;
-                    if (strcmp($arrRet[$keyname], '') != 0) {
-                        $sqlval = array('fee' => $arrRet[$keyname]);
-                        $objQuery->update('dtb_delivfee', $sqlval, 'deliv_id = ? AND fee_id = ?', array($deliv_id, $cnt));
-                    }
-                }
-            }
-        } else {
-            // 登録する配送業者IDの取得
-            $deliv_id = $objQuery->nextVal('dtb_deliv_deliv_id');
-            $sqlval['deliv_id'] = $deliv_id;
-            $sqlval['rank'] = $objQuery->max('rank', 'dtb_deliv') + 1;
-            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-            // INSERTの実行
-            $objQuery->insert('dtb_deliv', $sqlval);
-
-            $sqlval = array();
-            // お届け時間の設定
-            for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                $keyname = "deliv_time$cnt";
+        // 配送料
+        if (INPUT_DELIV_FEE) {
+            $sqlval['deliv_fee'] = array();
+            // 配送料金の設定
+            for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
+                $keyname = "fee$cnt";
                 if ($arrRet[$keyname] != '') {
-                    $sqlval['deliv_id'] = $deliv_id;
-                    $sqlval['time_id'] = $cnt;
-                    $sqlval['deliv_time'] = $arrRet[$keyname];
-                    // INSERTの実行
-                    $objQuery->insert('dtb_delivtime', $sqlval);
-                }
-            }
-
-            if (INPUT_DELIV_FEE) {
-                $sqlval = array();
-                // 配送料金の設定
-                for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                    $keyname = "fee$cnt";
-                    if ($arrRet[$keyname] != '') {
-                        $sqlval['deliv_id'] = $deliv_id;
-                        $sqlval['fee'] = $arrRet[$keyname];
-                        $sqlval['pref'] = $cnt;
-                        // INSERTの実行
-                        $sqlval['fee_id'] = $cnt;
-                        $objQuery->insert('dtb_delivfee', $sqlval);
-                    }
+                    $fee = array();
+                    $fee['fee'] = $arrRet[$keyname];
+                    $fee['pref'] = $cnt;
+                    $sqlval['deliv_fee'][$cnt] = $fee;
                 }
             }
         }
 
-        $objQuery->delete('dtb_payment_options', 'deliv_id = ?', array($arrRet['deliv_id']));
-        $sqlval = array();
+        // 支払い方法
+        $sqlval['payment_ids'] = array();
         $i = 1;
         foreach ($arrRet['payment_ids'] as $val) {
-            $sqlval['deliv_id'] = $deliv_id;
-            $sqlval['payment_id'] = $val;
-            $sqlval['rank'] = $i;
-            $objQuery->insert('dtb_payment_options', $sqlval);
+            $payment_ids = array();
+            $payment_ids['payment_id'] = $val;
+            $payment_ids['rank'] = $i;
+            $sqlval['payment_ids'][] = $payment_ids;
             $i++;
         }
-        $objQuery->commit();
+
+        $deliv_id = $objDelivery->save($sqlval);
+
         return $deliv_id;
     }
 
     /* 配送業者情報の取得 */
     function lfGetDelivData(&$objFormParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objDelivery = new SC_Helper_Delivery_Ex();
 
         $deliv_id = $objFormParam->getValue('deliv_id');
 
         // パラメーター情報の初期化
         $this->lfInitParam('edit', $objFormParam);
 
-        // 配送業者一覧の取得
-        $col = 'deliv_id, name, service_name, remark, confirm_url, product_type_id';
-        $where = 'deliv_id = ?';
-        $table = 'dtb_deliv';
-        $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $objFormParam->setParam($arrRet[0]);
-        // お届け時間の取得
-        $col = 'deliv_time';
-        $where = 'deliv_id = ?  ORDER BY time_id';
-        $table = 'dtb_delivtime';
-        $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $objFormParam->setParamList($arrRet, 'deliv_time');
-        // 配送料金の取得
-        $col = 'fee';
-        $where = 'deliv_id = ? ORDER BY pref';
-        $table = 'dtb_delivfee';
-        $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $objFormParam->setParamList($arrRet, 'fee');
+        $arrDeliv = $objDelivery->get($deliv_id);
+
+        // お届け時間
+        $objFormParam->setParamList($arrDeliv['deliv_time'], 'deliv_time');
+        unset($arrDeliv['deliv_time']);
+        // 配送料金
+        $objFormParam->setParamList($arrDeliv['fee'], 'fee');
+        unset($arrDeliv['fee']);
         // 支払方法
-        $col = 'payment_id';
-        $where = 'deliv_id = ? ORDER BY rank';
-        $table = 'dtb_payment_options';
-        $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $arrPaymentIds = array();
-        foreach ($arrRet as $val) {
-            $arrPaymentIds[] = $val['payment_id'];
-        }
-        $objFormParam->setValue('payment_ids', $arrPaymentIds);
+        $objFormParam->setValue('payment_ids', $arrDeliv['payment_ids']);
+        unset($arrDeliv['payment_ids']);
+        // 配送業者
+        $objFormParam->setParam($arrDeliv);
     }
 
     /* 入力内容のチェック */
@@ -307,14 +236,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
         if (!isset($objErr->arrErr['name'])) {
             // 既存チェック
-            $objDb = new SC_Helper_DB_Ex();
-            if ($arrRet['deliv_id'] == '') {
-                $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrRet['service_name']));
-            } else {
-                $objQuery =& SC_Query_Ex::getSingletonInstance();
-                $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrRet['deliv_id'], $arrRet['service_name'])) > 0)? true : false);
-            }
-            if ($ret) {
+            $objDelivery = new SC_Helper_Delivery_Ex();
+            if ($objDelivery->checkExist($arrRet)) {
                 $objErr->arrErr['service_name'] = '※ 同じ名称の組み合わせは登録できません。<br>';
             }
         }

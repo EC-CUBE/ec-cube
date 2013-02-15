@@ -507,6 +507,8 @@ class SC_CartSession {
      */
     function checkProducts($productTypeId) {
         $objProduct = new SC_Product_Ex();
+        $objDelivery = new SC_Helper_Delivery_Ex();
+        $arrDeliv = $objDelivery->getList($productTypeId);
         $tpl_message = '';
 
         // カート内の情報を取得
@@ -524,7 +526,6 @@ class SC_CartSession {
                 /*
                  * 配送業者のチェック
                  */
-                $arrDeliv = SC_Helper_Purchase_Ex::getDeliv($productTypeId);
                 if (SC_Utils_Ex::isBlank($arrDeliv)) {
                     $tpl_message .= '※「' . $product['name'] . '」はまだ配送の準備ができておりません。';
                     $tpl_message .= '恐れ入りますがお問い合わせページよりお問い合わせください。' . "\n";

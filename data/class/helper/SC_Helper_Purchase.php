@@ -672,19 +672,6 @@ class SC_Helper_Purchase {
     }
 
     /**
-     * 商品種別ID から配送業者を取得する.
-     *
-     * @param integer $product_type_id 商品種別ID
-     * @return array 配送業者の配列
-     */
-    function getDeliv($product_type_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('rank DESC');
-        return $objQuery->select('*', 'dtb_deliv', 'product_type_id = ? AND del_flg = 0',
-                                 array($product_type_id));
-    }
-
-    /**
      * 配送業者ID から, 有効な支払方法IDを取得する.
      *
      * @param integer $deliv_id 配送業者ID
