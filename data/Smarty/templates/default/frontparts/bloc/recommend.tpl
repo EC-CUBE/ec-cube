@@ -23,7 +23,7 @@
 <!--{if count($arrBestProducts) > 0}-->
     <div class="block_outer clearfix">
         <div id="recommend_area">
-            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_recommend.jpg" alt="*" class="title_icon" /></h2>
+            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_recommend.png" alt="*" class="title_icon" /></h2>
             <div class="block_body clearfix">
                 <!--{foreach from=$arrBestProducts item=arrProduct name="recommend_products"}-->
                     <div class="product_item clearfix">
