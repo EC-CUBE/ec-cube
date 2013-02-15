@@ -531,7 +531,7 @@ class SC_Helper_Purchase {
      */
     function getPaymentsByPrice($total, $deliv_id) {
 
-        $arrPaymentIds = $this->getPayments($deliv_id);
+        $arrPaymentIds = SC_Helper_Delivery_Ex::getPayments($deliv_id);
         if (SC_Utils_Ex::isBlank($arrPaymentIds)) {
             return array();
         }
@@ -650,39 +650,6 @@ class SC_Helper_Purchase {
             $arrDate = false;
         }
         return $arrDate;
-    }
-
-    /**
-     * 配送業者IDからお届け時間の配列を取得する.
-     *
-     * @param integer $deliv_id 配送業者ID
-     * @return array お届け時間の配列
-     */
-    function getDelivTime($deliv_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('time_id');
-        $results = $objQuery->select('time_id, deliv_time',
-                                     'dtb_delivtime',
-                                     'deliv_id = ?', array($deliv_id));
-        $arrDelivTime = array();
-        foreach ($results as $val) {
-            $arrDelivTime[$val['time_id']] = $val['deliv_time'];
-        }
-        return $arrDelivTime;
-    }
-
-    /**
-     * 配送業者ID から, 有効な支払方法IDを取得する.
-     *
-     * @param integer $deliv_id 配送業者ID
-     * @return array 有効な支払方法IDの配列
-     */
-    function getPayments($deliv_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('rank');
-        return $objQuery->getCol('payment_id', 'dtb_payment_options',
-                                 'deliv_id = ?',
-                                 array($deliv_id), MDB2_FETCHMODE_ORDERED);
     }
 
     /**

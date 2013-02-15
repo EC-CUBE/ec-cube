@@ -402,7 +402,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      */
     function getSelectedDeliv(&$objPurchase, &$objCartSess, $deliv_id) {
         $arrResults = array();
-        $arrResults['arrDelivTime'] = $objPurchase->getDelivTime($deliv_id);
+        $arrResults['arrDelivTime'] = SC_Helper_Delivery_Ex::getDelivTime($deliv_id);
         $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
         $arrResults['arrPayment'] = $objPurchase->getPaymentsByPrice($total, $deliv_id);
         $arrResults['img_show'] = $this->hasPaymentImage($arrResults['arrPayment']);

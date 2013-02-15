@@ -300,7 +300,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex {
         $this->arrForm        = $objFormParam->getFormParamList();
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->top_shipping_id      = array_shift((array_keys($this->arrAllShipping)));
-        $this->arrDelivTime   = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
+        $this->arrDelivTime   = SC_Helper_Delivery_Ex::getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
         if ($arrValuesBefore['payment_id'])
             $this->arrPayment[$arrValuesBefore['payment_id']] = $arrValuesBefore['payment_method'];
@@ -769,7 +769,7 @@ function lfCheckError(&$objFormParam) {
         $arrAllShipping = $objFormParam->getSwapArray($this->arrShippingKeys);
         $arrAllShipmentItem = $objFormParam->getSwapArray($this->arrShipmentItemKeys);
 
-        $arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
+        $arrDelivTime = SC_Helper_Delivery_Ex::getDelivTime($objFormParam->getValue('deliv_id'));
         //商品単価を複数配送にも適応
         $arrShippingValues = array();
         $arrIsNotQuantityUp = array();

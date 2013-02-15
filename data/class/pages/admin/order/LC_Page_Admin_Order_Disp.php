@@ -125,7 +125,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
 
         $this->arrForm = $objFormParam->getFormParamList();
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
-        $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
+        $this->arrDelivTime = SC_Helper_Delivery_Ex::getDelivTime($objFormParam->getValue('deliv_id'));
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         $this->setTemplate($this->tpl_mainpage);

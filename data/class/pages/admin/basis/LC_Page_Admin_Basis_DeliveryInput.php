@@ -215,10 +215,18 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $arrDeliv = $objDelivery->get($deliv_id);
 
         // お届け時間
-        $objFormParam->setParamList($arrDeliv['deliv_time'], 'deliv_time');
+        $deliv_times = array();
+        foreach ($arrDeliv['deliv_time'] as $value) {
+            $deliv_times[]['deliv_time'] = $value;
+        }
+        $objFormParam->setParamList($deliv_times, 'deliv_time');
         unset($arrDeliv['deliv_time']);
         // 配送料金
-        $objFormParam->setParamList($arrDeliv['fee'], 'fee');
+        $deliv_fee = array();
+        foreach ($arrDeliv['fee'] as $value) {
+            $deliv_fee[]['fee'] = $value;
+        }
+        $objFormParam->setParamList($deliv_fee, 'fee');
         unset($arrDeliv['fee']);
         // 支払方法
         $objFormParam->setValue('payment_ids', $arrDeliv['payment_ids']);
