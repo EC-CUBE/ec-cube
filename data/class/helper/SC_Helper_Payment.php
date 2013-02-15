@@ -41,7 +41,7 @@ class SC_Helper_Payment
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'payment_id = ?';
         if (!$has_deleted) {
-            $where .= ' del_flg = 0';
+            $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select('*', 'dtb_payment', $where, array($payment_id));
         return $arrRet[0];
