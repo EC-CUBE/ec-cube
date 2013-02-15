@@ -209,6 +209,16 @@
                         </p>
                     <!--{/if}-->
 
+                    <!--▼メーカー-->
+                    <!--{if $arrProduct.maker_name|strlen >= 1}-->
+                        <p class="maker">
+                            <span class="mini">メーカー：</span><span>
+                                <!--{$arrProduct.maker_name|h}-->
+                            </span>
+                        </p>
+                    <!--{/if}-->
+                    <!--▲メーカー-->
+
                     <!--▼メーカーURL-->
                     <!--{if $arrProduct.comment1|strlen >= 1}-->
                         <p class="sale_price">
