@@ -163,10 +163,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
                 // 購入完了ページ
                 else {
                     $objPurchase->completeOrder(ORDER_NEW);
-                    $template_id = SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ? 2 : 1;
-                    $objHelperMail->sfSendOrderMail(
-                            $this->arrForm['order_id'],
-                            $template_id);
+                    SC_Helper_Purchase_Ex::sendOrderMail($this->arrForm['order_id']);
 
                     SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }
