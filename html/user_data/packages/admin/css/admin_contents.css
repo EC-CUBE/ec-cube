@@ -176,29 +176,29 @@ table tr.last {
 
 /*おすすめ商品管理*/
 
-table#recommend-table {
+table.recommend-table {
     border-collapse: collapse;
     font-size: 100%;
     margin: 0 0 50px;
     width: 100%;
 }
 
-div#table-wrap {
+div.table-wrap {
     margin-top: 6px;
 }
 
-div#table-wrap div.table-img {
+div.table-wrap div.table-img {
     float: left;
     padding-left: 6px;
 }
 
-div#table-wrap div.table-detail {
+div.table-wrap div.table-detail {
     float: left;
     text-align: left;
     padding-left: 11px;
 }
 
-div#table-wrap div.table-detail div.detail-name {
+div.table-wrap div.table-detail div.detail-name {
     margin-bottom: 5px;
 }
 

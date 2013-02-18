@@ -82,10 +82,9 @@ function lfnSortItem(mode,data){
 //-->
 </script>
 
-        <!--{section name=cnt loop=$tpl_disp_max}-->
-
 <div id="admin-contents" class="contents-main">
-    <table class="list center" id="recommend-table">
+    <!--{section name=cnt loop=$tpl_disp_max}-->
+    <table class="list center recommend-table">
         <col width="13%" />
         <col width="73%" />
         <col width="7%" />
@@ -102,25 +101,26 @@ function lfnSortItem(mode,data){
             <td>おすすめ商品(<!--{$smarty.section.cnt.iteration}-->)</td>
                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
                     <td>
-                        <div id="table-wrap" class="clearfix">
+                        <div class="clearfix table-wrap">
                             <div class="table-img">
                                 <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
                                     <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrItems[$smarty.section.cnt.iteration].main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrItems[$smarty.section.cnt.iteration].name|h}-->" width="100" height="100" />
                                 <!--{/if}-->
                             </div>
                             <div class="table-detail">
-                                <div class="detail-name">商品名： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}--></div>
-                                    <div class="detail-form">
-                                        <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
-                                            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-                                            <input type="hidden" name="mode" value="regist" />
-                                            <input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|h}-->" />
-                                            <input type="hidden" name="category_id" value="<!--{$category_id|h}-->" />
-                                            <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|h}-->" />
-                                            <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
-                                            <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{"\n"}--><!--{$arrItems[$smarty.section.cnt.iteration].comment|h}--></textarea>
-                                        </form>
-                                    </div>
+                                <div class="detail-name">
+                                    商品名： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}-->
+                                </div>
+                                <div class="detail-form">
+                                    <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
+                                        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+                                        <input type="hidden" name="mode" value="regist" />
+                                        <input type="hidden" name="product_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].product_id|h}-->" />
+                                        <input type="hidden" name="category_id" value="<!--{$category_id|h}-->" />
+                                        <input type="hidden" name="rank" value="<!--{$arrItems[$smarty.section.cnt.iteration].rank|h}-->" />
+                                        <span class="attention"><!--{$arrErr[$smarty.section.cnt.iteration].comment}--></span>
+                                        <textarea class="top" name="comment" cols="45" rows="4" style="width: 586px; height: 80px; <!--{$arrErr[$smarty.section.cnt.iteration].comment|sfGetErrorColor}-->" <!--{$arrItems[$smarty.section.cnt.iteration].product_id|sfGetEnabled}-->><!--{"\n"}--><!--{$arrItems[$smarty.section.cnt.iteration].comment|h}--></textarea>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +171,6 @@ function lfnSortItem(mode,data){
         </tr>
         <!--{/if}-->
     <!--▲おすすめ商品<!--{$smarty.section.cnt.iteration}-->-->
-    <!--{/section}-->
     </table>
+    <!--{/section}-->
 </div>
