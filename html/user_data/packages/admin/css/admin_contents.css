@@ -202,16 +202,6 @@ div.table-wrap div.table-detail div.detail-name {
     margin-bottom: 5px;
 }
 
-td.no-border {
-    border: 0;
-    background: #f5f5f5;
-    padding: 20px;
-}
-
-td.no-border-w {
-    border: 0;
-}
-
 td.AlignLeft {
     text-align: left;
     padding-left: 11px;
