@@ -631,8 +631,7 @@ a:hover {
 #navi li.on li a,
 #navi li.on li a span,
 #navi li li.on a,
-#navi li li.on a span,
- {
+#navi li li.on a span {
     background: transparent;
 }
 
@@ -767,7 +766,7 @@ a:hover {
 
 #agreement {
     margin: 0;
-    border-width: 1px
+    border-width: 1px;
     border-color: #c0c0c0;
     border-style: solid;
     width: 480px;
