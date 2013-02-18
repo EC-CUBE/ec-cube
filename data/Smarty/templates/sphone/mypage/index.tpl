@@ -101,8 +101,8 @@
     var pageNo = 2;
     var url = "<!--{$smarty.const.ROOT_URLPATH}-->mypage/history.php";
     var statusImagePath = "<!--{$TPL_URLPATH}-->";
-    var arrPayment = <!--{$arrPayment|@json_encode}-->
-    var arrCustomerOrderStatus = <!--{$arrCustomerOrderStatus|@json_encode}-->
+    var arrPayment = <!--{$json_payment}-->
+    var arrCustomerOrderStatus = <!--{$json_customer_order_status}-->
 
     function getHistory(limit) {
         $.mobile.showPageLoadingMsg();

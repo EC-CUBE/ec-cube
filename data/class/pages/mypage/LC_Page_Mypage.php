@@ -102,6 +102,9 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
         $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
+        
+        $this->json_payment = SC_Utils::jsonEncode($this->arrPayment);
+        $this->json_customer_order_status = SC_Utils::jsonEncode($this->arrCustomerOrderStatus);
     }
 
     /**
