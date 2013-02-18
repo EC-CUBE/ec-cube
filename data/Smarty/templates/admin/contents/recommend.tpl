@@ -84,7 +84,7 @@ function lfnSortItem(mode,data){
 
 <div id="admin-contents" class="contents-main">
     <!--{section name=cnt loop=$tpl_disp_max}-->
-    <div class="recommend-product">
+    <div class="recommend-product <!--{if $arrItems[$smarty.section.cnt.iteration].status == "2"}-->hidden<!--{/if}-->">
         <table class="list center recommend-table">
             <col width="13%" />
             <col width="73%" />

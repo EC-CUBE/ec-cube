@@ -65,6 +65,16 @@ function func_submit( id ){
             <th>商品名</th>
             <td><input type="text" name="search_name" value="<!--{$arrForm.search_name}-->" size="35" class="box35" /></td>
         </tr>
+        <tr>
+            <th>商品ステータス</th>
+            <td>
+                <input type="hidden" name="search_status" value="1" />
+                <label>
+                    <input type="checkbox" name="search_status" value="" <!--{if $arrForm.search_status === ""}-->checked<!--{/if}--> />
+                    非公開の商品を含む
+                </label>
+            </td>
+        </tr>
     </table>
     <div class="btn-area">
         <ul>
@@ -76,7 +86,7 @@ function func_submit( id ){
     <p><!--{$tpl_linemax}-->件が該当しました。</p>
     <!--{$tpl_strnavi}-->
 
-    <table class="list">
+    <table id="recommend-search-results" class="list">
         <col width="15%" />
         <col width="12.5%" />
         <col width="60%" />
@@ -90,7 +100,7 @@ function func_submit( id ){
 
         <!--{foreach name=loop from=$arrProducts item=arr}-->
         <!--▼商品<!--{$smarty.foreach.loop.iteration}-->-->
-        <tr>
+        <tr class="<!--{if $arr.status == "2"}-->hidden<!--{/if}-->">
             <td class="center">
                 <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arr.main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
             </td>

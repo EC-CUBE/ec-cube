@@ -183,6 +183,10 @@ table.recommend-table {
     width: 100%;
 }
 
+.recommend-product.hidden td{
+    background: #C9C9C9;
+}
+
 div.table-wrap {
     margin-top: 6px;
 }
@@ -205,6 +209,13 @@ div.table-wrap div.table-detail div.detail-name {
 td.AlignLeft {
     text-align: left;
     padding-left: 11px;
+}
+
+/*おすすめ商品検索画面*/
+
+#recommend-search-results .hidden td,
+#recommend-search-results .hidden th{
+    background: #C9C9C9;
 }
 
 /*通常ボタン*/

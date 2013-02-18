@@ -124,6 +124,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
         $objFormParam->addParam('商品ID', 'search_name', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ID', 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
         $objFormParam->addParam('商品コード', 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品ステータス', 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
     }
 
@@ -168,6 +169,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
                 case 'search_product_code':
                     $where .=    ' AND alldtl.product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)';
                     $bind[] = '%'.$val.'%';
+                    break;
+                case 'search_status':
+                    $where .= ' AND alldtl.status = ?';
+                    $bind[] = $val;
                     break;
                 default:
                     break;
