@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'contents/recommend.tpl';
         $this->tpl_mainno = 'contents';
@@ -57,7 +59,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -67,7 +70,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -142,7 +146,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -150,7 +155,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * パラメーターの初期化を行う
      * @param Object $objFormParam
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ランク', 'rank', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -162,7 +168,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      * @return Array エラー内容
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
@@ -172,7 +179,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * 既に登録されている内容を取得する
      * @return Array $arrReturnProducts データベースに登録されているおすすめ商品の配列
      */
-    function getRecommendProducts() {
+    function getRecommendProducts()
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'dtb_products.name,dtb_products.main_list_image,dtb_best_products.*,dtb_products.status';
         $table = 'dtb_best_products INNER JOIN dtb_products ON dtb_best_products.product_id = dtb_products.product_id';
@@ -193,7 +201,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Array $arrPost POSTの値を格納した配列
      * @param Integer $member_id 登録した管理者を示すID
      */
-    function insertRecommendProduct($arrPost,$member_id) {
+    function insertRecommendProduct($arrPost,$member_id)
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 古いおすすめ商品のデータを削除する。
         $this->deleteProduct($arrPost);
@@ -214,7 +223,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * データを削除する
      * @param Array $arrPost POSTの値を格納した配列
      */
-    function deleteProduct($arrPost) {
+    function deleteProduct($arrPost)
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_best_products';
         $where = 'category_id = ? AND rank = ?';
@@ -227,7 +237,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Integer $product_id 商品ID
      * @return Array $arrProduct 商品のデータを格納した配列
      */
-    function getProduct($product_id) {
+    function getProduct($product_id)
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'product_id,main_list_image,name';
         $table = 'dtb_products';
@@ -242,7 +253,8 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex {
      * @param Array $arrPost POSTのデータを格納した配列
      * @param Array $arrItems フロントに表示される商品の情報を格納した配列
      */
-    function setProducts($arrPost,$arrItems) {
+    function setProducts($arrPost,$arrItems)
+    {
         $arrProduct = $this->getProduct($arrPost['product_id']);
         if (count($arrProduct) > 0) {
             $rank = $arrPost['rank'];

@@ -4,7 +4,8 @@
  * ユーザの状態をテストに合わせて変化させるユーティリティクラスです。
  *
  */
-class User_Utils {
+class User_Utils
+{
 
   /**
    * 端末種別を設定します。
@@ -12,7 +13,8 @@ class User_Utils {
    * @static
    * @param deviceType  端末種別ID
    */
-  public static function setDeviceType($deviceType) {
+  public static function setDeviceType($deviceType)
+  {
     SC_Display_Ex::setDummyDevice($deviceType);
   }
 
@@ -22,7 +24,8 @@ class User_Utils {
    * @static
    * @param isLogin true:ログインしている、false:ログインしていない
    */
-  public static function setLoginState($isLogin, $customer = null, $objQuery = null) {
+  public static function setLoginState($isLogin, $customer = null, $objQuery = null)
+  {
     if (!$isLogin) {
       $_SESSION['customer']['customer_id'] = null;
       $_SESSION['customer']['email'] = null;
@@ -38,7 +41,8 @@ class User_Utils {
   /**
    * ユーザ情報を外部から設定しなかった場合のデフォルト値を取得します。
    */
-  private static function getDefaultCustomer() {
+  private static function getDefaultCustomer()
+  {
     $arrValue['customer_id'] = '999999998';
     $arrValue['name01'] = '苗字';
     $arrValue['name02'] = '名前';

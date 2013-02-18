@@ -30,7 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
+class API_BrowseNodeLookup extends SC_Api_Abstract_Ex 
+{
 
     protected $operation_name = 'BrowseNodeLookup';
     protected $operation_description = 'カテゴリ取得';
@@ -39,7 +40,8 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam) {
+    public function doAction($arrParam)
+    {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
             $category_id = $arrRequest['BrowseNodeId'];
@@ -103,12 +105,14 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex {
         return false;
     }
 
-    protected function lfInitParam(&$objFormParam) {
+    protected function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('対象カテゴリID', 'BrowseNodeId', INT_LEN, 'a', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('返答種別', 'ResponseGroup', INT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    public function getResponseGroupName() {
+    public function getResponseGroupName()
+    {
         return 'BrowseNodes';
     }
 }

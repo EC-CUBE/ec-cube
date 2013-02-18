@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/index.tpl';
         $this->tpl_subno = 'index';
@@ -67,7 +69,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -77,7 +80,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
@@ -115,7 +119,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -124,7 +129,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      *
      * @deprecated 2.12.4
      */
-    function lfUpdateData($arrData) {
+    function lfUpdateData($arrData)
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         SC_Helper_DB_Ex::registerBasisData($arrData);
     }
@@ -134,12 +140,14 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
      *
      * @deprecated 2.12.4
      */
-    function lfInsertData($arrData) {
+    function lfInsertData($arrData)
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         SC_Helper_DB_Ex::registerBasisData($arrData);
     }
 
-    function lfInitParam(&$objFormParam, $post) {
+    function lfInitParam(&$objFormParam, $post)
+    {
         $objFormParam->addParam('会社名', 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('会社名(フリガナ)', 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK','MAX_LENGTH_CHECK'));
 
@@ -190,7 +198,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
     }
 
     // 入力エラーチェック
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $arrErr = $objFormParam->checkError();
         $post = $objFormParam->getHashArray();
 

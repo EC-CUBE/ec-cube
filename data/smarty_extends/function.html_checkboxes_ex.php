@@ -38,7 +38,8 @@
  * @return string
  * @uses smarty_function_escape_special_chars()
  */
-function smarty_function_html_checkboxes_ex($params, &$smarty) {
+function smarty_function_html_checkboxes_ex($params, &$smarty)
+{
     require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
 
     $name = 'checkbox';
@@ -126,7 +127,8 @@ function smarty_function_html_checkboxes_ex($params, &$smarty) {
     }
 }
 
-function smarty_function_html_checkboxes_output_ex($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids, $tags) {
+function smarty_function_html_checkboxes_output_ex($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids, $tags)
+{
     $_output = '';
 
     $_output .= '<input type="checkbox" name="'

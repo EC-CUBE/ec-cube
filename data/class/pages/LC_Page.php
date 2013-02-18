@@ -32,7 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page {
+class LC_Page 
+{
 
     // {{{ properties
 
@@ -83,7 +84,8 @@ class LC_Page {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         // 開始時刻を設定する。
         $this->timeStart = microtime(true);
 
@@ -116,14 +118,16 @@ class LC_Page {
      *
      * @return void
      */
-    function process() {}
+    function process()
+    {}
 
     /**
      * Page のレスポンス送信.
      *
      * @return void
      */
-    function sendResponse() {
+    function sendResponse()
+    {
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         // ローカルフックポイントを実行.
         $this->doLocalHookpointAfter($objPlugin);
@@ -150,7 +154,8 @@ class LC_Page {
      *
      * @return void
      */
-    function sendResponseCSV($file_name, $data) {
+    function sendResponseCSV($file_name, $data)
+    {
         $this->objDisplay->prepare($this);
         $this->objDisplay->addHeader('Content-disposition', "attachment; filename=${file_name}");
         $this->objDisplay->addHeader('Content-type', "application/octet-stream; name=${file_name}");
@@ -167,7 +172,8 @@ class LC_Page {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         // 一定時間以上かかったページの場合、ログ出力する。
         // エラー画面の表示では $this->timeStart が出力されない
         if (defined('PAGE_DISPLAY_TIME_LOG_MODE') && PAGE_DISPLAY_TIME_LOG_MODE == true && isset($this->timeStart)) {
@@ -186,7 +192,8 @@ class LC_Page {
      * @param SC_Helper_Plugin_Ex $objPlugin 
      * @return void
      */
-    function doLocalHookpointBefore(SC_Helper_Plugin_Ex $objPlugin) {
+    function doLocalHookpointBefore(SC_Helper_Plugin_Ex $objPlugin)
+    {
         // ローカルフックポイントを実行
         $parent_class_name = get_parent_class($this);
         if ($parent_class_name != 'LC_Page') {
@@ -204,7 +211,8 @@ class LC_Page {
      * @param SC_Helper_Plugin_Ex $objPlugin 
      * @return void
      */
-    function doLocalHookpointAfter(SC_Helper_Plugin_Ex $objPlugin) {
+    function doLocalHookpointAfter(SC_Helper_Plugin_Ex $objPlugin)
+    {
         // ローカルフックポイントを実行
         $parent_class_name = get_parent_class($this);
         if ($parent_class_name != 'LC_Page') {
@@ -220,7 +228,8 @@ class LC_Page {
      * テンプレート取得
      *
      */
-    function getTemplate() {
+    function getTemplate()
+    {
         return $this->template;
     }
 
@@ -228,7 +237,8 @@ class LC_Page {
      * テンプレート設定(ポップアップなどの場合)
      *
      */
-    function setTemplate($template) {
+    function setTemplate($template)
+    {
         $this->template = $template;
     }
 
@@ -252,7 +262,8 @@ class LC_Page {
      * @return string $path の存在する http(s):// から始まる絶対パス
      * @see Net_URL
      */
-    function getLocation($path, $param = array(), $useSSL = 'escape') {
+    function getLocation($path, $param = array(), $useSSL = 'escape')
+    {
         $rootPath = $this->getRootPath($path);
 
         // スキーマを定義
@@ -285,7 +296,8 @@ class LC_Page {
      * @param string $path 結果を取得するためのパス
      * @return string EC-CUBE のWEBルート(/html/)を / としたパス
      */
-    function getRootPath($path) {
+    function getRootPath($path)
+    {
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $path = str_replace('\\', '/', $path);
         $htmlPath = str_replace('\\', '/', HTML_REALDIR);
@@ -323,7 +335,8 @@ class LC_Page {
      * @return void
      * @deprecated 決済モジュール互換のため
      */
-    function allowClientCache() {
+    function allowClientCache()
+    {
         $this->httpCacheControl('private');
     }
 
@@ -334,7 +347,8 @@ class LC_Page {
      * @param string $mode (nocache/private)
      * @return void
      */
-    function httpCacheControl($mode = '') {
+    function httpCacheControl($mode = '')
+    {
         switch ($mode) {
             case 'nocache':
                 header('Pragma: no-cache');
@@ -369,7 +383,8 @@ class LC_Page {
      * @access protected
      * @return string $_GET['mode'] 又は $_POST['mode'] の文字列
      */
-    function getMode() {
+    function getMode()
+    {
         $pattern = '/^[a-zA-Z0-9_]+$/';
         $mode = null;
         if (isset($_GET['mode']) && preg_match($pattern, $_GET['mode'])) {
@@ -395,7 +410,8 @@ class LC_Page {
      * @param boolean $is_admin 管理画面でエラー表示をする場合 true
      * @return void
      */
-    function doValidToken($is_admin = false) {
+    function doValidToken($is_admin = false)
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!SC_Helper_Session_Ex::isValidToken(false)) {
                 if ($is_admin) {
@@ -414,7 +430,8 @@ class LC_Page {
      * @access protected
      * @return void
      */
-    function setTokenTo() {
+    function setTokenTo()
+    {
         $this->transactionid = SC_Helper_Session_Ex::getToken();
     }
 
@@ -423,7 +440,8 @@ class LC_Page {
      *
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
-    function log($mess, $log_level) {
+    function log($mess, $log_level)
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
         if ($log_level === 'Debug' && DEBUG_MODE === false) {
@@ -443,7 +461,8 @@ class LC_Page {
      * @param mixed $val デバックする要素
      * @return void
      */
-    function p($val) {
+    function p($val)
+    {
         SC_Utils_Ex::sfPrintR($val);
     }
 }

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
+class LC_Page_Entry_EmailMobile extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
 
     }
@@ -51,7 +53,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -62,7 +65,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objCustomer    = new SC_Customer_Ex();
         $objFormParam   = new SC_FormParam_Ex();
@@ -94,7 +98,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -104,7 +109,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      * @access public
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('メールアドレス', 'email_mobile', null, 'a',
                                 array('NO_SPTAB', 'EXIST_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'EMAIL_CHECK', 'MOBILE_EMAIL_CHECK'));
     }
@@ -117,7 +123,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      * @access private
      * @return array エラー情報の配列
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objFormParam->convParam();
         $objErr         = new SC_CheckError_Ex();
         $objErr->arrErr = $objFormParam->checkError();
@@ -139,7 +146,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      * @access private
      * @return void
      */
-    function lfRegistEmailMobile($email_mobile, $customer_id) {
+    function lfRegistEmailMobile($email_mobile, $customer_id)
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_customer',
                           array('email_mobile' => $email_mobile),

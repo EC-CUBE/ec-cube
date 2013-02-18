@@ -24,20 +24,24 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Date_getMinutesIntervalTest extends Common_TestCase {
+class SC_Date_getMinutesIntervalTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objDate = new SC_Date_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetMinutesInterval_要素が00と30の配列を返す() {
+    public function testGetMinutesInterval_要素が00と30の配列を返す()
+    {
         $this->expected = array('00'=>'00', '30'=>'30');
         $this->actual = $this->objDate->getMinutesInterval();
 

@@ -32,9 +32,11 @@ require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/admin/pro
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCase {
+class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCase 
+{
 
-    function setUp() {
+    function setUp()
+    {
         $this->objQuery =& SC_Query::getSingletonInstance();
         $this->objQuery->begin();
 
@@ -43,13 +45,15 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->now = "2010-01-01 00:00:00";
     }
 
-    function tearDown() {
+    function tearDown()
+    {
         $this->objQuery->rollback();
         $this->objQuery = null;
         $this->objPage = null;
     }
 
-    function testInit() {
+    function testInit()
+    {
 
         $this->assertEquals('products/product_class.tpl',
                             $this->objPage->tpl_mainpage);
@@ -61,11 +65,13 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
                             $this->objPage->tpl_subtitle);
     }
 
-    function testProcess() {
+    function testProcess()
+    {
         $this->objPage->process();
     }
 
-    function testCreateSearchParams() {
+    function testCreateSearchParams()
+    {
         $keys = array('search_product_id',
                       'search_product_code',
                       'search_category_id',
@@ -103,7 +109,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->verify();
     }
 
-    function testGetProductName() {
+    function testGetProductName()
+    {
         $product_id = 10000000;
         $this->expected = "テスト商品";
         $this->setProduct($product_id, $this->expected);
@@ -113,7 +120,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->verify();
     }
 
-    function testGetProductsClass() {
+    function testGetProductsClass()
+    {
         $product_id = 10000000;
         $product_class_id = 10000;
         $this->setProductsClass($product_id, $product_class_id);
@@ -140,7 +148,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->verify();
     }
 
-    function testGetAllClass() {
+    function testGetAllClass()
+    {
         $this->clearClass();
         $this->setClass(1000, "大きさ", 1, array('S', 'M', 'L', 'LL'));
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
@@ -153,7 +162,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->verify();
     }
 
-    function testGetAllClassCategory規格1のみ() {
+    function testGetAllClassCategory規格1のみ()
+    {
         $this->clearClass();
         $this->setClass(1000, "大きさ", 1, array('S', 'M', 'L', 'LL'));
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
@@ -181,7 +191,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->verify();
     }
 
-    function testGetAllClassCategory規格1と3() {
+    function testGetAllClassCategory規格1と3()
+    {
         $this->clearClass();
         $this->setClass(1000, "大きさ", 1, array('S', 'M', 'L', 'LL'));
         $this->setClass(2, "色", 2, array("赤", "青", "黄", "緑"));
@@ -293,7 +304,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->verify();
     }
 
-    function testGetProductsClassAndClasscategory() {
+    function testGetProductsClassAndClasscategory()
+    {
         $product_id = 10000;
         $product_class_id = 1000;
         $class_combination_id = 200;
@@ -330,11 +342,13 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->verify();
     }
 
-    function verify() {
+    function verify()
+    {
         $this->assertEquals($this->expected, $this->actual);
     }
 
-    function setProduct($product_id, $name) {
+    function setProduct($product_id, $name)
+    {
         $val['product_id'] = $product_id;
         $val['name'] = $name;
         $val['creator_id'] = 1;
@@ -342,7 +356,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->objQuery->insert('dtb_products', $val);
     }
 
-    function setProductsClass($product_id, $product_class_id, $class_combination_id = null) {
+    function setProductsClass($product_id, $product_class_id, $class_combination_id = null)
+    {
         $val['product_class_id'] = $product_class_id;
         $val['product_id'] = $product_id;
         $val['class_combination_id'] = $class_combination_id;
@@ -364,7 +379,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->objQuery->insert('dtb_class_combination', $val);
     }
 
-    function clearClass() {
+    function clearClass()
+    {
         $this->objQuery->delete('dtb_class');
         $this->objQuery->delete('dtb_classcategory');
     }
@@ -377,7 +393,8 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
      * @param integer $rank 規格の表示順
      * @param array $classcategory 規格分類名の配列
      */
-    function setClass($class_id, $class_name, $rank, $classcategory) {
+    function setClass($class_id, $class_name, $rank, $classcategory)
+    {
         $val['class_id'] = $class_id;
         $val['name'] = $class_name;
         $val['creator_id'] = 1;
@@ -396,13 +413,16 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
     }
 }
 
-class LC_Page_Admin_Products_ProductClass_Mock extends LC_Page_Admin_Products_ProductClass {
+class LC_Page_Admin_Products_ProductClass_Mock extends LC_Page_Admin_Products_ProductClass 
+{
 
-    function authorization() {
+    function authorization()
+    {
         // quiet.
     }
 
-    function assignView() {
+    function assignView()
+    {
         // quiet.
     }
 }

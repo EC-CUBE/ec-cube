@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Logout extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -50,7 +52,8 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
     }
 
@@ -59,7 +62,8 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $this->lfDoLogout();
 
@@ -72,7 +76,8 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function lfDoLogout() {
+    function lfDoLogout()
+    {
         $objSess = new SC_Session_Ex();
         $objSess->logout();
     }
@@ -82,7 +87,8 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

@@ -34,7 +34,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
+class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -44,7 +45,8 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -53,7 +55,8 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
 
         $order_id = $this->getOrderId();
         if ($order_id === false) {
@@ -75,7 +78,8 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -89,7 +93,8 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      * @return string|boolean 成功した場合は決済モジュールのパス;
      *                        失敗した場合 false
      */
-    function getModulePath($order_id) {
+    function getModulePath($order_id)
+    {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPayment = new SC_Helper_Payment_Ex();
 
@@ -118,7 +123,8 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      * @return integer|boolean 受注IDの取得に成功した場合は受注IDを返す;
      *                         失敗した場合は, false を返す.
      */
-    function getOrderId() {
+    function getOrderId()
+    {
         if (isset($_SESSION['order_id'])
             && !SC_Utils_Ex::isBlank($_SESSION['order_id'])
             && SC_Utils_Ex::sfIsInt($_SESSION['order_id'])) {
@@ -142,7 +148,8 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
     /**
      * 決済モジュールから遷移する場合があるため, トークンチェックしない.
      */
-    function doValidToken() {
+    function doValidToken()
+    {
         // nothing.
     }
 }

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_FrontParts_Bloc_Cart.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
+class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type'); //商品種類を取得
@@ -52,7 +54,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -62,7 +65,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objCart = new SC_CartSession_Ex();
         $this->isMultiple = $objCart->isMultiple();
@@ -78,7 +82,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -88,7 +93,8 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex {
      * @param SC_CartSession $objCart カートセッション管理クラス
      * @return array カートデータ配列
      */
-    function lfGetCartData(&$objCart) {
+    function lfGetCartData(&$objCart)
+    {
         $arrCartKeys = $objCart->getKeys();
         foreach ($arrCartKeys as $cart_key) {
             // 購入金額合計

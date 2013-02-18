@@ -24,34 +24,40 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Date_getHourTest extends Common_TestCase {
+class SC_Date_getHourTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objDate = new SC_Date_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetHour_24の配列を返す() {
+    public function testGetHour_24の配列を返す()
+    {
         $this->expected = 24;
         $this->actual = count($this->objDate->getHour());
 
         $this->verify("配列の長さ");
     }
 
-    public function testGetHour_要素の最低値が0の配列を返す() {
+    public function testGetHour_要素の最低値が0の配列を返す()
+    {
         $this->expected = 0;
         $this->actual = min($this->objDate->getHour());
 
         $this->verify("配列の最低値");
     }
 
-    public function testGetHour_要素の最大値が23の配列を返す() {
+    public function testGetHour_要素の最大値が23の配列を返す()
+    {
         $this->expected = 23;
         $this->actual = max($this->objDate->getHour());
 

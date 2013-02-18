@@ -28,7 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_Helper_DB.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_Helper_DB {
+class SC_Helper_DB 
+{
 
     // {{{ properties
 
@@ -63,7 +64,8 @@ class SC_Helper_DB {
      *               テーブルが存在しない場合 false,
      *               引数 $add == false でカラムが存在しない場合 false
      */
-    function sfColumnExists($table_name, $col_name, $col_type = '', $dsn = '', $add = false) {
+    function sfColumnExists($table_name, $col_name, $col_type = '', $dsn = '', $add = false)
+    {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
@@ -101,7 +103,8 @@ class SC_Helper_DB {
      * @return bool データが存在する場合 true, データの追加に成功した場合 true,
      *               $add == false で, データが存在しない場合 false
      */
-    function sfDataExists($table_name, $where, $arrWhereVal, $dsn = '', $sql = '', $add = false) {
+    function sfDataExists($table_name, $where, $arrWhereVal, $dsn = '', $sql = '', $add = false)
+    {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
@@ -130,7 +133,8 @@ class SC_Helper_DB {
      * @param string $col 取得カラムを指定する
      * @return array 店舗基本情報の配列
      */
-    function sfGetBasisData($force = false, $col = '') {
+    function sfGetBasisData($force = false, $col = '')
+    {
         static $data = array();
 
         if ($force || empty($data)) {
@@ -157,7 +161,8 @@ class SC_Helper_DB {
      * @param boolean $generate キャッシュファイルが無い時、DBのデータを基にキャッシュを生成するか
      * @return array 店舗基本情報の配列
      */
-    function sfGetBasisDataCache($generate = false){
+    function sfGetBasisDataCache($generate = false)
+    {
         // テーブル名
         $name = 'dtb_baseinfo';
         // キャッシュファイルパス
@@ -189,7 +194,8 @@ class SC_Helper_DB {
      *
      * @return bool キャッシュデータファイル生成結果
      */
-    function sfCreateBasisDataCache() {
+    function sfCreateBasisDataCache()
+    {
         // テーブル名
         $name = 'dtb_baseinfo';
         // キャッシュファイルパス
@@ -222,7 +228,8 @@ class SC_Helper_DB {
      * @return int
      * @deprecated
      */
-    function sfGetBasisCount() {
+    function sfGetBasisCount()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         return $objQuery->count('dtb_baseinfo');
@@ -233,14 +240,16 @@ class SC_Helper_DB {
      *
      * @return boolean 有無
      */
-    function sfGetBasisExists() {
+    function sfGetBasisExists()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         return $objQuery->exists('dtb_baseinfo');
     }
 
     /* 選択中のアイテムのルートカテゴリIDを取得する */
-    function sfGetRootId() {
+    function sfGetRootId()
+    {
 
         if (!$this->g_root_on) {
             $this->g_root_on = true;
@@ -276,7 +285,8 @@ class SC_Helper_DB {
      * @param integer $order_status 対応状況
      * @return array オーダー前ポイントの配列
      */
-    function sfGetRollbackPoint($order_id, $use_point, $add_point, $order_status) {
+    function sfGetRollbackPoint($order_id, $use_point, $add_point, $order_status)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('customer_id', 'dtb_order', 'order_id = ?', array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
@@ -308,7 +318,8 @@ class SC_Helper_DB {
      * @param bool $count_check 登録商品数のチェックを行う場合 true
      * @return array カテゴリツリーの配列
      */
-    function sfGetCatTree($parent_category_id, $count_check = false) {
+    function sfGetCatTree($parent_category_id, $count_check = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '';
         $col .= ' cat.category_id,';
@@ -354,7 +365,8 @@ class SC_Helper_DB {
      * @result void
      * @see sfGetCatTree()
      */
-    function findTree(&$arrTree, $parent, &$result) {
+    function findTree(&$arrTree, $parent, &$result)
+    {
         if ($result[count($result) - 1]['parent_category_id'] === 0) {
             return;
         } else {
@@ -378,7 +390,8 @@ class SC_Helper_DB {
      * @param bool $count_check 登録商品数のチェックを行う場合 true
      * @return array カテゴリツリーの配列
      */
-    function sfGetMultiCatTree($product_id, $count_check = false) {
+    function sfGetMultiCatTree($product_id, $count_check = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '';
         $col .= ' cat.category_id,';
@@ -426,7 +439,8 @@ class SC_Helper_DB {
      * @param integer $category_id カテゴリID
      * @return string 親カテゴリを連結した文字列
      */
-    function sfGetCatCombName($category_id) {
+    function sfGetCatCombName($category_id)
+    {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCatID = $this->sfGetParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
@@ -451,7 +465,8 @@ class SC_Helper_DB {
      * @param integer $category_id カテゴリID
      * @return array 指定したカテゴリIDのカテゴリ
      */
-    function sfGetCat($category_id) {
+    function sfGetCat($category_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // カテゴリを取得する
@@ -467,7 +482,8 @@ class SC_Helper_DB {
      * @param integer $category_id カテゴリID
      * @return array 指定したカテゴリIDの大カテゴリ
      */
-    function sfGetFirstCat($category_id) {
+    function sfGetFirstCat($category_id)
+    {
         // 商品が属するカテゴリIDを縦に取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = array();
@@ -492,7 +508,8 @@ class SC_Helper_DB {
      * @param string $head カテゴリ名のプレフィックス文字列
      * @return array カテゴリツリーの配列
      */
-    function sfGetCategoryList($addwhere = '', $products_check = false, $head = CATEGORY_HEAD) {
+    function sfGetCategoryList($addwhere = '', $products_check = false, $head = CATEGORY_HEAD)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'del_flg = 0';
 
@@ -531,7 +548,8 @@ class SC_Helper_DB {
      * @param bool $parent_zero 親カテゴリの Value=0 の場合 true
      * @return array カテゴリツリーの配列
      */
-    function sfGetLevelCatList($parent_zero = true) {
+    function sfGetLevelCatList($parent_zero = true)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // カテゴリ名リストを取得
@@ -580,7 +598,8 @@ class SC_Helper_DB {
      * @return array 選択中の商品のカテゴリIDの配列
      *
      */
-    function sfGetCategoryId($product_id, $category_id = 0, $closed = false) {
+    function sfGetCategoryId($product_id, $category_id = 0, $closed = false)
+    {
         if ($closed) {
             $status = '';
         } else {
@@ -607,7 +626,8 @@ class SC_Helper_DB {
      * @param integer $product_id プロダクトID
      * @return void
      */
-    function addProductBeforCategories($category_id, $product_id) {
+    function addProductBeforCategories($category_id, $product_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sqlval = array('category_id' => $category_id,
@@ -628,7 +648,8 @@ class SC_Helper_DB {
      * @param integer $product_id プロダクトID
      * @return void
      */
-    function addProductAfterCategories($category_id, $product_id) {
+    function addProductAfterCategories($category_id, $product_id)
+    {
         $sqlval = array('category_id' => $category_id,
                         'product_id' => $product_id);
 
@@ -660,7 +681,8 @@ class SC_Helper_DB {
      * @param integer $product_id プロダクトID
      * @return void
      */
-    function removeProductByCategories($category_id, $product_id) {
+    function removeProductByCategories($category_id, $product_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete('dtb_product_categories',
                           'category_id = ? AND product_id = ?', array($category_id, $product_id));
@@ -673,7 +695,8 @@ class SC_Helper_DB {
      * @param integer $product_id プロダクトID
      * @return void
      */
-    function updateProductCategories($arrCategory_id, $product_id) {
+    function updateProductCategories($arrCategory_id, $product_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 現在のカテゴリ情報を取得
@@ -706,7 +729,8 @@ class SC_Helper_DB {
      * @param boolean $is_force_all_count 全カテゴリの集計を強制する場合 true
      * @return void
      */
-    function sfCountCategory($objQuery = NULL, $is_force_all_count = false) {
+    function sfCountCategory($objQuery = NULL, $is_force_all_count = false)
+    {
         $objProduct = new SC_Product_Ex();
 
         if ($objQuery == NULL) {
@@ -883,7 +907,8 @@ __EOS__;
      * @param integer $id ID
      * @param array 子ID の配列
      */
-    function sfGetChildsID($table, $pid_name, $id_name, $id) {
+    function sfGetChildsID($table, $pid_name, $id_name, $id)
+    {
         $arrRet = $this->sfGetChildrenArray($table, $pid_name, $id_name, $id);
         return $arrRet;
     }
@@ -897,7 +922,8 @@ __EOS__;
      * @param integer $id ID番号
      * @return array 子IDの配列
      */
-    function sfGetChildrenArray($table, $pid_name, $id_name, $id) {
+    function sfGetChildrenArray($table, $pid_name, $id_name, $id)
+    {
         $arrChildren = array();
         $arrRet = array($id);
 
@@ -918,7 +944,8 @@ __EOS__;
      * @param array $arrPID 親IDの配列
      * @return array 子IDの配列
      */
-    function sfGetChildrenArraySub($table, $pid_name, $id_name, $arrPID) {
+    function sfGetChildrenArraySub($table, $pid_name, $id_name, $arrPID)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = "$pid_name IN (" . SC_Utils_Ex::repeatStrWithSeparator('?', count($arrPID)) . ')';
@@ -938,7 +965,8 @@ __EOS__;
      * @param integer $id ID
      * @return array 親IDの配列
      */
-    function sfGetParents($table, $pid_name, $id_name, $id) {
+    function sfGetParents($table, $pid_name, $id_name, $id)
+    {
         $arrRet = SC_Helper_DB_Ex::sfGetParentsArray($table, $pid_name, $id_name, $id);
         return $arrRet;
     }
@@ -952,7 +980,8 @@ __EOS__;
      * @param integer $id ID
      * @return array 親IDの配列
      */
-    function sfGetParentsArray($table, $pid_name, $id_name, $id) {
+    function sfGetParentsArray($table, $pid_name, $id_name, $id)
+    {
         $arrParents = array();
         $ret = $id;
 
@@ -967,7 +996,8 @@ __EOS__;
     }
 
     /* 子ID所属する親IDを取得する */
-    function sfGetParentsArraySub($table, $pid_name, $id_name, $child) {
+    function sfGetParentsArraySub($table, $pid_name, $id_name, $child)
+    {
         if (SC_Utils_Ex::isBlank($child)) {
             return false;
         }
@@ -985,7 +1015,8 @@ __EOS__;
      * @param integer $category_id カテゴリID
      * @return array 商品を検索する場合の配列
      */
-    function sfGetCatWhere($category_id) {
+    function sfGetCatWhere($category_id)
+    {
         // 子カテゴリIDの取得
         $arrRet = SC_Helper_DB_Ex::sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
 
@@ -1004,7 +1035,8 @@ __EOS__;
      * @param array $arrWhereVal プレースホルダ
      * @return array SELECT ボックス用リストの配列
      */
-    function sfGetIDValueList($table, $keyname, $valname, $where = '', $arrVal = array()) {
+    function sfGetIDValueList($table, $keyname, $valname, $where = '', $arrVal = array())
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "$keyname, $valname";
         $objQuery->setWhere('del_flg = 0');
@@ -1029,7 +1061,8 @@ __EOS__;
      * @param string $andwhere SQL の AND 条件である WHERE 句
      * @return void
      */
-    function sfRankUp($table, $colname, $id, $andwhere = '') {
+    function sfRankUp($table, $colname, $id, $andwhere = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         $where = "$colname = ?";
@@ -1080,7 +1113,8 @@ __EOS__;
      * @param string $andwhere SQL の AND 条件である WHERE 句
      * @return void
      */
-    function sfRankDown($table, $colname, $id, $andwhere = '') {
+    function sfRankDown($table, $colname, $id, $andwhere = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         $where = "$colname = ?";
@@ -1131,7 +1165,8 @@ __EOS__;
      * @param string $where SQL の AND 条件である WHERE 句
      * @return void
      */
-    function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = '') {
+    function sfMoveRank($tableName, $keyIdColumn, $keyId, $pos, $where = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
@@ -1258,7 +1293,8 @@ __EOS__;
      * @param array $arrId IDの配列
      * @return array 特定のカラムの配列
      */
-    function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId) {
+    function sfGetParentsCol($objQuery, $table, $id_name, $col_name, $arrId)
+    {
         $col = $col_name;
         $len = count($arrId);
         $where = '';
@@ -1290,7 +1326,8 @@ __EOS__;
      * @param integer $id ID
      * @return void
      */
-    function sfMoveCatRank($objQuery, $table, $id_name, $cat_name, $old_catid, $new_catid, $id) {
+    function sfMoveCatRank($objQuery, $table, $id_name, $cat_name, $old_catid, $new_catid, $id)
+    {
         if ($old_catid == $new_catid) {
             return;
         }
@@ -1329,7 +1366,8 @@ __EOS__;
      * @param array $addwhere SQL の AND 条件である WHERE 句
      * @return bool レコードが存在する場合 true
      */
-    function sfIsRecord($table, $col, $arrVal, $addwhere = '') {
+    function sfIsRecord($table, $col, $arrVal, $addwhere = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCol = preg_split('/[, ]/', $col);
 
@@ -1362,7 +1400,8 @@ __EOS__;
      * @param SC_Query $objQuery SC_Query インスタンス
      * @return void
      */
-    function sfCountMaker($objQuery) {
+    function sfCountMaker($objQuery)
+    {
         $sql = '';
 
         //テーブル内容の削除
@@ -1386,7 +1425,8 @@ __EOS__;
      * @return array 選択中の商品のメーカーIDの配列
      *
      */
-    function sfGetMakerId($product_id, $maker_id = 0, $closed = false) {
+    function sfGetMakerId($product_id, $maker_id = 0, $closed = false)
+    {
         if ($closed) {
             $status = '';
         } else {
@@ -1420,7 +1460,8 @@ __EOS__;
      * @param bool $products_check 商品の存在するカテゴリのみ取得する場合 true
      * @return array カテゴリツリーの配列
      */
-    function sfGetMakerList($addwhere = '', $products_check = false) {
+    function sfGetMakerList($addwhere = '', $products_check = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'del_flg = 0';
 
@@ -1457,7 +1498,8 @@ __EOS__;
      * @param integer $price 計算対象の金額
      * @return integer 税金額
      */
-    function sfTax($price) {
+    function sfTax($price)
+    {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
 
@@ -1471,7 +1513,8 @@ __EOS__;
      * @param integer $price 計算対象の金額
      * @return integer 税金付与した金額
      */
-    function sfCalcIncTax($price, $tax = null, $tax_rule = null) {
+    function sfCalcIncTax($price, $tax = null, $tax_rule = null)
+    {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         $tax      = $tax      === null ? $CONF['tax']      : $tax;
@@ -1487,7 +1530,8 @@ __EOS__;
      * @param integer $use_point
      * @return integer 加算ポイント
      */
-    function sfGetAddPoint($totalpoint, $use_point) {
+    function sfGetAddPoint($totalpoint, $use_point)
+    {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
 
@@ -1502,7 +1546,8 @@ __EOS__;
      * @param string $sqlFilePath SQL ファイルのパス
      * @return void
      */
-    function sfExecSqlByFile($sqlFilePath) {
+    function sfExecSqlByFile($sqlFilePath)
+    {
         if (file_exists($sqlFilePath)) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -1523,7 +1568,8 @@ __EOS__;
      * @param integer $product_id 商品ID
      * @return bool 商品規格が存在する場合:true, それ以外:false
      */
-    function sfHasProductClass($product_id) {
+    function sfHasProductClass($product_id)
+    {
         if (!SC_Utils_Ex::sfIsInt($product_id)) return false;
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -1539,7 +1585,8 @@ __EOS__;
      * @param array $arrData 登録するデータ
      * @return void
      */
-    static function registerBasisData($arrData) {
+    static function registerBasisData($arrData)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrData = $objQuery->extractOnlyColsOf('dtb_baseinfo', $arrData);

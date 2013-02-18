@@ -24,27 +24,32 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Session_checkUniqIdTest extends Common_TestCase {
+class SC_Session_checkUniqIdTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objSiteSession = new SC_SiteSession_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testCheckUniqId_POST値がない場合_True() {
+    public function testCheckUniqId_POST値がない場合_True()
+    {
         $_POST = null;
         $this->expected = true;
         $this->actual = $this->objSiteSession->checkUniqId();
         $this->verify('ポスト値空');
     }
     
-    public function testCheckUniqId_POSTとセッションのUniqIDが一致する場合_True() {
+    public function testCheckUniqId_POSTとセッションのUniqIDが一致する場合_True()
+    {
         $_POST['uniqid'] = '1234567890';
         $_SESSION['site']['uniqid'] = '1234567890';
         
@@ -53,7 +58,8 @@ class SC_Session_checkUniqIdTest extends Common_TestCase {
         $this->verify('ユニークID一致');
     }
     
-    public function testCheckUniqId_POSTとセッションのUniqIDが一致しない場合_False() {
+    public function testCheckUniqId_POSTとセッションのUniqIDが一致しない場合_False()
+    {
         $_POST['uniqid'] = '0987654321';
         $_SESSION['site']['uniqid'] = '1234567890';
         

@@ -31,20 +31,24 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_setShipmentItemTempForSoleTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_setShipmentItemTempForSoleTest extends SC_Helper_Purchase_TestBase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
     $_SESSION['testResult'] = null;
   }
 
   /////////////////////////////////////////
-  public function testSetShipmentItemTempForSole__いったん配送情報がクリアされたあと改めて指定のものが設定される() {
+  public function testSetShipmentItemTempForSole__いったん配送情報がクリアされたあと改めて指定のものが設定される()
+  {
     $helper = new SC_Helper_Purchase_setShipmentItemTempForSoleMock();
     $cartSession = new SC_CartSession_setShipmentItemTempForSoleMock();
     $shipping_id = '1001';
@@ -67,19 +71,24 @@ class SC_Helper_Purchase_setShipmentItemTempForSoleTest extends SC_Helper_Purcha
 
 }
 
-class SC_Helper_Purchase_setShipmentItemTempForSoleMock extends SC_Helper_Purchase {
-  function clearShipmentItemTemp() {
+class SC_Helper_Purchase_setShipmentItemTempForSoleMock extends SC_Helper_Purchase
+{
+  function clearShipmentItemTemp()
+  {
     $_SESSION['testResult']['clearShipmentItemTemp'] = TRUE;
   }
 
-  function setShipmentItemTemp($shipping_id, $id, $quantity) {
+  function setShipmentItemTemp($shipping_id, $id, $quantity)
+  {
     $_SESSION['testResult']['shipmentItemTemp'][] = 
       array('shipping_id' => $shipping_id, 'id' => $id, 'quantity' => $quantity);
   }
 }
 
-class SC_CartSession_setShipmentItemTempForSoleMock extends SC_CartSession {
-  function getCartList($key) {
+class SC_CartSession_setShipmentItemTempForSoleMock extends SC_CartSession
+{
+  function getCartList($key)
+  {
     return array(
       array('id'=>'1', 'quantity'=>'10'),
       array('id'=>'2', 'quantity'=>'5'),

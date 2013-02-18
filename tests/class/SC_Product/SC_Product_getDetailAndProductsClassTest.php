@@ -5,20 +5,24 @@ require_once($HOME . "/tests/class/SC_Product/SC_Product_TestBase.php");
 /**
  *
  */
-class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase {
+class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objProducts = new SC_Product_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetDetailAndProductsClass_商品規格IDの商品情報と規格情報を返す() {
+    public function testGetDetailAndProductsClass_商品規格IDの商品情報と規格情報を返す()
+    {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

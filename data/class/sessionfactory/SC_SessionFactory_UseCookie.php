@@ -32,7 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory_UseCookie extends SC_SessionFactory_Ex {
+class SC_SessionFactory_UseCookie extends SC_SessionFactory_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -44,7 +45,8 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory_Ex {
      * ・同じドメイン間で共有
      * FIXME セッションキーのキーが PHP デフォルトのため、上位ディレクトリーで定義があると、その値で動作すると考えられる。
      **/
-    function initSession() {
+    function initSession()
+    {
         ini_set('session.cache_limiter', 'none');
         // (session.auto_start などで)セッションが開始されていた場合に備えて閉じる。(FIXME: 保存する必要はない。破棄で良い。)
         session_write_close();
@@ -60,7 +62,8 @@ class SC_SessionFactory_UseCookie extends SC_SessionFactory_Ex {
      *
      * @return boolean 常に true を返す
      */
-    function useCookie() {
+    function useCookie()
+    {
         return true;
     }
 }

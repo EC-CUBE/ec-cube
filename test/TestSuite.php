@@ -35,8 +35,10 @@ require_once(realpath(dirname(__FILE__)) . "/class/util/Util_AllTests.php");
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
 
-class TestSuite {
-    public static function suite() {
+class TestSuite 
+{
+    public static function suite()
+    {
         $suite = new PHPUnit_Framework_TestSuite('ECCUBE');
         $suite->addTest(Page_AllTests::suite());
         $suite->addTest(DB_AllTests::suite());

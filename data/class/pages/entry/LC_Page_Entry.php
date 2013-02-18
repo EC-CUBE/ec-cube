@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Entry.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Entry extends LC_Page_Ex {
+class LC_Page_Entry extends LC_Page_Ex 
+{
 
     // {{{ properties
 
@@ -42,7 +43,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * Page を初期化する.
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
@@ -63,7 +65,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -73,7 +76,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * Page のプロセス
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -166,7 +170,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -178,7 +183,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @access private
      * @return uniqid
      */
-    function lfRegistCustomerData($sqlval) {
+    function lfRegistCustomerData($sqlval)
+    {
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
         return $sqlval['secret_key'];
     }
@@ -194,7 +200,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @access private
      * @return $arrResults
      */
-    function lfMakeSqlVal(&$objFormParam) {
+    function lfMakeSqlVal(&$objFormParam)
+    {
         $arrForm                = $objFormParam->getHashArray();
         $arrResults             = $objFormParam->getDbArray();
 
@@ -229,7 +236,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @access private
      * @return void
      */
-    function lfSendMail($uniqid, $arrForm) {
+    function lfSendMail($uniqid, $arrForm)
+    {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailText    = new SC_SiteView_Ex();
@@ -284,7 +292,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @param string $referer $_SERVER['HTTP_REFERER'] のデータ
      * @return boolean kiyaku.php からの妥当な遷移であれば true
      */
-    function lfCheckReferer(&$post, $referer) {
+    function lfCheckReferer(&$post, $referer)
+    {
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
             && empty($post)
@@ -300,7 +309,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @param array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function lfCheckError($arrRequest) {
+    function lfCheckError($arrRequest)
+    {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -329,7 +339,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @param string $value
      * @return エラーなし：true エラー：false
      */
-    function lfInputNameCheck($value) {
+    function lfInputNameCheck($value)
+    {
         // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
         if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
             return false;

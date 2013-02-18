@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
+class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mypageno     = 'index';
         $this->tpl_subtitle     = '購入履歴詳細';
@@ -59,7 +61,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -68,7 +71,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objCustomer    = new SC_Customer_Ex();
         $objDb          = new SC_Helper_DB_Ex();
@@ -120,7 +124,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -130,7 +135,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @param integer $order_id 注文番号
      * @return array 受注メール送信履歴の内容
      */
-    function lfGetMailHistory($order_id) {
+    function lfGetMailHistory($order_id)
+    {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $col        = 'send_date, subject, template_id, send_id';
         $where      = 'order_id = ?';
@@ -146,7 +152,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @param $arrWDAY array 曜日データの配列
      * @return array お届け先情報
      */
-    function lfGetShippingDate(&$objPurchase, $order_id, $arrWDAY) {
+    function lfGetShippingDate(&$objPurchase, $order_id, $arrWDAY)
+    {
         $arrShipping = $objPurchase->getShippings($order_id);
 
         foreach ($arrShipping as $shipping_index => $shippingData) {
@@ -168,7 +175,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @param $arrOrderDetail 購入履歴の配列
      * @return array 画像をセットした購入履歴の配列
      */
-    function setMainListImage($arrOrderDetails) {
+    function setMainListImage($arrOrderDetails)
+    {
         $i = 0;
         foreach ($arrOrderDetails as $arrOrderDetail) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -185,7 +193,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @param $arrOrderDetail 購入履歴の配列
      * @return array MIMETYPE、ファイル名をセットした購入履歴の配列
      */
-    function lfSetMimetype($arrOrderDetails) {
+    function lfSetMimetype($arrOrderDetails)
+    {
         $objHelperMobile = new SC_Helper_Mobile_Ex();
         $i = 0;
         foreach ($arrOrderDetails as $arrOrderDetail) {
@@ -206,7 +215,8 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex {
      * @param integer $order_id 注文番号
      * @param $arrOrderDetail 購入履歴の配列
      */
-    function lfSetAU($arrOrderDetails) {
+    function lfSetAU($arrOrderDetails)
+    {
         $this->isAU = false;
         // モバイル端末かつ、キャリアがAUの場合に処理を行う
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE && SC_MobileUserAgent::getCarrier() == 'ezweb') {

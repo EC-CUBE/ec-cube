@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_arrayDefineIndexesTest extends Common_TestCase {
+class SC_Utils_arrayDefineIndexesTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testArrayDefineIndexes_チェック対象のキーがすべて存在する場合_配列に変化がない() {
+  public function testArrayDefineIndexes_チェック対象のキーがすべて存在する場合_配列に変化がない()
+  {
     $input_array = array('apple' => 'りんご', 'banana' => 'バナナ', 'orange' => 'オレンジ');
     $defineIndexes = array('banana', 'orange');
 
@@ -53,7 +57,8 @@ class SC_Utils_arrayDefineIndexesTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testArrayDefineIndexes_チェック対象のキーが一部存在しない場合_配列に追加される() {
+  public function testArrayDefineIndexes_チェック対象のキーが一部存在しない場合_配列に追加される()
+  {
     $input_array = array('apple' => 'りんご', 'banana' => 'バナナ', 'orange' => 'オレンジ');
     $defineIndexes = array('tomato', 'banana', 'kiwi');
 

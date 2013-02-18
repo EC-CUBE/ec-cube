@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_SmartphoneView.php';
 
-class SC_SmartphoneView_Ex extends SC_SmartphoneView {
+class SC_SmartphoneView_Ex extends SC_SmartphoneView 
+{
 }

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'mail/history.tpl';
         $this->tpl_mainno = 'mail';
@@ -56,7 +58,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -66,7 +69,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         switch ($this->getMode()) {
             case 'delete':
@@ -90,7 +94,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -100,7 +105,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @param integer $search_pageno 表示したいページ番号
      * @return array( integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfDoSearch($search_pageno = 1) {
+    function lfDoSearch($search_pageno = 1)
+    {
 
         // 引数の初期化
         if (SC_Utils_Ex::sfIsInt($search_pageno)===false) {
@@ -139,7 +145,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      * @param integer $send_id　削除したい送信履歴のID
      * @return void
      */
-    function lfDeleteHistory($send_id) {
+    function lfDeleteHistory($send_id)
+    {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $objQuery->update('dtb_send_history',
                               array('del_flg' =>1),

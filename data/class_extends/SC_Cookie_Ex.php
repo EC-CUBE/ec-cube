@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_Cookie.php';
 
-class SC_Cookie_Ex extends SC_Cookie {
+class SC_Cookie_Ex extends SC_Cookie 
+{
 }

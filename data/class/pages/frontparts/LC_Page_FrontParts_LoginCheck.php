@@ -33,7 +33,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_FrontParts_LoginCheck.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
+class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
 
     }
@@ -53,7 +55,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -63,7 +66,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // 会員管理クラス
         $objCustomer = new SC_Customer_Ex();
@@ -208,7 +212,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -218,7 +223,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam パラメーター管理クラス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('メールアドレス', 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -234,7 +240,8 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex {
      * @return string JSON 形式のエラーメッセージ
      * @see LC_PageError
      */
-    function lfGetErrorMessage($error) {
+    function lfGetErrorMessage($error)
+    {
         switch ($error) {
             case TEMP_LOGIN_ERROR:
                 $msg = "メールアドレスもしくはパスワードが正しくありません。\n本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行ってください。";

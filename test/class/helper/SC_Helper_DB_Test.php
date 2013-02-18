@@ -32,12 +32,14 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/helper_
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_DB_Test extends PHPUnit_Framework_TestCase {
+class SC_Helper_DB_Test extends PHPUnit_Framework_TestCase 
+{
 
     /**
      * sfColumnExists() のテストケース.
      */
-    function testSfColumnExists() {
+    function testSfColumnExists()
+    {
         $objDb = new SC_Helper_DB_Ex();
         $this->assertEquals(true, $objDb->sfColumnExists('mtb_zip', 'zipcode'));
     }

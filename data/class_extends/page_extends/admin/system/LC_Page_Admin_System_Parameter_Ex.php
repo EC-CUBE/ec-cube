@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Parameter.
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Basis_Ex.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_System_Parameter_Ex extends LC_Page_Admin_System_Parameter {
+class LC_Page_Admin_System_Parameter_Ex extends LC_Page_Admin_System_Parameter 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_Admin_System_Parameter_Ex extends LC_Page_Admin_System_Parameter {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_Admin_System_Parameter_Ex extends LC_Page_Admin_System_Parameter {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_Admin_System_Parameter_Ex extends LC_Page_Admin_System_Parameter {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

@@ -27,7 +27,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_CartSession {
+class SC_CartSession 
+{
     /** ユニークIDを指定する. */
     var $key_tmp;
 
@@ -35,7 +36,8 @@ class SC_CartSession {
     var $cartSession;
 
     /* コンストラクタ */
-    function __construct($cartKey = 'cart') {
+    function __construct($cartKey = 'cart')
+    {
         if (!isset($_SESSION[$cartKey])) {
             $_SESSION[$cartKey] = array();
         }
@@ -43,7 +45,8 @@ class SC_CartSession {
     }
 
     // 商品購入処理中のロック
-    function saveCurrentCart($key_tmp, $productTypeId) {
+    function saveCurrentCart($key_tmp, $productTypeId)
+    {
         $this->key_tmp = 'savecart_' . $key_tmp;
         // すでに情報がなければ現状のカート情報を記録しておく
         if (count($_SESSION[$this->key_tmp]) == 0) {
@@ -58,7 +61,8 @@ class SC_CartSession {
     }
 
     // 商品購入中の変更があったかをチェックする。
-    function getCancelPurchase($productTypeId) {
+    function getCancelPurchase($productTypeId)
+    {
         $ret = isset($this->cartSession[$productTypeId]['cancel_purchase'])
             ? $this->cartSession[$productTypeId]['cancel_purchase'] : '';
         $this->cartSession[$productTypeId]['cancel_purchase'] = false;
@@ -66,7 +70,8 @@ class SC_CartSession {
     }
 
     // 購入処理中に商品に変更がなかったかを判定
-    function checkChangeCart($productTypeId) {
+    function checkChangeCart($productTypeId)
+    {
         $change = false;
         $max = $this->getMax($productTypeId);
         for ($i = 1; $i <= $max; $i++) {
@@ -94,7 +99,8 @@ class SC_CartSession {
     }
 
     // 次に割り当てるカートのIDを取得する
-    function getNextCartID($productTypeId) {
+    function getNextCartID($productTypeId)
+    {
         $count = array();
         foreach ($this->cartSession[$productTypeId] as $key => $value) {
             $count[] = $this->cartSession[$productTypeId][$key]['cart_no'];
@@ -110,7 +116,8 @@ class SC_CartSession {
      * @return string 商品ごとの合計価格(税込み)
      * @deprecated SC_CartSession::getCartList() を使用してください
      */
-    function getProductTotal($id, $productTypeId) {
+    function getProductTotal($id, $productTypeId)
+    {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
             if (isset($this->cartSession[$productTypeId][$i]['id'])
@@ -128,7 +135,8 @@ class SC_CartSession {
     }
 
     // 値のセット
-    function setProductValue($id, $key, $val, $productTypeId) {
+    function setProductValue($id, $key, $val, $productTypeId)
+    {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
             if (isset($this->cartSession[$productTypeId][$i]['id'])
@@ -140,7 +148,8 @@ class SC_CartSession {
     }
 
     // カート内商品の最大要素番号を取得する。
-    function getMax($productTypeId) {
+    function getMax($productTypeId)
+    {
         $max = 0;
         if (count($this->cartSession[$productTypeId]) > 0) {
             foreach ($this->cartSession[$productTypeId] as $key => $value) {
@@ -155,7 +164,8 @@ class SC_CartSession {
     }
 
     // カート内商品数量の合計
-    function getTotalQuantity($productTypeId) {
+    function getTotalQuantity($productTypeId)
+    {
         $total = 0;
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
@@ -165,7 +175,8 @@ class SC_CartSession {
     }
 
     // 全商品の合計価格
-    function getAllProductsTotal($productTypeId) {
+    function getAllProductsTotal($productTypeId)
+    {
         // 税込み合計
         $total = 0;
         $max = $this->getMax($productTypeId);
@@ -189,7 +200,8 @@ class SC_CartSession {
     }
 
     // 全商品の合計税金
-    function getAllProductsTax($productTypeId) {
+    function getAllProductsTax($productTypeId)
+    {
         // 税合計
         $total = 0;
         $max = $this->getMax($productTypeId);
@@ -203,7 +215,8 @@ class SC_CartSession {
     }
 
     // 全商品の合計ポイント
-    function getAllProductsPoint($productTypeId) {
+    function getAllProductsPoint($productTypeId)
+    {
         // ポイント合計
         $total = 0;
         if (USE_POINT !== false) {
@@ -228,7 +241,8 @@ class SC_CartSession {
     }
 
     // カートへの商品追加
-    function addProduct($product_class_id, $quantity) {
+    function addProduct($product_class_id, $quantity)
+    {
         $objProduct = new SC_Product_Ex();
         $arrProduct = $objProduct->getProductsClass($product_class_id);
         $productTypeId = $arrProduct['product_type_id'];
@@ -252,7 +266,8 @@ class SC_CartSession {
     }
 
     // 前頁のURLを記録しておく
-    function setPrevURL($url, $excludePaths = array()) {
+    function setPrevURL($url, $excludePaths = array())
+    {
         // 前頁として記録しないページを指定する。
         $arrExclude = array(
             '/shopping/'
@@ -273,12 +288,14 @@ class SC_CartSession {
     }
 
     // 前頁のURLを取得する
-    function getPrevURL() {
+    function getPrevURL()
+    {
         return isset($_SESSION['prev_url']) ? $_SESSION['prev_url'] : '';
     }
 
     // キーが一致した商品の削除
-    function delProductKey($keyname, $val, $productTypeId) {
+    function delProductKey($keyname, $val, $productTypeId)
+    {
         $max = count($this->cartSession[$productTypeId]);
         for ($i = 0; $i < $max; $i++) {
             if ($this->cartSession[$productTypeId][$i][$keyname] == $val) {
@@ -287,11 +304,13 @@ class SC_CartSession {
         }
     }
 
-    function setValue($key, $val, $productTypeId) {
+    function setValue($key, $val, $productTypeId)
+    {
         $this->cartSession[$productTypeId][$key] = $val;
     }
 
-    function getValue($key, $productTypeId) {
+    function getValue($key, $productTypeId)
+    {
         return $this->cartSession[$productTypeId][$key];
     }
 
@@ -299,7 +318,8 @@ class SC_CartSession {
      * セッション中の商品情報データの調整。
      * productsClass項目から、不必要な項目を削除する。
      */
-    function adjustSessionProductsClass(&$arrProductsClass) {
+    function adjustSessionProductsClass(&$arrProductsClass)
+    {
         $arrNecessaryItems = array(
             'product_id'          => true,
             'product_class_id'    => true,
@@ -332,7 +352,8 @@ class SC_CartSession {
      * @param integer $productTypeId 商品種別ID
      * @return array カート内商品一覧の配列
      */
-    function getCartList($productTypeId) {
+    function getCartList($productTypeId)
+    {
         $objProduct = new SC_Product_Ex();
         $max = $this->getMax($productTypeId);
         $arrRet = array();
@@ -372,7 +393,8 @@ class SC_CartSession {
      *
      * @return array すべてのカートの内容
      */
-    function getAllCartList() {
+    function getAllCartList()
+    {
         $results = array();
         $cartKeys = $this->getKeys();
         $i = 0;
@@ -393,7 +415,8 @@ class SC_CartSession {
      * @param integer $productTypeId 商品種別ID
      * @return array 商品規格ID の配列
      */
-    function getAllProductClassID($productTypeId) {
+    function getAllProductClassID($productTypeId)
+    {
         $max = $this->getMax($productTypeId);
         $productClassIDs = array();
         for ($i = 0; $i <= $max; $i++) {
@@ -410,7 +433,8 @@ class SC_CartSession {
      * @param integer $productTypeId 商品種別ID
      * @return void
      */
-    function delAllProducts($productTypeId) {
+    function delAllProducts($productTypeId)
+    {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
             unset($this->cartSession[$productTypeId][$i]);
@@ -418,7 +442,8 @@ class SC_CartSession {
     }
 
     // 商品の削除
-    function delProduct($cart_no, $productTypeId) {
+    function delProduct($cart_no, $productTypeId)
+    {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
             if ($this->cartSession[$productTypeId][$i]['cart_no'] == $cart_no) {
@@ -428,7 +453,8 @@ class SC_CartSession {
     }
 
     // 数量の増加
-    function upQuantity($cart_no, $productTypeId) {
+    function upQuantity($cart_no, $productTypeId)
+    {
         $quantity = $this->getQuantity($cart_no, $productTypeId);
         if (strlen($quantity + 1) <= INT_LEN) {
             $this->setQuantity($quantity + 1, $cart_no, $productTypeId);
@@ -436,7 +462,8 @@ class SC_CartSession {
     }
 
     // 数量の減少
-    function downQuantity($cart_no, $productTypeId) {
+    function downQuantity($cart_no, $productTypeId)
+    {
         $quantity = $this->getQuantity($cart_no, $productTypeId);
         if ($quantity > 1) {
             $this->setQuantity($quantity - 1, $cart_no, $productTypeId);
@@ -450,7 +477,8 @@ class SC_CartSession {
      * @param integer $productTypeId 商品種別ID
      * @return integer 該当商品規格の数量
      */
-    function getQuantity($cart_no, $productTypeId) {
+    function getQuantity($cart_no, $productTypeId)
+    {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
             if ($this->cartSession[$productTypeId][$i]['cart_no'] == $cart_no) {
@@ -467,7 +495,8 @@ class SC_CartSession {
      * @param integer $productTypeId 商品種別ID
      * @retrun void
      */
-    function setQuantity($quantity, $cart_no, $productTypeId) {
+    function setQuantity($quantity, $cart_no, $productTypeId)
+    {
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
             if ($this->cartSession[$productTypeId][$i]['cart_no'] == $cart_no) {
@@ -483,7 +512,8 @@ class SC_CartSession {
      * @param integer $productTypeId 商品種別ID
      * @return integer 商品規格ID
      */
-    function getProductClassId($cart_no, $productTypeId) {
+    function getProductClassId($cart_no, $productTypeId)
+    {
         for ($i = 0; $i < count($this->cartSession[$productTypeId]); $i++) {
             if ($this->cartSession[$productTypeId][$i]['cart_no'] == $cart_no) {
                 return $this->cartSession[$productTypeId][$i]['id'];
@@ -505,7 +535,8 @@ class SC_CartSession {
      * @param string $productTypeId 商品種別ID
      * @return string エラーが発生した場合はエラーメッセージ
      */
-    function checkProducts($productTypeId) {
+    function checkProducts($productTypeId)
+    {
         $objProduct = new SC_Product_Ex();
         $objDelivery = new SC_Helper_Delivery_Ex();
         $arrDeliv = $objDelivery->getList($productTypeId);
@@ -560,7 +591,8 @@ class SC_CartSession {
      * @param integer $productTypeId 商品種別ID
      * @return boolean 送料無料の場合 true
      */
-    function isDelivFree($productTypeId) {
+    function isDelivFree($productTypeId)
+    {
         $objDb = new SC_Helper_DB_Ex();
 
         $subtotal = $this->getAllProductsTotal($productTypeId);
@@ -674,7 +706,8 @@ class SC_CartSession {
      *
      * @return array 商品種別IDの配列
      */
-    function getKeys() {
+    function getKeys()
+    {
         $keys = array_keys($this->cartSession);
         // 数量が 0 の商品種別は削除する
         foreach ($keys as $key) {
@@ -692,7 +725,8 @@ class SC_CartSession {
      * @param integer $key 商品種別ID
      * @return void
      */
-    function registerKey($key) {
+    function registerKey($key)
+    {
         $_SESSION['cartKey'] = $key;
     }
 
@@ -701,7 +735,8 @@ class SC_CartSession {
      *
      * @return void
      */
-    function unsetKey() {
+    function unsetKey()
+    {
         unset($_SESSION['cartKey']);
     }
 
@@ -710,7 +745,8 @@ class SC_CartSession {
      *
      * @return integer 商品種別ID
      */
-    function getKey() {
+    function getKey()
+    {
         return $_SESSION['cartKey'];
     }
 
@@ -719,7 +755,8 @@ class SC_CartSession {
      *
      * @return boolean カートが複数商品種別の場合 true
      */
-    function isMultiple() {
+    function isMultiple()
+    {
         return count($this->getKeys()) > 1;
     }
 
@@ -729,7 +766,8 @@ class SC_CartSession {
      * @param integer $product_type_id 商品種別ID
      * @return boolean 指定の商品種別がカートに含まれる場合 true
      */
-    function hasProductType($product_type_id) {
+    function hasProductType($product_type_id)
+    {
         return in_array($product_type_id, $this->getKeys());
     }
 }

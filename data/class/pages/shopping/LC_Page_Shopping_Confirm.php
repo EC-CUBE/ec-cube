@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Confirm extends LC_Page_Ex {
+class LC_Page_Shopping_Confirm extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_title = 'ご入力内容のご確認';
         $masterData = new SC_DB_MasterData_Ex();
@@ -58,7 +60,8 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -69,7 +72,8 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
@@ -180,7 +184,8 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

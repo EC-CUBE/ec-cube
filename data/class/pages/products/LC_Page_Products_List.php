@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Products_List extends LC_Page_Ex {
+class LC_Page_Products_List extends LC_Page_Ex 
+{
 
     // {{{ properties
 
@@ -67,7 +68,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
 
         $masterData                 = new SC_DB_MasterData_Ex();
@@ -82,7 +84,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -93,7 +96,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objProduct = new SC_Product_Ex();
 
@@ -150,7 +154,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -159,7 +164,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
      *
      * @return integer カテゴリID
      */
-    function lfGetCategoryId($category_id) {
+    function lfGetCategoryId($category_id)
+    {
 
         // 指定なしの場合、0 を返す
         if (empty($category_id)) return 0;
@@ -183,7 +189,8 @@ class LC_Page_Products_List extends LC_Page_Ex {
     }
 
     /* 商品一覧の表示 */
-    function lfGetProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct) {
+    function lfGetProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct)
+    {
 
         $arrOrderVal = array();
 
@@ -241,7 +248,8 @@ __EOS__;
     }
 
     /* 入力内容のチェック */
-    function lfCheckError($product_id, &$arrForm, $tpl_classcat_find1, $tpl_classcat_find2) {
+    function lfCheckError($product_id, &$arrForm, $tpl_classcat_find1, $tpl_classcat_find2)
+    {
 
         // 入力データを渡す。
         $objErr = new SC_CheckError_Ex($arrForm);
@@ -265,7 +273,8 @@ __EOS__;
      *
      * @return void
      */
-    function lfGetDisplayNum($display_number) {
+    function lfGetDisplayNum($display_number)
+    {
         // 表示件数
         return (SC_Utils_Ex::sfIsInt($display_number))
             ? $display_number
@@ -277,7 +286,8 @@ __EOS__;
      *
      * @return str
      */
-    function lfGetPageTitle($mode, $category_id = 0) {
+    function lfGetPageTitle($mode, $category_id = 0)
+    {
         if ($mode == 'search') {
             return '検索結果';
         } elseif ($category_id == 0) {
@@ -293,7 +303,8 @@ __EOS__;
      *
      * @return array
      */
-    function lfGetSearchConditionDisp($arrSearchData) {
+    function lfGetSearchConditionDisp($arrSearchData)
+    {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $arrSearch  = array('category' => '指定なし', 'maker' => '指定なし', 'name' => '指定なし');
         // カテゴリ検索条件
@@ -318,7 +329,8 @@ __EOS__;
      *
      * @return int
      */
-    function lfGetProductAllNum($searchCondition) {
+    function lfGetProductAllNum($searchCondition)
+    {
         // 検索結果対象となる商品の数を取得
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($searchCondition['where_for_count']);
@@ -331,7 +343,8 @@ __EOS__;
      *
      * @return array
      */
-    function lfGetSearchCondition($arrSearchData) {
+    function lfGetSearchCondition($arrSearchData)
+    {
         $searchCondition = array(
             'where'             => '',
             'arrval'            => array(),
@@ -390,7 +403,8 @@ __EOS__;
      *
      * @return str
      */
-    function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id) {
+    function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id)
+    {
         $js_fnOnLoad = '';
         foreach ($arrProducts as $key => $value) {
             if ($arrProducts[$key]['product_id'] == $product_id) {
@@ -411,7 +425,8 @@ __EOS__;
      *
      * @return void
      */
-    function lfAddCart($arrForm, $referer) {
+    function lfAddCart($arrForm, $referer)
+    {
         $product_class_id = $arrForm['product_class_id'];
         $objCartSess = new SC_CartSession_Ex();
         $objCartSess->addProduct($product_class_id, $arrForm['quantity']);
@@ -425,7 +440,8 @@ __EOS__;
      * @param Array $arrStatusImage スタータス画像配列
      * @return Array $arrProducts 商品一覧情報
      */
-    function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage) {
+    function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage)
+    {
 
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
             for ($i = 0; $i < count($arrValues); $i++) {
@@ -447,7 +463,8 @@ __EOS__;
      *
      * @return void
      */
-    function doJson() {
+    function doJson()
+    {
         $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
         SC_Product_Ex::setPriceTaxTo($this->arrProducts);
 
@@ -465,7 +482,8 @@ __EOS__;
      * @param type $objProduct 
      * @return void
      */
-    function doDefault(&$objProduct) {
+    function doDefault(&$objProduct)
+    {
         //商品一覧の表示処理
         $strnavi            = $this->objNavi->strnavi;
         // 表示文字列
@@ -526,7 +544,8 @@ __EOS__;
             $_SESSION['cart_referer_url'] = $netURL->getURL();
         }
 
-        $this->tpl_javascript   .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
+        $this->tpl_javascript   .= 'function fnOnLoad()
+        {' . $js_fnOnLoad . '}';
         $this->tpl_onload       .= 'fnOnLoad(); ';
     }
 }

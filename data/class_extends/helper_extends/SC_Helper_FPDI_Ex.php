@@ -30,5 +30,6 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_FPDI.php';
  * @package Helper
  * @version $Id:$
  */
-class SC_Helper_FPDI_Ex extends SC_Helper_FPDI {
+class SC_Helper_FPDI_Ex extends SC_Helper_FPDI 
+{
 }

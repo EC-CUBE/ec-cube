@@ -5,19 +5,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /**
  *
  */
-class SC_Product_TestBase extends Common_TestCase {
-    protected function setUp() {
+class SC_Product_TestBase extends Common_TestCase
+{
+    protected function setUp()
+    {
         parent::setUp();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /**
      * DBに商品クラス情報を設定します.
      */
-    protected function setUpProductClass() {
+    protected function setUpProductClass()
+    {
         $product_class = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
@@ -58,7 +62,8 @@ class SC_Product_TestBase extends Common_TestCase {
                                );
 
         $this->objQuery->delete('dtb_products_class');
-        foreach ($product_class as $key => $item) {
+        foreach ($product_class as $key => $item)
+{
             $this->objQuery->insert('dtb_products_class', $item);
         }
         $this->setUpClassCategory();
@@ -68,7 +73,8 @@ class SC_Product_TestBase extends Common_TestCase {
     /**
      * DBに製品カテゴリ情報を登録します.
      */
-    protected function setUpClassCategory() {
+    protected function setUpClassCategory()
+    {
         $class_category = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
@@ -95,7 +101,8 @@ class SC_Product_TestBase extends Common_TestCase {
     /** 
      * DBに製品情報を登録します.
      */
-    protected function setUpProducts() {
+    protected function setUpProducts()
+    {
         $products = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
@@ -155,7 +162,8 @@ class SC_Product_TestBase extends Common_TestCase {
     /**
      * DBに商品ステータス情報を登録します.
      */
-    protected function setUpProductStatus() {
+    protected function setUpProductStatus()
+    {
         $class_category = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',

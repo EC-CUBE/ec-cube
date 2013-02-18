@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Multiple extends LC_Page_Ex {
+class LC_Page_Shopping_Multiple extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_title = 'お届け先の複数指定';
         $this->httpCacheControl('nocache');
@@ -52,7 +54,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -63,7 +66,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
@@ -120,7 +124,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -130,7 +135,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品名', 'name');
         $objFormParam->addParam('規格1', 'class_name1');
@@ -153,7 +159,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
      * @return void
      */
-    function setParamToSplitItems(&$objFormParam, &$objCartSess) {
+    function setParamToSplitItems(&$objFormParam, &$objCartSess)
+    {
         $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
         $arrItems = array();
         $index = 0;
@@ -184,7 +191,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param integer $uniqid 受注一時テーブルのユニークID
      * @return array 配送住所のプルダウン用連想配列
      */
-    function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress, $uniqid) {
+    function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress, $uniqid)
+    {
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
 
@@ -235,7 +243,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラー情報の配列
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objCartSess = new SC_CartSession_Ex();
 
         $objFormParam->convParam();
@@ -297,7 +306,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
      * @return void
      */
-    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objCartSess, &$objAddress) {
+    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objCartSess, &$objAddress)
+    {
         $arrParams = $objFormParam->getSwapArray();
 
         foreach ($arrParams as $arrParam) {

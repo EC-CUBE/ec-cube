@@ -33,5 +33,6 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_Mail.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_Helper_DB_Ex.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_Helper_Mail_Ex extends SC_Helper_Mail {
+class SC_Helper_Mail_Ex extends SC_Helper_Mail 
+{
 }

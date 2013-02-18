@@ -22,39 +22,47 @@
  */
 
 /* 日時表示用クラス */
-class SC_Date {
+class SC_Date 
+{
     var $start_year;
     var $month;
     var $day;
     var $end_year;
 
     // コンストラクタ
-    function __construct($start_year='', $end_year='') {
+    function __construct($start_year='', $end_year='')
+    {
         if ($start_year)  $this->setStartYear($start_year);
         if ($end_year)    $this->setEndYear($end_year);
     }
 
-    function setStartYear($year) {
+    function setStartYear($year)
+    {
         $this->start_year = $year;
     }
 
-    function getStartYear() {
+    function getStartYear()
+    {
         return $this->start_year;
     }
 
-    function setEndYear($endYear) {
+    function setEndYear($endYear)
+    {
         $this->end_year = $endYear;
     }
 
-    function getEndYear() {
+    function getEndYear()
+    {
         return $this->end_year;
     }
 
-    function setMonth($month) {
+    function setMonth($month)
+    {
         $this->month = $month;
     }
 
-    function setDay($day) {
+    function setDay($day)
+    {
         $this->day = $day;
     }
 
@@ -68,7 +76,8 @@ class SC_Date {
      *     string 「選択なし」は指定された値の下に付加する。
      * @param string $default_key
      */
-    function getYear($year = '', $default_year = false, $default_key = '----') {
+    function getYear($year = '', $default_year = false, $default_key = '----')
+    {
         if ($year) $this->setStartYear($year);
 
         $year = $this->start_year;
@@ -92,7 +101,8 @@ class SC_Date {
         return $year_array;
     }
 
-    function getZeroYear($year = '') {
+    function getZeroYear($year = '')
+    {
         if ($year) $this->setStartYear($year);
 
         $year = $this->start_year;
@@ -110,7 +120,8 @@ class SC_Date {
         return $year_array;
     }
 
-    function getZeroMonth() {
+    function getZeroMonth()
+    {
 
         $month_array = array();
         for ($i=1; $i <= 12; $i++) {
@@ -120,7 +131,8 @@ class SC_Date {
         return $month_array;
     }   
 
-    function getMonth($default = false) {
+    function getMonth($default = false)
+    {
         $month_array = array();
 
         if ($default) $month_array[''] = '--';
@@ -131,7 +143,8 @@ class SC_Date {
         return $month_array;
     }   
 
-    function getDay($default = false) {
+    function getDay($default = false)
+    {
         $day_array = array();
 
         if ($default) $day_array[''] = '--';
@@ -143,7 +156,8 @@ class SC_Date {
         return $day_array;
     }
 
-    function getHour() {
+    function getHour()
+    {
 
         $hour_array = array();
         for ($i=0; $i<=23; $i++) {
@@ -153,7 +167,8 @@ class SC_Date {
         return $hour_array;
     }
 
-    function getMinutes() {
+    function getMinutes()
+    {
 
         $minutes_array = array();
         for ($i=0; $i<=59; $i++) {
@@ -163,7 +178,8 @@ class SC_Date {
         return $minutes_array;
     }
 
-    function getMinutesInterval() {
+    function getMinutesInterval()
+    {
 
         $minutes_array = array('00'=>'00', '30'=>'30');
         return $minutes_array;

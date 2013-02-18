@@ -31,7 +31,8 @@
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_Helper_Purchase {
+class SC_Helper_Purchase 
+{
 
     var $arrShippingKey = array(
         'name01', 'name02', 'kana01', 'kana02',
@@ -59,7 +60,8 @@ class SC_Helper_Purchase {
      * @param integer $orderStatus 受注処理を完了する際に設定する対応状況
      * @return void
      */
-    function completeOrder($orderStatus = ORDER_NEW) {
+    function completeOrder($orderStatus = ORDER_NEW)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objSiteSession = new SC_SiteSession_Ex();
         $objCartSession = new SC_CartSession_Ex();
@@ -114,7 +116,8 @@ class SC_Helper_Purchase {
      * @param boolean $is_delete 受注データを論理削除する場合 true
      * @return void
      */
-    function cancelOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false) {
+    function cancelOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $in_transaction = $objQuery->inTransaction();
         if (!$in_transaction) {
@@ -156,7 +159,8 @@ class SC_Helper_Purchase {
      * @param boolean $is_delete 受注データを論理削除する場合 true
      * @return string 受注一時ID
      */
-    function rollbackOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false) {
+    function rollbackOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $in_transaction = $objQuery->inTransaction();
         if (!$in_transaction) {
@@ -198,7 +202,8 @@ class SC_Helper_Purchase {
      * @param SC_CartSession $objCartSession
      * @return void
      */
-    function verifyChangeCart($uniqId, &$objCartSession) {
+    function verifyChangeCart($uniqId, &$objCartSession)
+    {
         $cartKey = $objCartSession->getKey();
 
         // カート内が空でないか
@@ -233,7 +238,8 @@ class SC_Helper_Purchase {
      * @param integer $uniqId 受注一時情報ID
      * @return array 受注一時情報の配列
      */
-    function getOrderTemp($uniqId) {
+    function getOrderTemp($uniqId)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->getRow('*', 'dtb_order_temp', 'order_temp_id = ?', array($uniqId));
     }
@@ -244,7 +250,8 @@ class SC_Helper_Purchase {
      * @param integer $order_id 受注ID
      * @return array 受注一時情報の配列
      */
-    function getOrderTempByOrderId($order_id) {
+    function getOrderTempByOrderId($order_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->getRow('*', 'dtb_order_temp', 'order_id = ?', array($order_id));
     }
@@ -259,7 +266,8 @@ class SC_Helper_Purchase {
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return void
      */
-    function saveOrderTemp($uniqId, $params, &$objCustomer = NULL) {
+    function saveOrderTemp($uniqId, $params, &$objCustomer = NULL)
+    {
         if (SC_Utils_Ex::isBlank($uniqId)) {
             return;
         }
@@ -294,7 +302,8 @@ class SC_Helper_Purchase {
      *
      * @param bool $has_shipment_item 配送商品を保有している配送先のみ返す。
      */
-    function getShippingTemp($has_shipment_item = false) {
+    function getShippingTemp($has_shipment_item = false)
+    {
         if ($has_shipment_item) {
             $arrReturn = array();
             foreach ($_SESSION['shipping'] as $key => $arrVal) {
@@ -313,7 +322,8 @@ class SC_Helper_Purchase {
      * @param integer $shipping_id 配送先ID
      * @return void
      */
-    function clearShipmentItemTemp($shipping_id = null) {
+    function clearShipmentItemTemp($shipping_id = null)
+    {
         if (is_null($shipping_id)) {
             foreach ($_SESSION['shipping'] as $key => $value) {
                 $this->clearShipmentItemTemp($key);
@@ -333,7 +343,8 @@ class SC_Helper_Purchase {
      * @param integer $quantity 数量
      * @return void
      */
-    function setShipmentItemTemp($shipping_id, $product_class_id, $quantity) {
+    function setShipmentItemTemp($shipping_id, $product_class_id, $quantity)
+    {
         // 配列が長くなるので, リファレンスを使用する
         $arrItems =& $_SESSION['shipping'][$shipping_id]['shipment_item'][$product_class_id];
 
@@ -363,7 +374,8 @@ class SC_Helper_Purchase {
     /**
      * 配送先都道府県の配列を返す.
      */
-    function getShippingPref($is_multiple) {
+    function getShippingPref($is_multiple)
+    {
         $results = array();
         foreach (SC_Helper_Purchase_Ex::getShippingTemp($is_multiple) as $val) {
             $results[] = $val['shipping_pref'];
@@ -376,7 +388,8 @@ class SC_Helper_Purchase {
      *
      * @return boolean 複数配送指定の購入の場合 true
      */
-    function isMultiple() {
+    function isMultiple()
+    {
         return count(SC_Helper_Purchase_Ex::getShippingTemp(true)) >= 2;
     }
 
@@ -388,7 +401,8 @@ class SC_Helper_Purchase {
      * @param integer $shipping_id 配送先ID
      * @return void
      */
-    function saveShippingTemp($arrSrc, $shipping_id = 0) {
+    function saveShippingTemp($arrSrc, $shipping_id = 0)
+    {
         // 配送商品は引き継がない
         unset($arrSrc['shipment_item']);
 
@@ -406,7 +420,8 @@ class SC_Helper_Purchase {
      * @param integer $shipping_id 配送先ID
      * @return void
      */
-    function unsetShippingTemp() {
+    function unsetShippingTemp()
+    {
         SC_Helper_Purchase_Ex::unsetAllShippingTemp(true);
     }
 
@@ -416,7 +431,8 @@ class SC_Helper_Purchase {
      * @param bool $multiple_temp 複数お届け先の画面戻り処理用の情報も破棄するか
      * @return void
      */
-    static function unsetAllShippingTemp($multiple_temp = false) {
+    static function unsetAllShippingTemp($multiple_temp = false)
+    {
         unset($_SESSION['shipping']);
         if ($multiple_temp) {
             unset($_SESSION['multiple_temp']);
@@ -429,7 +445,8 @@ class SC_Helper_Purchase {
      * @param integer $shipping_id 配送先ID
      * @return void
      */
-    static function unsetOneShippingTemp($shipping_id) {
+    static function unsetOneShippingTemp($shipping_id)
+    {
         unset($_SESSION['shipping'][$shipping_id]);
     }
 
@@ -491,7 +508,8 @@ class SC_Helper_Purchase {
      * @param string $src_prefix コピー元の接頭辞. デフォルト order
      * @return void
      */
-    function copyFromOrder(&$dest, $src, $prefix = 'shipping', $src_prefix = 'order', $arrKey = null) {
+    function copyFromOrder(&$dest, $src, $prefix = 'shipping', $src_prefix = 'order', $arrKey = null)
+    {
         if (is_null($arrKey)) {
             $arrKey = $this->arrShippingKey;
         }
@@ -514,7 +532,8 @@ class SC_Helper_Purchase {
      * @param string $arrSrc 元となる配列
      * @return void
      */
-    function extractShipping($arrSrc) {
+    function extractShipping($arrSrc)
+    {
         $arrKey = array();
         foreach ($this->arrShippingKey as $key) {
             $arrKey[] = 'shipping_' . $key;
@@ -529,7 +548,8 @@ class SC_Helper_Purchase {
      * @param integer $deliv_id 配送業者ID
      * @return array 購入金額に応じた支払方法の配列
      */
-    function getPaymentsByPrice($total, $deliv_id) {
+    function getPaymentsByPrice($total, $deliv_id)
+    {
 
         $arrPaymentIds = SC_Helper_Delivery_Ex::getPayments($deliv_id);
         if (SC_Utils_Ex::isBlank($arrPaymentIds)) {
@@ -573,7 +593,8 @@ class SC_Helper_Purchase {
     /**
      * お届け日一覧を取得する.
      */
-    function getDelivDate(&$objCartSess, $productTypeId) {
+    function getDelivDate(&$objCartSess, $productTypeId)
+    {
         $cartList = $objCartSess->getCartList($productTypeId);
         $delivDateIds = array();
         foreach ($cartList as $item) {
@@ -631,7 +652,8 @@ class SC_Helper_Purchase {
     /**
      * お届け可能日のスタート値から, お届け日の配列を取得する.
      */
-    function getDateArray($start_day, $end_day) {
+    function getDateArray($start_day, $end_day)
+    {
         $masterData = new SC_DB_MasterData_Ex();
         $arrWDAY = $masterData->getMasterData('mtb_wday');
         //お届け可能日のスタート値がセットされていれば
@@ -664,7 +686,8 @@ class SC_Helper_Purchase {
      * @param boolean $convert_shipping_date yyyy/mm/dd(EEE) 形式の配送日付を変換する場合 true
      * @return void
      */
-    function registerShipping($order_id, $arrParams, $convert_shipping_date = true) {
+    function registerShipping($order_id, $arrParams, $convert_shipping_date = true)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_shipping';
         $where = 'order_id = ?';
@@ -702,7 +725,8 @@ class SC_Helper_Purchase {
      * @param array $arrParams 配送商品の配列
      * @return void
      */
-    function registerShipmentItem($order_id, $shipping_id, $arrParams) {
+    function registerShipmentItem($order_id, $shipping_id, $arrParams)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_shipment_item';
         $where = 'order_id = ? AND shipping_id = ?';
@@ -758,7 +782,8 @@ class SC_Helper_Purchase {
      * @param integer $cartKey 登録を行うカート情報のキー
      * @param integer 受注ID
      */
-    function registerOrderComplete($orderParams, &$objCartSession, $cartKey) {
+    function registerOrderComplete($orderParams, &$objCartSession, $cartKey)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 不要な変数を unset
@@ -828,7 +853,8 @@ class SC_Helper_Purchase {
      * @param array $arrParams 受注情報の連想配列
      * @return integer 受注ID
      */
-    function registerOrder($order_id, $arrParams) {
+    function registerOrder($order_id, $arrParams)
+    {
         $table = 'dtb_order';
         $where = 'order_id = ?';
         $objQuery = SC_Query_Ex::getSingletonInstance();
@@ -882,7 +908,8 @@ class SC_Helper_Purchase {
      * @param array $arrParams 受注情報の連想配列
      * @return void
      */
-    function registerOrderDetail($order_id, $arrParams) {
+    function registerOrderDetail($order_id, $arrParams)
+    {
         $table = 'dtb_order_detail';
         $where = 'order_id = ?';
         $objQuery = SC_Query_Ex::getSingletonInstance();
@@ -903,7 +930,8 @@ class SC_Helper_Purchase {
      * @param integer $customer_id 会員ID
      * @return array 受注情報の配列
      */
-    function getOrder($order_id, $customer_id = null) {
+    function getOrder($order_id, $customer_id = null)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'order_id = ?';
         $arrValues = array($order_id);
@@ -921,7 +949,8 @@ class SC_Helper_Purchase {
      * @param boolean $has_order_status 対応状況, 入金日も含める場合 true
      * @return array 受注詳細の配列
      */
-    function getOrderDetail($order_id, $has_order_status = true) {
+    function getOrderDetail($order_id, $has_order_status = true)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $dbFactory  = SC_DB_DBFactory_Ex::getInstance();
         $col = <<< __EOS__
@@ -978,7 +1007,8 @@ __EOS__;
      * @param array 受注詳細の配列
      * @return void
      */
-    function setDownloadableFlgTo(&$arrOrderDetail) {
+    function setDownloadableFlgTo(&$arrOrderDetail)
+    {
         foreach ($arrOrderDetail as $key => $value) {
             // 販売価格が 0 円
             if ($arrOrderDetail[$key]['price'] == '0') {
@@ -1001,7 +1031,8 @@ __EOS__;
      * @param boolean $has_items 結果に配送商品も含める場合 true
      * @return array 配送情報の配列
      */
-    function getShippings($order_id, $has_items = true) {
+    function getShippings($order_id, $has_items = true)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrResults = array();
         $objQuery->setOrder('shipping_id');
@@ -1031,7 +1062,8 @@ __EOS__;
      * @param boolean $has_detail 商品詳細も取得する場合 true
      * @return array 商品規格IDをキーにした配送商品の配列
      */
-    function getShipmentItems($order_id, $shipping_id, $has_detail = true) {
+    function getShipmentItems($order_id, $shipping_id, $has_detail = true)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objProduct = new SC_Product_Ex();
         $arrResults = array();
@@ -1063,7 +1095,8 @@ __EOS__;
      * @param integer $orderId 受注ID
      * @return void
      */
-    function sendOrderMail($orderId) {
+    function sendOrderMail($orderId)
+    {
         $mailHelper = new SC_Helper_Mail_Ex();
         $template_id =
             SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ? 2 : 1;
@@ -1082,7 +1115,8 @@ __EOS__;
      * @param array $sqlval 更新後の値をリファレンスさせるためのパラメーター
      * @return void
      */
-    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval = array()) {
+    function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval = array())
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrOrderOld = $objQuery->getRow('status, add_point, use_point, customer_id', 'dtb_order', 'order_id = ?', array($orderId));
 
@@ -1190,7 +1224,8 @@ __EOS__;
      * @param boolean $temp_table 更新対象は「受注_Temp」か
      * @static
      */
-    function sfUpdateOrderNameCol($order_id, $temp_table = false) {
+    function sfUpdateOrderNameCol($order_id, $temp_table = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         if ($temp_table) {
@@ -1228,7 +1263,8 @@ __EOS__;
      * @param integer $status 対応状況
      * @return boolean 使用するか(会員テーブルから減算するか)
      */
-    function isUsePoint($status) {
+    function isUsePoint($status)
+    {
         if ($status == null) {
             return false;
         }
@@ -1248,7 +1284,8 @@ __EOS__;
      * @param integer $status 対応状況
      * @return boolean 加算するか
      */
-    function isAddPoint($status) {
+    function isAddPoint($status)
+    {
         switch ($status) {
             case ORDER_NEW:         // 新規注文
             case ORDER_PAY_WAIT:    // 入金待ち
@@ -1284,7 +1321,8 @@ __EOS__;
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @param integer $cartKey 登録を行うカート情報のキー
      */
-    function cleanupSession($orderId, &$objCartSession, &$objCustomer, $cartKey) {
+    function cleanupSession($orderId, &$objCartSession, &$objCustomer, $cartKey)
+    {
         // カートの内容を削除する.
         $objCartSession->delAllProducts($cartKey);
         SC_SiteSession_Ex::unsetUniqId();
@@ -1301,7 +1339,8 @@ __EOS__;
      * @param integer $shipping_id 配送先ID
      * @return void
      */
-    function setShipmentItemTempForSole(&$objCartSession, $shipping_id = 0) {
+    function setShipmentItemTempForSole(&$objCartSession, $shipping_id = 0)
+    {
         $objCartSess = new SC_CartSession_Ex();
 
         $this->clearShipmentItemTemp();
@@ -1318,7 +1357,8 @@ __EOS__;
      *
      * @return integer
      */
-    public function getNextOrderID() {
+    public function getNextOrderID()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->nextVal('dtb_order_order_id');
     }

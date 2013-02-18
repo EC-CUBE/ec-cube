@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/holiday.tpl';
         $this->tpl_subno = 'holiday';
@@ -55,7 +57,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,7 +68,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objDb = new SC_Helper_DB_Ex();
 
@@ -162,18 +166,21 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
-    function lfGetHolidayDataByHolidayID($holiday_id) {
+    function lfGetHolidayDataByHolidayID($holiday_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'holiday_id = ?';
         return $objQuery->select('title, month, day', 'dtb_holiday', $where, array($holiday_id));
     }
 
-    function lfGetHolidayList() {
+    function lfGetHolidayList()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'del_flg <> 1';
@@ -182,7 +189,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     }
 
     /* DBへの挿入 */
-    function lfInsertClass($arrData, $member_id) {
+    function lfInsertClass($arrData, $member_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['title'] = $arrData['title'];
@@ -199,7 +207,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
     }
 
     /* DBへの更新 */
-    function lfUpdateClass($arrData) {
+    function lfUpdateClass($arrData)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['title'] = $arrData['title'];
@@ -212,7 +221,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
         return $ret;
     }
 
-    function lfInitParam($mode, &$objFormParam) {
+    function lfInitParam($mode, &$objFormParam)
+    {
         switch ($mode) {
             case 'edit':
                 $objFormParam->addParam('タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
@@ -236,7 +246,8 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode, &$objFormParam) {
+    function lfCheckError($mode, &$objFormParam)
+    {
         $objFormParam->convParam();
         $arrErr = $objFormParam->checkError();
         $post = $objFormParam->getHashArray();

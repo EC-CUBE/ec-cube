@@ -29,14 +29,16 @@
  * @package Helper
  * @version $Id$
  */
-class SC_Helper_HandleError {
+class SC_Helper_HandleError 
+{
 
     /**
      * 処理の読み込みを行う
      *
      * @return void
      */
-    static function load() {
+    static function load()
+    {
         // E_DEPRECATED 定数 (for PHP < 5.3)
         // TODO バージョン互換処理に統合したい。
         if (!defined('E_DEPRECATED')) {
@@ -82,7 +84,8 @@ class SC_Helper_HandleError {
      * @return void|boolean E_USER_ERROR が発生した場合は, エラーページへリダイレクト;
      *                      E_WARNING, E_USER_WARNING が発生した場合、true を返す
      */
-    static function handle_warning($errno, $errstr, $errfile, $errline) {
+    static function handle_warning($errno, $errstr, $errfile, $errline)
+    {
         // error_reporting 設定に含まれていないエラーコードは処理しない
         if (!(error_reporting() & $errno)) {
             return;
@@ -125,7 +128,8 @@ class SC_Helper_HandleError {
      * @return string|void エラーが捕捉された場合は, エラーページへリダイレクトする;
      *                     エラーが捕捉されない場合は, 出力バッファリングの内容を返す
      */
-    static function &_fatal_error_handler(&$buffer) {
+    static function &_fatal_error_handler(&$buffer)
+    {
         if (preg_match('/<b>(Fatal error)<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches = array())) {
             $message = "$matches[1]: $matches[2] on [$matches[3]($matches[4])]";
             GC_Utils_Ex::gfPrintLog($message, ERROR_LOG_REALFILE, true);
@@ -149,7 +153,8 @@ class SC_Helper_HandleError {
      *
      * @return void
      */
-    static function handle_error() {
+    static function handle_error()
+    {
         // 最後のエラーを確実に捉えるため、先頭で呼び出す。
         $arrError = error_get_last();
 
@@ -186,7 +191,8 @@ class SC_Helper_HandleError {
      * @param string|null $errstr エラーメッセージ
      * @return void
      */
-    static function displaySystemError($errstr = null) {
+    static function displaySystemError($errstr = null)
+    {
         ob_clean();
 
         // 絵文字変換・除去フィルターが有効か評価する。

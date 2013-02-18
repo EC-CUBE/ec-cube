@@ -31,12 +31,14 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBase
+{
 
   var $customer;
   var $customer_array;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->customer = new SC_Customer();
     $this->customer->setValue('customer_id', '1001');
@@ -63,12 +65,14 @@ class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBas
     $this->customer_array = array('customer_id' => '1001', 'email' => 'test@example.com');
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testCopyFromCustomer_ログインしていない場合_何もしない() {
+  public function testCopyFromCustomer_ログインしていない場合_何もしない()
+  {
     $dest = array();
     User_Utils::setLoginState(FALSE, $this->customer_array, $this->objQuery);
 
@@ -80,7 +84,8 @@ class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBas
     $this->verify();
   }
 
-  public function testCopyFromCustomer_モバイルの場合_モバイルのメールアドレスを設定する() {
+  public function testCopyFromCustomer_モバイルの場合_モバイルのメールアドレスを設定する()
+  {
     $dest = array();
     User_Utils::setLoginState(TRUE, $this->customer_array, $this->objQuery);
     User_Utils::setDeviceType(DEVICE_TYPE_MOBILE);
@@ -116,7 +121,8 @@ class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBas
     $this->verify();
   }
 
-  public function testCopyFromCustomer_モバイルかつモバイルのメールアドレスがない場合_通常のメールアドレスを設定する() {
+  public function testCopyFromCustomer_モバイルかつモバイルのメールアドレスがない場合_通常のメールアドレスを設定する()
+  {
     $dest = array();
     $prefix = 'order';
     // キーを絞る
@@ -137,7 +143,8 @@ class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBas
     $this->verify();
   }
 
-  public function testCopyFromCustomer_モバイルでない場合_通常のメールアドレスをそのまま設定する() {
+  public function testCopyFromCustomer_モバイルでない場合_通常のメールアドレスをそのまま設定する()
+  {
     $dest = array();
     $prefix = 'prefix';
     // キーを絞る

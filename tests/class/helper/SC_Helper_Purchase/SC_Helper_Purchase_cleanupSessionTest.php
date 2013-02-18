@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_cleanupSessionTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_cleanupSessionTest extends SC_Helper_Purchase_TestBase
+{
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpProductClass();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testCleanupSession__カートとセッションの配送情報が削除される() {
+  public function testCleanupSession__カートとセッションの配送情報が削除される()
+  {
     // 引数の準備
     $helper = new SC_Helper_Purchase();
     $cartSession = new SC_CartSession();

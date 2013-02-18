@@ -30,6 +30,7 @@
  */
 require_once CLASS_REALDIR . 'api/operations/Default.php';
 
-class API_Default_Ex extends API_Default {
+class API_Default_Ex extends API_Default 
+{
 
 }

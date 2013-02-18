@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBase
+{
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpShipmentItem();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testGetShipmentItems_存在しない受注IDを指定した場合_結果が空になる() {
+  public function testGetShipmentItems_存在しない受注IDを指定した場合_結果が空になる()
+  {
     $order_id = '100'; // 存在しないID
     $shipping_id = '1';
 
@@ -53,7 +57,8 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
     $this->verify('配送情報');
   }
 
-  public function testGetShipmentItems_存在しない配送先IDを指定した場合_結果が空になる() {
+  public function testGetShipmentItems_存在しない配送先IDを指定した場合_結果が空になる()
+  {
     $order_id = '1';
     $shipping_id = '100'; // 存在しないID
 
@@ -63,7 +68,8 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
     $this->verify('配送情報');
   }
 
-  public function testGetShipmentItems_存在する受注IDと配送先IDを指定した場合_結果が取得できる() {
+  public function testGetShipmentItems_存在する受注IDと配送先IDを指定した場合_結果が取得できる()
+  {
     $order_id = '1';
     $shipping_id = '1';
     
@@ -96,7 +102,8 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
     $this->verify('配送情報');
   }
 
-  public function testGetShipmentItems_詳細フラグをOFFにした場合_結果に詳細情報が含まれない() {
+  public function testGetShipmentItems_詳細フラグをOFFにした場合_結果に詳細情報が含まれない()
+  {
     $order_id = '1';
     $shipping_id = '1';
     

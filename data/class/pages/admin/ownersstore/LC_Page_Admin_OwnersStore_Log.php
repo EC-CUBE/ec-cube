@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex {
+class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
 
         $this->tpl_mainpage = 'ownersstore/log.tpl';
@@ -56,7 +58,8 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -66,7 +69,8 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         switch ($this->getMode()) {
             case 'detail':
                 $objForm = $this->initParam();
@@ -90,11 +94,13 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
-    function getLogs() {
+    function getLogs()
+    {
         $sql =<<<END
 SELECT
     *
@@ -113,14 +119,16 @@ END;
         return isset($arrRet) ? $arrRet : array();
     }
 
-    function initParam() {
+    function initParam()
+    {
         $objForm = new SC_FormParam_Ex();
         $objForm->addParam('log_id', 'log_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_GET);
         return $objForm;
     }
 
-    function getLogDetail($log_id) {
+    function getLogDetail($log_id)
+    {
             $sql =<<<END
 SELECT
     *

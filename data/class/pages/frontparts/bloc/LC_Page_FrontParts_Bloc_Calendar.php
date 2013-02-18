@@ -32,7 +32,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $ $
  */
-class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
+class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -42,7 +43,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -51,7 +53,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -61,7 +64,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // 休日取得取得
         $this->arrHoliday = $this->lfGetHoliday();
@@ -78,7 +82,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -88,7 +93,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      * @param integer $disp_month 表示する月数
      * @return array カレンダー情報の配列を返す
      */
-    function lfGetCalendar($disp_month = 1) {
+    function lfGetCalendar($disp_month = 1)
+    {
         $arrCalendar = array();
         $today = date('Y/m/d');
 
@@ -123,7 +129,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return array $arrHoliday 休日情報の配列を返す
      */
-    function lfGetHoliday() {
+    function lfGetHoliday()
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('rank DESC');
 
@@ -140,7 +147,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return array $arrRegularHoliday 定休日情報の配列を返す
      */
-    function lfGetRegularHoliday() {
+    function lfGetRegularHoliday()
+    {
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $arrRegularHoliday = explode('|', $arrInfo['regular_holiday_ids']);
         return $arrRegularHoliday;
@@ -154,7 +162,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      * @param integer $day 日
      * @return boolean 休日の場合trueを返す
      */
-    function lfCheckHoliday($year, $month, $day) {
+    function lfCheckHoliday($year, $month, $day)
+    {
         if (!empty($this->arrHoliday[$month])) {
             if (in_array($day, $this->arrHoliday[$month])) {
                 return true;

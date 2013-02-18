@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_registerShipmentItemTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_registerShipmentItemTest extends SC_Helper_Purchase_TestBase
+{
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpShipmentItem();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testRegisterShipmentItem_製品クラスIDが入っていない場合_登録を行わない() {
+  public function testRegisterShipmentItem_製品クラスIDが入っていない場合_登録を行わない()
+  {
     // 引数の設定
     $order_id = '1';
     $shipping_id = '1';
@@ -74,7 +78,8 @@ class SC_Helper_Purchase_registerShipmentItemTest extends SC_Helper_Purchase_Tes
     $this->verify('登録された配送商品情報');
   }
 
-  public function testRegisterShipmentItem_製品名等が指定されている場合_指定された値で登録を行う() {
+  public function testRegisterShipmentItem_製品名等が指定されている場合_指定された値で登録を行う()
+  {
     // 引数の設定
     $order_id = '1';
     $shipping_id = '1';
@@ -114,7 +119,8 @@ class SC_Helper_Purchase_registerShipmentItemTest extends SC_Helper_Purchase_Tes
     $this->verify('登録された配送商品情報');
   }
 
-  public function testRegisterShipmentItem_製品名等が指定されていない場合_DBからマスタ情報を取得して登録を行う() {
+  public function testRegisterShipmentItem_製品名等が指定されていない場合_DBからマスタ情報を取得して登録を行う()
+  {
     // 引数の設定
     $order_id = '1';
     $shipping_id = '1';
@@ -157,7 +163,8 @@ class SC_Helper_Purchase_registerShipmentItemTest extends SC_Helper_Purchase_Tes
 
   }
 
-  public function testRegisterShipmentItem_DBに存在しないカラムを指定した場合_エラーなく登録できる() {
+  public function testRegisterShipmentItem_DBに存在しないカラムを指定した場合_エラーなく登録できる()
+  {
     // 引数の設定
     $order_id = '1';
     $shipping_id = '1';

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'customer/search_customer.tpl';
         $this->tpl_subtitle = '会員検索';
@@ -53,7 +55,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -63,7 +66,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -97,7 +101,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -107,7 +112,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
     }
 
@@ -117,7 +123,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
     }
 
@@ -127,7 +134,8 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex {
      * @param array $arrParam 検索パラメーター連想配列
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfDoSearch($arrParam) {
+    function lfDoSearch($arrParam)
+    {
         return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
 }

@@ -32,20 +32,24 @@ require_once(realpath(dirname(__FILE__)) . '/../../../../data/class/pages/shoppi
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase {
+class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase 
+{
 
-    function setUp() {
+    function setUp()
+    {
         $this->objQuery =& SC_Query::getSingletonInstance();
         $this->objQuery->begin();
         $this->objPage = new LC_Page_Shopping_LoadPaymentModule();
     }
 
-    function tearDown() {
+    function tearDown()
+    {
         $this->objQuery->rollback();
         $this->objPage = null;
     }
 
-    function testGetOrderIdBySession() {
+    function testGetOrderIdBySession()
+    {
         $_SESSION['order_id'] = 1;
         $_GET['order_id'] = 2;
         $_POST['order_id'] = 3;
@@ -56,7 +60,8 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->verify();
     }
 
-    function testGetOrderIdByPOST() {
+    function testGetOrderIdByPOST()
+    {
         $_GET['order_id'] = 1;
         $_POST['order_id'] = 1;
 
@@ -66,7 +71,8 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->verify();
     }
 
-    function testGetOrderIdByGET() {
+    function testGetOrderIdByGET()
+    {
         $_GET['order_id'] = 2;
 
         $this->expected = $_GET['order_id'];
@@ -75,11 +81,13 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->verify();
     }
 
-    function testGetOrderIdIsNull() {
+    function testGetOrderIdIsNull()
+    {
         $this->assertFalse($this->objPage->getOrderId());
     }
 
-    function testGetModulePath() {
+    function testGetModulePath()
+    {
         $order_id = 10000;
         $payment_id = 10000;
         $module_path = __FILE__;
@@ -91,7 +99,8 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->verify();
     }
 
-    function testGetModulePathIsFailure() {
+    function testGetModulePathIsFailure()
+    {
         $order_id = 10000;
         $payment_id = 10000;
         $module_path = 'aaa';
@@ -103,11 +112,13 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
 
     }
 
-    function verify() {
+    function verify()
+    {
         $this->assertEquals($this->expected, $this->actual);
     }
 
-    function setPayment($order_id, $payment_id, $module_path) {
+    function setPayment($order_id, $payment_id, $module_path)
+    {
         $this->objQuery->insert('dtb_order', array('order_id' => $order_id,
                                                    'customer_id' => (int) 0,
                                                    'payment_id' => $payment_id,

@@ -3,7 +3,8 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class/SC_Display.php"
 /**
  * テスト用にSC_Displayクラスを変更してユーザエージェントを自在に設定できるようにしたクラスです。
  */
-class SC_Display_Ex extends SC_Display {
+class SC_Display_Ex extends SC_Display
+{
 
   /** テスト用に設定した端末種別 */
   static $dummyDevice = DEVICE_TYPE_PC;
@@ -14,7 +15,8 @@ class SC_Display_Ex extends SC_Display {
    * @param     $reset  boolean
    * @return    integer 端末種別ID
    */
-  public static function detectDevice($reset = FALSE) {
+  public static function detectDevice($reset = FALSE)
+  {
     return self::$dummyDevice;
   }
 
@@ -24,7 +26,8 @@ class SC_Display_Ex extends SC_Display {
    * @static
    * @param     $deviceType 端末種別ID
    */
-  public static function setDummyDevice($deviceType) {
+  public static function setDummyDevice($deviceType)
+  {
     self::$dummyDevice = $deviceType;
   }
 }

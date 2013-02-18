@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'products/class.tpl';
         $this->tpl_subno = 'class';
@@ -55,7 +57,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,7 +68,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -138,7 +142,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -148,7 +153,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('規格名', 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('規格ID', 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
     }
@@ -158,7 +164,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      *
      * @return array 規格情報
      */
-    function lfGetClass() {
+    function lfGetClass()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'del_flg <> 1';
@@ -173,7 +180,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param integer $class_id 規格ID
      * @return string 規格名
      */
-    function lfGetClassName($class_id) {
+    function lfGetClassName($class_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'class_id = ?';
         $class_name = $objQuery->get('name', 'dtb_class', $where, array($class_id));
@@ -186,7 +194,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param array $arrForm フォームパラメータークラス
      * @return integer 更新件数
      */
-    function lfInsertClass($arrForm) {
+    function lfInsertClass($arrForm)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval['name'] = $arrForm['name'];
@@ -206,7 +215,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param array $arrForm フォームパラメータークラス
      * @return integer 更新件数
      */
-    function lfUpdateClass($arrForm) {
+    function lfUpdateClass($arrForm)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['name'] = $arrForm['name'];
@@ -224,7 +234,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param SC_Helper_DB $objDb SC_Helper_DBのインスタンス
      * @return integer 削除件数
      */
-    function lfDeleteClass($class_id) {
+    function lfDeleteClass($class_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -240,7 +251,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrForm = $objFormParam->getHashArray();
         // パラメーターの基本チェック
@@ -266,7 +278,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param string $arrForm フォームの入力値
      * @return boolean 新規商品追加の場合 true
      */
-    function lfCheckInsert($arrForm) {
+    function lfCheckInsert($arrForm)
+    {
         //class_id のあるなしで新規商品かどうかを判定
         if (empty($arrForm['class_id'])) {
             return true;
@@ -280,7 +293,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param integer $class_id 規格ID
      * @return void
      */
-    function lfUpRank($class_id) {
+    function lfUpRank($class_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRankUp('dtb_class', 'class_id', $class_id);
     }
@@ -290,7 +304,8 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex {
      * @param integer $class_id 規格ID
      * @return void
      */
-    function lfDownRank($class_id) {
+    function lfDownRank($class_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRankDown('dtb_class', 'class_id', $class_id);
     }

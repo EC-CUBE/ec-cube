@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_Fpdf.php';
 
-class SC_Fpdf_Ex extends SC_Fpdf {
+class SC_Fpdf_Ex extends SC_Fpdf 
+{
 }

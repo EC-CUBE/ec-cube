@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'products/product_select.tpl';
         $this->tpl_mainno = 'products';
@@ -58,7 +60,8 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -68,7 +71,8 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objDb = new SC_Helper_DB_Ex();
 
@@ -97,7 +101,8 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -107,14 +112,16 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('カテゴリ', 'search_category_id', STEXT_LEN, 'n');
         $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa');
         $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVa');
     }
 
     /* 商品検索結果取得 */
-    function lfGetProducts(&$objDb) {
+    function lfGetProducts(&$objDb)
+    {
         $where = 'del_flg = 0';
         $arrWhereVal = array();
 

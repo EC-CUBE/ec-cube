@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
+class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex 
+{
 
     // {{{ properties
 
@@ -46,7 +47,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_subtitle = 'お気に入り一覧';
         $this->tpl_mypageno = 'favorite';
@@ -57,7 +59,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -66,7 +69,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         $objCustomer = new SC_Customer_Ex();
 
         $customer_id = $objCustomer->getValue('customer_id');
@@ -110,7 +114,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -122,7 +127,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
      * @access private
      * @return array お気に入り商品一覧
      */
-    function lfGetFavoriteProduct($customer_id, &$objPage) {
+    function lfGetFavoriteProduct($customer_id, &$objPage)
+    {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objProduct     = new SC_Product_Ex();
 
@@ -171,7 +177,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
     }
 
     /* 仕方がない処理。。 */
-    function lfMakeWhere($tablename, $arrProductId) {
+    function lfMakeWhere($tablename, $arrProductId)
+    {
 
         // 取得した表示すべきIDだけを指定して情報を取得。
         $where = '';
@@ -185,7 +192,8 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex {
     }
 
     // お気に入り商品削除
-    function lfDeleteFavoriteProduct($customer_id, $product_id) {
+    function lfDeleteFavoriteProduct($customer_id, $product_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $exists = $objQuery->exists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $product_id));

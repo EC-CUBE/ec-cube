@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/LC_Page_ResizeImage.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_ResizeImage_Ex extends LC_Page_ResizeImage {
+class LC_Page_ResizeImage_Ex extends LC_Page_ResizeImage 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_ResizeImage_Ex extends LC_Page_ResizeImage {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_ResizeImage_Ex extends LC_Page_ResizeImage {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_ResizeImage_Ex extends LC_Page_ResizeImage {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/shopping/LC_Page_Shopping_LoadPaymentModule.
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPaymentModule {
+class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPaymentModule 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPayment
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPayment
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPayment
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

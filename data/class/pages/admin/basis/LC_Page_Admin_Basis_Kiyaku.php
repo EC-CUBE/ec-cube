@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/kiyaku.tpl';
         $this->tpl_subno = 'kiyaku';
@@ -55,7 +57,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,7 +68,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objDb = new SC_Helper_DB_Ex();
 
@@ -151,12 +155,14 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     /* DBへの挿入 */
-    function lfInsertClass($arrData, $member_id) {
+    function lfInsertClass($arrData, $member_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTする値を作成する。
         $sqlval = array();
@@ -172,14 +178,16 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         return ($ret) ? $sqlval['kiyaku_id'] : FALSE;
     }
 
-    function lfGetKiyakuDataByKiyakuID($kiyaku_id) {
+    function lfGetKiyakuDataByKiyakuID($kiyaku_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'kiyaku_id = ?';
         return $objQuery->select('kiyaku_text, kiyaku_title', 'dtb_kiyaku', $where, array($kiyaku_id));
     }
 
-    function lfGetKiyakuList() {
+    function lfGetKiyakuList()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'del_flg <> 1';
@@ -188,7 +196,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
     }
 
     /* DBへの更新 */
-    function lfUpdateClass($arrData, $kiyaku_id) {
+    function lfUpdateClass($arrData, $kiyaku_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['kiyaku_title'] = $arrData['kiyaku_title'];
@@ -200,7 +209,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
         return ($ret) ? $kiyaku_id : FALSE;
     }
 
-    function lfInitParam($mode, &$objFormParam) {
+    function lfInitParam($mode, &$objFormParam)
+    {
         switch ($mode) {
             case 'confirm':
             case 'pre_edit':
@@ -223,7 +233,8 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($objFormParam) {
+    function lfCheckError($objFormParam)
+    {
         $arrErr = $objFormParam->checkError();
         $arrForm = $objFormParam->getHashArray();
         $objQuery =& SC_Query_Ex::getSingletonInstance();

@@ -28,7 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_Helper_PageLayout.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_Helper_PageLayout {
+class SC_Helper_PageLayout 
+{
 
     // }}}
     // {{{ functions
@@ -46,7 +47,8 @@ class SC_Helper_PageLayout {
      * @param integer $device_type_id 端末種別ID
      * @return void
      */
-    function sfGetPageLayout(&$objPage, $preview = false, $url = '', $device_type_id = DEVICE_TYPE_PC) {
+    function sfGetPageLayout(&$objPage, $preview = false, $url = '', $device_type_id = DEVICE_TYPE_PC)
+    {
 
         // URLを元にページ情報を取得
         if ($preview === false) {
@@ -108,7 +110,8 @@ class SC_Helper_PageLayout {
      * @param array $arrParams 追加の検索パラメーター
      * @return array ページ属性の配列
      */
-    function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array()) {
+    function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array())
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'device_type_id = ? ' . (SC_Utils_Ex::isBlank($where) ? $where : 'AND ' . $where);
         if ($page_id === null) {
@@ -132,7 +135,8 @@ class SC_Helper_PageLayout {
      * @param boolean $has_realpath php_path, tpl_path の絶対パスを含める場合 true
      * @return array ブロック情報の配列
      */
-    function getBlocs($device_type_id = DEVICE_TYPE_PC, $where = '', $arrParams = array(), $has_realpath = true) {
+    function getBlocs($device_type_id = DEVICE_TYPE_PC, $where = '', $arrParams = array(), $has_realpath = true)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'device_type_id = ? ' . (SC_Utils_Ex::isBlank($where) ? $where : 'AND ' . $where);
         $arrParams = array_merge(array($device_type_id), $arrParams);
@@ -153,7 +157,8 @@ class SC_Helper_PageLayout {
      * @param boolean $has_realpath php_path, tpl_path の絶対パスを含める場合 true
      * @return array 配置情報を含めたブロックの配列
      */
-    function getBlocPositions($device_type_id, $page_id, $has_realpath = true) {
+    function getBlocPositions($device_type_id, $page_id, $has_realpath = true)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = <<< __EOF__
         dtb_blocposition AS pos
@@ -192,7 +197,8 @@ __EOF__;
      * @param integer $device_type_id 端末種別ID
      * @return integer 削除数
      */
-    function lfDelPageData($page_id, $device_type_id = DEVICE_TYPE_PC) {
+    function lfDelPageData($page_id, $device_type_id = DEVICE_TYPE_PC)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {
@@ -214,7 +220,8 @@ __EOF__;
      * @param integer $device_type_id 端末種別ID
      * @return void // TODO boolean にするべき?
      */
-    function lfDelFile($filename, $device_type_id) {
+    function lfDelFile($filename, $device_type_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         /*
@@ -246,7 +253,8 @@ __EOF__;
      * @param integer $page_id ページID
      * @return 編集可能ページの場合 true
      */
-    function isEditablePage($device_type_id, $page_id) {
+    function isEditablePage($device_type_id, $page_id)
+    {
         if ($page_id == 0) {
             return false;
         }
@@ -265,7 +273,8 @@ __EOF__;
      * @param boolean $isUser USER_REALDIR 以下のパスを返す場合 true
      * @return string テンプレートのパス
      */
-    function getTemplatePath($device_type_id = DEVICE_TYPE_PC, $isUser = false) {
+    function getTemplatePath($device_type_id = DEVICE_TYPE_PC, $isUser = false)
+    {
         $templateName = '';
         switch ($device_type_id) {
             case DEVICE_TYPE_MOBILE:
@@ -302,7 +311,8 @@ __EOF__;
      * @param boolean $hasPackage パッケージのパスも含める場合 true
      * @return string 端末に応じた DocumentRoot から user_data までのパス
      */
-    function getUserDir($device_type_id = DEVICE_TYPE_PC, $hasPackage = false) {
+    function getUserDir($device_type_id = DEVICE_TYPE_PC, $hasPackage = false)
+    {
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
             $templateName = MOBILE_TEMPLATE_NAME;
@@ -334,7 +344,8 @@ __EOF__;
      * @param array $arrBlocs 設定するブロックの配列
      * @return void
      */
-    function setBlocPathTo($device_type_id = DEVICE_TYPE_PC, &$arrBlocs = array()) {
+    function setBlocPathTo($device_type_id = DEVICE_TYPE_PC, &$arrBlocs = array())
+    {
         foreach ($arrBlocs as $key => $value) {
             $arrBloc =& $arrBlocs[$key];
             $arrBloc['php_path'] = SC_Utils_Ex::isBlank($arrBloc['php_path']) ? '' : HTML_REALDIR . $arrBloc['php_path'];
@@ -350,7 +361,8 @@ __EOF__;
      * @param array $arrPageLayout レイアウト情報の配列
      * @return integer $col_num カラム数
      */
-    function getColumnNum($arrPageLayout) {
+    function getColumnNum($arrPageLayout)
+    {
         // メインは確定
         $col_num = 1;
         // LEFT NAVI

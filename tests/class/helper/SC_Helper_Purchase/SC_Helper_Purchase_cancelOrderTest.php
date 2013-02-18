@@ -30,22 +30,26 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase
+{
 
   private $helper;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpProductClass();
     $this->helper = new SC_Helper_Purchase_cancelOrderMock();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testCancelOrder_デフォルトの引数で呼び出した場合_製品クラスのデータが更新される(){
+  public function testCancelOrder_デフォルトの引数で呼び出した場合_製品クラスのデータが更新される()
+  {
     $order_id = '1001';
     $this->objQuery->begin();
 
@@ -78,7 +82,8 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
 
   // 実際にトランザクションを開始したかどうかはテストできないが、
   // 問題なく処理が完了することのみ確認
-  public function testCancelOrder_トランザクションが開始していない場合_内部で開始する(){
+  public function testCancelOrder_トランザクションが開始していない場合_内部で開始する()
+  {
     $order_id = '1001';
 
     $this->helper->cancelOrder($order_id, ORDER_NEW);
@@ -109,7 +114,8 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
     $this->verify();
   }
 
-  public function testCancelOrder_削除フラグが立っている場合_DB更新時に削除フラグが立てられる(){
+  public function testCancelOrder_削除フラグが立っている場合_DB更新時に削除フラグが立てられる()
+  {
     $order_id = '1001';
     $this->objQuery->begin();
 
@@ -146,16 +152,19 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase {
 
 }
 
-class SC_Helper_Purchase_cancelOrderMock extends SC_Helper_Purchase {
+class SC_Helper_Purchase_cancelOrderMock extends SC_Helper_Purchase
+{
 
-  function registerOrder($order_id, $params) {
+  function registerOrder($order_id, $params)
+  {
     $_SESSION['testResult']['registerOrder'] = array(
       'order_id' => $order_id,
       'params' => $params
     );
   }
 
-  function getOrderDetail($order_id) {
+  function getOrderDetail($order_id)
+  {
     $_SESSION['testResult']['getOrderDetail'] = array(
       'order_id' => $order_id
     );

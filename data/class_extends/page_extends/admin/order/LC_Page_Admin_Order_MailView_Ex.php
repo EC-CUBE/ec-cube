@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/admin/order/LC_Page_Admin_Order_MailView.php
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_MailView_Ex extends LC_Page_Admin_Order_MailView {
+class LC_Page_Admin_Order_MailView_Ex extends LC_Page_Admin_Order_MailView 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_Admin_Order_MailView_Ex extends LC_Page_Admin_Order_MailView {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_Admin_Order_MailView_Ex extends LC_Page_Admin_Order_MailView {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_Admin_Order_MailView_Ex extends LC_Page_Admin_Order_MailView {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
+class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -50,7 +52,8 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -60,7 +63,8 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // モバイル判定
         switch (SC_Display_Ex::detectDevice()) {
@@ -84,7 +88,8 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -94,7 +99,8 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
      * @param array $arrRequest リクエスト配列
      * @return array $arrCategoryId 選択中のカテゴリID
      */
-    function lfGetSelectedCategoryId($arrRequest) {
+    function lfGetSelectedCategoryId($arrRequest)
+    {
             // 商品ID取得
         $product_id = '';
         if (isset($arrRequest['product_id']) && $arrRequest['product_id'] != '' && is_numeric($arrRequest['product_id'])) {
@@ -121,7 +127,8 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
      * @param boolean $count_check 登録商品数をチェックする場合はtrue
      * @return array $arrRet カテゴリツリーの配列を返す
      */
-    function lfGetCatTree($arrParentCategoryId, $count_check = false) {
+    function lfGetCatTree($arrParentCategoryId, $count_check = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
         $col = '*';
@@ -170,7 +177,8 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex {
      * @param boolean $count_check 登録商品数をチェックする場合はtrue
      * @return array $arrMainCat メインカテゴリの配列を返す
      */
-    function lfGetMainCat($count_check = false) {
+    function lfGetMainCat($count_check = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';

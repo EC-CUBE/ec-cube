@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfDispDBDateTest extends Common_TestCase {
+class SC_Utils_sfDispDBDateTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfDispDBDate_年が指定されていない場合_0バイト文字列が返る() {
+  public function testSfDispDBDate_年が指定されていない場合_0バイト文字列が返る()
+  {
     $dbdate = '-01-23 01:12:24';
     
     $this->expected = '';
@@ -51,7 +55,8 @@ class SC_Utils_sfDispDBDateTest extends Common_TestCase {
 
     $this->verify();
   }
-  public function testSfDispDBDate_月が指定されていない場合_0バイト文字列が返る() {
+  public function testSfDispDBDate_月が指定されていない場合_0バイト文字列が返る()
+  {
     $dbdate = '2012--23 01:12:24';
     
     $this->expected = '';
@@ -59,7 +64,8 @@ class SC_Utils_sfDispDBDateTest extends Common_TestCase {
 
     $this->verify();
   }
-  public function testSfDispDBDate_日が指定されていない場合_0バイト文字列が返る() {
+  public function testSfDispDBDate_日が指定されていない場合_0バイト文字列が返る()
+  {
     $dbdate = '2012-01- 01:12:24';
     
     $this->expected = '';
@@ -67,7 +73,8 @@ class SC_Utils_sfDispDBDateTest extends Common_TestCase {
 
     $this->verify();
   }
-  public function testSfDispDBDate_年月日すべて存在する場合_フォーマット済み文字列が返る() {
+  public function testSfDispDBDate_年月日すべて存在する場合_フォーマット済み文字列が返る()
+  {
     $dbdate = '2012-1-23 1:12:24';
     
     $this->expected = '2012/01/23 01:12';
@@ -75,7 +82,8 @@ class SC_Utils_sfDispDBDateTest extends Common_TestCase {
 
     $this->verify();
   }
-  public function testSfDispDBDate_時刻表示フラグがOFFの場合_時刻なしのフォーマット済み文字列が返る() {
+  public function testSfDispDBDate_時刻表示フラグがOFFの場合_時刻なしのフォーマット済み文字列が返る()
+  {
     $dbdate = '2012-1-23 1:12:24';
     
     $this->expected = '2012/01/23';

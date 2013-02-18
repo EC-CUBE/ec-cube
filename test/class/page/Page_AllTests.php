@@ -32,9 +32,11 @@ require_once(realpath(dirname(__FILE__)) . '/LC_Page_Test.php');
  * @author Kentaro Ohkouchi
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class Page_AllTests extends PHPUnit_Framework_TestCase {
+class Page_AllTests extends PHPUnit_Framework_TestCase 
+{
 
-    public static function suite() {
+    public static function suite()
+    {
         $suite = new PHPUnit_Framework_TestSuite('Page');
         $suite->addTestSuite('LC_Page_Test');
         return $suite;

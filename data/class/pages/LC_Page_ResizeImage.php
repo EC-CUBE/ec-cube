@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_ResizeImage extends LC_Page_Ex {
+class LC_Page_ResizeImage extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -50,7 +52,8 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
     }
@@ -60,7 +63,8 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_GET);
@@ -89,11 +93,13 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('画像ファイル名', 'image', STEXT_LEN, 'a',  array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('画像の幅', 'width', STEXT_LEN, 'n',  array('NUM_CHECK'));
         $objFormParam->addParam('画像の高さ', 'height', STEXT_LEN, 'n',  array('NUM_CHECK'));
@@ -104,7 +110,8 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      *
      * @return boolean 正常な形式:true 不正な形式:false
      */
-    function lfCheckFileName() {
+    function lfCheckFileName()
+    {
         //$pattern = '|^[0-9]+_[0-9a-z]+\.[a-z]{3}$|';
         $pattern = '|\./|';
         $file    = trim($_GET['image']);
@@ -124,7 +131,8 @@ class LC_Page_ResizeImage extends LC_Page_Ex {
      * 
      * @return void
      */
-    function lfOutputImage($file, $width, $height) {
+    function lfOutputImage($file, $width, $height)
+    {
         $objThumb = new gdthumb();
         $objThumb->Main($file, $width, $height, '', true);
     }

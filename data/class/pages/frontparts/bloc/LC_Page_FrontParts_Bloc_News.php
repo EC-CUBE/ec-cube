@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
+class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -50,7 +52,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -60,7 +63,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objFormParam = new SC_FormParam_Ex();
         switch ($this->getMode()) {
@@ -107,7 +111,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -117,7 +122,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitNewsParam(&$objFormParam) {
+    function lfInitNewsParam(&$objFormParam)
+    {
         $objFormParam->addParam('現在ページ', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam('表示件数', 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam('新着ID', 'news_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
@@ -128,7 +134,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return array $arrNewsList 新着情報の配列を返す
      */
-    function lfGetNews(&$objQuery) {
+    function lfGetNews(&$objQuery)
+    {
         $objQuery->setOrder('rank DESC ');
         $arrNewsList = $objQuery->select('* , cast(news_date as date) as news_date_disp', 'dtb_news' ,'del_flg = 0');
 
@@ -154,7 +161,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return String $json 新着情報のJSONを返す
      */
-    function lfGetNewsForJson(&$objFormParam) {
+    function lfGetNewsForJson(&$objFormParam)
+    {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrData = $objFormParam->getHashArray();
@@ -183,7 +191,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return String $json 新着情報1件分のJSONを返す
      */
-    function lfGetNewsDetailForJson(&$objFormParam) {
+    function lfGetNewsDetailForJson(&$objFormParam)
+    {
 
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $arrData = $objFormParam->getHashArray();
@@ -200,7 +209,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return Integer $count 新着情報の件数を返す
      */
-    function lfGetNewsCount() {
+    function lfGetNewsCount()
+    {
 
         $count = 0;
 
@@ -216,7 +226,8 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex {
      * @param array $arrErr エラーメッセージの配列
      * @return string JSON 形式のエラーメッセージ
      */
-    function lfGetErrors($arrErr) {
+    function lfGetErrors($arrErr)
+    {
         $messages = '';
         foreach ($arrErr as $val) {
             $messages .= $val . "\n";

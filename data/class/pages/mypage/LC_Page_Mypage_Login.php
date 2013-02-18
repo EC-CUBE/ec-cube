@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex {
+class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->httpCacheControl('nocache');
     }
@@ -51,7 +53,8 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -60,7 +63,8 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
 
         SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
@@ -71,7 +75,8 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

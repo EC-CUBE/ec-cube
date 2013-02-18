@@ -33,20 +33,24 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetHashString_authTypePlainTest extends Common_TestCase {
+class SC_Utils_sfGetHashString_authTypePlainTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
   /**
-  public function testSfGetHashString_暗号化なしの設定になっている場合_文字列が変換されない() {
+  public function testSfGetHashString_暗号化なしの設定になっている場合_文字列が変換されない()
+  {
     $input = 'hello, world';
 
     $this->expected = $input;

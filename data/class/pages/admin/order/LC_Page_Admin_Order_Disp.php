@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Order_Disp.php 20767 2011-03-22 10:07:32Z nanasess $
  */
-class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
+class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex 
+{
 
     var $arrShippingKeys = array(
         'shipping_id',
@@ -74,7 +75,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'order/disp.tpl';
         $this->tpl_mainno = 'order';
@@ -99,7 +101,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -109,7 +112,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -136,7 +140,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      * デストラクタ.
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -146,7 +151,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         // 検索条件のパラメータを初期化
         parent::lfInitParam($objFormParam);
 
@@ -258,7 +264,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      * @param integer $order_id 取得元の受注ID
      * @return void
      */
-    function setOrderToFormParam(&$objFormParam, $order_id) {
+    function setOrderToFormParam(&$objFormParam, $order_id)
+    {
         $objPurchase = new SC_Helper_Purchase_Ex();
 
         // 受注詳細を設定

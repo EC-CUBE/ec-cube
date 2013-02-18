@@ -31,18 +31,22 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfTaxTest extends Common_TestCase {
+class SC_Utils_sfTaxTest extends Common_TestCase
+{
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfTax_四捨五入の場合_四捨五入の結果になる() {
+  public function testSfTax_四捨五入の場合_四捨五入の結果になる()
+  {
     $this->expected = array(1, 2);
     $this->actual[0] = SC_Utils::sfTax(140, 1, 1); // 1:四捨五入
     $this->actual[1] = SC_Utils::sfTax(150, 1, 1); // 1:四捨五入
@@ -50,7 +54,8 @@ class SC_Utils_sfTaxTest extends Common_TestCase {
     $this->verify('税額');
   }
 
-  public function testSfTax_切り捨ての場合_切り捨ての結果になる() {
+  public function testSfTax_切り捨ての場合_切り捨ての結果になる()
+  {
     $this->expected = array(2, 3);
     $this->actual[0] = SC_Utils::sfTax(140, 2, 2); // 2:切り捨て
     $this->actual[1] = SC_Utils::sfTax(150, 2, 2); // 2:切り捨て
@@ -58,7 +63,8 @@ class SC_Utils_sfTaxTest extends Common_TestCase {
     $this->verify('税額');
   }
 
-  public function testSfTax_切り上げの場合_切り上げの結果になる() {
+  public function testSfTax_切り上げの場合_切り上げの結果になる()
+  {
     $this->expected = array(2, 2);
     $this->actual[0] = SC_Utils::sfTax(140, 1, 3); // 3:切り上げ
     $this->actual[1] = SC_Utils::sfTax(150, 1, 3); // 3:切り上げ
@@ -66,7 +72,8 @@ class SC_Utils_sfTaxTest extends Common_TestCase {
     $this->verify('税額');
   }
 
-  public function testSfTax_それ以外の場合_切り上げの結果になる() {
+  public function testSfTax_それ以外の場合_切り上げの結果になる()
+  {
     $this->expected = array(2, 2);
     $this->actual[0] = SC_Utils::sfTax(140, 1, 4);
     $this->actual[1] = SC_Utils::sfTax(150, 1, 4);

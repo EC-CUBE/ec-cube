@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design_CSS.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_CSS_Ex extends LC_Page_Admin_Design_CSS {
+class LC_Page_Admin_Design_CSS_Ex extends LC_Page_Admin_Design_CSS 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_Admin_Design_CSS_Ex extends LC_Page_Admin_Design_CSS {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_Admin_Design_CSS_Ex extends LC_Page_Admin_Design_CSS {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_Admin_Design_CSS_Ex extends LC_Page_Admin_Design_CSS {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

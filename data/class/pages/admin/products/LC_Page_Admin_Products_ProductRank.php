@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'products/product_rank.tpl';
         $this->tpl_mainno = 'products';
@@ -55,7 +57,8 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,7 +68,8 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
@@ -112,12 +116,14 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     /* 商品読み込み */
-    function lfGetProduct($category_id) {
+    function lfGetProduct($category_id)
+    {
         // FIXME SC_Product クラスを使用した実装
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'alldtl.product_id, name, main_list_image, product_code_min, product_code_max, status';
@@ -150,7 +156,8 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex {
     /*
      * 商品の数値指定での並び替え実行
      */
-    function lfRenumber($parent_category_id) {
+    function lfRenumber($parent_category_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = <<< __EOS__
@@ -175,17 +182,20 @@ __EOS__;
         return $arrRet;
     }
 
-    function lfRankUp(&$objDb, $parent_category_id, $product_id) {
+    function lfRankUp(&$objDb, $parent_category_id, $product_id)
+    {
         $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankUp('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
-    function lfRankDown(&$objDb, $parent_category_id, $product_id) {
+    function lfRankDown(&$objDb, $parent_category_id, $product_id)
+    {
         $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankDown('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
-    function lfRankMove(&$objDb, $parent_category_id, $product_id) {
+    function lfRankMove(&$objDb, $parent_category_id, $product_id)
+    {
         $key = 'pos-'.$product_id;
         $input_pos = mb_convert_kana($_POST[$key], 'n');
         if (SC_Utils_Ex::sfIsInt($input_pos)) {

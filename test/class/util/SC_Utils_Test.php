@@ -32,7 +32,8 @@ require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page.p
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class SC_Utils_Test extends PHPUnit_Framework_TestCase {
+class SC_Utils_Test extends PHPUnit_Framework_TestCase 
+{
 
     // }}}
     // {{{ functions
@@ -42,7 +43,8 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
      *
      * 変換無し
      */
-    function testGetRealURL_変換無し() {
+    function testGetRealURL_変換無し()
+    {
         $url = "http://www.example.jp/admin/index.php";
 
         $expected = "http://www.example.jp:/admin/index.php";
@@ -51,7 +53,8 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
 
-    function testGetRealURL_変換有() {
+    function testGetRealURL_変換有()
+    {
         $url = "http://www.example.jp/admin/../index.php";
 
         $expected = "http://www.example.jp:/index.php";
@@ -60,7 +63,8 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
 
-    function testGetRealURL_空のディレクトリ() {
+    function testGetRealURL_空のディレクトリ()
+    {
         $url = "http://www.example.jp/admin/..///index.php";
 
         $expected = "http://www.example.jp:/index.php";
@@ -69,7 +73,8 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
 
-    function testGetRealURL_Dotのディレクトリ() {
+    function testGetRealURL_Dotのディレクトリ()
+    {
         $url = "http://www.example.jp/admin/././../index.php";
 
         $expected = "http://www.example.jp:/index.php";
@@ -78,7 +83,8 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
 
-    function testIsBlank() {
+    function testIsBlank()
+    {
         $val = "";
         $this->assertTrue(SC_Utils::isBlank($val));
 
@@ -121,7 +127,8 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $this->assertTrue(SC_Utils::isBlank($emptyArray));
     }
 
-    function testIsAbsoluteRealPath() {
+    function testIsAbsoluteRealPath()
+    {
         // for *NIX
         if (strpos(PHP_OS, 'WIN') === false) {
             $unix_absolute = '/usr/local';
@@ -147,7 +154,8 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase {
         $this->assertFalse(SC_Utils::isAbsoluteRealPath($empty));
     }
 
-    function testRecursiveMkdir() {
+    function testRecursiveMkdir()
+    {
         $tmp_dir = sys_get_temp_dir();
         $dir = '/foo/bar';
         $results = false;

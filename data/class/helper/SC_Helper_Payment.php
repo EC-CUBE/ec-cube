@@ -37,7 +37,8 @@ class SC_Helper_Payment
      * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
-    public function get($payment_id, $has_deleted = false) {
+    public function get($payment_id, $has_deleted = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'payment_id = ?';
         if (!$has_deleted) {
@@ -53,7 +54,8 @@ class SC_Helper_Payment
      * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
-    public function getList($has_deleted = false) {
+    public function getList($has_deleted = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'payment_id, payment_method, charge, rule_max, upper_rule, note, fix, charge_flg';
         $where = '';
@@ -72,7 +74,8 @@ class SC_Helper_Payment
      * @param array $sqlval
      * @return void
      */
-    public function save($sqlval) {
+    public function save($sqlval)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $payment_id = $sqlval['payment_id'];
@@ -99,7 +102,8 @@ class SC_Helper_Payment
      * @param integer $payment_id 支払方法ID
      * @return void
      */
-    public function delete($payment_id) {
+    public function delete($payment_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         // ランク付きレコードの削除
         $objDb->sfDeleteRankRecord('dtb_payment', 'payment_id', $payment_id);
@@ -111,7 +115,8 @@ class SC_Helper_Payment
      * @param integer $payment_id 支払方法ID
      * @return void
      */
-    public function rankUp($payment_id) {
+    public function rankUp($payment_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRankUp('dtb_payment', 'payment_id', $payment_id);
     }
@@ -122,7 +127,8 @@ class SC_Helper_Payment
      * @param integer $payment_id 支払方法ID
      * @return void
      */
-    public function rankDown($payment_id) {
+    public function rankDown($payment_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRankDown('dtb_payment', 'payment_id', $payment_id);
     }
@@ -135,7 +141,8 @@ class SC_Helper_Payment
      * @param integer $payment_id 支払い方法ID
      * @return boolean 決済モジュールを使用する支払い方法の場合 true
      */
-    public static function useModule($payment_id) {
+    public static function useModule($payment_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?', array($payment_id));
         return !SC_Utils_Ex::isBlank($memo03);
@@ -146,7 +153,8 @@ class SC_Helper_Payment
      * 
      * @return array
      */
-    public static function getIDValueList() {
+    public static function getIDValueList()
+    {
         return SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
     }
 }

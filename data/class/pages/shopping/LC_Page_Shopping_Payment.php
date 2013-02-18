@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Payment extends LC_Page_Ex {
+class LC_Page_Shopping_Payment extends LC_Page_Ex 
+{
 
     // {{{ properties
 
@@ -49,7 +50,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_onload = 'fnCheckInputPoint();';
         $this->tpl_title = 'お支払方法・お届け時間等の指定';
@@ -62,7 +64,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -73,7 +76,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -247,7 +251,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -259,7 +264,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param boolean $deliv_only deliv_id チェックのみの場合 true
      * @param array $arrShipping 配送先情報の配列
      */
-    function setFormParams(&$objFormParam, $arrParam, $deliv_only, &$arrShipping) {
+    function setFormParams(&$objFormParam, $arrParam, $deliv_only, &$arrShipping)
+    {
         $this->lfInitParam($objFormParam, $deliv_only, $arrShipping);
         $objFormParam->setParam($arrParam);
         $objFormParam->convParam();
@@ -273,7 +279,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param array $arrShipping 配送先情報の配列
      * @return void
      */
-    function lfInitParam(&$objFormParam, $deliv_only, &$arrShipping) {
+    function lfInitParam(&$objFormParam, $deliv_only, &$arrShipping)
+    {
         $objFormParam->addParam('配送業者', 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ポイント', 'use_point', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK', 'ZERO_START'));
         $objFormParam->addParam('その他お問い合わせ', 'message', LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -302,7 +309,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param integer $max_point 会員の保持ポイント
      * @return array 入力チェック結果の配列
      */
-    function lfCheckError(&$objFormParam, $subtotal, $max_point) {
+    function lfCheckError(&$objFormParam, $subtotal, $max_point)
+    {
         $objPurchase = new SC_Helper_Purchase_Ex();
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
@@ -342,7 +350,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param array $arrDelivTime 配送時間の配列
      */
-    function saveShippings(&$objFormParam, $arrDelivTime) {
+    function saveShippings(&$objFormParam, $arrDelivTime)
+    {
         $deliv_id = $objFormParam->getValue('deliv_id');
 
         /* TODO
@@ -368,7 +377,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param array $arrPayment お支払い方法の配列
      * @return void
      */
-    function lfRegistData($uniqid, $arrForm, &$objPurchase, $arrPayment) {
+    function lfRegistData($uniqid, $arrForm, &$objPurchase, $arrPayment)
+    {
 
         $arrForm['order_temp_id'] = $uniqid;
         $arrForm['update_date'] = 'CURRENT_TIMESTAMP';
@@ -400,7 +410,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param integer $deliv_id 配送業者ID
      * @return array 支払い方法, お届け時間を格納した配列
      */
-    function getSelectedDeliv(&$objPurchase, &$objCartSess, $deliv_id) {
+    function getSelectedDeliv(&$objPurchase, &$objCartSess, $deliv_id)
+    {
         $arrResults = array();
         $arrResults['arrDelivTime'] = SC_Helper_Delivery_Ex::getDelivTime($deliv_id);
         $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
@@ -415,7 +426,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param array $arrPayment 支払い方法の配列
      * @return boolean 支払い方法の画像がある場合 true
      */
-    function hasPaymentImage($arrPayment) {
+    function hasPaymentImage($arrPayment)
+    {
         foreach ($arrPayment as $val) {
             if (!SC_Utils_Ex::isBlank($val['payment_image'])) {
                 return true;
@@ -430,7 +442,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param array $arrDeliv 配送業者の配列
      * @return boolean 配送業者が1社のみの場合 true
      */
-    function isSingleDeliv($arrDeliv) {
+    function isSingleDeliv($arrDeliv)
+    {
         if (count($arrDeliv) == 1) {
             return true;
         } else {
@@ -445,7 +458,8 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex {
      * @param string $mode フォームパラメーター 'mode' の文字列
      * @return string モバイル用テンプレートのパス
      */
-    function getMobileMainpage($is_single_deliv = true, $mode) {
+    function getMobileMainpage($is_single_deliv = true, $mode)
+    {
         switch ($mode) {
             case 'select_deliv':
                 return 'shopping/payment.tpl';

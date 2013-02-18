@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery.tpl';
         $this->tpl_subno = 'delivery';
@@ -58,7 +60,8 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -68,7 +71,8 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objDeliv = new SC_Helper_Delivery_Ex();
         $mode = $this->getMode();
@@ -114,7 +118,8 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode, &$objFormParam) {
+    function lfCheckError($mode, &$objFormParam)
+    {
         $arrErr = array();
         switch ($mode) {
             case 'delete':
@@ -137,7 +142,8 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

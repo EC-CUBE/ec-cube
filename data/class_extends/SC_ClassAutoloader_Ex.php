@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_ClassAutoloader.php';
 
-class SC_ClassAutoloader_Ex extends SC_ClassAutoloader {
+class SC_ClassAutoloader_Ex extends SC_ClassAutoloader 
+{
 }

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Regist_Complete.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Regist_Complete extends LC_Page_Ex {
+class LC_Page_Regist_Complete extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Regist_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_title = '会員登録(完了ページ)';
     }
@@ -51,7 +53,8 @@ class LC_Page_Regist_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -62,7 +65,8 @@ class LC_Page_Regist_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
 
     }
@@ -72,7 +76,8 @@ class LC_Page_Regist_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

@@ -22,9 +22,11 @@
  */
 
 /* カートセッション管理クラス */
-class SC_SiteSession {
+class SC_SiteSession 
+{
     /* コンストラクタ */
-    function __construct() {
+    function __construct()
+    {
         // 前ページでの登録成功判定を引き継ぐ
         $_SESSION['site']['pre_regist_success'] =
                 isset($_SESSION['site']['regist_success'])
@@ -39,7 +41,8 @@ class SC_SiteSession {
     }
 
     /* 前ページが正当であるかの判定 */
-    function isPrePage() {
+    function isPrePage()
+    {
         if ($_SESSION['site']['pre_page'] != '' && $_SESSION['site']['now_page'] != '') {
             if ($_SESSION['site']['pre_regist_success'] || $_SESSION['site']['pre_page'] == $_SESSION['site']['now_page']) {
                 return true;
@@ -48,17 +51,20 @@ class SC_SiteSession {
         return false;
     }
 
-    function setNowPage($path) {
+    function setNowPage($path)
+    {
         $_SESSION['site']['now_page'] = $path;
     }
 
     /* 値の取得 */
-    function getValue($keyname) {
+    function getValue($keyname)
+    {
         return $_SESSION['site'][$keyname];
     }
 
     /* ユニークIDの取得 */
-    function getUniqId() {
+    function getUniqId()
+    {
         // ユニークIDがセットされていない場合はセットする。
         if (!isset($_SESSION['site']['uniqid']) || $_SESSION['site']['uniqid'] == '') {
             $this->setUniqId();
@@ -67,13 +73,15 @@ class SC_SiteSession {
     }
 
     /* ユニークIDのセット */
-    function setUniqId() {
+    function setUniqId()
+    {
         // 予測されないようにランダム文字列を付与する。
         $_SESSION['site']['uniqid'] = SC_Utils_Ex::sfGetUniqRandomId();
     }
 
     /* ユニークIDのチェック */
-    function checkUniqId() {
+    function checkUniqId()
+    {
         if (!empty($_POST['uniqid'])) {
             if ($_POST['uniqid'] != $_SESSION['site']['uniqid']) {
                 return false;
@@ -83,12 +91,14 @@ class SC_SiteSession {
     }
 
     /* ユニークIDの解除 */
-    function unsetUniqId() {
+    function unsetUniqId()
+    {
         $_SESSION['site']['uniqid'] = '';
     }
 
     /* 登録成功を記録 */
-    function setRegistFlag() {
+    function setRegistFlag()
+    {
         $_SESSION['site']['regist_success'] = true;
     }
 }

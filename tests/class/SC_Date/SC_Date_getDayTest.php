@@ -24,48 +24,56 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Date_getDayTest extends Common_TestCase {
+class SC_Date_getDayTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objDate = new SC_Date_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetDay_要素の数が31の配列を返す() {
+    public function testGetDay_要素の数が31の配列を返す()
+    {
         $this->expected = 31;
         $this->actual = count($this->objDate->getDay());
 
         $this->verify("配列の長さ");
     }
 
-    public function testGetDay_要素の最低値が1の配列を返す() {
+    public function testGetDay_要素の最低値が1の配列を返す()
+    {
         $this->expected = 1;
         $this->actual = min($this->objDate->getDay());
 
         $this->verify("配列の最低値");
     }
 
-    public function testGetDay_要素の最大値が31の配列を返す() {
+    public function testGetDay_要素の最大値が31の配列を返す()
+    {
         $this->expected = 31;
         $this->actual = max($this->objDate->getDay());
 
         $this->verify("配列の最大値");
     }
 
-    public function testGetDay_TRUEを与えた場合要素の数が32の配列を返す() {
+    public function testGetDay_TRUEを与えた場合要素の数が32の配列を返す()
+    {
         $this->expected = 32;
         $this->actual = count($this->objDate->getDay(true));
 
         $this->verify("デフォルトを設定した配列の長さ");
     }
 
-    public function testGetDay_TRUEを与えた場合ーー含まれるの配列を返す() {
+    public function testGetDay_TRUEを与えた場合ーー含まれるの配列を返す()
+    {
         $result = in_array('--', $this->objDate->getDay(true));
 
         $this->assertTrue($result, "デフォルトの値");

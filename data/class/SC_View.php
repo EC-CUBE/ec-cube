@@ -23,18 +23,21 @@
 
 require_once realpath(dirname(__FILE__)) . '/../module/Smarty/libs/Smarty.class.php';
 
-class SC_View {
+class SC_View 
+{
 
     var $_smarty;
 
     var $objPage;
 
     // コンストラクタ
-    function __construct() {
+    function __construct()
+    {
         $this->init();
     }
 
-    function init() {
+    function init()
+    {
         $this->_smarty = new Smarty;
         $this->_smarty->left_delimiter = '<!--{';
         $this->_smarty->right_delimiter = '}-->';
@@ -72,12 +75,14 @@ class SC_View {
     }
 
     // テンプレートに値を割り当てる
-    function assign($val1, $val2) {
+    function assign($val1, $val2)
+    {
         $this->_smarty->assign($val1, $val2);
     }
 
     // テンプレートの処理結果を取得
-    function fetch($template) {
+    function fetch($template)
+    {
         return $this->_smarty->fetch($template);
     }
 
@@ -88,7 +93,8 @@ class SC_View {
      * @param boolean $no_error
      * @return string
      */
-    function getResponse($template, $no_error = false) {
+    function getResponse($template, $no_error = false)
+    {
         if (!$no_error) {
             global $GLOBAL_ERR;
             if (!defined('OUTPUT_ERR')) {
@@ -111,7 +117,8 @@ class SC_View {
      * @param LC_Page_Ex $objPage 
      * @return void
      */
-    function setPage($objPage) {
+    function setPage($objPage)
+    {
        $this->objPage = $objPage;
     }
 
@@ -119,7 +126,8 @@ class SC_View {
      * Smartyのfilterをセットします. 
      * @return void
      */
-    function registFilter() {
+    function registFilter()
+    {
         $this->_smarty->register_prefilter(array(&$this, 'prefilter_transform'));
         $this->_smarty->register_outputfilter(array(&$this, 'outputfilter_transform'));
     }
@@ -130,7 +138,8 @@ class SC_View {
      * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
      * @return string $source ソース
      */
-    function prefilter_transform($source, &$smarty) {
+    function prefilter_transform($source, &$smarty)
+    {
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
@@ -145,7 +154,8 @@ class SC_View {
      * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
      * @return string $source ソース
      */
-    function outputfilter_transform($source, &$smarty) {
+    function outputfilter_transform($source, &$smarty)
+    {
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
@@ -155,7 +165,8 @@ class SC_View {
     }
 
     // テンプレートの処理結果を表示
-    function display($template, $no_error = false) {
+    function display($template, $no_error = false)
+    {
         if (!$no_error) {
             global $GLOBAL_ERR;
             if (!defined('OUTPUT_ERR')) {
@@ -174,7 +185,8 @@ class SC_View {
     }
 
     // オブジェクト内の変数をすべて割り当てる。
-    function assignobj($obj) {
+    function assignobj($obj)
+    {
         $data = get_object_vars($obj);
 
         foreach ($data as $key => $value) {
@@ -183,7 +195,8 @@ class SC_View {
     }
 
     // 連想配列内の変数をすべて割り当てる。
-    function assignarray($array) {
+    function assignarray($array)
+    {
         foreach ($array as $key => $val) {
             $this->_smarty->assign($key, $val);
         }
@@ -194,7 +207,8 @@ class SC_View {
      *
      * @param integer $device_type_id 端末種別ID
      */
-    function assignTemplatePath($device_type_id) {
+    function assignTemplatePath($device_type_id)
+    {
 
         // テンプレート変数を割り当て
         $this->assign('TPL_URLPATH', SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
@@ -209,7 +223,8 @@ class SC_View {
     }
 
     // デバッグ
-    function debug($var = true) {
+    function debug($var = true)
+    {
         $this->_smarty->debugging = $var;
     }
 }

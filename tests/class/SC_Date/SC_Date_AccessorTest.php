@@ -24,34 +24,40 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Date_AccessorTest extends Common_TestCase {
+class SC_Date_AccessorTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objDate = new SC_Date_Ex('2010','2014');
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetStartYear_startYearの値を取得する() {
+    public function testGetStartYear_startYearの値を取得する()
+    {
         $this->expected = '2010';
         $this->actual = $this->objDate->getStartYear();
 
         $this->verify("StartYear");
     }
 
-    public function testGetEndYear_endYearの値を取得する() {
+    public function testGetEndYear_endYearの値を取得する()
+    {
         $this->expected = '2014';
         $this->actual = $this->objDate->getEndYear();
 
         $this->verify("EndYear");
     }
 
-    public function testsetMonth_monthの値を設定する() {
+    public function testsetMonth_monthの値を設定する()
+    {
         $this->expected = '9';
         $this->objDate->setMonth('9');
         $this->actual = $this->objDate->month;
@@ -59,7 +65,8 @@ class SC_Date_AccessorTest extends Common_TestCase {
         $this->verify("Month");
     }
     
-    public function testsetDay_dayの値を設定する() {
+    public function testsetDay_dayの値を設定する()
+    {
         $this->expected = '28';
         $this->objDate->setDay('28');
         $this->actual = $this->objDate->day;

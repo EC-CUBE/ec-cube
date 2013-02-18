@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping extends LC_Page_Ex {
+class LC_Page_Shopping extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_title = 'ログイン';
         $masterData = new SC_DB_MasterData_Ex();
@@ -63,7 +65,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -74,7 +77,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -271,7 +275,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -281,7 +286,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
 
         $objFormParam->addParam('お名前(姓)', 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(名)', 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -326,7 +332,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitLoginFormParam(&$objFormParam) {
+    function lfInitLoginFormParam(&$objFormParam)
+    {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('メールアドレス', 'login_email', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -346,7 +353,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @param SC_SiteSession $objSiteSess SC_SiteSession インスタンス
      * @return string 遷移先のパス
      */
-    function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase, &$objSiteSess) {
+    function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase, &$objSiteSess)
+    {
         switch ($product_type_id) {
             case PRODUCT_TYPE_DOWNLOAD:
                 $objPurchase->unsetAllShippingTemp(true);
@@ -370,7 +378,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param boolean $isMultiple 複数配送の場合 true
      */
-    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, &$objFormParam, $isMultiple = false) {
+    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, &$objFormParam, $isMultiple = false)
+    {
         $arrParams = $objFormParam->getHashArray();
 
         // 注文者をお届け先とする配列を取得
@@ -413,7 +422,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラー情報の配
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         // 入力値の変換
         $objFormParam->convParam();
         $objFormParam->toLower('order_mail');
@@ -462,7 +472,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @param integer $uniqid 購入一時情報のユニークID
      * @return void
      */
-    function setFormParams(&$objFormParam, &$objPurchase, $uniqid) {
+    function setFormParams(&$objFormParam, &$objPurchase, $uniqid)
+    {
         $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
         if (SC_Utils_Ex::isBlank($arrOrderTemp)) {
             $arrOrderTemp = array(
@@ -500,7 +511,8 @@ class LC_Page_Shopping extends LC_Page_Ex {
      * @return string JSON 形式のエラーメッセージ
      * @see LC_PageError
      */
-    function lfGetErrorMessage($error) {
+    function lfGetErrorMessage($error)
+    {
         switch ($error) {
             case TEMP_LOGIN_ERROR:
                 $msg = "メールアドレスもしくはパスワードが正しくありません。\n本登録がお済みでない場合は、仮登録メールに記載されているURLより本登録を行ってください。";

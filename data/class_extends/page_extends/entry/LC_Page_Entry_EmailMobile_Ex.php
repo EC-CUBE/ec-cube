@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/entry/LC_Page_Entry_EmailMobile.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Entry_EmailMobile_Ex extends LC_Page_Entry_EmailMobile {
+class LC_Page_Entry_EmailMobile_Ex extends LC_Page_Entry_EmailMobile 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_Entry_EmailMobile_Ex extends LC_Page_Entry_EmailMobile {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_Entry_EmailMobile_Ex extends LC_Page_Entry_EmailMobile {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_Entry_EmailMobile_Ex extends LC_Page_Entry_EmailMobile {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

@@ -32,7 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory_PGSQL.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
+class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory 
+{
 
     /**
      * DBのバージョンを取得する.
@@ -40,7 +41,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $dsn データソース名
      * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = '') {
+    function sfGetDBVersion($dsn = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
         $val = $objQuery->getOne('select version()');
         $arrLine = explode(' ' , $val);
@@ -56,7 +58,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $sql SQL 文
      * @return string MySQL 用に置換した SQL 文
      */
-    function sfChangeMySQL($sql) {
+    function sfChangeMySQL($sql)
+    {
         return $sql;
     }
 
@@ -66,7 +69,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $method SUM または COUNT
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
-    function getOrderYesterdaySql($method) {
+    function getOrderYesterdaySql($method)
+    {
         return 'SELECT '.$method.'(total) FROM dtb_order '
                . 'WHERE del_flg = 0 '
                . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
@@ -79,7 +83,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $method SUM または COUNT
      * @return string 当月の売上高・売上件数を算出する SQL
      */
-    function getOrderMonthSql($method) {
+    function getOrderMonthSql($method)
+    {
         return 'SELECT '.$method.'(total) FROM dtb_order '
                . 'WHERE del_flg = 0 '
                . "AND to_char(create_date,'YYYY/MM') = ? "
@@ -92,7 +97,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      *
      * @return string 昨日のレビュー書き込み件数を算出する SQL
      */
-    function getReviewYesterdaySql() {
+    function getReviewYesterdaySql()
+    {
         return 'SELECT COUNT(*) FROM dtb_review AS A '
                . 'LEFT JOIN dtb_products AS B '
                . 'ON A.product_id = B.product_id '
@@ -107,7 +113,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      *
      * @return string 検索条件の SQL
      */
-    function getSendHistoryWhereStartdateSql() {
+    function getSendHistoryWhereStartdateSql()
+    {
         return "start_date BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes'";
     }
 
@@ -117,7 +124,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * @param string $dtb_order_alias
      * @return string 検索条件の SQL
      */
-    function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order') {
+    function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order')
+    {
         $baseinfo = SC_Helper_DB_Ex::sfGetBasisData();
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
@@ -144,7 +152,8 @@ __EOS__;
      * @param mixed $type
      * @return string 検索条件のSQL
      */
-    function getOrderTotalDaysWhereSql($type) {
+    function getOrderTotalDaysWhereSql($type)
+    {
         switch ($type) {
             case 'month':
                 $format = 'MM';
@@ -180,7 +189,8 @@ __EOS__;
      *
      * @return string 年代抽出部分の SQL
      */
-    function getOrderTotalAgeColSql() {
+    function getOrderTotalAgeColSql()
+    {
         return 'TRUNC(CAST(EXTRACT(YEAR FROM AGE(create_date, order_birth)) AS INT), -1)';
     }
 
@@ -190,7 +200,8 @@ __EOS__;
      * @param array $columns 連結を行うカラム名
      * @return string 連結後の SQL 文
      */
-    function concatColumn($columns) {
+    function concatColumn($columns)
+    {
         $sql = '';
         $i = 0;
         $total = count($columns);
@@ -213,7 +224,8 @@ __EOS__;
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression = '') {
+    function findTableNames($expression = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = '   SELECT c.relname AS name, '
             .  '     CASE c.relkind '
@@ -237,7 +249,8 @@ __EOS__;
      *
      * @return array 文字コード情報
      */
-    function getCharSet() {
+    function getCharSet()
+    {
         // 未実装
         return array();
     }
@@ -247,7 +260,8 @@ __EOS__;
      *
      * @return string
      */
-    function getDummyFromClauseSql() {
+    function getDummyFromClauseSql()
+    {
         return '';
     }
 
@@ -257,7 +271,8 @@ __EOS__;
      * MDB2_Driver_Manager_pgsql#listTables の不具合回避を目的として独自実装している。
      * @return array テーブル名の配列
      */
-    function listTables(SC_Query &$objQuery) {
+    function listTables(SC_Query &$objQuery)
+    {
         $col = 'tablename';
         $from = 'pg_tables';
         $where = "schemaname NOT IN ('pg_catalog', 'information_schema', 'sys')";

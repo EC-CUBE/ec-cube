@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'design/css.tpl';
         $this->area_row = 30;
@@ -58,7 +60,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -68,7 +71,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objLayout = new SC_Helper_PageLayout_Ex();
 
@@ -141,7 +145,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -151,7 +156,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('CSSファイル名', 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('旧CSSファイル名', 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
@@ -171,7 +177,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @param string $css_data 書き込みを行うデータ
      * @return boolean 登録が成功した場合 true; 失敗した場合 false
      */
-    function doRegister($css_dir, $css_name, $old_css_name, $css_path, $css_data) {
+    function doRegister($css_dir, $css_name, $old_css_name, $css_path, $css_data)
+    {
         $objFileManager = new SC_Helper_FileManager_Ex();
 
         if (!SC_Utils_Ex::isBlank($old_css_name)
@@ -195,7 +202,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @param string $css_path CSSファイルの絶対パス
      * @return boolean 削除が成功した場合 true; 失敗した場合 false
      */
-    function doDelete($css_path) {
+    function doDelete($css_path)
+    {
         if (!unlink($css_path)) {
             $this->arrErr['err'] = '※ CSSの削除に失敗しました<br />';
             return false;
@@ -209,7 +217,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @param array $css_dir CSSディレクトリ
      * @return array ファイルリスト
      */
-    function getCSSList($css_dir) {
+    function getCSSList($css_dir)
+    {
         $objFileManager = new SC_Helper_FileManager_Ex();
 
         $arrFileList = $objFileManager->sfGetFileList($css_dir);
@@ -230,7 +239,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam, &$arrErr) {
+    function lfCheckError(&$objFormParam, &$arrErr)
+    {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
@@ -265,7 +275,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @param integer $device_type_id 端末種別ID
      * @return string CSSディレクトリ
      */
-    function getCSSDir($device_type_id) {
+    function getCSSDir($device_type_id)
+    {
         return SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true) . 'css/';
     }
 
@@ -274,7 +285,8 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex {
      * @param string $str
      * @return boolean 
      */
-    function checkPath($str) {
+    function checkPath($str)
+    {
         // 含む場合はfalse
         if (preg_match('|\./|', $str)) {
             return false;

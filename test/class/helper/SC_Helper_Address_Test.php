@@ -56,7 +56,8 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
         $this->objQuery->rollback();
     }
 
-    function testRegistAddress() {
+    function testRegistAddress()
+    {
         // ダミーの住所を登録
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;
@@ -83,7 +84,8 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
     /**
      * @depends testSave
      */
-    function testGetAddress() {
+    function testGetAddress()
+    {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;
@@ -105,7 +107,8 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
     /**
      * @depends testSave
      */
-    function testGetList() {
+    function testGetList()
+    {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;
@@ -131,7 +134,8 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
     /**
      * @depends testSave
      */
-    function testDeleteAddress() {
+    function testDeleteAddress()
+    {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
+class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_title    = 'お届け先の追加･変更';
         $masterData         = new SC_DB_MasterData_Ex();
@@ -57,7 +59,8 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -68,7 +71,8 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objCustomer = new SC_Customer_Ex();
         $objAddress  = new SC_Helper_Address_Ex();
@@ -161,12 +165,14 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     /* 登録実行 */
-    function lfRegistData($objAddress, $objFormParam, $customer_id) {
+    function lfRegistData($objAddress, $objFormParam, $customer_id)
+    {
         $arrRet     = $objFormParam->getHashArray();
         $sqlval     = $objFormParam->getDbArray();
 
@@ -176,7 +182,8 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex {
         $objAddress->registAddress($sqlval);
     }
 
-    function lfRegistDataNonMember($objFormParam) {
+    function lfRegistDataNonMember($objFormParam)
+    {
         $arrRegistColumn = $objFormParam->getDbArray();
         foreach ($arrRegistColumn as $key => $val) {
             $arrRegist['shipping_' . $key ] = $val;

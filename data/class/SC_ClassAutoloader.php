@@ -28,14 +28,16 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_ClassAutoloader {
+class SC_ClassAutoloader 
+{
     /**
      * クラスのオートローディング本体
      *
      * LC_* には対応していない。
      * @return void
      */
-    public static function autoload($class) {
+    public static function autoload($class)
+    {
         $arrClassNamePart = explode('_', $class);
         $is_ex = end($arrClassNamePart) === 'Ex';
         $count = count($arrClassNamePart);

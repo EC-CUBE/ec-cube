@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'products/maker.tpl';
         $this->tpl_subno = 'maker';
@@ -55,7 +57,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,7 +68,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -149,7 +153,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -159,7 +164,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('メーカーID', 'maker_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メーカー名', 'name', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
     }
@@ -169,7 +175,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      *
      * @return array $arrMaker メーカー情報
      */
-    function lfDisp() {
+    function lfDisp()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 削除されていないメーカー情報を表示する
@@ -186,7 +193,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param array $arrForm メーカー情報
      * @return void
      */
-    function lfInsert(&$arrForm) {
+    function lfInsert(&$arrForm)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // INSERTする値を作成する
@@ -207,7 +215,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param array $arrForm メーカー情報
      * @return void
      */
-    function lfUpdate(&$arrForm) {
+    function lfUpdate(&$arrForm)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // UPDATEする値を作成する
@@ -225,7 +234,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param integer $maker_id メーカーID
      * @return void
      */
-    function lfDelete($maker_id) {
+    function lfDelete($maker_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfDeleteRankRecord('dtb_maker', 'maker_id', $maker_id, '', true);
     }
@@ -237,7 +247,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param  string  $mode up か down のモードを示す文字列
      * @return void
      */
-    function lfRankChange($maker_id, $mode) {
+    function lfRankChange($maker_id, $mode)
+    {
         $objDb = new SC_Helper_DB_Ex();
 
         switch ($mode) {
@@ -261,7 +272,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param integer $maker_id メーカーID
      * @return array  $arrForm メーカー名を追加
      */
-    function lfPreEdit(&$arrForm, $maker_id) {
+    function lfPreEdit(&$arrForm, $maker_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 編集項目を取得する
@@ -279,7 +291,8 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex {
      * @param  array $arrForm メーカー情報
      * @return array $objErr->arrErr エラー内容
      */
-    function lfCheckError(&$arrForm, &$objFormParam) {
+    function lfCheckError(&$arrForm, &$objFormParam)
+    {
 
         $arrErr = $objFormParam->checkError();
         if (!empty($arrErr)) {

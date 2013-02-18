@@ -32,7 +32,8 @@ require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page.p
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class LC_Page_Test extends PHPUnit_Framework_TestCase {
+class LC_Page_Test extends PHPUnit_Framework_TestCase 
+{
 
     // }}}
     // {{{ functions
@@ -46,7 +47,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      * LC_Page::sendRedirect() のテストケース(エラー).
      */
     /*
-    function testSendRedirect() {
+    function testSendRedirect()
+    {
         $objPage = new LC_Page();
         $result = $objPage->sendRedirect(HTTP_URL);
 
@@ -57,7 +59,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      * LC_Page::sendRedirect() のテストケース(エラー).
      */
     /*
-    function testSendRedirectIsFailed() {
+    function testSendRedirectIsFailed()
+    {
         $objPage = new LC_Page();
         $result = $objPage->sendRedirect("http://www.example.org");
 
@@ -68,7 +71,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
     /**
      * LC_Page::getToken() のテストケース.
      */
-    function testGetToken() {
+    function testGetToken()
+    {
         $objPage = new LC_Page();
 
         $objPage->setTokenTo();
@@ -84,7 +88,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
     /**
      * LC_Page::getLocation() のテストケース.
      */
-    function testGetLocation() {
+    function testGetLocation()
+    {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
         $url = $objPage->getLocation("/abouts/index.php");
@@ -98,7 +103,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      *
      * 絶対パス
      */
-    function testGetLocationWithFullPath() {
+    function testGetLocationWithFullPath()
+    {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
         $url = $objPage->getLocation(ROOT_URLPATH . 'abouts/index.php');
@@ -112,7 +118,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      *
      * QueryString 付与
      */
-    function testGetLocationWithQueryString() {
+    function testGetLocationWithQueryString()
+    {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
 
@@ -128,7 +135,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      *
      * HTTPS_URL 使用
      */
-    function testGetLocationUseSSL() {
+    function testGetLocationUseSSL()
+    {
         $objPage = new LC_Page();
         $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . "/../../../html");
 
@@ -144,7 +152,8 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase {
      *
      * DocumentRoot 指定
      */
-    function testGetLocationWithDocumentRoot() {
+    function testGetLocationWithDocumentRoot()
+    {
         $objPage = new LC_Page();
         $documentRoot = realpath(dirname(__FILE__) . "/../../../html");
 

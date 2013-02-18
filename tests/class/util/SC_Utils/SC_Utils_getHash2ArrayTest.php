@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_getHash2ArrayTest extends Common_TestCase {
+class SC_Utils_getHash2ArrayTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testGetHash2Array_必須キー指定がない場合_値のみの配列が返る() {
+  public function testGetHash2Array_必須キー指定がない場合_値のみの配列が返る()
+  {
     $input_array = array('apple' => 'りんご', 'banana' => 'バナナ', 'orange' => 'オレンジ');
     $this->expected = array('りんご', 'バナナ', 'オレンジ');
     $this->actual = SC_Utils::getHash2Array($input_array);
@@ -51,7 +55,8 @@ class SC_Utils_getHash2ArrayTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testGetHash2Array_必須キー指定がある場合_指定キーの値のみの配列が返る() {
+  public function testGetHash2Array_必須キー指定がある場合_指定キーの値のみの配列が返る()
+  {
     $input_array = array('apple' => 'りんご', 'banana' => 'バナナ', 'orange' => 'オレンジ');
     $requires = array('banana', 'apple');
     $this->expected = array('りんご', 'バナナ');

@@ -24,27 +24,32 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Session_getUniqIdTest extends Common_TestCase {
+class SC_Session_getUniqIdTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objSiteSession = new SC_SiteSession_Mock();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetUniqId_設定済みのユニークなID取得する() {
+    public function testGetUniqId_設定済みのユニークなID取得する()
+    {
         $_SESSION['site']['uniqid'] = '0987654321';
         $this->expected = '0987654321';
         $this->actual = $this->objSiteSession->getUniqId();
         $this->verify('ユニークID');
     }
     
-    public function testGetUniqId_新たにユニークなID取得する() {
+    public function testGetUniqId_新たにユニークなID取得する()
+    {
         $_SESSION['site']['uniqid'] = '';
         $this->expected = '1234567890';
         $this->actual = $this->objSiteSession->getUniqId();
@@ -52,8 +57,10 @@ class SC_Session_getUniqIdTest extends Common_TestCase {
     }
 }
 
-class SC_SiteSession_Mock extends SC_SiteSession_Ex {
-    function setUniqId() {
+class SC_SiteSession_Mock extends SC_SiteSession_Ex
+{
+    function setUniqId()
+    {
         $_SESSION['site']['uniqid'] = '1234567890';
     }
 }

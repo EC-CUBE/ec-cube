@@ -31,22 +31,26 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_registerOrderTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_registerOrderTest extends SC_Helper_Purchase_TestBase
+{
 
   private $helper;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpOrder();
     $this->helper = new SC_Helper_Purchase_registerOrderMock();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testRegisterOrder_既に受注IDが存在する場合_情報が更新される() {
+  public function testRegisterOrder_既に受注IDが存在する場合_情報が更新される()
+  {
     $order_id = '1001';
     $arrParams = array(
       'status' => '1',
@@ -88,7 +92,8 @@ class SC_Helper_Purchase_registerOrderTest extends SC_Helper_Purchase_TestBase {
     $this->verify();
   }
 
-  public function testRegisterOrder_存在しない受注IDを指定した場合_新規に登録される() {
+  public function testRegisterOrder_存在しない受注IDを指定した場合_新規に登録される()
+  {
     $order_id = '1003';
     $arrParams = array(
       'customer_id' => '1003',
@@ -131,7 +136,8 @@ class SC_Helper_Purchase_registerOrderTest extends SC_Helper_Purchase_TestBase {
     $this->verify();
   }
 
-  public function testRegisterOrder_受注IDが未指定の場合_新たにIDが発行される() {
+  public function testRegisterOrder_受注IDが未指定の場合_新たにIDが発行される()
+  {
     $order_id = '';
     $arrParams = array( // 顧客IDも未指定
       'status' => '2',
@@ -181,8 +187,10 @@ class SC_Helper_Purchase_registerOrderTest extends SC_Helper_Purchase_TestBase {
 
 }
 
-class SC_Helper_Purchase_registerOrderMock extends SC_Helper_Purchase {
-  function sfUpdateOrderStatus($order_id, $status, $add_point, $use_point, $values) {
+class SC_Helper_Purchase_registerOrderMock extends SC_Helper_Purchase
+{
+  function sfUpdateOrderStatus($order_id, $status, $add_point, $use_point, $values)
+  {
     $_SESSION['testResult']['sfUpdateOrderStatus'] = array(
       'order_id' => $order_id,
       'status' => $status,
@@ -191,7 +199,8 @@ class SC_Helper_Purchase_registerOrderMock extends SC_Helper_Purchase {
     );
   }
 
-  function sfUpdateOrderNameCol($order_id) {
+  function sfUpdateOrderNameCol($order_id)
+  {
    $_SESSION['testResult']['sfUpdateOrderNameCol'] = $order_id;
   }
 }

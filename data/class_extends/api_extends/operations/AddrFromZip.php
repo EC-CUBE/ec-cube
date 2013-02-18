@@ -30,6 +30,7 @@
  */
 require_once CLASS_REALDIR . 'api/operations/AddrFromZip.php';
 
-class API_AddrFromZip_Ex extends API_AddrFromZip {
+class API_AddrFromZip_Ex extends API_AddrFromZip 
+{
 
 }

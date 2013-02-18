@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'graph/SC_Graph_Bar.php';
 
-class SC_Graph_Bar_Ex extends SC_Graph_Bar {
+class SC_Graph_Bar_Ex extends SC_Graph_Bar 
+{
 }

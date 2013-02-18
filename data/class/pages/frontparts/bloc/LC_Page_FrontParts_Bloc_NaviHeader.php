@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_Ex {
+class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type'); //商品種類を取得
@@ -52,7 +54,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -62,7 +65,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         parent::action();
 
         //ヘッダーナビのカート情報を取得
@@ -78,7 +82,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -90,7 +95,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      * @param Array $cartKeys 商品種類配列
      * @return array $arrCartList カートデータ配列
      */
-    function lfGetCartData($objCart, $arrInfo, $cartKeys) {
+    function lfGetCartData($objCart, $arrInfo, $cartKeys)
+    {
         $cartList = array();
         foreach ($cartKeys as $key) {
             // カート集計処理

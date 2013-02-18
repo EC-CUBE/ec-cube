@@ -31,24 +31,28 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_TestBase
+{
 
   private $helper;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpOrder();
     $this->setUpCustomer();
     $this->helper = new SC_Helper_Purchase_sfUpdateOrderStatusMock();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
   // オプションの引数：対応状況、使用ポイント、加算ポイント
-  public function testSfUpdateOrderStatus_オプションの引数が未指定の場合_DBの値が引き継がれる() {
+  public function testSfUpdateOrderStatus_オプションの引数が未指定の場合_DBの値が引き継がれる()
+  {
     $order_id = '1001';
     $old_update_date = $this->objQuery->get('update_date', 'dtb_order', 'order_id = ?', array($order_id));
 
@@ -80,14 +84,16 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
 
   // TODO 定数を変更できないためテスト不可
   /**
-  public function testSfUpdateOrderStatus_ポイント使用しない設定の場合_ポイントに関する処理が行われない() {
+  public function testSfUpdateOrderStatus_ポイント使用しない設定の場合_ポイントに関する処理が行われない()
+  {
 
 
     $this->verify();
   }
   */
 
-  public function testSfUpdateOrderStatus_対応状況が発送済みに変更された場合_発送日が更新される() {
+  public function testSfUpdateOrderStatus_対応状況が発送済みに変更された場合_発送日が更新される()
+  {
     $order_id = '1001';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -123,7 +129,8 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
     $this->assertUpdate($new_dates, $old_dates, 'payment_date', '入金日', false);  
   }
 
-  public function testSfUpdateOrderStatus_対応状況が入金済みに変更された場合_入金日が更新される() {
+  public function testSfUpdateOrderStatus_対応状況が入金済みに変更された場合_入金日が更新される()
+  {
     $order_id = '1002';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -154,7 +161,8 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
     $this->assertUpdate($new_dates, $old_dates, 'payment_date', '入金日');  
   }
 
-  public function testSfUpdateOrderStatus_変更前の対応状況が利用対象の場合_変更前の使用ポイントを戻す() {
+  public function testSfUpdateOrderStatus_変更前の対応状況が利用対象の場合_変更前の使用ポイントを戻す()
+  {
     $order_id = '1002';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -182,7 +190,8 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testSfUpdateOrderStatus_変更後の対応状況が利用対象の場合_変更後の使用ポイントを引く() {
+  public function testSfUpdateOrderStatus_変更後の対応状況が利用対象の場合_変更後の使用ポイントを引く()
+  {
     $order_id = '1001';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -209,7 +218,8 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testSfUpdateOrderStatus_変更前の対応状況が加算対象の場合_変更前の加算ポイントを戻す() {
+  public function testSfUpdateOrderStatus_変更前の対応状況が加算対象の場合_変更前の加算ポイントを戻す()
+  {
     $order_id = '1002';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -237,7 +247,8 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testSfUpdateOrderStatus_変更後の対応状況が加算対象の場合_変更後の加算ポイントを足す() {
+  public function testSfUpdateOrderStatus_変更後の対応状況が加算対象の場合_変更後の加算ポイントを足す()
+  {
     $order_id = '1001';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -264,7 +275,8 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testSfUpdateOrderStatus_加算ポイントがプラスの場合_会員テーブルが更新される() {
+  public function testSfUpdateOrderStatus_加算ポイントがプラスの場合_会員テーブルが更新される()
+  {
     $order_id = '1001';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -293,7 +305,8 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testSfUpdateOrderStatus_加算ポイントが負でポイントが足りている場合_会員テーブルが更新される() {
+  public function testSfUpdateOrderStatus_加算ポイントが負でポイントが足りている場合_会員テーブルが更新される()
+  {
     $order_id = '1001';
     $old_dates = $this->objQuery->select(
       'update_date, commit_date, payment_date', 
@@ -324,13 +337,15 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
 
   // TODO ロールバックされる場合はexitするためテスト不可.
   /**
-  public function testSfUpdateOrderStatus_加算ポイントが負でポイントが足りていない場合_会員テーブルがロールバックされエラーとなる() {
+  public function testSfUpdateOrderStatus_加算ポイントが負でポイントが足りていない場合_会員テーブルがロールバックされエラーとなる()
+  {
   }
   */
 
   //////////////////////////////////////////
 
-  function assertUpdate($new_dates, $old_dates, $key, $message, $is_update = true) {
+  function assertUpdate($new_dates, $old_dates, $key, $message, $is_update = true)
+  {
     $new_date = $new_dates[0][$key];
     $old_date = $old_dates[0][$key];
     if (empty($new_date)) $new_date = '2000-01-01 00:00:00';
@@ -344,19 +359,22 @@ class SC_Helper_Purchase_sfUpdateOrderStatusTest extends SC_Helper_Purchase_Test
   }
 }
 
-class SC_Helper_Purchase_sfUpdateOrderStatusMock extends SC_Helper_Purchase {
+class SC_Helper_Purchase_sfUpdateOrderStatusMock extends SC_Helper_Purchase
+{
 
   var $usePoint;
   var $addPoint;
 
-  function isUsePoint($status) {
+  function isUsePoint($status)
+  {
     if (is_null($this->usePoint)) {
       return parent::isUsePoint($status);
     }
     return $this->usePoint;
   }
 
-  function isAddPoint($status) {
+  function isAddPoint($status)
+  {
     if (is_null($this->addPoint)) {
       return parent::isAddPoint($status);
     }

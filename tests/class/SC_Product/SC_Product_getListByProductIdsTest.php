@@ -5,20 +5,24 @@ require_once($HOME . "/tests/class/SC_Product/SC_Product_TestBase.php");
 /**
  *
  */
-class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase {
+class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objProducts = new SC_Product_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetListByProductIds_商品ID指定がない場合は空配列() {
+    public function testGetListByProductIds_商品ID指定がない場合は空配列()
+    {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -30,7 +34,8 @@ class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase {
         $this->verify('商品ID指定なし');
     }
     
-    public function testGetListByProductIds_指定の商品IDで情報を取得する() {
+    public function testGetListByProductIds_指定の商品IDで情報を取得する()
+    {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

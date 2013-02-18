@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetAddPointTest extends Common_TestCase {
+class SC_Utils_sfGetAddPointTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetAddPoint_計算結果が正になる場合_値がそのまま返る() {
+  public function testSfGetAddPoint_計算結果が正になる場合_値がそのまま返る()
+  {
     $totalpoint = 100;
     $use_point = 2000;
     $point_rate = 4;
@@ -54,7 +58,8 @@ class SC_Utils_sfGetAddPointTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetAddPoint_計算結果が負になる場合_0が返る() {
+  public function testSfGetAddPoint_計算結果が負になる場合_0が返る()
+  {
     $totalpoint = 70;
     $use_point = 2000;
     $point_rate = 4;

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
+class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -50,7 +52,8 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -59,7 +62,8 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         //受注詳細データの取得
         $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
@@ -80,12 +84,14 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     // 受注詳細データの取得
-    function lfGetOrderDetail($order_id) {
+    function lfGetOrderDetail($order_id)
+    {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
 
         $objCustomer    = new SC_Customer_Ex();
@@ -103,7 +109,8 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex {
     }
 
     // 商品をカートに追加
-    function lfAddCartProducts($arrOrderDetail) {
+    function lfAddCartProducts($arrOrderDetail)
+    {
 
         $objCartSess = new SC_CartSession_Ex();
         foreach ($arrOrderDetail as $order_row) {

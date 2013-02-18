@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfRmDupSlashTest extends Common_TestCase {
+class SC_Utils_sfRmDupSlashTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfRmDupSlash_非SSLの場合_スキーマ部分以外の重複スラッシュが1つになる() {
+  public function testSfRmDupSlash_非SSLの場合_スキーマ部分以外の重複スラッシュが1つになる()
+  {
     $input = 'http://www.example.co.jp///aaa//bb/co.php';
     $this->expected = 'http://www.example.co.jp/aaa/bb/co.php';
     $this->actual = SC_Utils::sfRmDupSlash($input);
@@ -51,7 +55,8 @@ class SC_Utils_sfRmDupSlashTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfRmDupSlash_SSLの場合_スキーマ部分以外の重複スラッシュが1つになる() {
+  public function testSfRmDupSlash_SSLの場合_スキーマ部分以外の重複スラッシュが1つになる()
+  {
     $input = 'https://www.example.co.jp///aaa//bb/co.php';
     $this->expected = 'https://www.example.co.jp/aaa/bb/co.php';
     $this->actual = SC_Utils::sfRmDupSlash($input);
@@ -59,7 +64,8 @@ class SC_Utils_sfRmDupSlashTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfRmDupSlash_上記以外の場合_すべての重複スラッシュが1つになる() {
+  public function testSfRmDupSlash_上記以外の場合_すべての重複スラッシュが1つになる()
+  {
     $input = 'hoge//www.example.co.jp///aaa//bb/co.php';
     $this->expected = 'hoge/www.example.co.jp/aaa/bb/co.php';
     $this->actual = SC_Utils::sfRmDupSlash($input);

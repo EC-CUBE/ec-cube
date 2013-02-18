@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Products_CategoryList extends LC_Page_Ex {
+class LC_Page_Products_CategoryList extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -50,7 +52,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -60,7 +63,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      * Page のAction
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // カテゴリIDの正当性チェック
         $this->lfCheckCategoryId();
@@ -80,12 +84,14 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     /* カテゴリIDの正当性チェック */
-    function lfCheckCategoryId($category_id) {
+    function lfCheckCategoryId($category_id)
+    {
         if ($category_id && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')) {
             return 0;
         }
@@ -101,7 +107,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      * @param object &$objPage ページオブジェクト
      * @return void
      */
-    function lfGetCategories($category_id, $count_check = false, &$objPage) {
+    function lfGetCategories($category_id, $count_check = false, &$objPage)
+    {
         // カテゴリの正しいIDを取得する。
         $category_id = $this->lfCheckCategoryId($category_id);
         if ($category_id == 0) {
@@ -155,7 +162,8 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex {
      *
      * @return object
      */
-    function lfInitParam($arrRequest) {
+    function lfInitParam($arrRequest)
+    {
         $objFormParam = new SC_FormParam_Ex();
         $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         // 値の取得

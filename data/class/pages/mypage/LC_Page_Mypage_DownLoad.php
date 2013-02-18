@@ -30,7 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author CUORE CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
+class LC_Page_Mypage_DownLoad extends LC_Page_Ex 
+{
 
     // {{{ properties
 
@@ -55,7 +56,8 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->allowClientCache();
     }
@@ -65,7 +67,8 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         ob_end_clean();
         parent::process();
         $this->action();
@@ -77,7 +80,8 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
@@ -104,7 +108,8 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      * todo たいした処理でないのに異常に処理が重い
      * @return void
      */
-    function sendResponse() {
+    function sendResponse()
+    {
         // TODO sendResponseをオーバーライドしている為、afterフックポイントが実行されない.直接実行する.(#1790)
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objPlugin->doAction('LC_Page_Mypage_DownLoad_action_after', array($this));
@@ -164,7 +169,8 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex {
      * @param integer $product_class_id 商品規格ID
      * @return array 商品情報の配列
      */
-    function lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id) {
+    function lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = <<< __EOS__
             pc.product_id AS product_id,
@@ -193,7 +199,8 @@ __EOS__;
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('customer_id', 'customer_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
         $objFormParam->addParam('order_id', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('product_id', 'product_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
@@ -201,7 +208,8 @@ __EOS__;
     }
 
     /* 入力内容のチェック */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
@@ -213,7 +221,8 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileHeader($realpath,$sdown_filename) {
+    function lfMobileHeader($realpath,$sdown_filename)
+    {
         $objHelperMobile = new SC_Helper_Mobile_Ex();
         //ファイルの拡張子からコンテンツタイプを取得する
         $mime_type = $objHelperMobile->getMIMEType($realpath);
@@ -230,7 +239,8 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileAuDownload($realpath,$sdown_filename) {
+    function lfMobileAuDownload($realpath,$sdown_filename)
+    {
         //モバイル用ヘッダー出力
         $this->lfMobileHeader($realpath,$sdown_filename);
         //ファイルサイズを取得する
@@ -261,7 +271,8 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileDownload($realpath,$sdown_filename) {
+    function lfMobileDownload($realpath,$sdown_filename)
+    {
         //モバイル用ヘッダー出力
         $this->lfMobileHeader($realpath,$sdown_filename);
         //ファイルサイズを取得する
@@ -319,7 +330,8 @@ __EOS__;
      * @param string $realpath ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfDownload($realpath,$sdown_filename) {
+    function lfDownload($realpath,$sdown_filename)
+    {
         // 拡張子を取得
         $extension = pathinfo($realpath, PATHINFO_EXTENSION);
         $contentType = $this->defaultContentType;
@@ -360,7 +372,8 @@ __EOS__;
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

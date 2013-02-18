@@ -33,5 +33,6 @@ require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_MYSQL.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_DB_DBFactory_MYSQL_Ex extends SC_DB_DBFactory_MYSQL {
+class SC_DB_DBFactory_MYSQL_Ex extends SC_DB_DBFactory_MYSQL 
+{
 }

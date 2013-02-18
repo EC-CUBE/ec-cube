@@ -11,8 +11,10 @@ require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_Base extends LC_Page_Ex {
-    function isValidIP() {
+class LC_Page_Upgrade_Base extends LC_Page_Ex 
+{
+    function isValidIP()
+    {
         $objLog  = new LC_Upgrade_Helper_Log;
         $masterData = new SC_DB_MasterData_Ex();
         $arrOstoreIPs = $masterData->getMasterData('mtb_ownersstore_ips');
@@ -33,7 +35,8 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
      * @param integer $product_id
      * @return boolean
      */
-    function autoUpdateEnable($product_id) {
+    function autoUpdateEnable($product_id)
+    {
         $where = 'module_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('auto_update_flg', 'dtb_module', $where, array($product_id));
@@ -54,7 +57,8 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
      * @param array $arrParams 追加パラメーター.連想配列で渡す.
      * @return string|object レスポンスボディ|エラー時にはPEAR::Errorオブジェクトを返す.
      */
-    function request($mode, $arrParams = array(), $arrCookies = array()) {
+    function request($mode, $arrParams = array(), $arrCookies = array())
+    {
         $objReq = new HTTP_Request();
         $objReq->setUrl(OSTORE_URL . 'upgrade/index.php');
         $objReq->setMethod('POST');
@@ -75,7 +79,8 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
         }
     }
 
-    function isLoggedInAdminPage() {
+    function isLoggedInAdminPage()
+    {
         $objSess = new SC_Session_Ex();
 
         if ($objSess->isSuccess() === SUCCESS) {
@@ -89,11 +94,13 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
      *
      * @return string
      */
-    function createSeed() {
+    function createSeed()
+    {
         return sha1(uniqid(rand(), true) . time());
     }
 
-    function getPublicKey() {
+    function getPublicKey()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('*', 'dtb_ownersstore_settings');
         return isset($arrRet[0]['public_key'])
@@ -104,7 +111,8 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex {
     /**
      * オーナーズストアからの POST のため, トークンチェックしない.
      */
-    function doValidToken() {
+    function doValidToken()
+    {
         // nothing.
     }
 }

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
+class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex 
+{
 
     // {{{ properties
 
@@ -52,7 +53,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'system/parameter.tpl';
         $this->tpl_subno = 'parameter';
@@ -66,7 +68,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -76,7 +79,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -118,7 +122,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -130,7 +135,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * @access private
      * @return void
      */
-    function update(&$arrKeys, &$arrForm) {
+    function update(&$arrKeys, &$arrForm)
+    {
         $data = array();
         $masterData = new SC_DB_MasterData_Ex();
         foreach ($arrKeys as $key) {
@@ -151,7 +157,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * @param array $arrForm $_POST 値
      * @return void
      */
-    function errorCheck(&$arrKeys, &$arrForm) {
+    function errorCheck(&$arrKeys, &$arrForm)
+    {
         $objErr = new SC_CheckError_Ex($arrForm);
         for ($i = 0; $i < count($arrKeys); $i++) {
             $objErr->doFunc(array($arrKeys[$i],
@@ -167,7 +174,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * @access private
      * @return array パラメーターのキーの配列
      */
-    function getParamKeys(&$masterData) {
+    function getParamKeys(&$masterData)
+    {
         $keys = array();
         $i = 0;
         foreach ($masterData->getDBMasterData('mtb_constants') as $key => $val) {

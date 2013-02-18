@@ -32,7 +32,8 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/db_exte
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_MasterData_Test.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
+class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase 
+{
 
     // }}}
     // {{{ functions
@@ -40,7 +41,8 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
     /**
      * SC_DB_MasterData::getMasterData() のテストケース
      */
-    function testGetMasterData() {
+    function testGetMasterData()
+    {
         $columns = array('id', 'name', 'rank');
         $masterData = new SC_DB_MasterData_Ex();
         $actual = $masterData->getMasterData('mtb_pref', $columns);
@@ -60,7 +62,8 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
     /**
      * SC_DB_MasterData::updateMasterData() のテストケース
      */
-    function testUpdateMasterData() {
+    function testUpdateMasterData()
+    {
 
         $columns = array('id', 'name', 'rank');
         $masterData = new SC_DB_MasterData_Ex();
@@ -85,7 +88,8 @@ class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase {
     /**
      * SC_DB_MasterData::createCache() のテストケース.
      */
-    function testCreateCache() {
+    function testCreateCache()
+    {
         $masterData = new SC_DB_MasterData_Ex();
         $masterData->clearCache('mtb_constants');
         $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));

@@ -37,7 +37,8 @@ class SC_Helper_Delivery {
      * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
-    public function get($deliv_id, $has_deleted = false) {
+    public function get($deliv_id, $has_deleted = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 配送業者一覧の取得
@@ -72,7 +73,8 @@ class SC_Helper_Delivery {
      * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
-    public function getList($product_type_id = null, $has_deleted = false) {
+    public function getList($product_type_id = null, $has_deleted = false)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $where = '';
@@ -99,7 +101,8 @@ class SC_Helper_Delivery {
      * @param array $sqlval
      * @return integer $deliv_id
      */
-    public function save($sqlval) {
+    public function save($sqlval)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
 
@@ -210,7 +213,8 @@ class SC_Helper_Delivery {
      * @param integer $deliv_id 配送方法ID
      * @return void
      */
-    public function delete($deliv_id) {
+    public function delete($deliv_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         // ランク付きレコードの削除
         $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $deliv_id);
@@ -222,7 +226,8 @@ class SC_Helper_Delivery {
      * @param integer $deliv_id 配送方法ID
      * @return void
      */
-    public function rankUp($deliv_id) {
+    public function rankUp($deliv_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRankUp('dtb_deliv', 'deliv_id', $deliv_id);
     }
@@ -233,7 +238,8 @@ class SC_Helper_Delivery {
      * @param integer $deliv_id 配送方法ID
      * @return void
      */
-    public function rankDown($deliv_id) {
+    public function rankDown($deliv_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDb->sfRankDown('dtb_deliv', 'deliv_id', $deliv_id);
     }
@@ -244,7 +250,8 @@ class SC_Helper_Delivery {
      * @param array $arrDeliv
      * @return boolean
      */
-    public function checkExist($arrDeliv) {
+    public function checkExist($arrDeliv)
+    {
         $objDb = new SC_Helper_DB_Ex();
         if ($arrDeliv['deliv_id'] == '') {
             $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrDeliv['service_name']));
@@ -261,7 +268,8 @@ class SC_Helper_Delivery {
      * @param string $type 値のタイプ
      * @return array
      */
-    public static function getIDValueList($type = 'name') {
+    public static function getIDValueList($type = 'name')
+    {
         return SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', $type);
     }
 
@@ -271,7 +279,8 @@ class SC_Helper_Delivery {
      * @param integer $deliv_id 配送業者ID
      * @return array お届け時間の配列
      */
-    public static function getDelivTime($deliv_id) {
+    public static function getDelivTime($deliv_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('time_id');
         $results = $objQuery->select('time_id, deliv_time', 'dtb_delivtime', 'deliv_id = ?', array($deliv_id));
@@ -288,7 +297,8 @@ class SC_Helper_Delivery {
      * @param integer $deliv_id 配送業者ID
      * @return array 有効な支払方法IDの配列
      */
-    public static function getPayments($deliv_id) {
+    public static function getPayments($deliv_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('rank');
         return $objQuery->getCol('payment_id', 'dtb_payment_options', 'deliv_id = ?', array($deliv_id), MDB2_FETCHMODE_ORDERED);
@@ -301,7 +311,8 @@ class SC_Helper_Delivery {
      * @param integer $deliv_id 配送業者ID
      * @return string 指定の都道府県, 配送業者の配送料金
      */
-    public static function getDelivFee($pref_id, $deliv_id = 0) {
+    public static function getDelivFee($pref_id, $deliv_id = 0)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         if (!is_array($pref_id)) {
             $pref_id = array($pref_id);
@@ -328,7 +339,8 @@ __EOS__;
      * @param integer $deliv_id 配送業者ID
      * @return array 配送料金の配列
      */
-    public static function getDelivFeeList($deliv_id) {
+    public static function getDelivFeeList($deliv_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('pref');
         $col = 'fee_id, fee, pref';

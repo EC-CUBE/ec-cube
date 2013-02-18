@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'products/review.tpl';
         $this->tpl_mainno = 'products';
@@ -75,7 +77,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -85,7 +88,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -134,7 +138,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -144,7 +149,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrRet);
@@ -174,7 +180,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param integer $review_id 商品レビューのID
      * @return void
      */
-    function lfDeleteReview($review_id) {
+    function lfDeleteReview($review_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg'] = 1;
         $objQuery->update('dtb_review', $sqlval, 'review_id = ?', array($review_id));
@@ -186,7 +193,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param array $arrForm フォームデータ
      * @return array hidden情報
      */
-    function lfSetHidden($arrForm) {
+    function lfSetHidden($arrForm)
+    {
         $arrHidden = array();
         foreach ($arrForm AS $key=>$val) {
             if (preg_match('/^search_/', $key)) {
@@ -212,7 +220,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('投稿者名', 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
         $objFormParam->addParam('投稿者URL', 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
         $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
@@ -237,7 +246,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param array $arrWhereVal WHERE文の判定値
      * @return void
      */
-    function lfDoOutputCsv($where, $arrWhereVal) {
+    function lfDoOutputCsv($where, $arrWhereVal)
+    {
         $objCSV = new SC_Helper_CSV_Ex();
         if ($where != '') {
             $where = 'WHERE ' . $where;
@@ -251,7 +261,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param array $arrForm フォームデータ
      * @return array WHERE文、判定値
      */
-    function lfGetWhere($arrForm) {
+    function lfGetWhere($arrForm)
+    {
         //削除されていない商品を検索
         $where = 'A.del_flg = 0 AND B.del_flg = 0';
         $arrWhereVal = array();
@@ -343,7 +354,8 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex {
      * @param array $arrWhereVal WHERE文の判定値
      * @return array レビュー一覧
      */
-    function lfGetReview($arrForm, $where, $arrWhereVal) {
+    function lfGetReview($arrForm, $where, $arrWhereVal)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // ページ送りの処理

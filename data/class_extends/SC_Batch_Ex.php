@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_Batch.php';
 
-class SC_Batch_Ex extends SC_Batch {
+class SC_Batch_Ex extends SC_Batch 
+{
 }

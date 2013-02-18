@@ -24,39 +24,46 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Date_getZeroYearTest extends Common_TestCase {
+class SC_Date_getZeroYearTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objDate = new SC_Date_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
   
-    public function testGetZeroYear_要素の数が4の配列を返す() {
+    public function testGetZeroYear_要素の数が4の配列を返す()
+    {
         $this->expected = 4;
         $this->actual = count($this->objDate->getZeroYear());
         $this->verify("配列の長さ");
     }
     
-    public function testGetZeroYear_最小値が2桁表記の今年の配列を返す() {
+    public function testGetZeroYear_最小値が2桁表記の今年の配列を返す()
+    {
         $this->expected = DATE('y');
         $this->actual = min($this->objDate->getZeroYear());
         $this->verify("最小値；今年");
     }
     
-    public function testGetZeroYear_最低値が引数の年の2桁表記の配列を返す() {
+    public function testGetZeroYear_最低値が引数の年の2桁表記の配列を返す()
+    {
         $this->expected = '07';
         $this->actual = min($this->objDate->getZeroYear('2007'));
 
         $this->verify("引数が最低値");
     }
     
-    public function testGetZeroYear_最低値がメンバー変数の年の2桁表記の配列を返す() {
+    public function testGetZeroYear_最低値がメンバー変数の年の2桁表記の配列を返す()
+    {
         $this->expected = '04';
         $this->objDate->setStartYear('2004');
         $this->actual = min($this->objDate->getZeroYear());
@@ -64,14 +71,16 @@ class SC_Date_getZeroYearTest extends Common_TestCase {
         $this->verify("メンバー変数が最低値");
     }
     
-    public function testGetZeroYear_最大値が3年後の2桁表記の配列を返す() {
+    public function testGetZeroYear_最大値が3年後の2桁表記の配列を返す()
+    {
         $this->expected = DATE('y')+3;
         $this->actual = max($this->objDate->getZeroYear());
 
         $this->verify("最大値；3年後");
     }
     
-    public function testGetZeroYear_最大値がメンバ変数の2桁表記の配列を返す() {
+    public function testGetZeroYear_最大値がメンバ変数の2桁表記の配列を返す()
+    {
         $this->expected = '20';
         $this->objDate->setEndYear('2020');
         $this->actual = max($this->objDate->getZeroYear());

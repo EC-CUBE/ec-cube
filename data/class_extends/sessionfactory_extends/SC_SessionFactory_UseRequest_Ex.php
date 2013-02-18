@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'sessionfactory/SC_SessionFactory_UseRequest.php';
 
-class SC_SessionFactory_UseRequest_Ex extends SC_SessionFactory_UseRequest {
+class SC_SessionFactory_UseRequest_Ex extends SC_SessionFactory_UseRequest 
+{
 }

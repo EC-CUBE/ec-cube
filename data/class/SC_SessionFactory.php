@@ -41,7 +41,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory {
+class SC_SessionFactory 
+{
 
     // }}}
     // {{{ functions
@@ -51,7 +52,8 @@ class SC_SessionFactory {
      *
      * @return SC_SessionFactory
      */
-    function getInstance() {
+    function getInstance()
+    {
 
         $type = defined('SESSION_KEEP_METHOD')
             ? SESSION_KEEP_METHOD
@@ -86,14 +88,16 @@ class SC_SessionFactory {
      * セッションの初期化を行う.
      *
      */
-    function initSession() {}
+    function initSession()
+    {}
 
     /**
      * Cookieを使用するかどうかを返す.
      *
      * @return boolean
      */
-    function useCookie() {}
+    function useCookie()
+    {}
 
 }
 /*

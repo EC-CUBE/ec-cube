@@ -22,7 +22,8 @@
  */
 
 // 円グラフ生成クラス
-class SC_Graph_Pie extends SC_Graph_Base_Ex{
+class SC_Graph_Pie extends SC_Graph_Base_Ex
+{
     var $cw;
     var $ch;
     var $cz;
@@ -32,7 +33,8 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex{
     var $arrData;
 
     // コンストラクタ
-    function __construct($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP) {
+    function __construct($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP)
+    {
         parent::__construct($bgw, $bgh, $left, $top);
         // サイズ設定
         $this->setSize(PIE_WIDTH, PIE_HEIGHT, PIE_THICK);
@@ -41,7 +43,8 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex{
     }
 
     // データを360°値に変換する
-    function getCircleData($array) {
+    function getCircleData($array)
+    {
         $total = '';
         $new_total = '';
         if (!is_array($array)) {
@@ -72,20 +75,23 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex{
     }
 
     // 円の位置設定を行う
-    function setPosition($cx, $cy) {
+    function setPosition($cx, $cy)
+    {
         $this->cx = $cx;
         $this->cy = $cy;
     }
 
     // 円のサイズ設定を行う
-    function setSize($cw, $ch, $cz = 0) {
+    function setSize($cw, $ch, $cz = 0)
+    {
         $this->cw = $cw;
         $this->ch = $ch;
         $this->cz = $cz;
     }
 
     // 影の描画
-    function drawShade() {
+    function drawShade()
+    {
         $move = 1;
         for ($i = ($this->cy + $this->cz); $i <= ($this->cy + $this->cz + ($this->cz * PIE_SHADE_IMPACT)); $i++) {
             imagefilledarc($this->image, $this->cx + $move, $i, $this->cw, $this->ch, 0, 360, $this->shade_color, IMG_ARC_PIE);
@@ -94,12 +100,14 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex{
     }
 
     // データをセットする
-    function setData($arrData) {
+    function setData($arrData)
+    {
         $this->arrData = array_values($arrData);
     }
 
     // 円グラフを描画する
-    function drawGraph() {
+    function drawGraph()
+    {
         $x = $this->cx;
         $y = $this->cy;
         $z = $this->cz;
@@ -197,7 +205,8 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex{
     }
 
     // 円グラフのラベルを描画する
-    function drawLabel($arrRad) {
+    function drawLabel($arrRad)
+    {
         $rd_max = count($arrRad);
         $start = 0;
         for ($i = 0; $i < $rd_max; $i++) {

@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore_
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Settings_Ex extends LC_Page_Admin_OwnersStore_Settings {
+class LC_Page_Admin_OwnersStore_Settings_Ex extends LC_Page_Admin_OwnersStore_Settings 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_Admin_OwnersStore_Settings_Ex extends LC_Page_Admin_OwnersStore_Se
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_Admin_OwnersStore_Settings_Ex extends LC_Page_Admin_OwnersStore_Se
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_Admin_OwnersStore_Settings_Ex extends LC_Page_Admin_OwnersStore_Se
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

@@ -32,7 +32,8 @@
  */
 
 
-class SC_Api_Operation {
+class SC_Api_Operation 
+{
 
     /** API_DEBUG_MODE */
     const API_DEBUG_MODE = false;
@@ -57,7 +58,8 @@ class SC_Api_Operation {
      * @param string $member_password ログインパスワード文字列
      * @return boolean ログイン情報が有効な場合 true
      */
-    protected function checkMemberAccount($member_id, $member_password) {
+    protected function checkMemberAccount($member_id, $member_password)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //パスワード、saltの取得
         $cols = 'password, salt';
@@ -81,7 +83,8 @@ class SC_Api_Operation {
      * @param string $password ログインパスワード
      * @return boolean ログインに成功した場合 true; 失敗した場合 false
      */
-    protected function checkCustomerAccount($login_email, $login_password) {
+    protected function checkCustomerAccount($login_email, $login_password)
+    {
         $objCustomer = new SC_Customer_Ex();
         if ($objCustomer->getCustomerDataFromEmailPass($login_password, $login_email)) {
             return true;
@@ -95,7 +98,8 @@ class SC_Api_Operation {
      *
      * @return boolean チェックに成功した場合 true; 失敗した場合 false
      */
-    protected function checkReferer() {
+    protected function checkReferer()
+    {
         $ret = false;
         if (!SC_Utils_Ex::isBlank($_SERVER['HTTP_REFERER'])) {
             $domain  = SC_Utils_Ex::sfIsHTTPS() ? HTTPS_URL : HTTP_URL;
@@ -116,7 +120,8 @@ class SC_Api_Operation {
      * @param array リクエストパラメータ
      * @return boolean 署名認証に成功した場合 true; 失敗した場合 false
      */
-    protected function checkApiSignature($operation_name, $arrParam, $arrApiConfig) {
+    protected function checkApiSignature($operation_name, $arrParam, $arrApiConfig)
+    {
         if (SC_Utils_Ex::isBlank($arrParam['Signature'])) {
             return false;
         }
@@ -170,7 +175,8 @@ class SC_Api_Operation {
      * @param  string 実行処理名
      * @return boolean チェックに成功した場合 true; 失敗した場合 false
      */
-    protected function checkIp($operation_name) {
+    protected function checkIp($operation_name)
+    {
         $ret = false;
         $allow_hosts = SC_Api_Utils_Ex::getOperationSubConfig($operation_name, 'allow_hosts');
         $arrAllowHost = explode("\n", $allow_hosts);
@@ -188,7 +194,8 @@ class SC_Api_Operation {
      * @param string $access_key
      * @return string 秘密鍵文字列
      */
-    protected function getApiSecretKey($access_key) {
+    protected function getApiSecretKey($access_key)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $secret_key = $objQuery->get('api_secret_key', 'dtb_api_account', 'api_access_key = ? and enable = 1 and del_flg = 0', array($access_key));
         return $secret_key;
@@ -201,7 +208,8 @@ class SC_Api_Operation {
      * @param array リクエストパラメータ
      * @return boolean 権限がある場合 true; 無い場合 false
      */
-    protected function checkOperationAuth($operation_name, &$arrParam, &$arrApiConfig) {
+    protected function checkOperationAuth($operation_name, &$arrParam, &$arrApiConfig)
+    {
         if (SC_Utils_Ex::isBlank($operation_name)) {
             return false;
         }
@@ -264,7 +272,8 @@ class SC_Api_Operation {
      * @param object SC_FormParam
      * @return void
      */
-    protected function setApiBaseParam(&$objFormParam) {
+    protected function setApiBaseParam(&$objFormParam)
+    {
         $objFormParam->addParam('Operation', 'Operation', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('Service', 'Service', STEXT_LEN, 'an', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('Style', 'Style', STEXT_LEN, 'an', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
@@ -278,7 +287,8 @@ class SC_Api_Operation {
      * @param array $arrPost リクエストパラメーター
      * @return array(string レスポンス名, array レスポンス配列)
      */
-    public function doApiAction($arrPost) {
+    public function doApiAction($arrPost)
+    {
         // 実行時間計測用
         $start_time = microtime(true);
 
@@ -373,7 +383,8 @@ class SC_Api_Operation {
      * @param float $start_time 実行時間計測用開始時間
      * @return array エコー情報配列 (XML用の _attributes 指定入り）
      */
-    protected function getOperationRequestEcho($arrParam, $start_time) {
+    protected function getOperationRequestEcho($arrParam, $start_time)
+    {
         $arrRet = array(
                 'HTTPHeaders' => array('Header' => array('_attributes' => array('Name' => 'UserAgent',
                                                                                 'Value' => htmlspecialchars($_SERVER['HTTP_USER_AGENT'])))),
@@ -388,7 +399,8 @@ class SC_Api_Operation {
     }
 
     // TODO: ここらへんは SC_Displayに持って行きたい所だが・・
-    public function sendApiResponse($type, $response_outer_name, &$arrResponse) {
+    public function sendApiResponse($type, $response_outer_name, &$arrResponse)
+    {
         switch ($type) {
             case 'xml':
                 SC_Api_Utils_Ex::sendResponseXml($response_outer_name, $arrResponse);

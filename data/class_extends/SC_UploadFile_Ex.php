@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_UploadFile.php';
 
-class SC_UploadFile_Ex extends SC_UploadFile {
+class SC_UploadFile_Ex extends SC_UploadFile 
+{
 }

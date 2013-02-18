@@ -28,7 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_DBFactory {
+class SC_DB_DBFactory 
+{
 
     /**
      * DB_TYPE に応じた DBFactory インスタンスを生成する.
@@ -36,7 +37,8 @@ class SC_DB_DBFactory {
      * @param string $db_type 任意のインスタンスを返したい場合は DB_TYPE 文字列を指定
      * @return mixed DBFactory インスタンス
      */
-    function getInstance($db_type = DB_TYPE) {
+    function getInstance($db_type = DB_TYPE)
+    {
         switch ($db_type) {
             case 'mysql':
                 return new SC_DB_DBFactory_MYSQL();
@@ -59,7 +61,8 @@ class SC_DB_DBFactory {
      * @param mixed $dsn データソース名
      * @return mixed データソース名またはDB接続パラメータの連想配列
      */
-    function getDSN($dsn = '') {
+    function getDSN($dsn = '')
+    {
         if (empty($dsn)) {
             if (defined('DEFAULT_DSN')) {
                 $dsn = array('phptype'  => DB_TYPE,
@@ -83,7 +86,8 @@ class SC_DB_DBFactory {
      * @param string $dsn データソース名
      * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = '') { return null; }
+    function sfGetDBVersion($dsn = '')
+    { return null; }
 
     /**
      * MySQL 用の SQL 文に変更する.
@@ -91,7 +95,8 @@ class SC_DB_DBFactory {
      * @param string $sql SQL 文
      * @return string MySQL 用に置換した SQL 文
      */
-    function sfChangeMySQL($sql) { return null; }
+    function sfChangeMySQL($sql)
+    { return null; }
 
     /**
      * 昨日の売上高・売上件数を算出する SQL を返す.
@@ -99,7 +104,8 @@ class SC_DB_DBFactory {
      * @param string $method SUM または COUNT
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
-    function getOrderYesterdaySql($method) { return null; }
+    function getOrderYesterdaySql($method)
+    { return null; }
 
     /**
      * 当月の売上高・売上件数を算出する SQL を返す.
@@ -107,28 +113,32 @@ class SC_DB_DBFactory {
      * @param string $method SUM または COUNT
      * @return string 当月の売上高・売上件数を算出する SQL
      */
-    function getOrderMonthSql($method) { return null; }
+    function getOrderMonthSql($method)
+    { return null; }
 
     /**
      * 昨日のレビュー書き込み件数を算出する SQL を返す.
      *
      * @return string 昨日のレビュー書き込み件数を算出する SQL
      */
-    function getReviewYesterdaySql() { return null; }
+    function getReviewYesterdaySql()
+    { return null; }
 
     /**
      * メール送信履歴の start_date の検索条件の SQL を返す.
      *
      * @return string 検索条件の SQL
      */
-    function getSendHistoryWhereStartdateSql() { return null; }
+    function getSendHistoryWhereStartdateSql()
+    { return null; }
 
     /**
      * ダウンロード販売の検索条件の SQL を返す.
      *
      * @return string 検索条件の SQL
      */
-    function getDownloadableDaysWhereSql() { return null; }
+    function getDownloadableDaysWhereSql()
+    { return null; }
 
     /**
      * 文字列連結を行う.
@@ -136,7 +146,8 @@ class SC_DB_DBFactory {
      * @param array $columns 連結を行うカラム名
      * @return string 連結後の SQL 文
      */
-    function concatColumn($columns) { return null; }
+    function concatColumn($columns)
+    { return null; }
 
     /**
      * テーブルを検索する.
@@ -147,7 +158,8 @@ class SC_DB_DBFactory {
      * @param string $expression 検索文字列
      * @return array テーブル名の配列
      */
-    function findTableNames($expression = '') { return array(); }
+    function findTableNames($expression = '')
+    { return array(); }
 
     /**
      * インデックス作成の追加定義を取得する
@@ -158,7 +170,8 @@ class SC_DB_DBFactory {
      * @param string $name 対象カラム名
      * @return array インデックス設定情報配列
      */
-    function sfGetCreateIndexDefinition($table, $name, $definition) { return $definition; }
+    function sfGetCreateIndexDefinition($table, $name, $definition)
+    { return $definition; }
 
     /**
      * 各 DB に応じた SC_Query での初期化を行う
@@ -166,7 +179,8 @@ class SC_DB_DBFactory {
      * @param SC_Query $objQuery SC_Query インスタンス
      * @return void
      */
-    function initObjQuery(SC_Query &$objQuery) {
+    function initObjQuery(SC_Query &$objQuery)
+    {
     }
 
     /**
@@ -174,7 +188,8 @@ class SC_DB_DBFactory {
      *
      * @return array テーブル名の配列
      */
-    function listTables(SC_Query &$objQuery) {
+    function listTables(SC_Query &$objQuery)
+    {
         $objManager =& $objQuery->conn->loadModule('Manager');
         return $objManager->listTables();
     }

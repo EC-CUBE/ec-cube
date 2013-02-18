@@ -31,23 +31,27 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_recursiveMkdirTest extends Common_TestCase {
+class SC_Utils_recursiveMkdirTest extends Common_TestCase
+{
 
   static $TMP_DIR;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     self::$TMP_DIR = realpath(dirname(__FILE__)) . "/../../../tmp";
     SC_Helper_FileManager::deleteFile(self::$TMP_DIR);
     mkdir(self::$TMP_DIR, 0777, true);
 // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testRecursiveMkdir_パーミッションを指定した場合_指定のパーミッションでディレクトリが作られる() {
+  public function testRecursiveMkdir_パーミッションを指定した場合_指定のパーミッションでディレクトリが作られる()
+  {
     $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
     $mode = 0755;
 
@@ -58,7 +62,8 @@ class SC_Utils_recursiveMkdirTest extends Common_TestCase {
     $this->verify('作成したディレクトリのパーミッション');
   }
 
-  public function testRecursiveMkdir_パーミッションを指定しない場合_0777でディレクトリが作られる() {
+  public function testRecursiveMkdir_パーミッションを指定しない場合_0777でディレクトリが作られる()
+  {
     $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
 
     $result = SC_Utils::recursiveMkdir($path);

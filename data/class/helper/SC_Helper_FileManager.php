@@ -28,7 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_FileManager {
+class SC_Helper_FileManager 
+{
 
     /**
      * 指定パス配下のディレクトリ取得する.
@@ -36,7 +37,8 @@ class SC_Helper_FileManager {
      * @param string $dir 取得するディレクトリパス
      * @return void
      */
-    function sfGetFileList($dir) {
+    function sfGetFileList($dir)
+    {
         $arrFileList = array();
         $arrDirList = array();
 
@@ -90,7 +92,8 @@ class SC_Helper_FileManager {
      * @param string $dir ディレクトリ
      * @return void
      */
-    function sfGetDirSize($dir) {
+    function sfGetDirSize($dir)
+    {
         $bytes = 0;
         if (file_exists($dir)) {
             // ディレクトリの場合下層ファイルの総量を取得
@@ -128,7 +131,8 @@ class SC_Helper_FileManager {
      *                            | 区切りで格納
      * @return array ツリー生成用の配列
      */
-    function sfGetFileTree($dir, $tree_status) {
+    function sfGetFileTree($dir, $tree_status)
+    {
 
         $cnt = 0;
         $arrTree = array();
@@ -169,7 +173,8 @@ class SC_Helper_FileManager {
      *                            | 区切りで格納
      * @return array ツリー生成用の配列
      */
-    function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status) {
+    function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status)
+    {
 
         if (file_exists($dir)) {
             $handle = opendir($dir);
@@ -216,7 +221,8 @@ class SC_Helper_FileManager {
      * @param string ディレクトリ
      * @return bool ファイルが存在する場合 true
      */
-    function sfDirChildExists($dir) {
+    function sfDirChildExists($dir)
+    {
         if (file_exists($dir)) {
             if (is_dir($dir)) {
                 $handle = opendir($dir);
@@ -242,7 +248,8 @@ class SC_Helper_FileManager {
      *                            | 区切りで格納
      * @return bool 前回開かれた状態の場合 true
      */
-    function lfIsFileOpen($dir, $tree_status) {
+    function lfIsFileOpen($dir, $tree_status)
+    {
         $arrTreeStatus = explode('|', $tree_status);
         if (in_array($dir, $arrTreeStatus)) {
             return true;
@@ -257,7 +264,8 @@ class SC_Helper_FileManager {
      * @param string $file ファイルパス
      * @return void
      */
-    function sfDownloadFile($file) {
+    function sfDownloadFile($file)
+    {
         // ファイルの場合はダウンロードさせる
         Header('Content-disposition: attachment; filename='.basename($file));
         Header('Content-type: application/octet-stream; name='.basename($file));
@@ -273,7 +281,8 @@ class SC_Helper_FileManager {
      * @param integer $mode パーミッション
      * @return bool ファイル作成に成功した場合 true
      */
-    function sfCreateFile($file, $mode = '') {
+    function sfCreateFile($file, $mode = '')
+    {
         // 行末の/を取り除く
         if ($mode != '') {
             $ret = @mkdir($file, $mode);
@@ -290,7 +299,8 @@ class SC_Helper_FileManager {
      * @param string ファイルパス
      * @return string ファイルの内容
      */
-    function sfReadFile($filename) {
+    function sfReadFile($filename)
+    {
         $str = '';
         // バイナリモードでオープン
         $fp = @fopen($filename, 'rb');
@@ -310,7 +320,8 @@ class SC_Helper_FileManager {
      * @param string $value 書き込み内容
      * @return boolean ファイルの書き込みに成功した場合 true
      */
-    function sfWriteFile($filename, $value) {
+    function sfWriteFile($filename, $value)
+    {
         if (!is_dir(dirname($filename))) {
             SC_Utils_Ex::recursiveMkdir(dirname($filename), 0777);
         }
@@ -331,7 +342,8 @@ class SC_Helper_FileManager {
      * @param string $template_code テンプレートコード
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
-    function downloadArchiveFiles($dir, $template_code) {
+    function downloadArchiveFiles($dir, $template_code)
+    {
         // ダウンロードされるファイル名
         $dlFileName = 'tpl_package_' . $template_code . '_' . date('YmdHis') . '.tar.gz';
 
@@ -369,7 +381,8 @@ class SC_Helper_FileManager {
      * @param string $path アーカイブパス
      * @return boolean Archive_Tar::extractModify()のエラー
      */
-    function unpackFile($path) {
+    function unpackFile($path)
+    {
         // 圧縮フラグTRUEはgzip解凍をおこなう
         $tar = new Archive_Tar($path, true);
 
@@ -397,7 +410,8 @@ class SC_Helper_FileManager {
      * @param boolean $del_myself $pathそのものを削除するか. true なら削除する.
      * @return void
      */
-    function deleteFile($path, $del_myself = true) {
+    function deleteFile($path, $del_myself = true)
+    {
         $flg = false;
         // 対象が存在するかを検証.
         if (file_exists($path) === false) {

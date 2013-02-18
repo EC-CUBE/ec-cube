@@ -33,5 +33,6 @@ require_once CLASS_REALDIR . 'util/GC_Utils.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class GC_Utils_Ex extends GC_Utils {
+class GC_Utils_Ex extends GC_Utils 
+{
 }

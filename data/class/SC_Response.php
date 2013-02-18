@@ -27,7 +27,8 @@
  * @author Ryuichi Tokugami
  * @version $Id$
  */
-class SC_Response{
+class SC_Response
+{
 
     /**
      * コンテンツタイプ
@@ -48,12 +49,14 @@ class SC_Response{
     /**
      * レスポンス出力を書き込む.
      */
-    function write() {
+    function write()
+    {
         $this->sendHeader();
         echo $this->body;
     }
 
-    function sendHeader() {
+    function sendHeader()
+    {
         // HTTPのヘッダ
         foreach ($this->header as $name => $head) {
             header($name.': '.$head);
@@ -63,19 +66,23 @@ class SC_Response{
         }
     }
 
-    function setContentType($contentType) {
+    function setContentType($contentType)
+    {
         $this->header['Content-Type'] = $contentType;
     }
 
-    function setResposeBody($body) {
+    function setResposeBody($body)
+    {
         $this->body = $body;
     }
 
-    function addHeader($name, $value) {
+    function addHeader($name, $value)
+    {
         $this->header[$name] = $value;
     }
 
-    function containsHeader($name) {
+    function containsHeader($name)
+    {
         return isset($this->header[$name]);
     }
 
@@ -83,7 +90,8 @@ class SC_Response{
      * アプリケーションのexit処理をする。以降の出力は基本的に停止する。
      * 各クラス内部で勝手にexitするな！
     */
-    function actionExit() {
+    function actionExit()
+    {
         // ローカルフックポイント処理
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $arrBacktrace = debug_backtrace();
@@ -114,7 +122,8 @@ class SC_Response{
      * @return void
      * @static
      */
-    function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
+    function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
+    {
 
         // ローカルフックポイント処理
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
@@ -215,7 +224,8 @@ class SC_Response{
      * @return void
      * @static
      */
-    function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null) {
+    function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
+    {
         $location = ROOT_URLPATH . ltrim($location, '/');
         SC_Response_Ex::sendRedirect($location, $arrQueryString, $inheritQueryString, $useSsl);
     }
@@ -223,7 +233,8 @@ class SC_Response{
     /**
      * @static
      */
-    function reload($arrQueryString = array(), $removeQueryString = false) {
+    function reload($arrQueryString = array(), $removeQueryString = false)
+    {
         // 現在の URL を取得
         $netUrl = new Net_URL($_SERVER['REQUEST_URI']);
 
@@ -235,11 +246,13 @@ class SC_Response{
         SC_Response_Ex::sendRedirect($netUrl->getURL(), $arrQueryString);
     }
 
-    function setHeader($headers) {
+    function setHeader($headers)
+    {
         $this->header = $headers;
     }
 
-    function setStatusCode($statusCode = null) {
+    function setStatusCode($statusCode = null)
+    {
         $this->statusCode = $statusCode;
     }
 
@@ -258,7 +271,8 @@ class SC_Response{
      * @license http://www.gnu.org/licenses/fdl.html GFDL (邦訳)
      * @static
      */
-    function sendHttpStatus($statusCode) {
+    function sendHttpStatus($statusCode)
+    {
         $protocol = $_SERVER['SERVER_PROTOCOL'];
         $httpVersion = (strpos($protocol, '1.1') !== false) ? '1.1' : '1.0';
         $messages = array(

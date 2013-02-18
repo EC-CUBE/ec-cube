@@ -27,7 +27,8 @@
  * 対象とする携帯端末は $_SERVER から決定する。
  * すべてのメソッドはクラスメソッド。
  */
-class SC_MobileUserAgent {
+class SC_MobileUserAgent 
+{
     /**
      * 携帯端末のキャリアを表す文字列を取得する。
      *
@@ -36,7 +37,8 @@ class SC_MobileUserAgent {
      * @return string|false 携帯端末のキャリアを表す文字列を返す。
      *                      携帯端末ではない場合は false を返す。
      */
-    function getCarrier() {
+    function getCarrier()
+    {
         $objAgent =& Net_UserAgent_Mobile::singleton();
         if (Net_UserAgent_Mobile::isError($objAgent)) {
             return false;
@@ -66,7 +68,8 @@ class SC_MobileUserAgent {
      *
      * @return string|false 取得したIDを返す。取得できなかった場合は false を返す。
      */
-    function getId() {
+    function getId()
+    {
         $objAgent =& Net_UserAgent_Mobile::singleton();
         if (Net_UserAgent_Mobile::isError($objAgent)) {
             return false;
@@ -84,7 +87,8 @@ class SC_MobileUserAgent {
      *
      * @return string 携帯端末のモデルを表す文字列を返す。
      */
-    function getModel() {
+    function getModel()
+    {
         $objAgent =& Net_UserAgent_Mobile::singleton();
         if (Net_UserAgent_Mobile::isError($objAgent)) {
             return 'Unknown';
@@ -107,7 +111,8 @@ class SC_MobileUserAgent {
      *
      * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
      */
-    function isSupported() {
+    function isSupported()
+    {
         $objAgent =& Net_UserAgent_Mobile::singleton();
 
         // 携帯端末だと認識されたが、User-Agent の形式が未知の場合
@@ -137,7 +142,8 @@ class SC_MobileUserAgent {
      * 
      * @return boolean サポートしている場合は true、それ以外の場合は false を返す。 
      */
-    function isMobile() { 
+    function isMobile()
+    { 
         $objAgent =& Net_UserAgent_Mobile::singleton(); 
         if (Net_UserAgent_Mobile::isError($objAgent)) { 
             return false; 

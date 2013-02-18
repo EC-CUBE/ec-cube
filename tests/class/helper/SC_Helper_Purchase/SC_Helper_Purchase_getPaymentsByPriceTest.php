@@ -31,21 +31,25 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_getPaymentsByPriceTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_getPaymentsByPriceTest extends SC_Helper_Purchase_TestBase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpPayment();
     $this->setUpPaymentOptions();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testGetPaymentsByPrice_購入金額がすべての上限を上回る場合_上限の設定がないものだけ取得できる() {
+  public function testGetPaymentsByPrice_購入金額がすべての上限を上回る場合_上限の設定がないものだけ取得できる()
+  {
     $deliv_id = '1003';
     $total = 21001;
     $helper = new SC_Helper_Purchase();
@@ -70,7 +74,8 @@ class SC_Helper_Purchase_getPaymentsByPriceTest extends SC_Helper_Purchase_TestB
     $this->verify();
   }
 
-  public function testGetPaymentsByPrice_購入金額が一部の上限を上回る場合_上限に引っかからないものだけ取得できる() {
+  public function testGetPaymentsByPrice_購入金額が一部の上限を上回る場合_上限に引っかからないものだけ取得できる()
+  {
     $deliv_id = '1003';
     $total = 20500;
     $helper = new SC_Helper_Purchase();
@@ -83,7 +88,8 @@ class SC_Helper_Purchase_getPaymentsByPriceTest extends SC_Helper_Purchase_TestB
     $this->verify();
   }
 
-  public function testGetPaymentsByPrice_購入金額が一部の下限を下回る場合_下限に引っかからないものだけ取得できる() {
+  public function testGetPaymentsByPrice_購入金額が一部の下限を下回る場合_下限に引っかからないものだけ取得できる()
+  {
     $deliv_id = '1003';
     $total = 11000;
     $helper = new SC_Helper_Purchase();
@@ -96,7 +102,8 @@ class SC_Helper_Purchase_getPaymentsByPriceTest extends SC_Helper_Purchase_TestB
     $this->verify();
   }
 
-  public function testGetPaymentsByPrice_購入金額がすべての下限を下回る場合_下限の設定がないものだけ取得できる() {
+  public function testGetPaymentsByPrice_購入金額がすべての下限を下回る場合_下限の設定がないものだけ取得できる()
+  {
     $deliv_id = '1003';
     $total = 9999;
     $helper = new SC_Helper_Purchase();

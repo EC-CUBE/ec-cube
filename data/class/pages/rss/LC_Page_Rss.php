@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_RSS extends LC_Page_Ex {
+class LC_Page_RSS extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_RSS extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'rss/index.tpl';
         $this->encode = 'UTF-8';
@@ -53,7 +55,8 @@ class LC_Page_RSS extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
 
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $objView = new SC_SiteView_Ex(false);
@@ -89,7 +92,8 @@ class LC_Page_RSS extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -99,7 +103,8 @@ class LC_Page_RSS extends LC_Page_Ex {
      * @param SC_Query $objQuery DB操作クラス
      * @return array $arrNews 取得結果を配列で返す
      */
-    function lfGetNews(&$objQuery) {
+    function lfGetNews(&$objQuery)
+    {
         $col = '';
         $col .= 'news_id ';        // 新着情報ID
         $col .= ',news_title ';    // 新着情報タイトル

@@ -33,19 +33,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetHashString_authTypeHmacTest extends Common_TestCase {
+class SC_Utils_sfGetHashString_authTypeHmacTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetHashString_暗号化ありの設定になっている場合_文字列が変換される() {
+  public function testSfGetHashString_暗号化ありの設定になっている場合_文字列が変換される()
+  {
     $input = 'hello, world';
     $salt = 'sample';
 
@@ -54,7 +58,8 @@ class SC_Utils_sfGetHashString_authTypeHmacTest extends Common_TestCase {
     $this->assertNotEquals('入力前後の文字列', $input, $output);
   }
 
-  public function testSfGetHashString_暗号化ありの設定になっていてsaltがない場合_文字列が変換される() {
+  public function testSfGetHashString_暗号化ありの設定になっていてsaltがない場合_文字列が変換される()
+  {
     $input = 'hello, world';
     $output = SC_Utils::sfGetHashString($input);
 

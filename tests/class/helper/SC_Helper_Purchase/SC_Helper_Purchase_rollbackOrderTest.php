@@ -30,22 +30,26 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_rollbackOrderTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_rollbackOrderTest extends SC_Helper_Purchase_TestBase
+{
 
   private $helper;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
 
     $this->helper = new SC_Helper_Purchase_rollbackOrderMock();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testRollbackOrder_デフォルトの引数で呼び出した場合_カートの状態をロールバックして元に戻る(){
+  public function testRollbackOrder_デフォルトの引数で呼び出した場合_カートの状態をロールバックして元に戻る()
+  {
     $this->objQuery->begin();
     $order_id = '1001';
 
@@ -83,7 +87,8 @@ class SC_Helper_Purchase_rollbackOrderTest extends SC_Helper_Purchase_TestBase {
    * 実際にトランザクションを開始したかどうかはテストできないが、
    * 問題なく処理が完了することのみ確認
    */
-  public function testRollbackOrder_トランザクションが開始していない場合_内部で開始する() {
+  public function testRollbackOrder_トランザクションが開始していない場合_内部で開始する()
+  {
     $order_id = '1001';
 
     $uniqid = $this->helper->rollbackOrder($order_id, ORDER_DELIV, true);
@@ -119,10 +124,12 @@ class SC_Helper_Purchase_rollbackOrderTest extends SC_Helper_Purchase_TestBase {
 
 }
 
-class SC_Helper_Purchase_rollbackOrderMock extends SC_Helper_Purchase {
+class SC_Helper_Purchase_rollbackOrderMock extends SC_Helper_Purchase
+{
   public $testResult = array();
 
-  function cancelOrder($order_id, $orderStatus, $is_delete) {
+  function cancelOrder($order_id, $orderStatus, $is_delete)
+  {
     $this->testResult['cancelOrder'] = array(
       'order_id' => $order_id,
       'orderStatus' => $orderStatus,
@@ -130,7 +137,8 @@ class SC_Helper_Purchase_rollbackOrderMock extends SC_Helper_Purchase {
     );
   }
 
-  function getOrderTempByOrderId($order_id) {
+  function getOrderTempByOrderId($order_id)
+  {
     $this->testResult['getOrderTempByOrderId'] = array(
       'order_id' => $order_id
     );
@@ -139,14 +147,16 @@ class SC_Helper_Purchase_rollbackOrderMock extends SC_Helper_Purchase {
     );
   }
 
-  function saveOrderTemp($uniqid, $arrOrderTemp, $objCustomer) {
+  function saveOrderTemp($uniqid, $arrOrderTemp, $objCustomer)
+  {
     $this->testResult['saveOrderTemp'] = array(
       'uniqid' => $uniqid,
       'arrOrderTemp' => $arrOrderTemp
     );
   }
 
-  function verifyChangeCart($uniqid, $objCartSession) {
+  function verifyChangeCart($uniqid, $objCartSession)
+  {
     $this->testResult['verifyChangeCart'] = array(
       'uniqid' => $uniqid
     );

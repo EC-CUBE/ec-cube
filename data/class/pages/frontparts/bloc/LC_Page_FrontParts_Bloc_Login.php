@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_FrontParts_Bloc_Login.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex {
+class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_login = false;
         $this->tpl_disable_logout = false;
@@ -53,7 +55,8 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -63,7 +66,8 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
@@ -99,7 +103,8 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -108,7 +113,8 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return boolean
      */
-    function lfCheckDisableLogout() {
+    function lfCheckDisableLogout()
+    {
         $masterData = new SC_DB_MasterData_Ex();
         $arrDisableLogout = $masterData->getMasterData('mtb_disable_logout');
 

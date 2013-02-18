@@ -32,19 +32,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetUniqRandomIdTest extends Common_TestCase {
+class SC_Utils_sfGetUniqRandomIdTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function test_prefix指定が無い場合_21文字のランダムな文字列が生成される() {
+  public function test_prefix指定が無い場合_21文字のランダムな文字列が生成される()
+  {
     $output1 = SC_Utils::sfGetUniqRandomId();
     $output2 = SC_Utils::sfGetUniqRandomId();
 
@@ -53,7 +57,8 @@ class SC_Utils_sfGetUniqRandomIdTest extends Common_TestCase {
     $this->assertNotEquals($output1, $output2, '生成結果がランダムになる');
   }
 
-  public function test_prefix指定がある場合_prefixのあとに21文字のランダムな文字列が生成される() {
+  public function test_prefix指定がある場合_prefixのあとに21文字のランダムな文字列が生成される()
+  {
     $output1 = SC_Utils::sfGetUniqRandomId('hello');
     $output2 = SC_Utils::sfGetUniqRandomId('hello');
 

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Shopping_Complete.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Shopping_Complete extends LC_Page_Ex {
+class LC_Page_Shopping_Complete extends LC_Page_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_title = 'ご注文完了';
     }
@@ -51,7 +53,8 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -62,7 +65,8 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         unset($_SESSION['order_id']);
@@ -75,14 +79,16 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     /**
      * 決済モジュールから遷移する場合があるため, トークンチェックしない.
      */
-    function doValidToken() {
+    function doValidToken()
+    {
         // nothing.
     }
 }

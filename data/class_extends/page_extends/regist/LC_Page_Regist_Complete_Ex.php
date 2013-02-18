@@ -33,7 +33,8 @@ require_once CLASS_REALDIR . 'pages/regist/LC_Page_Regist_Complete.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Regist_Complete_Ex extends LC_Page_Regist_Complete {
+class LC_Page_Regist_Complete_Ex extends LC_Page_Regist_Complete 
+{
 
     // }}}
     // {{{ functions
@@ -43,7 +44,8 @@ class LC_Page_Regist_Complete_Ex extends LC_Page_Regist_Complete {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,7 +54,8 @@ class LC_Page_Regist_Complete_Ex extends LC_Page_Regist_Complete {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
 
@@ -61,7 +64,8 @@ class LC_Page_Regist_Complete_Ex extends LC_Page_Regist_Complete {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 }

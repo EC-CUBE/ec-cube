@@ -5,13 +5,15 @@ require DATA_REALDIR . 'module/fpdi/japanese.php';
 // japanese.php のバグ回避
 $GLOBALS[SJIS_widths] = $SJIS_widths;
 
-class SC_Helper_FPDI extends PDF_Japanese {
+class SC_Helper_FPDI extends PDF_Japanese 
+{
     /**
      * PDF_Japanese の明朝フォントに加えゴシックフォントを追加定義
      *
      * @return void
      */
-    function AddSJISFont() {
+    function AddSJISFont()
+    {
         parent::AddSJISFont();
         $cw = $GLOBALS['SJIS_widths'];
         $c_map = '90msp-RKSJ-H';
@@ -24,7 +26,8 @@ class SC_Helper_FPDI extends PDF_Japanese {
      *
      * PDF_Japanese#SJISMultiCell をベースにカスタマイズ。
      */
-    function SJISMultiCellForFancyTable($w, $h, $txt, $border = 0, $align = 'L', $fill = 0) {
+    function SJISMultiCellForFancyTable($w, $h, $txt, $border = 0, $align = 'L', $fill = 0)
+    {
         $y = $this->y;
 
         // ここで SJIS に変換する。そのため、このメソッドの中では、PDF_Japanese#Cell を直接呼ぶ。
@@ -144,7 +147,8 @@ class SC_Helper_FPDI extends PDF_Japanese {
      *
      * FIXME: 後の列の高さが大きい場合、表示が乱れる。
      */
-    function FancyTable($header, $data, $w) {
+    function FancyTable($header, $data, $w)
+    {
         // Colors, line width and bold font
         $this->SetFillColor(216, 216, 216);
         $this->SetTextColor(0);
@@ -185,16 +189,19 @@ class SC_Helper_FPDI extends PDF_Japanese {
         $this->SetFillColor(255);
     }
 
-    function Text($x, $y, $txt) {
+    function Text($x, $y, $txt)
+    {
         parent::Text($x, $y, $this->lfConvSjis($txt));
     }
 
-    function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link='') {
+    function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link='')
+    {
         parent::Cell($w, $h, $this->lfConvSjis($txt), $border, $ln, $align, $fill, $link);
     }
 
     // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
-    function lfConvSjis($conv_str) {
+    function lfConvSjis($conv_str)
+    {
         return mb_convert_encoding($conv_str, 'SJIS-win', CHAR_CODE);
     }
 }

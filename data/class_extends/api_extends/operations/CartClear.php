@@ -30,6 +30,7 @@
  */
 require_once CLASS_REALDIR . 'api/operations/CartClear.php';
 
-class API_CartClear_Ex extends API_CartClear {
+class API_CartClear_Ex extends API_CartClear 
+{
 
 }

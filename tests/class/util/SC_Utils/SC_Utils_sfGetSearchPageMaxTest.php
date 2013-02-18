@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase {
+class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetSearchPageMax_正の整数が指定されている場合_指定の値が返る() {
+  public function testSfGetSearchPageMax_正の整数が指定されている場合_指定の値が返る()
+  {
     
     $this->expected = 100;
     $this->actual = SC_Utils::sfGetSearchPageMax(100);
@@ -51,7 +55,8 @@ class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetSearchPageMax_正の小数が指定されている場合_整数に変換される() {
+  public function testSfGetSearchPageMax_正の小数が指定されている場合_整数に変換される()
+  {
     
     $this->expected = 99;
     $this->actual = SC_Utils::sfGetSearchPageMax(99.5);
@@ -59,7 +64,8 @@ class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetSearchPageMax_負の数が指定されている場合_デフォルト値が返る() {
+  public function testSfGetSearchPageMax_負の数が指定されている場合_デフォルト値が返る()
+  {
     
     $this->expected = SEARCH_PMAX;
     $this->actual = SC_Utils::sfGetSearchPageMax(-50);
@@ -67,7 +73,8 @@ class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetSearchPageMax_指定がない場合_デフォルト値が返る() {
+  public function testSfGetSearchPageMax_指定がない場合_デフォルト値が返る()
+  {
     
     $this->expected = SEARCH_PMAX;
     $this->actual = SC_Utils::sfGetSearchPageMax();

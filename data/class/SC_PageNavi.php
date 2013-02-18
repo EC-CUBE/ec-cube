@@ -28,12 +28,14 @@
         $objPage->tpl_pageno = $_POST['pageno'];
     ・$func_nameに指定するJavaScriptの例
         // ページナビで使用する
-        function fnNaviPage(pageno) {
+        function fnNaviPage(pageno)
+        {
             document.form1['pageno'].value = pageno;
             document.form1.submit();
         }
 */
-class SC_PageNavi {
+class SC_PageNavi 
+{
     var $now_page;      // 現在のページ番号
     var $max_page;      // 最終のページ番号
     var $start_row;     // 開始レコード
@@ -41,7 +43,8 @@ class SC_PageNavi {
     var $arrPagenavi = array(); // ページ
 
     // コンストラクタ
-    function __construct($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true) {
+    function __construct($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true)
+    {
         $this->arrPagenavi['mode'] = 'search';
 
         //現在ページ($now_page)が正しい数値でない場合

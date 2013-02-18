@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_MobileEmoji.php';
 
-class SC_MobileEmoji_Ex extends SC_MobileEmoji {
+class SC_MobileEmoji_Ex extends SC_MobileEmoji 
+{
 }

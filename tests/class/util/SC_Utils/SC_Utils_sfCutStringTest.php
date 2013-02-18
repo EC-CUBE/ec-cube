@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfCutStringTest extends Common_TestCase {
+class SC_Utils_sfCutStringTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfCutString_マルチバイト指定で指定長より2文字以上長い場合_指定長でカットされる() {
+  public function testSfCutString_マルチバイト指定で指定長より2文字以上長い場合_指定長でカットされる()
+  {
     $input = 'あいうえおABC、こんにちは。';
     $this->expected = 'あいうえおABC、こんにち...';
     $this->actual = SC_Utils::sfCutString($input, 13, false);
@@ -51,7 +55,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCutString_マルチバイト指定で指定長より1文字長い場合_カットされない() {
+  public function testSfCutString_マルチバイト指定で指定長より1文字長い場合_カットされない()
+  {
     $input = 'あいうえおABC、こんにちは';
     $this->expected = 'あいうえおABC、こんにちは';
     $this->actual = SC_Utils::sfCutString($input, 13, false);
@@ -59,7 +64,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCutString_マルチバイト指定で指定長以内の場合_カットされない() {
+  public function testSfCutString_マルチバイト指定で指定長以内の場合_カットされない()
+  {
     $input = 'あいうえおABC、こんにち';
     $this->expected = 'あいうえおABC、こんにち';
     $this->actual = SC_Utils::sfCutString($input, 13, false);
@@ -67,7 +73,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCutString_1バイト指定で指定長より3文字以上長い場合_指定長でカットされる() {
+  public function testSfCutString_1バイト指定で指定長より3文字以上長い場合_指定長でカットされる()
+  {
     $input = 'hello, world!!';
     $this->expected = 'hello, worl...';
     $this->actual = SC_Utils::sfCutString($input, 11);
@@ -75,7 +82,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCutString_1バイト指定で指定長より2文字長い場合_カットされない() {
+  public function testSfCutString_1バイト指定で指定長より2文字長い場合_カットされない()
+  {
     $input = 'hello, world!';
     $this->expected = 'hello, world!';
     $this->actual = SC_Utils::sfCutString($input, 11);
@@ -83,7 +91,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCutString_1バイト指定で指定長より1文字長い場合_カットされない() {
+  public function testSfCutString_1バイト指定で指定長より1文字長い場合_カットされない()
+  {
     $input = 'hello, world';
     $this->expected = 'hello, world';
     $this->actual = SC_Utils::sfCutString($input, 11);
@@ -91,7 +100,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCutString_1バイト指定で指定長以内の場合_カットされない() {
+  public function testSfCutString_1バイト指定で指定長以内の場合_カットされない()
+  {
     $input = 'hello, worl';
     $this->expected = 'hello, worl';
     $this->actual = SC_Utils::sfCutString($input, 11);
@@ -100,7 +110,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
   }
 
   // [までの場合
-  public function testSfCutString_絵文字を含んでカットされる場合_中途半端な絵文字がカットされる1() {
+  public function testSfCutString_絵文字を含んでカットされる場合_中途半端な絵文字がカットされる1()
+  {
     $input = "hello[emoji:135], world.";
     $this->expected = 'hello...';
     $this->actual = SC_Utils::sfCutString($input, 6);
@@ -109,7 +120,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
   }
 
   // ]の直前までの場合
-  public function testSfCutString_絵文字を含んでカットされる場合_中途半端な絵文字がカットされる2() {
+  public function testSfCutString_絵文字を含んでカットされる場合_中途半端な絵文字がカットされる2()
+  {
     $input = "hello[emoji:135], world.";
     $this->expected = 'hello...';
     $this->actual = SC_Utils::sfCutString($input, 15);
@@ -118,7 +130,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
   }
 
   // 最初の絵文字の途中
-  public function testSfCutString_複数の絵文字を含んでいてカットされる場合_中途半端な絵文字がカットされる1() {
+  public function testSfCutString_複数の絵文字を含んでいてカットされる場合_中途半端な絵文字がカットされる1()
+  {
     $input = "hello[emoji:100][emoji:20], world![emoji:10]";
     $this->expected = 'hello...';
     $this->actual = SC_Utils::sfCutString($input, 10);
@@ -127,7 +140,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
   }
 
   // 2つめの絵文字の途中
-  public function testSfCutString_複数の絵文字を含んでいてカットされる場合_中途半端な絵文字がカットされる2() {
+  public function testSfCutString_複数の絵文字を含んでいてカットされる場合_中途半端な絵文字がカットされる2()
+  {
     $input = "hello[emoji:100][emoji:20], world![emoji:10]";
     $this->expected = 'hello[emoji:100]...';
     $this->actual = SC_Utils::sfCutString($input, 20);
@@ -136,7 +150,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
   }
 
   // 3つめの絵文字の途中
-  public function testSfCutString_複数の絵文字を含んでいてカットされる場合_中途半端な絵文字がカットされる3() {
+  public function testSfCutString_複数の絵文字を含んでいてカットされる場合_中途半端な絵文字がカットされる3()
+  {
     $input = "hello[emoji:100][emoji:20], world![emoji:10]";
     $this->expected = 'hello[emoji:100][emoji:20], wo...';
     $this->actual = SC_Utils::sfCutString($input, 30);
@@ -145,7 +160,8 @@ class SC_Utils_sfCutStringTest extends Common_TestCase {
   }
 
   // TODO 要確認 三点リーダ付けない場合は、lenと比較した方が良いのでは？
-  public function testSfCutString_三点リーダ付加指定がない場合_付加されない() {
+  public function testSfCutString_三点リーダ付加指定がない場合_付加されない()
+  {
     $input = 'hello, world';
     $this->expected = 'hello';
     $this->actual = SC_Utils::sfCutString($input, 5, true, false);

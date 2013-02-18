@@ -31,10 +31,12 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_sfUpdateOrderNameColTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_sfUpdateOrderNameColTest extends SC_Helper_Purchase_TestBase
+{
   var $helper;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpOrder();
     $this->setUpOrderTemp();
@@ -46,12 +48,14 @@ class SC_Helper_Purchase_sfUpdateOrderNameColTest extends SC_Helper_Purchase_Tes
     $this->helper = new SC_Helper_Purchase();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfUpdateOrderNameCol_TEMPフラグがOFFの場合_受注テーブルと発送テーブルが更新される() {
+  public function testSfUpdateOrderNameCol_TEMPフラグがOFFの場合_受注テーブルと発送テーブルが更新される()
+  {
     $order_id = '1002';
 
     $this->helper->sfUpdateOrderNameCol($order_id);
@@ -72,7 +76,8 @@ class SC_Helper_Purchase_sfUpdateOrderNameColTest extends SC_Helper_Purchase_Tes
     $this->verify();
   }
 
-  public function testSfUpdateOrderNameCol_TEMPフラグがONの場合_一時テーブルが更新される() {
+  public function testSfUpdateOrderNameCol_TEMPフラグがONの場合_一時テーブルが更新される()
+  {
     $order_id = '1002';
 
     $this->helper->sfUpdateOrderNameCol($order_id, true);

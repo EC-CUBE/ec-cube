@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfArrayIntersectKeysTest extends Common_TestCase {
+class SC_Utils_sfArrayIntersectKeysTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfArrayIntersectKeys_指定キーに含まれるものがない場合_空の配列が返る() {
+  public function testSfArrayIntersectKeys_指定キーに含まれるものがない場合_空の配列が返る()
+  {
     $input_array = array('apple' => 'りんご', 'banana' => 'バナナ', 'orange' => 'オレンジ');
     $key_array = array('kiwi', 'tomato');
 
@@ -53,7 +57,8 @@ class SC_Utils_sfArrayIntersectKeysTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfArrayIntersctKeys_指定キーに含まれるものがある場合_含まれるものだけが返る() {
+  public function testSfArrayIntersctKeys_指定キーに含まれるものがある場合_含まれるものだけが返る()
+  {
     $input_array = array('apple' => 'りんご', 'banana' => 'バナナ', 'orange' => 'オレンジ');
     $key_array = array('orange', 'apple');
 

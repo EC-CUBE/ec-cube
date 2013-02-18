@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/mail.tpl';
         $this->tpl_mainno = 'basis';
@@ -55,7 +57,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,7 +68,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -119,18 +123,21 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
-    function lfGetMailTemplateByTemplateID($template_id) {
+    function lfGetMailTemplateByTemplateID($template_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
         return $objQuery->getAll($sql, array($template_id));
     }
 
-    function lfRegistMailTemplate($post, $member_id) {
+    function lfRegistMailTemplate($post, $member_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $post['creator_id'] = $member_id;
@@ -147,7 +154,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
 
     }
 
-    function lfInitParam($mode, &$objFormParam) {
+    function lfInitParam($mode, &$objFormParam)
+    {
         switch ($mode) {
             case 'regist':
                 $objFormParam->addParam('メールタイトル', 'subject', MTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Index extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'login.tpl';
         $this->httpCacheControl('nocache');
@@ -52,7 +54,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -62,7 +65,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -71,7 +75,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -109,7 +114,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('ID', 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK' ,'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('PASSWORD', 'password', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
@@ -122,7 +128,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return array $arrErr エラー配列
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         // 書式チェック
         $arrErr = $objFormParam->checkError();
         if (SC_Utils_Ex::isBlank($arrErr)) {
@@ -143,7 +150,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @param string $pass ログインパスワード文字列
      * @return boolean ログイン情報が有効な場合 true
      */
-    function lfIsLoginMember($login_id, $pass) {
+    function lfIsLoginMember($login_id, $pass)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //パスワード、saltの取得
         $cols = 'password, salt';
@@ -166,7 +174,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @param string $login_id ログインID文字列
      * @return void
      */
-    function lfDoLogin($login_id) {
+    function lfDoLogin($login_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //メンバー情報取得
         $cols = 'member_id, authority, login_date, name';
@@ -189,7 +198,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @param string $last_login 最終ログイン日時(YYYY/MM/DD HH:ii:ss形式) またはNULL
      * @return string $sid 設定したセッションのセッションID
      */
-    function lfSetLoginSession($member_id, $login_id, $authority, $login_name, $last_login) {
+    function lfSetLoginSession($member_id, $login_id, $authority, $login_name, $last_login)
+    {
         $objSess = new SC_Session_Ex();
         // 認証済みの設定
         $objSess->SetSession('cert', CERT_STRING);
@@ -216,7 +226,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @param string $last_login 最終ログイン日時(YYYY/MM/DD HH:ii:ss形式) またはNULL
      * @return void
      */
-    function lfSetLoginData($sid, $member_id, $login_id, $authority, $last_login) {
+    function lfSetLoginData($sid, $member_id, $login_id, $authority, $last_login)
+    {
         // ログイン記録ログ出力
         $str_log = "login: user=$login_id($member_id) auth=$authority "
                     . "lastlogin=$last_login sid=$sid";
@@ -239,7 +250,8 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex {
      * @param string $login_id ログイン失敗時に投入されたlogin_id文字列
      * @return void
      */
-    function lfSetIncorrectData($error_login_id) {
+    function lfSetIncorrectData($error_login_id)
+    {
         GC_Utils_Ex::gfPrintLog($error_login_id . ' password incorrect.');
     }
 }

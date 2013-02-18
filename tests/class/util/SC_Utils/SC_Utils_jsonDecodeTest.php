@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_jsonDecodeTest extends Common_TestCase {
+class SC_Utils_jsonDecodeTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testJsonDecode__JSON形式にエンコードされた文字列からarrayに変換される() {
+  public function testJsonDecode__JSON形式にエンコードされた文字列からarrayに変換される()
+  {
     $input = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
 
     $obj = new stdClass;

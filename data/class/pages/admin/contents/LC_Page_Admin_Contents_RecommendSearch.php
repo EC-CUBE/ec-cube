@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainno = 'contents';
         $this->tpl_subno = '';
@@ -54,7 +56,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -64,7 +67,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -112,7 +116,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -120,7 +125,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * パラメーターの初期化を行う
      * @param Object $objFormParam
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('商品ID', 'search_name', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ID', 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
         $objFormParam->addParam('商品コード', 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
@@ -133,7 +139,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      * @return Array エラー内容
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         return $objErr->arrErr;
@@ -145,7 +152,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @return array ('where' => where string, 'bind' => databind array)
      * @param SC_FormParam $objFormParam
      */
-    function createWhere(&$objFormParam,&$objDb) {
+    function createWhere(&$objFormParam,&$objDb)
+    {
         $arrForm = $objFormParam->getHashArray();
         $where = 'alldtl.del_flg = 0';
         $bind = array();
@@ -190,7 +198,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @param array $whereAndBind
      * @param SC_Product $objProduct
      */
-    function getLineCount($whereAndBind,&$objProduct) {
+    function getLineCount($whereAndBind,&$objProduct)
+    {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
         // 検索結果対象となる商品の数を取得
@@ -205,7 +214,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @param array $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
      */
-    function getProducts($whereAndBind,&$objProduct, $page_max, $startno) {
+    function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
+    {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -222,7 +232,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex {
      * @param array $arrProductId
      * @param SC_Product $objProduct
      */
-    function getProductList($arrProductId, &$objProduct) {
+    function getProductList($arrProductId, &$objProduct)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 表示順序

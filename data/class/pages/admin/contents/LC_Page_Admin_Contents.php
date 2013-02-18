@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Contents extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'contents/index.tpl';
         $this->tpl_subno = 'index';
@@ -65,7 +67,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -75,7 +78,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -160,7 +164,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -169,7 +174,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      * @return Array エラー内容
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         $objErr->doFunc(array('日付', 'year', 'month', 'day'), array('CHECK_DATE'));
@@ -180,7 +186,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * パラメーターの初期化を行う
      * @param Object $objFormParam
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('news_id', 'news_id');
         $objFormParam->addParam('日付(年)', 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('日付(月)', 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -197,7 +204,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Array $arrPost POSTデータの配列
      * @param Integer $member_id 登録した管理者のID
      */
-    function lfNewsInsert($arrPost,$member_id) {
+    function lfNewsInsert($arrPost,$member_id)
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // rankの最大+1を取得する
@@ -220,7 +228,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $objQuery->insert($table, $sqlval);
     }
 
-    function lfNewsUpdate($arrPost,$member_id) {
+    function lfNewsUpdate($arrPost,$member_id)
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $table = 'dtb_news';
@@ -242,7 +251,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Array $arrPost POSTのグローバル変数
      * @return string 登録日を示す文字列
      */
-    function getRegistDate($arrPost) {
+    function getRegistDate($arrPost)
+    {
         $registDate = $arrPost['year'] .'/'. $arrPost['month'] .'/'. $arrPost['day'];
         return $registDate;
     }
@@ -252,7 +262,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param int $link_method
      * @return int
      */
-    function checkLinkMethod($link_method) {
+    function checkLinkMethod($link_method)
+    {
         if (strlen($link_method) == 0) {
             $link_method = 1;
         }
@@ -263,7 +274,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * ニュース記事を取得する。
      * @param Integer news_id ニュースID
      */
-    function getNews($news_id = '') {
+    function getNews($news_id = '')
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*, cast(news_date as date) as cast_news_date';
         $table = 'dtb_news';
@@ -283,7 +295,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * 指定されたニュースのランクの値を取得する。
      * @param Integer $news_id
      */
-    function getRankByNewsId($news_id) {
+    function getRankByNewsId($news_id)
+    {
         $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'rank';
         $table = 'dtb_news';
@@ -298,7 +311,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Integer $news_id
      * @param Integer $rank
      */
-    function computeRankForDelete($news_id,$rank) {
+    function computeRankForDelete($news_id,$rank)
+    {
         SC_Helper_DB_Ex::sfDeleteRankRecord('dtb_news', 'news_id', $news_id);
     }
 
@@ -306,7 +320,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * ニュースの日付の値をフロントでの表示形式に合わせるために分割
      * @param String $news_date
      */
-    function splitNewsDate($news_date) {
+    function splitNewsDate($news_date)
+    {
         return explode('-', $news_date);
     }
 
@@ -314,7 +329,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * ランクの最大値の値を返す。
      * @return Intger $max ランクの最大値の値
      */
-    function getRankMax() {
+    function getRankMax()
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'MAX(rank) as max';
         $table = 'dtb_news';
@@ -328,7 +344,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      * @param Object $objFormParam
      * @param Integer $news_id
      */
-    function getPostRank($news_id) {
+    function getPostRank($news_id)
+    {
         if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
             $key = 'pos-' . $news_id;
             $input_pos = $_POST[$key];

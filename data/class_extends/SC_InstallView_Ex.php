@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_InstallView.php';
 
-class SC_InstallView_Ex extends SC_InstallView {
+class SC_InstallView_Ex extends SC_InstallView 
+{
 }

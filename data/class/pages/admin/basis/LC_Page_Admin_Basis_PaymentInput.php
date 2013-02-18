@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex 
+{
 
     // {{{ properties
 
@@ -46,7 +47,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/payment_input.tpl';
         $this->tpl_mainno = 'basis';
@@ -60,7 +62,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -70,7 +73,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objPayment = new SC_Helper_Payment_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -159,18 +163,21 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     /* ファイル情報の初期化 */
-    function lfInitFile() {
+    function lfInitFile()
+    {
         $this->objUpFile->addFile('ロゴ画像', 'payment_image', array('gif','jpeg','jpg','png'), IMAGE_SIZE, false, CLASS_IMAGE_WIDTH, CLASS_IMAGE_HEIGHT);
         return $this->objUpFile;
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam($mode, &$objFormParam) {
+    function lfInitParam($mode, &$objFormParam)
+    {
 
         switch ($mode) {
             case 'edit':
@@ -211,7 +218,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
     }
 
     /* DBへデータを登録する */
-    function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '') {
+    function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '')
+    {
 
         $sqlval = array_merge($objFormParam->getHashArray(), $this->objUpFile->getDBFileList());
         $sqlval['payment_id'] = $payment_id;
@@ -227,7 +235,8 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
     /*　利用条件の数値チェック */
 
     /* 入力内容のチェック */
-    function lfCheckError($post, $objFormParam, SC_Helper_Payment_Ex $objPayment) {
+    function lfCheckError($post, $objFormParam, SC_Helper_Payment_Ex $objPayment)
+    {
 
         // DBのデータを取得
         $arrPaymentData = $objPayment->get($post['payment_id']);

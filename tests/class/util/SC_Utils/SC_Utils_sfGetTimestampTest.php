@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetTimestampTest extends Common_TestCase {
+class SC_Utils_sfGetTimestampTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetTimestamp_年が設定されていない場合_0バイト文字列が返る() {
+  public function testSfGetTimestamp_年が設定されていない場合_0バイト文字列が返る()
+  {
     $year = '';
     $month = '10';
     $day = '23';
@@ -53,7 +57,8 @@ class SC_Utils_sfGetTimestampTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetTimestamp_月が設定されていない場合_0バイト文字列が返る() {
+  public function testSfGetTimestamp_月が設定されていない場合_0バイト文字列が返る()
+  {
     $year = '2012';
     $month = '';
     $day = '13';
@@ -63,7 +68,8 @@ class SC_Utils_sfGetTimestampTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetTimestamp_日が設定されていない場合_0バイト文字列が返る() {
+  public function testSfGetTimestamp_日が設定されていない場合_0バイト文字列が返る()
+  {
     $year = '1999';
     $month = '09';
     $day = '';
@@ -73,7 +79,8 @@ class SC_Utils_sfGetTimestampTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetTimestamp_年月日すべて設定されている場合_連結された文字列が返る() {
+  public function testSfGetTimestamp_年月日すべて設定されている場合_連結された文字列が返る()
+  {
     $year = '1999';
     $month = '09';
     $day = '23';
@@ -84,7 +91,8 @@ class SC_Utils_sfGetTimestampTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetTimestamp_最終時刻フラグがONの場合_時刻が深夜のものになる() {
+  public function testSfGetTimestamp_最終時刻フラグがONの場合_時刻が深夜のものになる()
+  {
     $year = '1999';
     $month = '09';
     $day = '23';

@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Cart extends LC_Page_Ex {
+class LC_Page_Cart extends LC_Page_Ex 
+{
 
     // {{{ properties
 
@@ -52,7 +53,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_title = '現在のカゴの中';
         $masterData = new SC_DB_MasterData_Ex();
@@ -65,7 +67,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -76,7 +79,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
@@ -190,7 +194,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -199,7 +204,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return object
      */
-    function lfInitParam($arrRequest) {
+    function lfInitParam($arrRequest)
+    {
         $objFormParam = new SC_FormParam_Ex();
         $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カートナンバー', 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -219,7 +225,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return
      */
-    function lfUpdateOrderTempid($pre_uniqid,$uniqid) {
+    function lfUpdateOrderTempid($pre_uniqid,$uniqid)
+    {
         $sqlval['order_temp_id'] = $uniqid;
         $where = 'order_temp_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -235,7 +242,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function lfGetCartPrevUrl(&$session,$referer) {
+    function lfGetCartPrevUrl(&$session,$referer)
+    {
         if (!preg_match('/cart/', $referer)) {
             if (!empty($session['cart_referer_url'])) {
                 $session['cart_prev_url'] = $session['cart_referer_url'];
@@ -259,7 +267,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey) {
+    function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey)
+    {
         // 正常に登録されたことを記録しておく
         $objSiteSess->setRegistFlag();
         $pre_uniqid = $objSiteSess->getUniqId();

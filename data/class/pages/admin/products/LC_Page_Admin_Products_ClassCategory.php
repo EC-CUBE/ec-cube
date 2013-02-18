@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products_ClassCategory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'products/classcategory.tpl';
         $this->tpl_subno = 'class';
@@ -55,7 +57,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,7 +68,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objFormParam = new SC_FormParam_Ex();
 
@@ -141,7 +145,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -151,7 +156,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('規格ID', 'class_id', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam('規格分類名', 'name', STEXT_LEN, 'KVa', array('EXIST_CHECK' ,'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('規格分類ID', 'classcategory_id', INT_LEN, 'n', array('NUM_CHECK'));
@@ -163,7 +169,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param integer $class_id 規格ID
      * @return array 規格分類情報
      */
-    function lfGetClassCat($class_id) {
+    function lfGetClassCat($class_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'del_flg <> 1 AND class_id = ?';
@@ -178,7 +185,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param integer $class_id 規格ID
      * @return string 規格名
      */
-    function lfGetClassName($class_id) {
+    function lfGetClassName($class_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $where = 'class_id = ?';
@@ -192,7 +200,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param integer $classcategory_id 規格分類ID
      * @return string 規格分類名
      */
-    function lfGetClassCatName($classcategory_id) {
+    function lfGetClassCatName($classcategory_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'classcategory_id = ?';
         $name = $objQuery->get('name', 'dtb_classcategory', $where, array($classcategory_id));
@@ -205,7 +214,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param array $arrForm フォームパラメータークラス
      * @return integer 更新件数
      */
-    function lfInsertClass($arrForm) {
+    function lfInsertClass($arrForm)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
         // 親規格IDの存在チェック
@@ -233,7 +243,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param array $arrForm フォームパラメータークラス
      * @return integer 更新件数
      */
-    function lfUpdateClass($arrForm) {
+    function lfUpdateClass($arrForm)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEする値を作成する。
         $sqlval['name'] = $arrForm['name'];
@@ -250,7 +261,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrForm = $objFormParam->getHashArray();
         // パラメーターの基本チェック
@@ -276,7 +288,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param integer $classcategory_id 規格分類ID
      * @return boolean 新規商品追加の場合 true
      */
-    function lfCheckInsert($classcategory_id) {
+    function lfCheckInsert($classcategory_id)
+    {
         //classcategory_id のあるなしで新規規格分類化かどうかを判定
         if (empty($classcategory_id)) {
             return true;
@@ -292,7 +305,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param integer $classcategory_id 規格分類ID
      * @return void
      */
-    function lfDeleteClassCat($class_id, $classcategory_id) {
+    function lfDeleteClassCat($class_id, $classcategory_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $where = 'class_id = ' . SC_Utils_Ex::sfQuoteSmart($class_id);
         $objDb->sfDeleteRankRecord('dtb_classcategory', 'classcategory_id', $classcategory_id, $where, true);
@@ -304,7 +318,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param integer $classcategory_id 規格分類ID
      * @return void
      */
-    function lfUpRank($class_id, $classcategory_id) {
+    function lfUpRank($class_id, $classcategory_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $where = 'class_id = ' . SC_Utils_Ex::sfQuoteSmart($class_id);
         $objDb->sfRankUp('dtb_classcategory', 'classcategory_id', $classcategory_id, $where);
@@ -316,7 +331,8 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex {
      * @param integer $classcategory_id 規格分類ID
      * @return void
      */
-    function lfDownRank($class_id, $classcategory_id) {
+    function lfDownRank($class_id, $classcategory_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         $where = 'class_id = ' . SC_Utils_Ex::sfQuoteSmart($class_id);
         $objDb->sfRankDown('dtb_classcategory', 'classcategory_id', $classcategory_id, $where);

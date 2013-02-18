@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex 
+{
     // }}}
     // {{{ functions
 
@@ -40,7 +41,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery_input.tpl';
         $this->tpl_subno = 'delivery';
@@ -59,7 +61,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -69,7 +72,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($this->mode, $objFormParam);
         $objFormParam->setParam($_POST);
@@ -104,12 +108,14 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam($mode, &$objFormParam) {
+    function lfInitParam($mode, &$objFormParam)
+    {
         $objFormParam = new SC_FormParam_Ex();
 
         switch ($mode) {
@@ -147,7 +153,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      *
      * @return $deliv_id
      */
-    function lfRegistData($arrRet, $member_id) {
+    function lfRegistData($arrRet, $member_id)
+    {
         $objDelivery = new SC_Helper_Delivery_Ex();
 
         // 入力データを渡す。
@@ -196,7 +203,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
     }
 
     /* 配送業者情報の取得 */
-    function lfGetDelivData(&$objFormParam) {
+    function lfGetDelivData(&$objFormParam)
+    {
         $objDelivery = new SC_Helper_Delivery_Ex();
 
         $deliv_id = $objFormParam->getValue('deliv_id');
@@ -228,7 +236,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
     }
 
     /* 入力内容のチェック */
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrRet);

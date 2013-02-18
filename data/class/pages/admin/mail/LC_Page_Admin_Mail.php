@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Mail extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'mail/index.tpl';
         $this->tpl_mainno = 'mail';
@@ -82,7 +84,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -92,7 +95,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -180,7 +184,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -190,7 +195,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParamSearchCustomer(&$objFormParam) {
+    function lfInitParamSearchCustomer(&$objFormParam)
+    {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('配信メールアドレス種別', 'search_mail_type', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -202,7 +208,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfAddParamSelectTemplate(&$objFormParam) {
+    function lfAddParamSelectTemplate(&$objFormParam)
+    {
         $objFormParam->addParam('メール形式', 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
         $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('本文', 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
@@ -215,7 +222,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param array $arrTemplate SC_Helper_Mail_Ex::sfGetMailmagaTemplate()の戻り値
      * @return array key:template_id value:サブジェクト【配信形式】
      */
-    function lfGetMailTemplateList($arrTemplate) {
+    function lfGetMailTemplateList($arrTemplate)
+    {
         if (is_array($arrTemplate)) {
             foreach ($arrTemplate as $line) {
                 $return[$line['template_id']] = '【' . $this->arrHtmlmail[$line['mail_method']] . '】' . $line['subject'];
@@ -231,7 +239,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param array $template_id テンプレートID
      * @return void
      */
-    function lfGetTemplateData(&$objFormParam, $template_id) {
+    function lfGetTemplateData(&$objFormParam, $template_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('template_id DESC');
         $where = 'template_id = ?';
@@ -244,7 +253,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      *
      * @return integer 登録した行の dtb_send_history.send_id の値
      */
-    function lfRegisterData(&$objFormParam) {
+    function lfRegisterData(&$objFormParam)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         list($linemax, $arrSendCustomer, $objNavi) = SC_Helper_Customer_Ex::sfGetSearchData($objFormParam->getHashArray(), 'All');
@@ -288,7 +298,8 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex {
      * @param integer $send_id　配信履歴番号
      * @return array
      */
-    function lfGetMailQuery($send_id) {
+    function lfGetMailQuery($send_id)
+    {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

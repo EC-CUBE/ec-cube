@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_AdminView.php';
 
-class SC_AdminView_Ex extends SC_AdminView {
+class SC_AdminView_Ex extends SC_AdminView 
+{
 }

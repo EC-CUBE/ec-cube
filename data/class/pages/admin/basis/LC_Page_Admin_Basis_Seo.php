@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex 
+{
 
     // {{{ properties
 
@@ -46,7 +47,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/seo.tpl';
         $this->tpl_subno = 'seo';
@@ -66,7 +68,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -76,7 +79,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         // データの取得
         $this->arrPageData = $this->lfGetSeoPageData();
@@ -131,7 +135,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -141,7 +146,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      * @param array $arrUpdData 更新データ
      * @return integer 更新結果
      */
-    function lfUpdPageData($arrUpdData = array()) {
+    function lfUpdPageData($arrUpdData = array())
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $table = 'dtb_pagelayout';
@@ -159,7 +165,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
         return $objQuery->update($table, $sqlval, $where, $arrWhereVal);
     }
 
-    function lfInitParam($mode, &$objFormParam) {
+    function lfInitParam($mode, &$objFormParam)
+    {
         $objFormParam->addParam('デバイスID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メタタグ:Author', 'author', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
@@ -174,7 +181,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      * @param array 表示データ
      * @return array 表示データ
      */
-    function lfSetData($arrPageData, $arrDispData) {
+    function lfSetData($arrPageData, $arrDispData)
+    {
 
         foreach ($arrPageData as $device_key => $arrVal) {
             foreach ($arrVal as $key => $val) {
@@ -195,7 +203,8 @@ class LC_Page_Admin_Basis_Seo extends LC_Page_Admin_Ex {
      * @param void
      * @return array $arrRet ページデータ($arrRet[デバイスタイプID])
      */
-    function lfGetSeoPageData() {
+    function lfGetSeoPageData()
+    {
         $objLayout = new SC_Helper_PageLayout_Ex();
 
         return array(

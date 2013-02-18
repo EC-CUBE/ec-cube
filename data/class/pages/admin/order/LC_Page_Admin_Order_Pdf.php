@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'order/pdf_input.tpl';
         $this->tpl_mainno = 'order';
@@ -64,7 +66,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -74,7 +77,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date_Ex(1901);
@@ -115,7 +119,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * PDF作成フォームのデフォルト値の生成
      */
-    function createFromValues($order_id,$pdf_order_id) {
+    function createFromValues($order_id,$pdf_order_id)
+    {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
@@ -149,7 +154,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      * PDFの作成
      * @param SC_FormParam $objFormParam
      */
-    function createPdf(&$objFormParam) {
+    function createPdf(&$objFormParam)
+    {
 
         $arrErr = $this->lfCheckError($objFormParam);
         $arrRet = $objFormParam->getHashArray();
@@ -175,7 +181,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -183,7 +190,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *  パラメーター情報の初期化
      *  @param SC_FormParam
      */
-    function lfInitParam(&$objFormParam) {
+    function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('注文番号', 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('発行日', 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -206,7 +214,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *  @var SC_FormParam
      */
 
-    function lfCheckError(&$objFormParam) {
+    function lfCheckError(&$objFormParam)
+    {
         // 入力データを渡す。
         $arrParams = $objFormParam->getHashArray();
         $arrErr = $objFormParam->checkError();

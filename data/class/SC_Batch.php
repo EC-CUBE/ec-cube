@@ -28,7 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Batch {
+class SC_Batch 
+{
 
     // }}}
     // {{{ functions
@@ -39,5 +40,6 @@ class SC_Batch {
      * @param mixed $argv コマンドライン引数
      * @return mixed バッチの実行結果
      */
-    function execute($argv = '') {}
+    function execute($argv = '')
+    {}
 }

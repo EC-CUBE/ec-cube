@@ -31,7 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
+class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex 
+{
 
     // }}}
     // {{{ functions
@@ -41,7 +42,8 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'mail/template.tpl';
         $this->tpl_mainno = 'mail';
@@ -58,7 +60,8 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -68,7 +71,8 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    function action()
+    {
 
         $objMailHelper = new SC_Helper_Mail_Ex();
 
@@ -92,7 +96,8 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function destroy() {
+    function destroy()
+    {
         parent::destroy();
     }
 
@@ -101,7 +106,8 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex {
      * @param integer 削除したいテンプレートのID
      * @return void
      */
-    function lfDeleteMailTemplate($template_id) {
+    function lfDeleteMailTemplate($template_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_mailmaga_template',
                           array('del_flg' =>1),

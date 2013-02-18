@@ -5,20 +5,24 @@ require_once($HOME . "/tests/class/SC_Product/SC_Product_TestBase.php");
 /**
  *
  */
-class SC_Product_getProductStatusTest extends SC_Product_TestBase {
+class SC_Product_getProductStatusTest extends SC_Product_TestBase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objProducts = new SC_Product_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetProductStatus_商品IDなしは空の配列を返す() {
+    public function testGetProductStatus_商品IDなしは空の配列を返す()
+    {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -32,7 +36,8 @@ class SC_Product_getProductStatusTest extends SC_Product_TestBase {
         $this->verify('空の配列');
     }
     
-    public function testGetProductStatus_指定した商品IDの商品ステータスを返す() {
+    public function testGetProductStatus_指定した商品IDの商品ステータスを返す()
+    {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
