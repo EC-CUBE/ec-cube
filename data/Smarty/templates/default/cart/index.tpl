@@ -114,7 +114,7 @@
                                     <td class="alignC"><a href="?" onclick="fnFormModeSubmit('form<!--{$key|h}-->', 'delete', 'cart_no', '<!--{$item.cart_no|h}-->'); return false;">削除</a>
                                     </td>
                                     <td class="alignC">
-                                    <a class="expansion" target="_blank"
+                                    <a class="<!--{if $item.productsClass.main_image|strlen >= 1}-->expansion<!--{/if}-->" target="_blank"
                                             <!--{if $item.productsClass.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH|h}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->"
                                             <!--{/if}-->
                                             >
