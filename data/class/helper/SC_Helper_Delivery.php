@@ -28,8 +28,8 @@
  * @author pineray
  * @version $Id:$
  */
-class SC_Helper_Delivery
-{
+class SC_Helper_Delivery {
+
     /**
      * 配送方法の情報を取得.
      * 
@@ -41,7 +41,7 @@ class SC_Helper_Delivery
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 配送業者一覧の取得
-        $col = 'deliv_id, name, service_name, remark, confirm_url, product_type_id';
+        $col = '*';
         $where = 'deliv_id = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -57,7 +57,7 @@ class SC_Helper_Delivery
         $arrDeliv['deliv_time'] = $this->getDelivTime($deliv_id);
 
         // 配送料金の取得
-        $arrDeliv['fee'] = $this->getDelivFeeList($deliv_id);
+        $arrDeliv['deliv_fee'] = $this->getDelivFeeList($deliv_id);
 
         // 支払方法
         $arrDeliv['payment_ids'] = $this->getPayments($deliv_id);
@@ -115,8 +115,12 @@ class SC_Helper_Delivery
         $sqlval_payment_ids = $sqlval['payment_ids'];
         unset($sqlval['payment_ids']);
 
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+
         // deliv_id が決まっていた場合
         if ($sqlval['deliv_id'] != '') {
+            unset($sqlval['creator_id']);
+            unset($sqlval['create_date']);
             $deliv_id = $sqlval['deliv_id'];
             $where = 'deliv_id = ?';
             $objQuery->update('dtb_deliv', $sqlval, $where, array($deliv_id));
@@ -125,13 +129,13 @@ class SC_Helper_Delivery
             $table = 'dtb_delivtime';
             $where = 'deliv_id = ? AND time_id = ?';
             for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
-                $keyname = 'deliv_time'.$cnt;
                 $arrWhereVal = array($deliv_id, $cnt);
                 // 既存データの有無を確認
                 $curData = $objQuery->select('*', $table, $where, $arrWhereVal);
 
                 if (isset($sqlval_deliv_time[$cnt])) {
-                    $deliv_time = $sqlval_deliv_time[$cnt];
+                    $deliv_time = array();
+                    $deliv_time['deliv_time'] = $sqlval_deliv_time[$cnt];
 
                     // 入力が空ではなく、DBに情報があれば更新
                     if (count($curData)) {
@@ -145,15 +149,15 @@ class SC_Helper_Delivery
                     }
                 }
                 // 入力が空で、DBに情報がある場合は削除
-                else if (count($curData)) {
+                elseif (count($curData)) {
                     $objQuery->delete($table, $where, $arrWhereVal);
                 }
             }
 
             // 配送料の登録
             if (INPUT_DELIV_FEE) {
-                foreach ($sqlval_deliv_fee as $cnt => $deliv_fee) {
-                    $objQuery->update('dtb_delivfee', array('fee' => $deliv_fee['fee']), 'deliv_id = ? AND fee_id = ?', array($deliv_id, $cnt));
+                foreach ($sqlval_deliv_fee as $deliv_fee) {
+                    $objQuery->update('dtb_delivfee', array('fee' => $deliv_fee['fee']), 'deliv_id = ? AND fee_id = ?', array($deliv_id, $deliv_fee['fee_id']));
                 }
             }
         } else {
@@ -175,9 +179,8 @@ class SC_Helper_Delivery
 
             if (INPUT_DELIV_FEE) {
                 // 配送料金の設定
-                foreach ($sqlval_deliv_fee as $cnt => $deliv_fee) {
+                foreach ($sqlval_deliv_fee as $deliv_fee) {
                     $deliv_fee['deliv_id'] = $deliv_id;
-                    $deliv_fee['fee_id'] = $cnt;
                     // INSERTの実行
                     $objQuery->insert('dtb_delivfee', $deliv_fee);
                 }
@@ -186,9 +189,14 @@ class SC_Helper_Delivery
 
         // 支払い方法
         $objQuery->delete('dtb_payment_options', 'deliv_id = ?', array($deliv_id));
-        foreach ($sqlval_payment_ids as $payment_ids) {
-            $payment_ids['deliv_id'] = $deliv_id;
-            $objQuery->insert('dtb_payment_options', $payment_ids);
+        $i = 1;
+        foreach ($sqlval_payment_ids as $payment_id) {
+            $sqlval_payment_id = array();
+            $sqlval_payment_id['deliv_id'] = $deliv_id;
+            $sqlval_payment_id['payment_id'] = $payment_id;
+            $sqlval_payment_id['rank'] = $i;
+            $objQuery->insert('dtb_payment_options', $sqlval_payment_id);
+            $i++;
         }
 
         $objQuery->commit();
@@ -242,7 +250,7 @@ class SC_Helper_Delivery
             $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrDeliv['service_name']));
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrDeliv['deliv_id'], $arrDeliv['service_name'])) > 0)? true : false);
+            $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrDeliv['deliv_id'], $arrDeliv['service_name'])) > 0) ? true : false);
         }
         return $ret;
     }
@@ -266,9 +274,7 @@ class SC_Helper_Delivery
     public static function getDelivTime($deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('time_id');
-        $results = $objQuery->select('time_id, deliv_time',
-                                     'dtb_delivtime',
-                                     'deliv_id = ?', array($deliv_id));
+        $results = $objQuery->select('time_id, deliv_time', 'dtb_delivtime', 'deliv_id = ?', array($deliv_id));
         $arrDelivTime = array();
         foreach ($results as $val) {
             $arrDelivTime[$val['time_id']] = $val['deliv_time'];
@@ -285,9 +291,7 @@ class SC_Helper_Delivery
     public static function getPayments($deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('rank');
-        return $objQuery->getCol('payment_id', 'dtb_payment_options',
-                                 'deliv_id = ?',
-                                 array($deliv_id), MDB2_FETCHMODE_ORDERED);
+        return $objQuery->getCol('payment_id', 'dtb_payment_options', 'deliv_id = ?', array($deliv_id), MDB2_FETCHMODE_ORDERED);
     }
 
     /**
@@ -327,10 +331,9 @@ __EOS__;
     public static function getDelivFeeList($deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('pref');
-        $col = 'fee';
+        $col = 'fee_id, fee, pref';
         $where = 'deliv_id = ?';
         $table = 'dtb_delivfee';
-        return $objQuery->getCol($col, $table, $where, array($deliv_id),
-                                 MDB2_FETCHMODE_ORDERED);
+        return $objQuery->select($col, $table, $where, array($deliv_id));
     }
 }

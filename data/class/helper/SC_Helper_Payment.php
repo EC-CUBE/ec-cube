@@ -73,9 +73,10 @@ class SC_Helper_Payment
      * @return void
      */
     public function save($sqlval) {
-        $payment_id = $sqlval['payment_id'];
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $payment_id = $sqlval['payment_id'];
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         // 新規登録
         if ($payment_id == '') {
             // INSERTの実行
@@ -86,6 +87,7 @@ class SC_Helper_Payment
         // 既存編集
         } else {
             unset($sqlval['creator_id']);
+            unset($sqlval['create_date']);
             $where = 'payment_id = ?';
             $objQuery->update('dtb_payment', $sqlval, $where, array($payment_id));
         }

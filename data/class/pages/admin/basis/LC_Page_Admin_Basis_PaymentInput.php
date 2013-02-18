@@ -214,7 +214,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex {
     function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '') {
 
         $sqlval = array_merge($objFormParam->getHashArray(), $this->objUpFile->getDBFileList());
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $sqlval['payment_id'] = $payment_id;
         $sqlval['creator_id'] = $member_id;
 

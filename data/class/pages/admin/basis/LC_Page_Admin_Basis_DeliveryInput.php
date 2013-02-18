@@ -70,7 +70,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
      * @return void
      */
     function action() {
-
+        $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($this->mode, $objFormParam);
         $objFormParam->setParam($_POST);
 
@@ -158,16 +158,13 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $sqlval['confirm_url'] = $arrRet['confirm_url'];
         $sqlval['product_type_id'] = $arrRet['product_type_id'];
         $sqlval['creator_id'] = $member_id;
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
 
         // お届け時間
         $sqlval['deliv_time'] = array();
         for ($cnt = 1; $cnt <= DELIVTIME_MAX; $cnt++) {
             $keyname = "deliv_time$cnt";
             if ($arrRet[$keyname] != '') {
-                $deliv_time = array();
-                $deliv_time['deliv_time'] = $arrRet[$keyname];
-                $sqlval['deliv_time'][$cnt] = $deliv_time;
+                $sqlval['deliv_time'][$cnt] = $arrRet[$keyname];
             }
         }
 
@@ -179,6 +176,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
                 $keyname = "fee$cnt";
                 if ($arrRet[$keyname] != '') {
                     $fee = array();
+                    $fee['fee_id'] = $cnt;
                     $fee['fee'] = $arrRet[$keyname];
                     $fee['pref'] = $cnt;
                     $sqlval['deliv_fee'][$cnt] = $fee;
@@ -188,13 +186,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
         // 支払い方法
         $sqlval['payment_ids'] = array();
-        $i = 1;
-        foreach ($arrRet['payment_ids'] as $val) {
-            $payment_ids = array();
-            $payment_ids['payment_id'] = $val;
-            $payment_ids['rank'] = $i;
-            $sqlval['payment_ids'][] = $payment_ids;
-            $i++;
+        foreach ($arrRet['payment_ids'] as $payment_id) {
+            $sqlval['payment_ids'][] = $payment_id;
         }
 
         $deliv_id = $objDelivery->save($sqlval);
@@ -204,7 +197,6 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
 
     /* 配送業者情報の取得 */
     function lfGetDelivData(&$objFormParam) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDelivery = new SC_Helper_Delivery_Ex();
 
         $deliv_id = $objFormParam->getValue('deliv_id');
@@ -223,11 +215,11 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         unset($arrDeliv['deliv_time']);
         // 配送料金
         $deliv_fee = array();
-        foreach ($arrDeliv['fee'] as $value) {
-            $deliv_fee[]['fee'] = $value;
+        foreach ($arrDeliv['deliv_fee'] as $value) {
+            $deliv_fee[]['fee'] = $value['fee'];
         }
         $objFormParam->setParamList($deliv_fee, 'fee');
-        unset($arrDeliv['fee']);
+        unset($arrDeliv['deliv_fee']);
         // 支払方法
         $objFormParam->setValue('payment_ids', $arrDeliv['payment_ids']);
         unset($arrDeliv['payment_ids']);
