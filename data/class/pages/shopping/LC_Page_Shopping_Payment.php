@@ -415,7 +415,16 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
         $arrResults = array();
         $arrResults['arrDelivTime'] = SC_Helper_Delivery_Ex::getDelivTime($deliv_id);
         $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
-        $arrResults['arrPayment'] = $objPurchase->getPaymentsByPrice($total, $deliv_id);
+        $payments_deliv = SC_Helper_Delivery_Ex::getPayments($deliv_id);
+        $objPayment = new SC_Helper_Payment_Ex();
+        $payments_total = $objPayment->getByPrice($total);
+        $arrPayment = array();
+        foreach ($payments_total as $payment) {
+            if (in_array($payment['payment_id'], $payments_deliv)) {
+                $arrPayment[] = $payment;
+            }
+        }
+        $arrResults['arrPayment'] = $arrPayment;
         $arrResults['img_show'] = $this->hasPaymentImage($arrResults['arrPayment']);
         return $arrResults;
     }

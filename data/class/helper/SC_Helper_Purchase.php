@@ -542,55 +542,6 @@ class SC_Helper_Purchase
     }
 
     /**
-     * 購入金額に応じた支払方法を取得する.
-     *
-     * @param integer $total 購入金額
-     * @param integer $deliv_id 配送業者ID
-     * @return array 購入金額に応じた支払方法の配列
-     */
-    function getPaymentsByPrice($total, $deliv_id)
-    {
-
-        $arrPaymentIds = SC_Helper_Delivery_Ex::getPayments($deliv_id);
-        if (SC_Utils_Ex::isBlank($arrPaymentIds)) {
-            return array();
-        }
-
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        // 削除されていない支払方法を取得
-        $where = 'del_flg = 0 AND payment_id IN (' . SC_Utils_Ex::repeatStrWithSeparator('?', count($arrPaymentIds)) . ')';
-        $objQuery->setOrder('rank DESC');
-        $payments = $objQuery->select('payment_id, payment_method, rule_max, upper_rule, note, payment_image, charge', 'dtb_payment', $where, $arrPaymentIds);
-        $arrPayment = array();
-        foreach ($payments as $data) {
-            // 下限と上限が設定されている
-            if (strlen($data['rule_max']) != 0 && strlen($data['upper_rule']) != 0) {
-                if ($data['rule_max'] <= $total && $data['upper_rule'] >= $total) {
-                    $arrPayment[] = $data;
-                }
-            }
-            // 下限のみ設定されている
-            elseif (strlen($data['rule_max']) != 0) {
-                if ($data['rule_max'] <= $total) {
-                    $arrPayment[] = $data;
-                }
-            }
-            // 上限のみ設定されている
-            elseif (strlen($data['upper_rule']) != 0) {
-                if ($data['upper_rule'] >= $total) {
-                    $arrPayment[] = $data;
-                }
-            }
-            // いずれも設定なし
-            else {
-                $arrPayment[] = $data;
-            }
-        }
-        return $arrPayment;
-    }
-
-    /**
      * お届け日一覧を取得する.
      */
     function getDelivDate(&$objCartSess, $productTypeId)

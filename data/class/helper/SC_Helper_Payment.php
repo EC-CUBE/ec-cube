@@ -57,7 +57,7 @@ class SC_Helper_Payment
     public function getList($has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'payment_id, payment_method, charge, rule_max, upper_rule, note, fix, charge_flg';
+        $col = 'payment_id, payment_method, payment_image, charge, rule_max, upper_rule, note, fix, charge_flg';
         $where = '';
         if (!$has_deleted) {
             $where .= 'del_flg = 0';
@@ -66,6 +66,44 @@ class SC_Helper_Payment
         $objQuery->setOrder('rank DESC');
         $arrRet = $objQuery->select($col, $table, $where);
         return $arrRet;
+    }
+
+    /**
+     * 購入金額に応じた支払方法を取得する.
+     *
+     * @param integer $total 購入金額
+     * @return array 購入金額に応じた支払方法の配列
+     */
+    function getByPrice($total)
+    {
+        // 削除されていない支払方法を取得
+        $payments = $this->getList();
+        $arrPayment = array();
+        foreach ($payments as $data) {
+            // 下限と上限が設定されている
+            if (strlen($data['rule_max']) != 0 && strlen($data['upper_rule']) != 0) {
+                if ($data['rule_max'] <= $total && $data['upper_rule'] >= $total) {
+                    $arrPayment[] = $data;
+                }
+            }
+            // 下限のみ設定されている
+            elseif (strlen($data['rule_max']) != 0) {
+                if ($data['rule_max'] <= $total) {
+                    $arrPayment[] = $data;
+                }
+            }
+            // 上限のみ設定されている
+            elseif (strlen($data['upper_rule']) != 0) {
+                if ($data['upper_rule'] >= $total) {
+                    $arrPayment[] = $data;
+                }
+            }
+            // いずれも設定なし
+            else {
+                $arrPayment[] = $data;
+            }
+        }
+        return $arrPayment;
     }
 
     /**
