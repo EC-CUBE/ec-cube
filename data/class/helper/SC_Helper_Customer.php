@@ -690,4 +690,25 @@ class SC_Helper_Customer
 
         return $exists;
     }
+
+    /**
+     * 会員を削除する処理
+     *
+     * @param integer $customer_id 会員ID
+     * @return boolean true:成功 false:失敗
+     */
+    public static function delete($customer_id)
+    {
+        $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id, 'del_flg = 0');
+        if (SC_Utils_Ex::isBlank($arrData)) {
+            //対象となるデータが見つからない。
+            return false;
+        }
+        // XXXX: 仮会員は物理削除となっていたが論理削除に変更。
+        $arrVal = array(
+            'del_flg' => '1',
+        );
+        SC_Helper_Customer_Ex::sfEditCustomerData($arrVal, $customer_id);
+        return true;
+    }
 }

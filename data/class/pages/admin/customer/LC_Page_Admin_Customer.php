@@ -186,17 +186,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      */
     function lfDoDeleteCustomer($customer_id)
     {
-        $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id, 'del_flg = 0');
-        if (SC_Utils_Ex::isBlank($arrData)) {
-            //対象となるデータが見つからない。
-            return false;
-        }
-        // XXXX: 仮会員は物理削除となっていたが論理削除に変更。
-        $arrVal = array(
-            'del_flg' => '1',
-        );
-        SC_Helper_Customer_Ex::sfEditCustomerData($arrVal, $customer_id);
-        return true;
+        return SC_Helper_Customer_Ex::delete($customer_id);
     }
 
     /**
