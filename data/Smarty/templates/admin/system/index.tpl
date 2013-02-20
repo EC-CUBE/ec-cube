@@ -31,6 +31,9 @@
         <!--▲ページ送り-->
     </div>
 
+    <div class="btn">
+        <a class="btn-action" href="javascript:;" onclick="win02('./input.php','input','620','450'); return false;"><span class="btn-next">メンバーを新規入力</span></a>
+    </div>
     <!--▼メンバー一覧ここから-->
     <table class="list">
         <col width="15%" />
@@ -40,9 +43,6 @@
         <col width="7.5%" />
         <col width="7.5%" />
         <col width="20%" />
-        <div class="btn">
-            <a class="btn-action" href="javascript:;" onclick="win02('./input.php','input','620','450'); return false;"><span class="btn-next">メンバーを新規入力</span></a>
-        </div>
         <tr>
             <th>権限</th>
             <th>名前</th>
@@ -58,8 +58,8 @@
             <td><!--{$list_data[data].name|h}--></td>
             <td><!--{$list_data[data].department|h}--></td>
             <!--{assign var="work" value=$list_data[data].work}--><td><!--{$arrWORK[$work]|h}--></td>
-            <td align="center"><a href="#" onClick="win02('./input.php?id=<!--{$list_data[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','620','450'); return false;">編集</a></td>
-            <td align="center"><!--{if $workmax > 1}--><a href="#" onClick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
+            <td align="center"><a href="#" onclick="win02('./input.php?id=<!--{$list_data[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','620','450'); return false;">編集</a></td>
+            <td align="center"><!--{if $workmax > 1}--><a href="#" onclick="fnDeleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
             <td align="center">
             <!--{$tpl_nomove}-->
             <!--{if !($smarty.section.data.first && $tpl_disppage eq 1)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=up&amp;pageno=<!--{$tpl_disppage}-->">上へ</a><!--{/if}-->

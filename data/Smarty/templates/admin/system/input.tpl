@@ -32,10 +32,10 @@ self.moveTo(20,20);self.focus();
 
 <form name="form1" id="form1" method="post" action="">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="<!--{$tpl_mode|h}-->">
-<input type="hidden" name="member_id" value="<!--{$tpl_member_id|h}-->">
-<input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->">
-<input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->">
+<input type="hidden" name="mode" value="<!--{$tpl_mode|h}-->" />
+<input type="hidden" name="member_id" value="<!--{$tpl_member_id|h}-->" />
+<input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->" />
+<input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->" />
 
 <h2>メンバー登録/編集</h2>
 

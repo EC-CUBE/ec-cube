@@ -115,7 +115,7 @@ function func_submit( id ){
                 <!--{/if}-->
             </td>
             <td><!--{$arr.name|h}--></td>
-            <td class="center"><a href="" onClick="return func_submit(<!--{$arr.product_id}-->)">決定</a></td>
+            <td class="center"><a href="" onclick="return func_submit(<!--{$arr.product_id}-->)">決定</a></td>
         </tr>
         <!--▲商品<!--{$smarty.foreach.loop.iteration}-->-->    
         <!--{/foreach}-->

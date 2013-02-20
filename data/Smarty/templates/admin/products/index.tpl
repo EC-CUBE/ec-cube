@@ -37,7 +37,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "none");
 
-            $('#' + inner_id).html('    URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
+            $('#' + inner_id).html('    URL <a href="#" onclick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
         }
     }else{
         for (i = 1; i <= cnt; i++) {
@@ -47,7 +47,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "");
 
-            $('#' + inner_id).html('    カテゴリ <a href="#" onClick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
+            $('#' + inner_id).html('    カテゴリ <a href="#" onclick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
         }
     }
 
@@ -234,7 +234,7 @@ function lfnDispChange(){
                 <th rowspan="2">複製</th>
             </tr>
             <tr>
-                <th nowrap="nowrap"><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
+                <th nowrap="nowrap"><a href="#" onclick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
             </tr>
 
             <!--{section name=cnt loop=$arrProducts}-->

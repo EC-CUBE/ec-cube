@@ -22,7 +22,7 @@
  */
 *}-->
 
-<script>
+<script type="text/javascript">
     function fnRestore(list_name) {
         if (window.confirm('リストアしますか?')) {
             document.body.style.cursor = 'wait';
@@ -100,7 +100,7 @@
         <h2>実行結果</h2>
         <div class="message">
             <!--{if $tpl_restore_err == false}-->
-                <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onClick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$tpl_restore_name|h}-->'; submit(); return false;"><span>エラーを無視してリストアする</span></a></div>
+                <div class="btn"><a class="btn-normal" href="javascript:;" name="restore_config" onclick="document.body.style.cursor = 'wait'; form1.mode.value='restore_config'; form1.list_name.value='<!--{$tpl_restore_name|h}-->'; submit(); return false;"><span>エラーを無視してリストアする</span></a></div>
             <!--{/if}-->
             <!--{$tpl_restore_msg|h}-->
         </div>

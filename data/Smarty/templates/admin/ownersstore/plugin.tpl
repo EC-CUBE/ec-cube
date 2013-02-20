@@ -132,7 +132,7 @@
             <td>
                 <!--{assign var=key value="plugin_file"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="file" name="<!--{ $key }-->" class="box45" size="43"  style="<!--{$arrErr[$key]|sfGetErrorColor}--> <!--{if $arrErr[$key]}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->">
+                <input type="file" name="<!--{ $key }-->" class="box45" size="43"  style="<!--{$arrErr[$key]|sfGetErrorColor}--> <!--{if $arrErr[$key]}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->" />
                 <a class="btn-action" href="javascript:;" onclick="install(); return false;"><span class="btn-next">インストール</span></a>
             </td>
         </tr>
@@ -156,7 +156,7 @@
                 <!--ロゴ-->
                 <td class="center plugin_img">
                     <!--{if $plugin.plugin_site_url != '' }-->
-                        <a href="?" onclick="win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$plugin.logo}-->" width="65" height="65"/></a>&nbsp;
+                        <a href="?" onclick="win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$plugin.logo}-->" width="65" height="65" /></a>&nbsp;
                     <!--{else}-->
                         <img src="<!--{$plugin.logo}-->" width="65" height="65"/>
                     <!--{/if}-->
@@ -202,9 +202,9 @@
                                 <a  href="javascript:;" name="uninstall" onclick="uninstall(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;">削除</a>&nbsp;|&nbsp;
                             <!-- 有効/無効 -->
                                 <!--{if $plugin.enable == $smarty.const.PLUGIN_ENABLE_TRUE}-->
-                                    <label><input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" id="login_memory" checked="checked">有効</input></label><br/>
+                                    <label><input id="plugin_enable" type="checkbox" name="disable" value="<!--{$plugin.plugin_id}-->" checked="checked" />有効</label><br/>
                                 <!--{else}-->
-                                    <label><input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" id="login_memory">有効にする</input></label><br/>
+                                    <label><input id="plugin_enable" type="checkbox" name="enable" value="<!--{$plugin.plugin_id}-->" />有効にする</label><br/>
                                 <!--{/if}-->
 
                                 <!-- アップデートリンク押下時に表示する. -->
@@ -217,7 +217,7 @@
                 <!--優先順位-->
                 <td class="center">
                     <span class="attention"><!--{$arrErr.priority[$plugin.plugin_id]}--></span>
-                    <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}-->" value="<!--{$plugin.priority|h}-->" size="1" class="priority" />
+                    <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}--> priority" value="<!--{$plugin.priority|h}-->" size="1" />
                     <a class="btn-action" href="javascript:;" onclick="update_priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">変更</span></a><br/>
                     <span><!--{$plugin.priority_message}--></span>
                 </td>

@@ -56,7 +56,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
         </tr>
         <!--{if $arrForm.mail_method.value ne 2}-->
             <tr>
-                <td colspan="2"><a href="javascript:;" onClick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a>
+                <td colspan="2"><a href="javascript:;" onclick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a>
             </tr>
         <!--{/if}-->
         <tr>
@@ -68,7 +68,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
     <div class="btn-area">
         <ul>
             <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" name="subm03" onClick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
         </ul>
     </div>
 </div>

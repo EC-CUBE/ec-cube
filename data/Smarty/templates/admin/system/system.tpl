@@ -28,7 +28,7 @@
         <tr>
             <th>
             <!--{$info.title|h}-->
-            </td>
+            </th>
             <td>
             <!--{$info.value|h|nl2br}-->
             </td>
