@@ -289,7 +289,7 @@
         <span class="attention">※ 商品が選択されていません。</span>
     <!--{/if}-->
 
-    <table class="list" id="order-edit-products">
+    <table class="list order-edit-products">
         <tr>
             <th class="id">商品コード</th>
             <th class="name">商品名/規格1/規格2</th>
@@ -445,7 +445,7 @@
             <input type="hidden" name="<!--{$product_quantity}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$product_quantity]|h}-->" />
 
             <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
-                <table class="list" id="order-edit-products">
+                <table class="list order-edit-products">
                     <tr>
                         <th class="id">商品コード</th>
                         <th class="name">商品名/規格1/規格2</th>
@@ -485,7 +485,7 @@
                             <td class="right">
                                 <!--{assign var=key value="shipment_quantity"}-->
                                 <span class="attention"><!--{$arrErr[$key][$shipping_index][$item_index]}--></span>
-                                <input type="text" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->"　size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" />
+                                <input type="text" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" />
                             </td>
                         </tr>
                     <!--{/section}-->
@@ -594,7 +594,7 @@
                     <!--{assign var=key value="time_id"}-->
                     <span class="attention"><!--{$arrErr[$key][$shipping_index]}--></span>
                     <select name="<!--{$key}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key][$shipping_index]|sfGetErrorColor}-->">
-                        <option value="" selected="0">指定無し</option>
+                        <option value="">指定無し</option>
                         <!--{html_options options=$arrDelivTime selected=$arrShipping[$key]}-->
                     </select>
                 </td>

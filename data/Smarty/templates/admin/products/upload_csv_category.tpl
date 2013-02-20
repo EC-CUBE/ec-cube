@@ -55,7 +55,7 @@
             <th>登録情報</th>
             <td>
                 <!--{foreach name=title key=key item=item from=$arrTitle}-->
-                <!--{$smarty.foreach.title.iteration}-->項目：<!--{$item}--><br>
+                <!--{$smarty.foreach.title.iteration}-->項目：<!--{$item}--><br />
                 <!--{/foreach}-->
             </td>
         </tr>

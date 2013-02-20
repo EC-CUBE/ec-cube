@@ -234,7 +234,7 @@ function lfnDispChange(){
                 <th rowspan="2">複製</th>
             </tr>
             <tr>
-                <th nowrap><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
+                <th nowrap="nowrap"><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
             </tr>
 
             <!--{section name=cnt loop=$arrProducts}-->
@@ -243,7 +243,7 @@ function lfnDispChange(){
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                     <td class="id" rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
                     <td class="thumbnail" rowspan="2">
-                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">            </td>
+                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" />            </td>
                     <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
                         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
                             <br />～ <!--{$arrProducts[cnt].product_code_max|h}-->

@@ -33,9 +33,9 @@
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="edit" />
-<input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id|h}-->">
-<input type="hidden" name="category_id" value="<!--{$arrForm.category_id|h}-->">
-<input type="hidden" name="keySet" value="">
+<input type="hidden" name="parent_category_id" value="<!--{$arrForm.parent_category_id|h}-->" />
+<input type="hidden" name="category_id" value="<!--{$arrForm.category_id|h}-->" />
+<input type="hidden" name="keySet" value="" />
 <div id="products" class="contents-main">
     <div class="btn">
         <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
@@ -44,7 +44,7 @@
 
     <!--{* ▼画面左 *}-->
     <div id="products-category-left">
-        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ" />&nbsp;ホーム</a><br />
         <!--{section name=cnt loop=$arrTree}-->
             <!--{assign var=level value="`$arrTree[cnt].level`}-->
 
@@ -62,13 +62,13 @@
             <!--{if $arrTree[cnt].level != $smarty.const.LEVEL_MAX}-->
                 <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false;">
                 <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
-                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ">
+                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ" />
                 <!--{else}-->
-                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
+                    <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ" />
                 <!--{/if}-->
                 <!--{$disp_name|sfCutString:10:false|h}--></a><br />
             <!--{else}-->
-                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
+                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ" />
                 <!--{$disp_name|sfCutString:10:false|h}--></a><br />
             <!--{/if}-->
 

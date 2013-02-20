@@ -157,7 +157,7 @@ function lfnSortItem(mode,data){
                 <td>
                     <!--{* 移動 *}-->
                     <!--{if $smarty.section.cnt.iteration != 1 && $arrItems[$smarty.section.cnt.iteration].product_id}-->
-                        <a href="?" onclick="lfnSortItem('up',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;">上へ</a><br>&nbsp;
+                        <a href="?" onclick="lfnSortItem('up',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;">上へ</a><br />&nbsp;
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $tpl_disp_max && $arrItems[$smarty.section.cnt.iteration].product_id}-->
                         <a href="?" onclick="lfnSortItem('down',<!--{$arrItems[$smarty.section.cnt.iteration].rank}-->); return false;">下へ</a>

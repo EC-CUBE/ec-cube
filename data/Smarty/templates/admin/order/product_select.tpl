@@ -190,7 +190,6 @@
         <!--{section name=cnt loop=$arrProducts}-->
             <!--{assign var=id value=$arrProducts[cnt].product_id}-->
             <form name="product_form<!--{$id|h}-->" action="?" onsubmit="return false;">
-                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <!--▼商品<!--{$smarty.section.cnt.iteration}-->-->
                 <!--{assign var=status value="`$arrProducts[cnt].status`"}-->
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
@@ -198,6 +197,7 @@
                         <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                     </td>
                     <td>
+                        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                         <!--{assign var=codemin value=`$arrProducts[cnt].product_code_min`}-->
                         <!--{assign var=codemax value=`$arrProducts[cnt].product_code_max`}-->
                         <!--{* 商品コード *}-->

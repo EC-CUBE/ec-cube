@@ -193,16 +193,16 @@
         <col width="8%" />
         <col width="8%" />
         <tr>
-            <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br>登録</label></th>
-            <th>規格1<br>(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
-            <th>規格2<br>(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
+            <th><input type="checkbox" onclick="fnAllCheck(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br />登録</label></th>
+            <th>規格1<br />(<!--{$arrClass[$class_id1]|default:"未選択"|h}-->)</th>
+            <th>規格2<br />(<!--{$arrClass[$class_id2]|default:"未選択"|h}-->)</th>
             <th>商品コード</th>
             <th>在庫数<span class="attention">*</span></th>
             <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
             <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
             <th>商品種別<span class="attention">*</span></th>
-            <th>ダウンロード<br>ファイル名<span class="red"><br>上限<!--{$smarty.const.STEXT_LEN}-->文字</span></th>
-            <th>ダウンロード商品用<br>ファイル</th>
+            <th>ダウンロード<br />ファイル名<span class="red"><br />上限<!--{$smarty.const.STEXT_LEN}-->文字</span></th>
+            <th>ダウンロード商品用<br />ファイル</th>
         </tr>
         <!--{section name=cnt loop=$arrForm.total.value}-->
             <!--{assign var=index value=$smarty.section.cnt.index}-->

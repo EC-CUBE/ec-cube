@@ -96,7 +96,7 @@
                 </td>
             </tr>
             <tr>
-                <th>ダウンロード商品用<BR />ファイル</th>
+                <th>ダウンロード商品用<br />ファイル</th>
                 <td>
                     <!--{if $arrForm.down_realfilename != ""}-->
                         <!--{$arrForm.down_realfilename|h}-->
@@ -270,7 +270,7 @@
                 <tr>
                     <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
-                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->">
+                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                         <!--{/if}-->
                     </th>
                     <td>
