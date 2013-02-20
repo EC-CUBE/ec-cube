@@ -29,6 +29,9 @@ class SC_Date
     var $day;
     var $end_year;
 
+    public static $arrHoliday = NULL;
+    public static $arrRegularHoliday = NULL;
+
     // コンストラクタ
     function __construct($start_year='', $end_year='')
     {
@@ -183,5 +186,59 @@ class SC_Date
 
         $minutes_array = array('00'=>'00', '30'=>'30');
         return $minutes_array;
+    }
+
+    /**
+     * 休日の判定.
+     * 
+     * @param integer $year
+     * @param integer $month
+     * @param integer $day
+     * @return boolean 休日の場合はtrue
+     */
+    public function isHoliday($year, $month, $day)
+    {
+        is_null(SC_Date_Ex::$arrHoliday) and $this->setArrHoliday();
+        is_null(SC_Date_Ex::$arrRegularHoliday) and $this->setRegularHoliday();
+
+        if (!empty(SC_Date_Ex::$arrHoliday[$month])) {
+            if (in_array($day, SC_Date_Ex::$arrHoliday[$month])) {
+                return true;
+            }
+        }
+        if (!empty(SC_Date_Ex::$arrRegularHoliday)) {
+            $day = date('w', mktime(0,0,0 ,$month, $day, $year));
+            if (in_array($day, SC_Date_Ex::$arrRegularHoliday)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 休日情報をスタティック変数にセット.
+     * 
+     * @return void
+     */
+    private function setArrHoliday()
+    {
+        $objHoliday = new SC_Helper_Holiday_Ex();
+        $holiday = $objHoliday->getList();
+        $arrHoliday = array();
+        foreach ($holiday AS $val) {
+            $arrHoliday[$val['month']][] = $val['day'];
+        }
+        SC_Date_Ex::$arrHoliday = $arrHoliday;
+    }
+
+    /**
+     * 定休日情報をスタティック変数にセット.
+     * 
+     * @return void
+     */
+    private function setRegularHoliday()
+    {
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
+        SC_Date_Ex::$arrRegularHoliday = explode('|', $arrInfo['regular_holiday_ids']);
     }
 }
