@@ -61,7 +61,7 @@
                 <input type="text" name="kana01"
                     value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->"class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
+                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
                 <input type="text" name="kana02"
                     value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
@@ -92,7 +92,7 @@
             <dd>
                 <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
                 <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->" class="boxHarf top data-role-none">
-                    <option value="" selected="selected">都道府県</option>
+                    <option value="">都道府県</option>
                     <!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}-->
                 </select>
 

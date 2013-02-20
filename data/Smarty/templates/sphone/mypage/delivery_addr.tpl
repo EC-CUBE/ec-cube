@@ -24,7 +24,7 @@
 
 <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`popup_header.tpl" subtitle="新しいお届け先の追加・変更"}-->
 
-<section id="windowcolumn">
+<section>
     <h2 class="title"><!--{$tpl_title|h}--></h2>
 
     <!--★インフォメーション★-->

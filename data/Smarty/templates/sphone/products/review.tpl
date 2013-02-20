@@ -78,7 +78,7 @@
             </tr>
         </table>
         <div class="btn_area">
-                <p><input type="submit" value="次へ" class="btn data-role-none" alt="次へ" name="next" id="next" /></p>
+                <p><input type="submit" value="次へ" class="btn data-role-none" name="next" id="next" /></p>
             </div>
     </form>
 </div>

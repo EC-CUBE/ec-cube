@@ -52,7 +52,7 @@
         </div>
         <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
             <h3>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
-        <div id="historyBox">	
+        <div class="historyBox">	
         <p>
             <!--{if $isMultiple}-->
                     <!--{foreach item=item from=$shippingItem.shipment_item}-->
