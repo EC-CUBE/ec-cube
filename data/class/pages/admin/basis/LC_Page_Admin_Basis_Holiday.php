@@ -71,7 +71,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
     function action()
     {
 
-        $objDb = new SC_Helper_DB_Ex();
+        $objHoliday = new SC_Helper_Holiday_Ex();
 
         $objDate = new SC_Date_Ex();
         $this->arrMonth = $objDate->getMonth();
@@ -79,74 +79,59 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
 
         $mode = $this->getMode();
 
-        if (!empty($_POST)) {
+        $objFormParam = new SC_FormParam_Ex();
+        $this->lfInitParam($mode, $objFormParam);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
 
-            $objFormParam = new SC_FormParam_Ex();
-            $this->lfInitParam($mode, $objFormParam);
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
-            $holiday_id = $objFormParam->getValue('holiday_id');
-
-            $this->arrErr = $this->lfCheckError($mode, $objFormParam);
-            if (!empty($this->arrErr['holiday_id'])) {
-                trigger_error('', E_USER_ERROR);
-                return;
-            }
-
-            $post = $objFormParam->getHashArray();
-        }
+        $holiday_id = $objFormParam->getValue('holiday_id');
 
         // 要求判定
         switch ($mode) {
             // 編集処理
             case 'edit':
-                // POST値の引き継ぎ
-                $this->arrForm = $this->arrForm = $_POST;
+                $this->arrErr = $this->lfCheckError($objFormParam, $objHoliday);
+                if (!SC_Utils_Ex::isBlank($this->arrErr['holiday_id'])) {
+                    trigger_error('', E_USER_ERROR);
+                    return;
+                }
 
                 if (count($this->arrErr) <= 0) {
-                    // 新規作成
-                    if ($post['holiday_id'] == '') {
-                        $this->lfInsertClass($this->arrForm, $_SESSION['member_id']);
+                    // POST値の引き継ぎ
+                    $arrParam = $objFormParam->getHashArray();
+                    // 登録実行
+                    $res_holiday_id = $this->doRegist($holiday_id, $arrParam, $objHoliday);
+                    if ($res_holiday_id !== FALSE) {
+                        // 完了メッセージ
+                        $holiday_id = $res_holiday_id;
+                        $this->tpl_onload = "alert('登録が完了しました。');";
                     }
-                    // 既存編集
-                    else {
-                        $this->lfUpdateClass($this->arrForm, $post['holiday_id']);
-                    }
-
-                    // 再表示
-                    $this->objDisplay->reload();
-                } else {
-                    // POSTデータを引き継ぐ
-                    $this->tpl_holiday_id = $post['holiday_id'];
                 }
+                // POSTデータを引き継ぐ
+                $this->tpl_holiday_id = $holiday_id;
+
                 break;
             // 削除
             case 'delete':
-                $objDb->sfDeleteRankRecord('dtb_holiday', 'holiday_id', $post['holiday_id'], '', true);
-
-                // 再表示
-                $this->objDisplay->reload();
+                $objHoliday->delete($holiday_id);
                 break;
             // 編集前処理
             case 'pre_edit':
                 // 編集項目を取得する。
-                $arrHolidayData = $this->lfGetHolidayDataByHolidayID($post['holiday_id']);
+                $arrHolidayData = $objHoliday->get($holiday_id);
+                $objFormParam->setParam($arrHolidayData);
 
-                // 入力項目にカテゴリ名を入力する。
-                $this->arrForm['title'] = $arrHolidayData[0]['title'];
-                $this->arrForm['month'] = $arrHolidayData[0]['month'];
-                $this->arrForm['day'] = $arrHolidayData[0]['day'];
                 // POSTデータを引き継ぐ
-                $this->tpl_holiday_id = $post['holiday_id'];
+                $this->tpl_holiday_id = $holiday_id;
                 break;
             case 'down':
-                $objDb->sfRankDown('dtb_holiday', 'holiday_id', $post['holiday_id']);
+                $objHoliday->rankDown($holiday_id);
 
                 // 再表示
                 $this->objDisplay->reload();
                 break;
             case 'up':
-                $objDb->sfRankUp('dtb_holiday', 'holiday_id', $post['holiday_id']);
+                $objHoliday->rankUp($holiday_id);
 
                 // 再表示
                 $this->objDisplay->reload();
@@ -155,10 +140,9 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
                 break;
         }
 
-        $this->arrHoliday = $this->lfGetHolidayList();
-        // POSTデータを引き継ぐ
-        $this->tpl_holiday_id = $holiday_id;
+        $this->arrForm = $objFormParam->getFormParamList();
 
+        $this->arrHoliday = $objHoliday->getList();
     }
 
     /**
@@ -171,71 +155,36 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
         parent::destroy();
     }
 
-    function lfGetHolidayDataByHolidayID($holiday_id)
+    /**
+     * 登録処理を実行.
+     * 
+     * @param integer $holiday_id
+     * @param array $sqlval
+     * @param object $objHoliday
+     * @return multiple
+     */
+    function doRegist($holiday_id, $sqlval, SC_Helper_Holiday_Ex $objHoliday)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $where = 'holiday_id = ?';
-        return $objQuery->select('title, month, day', 'dtb_holiday', $where, array($holiday_id));
-    }
-
-    function lfGetHolidayList()
-    {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $where = 'del_flg <> 1';
-        $objQuery->setOrder('rank DESC');
-        return $objQuery->select('holiday_id, title, month, day', 'dtb_holiday', $where);
-    }
-
-    /* DBへの挿入 */
-    function lfInsertClass($arrData, $member_id)
-    {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        // INSERTする値を作成する。
-        $sqlval['title'] = $arrData['title'];
-        $sqlval['month'] = $arrData['month'];
-        $sqlval['day'] = $arrData['day'];
-        $sqlval['creator_id'] = $member_id;
-        $sqlval['rank'] = $objQuery->max('rank', 'dtb_holiday') + 1;
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-        // INSERTの実行
-        $sqlval['holiday_id'] = $objQuery->nextVal('dtb_holiday_holiday_id');
-        $ret = $objQuery->insert('dtb_holiday', $sqlval);
-        return $ret;
-    }
-
-    /* DBへの更新 */
-    function lfUpdateClass($arrData)
-    {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        // UPDATEする値を作成する。
-        $sqlval['title'] = $arrData['title'];
-        $sqlval['month'] = $arrData['month'];
-        $sqlval['day'] = $arrData['day'];
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = 'holiday_id = ?';
-        // UPDATEの実行
-        $ret = $objQuery->update('dtb_holiday', $sqlval, $where, array($arrData['holiday_id']));
-        return $ret;
+        $sqlval['holiday_id'] = $holiday_id;
+        $sqlval['creator_id'] = $_SESSION['member_id'];
+        return $objHoliday->save($sqlval);
     }
 
     function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {
             case 'edit':
+            case 'pre_edit':
                 $objFormParam->addParam('タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 $objFormParam->addParam('月', 'month', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 $objFormParam->addParam('日', 'day', INT_LEN, 'n', array('SELECT_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                // breakしない
-            case 'delete':
-            case 'pre_edit':
-            case 'down':
-            case 'up':
                 $objFormParam->addParam('定休日ID', 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
+            case 'delete':
+            case 'down':
+            case 'up':
             default:
+                $objFormParam->addParam('定休日ID', 'holiday_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
                 break;
         }
     }
@@ -243,29 +192,18 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック
      *
-     * @param string $mode
+     * @param object $objFormParam
+     * @param object $objHoliday
      * @return array
      */
-    function lfCheckError($mode, &$objFormParam)
+    function lfCheckError(&$objFormParam, SC_Helper_Holiday_Ex &$objHoliday)
     {
-        $objFormParam->convParam();
         $arrErr = $objFormParam->checkError();
-        $post = $objFormParam->getHashArray();
+        $arrForm = $objFormParam->getHashArray();
 
-        if (!isset($arrErr['date'])) {
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $where = 'del_flg = 0 AND month = ? AND day = ?';
-            $arrWhereVal = array($post['month'], $post['day']);
-            if (!empty($post['holiday_id'])) {
-                $where .= ' AND holiday_id <> ?';
-                $arrWhereVal[] = $post['holiday_id'];
-            }
-            $arrRet = $objQuery->select('count(holiday_id) as count', 'dtb_holiday', $where, $arrWhereVal);
-
-            // 編集中のレコード以外に同じ日付が存在する場合
-            if ($arrRet[0]['count'] > 0) {
-                $arrErr['date'] = '※ 既に同じ日付の登録が存在します。<br>';
-            }
+        // 編集中のレコード以外に同じ日付が存在する場合
+        if ($objHoliday->isDateExist($arrForm['month'], $arrForm['day'], $arrForm['holiday_id'])) {
+            $arrErr['date'] = '※ 既に同じ日付の登録が存在します。<br>';
         }
         return $arrErr;
     }

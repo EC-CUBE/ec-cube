@@ -33,7 +33,7 @@
             <th>タイトル<span class="attention"> *</span></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
-                <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
+                <input type="text" name="title" value="<!--{$arrForm.title.value|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
                 <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -47,11 +47,11 @@
                 <!--{/if}-->
                 <select name="month" style="<!--{$arrErr.month|sfGetErrorColor}-->">
                     <option value="">--</option>
-                    <!--{html_options options=$arrMonth selected=$arrForm.month}-->
+                    <!--{html_options options=$arrMonth selected=$arrForm.month.value}-->
                 </select>月
                 <select name="day" style="<!--{$arrErr.day|sfGetErrorColor}-->">
                     <option value="">--</option>
-                    <!--{html_options options=$arrDay selected=$arrForm.day}-->
+                    <!--{html_options options=$arrDay selected=$arrForm.day.value}-->
                 </select>日
                 <br />
                 <span class="attention">振替休日は自動設定されないので、振替え先の日付を設定してください。</span>
