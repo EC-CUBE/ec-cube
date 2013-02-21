@@ -314,7 +314,9 @@ __EOS__;
 
         // メーカー検索条件
         if (strlen($arrSearchData['maker_id']) > 0) {
-            $arrSearch['maker']     = $objQuery->get('name', 'dtb_maker', 'maker_id = ?', array($arrSearchData['maker_id']));
+            $objMaker = new SC_Helper_Maker_Ex();
+            $maker = $objMaker->get($arrSearchData['maker_id']);
+            $arrSearch['maker']     = $maker['name'];
         }
 
         // 商品名検索条件

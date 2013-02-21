@@ -75,7 +75,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
-        $this->arrMaker = SC_Helper_DB_Ex::sfGetIDValueList('dtb_maker', 'maker_id', 'name');
+        $this->arrMaker = SC_Helper_Maker_Ex::getIDValueList();
         $this->arrPayments = SC_Helper_Payment_Ex::getIDValueList();
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
