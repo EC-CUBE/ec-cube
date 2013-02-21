@@ -58,7 +58,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
 
-        $objDate = new SC_Date();
+        $objDate = new SC_Date_Ex();
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE('Y'));
