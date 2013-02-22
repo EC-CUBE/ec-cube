@@ -58,11 +58,10 @@ class LC_Page_RSS extends LC_Page_Ex
     function process()
     {
 
-        $objQuery = SC_Query_Ex::getSingletonInstance();
         $objView = new SC_SiteView_Ex(false);
 
         //新着情報を取得
-        $arrNews = $this->lfGetNews($objQuery);
+        $arrNews = $this->lfGetNews();
 
         //キャッシュしない(念のため)
         header('pragma: no-cache');
@@ -100,31 +99,23 @@ class LC_Page_RSS extends LC_Page_Ex
     /**
      * 新着情報を取得する
      *
-     * @param SC_Query $objQuery DB操作クラス
      * @return array $arrNews 取得結果を配列で返す
      */
-    function lfGetNews(&$objQuery)
+    function lfGetNews()
     {
-        $col = '';
-        $col .= 'news_id ';        // 新着情報ID
-        $col .= ',news_title ';    // 新着情報タイトル
-        $col .= ',news_comment ';  // 新着情報本文
-        $col .= ',news_date ';     // 日付
-        $col .= ',news_url ';      // 新着情報URL
-        $col .= ',news_select ';   // 新着情報の区分(1:URL、2:本文)
-        $col .= ',(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ';    // 店名
-        $col .= ',(SELECT email04 FROM dtb_baseinfo limit 1) AS email ';           // 代表Emailアドレス
-        $from = 'dtb_news';
-        $where = "del_flg = '0'";
-        $order = 'rank DESC';
-        $objQuery->setOrder($order);
-        $arrNews = $objQuery->select($col,$from,$where);
+        $objNews = new SC_Helper_News_Ex();
+        $arrNews = $objNews->getList();
+
+        $objDb = new SC_Helper_DB_Ex();
+        $arrInfo = $objDb->sfGetBasisData(FALSE, 'shop_name, email04');
 
         // RSS用に変換
         foreach ($arrNews as $key => $value) {
             $netUrlHttpUrl = new Net_URL(HTTP_URL);
 
             $row =& $arrNews[$key];
+            $row['shop_name'] = $arrInfo['shop_name'];
+            $row['email'] = $arrInfo['email04'];
             // 日付
             $row['news_date'] = date('r', strtotime($row['news_date']));
             // 新着情報URL

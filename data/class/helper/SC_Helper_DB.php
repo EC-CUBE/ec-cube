@@ -1609,4 +1609,19 @@ __EOS__;
             GC_Utils_Ex::gfPrintLog('dtb_baseinfo に INSERT を実行しました。');
         }
     }
+
+    /**
+     * レコード件数を計算.
+     * 
+     * @param string $table
+     * @param string $where
+     * @param array $arrval
+     * @return integer レコード件数
+     */
+    public function countRecords($table, $where = '', $arrval = array())
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $col = 'COUNT(*)';
+        return $objQuery->get($col, $table, $where, $arrval);
+    }
 }

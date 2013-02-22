@@ -22,54 +22,11 @@
  */
 *}-->
 
-<script type="text/javascript">
-<!--
-
-function func_regist(url) {
-    res = confirm('この内容で<!--{if $edit_mode eq "on"}-->編集<!--{else}-->登録<!--{/if}-->しても宜しいですか？');
-    if(res == true) {
-        document.form1.mode.value = 'regist';
-        document.form1.submit();
-        return false;
-    }
-    return false;
-}
-
-function func_edit(news_id) {
-    document.form1.mode.value = "search";
-    document.form1.news_id.value = news_id;
-    document.form1.submit();
-    return false;
-}
-
-function func_del(news_id) {
-    res = confirm('この新着情報を削除しても宜しいですか？');
-    if(res == true) {
-        document.form1.mode.value = "delete";
-        document.form1.news_id.value = news_id;
-        document.form1.submit();
-    }
-    return false;
-}
-
-function func_rankMove(term,news_id) {
-    document.form1.mode.value = "move";
-    document.form1.news_id.value = news_id;
-    document.form1.term.value = term;
-    document.form1.submit();
-    return false;
-}
-
--->
-</script>
-
-
 <div id="admin-contents" class="contents-main">
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
-<input type="hidden" name="news_id" value="<!--{$arrForm.news_id|h}-->" />
-<input type="hidden" name="term" value="" />
+<input type="hidden" name="news_id" value="<!--{$arrForm.news_id.value|h}-->" />
     <!--{* ▼登録テーブルここから *}-->
     <table>
         <tr>
@@ -78,15 +35,15 @@ function func_rankMove(term,news_id) {
                 <!--{if $arrErr.year || $arrErr.month || $arrErr.day}--><span class="attention"><!--{$arrErr.year}--><!--{$arrErr.month}--><!--{$arrErr.day}--></span><!--{/if}-->
                 <select name="year" <!--{if $arrErr.year || $arrErr.month || $arrErr.day }-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
                     <option value="" selected="selected">----</option>
-                    <!--{html_options options=$arrYear selected=$arrForm.year}-->
+                    <!--{html_options options=$arrYear selected=$arrForm.year.value}-->
                 </select>年
                 <select name="month" <!--{if $arrErr.year || $arrErr.month || $arrErr.day}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
                     <option value="" selected="selected">--</option>
-                    <!--{html_options options=$arrMonth selected=$arrForm.month}-->
+                    <!--{html_options options=$arrMonth selected=$arrForm.month.value}-->
                 </select>月
                 <select name="day" <!--{if $arrErr.year || $arrErr.month || $arrErr.day}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
                     <option value="" selected="selected">--</option>
-                    <!--{html_options options=$arrDay selected=$arrForm.day}-->
+                    <!--{html_options options=$arrDay selected=$arrForm.day.value}-->
                 </select>日
             </td>
         </tr>
@@ -94,7 +51,7 @@ function func_rankMove(term,news_id) {
             <th>タイトル<span class="attention"> *</span></th>
             <td>
                 <!--{if $arrErr.news_title}--><span class="attention"><!--{$arrErr.news_title}--></span><!--{/if}-->
-                <textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><!--{"\n"}--><!--{$arrForm.news_title|h}--></textarea><br />
+                <textarea name="news_title" cols="60" rows="8" class="area60" maxlength="<!--{$smarty.const.MTEXT_LEN}-->" <!--{if $arrErr.news_title}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->><!--{"\n"}--><!--{$arrForm.news_title.value|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.MTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -102,19 +59,19 @@ function func_rankMove(term,news_id) {
             <th>URL</th>
             <td>
                 <span class="attention"><!--{$arrErr.news_url}--></span>
-                <input type="text" name="news_url" size="60" class="box60"    value="<!--{$arrForm.news_url|h}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->" />
+                <input type="text" name="news_url" size="60" class="box60"    value="<!--{$arrForm.news_url.value|h}-->" <!--{if $arrErr.news_url}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> maxlength="<!--{$smarty.const.URL_LEN}-->" />
                 <span class="attention"> (上限<!--{$smarty.const.URL_LEN}-->文字)</span>
             </td>
         </tr>
         <tr>
             <th>リンク</th>
-            <td><label><input type="checkbox" name="link_method" value="2" <!--{if $arrForm.link_method eq 2}--> checked <!--{/if}--> /> 別ウィンドウで開く</label></td>
+            <td><label><input type="checkbox" name="link_method" value="2" <!--{if $arrForm.link_method.value eq 2}--> checked <!--{/if}--> /> 別ウィンドウで開く</label></td>
         </tr>
         <tr>
             <th>本文作成</th>
             <td>
                 <!--{if $arrErr.news_comment}--><span class="attention"><!--{$arrErr.news_comment}--></span><!--{/if}-->
-                <textarea name="news_comment" cols="60" rows="8" wrap="soft" class="area60" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="background-color:<!--{if $arrErr.news_comment}--><!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><!--{"\n"}--><!--{$arrForm.news_comment|h}--></textarea><br />
+                <textarea name="news_comment" cols="60" rows="8" wrap="soft" class="area60" maxlength="<!--{$smarty.const.LTEXT_LEN}-->" style="background-color:<!--{if $arrErr.news_comment}--><!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->"><!--{"\n"}--><!--{$arrForm.news_comment.value|h}--></textarea><br />
                 <span class="attention"> (上限3000文字)</span>
             </td>
         </tr>
@@ -123,7 +80,7 @@ function func_rankMove(term,news_id) {
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="return func_regist();"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>
 </form>
@@ -136,7 +93,6 @@ function func_rankMove(term,news_id) {
     <form name="move" id="move" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="moveRankSet" />
-    <input type="hidden" name="term" value="setposition" />
     <input type="hidden" name="news_id" value="" />
     <input type="hidden" name="moveposition" value="" />
     <input type="hidden" name="rank" value="" />
@@ -169,17 +125,22 @@ function func_rankMove(term,news_id) {
             </td>
             <td>
                 <!--{if $arrNews[data].news_id != $tpl_news_id}-->
-                <a href="#" onclick="return func_edit('<!--{$arrNews[data].news_id|h}-->');">編集</a>
+                <a href="#" onclick="fnFormModeSubmit('move','pre_edit','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">編集</a>
                 <!--{else}-->
                 編集中
                 <!--{/if}-->
             </td>
-            <td><a href="#" onclick="return func_del('<!--{$arrNews[data].news_id|h}-->');">削除</a></td>
+            <td><a href="#" onclick="fnFormModeSubmit('move','delete','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">削除</a></td>
             <td>
-            <!--{if count($arrNews) != 1}-->
-            <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;">移動</a><br />
-            <!--{/if}-->
-            <!--{if $arrNews[data].rank ne $max_rank}--><a href="#" onclick="return func_rankMove('up', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');">上へ</a><!--{/if}-->　<!--{if $arrNews[data].rank ne 1}--><a href="#" onclick="return func_rankMove('down', '<!--{$arrNews[data].news_id|h}-->', '<!--{$max_rank|h}-->');">下へ</a><!--{/if}-->
+                <!--{if count($arrNews) != 1}-->
+                <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;">移動</a><br />
+                <!--{/if}-->
+                <!--{if $smarty.section.data.iteration != 1}-->
+                <a href="?" onclick="fnFormModeSubmit('move','up','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">上へ</a>
+                <!--{/if}-->
+                <!--{if !$smarty.section.data.last}-->
+                <a href="?" onclick="fnFormModeSubmit('move','down','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">下へ</a>
+                <!--{/if}-->
             </td>
         </tr>
         <!--{sectionelse}-->
