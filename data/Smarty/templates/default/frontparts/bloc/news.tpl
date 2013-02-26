@@ -26,7 +26,7 @@
         <div class="block_body">
             <div class="news_contents">
             <!--{section name=data loop=$arrNews}-->
-            <!--{assign var="date_array" value="-"|explode:$arrNews[data].news_date_disp}-->
+            <!--{assign var="date_array" value="-"|explode:$arrNews[data].cast_news_date}-->
             <dl class="newslist">
                 <dt><!--{$date_array[0]}-->年<!--{$date_array[1]}-->月<!--{$date_array[2]}-->日</dt>
                 <dt>
