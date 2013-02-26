@@ -72,6 +72,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
     {
 
         $masterData = new SC_DB_MasterData_Ex();
+        $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
 
         $mode = $this->getMode();
 
@@ -89,9 +90,9 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
 
         switch ($mode) {
             case 'id_set':
-                    $result = $this->lfGetMailTemplateByTemplateID($post['template_id']);
-                    if ($result) {
-                        $this->arrForm = $result[0];
+                    $mailtemplate = $objMailtemplate->get($post['template_id']);
+                    if ($mailtemplate) {
+                        $this->arrForm = $mailtemplate;
                     } else {
                         $this->arrForm['template_id'] = $post['template_id'];
                     }
@@ -105,7 +106,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
 
                     } else {
                         // 正常
-                        $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
+                        $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id'], $objMailtemplate);
 
                         // 完了メッセージ
                         $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
@@ -128,30 +129,10 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
         parent::destroy();
     }
 
-    function lfGetMailTemplateByTemplateID($template_id)
+    function lfRegistMailTemplate($post, $member_id, SC_Helper_Mailtemplate_Ex $objMailtemplate)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
-        return $objQuery->getAll($sql, array($template_id));
-    }
-
-    function lfRegistMailTemplate($post, $member_id)
-    {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
         $post['creator_id'] = $member_id;
-        $post['update_date'] = 'CURRENT_TIMESTAMP';
-
-        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
-        $template_data = $objQuery->getAll($sql, array($post['template_id']));
-        if ($template_data) {
-            $sql_where = 'template_id = ?';
-            $objQuery->update('dtb_mailtemplate', $post, $sql_where, array(addslashes($post['template_id'])));
-        } else {
-            $objQuery->insert('dtb_mailtemplate', $post);
-        }
-
+        $objMailtemplate->save($post);
     }
 
     function lfInitParam($mode, &$objFormParam)

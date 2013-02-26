@@ -75,13 +75,12 @@ class SC_Helper_Mail
     function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '')
     {
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // メールテンプレート情報の取得
-        $where = 'template_id = ?';
-        $arrRet = $objQuery->select('subject, header, footer', 'dtb_mailtemplate', $where, array($template_id));
-        $objPage->tpl_header = $arrRet[0]['header'];
-        $objPage->tpl_footer = $arrRet[0]['footer'];
-        $tmp_subject = $arrRet[0]['subject'];
+        $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
+        $mailtemplate = $objMailtemplate->get($template_id);
+        $objPage->tpl_header = $mailtemplate['header'];
+        $objPage->tpl_footer = $mailtemplate['footer'];
+        $tmp_subject = $mailtemplate['subject'];
 
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
@@ -116,11 +115,11 @@ class SC_Helper_Mail
 
         if ($subject == '' && $header == '' && $footer == '') {
             // メールテンプレート情報の取得
-            $where = 'template_id = ?';
-            $arrRet = $objQuery->select('subject, header, footer', 'dtb_mailtemplate', $where, array($template_id));
-            $arrTplVar->tpl_header = $arrRet[0]['header'];
-            $arrTplVar->tpl_footer = $arrRet[0]['footer'];
-            $tmp_subject = $arrRet[0]['subject'];
+            $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
+            $mailtemplate = $objMailtemplate->get($template_id);
+            $arrTplVar->tpl_header = $mailtemplate['header'];
+            $arrTplVar->tpl_footer = $mailtemplate['footer'];
+            $tmp_subject = $mailtemplate['subject'];
         } else {
             $arrTplVar->tpl_header = $header;
             $arrTplVar->tpl_footer = $footer;

@@ -226,8 +226,6 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      */
     function changeData(&$objFormParam)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
         $template_id = $objFormParam->getValue('template_id');
 
         // 未選択時
@@ -236,9 +234,8 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
         }
         // 有効選択時
         elseif (SC_Utils_Ex::sfIsInt($template_id)) {
-            $where = 'template_id = ?';
-            $arrWhereVal = array($template_id);
-            $mailTemplates = $objQuery->getRow('subject, header, footer', 'dtb_mailtemplate', $where, $arrWhereVal);
+            $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
+            $mailTemplates = $objMailtemplate->get($template_id);
         }
         // 不正選択時
         else {
