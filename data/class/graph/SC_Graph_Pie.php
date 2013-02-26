@@ -116,10 +116,9 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
 
         // データの角度を取得する
         $arrRad = $this->getCircleData($this->arrData);
-        $rd_max = count($arrRad);
 
         // データが存在しない場合
-        if ($rd_max <= 0) {
+        if (empty($arrRad)) {
             return;
         }
 
@@ -135,10 +134,10 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
         // 側面の描画
         for ($i = ($y + $z - 1); $i >= $y; $i--) {
             $start = 0;
-            for ($j = 0; $j < $rd_max; $j++) {
+            foreach ($arrRad as $rad) {
                 // 角度が0度以上の場合のみ側面を描画する。
-                if ($arrRad[$j] > 0) {
-                    $end = $start + $arrRad[$j];
+                if ($rad > 0) {
+                    $end = $start + $rad;
                     if ($start == 0 && $end == 360) {
                         // -90~270で指定すると円が描画できないので0~360に指定
                         imagearc($this->image, $x, $i, $w, $h, 0, 360, $this->arrDarkColor[($j % $dc_max)]);
@@ -155,27 +154,19 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
 
         // 上面の描画
         $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $end = $start + $arrRad[$i];
-            if ($start == 0 && $end == 360) {
-                // -90~270で指定すると円が描画できないので0~360に指定
-                imagefilledarc($this->image, $x, $y, $w, $h, 0, 360, $this->arrColor[($i % $c_max)], IMG_ARC_PIE);
-            } else {
-                // -90°は12時の位置から開始するように補正している。
-                imagefilledarc($this->image, $x, $y, $w, $h, $start - 90, $end - 90, $this->arrColor[($i % $c_max)], IMG_ARC_PIE);
+        foreach ($arrRad as $key => $rad) {
+            $end = $start + $rad;
+            // 開始・終了が同一値だと、(imagefilledarc 関数における) 0°から360°として動作するようなので、スキップする。
+            // XXX 値ラベルは別ロジックなので、実質問題を生じないと考えている。
+            if ($start == $end) {
+                continue 1;
             }
-            $start = $end;
-        }
-
-        // 上面の縁取り
-        $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $end = $start + $arrRad[$i];
-            if ($start == 0 && $end == 360) {
-                // -90~270で指定すると円が描画できないので0~360に指定
-                imagearc($this->image, $x, $y, $w, $h, 0, 360 , $this->flame_color);
-            }
-            // -90°は12時の位置から開始するように補正している。
+            // -90°は12時の位置から開始するように補正するもの。
+            // 塗りつぶし
+            imagefilledarc($this->image, $x, $y, $w, $h, $start - 90, $end - 90, $this->arrColor[($key % $c_max)], $style);
+            // FIXME 360°描画の場合、(imagefilledarc 関数における) 0°から360°として動作する。本来-90°から360°として動作すべき。
+            //       なお、360°と0°の組み合わせを考慮すると線が無いのも問題があるので、この処理をスキップする対応は不適当である。
+            // 縁取り線
             imagefilledarc($this->image, $x, $y, $w, $h, $start - 90, $end - 90, $this->flame_color, IMG_ARC_EDGED|IMG_ARC_NOFILL);
             $start = $end;
         }
@@ -184,8 +175,8 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
         imageline($this->image, $x + ($w / 2), $y, $x + ($w / 2), $y + $z, $this->flame_color);
         imageline($this->image, $x - ($w / 2), $y, $x - ($w / 2), $y + $z, $this->flame_color);
         $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $end = $start + $arrRad[$i];
+        foreach ($arrRad as $rad) {
+            $end = $start + $rad;
             // 前面のみ
             if ($end > 90 && $end < 270) {
                 list($ax, $ay) = $this->lfGetArcPos($x, $y, $w, $h, $end);
@@ -207,16 +198,15 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
     // 円グラフのラベルを描画する
     function drawLabel($arrRad)
     {
-        $rd_max = count($arrRad);
         $start = 0;
-        for ($i = 0; $i < $rd_max; $i++) {
-            $center = $start + ($arrRad[$i] / 2);
-            $end = $start + $arrRad[$i];
+        foreach ($arrRad as $key => $rad) {
+            $center = $start + ($rad / 2);
+            $end = $start + $rad;
             list($sx, $sy) = $this->lfGetArcPos($this->cx, $this->cy, ($this->cw / 1.5), ($this->ch / 1.5), $center);
             list($ex, $ey) = $this->lfGetArcPos($this->cx, $this->cy, ($this->cw * 1.5), ($this->ch * 1.5), $center);
             // 指示線の描画
             imageline($this->image, $sx, $sy, $ex + 2, $ey - PIE_LABEL_UP, $this->flame_color);
-            $this->setText(FONT_SIZE, $ex - 10, $ey - PIE_LABEL_UP - FONT_SIZE, $this->arrLabel[$i], NULL, 0, true);
+            $this->setText(FONT_SIZE, $ex - 10, $ey - PIE_LABEL_UP - FONT_SIZE, $this->arrLabel[$key], NULL, 0, true);
             $start = $end;
         }
     }
