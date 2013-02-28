@@ -1921,4 +1921,48 @@ class SC_Utils
         }
         return $return;
     }
+
+    /**
+     * 
+     * @param string $primary_key
+     * @param string $glue_key
+     * @param integer $max_depth
+     * @param array $correction
+     * @param integer $base_id
+     * @return array ツリーの配列
+     */
+    public static function buildTree($primary_key, $glue_key, $max_depth, $correction = array(), $base_id = 0)
+    {
+        $children = array();
+        foreach ($correction as $child) {
+            $children[$child[$glue_key]][] = $child;
+        }
+        $arrTree = $children[$base_id];
+        foreach ($arrTree as &$child) {
+            SC_Utils_Ex::addChild($child, $primary_key, 1, $max_depth, $children);
+        }
+        return $arrTree;
+    }
+
+    /**
+     * ツリーの親子をつなげるルーチン.
+     * 
+     * @param array $target 親
+     * @param string $primary_key 主キーの識別子
+     * @param integer $level 親の階層
+     * @param integer $max_depth 階層の深さの最大値
+     * @param array $children 子の配列（キーが親ID）
+     * @return void
+     */
+    public static function addChild(&$target, $primary_key, $level, $max_depth, &$children = array())
+    {
+        if (isset($children[$target[$primary_key]])) {
+            $target['children'] = $children[$target[$primary_key]];
+            if ($level + 1 < $max_depth) {
+                foreach ($target['children'] as &$child) {
+                    SC_Utils_Ex::addChild($child, $primary_key, $level++, $max_depth, $children);
+                }
+            }
+        }
+    }
 }

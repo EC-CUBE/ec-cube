@@ -20,15 +20,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<!--商品カテゴリここから-->
-<section id="category_area">
-    <h2 class="title_block">商品カテゴリ</h2>
-    <nav id="categorytree">
-        <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$arrTree treeID="categorytreelist"}-->
-
-        <script>//<![CDATA[
-            initCategoryList(); //カテゴリリストの初期化
-        //]]></script>
-    </nav>
-</section>
-<!-- ▲カテゴリ -->
+<ul<!--{if $treeID != ""}--> id="<!--{$treeID}-->"<!--{/if}-->>
+<!--{foreach from=$children item=child}-->
+    <li<!--{if !in_array($child.category_id, $arrDispID)}--> style="display: none;"<!--{/if}--> class="level<!--{$child.level}--><!--{if in_array($child.category_id, $tpl_category_id)}--> onmark<!--{/if}-->">
+        <p><a href="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php?category_id=<!--{$child.category_id}-->"<!--{if in_array($child.category_id, $tpl_category_id)}--> class="onlink"<!--{/if}-->><!--{$child.category_name|h}-->(<!--{$child.product_count|default:0}-->)</a></p>
+        <!--{if isset($child.children|smarty:nodefaults)}-->
+            <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$child.children}-->
+        <!--{/if}-->
+    </li>
+<!--{/foreach}-->
+</ul>

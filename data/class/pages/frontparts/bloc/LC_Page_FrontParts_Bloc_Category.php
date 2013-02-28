@@ -131,6 +131,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
+
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
         // 登録商品数のチェック
@@ -141,6 +142,9 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
         }
         $objQuery->setOption('ORDER BY rank DESC');
         $arrRet = $objQuery->select($col, $from, $where);
+
+        $arrTree = SC_Utils_Ex::buildTree('category_id', 'parent_category_id', 10, $arrRet);
+
         foreach ($arrParentCategoryId as $category_id) {
             $arrParentID = $objDb->sfGetParents(
                 'dtb_category',
@@ -161,14 +165,10 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
                 $category_id
             );
             $this->root_parent_id[] = $arrParentID[0];
-            $arrDispID = array_merge($arrBrothersID, $arrChildrenID);
-            foreach ($arrRet as &$arrCategory) {
-                if (in_array($arrCategory['category_id'], $arrDispID)) {
-                    $arrCategory['display'] = 1;
-                }
-            }
+            $this->arrDispID = array_merge($arrBrothersID, $arrChildrenID);
         }
-        return $arrRet;
+
+        return $arrTree;
     }
 
     /**

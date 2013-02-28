@@ -91,8 +91,9 @@ function setclickevent(tgt, lv, num){
                 //▶を表示し、リストオープン関数を追加
                 var linkObj = document.createElement("a");
                 linkObj.innerText = '＋';
-                tgt.childNodes[0].className="category_header plus";
-                tgt.childNodes[0].appendChild(linkObj);
+                $(tgt).children('span.category_header')
+                        .addClass('plus')
+                        .append(linkObj);
                 j++;
                 linkObj.parentNode.setAttribute('onclick', 'listopen(' + lv + ',' + num + ')');
 
