@@ -129,22 +129,11 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
      */
     function lfGetCatTree($arrParentCategoryId, $count_check = false)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
+        $objCategory = new SC_Helper_Category_Ex();
+        $arrTree = $objCategory->getTree($count_check);
 
-        $col = '*';
-        $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
-        // 登録商品数のチェック
-        if ($count_check) {
-            $where = 'del_flg = 0 AND product_count > 0';
-        } else {
-            $where = 'del_flg = 0';
-        }
-        $objQuery->setOption('ORDER BY rank DESC');
-        $arrRet = $objQuery->select($col, $from, $where);
-
-        $arrTree = SC_Utils_Ex::buildTree('category_id', 'parent_category_id', 10, $arrRet);
-
+        $arrCategory = $objCategory->getList($count_check);
         foreach ($arrParentCategoryId as $category_id) {
             $arrParentID = $objDb->sfGetParents(
                 'dtb_category',
@@ -153,13 +142,13 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
                 $category_id
             );
             $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray(
-                $arrRet,
+                $arrCategory,
                 'parent_category_id',
                 'category_id',
                 $arrParentID
             );
             $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray(
-                $arrRet,
+                $arrCategory,
                 'parent_category_id',
                 'category_id',
                 $category_id
