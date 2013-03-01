@@ -30,20 +30,31 @@
  */
 class SC_Helper_Category
 {
+    private $count_check;
+
+    /**
+     * コンストラクター
+     * 
+     * @param boolean $count_check 登録商品数をチェックする場合はtrue
+     */
+    function __construct($count_check = FALSE)
+    {
+        $this->count_check = $count_check;
+    }
+
     /**
      * カテゴリー一覧の取得.
      * 
-     * @param boolean $count_check 登録商品数をチェックする場合はtrue
      * @param boolean $cid_to_key 配列のキーをカテゴリーIDにする場合はtrue
      * @return array カテゴリー一覧の配列
      */
-    public function getList($count_check = FALSE, $cid_to_key = FALSE)
+    public function getList($cid_to_key = FALSE)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
         // 登録商品数のチェック
-        if ($count_check) {
+        if ($this->count_check) {
             $where = 'del_flg = 0 AND product_count > 0';
         } else {
             $where = 'del_flg = 0';
@@ -53,12 +64,7 @@ class SC_Helper_Category
 
         if ($cid_to_key) {
             // 配列のキーをカテゴリーIDに
-            $arrTmp = array();
-            foreach ($arrCategory as $category) {
-                $arrTmp[$category['category_id']] = $category;
-            }
-            $arrCategory =& $arrTmp;
-            unset($arrTmp);
+            $arrCategory = SC_Utils_Ex::makeArrayIDToKey('category_id', $arrCategory);
         }
         
         return $arrCategory;
@@ -67,12 +73,11 @@ class SC_Helper_Category
     /**
      * カテゴリーツリーの取得.
      * 
-     * @param boolean $count_check 登録商品数をチェックする場合はtrue
      * @return type
      */
-    public function getTree($count_check = FALSE)
+    public function getTree()
     {
-        $arrList = $this->getList($count_check);
+        $arrList = $this->getList();
         $arrTree = SC_Utils_Ex::buildTree('category_id', 'parent_category_id', LEVEL_MAX, $arrList);
         return $arrTree;
     }

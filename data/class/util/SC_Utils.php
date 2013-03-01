@@ -1923,6 +1923,7 @@ class SC_Utils
     }
 
     /**
+     * カテゴリーツリー状の配列を作成.
      * 
      * @param string $primary_key
      * @param string $glue_key
@@ -1964,5 +1965,23 @@ class SC_Utils
                 }
             }
         }
+    }
+
+    /**
+     * 配列のキーをIDにした配列を作成.
+     * 
+     * @param string $ID_name IDが格納されているキー名
+     * @param array $correction 元の配列
+     * @return array
+     */
+    public static function makeArrayIDToKey($ID_name, $correction = array())
+    {
+        $arrTmp = array();
+        foreach ($correction as $item) {
+            $arrTmp[$item[$ID_name]] = $item;
+        }
+        $return =& $arrTmp;
+        unset($arrTmp);
+        return $return;
     }
 }
