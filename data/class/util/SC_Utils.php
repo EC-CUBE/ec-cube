@@ -1932,13 +1932,13 @@ class SC_Utils
      * @param integer $base_id
      * @return array ツリーの配列
      */
-    public static function buildTree($primary_key, $glue_key, $max_depth, $correction = array(), $base_id = 0)
+    public static function buildTree($primary_key, $glue_key, $max_depth, $correction = array(), $root_id = 0)
     {
         $children = array();
         foreach ($correction as $child) {
             $children[$child[$glue_key]][] = $child;
         }
-        $arrTree = $children[$base_id];
+        $arrTree = $children[$root_id];
         foreach ($arrTree as &$child) {
             SC_Utils_Ex::addChild($child, $primary_key, 1, $max_depth, $children);
         }
@@ -1983,5 +1983,31 @@ class SC_Utils
         $return =& $arrTmp;
         unset($arrTmp);
         return $return;
+    }
+
+    /**
+     * 階層情報が含まれている配列から親ID配列を取得する.
+     * 
+     * @param integer $start_id 取得起点
+     * @param string $primary_key 主キー名
+     * @param string $glue_key 親IDキー名
+     * @param array $correction 階層構造が含まれている配列
+     * @param integer $root_id ルートID
+     * @return array 親ID配列
+     */
+    public static function getTreeTrail($start_id, $primary_key, $glue_key, $correction = array(), $root_id = 0)
+    {
+        $arrIDToKay = SC_Utils_Ex::makeArrayIDToKey($primary_key, $correction);
+        $id = $start_id;
+        $arrTrail = array();
+        while ($id != $root_id && !SC_Utils_Ex::isBlank($id)) {
+            $arrTrail[] = $id;
+            if (isset($arrIDToKay[$id][$glue_key])) {
+                $id = $arrIDToKay[$id][$glue_key];
+            } else {
+                $id = $root_id;
+            }
+        }
+        return array_reverse($arrTrail);
     }
 }

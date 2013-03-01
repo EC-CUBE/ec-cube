@@ -129,18 +129,12 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
      */
     function lfGetCatTree($arrParentCategoryId, $count_check = false)
     {
-        $objDb = new SC_Helper_DB_Ex();
         $objCategory = new SC_Helper_Category_Ex($count_check);
         $arrTree = $objCategory->getTree();
 
         $arrCategory = $objCategory->getList();
         foreach ($arrParentCategoryId as $category_id) {
-            $arrParentID = $objDb->sfGetParents(
-                'dtb_category',
-                'parent_category_id',
-                'category_id',
-                $category_id
-            );
+            $arrParentID = SC_Utils_Ex::getTreeTrail($category_id, 'category_id', 'parent_category_id', $arrCategory);
             $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray(
                 $arrCategory,
                 'parent_category_id',
