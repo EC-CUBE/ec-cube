@@ -43,6 +43,26 @@ class SC_Helper_Category
     }
 
     /**
+     * カテゴリーの情報を取得.
+     * 
+     * @param integer $category_id カテゴリーID
+     * @return array
+     */
+    public function get($category_id)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $col = '*';
+        $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
+        $where = 'dtb_category.category_id = ? AND del_flg = 0';
+        // 登録商品数のチェック
+        if ($this->count_check) {
+            $where .= ' AND product_count > 0';
+        }
+        $arrRet = $objQuery->getRow($col, $from, $where, array($category_id));
+        return $arrRet;
+    }
+
+    /**
      * カテゴリー一覧の取得.
      * 
      * @param boolean $cid_to_key 配列のキーをカテゴリーIDにする場合はtrue
@@ -86,5 +106,18 @@ class SC_Helper_Category
         $arrList = $this->getList();
         $arrTree = SC_Utils_Ex::buildTree('category_id', 'parent_category_id', LEVEL_MAX, $arrList);
         return $arrTree;
+    }
+
+    /**
+     * 親カテゴリーIDの配列を取得.
+     * 
+     * @param integer $category_id 起点のカテゴリーID
+     * @return array
+     */
+    public function getTreeTrail($category_id)
+    {
+        $arrCategory = $this->getList();
+        $arrTrailID = SC_Utils_Ex::getTreeTrail($category_id, 'category_id', 'parent_category_id', $arrCategory);
+        return $arrTrailID;
     }
 }

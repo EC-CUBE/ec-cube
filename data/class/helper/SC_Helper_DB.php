@@ -460,23 +460,6 @@ class SC_Helper_DB
     }
 
     /**
-     * 指定したカテゴリIDのカテゴリを取得する.
-     *
-     * @param integer $category_id カテゴリID
-     * @return array 指定したカテゴリIDのカテゴリ
-     */
-    function sfGetCat($category_id)
-    {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        // カテゴリを取得する
-        $arrVal = array($category_id);
-        $res = $objQuery->select('category_id AS id, category_name AS name', 'dtb_category', 'category_id = ?', $arrVal);
-
-        return $res[0];
-    }
-
-    /**
      * 指定したカテゴリIDの大カテゴリを取得する.
      *
      * @param integer $category_id カテゴリID

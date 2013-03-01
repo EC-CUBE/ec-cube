@@ -239,11 +239,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
     {
         $category_id = $objFormParam->getValue('category_id');
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        // 編集対象のカテゴリ名をDBより取得する
-        $where = 'category_id = ?';
-        $arrRes = $objQuery->getRow('*', 'dtb_category', $where, array($category_id));
+        $objCategory = new SC_Helper_Category_Ex();
+        $arrRes = $objCategory->get($category_id);
 
         $objFormParam->setParam($arrRes);
 

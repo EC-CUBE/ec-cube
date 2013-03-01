@@ -293,8 +293,9 @@ __EOS__;
         } elseif ($category_id == 0) {
             return '全商品';
         } else {
-            $arrCat = SC_Helper_DB_Ex::sfGetCat($category_id);
-            return $arrCat['name'];
+            $objCategory = new SC_Helper_Category_Ex();
+            $arrCat = $objCategory->get($category_id);
+            return $arrCat['category_name'];
         }
     }
 

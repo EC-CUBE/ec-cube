@@ -134,7 +134,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
 
         $arrCategory = $objCategory->getList();
         foreach ($arrParentCategoryId as $category_id) {
-            $arrParentID = SC_Utils_Ex::getTreeTrail($category_id, 'category_id', 'parent_category_id', $arrCategory);
+            $arrParentID = $objCategory->getTreeTrail($category_id);
             $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray(
                 $arrCategory,
                 'parent_category_id',
