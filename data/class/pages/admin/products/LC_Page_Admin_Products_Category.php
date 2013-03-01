@@ -76,6 +76,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
 
         $objDb      = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
+        $objCategory = new SC_Helper_Category_Ex();
 
         // 入力パラメーター初期化
         $this->initParam($objFormParam);
@@ -182,7 +183,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         // カテゴリ一覧を取得
         $this->arrList = $this->findCategoiesByParentCategoryId($parent_category_id);
         // カテゴリツリーを取得
-        $this->arrTree = $objDb->sfGetCatTree($parent_category_id);
+//        $this->arrTree = $objDb->sfGetCatTree($parent_category_id);
+        $this->arrTree = $objCategory->getTree();
+        $this->arrParentID = $objCategory->getTreeTrail($parent_category_id);
         // ぱんくずの生成
         $arrBread = array();
         $objDb->findTree($this->arrTree, $parent_category_id, $arrBread);

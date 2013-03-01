@@ -1131,6 +1131,11 @@ body > #container {
     background-color: #f3f3f3;
 }
 
+#products-category-left li ul,
+#products-rank-left li ul {
+    margin-left: 20px;
+}
+
 #products-category-right .now_dir {
     margin-bottom: 20px;
     padding: 10px;
