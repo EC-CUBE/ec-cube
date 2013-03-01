@@ -50,24 +50,30 @@ class SC_Helper_Category
      */
     public function getList($cid_to_key = FALSE)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = '*';
-        $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
-        // 登録商品数のチェック
-        if ($this->count_check) {
-            $where = 'del_flg = 0 AND product_count > 0';
-        } else {
-            $where = 'del_flg = 0';
+        static $arrCategory = array();
+
+        if (!isset($arrCategory[$this->count_check])) {
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $col = '*';
+            $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
+            // 登録商品数のチェック
+            if ($this->count_check) {
+                $where = 'del_flg = 0 AND product_count > 0';
+            } else {
+                $where = 'del_flg = 0';
+            }
+            $objQuery->setOption('ORDER BY rank DESC');
+            $arrTmp = $objQuery->select($col, $from, $where);
+
+            $arrCategory[$this->count_check] = $arrTmp;
         }
-        $objQuery->setOption('ORDER BY rank DESC');
-        $arrCategory = $objQuery->select($col, $from, $where);
 
         if ($cid_to_key) {
             // 配列のキーをカテゴリーIDに
-            $arrCategory = SC_Utils_Ex::makeArrayIDToKey('category_id', $arrCategory);
+            return SC_Utils_Ex::makeArrayIDToKey('category_id', $arrCategory[$this->count_check]);
         }
-        
-        return $arrCategory;
+
+        return $arrCategory[$this->count_check];
     }
 
     /**
