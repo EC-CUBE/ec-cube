@@ -130,7 +130,7 @@ class SC_Helper_HandleError
      */
     static function &_fatal_error_handler(&$buffer)
     {
-        if (preg_match('/<b>(Fatal error)<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches = array())) {
+        if (preg_match('/<b>(Fatal error)<\/b>: +(.+) in <b>(.+)<\/b> on line <b>(\d+)<\/b><br \/>/i', $buffer, $matches)) {
             $message = "$matches[1]: $matches[2] on [$matches[3]($matches[4])]";
             GC_Utils_Ex::gfPrintLog($message, ERROR_LOG_REALFILE, true);
             if (DEBUG_MODE !== true) {

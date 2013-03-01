@@ -1172,7 +1172,7 @@ class SC_CheckError
         $prohibitedStr = str_replace(array('|', '/'), array('\|', '\/'), $value[2]);
 
         $pattern = '/' . join('|', $prohibitedStr) . '/i';
-        if (preg_match_all($pattern, $targetStr, $matches = array())) {
+        if (preg_match_all($pattern, $targetStr, $matches)) {
             $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は入力できません。<br />';
         }
     }

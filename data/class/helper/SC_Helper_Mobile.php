@@ -130,7 +130,7 @@ class SC_Helper_Mobile
      */
     function lfMobileGetExtSessionId()
     {
-        if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches = array())) {
+        if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
             return null;
         }
 
