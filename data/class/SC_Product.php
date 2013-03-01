@@ -182,12 +182,7 @@ __EOS__;
         $arrProducts = $this->lists($objQuery);
 
         // 配列のキーを商品IDに
-        $arrTmp = array();
-        foreach ($arrProducts as $arrProduct) {
-            $arrTmp[$arrProduct['product_id']] = $arrProduct;
-        }
-        $arrProducts =& $arrTmp;
-        unset($arrTmp);
+        $arrProducts = SC_Utils_Ex::makeArrayIDToKey('product_id', $arrProducts);
 
         // SC_Query::setOrder() の指定がない場合、$arrProductId で指定された商品IDの順に配列要素を並び替え
         if (strlen($objQuery->order) === 0) {
