@@ -322,30 +322,7 @@ class LC_Page_Entry extends LC_Page_Ex
         $objFormParam->setParam($arrData);
         // エラーチェック
         $arrErr = $objFormParam->checkError();
-        // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
-        if (!$this->lfInputNameCheck($addData['zip01'])) {
-            $arrErr['zip01'] = '※ 入力形式が不正です。<br />';
-        }
-        if (!$this->lfInputNameCheck($arrdata['zip02'])) {
-            $arrErr['zip02'] = '※ 入力形式が不正です。<br />';
-        }
 
         return $arrErr;
-    }
-
-    /**
-     * エラーチェック.
-     *
-     * @param string $value
-     * @return エラーなし：true エラー：false
-     */
-    function lfInputNameCheck($value)
-    {
-        // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
-        if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
-            return false;
-        }
-
-        return true;
     }
 }
