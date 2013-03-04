@@ -26,12 +26,6 @@
     購入日時：<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br>
     注文番号：<!--{$tpl_arrOrderData.order_id}--><br>
     お支払い方法：<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
-    <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br>
-        お届け時間：<!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
-    <!--{/if}-->
-    <!--{if $tpl_arrOrderData.deliv_date != ""}--><br>
-        お届け日：<!--{$tpl_arrOrderData.deliv_date|h}-->
-    <!--{/if}-->
 
     <form action="order.php" method="post">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
@@ -127,6 +121,14 @@
         <!--{if $shippingItem.shipping_fax01 > 0}-->
             ●FAX番号<br>
             <!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br>
+        <!--{/if}-->
+        <!--{if $shippingItem.shipping_date|h != ""}-->
+            ●お届け日<br>
+            <!--{$shippingItem.shipping_date|h}-->&nbsp;<br>
+        <!--{/if}-->
+        <!--{if $shippingItem.shipping_time|h != ""}-->
+            ●お届け時間<br>
+            <!--{$shippingItem.shipping_time|h}-->&nbsp;<br>
         <!--{/if}-->
         <br>
     <!--{/foreach}-->
