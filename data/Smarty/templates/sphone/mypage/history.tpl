@@ -75,12 +75,8 @@
                             <!--{if $shippingItem.shipping_fax01 > 0}-->
             <em>FAX番号</em>：&nbsp;<!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br />
                             <!--{/if}-->            
-            <!--{if $shippingItem.shipping_date != ""}-->
-                <em>お届け日</em>：&nbsp;<!--{$shippingItem.shipping_date|default:'指定なし'|h}--><br />
-            <!--{/if}-->            
-            <!--{if $shippingItem.shipping_time != ""}-->
-                <em>お届け時間</em>：&nbsp;<!--{$shippingItem.shipping_time|default:'指定なし'|h}--><br />
-            <!--{/if}-->            
+            <em>お届け日</em>：&nbsp;<!--{$shippingItem.shipping_date|default:'指定なし'|h}--><br />
+            <em>お届け時間</em>：&nbsp;<!--{$shippingItem.shipping_time|default:'指定なし'|h}--><br />
 </p>
 </div>
 

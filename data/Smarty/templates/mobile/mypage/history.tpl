@@ -122,14 +122,10 @@
             ●FAX番号<br>
             <!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br>
         <!--{/if}-->
-        <!--{if $shippingItem.shipping_date|h != ""}-->
-            ●お届け日<br>
-            <!--{$shippingItem.shipping_date|h}-->&nbsp;<br>
-        <!--{/if}-->
-        <!--{if $shippingItem.shipping_time|h != ""}-->
-            ●お届け時間<br>
-            <!--{$shippingItem.shipping_time|h}-->&nbsp;<br>
-        <!--{/if}-->
+        ●お届け日<br>
+        <!--{$shippingItem.shipping_date|default:'指定なし'|h}-->&nbsp;<br>
+        ●お届け時間<br>
+        <!--{$shippingItem.shipping_time|default:'指定なし'|h}-->&nbsp;<br>
         <br>
     <!--{/foreach}-->
 
