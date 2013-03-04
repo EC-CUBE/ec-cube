@@ -34,14 +34,6 @@
                 <em>注文番号</em>：&nbsp;<!--{$tpl_arrOrderData.order_id}--><br />
                 <em>購入日時</em>：&nbsp;<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <em>お支払い方法</em>：&nbsp;<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
-                <!--{if $tpl_arrOrderData.deliv_time_id != ""}-->
-                    <br />
-                    <em>お届け時間</em>：&nbsp;<!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
-                <!--{/if}-->
-                <!--{if $tpl_arrOrderData.deliv_date != ""}-->
-                    <br />
-                    <em>お届け日</em>：&nbsp;<!--{$tpl_arrOrderData.deliv_date|h}-->
-                <!--{/if}-->
             </p>
 
             <form action="order.php" method="post">
@@ -83,8 +75,12 @@
                             <!--{if $shippingItem.shipping_fax01 > 0}-->
             <em>FAX番号</em>：&nbsp;<!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br />
                             <!--{/if}-->            
-            <em>お届け日</em>：&nbsp;<!--{$shippingItem.shipping_date|default:'指定なし'|h}--><br />
-            <em>お届け時間</em>：&nbsp;<!--{$shippingItem.shipping_time|default:'指定なし'|h}--><br />
+            <!--{if $shippingItem.shipping_date != ""}-->
+                <em>お届け日</em>：&nbsp;<!--{$shippingItem.shipping_date|default:'指定なし'|h}--><br />
+            <!--{/if}-->            
+            <!--{if $shippingItem.shipping_time != ""}-->
+                <em>お届け時間</em>：&nbsp;<!--{$shippingItem.shipping_time|default:'指定なし'|h}--><br />
+            <!--{/if}-->            
 </p>
 </div>
 
