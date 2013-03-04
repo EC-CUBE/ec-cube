@@ -1929,7 +1929,7 @@ class SC_Utils
      * @param string $glue_key
      * @param integer $max_depth
      * @param array $correction
-     * @param integer $base_id
+     * @param integer $root_id
      * @return array ツリーの配列
      */
     public static function buildTree($primary_key, $glue_key, $max_depth, $correction = array(), $root_id = 0)
@@ -1993,15 +1993,20 @@ class SC_Utils
      * @param string $glue_key 親IDキー名
      * @param array $correction 階層構造が含まれている配列
      * @param integer $root_id ルートID
+     * @param boolean $id_only IDだけの配列を返す場合はtrue
      * @return array 親ID配列
      */
-    public static function getTreeTrail($start_id, $primary_key, $glue_key, $correction = array(), $root_id = 0)
+    public static function getTreeTrail($start_id, $primary_key, $glue_key, $correction = array(), $root_id = 0, $id_only = TRUE)
     {
         $arrIDToKay = SC_Utils_Ex::makeArrayIDToKey($primary_key, $correction);
         $id = $start_id;
         $arrTrail = array();
         while ($id != $root_id && !SC_Utils_Ex::isBlank($id)) {
-            $arrTrail[] = $id;
+            if ($id_only) {
+                $arrTrail[] = $id;
+            } else {
+                $arrTrail[] = $arrIDToKay[$id];
+            }
             if (isset($arrIDToKay[$id][$glue_key])) {
                 $id = $arrIDToKay[$id][$glue_key];
             } else {

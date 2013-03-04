@@ -71,8 +71,8 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
     function action()
     {
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
+        $objCategory = new SC_Helper_Category_Ex();
 
         $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : '';
 
@@ -103,11 +103,11 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
                 break;
         }
 
-        $this->arrTree = $objDb->sfGetCatTree($this->arrForm['parent_category_id']);
+        $this->arrTree = $objCategory->getTree();
+        $this->arrParentID = $objCategory->getTreeTrail($this->arrForm['parent_category_id']);     
         $this->arrProductsList = $this->lfGetProduct($this->arrForm['parent_category_id']);
-        $arrBread = array();
-        $objDb->findTree($this->arrTree, $this->arrForm['parent_category_id'], $arrBread);
-        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
+        $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
+        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
 
     }
 

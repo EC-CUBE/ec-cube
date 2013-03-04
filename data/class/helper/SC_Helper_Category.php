@@ -112,12 +112,13 @@ class SC_Helper_Category
      * 親カテゴリーIDの配列を取得.
      * 
      * @param integer $category_id 起点のカテゴリーID
+     * @param boolean $id_only IDだけの配列を返す場合はtrue
      * @return array
      */
-    public function getTreeTrail($category_id)
+    public function getTreeTrail($category_id, $id_only = TRUE)
     {
         $arrCategory = $this->getList();
-        $arrTrailID = SC_Utils_Ex::getTreeTrail($category_id, 'category_id', 'parent_category_id', $arrCategory);
+        $arrTrailID = SC_Utils_Ex::getTreeTrail($category_id, 'category_id', 'parent_category_id', $arrCategory, 0, $id_only);
         return $arrTrailID;
     }
 }

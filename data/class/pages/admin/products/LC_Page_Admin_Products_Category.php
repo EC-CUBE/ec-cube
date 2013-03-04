@@ -183,13 +183,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         // カテゴリ一覧を取得
         $this->arrList = $this->findCategoiesByParentCategoryId($parent_category_id);
         // カテゴリツリーを取得
-//        $this->arrTree = $objDb->sfGetCatTree($parent_category_id);
         $this->arrTree = $objCategory->getTree();
         $this->arrParentID = $objCategory->getTreeTrail($parent_category_id);
         // ぱんくずの生成
-        $arrBread = array();
-        $objDb->findTree($this->arrTree, $parent_category_id, $arrBread);
-        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
+        $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
+        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
 
     }
 
