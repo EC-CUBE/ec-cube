@@ -36,11 +36,11 @@
                 <em>お支払い方法</em>：&nbsp;<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
                 <!--{if $tpl_arrOrderData.deliv_time_id != ""}-->
                     <br />
-                    <em>お届け時間</em>：&nbsp;</strong><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
+                    <em>お届け時間</em>：&nbsp;<!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
                 <!--{/if}-->
                 <!--{if $tpl_arrOrderData.deliv_date != ""}-->
                     <br />
-                    <em>お届け日</em>：&nbsp;</strong><!--{$tpl_arrOrderData.deliv_date|h}-->
+                    <em>お届け日</em>：&nbsp;<!--{$tpl_arrOrderData.deliv_date|h}-->
                 <!--{/if}-->
             </p>
 
