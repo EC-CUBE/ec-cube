@@ -24,10 +24,9 @@
 <section id="category_area">
     <h2 class="title_block">商品カテゴリ</h2>
     <nav id="categorytree">
-        <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$arrTree treeID="categorytreelist"}-->
+        <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$arrTree treeID="categorytreelist" display=1 level=0}-->
 
         <script>//<![CDATA[
-            initCategoryList(); //カテゴリリストの初期化
         //]]></script>
     </nav>
 </section>

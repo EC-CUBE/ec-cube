@@ -36,6 +36,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
 
     // }}}
     // {{{ functions
+    public $arrParentID;
 
     /**
      * Page を初期化する.
@@ -132,23 +133,11 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
         $objCategory = new SC_Helper_Category_Ex($count_check);
         $arrTree = $objCategory->getTree();
 
-        $arrCategory = $objCategory->getList();
+        $this->arrParentID = array();
         foreach ($arrParentCategoryId as $category_id) {
             $arrParentID = $objCategory->getTreeTrail($category_id);
-            $arrBrothersID = SC_Utils_Ex::sfGetBrothersArray(
-                $arrCategory,
-                'parent_category_id',
-                'category_id',
-                $arrParentID
-            );
-            $arrChildrenID = SC_Utils_Ex::sfGetUnderChildrenArray(
-                $arrCategory,
-                'parent_category_id',
-                'category_id',
-                $category_id
-            );
+            $this->arrParentID = array_merge($this->arrParentID, $arrParentID); 
             $this->root_parent_id[] = $arrParentID[0];
-            $this->arrDispID = array_merge($arrBrothersID, $arrChildrenID);
         }
 
         return $arrTree;

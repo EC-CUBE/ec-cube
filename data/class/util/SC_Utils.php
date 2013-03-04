@@ -1092,30 +1092,6 @@ class SC_Utils
         return false;
     }
 
-    /* 階層構造のテーブルから与えられたIDの兄弟を取得する */
-    function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID)
-    {
-        $max = count($arrData);
-
-        $arrBrothers = array();
-        foreach ($arrPID as $id) {
-            // 親IDを検索する
-            for ($i = 0; $i < $max; $i++) {
-                if ($arrData[$i][$id_name] == $id) {
-                    $parent = $arrData[$i][$pid_name];
-                    break;
-                }
-            }
-            // 兄弟IDを検索する
-            for ($i = 0; $i < $max; $i++) {
-                if ($arrData[$i][$pid_name] == $parent) {
-                    $arrBrothers[] = $arrData[$i][$id_name];
-                }
-            }
-        }
-        return $arrBrothers;
-    }
-
     /* 階層構造のテーブルから与えられたIDの直属の子を取得する */
     function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent)
     {
