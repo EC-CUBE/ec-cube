@@ -1968,13 +1968,18 @@ class SC_Utils
      * @param string $primary_key 主キー名
      * @param string $glue_key 親IDキー名
      * @param array $correction 階層構造が含まれている配列
+     * @param boolean $cid_is_key キーがIDの配列の場合はtrue
      * @param integer $root_id ルートID
      * @param boolean $id_only IDだけの配列を返す場合はtrue
      * @return array 親ID配列
      */
-    public static function getTreeTrail($start_id, $primary_key, $glue_key, $correction = array(), $root_id = 0, $id_only = TRUE)
+    public static function getTreeTrail($start_id, $primary_key, $glue_key, $correction = array(), $cid_is_key = FALSE, $root_id = 0, $id_only = TRUE)
     {
-        $arrIDToKay = SC_Utils_Ex::makeArrayIDToKey($primary_key, $correction);
+        if ($cid_is_key) {
+            $arrIDToKay = $correction;
+        } else {
+            $arrIDToKay = SC_Utils_Ex::makeArrayIDToKey($primary_key, $correction);
+        }
         $id = $start_id;
         $arrTrail = array();
         while ($id != $root_id && !SC_Utils_Ex::isBlank($id)) {

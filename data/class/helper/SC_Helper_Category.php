@@ -70,7 +70,7 @@ class SC_Helper_Category
      */
     public function getList($cid_to_key = FALSE)
     {
-        static $arrCategory = array();
+        static $arrCategory = array(), $cidIsKey = array();
 
         if (!isset($arrCategory[$this->count_check])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -89,8 +89,11 @@ class SC_Helper_Category
         }
 
         if ($cid_to_key) {
-            // 配列のキーをカテゴリーIDに
-            return SC_Utils_Ex::makeArrayIDToKey('category_id', $arrCategory[$this->count_check]);
+            if (!isset($cidIsKey[$this->count_check])) {
+                // 配列のキーをカテゴリーIDに
+                $cidIsKey[$this->count_check] = SC_Utils_Ex::makeArrayIDToKey('category_id', $arrCategory[$this->count_check]);
+            }
+            return $cidIsKey[$this->count_check];
         }
 
         return $arrCategory[$this->count_check];
@@ -103,9 +106,12 @@ class SC_Helper_Category
      */
     public function getTree()
     {
-        $arrList = $this->getList();
-        $arrTree = SC_Utils_Ex::buildTree('category_id', 'parent_category_id', LEVEL_MAX, $arrList);
-        return $arrTree;
+        static $arrTree = array();
+        if (!isset($arrTree[$this->count_check])) {
+            $arrList = $this->getList();
+            $arrTree[$this->count_check] = SC_Utils_Ex::buildTree('category_id', 'parent_category_id', LEVEL_MAX, $arrList);
+        }
+        return $arrTree[$this->count_check];
     }
 
     /**
@@ -117,8 +123,8 @@ class SC_Helper_Category
      */
     public function getTreeTrail($category_id, $id_only = TRUE)
     {
-        $arrCategory = $this->getList();
-        $arrTrailID = SC_Utils_Ex::getTreeTrail($category_id, 'category_id', 'parent_category_id', $arrCategory, 0, $id_only);
+        $arrCategory = $this->getList(TRUE);
+        $arrTrailID = SC_Utils_Ex::getTreeTrail($category_id, 'category_id', 'parent_category_id', $arrCategory, TRUE, 0, $id_only);
         return $arrTrailID;
     }
 }
