@@ -42,8 +42,8 @@
 <!--{/if}-->
 ■ご注文商品明細
 <!--{section name=cnt loop=$arrOrderDetail}-->
-商品コード: <!--{$arrOrderDetail[cnt].product_code}-->
-商品名: <!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
+商品コード：<!--{$arrOrderDetail[cnt].product_code}-->
+商品名：<!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
 単価：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrOrderDetail[cnt].tax_rate:$arrOrderDetail[cnt].tax_rule|number_format}-->
 数量：<!--{$arrOrderDetail[cnt].quantity}-->
 
@@ -68,11 +68,11 @@
 　住所　　：<!--{$arrPref[$shipping.shipping_pref]}--><!--{$shipping.shipping_addr01}--><!--{$shipping.shipping_addr02}-->
 　電話番号：<!--{$shipping.shipping_tel01}-->-<!--{$shipping.shipping_tel02}-->-<!--{$shipping.shipping_tel03}-->
 　お届け日：<!--{$shipping.shipping_date|date_format:"%Y/%m/%d"|default:"指定なし"}-->
-お届け時間：<!--{$shipping.shipping_time|default:"指定なし"}-->
+　お届け時間：<!--{$shipping.shipping_time|default:"指定なし"}-->
 
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
-商品コード: <!--{$item.product_code}-->
-商品名: <!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
+商品コード：<!--{$item.product_code}-->
+商品名：<!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
 単価：￥ <!--{$item.price|sfCalcIncTax:$arrOrder.order_tax_rate:$arrOrder.order_tax_rule|number_format}-->
 数量：<!--{$item.quantity}-->
 
