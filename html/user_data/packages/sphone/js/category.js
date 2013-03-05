@@ -15,7 +15,7 @@ $(function(){
                         if ($(this).css('display') === 'none') {
                             tgt.children('a').text('＋');
                         } else {
-                            tgt.children('a').text('ー');
+                            tgt.children('a').text('－');
                         }
                     });
                 })
