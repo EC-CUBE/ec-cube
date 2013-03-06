@@ -535,8 +535,12 @@ __EOS__;
             if (empty($arrErr)) {
                 $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
 
+                // 開いているカテゴリーツリーを維持するためのパラメーター
+                $arrQueryString = array(
+                    'category_id' => $this->arrForm['category_id'],
+                );
 
-                SC_Response_Ex::sendRedirect(CART_URLPATH);
+                SC_Response_Ex::sendRedirect(CART_URLPATH, $arrQueryString);
                 SC_Response_Ex::actionExit();
             }
             $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);

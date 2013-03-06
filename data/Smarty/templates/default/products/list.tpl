@@ -196,6 +196,7 @@
                 <!--▼買い物かご-->
                 <input type="hidden" name="product_id" value="<!--{$id|h}-->" />
                 <input type="hidden" name="product_class_id" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
+                <input type="hidden" name="category_id" value="<!--{$arrSearchData.category_id|h}-->" />
 
                 <div class="cart_area clearfix">
                     <!--{if $tpl_stock_find[$id]}-->
