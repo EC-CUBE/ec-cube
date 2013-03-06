@@ -107,6 +107,20 @@ class LC_Page_Cart extends LC_Page_Ex
             SC_Response_Ex::actionExit();
         }
 
+        $objFormParam4OpenCategoryTree =
+            $this->lfInitParam4OpenCategoryTree($_REQUEST);
+        if ($objFormParam4OpenCategoryTree->getValue('product_id')) {
+            $arrQueryString = array(
+                'product_id' => $objFormParam4OpenCategoryTree->getValue(
+                    'product_id'),
+            );
+        } else {
+            $arrQueryString = array(
+                'category_id' => $objFormParam4OpenCategoryTree->getValue(
+                    'category_id'),
+            );
+        }
+
         switch ($this->mode) {
             case 'confirm':
                 // カート内情報の取得
@@ -125,29 +139,25 @@ class LC_Page_Cart extends LC_Page_Ex
             case 'up'://1個追加
                 $objCartSess->upQuantity($cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             case 'down'://1個減らす
                 $objCartSess->downQuantity($cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             case 'setQuantity'://数量変更
                 $objCartSess->setQuantity($objFormParam->getValue('quantity'), $cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             case 'delete'://カートから削除
                 $objCartSess->delProduct($cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             default:
@@ -176,7 +186,10 @@ class LC_Page_Cart extends LC_Page_Ex
         //商品の合計金額をセット
         $this->tpl_all_total_inctax = $totalIncTax;
 
-        $this->tpl_category_id = $objFormParam->getValue('category_id');
+        $this->tpl_category_id =
+            $objFormParam4OpenCategoryTree->getValue('category_id');
+        $this->tpl_product_id =
+            $objFormParam4OpenCategoryTree->getValue('product_id');
 
         // ログイン判定
         if ($objCustomer->isLoginSuccess(true)) {
@@ -216,10 +229,29 @@ class LC_Page_Cart extends LC_Page_Ex
         $objFormParam = new SC_FormParam_Ex();
         $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カートナンバー', 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        // PC版での値引き継ぎ用
-        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用
         $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        // 値の取得
+        $objFormParam->setParam($arrRequest);
+        // 入力値の変換
+        $objFormParam->convParam();
+        return $objFormParam;
+    }
+
+    /**
+     * PC版での開いているカテゴリーツリーの維持用の入力値
+     *
+     * @return object
+     */
+    function lfInitParam4OpenCategoryTree($arrRequest)
+    {
+        $objFormParam = new SC_FormParam_Ex();
+
+        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n',
+            array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n',
+            array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換

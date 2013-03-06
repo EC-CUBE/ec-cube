@@ -75,6 +75,7 @@
                         <input type="hidden" name="cart_no" value="" />
                         <input type="hidden" name="cartKey" value="<!--{$key|h}-->" />
                         <input type="hidden" name="category_id" value="<!--{$tpl_category_id|h}-->" />
+                        <input type="hidden" name="product_id" value="<!--{$tpl_product_id|h}-->" />
                         <!--{if count($cartKeys) > 1}-->
                             <h3><!--{$arrProductType[$key]|h}--></h3>
                             <!--{assign var=purchasing_goods_name value=$arrProductType[$key]}-->

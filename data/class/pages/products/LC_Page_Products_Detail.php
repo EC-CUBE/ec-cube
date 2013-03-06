@@ -516,8 +516,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex
 
             $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));
 
+            // 開いているカテゴリーツリーを維持するためのパラメーター
+            $arrQueryString = array(
+                'product_id' => $this->objFormParam->getValue('product_id'),
+            );
 
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            SC_Response_Ex::sendRedirect(CART_URLPATH, $arrQueryString);
             SC_Response_Ex::actionExit();
         }
     }
