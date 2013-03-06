@@ -137,11 +137,8 @@ class SC_Helper_PageLayout
      */
     function getBlocs($device_type_id = DEVICE_TYPE_PC, $where = '', $arrParams = array(), $has_realpath = true)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'device_type_id = ? ' . (SC_Utils_Ex::isBlank($where) ? $where : 'AND ' . $where);
-        $arrParams = array_merge(array($device_type_id), $arrParams);
-        $objQuery->setOrder('bloc_id');
-        $arrBlocs = $objQuery->select('*', 'dtb_bloc', $where, $arrParams);
+        $objBloc = new SC_Helper_Bloc_Ex($device_type_id);
+        $arrBlocs = $objBloc->getWhere($where, $arrParams);
         if ($has_realpath) {
             $this->setBlocPathTo($device_type_id, $arrBlocs);
         }

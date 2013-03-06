@@ -85,15 +85,16 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
         $this->bloc_id = $objFormParam->getValue('bloc_id');
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
+        $objBloc = new SC_Helper_Bloc_Ex($this->device_type_id);
         $objLayout = new SC_Helper_PageLayout_Ex();
 
         switch ($this->getMode()) {
             // 登録/更新
             case 'confirm':
                 if (!$is_error) {
-                    $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr, $objLayout);
+                    $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr, $objBloc);
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                        $result = $this->doRegister($objFormParam, $objLayout);
+                        $result = $this->doRegister($objFormParam, $objBloc);
                         if ($result !== false) {
                             $arrPram = array(
                                 'bloc_id' => $result,
@@ -111,7 +112,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
             // 削除
             case 'delete':
                 if (!$is_error) {
-                    if ($this->doDelete($objFormParam, $objLayout)) {
+                    if ($this->doDelete($objFormParam, $objBloc)) {
                         $arrPram = array(
                             'device_type_id' => $this->device_type_id,
                             'msg' => 'on',
@@ -133,10 +134,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
 
         if (!$is_error) {
             // ブロック一覧を取得
-            $this->arrBlocList = $objLayout->getBlocs($this->device_type_id);
+            $this->arrBlocList = $objBloc->getList();
             // bloc_id が指定されている場合にはブロックデータの取得
             if (!SC_Utils_Ex::isBlank($this->bloc_id)) {
-                $arrBloc = $this->getBlocTemplate($this->device_type_id, $this->bloc_id, $objLayout);
+                $arrBloc = $this->getBlocTemplate($this->bloc_id, $objBloc);
                 $objFormParam->setParam($arrBloc);
             }
         } else {
@@ -176,23 +177,14 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
     /**
      * ブロックのテンプレートを取得する.
      *
-     * @param integer $device_type_id 端末種別ID
      * @param integer $bloc_id ブロックID
-     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @param SC_Helper_Bloc_Ex $objBloc SC_Helper_Bloc_Ex インスタンス
      * @return array ブロック情報の配列
      */
-    function getBlocTemplate($device_type_id, $bloc_id, &$objLayout)
+    function getBlocTemplate($bloc_id, SC_Helper_Bloc_Ex &$objBloc)
     {
-        $arrBloc = $objLayout->getBlocs($device_type_id, 'bloc_id = ?', array($bloc_id));
-        if (SC_Utils_Ex::isAbsoluteRealPath($arrBloc[0]['tpl_path'])) {
-            $tpl_path = $arrBloc[0]['tpl_path'];
-        } else {
-            $tpl_path = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id) . BLOC_DIR . $arrBloc[0]['tpl_path'];
-        }
-        if (file_exists($tpl_path)) {
-            $arrBloc[0]['bloc_html'] = file_get_contents($tpl_path);
-        }
-        return $arrBloc[0];
+        $arrBloc = $objBloc->get($bloc_id);
+        return $arrBloc;
     }
 
     /**
@@ -202,103 +194,39 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      * データベースをロールバックする.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @param SC_Helper_Bloc $objBloc SC_Helper_Bloc インスタンス
      * @return integer|boolean 登録が成功した場合, 登録したブロックID;
      *                         失敗した場合 false
      */
-    function doRegister(&$objFormParam, &$objLayout)
+    function doRegister(&$objFormParam, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrParams = $objFormParam->getHashArray();
+        $result = $objBloc->save($arrParams);
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
-
-        // blod_id が空の場合は新規登録
-        $is_new = SC_Utils_Ex::isBlank($arrParams['bloc_id']);
-        $bloc_dir = $objLayout->getTemplatePath($arrParams['device_type_id']) . BLOC_DIR;
-        // 既存データの重複チェック
-        if (!$is_new) {
-            $arrExists = $objLayout->getBlocs($arrParams['device_type_id'], 'bloc_id = ?', array($arrParams['bloc_id']));
-
-            // 既存のファイルが存在する場合は削除しておく
-            $exists_file = $bloc_dir . $arrExists[0]['filename'] . '.tpl';
-            if (file_exists($exists_file)) {
-                unlink($exists_file);
-            }
-        }
-
-        $table = 'dtb_bloc';
-        $arrValues = $objQuery->extractOnlyColsOf($table, $arrParams);
-        $arrValues['tpl_path'] = $arrParams['filename'] . '.tpl';
-        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
-
-        // 新規登録
-        if ($is_new || SC_Utils_Ex::isBlank($arrExists)) {
-            $objQuery->setOrder('');
-            $arrValues['bloc_id'] = 1 + $objQuery->max('bloc_id', $table, 'device_type_id = ?',
-                                                       array($arrValues['device_type_id']));
-            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
-            $objQuery->insert($table, $arrValues);
-        }
-        // 更新
-        else {
-            $objQuery->update($table, $arrValues, 'bloc_id = ? AND device_type_id = ?',
-                              array($arrValues['bloc_id'], $arrValues['device_type_id']));
-        }
-
-        $bloc_path = $bloc_dir . $arrValues['tpl_path'];
-        if (!SC_Helper_FileManager_Ex::sfWriteFile($bloc_path, $arrParams['bloc_html'])) {
+        if (!$result) {
             $this->arrErr['err'] = '※ ブロックの書き込みに失敗しました<br />';
-            $objQuery->rollback();
-            return false;
         }
 
-        $objQuery->commit();
-        return $arrValues['bloc_id'];
+        return $result;
     }
 
     /**
      * 削除を実行する.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @param SC_Helper_Bloc $objBloc SC_Helper_Bloc インスタンス
      * @return boolean 登録が成功した場合 true; 失敗した場合 false
      */
-    function doDelete(&$objFormParam, &$objLayout)
+    function doDelete(&$objFormParam, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrParams = $objFormParam->getHashArray();
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
+        $result = $objBloc->delete($arrParams['bloc_id']);
 
-        $arrExists = $objLayout->getBlocs($arrParams['device_type_id'], 'bloc_id = ? AND deletable_flg = 1',
-                                          array($arrParams['bloc_id']));
-        $is_error = false;
-        if (!SC_Utils_Ex::isBlank($arrExists)) {
-            $objQuery->delete('dtb_bloc', 'bloc_id = ? AND device_type_id = ?',
-                              array($arrExists[0]['bloc_id'], $arrExists[0]['device_type_id']));
-            $objQuery->delete('dtb_blocposition', 'bloc_id = ? AND device_type_id = ?',
-                              array($arrExists[0]['bloc_id'], $arrExists[0]['device_type_id']));
-
-            $bloc_dir = $objLayout->getTemplatePath($arrParams['device_type_id']) . BLOC_DIR;
-            $exists_file = $bloc_dir . $arrExists[0]['filename'] . '.tpl';
-
-            // ファイルの削除
-            if (file_exists($exists_file)) {
-                if (!unlink($exists_file)) {
-                    $is_error = true;
-                }
-            }
-        } else {
-            $is_error = true;
-        }
-
-        if ($is_error) {
+        if (!$result) {
             $this->arrErr['err'] = '※ ブロックの削除に失敗しました<br />';
-            $objQuery->rollback();
-            return false;
         }
-        $objQuery->commit();
-        return true;
+
+        return $result;
     }
 
     /**
@@ -307,7 +235,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam, &$arrErr, &$objLayout)
+    function lfCheckError(&$objFormParam, &$arrErr, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
@@ -323,7 +251,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
             $where .= ' AND bloc_id <> ?';
             $arrValues[] = $arrParams['bloc_id'];
         }
-        $arrBloc = $objLayout->getBlocs($arrParams['device_type_id'], $where, $arrValues);
+        $arrBloc = $objBloc->getWhere($where, $arrValues);
         if (!SC_Utils_Ex::isBlank($arrBloc)) {
             $objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。<br />';
         }
