@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>会員登録(test01)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">会員登録(test01)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>entry</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>b_agree</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name02</td>
+	<td>太郎</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana02</td>
+	<td>タロウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip02</td>
+	<td>0001</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr01</td>
+	<td>大阪市北区梅田</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr02</td>
+	<td>2-4-9 ブリーゼタワー13F</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel03</td>
+	<td>7500</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax03</td>
+	<td>7501</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>test@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email02</td>
+	<td>test@example.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>man</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>job</td>
+	<td>label=コンサルタント</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>year</td>
+	<td>label=1966</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>month</td>
+	<td>label=10</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>day</td>
+	<td>label=10</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>test01</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password02</td>
+	<td>test01</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>reminder</td>
+	<td>label=好きな食べ物は？</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reminder_answer</td>
+	<td>ラーメン</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>back</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>send</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

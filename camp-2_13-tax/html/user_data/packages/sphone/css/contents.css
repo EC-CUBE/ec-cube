@@ -1,0 +1,610 @@
+@charset "utf-8";
+/* ===================================================================
+CSS information
+file name  :contents.css
+style info :下層コンテンツ用(#undercolumn)
+=================================================================== */
+/* -----------------------------------------------
+#undercolumn 汎用
+----------------------------------------------- */
+#undercolumn {
+    padding-bottom: 35px;
+}
+/**イントロダクション*/
+.information {
+    font-weight: bold;
+    padding: 5px 10px;
+    line-height: 1.3;
+    border-bottom: #CCC solid 1px;
+}
+.information p:first-child {
+    font-size: 14px;
+    margin-bottom: 0.5em;
+}
+/*フォーム枠*/
+.form_area {
+    padding: 10px;
+}
+.form_area p:first-child {
+    margin-bottom: 0.5em;
+}
+.formBox {
+    margin-bottom: 20px;
+    border: #A9ABAD solid 1px;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+.innerBox {
+    padding: 10px;
+    border-bottom: #CCC solid 1px;
+}
+.arrowBox {
+    padding: 10px 25px 10px 10px;
+    background: url(../img/common/ico_arrowR.png) 95% center no-repeat;
+    border-bottom: #CCC solid 1px;
+    clear: both;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    .arrowBox {
+        background: url(../img/common/ico_arrowR2.png) 95% center no-repeat;
+        -webkit-background-size: 10px 15px;
+        background-size: 10px 15px;
+    }
+}
+.box_header {
+    font-size: 16px;
+    font-weight: bold;
+    background: #EEE;
+    padding: 10px;
+    border-radius: 7px 7px 0 0;
+    -moz-border-radius: 7px 7px 0 0;
+    -webkit-border-radius: 7px 7px 0 0;
+    border-bottom: #CCC solid 1px;
+}
+/*合計(フォーム下)*/
+.total_area,
+.result_area {
+    padding: 10px;
+    text-align: right;
+    background: #F7F5F0;
+    border-top: #FFF solid 1px;
+    border-bottom: #A9ABAD solid 1px;
+}
+.formBox .btn_area_btm {
+    padding: 10px;
+    background: #F7F5F0;
+    border-top: #FFF solid 1px;
+    border-bottom: none;
+    border-radius: 0 0 7px 7px;
+    -moz-border-radius: 0 0 7px 7px;
+    -webkit-border-radius: 0 0 7px 7px;
+}
+.formBox div:first-child {
+    border-radius: 7px 7px 0 0;
+    -moz-border-radius: 7px 7px 0 0;
+    -webkit-border-radius: 7px 7px 0 0;
+}
+.formBox div:last-child {
+    border-radius: 0 0 7px 7px;
+    -moz-border-radius: 0 0 7px 7px;
+    -webkit-border-radius: 0 0 7px 7px;
+    border-bottom: none;
+}
+.form_area div:after {
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+/* -----------------------------------------------
+カートボックス
+----------------------------------------------- */
+
+/*カゴの中の商品*/
+.cartinarea {
+    padding: 10px;
+    border-bottom: #CCC solid 1px;
+}
+.cartitemBox {
+    padding: 10px 0;
+    border-bottom: #CCC solid 1px;
+    clear: both;
+}
+.cartinarea .cartitemBox:last-child {
+    border-bottom: none;
+}
+.cartinarea .photoL {
+    width: 80px;
+}
+.cartinarea .cartinContents {
+    width: 68%;
+    float: right;
+    display: block;
+    position: relative;
+}
+.cartinarea .cartinContents p {
+    line-height: 1.2;
+}
+.cartinContents div {
+    min-height: 50px;
+}
+/* -----------------------------------------------
+ふきだしボックス
+----------------------------------------------- */
+.bubbleBox {
+    width: 90%;
+    font-weight: bold;
+    margin: 10px auto 20px auto;
+    padding: 10px 15px;
+    position: relative;
+    background-color: #F6F6F6;
+    border: 1px solid #C5C4C0;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-box-shadow: inset 1px 1px 1px #FFF;
+    -webkit-box-shadow: inset 1px 1px 1px #FFF;
+    cursor: pointer;
+}
+.bubble_arrow_line {
+    width: 0;
+    height: 0;
+    border-color: #C5C4C0 transparent transparent transparent;
+    border-style: solid;
+    border-width: 10px;
+    position: absolute;
+    bottom: -21px;
+    left: 50%;
+}
+.bubble_arrow {
+    width: 0;
+    height: 0;
+    border-color: #F6F6F6 transparent transparent transparent;
+    border-style: solid;
+    border-width: 10px;
+    position: absolute;
+    bottom: -19px;
+    left: 50%;
+}
+.bubble_announce {
+    height: 2.5em;
+    background: url(../img/common/ico_arrowR.png)  right center no-repeat;
+    clear: both;
+    vertical-align: middle;
+    margin-bottom: 5px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    .bubble_announce {
+        background: url(../img/common/ico_arrowR2.png) right center no-repeat;
+        -webkit-background-size: 10px 15px;
+        background-size: 10px 15px;
+    }
+}
+.bubbleBox p.fb {
+    line-height: 2.5em;
+}
+.deliv_announce p {
+    width: 80%;
+}
+.bubbleBox a:link,
+.bubbleBox a:visited {
+    color: #333;
+}
+/* -----------------------------------------------
+カートの中ページ
+----------------------------------------------- */
+.totalmoney_area {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: #CCC solid 1px;
+}
+.point_announce {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.cartinContents .btn_delete {
+    padding: 2px;
+    right: 0;
+    float: right;
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+}
+.cartinContents ul {
+    float: right;
+    clear: both;
+    line-height: 1.1;
+}
+.cartinContents ul li {
+    display: inline;
+    float: left;
+}
+.cartinContents ul li.quantity {
+    padding-left: 0.5em;
+    padding-top: 1em;
+    vertical-align: bottom;
+}
+.cartinContents ul li.quantity_btn {
+    padding-left: 0.5em;
+    padding-top: 0.8em;
+    vertical-align: bottom;
+}
+.cartinContents ul li.result {
+    padding-left: 1.5em;
+    padding-top: 1em;
+    vertical-align: bottom;
+}
+
+.cartinContents p {
+    margin-right: 25px;
+}
+
+.cartinContents p.btn_delete {
+    margin-right: 0;
+}
+
+/* -----------------------------------------------
+お届け先指定
+----------------------------------------------- */
+.deliv_check {
+    clear: both;
+}
+.deliv_check dt {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 10px 5px 10px;
+    background: #EEE;
+    border-top: #FFF solid 1px;
+    vertical-align: middle;
+    position: relative;
+    display: block;
+}
+.deliv_check dt p {
+    vertical-align: middle;
+}
+.deliv_check dd {
+    font-size: 12px;
+    padding: 10px;
+    border-bottom: #CCC solid 1px;
+    display: block;
+}
+.deliv_check dd.end {
+    border-bottom: none;
+}
+.deliv_check dd p {
+    display: inline;
+    float: left;
+}
+.deliv_check ul.edit {
+    float: right;
+    clear: right;
+    display: inline;
+    line-height: 1.1;
+    position: absolute;
+    right: 10px;
+    top: 12px;
+}
+.deliv_check dt.first {
+    border-top: none;
+    border-radius: 7px 7px 0 0;
+    -moz-border-radius: 7px 7px 0 0;
+    -webkit-border-radius: 7px 7px 0 0;
+}
+
+/* -----------------------------------------------
+お届け先指定(複数)
+----------------------------------------------- */
+.delivitemBox {
+    padding: 10px;
+    border-bottom: #CCC solid 1px;
+    clear: both;
+    position: relative;
+}
+.delivitemBox .photoL {
+    width: 80px;
+}
+.delivitemBox .delivContents {
+    width: 67%;
+    float: right;
+    display: block;
+    position: relative;
+}
+
+.delivContents p {
+    float: left;
+    line-height: 1.2;
+    margin-bottom: 5px;
+    margin-right: 40px;
+}
+.delivContents ul {
+    width: 3em;
+    float: right;
+    right: 7px;
+    position: absolute;
+}
+.delivContents ul li {
+    text-align: center;
+    clear: both;
+}
+
+.delivContents ul li:first-child {
+    line-height: 1.2;
+    vertical-align: bottom;
+}
+
+/* -----------------------------------------------
+お支払方法・お届け時間等の指定
+----------------------------------------------- */
+.pay_area ul {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.pay_area ul li {
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+.pay_area .attention,
+.pay_area2 .attention {
+    margin-left: 10px;
+}
+.pay_area02 select:first-child {
+    margin-bottom: 12px;
+}
+p.check_point {
+    font-size: 12px;
+    padding-left: 1em;
+    font-weight: normal;
+}
+p.check_point .box_point {
+    margin-right: 0.5em;
+}
+.contact_area p {
+    line-height: 1.3;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.contact_area .textarea {
+    width: 95%;
+}
+.non-select-msg {
+    margin: 20px 0;
+    border: none;
+}
+.time_select {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+/* -----------------------------------------------
+ご注文内容のご確認
+----------------------------------------------- */
+.cartcartconfirmarea {
+    padding: 0 10px;
+    border-bottom: #CCC solid 1px;
+}
+.cartconfirmBox {
+    padding: 10px 0;
+    border-bottom: #CCC solid 1px;
+    clear: both;
+    position: relative;
+}
+.cartconfirmBox:last-child {
+    border-bottom: none;
+}
+.cartconfirmBox .photoL {
+    width: 80px;
+    float: left;
+}
+.cartconfirmContents {
+    width: 67%;
+    float: right;
+    display: block;
+    position: relative;
+    line-height: 1.3;
+}
+.cartconfirmContents div {
+    min-height: 62px;
+    line-height: 1.3;
+}
+.cartconfirmBox ul {
+    float: right;
+    clear: both;
+    line-height: 1.1;
+}
+.cartconfirmBox ul li {
+    display: inline;
+    font-weight: bold;
+}
+.cartconfirmBox ul li.result {
+    padding-left: 1em;
+    vertical-align: bottom;
+}
+.result_area {
+    font-size: 14px;
+    font-weight: bold;
+}
+.result_area dl {
+    text-align: right;
+    float: right;
+    display: block;
+}
+.result_area dt,
+.result_area dd {
+    text-align: right;
+}
+.result_area dt {
+    font-size: 11px;
+    clear: left;
+    float: right;
+}
+dl.point dl {
+    display: block;
+}
+.point_confifrm dl {
+    font-weight: bold;
+    border-bottom: #CCC solid 1px;
+}
+.point_confifrm dl:last-child {
+    border-bottom: none;
+}
+.point_confifrm dt {
+    width: 60%;
+    padding: 10px 0 10px 10px;
+    float: left;
+    display: block;
+}
+.point_confifrm dd {
+    width: 30%;
+    padding: 10px 10px 10px 0;
+    float: right;
+    text-align: right;
+}
+.deliv_confirm dt {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    background: #EEE;
+    border-top: #FFF solid 1px;
+    border-radius: 7px 7px 0 0;
+    -moz-border-radius: 7px 7px 0 0;
+    -webkit-border-radius: 7px 7px 0 0;
+    line-height: 1.2;
+    vertical-align: middle;
+    position: relative;
+    display: block;
+}
+.deliv_confirm dd {
+    font-size: 12px;
+    padding: 10px;
+    border-bottom: #CCC solid 1px;
+    display: block;
+    line-height: 1.3;
+}
+
+.deliv_confirm dd:last-child {
+    border-bottom: none;
+}
+
+.deliv_confirm dd p.deliv_name {
+    margin-bottom: 3px;
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.date_confirm li {
+    padding-right: 1em;
+    display: inline;
+}
+/* -----------------------------------------------
+入力フォーム/確認画面共通
+----------------------------------------------- */
+dl.form_entry {
+    width: 100%;
+    margin: 0 0 15px 0;
+    padding: 0;
+    border-top: #999 solid 1px;
+    border-bottom: #999 solid 1px;
+    position: relative;
+}
+dl.form_entry dt {
+    font-weight: bold;
+    padding: 10px 12px 0;
+}
+dl.form_entry dd {
+    padding: 0 12px 10px;
+    border-bottom: #CCC solid 1px;
+    line-height: 1.2;
+}
+dl.form_entry dd:last-child {
+    border-bottom: 0;
+}
+dl.form_entry .selectdate {
+    margin-top: 12px;
+    padding: 5px 6px 5px 4px;
+    font-size: 12px;
+    vertical-align: bottom;
+}
+dl.form_entry li {
+    margin-bottom: 0.3em;
+    vertical-align: middle;
+}
+dl.form_entry .bg_head {
+    padding-bottom: 10px;
+}
+/* -----------------------------------------------
+完了画面
+----------------------------------------------- */
+.thankstext {
+    font-size: 16px;
+    color: #FF6633;
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+#completetext p {
+    line-height: 1.3;
+}
+
+#completetext,
+.shopInformation {
+    font-size: 14px;
+    padding: 10px;
+    clear: both;
+}
+#completetext p,
+.shopInformation p {
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+/* -----------------------------------------------
+特定商/当サイトについて
+----------------------------------------------- */
+dl.form_info {
+    width: 100%;
+    margin: 10px 0 15px 0;
+    padding: 0;
+    border-bottom: #999 solid 1px;
+    position: relative;
+}
+dl.form_info dt {
+    font-weight: bold;
+    padding: 10px 10px 0;
+}
+dl.form_info dd {
+    padding: 0 10px 10px;
+    border-bottom: #CCC solid 1px;
+}
+dl.form_info dd:last-child {
+    border-bottom: 0;
+}
+
+#maps {
+    width: 88%!important;
+    margin: 10px auto!important;
+}
+/* -----------------------------------------------
+規約
+----------------------------------------------- */
+#kiyaku_text {
+    padding: 10px 20px;
+    border-bottom: #999 solid 1px;
+    border-top: #999 solid 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+/*-------------------------------------------------
+error
+----------------------------------------*/
+#errorBox {
+    text-align: left;
+    padding: 20px;
+}
+
+

@@ -1,0 +1,111 @@
+div#admin-contents {
+	width: 100%;
+}
+
+.ms2side__area {
+    overflow: auto;
+    padding-bottom: 20px;
+    padding-left: 112px;
+}
+
+.ms2side__div {
+    padding: 1px;
+    clear: left;
+    float: left;
+    background: url("") repeat-x scroll 0 0 transparent;
+}
+
+.ms2side__div p.AddOne,
+.ms2side__div p.RemoveOne,
+.ms2side__div p.MoveTop,
+.ms2side__div p.MoveDown {
+    margin: 5px auto;
+}
+.ms2side__div p.AddAll,
+.ms2side__div p.RemoveAll,
+.ms2side__div p.MoveUp,
+.ms2side__div p.MoveBottom {
+    margin: 5px auto;
+}
+.ms2side__select {
+    border: 1px solid #CCCCCC;
+    float: left;
+    padding: 9px;
+}
+
+.ms2side__header {
+    background: none repeat scroll 0 0 #DDDDDD;
+    margin: 0 0 7px;
+    padding: 5px;}
+
+.ms2side__options, .ms2side__updown {
+	float: left;
+	font-size: 12px;
+    margin: 90px 0 0;
+	padding: 0 8px;
+	width: 80px;
+	color: black;
+	text-align: center;
+	overflow: hidden;
+}
+
+.ms2side__updown {
+    margin-top: 0;
+    margin-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    background: none repeat scroll 0 0 #EEEEEE;
+    font-size: 12px;
+}
+
+div.Sort {
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.ms2side__options p, .ms2side__updown p {
+	width:40px;
+	display:inline-block;
+    text-decoration: none;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-image: url('../../img/button/white-grad.png');
+    padding: 2px 8px;
+    white-space: nowrap;
+    border: solid 1px #bcbecb;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: normal;
+	color: #444757;
+
+    /* CSS3 radius */
+    border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+}
+
+.ms2side__options p.ms2side_hover, .ms2side__updown p.ms2side_hover {
+	background-color: #F0F0FF;
+	border-color: #ccc;
+	cursor: hand;
+}
+
+.ms2side__options p.ms2side__hide, .ms2side__updown p.ms2side__hide {
+	cursor: default;
+	color: ccc;
+	border: 1px solid eee;
+	background-color: #eeeeee;
+}
+
+.ms2side__div select {
+	width: 250px;
+	float: left;
+}

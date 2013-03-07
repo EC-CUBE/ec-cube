@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>基本情報管理(メール設定：入力)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">基本情報管理(メール設定：入力)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-basis-mail']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>template_id</td>
+	<td>label=注文受付メール(携帯)</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>subject</td>
+	<td>ご注文を受け付けました</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//textarea[@name='header']</td>
+	<td>お買い上げありがとうございます。<br />下記の通りご注文を受け付けました。</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='basis']/table/tbody/tr[3]/td/div/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//textarea[@name='footer']</td>
+	<td><br />こんごともよろしくお願い致します。</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='basis']/table/tbody/tr[5]/td/div/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='basis']/div/ul/li/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>登録しても宜しいですか</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

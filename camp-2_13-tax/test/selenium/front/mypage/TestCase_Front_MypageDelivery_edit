@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>MYページ(お届け先変更)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">MYページ(お届け先変更)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>mypage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=お届け先追加・変更</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=変更</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPopUp</td>
+	<td>deliv_disp</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>name=deliv_disp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>name=deliv_disp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name01</td>
+	<td>ロックオン編集</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name02</td>
+	<td>花子編集</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana01</td>
+	<td>ロックオンヘンシュウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana02</td>
+	<td>ハナコヘンシュウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip02</td>
+	<td>0001</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr01</td>
+	<td>大阪市北区梅田</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr02</td>
+	<td>2-4-9 ブリーゼタワー13F</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel03</td>
+	<td>7500</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>register</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
