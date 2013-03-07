@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>基本情報管理(支払方法設定：新規入力)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">基本情報管理(支払方法設定：新規入力)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-basis-payment']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='basis']/div/ul/li/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//form[@id='form1']/table/tbody/tr[2]/td/input</td>
+	<td>320</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//form[@id='form1']/table/tbody/tr[3]/td/input[1]</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//form[@id='form1']/table/tbody/tr[3]/td/input[2]</td>
+	<td>50000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>payment_image</td>
+	<td>C:\Users\lockon\Pictures\ECアイテム\pay-conbini.gif</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=アップロード</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=[画像の取り消し]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>payment_image</td>
+	<td>C:\Users\lockon\Pictures\ECアイテム\pay-conbini.gif</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=アップロード</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='form1']/div/ul/li/a/span</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
