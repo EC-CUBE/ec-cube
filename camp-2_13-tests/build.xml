@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="EC-CUBE" basedir="." default="test">
+  <!-- Jenkins上でのみ実行するタスク -->
+  <target name="prepare-jenkins">
+    <copy overwrite="true" file="data/config/config.php.jenkins" tofile="data/config/config.php"/>
+    <copy overwrite="true" file="tests/phpunit.xml.jenkins" tofile="tests/phpunit.xml"/>
+  </target>
+
+  <target name="test">
+    <delete>
+      <fileset dir="data/cache">
+        <include name="*"/>
+      </fileset>
+    </delete>
+    <delete dir="reports" includeemptydirs="true" />
+    <mkdir dir="reports/coverage" />
+    <exec dir="."
+      output="reports/stdout.log"
+      error="reports/stderr.log"
+      command="phpunit --log-tap reports/tap.log
+               --log-junit reports/unitreport.xml
+                       --coverage-html reports/coverage
+                       --coverage-clover reports/coverage/coverage.xml
+                       --configuration tests/phpunit.xml
+                       tests/" />
+  </target>
+  <target name="checkstyle">
+    <exec command="phpcs --standard=tests/ruleset.xml
+    --report=checkstyle
+    --extensions=php
+    -pv data/
+    --report-file=reports/checkstyle.xml
+    --ignore=data/module,data/Smarty,data/smarty_extends" />
+  </target>
+</project>

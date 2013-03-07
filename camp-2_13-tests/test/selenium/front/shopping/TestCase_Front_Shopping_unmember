@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>商品購入フロー(非ログイン非会員)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">商品購入フロー(非ログイン非会員)</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=食品(3)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>detail2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>cart</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>confirm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>buystep</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_name01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_name02</td>
+	<td>太郎</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_kana01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_kana02</td>
+	<td>タロウ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_zip02</td>
+	<td>0001</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>order_pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_addr01</td>
+	<td>大阪市北区梅田</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_addr02</td>
+	<td>2-4-9 ブリーゼタワー13F</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_tel02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_tel03</td>
+	<td>7500</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_fax01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_fax02</td>
+	<td>4795</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_fax03</td>
+	<td>7501</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_email</td>
+	<td>test01@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>order_email02</td>
+	<td>test01@example.com</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>order_sex_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>order_job</td>
+	<td>label=コンピュータ関連技術職</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>year</td>
+	<td>label=1985</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>month</td>
+	<td>label=7</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>day</td>
+	<td>label=21</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>deliv_label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_name01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_name02</td>
+	<td>花子</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_kana01</td>
+	<td>ロックオン</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_kana02</td>
+	<td>ハナコ</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_zip01</td>
+	<td>104</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_zip02</td>
+	<td>0061</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>shipping_pref</td>
+	<td>label=東京都</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_addr01</td>
+	<td>中央区銀座</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_addr02</td>
+	<td>6-11-4 ニックス銀座ビル3F</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_tel01</td>
+	<td>03</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_tel02</td>
+	<td>3289</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>shipping_tel03</td>
+	<td>5051</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>singular</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>pay_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>message</td>
+	<td>お問い合わせ事項</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>back03</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>singular</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>pay_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>next-top</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

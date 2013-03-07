@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>商品登録(ダウンロード商品)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">商品登録(ダウンロード商品)</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-products-product']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>ダウンロード商品</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='product_type_id' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=&lt;- 登録</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>status</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>product_status[]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='product_status[]' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='product_status[]' and @value='3']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='product_status[]' and @value='4']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='product_status[]' and @value='5']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='product_type_id' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>down_filename</td>
+	<td>ダウンロード商品のファイル名</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//input[@name='down_file']</td>
+	<td>C:\Users\lockon\Pictures\ECアイテム\DownloadSample.pdf</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=アップロード</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>product_code</td>
+	<td>download-test01</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>price01</td>
+	<td>300</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>price02</td>
+	<td>280</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>stock_unlimited</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>point_rate</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>sale_limit</td>
+	<td>20</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>comment3</td>
+	<td>ダウンロード商品,テスト</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>note</td>
+	<td>テスト用ダウンロード商品です。</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>main_list_comment</td>
+	<td>一覧メインコメント<br />ダウンロード商品テスト</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>main_comment</td>
+	<td>詳細メインコメント<br />ダウンロード商品テスト</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//input[@name='main_large_image']</td>
+	<td>C:\Users\lockon\Pictures\ECアイテム\DownloadSample.jpg</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', 'main_large_image'); return false;&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=サブ情報表示/非表示</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='products']/div[5]/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='products']/div/ul/li[1]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='products']/div[5]/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='products']/div/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

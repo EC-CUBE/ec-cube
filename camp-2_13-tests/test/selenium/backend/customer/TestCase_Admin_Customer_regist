@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>顧客登録</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">顧客登録</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>//li[@id='navi-customer-customer']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name='status' and @value='2']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name01</td>
+	<td>テスト</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name02</td>
+	<td>テスト</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana01</td>
+	<td>テスト</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>kana02</td>
+	<td>テスト</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip01</td>
+	<td>530</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>zip02</td>
+	<td>0002</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>pref</td>
+	<td>label=大阪府</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr01</td>
+	<td>大阪市北区梅田1-1-4</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addr02</td>
+	<td>ブリーゼタワー</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>test01@example.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel01</td>
+	<td>06</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel02</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tel03</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>sex</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>job</td>
+	<td>label=コンサルタント</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>year</td>
+	<td>label=1986</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>month</td>
+	<td>label=1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>day</td>
+	<td>label=11</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>testtest</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>reminder</td>
+	<td>label=好きな食べ物は？</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reminder_answer</td>
+	<td>ラーメン</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mailmaga_flg</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>point</td>
+	<td>5000</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='customer']/div[1]/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=この内容で登録する</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

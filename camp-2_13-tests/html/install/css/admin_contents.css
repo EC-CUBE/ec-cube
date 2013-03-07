@@ -1,0 +1,407 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* 上記による Fierfox 2 崩れ対応 */
+option {
+    margin-right: 0.5em;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    font-family: "ＭＳ Ｐゴシック","Hiragino Maru Gothic Pro","ヒラギノ丸ゴ Pro W4",Osaka,sans-serif;
+    font-size: 80%;
+    line-height: 120%;
+}
+
+option {
+    margin-right: 3px;
+    font-size: 100%;
+}
+
+input, textarea {
+    margin-right: 3px;
+    font-size: 100%;
+}
+
+select {
+    font-size: 100%;
+}
+select.top,
+input.top,
+textarea.top{
+    margin-bottom: 5px;
+}
+
+.page_rows{
+    margin-bottom:20px;
+}
+
+img {
+    border: 0;
+}
+
+ul, li {
+    list-style: none;
+}
+
+hr {
+    display: none;
+}
+
+/*テーブル設定*/
+table {
+    margin: 0 0 20px;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 100%;
+    text-align: left;
+}
+
+th, td {
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+th {
+    width: 240px;
+    background: url('../img/table_back.png') repeat-x #f4f5f5;
+    font-weight: normal;
+    text-align: left;
+}
+
+.contents-main .btn-area, #popup .btn-area, #form_edit .btn-area{
+    margin : 0px 0 60px 0;
+    padding: 20px 0;
+    clear: both;
+    width: 100%;
+    background:#f5f5f5;
+    text-align: center;
+}
+
+.contents-main .btn-area li, #popup .btn-area li, .btn-area li{
+    margin-right: 10px;
+    display: inline;
+}
+
+
+/*通常ボタン*/
+.btn-normal, a.btn-normal:link, a.btn-normal:visited {
+    margin-right: 5px;
+    padding: 2px 10px;
+    border: solid 1px #bcbecb;
+    display: inline-block;
+    color: #444757;
+    background-image: url('../img/white-grad.png');
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #eee;
+    font-weight: normal;
+    font-size: 90%;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    /* CSS3 radius */
+    border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+}
+
+/*動作ボタン*/
+.btn-action, a.btn-action:link, a.btn-action:visited {
+    padding: 5px 10px;
+    border: solid 1px #bcbecb;
+    display: inline-block;
+    color: #444757;
+    background: url('../img/white-grad04.png') top repeat-x #eee;
+    background-attachment: scroll;
+    background-clip: border-box;
+    font-weight: normal;
+    font-size: 80%;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    /* CSS3 radius */
+    border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+    /* Safari, Chrome radius */
+    -webkit-box-sizing: content-box;
+    -webkit-border-radius: 5px;
+    /* Firefox radius */
+    -moz-border-radius: 5px;
+}
+
+
+/*戻るボタン*/
+.btn-action .btn-prev {
+    padding: 0 0 0 20px;
+    display: inline-block;
+    background: url('../img/ico_prev.gif') left no-repeat;
+    font-weight: bold;
+    font-size: 114%;
+}
+
+
+/*進むボタン*/
+.btn-action .btn-next {
+    padding: 0 20px 0 0;
+    display: inline-block;
+    background: url('../img/ico_next.gif') right no-repeat;
+    font-weight: bold;
+    font-size: 114%;
+}
+
+a.btn-normal:hover, a.btn-action:hover, a.btn-tool:hover{
+    border: solid 1px #d5d7df;
+    color: #6d728b;
+}
+
+a.btn-tool-format:hover{
+    border: solid 1px #363a47;
+    color: #6b728b;
+}
+
+a.btn:active, a.btn-normal:active {
+    background-image: url('../img/white-grad-active.png');
+}
+
+
+/*LINK*/
+a:link {
+    color: #39c;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #39c;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #39c;
+    text-decoration: none;
+}
+
+.left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.attention {
+    color: #f00;
+}
+
+
+/* コンテンツ
+----------------------------------------------- */
+* html div#container {
+    position: relative;
+    height: 100%;
+    min-height: 100%;
+}
+
+body > #container {
+    height: auto;
+}
+
+#container {
+    position: relative;
+    min-height: 100%;
+}
+
+#contents {
+    padding: 20px 20px 100px;
+    width: 1000px;
+}
+
+
+/* インストールメッセージ
+----------------------------------------------- */
+
+/*以下エラーページと共通■触るべからず*/
+
+#outside {
+    margin:0 auto;
+    padding:0;
+    text-align:center;
+    width:100%;
+}
+
+#out-wrap {
+    margin:100px auto;
+    width: 560px;
+}
+
+#out-area {
+    width:560px;
+    text-align: left;
+
+}
+
+#out-wrap .logo {
+    padding-bottom: 5px;
+    float: right;
+}
+
+#out-area{
+    width: 558px;
+}
+#out-area .out-top {
+    clear: both;
+    width: 560px;
+    height: 10px;
+    background: url('../img/login_back_top.jpg') bottom left no-repeat;
+}
+
+/*以上エラーページと共通■触るべからず*/
+
+#out-area .contents {
+    width:560px;
+    background: url('../img/login_back_contents.gif') top left repeat-y;
+    text-align: left;
+}
+
+#out-area .btn-area-top {
+    width: 560px;
+    height: 10px;
+    background: url('../img/login_back_btn_top.jpg') left no-repeat;
+}
+#out-area .btn-area ul {
+    padding: 20px 0 10px 0;
+    width: 560px;
+    text-align: center;
+    background: url('../img/login_back_btn_contents.jpg') top left no-repeat #f4f5f5;
+}
+#out-area .btn-area-bottom {
+    width: 560px;
+    height: 10px;
+    background: url('../img/login_back_btn_bottom.jpg') bottom left no-repeat #eeeff0;
+}
+#out-area .contents .block {
+    margin: 0 auto;
+    width: 520px;
+}
+#out-area .contents .message {
+    margin: 0 auto 0px auto;
+    padding: 5px 0;
+    width: 520px;
+    color:#444757;
+    font-size:100%;
+}
+#out-area .contents h2 {
+    margin: 0 auto 10px auto;
+    padding: 5px 0;
+    width: 520px;
+    color:#444757;
+    font-size:100%;
+    font-weight: bold;
+    border-bottom: solid 3px #ccc;
+}
+#out-area .contents .result-info01 {
+    margin: 0 auto 10px auto;
+    padding: 20px;
+    width: 480px;
+    background: #eee;
+    font-size: 86%;
+    font-weight: bold;
+    line-height:160%;
+}
+#out-area .contents .result-info02 {
+    margin: 0 auto;
+    padding-bottom: 30px;
+    width: 520px;
+}
+#out-area .contents .result-info02 p {
+    margin-bottom: 10px;
+}
+#out-area .contents .result-info02 p.action-message {
+    margin: 20px 0 0 0;
+    padding-bottom: 10px;
+    color:#444757;
+}
+.ex-text{
+    color: #7c7c7c;
+    font-size: 86%;
+}
+
+#out-area .contents .result-info01 .site-info-list li {
+    margin-bottom: 5px;
+    font-size: 120%;
+    font-weight: normal;
+}
+
+/* EC-CUBEからのお知らせエリア
+----------------------------------------------- */
+
+#info-area{
+	margin-top:20px;
+    width: 558px;
+}
+
+/* フォーム
+----------------------------------------------- */
+div.btn,p.remark {
+    margin: 0 0 20px 0;
+}
+
+/*FORM*/
+.box470 {
+    width: 470px;
+    height: 300px;
+}
+.box280 {
+    width: 280px;
+    height: 30px;
+}
+
+/*COLOR*/
+.red {
+    color: #f00;
+}
+
+/*FONT*/
+.bold {
+    font-weight:bold;
+}
+
+/* フロート解除 */
+.clearfix:after {
+    display:block;
+    clear:both;
+    height:0px;
+    line-height:0px;
+    visibility:hidden;
+    content:".";
+}
+
