@@ -27,7 +27,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Initial 
+class SC_Initial
 {
 
     // {{{ cunstructor
@@ -39,7 +39,7 @@ class SC_Initial
     {
 
         /** EC-CUBEのバージョン */
-        define('ECCUBE_VERSION', '2.12.3-dev');
+        define('ECCUBE_VERSION', '2.13.0-dev');
     }
 
     // }}}
