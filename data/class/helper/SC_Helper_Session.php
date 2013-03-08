@@ -138,7 +138,11 @@ class SC_Helper_Session
     {
         // MAX_LIFETIME以上更新されていないセッションを削除する。
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
+        if(DB_TYPE == "pgsql"){
+            $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
+        }else{
+            $where = "update_date < current_timestamp + interval -". MAX_LIFETIME . " second";
+        }
         $objQuery->delete('dtb_session', $where);
         return true;
     }
