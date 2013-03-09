@@ -1278,3 +1278,4 @@ INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_co
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_kara_mail', 'receive_date', 1, '');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product_categories', 'category_id', 2, 'カテゴリが多いときに試してみてください。');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('mtb_zip', 'zipcode', 2, '郵便番号検索が遅いときに試してみてください。郵便番号データの更新時には無効にしていることをおすすめします。');
+INSERT INTO dtb_tax_rule (tax_rule_id, country_id, pref_id, product_id, product_class_id, calc_rule, tax_rate, tax_adjust, apply_date, del_flg, create_date,update_date) VALUES (0, 0, 0, 0, 0, 1, 5, 0, NULL, 0, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
