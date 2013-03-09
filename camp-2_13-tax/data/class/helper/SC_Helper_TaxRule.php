@@ -148,12 +148,7 @@ class SC_Helper_TaxRule
     function setTaxRuleForProduct($tax_rate, $product_id = 0, $product_class_id = 0, $tax_adjust=0, $pref_id = 0, $country_id = 0)
     {
         // 税情報を設定
-        SC_Helper_TaxRule_Ex::setTaxRule($tax_rate,
-                                         $tax_adjust,
-                                         $product_id,
-                                         $product_class_id,
-                                         $pref_id,
-                                         $country_id);
+        SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id, $product_class_id, $pref_id, $country_id);
     }
 
     /**
@@ -162,41 +157,41 @@ class SC_Helper_TaxRule
      * @param
      * @return
      */
-    function setTaxRule($tax_rate, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    function setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
-        // デフォルトの設定とtax_rateの値が同じ場合は登録しない
-        $arrRet = SC_Helper_TaxRule_Ex::getTaxRule();
-        if( $arrRet['tax_rate'] == $tax_rate ) {
-            return;
-        }
+		$table = 'dtb_tax_rule';
+		$arrValues = array();
+		$arrValues['calc_rule'] = $calc_rule;
+		$arrValues['tax_rate'] = $tax_rate;
+		$arrValues['tax_adjust'] = $tax_adjust;
+		$arrValues['apply_date'] = $apply_date;
+		$arrValues['member_id'] = $_SESSION['member_id'];
+		$arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+		
         // 新規か更新か？
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = 'product_id=? and product_class_id=? and pref_id=? and country_id=?';
+		if($tax_rule_id == NULL && $product_id != 0 && $product_class_id != 0){
+        $where = 'product_id = ? AND product_class_id= ? AND pref_id = ? AND country_id = ?';
         $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
-        $arrCheck = $objQuery->select('*', 'dtb_tax_rule', $where, $arrVal);
-        
-        if(empty($arrCheck)) {
+		$arrCheck = $objQuery->getRow('*', 'dtb_tax_rule', $where, $arrVal);
+		$tax_rule_id = $arrCheck['tax_rule_id'];
+		}
+		
+        if($tax_rule_id == NULL) {
             // 税情報を新規
-            $table = 'dtb_tax_rule';
-            $arrValues = array();
-            // todo idを計算して設定する必要あり(nextvalに変更？)
-            $arrTaxruleid = $objQuery->select('max(tax_rule_id)', 'dtb_tax_rule');
-            $arrValues['tax_rule_id'] = $arrTaxruleid[0]['max(tax_rule_id)']+1;
+            // INSERTの実行
+            $arrValues['tax_rule_id'] = $objQuery->nextVal('dtb_tax_rule_tax_rule_id');
             $arrValues['country_id'] = $country_id;
             $arrValues['pref_id'] = $pref_id;
             $arrValues['product_id'] = $product_id;
             $arrValues['product_class_id'] = $product_class_id;
-            $arrValues['calc_rule'] = $arrRet['calc_rule'];
-            $arrValues['tax_rate'] = $tax_rate;
-            $arrValues['tax_adjust'] = $tax_adjust;
-            $arrValues['apply_date'] = $arrRet['apply_date'];
-            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
-            $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+			$arrValues['create_date'] = 'CURRENT_TIMESTAMP';
         
             $objQuery->insert($table, $arrValues);
         } else {
             // 税情報を更新
-            $objQuery->update('dtb_tax_rule', array('tax_rate' => $tax_rate), $where, $arrVal);
+            $where = 'tax_rule_id = ?';
+            $ret = $objQuery->update($table, $arrValues, $where, array($tax_rule_id));
         }
     }
     
@@ -223,7 +218,7 @@ class SC_Helper_TaxRule
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
         }
-        return $objQuery->getRow('*', 'dtb_tax_rule', 'tax_rule_id = ?', array($tax_rule_id));
+        return $objQuery->getRow('*', 'dtb_tax_rule', $where, array($tax_rule_id));
     }
 
 	
@@ -239,49 +234,20 @@ class SC_Helper_TaxRule
         return $arrRet[0];
     }
 
-    function registerTaxRuleData($sqlval) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $sqlval['apply_date'] = SC_Utils_Ex::sfGetTimestampistime($sqlval['apply_date_year'], $sqlval['apply_date_month'], $sqlval['apply_date_day'],$sqlval['apply_date_hour'], $sqlval['apply_date_minutes']);
-
-        unset($sqlval['apply_date_year']);
-        unset($sqlval['apply_date_month']);
-        unset($sqlval['apply_date_day']);
-        unset($sqlval['apply_date_hour']);
-        unset($sqlval['apply_date_minutes']);
-
-        $tax_rule_id = $sqlval['tax_rule_id'];
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        // 新規登録
-        if ($tax_rule_id == '') {
-            // INSERTの実行
-            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-            $sqlval['tax_rule_id'] = $objQuery->nextVal('dtb_tax_rule_tax_rule_id');
-            $ret = $objQuery->insert('dtb_tax_rule', $sqlval);
-            // 既存編集
-        } else {
-            unset($sqlval['tax_rule_id']);
-            unset($sqlval['create_date']);
-            $where = 'tax_rule_id = ?';
-            $ret = $objQuery->update('dtb_tax_rule', $sqlval, $where, array($tax_rule_id));
-        }
-        return ($ret) ? $sqlval['tax_rule_id'] : FALSE;
-    }
-
     /**
      * 税規約の削除.
      *
      * @param integer $tax_rule_id 税規約ID
      * @return void
      */
-    public function deleteTaxRuleData($tax_rule_id)
+    function deleteTaxRuleData($tax_rule_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $sqlval = array();
         $sqlval['del_flg']     = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = 'tax_rule_id = ?';
         $objQuery->update('dtb_tax_rule', $sqlval, $where, array($tax_rule_id));
     }
-
-
 }
