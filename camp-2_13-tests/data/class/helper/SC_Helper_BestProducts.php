@@ -103,7 +103,7 @@ class SC_Helper_BestProducts
      * @param array $sqlval
      * @return multiple 登録成功:おすすめ商品ID, 失敗:FALSE
      */
-    public function save($sqlval)
+    public function saveBestProducts($sqlval)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

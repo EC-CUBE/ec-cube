@@ -213,7 +213,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
         $sqlval['rank'] = $arrPost['rank'];
         $sqlval['comment'] = $arrPost['comment'];
         $sqlval['creator_id'] = $member_id;
-        $objRecommend->save($sqlval);
+        $objRecommend->saveBestProducts($sqlval);
     }
 
     /**
