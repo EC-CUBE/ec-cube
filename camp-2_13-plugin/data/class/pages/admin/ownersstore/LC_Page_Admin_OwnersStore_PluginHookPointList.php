@@ -95,8 +95,12 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
                 break;
         }
         // DBからプラグイン情報を取得
-        $arrHookPoint = SC_Plugin_Util_Ex::getPluginHookPointList();
-
+        $arrRet = SC_Plugin_Util_Ex::getPluginHookPointList();
+        // 競合チェック
+        $this->arrConflict = SC_Plugin_Util_Ex::checkConflictPlugin();
+        foreach ($arrRet AS $key=>$val) {
+            $arrHookPoint[$val['hook_point']][$val['plugin_id']] = $val;
+        }
         $this->arrHookPoint = $arrHookPoint;
     }
 

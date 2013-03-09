@@ -233,21 +233,23 @@ class SC_Plugin_Util
     function checkConflictPlugin($plugin_id = '')
     {
         // フックポイントを取得します.
+        $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ?';
         if ($plugin_id > 0) {
             $hookPoints = SC_Plugin_Util::getPluginHookPoint($plugin_id);
         } else {
             $hookPoints = SC_Plugin_Util::getPluginHookPointList(1);
+            $where .= ' AND T1.use_flg = true';
         }
 
         $conflict_alert_message = '';
         $arrConflictPluginName = array();
+        $arrConflictHookPoint = array();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->setGroupBy('T1.hook_point, T1.plugin_id, T2.plugin_name');
+        $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 ON T1.plugin_id = T2.plugin_id';
         foreach ($hookPoints as $hookPoint) {
             // 競合するプラグインを取得する,
-            $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 ON T1.plugin_id = T2.plugin_id';
-            $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ' . PLUGIN_ENABLE_TRUE;
-            $objQuery->setGroupBy('T1.plugin_id, T2.plugin_name');
-            $conflictPlugins = $objQuery->select('T1.plugin_id, T2.plugin_name', $table, $where, array($hookPoint['hook_point'], $hookPoint['plugin_id']));
+            $conflictPlugins = $objQuery->select('T1.hook_point, T1.plugin_id, T2.plugin_name', $table, $where, array($hookPoint['hook_point'], $hookPoint['plugin_id'], PLUGIN_ENABLE_TRUE));
 
             // プラグイン名重複を削除する為、専用の配列に格納し直す.
             foreach ($conflictPlugins as $conflictPlugin) {
@@ -255,13 +257,22 @@ class SC_Plugin_Util
                 if (!in_array($conflictPlugin['plugin_name'], $arrConflictPluginName)) {
                     $arrConflictPluginName[] = $conflictPlugin['plugin_name'];
                 }
+                // プラグイン名が見つからなければ配列に格納
+                if (!in_array($conflictPlugin['hook_point'], $arrConflictHookPoint)) {
+                    $arrConflictHookPoint[] = $conflictPlugin['hook_point'];
+                }
             }
         }
-        // メッセージをセットします.
-        foreach ($arrConflictPluginName as $conflictPluginName) {
-            $conflict_alert_message .= '* ' .  $conflictPluginName . 'と競合する可能性があります。<br/>';
+
+        if ($plugin_id > 0) {
+            // メッセージをセットします.
+            foreach ($arrConflictPluginName as $conflictPluginName) {
+                $conflict_alert_message .= '* ' .  $conflictPluginName . 'と競合する可能性があります。<br/>';
+            }
+            return $conflict_alert_message;
+        } else {
+            return $arrConflictHookPoint;
         }
-        return $conflict_alert_message;
     }
 
 }

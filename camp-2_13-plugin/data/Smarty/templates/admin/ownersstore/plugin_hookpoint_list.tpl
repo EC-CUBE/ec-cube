@@ -56,11 +56,9 @@
 <!--<form name="form1" id="form1" method="post" action="?">-->
 <form name="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="" />
+<input type="hidden" name="mode" value="conflict_check" />
 <input type="hidden" name="plugin_hookpoint_id" value="" />
 <div id="system" class="contents-main">
-    <h2>プラグイン競合チェック</h2>
-
     <!--▼プラグイン一覧ここから-->
     <h2>フックポイント別プラグイン一覧</h2>
     <!--{if count($arrHookPoint) > 0}-->
@@ -81,9 +79,9 @@
     <!--{foreach from=$hookpoint item=val name="plugin"}-->
             <tr>
                 <!--{if $hookpoint|@count > 0 && $smarty.foreach.plugin.iteration == '1'}-->
-                <td rowspan="<!--{$hookpoint|@count}-->"><!--{$val.hook_point}--></td>
+                <td <!--{if in_array($val.hook_point, $arrConflict)}-->bgcolor="pink"<!--{/if}--> rowspan="<!--{$hookpoint|@count}-->"><!--{$val.hook_point}--></td>
                 <!--{elseif !$smarty.foreach.plugin.iteration > 1}-->
-                <td><!--{$val.hook_point}--></td>
+                <td <!--{if in_array($val.hook_point, $arrConflict)}-->bgcolor="pink"<!--{/if}-->><!--{$val.hook_point}--></td>
                 <!--{/if}-->
                 <td<!--{if $val.use_flg == "f"}--> bgcolor="grey"<!--{/if}-->><!--{$val.priority}--></td>
                 <td<!--{if $val.use_flg == "f"}--> bgcolor="grey"<!--{/if}-->><!--{$val.plugin_name}--></td>
