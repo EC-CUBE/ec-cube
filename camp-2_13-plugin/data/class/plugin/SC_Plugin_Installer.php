@@ -125,12 +125,12 @@ class SC_Plugin_Installer {
             $error_message = $this->verifySql($sql['sql'], $sql['params']);
             if (!is_null($error_message)) {
                 $this->log("verify sql: invalid sql " . $sql['sql']);
+                $this->log("verify sql: $error_message");
                 $arrErr[] = $error_message;
             }
         }
         
         if (count($arrErr) > 0) {
-            $this->log("verify sql: err");
             return $arrErr;
         }
         
@@ -140,6 +140,30 @@ class SC_Plugin_Installer {
         foreach ($arrSql as $sql) {
             $this->log("exec sql: " . $sql['sql']);
             $objQuery->query($sql['sql'], $sql['params']);
+        }
+        
+        $arrInsertQuery = $this->arrInstallData['insert'];
+        foreach ($arrInsertQuery as $query) {
+            $objQuery->insert(
+                    $query['table'],
+                    $query['arrVal'],
+                    $query['arrSql'],
+                    $query['arrSqlVal'],
+                    $query['form'],
+                    $query['arrFromVal']
+            );
+        }
+        
+        $arrUpdateQuery = $this->arrInstallData['update'];
+        foreach ($arrUpdateQuery as $query) {
+            $objQuery->update(
+                    $query['table'],
+                    $query['arrVal'],
+                    $query['where'],
+                    $query['arrWhereVal'],
+                    $query['arrRawSql'],
+                    $query['arrRawSqlVal']
+            );
         }
         
         // プラグインのディレクトリコピー
@@ -216,7 +240,7 @@ class SC_Plugin_Installer {
      * @param type $type 
      */
     function sqlAterTableAdd($table_name, $col_name, $col_type) {
-        $sql = ("ALTER TABLE $table_name ADD $col_name $col_type ");
+        $sql = "ALTER TABLE $table_name ADD $col_name $col_type ";
         $this->sql($sql);
     }
     
@@ -228,32 +252,30 @@ class SC_Plugin_Installer {
      * @param type $type 
      */
     function sqlAterTableDrop($table_name, $col_name) {
-        $sql = ("ALTER TABLE $table_name DROP $col_name");
+        $sql = "ALTER TABLE $table_name DROP $col_name";
         $this->sql($sql);
     }
     
     
     function sqlInsert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
-        $this->arrInstallData['insert'] = array(
-            'params'   => array(
-                'table' => $table,
-                'arrVal' => $arrVal, 
-                'arrSql' => $arrSql, 
-                'arrSqlVal' => $arrSqlVal, 
-                'form' =>$from,
-                'arrFromVal' => $arrFromVal)
+        $this->arrInstallData['insert'][] = array(
+            'table' => $table,
+            'arrVal' => $arrVal, 
+            'arrSql' => $arrSql, 
+            'arrSqlVal' => $arrSqlVal, 
+            'form' =>$from,
+            'arrFromVal' => $arrFromVal
         );
     }
     
     function sqlUpdate($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
-        $this->arrInstallData['update'] = array(
-            'params'   => array(
-                'table' => $table,
-                'arrVal' => $arrVal, 
-                'where' => $where, 
-                'arrWhereVal' => $arrWhereVal, 
-                'arrRawSql' =>$arrRawSql,
-                'arrRawSqlVal' => $arrRawSqlVal)
+        $this->arrInstallData['update'][] = array(
+            'table' => $table,
+            'arrVal' => $arrVal, 
+            'where' => $where, 
+            'arrWhereVal' => $arrWhereVal, 
+            'arrRawSql' =>$arrRawSql,
+            'arrRawSqlVal' => $arrRawSqlVal
         );
     }
     
