@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Kiyaku/SC_Helper_Kiyaku_Test
 /**
  *
  */
-class SC_Helper_Kiyaku_getRankTest extends SC_Helper_Kiyaku_TestBase
+class SC_Helper_Kiyaku_getKiyakuTest extends SC_Helper_Kiyaku_TestBase
 {
 
     protected function setUp()
@@ -21,7 +21,7 @@ class SC_Helper_Kiyaku_getRankTest extends SC_Helper_Kiyaku_TestBase
 
     /////////////////////////////////////////
 
-    public function testgetRankTest_規約情報を取得できた場合_規約のarrayを返す()
+    public function testgetKiyakuTest_規約情報を取得できた場合_規約のarrayを返す()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
@@ -39,11 +39,11 @@ class SC_Helper_Kiyaku_getRankTest extends SC_Helper_Kiyaku_TestBase
             'del_flg' => '0'
                                 );
 
-        $this->actual = $this->objKiyaku->getRank($kiyaku_id, $has_deleted);
+        $this->actual = $this->objKiyaku->getKiyaku($kiyaku_id, $has_deleted);
         $this->verify('規約詳細取得');
     }
 
-    public function testgetRankTest_規約情報を規約idから取得する際削除された規約を指定した場合_nullを返す()
+    public function testgetKiyakuTest_規約情報を規約idから取得する際削除された規約を指定した場合_nullを返す()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
@@ -52,11 +52,11 @@ class SC_Helper_Kiyaku_getRankTest extends SC_Helper_Kiyaku_TestBase
         //期待値
         $this->expected = null;
 
-        $this->actual = $this->objKiyaku->getRank($kiyaku_id, $has_deleted);
+        $this->actual = $this->objKiyaku->getKiyaku($kiyaku_id, $has_deleted);
         $this->verify('規約詳細取得');
     }
 
-    public function testgetRankTest_削除された情報を含む規約情報を規約idから取得する際削除された規約を指定した場合_nullを返す()
+    public function testgetKiyakuTest_削除された情報を含む規約情報を規約idから取得する際削除された規約を指定した場合_nullを返す()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
@@ -74,7 +74,7 @@ class SC_Helper_Kiyaku_getRankTest extends SC_Helper_Kiyaku_TestBase
                 'del_flg' => '1'
                                 );
 
-        $this->actual = $this->objKiyaku->getRank($kiyaku_id, $has_deleted);
+        $this->actual = $this->objKiyaku->getKiyaku($kiyaku_id, $has_deleted);
         $this->verify('規約詳細取得');
     }
 

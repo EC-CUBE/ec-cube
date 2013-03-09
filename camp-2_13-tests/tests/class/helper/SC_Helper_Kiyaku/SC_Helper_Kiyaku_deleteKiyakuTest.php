@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Kiyaku/SC_Helper_Kiyaku_Test
 /**
  *
  */
-class SC_Helper_Kiyaku_deleteRankTest extends SC_Helper_Kiyaku_TestBase
+class SC_Helper_Kiyaku_deleteKiyakuTest extends SC_Helper_Kiyaku_TestBase
 {
 
     protected function setUp()
@@ -21,7 +21,7 @@ class SC_Helper_Kiyaku_deleteRankTest extends SC_Helper_Kiyaku_TestBase
 
     /////////////////////////////////////////
 
-    public function testdeleteRankTest_削除ができた場合_del_flgの1を返す()
+    public function testdeleteKiyakuTest_削除ができた場合_del_flgの1を返す()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
@@ -30,7 +30,7 @@ class SC_Helper_Kiyaku_deleteRankTest extends SC_Helper_Kiyaku_TestBase
         //期待値
         $this->expected = "1";
 
-        $this->objKiyaku->deleteRank($kiyaku_id);
+        $this->objKiyaku->deleteKiyaku($kiyaku_id);
 
         $col = 'del_flg';
         $from = 'dtb_kiyaku';
