@@ -39,7 +39,7 @@ class SC_Plugin_Installer {
     }
     
     public function execInstall() {
-        GC_Utils_Ex::gfPrintLog("start install");
+        GC_Utils_Ex::gfPrintLog("start install: " . $this->arrPlugin['plugin_code']);
         
         $plugin_code = $this->arrPlugin['plugin_code'];
 
@@ -76,8 +76,7 @@ class SC_Plugin_Installer {
         }
 
         $objQuery->commit();
-        GC_Utils_Ex::gfPrintLog("end install");
-        
+        GC_Utils_Ex::gfPrintLog("end install: " . $this->arrPlugin['plugin_code']);
     }
     
     public function copyFile($src, $dist) {
@@ -111,5 +110,9 @@ class SC_Plugin_Installer {
             'sql'    => $sql,
             'params' => $params
         );
+    }
+    
+    public function query($sql, array $params = array()) {
+        $this->sql($sql, $params);
     }
 }
