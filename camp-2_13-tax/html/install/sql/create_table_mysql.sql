@@ -1227,6 +1227,7 @@ CREATE TABLE dtb_tax_rule (
     tax_rate numeric NOT NULL DEFAULT 5,
     tax_adjust numeric NOT NULL DEFAULT 0,
     apply_date timestamp,
+	member_id int NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
