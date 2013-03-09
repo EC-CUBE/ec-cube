@@ -200,6 +200,7 @@
             <th>在庫数<span class="attention">*</span></th>
             <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
             <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
+            <th>消費税率(%)<span class="attention">*</span></th>
             <th>商品種別<span class="attention">*</span></th>
             <th>ダウンロード<br />ファイル名<span class="red"><br />上限<!--{$smarty.const.STEXT_LEN}-->文字</span></th>
             <th>ダウンロード商品用<br />ファイル</th>
@@ -269,6 +270,13 @@
                         <span class="attention"><!--{$arrErr[$key][$index]}--></span>
                     <!--{/if}-->
                     <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
+                </td>
+                <td class="center">
+                    <!--{assign var=key value="tax_rate"}-->
+                    <!--{if $arrErr[$key][$index]}-->
+                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
+                    <!--{/if}-->
+                    <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />                
                 </td>
                 <td class="class-product-type">
                     <!--{assign var=key value="product_type_id"}-->
