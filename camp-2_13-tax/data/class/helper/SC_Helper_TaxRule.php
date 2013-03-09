@@ -22,7 +22,7 @@
  */
 
 /**
- * 会員規約を管理するヘルパークラス.
+ * 税規約を管理するヘルパークラス.
  *
  * @package Helper
  * @author AMUAMU
@@ -30,7 +30,6 @@
  */
 class SC_Helper_TaxRule
 {
-
     /**
      * 設定情報に基づいて税金付与した金額を返す
      *
@@ -39,15 +38,23 @@ class SC_Helper_TaxRule
      */
     function sfCalcIncTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
-        $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
-
-        return $price + SC_Helper_TaxRule_Ex::sfTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
+        return $price + SC_Helper_TaxRule_Ex::sfTax($price, $product_id, $product_class_id, $pref_id, $country_id);
     }
 
     /**
-     * 税金額を返す
+     * 設定情報に基づいて税金の金額を返す
      *
-     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
+     * @param integer $price 計算対象の金額
+     * @return integer 税金した金額
+     */
+    function sfTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
+    {
+        $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
+        return SC_Helper_TaxRule_Ex::calcTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
+    }
+
+    /**
+     * 税金額を計算する
      *
      * @param integer $price 計算対象の金額
      * @param integer $tax 税率(%単位)
@@ -55,7 +62,7 @@ class SC_Helper_TaxRule
      * @param integer $tax_rule 端数処理
      * @return integer 税金額
      */
-    function sfTax($price, $tax, $calc_rule, $tax_adjust = 0)
+    function calcTax ($price, $tax, $calc_rule, $tax_adjust = 0)
     {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
@@ -81,7 +88,7 @@ class SC_Helper_TaxRule
     }
 
     /**
-     * 税金設定情報に基づいて税金額を返す
+     * 現在有効な税金設定情報を返す
      *
      * @param integer $price 計算対象の金額
      * @return array 税設定情報
