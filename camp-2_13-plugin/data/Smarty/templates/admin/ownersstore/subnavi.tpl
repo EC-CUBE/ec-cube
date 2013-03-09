@@ -25,6 +25,8 @@
 <ul class="level1">
     <li id="navi-ownersstore-index" class="<!--{if $tpl_subno == 'index'}-->on<!--{/if}-->">
         <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span>プラグイン管理</span></a></li>
+    <li id="navi-ownersstore-plugin-hookpoint-list" class="<!--{if $tpl_subno == 'plugin-hookpoint-list'}-->on<!--{/if}-->">
+        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/plugin_hookpoint_list.php"><span>プラグインフックポイント管理</span></a></li>
     <li id="navi-ownersstore-module" class="<!--{if $tpl_subno == 'module'}-->on<!--{/if}-->">
         <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/module.php"><span>モジュール管理</span></a></li>
     <li id="navi-ownersstore-settings" class="<!--{if $tpl_subno == 'settings'}-->on<!--{/if}-->">

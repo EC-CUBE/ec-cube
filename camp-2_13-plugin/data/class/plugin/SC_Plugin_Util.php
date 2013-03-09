@@ -147,8 +147,22 @@ class SC_Plugin_Util
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = '*';
         $from = 'dtb_plugin_hookpoint';
-        $where = 'plugin_id = ?';
+        $where = 'plugin_id = ? AND use_flg = true';
         return $objQuery->select($cols, $from, $where, array($plugin_id));
+    }
+
+    function getPluginHookPointList()
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->setOrder('priority DESC');
+        $cols = 'dtb_plugin_hookpoint.*, dtb_plugin.priority, dtb_plugin.plugin_name';
+        $from = 'dtb_plugin_hookpoint LEFT JOIN dtb_plugin USING(plugin_id)';
+        $arrRet = $objQuery->select($cols, $from);
+        $arrList = array();
+        foreach ($arrRet AS $key=>$val) {
+            $arrList[$val['plugin_hookpoint_id']][$val['plugin_id']] = $val;
+        }
+        return $arrList;
     }
 
     /**
