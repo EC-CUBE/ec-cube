@@ -601,6 +601,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
         if (isset($arrForm['category_id']) && !is_array($arrForm['category_id'])) {
             $arrForm['category_id'] = unserialize($arrForm['category_id']);
         }
+        $this->tpl_json_category_id = SC_Utils_Ex::jsonEncode($arrForm['category_id']);
         if ($arrForm['status'] == '') {
             $arrForm['status'] = DEFAULT_PRODUCT_DISP;
         }
@@ -985,7 +986,7 @@ __EOF__;
      */
     function lfSetOnloadJavaScript_InputPage($anchor_hash = '')
     {
-        return "fnCheckStockLimit('" . DISABLED_RGB . "'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
+        return "fnCheckStockLimit('" . DISABLED_RGB . "');fnInitSelect('category_id_unselect'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
     }
 
     /**

@@ -33,6 +33,18 @@ function lfDispSwitch(id){
     }
 }
 
+// セレクトボックスのリストを初期化
+// ※キャッシュ対策
+// (移動元セレクトボックス)
+function fnInitSelect(select) {
+    var selectedOptions = <!--{$tpl_json_category_id}-->;
+    $('#' + select + ' option').attr('selected', false);
+    for(var i=0; i<selectedOptions.length; i++){
+        $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
+            .attr('selected', 'selected');
+    }
+}
+
 // セレクトボックスのリストを移動
 // (移動元セレクトボックスID, 移動先セレクトボックスID)
 function fnMoveSelect(select, target) {
