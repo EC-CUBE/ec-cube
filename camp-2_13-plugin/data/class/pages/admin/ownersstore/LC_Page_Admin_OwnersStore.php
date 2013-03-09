@@ -851,7 +851,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     function execPlugin($obj, $class_name, $exec_func)
     {
         $objPluginInstaller = new SC_Plugin_Installer($obj);
-        
+
         $arrErr = array();
         if (method_exists($class_name, $exec_func) === true) {
             $ret = call_user_func_array(
@@ -863,6 +863,8 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         } else {
             $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
+
+        $objPluginInstaller->execInstall();
         return $arrErr;
     }
 
