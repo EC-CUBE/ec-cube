@@ -350,6 +350,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
      */
     function installPlugin($archive_file_name, $key)
     {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+        
         // 一時展開ディレクトリにファイルがある場合は事前に削除.
         $arrFileHash = SC_Helper_FileManager_Ex::sfGetFileList(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
         if (count($arrFileHash) > 0) {
@@ -426,6 +429,8 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
             return $arrErr;
         }
 
+        $objQuery->commit();
+        
         // 不要なファイルの削除
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
         return $arrErr;
@@ -761,7 +766,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
 
         // プラグイン情報をDB登録.
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
         $arr_sqlval_plugin = array();
         $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
         $arr_sqlval_plugin['plugin_id'] = $plugin_id;
@@ -819,7 +823,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
                 }
             }
         }
-        return $objQuery->commit();
     }
 
     /**
