@@ -28,7 +28,7 @@
  * @author pineray
  * @version $Id:$
  */
-class SC_Helper_Recommend
+class SC_Helper_BestProducts
 {
     /**
      * おすすめ商品の情報を取得.
@@ -37,7 +37,7 @@ class SC_Helper_Recommend
      * @param boolean $has_deleted 削除されたおすすめ商品も含む場合 true; 初期値 false
      * @return array
      */
-    public function get($best_id, $has_deleted = false)
+    public function getBestProducts($best_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';

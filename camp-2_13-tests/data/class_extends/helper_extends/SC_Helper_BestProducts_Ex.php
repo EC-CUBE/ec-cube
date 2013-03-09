@@ -22,7 +22,7 @@
  */
 
 // {{{ requires
-require_once CLASS_REALDIR . 'helper/SC_Helper_Recommend.php';
+require_once CLASS_REALDIR . 'helper/SC_Helper_BestProducts.php';
 
 /**
  * おすすめ商品を管理するヘルパークラス(拡張).
@@ -33,7 +33,7 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_Recommend.php';
  * @author pineray
  * @version $Id:$
  */
-class SC_Helper_Recommend_Ex extends SC_Helper_Recommend
+class SC_Helper_BestProducts_Ex extends SC_Helper_BestProducts
 {
     //put your code here
 }
