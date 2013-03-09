@@ -31,36 +31,40 @@ class SC_Plugin_Installer {
     }
     
     function execInstall() {
-        
         GC_Utils_Ex::gfPrintLog("start install");
-
-		// ファイルコピーの事前チェック？
         
+        $plugin_code = $this->arrPlugin['plugin_code'];
+
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->begin();
         
         // テーブル作成SQLなどを実行
-        $arrSql = $this->arrInstallData["plugin_code"]['sql'];
+        $arrSql = $this->arrInstallData[$plugin_code]['sql'];
         
         foreach ($arrSql as $sql) {
-            GC_Utils_Ex::gfPrintLog("start install");
+            GC_Utils_Ex::gfPrintLog("exec sql:" . $sql['sql']);
             $objQuery->query($sql['sql'], $sql['params']);
         }
 
         // プラグインのディレクトリコピー
-        $arrCopyDirectories = $this->arrInstallData["plugin_code"]['copy_directory'];
+        $arrCopyDirectories = $this->arrInstallData[$plugin_code]['copy_directory'];
 
         foreach ($arrCopyDirectories as $directory) {
+            GC_Utils_Ex::gfPrintLog("exec dir copy:" . $directory['src']);
             // ディレクトリコピー -> HTML配下とDATA配下を別関数にする
-            // SC_Utils::copyDirectory(PLUGIN_UPLOAD_REALDIR . $arrPlugin['plugin_code'] . "/" . $directory, PLUGIN_HTML_REALDIR . $arrPlugin['plugin_code'] . "/" . $directory);
+            SC_Utils::copyDirectory(
+                    PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $directory['src'],
+                    PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $directory['dist']);
         }
 
         // プラグインのファイルコピー
-        $arrCopyFiles = $this->arrInstallData["plugin_code"]['copy_file'];
+        $arrCopyFiles = $this->arrInstallData[$plugin_code]['copy_file'];
 
         foreach ($arrCopyFiles as $file) {
+            GC_Utils_Ex::gfPrintLog("exec file copy:" . $file['src']);
             // ファイルコピー
-			copy(PLUGIN_UPLOAD_REALDIR . $arrPlugin['plugin_code'] . "/" . $file['src'], PLUGIN_HTML_REALDIR . $arrPlugin['plugin_code'] . "/" . $file['dist']);
+            copy(PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $file['src'],
+                 PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $file['dist']);
         }
 
         $objQuery->commit();
@@ -69,14 +73,16 @@ class SC_Plugin_Installer {
     }
     
     function copyFile($src, $dist) {
-        $this->arrInstallData["plugin_code"]['copy_file'] = array(
+        $plugin_code = $this->arrPlugin['plugin_code'];
+        $this->arrInstallData[$plugin_code]['copy_file'] = array(
             'src'    => $src,
             'dist' => $dist
         );
     }
 
     function copyDirectory($src, $dist) {
-        $this->arrInstallData["plugin_code"]['copy_directory'] = array(
+        $plugin_code = $this->arrPlugin['plugin_code'];
+        $this->arrInstallData[$plugin_code]['copy_directory'] = array(
             'src'    => $src,
             'dist' => $dist
         );        
