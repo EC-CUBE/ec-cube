@@ -30,6 +30,7 @@
  */
 class SC_Helper_TaxRule
 {
+
     /**
      * 設定情報に基づいて税金付与した金額を返す
      *
@@ -50,6 +51,31 @@ class SC_Helper_TaxRule
     function sfTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
         $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
+        return SC_Helper_TaxRule_Ex::calcTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
+    }
+
+    /**
+     * 設定情報IDに基づいて税金付与した金額を返す
+     * (受注データのようにルールが決まっている場合用)
+     *
+     * @param integer $price 計算対象の金額
+     * @return integer 税金付与した金額
+     */
+    function calcIncTaxFromRuleId($price, $tax_rule_id = 0)
+    {
+        return $price + SC_Helper_TaxRule_Ex::calcTaxFromRuleId($price, $tax_rule_id);
+    }
+
+    /**
+     * 設定情報IDに基づいて税金の金額を返す
+     * (受注データのようにルールが決まっている場合用)
+     *
+     * @param integer $price 計算対象の金額
+     * @return integer 税金した金額
+     */
+    function calcTaxFromRuleId($price, $tax_rule_id = 0)
+    {
+        $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRuleData($tax_rule_id);
         return SC_Helper_TaxRule_Ex::calcTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
     }
 
@@ -119,10 +145,13 @@ class SC_Helper_TaxRule
 
     function getTaxRuleData($tax_rule_id)
     {
-
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        return $objQuery->getRow('*', 'dtb_tax_rule', 'tax_rule_id = ?', array($tax_rule_id));
     }
 
 
     function registerTaxRuleData() {
     }
+
+
 }
