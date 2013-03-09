@@ -74,7 +74,7 @@ class SC_Plugin_Installer {
     
     function copyFile($src, $dist) {
         $plugin_code = $this->arrPlugin['plugin_code'];
-        $this->arrInstallData[$plugin_code]['copy_file'] = array(
+        $this->arrInstallData[$plugin_code]['copy_file'][] = array(
             'src'    => $src,
             'dist' => $dist
         );
@@ -82,7 +82,7 @@ class SC_Plugin_Installer {
 
     function copyDirectory($src, $dist) {
         $plugin_code = $this->arrPlugin['plugin_code'];
-        $this->arrInstallData[$plugin_code]['copy_directory'] = array(
+        $this->arrInstallData[$plugin_code]['copy_directory'][] = array(
             'src'    => $src,
             'dist' => $dist
         );        
@@ -94,7 +94,7 @@ class SC_Plugin_Installer {
     
     public function sql($sql, array $params = array()) {
         $plugin_code = $this->arrPlugin['plugin_code'];
-        $this->arrInstallData[$plugin_code]['sql'] = array(
+        $this->arrInstallData[$plugin_code]['sql'][] = array(
             'sql'    => $sql,
             'params' => $params
         );
