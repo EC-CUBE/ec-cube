@@ -44,7 +44,7 @@ class SC_Helper_BestProducts_getByRankTest extends SC_Helper_BestProducts_TestBa
 
     /**　rankが存在しない場合、空を返す。
      */
-    public function testGetByRank_ランクが存在しない場合、空を返す()
+    public function testGetByRank_ランクが存在しない場合_空を返す()
     {
         $rank = '9999';
 
@@ -55,7 +55,7 @@ class SC_Helper_BestProducts_getByRankTest extends SC_Helper_BestProducts_TestBa
     }
 
     // $rankが存在する場合、対応した結果を取得できる。
-    public function testGetByRank_ランクが存在する場合、対応した結果を取得できる(){
+    public function testGetByRank_ランクが存在する場合_対応した結果を取得できる(){
 
         $rank = '1';
 
@@ -83,7 +83,7 @@ class SC_Helper_BestProducts_getByRankTest extends SC_Helper_BestProducts_TestBa
 
 
     // rankが存在するが、del_flg=1の場合、空が帰る。
-    public function testGetByRank_ランクが存在かつ、削除の場合、空が返る(){
+    public function testGetByRank_ランクが存在かつ_削除の場合_空が返る(){
 
         $rank = '2';
 
@@ -95,7 +95,7 @@ class SC_Helper_BestProducts_getByRankTest extends SC_Helper_BestProducts_TestBa
     }
 
     // rankが存在するが、del_flg=1の場合、かつ。$has_deleted=trueを指定
-    public function testGetByRank_ランクが存在かつ、has_deletedの場合、対応した結果が返る(){
+    public function testGetByRank_ランクが存在かつ_has_deletedの場合_対応した結果が返る(){
 
         $rank = '2';
 

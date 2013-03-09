@@ -44,7 +44,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
 
     /**　best_idが存在しない場合、空を返す。
      */
-    public function testGetBestProducts_おすすめidが存在しない場合、空を返す()
+    public function testGetBestProducts_おすすめidが存在しない場合_空を返す()
     {
         $best_id = '9999';
 
@@ -55,7 +55,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
     }
 
     // best_idが存在する場合、対応した結果を取得できる。
-    public function testGetBestProducts_おすすめIDが存在する場合、対応した結果を取得できる(){
+    public function testGetBestProducts_おすすめIDが存在する場合_対応した結果を取得できる(){
 
         $best_id = '1001';
 
@@ -83,7 +83,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
 
 
     // best_idが存在するが、del_flg=1の場合、空が帰る。
-    public function testGetBestProducts_おすすめIDがあり、かつ削除済みの場合、空が返る(){
+    public function testGetBestProducts_おすすめIDがあり_かつ削除済みの場合_空が返る(){
 
         $best_id = '1002';
 
@@ -95,7 +95,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
     }
 
     // best_idが存在するが、del_flg=1の場合、かつ。$has_deleted=trueを指定
-    public function testGetBestProducts_削除済みでかつhas_deletedがtrueの場合、対応した結果が返る(){
+    public function testGetBestProducts_削除済みでかつhas_deletedがtrueの場合_対応した結果が返る(){
 
         $best_id = '1002';
 

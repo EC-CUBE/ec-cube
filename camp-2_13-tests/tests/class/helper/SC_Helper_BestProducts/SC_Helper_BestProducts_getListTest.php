@@ -55,7 +55,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
         $this->verify();
     }
 
-    public function testGetList_データがある場合、想定した結果が返る(){
+    public function testGetList_データがある場合_想定した結果が返る(){
 
         $this->setUpBestProducts();
 
@@ -147,7 +147,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
 
 
 
-    public function testGetList_ページングが想定した結果が返る12(){
+    public function testGetList_ページングが想定した結果が返る_表示件数1_ページ番号2(){
 
         $this->setUpBestProducts();
 
@@ -173,7 +173,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
     }
 
 
-    public function testGetList_ページングが想定した結果が返る10(){
+    public function testGetList_ページングが想定した結果が返る_表示件数1_ページ番号0(){
 
         $this->setUpBestProducts();
 
