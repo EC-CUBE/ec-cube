@@ -58,6 +58,31 @@ class SC_Plugin_Installer {
             $objQuery->query($sql['sql'], $sql['params']);
         }
         
+        $arrInsertQuery = $this->arrInstallData['insert'];
+        foreach ($arrInsertQuery as $insertQuery) {
+            $objQuery->insert(
+                    $insertQuery['table'],
+                    $insertQuery['arrVal'],
+                    $insertQuery['arrSql'],
+                    $insertQuery['arrSqlVal'],
+                    $insertQuery['form'],
+                    $insertQuery['arrFromVal']
+                    );
+        }
+        
+            
+        $arrInsertQuery = $this->arrInstallData['update'];
+        foreach ($arrInsertQuery as $insertQuery) {
+            $objQuery->update(
+                    $insertQuery['table'],
+                    $insertQuery['arrVal'],
+                    $insertQuery['where'],
+                    $insertQuery['arrWhereVal'],
+                    $insertQuery['arrRawSql'],
+                    $insertQuery['arrRawSqlVal']
+                    );
+        }
+                            
         // プラグインのディレクトリコピー
         $arrCopyDirectories = $this->arrInstallData['copy_directory'];
 
@@ -162,4 +187,53 @@ class SC_Plugin_Installer {
         $msg = sprintf("%s %s: %s", $this->exec_func, $this->plugin_code, $msg);
         GC_Utils::gfPrintLog($msg, PLUGIN_LOG_REALFILE);
     }
+    
+    /**
+     * カラム追加クエリの追加
+     * 
+     * @param type $table
+     * @param type $col
+     * @param type $type 
+     */
+    function sqlAterTableAdd($table_name, $col_name, $col_type) {
+        $sql = ("ALTER TABLE $table_name ADD $col_name $col_type ");
+        $this->sql($sql);
+    }
+    
+    /**
+     * カラム削除クエリの追加
+     * 
+     * @param type $table
+     * @param type $col
+     * @param type $type 
+     */
+    function sqlAterTableDrop($table_name, $col_name) {
+        $sql = ("ALTER TABLE $table_name DROP $col_name");
+        $this->sql($sql);
+    }
+    
+    
+    function sqlInsert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
+        $this->arrInstallData['insert'] = array(
+            'params'   => array(
+                'table' => $table,
+                'arrVal' => $arrVal, 
+                'arrSql' => $arrSql, 
+                'arrSqlVal' => $arrSqlVal, 
+                'form' =>$from,
+                'arrFromVal' => $arrFromVal)
+        );
+    }
+    
+    function sqlUpdate($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
+        $this->arrInstallData['update'] = array(
+            'params'   => array(
+                'table' => $table,
+                'arrVal' => $arrVal, 
+                'where' => $where, 
+                'arrWhereVal' => $arrWhereVal, 
+                'arrRawSql' =>$arrRawSql,
+                'arrRawSqlVal' => $arrRawSqlVal)
+        );
+    }    
 }
