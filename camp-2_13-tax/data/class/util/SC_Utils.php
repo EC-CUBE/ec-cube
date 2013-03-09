@@ -273,6 +273,22 @@ class SC_Utils
         return $date;
     }
 
+    /* DB用日付日時文字列取得 */
+    function sfGetTimestampistime($year, $month, $day, $hour, $minutes, $last = false)
+    {
+        if ($year != '' && $month != '' && $day != '' && $hour != '' && $minutes != '') {
+            if ($last) {
+                $time = $hour.':'.$minutes.':59';
+            } else {
+                $time = $hour.':'.$minutes.':00';
+            }
+            $date = $year.'-'.$month.'-'.$day.' '.$time;
+        } else {
+            $date = '';
+        }
+        return $date;
+    }
+
     /**
      *  INT型の数値チェック
      *  ・FIXME: マイナス値の扱いが不明確
