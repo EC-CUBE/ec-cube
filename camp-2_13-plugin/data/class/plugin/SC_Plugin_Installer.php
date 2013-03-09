@@ -30,6 +30,9 @@ class SC_Plugin_Installer {
         $this->arrPlugin = $arrPlugin;
     }
     
+    /**
+     * 
+     */
     function execInstall() {
         
         GC_Utils_Ex::gfPrintLog("start install");
@@ -54,10 +57,10 @@ class SC_Plugin_Installer {
         
         $objQuery->commit();
         GC_Utils_Ex::gfPrintLog("end install");
-        
     }
     
-    function copyFile($sql, $dist) {
+    
+    function copyFile($src, $dist) {
         
     }
     
