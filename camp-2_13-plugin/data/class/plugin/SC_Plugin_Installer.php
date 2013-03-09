@@ -107,7 +107,7 @@ class SC_Plugin_Installer {
         GC_Utils_Ex::gfPrintLog("end install: " . $this->arrPlugin['plugin_code']);
     }
     
-    public function execPlugin($exec_func) {
+    public function execPlugin() {
         $this->log("start");
         
         $plugin_code = $this->arrPlugin['plugin_code'];
@@ -184,7 +184,7 @@ class SC_Plugin_Installer {
     }
     
     protected function log($msg) {
-        $msg = sprintf("%s %s: %s", $this->exec_func, $this->plugin_code, $msg);
+        $msg = sprintf("%s %s: %s", $this->plugin_code, $this->exec_func, $msg);
         GC_Utils::gfPrintLog($msg, PLUGIN_LOG_REALFILE);
     }
     
