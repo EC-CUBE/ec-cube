@@ -178,8 +178,6 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
         $objFormParam->addParam('FAX番号3', 'fax03', TEL_ITEM_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         // その他
-        $objFormParam->addParam('消費税率', 'tax', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('課税規則 ', 'tax_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('送料無料条件', 'free_rule', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('店舗営業時間', 'business_hour', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
 
