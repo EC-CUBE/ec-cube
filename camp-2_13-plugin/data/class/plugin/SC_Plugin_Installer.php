@@ -39,6 +39,8 @@ class SC_Plugin_Installer {
         $this->arrInstallData['sql'] = array();
         $this->arrInstallData['copy_file'] = array();
         $this->arrInstallData['copy_direcrtory'] = array();
+        $this->arrInstallData['insert'] = array();
+        $this->arrInstallData['update'] = array();
         $this->arrInstallData['remove_file'] = array();
         $this->arrInstallData['remove_directory'] = array();
     }
@@ -112,11 +114,29 @@ class SC_Plugin_Installer {
         
         $plugin_code = $this->arrPlugin['plugin_code'];
 
-        $objQuery =& SC_Query::getSingletonInstance();
-        
+
         // テーブル作成SQLなどを実行
         $arrSql = $this->arrInstallData['sql'];
+        $arrErr = array();
+
+        // SQLの検証
+        foreach ($arrSql as $sql) {
+            $this->log("verify sql: " . $sql['sql']);
+            $error_message = $this->verifySql($sql['sql'], $sql['params']);
+            if (!is_null($error_message)) {
+                $this->log("verify sql: invalid sql " . $sql['sql']);
+                $arrErr[] = $error_message;
+            }
+        }
         
+        if (count($arrErr) > 0) {
+            $this->log("verify sql: err");
+            return $arrErr;
+        }
+        
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        
+        // SQLの実行
         foreach ($arrSql as $sql) {
             $this->log("exec sql: " . $sql['sql']);
             $objQuery->query($sql['sql'], $sql['params']);
@@ -235,5 +255,29 @@ class SC_Plugin_Installer {
                 'arrRawSql' =>$arrRawSql,
                 'arrRawSqlVal' => $arrRawSqlVal)
         );
-    }    
+    }
+    
+    /**
+     * 
+     * @param string $sql
+     * @param type $params
+     */
+    protected function verifySql($sql, $params) {
+        // FIXME $paramsのチェックも行いたい.
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        
+        // force runを有効にし, システムエラーを回避する
+        $objQuery->force_run = true;
+
+        // prepareでSQLを検証
+        $sth = $objQuery->prepare($sql);
+
+        if (PEAR::isError($sth)) {
+            $error_message = $sth->message . ":" . $sth->userinfo;
+        }
+        // force_runをもとに戻す.
+        $objQuery->force_run = false;
+        
+        return $error_message;
+    }
 }
