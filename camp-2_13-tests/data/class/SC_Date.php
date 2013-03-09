@@ -198,8 +198,8 @@ class SC_Date
      */
     public function isHoliday($year, $month, $day)
     {
-        is_null(SC_Date_Ex::$arrHoliday) and $this->setArrHoliday();
-        is_null(SC_Date_Ex::$arrRegularHoliday) and $this->setRegularHoliday();
+        if (is_null(SC_Date_Ex::$arrHoliday)) $this->setArrHoliday();
+        if (is_null(SC_Date_Ex::$arrRegularHoliday)) $this->setRegularHoliday();
 
         if (!empty(SC_Date_Ex::$arrHoliday[$month])) {
             if (in_array($day, SC_Date_Ex::$arrHoliday[$month])) {
