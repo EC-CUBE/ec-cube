@@ -425,6 +425,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
 
         $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'install');
         if ($this->isError($arrErr) === true) {
+            var_dump($arrErr);
+            $objQuery->rollback();
+            //$objQuery->begin();
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin['plugin_id'], $plugin_html_dir_path);
             return $arrErr;
         }
@@ -864,11 +867,14 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
             if (!(is_null($ret) || $ret === true)) {
                 $arrErr[$obj['plugin_code']] = $ret;
             }
+            $arrInstallErr = $objPluginInstaller->execPlugin();
+            if ($arrInstallErr) {
+                $arrErr['plugin_file'] = "プラグインのインストールにしっぱいしました.<br/>";
+            }
         } else {
-            $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
+            $arrErr['plugin_file'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
-
-        $objPluginInstaller->execPlugin();
+        
         return $arrErr;
     }
 
