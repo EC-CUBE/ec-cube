@@ -30,12 +30,11 @@ class SC_Plugin_Installer {
         $this->arrPlugin = $arrPlugin;
     }
     
-    /**
-     * 
-     */
     function execInstall() {
         
         GC_Utils_Ex::gfPrintLog("start install");
+
+		// ファイルコピーの事前チェック？
         
         $objQuery =& SC_Query::getSingletonInstance();
         $objQuery->begin();
@@ -47,23 +46,42 @@ class SC_Plugin_Installer {
             GC_Utils_Ex::gfPrintLog("start install");
             $objQuery->query($sql['sql'], $sql['params']);
         }
-        
+
+        // プラグインのディレクトリコピー
+        $arrCopyDirectories = $this->arrInstallData["plugin_code"]['copy_directory'];
+
+        foreach ($arrCopyDirectories as $directory) {
+            // ディレクトリコピー -> HTML配下とDATA配下を別関数にする
+            // SC_Utils::copyDirectory(PLUGIN_UPLOAD_REALDIR . $arrPlugin['plugin_code'] . "/" . $directory, PLUGIN_HTML_REALDIR . $arrPlugin['plugin_code'] . "/" . $directory);
+        }
+
         // プラグインのファイルコピー
         $arrCopyFiles = $this->arrInstallData["plugin_code"]['copy_file'];
-        
+
         foreach ($arrCopyFiles as $file) {
             // ファイルコピー
+			copy(PLUGIN_UPLOAD_REALDIR . $arrPlugin['plugin_code'] . "/" . $file['src'], PLUGIN_HTML_REALDIR . $arrPlugin['plugin_code'] . "/" . $file['dist']);
         }
-        
+
         $objQuery->commit();
         GC_Utils_Ex::gfPrintLog("end install");
-    }
-    
-    
-    function copyFile($src, $dist) {
         
     }
     
+    function copyFile($src, $dist) {
+        $this->arrInstallData["plugin_code"]['copy_file'] = array(
+            'src'    => $src,
+            'dist' => $dist
+        );
+    }
+
+    function copyDirectory($src, $dist) {
+        $this->arrInstallData["plugin_code"]['copy_directory'] = array(
+            'src'    => $src,
+            'dist' => $dist
+        );        
+    }
+
     function removeFile($dist) {
         
     }
