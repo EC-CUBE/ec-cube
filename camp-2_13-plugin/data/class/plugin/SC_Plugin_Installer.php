@@ -92,7 +92,7 @@ class SC_Plugin_Installer {
         
     }
     
-    function sql($sql, array $params) {
+    public function sql($sql, array $params = array()) {
         $plugin_code = $this->arrPlugin['plugin_code'];
         $this->arrInstallData[$plugin_code]['sql'] = array(
             'sql'    => $sql,
