@@ -22,13 +22,18 @@
  */
 class SC_Plugin_Installer {
     
+    protected $exec_func;
+    
     protected $plugin_code;
     
     protected $arrPlugin;
     
     protected $arrInstallData;
     
-    public function __construct($arrPlugin) {
+    public function __construct($exec_func, $arrPlugin) {
+        define('PLUGIN_LOG_REALFILE', DATA_REALDIR . "logs/plugin.log");
+        $this->exec_func   = $exec_func;
+        $this->plugin_code = $arrPlugin['plugin_code'];
         $this->arrPlugin   = $arrPlugin;
         $this->arrInstallData = array();
         $this->arrInstallData['sql'] = array();
@@ -44,7 +49,6 @@ class SC_Plugin_Installer {
         $plugin_code = $this->arrPlugin['plugin_code'];
 
         $objQuery =& SC_Query::getSingletonInstance();
-        $objQuery->begin();
         
         // テーブル作成SQLなどを実行
         $arrSql = $this->arrInstallData['sql'];
@@ -75,10 +79,48 @@ class SC_Plugin_Installer {
                  PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $file['dist']);
         }
 
-        $objQuery->commit();
         GC_Utils_Ex::gfPrintLog("end install: " . $this->arrPlugin['plugin_code']);
     }
     
+    public function execPlugin($exec_func) {
+        $this->log("start");
+        
+        $plugin_code = $this->arrPlugin['plugin_code'];
+
+        $objQuery =& SC_Query::getSingletonInstance();
+        
+        // テーブル作成SQLなどを実行
+        $arrSql = $this->arrInstallData['sql'];
+        
+        foreach ($arrSql as $sql) {
+            $this->log("exec sql: " . $sql['sql']);
+            $objQuery->query($sql['sql'], $sql['params']);
+        }
+        
+        // プラグインのディレクトリコピー
+        $arrCopyDirectories = $this->arrInstallData['copy_directory'];
+
+        foreach ($arrCopyDirectories as $directory) {
+            $this->log("exec dir copy: " . $directory['src'] . ' -> ' . $directory['dist']);
+            // ディレクトリコピー -> HTML配下とDATA配下を別関数にする
+            SC_Utils::copyDirectory(
+                    PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $directory['src'],
+                    PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $directory['dist']);
+        }
+
+        // プラグインのファイルコピー
+        $arrCopyFiles = $this->arrInstallData['copy_file'];
+
+        foreach ($arrCopyFiles as $file) {
+            $this->log("exec file copy: " . $file['src'] . ' -> ' . $file['dist']);
+            // ファイルコピー
+            copy(PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $file['src'],
+                 PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $file['dist']);
+        }
+        
+        $this->log("end");         
+    }
+
     public function copyFile($src, $dist) {
         $this->arrInstallData['copy_file'][] = array(
             'src'  => $src,
@@ -114,5 +156,10 @@ class SC_Plugin_Installer {
     
     public function query($sql, array $params = array()) {
         $this->sql($sql, $params);
+    }
+    
+    protected function log($msg) {
+        $msg = sprintf("%s %s: %s", $this->exec_func, $this->plugin_code, $msg);
+        GC_Utils::gfPrintLog($msg, PLUGIN_LOG_REALFILE);
     }
 }
