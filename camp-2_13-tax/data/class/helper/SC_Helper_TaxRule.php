@@ -133,11 +133,66 @@ class SC_Helper_TaxRule
         $order = 'apply_date DESC';
         $objQuery->setOrder($order);
         $arrData = $objQuery->select('*', $table, $where, $arrVal);
+        print_r($arrData);
         // 日付や条件でこねて選択は、作り中。取りあえずスタブ的にデフォルトを返却
         return $arrData[0];
     }
 
+    /**
+     * 税金設定情報を登録する（商品管理用）
+     *
+     * @param
+     * @return
+     */
+    function setTaxRuleForProduct($tax_rate, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    {
+        // デフォルトの設定取得
+        $arrRet = SC_Helper_TaxRule_Ex::getTaxRule();
+        // 税情報を設定
+        SC_Helper_TaxRule_Ex::setTaxRule($arrRet['calc_rule'],
+                                         $tax_rate,
+                                         $arrRet['apply_date'],
+                                         $tax_adjust,
+                                         $product_id,
+                                         $product_class_id,
+                                         $pref_id,
+                                         $country_id);
+    }
 
+    /**
+     * 税金設定情報を登録する（仮）
+     *
+     * @param
+     * @return
+     */
+    function setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    {
+        // デフォルトの設定とtax_rateの値が同じ場合は登録しない
+        $arrRet = SC_Helper_TaxRule_Ex::getTaxRule();
+        if( $arrRet['tax_rate'] == $tax_rate ) {
+            return;
+        }
+        // 税情報を設定
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $table = 'dtb_tax_rule';
+        $arrValues = array();
+        // todo idを計算して設定する必要あり
+        $arrValues['tax_rule_id'] = 1;
+        $arrValues['country_id'] = $country_id;
+        $arrValues['pref_id'] = $pref_id;
+        $arrValues['product_id'] = $product_id;
+        $arrValues['product_class_id'] = $product_class_id;
+        $arrValues['calc_rule'] = $calc_rule;
+        $arrValues['tax_rate'] = $tax_rate;
+        $arrValues['tax_adjust'] = $tax_adjust;
+        $arrValues['apply_date'] = $apply_date;
+        $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
+        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+        
+        $objQuery->insert($table, $arrValues);
+    }
+    
+    
     function getTaxRuleList($has_disable = false)
     {
 
