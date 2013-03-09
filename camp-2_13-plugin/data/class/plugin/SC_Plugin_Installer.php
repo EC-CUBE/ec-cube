@@ -22,12 +22,20 @@
  */
 class SC_Plugin_Installer {
     
+    protected $plugin_code;
+    
     protected $arrPlugin;
     
     protected $arrInstallData;
     
     function __construct($arrPlugin) {
-        $this->arrPlugin = $arrPlugin;
+        $this->arrPlugin   = $arrPlugin;
+        $this->arrInstallData = array();
+        $this->arrInstallData['sql'] = array();
+        $this->arrInstallData['copy_file'] = array();
+        $this->arrInstallData['copy_direcrtory'] = array();
+        $this->arrInstallData['remove_file'] = array();
+        $this->arrInstallData['remove_directory'] = array();
     }
     
     function execInstall() {
@@ -39,15 +47,15 @@ class SC_Plugin_Installer {
         $objQuery->begin();
         
         // テーブル作成SQLなどを実行
-        $arrSql = $this->arrInstallData[$plugin_code]['sql'];
+        $arrSql = $this->arrInstallData['sql'];
         
         foreach ($arrSql as $sql) {
             GC_Utils_Ex::gfPrintLog("exec sql:" . $sql['sql']);
             $objQuery->query($sql['sql'], $sql['params']);
         }
-
+        
         // プラグインのディレクトリコピー
-        $arrCopyDirectories = $this->arrInstallData[$plugin_code]['copy_directory'];
+        $arrCopyDirectories = $this->arrInstallData['copy_directory'];
 
         foreach ($arrCopyDirectories as $directory) {
             GC_Utils_Ex::gfPrintLog("exec dir copy:" . $directory['src']);
@@ -58,7 +66,7 @@ class SC_Plugin_Installer {
         }
 
         // プラグインのファイルコピー
-        $arrCopyFiles = $this->arrInstallData[$plugin_code]['copy_file'];
+        $arrCopyFiles = $this->arrInstallData['copy_file'];
 
         foreach ($arrCopyFiles as $file) {
             GC_Utils_Ex::gfPrintLog("exec file copy:" . $file['src']);
@@ -73,28 +81,33 @@ class SC_Plugin_Installer {
     }
     
     function copyFile($src, $dist) {
-        $plugin_code = $this->arrPlugin['plugin_code'];
-        $this->arrInstallData[$plugin_code]['copy_file'][] = array(
+        $this->arrInstallData['copy_file'][] = array(
             'src'    => $src,
             'dist' => $dist
         );
     }
-
+ 
     function copyDirectory($src, $dist) {
-        $plugin_code = $this->arrPlugin['plugin_code'];
-        $this->arrInstallData[$plugin_code]['copy_directory'][] = array(
+        $this->arrInstallData['copy_directory'][] = array(
             'src'    => $src,
             'dist' => $dist
         );        
     }
-
+    
     function removeFile($dist) {
-        
+        $this->arrInstallData['remove_file'][] = array(
+            'dist' => $dist
+        );
     }
     
+    function removeDirectory($dist) {
+       $this->arrInstallData['remove_file'][] = array(
+            'dist' => $dist
+        );     
+    }
+
     public function sql($sql, array $params = array()) {
-        $plugin_code = $this->arrPlugin['plugin_code'];
-        $this->arrInstallData[$plugin_code]['sql'][] = array(
+        $this->arrInstallData['sql'][] = array(
             'sql'    => $sql,
             'params' => $params
         );
