@@ -50,6 +50,9 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
         $this->tpl_mainno   = 'ownersstore';
         $this->tpl_maintitle = 'オーナーズストア';
         $this->tpl_subtitle = 'プラグインフックポイント管理';
+
+        $this->arrUse[t] = 'ON';
+        $this->arrUse[f] = 'OFF';
     }
 
     /**
@@ -77,57 +80,15 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
 
         $mode = $this->getMode();
         switch ($mode) {
-            // 削除
-            case 'uninstall':
+            // ON/OFF
+            case 'update_use':
                 // エラーチェック
                 $this->arrErr = $objFormParam->checkError();
-                if ($this->isError($this->arrErr) === false) {
-                    $plugin_id = $objFormParam->getValue('plugin_id');
-                    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
-                    $this->arrErr = $this->uninstallPlugin($plugin);
-                    if ($this->isError($this->arrErr) === false) {
-                        // TODO 全プラグインのインスタンスを保持したまま後続処理が実行されるので、全てのインスタンスを解放する。
-                        unset($GLOBALS['_SC_Helper_Plugin_instance']);
-                        // コンパイルファイルのクリア処理
-                        SC_Utils_Ex::clearCompliedTemplate();
-                        $this->tpl_onload = "alert('" . $plugin['plugin_name'] ."を削除しました。');";
-                    }
-                }
-                break;
-            // 有効化
-            case 'enable':
-                // エラーチェック
-                $this->arrErr = $objFormParam->checkError();
-                if ($this->isError($this->arrErr) === false) {
-                    $plugin_id = $objFormParam->getValue('plugin_id');
-                    // プラグイン取得.
-                    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
-                    $this->arrErr = $this->enablePlugin($plugin);
-                    if ($this->isError($this->arrErr) === false) {
-                        // TODO 全プラグインのインスタンスを保持したまま後続処理が実行されるので、全てのインスタンスを解放する。
-                        unset($GLOBALS['_SC_Helper_Plugin_instance']);
-                        // コンパイルファイルのクリア処理
-                        SC_Utils_Ex::clearCompliedTemplate();
-                        $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を有効にしました。');";
-                    }
-                }
-                break;
-            // 無効化
-            case 'disable':
-                // エラーチェック
-                $this->arrErr = $objFormParam->checkError();
-                if ($this->isError($this->arrErr) === false) {
-                    $plugin_id = $objFormParam->getValue('plugin_id');
-                    // プラグイン取得.
-                    $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
-                    $this->arrErr = $this->disablePlugin($plugin);
-                    if ($this->isError($this->arrErr) === false) {
-                        // TODO 全プラグインのインスタンスを保持したまま後続処理が実行されるので、全てのインスタンスを解放する。
-                        unset($GLOBALS['_SC_Helper_Plugin_instance']);
-                        // コンパイルファイルのクリア処理
-                        SC_Utils_Ex::clearCompliedTemplate();
-                        $this->tpl_onload = "alert('" . $plugin['plugin_name'] . "を無効にしました。');";
-                    }
+                if (!(count($this->arrErr) > 0)) {
+                    $arrPluginHookpointUse = $objFormParam->getValue('plugin_hookpoint_use');
+                    $plugin_hookpoint_id = $objFormParam->getValue('plugin_hookpoint_id');
+                $use_flg = ($arrPluginHookpointUse[$plugin_hookpoint_id] == 't') ? true :false;
+                SC_Plugin_Util_Ex::setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg);
                 }
                 break;
             default:
@@ -156,13 +117,11 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
      * @param string $mode モード
      * @return void
      */
-    function initParam(&$objFormParam, $mode)
+    function initParam(&$objFormParam)
     {
-        $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('plugin_id', 'plugin_id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        if ($mode === 'priority') {
-            $objFormParam->addParam('優先度', 'priority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        }
+        $objFormParam->addParam('モード', 'mode', STEXT_LEN, '', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ON/OFFフラグ', 'plugin_hookpoint_use', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('プラグインフックポイントID', 'plugin_hookpoint_id', INT_LEN, '', array('NUM_CHECK', 'EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
 }

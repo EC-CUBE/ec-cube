@@ -154,13 +154,14 @@ class SC_Plugin_Util
     function getPluginHookPointList()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('priority DESC');
+        $objQuery->setOrder('hook_point ASC, priority DESC');
         $cols = 'dtb_plugin_hookpoint.*, dtb_plugin.priority, dtb_plugin.plugin_name';
         $from = 'dtb_plugin_hookpoint LEFT JOIN dtb_plugin USING(plugin_id)';
-        $arrRet = $objQuery->select($cols, $from);
+        $where = 'enable = 1';
+        $arrRet = $objQuery->select($cols, $from, $where);
         $arrList = array();
         foreach ($arrRet AS $key=>$val) {
-            $arrList[$val['plugin_hookpoint_id']][$val['plugin_id']] = $val;
+            $arrList[$val['hook_point']][$val['plugin_id']] = $val;
         }
         return $arrList;
     }
@@ -190,5 +191,17 @@ class SC_Plugin_Util
             }
         }
         return $arrErr;
+    }
+
+    /**
+     * フックポイントのON/OFF変更
+     *
+     * @param intger $plugin_hookpoint_id  フックポイントID
+     * @return bolean $use_flg：ture=ON、false=OFF
+     */
+    function setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg = false) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $sqlval['use_flg'] = $use_flg;
+        $objQuery->update('dtb_plugin_hookpoint', $sqlval, 'plugin_hookpoint_id = ?', array($plugin_hookpoint_id));
     }
 }
