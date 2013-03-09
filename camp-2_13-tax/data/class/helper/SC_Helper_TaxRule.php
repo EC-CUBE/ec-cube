@@ -39,9 +39,9 @@ class SC_Helper_TaxRule
      */
     function sfCalcIncTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
-        $arrTaxRule = SC_Helper_TaxRule_Ex:;getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
+        $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
 
-        return SC_Helper_TaxRule_Ex::sfTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
+        return $price + SC_Helper_TaxRule_Ex::sfTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
     }
 
     /**

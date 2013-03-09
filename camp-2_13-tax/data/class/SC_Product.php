@@ -28,7 +28,7 @@
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_Product 
+class SC_Product
 {
 
     /** 規格名一覧 */
@@ -303,12 +303,12 @@ __EOS__;
                 // 価格
                 $arrClassCats2['price01']
                     = strlen($arrProductsClass['price01'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price01']))
+                    ? number_format(SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProductsClass['price01'], $productId, $arrProductsClass['product_class_id']))
                     : '';
 
                 $arrClassCats2['price02']
                     = strlen($arrProductsClass['price02'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price02']))
+                    ? number_format(SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProductsClass['price02'], $productId, $arrProductsClass['product_class_id']))
                     : '';
 
                 // ポイント
