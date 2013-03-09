@@ -133,7 +133,6 @@ class SC_Helper_TaxRule
         $order = 'apply_date DESC';
         $objQuery->setOrder($order);
         $arrData = $objQuery->select('*', $table, $where, $arrVal);
-        print_r($arrData);
         // 日付や条件でこねて選択は、作り中。取りあえずスタブ的にデフォルトを返却
         return $arrData[0];
     }
