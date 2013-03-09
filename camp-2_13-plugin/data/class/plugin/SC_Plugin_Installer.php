@@ -28,7 +28,7 @@ class SC_Plugin_Installer {
     
     protected $arrInstallData;
     
-    function __construct($arrPlugin) {
+    public function __construct($arrPlugin) {
         $this->arrPlugin   = $arrPlugin;
         $this->arrInstallData = array();
         $this->arrInstallData['sql'] = array();
@@ -38,7 +38,7 @@ class SC_Plugin_Installer {
         $this->arrInstallData['remove_directory'] = array();
     }
     
-    function execInstall() {
+    public function execInstall() {
         GC_Utils_Ex::gfPrintLog("start install");
         
         $plugin_code = $this->arrPlugin['plugin_code'];
@@ -80,27 +80,27 @@ class SC_Plugin_Installer {
         
     }
     
-    function copyFile($src, $dist) {
+    public function copyFile($src, $dist) {
         $this->arrInstallData['copy_file'][] = array(
-            'src'    => $src,
+            'src'  => $src,
             'dist' => $dist
         );
     }
  
-    function copyDirectory($src, $dist) {
+    public function copyDirectory($src, $dist) {
         $this->arrInstallData['copy_directory'][] = array(
-            'src'    => $src,
+            'src'  => $src,
             'dist' => $dist
         );        
     }
     
-    function removeFile($dist) {
+    public function removeFile($dist) {
         $this->arrInstallData['remove_file'][] = array(
             'dist' => $dist
         );
     }
     
-    function removeDirectory($dist) {
+    public function removeDirectory($dist) {
        $this->arrInstallData['remove_file'][] = array(
             'dist' => $dist
         );     
