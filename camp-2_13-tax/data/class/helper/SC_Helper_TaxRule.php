@@ -134,7 +134,9 @@ class SC_Helper_TaxRule
         $objQuery->setOrder($order);
         $arrData = $objQuery->select('*', $table, $where, $arrVal);
         // 日付や条件でこねて選択は、作り中。取りあえずスタブ的にデフォルトを返却
-        return $arrData[0];
+        // 一旦配列の最後の項目を返すように変更
+        // return $arrData[0];
+        return $arrData[count($arrData)-1];
     }
 
     /**
@@ -143,14 +145,10 @@ class SC_Helper_TaxRule
      * @param
      * @return
      */
-    function setTaxRuleForProduct($tax_rate, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    function setTaxRuleForProduct($tax_rate, $product_id = 0, $product_class_id = 0, $tax_adjust=0, $pref_id = 0, $country_id = 0)
     {
-        // デフォルトの設定取得
-        $arrRet = SC_Helper_TaxRule_Ex::getTaxRule();
         // 税情報を設定
-        SC_Helper_TaxRule_Ex::setTaxRule($arrRet['calc_rule'],
-                                         $tax_rate,
-                                         $arrRet['apply_date'],
+        SC_Helper_TaxRule_Ex::setTaxRule($tax_rate,
                                          $tax_adjust,
                                          $product_id,
                                          $product_class_id,
@@ -159,36 +157,47 @@ class SC_Helper_TaxRule
     }
 
     /**
-     * 税金設定情報を登録する（仮）
+     * 税金設定情報を登録する（仮）リファクタする（memo：規格設定後に商品編集を行うと消費税が0になるのを対応が必要）
      *
      * @param
      * @return
      */
-    function setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    function setTaxRule($tax_rate, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
         // デフォルトの設定とtax_rateの値が同じ場合は登録しない
         $arrRet = SC_Helper_TaxRule_Ex::getTaxRule();
         if( $arrRet['tax_rate'] == $tax_rate ) {
             return;
         }
-        // 税情報を設定
+        // 新規か更新か？
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $table = 'dtb_tax_rule';
-        $arrValues = array();
-        // todo idを計算して設定する必要あり
-        $arrValues['tax_rule_id'] = 1;
-        $arrValues['country_id'] = $country_id;
-        $arrValues['pref_id'] = $pref_id;
-        $arrValues['product_id'] = $product_id;
-        $arrValues['product_class_id'] = $product_class_id;
-        $arrValues['calc_rule'] = $calc_rule;
-        $arrValues['tax_rate'] = $tax_rate;
-        $arrValues['tax_adjust'] = $tax_adjust;
-        $arrValues['apply_date'] = $apply_date;
-        $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
-        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+        $where = 'product_id=? and product_class_id=? and pref_id=? and country_id=?';
+        $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
+        $arrCheck = $objQuery->select('*', 'dtb_tax_rule', $where, $arrVal);
         
-        $objQuery->insert($table, $arrValues);
+        if(empty($arrCheck)) {
+            // 税情報を新規
+            $table = 'dtb_tax_rule';
+            $arrValues = array();
+            // todo idを計算して設定する必要あり(nextvalに変更？)
+            $arrTaxruleid = $objQuery->select('max(tax_rule_id)', 'dtb_tax_rule');
+            $arrValues['tax_rule_id'] = $arrTaxruleid[0]['max(tax_rule_id)']+1;
+            $arrValues['country_id'] = $country_id;
+            $arrValues['pref_id'] = $pref_id;
+            $arrValues['product_id'] = $product_id;
+            $arrValues['product_class_id'] = $product_class_id;
+            $arrValues['calc_rule'] = $arrRet['calc_rule'];
+            $arrValues['tax_rate'] = $tax_rate;
+            $arrValues['tax_adjust'] = $tax_adjust;
+            $arrValues['apply_date'] = $arrRet['apply_date'];
+            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
+            $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+        
+            $objQuery->insert($table, $arrValues);
+        } else {
+            // 税情報を更新
+            $objQuery->update('dtb_tax_rule', array('tax_rate' => $tax_rate), $where, $arrVal);
+        }
     }
     
     

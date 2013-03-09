@@ -1141,7 +1141,7 @@ __EOF__;
         $objProduct->setProductStatus($product_id, $arrList['product_status']);
         
         // 税情報設定
-        SC_Helper_TaxRule_Ex::setTaxRuleForProduct($arrList['tax_rate'], 0, $arrList['product_id'], $arrList['product_class_id']);
+        SC_Helper_TaxRule_Ex::setTaxRuleForProduct($arrList['tax_rate'], $arrList['product_id'], $arrList['product_class_id']);
 
         // 関連商品登録
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
