@@ -110,8 +110,6 @@ CREATE TABLE dtb_baseinfo (
     law_term08 text,
     law_term09 text,
     law_term10 text,
-    tax numeric NOT NULL DEFAULT 5,
-    tax_rule smallint NOT NULL DEFAULT 1,
     email01 text,
     email02 text,
     email03 text,

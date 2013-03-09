@@ -275,20 +275,6 @@ $(function() {
     <h2>SHOP機能</h2>
     <table id="basis-index-func">
         <tr>
-            <th>消費税率<span class="attention"> *</span></th>
-            <td>
-                <span class="attention"><!--{$arrErr.tax}--></span>
-                <input type="text" name="tax" value="<!--{$arrForm.tax|h}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> ％
-            </td>
-        </tr>
-        <tr>
-            <th>課税規則<span class="attention"> *</span></th>
-            <td>
-                <span class="attention"><!--{$arrErr.tax_rule}--></span>
-                <!--{html_radios name="tax_rule" options=$arrTAXRULE selected=$arrForm.tax_rule}-->
-            </td>
-        </tr>
-        <tr>
             <th>送料無料条件</th>
             <td>
                 <span class="attention"><!--{$arrErr.free_rule}--></span>
