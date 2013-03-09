@@ -115,10 +115,6 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
             case 'edit':
                 // エラーチェック
                 $this->arrErr = $this->lfCheckError($objFormParam, $objTaxRule);
-                if (!SC_Utils_Ex::isBlank($this->arrErr['tax_rule_id'])) {
-                    trigger_error('', E_USER_ERROR);
-                    return;
-                }
 
                 if (count($this->arrErr) <= 0) {
                     // POST値の引き継ぎ
@@ -193,7 +189,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
     {
         $objFormParam->addParam('税規約ID', 'tax_rule_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('消費税率', 'tax_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('課税規則 ', 'calc_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('課税規則', 'calc_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 適用日時
         $objFormParam->addParam('適用年', 'apply_date_year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('適用月', 'apply_date_month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -212,11 +208,13 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
      * @param object $objTaxRule
      * @return multiple
      */
-    function doRegist($tax_rule_id, $sqlval, SC_Helper_TaxRule_Ex $objTaxRule)
+    function doRegist($tax_rule_id, $arrParam, SC_Helper_TaxRule_Ex $objTaxRule)
     {
-        $sqlval['tax_rule_id'] = $tax_rule_id;
-        $sqlval['member_id'] = $_SESSION['member_id'];
-        return $objTaxRule->registerTaxRuleData($sqlval);
+        $apply_date = SC_Utils_Ex::sfGetTimestampistime($arrParam['apply_date_year'], sprintf("%02d",$arrParam['apply_date_month']), sprintf("%02d",$arrParam['apply_date_day']),sprintf("%02d",$arrParam['apply_date_hour']), sprintf("%02d",$arrParam['apply_date_minutes']));
+
+        $calc_rule = $arrParam['calc_rule'];
+        $tax_rate = $arrParam['tax_rate'];
+        return $objTaxRule->setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id);
     }
 
     /**
@@ -233,7 +231,6 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
         // tax_rule_id の正当性チェック
         if (!empty($arrForm['tax_rule_id'])) {
             if (!SC_Utils_Ex::sfIsInt($arrForm['tax_rule_id'])
-                || SC_Utils_Ex::sfIsZeroFilling($arrForm['tax_rule_id'])
                 || !$objTaxRule->getTaxRuleData($arrForm['tax_rule_id'])
             ) {
                 // tax_rule_idが指定されていて、且つその値が不正と思われる場合はエラー
@@ -241,8 +238,9 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
             }
         }
 
+        if ($arrForm['tax_rule_id'] != '0') {
         $apply_date = SC_Utils_Ex::sfGetTimestampistime($arrForm['apply_date_year'], sprintf("%02d",$arrForm['apply_date_month']), sprintf("%02d",$arrForm['apply_date_day']),sprintf("%02d",$arrForm['apply_date_hour']), sprintf("%02d",$arrForm['apply_date_minutes']));
-var_dump($apply_date);
+
         // 税規約情報読み込み
         $arrTaxRuleByTime = $objTaxRule->getTaxRuleByTime($apply_date);
         // 編集中のレコード以外に同じ消費税率、課税規則が存在する場合
@@ -253,6 +251,7 @@ var_dump($apply_date);
             ) {
                 $arrErr['apply_date'] = '※ 既に同じ適用日時で登録が存在します。<br />';
             }
+        }
 
         return $arrErr;
     }

@@ -26,6 +26,7 @@
                 <!--{html_radios name="calc_rule" options=$arrTAXCALCRULE selected=$arrForm.calc_rule.value}-->
             </td>
         </tr>
+        <!--{if $tpl_tax_rule_id != "0"}-->
         <tr>
             <th>適用日時<span class="attention"> *</span></th>
             <td><span class="attention"><!--{$arrErr.apply_date}--></span>
@@ -61,6 +62,13 @@
                 </select>分
             </td>
         </tr>
+        <!--{else}-->
+        <input type="hidden" name="apply_date_year" value="<!--{$arrForm.apply_date_year.value|h}-->" />
+        <input type="hidden" name="apply_date_month" value="<!--{$arrForm.apply_date_month.value|h}-->" />
+        <input type="hidden" name="apply_date_day" value="<!--{$arrForm.apply_date_day.value|h}-->" />
+        <input type="hidden" name="apply_date_hour" value="<!--{$arrForm.apply_date_hour.value|h}-->" />
+        <input type="hidden" name="apply_date_minutes" value="<!--{$arrForm.apply_date_minutes.value|h}-->" />
+        <!--{/if}-->
     </table>
 
     <div class="btn-area">
@@ -84,30 +92,36 @@
             <th class="edit">編集</th>
             <th class="delete">削除</th>
         </tr>
-            <!--{section name=cnt loop=$arrTaxrule}-->
+        <!--{section name=cnt loop=$arrTaxrule}-->
         <tr style="background:<!--{if $tpl_tax_rule_id != $arrTaxrule[cnt].tax_rule_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
             <!--{assign var=tax_rule_id value=$arrTaxrule[cnt].tax_rule_id}-->
-            <td><!--{$tax_rule_id|h}--></td>
-            <td><!--{$arrTaxrule[cnt].tax_rate|h}--></td>
-            <td><!--{assign var=calc_rule value=$arrTaxrule[cnt].calc_rule}-->
+            <td class="center"><!--{$tax_rule_id|h}--></td>
+            <td class="center"><!--{$arrTaxrule[cnt].tax_rate|h}--></td>
+            <td class="center"><!--{assign var=calc_rule value=$arrTaxrule[cnt].calc_rule}-->
                 <!--{$arrTAXCALCRULE[$calc_rule]}--></td>
-            <td><!--{$arrTaxrule[cnt].apply_date|h}--></td>
+            <td class="center">
+                <!--{if $arrTaxrule[cnt].tax_rule_id == 0}-->
+                基本税率設定
+                <!--{else}-->
+                <!--{$arrTaxrule[cnt].apply_date|h}-->
+                <!--{/if}-->
+            </td>
             <td class="center">
             <!--{if $tpl_tax_rule_id != $arrTaxrule[cnt].tax_rule_id}-->
-                <a href="?" onclick="fnModeSubmit('pre_edit', 'tax_rule_id', <!--{$arrTaxrule[cnt].tax_rule_id}-->); return false;">編集</a>
-                <!--{else}-->
+                <a href="?" onclick="fnModeSubmit('pre_edit', 'tax_rule_id', '<!--{$arrTaxrule[cnt].tax_rule_id}-->'); return false;">編集</a>
+            <!--{else}-->
                 編集中
-                    <!--{/if}-->
+            <!--{/if}-->
             </td>
             <td class="center">
             <!--{if $arrTaxrule[cnt].tax_rule_id == 0}-->
                 -
-                <!--{else}-->
-                <a href="?" onclick="fnModeSubmit('delete', 'tax_rule_id', <!--{$arrTaxrule[cnt].tax_rule_id}-->); return false;">削除</a>
-                    <!--{/if}-->
+            <!--{else}-->
+                <a href="?" onclick="fnModeSubmit('delete', 'tax_rule_id', '<!--{$arrTaxrule[cnt].tax_rule_id}-->'); return false;">削除</a>
+            <!--{/if}-->
             </td>
         </tr>
-            <!--{/section}-->
+        <!--{/section}-->
     </table>
     <!--{/if}-->
 </div>
