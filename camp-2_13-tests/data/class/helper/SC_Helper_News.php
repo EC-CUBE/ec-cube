@@ -37,7 +37,7 @@ class SC_Helper_News
      * @param boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
      * @return array
      */
-    public function get($news_id, $has_deleted = false)
+    public function getNews($news_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*, cast(news_date as date) as cast_news_date';
@@ -84,7 +84,7 @@ class SC_Helper_News
      * @param array $sqlval
      * @return multiple 登録成功:ニュースID, 失敗:FALSE
      */
-    public function save($sqlval)
+    public function saveNews($sqlval)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -113,7 +113,7 @@ class SC_Helper_News
      * @param integer $news_id ニュースID
      * @return void
      */
-    public function delete($news_id)
+    public function deleteNews($news_id)
     {
         $objDb = new SC_Helper_DB_Ex();
         // ランク付きレコードの削除
