@@ -192,19 +192,86 @@ class SC_Helper_TaxRule
     }
     
     
-    function getTaxRuleList($has_disable = false)
+    function getTaxRuleList($has_deleted = false)
     {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $col = 'tax_rule_id, tax_rate, calc_rule, apply_date';
+        $where = '';
+        if (!$has_deleted) {
+            $where .= 'del_flg = 0';
+        }
+        $table = 'dtb_tax_rule';
+        $objQuery->setOrder('tax_rule_id DESC');
+        $arrRet = $objQuery->select($col, $table, $where);
+        return $arrRet;
 
     }
 
-    function getTaxRuleData($tax_rule_id)
+    function getTaxRuleData($tax_rule_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = 'tax_rule_id = ?';
+        if (!$has_deleted) {
+            $where .= ' AND del_flg = 0';
+        }
         return $objQuery->getRow('*', 'dtb_tax_rule', 'tax_rule_id = ?', array($tax_rule_id));
     }
 
+	
 
-    function registerTaxRuleData() {
+    function getTaxRuleByTime($apply_date, $has_deleted = false)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $where = 'apply_date = ?';
+        if (!$has_deleted) {
+            $where .= ' AND del_flg = 0';
+        }
+        $arrRet = $objQuery->select('*', 'dtb_tax_rule', $where, array($apply_date));
+        return $arrRet[0];
+    }
+
+    function registerTaxRuleData($sqlval) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $sqlval['apply_date'] = SC_Utils_Ex::sfGetTimestampistime($sqlval['apply_date_year'], $sqlval['apply_date_month'], $sqlval['apply_date_day'],$sqlval['apply_date_hour'], $sqlval['apply_date_minutes']);
+
+        unset($sqlval['apply_date_year']);
+        unset($sqlval['apply_date_month']);
+        unset($sqlval['apply_date_day']);
+        unset($sqlval['apply_date_hour']);
+        unset($sqlval['apply_date_minutes']);
+
+        $tax_rule_id = $sqlval['tax_rule_id'];
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+        // 新規登録
+        if ($tax_rule_id == '') {
+            // INSERTの実行
+            $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
+            $sqlval['tax_rule_id'] = $objQuery->nextVal('dtb_tax_rule_tax_rule_id');
+            $ret = $objQuery->insert('dtb_tax_rule', $sqlval);
+            // 既存編集
+        } else {
+            unset($sqlval['tax_rule_id']);
+            unset($sqlval['create_date']);
+            $where = 'tax_rule_id = ?';
+            $ret = $objQuery->update('dtb_tax_rule', $sqlval, $where, array($tax_rule_id));
+        }
+        return ($ret) ? $sqlval['tax_rule_id'] : FALSE;
+    }
+
+    /**
+     * 税規約の削除.
+     *
+     * @param integer $tax_rule_id 税規約ID
+     * @return void
+     */
+    public function deleteTaxRuleData($tax_rule_id)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $sqlval['del_flg']     = 1;
+        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+        $where = 'tax_rule_id = ?';
+        $objQuery->update('dtb_tax_rule', $sqlval, $where, array($tax_rule_id));
     }
 
 
