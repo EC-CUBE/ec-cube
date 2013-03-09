@@ -32,12 +32,61 @@ class SC_Helper_TaxRule
 {
 
     /**
-     * 税金情報に基づいて税金額を返す
+     * 設定情報に基づいて税金付与した金額を返す
      *
      * @param integer $price 計算対象の金額
+     * @return integer 税金付与した金額
+     */
+    function sfCalcIncTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
+    {
+        $arrTaxRule = SC_Helper_TaxRule_Ex:;getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
+
+        return SC_Utils_Ex::sfTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
+    }
+
+    /**
+     * 税金額を返す
+     *
+     * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
+     *
+     * @param integer $price 計算対象の金額
+     * @param integer $tax 税率(%単位)
+     *     XXX integer のみか不明
+     * @param integer $tax_rule 端数処理
      * @return integer 税金額
      */
-    function sfTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
+    function sfTax($price, $tax, $calc_rule, $tax_adjust = 0)
+    {
+        $real_tax = $tax / 100;
+        $ret = $price * $real_tax;
+        switch ($calc_rule) {
+            // 四捨五入
+            case 1:
+                $ret = round($ret);
+                break;
+            // 切り捨て
+            case 2:
+                $ret = floor($ret);
+                break;
+            // 切り上げ
+            case 3:
+                $ret = ceil($ret);
+                break;
+            // デフォルト:切り上げ
+            default:
+                $ret = ceil($ret);
+                break;
+        }
+        return $ret + $tax_adjust;
+    }
+
+    /**
+     * 税金設定情報に基づいて税金額を返す
+     *
+     * @param integer $price 計算対象の金額
+     * @return array 税設定情報
+     */
+    function getTaxRule($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
         // 条件に基づいて税情報を取得
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -51,8 +100,22 @@ class SC_Helper_TaxRule
         $order = 'apply_date DESC';
         $objQuery->setOrder($order);
         $arrData = $objQuery->select('*', $table, $where, $arrVal);
-        return $arrData[0]; //
+        // 日付や条件でこねて選択は、作り中。取りあえずスタブ的にデフォルトを返却
+        return $arrData[0];
+    }
+
+
+    function getTaxRuleList($has_disable = false)
+    {
 
     }
 
+    function getTaxRuleData($tax_rule_id)
+    {
+
+    }
+
+
+    function registerTaxRuleData() {
+    }
 }
