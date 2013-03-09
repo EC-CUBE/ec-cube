@@ -850,9 +850,13 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
      */
     function execPlugin($obj, $class_name, $exec_func)
     {
+        $objPluginInstaller = new SC_Plugin_Installer($obj);
+        
         $arrErr = array();
         if (method_exists($class_name, $exec_func) === true) {
-            $ret = call_user_func(array($class_name, $exec_func), $obj);
+            $ret = call_user_func_array(
+                    array($class_name, $exec_func),
+                    array($obj, $objPluginInstaller));
             if (!(is_null($ret) || $ret === true)) {
                 $arrErr[$obj['plugin_code']] = $ret;
             }
