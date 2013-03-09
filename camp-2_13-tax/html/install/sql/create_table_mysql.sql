@@ -73,6 +73,7 @@ CREATE TABLE dtb_baseinfo (
     company_kana text,
     zip01 text,
     zip02 text,
+    country_id int,
     pref smallint,
     addr01 text,
     addr02 text,
@@ -87,6 +88,7 @@ CREATE TABLE dtb_baseinfo (
     law_manager text,
     law_zip01 text,
     law_zip02 text,
+    law_country_id int,
     law_pref smallint,
     law_addr01 text,
     law_addr02 text,
@@ -484,6 +486,7 @@ CREATE TABLE dtb_customer (
     kana02 text NOT NULL,
     zip01 text,
     zip02 text,
+    country_id int,
     pref smallint,
     addr01 text,
     addr02 text,
@@ -537,6 +540,7 @@ CREATE TABLE dtb_order (
     order_fax03 text,
     order_zip01 text,
     order_zip02 text,
+    order_country_id int,
     order_pref smallint,
     order_addr01 text,
     order_addr02 text,
@@ -596,6 +600,7 @@ CREATE TABLE dtb_order_temp (
     order_fax03 text,
     order_zip01 text,
     order_zip02 text,
+    order_country_id int,
     order_pref smallint,
     order_addr01 text,
     order_addr02 text,
@@ -654,6 +659,7 @@ CREATE TABLE dtb_shipping (
     shipping_fax01 text,
     shipping_fax02 text,
     shipping_fax03 text,
+    shipping_country_id int,
     shipping_pref smallint,
     shipping_zip01 text,
     shipping_zip02 text,
@@ -693,6 +699,7 @@ CREATE TABLE dtb_other_deliv (
     kana02 text,
     zip01 text,
     zip02 text,
+    country_id int,
     pref smallint,
     addr01 text,
     addr02 text,
@@ -1099,6 +1106,13 @@ CREATE TABLE mtb_device_type (
     id smallint,
     name text,
     rank smallint NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE mtb_country (
+    id int,
+    name text,
+    rank int NOT NULL,
     PRIMARY KEY (id)
 );
 
