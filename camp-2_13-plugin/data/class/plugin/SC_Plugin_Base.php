@@ -53,7 +53,7 @@ abstract class SC_Plugin_Base
      * @param array $arrPlugin plugin_infoを元にDBに登録されたプラグイン情報(dtb_plugin)
      * @return void
      */
-    abstract function install($arrPlugin);
+    abstract function install($arrPlugin, $objPluginInstaller = null);
 
     /**
      * アンインストール
@@ -63,7 +63,7 @@ abstract class SC_Plugin_Base
      * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
      * @return void
      */
-    abstract function uninstall($arrPlugin);
+    abstract function uninstall($arrPlugin, $objPluginInstaller = null);
 
     /**
      * 稼働
@@ -73,7 +73,7 @@ abstract class SC_Plugin_Base
      * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
      * @return void
      */
-    abstract function enable($arrPlugin);
+    abstract function enable($arrPlugin, $objPluginInstaller = null);
 
     /**
      * 停止
@@ -83,7 +83,7 @@ abstract class SC_Plugin_Base
      * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
      * @return void
      */
-    abstract function disable($arrPlugin);
+    abstract function disable($arrPlugin, $objPluginInstaller = null);
 
     /**
      * プラグインヘルパーへ, コールバックメソッドを登録します.
