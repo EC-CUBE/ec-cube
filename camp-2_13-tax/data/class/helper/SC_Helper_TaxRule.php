@@ -41,7 +41,7 @@ class SC_Helper_TaxRule
     {
         $arrTaxRule = SC_Helper_TaxRule_Ex:;getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
 
-        return SC_Utils_Ex::sfTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
+        return SC_Helper_TaxRule_Ex::sfTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
     }
 
     /**
