@@ -721,6 +721,8 @@ INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_
 INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+INSERT INTO dtb_tax_rule (tax_rule_id, apply_date, member_id, del_flg, create_date, update_date) VALUES (0, CURRENT_TIMESTAMP, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (0, 'table', 0);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (1, 'tr', 1);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (2, 'td', 2);
