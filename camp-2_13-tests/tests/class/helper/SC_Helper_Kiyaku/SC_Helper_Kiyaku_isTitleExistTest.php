@@ -25,7 +25,7 @@ class SC_Helper_Kiyaku_isTitleExistTest extends SC_Helper_Kiyaku_TestBase
     {
         $this->setUpKiyaku();
         $title =  'test1';
-        $kiyaku_id = 2;
+        $kiyaku_id = 1001;
 
         $this->expected = true;
 
@@ -50,7 +50,7 @@ class SC_Helper_Kiyaku_isTitleExistTest extends SC_Helper_Kiyaku_TestBase
     {
         $this->setUpKiyaku();
         $title =  'xxxx';
-        $kiyaku_id = 2;
+        $kiyaku_id = 1001;
 
         $this->expected = false;
 

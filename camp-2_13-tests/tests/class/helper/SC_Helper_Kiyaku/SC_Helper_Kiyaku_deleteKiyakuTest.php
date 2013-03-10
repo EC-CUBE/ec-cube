@@ -25,7 +25,7 @@ class SC_Helper_Kiyaku_deleteKiyakuTest extends SC_Helper_Kiyaku_TestBase
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
-        $kiyaku_id = 2;
+        $kiyaku_id = 1001;
 
         //期待値
         $this->expected = "1";

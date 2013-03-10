@@ -23,11 +23,10 @@ class SC_Helper_Kiyaku_TestBase extends Common_TestCase
     protected function setUpKiyaku()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        // シーケンス初期化
         
         $kiyaku = array(
             array(
-                'kiyaku_id' => '1',
+                'kiyaku_id' => '1000',
                 'kiyaku_title' => 'test1',
                 'kiyaku_text' => 'test_text',
                 'rank' => '12',
@@ -37,7 +36,7 @@ class SC_Helper_Kiyaku_TestBase extends Common_TestCase
                 'del_flg' => '0'
                   ),
             array(
-                'kiyaku_id' => '2',
+                'kiyaku_id' => '1001',
                 'kiyaku_title' => 'test2',
                 'kiyaku_text' => 'test_text2',
                 'rank' => '11',
@@ -47,7 +46,7 @@ class SC_Helper_Kiyaku_TestBase extends Common_TestCase
                 'del_flg' => '0'
                   ),
             array(
-                'kiyaku_id' => '3',
+                'kiyaku_id' => '1002',
                 'kiyaku_title' => 'test3',
                 'kiyaku_text' => 'test_text',
                 'rank' => '10',

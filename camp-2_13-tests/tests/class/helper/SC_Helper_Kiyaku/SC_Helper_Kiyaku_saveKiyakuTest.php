@@ -21,14 +21,14 @@ class SC_Helper_Kiyaku_saveKiyakuTest extends SC_Helper_Kiyaku_TestBase
 
     /////////////////////////////////////////
 
-    public function testsaveKiyakuTest_新規で規約を登録する場合_4を返す()
+    public function testsaveKiyakuTest_新規で規約を登録する場合_1003を返す()
     {
 
         if(DB_TYPE != 'pgsql') { //postgresqlだとどうしてもDBエラーになるのでとりいそぎ回避
         
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $this->setUpKiyaku();
-            $this->expected = '4';
+            $this->expected = '1003';
         
             $sqlval = array(
                     'kiyaku_title' => '第3条 (TEST)',
@@ -52,14 +52,14 @@ class SC_Helper_Kiyaku_saveKiyakuTest extends SC_Helper_Kiyaku_TestBase
         }
     }
 
-    public function testsaveKiyakuTest_規約を更新する場合_2を返す()
+    public function testsaveKiyakuTest_規約を更新する場合_1001を返す()
     {
         if(DB_TYPE != 'pgsql') { //postgresqlだとどうしてもDBエラーになるのでとりいそぎ回避
     
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $this->setUpKiyaku();
             $sqlval = array(
-                    'kiyaku_id' => '2',
+                    'kiyaku_id' => '1001',
                     'kiyaku_title' => '第2条 (登録)',
                     'kiyaku_text' => 'test kiyaku2',
                     'rank' => '11',
@@ -68,8 +68,7 @@ class SC_Helper_Kiyaku_saveKiyakuTest extends SC_Helper_Kiyaku_TestBase
                     'update_date' => '2000-01-01 00:00:00',
                     'del_flg' => '0'
                     );
-            $this->expected = 2;
-            // シーケンス調整
+            $this->expected = 1001;
             $this->actual = $this->objKiyaku->saveKiyaku($sqlval);
     
             $this->verify('新規規約登録');

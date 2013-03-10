@@ -25,7 +25,7 @@ class SC_Helper_Kiyaku_rankDownTest extends SC_Helper_Kiyaku_TestBase
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
-        $kiyaku_id = 1;
+        $kiyaku_id = 1000;
 
         //期待値
         $this->expected = '11';

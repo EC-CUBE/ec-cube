@@ -26,10 +26,10 @@ class SC_Helper_Kiyaku_getKiyakuTest extends SC_Helper_Kiyaku_TestBase
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
         $has_deleted = FALSE;
-        $kiyaku_id = 1;
+        $kiyaku_id = 1000;
         //期待値
         $this->expected = array(
-            'kiyaku_id' => '1',
+            'kiyaku_id' => '1000',
             'kiyaku_title' => 'test1',
             'kiyaku_text' => 'test_text',
             'rank' => '12',
@@ -48,7 +48,7 @@ class SC_Helper_Kiyaku_getKiyakuTest extends SC_Helper_Kiyaku_TestBase
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
         $has_deleted = FALSE;
-        $kiyaku_id = 3;
+        $kiyaku_id = 1002;
         //期待値
         $this->expected = null;
 
@@ -61,10 +61,10 @@ class SC_Helper_Kiyaku_getKiyakuTest extends SC_Helper_Kiyaku_TestBase
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpKiyaku();
         $has_deleted = TRUE;
-        $kiyaku_id = 3;
+        $kiyaku_id = 1002;
         //期待値
         $this->expected = array(
-                'kiyaku_id' => '3',
+                'kiyaku_id' => '1002',
                 'kiyaku_title' => 'test3',
                 'kiyaku_text' => 'test_text',
                 'rank' => '10',
