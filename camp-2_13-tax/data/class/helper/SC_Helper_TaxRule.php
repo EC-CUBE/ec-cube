@@ -113,30 +113,77 @@ class SC_Helper_TaxRule
         return $ret + $tax_adjust;
     }
 
+
     /**
      * 現在有効な税金設定情報を返す
      *
      * @param integer $price 計算対象の金額
      * @return array 税設定情報
      */
-    function getTaxRule($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    function getTaxRule ($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
-        // 条件に基づいて税情報を取得
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $table = 'dtb_tax_rule';
-        $where = '(product_id = 0 OR product_id = ?)'
-                    . ' AND (product_class_id = 0 OR product_class_id = ?)'
-                    . ' AND (pref_id = 0 OR pref_id = ?)'
-                    . ' AND (country_id = 0 OR country_id = ?)';
+        // リクエストの配列化
+        $arrRequest = array('product_id' => $product_id,
+                        'product_class_id' => $product_class_id,
+                        'pref_id' => $pref_id,
+                        'country_id' => $country_id);
 
-        $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
-        $order = 'apply_date DESC';
-        $objQuery->setOrder($order);
-        $arrData = $objQuery->select('*', $table, $where, $arrVal);
-        // 日付や条件でこねて選択は、作り中。取りあえずスタブ的にデフォルトを返却
-        // 一旦配列の最後の項目を返すように変更
-        // return $arrData[0];
-        return $arrData[count($arrData)-1];
+        // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
+        // 後に書いてあるほど優先される、詳細後述MEMO参照
+        $arrPriorityKeys = array('product_id', 'product_class_id', 'pref_id', 'country_id');
+        $cache_key = "$product_id,$product_class_id,$pref_id,$country_id";
+
+        // 複数回呼出があるのでキャッシュ化
+        static $data_c = array();
+
+        if (empty($data_c[$cache_key])) {
+            $arrRet = array();
+
+            // 条件に基づいて税の設定情報を取得
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $table = 'dtb_tax_rule';
+            $cols = '*, CASE WHEN apply_date IS NULL THEN 1 ELSE 0 END as nullorder';
+            $where = '(product_id = 0 OR product_id = ?)'
+                        . ' AND (product_class_id = 0 OR product_class_id = ?)'
+                        . ' AND (pref_id = 0 OR pref_id = ?)'
+                        . ' AND (country_id = 0 OR country_id = ?)'
+                        . ' AND (apply_date < CURRENT_TIMESTAMP OR apply_date IS NULL)'
+                        . ' AND del_flg = 0';
+
+            $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
+            $order = 'nullorder ASC, apply_date DESC';
+            $objQuery->setOrder($order);
+            $arrData = $objQuery->select($cols, $table, $where, $arrVal);
+            // 優先度付け
+            // MEMO: 税の設定は相反する設定を格納可能だが、その中で優先度を付けるため
+            //       キーの優先度により、利用する税設定を判断する
+            //       優先度が同等の場合、適用日付で判断する
+
+            // XXXX: ビット演算で優先順位を判断という雑な事してます。すいません
+            foreach ($arrData as $data_key => $data) {
+                $res = 0;
+                foreach ($arrPriorityKeys as $key_no => $key) {
+                    if ($arrRequest[$key] != 0 && $data[$key] == $arrRequest[$key]) {
+                        // 配列の数値添字を重みとして利用する
+                        $res += 1 << ($key_no + 1);
+                    }
+                }
+                $arrData[$data_key]['rank'] = $res;
+            }
+
+            // 優先順位が高いものを返却値として確定
+            // 適用日降順に並んでいるので、単に優先順位比較のみで格納判断可能
+            foreach ($arrData as $data) {
+                if (!isset($arrRet['rank']) || $arrRet['rank'] < $data['rank']) {
+                    // 優先度が高い場合, または空の場合
+                    $arrRet = $data;
+                }
+            }
+            $data_c[$cache_key] = $arrRet;
+        }
+
+        GC_Utils_Ex::gfDebugLog('key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
+        return $data_c[$cache_key];
     }
 
     /**
@@ -159,24 +206,24 @@ class SC_Helper_TaxRule
      */
     function setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
-		$table = 'dtb_tax_rule';
-		$arrValues = array();
-		$arrValues['calc_rule'] = $calc_rule;
-		$arrValues['tax_rate'] = $tax_rate;
-		$arrValues['tax_adjust'] = $tax_adjust;
-		$arrValues['apply_date'] = $apply_date;
-		$arrValues['member_id'] = $_SESSION['member_id'];
-		$arrValues['update_date'] = 'CURRENT_TIMESTAMP';
-		
+        $table = 'dtb_tax_rule';
+        $arrValues = array();
+        $arrValues['calc_rule'] = $calc_rule;
+        $arrValues['tax_rate'] = $tax_rate;
+        $arrValues['tax_adjust'] = $tax_adjust;
+        $arrValues['apply_date'] = $apply_date;
+        $arrValues['member_id'] = $_SESSION['member_id'];
+        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+
         // 新規か更新か？
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-		if($tax_rule_id == NULL && $product_id != 0 && $product_class_id != 0){
+        if($tax_rule_id == NULL && $product_id != 0 && $product_class_id != 0){
         $where = 'product_id = ? AND product_class_id= ? AND pref_id = ? AND country_id = ?';
         $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
-		$arrCheck = $objQuery->getRow('*', 'dtb_tax_rule', $where, $arrVal);
-		$tax_rule_id = $arrCheck['tax_rule_id'];
-		}
-		
+        $arrCheck = $objQuery->getRow('*', 'dtb_tax_rule', $where, $arrVal);
+        $tax_rule_id = $arrCheck['tax_rule_id'];
+        }
+
         if($tax_rule_id == NULL) {
             // 税情報を新規
             // INSERTの実行
@@ -185,8 +232,8 @@ class SC_Helper_TaxRule
             $arrValues['pref_id'] = $pref_id;
             $arrValues['product_id'] = $product_id;
             $arrValues['product_class_id'] = $product_class_id;
-			$arrValues['create_date'] = 'CURRENT_TIMESTAMP';
-        
+            $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
+
             $objQuery->insert($table, $arrValues);
         } else {
             // 税情報を更新
@@ -194,8 +241,8 @@ class SC_Helper_TaxRule
             $ret = $objQuery->update($table, $arrValues, $where, array($tax_rule_id));
         }
     }
-    
-    
+
+
     function getTaxRuleList($has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -221,7 +268,7 @@ class SC_Helper_TaxRule
         return $objQuery->getRow('*', 'dtb_tax_rule', $where, array($tax_rule_id));
     }
 
-	
+
 
     function getTaxRuleByTime($apply_date, $has_deleted = false)
     {
