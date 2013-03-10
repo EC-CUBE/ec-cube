@@ -32,28 +32,28 @@ class SC_Helper_News_getListTest extends SC_Helper_News_TestBase
         $this->expected = array(
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '4',
+            'news_id' => '1004',
             'news_title' => 'ニュース情報04',
             'creator_id' => '1',
             'del_flg' => '0'
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '3',
+            'news_id' => '1003',
             'news_title' => 'ニュース情報03',
             'creator_id' => '1',
             'del_flg' => '1'
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '2',
+            'news_id' => '1002',
             'news_title' => 'ニュース情報02',
             'creator_id' => '1',
             'del_flg' => '0'
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '1',
+            'news_id' => '1001',
             'news_title' => 'ニュース情報01',
             'creator_id' => '1',
             'del_flg' => '0'
@@ -78,21 +78,21 @@ class SC_Helper_News_getListTest extends SC_Helper_News_TestBase
         $this->expected = array(
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '4',
+            'news_id' => '1004',
             'news_title' => 'ニュース情報04',
             'creator_id' => '1',
             'del_flg' => '0'
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '2',
+            'news_id' => '1002',
             'news_title' => 'ニュース情報02',
             'creator_id' => '1',
             'del_flg' => '0'
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '1',
+            'news_id' => '1001',
             'news_title' => 'ニュース情報01',
             'creator_id' => '1',
             'del_flg' => '0'
@@ -117,7 +117,7 @@ class SC_Helper_News_getListTest extends SC_Helper_News_TestBase
 
         $this->expected = array(
           'update_date' => '2000-01-01 00:00:00',
-          'news_id' => '1',
+          'news_id' => '1001',
           'news_title' => 'ニュース情報01',
           'creator_id' => '1',
           'del_flg' => '0'
@@ -139,7 +139,7 @@ class SC_Helper_News_getListTest extends SC_Helper_News_TestBase
 
         $this->expected = array(
           'update_date' => '2000-01-01 00:00:00',
-          'news_id' => '4',
+          'news_id' => '1004',
           'news_title' => 'ニュース情報04',
           'creator_id' => '1',
           'del_flg' => '0'

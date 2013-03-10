@@ -25,7 +25,7 @@ class SC_Helper_News_moveRankTest extends SC_Helper_News_TestBase
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpNews();
-        $news_id = 1;
+        $news_id = 1001;
         $rank = 1;
 
         $this->expected = '4';

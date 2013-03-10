@@ -51,7 +51,7 @@ class SC_Helper_News_TestBase extends Common_TestCase
         $news = array(
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '1',
+            'news_id' => '1001',
             'news_title' => 'ニュース情報01',
             'rank' => '1',
             'creator_id' => '1',
@@ -59,7 +59,7 @@ class SC_Helper_News_TestBase extends Common_TestCase
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '2',
+            'news_id' => '1002',
             'news_title' => 'ニュース情報02',
             'rank' => '2',
             'creator_id' => '1',
@@ -67,7 +67,7 @@ class SC_Helper_News_TestBase extends Common_TestCase
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '3',
+            'news_id' => '1003',
             'news_title' => 'ニュース情報03',
             'rank' => '3',
             'creator_id' => '1',
@@ -75,7 +75,7 @@ class SC_Helper_News_TestBase extends Common_TestCase
             ),
           array(
             'update_date' => '2000-01-01 00:00:00',
-            'news_id' => '4',
+            'news_id' => '1004',
             'news_title' => 'ニュース情報04',
             'rank' => '4',
             'creator_id' => '1',

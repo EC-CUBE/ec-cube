@@ -43,7 +43,7 @@ class SC_Helper_Bloc
      * @param integer $bloc_id ブロックID
      * @return array
      */
-    public function get($bloc_id)
+    public function getBloc($bloc_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
@@ -108,7 +108,7 @@ class SC_Helper_Bloc
         $bloc_dir = SC_Helper_PageLayout_Ex::getTemplatePath($sqlval['device_type_id']) . BLOC_DIR;
         // 既存データの重複チェック
         if (!$is_new) {
-            $arrExists = $this->get($sqlval['bloc_id']);
+            $arrExists = $this->getBloc($sqlval['bloc_id']);
 
             // 既存のファイルが存在する場合は削除しておく
             $exists_file = $bloc_dir . $arrExists[0]['filename'] . '.tpl';

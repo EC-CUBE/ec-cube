@@ -25,7 +25,7 @@ class SC_Helper_News_rankUpTest extends SC_Helper_News_TestBase
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpNews();
-        $news_id = 2;
+        $news_id = 1002;
 
         $this->expected = '3';
 

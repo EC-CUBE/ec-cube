@@ -36,11 +36,11 @@ class SC_Helper_News_getNewsTest extends SC_Helper_News_TestBase
     public function testGet_存在するニュースIDを指定した場合_対応する結果が取得できる()
     {
         $this->setUpNews();
-        $news_id = '1';
+        $news_id = '1001';
 
         $this->expected = array(
         'update_date' => '2000-01-01 00:00:00',
-        'news_id' => '1',
+        'news_id' => '1001',
         'news_title' => 'ニュース情報01',
         'creator_id' => '1',
         'del_flg' => '0'
