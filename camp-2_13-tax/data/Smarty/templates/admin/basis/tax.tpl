@@ -78,14 +78,12 @@
     </div>
     <!--{if count($arrTaxrule) > 0}-->
     <table class="list">
-        <col width="5%" />
-        <col width="20%" />
-        <col width="20%" />
+        <col width="22%" />
+        <col width="23%" />
         <col width="35%" />
         <col width="10%" />
         <col width="10%" />
         <tr>
-            <th>ID</th>
             <th>消費税率</th>
             <th>課税規則</th>
             <th>適用日時</th>
@@ -94,8 +92,6 @@
         </tr>
         <!--{section name=cnt loop=$arrTaxrule}-->
         <tr style="background:<!--{if $tpl_tax_rule_id != $arrTaxrule[cnt].tax_rule_id}-->#ffffff<!--{else}--><!--{$smarty.const.SELECT_RGB}--><!--{/if}-->;">
-            <!--{assign var=tax_rule_id value=$arrTaxrule[cnt].tax_rule_id}-->
-            <td class="center"><!--{$tax_rule_id|h}--></td>
             <td class="center"><!--{$arrTaxrule[cnt].tax_rate|h}--></td>
             <td class="center"><!--{assign var=calc_rule value=$arrTaxrule[cnt].calc_rule}-->
                 <!--{$arrTAXCALCRULE[$calc_rule]}--></td>
