@@ -170,7 +170,7 @@ class SC_Plugin_Installer {
      * @param type $col
      * @param type $type 
      */
-    function sqlAterTableAdd($table_name, $col_name, $col_type) {
+    function sqlAterTableAddColumn($table_name, $col_name, $col_type) {
         $sql = "ALTER TABLE $table_name ADD $col_name $col_type ";
         $this->sql($sql);
     }
@@ -182,7 +182,7 @@ class SC_Plugin_Installer {
      * @param type $col
      * @param type $type 
      */
-    function sqlAterTableDrop($table_name, $col_name) {
+    function sqlAterTableDropColumn($table_name, $col_name) {
         $sql = "ALTER TABLE $table_name DROP $col_name";
         $this->sql($sql);
     }
