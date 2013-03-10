@@ -130,7 +130,7 @@ class SC_Helper_TaxRule
 
         // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
         // 後に書いてあるほど優先される、詳細後述MEMO参照
-        $arrPriorityKeys = array('product_id', 'product_class_id', 'pref_id', 'country_id');
+        $arrPriorityKeys = array('product_id', 'product_class_id', 'pref_id', 'country_id');    // TODO: パラメーター設定に持っていく
         $cache_key = "$product_id,$product_class_id,$pref_id,$country_id";
 
         // 複数回呼出があるのでキャッシュ化
@@ -182,7 +182,7 @@ class SC_Helper_TaxRule
             $data_c[$cache_key] = $arrRet;
         }
 
-        GC_Utils_Ex::gfDebugLog('key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
+        GC_Utils_Ex::gfDebugLog('tax_key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
         return $data_c[$cache_key];
     }
 
