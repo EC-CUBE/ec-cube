@@ -189,13 +189,26 @@ class SC_Helper_TaxRule
     /**
      * 税金設定情報を登録する（商品管理用）
      *
-     * @param
-     * @return
+     * @param decimal $tax_rate 消費税率
+     * @param integer $product_id 商品ID
+     * @param integer $product_class_id 商品規格ID
+     * @param decimal $tax_adjust 消費税加算額
+     * @param integer $pref_id 県ID
+     * @param integer $country_id 国ID
+     * @return void
      */
     function setTaxRuleForProduct($tax_rate, $product_id = 0, $product_class_id = 0, $tax_adjust=0, $pref_id = 0, $country_id = 0)
     {
-        // 税情報を設定
-        SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id, $product_class_id, $pref_id, $country_id);
+        // 基本設定を取得
+        $arrRet = SC_Helper_taxRule_Ex::getTaxRule();
+        // 基本設定の消費税率と一緒であれば設定しない
+        if( $arrRet['tax_rate'] != $tax_rate ) {
+            // 課税規則は基本設定のものを使用
+            $calc_rule = $arrRet['calc_rule'];
+            // 税情報を設定
+            SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id, $product_class_id, $pref_id, $country_id);
+    
+        }
     }
 
     /**
@@ -218,10 +231,10 @@ class SC_Helper_TaxRule
         // 新規か更新か？
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         if($tax_rule_id == NULL && $product_id != 0 && $product_class_id != 0){
-        $where = 'product_id = ? AND product_class_id= ? AND pref_id = ? AND country_id = ?';
-        $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
-        $arrCheck = $objQuery->getRow('*', 'dtb_tax_rule', $where, $arrVal);
-        $tax_rule_id = $arrCheck['tax_rule_id'];
+            $where = 'product_id = ? AND product_class_id= ? AND pref_id = ? AND country_id = ?';
+            $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
+            $arrCheck = $objQuery->getRow('*', 'dtb_tax_rule', $where, $arrVal);
+            $tax_rule_id = $arrCheck['tax_rule_id'];
         }
 
         if($tax_rule_id == NULL) {
