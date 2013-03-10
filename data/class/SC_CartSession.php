@@ -27,7 +27,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_CartSession
+class SC_CartSession 
 {
     /** ユニークIDを指定する. */
     var $key_tmp;
@@ -126,7 +126,7 @@ class SC_CartSession
                 // 税込み合計
                 $price = $this->cartSession[$productTypeId][$i]['price'];
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-                $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price, 0, $id[0]);
+                $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
                 $total = $incTax * $quantity;
                 return $total;
             }
@@ -193,9 +193,7 @@ class SC_CartSession
             }
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
 
-            $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price,
-                $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                $this->cartSession[$productTypeId][$i]['id'][0]);
+            $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
             $total+= ($incTax * $quantity);
         }
         return $total;
@@ -210,9 +208,7 @@ class SC_CartSession
         for ($i = 0; $i <= $max; $i++) {
             $price = $this->cartSession[$productTypeId][$i]['price'];
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-            $tax = SC_Helper_TaxRule_Ex::sfTax($price,
-                $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                $this->cartSession[$productTypeId][$i]['id'][0]);
+            $tax = SC_Helper_DB_Ex::sfTax($price);
             $total+= ($tax * $quantity);
         }
         return $total;
@@ -377,10 +373,7 @@ class SC_CartSession
                     = $this->cartSession[$productTypeId][$i]['productsClass']['point_rate'];
 
                 $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-                $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price,
-                    $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                    $this->cartSession[$productTypeId][$i]['id'][0]);
-
+                $incTax = SC_Helper_DB_Ex::sfCalcIncTax($price);
                 $total = $incTax * $quantity;
 
                 $this->cartSession[$productTypeId][$i]['total_inctax'] = $total;
@@ -577,9 +570,7 @@ class SC_CartSession
                 if (!is_null($limit) && $arrItem['quantity'] > $limit) {
                     if ($limit > 0) {
                         $this->setProductValue($arrItem['id'], 'quantity', $limit, $productTypeId);
-                        $total_inctax = $limit * SC_Helper_TaxRule_Ex::sfCalcIncTax($arrItem['price'],
-                            $product['product_id'],
-                            $arrItem['id'][0]);
+                        $total_inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItem['price']) * $limit;
                         $this->setProductValue($arrItem['id'], 'total_inctax', $total_inctax, $productTypeId);
                         $tpl_message .= '※「' . $product['name'] . '」は販売制限(または在庫が不足)しております。';
                         $tpl_message .= "一度に数量{$limit}を超える購入はできません。\n";
@@ -660,9 +651,9 @@ class SC_CartSession
         $results['subtotal'] = $this->getAllProductsTotal($productTypeId);
         $results['deliv_fee'] = 0;
 
-        $arrTaxInfo = SC_Helper_TaxRule_Ex::getTaxRule();
-        $results['order_tax_rate'] = $arrTaxInfo['tax_rate'];
-        $results['order_tax_rule'] = $arrTaxInfo['calc_rule'];
+        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
+        $results['order_tax_rate'] = $arrInfo['tax'];
+        $results['order_tax_rule'] = $arrInfo['tax_rule'];
 
         // 商品ごとの送料を加算
         if (OPTION_PRODUCT_DELIV_FEE == 1) {
