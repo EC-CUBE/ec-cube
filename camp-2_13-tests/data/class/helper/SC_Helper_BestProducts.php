@@ -134,7 +134,7 @@ class SC_Helper_BestProducts
      * @param integer $best_id おすすめ商品ID
      * @return void
      */
-    public function delete($best_id)
+    public function deleteBestProducts($best_id)
     {
         $objDb = new SC_Helper_DB_Ex();
         // ランク付きレコードの削除
