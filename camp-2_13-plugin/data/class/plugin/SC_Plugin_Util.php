@@ -140,14 +140,28 @@ class SC_Plugin_Util
      * プラグインIDをキーに, プラグインフックポイントを取得する.
      *
      * @param integer $plugin_id
+     * @param integer $use_type 1=有効のみ 2=無効のみ 3=全て
      * @return array フックポイントの一覧
      */
-    function getPluginHookPoint($plugin_id)
+    function getPluginHookPoint($plugin_id, $use_type = 1)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = '*';
         $from = 'dtb_plugin_hookpoint';
-        $where = 'plugin_id = ? AND use_flg = true';
+        $where = 'plugin_id = ?';
+        switch ($use_type) {
+            case 1:
+                $where .= ' AND use_flg = true';
+            break;
+
+            case 2:
+                $where .= ' AND use_flg = false';
+            break;
+
+            case 3:
+            default:
+            break;
+        }
         return $objQuery->select($cols, $from, $where, array($plugin_id));
     }
 
@@ -235,7 +249,7 @@ class SC_Plugin_Util
         // フックポイントを取得します.
         $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ?';
         if ($plugin_id > 0) {
-            $hookPoints = SC_Plugin_Util::getPluginHookPoint($plugin_id);
+            $hookPoints = SC_Plugin_Util::getPluginHookPoint($plugin_id, '');
         } else {
             $hookPoints = SC_Plugin_Util::getPluginHookPointList(1);
             $where .= ' AND T1.use_flg = true';
