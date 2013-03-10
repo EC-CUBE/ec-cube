@@ -159,10 +159,6 @@ class SC_Plugin_Installer {
         );
     }
     
-    public function query($sql, array $params = array()) {
-        $this->sql($sql, $params);
-    }
-    
     protected function log($msg) {
         $msg = sprintf("%s %s: %s", $this->plugin_code, $this->exec_func, $msg);
         GC_Utils::gfPrintLog($msg, PLUGIN_LOG_REALFILE);
