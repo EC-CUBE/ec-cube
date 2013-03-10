@@ -201,7 +201,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
             $this->arrLogList['DB'] = 'DBログファイル';
         }
         if (defined('PLUGIN_LOG_REALFILE') && strlen(PLUGIN_LOG_REALFILE) >= 1) {
-            $this->arrLogList['PLUGIN'] = 'DBログファイル';
+            $this->arrLogList['PLUGIN'] = 'プラグインログファイル';
         }
     }
 }
