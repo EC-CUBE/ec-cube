@@ -1224,14 +1224,13 @@ CREATE TABLE dtb_tax_rule (
     calc_rule smallint NOT NULL DEFAULT 1,
     tax_rate numeric NOT NULL DEFAULT 5,
     tax_adjust numeric NOT NULL DEFAULT 0,
-    apply_date timestamp,
+    apply_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	member_id int NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,
-    create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    create_date timestamp NOT NULL,
     update_date timestamp NOT NULL,
     PRIMARY KEY (tax_rule_id)
 );
-
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);
