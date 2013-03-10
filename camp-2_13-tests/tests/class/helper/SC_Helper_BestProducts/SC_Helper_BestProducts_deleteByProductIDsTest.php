@@ -50,7 +50,7 @@ class SC_Helper_BestProducts_deleteByProductIDsTest extends SC_Helper_BestProduc
 
         $this->expected = null;
 
-        $this->actual = SC_Helper_BestProducts::getBestProducts('1001');
+        $this->actual = $objHelperBestProducts->getBestProducts('1001');
 
         $this->verify();
     }
@@ -63,11 +63,11 @@ class SC_Helper_BestProducts_deleteByProductIDsTest extends SC_Helper_BestProduc
 
         $this->expected = null;
 
-        $this->actual = SC_Helper_BestProducts::getBestProducts('1001');
+        $this->actual = $objHelperBestProducts->getBestProducts('1001');
 
         $this->verify();
 
-        $this->actual = SC_Helper_BestProducts::getBestProducts('1003');
+        $this->actual = $objHelperBestProducts->getBestProducts('1003');
 
         $this->verify();
 

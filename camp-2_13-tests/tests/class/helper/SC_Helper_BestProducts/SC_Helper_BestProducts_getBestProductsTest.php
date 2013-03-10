@@ -49,7 +49,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
         $best_id = '9999';
 
         $this->expected = null;
-        $this->actual = SC_Helper_BestProducts::getBestProducts($best_id);
+        $this->actual = SC_Helper_BestProducts_Ex::getBestProducts($best_id);
 
         $this->verify();
     }
@@ -68,7 +68,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
             'del_flg' => '0'
         );
 
-        $result = SC_Helper_BestProducts::getBestProducts($best_id);
+        $result = SC_Helper_BestProducts_Ex::getBestProducts($best_id);
         $this->actual = Test_Utils::mapArray($result,
             array('category_id',
                 'rank',
@@ -88,7 +88,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
         $best_id = '1002';
 
         $this->expected = null;
-        $this->actual = SC_Helper_BestProducts::getBestProducts($best_id);
+        $this->actual = SC_Helper_BestProducts_Ex::getBestProducts($best_id);
 
         $this->verify();
 
@@ -108,7 +108,7 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
             'del_flg' => '1'
         );
 
-        $result = SC_Helper_BestProducts::getBestProducts($best_id,true);
+        $result = SC_Helper_BestProducts_Ex::getBestProducts($best_id,true);
         $this->actual = Test_Utils::mapArray($result,
             array('category_id',
                 'rank',

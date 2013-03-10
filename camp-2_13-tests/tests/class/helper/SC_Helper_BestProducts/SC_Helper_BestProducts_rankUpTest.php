@@ -43,11 +43,11 @@ class SC_Helper_BestProducts_rankUpTest extends SC_Helper_BestProducts_TestBase
 
     public function testRankUp_指定されたデータがランクアップされる(){
 
-        SC_Helper_BestProducts::rankUp("1003");
+        SC_Helper_BestProducts_Ex::rankUp("1003");
 
         $this->expected = "2";
 
-        $arrRet = SC_Helper_BestProducts::getBestProducts('1003');
+        $arrRet = SC_Helper_BestProducts_Ex::getBestProducts('1003');
 
         $this->actual = $arrRet['rank'];
 

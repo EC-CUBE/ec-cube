@@ -46,11 +46,11 @@ class SC_Helper_BestProducts_deleteBestProductsTest extends SC_Helper_BestProduc
     // データが削除されていることを確認
     public function testDeleteBestProducts_データが削除される(){
 
-        SC_Helper_BestProducts::deleteBestProducts("1001");
+        SC_Helper_BestProducts_Ex::deleteBestProducts("1001");
 
         $this->expected = null;
 
-        $this->actual = SC_Helper_BestProducts::getBestProducts('1001');
+        $this->actual = SC_Helper_BestProducts_Ex::getBestProducts('1001');
 
         $this->verify();
     }
@@ -58,11 +58,11 @@ class SC_Helper_BestProducts_deleteBestProductsTest extends SC_Helper_BestProduc
     // データが削除後、ランクが繰り上がることを確認
     public function testDeleteBestProducts_データ削除後_ランクが繰り上がることを確認(){
 
-        SC_Helper_BestProducts::deleteBestProducts("1001");
+        SC_Helper_BestProducts_Ex::deleteBestProducts("1001");
 
         $this->expected = "1";
 
-        $arrRet = SC_Helper_BestProducts::getBestProducts('1002',true);
+        $arrRet = SC_Helper_BestProducts_Ex::getBestProducts('1002',true);
 
         $this->actual = $arrRet['rank'];
 

@@ -43,11 +43,11 @@ class SC_Helper_BestProducts_rankDownTest extends SC_Helper_BestProducts_TestBas
 
     public function testRankDown_指定されたデータがランクダウンされる(){
 
-        SC_Helper_BestProducts::rankDown("1001");
+        SC_Helper_BestProducts_Ex::rankDown("1001");
 
         $this->expected = "2";
 
-        $arrRet = SC_Helper_BestProducts::getBestProducts('1001');
+        $arrRet = SC_Helper_BestProducts_Ex::getBestProducts('1001');
 
         $this->actual = $arrRet['rank'];
 

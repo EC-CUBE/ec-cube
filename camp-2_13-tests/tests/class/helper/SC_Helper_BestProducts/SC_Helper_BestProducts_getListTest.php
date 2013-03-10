@@ -50,7 +50,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
         $this->deleteAllBestProducts();
 
         $this->expected = array();
-        $this->actual = SC_Helper_BestProducts::getList();
+        $this->actual = SC_Helper_BestProducts_Ex::getList();
 
         $this->verify();
     }
@@ -89,7 +89,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
         );
 
 
-        $this->actual = SC_Helper_BestProducts::getList();
+        $this->actual = SC_Helper_BestProducts_Ex::getList();
         $this->verify();
 
     }
@@ -140,7 +140,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
         );
 
 
-        $this->actual = SC_Helper_BestProducts::getList(0,0,true);
+        $this->actual = SC_Helper_BestProducts_Ex::getList(0,0,true);
         $this->verify();
 
     }
@@ -167,7 +167,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
         );
 
 
-        $this->actual = SC_Helper_BestProducts::getList(1,2);
+        $this->actual = SC_Helper_BestProducts_Ex::getList(1,2);
         $this->verify();
 
     }
@@ -193,7 +193,7 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
             )
         );
 
-        $this->actual = SC_Helper_BestProducts::getList(1,0);
+        $this->actual = SC_Helper_BestProducts_Ex::getList(1,0);
         $this->verify();
 
     }

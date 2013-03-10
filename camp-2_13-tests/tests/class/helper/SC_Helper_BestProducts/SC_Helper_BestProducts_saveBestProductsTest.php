@@ -59,7 +59,7 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
             'del_flg' => '0'
         );
 
-        $result = SC_Helper_BestProducts::saveBestProducts($sqlVal);
+        $result = SC_Helper_BestProducts_Ex::saveBestProducts($sqlVal);
 
         $this->expected = array(
             'product_id'=>'3',
@@ -72,9 +72,9 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
             'del_flg' => '0'
         );
 
-        $this->actual = SC_Helper_BestProducts::getBestProducts('1001');
+        $this->actual = SC_Helper_BestProducts_Ex::getBestProducts('1001');
 
-        $arrRet = SC_Helper_BestProducts::getBestProducts('1001');
+        $arrRet = SC_Helper_BestProducts_Ex::getBestProducts('1001');
 
 
         $this->actual = Test_Utils::mapArray($arrRet,
@@ -107,7 +107,7 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
                 'del_flg' => '0'
             );
 
-            $best_id = SC_Helper_BestProducts::saveBestProducts($sqlVal);
+            $best_id = SC_Helper_BestProducts_Ex::saveBestProducts($sqlVal);
 
             $this->expected = array(
                 'product_id'=>'4',
@@ -119,7 +119,7 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
                 'del_flg' => '0'
             );
 
-            $arrRet = SC_Helper_BestProducts::getBestProducts($best_id);
+            $arrRet = SC_Helper_BestProducts_Ex::getBestProducts($best_id);
 
 
             $this->actual = Test_Utils::mapArray($arrRet,
@@ -153,11 +153,11 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
                 'del_flg' => '0'
             );
 
-            $best_id = SC_Helper_BestProducts::saveBestProducts($sqlVal);
+            $best_id = SC_Helper_BestProducts_Ex::saveBestProducts($sqlVal);
 
             $this->expected = "4"; //ランク
 
-            $arrRet = SC_Helper_BestProducts::getBestProducts($best_id);
+            $arrRet = SC_Helper_BestProducts_Ex::getBestProducts($best_id);
 
 
             $this->actual = $arrRet['rank'];
