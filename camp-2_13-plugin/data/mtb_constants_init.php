@@ -470,3 +470,5 @@ define('SMARTY_FORCE_COMPILE_MODE', false);
 define('LOGIN_RETRY_INTERVAL', 0);
 /** MYページ：ご注文状況表示フラグ */
 define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
+/** プラグインデバッグモード */
+define('PLUGIN_DEBUG_MODE', false);
