@@ -31,7 +31,6 @@ class SC_Plugin_Installer {
     protected $arrInstallData;
     
     public function __construct($exec_func, $arrPlugin) {
-        define('PLUGIN_LOG_REALFILE', DATA_REALDIR . "logs/plugin.log");
         $this->exec_func   = $exec_func;
         $this->plugin_code = $arrPlugin['plugin_code'];
         $this->arrPlugin   = $arrPlugin;
