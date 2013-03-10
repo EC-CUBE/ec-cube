@@ -122,6 +122,22 @@ class SC_Helper_TaxRule
      */
     function getTaxRule ($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
+        // 初期化
+        $product_id = $product_id > 0 ? $product_id : 0;
+        $product_class_id = $product_class_id > 0 ? $product_class_id : 0;
+        $pref_id = $pref_id > 0 ? $pref_id : 0;
+        $country_id = $country_id > 0 ? $country_id : 0;
+
+        $objCustomer = new SC_Customer_Ex();
+        if ($objCustomer->isLoginSuccess(true)) {
+            if ($country_id == 0) {
+                $objCustomer->getValue('country_id');
+            }
+            if ($pref_id == 0) {
+                $objCustomer->getValue('pref');
+            }
+        }
+
         // リクエストの配列化
         $arrRequest = array('product_id' => $product_id,
                         'product_class_id' => $product_class_id,
@@ -143,8 +159,8 @@ class SC_Helper_TaxRule
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $table = 'dtb_tax_rule';
             $cols = '*, CASE WHEN apply_date IS NULL THEN 1 ELSE 0 END as nullorder';
-            $where = '(product_id = 0 OR product_id = ?)'
-                        . ' AND (product_class_id = 0 OR product_class_id = ?)'
+            $where = '((product_id = 0 OR product_id = ?)'
+                        . ' OR (product_class_id = 0 OR product_class_id = ?))'
                         . ' AND (pref_id = 0 OR pref_id = ?)'
                         . ' AND (country_id = 0 OR country_id = ?)'
                         . ' AND (apply_date < CURRENT_TIMESTAMP OR apply_date IS NULL)'
@@ -182,7 +198,7 @@ class SC_Helper_TaxRule
             $data_c[$cache_key] = $arrRet;
         }
 
-        GC_Utils_Ex::gfDebugLog('tax_key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
+        GC_Utils_Ex::gfPrintLog('tax_key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
         return $data_c[$cache_key];
     }
 
@@ -207,7 +223,7 @@ class SC_Helper_TaxRule
             $calc_rule = $arrRet['calc_rule'];
             // 税情報を設定
             SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id, $product_class_id, $pref_id, $country_id);
-    
+
         }
     }
 
