@@ -42,8 +42,7 @@ class SC_Helper_BestProducts_deleteByProductIDsTest extends SC_Helper_BestProduc
     }
 
 
-    // データが削除されていることを確認
-    public function testDeleteByProductIDs_delete(){
+    public function testDeleteByProductIDs_データが削除される(){
 
         $objHelperBestProducts = new SC_Helper_BestProducts_Ex();
 
@@ -57,7 +56,7 @@ class SC_Helper_BestProducts_deleteByProductIDsTest extends SC_Helper_BestProduc
     }
 
     // データが削除されていることを確認
-    public function testDeleteByProductIDs_delete2(){
+    public function testDeleteByProductIDs_複数データが削除される(){
 
         $objHelperBestProducts = new SC_Helper_BestProducts_Ex();
         $objHelperBestProducts->deleteByProductIDs(array("2","3"));
