@@ -115,7 +115,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
 
             // 編集前処理
             case 'pre_edit':
-                $maker = $objMaker->get($maker_id);
+                $maker = $objMaker->getMaker($maker_id);
                 $objFormParam->setParam($maker);
 
                 // POSTデータを引き継ぐ
@@ -189,7 +189,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
     {
         $sqlval['maker_id'] = $maker_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        return $objMaker->save($sqlval);
+        return $objMaker->saveMaker($sqlval);
     }
 
     /**
@@ -207,7 +207,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
         if (!empty($arrForm['maker_id'])) {
             if (!SC_Utils_Ex::sfIsInt($arrForm['maker_id'])
                 || SC_Utils_Ex::sfIsZeroFilling($arrForm['maker_id'])
-                || !$objMaker->get($arrForm['maker_id'])
+                || !$objMaker->getMaker($arrForm['maker_id'])
             ) {
                 // maker_idが指定されていて、且つその値が不正と思われる場合はエラー
                 $arrErr['maker_id'] = '※ メーカーIDが不正です<br />';
