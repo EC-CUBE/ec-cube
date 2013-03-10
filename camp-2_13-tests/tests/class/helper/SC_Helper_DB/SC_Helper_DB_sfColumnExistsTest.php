@@ -36,7 +36,7 @@ class SC_Helper_DB_sfColumnExists extends SC_Helper_DB_TestBase
     protected function setUp()
     {
         parent::setUp();
-        $this->helper = new SC_Helper_DB_Mock();
+        $this->helper = new SC_Helper_DB_sfColumnExistsMock();
     }
 
     protected function tearDown()
@@ -77,7 +77,7 @@ class SC_Helper_DB_sfColumnExists extends SC_Helper_DB_TestBase
 
 }
 
-class SC_Helper_DB_Mock extends SC_Helper_DB_Ex
+class SC_Helper_DB_sfColumnExistsMock extends SC_Helper_DB_Ex
 {
     function sfColumnAdd($tableName, $colName, $colType) {
         return true;

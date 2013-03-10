@@ -36,8 +36,6 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   protected function setUp()
   {
     parent::setUp();
-    //Basisデータのキャッシュを再生成しておく
-    SC_Helper_DB_Ex::sfGetBasisData(true);
   }
 
   protected function tearDown()
