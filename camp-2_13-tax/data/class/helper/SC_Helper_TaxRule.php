@@ -238,7 +238,7 @@ class SC_Helper_TaxRule
         } else {
             // 税情報を更新
             $where = 'tax_rule_id = ?';
-            $ret = $objQuery->update($table, $arrValues, $where, array($tax_rule_id));
+            $objQuery->update($table, $arrValues, $where, array($tax_rule_id));
         }
     }
 
