@@ -35,18 +35,17 @@ class SC_Helper_News_saveNewsTest extends SC_Helper_News_TestBase
 
             $this->expected['count'] = '5';
             $this->expected['content'] = array(
-            'news_id' => '5',
             'news_title' => 'ニュース情報05',
             'creator_id' => '1',
             'del_flg' => '0'
             );
 
-            $sqlval['news_id'] = $objQuery->setVal('dtb_news_news_id', 5);
+            //$sqlval['news_id'] = $objQuery->setVal('dtb_news_news_id', 5);
             $ret_id = $this->objNews->saveNews($sqlval);
 
             $this->actual['count'] = $objQuery->count('dtb_news');
             $result = $objQuery->select(
-            'news_id, news_title, creator_id, del_flg',
+            'news_title, creator_id, del_flg',
             'dtb_news',
             'news_id = ?',
             array($ret_id));
