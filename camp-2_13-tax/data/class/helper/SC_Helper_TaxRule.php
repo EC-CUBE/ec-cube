@@ -281,7 +281,8 @@ class SC_Helper_TaxRule
             $where .= 'del_flg = 0 AND product_id = 0 AND product_class_id = 0';
         }
         $table = 'dtb_tax_rule';
-        $objQuery->setOrder('tax_rule_id DESC');
+		// 適用日時順に更新
+        $objQuery->setOrder('apply_date DESC');
         $arrRet = $objQuery->select($col, $table, $where);
         return $arrRet;
 
