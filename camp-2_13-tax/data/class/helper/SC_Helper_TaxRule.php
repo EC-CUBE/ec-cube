@@ -278,7 +278,7 @@ class SC_Helper_TaxRule
         $col = 'tax_rule_id, tax_rate, calc_rule, apply_date';
         $where = '';
         if (!$has_deleted) {
-            $where .= 'del_flg = 0';
+            $where .= 'del_flg = 0 AND product_id = 0 AND product_class_id = 0';
         }
         $table = 'dtb_tax_rule';
         $objQuery->setOrder('tax_rule_id DESC');
