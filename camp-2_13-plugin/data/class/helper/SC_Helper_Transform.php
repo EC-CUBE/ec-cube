@@ -592,6 +592,9 @@ class SC_Helper_Transform
      */
     protected function lfSetTransform($mode, $target_key, $html_snip)
     {
+        if (PLUGIN_DEBUG_MODE) {
+            $html_snip = '<div style="background-color:pink;">' . $html_snip . '</div>';
+        }
 
         $substitute_tag = sprintf('<!--###%08d###-->', $this->smarty_tags_idx);
         $this->arrSmartyTagsOrg[$this->smarty_tags_idx] = $html_snip;
