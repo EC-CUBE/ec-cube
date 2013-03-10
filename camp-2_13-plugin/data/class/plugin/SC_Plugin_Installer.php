@@ -231,12 +231,12 @@ class SC_Plugin_Installer {
             return $error_message;
         }
         
-        $ret = $sth->execute($params);
-        if (PEAR::isError($ret)) {
-            $error_message = $ret->message . ":" . $ret->userinfo;
-            $objQuery->force_run = false;
-            return $error_message;            
-        }
+        //$ret = $sth->execute($params);
+        //if (PEAR::isError($ret)) {
+        //    $error_message = $ret->message . ":" . $ret->userinfo;
+        //    $objQuery->force_run = false;
+        //    return $error_message;            
+        //}
         
         $sth->free();
         // force_runをもとに戻す.
