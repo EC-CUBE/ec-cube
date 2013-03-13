@@ -153,8 +153,8 @@ class SC_Helper_Locale {
         }
 
         // Get a list of enabled plugins.
-        if (defined(PLUGIN_UPLOAD_REALDIR)) {
-            $arrPluginDataList = SC_Plugin_Util_Ex::getEnablePlugin();
+        if (defined('ECCUBE_INSTALL')) {
+            $arrPluginDataList = SC_Plugin_Util_Ex::getAllPlugin();
             // Get the plugins directory.
             $arrPluginDirectory = SC_Plugin_Util_Ex::getPluginDirectory();
             foreach ($arrPluginDataList as $arrPluginData) {
