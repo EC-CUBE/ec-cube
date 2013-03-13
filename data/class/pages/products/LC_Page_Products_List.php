@@ -101,7 +101,7 @@ class LC_Page_Products_List extends LC_Page_Ex
 
         $objProduct = new SC_Product_Ex();
 
-        $this->arrForm = $_REQUEST;
+        $this->arrForm = $_REQUEST;//時間が無いのでコレで勘弁してください。 tao_s
         //modeの取得
         $this->mode = $this->getMode();
 
@@ -514,10 +514,12 @@ __EOS__;
         $this->productStatus = $this->arrProducts['productStatus'];
         unset($this->arrProducts['productStatus']);
         $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
-        //onloadスクリプトを設定. 在庫ありの商品のみ出力する
-        foreach ($this->arrProducts as $arrProduct) {
-            if ($arrProduct['stock_unlimited_max'] || $arrProduct['stock_max'] > 0) {
-                $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_PC) {
+            //onloadスクリプトを設定. 在庫ありの商品のみ出力する
+            foreach ($this->arrProducts as $arrProduct) {
+                if ($arrProduct['stock_unlimited_max'] || $arrProduct['stock_max'] > 0) {
+                    $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
+                }
             }
         }
 
