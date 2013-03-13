@@ -101,7 +101,7 @@ class LC_Page_Products_List extends LC_Page_Ex
 
         $objProduct = new SC_Product_Ex();
 
-        $this->arrForm = $_REQUEST;//時間が無いのでコレで勘弁してください。 tao_s
+        $this->arrForm = $_REQUEST;
         //modeの取得
         $this->mode = $this->getMode();
 
