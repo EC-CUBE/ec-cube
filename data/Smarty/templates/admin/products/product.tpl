@@ -198,6 +198,14 @@ function selectAll(target) {
             </td>
         </tr>
         <tr>
+            <th>消費税率<span class="attention"> *</span></th>
+            <td>
+                <span class="attention"><!--{$arrErr.tax_rate}--></span>
+                <input type="text" name="tax_rate" value="<!--{$arrForm.tax_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.tax_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>%
+                <span class="attention">(半角数字で入力)</span>
+            </td>
+        </tr>
+        <tr>
             <th>在庫数<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.stock}--></span>

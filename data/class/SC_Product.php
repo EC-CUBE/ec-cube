@@ -28,7 +28,7 @@
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_Product 
+class SC_Product
 {
 
     /** 規格名一覧 */
@@ -303,12 +303,12 @@ __EOS__;
                 // 価格
                 $arrClassCats2['price01']
                     = strlen($arrProductsClass['price01'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price01']))
+                    ? number_format(SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProductsClass['price01'], $productId, $arrProductsClass['product_class_id']))
                     : '';
 
                 $arrClassCats2['price02']
                     = strlen($arrProductsClass['price02'])
-                    ? number_format(SC_Helper_DB_Ex::sfCalcIncTax($arrProductsClass['price02']))
+                    ? number_format(SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProductsClass['price02'], $productId, $arrProductsClass['product_class_id']))
                     : '';
 
                 // ポイント
@@ -610,10 +610,10 @@ __EOS__;
      */
     static function setIncTaxToProduct(&$arrProduct)
     {
-        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price01_min']) : null;
-        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price01_max']) : null;
-        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price02_min']) : null;
-        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_DB_Ex::sfCalcIncTax($arrProduct['price02_max']) : null;
+        $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price01_min'], $arrProduct['product_id']) : null;
+        $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price01_max'], $arrProduct['product_id']) : null;
+        $arrProduct['price02_min_inctax'] = isset($arrProduct['price02_min']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price02_min'], $arrProduct['product_id']) : null;
+        $arrProduct['price02_max_inctax'] = isset($arrProduct['price02_max']) ? SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price02_max'], $arrProduct['product_id']) : null;
     }
 
     /**

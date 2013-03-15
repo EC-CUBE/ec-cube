@@ -30,6 +30,9 @@ define('INSTALL_INFO_URL', 'http://www.ec-cube.net/install_info/index.php');
 if (ob_get_level() > 0 && ob_get_length() > 0) {
     while (ob_end_clean());
 }
+
+define("DEFAULT_COUNTRY_ID",392);
+
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 ob_start();
 // ▲require.php 相当
@@ -576,6 +579,7 @@ function lfDispComplete($objPage)
     $sqlval['detail_tpl'] = 'default1';
     $sqlval['mypage_tpl'] = 'default1';
     $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+    $sqlval['country_id'] = DEFAULT_COUNTRY_ID;
     $objQuery = new SC_Query($arrDsn);
     $cnt = $objQuery->count('dtb_baseinfo');
     if ($cnt > 0) {
@@ -1118,6 +1122,7 @@ function getSequences()
         array('dtb_plugin_hookpoint', 'plugin_hookpoint_id'),
         array('dtb_api_config', 'api_config_id'),
         array('dtb_api_account', 'api_account_id'),
+        array('dtb_tax_rule', 'tax_rule_id'),
     );
 }
 

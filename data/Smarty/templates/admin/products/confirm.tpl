@@ -122,6 +122,12 @@
                 </td>
             </tr>
             <tr>
+                <th>消費税率</th>
+                <td>
+                    <!--{if strlen($arrForm.tax_rate) >= 1}--><!--{$arrForm.tax_rate|h}--> %<!--{/if}-->
+                </td>
+            </tr>
+            <tr>
                 <th>在庫数</th>
                 <td>
                     <!--{if $arrForm.stock_unlimited == 1}-->

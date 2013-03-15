@@ -95,6 +95,9 @@ class SC_Helper_Customer
                 $arrData['reminder_answer'] = SC_Utils_Ex::sfGetHashString($arrData['reminder_answer'], $salt);
             }
         }
+        
+        //デフォルト国IDを追加
+        $arrData['country_id'] = DEFAULT_COUNTRY_ID;
 
         //-- 編集登録実行
         if (is_numeric($customer_id)) {

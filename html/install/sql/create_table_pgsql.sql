@@ -73,6 +73,7 @@ CREATE TABLE dtb_baseinfo (
     company_kana text,
     zip01 text,
     zip02 text,
+    country_id int,
     pref smallint,
     addr01 text,
     addr02 text,
@@ -87,6 +88,7 @@ CREATE TABLE dtb_baseinfo (
     law_manager text,
     law_zip01 text,
     law_zip02 text,
+    law_country_id int,
     law_pref smallint,
     law_addr01 text,
     law_addr02 text,
@@ -108,8 +110,6 @@ CREATE TABLE dtb_baseinfo (
     law_term08 text,
     law_term09 text,
     law_term10 text,
-    tax numeric NOT NULL DEFAULT 5,
-    tax_rule smallint NOT NULL DEFAULT 1,
     email01 text,
     email02 text,
     email03 text,
@@ -484,6 +484,7 @@ CREATE TABLE dtb_customer (
     kana02 text NOT NULL,
     zip01 text,
     zip02 text,
+    country_id int,
     pref smallint,
     addr01 text,
     addr02 text,
@@ -537,6 +538,7 @@ CREATE TABLE dtb_order (
     order_fax03 text,
     order_zip01 text,
     order_zip02 text,
+    order_country_id int,
     order_pref smallint,
     order_addr01 text,
     order_addr02 text,
@@ -596,6 +598,7 @@ CREATE TABLE dtb_order_temp (
     order_fax03 text,
     order_zip01 text,
     order_zip02 text,
+    order_country_id int,
     order_pref smallint,
     order_addr01 text,
     order_addr02 text,
@@ -654,6 +657,7 @@ CREATE TABLE dtb_shipping (
     shipping_fax01 text,
     shipping_fax02 text,
     shipping_fax03 text,
+    shipping_country_id int,
     shipping_pref smallint,
     shipping_zip01 text,
     shipping_zip02 text,
@@ -693,6 +697,7 @@ CREATE TABLE dtb_other_deliv (
     kana02 text,
     zip01 text,
     zip02 text,
+    country_id int,
     pref smallint,
     addr01 text,
     addr02 text,
@@ -1102,6 +1107,13 @@ CREATE TABLE mtb_device_type (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE mtb_country (
+    id int,
+    name text,
+    rank int NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE dtb_mobile_ext_session_id (
     session_id text NOT NULL,
     param_key text,
@@ -1203,6 +1215,22 @@ CREATE TABLE dtb_api_account (
     PRIMARY KEY (api_account_id)
 );
 
+CREATE TABLE dtb_tax_rule (
+    tax_rule_id int NOT NULL,
+    country_id int NOT NULL DEFAULT 0,
+    pref_id int NOT NULL DEFAULT 0,
+    product_id int NOT NULL DEFAULT 0,
+    product_class_id int NOT NULL DEFAULT 0,
+    calc_rule smallint NOT NULL DEFAULT 1,
+    tax_rate numeric NOT NULL DEFAULT 5,
+    tax_adjust numeric NOT NULL DEFAULT 0,
+    apply_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	member_id int NOT NULL,
+    del_flg smallint NOT NULL DEFAULT 0,
+    create_date timestamp NOT NULL,
+    update_date timestamp NOT NULL,
+    PRIMARY KEY (tax_rule_id)
+);
 
 CREATE INDEX dtb_customer_mobile_phone_id_key ON dtb_customer (mobile_phone_id);
 CREATE INDEX dtb_order_detail_product_id_key ON dtb_order_detail(product_id);

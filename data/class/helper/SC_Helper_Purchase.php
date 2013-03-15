@@ -36,7 +36,7 @@ class SC_Helper_Purchase
 
     var $arrShippingKey = array(
         'name01', 'name02', 'kana01', 'kana02',
-        'sex', 'zip01', 'zip02', 'pref', 'addr01', 'addr02',
+        'sex', 'zip01', 'zip02', 'country_id','pref', 'addr01', 'addr02',
         'tel01', 'tel02', 'tel03', 'fax01', 'fax02', 'fax03',
     );
 
@@ -288,6 +288,10 @@ class SC_Helper_Purchase
             $this->copyFromCustomer($sqlval, $objCustomer);
         }
         $exists = $this->getOrderTemp($uniqId);
+        
+        //国ID追加
+        $sqlval['order_country_id'] = DEFAULT_COUNTRY_ID;
+        
         if (SC_Utils_Ex::isBlank($exists)) {
             $sqlval['order_temp_id'] = $uniqId;
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
@@ -465,7 +469,7 @@ class SC_Helper_Purchase
      */
     function copyFromCustomer(&$dest, &$objCustomer, $prefix = 'order',
         $keys = array('name01', 'name02', 'kana01', 'kana02',
-            'sex', 'zip01', 'zip02', 'pref', 'addr01', 'addr02',
+            'sex', 'zip01', 'zip02', 'country_id','pref', 'addr01', 'addr02',
             'tel01', 'tel02', 'tel03', 'fax01', 'fax02', 'fax03',
             'job', 'birth', 'email',
         )
@@ -664,6 +668,11 @@ class SC_Helper_Purchase
             $arrValues['order_id'] = $order_id;
             $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
             $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
+            //国ID追加
+            /*いらないかもしれないんでとりあえずコメントアウト
+            $arrValues['shipping_country_id'] = DEFAULT_COUNTRY_ID;
+            */
+
             $objQuery->insert($table, $arrValues);
         }
     }

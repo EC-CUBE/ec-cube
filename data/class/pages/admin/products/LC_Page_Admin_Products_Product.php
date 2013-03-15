@@ -342,6 +342,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
             $objFormParam->addParam('商品コード', 'product_code', STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
             $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+            $objFormParam->addParam('消費税率', 'tax_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('在庫数', 'stock', AMOUNT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('在庫無制限', 'stock_unlimited', INT_LEN, 'n', array('SPTAB_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         }
@@ -608,6 +609,13 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
         if ($arrForm['product_type_id'] == '') {
             $arrForm['product_type_id'] = DEFAULT_PRODUCT_DOWN;
         }
+        // 編集の場合は設定された税率、新規の場合はデフォルトの税率を取得
+        if ($arrForm['product_id'] == '') {
+            $arrRet = SC_Helper_TaxRule_Ex::getTaxRule();
+        } else {
+            $arrRet = SC_Helper_TaxRule_Ex::getTaxRule($arrForm['product_id'], $arrForm['product_class_id']);
+        }
+        $arrForm['tax_rate'] = $arrRet['tax_rate'];
         // アップロードファイル情報取得(Hidden用)
         $arrHidden = $objUpFile->getHiddenFileList();
         $arrForm['arrHidden'] = array_merge((array)$arrHidden, (array)$objDownFile->getHiddenFileList());
@@ -1132,6 +1140,9 @@ __EOF__;
         // 商品ステータス設定
         $objProduct = new SC_Product_Ex();
         $objProduct->setProductStatus($product_id, $arrList['product_status']);
+        
+        // 税情報設定
+        SC_Helper_TaxRule_Ex::setTaxRuleForProduct($arrList['tax_rate'], $arrList['product_id'], $arrList['product_class_id']);
 
         // 関連商品登録
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);

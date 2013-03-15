@@ -95,3 +95,5 @@ DROP TABLE mtb_auth_excludes;
 DROP TABLE dtb_plugin_hookpoint;
 DROP TABLE dtb_api_config;
 DROP TABLE dtb_api_account;
+DROP TABLE dtb_tax_rule;
+DROP TABLE mtb_country;

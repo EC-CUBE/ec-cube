@@ -216,6 +216,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         $objFormParam->addParam('在庫数', 'stock_unlimited', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('消費税率', 'tax_rate', PERCENTAGE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品種別', 'product_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('削除フラグ', 'del_flg', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ダウンロード販売用ファイル名', 'down_filename', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
@@ -293,6 +294,9 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
             $arrPC['product_type_id'] = SC_Utils_Ex::isBlank($arrPC['product_type_id']) ? 0 : $arrPC['product_type_id'];
 
             $objQuery->insert('dtb_products_class', $arrPC);
+            
+            // 税情報登録/更新
+            SC_Helper_TaxRule_Ex::setTaxRuleForProduct($arrList['tax_rate'][$i], $arrPC['product_id'], $arrPC['product_class_id']);
         }
 
         // 規格無し用の商品規格を非表示に
@@ -360,6 +364,13 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
                     && SC_Utils_Ex::isBlank($arrValues['stock'][$i])
                 ) {
                     $arrErr['stock'][$i] = '※ 在庫数が入力されていません。<br />';
+                }
+                /*
+                 * 消費税率の必須チェック
+                 */
+                if (SC_Utils_Ex::isBlank($arrValues['tax_rate'][$i]))
+                {
+                    $arrErr['tax_rate'][$i] = '※ 消費税率が入力されていません。<br />';
                 }
                 /*
                  * 商品種別の必須チェック
@@ -481,7 +492,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         $arrKeys = array('classcategory_id1', 'classcategory_id2','product_code',
             'classcategory_name1', 'classcategory_name2', 'stock',
             'stock_unlimited', 'price01', 'price02',
-            'product_type_id', 'down_filename', 'down_realfilename', 'upload_index',
+            'product_type_id', 'down_filename', 'down_realfilename', 'upload_index', 'tax_rate'
         );
         $arrFormValues = $objFormParam->getSwapArray($arrKeys);
         // フォームの規格1, 規格2をキーにした配列を生成
@@ -505,6 +516,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
                 } else {
                     $arrValues['del_flg'] = '0';
                 }
+                // 消費税率を設定
+                $arrRet = SC_Helper_TaxRule_Ex::getTaxRule($arrValues['product_id'], $arrValues['product_class_id']);
+                $arrValues['tax_rate'] = $arrRet['tax_rate'];
+                
                 $arrMergeProductsClass[] = $arrValues;
             }
         }
