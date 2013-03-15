@@ -220,7 +220,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
             <meta http-equiv='Content-Type' content='text/html; charset=<?php echo CHAR_CODE ?>' />
         </head>
         <body>
-        <p>DB 登録進捗状況</p>
+        <p><?php echo t("c_DB registration in progress_01"); ?></p>
         <div style='background-color: #494E5F;'>
         <?php
         // 一部のIEは256バイト以上受け取ってから表示を開始する。
@@ -276,8 +276,8 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex {
                 function complete() {
                     document.open('text/html','replace');
                     document.clear();
-                    document.write('<?php t("c_<p>Completed.<br /> T_ARG1 items were added.</p>_01", array("T_ARG1" => $cntInsert))?>');
-                    document.write('<?php t("c_<p><a href='?' target='_top'>Go back</a></p>_01"); ?>');
+                    document.write("<?php echo t("c_<p>Completed.<br /> T_ARG1 items were added.</p>_01", array("T_ARG1" => $cntInsert)); ?>");
+                    document.write("<?php echo t("c_<p><a href='?' target='_top'>Go back</a></p>_01"); ?>");
                     document.close();
                 }
                 // コンテンツを削除するため、タイムアウトで呼び出し。

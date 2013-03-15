@@ -49,8 +49,8 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
-        $this->tpl_maintitle = t('c_Basic information_01');;
-        $this->tpl_subtitle = t('c_Delivery method settings_01');;
+        $this->tpl_maintitle = t('c_Basic information_01');
+        $this->tpl_subtitle = t('c_Delivery method settings_01');
         $this->mode = $this->getMode();
     }
 

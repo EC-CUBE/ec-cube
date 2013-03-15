@@ -107,7 +107,7 @@
         <!--★ボタン★-->
         <div class="btn_area">
             <ul class="btn_btm">
-                <li><input type="submit" value="Confirm" class="btn data-role-none" name="send" id="send" /></li>
+                <li><input type="submit" value="Register" class="btn data-role-none" name="send" id="send" /></li>
                 <li><a href="#" onclick="fnModeSubmit('return', '', ''); return false;" class="btn_back">Go back</a></li>
             </ul>
         </div>

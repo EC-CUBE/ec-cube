@@ -171,8 +171,8 @@
                     <!--{if $arrProduct.price01_max_inctax > 0}-->
                         <p class="normal_price">
                             <span class="mini"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(tax included):</span>
+                            &#036;
                             <span id="price01_default">
-                                &#036;
                                 <!--{if $arrProduct.price01_min_inctax == $arrProduct.price01_max_inctax}-->
                                     <!--{$arrProduct.price01_min_inctax|number_format}-->
                                 <!--{else}-->
@@ -185,8 +185,8 @@
                     <!--★販売価格★-->
                     <p class="sale_price">
                         <span class="mini"><!--{$smarty.const.SALE_PRICE_TITLE}-->(tax included):</span>
+                        &#036;
                         <span class="price"><span id="price02_default">
-                            &#036;
                             <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
                                 <!--{$arrProduct.price02_min_inctax|number_format}-->
                             <!--{else}-->

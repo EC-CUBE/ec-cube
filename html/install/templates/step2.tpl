@@ -60,7 +60,7 @@ function lfnChangePort(db_type) {
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="LC_Page_Install_034"}--></th>
+                <th><!--{t string="tpl_DB server_01"}--></th>
                 <td>
                 <!--{assign var=key value="db_server"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>

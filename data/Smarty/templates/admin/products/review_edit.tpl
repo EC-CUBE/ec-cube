@@ -50,7 +50,7 @@
             <th><!--{t string="tpl_Review display_01"}--></th>
             <td>
                 <!--{if $arrErr.status}--><span class="attention"><!--{$arrErr.status}--></span><!--{/if}-->
-                <input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->><!--{t string="tpl_Not displayed_01"}--><!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->><!--{t string="tpl_Display_01"}--><!--{/if}-->
+                <label><input type="radio" name="status" value="2" <!--{if $arrForm.status eq 2}-->checked<!--{/if}-->><!--{t string="tpl_Not displayed_01"}--></label><!--{if $arrForm.status eq 2 && !$tpl_status_change}--><!--{else}--><label><input type="radio" name="status" value="1" <!--{if $arrForm.status eq 1}-->checked<!--{/if}-->><!--{t string="tpl_Display_01"}--></label><!--{/if}-->
             </td>
         </tr>
         <tr>

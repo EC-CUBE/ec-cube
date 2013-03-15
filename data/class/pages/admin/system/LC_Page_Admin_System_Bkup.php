@@ -486,8 +486,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex {
         $success = $tar->extract($work_dir);
 
         if (!$success) {
-            $msg = t('c_Decompression of backup file failed.\n_01');
-            $msg .= t('c_Decompression source: T_ARG1 \n_01', array('T_ARG1' => $bkup_filepath));
+            $msg = t('c_Decompression of backup file failed._01');
+            $msg .= t('c_Decompression source: T_ARG1 _01', array('T_ARG1' => $bkup_filepath));
             $msg .= t('c_Decompression destination: T_ARG1_01', array('T_ARG1' => $work_dir));
             trigger_error($msg, E_USER_ERROR);
         }
