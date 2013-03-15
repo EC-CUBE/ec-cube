@@ -37,7 +37,7 @@ class SC_Helper_Maker
      * @param boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
      * @return array
      */
-    public function get($maker_id, $has_deleted = false)
+    public function getMaker($maker_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'maker_id = ?';
@@ -92,7 +92,7 @@ class SC_Helper_Maker
      * @param array $sqlval
      * @return multiple 登録成功:メーカーID, 失敗:FALSE
      */
-    public function save($sqlval)
+    public function saveMaker($sqlval)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

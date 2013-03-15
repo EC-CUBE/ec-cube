@@ -109,13 +109,13 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
                 break;
             // 削除
             case 'delete':
-                $objKiyaku->delete($kiyaku_id);
+                $objKiyaku->deleteKiyaku($kiyaku_id);
                 break;
 
             // 編集前処理
             case 'pre_edit':
                 // 編集項目を取得する。
-                $arrKiyakuData = $objKiyaku->get($kiyaku_id);
+                $arrKiyakuData = $objKiyaku->getKiyaku($kiyaku_id);
                 $objFormParam->setParam($arrKiyakuData);
 
                 // 編集中の規約IDを渡す
@@ -168,7 +168,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
     {
         $sqlval['kiyaku_id'] = $kiyaku_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
-        return $objKiyaku->save($sqlval);
+        return $objKiyaku->saveKiyaku($sqlval);
     }
 
     function lfInitParam($mode, &$objFormParam)

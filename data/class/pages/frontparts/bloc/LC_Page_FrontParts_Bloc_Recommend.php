@@ -93,7 +93,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      */
     function lfGetRanking()
     {
-        $objRecommend = new SC_Helper_Recommend_Ex();
+        $objRecommend = new SC_Helper_BestProducts_Ex();
 
         // おすすめ商品取得
         $arrRecommends = $objRecommend->getList(RECOMMEND_NUM);

@@ -28,7 +28,7 @@
  * @author pineray
  * @version $Id:$
  */
-class SC_Helper_Recommend
+class SC_Helper_BestProducts
 {
     /**
      * おすすめ商品の情報を取得.
@@ -37,7 +37,7 @@ class SC_Helper_Recommend
      * @param boolean $has_deleted 削除されたおすすめ商品も含む場合 true; 初期値 false
      * @return array
      */
-    public function get($best_id, $has_deleted = false)
+    public function getBestProducts($best_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
@@ -103,7 +103,7 @@ class SC_Helper_Recommend
      * @param array $sqlval
      * @return multiple 登録成功:おすすめ商品ID, 失敗:FALSE
      */
-    public function save($sqlval)
+    public function saveBestProducts($sqlval)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -134,11 +134,11 @@ class SC_Helper_Recommend
      * @param integer $best_id おすすめ商品ID
      * @return void
      */
-    public function delete($best_id)
+    public function deleteBestProducts($best_id)
     {
         $objDb = new SC_Helper_DB_Ex();
         // ランク付きレコードの削除
-        $objDb->sfDeleteRankRecord('dtb_best_products', 'best_id', $best_id, TRUE);
+        $objDb->sfDeleteRankRecord('dtb_best_products', 'best_id', $best_id,'', TRUE);
     }
 
     /**
@@ -153,7 +153,7 @@ class SC_Helper_Recommend
         $arrList = $this->getList();
         foreach ($arrList as $recommend) {
             if (in_array($recommend['product_id'], $productIDs)) {
-                $objDb->sfDeleteRankRecord('dtb_best_products', 'best_id', $recommend['best_id'], TRUE);
+                $objDb->sfDeleteRankRecord('dtb_best_products', 'best_id', $recommend['best_id'],'', TRUE);
             }
         }
     }

@@ -115,7 +115,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
                 break;
 
             case 'pre_edit':
-                $news = $objNews->get($news_id);
+                $news = $objNews->getNews($news_id);
                 list($news['year'],$news['month'],$news['day']) = $this->splitNewsDate($news['cast_news_date']);
                 $objFormParam->setParam($news);
 
@@ -125,7 +125,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 
             case 'delete':
             //----　データ削除
-                $objNews->delete($news_id);
+                $objNews->deleteNews($news_id);
                 //自分にリダイレクト（再読込による誤動作防止）
                 SC_Response_Ex::reload();
                 break;
@@ -218,7 +218,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
         $sqlval['link_method'] = $this->checkLinkMethod($sqlval['link_method']);
         $sqlval['news_date'] = $this->getRegistDate($sqlval);
         unset($sqlval['year'], $sqlval['month'], $sqlval['day']);
-        return $objNews->save($sqlval);
+        return $objNews->saveNews($sqlval);
     }
 
     /**

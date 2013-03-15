@@ -37,7 +37,7 @@ class SC_Helper_Kiyaku
      * @param boolean $has_deleted 削除された会員規約も含む場合 true; 初期値 false
      * @return array
      */
-    public function get($kiyaku_id, $has_deleted = false)
+    public function getKiyaku($kiyaku_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'kiyaku_id = ?';
@@ -74,7 +74,7 @@ class SC_Helper_Kiyaku
      * @param array $sqlval
      * @return multiple 登録成功:会員規約ID, 失敗:FALSE
      */
-    public function save($sqlval)
+    public function saveKiyaku($sqlval)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -103,7 +103,7 @@ class SC_Helper_Kiyaku
      * @param integer $kiyaku_id 会員規約ID
      * @return void
      */
-    public function delete($kiyaku_id)
+    public function deleteKiyaku($kiyaku_id)
     {
         $objDb = new SC_Helper_DB_Ex();
         // ランク付きレコードの削除

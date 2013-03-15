@@ -55,7 +55,7 @@ class SC_Helper_DB
      * 引数 $add が true の場合, 該当のカラムが存在しない場合は, カラムの生成を行う.
      * カラムの生成も行う場合は, $col_type も必須となる.
      *
-     * @param string $table_name テーブル名
+     * @param string $$tableName テーブル名
      * @param string $column_name カラム名
      * @param string $col_type カラムのデータ型
      * @param string $dsn データソース名
@@ -64,7 +64,7 @@ class SC_Helper_DB
      *               テーブルが存在しない場合 false,
      *               引数 $add == false でカラムが存在しない場合 false
      */
-    function sfColumnExists($table_name, $col_name, $col_type = '', $dsn = '', $add = false)
+    function sfColumnExists($tableName, $colName, $colType = '', $dsn = '', $add = false)
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
@@ -72,52 +72,50 @@ class SC_Helper_DB
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
 
         // テーブルが無ければエラー
-        if (!in_array($table_name, $objQuery->listTables())) return false;
+        if (!in_array($tableName, $objQuery->listTables())) return false;
 
         // 正常に接続されている場合
         if (!$objQuery->isError()) {
             // カラムリストを取得
-            $columns = $objQuery->listTableFields($table_name);
+            $columns = $objQuery->listTableFields($tableName);
 
-            if (in_array($col_name, $columns)) {
+            if (in_array($colName, $columns)) {
                 return true;
             }
         }
 
         // カラムを追加する
         if ($add) {
-            $objQuery->query("ALTER TABLE $table_name ADD $col_name $col_type ");
-            return true;
+            return $this->sfColumnAdd($tableName, $colName, $colType);
         }
         return false;
+    }
+    
+    function sfColumnAdd($tableName, $colName, $colType) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
+        return $objQuery->query("ALTER TABLE $tableName ADD $colName $colType ");
     }
 
     /**
      * データの存在チェックを行う.
      *
-     * @param string $table_name テーブル名
+     * @param string $tableName テーブル名
      * @param string $where データを検索する WHERE 句
-     * @param string $dsn データソース名
-     * @param string $sql @deprecated データの追加を行う場合の SQL文
-     * @param bool $add @deprecated データの追加も行う場合 true
+     * @param array $arrWhereVal WHERE句のプレースホルダ値
      * @return bool データが存在する場合 true, データの追加に成功した場合 true,
      *               $add == false で, データが存在しない場合 false
      */
-    function sfDataExists($table_name, $where, $arrWhereVal, $dsn = '', $sql = '', $add = false)
+    function sfDataExists($tableName, $where, $arrWhereVal)
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists($table_name, $where, $arrWhereVal);
+        $exists = $objQuery->exists($tableName, $where, $arrWhereVal);
 
         // データが存在する場合 TRUE
         if ($exists) {
             return TRUE;
-        // $add が TRUE の場合はデータを追加する
-        } elseif ($add) {
-            return $objQuery->exec($sql);
-        // $add が FALSE で、データが存在しない場合 FALSE
         } else {
             return FALSE;
         }
@@ -1159,50 +1157,22 @@ __EOS__;
         } else {
             $getWhere = "$keyIdColumn = ?";
         }
-        $rank = $objQuery->get('rank', $tableName, $getWhere, array($keyId));
+        $oldRank = $objQuery->get('rank', $tableName, $getWhere, array($keyId));
 
         $max = $objQuery->max('rank', $tableName, $where);
-
-        // 値の調整（逆順）
-        if ($pos > $max) {
-            $position = 1;
-        } else if ($pos < 1) {
-            $position = $max;
-        } else {
-            $position = $max - $pos + 1;
-        }
-
-        //入れ替え先の順位が入れ換え元の順位より大きい場合
-        if ($position > $rank) $term = 'rank - 1';
-
-        //入れ替え先の順位が入れ換え元の順位より小さい場合
-        if ($position < $rank) $term = 'rank + 1';
-
-        // XXX 入れ替え先の順位が入れ替え元の順位と同じ場合
-        if (!isset($term)) $term = 'rank';
-
-        // 指定した順位の商品から移動させる商品までのrankを１つずらす
-        $sqlval = array();
-        $arrRawSql = array(
-            'rank' => $term,
-        );
-        $str_where = 'rank BETWEEN ? AND ?';
-        if ($where != '') {
-            $str_where .= " AND $where";
-        }
-
-        if ($position > $rank) {
-            $arrWhereVal = array($rank + 1, $position);
-            $objQuery->update($tableName, $sqlval, $str_where, $arrWhereVal, $arrRawSql);
-        }
-        if ($position < $rank) {
-            $arrWhereVal = array($position, $rank - 1);
-            $objQuery->update($tableName, $sqlval, $str_where, $arrWhereVal, $arrRawSql);
+        
+        // 更新するランク値を取得
+        $newRank = $this->getNewRank($pos, $max);
+        // 他のItemのランクを調整する 
+        $ret = $this->moveOtherItemRank($newRank, $oldRank, $objQuery, $tableName, $where);
+        if (!$ret) {
+            // 他のランク変更がなければ処理を行わない
+            return;
         }
 
         // 指定した順位へrankを書き換える。
         $sqlval = array(
-            'rank' => $position,
+            'rank' => $newRank,
         );
         $str_where = "$keyIdColumn = ?";
         if ($where != '') {
@@ -1213,6 +1183,62 @@ __EOS__;
 
         $objQuery->commit();
     }
+    
+    /**
+     * 指定された位置の値をDB用のRANK値に変換する
+     * 指定位置が1番目に移動なら、newRankは最大値
+     * 指定位置が1番下へ移動なら、newRankは1
+     * 
+     * @param int $position 指定された位置
+     * @param int $maxRank 現在のランク最大値
+     * @return int $newRank DBに登録するRANK値
+     */ 
+    function getNewRank($position, $maxRank) {
+        
+        if ($position > $maxRank) {
+            $newRank = 1;
+        } else if ($position < 1) {
+            $newRank = $maxRank;
+        } else {
+            $newRank = $maxRank - $position + 1;
+        }
+        return $newRank;
+    }
+
+    /**
+     * 指定した順位の商品から移動させる商品までのrankを１つずらす
+     * 
+     * @param int $newRank
+     * @param int $oldRank
+     * @param object $objQuery
+     * @param string $where
+     * @return boolean 
+     */
+    function moveOtherItemRank($newRank, $oldRank, &$objQuery, $tableName, $addWhere) {
+        
+        $sqlval = array();
+        $arrRawSql = array();
+        $where = 'rank BETWEEN ? AND ?';
+        if ($addWhere != '') {
+            $where .= " AND $Where";
+        }
+        if ($newRank > $oldRank) {
+            //位置を上げる場合、他の商品の位置を1つ下げる（ランクを1下げる）
+            $arrRawSql['rank'] = 'rank - 1';
+            $arrWhereVal = array($oldRank + 1, $newRank);
+        } else if ($newRank < $oldRank) {
+            //位置を下げる場合、他の商品の位置を1つ上げる（ランクを1上げる）
+            $arrRawSql['rank'] = 'rank + 1';
+            $arrWhereVal = array($newRank, $oldRank - 1);
+        } else {
+            //入れ替え先の順位が入れ替え元の順位と同じ場合なにもしない
+            return false;
+        }
+        
+        return $objQuery->update($tableName, $sqlval, $where, $arrWhereVal, $arrRawSql);
+        
+    }
+    
 
     /**
      * ランクを含むレコードを削除する.

@@ -1,4 +1,7 @@
 <?php
+
+$HOME = realpath(dirname(__FILE__)) . "/../../../..";
+require_once($HOME . "/tests/class/helper/SC_Helper_BestProducts/SC_Helper_BestProducts_TestBase.php");
 /*
  * This file is part of EC-CUBE
  *
@@ -21,19 +24,35 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
-require_once CLASS_REALDIR . 'helper/SC_Helper_Recommend.php';
-
 /**
- * おすすめ商品を管理するヘルパークラス(拡張).
  *
- * LC_Helper_Recommend をカスタマイズする場合はこのクラスを編集する.
- *
- * @package Helper
- * @author pineray
- * @version $Id:$
+ * @author hiroshi kakuta
  */
-class SC_Helper_Recommend_Ex extends SC_Helper_Recommend
+class SC_Helper_BestProducts_rankDownTest extends SC_Helper_BestProducts_TestBase
 {
-    //put your code here
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->setUpBestProducts();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+    }
+
+    public function testRankDown_指定されたデータがランクダウンされる(){
+
+        SC_Helper_BestProducts_Ex::rankDown("1001");
+
+        $this->expected = "2";
+
+        $arrRet = SC_Helper_BestProducts_Ex::getBestProducts('1001');
+
+        $this->actual = $arrRet['rank'];
+
+        $this->verify();
+    }
+
 }
+

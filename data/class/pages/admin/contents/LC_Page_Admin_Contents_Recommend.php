@@ -78,7 +78,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
         $objFormParam->convParam();
         $arrPost = $objFormParam->getHashArray();
 
-        $objRecommend = new SC_Helper_Recommend_Ex();
+        $objRecommend = new SC_Helper_BestProducts_Ex();
 
         switch ($this->getMode()) {
             case 'down': //商品の並び替えをする。
@@ -174,7 +174,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      * @param Object $objRecommend
      * @return Array $arrReturnProducts データベースに登録されているおすすめ商品の配列
      */
-    function getRecommendProducts(SC_Helper_Recommend_Ex &$objRecommend)
+    function getRecommendProducts(SC_Helper_BestProducts_Ex &$objRecommend)
     {
         $arrList = $objRecommend->getList();
         // product_id の一覧を作成
@@ -202,7 +202,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      * @param Integer $member_id 登録した管理者を示すID
      * @param Object $objRecommend
      */
-    function insertRecommendProduct($arrPost,$member_id, SC_Helper_Recommend_Ex &$objRecommend)
+    function insertRecommendProduct($arrPost,$member_id, SC_Helper_BestProducts_Ex &$objRecommend)
     {
         // 古いおすすめ商品のデータを削除する。
         $this->deleteProduct($arrPost, $objRecommend);
@@ -213,7 +213,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
         $sqlval['rank'] = $arrPost['rank'];
         $sqlval['comment'] = $arrPost['comment'];
         $sqlval['creator_id'] = $member_id;
-        $objRecommend->save($sqlval);
+        $objRecommend->saveBestProducts($sqlval);
     }
 
     /**
@@ -222,7 +222,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      * @param Object $objRecommend
      * @return void
      */
-    function deleteProduct($arrPost, SC_Helper_Recommend_Ex &$objRecommend)
+    function deleteProduct($arrPost, SC_Helper_BestProducts_Ex &$objRecommend)
     {
         if ($arrPost['best_id']) {
             $target = $arrPost['best_id'];
@@ -230,7 +230,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
             $recommend = $objRecommend->getByRank($arrPost['rank']);
             $target = $recommend['best_id'];
         }
-        $objRecommend->delete($target);
+        $objRecommend->deleteBestProducts($target);
     }
 
     /**
