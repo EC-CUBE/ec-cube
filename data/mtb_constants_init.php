@@ -404,7 +404,7 @@ define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DATA_REALDIR . "downloads/tmp/plugin
 define('PLUGIN_HTML_URLPATH', ROOT_URLPATH . "plugin/");
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
-/** ダウンロードファイル登録可能拡張子(カンマ区切り)" */
+/** ダウンロードファイル登録可能拡張子(カンマ区切り) */
 define('DOWNLOAD_EXTENSION', "zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv");
 /** ダウンロード販売ファイル用サイズ制限(KB) */
 define('DOWN_SIZE', 50000);
@@ -468,3 +468,6 @@ define('SMARTY_FORCE_COMPILE_MODE', false);
 define('LOGIN_RETRY_INTERVAL', 0);
 /** MYページ：ご注文状況表示フラグ */
 define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
+/** デフォルト国コード ISO_3166-1に準拠 */
+define('DEFAULT_COUNTRY_ID', 392);
+
