@@ -84,29 +84,42 @@ class SC_Helper_CSV
         $cols = SC_Utils_Ex::sfGetCommaList($arrOutputCols, true);
 
         // TODO: 固有処理 なんかエレガントな処理にしたい
-        if ($csv_id == '1') {
-            //商品の場合
+        // 商品の場合
+        if ($csv_id == 1) {
             $objProduct = new SC_Product_Ex();
             // このWhereを足さないと無効な規格も出力される。現行仕様と合わせる為追加。
             $inner_where = 'dtb_products_class.del_flg = 0';
-            $sql = $objQuery->getSql($cols, $objProduct->prdclsSQL($inner_where),$where);
-        } else if ($csv_id == '2') {
-            // 会員の場合
-            $sql = 'SELECT ' . $cols . ' FROM dtb_customer ' . $where;
-        } else if ($csv_id == '3') {
-            // 注文の場合
-            $sql = 'SELECT ' . $cols . ' FROM dtb_order ' . $where;
-        } else if ($csv_id == '4') {
-            // レビューの場合
-            $sql = 'SELECT ' . $cols . ' FROM dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id ' . $where;
-        } else if ($csv_id == '5') {
-            // カテゴリの場合
-            $sql = 'SELECT ' . $cols . ' FROM dtb_category ' . $where;
+            $from = $objProduct->prdclsSQL($inner_where);
+            $sql = $objQuery->getSql($cols, $from, $where);
         }
-        // 「getSqlを使っているcsv_id=1」以外で「order指定」がある場合は末尾に付与
-        // 全csv_idでgetSqlを使用して生成するよう統一する場合は当メソッドの呼び元も要修正
-        $sql = ($csv_id != '1' && strlen($order) >= 1) ? $sql.' order by '.$order : $sql;
+        // 商品以外の場合
+        else {
+            // 会員の場合
+            if ($csv_id == 2) {
+                $from = 'dtb_customer';
+            }
+            // 注文の場合
+            else if ($csv_id == 3) {
+                $from = 'dtb_order';
+            }
+            // レビューの場合
+            else if ($csv_id == 4) {
+                $from = 'dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id';
+            }
+            // カテゴリの場合
+            else if ($csv_id == 5) {
+                $from = 'dtb_category';
+            }
+
+            $sql = "SELECT $cols FROM $from $where";
+            // 「getSqlを使っているcsv_id=1」以外で「order指定」がある場合は末尾に付与
+            // 全csv_idでgetSqlを使用して生成するよう統一する場合は当メソッドの呼び元も要修正
+            if ($csv_id != 1 && strlen($order) >= 1) {
+                $sql .= " ORDER BY $order";
+            }
+        }
         // 固有処理ここまで
+
         return $this->sfDownloadCsvFromSql($sql, $arrVal, $this->arrSubnavi[$csv_id], $arrOutput['disp_name'], $is_download);
     }
 
