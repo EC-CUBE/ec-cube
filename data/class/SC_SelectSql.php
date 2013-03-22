@@ -220,6 +220,24 @@ class SC_SelectSql
         }
     }
 
+    /**
+     * WHERE を取得する。
+     *
+     * ヘンテコセッター互換仕様。
+     * @param $with_where boolean 必要に応じて WHERE を前置するか
+     * @return string WHERE
+     */
+    function getWhere($with_where = false)
+    {
+        $where = $this->where;
+
+        if (!$with_where) {
+            $where = preg_replace('/^\s*WHERE\s+/', '', $where);
+        }
+
+        return $where;
+    }
+
     function setWhere($where)
     {
         if ($where != '') {

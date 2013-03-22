@@ -439,10 +439,6 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      */
     function doOutputCSV($where, $arrVal, $order)
     {
-        if ($where != '') {
-            $where = " WHERE $where ";
-        }
-
         $objCSV = new SC_Helper_CSV_Ex();
         $objCSV->sfDownloadCsv('3', $where, $arrVal, $order, true);
     }

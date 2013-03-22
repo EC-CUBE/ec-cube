@@ -249,9 +249,6 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     function lfDoOutputCsv($where, $arrWhereVal)
     {
         $objCSV = new SC_Helper_CSV_Ex();
-        if ($where != '') {
-            $where = 'WHERE ' . $where;
-        }
         $objCSV->sfDownloadCsv('4', $where, $arrWhereVal, '', true);
     }
 

@@ -370,6 +370,6 @@ class SC_CustomerList extends SC_SelectSql_Ex
 
     function getWhere()
     {
-        return array($this->where, $this->arrVal);
+        return array(parent::getWhere(), $this->arrVal);
     }
 }

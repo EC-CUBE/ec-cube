@@ -229,9 +229,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     function lfDoCSV($arrParam)
     {
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
+        $objCSV = new SC_Helper_CSV_Ex();
+
         $order = 'update_date DESC, customer_id DESC';
 
-        $objCSV = new SC_Helper_CSV_Ex();
         list($where, $arrVal) = $objSelect->getWhere();
         return $objCSV->sfDownloadCsv('2', $where, $arrVal, $order, true);
     }
