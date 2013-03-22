@@ -210,8 +210,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
 
             // シーケンス配列を格納する。
             $objFormParam->setParam($arrCSV, true);
-            $arrRet = $objFormParam->getHashArray();
-            $objFormParam->setParam($arrRet);
             // 入力値の変換
             $objFormParam->convParam();
 
