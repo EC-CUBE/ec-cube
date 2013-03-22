@@ -52,9 +52,9 @@
                             <!--▼商品 -->
                             <div class="arrowBox">
                                 <p>
-                                    <em>注文番号：</em><span class="order_id"><!--{$arrOrder[cnt].order_id}--><!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}--></span><br />
+                                    <em>注文番号：</em><span class="order_id"><!--{$arrOrder[cnt].order_id}--></span><br />
                                     <em>購入日時：</em><span class="create_date"><!--{$arrOrder[cnt].create_date|sfDispDBDate}--></span><br />
-                                    <em>お支払い方法：</em><span class="payment_id"><!--{$arrPayment[$payment_id]|h}--></span><br />
+                                    <em>お支払い方法：</em><span class="payment_id"><!--{$arrOrder[cnt].payment_method|h}--></span><br />
                                     <em>合計金額：</em><span class="payment_total"><!--{$arrOrder[cnt].payment_total|number_format}--></span>円<br />
                                     <em>ご注文状況：</em>
                                     <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
@@ -139,7 +139,7 @@
                         //購入日時をセット
                         $($(".arrowBox span.create_date").get(maxCnt)).text(history.create_date);
                         //支払い方法をセット
-                        $($(".arrowBox span.payment_id").get(maxCnt)).text(history.payment_id);
+                        $($(".arrowBox span.payment_id").get(maxCnt)).text(history.payment_method);
                         //合計金額をセット
                         $($(".arrowBox span.payment_total").get(maxCnt)).text(history.payment_total);
                         //履歴URLをセット

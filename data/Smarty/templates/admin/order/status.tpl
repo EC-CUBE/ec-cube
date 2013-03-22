@@ -94,7 +94,7 @@
                 <td><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>
                 <td><!--{$arrStatus[cnt].order_name01|h}--><!--{$arrStatus[cnt].order_name02|h}--></td>
                 <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
-                <td><!--{$arrPayment[$payment_id]|h}--></td>
+                <td><!--{$arrStatus[cnt].payment_method|h}--></td>
                 <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
                 <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_Not deposited_01"}--><!--{/if}--></td>
                 <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}--><!--{t string="tpl_Not shipped_01"}--><!--{/if}--></td>

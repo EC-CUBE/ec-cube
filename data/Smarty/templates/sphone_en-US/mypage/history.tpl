@@ -33,7 +33,7 @@
             <p>
                 <em>Order number</em>:&nbsp;<!--{$tpl_arrOrderData.order_id}--><br />
                 <em>Date/time of purchase</em>:&nbsp;<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
-                <em>Payment method</em>:&nbsp;<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+                <em>Payment method</em>:&nbsp;<!--{$tpl_arrOrderData.payment_method|h}-->
                 <!--{if $tpl_arrOrderData.deliv_time_id != ""}-->
                     <br />
                     <em>Delivery time</em>:&nbsp;</strong><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->

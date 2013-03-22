@@ -33,7 +33,7 @@
             <p>
                 <em>注文番号</em>：&nbsp;<!--{$tpl_arrOrderData.order_id}--><br />
                 <em>購入日時</em>：&nbsp;<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
-                <em>お支払い方法</em>：&nbsp;<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+                <em>お支払い方法</em>：&nbsp;<!--{$tpl_arrOrderData.payment_method|h}-->
                 <!--{if $tpl_arrOrderData.deliv_time_id != ""}-->
                     <br />
                     <em>お届け時間</em>：&nbsp;</strong><!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->

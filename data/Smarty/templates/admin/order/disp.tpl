@@ -306,7 +306,7 @@ self.moveTo(20,20);self.focus();
             <tr>
                 <th><!--{t string="tpl_Payment method_01"}--></th>
                 <td>
-                    <!--{$arrPayment[$arrForm.payment_id.value]|h}-->
+                    <!--{$arrForm.payment_method.value|h}-->
                 </td>
             </tr>
 

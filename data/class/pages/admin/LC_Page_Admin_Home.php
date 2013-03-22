@@ -261,13 +261,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
                 ORDER BY det.order_detail_id
                 LIMIT 1
                 ) AS product_name,
-                (SELECT
-                    pay.payment_method
-                FROM
-                    dtb_payment AS pay
-                WHERE
-                    ord.payment_id = pay.payment_id
-                ) AS payment_method
+                ord.payment_method
             FROM (
                 SELECT
                     order_id,
@@ -276,7 +270,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
                     order_name02,
                     total,
                     create_date,
-                    payment_id
+                    payment_method
                 FROM
                     dtb_order AS ord
                 WHERE

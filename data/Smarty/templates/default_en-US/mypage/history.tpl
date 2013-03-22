@@ -31,7 +31,7 @@
             <p>
                 <span class="st">Date and time of purchase:&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <span class="st">Order number:&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
-                <span class="st">Payment method:&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+                <span class="st">Payment method:&nbsp;</span><!--{$tpl_arrOrderData.payment_method|h}-->
             </p>
             <form action="order.php" method="post">
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
