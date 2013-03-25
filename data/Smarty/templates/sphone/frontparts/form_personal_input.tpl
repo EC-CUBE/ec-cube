@@ -43,7 +43,7 @@
     <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="メイ"/>
 </dd>
 
-<dt>郵便番号&nbsp;<span class="attention">※</span></dt>
+<dt>郵便番号&nbsp;</dt>
 <dd>
     <!--{* <!--{assign var=key1 value="`$prefix`zip01"}--> *}-->
     <!--{* <!--{assign var=key2 value="`$prefix`zip02"}--> *}-->

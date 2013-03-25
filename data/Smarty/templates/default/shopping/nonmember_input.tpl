@@ -62,7 +62,7 @@
                 </td>
             </tr>
             <tr>
-                <th>郵便番号<span class="attention">※</span></th>
+                <th>郵便番号</th>
                 <td>
                     <!--{* <!--{assign var=key1 value="order_zip01"}--> *}-->
                     <!--{* <!--{assign var=key2 value="order_zip02"}--> *}-->
@@ -210,7 +210,7 @@
                 </td>
             </tr>
             <tr>
-                <th>郵便番号<span class="attention">※</span></th>
+                <th>郵便番号</th>
                 <td>
                     <!--{* <!--{assign var=key1 value="shipping_zip01"}--> *}-->
                     <!--{* <!--{assign var=key2 value="shipping_zip02"}--> *}-->

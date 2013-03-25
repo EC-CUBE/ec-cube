@@ -86,7 +86,7 @@
                     class="boxHarf text data-role-none" placeholder="メイ"/>
             </dd>
 
-            <dt>郵便番号&nbsp;<span class="attention">※</span></dt>
+            <dt>郵便番号&nbsp;</dt>
             <dd>
                 <!--{* <!--{assign var=key1 value="order_zip01"}--> *}-->
                 <!--{* <!--{assign var=key2 value="order_zip02"}--> *}-->
@@ -282,7 +282,7 @@
                         class="boxHarf text data-role-none" placeholder="メイ"/>
                 </dd>
 
-                <dt>郵便番号&nbsp;<span class="attention">※</span></dt>
+                <dt>郵便番号&nbsp;></dt>
                 <dd>
                     <!--{* <!--{assign var=key1 value="shipping_zip01"}--> *}-->
                     <!--{* <!--{assign var=key2 value="shipping_zip02"}--> *}-->

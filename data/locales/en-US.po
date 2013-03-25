@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: EC-CUBE Core\n"
 "POT-Creation-Date: 2012-05-07 13T_39+0900\n"
-"PO-Revision-Date: 2013-03-25 15:55+0900\n"
+"PO-Revision-Date: 2013-03-25 21:05+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3466,9 +3466,6 @@ msgid "tpl_Store name (in English)_01"
 msgstr "Store name (in English)"
 
 msgid "tpl_Postal code_01"
-msgstr "Postal code"
-
-msgid "tpl_Postal code<span class='attention'> *</span>_01"
 msgstr "Postal code"
 
 msgid "tpl_Location finder_01"

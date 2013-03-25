@@ -48,7 +48,7 @@
             <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> <!--{t string="tpl_(T_ARG1 characters max)_01" T_ARG1=$arrForm[$key].length}--></span></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_Postal code<span class='attention'> *</span>_01" escape="none"}--></th>
+            <th><!--{t string="tpl_Postal code_01" escape="none"}--></th>
             <td>
             <!--{* <!--{assign var=key1 value="law_zip01"}--> *}-->
             <!--{* <!--{assign var=key2 value="law_zip02"}--> *}-->

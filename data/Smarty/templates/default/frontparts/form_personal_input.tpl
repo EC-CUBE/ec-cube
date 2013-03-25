@@ -49,7 +49,7 @@
     </td>
 </tr>
 <tr>
-    <th>郵便番号<span class="attention">※</span></th>
+    <th>郵便番号</th>
     <td>
         <!--{assign var=key1 value="`$prefix`zipcode"}-->
         <!--{* <!--{assign var=key1 value="`$prefix`zip01"}--> *}-->
