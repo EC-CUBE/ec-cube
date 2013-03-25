@@ -103,10 +103,10 @@
                                     <div>
                                         <p><em><!--{$item.productsClass.name|h}--></em><br />
                                         <!--{if $item.productsClass.classcategory_name1 != ""}-->
-                                                <span class="mini"><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></span><br />
+                                                <span class="mini"><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--></span><br />
                                         <!--{/if}-->
                                         <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                                                <span class="mini"><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></span>
+                                                <span class="mini"><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--></span>
                                         <!--{/if}-->
                                         </p>
                                     </div>

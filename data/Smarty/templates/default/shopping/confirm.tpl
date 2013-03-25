@@ -100,10 +100,10 @@
                         <ul>
                             <li><strong><!--{$item.productsClass.name|h}--></strong></li>
                             <!--{if $item.productsClass.classcategory_name1 != ""}-->
-                            <li><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--></li>
+                            <li><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--></li>
                             <!--{/if}-->
                             <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                            <li><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--></li>
+                            <li><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--></li>
                             <!--{/if}-->
                         </ul>
                     </td>

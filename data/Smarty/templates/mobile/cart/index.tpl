@@ -53,8 +53,8 @@
                 <!--{/if}-->
                 <!--{foreach from=$cartItems[$key] item=item}-->
                     ◎<!--{* 商品名 *}--><!--{$item.productsClass.name|h}--><br>
-                    <!--{* 規格名1 *}--><!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
-                    <!--{* 規格名2 *}--><!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
+                    <!--{* 規格名1 *}--><!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--><br><!--{/if}-->
+                    <!--{* 規格名2 *}--><!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--><br><!--{/if}-->
                     <!--{* 販売価格 *}-->
                     <!--{$item.price|sfCalcIncTax|number_format}-->円
                     × <!--{$item.quantity}--><br>
