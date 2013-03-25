@@ -54,7 +54,7 @@
                 <hr class="dashed" />
                 <!--{if $freeRule > 0 && $key.productTypeId|h != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <!--{if $key.delivFree > 0}-->
-                        <p class="attention free_money_area">Shipping is free if you spend another &#036; <span class="free_money"><!--{$key.delivFree|number_format}--></span></p>
+                        <p class="attention free_money_area">Spend &#036; <span class="free_money"><!--{$key.delivFree|number_format}--></span> more for free shipping!!</p>
                     <!--{else}-->
                         <p class="attention free_money_area">Currently, shipping is free</p>
                     <!--{/if}-->
