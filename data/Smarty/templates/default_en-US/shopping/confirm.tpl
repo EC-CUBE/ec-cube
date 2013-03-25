@@ -241,7 +241,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Address</th>
-                    <td><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--></td>
+                    <td><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--> <!--{$shippingItem.shipping_addr02|h}--></td>
                 </tr>
                 <tr>
                     <th scope="row">Phone number</th>

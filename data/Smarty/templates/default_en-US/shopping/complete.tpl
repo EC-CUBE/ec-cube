@@ -48,7 +48,7 @@
         <!-- ▲コンビに決済の場合には表示 -->
 
         <div id="complete_area">
-            <p class="message">Thank you for purchasing <!--{$arrInfo.shop_name|h}-->.</p>
+            <p class="message">Thank you for purchasing from <!--{$arrInfo.shop_name|h}-->.</p>
             <p>A confirmation e-mail regarding your order has just been sent.<br />
                In the event that a response mail is not received, please contact us.<br />
                We look forward to doing business with you again in the future.</p>
