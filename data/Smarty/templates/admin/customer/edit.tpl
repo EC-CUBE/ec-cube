@@ -176,7 +176,7 @@
                 </td>
             </tr>
             <tr>
-                <th><!--{t string="tpl_Postal code<span class='attention'> *</span>_01" escape="none"}--></th>
+                <th><!--{t string="tpl_Postal code_01" escape="none"}--></th>
                 <td>
                     <!--{* <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span> *}-->
                     <span class="attention"><!--{$arrErr.zipcode}--></span>

@@ -37,7 +37,7 @@
     </td>
 </tr>
 <tr>
-    <th>Postal code<span class="attention">*</span></th>
+    <th>Postal code</th>
     <td>
         <!--{* <!--{assign var=key1 value="`$prefix`zip01"}--> *}-->
         <!--{* <!--{assign var=key2 value="`$prefix`zip02"}--> *}-->
