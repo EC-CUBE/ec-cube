@@ -222,7 +222,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex {
         // 郵便番号チェック
 //        $objFormParam->addParam(t('c_Postal code 1_01'), 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
 //        $objFormParam->addParam(t('c_Postal code 2_01'), 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK','NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('c_Postal code_01'), 'zipcode', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam(t('c_Postal code_01'), 'zipcode', ZIPCODE_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
 
         // 所在地チェック
         $objFormParam->addParam(t('c_Prefecture_01'), 'pref', '', 'n');
