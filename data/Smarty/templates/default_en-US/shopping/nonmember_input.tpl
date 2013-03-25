@@ -58,7 +58,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Postal code<span class="attention">*</span></th>
+                <th>Postal code</th>
                 <td>
                     <!--{* <!--{assign var=key1 value="order_zip01"}--> *}-->
                     <!--{* <!--{assign var=key2 value="order_zip02"}--> *}-->

@@ -33,7 +33,7 @@
     <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="boxHarf text data-role-none" placeholder="First Name" />
 </dd>
 
-<dt>Postal code&nbsp;<span class="attention">*</span></dt>
+<dt>Postal code&nbsp;</dt>
 <dd>
     <!--{* <!--{assign var=key1 value="`$prefix`zip01"}--> *}-->
     <!--{* <!--{assign var=key2 value="`$prefix`zip02"}--> *}-->
