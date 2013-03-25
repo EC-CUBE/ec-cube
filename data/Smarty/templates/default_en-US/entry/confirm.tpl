@@ -52,7 +52,7 @@
             <tr>
                 <th>Address</th>
                 <td>
-                    <!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
+                    <!--{$arrForm.addr01|h}--> <!--{$arrForm.addr02|h}-->
                 </td>
             </tr>
             <tr>

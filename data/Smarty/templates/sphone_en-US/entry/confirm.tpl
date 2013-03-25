@@ -44,7 +44,7 @@
             <dd>
                 <!--{* <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br /> *}-->
                 <!--{$arrForm.zipcode|h}--><br />
-                <!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
+                <!--{$arrForm.addr01|h}--> <!--{$arrForm.addr02|h}-->
             </dd>
 
             <dt>Phone number</dt>

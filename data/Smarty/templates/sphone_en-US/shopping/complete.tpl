@@ -40,7 +40,7 @@
     <!-- ▲コンビに決済の場合には表示 -->
 
     <div class="thankstext">
-        <p>Thank you for your order <!--{$arrInfo.shop_name|h}--></p>
+        <p>Thank you for ordering from <!--{$arrInfo.shop_name|h}--></p>
     </div>
     <hr>
     <div id="completetext">

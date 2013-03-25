@@ -78,7 +78,7 @@ function func_return(){
             </tr>
             <tr>
                 <th><!--{t string="tpl_Address_01"}--></th>
-                <td><!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
+                <td><!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--> <!--{$arrForm.addr02|h}--></td>
             </tr>
             <tr>
                 <th><!--{t string="tpl_E-mail address_01"}--></th>
