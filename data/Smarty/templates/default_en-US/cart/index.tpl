@@ -82,7 +82,7 @@
                     <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $arrInfo.free_rule > 0}-->
                             <!--{if !$arrData[$key].is_deliv_free}-->
-                                Shipping is free if you spend another "<span class="price">&#36; <!--{$tpl_deliv_free[$key]|number_format}--></span>"!!
+                                Spend "<span class="price">&#36; <!--{$tpl_deliv_free[$key]|number_format}--></span>" more for free shipping!!
                             <!--{else}-->
                                 "<span class="attention">Free shipping</span>" now!!
                             <!--{/if}-->
@@ -95,7 +95,7 @@
                     <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $arrInfo.free_rule > 0}-->
                             <!--{if !$arrData[$key].is_deliv_free}-->
-                                Shipping is free if you spend another "<span class="price">&#36; <!--{$tpl_deliv_free[$key]|number_format}--></span>"!!
+                                Spend "<span class="price">&#36; <!--{$tpl_deliv_free[$key]|number_format}--></span>" more for free shipping!!
                             <!--{else}-->
                                 "<span class="attention">Free shipping</span>" now!!
                             <!--{/if}-->
