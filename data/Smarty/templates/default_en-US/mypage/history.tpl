@@ -75,7 +75,7 @@
 </a>
                         <!--{else}-->
                             <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
-                                <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />(Credit being confirmed)
+                                <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />(Transaction being confirmed)
                             <!--{else}-->
                                 <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />(Expired)
                             <!--{/if}-->

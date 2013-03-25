@@ -76,7 +76,7 @@
                                             <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&amp;product_id=<!--{$orderDetail.product_id}-->&amp;product_class_id=<!--{$orderDetail.product_class_id}-->" rel="external">Download</a><br />
                                         <!--{else}-->
                                             <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
-                                                <!--{$arrProductType[$orderDetail.product_type_id]}--><br />(Credit card being confirmed)
+                                                <!--{$arrProductType[$orderDetail.product_type_id]}--><br />(Transaction being confirmed)
                                             <!--{else}-->
                                                 <!--{$arrProductType[$orderDetail.product_type_id]}--><br />(Expired)
                                             <!--{/if}-->
