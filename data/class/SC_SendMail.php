@@ -127,6 +127,7 @@ class SC_SendMail
     {
         // iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する
         $this->body = mb_convert_encoding($body, 'JIS', CHAR_CODE);
+        $this->body = str_replace(array("\r\n", "\r"), "\n", $this->body);
     }
 
     /**
