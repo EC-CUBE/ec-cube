@@ -51,7 +51,7 @@
 
         <!--{assign var=key1 value="zip01"}-->
         <!--{assign var=key2 value="zip02"}-->
-        【郵便番号<br>
+        【郵便番号】<br>
         <font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
         <!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
         <!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
