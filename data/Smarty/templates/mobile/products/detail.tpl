@@ -67,6 +67,16 @@
     [emoji:76]<!--{$arrProduct.main_comment|nl2br_html}--><br>
     <br>
 
+    <!--▼商品ステータス-->
+    <!--{assign var=ps value=$productStatus[$tpl_product_id]}-->
+    <!--{if count($ps) > 0}-->
+        <!--{foreach from=$ps item=status}-->
+            ★<!--{$arrSTATUS[$status]}--><br>
+        <!--{/foreach}-->
+        <br>
+    <!--{/if}-->
+    <!--▲商品ステータス-->
+
     <!--★商品コード★-->
     商品コード：
     <!--{if $arrProduct.product_code_min == $arrProduct.product_code_max}-->
