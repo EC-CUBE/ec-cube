@@ -41,14 +41,6 @@ self.moveTo(20,20);self.focus();
             <td><!--{$arrSearchData.search_customer_id|default_t:"tpl_(Not designated)_01"|h}--></td>
         </tr>
         <tr>
-            <th><!--{t string="tpl_Prefecture_01"}--></th>
-            <td>
-            <!--{if $arrSearchData.search_pref}-->
-                <!--{$arrPref[$arrSearchData.search_pref]|h}-->
-            <!--{else}--><!--{t string="tpl_(Not designated)_01"}--><!--{/if}-->
-            </td>
-        </tr>
-        <tr>
             <th><!--{t string="tpl_Name_02"}--></th>
             <td><!--{$arrSearchData.search_name|default_t:"tpl_(Not designated)_01"|h}--></td>
         </tr>
