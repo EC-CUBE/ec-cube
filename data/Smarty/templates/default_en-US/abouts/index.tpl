@@ -84,9 +84,7 @@
                     <th>Location</th>
                     <td><!--{if strlen($objSiteInfo->data.zipcode)}-->
                         <!--{$objSiteInfo->data.zipcode|h}-->
-                        <!--{if strlen($objSiteInfo->data.addr01) || strlen($objSiteInfo->data.addr02)}-->
                         <br /> 
-                        <!--{/if}-->
                         <!--{/if}--><!--{$objSiteInfo->data.addr01|h}--> <!--{$objSiteInfo->data.addr02|h}--></td>
                 </tr>
             <!--{/if}-->
