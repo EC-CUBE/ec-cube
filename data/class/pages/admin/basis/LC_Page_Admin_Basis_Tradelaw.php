@@ -126,7 +126,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
         $objFormParam->addParam(t('c_Operation director_01'), 'law_manager', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
 //        $objFormParam->addParam(t('c_Postal code 1_01'), 'law_zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
 //        $objFormParam->addParam(t('c_Postal code 2_01'), 'law_zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam(t('c_Postal code_01'), 'law_zipcode', ZIPCODE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Postal code_01'), 'law_zipcode', ZIPCODE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Prefecture_01'), 'law_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam(t('c_Location 1_01'), 'law_addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam(t('c_Location 2_01'), 'law_addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
