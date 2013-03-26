@@ -100,7 +100,7 @@
 
             <br>
             <!--{if $tpl_prev_url != ""}-->
-                <a href="<!--{$tpl_prev_url|h}-->">[emoji:69]お買物を続ける</a><br>
+                <a href="<!--{$tpl_prev_url|h}-->">[emoji:69]お買い物を続ける</a><br>
                 <br>
             <!--{/if}-->
         <!--{/foreach}-->
