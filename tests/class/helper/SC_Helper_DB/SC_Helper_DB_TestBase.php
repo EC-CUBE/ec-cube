@@ -127,8 +127,6 @@ class SC_Helper_DB_TestBase extends Common_TestCase
             'law_term08' => 'lawterm08',
             'law_term09' => 'lawterm09',
             'law_term10' => 'lawterm10',
-            'tax' => '5',
-            'tax_rule' => '1',
             'email01' => 'test1@test.com',
             'email02' => 'test2@test.com',
             'email03' => 'test3@test.com',
