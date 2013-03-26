@@ -79,13 +79,13 @@
                 </tr>
             <!--{/if}-->
             *}-->
-            <!--{if strlen($objSiteInfo->data.zipcode)}-->
                 <tr>
                     <th>Location</th>
-                    <td><!--{$objSiteInfo->data.zipcode|h}--><br /><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></td>
+                    <td><!--{if strlen($objSiteInfo->data.zipcode)}-->
+                        <!--{$objSiteInfo->data.zipcode|h}--><br /> 
+                        <!--{/if}--><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></td>
                 </tr>
-            <!--{/if}-->
-
+           
             <!--{if strlen($objSiteInfo->data.tel01)}-->
                 <tr>
                     <th>Phone number</th>
