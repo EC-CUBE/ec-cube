@@ -432,7 +432,7 @@ class LC_Page_Shopping extends LC_Page_Ex {
 //            $objErr->doFunc(array(t('c_Name (first name) KANA_01'), 'shipping_kana02'), array('EXIST_CHECK'));
 //            $objErr->doFunc(array(t('c_Postal code 1_01'), 'shipping_zip01'), array('EXIST_CHECK'));
 //            $objErr->doFunc(array(t('c_Postal code 2_01'), 'shipping_zip02'), array('EXIST_CHECK'));
-            $objErr->doFunc(array(t('c_Postal code_01'), 'shipping_zipcode'), array('EXIST_CHECK'));
+            $objErr->doFunc(array(t('c_Postal code_01'), 'shipping_zipcode'), array('NUM_CHECK','MAX_LENGTH_CHECK'));
             $objErr->doFunc(array(t('c_Address 1_01'), 'shipping_addr01'), array('EXIST_CHECK'));
             $objErr->doFunc(array(t('c_Address 2_01'), 'shipping_addr02'), array('EXIST_CHECK'));
             $objErr->doFunc(array(t('c_Telephone number 1_01'), 'shipping_tel01'), array('EXIST_CHECK'));
