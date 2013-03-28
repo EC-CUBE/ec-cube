@@ -319,7 +319,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
             }
 
             // 全データを取得
-            $sql = "SELECT * FROM $table";
+            $sql = 'SELECT * FROM "' . $table . '"';
 
             $this->fpOutput =& $fp;
             $this->first_line = true;

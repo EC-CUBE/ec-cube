@@ -773,9 +773,9 @@ class SC_Query
     function delete($table, $where = '', $arrWhereVal = array())
     {
         if (strlen($where) <= 0) {
-            $sqlde = "DELETE FROM $table";
+            $sqlde = 'DELETE FROM "' . $table . '"';
         } else {
-            $sqlde = "DELETE FROM $table WHERE $where";
+            $sqlde = 'DELETE FROM "' . $table . '" WHERE ' . $where;
         }
         $ret = $this->query($sqlde, $arrWhereVal, false, null, MDB2_PREPARE_MANIP);
         return $ret;
