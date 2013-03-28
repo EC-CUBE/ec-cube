@@ -30,11 +30,12 @@
         <!--{assign var=key value="main_image"}-->
     <!--{/if}-->
     <center><img src="<!--{$arrFile[$key].filepath}-->"></center>
+    <br>
 
     <!--★商品サブ画像★-->
-    <center>
-        <!--{if $subImageFlag == true}-->
-            <br>画像
+    <!--{if $subImageFlag == true}-->
+        <center>
+            画像
             <!--{if ($smarty.get.image == "" || $smarty.get.image == "main_image")}-->
                 [1]
             <!--{else}-->
@@ -53,10 +54,9 @@
                     <!--{assign var=num value="`$num+1`"}-->
                 <!--{/if}-->
             <!--{/section}-->
-            <br>
-        <!--{/if}-->
+        </center>
         <br>
-    </center>
+    <!--{/if}-->
 
     <!--{* オペビルダー用 *}-->
     <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
