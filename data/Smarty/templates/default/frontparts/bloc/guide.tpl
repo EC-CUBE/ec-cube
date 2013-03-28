@@ -32,7 +32,7 @@
                     >お問い合わせ</a></li>
                 <li>
                     <a href="<!--{$smarty.const.ROOT_URLPATH}-->order/<!--{$smarty.const.DIR_INDEX_PATH}-->" class="<!--{if $tpl_page_category == "order"}--> selected<!--{/if}-->"
-                    >特定商取引に関する表記</a></li>
+                    >特定商取引法に基づく表記</a></li>
                 <li>
                     <a href="<!--{$smarty.const.ROOT_URLPATH}-->guide/privacy.php" class="<!--{if $tpl_page_category == "order"}--> selected<!--{/if}-->"
                     >プライバシーポリシー</a></li>
