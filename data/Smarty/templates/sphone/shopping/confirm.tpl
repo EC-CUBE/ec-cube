@@ -21,16 +21,15 @@
  *}-->
 
 <script>//<![CDATA[
-    var send = true;
+    var sent = false;
 
     function fnCheckSubmit() {
-        if(send) {
-            send = false;
-            return true;
-        } else {
+        if (sent) {
             alert("只今、処理中です。しばらくお待ち下さい。");
             return false;
         }
+        sent = true;
+        return true;
     }
 
     //ご注文内容エリアの表示/非表示

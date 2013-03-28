@@ -23,16 +23,15 @@
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.js"></script>
 <link rel="stylesheet" type="text/css" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.facebox/facebox.css" media="screen" />
 <script type="text/javascript">//<![CDATA[
-    var send = true;
+    var sent = false;
 
     function fnCheckSubmit() {
-        if(send) {
-            send = false;
-            return true;
-        } else {
+        if (sent) {
             alert("只今、処理中です。しばらくお待ち下さい。");
             return false;
         }
+        sent = true;
+        return true;
     }
 
     $(document).ready(function() {
