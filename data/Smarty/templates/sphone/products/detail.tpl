@@ -279,7 +279,7 @@
                         <dl>
                             <dt>数量</dt>
                             <dd>
-                                <input type="number" name="quantity" class="quantitybox" value="<!--{$arrForm.quantity.value|default:1|h}-->" max="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+                                <input type="number" name="quantity" class="quantitybox" value="<!--{$arrForm.quantity.value|default:1|h}-->" max="<!--{9|str_repeat:$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
                                 <!--{if $arrErr.quantity != ""}-->
                                     <br /><span class="attention"><!--{$arrErr.quantity}--></span>
                                 <!--{/if}-->

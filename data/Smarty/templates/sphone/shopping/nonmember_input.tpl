@@ -94,11 +94,11 @@
                 <p>
                     <input type="tel" name="<!--{$key1}-->"
                         value="<!--{$arrForm[$key1].value|h}-->"
-                        max="<!--{$arrForm[$key1].length}-->"
+                        maxlength="<!--{$arrForm[$key1].length}-->"
                         style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
                     <input type="tel" name="<!--{$key2}-->"
                         value="<!--{$arrForm[$key2].value|h}-->"
-                        max="<!--{$arrForm[$key2].length}-->"
+                        maxlength="<!--{$arrForm[$key2].length}-->"
                         style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
                     <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a>
                 </p>
@@ -280,11 +280,11 @@
                     <p>
                         <input type="tel" name="<!--{$key1}-->"
                             value="<!--{$arrForm[$key1].value|h}-->"
-                            max="<!--{$arrForm[$key1].length}-->"
+                            maxlength="<!--{$arrForm[$key1].length}-->"
                             style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;
                         <input type="tel" name="<!--{$key2}-->"
                             value="<!--{$arrForm[$key2].value|h}-->"
-                            max="<!--{$arrForm[$key2].length}-->"
+                            maxlength="<!--{$arrForm[$key2].length}-->"
                             style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;
                         <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="fn">郵便番号検索</span></a>
                     </p>

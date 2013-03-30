@@ -71,7 +71,7 @@
                             <ul>
                                 <li class="result"><span class="mini">数量</span></li>
                                 <li>
-                                    <input type="number" name="<!--{$key}-->[<!--{$index}-->]" class="cartin_quantity txt" value="<!--{$arrForm[$key].value[$index]}-->" max="9" style="" />
+                                    <input type="number" name="<!--{$key}-->[<!--{$index}-->]" class="cartin_quantity txt" value="<!--{$arrForm[$key].value[$index]}-->" max="<!--{9|str_repeat:$arrForm[$key].length}-->" style="" />
                                 </li>
                             </ul>
                         </div>
