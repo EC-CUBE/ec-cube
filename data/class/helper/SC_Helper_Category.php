@@ -51,7 +51,7 @@ class SC_Helper_Category
     public function get($category_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = '*';
+        $col = 'dtb_category.*, dtb_category_total_count.product_count';
         $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
         $where = 'dtb_category.category_id = ? AND del_flg = 0';
         // 登録商品数のチェック
@@ -74,7 +74,7 @@ class SC_Helper_Category
 
         if (!isset($arrCategory[$this->count_check])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $col = '*';
+            $col = 'dtb_category.*, dtb_category_total_count.product_count';
             $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
             // 登録商品数のチェック
             if ($this->count_check) {
