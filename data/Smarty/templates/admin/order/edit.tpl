@@ -58,6 +58,7 @@
         df['shipping_fax03'+shipping_key].value = df.order_fax03.value;
         df['shipping_addr01'+shipping_key].value = df.order_addr01.value;
         df['shipping_addr02'+shipping_key].value = df.order_addr02.value;
+        df['shipping_pref'+shipping_key].value = df.order_pref.value;
     }
 
     function fnFormConfirm() {
