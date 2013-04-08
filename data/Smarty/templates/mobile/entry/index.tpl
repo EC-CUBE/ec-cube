@@ -36,9 +36,9 @@
 
         名（例：花子）<br>
         <input type="text" name="name02" value="<!--{$arrForm.name02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
-        <font color="#FF0000"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></font>
 
         ●お名前(フリガナ)<font color="#FF0000"> *</font><br>
+        <font color="#FF0000"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></font>
         フリガナ/姓（例：シブヤ）<br>
         <input type="text" name="kana01" value="<!--{$arrForm.kana01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
