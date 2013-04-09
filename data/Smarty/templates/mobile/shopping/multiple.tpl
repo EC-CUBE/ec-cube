@@ -82,7 +82,7 @@
     <br>
     <hr>
 
-    <!--{if $tpl_addrmax <= $smarty.const.DELIV_ADDR_MAX}-->
+    <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
         <form method="post" action="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
             <input type="hidden" name="ParentPage" value="<!--{$smarty.const.MULTIPLE_URLPATH}-->">

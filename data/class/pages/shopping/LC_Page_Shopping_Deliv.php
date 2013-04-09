@@ -184,7 +184,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
             )
         );
         $this->arrAddr = array_merge($addr, $objAddress->getList($objCustomer->getValue('customer_id')));
-        $this->tpl_addrmax = count($this->arrAddr);
+        $this->tpl_addrmax = count($this->arrAddr) - 1; // 会員の住所をカウントしない
 
 
     }

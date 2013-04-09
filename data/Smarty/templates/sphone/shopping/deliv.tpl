@@ -74,7 +74,7 @@
                                 </ul>
                             </dt>
                         <!--{/if}-->
-                        <dd <!--{if $smarty.section.cnt.last && !($tpl_addrmax <= $smarty.const.DELIV_ADDR_MAX)}-->class="end"<!--{/if}-->>
+                        <dd <!--{if $smarty.section.cnt.last && !($tpl_addrmax < $smarty.const.DELIV_ADDR_MAX)}-->class="end"<!--{/if}-->>
                             <!--{assign var=key value=$arrAddr[cnt].pref}-->
                             <!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
                             <!--{$arrAddr[cnt].name01|h}--> <!--{$arrAddr[cnt].name02|h}-->
@@ -82,7 +82,7 @@
                     </dl>
                 <!--{/section}-->
 
-                <!--{if $tpl_addrmax <= $smarty.const.DELIV_ADDR_MAX}-->
+                <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
                     <div class="inner">
                         <a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
                     </div>

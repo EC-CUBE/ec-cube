@@ -85,7 +85,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
 
         $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase,
                                             $objAddress, $this->tpl_uniqid);
-        $this->tpl_addrmax = count($this->addrs);
+        $this->tpl_addrmax = count($this->addrs) - 2; // 「選択してください」と会員の住所をカウントしない
         $this->lfInitParam($objFormParam);
 
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);

@@ -32,7 +32,7 @@
         <p>登録住所一覧です。<p>
         <p>最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
     </div>
-    <!--{if $tpl_linemax <= $smarty.const.DELIV_ADDR_MAX}-->
+    <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
         <!--{* 退会時非表示 *}-->
         <!--{if $tpl_login}-->
             <!--★ボタン★-->
