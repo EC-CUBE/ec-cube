@@ -30,7 +30,7 @@
         <p class="inforamtion">登録住所以外への住所へ送付される場合等にご利用いただくことができます。<br />
         ※最大<span class="attention"><!--{$smarty.const.DELIV_ADDR_MAX|h}-->件</span>まで登録できます。</p>
 
-        <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
+        <!--{if $tpl_linemax <= $smarty.const.DELIV_ADDR_MAX}-->
             <!--{* 退会時非表示 *}-->
             <!--{if $tpl_login}-->
                 <p class="add_address">

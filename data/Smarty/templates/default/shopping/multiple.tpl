@@ -37,12 +37,12 @@
         </p>
         <h2 class="title"><!--{$tpl_title|h}--></h2>
         <p class="information">各商品のお届け先を選択してください。<br />（※数量の合計は、カゴの中の数量と合わせてください。）</p>
-        <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
+        <!--{if $tpl_addrmax <= $smarty.const.DELIV_ADDR_MAX}-->
             <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
         <!--{/if}-->
         <p class="mini attention">※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
 
-        <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
+        <!--{if $tpl_addrmax <= $smarty.const.DELIV_ADDR_MAX}-->
             <p class="addbtn">
                 <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address_on.jpg','addition');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg','addition');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" name="addition" id="addition" /></a>
             </p>
