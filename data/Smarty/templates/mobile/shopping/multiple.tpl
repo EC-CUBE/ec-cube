@@ -34,27 +34,27 @@
             <!--{assign var=index value=$smarty.section.line.index}-->
             <input type="hidden" name="cart_no[<!--{$index}-->]" value="<!--{$index}-->">
             <!--{assign var=key value="product_class_id"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="name"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="class_name1"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="class_name2"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="classcategory_name1"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="classcategory_name2"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="main_image"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="main_list_image"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="price"}-->
-            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->">
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
 
             <!--{* 商品名 *}-->◎<!--{$arrForm.name.value[$index]|h}--><br>
-            <!--{* 規格名1 *}--><!--{if $arrForm.classcategory_name1.value[$index] != ""}--><!--{$arrForm.class_name1.value[$index]}-->：<!--{$arrForm.classcategory_name1.value[$index]}--><br><!--{/if}-->
-            <!--{* 規格名2 *}--><!--{if $arrForm.classcategory_name2.value[$index] != ""}--><!--{$arrForm.class_name2.value[$index]}-->：<!--{$arrForm.classcategory_name2.value[$index]}--><br><!--{/if}-->
+            <!--{* 規格名1 *}--><!--{if $arrForm.classcategory_name1.value[$index] != ""}--><!--{$arrForm.class_name1.value[$index]|h}-->：<!--{$arrForm.classcategory_name1.value[$index]|h}--><br><!--{/if}-->
+            <!--{* 規格名2 *}--><!--{if $arrForm.classcategory_name2.value[$index] != ""}--><!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--><br><!--{/if}-->
             <!--{* 販売価格 *}-->
             <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->円<br>
 
@@ -62,7 +62,7 @@
             <!--{if $arrErr[$key][$index] != ''}-->
                 <font color="#FF0000"><!--{$arrErr[$key][$index]}--></font>
             <!--{/if}-->
-            数量：<input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]}-->" size="4">
+            数量：<input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="4">
             <br>
 
             <!--{assign var=key value="shipping"}-->
