@@ -758,6 +758,7 @@ class SC_Helper_Purchase
             $orderParams['status'] = ORDER_NEW;
         }
 
+        $orderParams['del_flg'] = '0';
         $orderParams['create_date'] = 'CURRENT_TIMESTAMP';
         $orderParams['update_date'] = 'CURRENT_TIMESTAMP';
 
