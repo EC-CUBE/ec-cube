@@ -80,10 +80,10 @@
                 </td>
                 <td class="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="fnModeSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" />上へ</a>
+                    <a href="?" onclick="fnModeSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">上へ</a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="fnModeSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" />下へ</a>
+                    <a href="?" onclick="fnModeSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">下へ</a>
                     <!--{/if}-->
                 </td>
             </tr>
