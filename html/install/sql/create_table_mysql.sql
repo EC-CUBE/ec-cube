@@ -760,6 +760,7 @@ CREATE TABLE dtb_pagelayout (
     update_url text,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
+    meta_robots text,
     PRIMARY KEY (device_type_id, page_id)
 );
 

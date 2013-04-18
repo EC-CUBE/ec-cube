@@ -27,9 +27,18 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
             <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}-->/<!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}-->/<!--{$tpl_title|h}--><!--{/if}--></title>
-            <meta name="author" content="<!--{$arrPageLayout.author|h}-->">
-            <meta name="description" content="<!--{$arrPageLayout.description|h}-->">
-            <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->">
+            <!--{if $arrPageLayout.author|strlen >= 1}-->
+                <meta name="author" content="<!--{$arrPageLayout.author|h}-->">
+            <!--{/if}-->
+            <!--{if $arrPageLayout.description|strlen >= 1}-->
+                <meta name="description" content="<!--{$arrPageLayout.description|h}-->">
+            <!--{/if}-->
+            <!--{if $arrPageLayout.keyword|strlen >= 1}-->
+                <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->">
+            <!--{/if}-->
+            <!--{if $arrPageLayout.meta_robots|strlen >= 1}-->
+                <meta name="robots" content="<!--{$arrPageLayout.meta_robots|h}-->">
+            <!--{/if}-->
             <!--{* ▼Head COLUMN *}-->
             <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
                 <!--{* ▼上ナビ *}-->

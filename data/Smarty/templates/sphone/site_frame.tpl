@@ -76,6 +76,9 @@
         <!--{if $arrPageLayout.keyword|strlen >= 1}-->
             <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
         <!--{/if}-->
+        <!--{if $arrPageLayout.meta_robots|strlen >= 1}-->
+            <meta name="robots" content="<!--{$arrPageLayout.meta_robots|h}-->" />
+        <!--{/if}-->
         <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
         <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
         <!--{* iPhone用アイコン画像 *}-->

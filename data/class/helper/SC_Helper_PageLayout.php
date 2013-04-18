@@ -62,6 +62,10 @@ class SC_Helper_PageLayout
 
         $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageData[0]['filename'] . '.tpl';
         $objPage->arrPageLayout =& $arrPageData[0];
+        if (strlen($objPage->arrPageLayout['author']) === 0) {
+            $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
+            $objPage->arrPageLayout['author'] = $arrInfo['company_name'];
+        }
 
         // ページタイトルを設定
         if (SC_Utils_Ex::isBlank($objPage->tpl_title)) {

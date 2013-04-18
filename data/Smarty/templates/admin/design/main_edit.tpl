@@ -60,7 +60,7 @@ function fnTargetSelf(){
             </td>
         </tr>
         <tr>
-        <th>URL</th>
+            <th>URL</th>
             <td>
                 <!--{assign var=key value="filename"}-->
                 <!--{if $arrForm.edit_flg.value == 2}-->
@@ -85,6 +85,46 @@ function fnTargetSelf(){
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="author"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="description"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="keyword"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="meta_robots"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
             </td>
         </tr>
     </table>

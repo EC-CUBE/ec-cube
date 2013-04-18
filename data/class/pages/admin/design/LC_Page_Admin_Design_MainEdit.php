@@ -167,6 +167,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
         $objFormParam->addParam('フッタチェック', 'footer_chk', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('修正フラグ', 'edit_flg', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('TPLデータ', 'tpl_data');
+        $objFormParam->addParam('meta タグ:author', 'author', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('meta タグ:description', 'description', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('meta タグ:keyword', 'keyword', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('meta タグ:robots', 'meta_robots', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -213,6 +217,10 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
         $arrParams['page_name'] = $objFormParam->getValue('page_name');
         $arrParams['url'] = USER_DIR . $filename . '.php';
         $arrParams['filename'] = USER_DIR . $filename;
+        $arrParams['author']        = $objFormParam->getValue('author');
+        $arrParams['description']   = $objFormParam->getValue('description');
+        $arrParams['keyword']       = $objFormParam->getValue('keyword');
+        $arrParams['meta_robots']   = $objFormParam->getValue('meta_robots');
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
