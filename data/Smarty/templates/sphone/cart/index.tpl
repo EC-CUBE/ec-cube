@@ -88,7 +88,7 @@
 
                     <input type="hidden" name="mode" value="confirm" />
                     <input type="hidden" name="cart_no" value="" />
-                    <input type="hidden" name="cartKey" value="<!--{$key}-->" />
+                    <input type="hidden" name="cartKey" value="<!--{$key|h}-->" />
 
                     <div class="formBox">
 
@@ -145,7 +145,6 @@
                         </div>
                         <!--{if strlen($tpl_error) == 0}-->
                             <div class="btn_area_btm">
-                                <input type="hidden" name="cartKey" value="<!--{$key}-->" />
                                 <input type="submit" value="ご購入手続きへ" name="confirm" class="btn data-role-none" />
                             </div>
                         <!--{/if}-->
