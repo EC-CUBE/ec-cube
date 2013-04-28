@@ -44,7 +44,7 @@
 
     <div class="form_area">
         <!--{if $tpl_linemax > 0}-->
-            <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/delivery.php" >
+            <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL}-->mypage/delivery.php" >
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <input type="hidden" name="mode" value="" />
                 <input type="hidden" name="other_deliv_id" value="" />

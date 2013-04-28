@@ -267,7 +267,7 @@ function lfnDispChange(){
                     <!--{assign var=key value=$arrProducts[cnt].status}-->
                     <td class="menu" rowspan="2"><!--{$arrDISP[$key]}--></td>
                     <td class="menu" rowspan="2"><span class="icon_edit"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >編集</a></span></td>
-                    <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
+                    <td class="menu" rowspan="2"><span class="icon_confirm"><a href="<!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->&amp;admin=on" target="_blank">確認</a></span></td>
                     <!--{if $smarty.const.OPTION_CLASS_REGIST == 1}-->
                     <td class="menu" rowspan="2"><span class="icon_class"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnChangeAction('./product_class.php'); fnModeSubmit('pre_edit', 'product_id', <!--{$arrProducts[cnt].product_id}-->); return false;" >規格</a></span></td>
                     <!--{/if}-->
@@ -286,7 +286,7 @@ function lfnDispChange(){
 
                         <!--{* URL *}-->
                         <div id="disp_url<!--{$smarty.section.cnt.iteration}-->" style="display:none">
-                            <!--{$smarty.const.HTTP_URL|sfTrimURL}-->/products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
+                            <!--{$smarty.const.HTTP_URL}-->products/detail.php?product_id=<!--{$arrProducts[cnt].product_id}-->
                         </div>
                     </td>
                 </tr>

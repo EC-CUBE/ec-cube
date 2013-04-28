@@ -137,7 +137,7 @@
 <script>
     var pageNo = 2;
     var url = "<!--{$smarty.const.P_DETAIL_URLPATH}-->";
-    var imagePath = "<!--{$smarty.const.IMAGE_SAVE_URLPATH|sfTrimURL}-->/";
+    var imagePath = "<!--{$smarty.const.IMAGE_SAVE_URLPATH}-->";
     var statusImagePath = "<!--{$TPL_URLPATH}-->";
 
     function getProducts(limit) {

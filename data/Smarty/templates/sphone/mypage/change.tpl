@@ -32,7 +32,7 @@
         <p><span class="attention">※</span>は必須入力項目です。</p>
     </div>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/change.php">
+    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL}-->mypage/change.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="confirm" />
         <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />

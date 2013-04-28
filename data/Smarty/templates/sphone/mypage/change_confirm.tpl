@@ -33,7 +33,7 @@
         <p>入力内容をご確認ください。</p>
     </div>
 
-    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/change.php">
+    <form name="form1" id="form1" method="post" action="<!--{$smarty.const.HTTPS_URL}-->mypage/change.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="complete" />
         <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />

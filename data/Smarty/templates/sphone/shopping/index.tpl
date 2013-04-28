@@ -71,7 +71,7 @@
         <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="passtextBox data-role-none" placeholder="パスワード" />
         </div>
 
-        <p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードを忘れた方</a></p>
+        <p class="arrowRtxt"><a rel="external" href="<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードを忘れた方</a></p>
         <div class="btn_area">
         <p><input type="submit" value="ログイン" class="btn data-role-none" name="log" id="log" /></p>
         </div>

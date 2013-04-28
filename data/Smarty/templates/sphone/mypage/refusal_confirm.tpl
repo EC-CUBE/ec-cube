@@ -25,7 +25,7 @@
 <section id="mypagecolumn">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <!--{include file=$tpl_navi}-->
-    <form name="form1" method="post" action="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/refusal.php">
+    <form name="form1" method="post" action="<!--{$smarty.const.HTTPS_URL}-->mypage/refusal.php">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="complete" />
 
