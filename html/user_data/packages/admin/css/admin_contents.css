@@ -418,17 +418,14 @@ a.btn-normal:active {
 
 
 /*LINK*/
-a:link {
-    color: #39c;
-    text-decoration: none;
-}
-
+a:link,
 a:visited {
     color: #39c;
     text-decoration: none;
 }
 
-a:hover {
+a:link:hover,
+a[href]:hover {
     color: #74badc;
     text-decoration: none;
 }
