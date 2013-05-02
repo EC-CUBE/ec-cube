@@ -26,7 +26,7 @@ class Common_TestCase extends PHPUnit_Framework_TestCase
 
   protected function setUp()
   {
-    $this->objQuery = SC_Query_Ex::getSingletonInstance();
+    $this->objQuery = SC_Query_Ex::getSingletonInstance('', true);
     $this->objQuery->begin();
   }
 
