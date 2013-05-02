@@ -43,7 +43,7 @@
     <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
     <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
     <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
-    <script src="<!--{$TPL_URLPATH}-->js/jquery-1.6.4.min.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/jquery-1.8.1.min.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -56,9 +56,9 @@
     <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
     <!--{* jQuery Mobile *}-->
-    <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.0.1.min.css" />
+    <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.2.1.min.css" />
     <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
-    <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.0.1.min.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.2.1.min.js"></script>
 
     <!--{* スマートフォンカスタマイズ用JS *}-->
     <script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
