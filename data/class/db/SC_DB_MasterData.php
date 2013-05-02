@@ -41,8 +41,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_MasterData.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_MasterData 
-{
+class SC_DB_MasterData {
 
     // {{{ properties
 
@@ -70,8 +69,7 @@ class SC_DB_MasterData
      *                        を表すカラム名を格納した配列
      * @return array マスターデータ
      */
-    function getMasterData($name, $columns = array())
-    {
+    function getMasterData($name, $columns = array()) {
 
         $columns = $this->getDefaultColumnName($columns);
 
@@ -103,8 +101,7 @@ class SC_DB_MasterData
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの登録数
      */
-    function registMasterData($name, $columns, $masterData, $autoCommit = true)
-    {
+    function registMasterData($name, $columns, $masterData, $autoCommit = true) {
 
         $columns = $this->getDefaultColumnName($columns);
 
@@ -139,8 +136,7 @@ class SC_DB_MasterData
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの更新数
      */
-    function updateMasterData($name, $columns, $masterData, $autoCommit = true)
-    {
+    function updateMasterData($name, $columns, $masterData, $autoCommit = true) {
 
         $columns = $this->getDefaultColumnName($columns);
 
@@ -174,8 +170,7 @@ class SC_DB_MasterData
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの更新数
      */
-    function insertMasterData($name, $key, $value, $comment, $autoCommit = true)
-    {
+    function insertMasterData($name, $key, $value, $comment, $autoCommit = true) {
 
         $columns = $this->getDefaultColumnName();
 
@@ -207,8 +202,7 @@ class SC_DB_MasterData
      * @param bool $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの削除数
      */
-    function deleteMasterData($name, $autoCommit = true)
-    {
+    function deleteMasterData($name, $autoCommit = true) {
         $this->objQuery =& SC_Query_Ex::getSingletonInstance();
         if ($autoCommit) {
             $this->objQuery->begin();
@@ -230,8 +224,7 @@ class SC_DB_MasterData
      * @param string $name マスターデータ名
      * @return bool 消去した場合 true
      */
-    function clearCache($name)
-    {
+    function clearCache($name) {
         $masterDataFile = MASTER_DATA_REALDIR . $name . '.php';
         if (is_file($masterDataFile)) {
             unlink($masterDataFile);
@@ -258,8 +251,7 @@ class SC_DB_MasterData
      *                             [2] => 表示順 を表すカラム名を格納した配列
      * @return bool キャッシュの生成に成功した場合 true
      */
-    function createCache($name, $columns = array(), $isDefine = false, $commentColumn = array())
-    {
+    function createCache($name, $columns = array(), $isDefine = false, $commentColumn = array()) {
 
         // マスターデータを取得
         $masterData = $this->getDbMasterData($name, $columns);
@@ -308,8 +300,7 @@ class SC_DB_MasterData
      *                        を表すカラム名を格納した配列
      * @return array マスターデータ
      */
-    function getDbMasterData($name, $columns = array())
-    {
+    function getDbMasterData($name, $columns = array()) {
 
         $columns = $this->getDefaultColumnName($columns);
 
@@ -341,8 +332,7 @@ class SC_DB_MasterData
      *                        を表すカラム名を格納した配列
      * @return array カラム名を格納した配列
      */
-    function getDefaultColumnName($columns = array())
-    {
+    function getDefaultColumnName($columns = array()) {
 
         if (!empty($columns)) {
             return $columns;
@@ -359,8 +349,7 @@ class SC_DB_MasterData
      * @param array $comments コメントの配列
      * @return string 定数定義の文字列
      */
-    function getMasterDataAsDefine($masterData, $comments = array())
-    {
+    function getMasterDataAsDefine($masterData, $comments = array()) {
         $data = '';
         foreach ($masterData as $key => $val) {
             if (!empty($comments[$key])) {

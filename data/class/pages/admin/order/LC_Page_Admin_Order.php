@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Order extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'order/index.tpl';
         $this->tpl_mainno = 'order';
@@ -72,7 +70,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
         $this->arrDay = $objDate->getDay();
 
         // 支払い方法の取得
-        $this->arrPayments = SC_Helper_Payment_Ex::getIDValueList();
+        $this->arrPayments = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
 
         $this->httpCacheControl('nocache');
     }
@@ -82,8 +80,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -93,8 +90,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -102,13 +98,11 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
         $this->arrHidden = $objFormParam->getSearchArray();
         $this->arrForm = $objFormParam->getFormParamList();
 
-        $objPurchase = new SC_Helper_Purchase_Ex();
-
         switch ($this->getMode()) {
             // 削除
             case 'delete':
-                $order_id = $objFormParam->getValue('order_id');
-                $objPurchase->cancelOrder($order_id, ORDER_CANCEL, true);
+                $this->doDelete('order_id = ?',
+                                array($objFormParam->getValue('order_id')));
                 // 削除後に検索結果を表示するため breakしない
 
             // 検索パラメーター生成後に処理実行するため breakしない
@@ -147,12 +141,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
 
                         // 全件削除(ADMIN_MODE)
                         case 'delete_all':
-                            $page_max = 0;
-                            $arrResults = $this->findOrders($where, $arrWhereVal,
-                                                           $page_max, 0, $order);
-                            foreach ($arrResults as $element) {
-                                $objPurchase->cancelOrder($element['order_id'], ORDER_CANCEL, true);
-                            }
+                            $this->doDelete($where, $arrWhereVal);
                             break;
 
                         // 検索実行
@@ -185,8 +174,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -196,8 +184,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('注文番号1', 'search_order_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('注文番号2', 'search_order_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('対応状況', 'search_order_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -244,8 +231,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfCheckError(&$objFormParam)
-    {
+    function lfCheckError(&$objFormParam) {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
@@ -283,8 +269,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function buildQuery($key, &$where, &$arrValues, &$objFormParam)
-    {
+    function buildQuery($key, &$where, &$arrValues, &$objFormParam) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         switch ($key) {
 
@@ -294,11 +279,11 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
                 break;
             case 'search_order_name':
                 $where .= ' AND ' . $dbFactory->concatColumn(array('order_name01', 'order_name02')) . ' LIKE ?';
-                $arrValues[] = sprintf('%%%s%%', preg_replace('/[ 　]/u', '', $objFormParam->getValue($key)));
+                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
                 break;
             case 'search_order_kana':
                 $where .= ' AND ' . $dbFactory->concatColumn(array('order_kana01', 'order_kana02')) . ' LIKE ?';
-                $arrValues[] = sprintf('%%%s%%', preg_replace('/[ 　]/u', '', $objFormParam->getValue($key)));
+                $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
                 break;
             case 'search_order_id1':
                 $where .= ' AND order_id >= ?';
@@ -418,8 +403,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * @param array $arrParam 削除対象の値
      * @return void
      */
-    function doDelete($where, $arrParam = array())
-    {
+    function doDelete($where, $arrParam = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg']     = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -437,8 +421,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * @param string $order 検索結果の並び順
      * @return void
      */
-    function doOutputCSV($where, $arrVal, $order)
-    {
+    function doOutputCSV($where, $arrVal, $order) {
         if ($where != '') {
             $where = " WHERE $where ";
         }
@@ -454,8 +437,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * @param array $arrValues 検索条件のパラメーター
      * @return integer 検索結果の行数
      */
-    function getNumberOfLines($where, $arrValues)
-    {
+    function getNumberOfLines($where, $arrValues) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->count('dtb_order', $where, $arrValues);
     }
@@ -470,12 +452,9 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * @param string $order 検索結果の並び順
      * @return array 受注の検索結果
      */
-    function findOrders($where, $arrValues, $limit, $offset, $order)
-    {
+    function findOrders($where, $arrValues, $limit, $offset, $order) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        if ($limit != 0) {
-            $objQuery->setLimitOffset($limit, $offset);
-        }
+        $objQuery->setLimitOffset($limit, $offset);
         $objQuery->setOrder($order);
         return $objQuery->select('*', 'dtb_order', $where, $arrValues);
     }

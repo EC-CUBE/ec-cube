@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Log.php';
  * @author Seasoft 塚田将久
  * @version $Id$
  */
-class LC_Page_Admin_System_Log_Ex extends LC_Page_Admin_System_Log 
-{
+class LC_Page_Admin_System_Log_Ex extends LC_Page_Admin_System_Log {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Admin_System_Log_Ex extends LC_Page_Admin_System_Log
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Admin_System_Log_Ex extends LC_Page_Admin_System_Log
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Admin_System_Log_Ex extends LC_Page_Admin_System_Log
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

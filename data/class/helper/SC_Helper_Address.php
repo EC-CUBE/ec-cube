@@ -36,8 +36,7 @@ class SC_Helper_Address
      * @param array $sqlval
      * @return array()
      */
-    function registAddress($sqlval)
-    {
+    function save($sqlval) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $customer_id = $sqlval['customer_id'];
         $other_deliv_id = $sqlval['other_deliv_id'];
@@ -77,8 +76,7 @@ class SC_Helper_Address
      * @param integer $other_deliv_id
      * @return array()
      */
-    function getAddress($other_deliv_id)
-    {
+    function get($other_deliv_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $address = $objQuery->select('*', 'dtb_other_deliv', 'other_deliv_id = ?', array($other_deliv_id));
         return $address ? $address[0] : FALSE;
@@ -91,8 +89,7 @@ class SC_Helper_Address
      * @param integer $startno
      * @return array
      */
-    function getList($customer_id, $startno = '')
-    {
+    function getList($customer_id, $startno = '') {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('other_deliv_id DESC');
         //スマートフォン用の処理
@@ -108,8 +105,7 @@ class SC_Helper_Address
      * @param integer $delivId
      * @return void
      */
-    function deleteAddress($other_deliv_id)
-    {
+    function delete($other_deliv_id) {
         $where      = 'other_deliv_id = ?';
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete('dtb_other_deliv', $where, array($other_deliv_id));
@@ -121,8 +117,7 @@ class SC_Helper_Address
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function setFormParam(&$objFormParam)
-    {
+    function setFormParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         $objFormParam->addParam('', 'other_deliv_id');
     }
@@ -133,8 +128,7 @@ class SC_Helper_Address
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function errorCheck(&$objFormParam)
-    {
+    function errorCheck(&$objFormParam) {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
         return $objErr->arrErr;
     }

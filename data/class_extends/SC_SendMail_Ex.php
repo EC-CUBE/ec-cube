@@ -33,6 +33,5 @@ require_once CLASS_REALDIR . 'SC_SendMail.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SendMail_Ex extends SC_SendMail 
-{
+class SC_SendMail_Ex extends SC_SendMail {
 }

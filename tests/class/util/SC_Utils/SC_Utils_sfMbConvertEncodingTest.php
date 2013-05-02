@@ -31,31 +31,26 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfMbConvertEncodingTest extends Common_TestCase
-{
+class SC_Utils_sfMbConvertEncodingTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfMbConvertEncoding_MS932の場合_エラーが起きない()
-  {
+  public function testSfMbConvertEncoding_MS932の場合_エラーが起きない() {
     $input = 'あいうえお、今日は良い天気です。';
     $encode = 'MS932';
 
     $this->assertNotNull(SC_Utils::sfMbConvertEncoding($input, $encode), '変換結果');
   }
 
-  public function testSfMbConvertEncoding_UTF8の場合_エラーが起きない()
-  {
+  public function testSfMbConvertEncoding_UTF8の場合_エラーが起きない() {
     $input = 'あいうえお、今日は良い天気です。';
     $encode = 'UTF8';
 

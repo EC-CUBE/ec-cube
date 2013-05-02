@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_System extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
 
         $this->list_data    = '';  // テーブルデータ取得用
@@ -58,7 +56,8 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
 
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
-        $this->arrWORK = $masterData->getMasterData('mtb_work');
+        $this->arrWORK[0]   = '非稼働';
+        $this->arrWORK[1]   = '稼働';
     }
 
     /**
@@ -66,8 +65,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -77,8 +75,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         // ADMIN_ID以外の管理者件数を取得
         $linemax = $this->getMemberCount('del_flg <> 1 AND member_id <> ' . ADMIN_ID);
@@ -105,8 +102,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -117,8 +113,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      * @param string $where WHERE句
      * @return integer 件数
      */
-    function getMemberCount($where)
-    {
+    function getMemberCount($where) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_member';
         return $objQuery->count($table, $where);
@@ -131,8 +126,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      * @param integer $startno 開始行番号
      * @return array 管理者データの連想配列
      */
-    function getMemberData($startno)
-    {
+    function getMemberData($startno) {
         $col = 'member_id,name,department,login_id,authority,rank,work';
         $from = 'dtb_member';
         $where = 'del_flg <> 1 AND member_id <> ?';
@@ -150,8 +144,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      * @param integer  $pageno ページの番号（$_GETから入ってきた値）
      * @return integer $clean_pageno チェック後のページの番号
      */
-    function lfCheckPageNo($pageno)
-    {
+    function lfCheckPageNo($pageno) {
 
         $clean_pageno = '';
 

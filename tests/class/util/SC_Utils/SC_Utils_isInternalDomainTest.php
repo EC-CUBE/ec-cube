@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
-{
+class SC_Utils_sfIsInternalDomainTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testsfIsInternalDomain_ドメインが一致する場合_trueが返る()
-  {
+  public function testsfIsInternalDomain_ドメインが一致する場合_trueが返る() {
     $url = 'http://test.local/html/index.php';
     $this->expected = TRUE;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
@@ -55,8 +51,7 @@ class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
     $this->verify($url);
   }
 
-  public function testsfIsInternalDomain_アンカーを含むURLの場合_trueが返る()
-  {
+  public function testsfIsInternalDomain_アンカーを含むURLの場合_trueが返る() {
     $url = 'http://test.local/html/index.php#hoge';
     $this->expected = TRUE;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
@@ -64,8 +59,7 @@ class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
     $this->verify($url);
   }
 
-  public function testsfIsInternalDomain_ドメインが一致しない場合_falseが返る()
-  {
+  public function testsfIsInternalDomain_ドメインが一致しない場合_falseが返る() {
     $url = 'http://test.local.jp/html/index.php';
     $this->expected = TRUE;
     $this->actual = SC_Utils::sfIsInternalDomain($url);

@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'design/main_edit.tpl';
         $this->text_row     = 13;
@@ -60,8 +58,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -71,8 +68,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -144,8 +140,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -157,8 +152,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('名称', 'page_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -177,8 +171,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
      * @return array ページデータの配列
      */
-    function getTplMainpage($device_type_id, $page_id, &$objLayout)
-    {
+    function getTplMainpage($device_type_id, $page_id, &$objLayout) {
         $arrPageData = $objLayout->getPageProperties($device_type_id, $page_id);
 
         $templatePath = $objLayout->getTemplatePath($device_type_id);
@@ -202,8 +195,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      * @return integer|boolean 登録が成功した場合, 登録したページID;
      *                         失敗した場合 false
      */
-    function doRegister(&$objFormParam, &$objLayout)
-    {
+    function doRegister(&$objFormParam, &$objLayout) {
         $filename = $objFormParam->getValue('filename');
         $arrParams['device_type_id'] = $objFormParam->getValue('device_type_id');
         $arrParams['page_id'] = $objFormParam->getValue('page_id');
@@ -258,8 +250,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
      * @return integer ページID
      */
-    function registerPage($arrParams, &$objLayout)
-    {
+    function registerPage($arrParams, &$objLayout) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // ページIDが空の場合は新規登録
@@ -303,8 +294,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam, &$arrErr)
-    {
+    function lfCheckError(&$objFormParam, &$arrErr) {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
@@ -353,8 +343,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      * @param string $filename フォームパラメーターの filename
      * @return boolean 作成に成功した場合 true
      */
-    function createPHPFile($filename)
-    {
+    function createPHPFile($filename) {
         $path = USER_REALDIR . $filename . '.php';
 
         if (file_exists($path)) {

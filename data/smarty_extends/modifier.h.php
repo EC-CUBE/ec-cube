@@ -18,7 +18,6 @@
  * @param string $string
  * @return string
  */
-function smarty_modifier_h($string)
-{
+function smarty_modifier_h($string) {
     return htmlspecialchars($string, ENT_QUOTES);
 }

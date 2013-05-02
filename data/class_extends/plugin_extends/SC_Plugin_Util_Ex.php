@@ -23,6 +23,5 @@
 
 require_once CLASS_REALDIR . 'plugin/SC_Plugin_Util.php';
 
-class SC_Plugin_Util_Ex extends SC_Plugin_Util 
-{
+class SC_Plugin_Util_Ex extends SC_Plugin_Util {
 }

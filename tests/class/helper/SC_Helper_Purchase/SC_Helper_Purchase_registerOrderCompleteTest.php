@@ -32,25 +32,21 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @version $Id$
  */
 
-class SC_Helper_Purchase_registerOrderCompleteTest extends SC_Helper_Purchase_TestBase
-{
+class SC_Helper_Purchase_registerOrderCompleteTest extends SC_Helper_Purchase_TestBase {
   private $helper;
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
     $this->setUpOrderTemp();
     $this->helper = new SC_Helper_Purchase_registerOrderCompleteMock();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testRegisterOrderComplete_不要な変数が含まれている場合_登録前に除外される()
-  {
+  public function testRegisterOrderComplete_不要な変数が含まれている場合_登録前に除外される() {
     // 引数の準備
     $orderParams = array(
       'order_id' => '1001',
@@ -97,8 +93,7 @@ class SC_Helper_Purchase_registerOrderCompleteTest extends SC_Helper_Purchase_Te
     $this->verify();
   }
 
-  public function testRegisterOrderComplete_ステータスの指定がない場合_新規受付扱いとなる()
-  {
+  public function testRegisterOrderComplete_ステータスの指定がない場合_新規受付扱いとなる() {
     // 引数の準備
     $orderParams = array(
       'order_id' => '1001',
@@ -128,11 +123,9 @@ class SC_Helper_Purchase_registerOrderCompleteTest extends SC_Helper_Purchase_Te
 
 }
 
-class SC_Helper_Purchase_registerOrderCompleteMock extends SC_Helper_Purchase
-{
+class SC_Helper_Purchase_registerOrderCompleteMock extends SC_Helper_Purchase {
 
-  function registerOrder($order_id, $params)
-  {
+  function registerOrder($order_id, $params) {
     $_SESSION['testResult']['registerOrder'] = array(
       'order_id' => $order_id,
       'status' => $params['status'],
@@ -140,24 +133,20 @@ class SC_Helper_Purchase_registerOrderCompleteMock extends SC_Helper_Purchase
     );
   }
 
-  function registerOrderDetail($order_id, $params)
-  {
+  function registerOrderDetail($order_id, $params) {
     $_SESSION['testResult']['registerOrderDetail'] = array(
       'order_id' => $order_id,
       'params' => $params
     );
   }
 
-  function setUniqId()
-  {}
+  function setUniqId() {}
 }
 
-class SC_CartSession_registerOrderCompleteMock extends SC_CartSession
-{
+class SC_CartSession_registerOrderCompleteMock extends SC_CartSession {
 
   // カートの内容を取得
-  function getCartList($cartKey)
-  {
+  function getCartList($cartKey) {
     return array(
       array(
         'productsClass' => array(

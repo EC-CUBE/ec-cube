@@ -42,12 +42,39 @@
 
     <!--{* ▼画面左 *}-->
     <div id="products-rank-left">
-        <ul>
-            <li>
-                <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ" />&nbsp;ホーム</a>
-                <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`products/product_rank_tree_fork.tpl" children=$arrTree treeID="f0" display=1}-->
-            </li>
-        </ul>
+        <a href="?"><img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">&nbsp;ホーム</a><br />
+        <!--{section name=cnt loop=$arrTree}-->
+            <!--{assign var=level value="`$arrTree[cnt].level`}-->
+
+            <!--{* 上の階層表示の時にdivを閉じる *}-->
+            <!--{assign var=close_cnt value="`$before_level-$level+1`}-->
+            <!--{if $close_cnt > 0}-->
+                <!--{section name=n loop=$close_cnt}--></div><!--{/section}-->
+            <!--{/if}-->
+
+            <!--{* スペース繰り返し *}-->
+            <!--{section name=n loop=$level}-->　　<!--{/section}-->
+
+            <!--{* カテゴリ名表示 *}-->
+            <!--{assign var=disp_name value="`$arrTree[cnt].category_id`.`$arrTree[cnt].category_name`"}-->
+            <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrTree[cnt].category_id}-->); return false">
+            <!--{if $arrForm.parent_category_id == $arrTree[cnt].category_id}-->
+                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ">
+            <!--{else}-->
+                <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
+            <!--{/if}-->
+            <!--{$disp_name|sfCutString:10:false|h}-->(<!--{$arrTree[cnt].product_count|default:0}-->)</a>
+            <br />
+            <!--{if $arrTree[cnt].display == true}-->
+                <div id="f<!--{$arrTree[cnt].category_id}-->">
+            <!--{else}-->
+                <div id="f<!--{$arrTree[cnt].category_id}-->" style="display:none">
+            <!--{/if}-->
+            <!--{if $smarty.section.cnt.last}-->
+                <!--{section name=n loop=$level}--></div><!--{/section}-->
+            <!--{/if}-->
+            <!--{assign var=before_level value="`$arrTree[cnt].level`}-->
+        <!--{/section}-->
     </div>
     <!--{* ▲画面左 *}-->
 

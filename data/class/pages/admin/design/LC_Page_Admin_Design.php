@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'design/index.tpl';
         $this->tpl_subno = 'layout';
@@ -60,8 +58,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -71,8 +68,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -151,8 +147,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -163,8 +158,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      * @param integer $bloc_cnt ブロック数
      * @return void
      */
-    function lfInitParam(&$objFormParam, $bloc_cnt = 0)
-    {
+    function lfInitParam(&$objFormParam, $bloc_cnt = 0) {
         $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ブロック数', 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -186,8 +180,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
      * @return array レイアウト情報の配列
      */
-    function getLayout($device_type_id, $page_id, &$objLayout)
-    {
+    function getLayout($device_type_id, $page_id, &$objLayout) {
         $arrResults = array();
         $i = 0;
 
@@ -218,8 +211,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      * @param integer $cnt 配列番号
      * @return void
      */
-    function copyBloc(&$arrDest, $arrFrom, $cnt)
-    {
+    function copyBloc(&$arrDest, $arrFrom, $cnt) {
         $arrDest[$cnt]['target_id'] = $this->arrTarget[$arrFrom['target_id']];
         $arrDest[$cnt]['bloc_id'] = $arrFrom['bloc_id'];
         $arrDest[$cnt]['bloc_row'] = $arrFrom['bloc_row'];
@@ -234,8 +226,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      * @param array $arrToBlocs チェックを行うデータ配列
      * @return bool 存在する場合 true
      */
-    function existsBloc($arrBloc, $arrToBlocs)
-    {
+    function existsBloc($arrBloc, $arrToBlocs) {
         foreach ($arrToBlocs as $arrToBloc) {
             if ($arrBloc['bloc_id'] === $arrToBloc['bloc_id']) {
                 return true;
@@ -251,8 +242,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
      * @return string プレビューを行う tpl_mainpage ファイル名
      */
-    function savePreviewData($page_id, &$objLayout)
-    {
+    function savePreviewData($page_id, &$objLayout) {
         $arrPageData = $objLayout->getPageProperties(DEVICE_TYPE_PC, $page_id);
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrPageData[0]['page_id'] = 0;
@@ -267,8 +257,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      * @param boolean $is_preview プレビュー時の場合 true
      * @return void
      */
-    function placingBlocs(&$objFormParam, $is_preview = false)
-    {
+    function placingBlocs(&$objFormParam, $is_preview = false) {
         $page_id = $is_preview ? 0 : $objFormParam->getValue('page_id');
         $device_type_id = $objFormParam->getValue('device_type_id');
         $bloc_cnt = $objFormParam->getValue('bloc_cnt');

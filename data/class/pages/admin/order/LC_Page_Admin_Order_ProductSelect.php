@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'order/product_select.tpl';
         $this->tpl_mainno = 'order';
@@ -60,8 +58,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -71,8 +68,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -81,7 +77,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
         $objFormParam->convParam();
 
         $this->tpl_no = $this->getNo(array($_GET,$_POST));
-        $this->shipping_id = $this->getShippingId(array($_GET,$_POST));
 
         switch ($this->getMode()) {
             case 'search':
@@ -105,8 +100,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
                 $objProduct->setProductsClassByProductIds($arrProduct_id);
                 $this->tpl_javascript .= $this->getTplJavascript($objProduct);
                 $js_fnOnLoad = $this->getFnOnload($this->arrProducts);
-                $this->tpl_javascript .= 'function fnOnLoad()
-                {' . $js_fnOnLoad . '}';
+                $this->tpl_javascript .= 'function fnOnLoad(){' . $js_fnOnLoad . '}';
                 $this->tpl_onload .= 'fnOnLoad();';
                 // 規格1クラス名
                 $this->tpl_class_name1 = $objProduct->className1;
@@ -137,8 +131,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @param array $arrProductId
      * @param SC_Product $objProduct
      */
-    function getProductList($arrProductId, &$objProduct)
-    {
+    function getProductList($arrProductId, &$objProduct) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 表示順序
@@ -152,8 +145,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * ロード時に実行するJavascriptを生成
      * @param array $arrProducts
      */
-    function getFnOnload($arrProducts)
-    {
+    function getFnOnload($arrProducts) {
         foreach ($arrProducts as $arrProduct) {
             $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
         }
@@ -164,8 +156,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * 規格クラス用JavaScript生成
      * @param SC_Product $objProduct
      */
-    function getTplJavascript(&$objProduct)
-    {
+    function getTplJavascript(&$objProduct) {
         return 'productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
     }
 
@@ -174,8 +165,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @param array $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
      */
-    function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
-    {
+    function getProducts($whereAndBind,&$objProduct, $page_max, $startno) {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -195,8 +185,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @param array $whereAndBind
      * @param SC_Product $objProduct
      */
-    function getLineCount($whereAndBind,&$objProduct)
-    {
+    function getLineCount($whereAndBind,&$objProduct) {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
         // 検索結果対象となる商品の数を取得
@@ -212,8 +201,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @return array ('where' => where string, 'bind' => databind array)
      * @param SC_FormParam $objFormParam
      */
-    function createWhere(&$objFormParam,&$objDb)
-    {
+    function createWhere(&$objFormParam,&$objDb) {
         $arrForm = $objFormParam->getHashArray();
         $where = 'alldtl.del_flg = 0';
         $bind = array();
@@ -253,8 +241,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * リクエストパラメーターnoを取ってくる。
      * @param unknown_type $globalParams
      */
-    function getNo($globalParams)
-    {
+    function getNo($globalParams) {
         foreach ($globalParams as $params) {
             if (isset($params['no']) && $params['no']!= '') {
                 return intval($params['no']);
@@ -264,27 +251,11 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
     }
 
     /**
-     * リクエストパラメーター shipping_id を取ってくる。
-     * @param unknown_type $globalParams
-     */
-    function getShippingId($globalParams)
-    {
-        foreach ($globalParams as $params) {
-            if (isset($params['shipping_id']) && $params['shipping_id']!= '') {
-                return intval($params['shipping_id']);
-            }
-        }
-        return null;
-    }
-
-
-    /**
      * 取得している並び順で並び替え
      * @param $arrProduct_id
      * @param $productList
      */
-    function sortProducts($arrProduct_id,$productList)
-    {
+    function sortProducts($arrProduct_id,$productList) {
         $products  = array();
         foreach ($productList as $item) {
             $products[ $item['product_id'] ] = $item;
@@ -300,8 +271,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * デストラクタ.
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -309,13 +279,11 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * パラメーター情報の初期化
      * @param SC_FormParam $objFormParam
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('オーダーID', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カテゴリID', 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam('商品コード', 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
-        $objFormParam->addParam('届け先ID', 'shipping_id', LTEXT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 }

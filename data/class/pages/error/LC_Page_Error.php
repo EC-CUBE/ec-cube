@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Error.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Error extends LC_Page_Ex 
-{
+class LC_Page_Error extends LC_Page_Ex {
 
     // {{{ properties
 
@@ -61,8 +60,7 @@ class LC_Page_Error extends LC_Page_Ex
      * ここでは, parent::init() を行わない.
      * @return void
      */
-    function init()
-    {
+    function init() {
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_title = 'エラー';
         // ディスプレイクラス生成
@@ -71,9 +69,6 @@ class LC_Page_Error extends LC_Page_Ex
         // transformでフックしているばあいに, 再度エラーが発生するため, コールバックを無効化.
         $objHelperPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objHelperPlugin->arrRegistedPluginActions = array();
-
-        // キャッシュから店舗情報取得（DBへの接続は行わない）
-        $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisDataCache(false);
     }
 
     /**
@@ -81,8 +76,7 @@ class LC_Page_Error extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -93,8 +87,7 @@ class LC_Page_Error extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
@@ -180,16 +173,14 @@ class LC_Page_Error extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
     /**
      * エラーページではトランザクショントークンの自動検証は行わない
      */
-    function doValidToken()
-    {
+    function doValidToken() {
         // queit.
     }
 }

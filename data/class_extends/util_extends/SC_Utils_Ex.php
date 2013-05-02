@@ -33,6 +33,5 @@ require_once CLASS_REALDIR . 'util/SC_Utils.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Utils_Ex extends SC_Utils 
-{
+class SC_Utils_Ex extends SC_Utils {
 }

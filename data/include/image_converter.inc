@@ -2,8 +2,7 @@
 /**
  * 画像ファイルの変換を行う
  */
-class ImageConverter 
-{
+class ImageConverter {
     var $outputImageDir;         // 変換後の画像の保存先
     var $outputImageType;        // 変換後の画像の形式
     var $outputImageWidth;       // 変換後の画像の横幅
@@ -11,8 +10,7 @@ class ImageConverter
     var $outputImageFileSize;    // 変換後の画像のファイルサイズ
 
     // コンストラクタ
-    function ImageConverter()
-    {
+    function ImageConverter() {
         $this->outputImageDir    = realpath(realpath(dirname(__FILE__)));
         $this->outputImageType   = 'jpg';
         $this->outputImageWidth  = 320;
@@ -21,8 +19,7 @@ class ImageConverter
     }
 
     // 変換実行
-    function execute($inputImagePath)
-    {
+    function execute($inputImagePath) {
         // 前処理
         $filestat         = @stat($inputImagePath);
         $imagesize        = getimagesize($inputImagePath);
@@ -163,50 +160,22 @@ class ImageConverter
     }
 
     // Setter
-    function setOutputDir($outputDir)
-    {
-        $this->outputImageDir   = $outputDir;
-    }
-    function setImageType($imageType)
-    {
-        $this->outputImageType  = $imageType;
-    }
-    function setImageWidth($imageWidth)
-    {
-        $this->outputImageWidth = $imageWidth;
-    }
-    function setImageHeight($imageHeight)
-    {
-        $this->outputImageHeight = $imageHeight;
-    }
-    function setFileSize($fileSize)
-    {
-        $this->outputFileSize   = $fileSize;
-    }
+    function setOutputDir($outputDir)   { $this->outputImageDir   = $outputDir;  }
+    function setImageType($imageType)   { $this->outputImageType  = $imageType;  }
+    function setImageWidth($imageWidth) { $this->outputImageWidth = $imageWidth; }
+    function setImageHeight($imageHeight) { $this->outputImageHeight = $imageHeight; }
+    function setFileSize($fileSize)     { $this->outputFileSize   = $fileSize;   }
 
     // Getter
-    function getOutputDir()
-    {
-        return $this->outputDir;
-    }
-    function getImageType()
-    {
-        return $this->outputImageType;
-    }
-    function getImageWidth()
-    {
-        return $this->outputImageWidth;
-    }
-    function getImageHeight()
-    {
-        return $this->outputImageHeight;
-    }
+    function getOutputDir()   { return $this->outputDir;         }
+    function getImageType()   { return $this->outputImageType;   }
+    function getImageWidth()  { return $this->outputImageWidth;  }
+    function getImageHeight() { return $this->outputImageHeight; }
 
     /*
      * PrivateMethod
      */
-    function beforeExecute()
-    {
+    function beforeExecute() {
     }
 
     /**
@@ -216,8 +185,7 @@ class ImageConverter
      * @param resource $image imagecreatetruecolor() のような画像作成関数が返す画像リソース。
      * @return array 色情報
      */
-    function getTransparentColor($image)
-    {
+    function getTransparentColor($image) {
         $max_x = imagesx($image) - 1;
         $max_y = imagesy($image) - 1;
         for ($x = 0; $x <= $max_x; $x++) {

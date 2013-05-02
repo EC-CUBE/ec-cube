@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Entry_Kiyaku extends LC_Page_Ex 
-{
+class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_title = 'ご利用規約';
     }
@@ -53,8 +51,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -65,8 +62,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $arrKiyaku = $this->lfGetKiyakuData();
         $this->max = count($arrKiyaku);
@@ -86,8 +82,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -100,8 +95,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      * @access public
      * @return string 規約の内容をテキストエリアで表示するように整形したデータ
      */
-    function lfMakeKiyakuText($arrKiyaku, $max, $offset)
-    {
+    function lfMakeKiyakuText($arrKiyaku, $max, $offset) {
         $this->tpl_kiyaku_text = '';
         for ($i = 0; $i < $max; $i++) {
             if ($offset !== null && ($offset - 1) <> $i) continue;
@@ -117,10 +111,12 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      * @access private
      * @return array $arrKiyaku 規約の配列
      */
-    function lfGetKiyakuData()
-    {
-        $objKiyaku = new SC_Helper_Kiyaku_Ex();
-        $arrKiyaku = $objKiyaku->getList();
+    function lfGetKiyakuData() {
+
+        $objQuery   = SC_Query_Ex::getSingletonInstance();
+
+        $objQuery->setOrder('rank DESC');
+        $arrKiyaku  = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', 'del_flg <> 1');
 
         return $arrKiyaku;
     }
@@ -133,8 +129,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      * @access private
      * @return int
      */
-    function lfSetOffset($offset)
-    {
+    function lfSetOffset($offset) {
         return is_numeric($offset) === true ? intval($offset) : 1;
     }
 

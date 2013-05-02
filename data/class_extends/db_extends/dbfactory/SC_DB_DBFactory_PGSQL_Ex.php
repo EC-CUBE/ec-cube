@@ -33,6 +33,5 @@ require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_PGSQL.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_DB_DBFactory_PGSQL_Ex extends SC_DB_DBFactory_PGSQL 
-{
+class SC_DB_DBFactory_PGSQL_Ex extends SC_DB_DBFactory_PGSQL {
 }

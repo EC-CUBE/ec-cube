@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/mail.tpl';
         $this->tpl_mainno = 'basis';
@@ -57,8 +55,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -68,11 +65,9 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $masterData = new SC_DB_MasterData_Ex();
-        $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
 
         $mode = $this->getMode();
 
@@ -90,9 +85,9 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
 
         switch ($mode) {
             case 'id_set':
-                    $mailtemplate = $objMailtemplate->get($post['template_id']);
-                    if ($mailtemplate) {
-                        $this->arrForm = $mailtemplate;
+                    $result = $this->lfGetMailTemplateByTemplateID($post['template_id']);
+                    if ($result) {
+                        $this->arrForm = $result[0];
                     } else {
                         $this->arrForm['template_id'] = $post['template_id'];
                     }
@@ -106,7 +101,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
 
                     } else {
                         // 正常
-                        $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id'], $objMailtemplate);
+                        $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
 
                         // 完了メッセージ
                         $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
@@ -124,24 +119,40 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
-    function lfRegistMailTemplate($post, $member_id, SC_Helper_Mailtemplate_Ex $objMailtemplate)
-    {
-        $post['creator_id'] = $member_id;
-        $objMailtemplate->save($post);
+    function lfGetMailTemplateByTemplateID($template_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
+        return $objQuery->getAll($sql, array($template_id));
     }
 
-    function lfInitParam($mode, &$objFormParam)
-    {
+    function lfRegistMailTemplate($post, $member_id) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $post['creator_id'] = $member_id;
+        $post['update_date'] = 'CURRENT_TIMESTAMP';
+
+        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
+        $template_data = $objQuery->getAll($sql, array($post['template_id']));
+        if ($template_data) {
+            $sql_where = 'template_id = ?';
+            $objQuery->update('dtb_mailtemplate', $post, $sql_where, array(addslashes($post['template_id'])));
+        } else {
+            $objQuery->insert('dtb_mailtemplate', $post);
+        }
+
+    }
+
+    function lfInitParam($mode, &$objFormParam) {
         switch ($mode) {
             case 'regist':
                 $objFormParam->addParam('メールタイトル', 'subject', MTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('ヘッダー', 'header', LTEXT_LEN, 'KVa', array('SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('ヘッダー', 'header', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             case 'id_set':
                 $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));

@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Rss_Products extends LC_Page_Ex 
-{
+class LC_Page_Rss_Products extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'rss/products.tpl';
         $this->encode = 'UTF-8';
@@ -55,8 +53,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
     }
 
@@ -65,8 +62,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objView = new SC_SiteView_Ex();
 
@@ -127,8 +123,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -139,8 +134,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      * @param str $product_id 商品ID
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsDetailData($mode, $product_id)
-    {
+    function lfGetProductsDetailData($mode, $product_id) {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品詳細を取得
         if ($mode == 'all') {
@@ -191,8 +185,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsListData()
-    {
+    function lfGetProductsListData() {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品一覧を取得
         $arrProduct = $objQuery->getAll('SELECT product_id, name AS product_name FROM dtb_products');
@@ -204,8 +197,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsAllData()
-    {
+    function lfGetProductsAllData() {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品情報を取得
         $arrProduct = $this->lfGetProductsAllclass($objQuery);
@@ -250,8 +242,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      * @param integer $product_id 商品ID
      * @return array $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsDetail(&$objQuery, $product_id = 'all')
-    {
+    function lfGetProductsDetail(&$objQuery, $product_id = 'all') {
         $objProduct = new SC_Product_Ex();
 
         // --- 商品詳細の取得
@@ -292,8 +283,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      * @param SC_Query $objQuery DB操作クラス
      * @return array $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsAllclass(&$objQuery)
-    {
+    function lfGetProductsAllclass(&$objQuery) {
         // --- 商品一覧の取得
         $objQuery->setWhere('del_flg = 0 AND status = 1');
         $objQuery->setOrder('product_id');

@@ -249,11 +249,6 @@ style info :ブロック用
     line-height: 1.3em;
     vertical-align: middle;
 }
-#categorytree li ul {
-    border: none;
-    margin: 0;
-    padding: 0;
-}
 
 #categorytree li:first-child {
     border-top: none;

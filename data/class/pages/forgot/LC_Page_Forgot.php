@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Forgot extends LC_Page_Ex 
-{
+class LC_Page_Forgot extends LC_Page_Ex {
 
     // {{{ properties
 
@@ -56,8 +55,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_title = 'パスワードを忘れた方';
         $this->tpl_mainpage = 'forgot/index.tpl';
@@ -76,8 +74,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -88,8 +85,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -150,8 +146,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      * @param array $arrReminder リマインダー質問リスト
      * @return string エラー文字列 問題が無ければNULL
      */
-    function lfCheckForgotMail(&$arrForm, &$arrReminder)
-    {
+    function lfCheckForgotMail(&$arrForm, &$arrReminder) {
         $errmsg = NULL;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = '(email = ? OR email_mobile = ?) AND name01 = ? AND name02 = ? AND del_flg = 0';
@@ -179,8 +174,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      * @param array $device_type デバイスタイプ
      * @return void
      */
-    function lfInitMailCheckParam(&$objFormParam, $device_type)
-    {
+    function lfInitMailCheckParam(&$objFormParam, $device_type) {
         $objFormParam->addParam('お名前(姓)', 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(名)', 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
         if ($device_type === DEVICE_TYPE_MOBILE) {
@@ -198,8 +192,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      * @param array $arrReminder リマインダー質問リスト
      * @return string エラー文字列 問題が無ければNULL
      */
-    function lfCheckForgotSecret(&$arrForm, &$arrReminder)
-    {
+    function lfCheckForgotSecret(&$arrForm, &$arrReminder) {
         $errmsg = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = 'customer_id, reminder, reminder_answer, salt';
@@ -259,8 +252,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      * @param array $device_type デバイスタイプ
      * @return void
      */
-    function lfInitSecretCheckParam(&$objFormParam, $device_type)
-    {
+    function lfInitSecretCheckParam(&$objFormParam, $device_type) {
         // メールチェックと同等のチェックを再度行う
         $this->lfInitMailCheckParam($objFormParam, $device_type);
         // 秘密の質問チェックの追加
@@ -274,8 +266,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -290,8 +281,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      *
      * FIXME: メールテンプレート編集の方に足すのが望ましい
      */
-    function lfSendMail(&$CONF, $email, $customer_name, $new_password)
-    {
+    function lfSendMail(&$CONF, $email, $customer_name, $new_password) {
         // パスワード変更お知らせメール送信
         $objMailText = new SC_SiteView_Ex(false);
         $objMailText->setPage($this);

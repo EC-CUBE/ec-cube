@@ -42,8 +42,7 @@ register_shutdown_function(array($objPage, 'destroy'));
 $objPage->process($mode);
 
 
-function lfPageFactory($mode)
-{
+function lfPageFactory($mode) {
     $prefix = 'LC_Page_Upgrade_';
     $file   = CLASS_REALDIR . "pages/upgrade/${prefix}";
     $class  = $prefix;

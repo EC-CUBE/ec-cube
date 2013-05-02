@@ -197,14 +197,12 @@ switch ($mode) {
         }
 
         //マスターデータのキャッシュを削除
-        $cache_dir = DATA_REALDIR . 'cache/';
+        $cache_dir = '../../data/cache/';
         $res_dir = opendir($cache_dir);
         while ($file_name = readdir($res_dir)){
             //dummy以外は削除
             if ($file_name != 'dummy'){
-                if (is_file($cache_dir . $file_name)) {
-                    unlink($cache_dir . $file_name);
-                }
+                unlink($cache_dir . $file_name);
             }
         }
         closedir($res_dir);
@@ -274,8 +272,7 @@ $objView->assignobj($objPage);
 $objView->display('install_frame.tpl');
 //-----------------------------------------------------------------------------------------------------------------------------------
 // ようこそ画面の表示
-function lfDispWelcome($objPage)
-{
+function lfDispWelcome($objPage) {
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -290,8 +287,7 @@ function lfDispWelcome($objPage)
 }
 
 // 使用許諾契約書の表示
-function lfDispAgreement($objPage)
-{
+function lfDispAgreement($objPage) {
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -306,8 +302,7 @@ function lfDispAgreement($objPage)
 }
 
 // STEP0画面の表示(チェック)
-function lfDispStep0($objPage)
-{
+function lfDispStep0($objPage) {
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -451,8 +446,7 @@ function lfDispStep0($objPage)
 }
 
 // STEP0_1画面の表示(ファイルのコピー)
-function lfDispStep0_1($objPage)
-{
+function lfDispStep0_1($objPage) {
     global $objWebParam;
     global $objDBParam;
 
@@ -469,15 +463,13 @@ function lfDispStep0_1($objPage)
     return $objPage;
 }
 
-function lfGetFileMode($path)
-{
+function lfGetFileMode($path) {
     $mode = substr(sprintf('%o', fileperms($path)), -3);
     return $mode;
 }
 
 // STEP1画面の表示
-function lfDispStep1($objPage)
-{
+function lfDispStep1($objPage) {
     global $objDBParam;
     // hiddenに入力値を保持
     $objPage->arrHidden = $objDBParam->getHashArray();
@@ -489,8 +481,7 @@ function lfDispStep1($objPage)
 }
 
 // STEP2画面の表示
-function lfDispStep2($objPage)
-{
+function lfDispStep2($objPage) {
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -503,8 +494,7 @@ function lfDispStep2($objPage)
 }
 
 // STEP3画面の表示
-function lfDispStep3($objPage)
-{
+function lfDispStep3($objPage) {
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -519,8 +509,7 @@ function lfDispStep3($objPage)
 }
 
 // STEP4画面の表示
-function lfDispStep4($objPage)
-{
+function lfDispStep4($objPage) {
     global $objWebParam;
     global $objDBParam;
     global $objDb;
@@ -553,8 +542,7 @@ function lfDispStep4($objPage)
 }
 
 // 完了画面の表示
-function lfDispComplete($objPage)
-{
+function lfDispComplete($objPage) {
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -626,8 +614,7 @@ function lfDispComplete($objPage)
 }
 
 // WEBパラメーター情報の初期化
-function lfInitWebParam($objWebParam)
-{
+function lfInitWebParam($objWebParam) {
     global $objDb;
 
     if (defined('HTTP_URL')) {
@@ -714,8 +701,7 @@ function lfInitWebParam($objWebParam)
 }
 
 // DBパラメーター情報の初期化
-function lfInitDBParam($objDBParam)
-{
+function lfInitDBParam($objDBParam) {
 
     if (defined('DB_SERVER')) {
         $db_server = DB_SERVER;
@@ -758,8 +744,7 @@ function lfInitDBParam($objDBParam)
 }
 
 // 入力内容のチェック
-function lfCheckWebError($objWebParam)
-{
+function lfCheckWebError($objWebParam) {
     // 入力データを渡す。
     $arrRet = $objWebParam->getHashArray();
     $objErr = new SC_CheckError($arrRet);
@@ -793,8 +778,7 @@ function lfCheckWebError($objWebParam)
 }
 
 // 入力内容のチェック
-function lfCheckDBError($objDBParam)
-{
+function lfCheckDBError($objDBParam) {
     global $objPage;
 
     // 入力データを渡す。
@@ -825,8 +809,7 @@ function lfCheckDBError($objDBParam)
 }
 
 // SQL文の実行
-function lfExecuteSQL($filepath, $arrDsn, $disp_err = true)
-{
+function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
     $arrErr = array();
 
     if (!file_exists($filepath)) {
@@ -883,8 +866,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true)
  * @param array $arrDsn データソース名の配列
  * @return array エラーが発生した場合はエラーメッセージの配列
  */
-function lfDropSequence($arrSequences, $arrDsn)
-{
+function lfDropSequence($arrSequences, $arrDsn) {
     $arrErr = array();
 
     // Debugモード指定
@@ -923,8 +905,7 @@ function lfDropSequence($arrSequences, $arrDsn)
  * @param array $arrDsn データソース名の配列
  * @return array エラーが発生した場合はエラーメッセージの配列
  */
-function lfCreateSequence($arrSequences, $arrDsn)
-{
+function lfCreateSequence($arrSequences, $arrDsn) {
     $arrErr = array();
 
     // Debugモード指定
@@ -963,8 +944,7 @@ function lfCreateSequence($arrSequences, $arrDsn)
 }
 
 // 設定ファイルの作成
-function lfMakeConfigFile()
-{
+function lfMakeConfigFile() {
     global $objWebParam;
     global $objDBParam;
 
@@ -1058,8 +1038,7 @@ function lfMakeConfigFile()
  * @see http://www.php.net/glob
  */
 $alldirs = array();
-function listdirs($dir)
-{
+function listdirs($dir) {
     global $alldirs;
     $alldirs[] = $dir;
     $dirs = glob($dir . '/*');
@@ -1074,8 +1053,7 @@ function listdirs($dir)
 /**
  * 保持したスタティック変数をクリアする。
  */
-function initdirs()
-{
+function initdirs() {
     global $alldirs;
     $alldirs = array();
 }
@@ -1085,8 +1063,7 @@ function initdirs()
  *
  * @return array シーケンスを使用するテーブル名とカラム名の配列
  */
-function getSequences()
-{
+function getSequences() {
     return array(
         array('dtb_best_products', 'best_id'),
         array('dtb_bloc', 'bloc_id'),
@@ -1127,8 +1104,7 @@ function getSequences()
  *
  * @param string 設定する管理機能のディレクトリ名
  */
-function renameAdminDir($adminDir)
-{
+function renameAdminDir($adminDir) {
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     if ($adminDir === $oldAdminDir) {
         return true;
@@ -1142,8 +1118,7 @@ function renameAdminDir($adminDir)
     return true;
 }
 
-function getArrayDsn(SC_FormParam $objDBParam)
-{
+function getArrayDsn(SC_FormParam $objDBParam) {
     $arrRet = $objDBParam->getHashArray();
 
     if (!defined('DB_TYPE')) {

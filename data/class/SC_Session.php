@@ -22,8 +22,7 @@
  */
 
 /* セッション管理クラス */
-class SC_Session 
-{
+class SC_Session {
 
     /** ログインユーザ名 */
     var $login_id;
@@ -44,8 +43,7 @@ class SC_Session
     var $uniqid;
 
     /* コンストラクタ */
-    function __construct()
-    {
+    function __construct() {
         // セッション情報の保存
         if (isset($_SESSION['cert'])) {
             $this->sid = session_id();
@@ -66,8 +64,7 @@ class SC_Session
         }
     }
     /* 認証成功の判定 */
-    function IsSuccess()
-    {
+    function IsSuccess() {
         if ($this->cert == CERT_STRING) {
             $masterData = new SC_DB_MasterData_Ex();
             $admin_path = preg_replace('/\/+/', '/', $_SERVER['SCRIPT_NAME']);
@@ -85,26 +82,22 @@ class SC_Session
     }
 
     /* セッションの書き込み */
-    function SetSession($key, $val)
-    {
+    function SetSession($key, $val) {
         $_SESSION[$key] = $val;
     }
 
     /* セッションの読み込み */
-    function GetSession($key)
-    {
+    function GetSession($key) {
         return $_SESSION[$key];
     }
 
     /* セッションIDの取得 */
-    function GetSID()
-    {
+    function GetSID() {
         return $this->sid;
     }
 
     /** ユニークIDの取得 **/
-    function getUniqId()
-    {
+    function getUniqId() {
         // ユニークIDがセットされていない場合はセットする。
         if (empty($_SESSION['uniqid'])) {
             $this->setUniqId();
@@ -113,15 +106,13 @@ class SC_Session
     }
 
     /** ユニークIDのセット **/
-    function setUniqId()
-    {
+    function setUniqId() {
         // 予測されないようにランダム文字列を付与する。
         $this->SetSession('uniqid', SC_Utils_Ex::sfGetUniqRandomId());
     }
 
     // 関連セッションのみ破棄する。
-    function logout()
-    {
+    function logout() {
         unset($_SESSION['cert']);
         unset($_SESSION['login_id']);
         unset($_SESSION['authority']);

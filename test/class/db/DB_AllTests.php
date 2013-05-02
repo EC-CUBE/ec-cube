@@ -34,11 +34,9 @@ require_once(realpath(dirname(__FILE__)) . '/SC_DB_MasterData_Test.php');
  * @author Kentaro Ohkouchi
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class DB_AllTests extends PHPUnit_Framework_TestCase 
-{
+class DB_AllTests extends PHPUnit_Framework_TestCase {
 
-    public static function suite()
-    {
+    public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite('SC_DB');
         $suite->addTestSuite('SC_DB_DBFactory_Test');
         $suite->addTestSuite('SC_DB_MasterData_Test');

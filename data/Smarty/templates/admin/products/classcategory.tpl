@@ -75,7 +75,7 @@
                     <!--{/if}-->
                 </td>
                 <td align="center">
-                    <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ fnModeSubmit('delete','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); } return false;">削除</a>
+                    <a href="?" onclick="fnModeSubmit('delete','classcategory_id', <!--{$arrClassCat[cnt].classcategory_id}-->); return false;">削除</a>
                 </td>
                 <td align="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->

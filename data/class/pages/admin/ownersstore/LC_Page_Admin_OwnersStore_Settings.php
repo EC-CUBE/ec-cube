@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
 
     /** SC_FormParamのインスタンス */
     var $objForm;
@@ -51,8 +50,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
 
         $this->tpl_mainpage = 'ownersstore/settings.tpl';
@@ -68,8 +66,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -79,8 +76,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
         switch ($this->getMode()) {
             // 入力内容をDBへ登録する
             case 'register':
@@ -97,8 +93,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -109,8 +104,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      * @param void
      * @return void
      */
-    function execRegisterMode()
-    {
+    function execRegisterMode() {
         // パラメーターオブジェクトの初期化
         $this->initRegisterMode();
         // POSTされたパラメーターの検証
@@ -139,8 +133,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      * @param void
      * @return void
      */
-    function initRegisterMode()
-    {
+    function initRegisterMode() {
         // 前後の空白を削除
         if (isset($_POST['public_key'])) {
             $_POST['public_key'] = trim($_POST['public_key']);
@@ -159,8 +152,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      * @param void
      * @return array エラー情報を格納した連想配列
      */
-    function validateRegistermode()
-    {
+    function validateRegistermode() {
         return $this->objForm->checkError();
     }
 
@@ -171,8 +163,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      * @param void
      * @return void
      */
-    function execDefaultMode()
-    {
+    function execDefaultMode() {
         $this->arrForm = $this->getOwnersStoreSettings();
     }
 
@@ -182,8 +173,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      * @param array $arrSettingsData ｵｰﾅｰｽﾞｽﾄｱ設定の連想配列
      * @return void
      */
-    function registerOwnersStoreSettings($arrSettingsData)
-    {
+    function registerOwnersStoreSettings($arrSettingsData) {
         $table = 'dtb_ownersstore_settings';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists($table);
@@ -201,8 +191,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
      * @param void
      * @return array
      */
-    function getOwnersStoreSettings()
-    {
+    function getOwnersStoreSettings() {
         $table   = 'dtb_ownersstore_settings';
         $colmuns = '*';
 

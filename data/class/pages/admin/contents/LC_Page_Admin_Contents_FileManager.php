@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'contents/file_manager.tpl';
         $this->tpl_mainno = 'contents';
@@ -58,8 +56,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -69,8 +66,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         // フォーム操作クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -208,8 +204,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -219,8 +214,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
     }
@@ -231,8 +225,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParamModeMove(&$objFormParam)
-    {
+    function lfInitParamModeMove(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
         $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array());
@@ -244,8 +237,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParamModeView(&$objFormParam)
-    {
+    function lfInitParamModeView(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
         $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array('SELECT_CHECK'));
@@ -257,8 +249,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParamModeCreate(&$objFormParam)
-    {
+    function lfInitParamModeCreate(&$objFormParam) {
         // 共通定義
         $this->lfInitParamCommon($objFormParam);
         $objFormParam->addParam('選択ファイル', 'select_file', MTEXT_LEN, 'a', array());
@@ -271,8 +262,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParamCommon(&$objFormParam)
-    {
+    function lfInitParamCommon(&$objFormParam) {
         $objFormParam->addParam('ルートディレクトリ', 'top_dir', MTEXT_LEN, 'a', array());
         $objFormParam->addParam('現在の階層ディレクトリ', 'now_dir', MTEXT_LEN, 'a', array());
         $objFormParam->addParam('現在の階層ファイル', 'now_file', MTEXT_LEN, 'a', array());
@@ -286,8 +276,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param object $objUpFile SC_UploadFileインスタンス
      * @return void
      */
-    function lfInitFile(&$objUpFile)
-    {
+    function lfInitFile(&$objUpFile) {
         $objUpFile->addFile('ファイル', 'upload_file', array(), FILE_SIZE, true, 0, 0, false);
     }
 
@@ -297,8 +286,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param array $arrVal $_POST
      * @return array $setParam テンプレートに渡す値
      */
-    function createSetParam($arrVal)
-    {
+    function createSetParam($arrVal) {
         $setParam = $arrVal;
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $setParam['top_dir'] = (strpos(PHP_OS, 'WIN') === false) ? USER_REALDIR : str_replace('\\', '/', USER_REALDIR);
@@ -316,8 +304,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param string $val 値
      * @return void
      */
-    function setDispParam($key, $val)
-    {
+    function setDispParam($key, $val) {
         $this->$key = $val;
     }
 
@@ -328,8 +315,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return boolean ディレクトリ作成できたかどうか
      */
-    function tryCreateDir($objFileManager, $objFormParam)
-    {
+    function tryCreateDir($objFileManager, $objFormParam) {
         $create_dir_flg = false;
         $create_dir = rtrim($objFormParam->getValue('now_dir'), '/');
         // ファイル作成
@@ -345,8 +331,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return boolean ファイル表示するかどうか
      */
-    function tryView(&$objFormParam)
-    {
+    function tryView(&$objFormParam) {
         $view_flg = false;
         $now_dir = $this->lfCheckSelectDir($objFormParam, dirname($objFormParam->getValue('select_file')));
         $objFormParam->setValue('now_dir', $now_dir);
@@ -362,8 +347,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setParentDir($objFormParam)
-    {
+    function setParentDir($objFormParam) {
         $parent_dir = $this->lfGetParentDir($objFormParam->getValue('now_dir'));
         $this->setDispParam('tpl_parent_dir', $parent_dir);
     }
@@ -374,8 +358,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setDispPath($objFormParam)
-    {
+    function setDispPath($objFormParam) {
         $tpl_now_dir = '';
         // Windows 環境で DIRECTORY_SEPARATOR が JavaScript に渡るとエスケープ文字と勘違いするので置換
         $html_realdir = str_replace(DIRECTORY_SEPARATOR, '/', HTML_REALDIR);
@@ -391,8 +374,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param string $value エラー内容
      * @return void
      */
-    function setDispError($key, $value)
-    {
+    function setDispError($key, $value) {
         // 既にエラーがある場合は、処理しない
         if (SC_Utils_Ex::isBlank($this->arrErr[$key])) {
             $this->arrErr[$key] = $value;
@@ -405,8 +387,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param string $tpl_onload javascript
      * @return void
      */
-    function setTplOnLoad($tpl_onload)
-    {
+    function setTplOnLoad($tpl_onload) {
         $this->tpl_onload .= $tpl_onload;
     }
 
@@ -417,8 +398,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param string $dir ディレクトリ
      * @return string $select_dir 選択ディレクトリ
      */
-    function lfCheckSelectDir($objFormParam, $dir)
-    {
+    function lfCheckSelectDir($objFormParam, $dir) {
         $select_dir = '';
         $top_dir = $objFormParam->getValue('top_dir');
         // USER_REALDIR以下の場合
@@ -443,8 +423,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param string $dir 現在いるディレクトリ
      * @return string $parent_dir 親ディレクトリ
      */
-    function lfGetParentDir($dir)
-    {
+    function lfGetParentDir($dir) {
         $parent_dir = '';
         $dir = rtrim($dir, '/');
         $arrDir = explode('/', $dir);
@@ -463,8 +442,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setDispTree($objFileManager, $objFormParam)
-    {
+    function setDispTree($objFileManager, $objFormParam) {
         $tpl_onload = '';
         // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ, 選択ツリーhidden名, ツリー状態hidden名, mode hidden名
         $now_dir = $objFormParam->getValue('now_dir');
@@ -496,8 +474,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function setIsTopDir($objFormParam)
-    {
+    function setIsTopDir($objFormParam) {
         // トップディレクトリか調査
         $is_top_dir = false;
         // 末尾の/をとる

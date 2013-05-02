@@ -31,11 +31,9 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_unsetShippingTempTest extends SC_Helper_Purchase_TestBase
-{
+class SC_Helper_Purchase_unsetShippingTempTest extends SC_Helper_Purchase_TestBase {
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
 
     // 空にするだけなので適当な値を設定
@@ -43,14 +41,12 @@ class SC_Helper_Purchase_unsetShippingTempTest extends SC_Helper_Purchase_TestBa
     $_SESSION['multiple_temp'] = 'temp02';
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testUnsetShippingTemp__配送情報がすべて破棄される()
-  {
+  public function testUnsetShippingTemp__配送情報がすべて破棄される() {
     SC_Helper_Purchase::unsetShippingTemp(TRUE);
 
     $this->expected = array('shipping'=>TRUE, 'multiple_temp'=>TRUE);

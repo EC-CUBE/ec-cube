@@ -35,11 +35,9 @@ require_once(realpath(dirname(__FILE__)) . "/SC_Helper_Address_Test.php");
  * @author Kentaro Ohkouchi
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class Helper_AllTests extends PHPUnit_Framework_TestCase 
-{
+class Helper_AllTests extends PHPUnit_Framework_TestCase {
 
-    public static function suite()
-    {
+    public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite('SC_Helper');
         $suite->addTestSuite('SC_Helper_DB_Test');
         $suite->addTestSuite('SC_Helper_Session_Test');

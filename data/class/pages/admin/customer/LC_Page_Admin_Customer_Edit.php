@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'customer/edit.tpl';
         $this->tpl_mainno = 'customer';
@@ -67,7 +65,8 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
         $this->arrDay = $objDate->getDay();
 
         // 支払い方法種別
-        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
+        $objDb = new SC_Helper_DB_Ex();
+        $this->arrPayment = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
     }
 
     /**
@@ -75,8 +74,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -86,8 +84,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -200,8 +197,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -211,8 +207,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         // 会員項目のパラメーター取得
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
@@ -227,8 +222,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitSearchParam(&$objFormParam)
-    {
+    function lfInitSearchParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
         $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -240,8 +234,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      * @param array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckErrorSearchParam(&$objFormParam)
-    {
+    function lfCheckErrorSearchParam(&$objFormParam) {
         return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
     }
 
@@ -251,8 +244,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      * @param array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckError(&$objFormParam)
-    {
+    function lfCheckError(&$objFormParam) {
         $arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam, true);
 
         // メアド重複チェック(共通ルーチンは使えない)
@@ -291,8 +283,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      * @param array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfRegistData(&$objFormParam)
-    {
+    function lfRegistData(&$objFormParam) {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         // 登録用データ取得
         $arrData = $objFormParam->getDbArray();
@@ -321,8 +312,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      * @param array $arrParam 検索パラメーター連想配列
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfPurchaseHistory($customer_id, $pageno = 0)
-    {
+    function lfPurchaseHistory($customer_id, $pageno = 0) {
         if (SC_Utils_Ex::isBlank($customer_id)) {
             return array('0', array(), NULL);
         }

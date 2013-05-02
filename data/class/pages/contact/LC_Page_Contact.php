@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Contact extends LC_Page_Ex 
-{
+class LC_Page_Contact extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->tpl_title = 'お問い合わせ';
@@ -67,8 +65,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -79,8 +76,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -143,8 +139,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -157,8 +152,7 @@ class LC_Page_Contact extends LC_Page_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
 
         $objFormParam->addParam('お名前(姓)', 'name01', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(名)', 'name02', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
@@ -183,8 +177,7 @@ class LC_Page_Contact extends LC_Page_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array 入力チェック結果の配列
      */
-    function lfCheckError(&$objFormParam)
-    {
+    function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrForm);
@@ -198,8 +191,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function lfSendMail(&$objPage)
-    {
+    function lfSendMail(&$objPage) {
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         $objPage->tpl_shopname = $CONF['shop_name'];
         $objPage->tpl_infoemail = $CONF['email02'];

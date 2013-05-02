@@ -30,8 +30,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Batch_Update extends SC_Batch 
-{
+class SC_Batch_Update extends SC_Batch {
 
     /**
      * 変換したいファイルの拡張子をカンマ区切りで羅列.
@@ -49,8 +48,7 @@ class SC_Batch_Update extends SC_Batch
      * @param string $target アップデータファイルのディレクトリパス
      * @return void
      */
-    function execute($target = '.')
-    {
+    function execute($target = '.') {
         $msg = '';
         $oldMask = umask(0);
         $bkupDistInfoArray = array(); //バックアップファイル用のdistinfoファイル内容
@@ -197,8 +195,7 @@ class SC_Batch_Update extends SC_Batch
      * @return array $dir より下層に存在するパス名の配列
      * @see http://www.php.net/glob
      */
-    function listdirs($dir)
-    {
+    function listdirs($dir) {
         static $alldirs = array();
         $dirs = glob($dir . '/*');
         if (is_array($dirs) && count($dirs) > 0) {
@@ -215,8 +212,7 @@ class SC_Batch_Update extends SC_Batch
      *
      * @param string $path 絶対パス
      */
-    function lfMkdirRecursive($path)
-    {
+    function lfMkdirRecursive($path) {
         $path = dirname($path);
 
         // HTML_REALDIR/DATA_REALDIRの判別
@@ -239,8 +235,7 @@ class SC_Batch_Update extends SC_Batch
         }
     }
 
-    function makeDistInfo($bkupDistInfoArray)
-    {
+    function makeDistInfo($bkupDistInfoArray) {
         $src = "<?php\n"
              . '$distifo = array(' . "\n";
 
@@ -252,8 +247,7 @@ class SC_Batch_Update extends SC_Batch
         return $src;
     }
 
-    function printLog($msg)
-    {
+    function printLog($msg) {
         GC_Utils_Ex::gfPrintLog($msg, DATA_REALDIR . 'logs/ownersstore_batch_update.log');
     }
 }

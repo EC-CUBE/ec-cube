@@ -28,8 +28,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_Mail 
-{
+class SC_Helper_Mail {
 
     /** メールテンプレートのパス */
     var $arrMAILTPLPATH;
@@ -44,8 +43,7 @@ class SC_Helper_Mail
     /**
      * コンストラクタ.
      */
-    function __construct()
-    {
+    function __construct() {
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTPLPATH =  $masterData->getMasterData('mtb_mail_tpl_path');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -56,8 +54,7 @@ class SC_Helper_Mail
      * 
      * @param LC_Page $objPage
      */
-    function setPage(LC_Page $objPage)
-    {
+    function setPage(LC_Page $objPage) {
         $this->objPage = $objPage;
     }
 
@@ -66,21 +63,20 @@ class SC_Helper_Mail
      * 
      * @return LC_Page
      */
-    function getPage()
-    {
+    function getPage() {
         return $this->objPage;
     }
 
     /* DBに登録されたテンプレートメールの送信 */
-    function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '')
-    {
+    function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '') {
 
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // メールテンプレート情報の取得
-        $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
-        $mailtemplate = $objMailtemplate->get($template_id);
-        $objPage->tpl_header = $mailtemplate['header'];
-        $objPage->tpl_footer = $mailtemplate['footer'];
-        $tmp_subject = $mailtemplate['subject'];
+        $where = 'template_id = ?';
+        $arrRet = $objQuery->select('subject, header, footer', 'dtb_mailtemplate', $where, array($template_id));
+        $objPage->tpl_header = $arrRet[0]['header'];
+        $objPage->tpl_footer = $arrRet[0]['footer'];
+        $tmp_subject = $arrRet[0]['subject'];
 
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
@@ -104,8 +100,7 @@ class SC_Helper_Mail
     }
 
     /* 受注完了メール送信 */
-    function sfSendOrderMail($order_id, $template_id, $subject = '', $header = '', $footer = '', $send = true)
-    {
+    function sfSendOrderMail($order_id, $template_id, $subject = '', $header = '', $footer = '', $send = true) {
 
         $arrTplVar = new stdClass();
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
@@ -115,11 +110,11 @@ class SC_Helper_Mail
 
         if ($subject == '' && $header == '' && $footer == '') {
             // メールテンプレート情報の取得
-            $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
-            $mailtemplate = $objMailtemplate->get($template_id);
-            $arrTplVar->tpl_header = $mailtemplate['header'];
-            $arrTplVar->tpl_footer = $mailtemplate['footer'];
-            $tmp_subject = $mailtemplate['subject'];
+            $where = 'template_id = ?';
+            $arrRet = $objQuery->select('subject, header, footer', 'dtb_mailtemplate', $where, array($template_id));
+            $arrTplVar->tpl_header = $arrRet[0]['header'];
+            $arrTplVar->tpl_footer = $arrRet[0]['footer'];
+            $tmp_subject = $arrRet[0]['subject'];
         } else {
             $arrTplVar->tpl_header = $header;
             $arrTplVar->tpl_footer = $footer;
@@ -217,8 +212,7 @@ class SC_Helper_Mail
     }
 
     // テンプレートを使用したメールの送信
-    function sfSendTplMail($to, $tmp_subject, $tplpath, &$objPage)
-    {
+    function sfSendTplMail($to, $tmp_subject, $tplpath, &$objPage) {
         $objMailView = new SC_SiteView_Ex();
         $objMailView->setPage($this->getPage());
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
@@ -239,8 +233,7 @@ class SC_Helper_Mail
     }
 
     // 通常のメール送信
-    function sfSendMail($to, $tmp_subject, $body)
-    {
+    function sfSendMail($to, $tmp_subject, $body) {
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         // メール送信処理
         $objSendMail = new SC_SendMail_Ex();
@@ -254,8 +247,7 @@ class SC_Helper_Mail
     }
 
     //件名にテンプレートを用いる
-    function sfMakeSubject($subject, &$objMailView)
-    {
+    function sfMakeSubject($subject, &$objMailView) {
         if (empty($objMailView)) {
             $objMailView = new SC_SiteView_Ex();
             $objMailView->setPage($this->getPage());
@@ -274,8 +266,7 @@ class SC_Helper_Mail
     }
 
     // メール配信履歴への登録
-    function sfSaveMailHistory($order_id, $template_id, $subject, $body)
-    {
+    function sfSaveMailHistory($order_id, $template_id, $subject, $body) {
         $sqlval = array();
         $sqlval['subject'] = $subject;
         $sqlval['order_id'] = $order_id;
@@ -295,8 +286,7 @@ class SC_Helper_Mail
     }
 
     /* 会員登録があるかどうかのチェック(仮会員を含まない) */
-    function sfCheckCustomerMailMaga($email)
-    {
+    function sfCheckCustomerMailMaga($email) {
         $col = 'email, mailmaga_flg, customer_id';
         $from = 'dtb_customer';
         $where = '(email = ? OR email_mobile = ?) AND status = 2 AND del_flg = 0';
@@ -317,8 +307,7 @@ class SC_Helper_Mail
      * @param boolean $is_mobile false(default):PCアドレスにメールを送る true:携帯アドレスにメールを送る
      * @return boolean true:成功 false:失敗
      */
-    function sfSendRegistMail($secret_key, $customer_id = '', $is_mobile = false)
-    {
+    function sfSendRegistMail($secret_key, $customer_id = '', $is_mobile = false) {
         // 会員データの取得
         if (SC_Utils_Ex::sfIsInt($customer_id)) {
             $arrCustomerData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
@@ -381,8 +370,7 @@ class SC_Helper_Mail
      * @return　array メールテンプレート情報を格納した配列
      * @todo   表示順も引数で変更できるように
      */
-    function sfGetMailmagaTemplate($template_id = null)
-    {
+    function sfGetMailmagaTemplate($template_id = null) {
         // 初期化
         $where = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -408,8 +396,7 @@ class SC_Helper_Mail
      * @param integer 特定の送信履歴を取り出したい時はsend_idを指定。未指定時は全件取得
      * @return　array 送信履歴情報を格納した配列
      */
-    function sfGetSendHistory($send_id = null)
-    {
+    function sfGetSendHistory($send_id = null) {
         // 初期化
         $where = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -437,8 +424,7 @@ class SC_Helper_Mail
      * @param integer $send_id dtb_send_history の情報
      * @return　void
      */
-    function sfSendMailmagazine($send_id)
-    {
+    function sfSendMailmagazine($send_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
         $objSite = $objDb->sfGetBasisData();

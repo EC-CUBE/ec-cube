@@ -26,6 +26,12 @@
     購入日時：<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br>
     注文番号：<!--{$tpl_arrOrderData.order_id}--><br>
     お支払い方法：<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+    <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br>
+        お届け時間：<!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
+    <!--{/if}-->
+    <!--{if $tpl_arrOrderData.deliv_date != ""}--><br>
+        お届け日：<!--{$tpl_arrOrderData.deliv_date|h}-->
+    <!--{/if}-->
 
     <form action="order.php" method="post">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
@@ -61,11 +67,9 @@
         単価：
         <!--{assign var=price value=`$orderDetail.price`}-->
         <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-        <!--{assign var=tax_rate value=`$orderDetail.tax_rate`}-->
-        <!--{assign var=tax_rule value=`$orderDetail.tax_rule`}-->
-        <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format|h}-->円<br>
+        <!--{$price|sfCalcIncTax|number_format|h}-->円<br>
         数量：<!--{$quantity|h}--><br>
-        小計：<!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円<br>
+        小計：<!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円<br>
     <!--{/foreach}-->
     <hr>
     小計：<!--{$tpl_arrOrderData.subtotal|number_format}-->円<br>
@@ -104,7 +108,7 @@
                 <!--{if $item.productsClass.classcategory_name2 != ""}-->
                     <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br>
                 <!--{/if}-->
-                単価：<!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|number_format}-->円<br>
+                単価：<!--{$item.price|sfCalcIncTax|number_format}-->円<br>
                 数量：<!--{$item.quantity}--><br>
                 <br>
             <!--{/foreach}-->
@@ -122,10 +126,6 @@
             ●FAX番号<br>
             <!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br>
         <!--{/if}-->
-        ●お届け日<br>
-        <!--{$shippingItem.shipping_date|default:'指定なし'|h}-->&nbsp;<br>
-        ●お届け時間<br>
-        <!--{$shippingItem.shipping_time|default:'指定なし'|h}-->&nbsp;<br>
         <br>
     <!--{/foreach}-->
 

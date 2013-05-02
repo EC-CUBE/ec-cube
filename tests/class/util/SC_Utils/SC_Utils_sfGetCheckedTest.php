@@ -31,31 +31,26 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetCheckedTest extends Common_TestCase
-{
+class SC_Utils_sfGetCheckedTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetChecked_引数が一致する場合_チェック済みの文字列が返る()
-  {
+  public function testSfGetChecked_引数が一致する場合_チェック済みの文字列が返る() {
     $this->expected = 'checked="checked"';
     $this->actual = SC_Utils::sfGetChecked('1', '1');
 
     $this->verify();
   }
 
-  public function testSfGetChecked_引数が一致しない場合_0バイト文字列が返る()
-  {
+  public function testSfGetChecked_引数が一致しない場合_0バイト文字列が返る() {
     $this->expected = '';
     $this->actual = SC_Utils::sfGetChecked('2', '1');
 

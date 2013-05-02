@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Cale
  * @author LOCKON CO.,LTD.
  * @version $ $
  */
-class LC_Page_FrontParts_Bloc_Calendar_Ex extends LC_Page_FrontParts_Bloc_Calendar 
-{
+class LC_Page_FrontParts_Bloc_Calendar_Ex extends LC_Page_FrontParts_Bloc_Calendar {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_FrontParts_Bloc_Calendar_Ex extends LC_Page_FrontParts_Bloc_Calend
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_FrontParts_Bloc_Calendar_Ex extends LC_Page_FrontParts_Bloc_Calend
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_FrontParts_Bloc_Calendar_Ex extends LC_Page_FrontParts_Bloc_Calend
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

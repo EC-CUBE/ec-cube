@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Regist extends LC_Page_Ex 
-{
+class LC_Page_Regist extends LC_Page_Ex {
 
     // {{{ properties
 
@@ -44,8 +43,7 @@ class LC_Page_Regist extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Regist extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -66,8 +63,7 @@ class LC_Page_Regist extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         switch ($this->getMode()) {
             case 'regist':
@@ -95,8 +91,7 @@ class LC_Page_Regist extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -107,8 +102,7 @@ class LC_Page_Regist extends LC_Page_Ex
      * @access private
      * @return string $arrRegist['secret_key'] 本登録ID
      */
-    function lfRegistData($array)
-    {
+    function lfRegistData($array) {
         $objQuery                   = SC_Query_Ex::getSingletonInstance();
         $arrRegist['secret_key']    = SC_Helper_Customer_Ex::sfGetUniqSecretKey(); //本登録ID発行
         $arrRegist['status']        = 2;
@@ -128,8 +122,7 @@ class LC_Page_Regist extends LC_Page_Ex
      * @access private
      * @return array エラーの配列
      */
-    function lfCheckError($array)
-    {
+    function lfCheckError($array) {
         $objErr     = new SC_CheckError_Ex($array);
 
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
@@ -151,8 +144,7 @@ class LC_Page_Regist extends LC_Page_Ex
      * @access private
      * @return void
      */
-    function lfSendRegistMail($registSecretKey)
-    {
+    function lfSendRegistMail($registSecretKey) {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objCustomer    = new SC_Customer_Ex();
         $objHelperMail  = new SC_Helper_Mail_Ex();

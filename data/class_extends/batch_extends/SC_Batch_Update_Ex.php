@@ -23,6 +23,5 @@
 
 require_once CLASS_REALDIR . 'util/SC_Batch_Update.php';
 
-class SC_Batch_Update_Ex extends SC_Batch_Update 
-{
+class SC_Batch_Update_Ex extends SC_Batch_Update {
 }

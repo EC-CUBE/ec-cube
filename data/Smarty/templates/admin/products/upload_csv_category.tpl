@@ -47,15 +47,14 @@
             <th>CSVファイル</th>
             <td>
                 <!--{if $arrErr.csv_file}--><span class="attention"><!--{$arrErr.csv_file}--></span><!--{/if}-->
-                <input type="file" name="csv_file" size="60" class="box60" /><span class="attention"> (1行目タイトル行)
-                (最大アップロードサイズ:<!--{$max_upload_csv_size}-->)</span>
+                <input type="file" name="csv_file" size="60" class="box60" /><span class="attention"> (1行目タイトル行)</span>
             </td>
         </tr>
         <tr>
             <th>登録情報</th>
             <td>
                 <!--{foreach name=title key=key item=item from=$arrTitle}-->
-                <!--{$smarty.foreach.title.iteration}-->項目：<!--{$item}--><br />
+                <!--{$smarty.foreach.title.iteration}-->項目：<!--{$item}--><br>
                 <!--{/foreach}-->
             </td>
         </tr>

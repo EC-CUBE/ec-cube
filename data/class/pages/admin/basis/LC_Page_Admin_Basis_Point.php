@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/point.tpl';
         $this->tpl_subno = 'point';
@@ -57,8 +55,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -68,8 +65,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objDb = new SC_Helper_DB_Ex();
         // パラメーター管理クラス
@@ -119,20 +115,17 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('ポイント付与率', 'point_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('会員登録時付与ポイント', 'welcome_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
-    function lfUpdateData($post)
-    {
+    function lfUpdateData($post) {
         // 入力データを渡す。
         $sqlval = $post;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -141,8 +134,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
         $ret = $objQuery->update('dtb_baseinfo', $sqlval);
     }
 
-    function lfInsertData($post)
-    {
+    function lfInsertData($post) {
         // 入力データを渡す。
         $sqlval = $post;
         $sqlval['id'] = 1;

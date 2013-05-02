@@ -32,8 +32,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex 
-{
+class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex {
 
     var $state = null;
 
@@ -45,8 +44,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      *
      * @param string $state
      */
-    function setState($state = 'pc')
-    {
+    function setState($state = 'pc') {
         switch ($state) {
             case 'mobile':
                 $this->state = new LC_UseRequest_State_Mobile;
@@ -64,8 +62,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      *
      * @return boolean 常にfalseを返す
      */
-    function useCookie()
-    {
+    function useCookie() {
         return false;
     }
 
@@ -76,8 +73,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      * @return string|null 取得したセッションIDを返す。
      *                     取得できなかった場合は null を返す。
      */
-    function getExtSessionId()
-    {
+    function getExtSessionId() {
         if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
             return null;
         }
@@ -107,8 +103,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      * @param string $url URL
      * @return void
      */
-    function setExtSessionId($param_key, $param_value, $url)
-    {
+    function setExtSessionId($param_key, $param_value, $url) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // GC
@@ -131,8 +126,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      *
      * @return boolean セッションデータが有効な場合は true、無効な場合は false を返す。
      */
-    function validateSession()
-    {
+    function validateSession() {
         /**
          * PCサイトでは
          *  ・セッションデータが適切に設定されているか
@@ -156,8 +150,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      * @return string|false 取得した有効なセッションIDを返す。
      *                      取得できなかった場合は false を返す。
      */
-    function getSessionId()
-    {
+    function getSessionId() {
         // パラメーターからセッションIDを取得する。
         $sessionId = @$_POST[session_name()];
         if (!isset($sessionId)) {
@@ -191,8 +184,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      *
      * @return void
      */
-    function initSession()
-    {
+    function initSession() {
         // セッションIDの受け渡しにクッキーを使用しない。
         ini_set('session.use_cookies', '0');
         ini_set('session.use_trans_sid', '1');
@@ -240,8 +232,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
  * セッションデータ管理クラスの基底クラス
  *
  */
-class LC_UseRequest_State 
-{
+class LC_UseRequest_State {
     /** 名前空間(pc/mobile) */
     var $namespace = '';
     /** 有効期間 */
@@ -254,16 +245,14 @@ class LC_UseRequest_State
      *
      * @return string
      */
-    function getNameSpace()
-    { return $this->namespace; }
+    function getNameSpace() { return $this->namespace; }
 
     /**
      * 有効期間を取得する
      *
      * @return integer
      */
-    function getLifeTime()
-    { return $this->lifetime; }
+    function getLifeTime() { return $this->lifetime; }
 
     /**
      * セッションデータが設定されているかを判定する.
@@ -272,8 +261,7 @@ class LC_UseRequest_State
      *
      * @return boolean
      */
-    function validateNameSpace()
-    {
+    function validateNameSpace() {
         $namespace = $this->getNameSpace();
         if (isset($_SESSION[$namespace]) && is_array($_SESSION[$namespace])) {
             return true;
@@ -289,8 +277,7 @@ class LC_UseRequest_State
      * @param string $key
      * @return mixed|null
      */
-    function getValue($key)
-    {
+    function getValue($key) {
         $namespace = $this->getNameSpace();
         return isset($_SESSION[$namespace][$key])
             ? $_SESSION[$namespace][$key]
@@ -304,8 +291,7 @@ class LC_UseRequest_State
      * @param string $key
      * @param mixed $value
      */
-    function setValue($key, $value)
-    {
+    function setValue($key, $value) {
         $namespace = $this->getNameSpace();
         $_SESSION[$namespace][$key] = $value;
     }
@@ -315,8 +301,7 @@ class LC_UseRequest_State
      *
      * @return integer
      */
-    function getExpire()
-    {
+    function getExpire() {
         return $this->getValue('expires');
     }
 
@@ -324,8 +309,7 @@ class LC_UseRequest_State
      * 有効期限を設定する.
      *
      */
-    function updateExpire()
-    {
+    function updateExpire() {
         $lifetime = $this->getLifeTime();
         $this->setValue('expires', time() + $lifetime);
     }
@@ -335,8 +319,7 @@ class LC_UseRequest_State
      *
      * @return boolean
      */
-    function validateExpire()
-    {
+    function validateExpire() {
         $expire = $this->getExpire();
         if (intval($expire) > time()) {
             return true;
@@ -351,8 +334,7 @@ class LC_UseRequest_State
      *
      * @return string
      */
-    function getIp()
-    {
+    function getIp() {
         return $this->getValue('ip');
     }
 
@@ -360,8 +342,7 @@ class LC_UseRequest_State
      * IPアドレスを設定する.
      *
      */
-    function updateIp()
-    {
+    function updateIp() {
         $this->setValue('ip', $_SERVER['REMOTE_ADDR']);
     }
 
@@ -371,8 +352,7 @@ class LC_UseRequest_State
      *
      * @return boolean
      */
-    function validateIp()
-    {
+    function validateIp() {
         $ip = $this->getIp();
         if (!empty($_SERVER['REMOTE_ADDR']) && $ip === $_SERVER['REMOTE_ADDR']) {
 
@@ -389,8 +369,7 @@ class LC_UseRequest_State
      *
      * @return string
      */
-    function getModel()
-    {
+    function getModel() {
         return $this->getValue('model');
     }
 
@@ -399,8 +378,7 @@ class LC_UseRequest_State
      *
      * @return boolean
      */
-    function validateSessionData()
-    {
+    function validateSessionData() {
         foreach ($this->validate as $method) {
             $method = 'validate' . $method;
             if (!$this->$method()) {
@@ -414,16 +392,14 @@ class LC_UseRequest_State
      * セッションデータを初期化する.
      *
      */
-    function inisializeSessionData()
-    {}
+    function inisializeSessionData() {}
 }
 
 /**
  * PCサイト用のセッションデータ管理クラス
  *
  */
-class LC_UseRequest_State_PC extends LC_UseRequest_State 
-{
+class LC_UseRequest_State_PC extends LC_UseRequest_State {
 
     /**
      * コンストラクタ
@@ -436,8 +412,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State
      *
      * @return LC_UseRequest_State_PC
      */
-    function LC_UseRequest_State_PC()
-    {
+    function LC_UseRequest_State_PC() {
         $this->namespace = 'pc';
         $this->lifetime  = SESSION_LIFETIME;
         $this->validate  = array('NameSpace', 'Model', 'Ip', 'Expire');
@@ -447,8 +422,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State
      * セッションにUserAgentを設定する.
      *
      */
-    function updateModel()
-    {
+    function updateModel() {
         $this->setValue('model', $_SERVER['HTTP_USER_AGENT']);
     }
 
@@ -457,8 +431,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State
      *
      * @return boolean
      */
-    function validateModel()
-    {
+    function validateModel() {
         $ua = $this->getModel();
         if (!empty($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] === $ua) {
             return true;
@@ -473,8 +446,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State
      * セッションデータを初期化する.
      *
      */
-    function inisializeSessionData()
-    {
+    function inisializeSessionData() {
         $_SESSION = array();
         $this->updateModel();
         $this->updateIp();
@@ -486,8 +458,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State
  * モバイルサイト用のセッションデータ管理クラス
  *
  */
-class LC_UseRequest_State_Mobile extends LC_UseRequest_State 
-{
+class LC_UseRequest_State_Mobile extends LC_UseRequest_State {
 
     /**
      * コンストラクタ
@@ -501,8 +472,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State
      *
      * @return LC_UseRequest_State_Mobile
      */
-    function LC_UseRequest_State_Mobile()
-    {
+    function LC_UseRequest_State_Mobile() {
         $this->namespace = 'mobile';
         $this->lifetime  = MOBILE_SESSION_LIFETIME;
         $this->validate  = array('NameSpace', 'Model', 'Expire');
@@ -512,8 +482,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State
      * 携帯の機種名を設定する
      *
      */
-    function updateModel()
-    {
+    function updateModel() {
         $this->setValue('model', SC_MobileUserAgent_Ex::getModel());
     }
 
@@ -522,8 +491,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State
      *
      * @return boolean
      */
-    function validateModel()
-    {
+    function validateModel() {
         $modelInSession = $this->getModel();
         $model = SC_MobileUserAgent_Ex::getModel();
         if (!empty($model) && $model === $modelInSession) {
@@ -537,8 +505,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State
      *
      * @return string
      */
-    function getPhoneId()
-    {
+    function getPhoneId() {
         return $this->getValue('phone_id');
     }
 
@@ -546,8 +513,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State
      * 携帯のIDを登録する.
      *
      */
-    function updatePhoneId()
-    {
+    function updatePhoneId() {
         $this->setValue('phone_id', SC_MobileUserAgent_Ex::getId());
     }
 
@@ -555,8 +521,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State
      * セッションデータを初期化する.
      *
      */
-    function inisializeSessionData()
-    {
+    function inisializeSessionData() {
         $_SESSION = array();
         $this->updateModel();
         $this->updateIp();

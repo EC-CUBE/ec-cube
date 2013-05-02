@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_InputZip extends LC_Page_Ex 
-{
+class LC_Page_InputZip extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_message = '住所を検索しています。';
     }
@@ -53,8 +51,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $objView = new SC_SiteView_Ex(false);
 
         // 入力エラーチェック
@@ -92,8 +89,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -103,8 +99,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      * @param array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function fnErrorCheck($arrRequest)
-    {
+    function fnErrorCheck($arrRequest) {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -131,8 +126,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      * @param string $value
      * @return エラーなし：true エラー：false
      */
-    function lfInputNameCheck($value)
-    {
+    function lfInputNameCheck($value) {
         // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
         if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
             return false;

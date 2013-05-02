@@ -18,8 +18,7 @@
  * @param string
  * @return string
  */
-function smarty_modifier_nl2br_html($string)
-{
+function smarty_modifier_nl2br_html($string) {
     $lines = preg_split('/(\\r\\n|\\r|\\n)/', $string);
     $keys = array_keys($lines);
     $last_key = end($keys); // 最終行のキー

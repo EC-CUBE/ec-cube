@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/preview/LC_Page_Preview.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Preview_Ex extends LC_Page_Preview 
-{
+class LC_Page_Preview_Ex extends LC_Page_Preview {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Preview_Ex extends LC_Page_Preview
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Preview_Ex extends LC_Page_Preview
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Preview_Ex extends LC_Page_Preview
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

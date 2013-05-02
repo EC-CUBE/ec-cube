@@ -34,8 +34,7 @@ require_once CLASS_REALDIR . 'pages/error/LC_Page_Error_SystemError.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError 
-{
+class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError {
 
     // }}}
     // {{{ functions
@@ -45,8 +44,7 @@ class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -55,8 +53,7 @@ class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -65,8 +62,7 @@ class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

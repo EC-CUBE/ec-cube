@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_Ex extends LC_Page_Error 
-{
+class LC_Page_Error_Ex extends LC_Page_Error {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Error_Ex extends LC_Page_Error
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Error_Ex extends LC_Page_Error
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Error_Ex extends LC_Page_Error
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

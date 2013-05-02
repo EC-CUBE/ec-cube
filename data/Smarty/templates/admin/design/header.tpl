@@ -59,7 +59,7 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
     <input type="hidden" name="division" value="footer" />
-    <input type="hidden" name="footer_row" value="<!--{$footer_row}-->" />
+    <input type="hidden" name="footer_row" value=<!--{$footer_row}--> />
     <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
         <textarea id="footer-area" class="top" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{"\n"}--><!--{$footer_data|h|smarty:nodefaults}--></textarea>

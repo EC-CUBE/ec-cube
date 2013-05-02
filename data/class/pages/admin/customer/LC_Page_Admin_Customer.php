@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Customer extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Customer extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'customer/index.tpl';
         $this->tpl_mainno = 'customer';
@@ -87,8 +85,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -98,8 +95,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -150,8 +146,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -161,8 +156,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
@@ -173,8 +167,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      * @param array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckError(&$objFormParam)
-    {
+    function lfCheckError(&$objFormParam) {
         return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
     }
 
@@ -184,9 +177,18 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      * @param integer $customer_id 会員ID
      * @return boolean true:成功 false:失敗
      */
-    function lfDoDeleteCustomer($customer_id)
-    {
-        return SC_Helper_Customer_Ex::delete($customer_id);
+    function lfDoDeleteCustomer($customer_id) {
+        $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id, 'del_flg = 0');
+        if (SC_Utils_Ex::isBlank($arrData)) {
+            //対象となるデータが見つからない。
+            return false;
+        }
+        // XXXX: 仮会員は物理削除となっていたが論理削除に変更。
+        $arrVal = array(
+            'del_flg' => '1',
+        );
+        SC_Helper_Customer_Ex::sfEditCustomerData($arrVal, $customer_id);
+        return true;
     }
 
     /**
@@ -195,8 +197,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      * @param integer $customer_id 会員ID
      * @return boolean true:成功 false:失敗
      */
-    function lfDoResendMail($customer_id)
-    {
+    function lfDoResendMail($customer_id) {
         $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
         if (SC_Utils_Ex::isBlank($arrData) or $arrData['del_flg'] == 1) {
             //対象となるデータが見つからない、または削除済み
@@ -215,8 +216,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      * @param array $arrParam 検索パラメーター連想配列
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfDoSearch($arrParam)
-    {
+    function lfDoSearch($arrParam) {
         return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
 
@@ -226,8 +226,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      * @param array $arrParam 検索パラメーター連想配列
      * @return boolean true:成功 false:失敗
      */
-    function lfDoCSV($arrParam)
-    {
+    function lfDoCSV($arrParam) {
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
         $order = 'update_date DESC, customer_id DESC';
 

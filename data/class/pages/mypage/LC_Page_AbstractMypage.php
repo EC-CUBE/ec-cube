@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_AbstractMypage extends LC_Page_Ex 
-{
+class LC_Page_AbstractMypage extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         // mypage 共通
         $this->tpl_title        = 'MYページ';
@@ -56,8 +54,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
 
         parent::process();
         // ログインチェック
@@ -105,8 +102,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

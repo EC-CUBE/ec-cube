@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Order_Disp.php 20767 2011-03-22 10:07:32Z nanasess $
  */
-class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex 
-{
+class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
 
     var $arrShippingKeys = array(
         'shipping_id',
@@ -75,8 +74,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'order/disp.tpl';
         $this->tpl_mainno = 'order';
@@ -90,10 +88,10 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
 
         // 支払い方法の取得
-        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
+        $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
 
         // 配送業者の取得
-        $this->arrDeliv = SC_Helper_Delivery_Ex::getIDValueList();
+        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', 'name');
     }
 
     /**
@@ -101,8 +99,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -112,8 +109,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -129,7 +125,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
 
         $this->arrForm = $objFormParam->getFormParamList();
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
-        $this->arrDelivTime = SC_Helper_Delivery_Ex::getDelivTime($objFormParam->getValue('deliv_id'));
+        $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         $this->setTemplate($this->tpl_mainpage);
@@ -140,8 +136,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      * デストラクタ.
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -151,8 +146,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         // 検索条件のパラメータを初期化
         parent::lfInitParam($objFormParam);
 
@@ -199,8 +193,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('規格名2', 'classcategory_name2');
         $objFormParam->addParam('メモ', 'note', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('削除用項番', 'delete_no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('消費税率', 'tax_rate');
-        $objFormParam->addParam('課税規則', 'tax_rule');
 
         // DB読込用
         $objFormParam->addParam('小計', 'subtotal');
@@ -264,8 +256,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      * @param integer $order_id 取得元の受注ID
      * @return void
      */
-    function setOrderToFormParam(&$objFormParam, $order_id)
-    {
+    function setOrderToFormParam(&$objFormParam, $order_id) {
         $objPurchase = new SC_Helper_Purchase_Ex();
 
         // 受注詳細を設定

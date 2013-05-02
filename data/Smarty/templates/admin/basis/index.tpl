@@ -110,7 +110,7 @@ $(function() {
 //]]></script>
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="confirm" />
+<input type="hidden" name="mode" value="<!--{$tpl_mode}-->" />
 <!--{* ▼登録テーブルここから *}-->
 <div id="basis" class="contents-main">
 
@@ -322,7 +322,7 @@ $(function() {
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>
 </div>

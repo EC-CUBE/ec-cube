@@ -64,7 +64,7 @@
         <div class="attention"><!--{$arrErr[$key3]}--><!--{$arrErr[$key4]}--><!--{$arrErr[$key5]}--></div>
     <!--{/if}-->
     <select name="<!--{$key3}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" class="boxHarf top data-role-none">
-        <option value="">都道府県</option>
+        <option value="" selected="selected">都道府県</option>
         <!--{html_options options=$arrPref selected=$arrForm[$key3]}-->
     </select>
 
@@ -127,8 +127,8 @@
             <div class="attention"><!--{$arrErr[$key1]}--></div>
         <!--{/if}-->
         <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
-            <input type="radio" id="man" name="<!--{$key1}-->" value="1" <!--{if $arrForm[$key1] eq 1}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="man">男性</label>&nbsp;&nbsp;
-            <input type="radio" id="woman" name="<!--{$key1}-->" value="2" <!--{if $arrForm[$key1] eq 2}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="woman">女性</label>
+            <p><input type="radio" id="man" name="<!--{$key1}-->" value="1" <!--{if $arrForm[$key1] eq 1}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="man">男性</label>&nbsp;&nbsp;
+            <input type="radio" id="woman" name="<!--{$key1}-->" value="2" <!--{if $arrForm[$key1] eq 2}--> checked="checked" <!--{/if}--> class="data-role-none" /><label for="woman">女性</label></p>
         </span>
     </dd>
 
@@ -139,7 +139,7 @@
             <div class="attention"><!--{$arrErr[$key1]}--></div>
         <!--{/if}-->
         <select name="<!--{$key1}-->" class="boxLong data-role-none">
-            <option value="">選択してください</option>
+            <option value="" selected="selected">選択してください</option>
             <!--{html_options options=$arrJob selected=$arrForm[$key1]}-->
         </select>
     </dd>
@@ -178,7 +178,7 @@
                 <div class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></div>
             <!--{/if}-->
             <select name="reminder" style="<!--{$arrErr.reminder|sfGetErrorColor}-->" class="boxLong top data-role-none">
-                <option value="">質問を選択してください</option>
+                <option value="" selected="selected">質問を選択してください</option>
                 <!--{html_options options=$arrReminder selected=$arrForm.reminder}-->
             </select>
 

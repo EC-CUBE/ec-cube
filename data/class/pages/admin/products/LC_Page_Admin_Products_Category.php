@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex {
 
     // {{{ properties
 
@@ -44,8 +43,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = 'カテゴリ登録';
@@ -60,8 +58,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -71,12 +68,10 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objDb      = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
-        $objCategory = new SC_Helper_Category_Ex();
 
         // 入力パラメーター初期化
         $this->initParam($objFormParam);
@@ -183,11 +178,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         // カテゴリ一覧を取得
         $this->arrList = $this->findCategoiesByParentCategoryId($parent_category_id);
         // カテゴリツリーを取得
-        $this->arrTree = $objCategory->getTree();
-        $this->arrParentID = $objCategory->getTreeTrail($parent_category_id);
+        $this->arrTree = $objDb->sfGetCatTree($parent_category_id);
         // ぱんくずの生成
-        $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
-        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
+        $arrBread = array();
+        $objDb->findTree($this->arrTree, $parent_category_id, $arrBread);
+        $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode($arrBread);
 
     }
 
@@ -205,8 +200,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_Helper_Db $objDb
      * @return void
      */
-    function doDelete(&$objFormParam, &$objDb)
-    {
+    function doDelete(&$objFormParam, &$objDb) {
         $category_id = $objFormParam->getValue('category_id');
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -236,12 +230,14 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam
      * @return void
      */
-    function doPreEdit(&$objFormParam)
-    {
+    function doPreEdit(&$objFormParam) {
         $category_id = $objFormParam->getValue('category_id');
 
-        $objCategory = new SC_Helper_Category_Ex();
-        $arrRes = $objCategory->get($category_id);
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        // 編集対象のカテゴリ名をDBより取得する
+        $where = 'category_id = ?';
+        $arrRes = $objQuery->getRow('*', 'dtb_category', $where, array($category_id));
 
         $objFormParam->setParam($arrRes);
 
@@ -260,8 +256,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam
      * @return void
      */
-    function doEdit(&$objFormParam)
-    {
+    function doEdit(&$objFormParam) {
         $category_id = $objFormParam->getValue('category_id');
 
         // 追加か
@@ -297,8 +292,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param boolean $add 追加か
      * @return void
      */
-    function checkError(&$objFormParam, $add)
-    {
+    function checkError(&$objFormParam, $add) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 入力項目チェック
@@ -353,8 +347,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam
      * @return void
      */
-    function doUp(&$objFormParam)
-    {
+    function doUp(&$objFormParam) {
         $category_id = $objFormParam->getValue('category_id');
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -381,8 +374,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam
      * @return void
      */
-    function doDown(&$objFormParam)
-    {
+    function doDown(&$objFormParam) {
         $category_id = $objFormParam->getValue('category_id');
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -409,8 +401,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam
      * @return void
      */
-    function initParam(&$objFormParam)
-    {
+    function initParam(&$objFormParam) {
         $objFormParam->addParam('親カテゴリID', 'parent_category_id', null, null, array());
         $objFormParam->addParam('カテゴリID', 'category_id', null, null, array());
         $objFormParam->addParam('カテゴリ名', 'category_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -426,8 +417,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param int $parent_category_id 親カテゴリID
      * @return array カテゴリの配列
      */
-    function findCategoiesByParentCategoryId($parent_category_id)
-    {
+    function findCategoiesByParentCategoryId($parent_category_id) {
         if (!$parent_category_id) {
             $parent_category_id = 0;
         }
@@ -444,8 +434,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function updateCategory($category_id, $arrCategory)
-    {
+    function updateCategory($category_id, $arrCategory) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrCategory['update_date']   = 'CURRENT_TIMESTAMP';
@@ -462,8 +451,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function registerCategory($arrCategory)
-    {
+    function registerCategory($arrCategory) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $parent_category_id = $arrCategory['parent_category_id'];
@@ -509,8 +497,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * @param integer 親カテゴリID
      * @param 超えている場合 true
      */
-    function isOverLevel($parent_category_id)
-    {
+    function isOverLevel($parent_category_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $level = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($parent_category_id));
         return $level >= LEVEL_MAX;
@@ -521,14 +508,12 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
     // 並びが1つ下のIDを取得する。
-    function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id)
-    {
+    function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id) {
         // 親IDを取得する。
         $col = "$pid_name";
         $where = "$id_name = ?";
@@ -549,8 +534,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
     }
 
     // 並びが1つ上のIDを取得する。
-    function lfGetUpRankID($objQuery, $table, $pid_name, $id_name, $id)
-    {
+    function lfGetUpRankID($objQuery, $table, $pid_name, $id_name, $id) {
         // 親IDを取得する。
         $col = "$pid_name";
         $where = "$id_name = ?";
@@ -570,16 +554,14 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         return $up_id;
     }
 
-    function lfCountChilds($objQuery, $table, $pid_name, $id_name, $id)
-    {
+    function lfCountChilds($objQuery, $table, $pid_name, $id_name, $id) {
         $objDb = new SC_Helper_DB_Ex();
         // 子ID一覧を取得
         $arrRet = $objDb->sfGetChildrenArray($table, $pid_name, $id_name, $id);
         return count($arrRet);
     }
 
-    function lfUpRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count)
-    {
+    function lfUpRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
         $objDb = new SC_Helper_DB_Ex();
         // 子ID一覧を取得
         $arrRet = $objDb->sfGetChildrenArray($table, $pid_name, $id_name, $id);
@@ -591,8 +573,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
 
-    function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count)
-    {
+    function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count) {
         $objDb = new SC_Helper_DB_Ex();
         // 子ID一覧を取得
         $arrRet = $objDb->sfGetChildrenArray($table, $pid_name, $id_name, $id);

@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/tradelaw.tpl';
         $this->tpl_subno = 'tradelaw';
@@ -60,8 +58,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -71,8 +68,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objDb = new SC_Helper_DB_Ex();
 
@@ -120,14 +116,12 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('販売業者', 'law_company', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('運営責任者', 'law_manager', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('郵便番号1', 'law_zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
@@ -143,24 +137,22 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
         $objFormParam->addParam('FAX番号3', 'law_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam('メールアドレス', 'law_email', null, 'KVa', array('EXIST_CHECK', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam('URL', 'law_url', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'URL_CHECK'));
-        $objFormParam->addParam('必要料金', 'law_term01', MLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('注文方法', 'law_term02', MLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('支払方法', 'law_term03', MLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('支払期限', 'law_term04', MLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('引き渡し時期', 'law_term05', MLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('返品・交換について', 'law_term06', MLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('必要料金', 'law_term01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文方法', 'law_term02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('支払方法', 'law_term03', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('支払期限', 'law_term04', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('引き渡し時期', 'law_term05', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('返品・交換について', 'law_term06', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    function lfUpdateData($sqlval)
-    {
+    function lfUpdateData($sqlval) {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // UPDATEの実行
         $ret = $objQuery->update('dtb_baseinfo', $sqlval);
     }
 
-    function lfInsertData($sqlval)
-    {
+    function lfInsertData($sqlval) {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // INSERTの実行
@@ -168,8 +160,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
     }
 
     /* 入力内容のチェック */
-    function lfCheckError(&$objFormParam)
-    {
+    function lfCheckError(&$objFormParam) {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrRet);

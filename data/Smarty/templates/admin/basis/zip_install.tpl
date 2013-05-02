@@ -28,7 +28,7 @@
     </style>
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="" />
+        <input type="hidden" name="mode" value="">
         <p>保存されている郵便番号CSVの更新日時: <!--{$tpl_csv_datetime|h}--></p>
         <p>郵便番号CSVには <!--{$tpl_line|h}--> 行のデータがあります。</p>
         <p>郵便番号DBには <!--{$tpl_count_mtb_zip|h}--> 行のデータがあります。</p>
@@ -52,7 +52,7 @@
         <div class="basis-zip-item">
             <h2>DB手動登録</h2>
             <p>指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next">手動登録</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8" /><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next">手動登録</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
 
         <div class="basis-zip-item">

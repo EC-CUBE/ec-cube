@@ -22,11 +22,11 @@
  */
 *}-->
 
-<form name="form1" id="form1" method="post" action="?" >
+<form name="form1" id="form1" method="POST" action="?" >
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
 <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
-<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
+<input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" >
 <input type="hidden" name="order_id" value="" />
 <div id="order" class="contents-main">
     <h2>抽出条件</h2>
@@ -57,7 +57,7 @@
             </select>
             <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit(); return false;"><span>移動</span></a>
         </div>
-        <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->に変更時には、在庫数を手動で戻してください。</span><br />
+        <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->もしくは、削除に変更時には、在庫数を手動で戻してください。</span><br />
 
         <p class="remark">
             <!--{$tpl_linemax}-->件が該当しました。
@@ -88,7 +88,7 @@
             <!--{section name=cnt loop=$arrStatus}-->
             <!--{assign var=status value="`$arrStatus[cnt].status`"}-->
             <tr style="background:<!--{$arrORDERSTATUS_COLOR[$status]}-->;">
-                <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" /></td>
+                <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
                 <td><!--{$arrORDERSTATUS[$status]}--></td>
                 <td><a href="#" onclick="fnOpenWindow('./disp.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></a></td>
                 <td><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>

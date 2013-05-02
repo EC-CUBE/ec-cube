@@ -31,12 +31,10 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_TestBase
-{
+class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_TestBase {
   private $helper;
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
     $this->setUpProductClass();
     $this->setUpProducts();
@@ -47,14 +45,12 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
     $this->helper = new SC_Helper_Purchase();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSetShipmentItemTemp_製品情報が既に存在する場合_存在する情報が価格に反映される()
-  {
+  public function testSetShipmentItemTemp_製品情報が既に存在する場合_存在する情報が価格に反映される() {
     $this->helper->setShipmentItemTemp('1001', '1001', 10);
 
     $this->expected = array(
@@ -70,8 +66,7 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testSetShipmentItemTemp_製品情報が存在しない場合_DBから取得した値が反映される()
-  {
+  public function testSetShipmentItemTemp_製品情報が存在しない場合_DBから取得した値が反映される() {
     $this->helper->setShipmentItemTemp('1001', '1002', 10);
 
     $this->expected = array(

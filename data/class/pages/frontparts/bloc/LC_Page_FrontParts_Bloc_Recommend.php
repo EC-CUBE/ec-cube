@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_FrontParts_Bloc_Best5 - Copy.php -1   $
  */
-class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex 
-{
+class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -52,8 +50,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -63,8 +60,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         // 基本情報を渡す
         $objSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
@@ -81,8 +77,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -91,41 +86,40 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return array $arrBestProducts 検索結果配列
      */
-    function lfGetRanking()
-    {
-        $objRecommend = new SC_Helper_Recommend_Ex();
+    function lfGetRanking() {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objProduct = new SC_Product_Ex();
 
         // おすすめ商品取得
-        $arrRecommends = $objRecommend->getList(RECOMMEND_NUM);
+        $col = 'T1.best_id, T1.category_id, T1.rank, T1.product_id, T1.title, T1.comment, T1.create_date, T1.update_date';
+        $table = 'dtb_best_products as T1 INNER JOIN dtb_products as T2 ON T1.product_id = T2.product_id';
+        $where = 'T1.del_flg = 0 and T2.status = 1';
+        $objQuery->setOrder('T1.rank');
+        $objQuery->setLimit(RECOMMEND_NUM);
+        $arrBestProducts = $objQuery->select($col, $table, $where);
 
-        $response = array();
-        if (count($arrRecommends) > 0) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        if (count($arrBestProducts) > 0) {
             // 商品一覧を取得
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $objProduct = new SC_Product_Ex();
             // where条件生成&セット
             $arrProductId = array();
-            foreach ($arrRecommends as $key => $val) {
+            $where = 'product_id IN (';
+            foreach ($arrBestProducts as $key => $val) {
                 $arrProductId[] = $val['product_id'];
             }
-            $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);
-
-            // 税込金額を設定する
-            SC_Product_Ex::setIncTaxToProducts($arrProducts);
-
+            // 取得
+            $arrProductList = $objProduct->getListByProductIds($objQuery, $arrProductId);
             // おすすめ商品情報にマージ
-            foreach ($arrRecommends as $key => $value) {
-                if (isset($arrProducts[$value['product_id']])) {
-                    $product = $arrProducts[$value['product_id']];
-                    if (!NOSTOCK_HIDDEN || ($product['status'] == 1 && ($product['stock_max'] >= 1 || $product['stock_unlimited_max'] == 1))) {
-                        $response[] = array_merge($value, $arrProducts[$value['product_id']]);
-                    }
+            foreach ($arrBestProducts as $key => $value) {
+                $arrRow =& $arrBestProducts[$key];
+                if (isset($arrProductList[$arrRow['product_id']])) {
+                    $arrRow = array_merge($arrRow, $arrProductList[$arrRow['product_id']]);
                 } else {
                     // 削除済み商品は除外
-                    unset($arrRecommends[$key]);
+                    unset($arrBestProducts[$key]);
                 }
             }
         }
-        return $response;
+        return $arrBestProducts;
     }
 }

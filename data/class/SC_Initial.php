@@ -27,16 +27,14 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Initial 
-{
+class SC_Initial {
 
     // {{{ cunstructor
 
     /**
      * コンストラクタ.
      */
-    function __construct()
-    {
+    function __construct() {
 
         /** EC-CUBEのバージョン */
         define('ECCUBE_VERSION', '2.12.3-dev');
@@ -51,8 +49,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function init()
-    {
+    function init() {
         $this->requireInitialConfig();
         $this->defineDSN();                 // requireInitialConfig メソッドより後で実行
         $this->defineDirectoryIndex();
@@ -72,8 +69,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function requireInitialConfig()
-    {
+    function requireInitialConfig() {
 
         define('CONFIG_REALFILE', realpath(dirname(__FILE__)) . '/../config/config.php');
         if (file_exists(CONFIG_REALFILE)) {
@@ -88,8 +84,7 @@ class SC_Initial
      * @return void
      * @deprecated 下位互換用
      */
-    function defineDSN()
-    {
+    function defineDSN() {
         if (defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD')
             && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')
         ) {
@@ -103,8 +98,7 @@ class SC_Initial
     /**
      * @deprecated
      */
-    function setErrorReporting()
-    {
+    function setErrorReporting() {
         error_reporting(E_ALL & ~E_NOTICE);
         // PHP 5.3.0対応
         if (error_reporting() > 6143) {
@@ -120,8 +114,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function phpconfigInit()
-    {
+    function phpconfigInit() {
         ini_set('html_errors', '1');
         ini_set('mbstring.http_input', CHAR_CODE);
         ini_set('mbstring.http_output', CHAR_CODE);
@@ -156,8 +149,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function defineDirectoryIndex()
-    {
+    function defineDirectoryIndex() {
 
         // DirectoryIndex の実ファイル名
         if (!defined('DIR_INDEX_FILE')) {
@@ -188,8 +180,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function defineParameter()
-    {
+    function defineParameter() {
 
         $errorMessage
             = '<div style="color: #F00; font-weight: bold; background-color: #FEB; text-align: center">'
@@ -232,8 +223,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function complementParameter()
-    {
+    function complementParameter() {
     }
 
     /**
@@ -244,8 +234,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function createCacheDir()
-    {
+    function createCacheDir() {
         if (defined('HTML_REALDIR')) {
             umask(0);
             if (!file_exists(COMPILE_REALDIR)) {
@@ -272,8 +261,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function defineConstants()
-    {
+    function defineConstants() {
         // LC_Page_Error用
         /** 指定商品ページがない */
         define('PRODUCT_NOT_FOUND', 1);
@@ -440,8 +428,7 @@ class SC_Initial
      *
      * @return void
      */
-    function stripslashesDeepGpc()
-    {
+    function stripslashesDeepGpc() {
         // Strip magic quotes from request data.
         if (get_magic_quotes_gpc()
             && version_compare(PHP_VERSION, '5.0.0', '>=')) {
@@ -471,8 +458,7 @@ class SC_Initial
      * @access protected
      * @return void
      */
-    function resetSuperglobalsRequest()
-    {
+    function resetSuperglobalsRequest() {
         $_REQUEST = array_merge($_GET, $_POST);
     }
 
@@ -483,8 +469,7 @@ class SC_Initial
      * @param mixed $value 定数の値。
      * @return void
      */
-    function defineIfNotDefined($name, $value = null)
-    {
+    function defineIfNotDefined($name, $value = null) {
         if (!defined($name)) {
             define($name, $value);
         }
@@ -495,8 +480,7 @@ class SC_Initial
      *
      * @return void
      */
-    function setTimezone()
-    {
+    function setTimezone() {
         date_default_timezone_set('Asia/Tokyo');
     }
 }

@@ -22,7 +22,7 @@
  */
 *}-->
 
-<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data"">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="csv_upload" />
 <div id="products" class="contents-main">
@@ -47,7 +47,7 @@
                 <!--{if $arrErr.csv_file}-->
                     <span class="attention"><!--{$arrErr.csv_file}--></span>
                 <!--{/if}-->
-                <input type="file" name="csv_file" size="40" /><span class="attention">(1行目タイトル行)(最大アップロードサイズ:<!--{$max_upload_csv_size}-->)</span>
+                <input type="file" name="csv_file" size="40" /><span class="attention">(1行目タイトル行)</span>
             </td>
         </tr>
         <tr>

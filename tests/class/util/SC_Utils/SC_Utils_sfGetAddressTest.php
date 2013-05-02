@@ -31,32 +31,27 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetAddressTest extends Common_TestCase
-{
+class SC_Utils_sfGetAddressTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
     $this->setUpAddress();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function test_住所がヒットしない場合_空の配列が返る()
-  {
+  public function test_住所がヒットしない場合_空の配列が返る() {
     $this->expected = array();
     $this->actual = SC_Utils::sfGetAddress('9999999');
 
     $this->verify('郵便番号検索結果');
   }
 
-  public function test_住所が一件だけヒットする場合_住所データが取得できる()
-  {
+  public function test_住所が一件だけヒットする場合_住所データが取得できる() {
     $this->expected = array(
       array(
         'state' => '1',    // 北海道
@@ -73,8 +68,7 @@ class SC_Utils_sfGetAddressTest extends Common_TestCase
   // 今の仕様ではこれでOKかもしれないが、そもそも一件目しか使わないのなら
   // $data_list[0]を返した方が良いのでは?
   /**
-  public function test_住所が二件以上ヒットする場合_町名を消した住所データが取得できる()
-  {
+  public function test_住所が二件以上ヒットする場合_町名を消した住所データが取得できる() {
     $this->expected = array(
       array(
         'state' => '5',    // 秋田県
@@ -93,8 +87,7 @@ class SC_Utils_sfGetAddressTest extends Common_TestCase
   }
   */
 
-  public function test_住所に但し書きが含まれる場合_但し書きが消去される()
-  {
+  public function test_住所に但し書きが含まれる場合_但し書きが消去される() {
     $this->expected = array(
       array(
         'state' => '1',    // 北海道
@@ -107,8 +100,7 @@ class SC_Utils_sfGetAddressTest extends Common_TestCase
     $this->verify('郵便番号検索結果');
   }
 
-  public function test_住所に注意文言がある場合_町名が消去される()
-  {
+  public function test_住所に注意文言がある場合_町名が消去される() {
     $this->expected = array(
       array(
         'state' => '1',    // 北海道
@@ -121,8 +113,7 @@ class SC_Utils_sfGetAddressTest extends Common_TestCase
     $this->verify('郵便番号検索結果');
   }
 
-  public function test_住所に番地の説明が含まれる場合_町名が消去される()
-  {
+  public function test_住所に番地の説明が含まれる場合_町名が消去される() {
     $this->expected = array(
       array(
         'state' => '8',    // 茨城県
@@ -137,8 +128,7 @@ class SC_Utils_sfGetAddressTest extends Common_TestCase
 
   //////////////////////////////////////////
 
-  protected function setUpAddress()
-  {
+  protected function setUpAddress() {
 
     $address = array(
       array(

@@ -30,8 +30,7 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_ItemLookup extends SC_Api_Abstract_Ex 
-{
+class API_ItemLookup extends SC_Api_Abstract_Ex {
 
     protected $operation_name = 'ItemLookup';
     protected $operation_description = '商品詳細情報を取得します。';
@@ -40,8 +39,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam)
-    {
+    public function doAction($arrParam) {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
             $objProduct = new SC_Product_Ex();
@@ -76,8 +74,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex
         return false;
     }
 
-    protected function checkErrorExtended($arrParam)
-    {
+    protected function checkErrorExtended($arrParam) {
         switch ($arrParam['IdType']) {
         case 'product_code':
             break;
@@ -91,8 +88,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex
         }
     }
 
-    protected function lfInitParam(&$objFormParam)
-    {
+    protected function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('商品コンディション', 'Condition', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ID種別', 'IdType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('指定ID', 'ItemId', STEXT_LEN, 'a', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
@@ -105,8 +101,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex
         $objFormParam->addParam('関連タグソート', 'TagSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    public function getResponseGroupName()
-    {
+    public function getResponseGroupName() {
         return 'Item';
     }
 }

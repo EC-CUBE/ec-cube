@@ -32,15 +32,13 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/db_exte
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory_Test.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase 
-{
+class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase {
 
     // }}}
     // {{{ functions
 
     /* TODO
-    function testSfGetDBVersion()
-    {
+    function testSfGetDBVersion() {
         $dbFactory = SC_DB_DBFactory::getInstance();
         $objQuery = new SC_Query(DEFAULT_DSN, true, true);
         switch (DB_TYPE) {
@@ -56,16 +54,14 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase
     }
     */
 
-    function testFindTableNames()
-    {
+    function testFindTableNames() {
         $dbFactory = SC_DB_DBFactory::getInstance();
         $objQuery = new SC_Query(DEFAULT_DSN);
         $actual = $dbFactory->findTableNames('mtb_pre');
         $this->assertEquals('mtb_pref', $actual[0]);
     }
 
-    function testConcatColumn()
-    {
+    function testConcatColumn() {
 
         $params = array('column1', 'column2');
 
@@ -90,8 +86,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase
     /**
      * 昨日の売上高・売上件数を算出する SQL のテスト.
      */
-    function testGetOrderYesterdaySql()
-    {
+    function testGetOrderYesterdaySql() {
 
         switch (DB_TYPE) {
         case 'pgsql':
@@ -120,8 +115,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase
     /**
      * 当月の売上高・売上件数を算出する SQL のテスト.
      */
-    function testGetOrderMonthSql()
-    {
+    function testGetOrderMonthSql() {
         switch (DB_TYPE) {
         case 'pgsql':
             $expected =  "SELECT COUNT(total) FROM dtb_order "
@@ -151,8 +145,7 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase
     /**
      * 昨日のレビュー書き込み件数を算出する SQL のテスト.
      */
-    function testGetReviewYesterdaySql()
-    {
+    function testGetReviewYesterdaySql() {
         switch (DB_TYPE) {
         case 'pgsql':
             $expected = "SELECT COUNT(*) FROM dtb_review AS A "

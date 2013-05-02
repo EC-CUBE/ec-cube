@@ -23,6 +23,5 @@
 
 require_once CLASS_REALDIR . 'SC_View.php';
 
-class SC_View_Ex extends SC_View 
-{
+class SC_View_Ex extends SC_View {
 }

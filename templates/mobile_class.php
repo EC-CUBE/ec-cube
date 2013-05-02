@@ -4,8 +4,7 @@
      *
      * @return void
      */
-    function mobileInit()
-    {
+    function mobileInit() {
         $this->init();
     }
 
@@ -14,8 +13,7 @@
      *
      * @return void
      */
-    function mobileProcess()
-    {
+    function mobileProcess() {
     }
 /*
  * Local variables:

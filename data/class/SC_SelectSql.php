@@ -22,8 +22,7 @@
  */
 
 /* ---- SQL文を作るクラス ---- */
-class SC_SelectSql 
-{
+class SC_SelectSql {
 
     var $sql;
 
@@ -35,16 +34,14 @@ class SC_SelectSql
     var $arrVal;
 
     //--　コンストラクタ。
-    function __construct($array = '')
-    {
+    function __construct($array = '') {
         if (is_array($array)) {
             $this->arrSql = $array;
         }
     }
 
     //-- SQL分生成
-    function getSql($mode = '')
-    {
+    function getSql($mode = '') {
         $this->sql = $this->select .' '. $this->where .' '. $this->group .' ';
 
         if ($mode == 2) {
@@ -55,15 +52,13 @@ class SC_SelectSql
     }
 
         // 検索用
-    function addSearchStr($val)
-    {
+    function addSearchStr($val) {
         $return = '%' .$val. '%';
         return $return;
     }
 
     //-- 範囲検索（○　~　○　まで）
-    function selectRange($from, $to, $column)
-    {
+    function selectRange($from, $to, $column) {
 
         // ある単位のみ検索($from = $to)
         if ($from == $to) {
@@ -86,8 +81,7 @@ class SC_SelectSql
     }
 
     //--　期間検索（○年○月○日か~○年○月○日まで）
-    function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column)
-    {
+    function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
         $return = array();
 
         // 開始期間の構築
@@ -126,8 +120,7 @@ class SC_SelectSql
     }
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx) AND ...
-    function setItemTerm($arr, $ItemStr)
-    {
+    function setItemTerm($arr, $ItemStr) {
         $return = array();
         foreach ($arr as $data) {
 
@@ -152,8 +145,7 @@ class SC_SelectSql
     }
 
     //　NULL値が必要な場合
-    function setItemTermWithNull($arr, $ItemStr)
-    {
+    function setItemTermWithNull($arr, $ItemStr) {
         $return = array();
         $item = " {$ItemStr} IS NULL ";
 
@@ -171,8 +163,7 @@ class SC_SelectSql
         return $return;
     }
     // NULLもしくは''で検索する場合
-    function setItemTermWithNullAndSpace($arr, $ItemStr)
-    {
+    function setItemTermWithNullAndSpace($arr, $ItemStr) {
         $return = array();
         $count = count($arr);
         $item = " {$ItemStr} IS NULL OR {$ItemStr} = '' ";
@@ -197,8 +188,7 @@ class SC_SelectSql
                                                             'value'  => $_POST['show_site1']);
 
     */
-    function setWhereByOR($arrWhere)
-    {
+    function setWhereByOR($arrWhere) {
 
         $count = count($arrWhere);
 
@@ -220,8 +210,7 @@ class SC_SelectSql
         }
     }
 
-    function setWhere($where)
-    {
+    function setWhere($where) {
         if ($where != '') {
             if ($this->where) {
 
@@ -234,30 +223,26 @@ class SC_SelectSql
         }
     }
 
-    function setOrder($order)
-    {
+    function setOrder($order) {
 
             $this->order =  'ORDER BY ' . $order;
 
     }
 
-    function setGroup($group)
-    {
+    function setGroup($group) {
 
         $this->group =  'GROUP BY ' . $group;
 
     }
 
-    function clearSql()
-    {
+    function clearSql() {
         $this->select = '';
         $this->where = '';
         $this->group = '';
         $this->order = '';
     }
 
-    function setSelect($sql)
-    {
+    function setSelect($sql) {
         $this->select = $sql;
     }
 }

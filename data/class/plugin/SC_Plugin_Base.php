@@ -30,8 +30,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id: $
  */
-abstract class SC_Plugin_Base 
-{
+abstract class SC_Plugin_Base {
 
     protected $arrSelfInfo;
 
@@ -41,8 +40,7 @@ abstract class SC_Plugin_Base
      * @param array $arrSelfInfo 自身のプラグイン情報
      * @return void
      */
-    function __construct(array $arrSelfInfo)
-    {
+    function __construct(array $arrSelfInfo) {
         $this->arrSelfInfo = $arrSelfInfo;
     }
     /**
@@ -91,8 +89,7 @@ abstract class SC_Plugin_Base
      * @param object $objPluginHelper
      * @param integer $priority
      */
-    function register(SC_Helper_Plugin $objHelperPlugin, $priority)
-    {
+    function register(SC_Helper_Plugin $objHelperPlugin, $priority) {
         if (isset($this->arrSelfInfo['plugin_hook_point'])) {
             $arrHookPoints = $this->arrSelfInfo['plugin_hook_point'];
             foreach ($arrHookPoints as $hook_point) {
@@ -110,8 +107,7 @@ abstract class SC_Plugin_Base
      *
      * @return array $arrSelfInfo 自身のプラグイン情報
      */
-    function getPluginInfo()
-    {
+    function getPluginInfo() {
         return $this->arrSelfInfo;
     }
 

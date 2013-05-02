@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Logi
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_LoginHeader_Ex extends LC_Page_FrontParts_Bloc_LoginHeader 
-{
+class LC_Page_FrontParts_Bloc_LoginHeader_Ex extends LC_Page_FrontParts_Bloc_LoginHeader {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_FrontParts_Bloc_LoginHeader_Ex extends LC_Page_FrontParts_Bloc_Log
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_FrontParts_Bloc_LoginHeader_Ex extends LC_Page_FrontParts_Bloc_Log
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_FrontParts_Bloc_LoginHeader_Ex extends LC_Page_FrontParts_Bloc_Log
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

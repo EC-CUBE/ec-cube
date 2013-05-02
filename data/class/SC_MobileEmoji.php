@@ -30,8 +30,7 @@ define('MOBILE_EMOJI_SUBSTITUTE', '');
 /**
  * 携帯端末の絵文字を扱うクラス
  */
-class SC_MobileEmoji 
-{
+class SC_MobileEmoji {
     /**
      * 絵文字タグを各キャリア用の文字コードに変換する
      * output buffering 用コールバック関数
@@ -39,8 +38,7 @@ class SC_MobileEmoji
      * @param string 入力
      * @return string 出力
      */
-    static function handler($buffer)
-    {
+    static function handler($buffer) {
         $replace_callback = create_function('$matches', 'return SC_MobileEmoji_Ex::indexToCode($matches[1]);');
         return preg_replace_callback('/\[emoji:(e?\d+)\]/', $replace_callback, $buffer);
     }
@@ -51,8 +49,7 @@ class SC_MobileEmoji
      * @param string $index 絵文字番号
      * @return string 絵文字を表す Shift JIS の文字列を返す。
      */
-    function indexToCode($index)
-    {
+    function indexToCode($index) {
         $carrier = SC_MobileUserAgent_Ex::getCarrier();
         if ($carrier === false) {
             return MOBILE_EMOJI_SUBSTITUTE;

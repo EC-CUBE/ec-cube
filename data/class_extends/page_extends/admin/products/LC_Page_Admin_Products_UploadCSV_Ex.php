@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_Upload
  * @author LOCKON CO.,LTD.
  * @version $$Id$$
  */
-class LC_Page_Admin_Products_UploadCSV_Ex extends LC_Page_Admin_Products_UploadCSV 
-{
+class LC_Page_Admin_Products_UploadCSV_Ex extends LC_Page_Admin_Products_UploadCSV {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Admin_Products_UploadCSV_Ex extends LC_Page_Admin_Products_UploadC
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Admin_Products_UploadCSV_Ex extends LC_Page_Admin_Products_UploadC
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Admin_Products_UploadCSV_Ex extends LC_Page_Admin_Products_UploadC
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Guide_Kiyaku extends LC_Page_Ex 
-{
+class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -52,8 +50,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -64,8 +61,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $this->lfGetKiyaku(intval($_GET['page']), $this);
 
@@ -77,8 +73,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -89,10 +84,10 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      * @param object &$objPage ページオブジェクト
      * @return void
      */
-    function lfGetKiyaku($index, &$objPage)
-    {
-        $objKiyaku = new SC_Helper_Kiyaku_Ex();
-        $arrKiyaku = $objKiyaku->getList();
+    function lfGetKiyaku($index, &$objPage) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->setOrder('rank DESC');
+        $arrKiyaku = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', 'del_flg <> 1');
 
         $number = count($arrKiyaku);
         if ($number > 0) {

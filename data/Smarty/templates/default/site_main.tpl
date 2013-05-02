@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<body class="<!--{$tpl_page_class_name|h}-->">
+<body>
 <!--{$GLOBAL_ERR}-->
 <noscript>
     <p>JavaScript を有効にしてご利用下さい.</p>

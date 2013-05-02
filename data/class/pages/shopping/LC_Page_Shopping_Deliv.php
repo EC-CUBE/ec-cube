@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Deliv extends LC_Page_Ex 
-{
+class LC_Page_Shopping_Deliv extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
@@ -56,8 +54,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -68,8 +65,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
@@ -113,7 +109,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
         switch ($this->getMode()) {
             // 削除
             case 'delete':
-                $objAddress->deleteAddress($arrForm['other_deliv_id']);
+                $objAddress->delete($arrForm['other_deliv_id']);
                 break;
 
             // 会員登録住所に送る
@@ -194,8 +190,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -205,8 +200,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('その他のお届け先ID', 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お届け先チェック', 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }
@@ -224,8 +218,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @return boolean お届け先チェックの値が妥当な場合 true
      */
-    function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer, $objAddress)
-    {
+    function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer, $objAddress) {
         GC_Utils_Ex::gfDebugLog('register deliv. deliv_check=' . $deliv_check);
         $arrValues = array();
         // 会員登録住所がチェックされている場合
@@ -234,7 +227,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
         }
         // 別のお届け先がチェックされている場合
         else {
-            $arrOtherDeliv = $objAddress->getAddress($other_deliv_id);
+            $arrOtherDeliv = $objAddress->get($other_deliv_id);
             if (!$arrOtherDeliv) {
                 return false;
             }

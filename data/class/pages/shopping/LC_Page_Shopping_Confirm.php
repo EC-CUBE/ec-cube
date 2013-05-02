@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Confirm extends LC_Page_Ex 
-{
+class LC_Page_Shopping_Confirm extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_title = 'ご入力内容のご確認';
         $masterData = new SC_DB_MasterData_Ex();
@@ -51,7 +49,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
         $this->arrReminder = $masterData->getMasterData('mtb_reminder');
-        $this->arrDeliv = SC_Helper_Delivery_Ex::getIDValueList('service_name');
+        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', 'service_name');
         $this->httpCacheControl('nocache');
     }
 
@@ -60,8 +58,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -72,8 +69,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
@@ -167,7 +163,10 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
                 // 購入完了ページ
                 else {
                     $objPurchase->completeOrder(ORDER_NEW);
-                    SC_Helper_Purchase_Ex::sendOrderMail($this->arrForm['order_id']);
+                    $template_id = SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ? 2 : 1;
+                    $objHelperMail->sfSendOrderMail(
+                            $this->arrForm['order_id'],
+                            $template_id);
 
                     SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }
@@ -184,8 +183,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

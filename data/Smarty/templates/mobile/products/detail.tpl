@@ -114,16 +114,6 @@
     <!--{/if}-->
     <br>
 
-    <!--★メーカー★-->
-    <!--{if $arrProduct.maker_name|strlen >= 1}-->
-        メーカー：<!--{$arrProduct.maker_name|h}--><br>
-    <!--{/if}-->
-
-    <!--★メーカーURL★-->
-    <!--{if $arrProduct.comment1|strlen >= 1}-->
-        メーカーURL：<a href="<!--{$arrProduct.comment1|h}-->"><!--{$arrProduct.comment1|h}--></a><br>
-    <!--{/if}-->
-
     <!--★関連カテゴリ★-->
     関連カテゴリ：<br>
     <!--{section name=r loop=$arrRelativeCat}-->

@@ -94,7 +94,7 @@
 
                 <!--★商品価格★-->
                 <p>
-                    <span class="pricebox sale_price"><span class="mini"><!--{$smarty.const.SALE_PRICE_TITLE|h}-->(税込):</span></span>
+                    <span class="pricebox sale_price"><span class="mini">販売価格(税込):</span></span>
                     <span class="price">
                         <span id="price02_default_<!--{$id}-->">
                             <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
@@ -206,9 +206,9 @@
                     var priceVale = "";
                     //販売価格が範囲か判定
                     if (product.price02_min == product.price02_max) {
-                        priceVale = product.price02_min_inctax_format + '円';
+                        priceVale = product.price02_min_tax_format + '円';
                     } else {
-                        priceVale = product.price02_min_inctax_format + '～' + product.price02_max_inctax_format + '円';
+                        priceVale = product.price02_min_tax_format + '～' + product.price02_max_tax_format + '円';
                     }
                     price.append(priceVale);
 

@@ -22,14 +22,12 @@
  */
 
 // プラグインのユーティリティクラス.
-class SC_Plugin_Util 
-{
+class SC_Plugin_Util {
 
     /**
      * 稼働中のプラグインを取得する。
      */
-    function getEnablePlugin()
-    {
+    function getEnablePlugin() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
@@ -56,8 +54,7 @@ class SC_Plugin_Util
      * 
      * @return array $arrRet インストールされているプラグイン.
      */
-    function getAllPlugin()
-    {
+    function getAllPlugin() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
@@ -76,8 +73,7 @@ class SC_Plugin_Util
      * @param int $plugin_id プラグインID.
      * @return array プラグインの基本情報.
      */
-    function getPluginByPluginId($plugin_id)
-    {
+    function getPluginByPluginId($plugin_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
@@ -93,8 +89,7 @@ class SC_Plugin_Util
      * @param string $plugin_code プラグインコード.
      * @return array プラグインの基本情報.
      */
-    function getPluginByPluginCode($plugin_code)
-    {
+    function getPluginByPluginCode($plugin_code) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
         $table = 'dtb_plugin';
@@ -109,8 +104,7 @@ class SC_Plugin_Util
      * @param string $plugin_id プラグインID.
      * @return array プラグインの基本情報.
      */
-    function deletePluginByPluginId($plugin_id)
-    {
+    function deletePluginByPluginId($plugin_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'plugin_id = ?';
         $objQuery->delete('dtb_plugin', $where, array($plugin_id));
@@ -122,8 +116,7 @@ class SC_Plugin_Util
      *
      * @return array $arrPluginDirectory
      */
-    function getPluginDirectory()
-    {
+    function getPluginDirectory() {
         $arrPluginDirectory = array();
         if (is_dir(PLUGIN_UPLOAD_REALDIR)) {
             if ($dh = opendir(PLUGIN_UPLOAD_REALDIR)) {
@@ -142,8 +135,7 @@ class SC_Plugin_Util
      * @param integer $plugin_id
      * @return array フックポイントの一覧
      */
-    function getPluginHookPoint($plugin_id)
-    {
+    function getPluginHookPoint($plugin_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = '*';
         $from = 'dtb_plugin_hookpoint';
@@ -157,8 +149,7 @@ class SC_Plugin_Util
      * @param string $key  エラー情報を格納するキー
      * @return array $arrErr エラー情報を格納した連想配列.
      */
-    function checkExtension($key)
-    {
+    function checkExtension($key) {
         // プラグイン利用に必須のモジュール
         // 'EC-CUBEバージョン' => array('モジュール名')
         $arrRequireExtension = array(

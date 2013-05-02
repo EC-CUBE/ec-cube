@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_jsonEncodeTest extends Common_TestCase
-{
+class SC_Utils_jsonEncodeTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testJsonEncode__JSON形式にエンコードされた文字列が返る()
-  {
+  public function testJsonEncode__JSON形式にエンコードされた文字列が返る() {
     $input = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
     $this->expected = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
     $this->actual = SC_Utils::jsonEncode($input);

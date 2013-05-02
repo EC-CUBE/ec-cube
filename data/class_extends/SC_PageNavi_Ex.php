@@ -23,6 +23,5 @@
 
 require_once CLASS_REALDIR . 'SC_PageNavi.php';
 
-class SC_PageNavi_Ex extends SC_PageNavi 
-{
+class SC_PageNavi_Ex extends SC_PageNavi {
 }

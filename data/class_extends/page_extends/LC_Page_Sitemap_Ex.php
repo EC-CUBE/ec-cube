@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/LC_Page_Sitemap.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Sitemap_Ex extends LC_Page_Sitemap 
-{
+class LC_Page_Sitemap_Ex extends LC_Page_Sitemap {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Sitemap_Ex extends LC_Page_Sitemap
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Sitemap_Ex extends LC_Page_Sitemap
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Sitemap_Ex extends LC_Page_Sitemap
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

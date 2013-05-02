@@ -30,8 +30,7 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_ItemSearch extends SC_Api_Abstract_Ex 
-{
+class API_ItemSearch extends SC_Api_Abstract_Ex {
 
     protected $operation_name = 'ItemSearch';
     protected $operation_description = '商品検索・商品一覧情報を取得します。';
@@ -40,8 +39,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam)
-    {
+    public function doAction($arrParam) {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
 
@@ -69,7 +67,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
 
             if (!SC_Utils_Ex::isBlank($arrProducts)) {
                 $arrProducts = $this->setStatusDataTo($arrProducts, $arrSTATUS, $arrSTATUS_IMAGE);
-                SC_Product_Ex::setPriceTaxTo($arrProducts);
+                $arrProducts = $objProduct->setPriceTaxTo($arrProducts);
                 foreach ($arrProducts as $key=>$val) {
                     $arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
                 }
@@ -93,8 +91,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
         return false;
     }
 
-    protected function lfInitParam(&$objFormParam)
-    {
+    protected function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('カテゴリID', 'BrowseNode', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('キーワード', 'Keywords', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メーカー名', 'Manufacturer', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -102,8 +99,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
         $objFormParam->addParam('ソート', 'Sort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    public function getResponseGroupName()
-    {
+    public function getResponseGroupName() {
         return 'Items';
     }
 
@@ -114,8 +110,7 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
      * @return array
      * TODO: LC_Page_Products_List::lfGetProductsList() と共通化
      */
-    protected function getProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct)
-    {
+    protected function getProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct) {
 
         $arrOrderVal = array();
 
@@ -189,8 +184,7 @@ __EOS__;
      * @return array
      * TODO: LC_Page_Products_List:;lfGetSearchCondition() と共通化
      */
-    protected function getSearchCondition($arrSearchData)
-    {
+    protected function getSearchCondition($arrSearchData) {
         $searchCondition = array(
             'where'             => '',
             'arrval'            => array(),
@@ -259,8 +253,7 @@ __EOS__;
      * @param Array $arrStatusImage スタータス画像配列
      * @return Array $arrProducts 商品一覧情報
      */
-    protected function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage)
-    {
+    protected function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage) {
 
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
             for ($i = 0; $i < count($arrValues); $i++) {

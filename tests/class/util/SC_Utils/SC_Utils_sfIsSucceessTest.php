@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfIsSuccessTest extends Common_TestCase
-{
+class SC_Utils_sfIsSuccessTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfIsSuccess_認証に失敗している場合_falseが返る()
-  {
+  public function testSfIsSuccess_認証に失敗している場合_falseが返る() {
     $objSess = new SC_Session_Mock();
     $objSess->is_success = SUCCESS + 1;
 
@@ -57,8 +53,7 @@ class SC_Utils_sfIsSuccessTest extends Common_TestCase
     $this->verify('認証可否');
   }
 
-  public function testSfIsSuccess_認証成功でリファラがない場合_trueが返る()
-  {
+  public function testSfIsSuccess_認証成功でリファラがない場合_trueが返る() {
     $objSess = new SC_Session_Mock();
     $objSess->is_success = SUCCESS;
 
@@ -69,8 +64,7 @@ class SC_Utils_sfIsSuccessTest extends Common_TestCase
   }
 
   // TODO 正規のドメインであることは確認しているが、管理画面からというのはチェックしていないのでは？
-  public function testSfIsSuccess_認証成功でリファラが正しい場合_trueが返る()
-  {
+  public function testSfIsSuccess_認証成功でリファラが正しい場合_trueが返る() {
     $objSess = new SC_Session_Mock();
     $objSess->is_success = SUCCESS;
     $_SERVER['HTTP_REFERER'] = 'http://test.local/hoge/fuga';
@@ -81,8 +75,7 @@ class SC_Utils_sfIsSuccessTest extends Common_TestCase
     $this->verify('認証可否');
   }
 
-  public function testSfIsSuccess_認証成功でリファラが不正な場合_falseが返る()
-  {
+  public function testSfIsSuccess_認証成功でリファラが不正な場合_falseが返る() {
     $objSess = new SC_Session_Mock();
     $objSess->is_success = SUCCESS;
     $_SERVER['HTTP_REFERER'] = 'http://test.jp.local/hoge/fuga';
@@ -97,13 +90,11 @@ class SC_Utils_sfIsSuccessTest extends Common_TestCase
 
 }
 
-class SC_Session_Mock extends SC_Session
-{
+class SC_Session_Mock extends SC_Session {
 
   public $is_success;
 
-  function IsSuccess()
-  {
+  function IsSuccess() {
     return $this->is_success;
   }
 

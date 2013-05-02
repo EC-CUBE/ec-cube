@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex 
-{
+class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
 
     // {{{ properties
 
@@ -47,8 +46,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mypageno = 'index';
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
@@ -67,8 +65,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -77,8 +74,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getvalue('customer_id');
@@ -103,12 +99,9 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
                 break;
         }
         // 支払い方法の取得
-        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
+        $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-        
-        $this->json_payment = SC_Utils::jsonEncode($this->arrPayment);
-        $this->json_customer_order_status = SC_Utils::jsonEncode($this->arrCustomerOrderStatus);
     }
 
     /**
@@ -116,8 +109,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -129,8 +121,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return void
      */
-    function lfGetOrderHistory($customer_id, $startno = -1)
-    {
+    function lfGetOrderHistory($customer_id, $startno = -1) {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
 
         $col        = 'order_id, create_date, payment_id, payment_total, status';

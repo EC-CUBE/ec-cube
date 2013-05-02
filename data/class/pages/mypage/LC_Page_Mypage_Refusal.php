@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex 
-{
+class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_subtitle = '退会手続き(入力ページ)';
         $this->tpl_mypageno = 'refusal';
@@ -54,8 +52,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         switch ($this->getMode()) {
             case 'confirm':
@@ -92,8 +88,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -103,9 +98,13 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return void
      */
-    function lfDeleteCustomer($customer_id)
-    {
-        return SC_Helper_Customer_Ex::delete($customer_id);
+    function lfDeleteCustomer($customer_id) {
+        $objQuery = SC_Query_Ex::getSingletonInstance();
+
+        $sqlval['del_flg']      = 1;
+        $sqlval['update_date']  = 'CURRENT_TIMESTAMP';
+        $where                  = 'customer_id = ?';
+        $objQuery->update('dtb_customer', $sqlval, $where, array($customer_id));
     }
 
 }

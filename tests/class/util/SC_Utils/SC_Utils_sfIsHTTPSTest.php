@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfIsHTTPSTest extends Common_TestCase
-{
+class SC_Utils_sfIsHTTPSTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfIsHTTPS_環境変数にSSLを示す値が入っている場合_trueが返る()
-  {
+  public function testSfIsHTTPS_環境変数にSSLを示す値が入っている場合_trueが返る() {
     $_SERVER['HTTPS'] = 'on';
     $this->expected = true;
     $this->actual = SC_Utils::sfIsHTTPS();
@@ -55,8 +51,7 @@ class SC_Utils_sfIsHTTPSTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfIsHTTPS_環境変数に非SSLを示す値が入っている場合_falseが返る()
-  {
+  public function testSfIsHTTPS_環境変数に非SSLを示す値が入っている場合_falseが返る() {
     $_SERVER['HTTPS'] = 'off';
     $this->expected = false;
     $this->actual = SC_Utils::sfIsHTTPS();
@@ -64,8 +59,7 @@ class SC_Utils_sfIsHTTPSTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfIsHTTPS_環境変数に値が入っていない場合_falseが返る()
-  {
+  public function testSfIsHTTPS_環境変数に値が入っていない場合_falseが返る() {
     unset($_SERVER['HTTPS']);
     $this->expected = false;
     $this->actual = SC_Utils::sfIsHTTPS();

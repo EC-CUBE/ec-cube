@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_Produc
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductRank_Ex extends LC_Page_Admin_Products_ProductRank 
-{
+class LC_Page_Admin_Products_ProductRank_Ex extends LC_Page_Admin_Products_ProductRank {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Admin_Products_ProductRank_Ex extends LC_Page_Admin_Products_Produ
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Admin_Products_ProductRank_Ex extends LC_Page_Admin_Products_Produ
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Admin_Products_ProductRank_Ex extends LC_Page_Admin_Products_Produ
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

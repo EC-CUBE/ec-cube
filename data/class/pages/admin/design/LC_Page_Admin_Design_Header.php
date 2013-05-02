@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'design/header.tpl';
         $this->header_row = 13;
@@ -61,8 +59,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -72,8 +69,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -124,8 +120,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -135,8 +130,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('division', 'division', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ヘッダデータ', 'header');
@@ -149,8 +143,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam, &$arrErr)
-    {
+    function lfCheckError(&$objFormParam, &$arrErr) {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
@@ -166,8 +159,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return integer|boolean 登録が成功した場合 true; 失敗した場合 false
      */
-    function doRegister(&$objFormParam)
-    {
+    function doRegister(&$objFormParam) {
         $division = $objFormParam->getValue('division');
         $contents = $objFormParam->getValue($division);
         $tpl_path = $this->getTemplatePath($objFormParam->getValue('device_type_id'), $division);
@@ -186,8 +178,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      * @param string $division 'header' or 'footer'
      * @return string|boolean 成功した場合, テンプレートのパス; 失敗した場合 false
      */
-    function getTemplatePath($device_type_id, $division)
-    {
+    function getTemplatePath($device_type_id, $division) {
         $tpl_path = SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id) . '/' . $division . '.tpl';
         if (file_exists($tpl_path)) {
             return $tpl_path;

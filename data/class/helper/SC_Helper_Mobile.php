@@ -28,8 +28,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_Mobile 
-{
+class SC_Helper_Mobile {
 
     /** 基本MimeType */
     var $defaultMimeType = 'application/force-download';
@@ -81,8 +80,7 @@ class SC_Helper_Mobile
      *
      * @return void
      */
-    function lfMobileCheckCompatibility()
-    {
+    function lfMobileCheckCompatibility() {
         if (!SC_MobileUserAgent_Ex::isSupported()) {
             header('Location: ' . ROOT_URLPATH . 'unsupported/' . DIR_INDEX_PATH);
             exit;
@@ -95,8 +93,7 @@ class SC_Helper_Mobile
      * @param string &$value 入力データへの参照
      * @return void
      */
-    function lfMobileConvertInputValue(&$value)
-    {
+    function lfMobileConvertInputValue(&$value) {
         if (is_array($value)) {
             foreach ($value as $key => $val) {
                 $this->lfMobileConvertInputValue($value[$key]);
@@ -115,8 +112,7 @@ class SC_Helper_Mobile
      *
      * @return void
      */
-    function lfMobileInitInput()
-    {
+    function lfMobileInitInput() {
         array_walk($_GET, array($this, 'lfMobileConvertInputValue'));
         array_walk($_POST, array($this, 'lfMobileConvertInputValue'));
         array_walk($_REQUEST, array($this, 'lfMobileConvertInputValue'));
@@ -128,9 +124,8 @@ class SC_Helper_Mobile
      * @return string|null 取得したセッションIDを返す。
      *                     取得できなかった場合は null を返す。
      */
-    function lfMobileGetExtSessionId()
-    {
-        if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches)) {
+    function lfMobileGetExtSessionId() {
+        if (!preg_match('|^' . ROOT_URLPATH . '(.*)$|', $_SERVER['SCRIPT_NAME'], $matches = array())) {
             return null;
         }
 
@@ -156,8 +151,7 @@ class SC_Helper_Mobile
      * @return string|false 取得した有効なセッションIDを返す。
      *                      取得できなかった場合は false を返す。
      */
-    function lfMobileGetSessionId()
-    {
+    function lfMobileGetSessionId() {
         // パラメーターからセッションIDを取得する。
         $sessionId = @$_POST[session_name()];
         if (!isset($sessionId)) {
@@ -186,8 +180,7 @@ class SC_Helper_Mobile
      *
      * @return boolean セッションデータが有効な場合は true、無効な場合は false を返す。
      */
-    function lfMobileValidateSession()
-    {
+    function lfMobileValidateSession() {
         // 配列 mobile が登録されているかどうかをチェックする。
         if (!is_array(@$_SESSION['mobile'])) {
             return false;
@@ -227,8 +220,7 @@ class SC_Helper_Mobile
      *
      * @return void
      */
-    function lfMobileInitOutput()
-    {
+    function lfMobileInitOutput() {
         // 出力用のエンコーディングを Shift JIS に固定する。
         mb_http_output('SJIS-win');
 
@@ -250,8 +242,7 @@ class SC_Helper_Mobile
      *
      * @return void
      */
-    function sfMobileInit()
-    {
+    function sfMobileInit() {
         $this->lfMobileInitInput();
 
         if (basename(dirname($_SERVER['SCRIPT_NAME'])) != 'unsupported') {
@@ -266,8 +257,7 @@ class SC_Helper_Mobile
      *
      * @return String
      */
-    function gfAddSessionId($url = null)
-    {
+    function gfAddSessionId($url = null) {
         $objURL = new Net_URL($url);
         $objURL->addQueryString(session_name(), session_id());
         return $objURL->getURL();
@@ -279,8 +269,7 @@ class SC_Helper_Mobile
      * @param array $array 元となる配列
      * @param array セッション ID を追加した配列
      */
-    function sessionIdArray($array = array())
-    {
+    function sessionIdArray($array = array()) {
         return array_merge($array, array(session_name() => session_id()));
     }
 
@@ -289,8 +278,7 @@ class SC_Helper_Mobile
      *
      * @return string 生成したトークンを返す。
      */
-    function lfGenerateKaraMailToken()
-    {
+    function lfGenerateKaraMailToken() {
         $token_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
         $token_chars_length = strlen($token_chars);
         $token_length = 10;
@@ -311,8 +299,7 @@ class SC_Helper_Mobile
      * @param string $session_id セッションID (省略した場合は現在のセッションID)
      * @return string|false トークンを返す。エラーが発生した場合はfalseを返す。
      */
-    function gfPrepareKaraMail($next_url, $session_id = null)
-    {
+    function gfPrepareKaraMail($next_url, $session_id = null) {
         if (!isset($session_id)) {
             $session_id = session_id();
         }
@@ -358,8 +345,7 @@ class SC_Helper_Mobile
      * @param string $email メールアドレス
      * @return boolean 成功した場合はtrue、失敗した場合はfalseを返す。
      */
-    function gfRegisterKaraMail($token, $email)
-    {
+    function gfRegisterKaraMail($token, $email) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // GC
@@ -389,8 +375,7 @@ class SC_Helper_Mobile
      * @param string $token トークン
      * @return string|false URLを返す。エラーが発生した場合はfalseを返す。
      */
-    function gfFinishKaraMail($token)
-    {
+    function gfFinishKaraMail($token) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrRow = $objQuery->getRow(
@@ -428,8 +413,7 @@ class SC_Helper_Mobile
      * @param string $url URL
      * @return void
      */
-    function sfMobileSetExtSessionId($param_key, $param_value, $url)
-    {
+    function sfMobileSetExtSessionId($param_key, $param_value, $url) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // GC
@@ -452,8 +436,7 @@ class SC_Helper_Mobile
      * @param string $address メールアドレス
      * @return boolean 携帯のメールアドレスの場合はtrue、それ以外の場合はfalseを返す。
      */
-    function gfIsMobileMailAddress($address)
-    {
+    function gfIsMobileMailAddress($address) {
         $masterData = new SC_DB_MasterData_Ex();
         $arrMobileMailDomains = $masterData->getMasterData('mtb_mobile_domain');
 
@@ -473,8 +456,7 @@ class SC_Helper_Mobile
      * @param string $filename ファイル名
      * @return string MIMEタイプ
      */
-    function getMimeType($filename)
-    {
+    function getMimeType($filename) {
         //ファイルの拡張子からコンテンツタイプを決定する
         $file_extension = strtolower(substr(strrchr($filename,'.'),1));
         $mime_type = $this->defaultMimeType;

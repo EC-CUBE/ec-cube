@@ -32,12 +32,10 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_Utils.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_Utils 
-{
+class SC_Utils {
 
     // インストール初期処理
-    function sfInitInstall()
-    {
+    function sfInitInstall() {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
             $phpself = $_SERVER['SCRIPT_NAME'];
@@ -65,8 +63,7 @@ class SC_Utils
      * @param string $path 検索対象のパス
      * @return string インストーラの URL
      */
-    function searchInstallerPath($path)
-    {
+    function searchInstallerPath($path) {
         $installer = 'install/' . DIR_INDEX_PATH;
 
         if (SC_Utils_Ex::sfIsHTTPS()) {
@@ -103,8 +100,7 @@ class SC_Utils
      * @param string $url http(s):// から始まる URL
      * @return string $url を絶対パスに変換した URL
      */
-    function getRealURL($url)
-    {
+    function getRealURL($url) {
         $parse = parse_url($url);
         $tmp = explode('/', $parse['path']);
         $results = array();
@@ -123,8 +119,7 @@ class SC_Utils
     }
 
     // 装飾付きエラーメッセージの表示
-    function sfErrorHeader($mess, $print = false)
-    {
+    function sfErrorHeader($mess, $print = false) {
         global $GLOBAL_ERR;
         $GLOBAL_ERR.= '<div id="errorHeader">';
         $GLOBAL_ERR.= $mess;
@@ -135,8 +130,7 @@ class SC_Utils
     }
 
     /* エラーページの表示 */
-    function sfDispError($type)
-    {
+    function sfDispError($type) {
 
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_DispError_Ex.php';
 
@@ -149,8 +143,7 @@ class SC_Utils
     }
 
     /* サイトエラーページの表示 */
-    function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '')
-    {
+    function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '') {
 
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_Ex.php';
 
@@ -171,15 +164,13 @@ class SC_Utils
      *
      * @deprecated 2.12.0 trigger_error($debugMsg, E_USER_ERROR) を使用すること
      */
-    function sfDispException($debugMsg = null)
-    {
+    function sfDispException($debugMsg = null) {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         trigger_error($debugMsg, E_USER_ERROR);
     }
 
     /* 認証の可否判定 */
-    function sfIsSuccess($objSess, $disp_error = true)
-    {
+    function sfIsSuccess($objSess, $disp_error = true) {
         $ret = $objSess->IsSuccess();
         if ($ret != SUCCESS) {
             if ($disp_error) {
@@ -214,8 +205,7 @@ class SC_Utils
      * @param string $passlen 変換する文字列
      * @return string アスタリスクへ変換した文字列
      */
-    function sfPassLen($passlen)
-    {
+    function sfPassLen($passlen) {
         $ret = '';
         for ($i=0;$i<$passlen;true) {
             $ret.='*';
@@ -229,8 +219,7 @@ class SC_Utils
      *
      * @return bool
      */
-    function sfIsHTTPS()
-    {
+    function sfIsHTTPS() {
         // HTTPS時には$_SERVER['HTTPS']には空でない値が入る
         // $_SERVER['HTTPS'] != 'off' はIIS用
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
@@ -246,8 +235,7 @@ class SC_Utils
      *  @param  obj  SC_Session, SC_SiteSession
      *  @return bool
      */
-    function sfIsValidTransition($objSess)
-    {
+    function sfIsValidTransition($objSess) {
         // 前画面からPOSTされるuniqidが正しいものかどうかをチェック
         $uniqid = $objSess->getUniqId();
         if (!empty($_POST['uniqid']) && ($_POST['uniqid'] === $uniqid)) {
@@ -258,8 +246,7 @@ class SC_Utils
     }
 
     /* DB用日付文字列取得 */
-    function sfGetTimestamp($year, $month, $day, $last = false)
-    {
+    function sfGetTimestamp($year, $month, $day, $last = false) {
         if ($year != '' && $month != '' && $day != '') {
             if ($last) {
                 $time = '23:59:59';
@@ -282,8 +269,7 @@ class SC_Utils
      *  @return bool
      */
     //
-    function sfIsInt($value)
-    {
+    function sfIsInt($value) {
         if (strlen($value) >= 1 && strlen($value) <= INT_LEN && is_numeric($value)) {
             return true;
         }
@@ -296,15 +282,13 @@ class SC_Utils
      * @param string $value 検査対象
      * @return boolean 0で埋められている
      */
-    function sfIsZeroFilling($value)
-    {
+    function sfIsZeroFilling($value) {
         if (strlen($value) > 1 && $value{0} === '0')
             return true;
         return false;
     }
 
-    function sfGetCSVData($data, $prefix = '')
-    {
+    function sfGetCSVData($data, $prefix = '') {
         if ($prefix == '') {
             $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date('ymdHis') .'.csv';
@@ -321,8 +305,7 @@ class SC_Utils
     }
 
     /* 1階層上のディレクトリ名を取得する */
-    function sfUpDirName()
-    {
+    function sfUpDirName() {
         $path = $_SERVER['SCRIPT_NAME'];
         $arrVal = explode('/', $path);
         $cnt = count($arrVal);
@@ -333,8 +316,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeCBValue($keyname, $max)
-    {
+    function sfMergeCBValue($keyname, $max) {
         $conv = '';
         $cnt = 1;
         for ($cnt = 1; $cnt <= $max; $cnt++) {
@@ -351,8 +333,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeCheckBoxes($array, $max)
-    {
+    function sfMergeCheckBoxes($array, $max) {
         $ret = '';
         $arrTmp = array();
         if (is_array($array)) {
@@ -374,8 +355,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeParamCheckBoxes($array)
-    {
+    function sfMergeParamCheckBoxes($array) {
         $ret = '';
         if (is_array($array)) {
             foreach ($array as $val) {
@@ -395,8 +375,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfSearchCheckBoxes($array)
-    {
+    function sfSearchCheckBoxes($array) {
         $max = max($array);
         $ret = '';
         for ($i = 1; $i <= $max; $i++) {
@@ -412,8 +391,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfSplitCheckBoxes($val)
-    {
+    function sfSplitCheckBoxes($val) {
         $arrRet = array();
         $len = strlen($val);
         for ($i = 0; $i < $len; $i++) {
@@ -428,8 +406,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeCBSearchValue($keyname, $max)
-    {
+    function sfMergeCBSearchValue($keyname, $max) {
         $conv = '';
         $cnt = 1;
         for ($cnt = 1; $cnt <= $max; $cnt++) {
@@ -446,8 +423,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfSplitCBValue($val, $keyname = '')
-    {
+    function sfSplitCBValue($val, $keyname = '') {
         $arr = array();
         $len = strlen($val);
         $no = 1;
@@ -463,8 +439,7 @@ class SC_Utils
     }
 
     // キーと値をセットした配列を取得
-    function sfArrKeyValue($arrList, $keyname, $valname, $len_max = '', $keysize = '')
-    {
+    function sfArrKeyValue($arrList, $keyname, $valname, $len_max = '', $keysize = '') {
         $arrRet = array();
         $max = count($arrList);
 
@@ -489,8 +464,7 @@ class SC_Utils
     }
 
     // キーと値をセットした配列を取得(値が複数の場合)
-    function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = '')
-    {
+    function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = '') {
 
         $max = count($arrList);
 
@@ -517,8 +491,7 @@ class SC_Utils
     }
 
     // 配列の値をカンマ区切りで返す。
-    function sfGetCommaList($array, $space=true, $arrPop = array())
-    {
+    function sfGetCommaList($array, $space=true, $arrPop = array()) {
         if (count($array) > 0) {
             $line = '';
             foreach ($array as $val) {
@@ -543,8 +516,7 @@ class SC_Utils
     }
 
     /* 配列の要素をCSVフォーマットで出力する。*/
-    function sfGetCSVList($array)
-    {
+    function sfGetCSVList($array) {
         $line = '';
         if (count($array) > 0) {
             foreach ($array as $val) {
@@ -567,8 +539,7 @@ class SC_Utils
     /*            ２．終了年月日 (YYYY/MM/DD 235959)
     /*            ３．エラー (0 = OK, 1 = NG)
     /*-----------------------------------------------------------------*/
-    function sfCheckSetTerm($start_year, $start_month, $start_day, $end_year, $end_month, $end_day)
-    {
+    function sfCheckSetTerm($start_year, $start_month, $start_day, $end_year, $end_month, $end_day) {
 
         // 期間指定
         $error = 0;
@@ -591,14 +562,12 @@ class SC_Utils
     }
 
     // エラー箇所の背景色を変更するためのfunction SC_Viewで読み込む
-    function sfSetErrorStyle()
-    {
+    function sfSetErrorStyle() {
         return 'style="background-color:'.ERR_COLOR.'"';
     }
 
     // 一致した値のキー名を取得
-    function sfSearchKey($array, $word, $default)
-    {
+    function sfSearchKey($array, $word, $default) {
         foreach ($array as $key => $val) {
             if ($val == $word) {
                 return $key;
@@ -607,32 +576,28 @@ class SC_Utils
         return $default;
     }
 
-    function sfGetErrorColor($val)
-    {
+    function sfGetErrorColor($val) {
         if ($val != '') {
             return 'background-color:' . ERR_COLOR;
         }
         return '';
     }
 
-    function sfGetEnabled($val)
-    {
+    function sfGetEnabled($val) {
         if (! $val) {
             return ' disabled="disabled"';
         }
         return '';
     }
 
-    function sfGetChecked($param, $value)
-    {
+    function sfGetChecked($param, $value) {
         if ((string)$param === (string)$value) {
             return 'checked="checked"';
         }
         return '';
     }
 
-    function sfTrim($str)
-    {
+    function sfTrim($str) {
         $ret = mb_ereg_replace("^[　 \n\r]*", '', $str);
         $ret = mb_ereg_replace("[　 \n\r]*$", '', $ret);
         return $ret;
@@ -649,8 +614,7 @@ class SC_Utils
      * @param integer $tax_rule 端数処理
      * @return integer 税金額
      */
-    function sfTax($price, $tax, $tax_rule)
-    {
+    function sfTax($price, $tax, $tax_rule) {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
         switch ($tax_rule) {
@@ -685,14 +649,12 @@ class SC_Utils
      * @param integer $tax_rule 端数処理
      * @return integer 税金付与した金額
      */
-    function sfCalcIncTax($price, $tax, $tax_rule)
-    {
+    function sfCalcIncTax($price, $tax, $tax_rule) {
         return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
 
     // 桁数を指定して四捨五入
-    function sfRound($value, $pow = 0)
-    {
+    function sfRound($value, $pow = 0) {
         $adjust = pow(10 ,$pow-1);
 
         // 整数且つ0出なければ桁数指定を行う
@@ -714,8 +676,7 @@ class SC_Utils
      * @param int $product_id
      * @return int 
      */
-    function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = '')
-    {
+    function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = '') {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
         switch ($rule) {
@@ -740,8 +701,7 @@ class SC_Utils
     }
 
     /* 規格分類の件数取得 */
-    function sfGetClassCatCount()
-    {
+    function sfGetClassCatCount() {
         $sql = 'select count(dtb_class.class_id) as count, dtb_class.class_id ';
         $sql.= 'from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ';
         $sql.= 'where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ';
@@ -755,36 +715,27 @@ class SC_Utils
     }
 
     /**
-     * 商品IDとカテゴリIDから商品規格IDを取得する
+     * $classcategory_id1 と $classcategory_id2 が使用されていない。
      * @param int $product_id
-     * @param int $classcategory_id1 デフォルト値0
-     * @param int $classcategory_id2 デフォルト値0
+     * @param int $classcategory_id1
+     * @param int $classcategory_id2
      * @return int 
      */
-    function sfGetProductClassId($product_id, $classcategory_id1=0, $classcategory_id2=0)
-    {
-        $where = 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?';
-        if (!$classcategory_id1) { //NULLが入ってきた場合への対策
-          $classcategory_id1 = 0;
-        }
-        if (!$classcategory_id2) {
-          $classcategory_id2 = 0;
-        }
+    function sfGetProductClassId($product_id, $classcategory_id1, $classcategory_id2) {
+        $where = 'product_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id, $classcategory_id1, $classcategory_id2));
+        $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id));
         return $ret;
     }
 
     /* 文末の「/」をなくす */
-    function sfTrimURL($url)
-    {
+    function sfTrimURL($url) {
         $ret = rtrim($url, '/');
         return $ret;
     }
 
     /* DBから取り出した日付の文字列を調整する。*/
-    function sfDispDBDate($dbdate, $time = true)
-    {
+    function sfDispDBDate($dbdate, $time = true) {
         list($y, $m, $d, $H, $M) = preg_split('/[- :]/', $dbdate);
 
         if (strlen($y) > 0 && strlen($m) > 0 && strlen($d) > 0) {
@@ -800,8 +751,7 @@ class SC_Utils
     }
 
     /* 配列をキー名ごとの配列に変更する */
-    function sfSwapArray($array, $isColumnName = true)
-    {
+    function sfSwapArray($array, $isColumnName = true) {
         $arrRet = array();
         foreach ($array as $key1 => $arr1) {
             if (!is_array($arr1)) continue 1;
@@ -826,8 +776,7 @@ class SC_Utils
      * @param array 必須キーの配列
      * @return array 連想配列の値のみの配列
      */
-    function getHash2Array($hash, $requires = array())
-    {
+    function getHash2Array($hash, $requires = array()) {
         $array = array();
         $i = 0;
         foreach ($hash as $key => $val) {
@@ -845,8 +794,7 @@ class SC_Utils
     }
 
     /* かけ算をする（Smarty用) */
-    function sfMultiply($num1, $num2)
-    {
+    function sfMultiply($num1, $num2) {
         return $num1 * $num2;
     }
 
@@ -860,8 +808,7 @@ class SC_Utils
      * @param integer $point_rate
      * @return integer 加算ポイント
      */
-    function sfGetAddPoint($totalpoint, $use_point, $point_rate)
-    {
+    function sfGetAddPoint($totalpoint, $use_point, $point_rate) {
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
         $add_point = $totalpoint - intval($use_point * ($point_rate / 100));
 
@@ -872,8 +819,7 @@ class SC_Utils
     }
 
     /* 一意かつ予測されにくいID */
-    function sfGetUniqRandomId($head = '')
-    {
+    function sfGetUniqRandomId($head = '') {
         // 予測されないようにランダム文字列を付与する。
         $random = GC_Utils_Ex::gfMakePassword(8);
         // 同一ホスト内で一意なIDを生成
@@ -882,8 +828,7 @@ class SC_Utils
     }
 
     // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
-    function sfRmDupSlash($istr)
-    {
+    function sfRmDupSlash($istr) {
         if (preg_match('|^http://|', $istr)) {
             $str = substr($istr, 7);
             $head = 'http://';
@@ -915,8 +860,7 @@ class SC_Utils
      * @param string $out_dir 変換後のファイルを出力するディレクトリを表す文字列
      * @return string 変換後のテキストファイルのパス
      */
-    function sfEncodeFile($filepath, $enc_type, $out_dir)
-    {
+    function sfEncodeFile($filepath, $enc_type, $out_dir) {
         $ifp = fopen($filepath, 'r');
 
         // 正常にファイルオープンした場合
@@ -944,8 +888,7 @@ class SC_Utils
         return $outpath;
     }
 
-    function sfCutString($str, $len, $byte = true, $commadisp = true)
-    {
+    function sfCutString($str, $len, $byte = true, $commadisp = true) {
         if ($byte) {
             if (strlen($str) > ($len + 2)) {
                 $ret =substr($str, 0, $len);
@@ -993,8 +936,7 @@ class SC_Utils
     }
 
     // 年、月、締め日から、先月の締め日+1、今月の締め日を求める。
-    function sfTermMonth($year, $month, $close_day)
-    {
+    function sfTermMonth($year, $month, $close_day) {
         $end_year = $year;
         $end_month = $month;
 
@@ -1036,8 +978,7 @@ class SC_Utils
     }
 
     // 再帰的に多段配列を検索して一次元配列(Hidden引渡し用配列)に変換する。
-    function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = '')
-    {
+    function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = '') {
         if (is_array($arrSrc)) {
             foreach ($arrSrc as $key => $val) {
                 if ($parent_key != '') {
@@ -1056,8 +997,7 @@ class SC_Utils
     }
 
     // DB取得日時をタイムに変換
-    function sfDBDatetoTime($db_date)
-    {
+    function sfDBDatetoTime($db_date) {
         $date = preg_replace("|\..*$|",'',$db_date);
         $time = strtotime($date);
         return $time;
@@ -1068,14 +1008,12 @@ class SC_Utils
      *
      * XXX この関数を使っている箇所は、ほぼ設計誤りと思われる。変数にフェッチするか、出力時のエンコーディングで対応すべきと見受ける。
      */
-    function sfMbConvertEncoding($str, $encode = CHAR_CODE)
-    {
+    function sfMbConvertEncoding($str, $encode = CHAR_CODE) {
         return mb_convert_encoding($str, $encode);
     }
 
     // 2つの配列を用いて連想配列を作成する
-    function sfArrCombine($arrKeys, $arrValues)
-    {
+    function sfArrCombine($arrKeys, $arrValues) {
 
         if (count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
 
@@ -1092,9 +1030,31 @@ class SC_Utils
         return false;
     }
 
+    /* 階層構造のテーブルから与えられたIDの兄弟を取得する */
+    function sfGetBrothersArray($arrData, $pid_name, $id_name, $arrPID) {
+        $max = count($arrData);
+
+        $arrBrothers = array();
+        foreach ($arrPID as $id) {
+            // 親IDを検索する
+            for ($i = 0; $i < $max; $i++) {
+                if ($arrData[$i][$id_name] == $id) {
+                    $parent = $arrData[$i][$pid_name];
+                    break;
+                }
+            }
+            // 兄弟IDを検索する
+            for ($i = 0; $i < $max; $i++) {
+                if ($arrData[$i][$pid_name] == $parent) {
+                    $arrBrothers[] = $arrData[$i][$id_name];
+                }
+            }
+        }
+        return $arrBrothers;
+    }
+
     /* 階層構造のテーブルから与えられたIDの直属の子を取得する */
-    function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent)
-    {
+    function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent) {
         $max = count($arrData);
 
         $arrChildren = array();
@@ -1111,8 +1071,7 @@ class SC_Utils
      * SQLシングルクォート対応
      * @deprecated SC_Query::quote() を使用すること
      */
-    function sfQuoteSmart($in)
-    {
+    function sfQuoteSmart($in) {
 
         if (is_int($in) || is_double($in)) {
             return $in;
@@ -1126,8 +1085,7 @@ class SC_Utils
     }
 
     // ディレクトリを再帰的に生成する
-    function sfMakeDir($path)
-    {
+    function sfMakeDir($path) {
         static $count = 0;
         $count++;  // 無限ループ回避
         $dir = dirname($path);
@@ -1154,8 +1112,7 @@ class SC_Utils
     }
 
     // ディレクトリ以下のファイルを再帰的にコピー
-    function sfCopyDir($src, $des, $mess = '', $override = false)
-    {
+    function sfCopyDir($src, $des, $mess = '', $override = false) {
         if (!is_dir($src)) {
             return false;
         }
@@ -1212,8 +1169,7 @@ class SC_Utils
      * @param boolean|string $output 半角スペース256文字+改行を出力するか。または、送信する文字列を指定。
      * @return void
      */
-    function sfFlush($output = false, $sleep = 0)
-    {
+    function sfFlush($output = false, $sleep = 0) {
         // 出力をバッファリングしない(==日本語自動変換もしない)
         while (@ob_end_flush());
 
@@ -1235,8 +1191,7 @@ class SC_Utils
     }
 
     // @versionの記載があるファイルからバージョンを取得する。
-    function sfGetFileVersion($path)
-    {
+    function sfGetFileVersion($path) {
         if (file_exists($path)) {
             $src_fp = fopen($path, 'rb');
             if ($src_fp) {
@@ -1261,8 +1216,7 @@ class SC_Utils
      * @return array 変換後の配列
      * @see mb_convert_kana
      */
-    function mbConvertKanaWithArray($array, $arrConvList)
-    {
+    function mbConvertKanaWithArray($array, $arrConvList) {
         foreach ($arrConvList as $key => $val) {
             if (isset($array[$key])) {
                 $array[$key] = mb_convert_kana($array[$key] ,$val);
@@ -1278,8 +1232,7 @@ class SC_Utils
      * @param array $defineIndexes チェックする添字
      * @return array 添字を定義した配列
      */
-    function arrayDefineIndexes($array, $defineIndexes)
-    {
+    function arrayDefineIndexes($array, $defineIndexes) {
         foreach ($defineIndexes as $key) {
             if (!isset($array[$key])) $array[$key] = '';
         }
@@ -1295,8 +1248,7 @@ class SC_Utils
      * @param array $arrKey
      * @return array
      */
-    function sfArrayIntersectKeys($arrSrc, $arrKey)
-    {
+    function sfArrayIntersectKeys($arrSrc, $arrKey) {
         $arrRet = array();
         foreach ($arrKey as $key) {
             if (isset($arrSrc[$key])) $arrRet[$key] = $arrSrc[$key];
@@ -1309,8 +1261,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::printXMLDeclaration を使用すること
      */
-    function printXMLDeclaration()
-    {
+    function printXMLDeclaration() {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         GC_Utils_Ex::printXMLDeclaration();
     }
@@ -1320,8 +1271,7 @@ class SC_Utils
      *
      * @return string
      */
-    function getTableTag($array)
-    {
+    function getTableTag($array) {
         $html = '<table>';
         $html.= '<tr>';
         foreach ($array[0] as $key => $val) {
@@ -1347,8 +1297,7 @@ class SC_Utils
      * @param string &$filename ファイル名
      * @return string
      */
-    function sfNoImageMainList($filename = '')
-    {
+    function sfNoImageMainList($filename = '') {
         if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
             $filename .= 'noimage_main_list.jpg';
         }
@@ -1361,8 +1310,7 @@ class SC_Utils
      * @param string &$filename ファイル名
      * @return string
      */
-    function sfNoImageMain($filename = '')
-    {
+    function sfNoImageMain($filename = '') {
         if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
             $filename .= 'noimage_main.png';
         }
@@ -1370,8 +1318,7 @@ class SC_Utils
     }
 
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
-    function sfPrintR($obj)
-    {
+    function sfPrintR($obj) {
         echo '<div style="font-size: 12px;color: #00FF00;">' . "\n";
         echo '<strong>**デバッグ中**</strong><br />' . "\n";
         echo '<pre>' . "\n";
@@ -1386,8 +1333,7 @@ class SC_Utils
      * @param integer $length 文字数
      * @return string ランダムな文字列
      */
-    function sfGetRandomString($length = 1)
-    {
+    function sfGetRandomString($length = 1) {
         return Text_Password::create($length);
     }
 
@@ -1396,8 +1342,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::getUrl を使用すること
      */
-    function sfGetUrl()
-    {
+    function sfGetUrl() {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         return GC_Utils_Ex::getUrl();
     }
@@ -1407,8 +1352,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::toStringBacktrace を使用すること
      */
-    function sfBacktraceToString($arrBacktrace)
-    {
+    function sfBacktraceToString($arrBacktrace) {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         return GC_Utils_Ex::toStringBacktrace($arrBacktrace);
     }
@@ -1418,8 +1362,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::isAdminFunction を使用すること
      */
-    function sfIsAdminFunction()
-    {
+    function sfIsAdminFunction() {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         return GC_Utils_Ex::isAdminFunction();
     }
@@ -1429,8 +1372,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::isFrontFunction を使用すること
      */
-    function sfIsFrontFunction()
-    {
+    function sfIsFrontFunction() {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         return GC_Utils_Ex::isFrontFunction();
     }
@@ -1440,15 +1382,13 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::isInstallFunction を使用すること
      */
-    function sfIsInstallFunction()
-    {
+    function sfIsInstallFunction() {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         return GC_Utils_Ex::isInstallFunction();
     }
 
     // 郵便番号から住所の取得
-    function sfGetAddress($zipcode)
-    {
+    function sfGetAddress($zipcode) {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -1494,8 +1434,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 microtime(true) を使用する。
      */
-    function sfMicrotimeFloat()
-    {
+    function sfMicrotimeFloat() {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         return microtime(true);
     }
@@ -1521,8 +1460,7 @@ class SC_Utils
      * @param boolean $greedy '貧欲'にチェックを行う場合 true
      * @return boolean $val が空白と判断された場合 true
      */
-    function isBlank($val, $greedy = true)
-    {
+    function isBlank($val, $greedy = true) {
         if (is_array($val)) {
             if ($greedy) {
                 if (empty($val)) {
@@ -1564,8 +1502,7 @@ class SC_Utils
      * @param string $url
      * @return boolean
      */
-    function sfIsInternalDomain($url)
-    {
+    function sfIsInternalDomain($url) {
         $netURL = new Net_URL(HTTP_URL);
         $host = $netURL->host;
         if (!$host) return false;
@@ -1581,8 +1518,7 @@ class SC_Utils
      * @param string $salt salt
      * @return string ハッシュ暗号化された文字列
      */
-    function sfGetHashString($str, $salt)
-    {
+    function sfGetHashString($str, $salt) {
         $res = '';
         if ($salt == '') {
             $salt = AUTH_MAGIC;
@@ -1603,8 +1539,7 @@ class SC_Utils
      * @param string $salt salt
      * @return boolean 一致判定
      */
-    function sfIsMatchHashPassword($pass, $hashpass, $salt)
-    {
+    function sfIsMatchHashPassword($pass, $hashpass, $salt) {
         $res = false;
         if ($hashpass != '') {
             if (AUTH_TYPE == 'PLAIN') {
@@ -1635,8 +1570,7 @@ class SC_Utils
      * @param string $search_page_max 表示件数の選択値
      * @return integer 1ページあたりの最大表示件数
      */
-    function sfGetSearchPageMax($search_page_max)
-    {
+    function sfGetSearchPageMax($search_page_max) {
         if (SC_Utils_Ex::sfIsInt($search_page_max) && $search_page_max > 0) {
             $page_max = intval($search_page_max);
         } else {
@@ -1657,8 +1591,7 @@ class SC_Utils
      * @see json_encode()
      * @see Services_JSON::encode()
      */
-    function jsonEncode($value)
-    {
+    function jsonEncode($value) {
         if (function_exists('json_encode')) {
             return json_encode($value);
         } else {
@@ -1680,8 +1613,7 @@ class SC_Utils
      * @see json_decode()
      * @see Services_JSON::decode()
      */
-    function jsonDecode($json)
-    {
+    function jsonDecode($json) {
         if (function_exists('json_decode')) {
             return json_decode($json);
         } else {
@@ -1700,8 +1632,7 @@ class SC_Utils
      * @param string チェック対象のパス
      * @return boolean 絶対パスの場合 true
      */
-    function isAbsoluteRealPath($realpath)
-    {
+    function isAbsoluteRealPath($realpath) {
         if (strpos(PHP_OS, 'WIN') === false) {
             return substr($realpath, 0, 1) == '/';
         } else {
@@ -1719,8 +1650,7 @@ class SC_Utils
      * @return boolean 作成に成功した場合 true; 失敗した場合 false
      * @see http://jp.php.net/mkdir
      */
-    function recursiveMkdir($pathname, $mode = 0777)
-    {
+    function recursiveMkdir($pathname, $mode = 0777) {
         /*
          * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
          * 自クラスへ再帰する.
@@ -1729,8 +1659,7 @@ class SC_Utils
         return is_dir($pathname) || @mkdir($pathname, $mode);
     }
 
-    function isAppInnerUrl($url)
-    {
+    function isAppInnerUrl($url) {
         $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
         return preg_match($pattern, $url) >= 1;
     }
@@ -1743,8 +1672,7 @@ class SC_Utils
      * @param integer $seconds 最大実行時間を延長する秒数。
      * @return boolean 成功=true, 失敗=false
      */
-    function extendTimeOut($seconds = null)
-    {
+    function extendTimeOut($seconds = null) {
         $safe_mode = (boolean)ini_get('safe_mode');
         if ($safe_mode) return false;
 
@@ -1766,8 +1694,7 @@ class SC_Utils
      * コンパイルファイルを削除します.
      * @return void
      */
-    function clearCompliedTemplate()
-    {
+    function clearCompliedTemplate() {
         // コンパイルファイルの削除処理
         SC_Helper_FileManager_Ex::deleteFile(COMPILE_REALDIR, false);
         SC_Helper_FileManager_Ex::deleteFile(COMPILE_ADMIN_REALDIR, false);
@@ -1781,8 +1708,7 @@ class SC_Utils
      * @param string $destDir コピー先ディレクトリのパス
      * @return void
      */
-    function copyDirectory($source_path, $dest_path)
-    {
+    function copyDirectory($source_path, $dest_path) {
 
         $handle=opendir($source_path);  
         while ($filename = readdir($handle)) {
@@ -1808,8 +1734,7 @@ class SC_Utils
      * @param string $separator 区切り文字
      * @return string
      */
-    function repeatStrWithSeparator($input, $multiplier, $separator = ',')
-    {
+    function repeatStrWithSeparator($input, $multiplier, $separator = ',') {
         return implode($separator, array_fill(0, $multiplier, $input));
     }
 
@@ -1820,8 +1745,7 @@ class SC_Utils
      * @param string $str 文字列
      * @return string RFC3986エンコード文字列
      */
-    function encodeRFC3986($str)
-    {
+    function encodeRFC3986($str) {
         return str_replace('%7E', '~', rawurlencode($str));
     }
 
@@ -1832,8 +1756,7 @@ class SC_Utils
      * @param string $charlist 削除する文字を指定
      * @return string 変更後の文字列
      */
-    static function trim($str, $charlist = null)
-    {
+    static function trim($str, $charlist = null) {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
         return preg_replace('/(^' . $re . ')|(' . $re . '$)/us', '', $str);
     }
@@ -1845,8 +1768,7 @@ class SC_Utils
      * @param string $charlist 削除する文字を指定
      * @return string 変更後の文字列
      */
-    static function ltrim($str, $charlist = null)
-    {
+    static function ltrim($str, $charlist = null) {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
         return preg_replace('/^' . $re . '/us', '', $str);
     }
@@ -1858,8 +1780,7 @@ class SC_Utils
      * @param string $charlist 削除する文字を指定
      * @return string 変更後の文字列
      */
-    static function rtrim($str, $charlist = null)
-    {
+    static function rtrim($str, $charlist = null) {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
         return preg_replace('/' . $re . '$/us', '', $str);
     }
@@ -1870,130 +1791,11 @@ class SC_Utils
      * @param string $charlist 削除する文字を指定
      * @return string パターン
      */
-    static function getTrimPregPattern($charlist = null)
-    {
+    static function getTrimPregPattern($charlist = null) {
         if (is_null($charlist)) {
             return '\s+';
         } else {
             return '[' . preg_quote($charlist, '/') . ']+';
         }
-    }
-
-    /**
-     * データ量の単位を付与する
-     * 
-     * @param int $data
-     * @return string
-     */
-    function getUnitDataSize($data)
-    {
-
-        if($data < 1000){
-            $return = $data . "KB";
-        }elseif($data < 1000000){ 
-            $return = $data/1000 . "MB";
-        }else{
-            $return = $data/1000000 . "GB";
-        }
-        return $return;
-    }
-
-    /**
-     * カテゴリーツリー状の配列を作成.
-     * 
-     * @param string $primary_key
-     * @param string $glue_key
-     * @param integer $max_depth
-     * @param array $correction
-     * @param integer $root_id
-     * @return array ツリーの配列
-     */
-    public static function buildTree($primary_key, $glue_key, $max_depth, $correction = array(), $root_id = 0)
-    {
-        $children = array();
-        foreach ($correction as $child) {
-            $children[$child[$glue_key]][] = $child;
-        }
-        $arrTree = $children[$root_id];
-        foreach ($arrTree as &$child) {
-            SC_Utils_Ex::addChild($child, $primary_key, 1, $max_depth, $children);
-        }
-        return $arrTree;
-    }
-
-    /**
-     * ツリーの親子をつなげるルーチン.
-     * 
-     * @param array $target 親
-     * @param string $primary_key 主キーの識別子
-     * @param integer $level 親の階層
-     * @param integer $max_depth 階層の深さの最大値
-     * @param array $children 子の配列（キーが親ID）
-     * @return void
-     */
-    public static function addChild(&$target, $primary_key, $level, $max_depth, &$children = array())
-    {
-        if (isset($children[$target[$primary_key]])) {
-            $target['children'] = $children[$target[$primary_key]];
-            if ($level + 1 < $max_depth) {
-                foreach ($target['children'] as &$child) {
-                    SC_Utils_Ex::addChild($child, $primary_key, $level++, $max_depth, $children);
-                }
-            }
-        }
-    }
-
-    /**
-     * 配列のキーをIDにした配列を作成.
-     * 
-     * @param string $ID_name IDが格納されているキー名
-     * @param array $correction 元の配列
-     * @return array
-     */
-    public static function makeArrayIDToKey($ID_name, $correction = array())
-    {
-        $arrTmp = array();
-        foreach ($correction as $item) {
-            $arrTmp[$item[$ID_name]] = $item;
-        }
-        $return =& $arrTmp;
-        unset($arrTmp);
-        return $return;
-    }
-
-    /**
-     * 階層情報が含まれている配列から親ID配列を取得する.
-     * 
-     * @param integer $start_id 取得起点
-     * @param string $primary_key 主キー名
-     * @param string $glue_key 親IDキー名
-     * @param array $correction 階層構造が含まれている配列
-     * @param boolean $cid_is_key キーがIDの配列の場合はtrue
-     * @param integer $root_id ルートID
-     * @param boolean $id_only IDだけの配列を返す場合はtrue
-     * @return array 親ID配列
-     */
-    public static function getTreeTrail($start_id, $primary_key, $glue_key, $correction = array(), $cid_is_key = FALSE, $root_id = 0, $id_only = TRUE)
-    {
-        if ($cid_is_key) {
-            $arrIDToKay = $correction;
-        } else {
-            $arrIDToKay = SC_Utils_Ex::makeArrayIDToKey($primary_key, $correction);
-        }
-        $id = $start_id;
-        $arrTrail = array();
-        while ($id != $root_id && !SC_Utils_Ex::isBlank($id)) {
-            if ($id_only) {
-                $arrTrail[] = $id;
-            } else {
-                $arrTrail[] = $arrIDToKay[$id];
-            }
-            if (isset($arrIDToKay[$id][$glue_key])) {
-                $id = $arrIDToKay[$id][$glue_key];
-            } else {
-                $id = $root_id;
-            }
-        }
-        return array_reverse($arrTrail);
     }
 }

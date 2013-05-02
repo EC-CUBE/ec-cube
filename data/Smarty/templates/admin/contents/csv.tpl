@@ -65,7 +65,7 @@ function lfFormModeDefautSetSubmit(form, mode) {
     <span class="attention"><!--{$arrErr.tpl_subno_csv}--></span>
     <div class="ms2side__area">
         <span class="attention"><!--{$arrErr.output_list}--></span>
-        <select multiple="multiple" name="output_list[]" style="<!--{$arrErr.output_list|sfGetErrorColor}-->;" id="output_list" size="20">
+        <select multiple name="output_list[]" style="<!--{$arrErr.output_list|sfGetErrorColor}-->;" id="output_list" size="20">
             <!--{html_options options=$arrOptions selected=$arrSelected}-->
         </select>
     </div>

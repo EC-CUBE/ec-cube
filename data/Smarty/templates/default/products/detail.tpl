@@ -115,7 +115,7 @@
                             <!--{else}-->
                                 <!--{$arrProduct.price01_min_inctax|number_format}-->～<!--{$arrProduct.price01_max_inctax|number_format}-->
                             <!--{/if}-->
-                        <!--{/strip}--></span><span id="price01_dynamic"></span>
+                        </span><span id="price01_dynamic"></span><!--{/strip}-->
                         円
                     </dd>
                 </dl>
@@ -131,7 +131,7 @@
                         <!--{else}-->
                             <!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
                         <!--{/if}-->
-                    <!--{/strip}--></span><span id="price02_dynamic"></span>
+                    </span><span id="price02_dynamic"></span><!--{/strip}-->
                     円
                 </dd>
             </dl>
@@ -149,7 +149,7 @@
                                 <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate|number_format}-->
                             <!--{/if}-->
                         <!--{/if}-->
-                    <!--{/strip}--></span><span id="point_dynamic"></span>
+                    </span><span id="point_dynamic"></span><!--{/strip}-->
                     Pt
                 </div>
             <!--{/if}-->
@@ -191,99 +191,99 @@
             <!--▼買い物かご-->
 
             <div class="cart_area clearfix">
-                <input type="hidden" name="mode" value="cart" />
-                <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
-                <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
-                <input type="hidden" name="favorite_product_id" value="" />
+            <input type="hidden" name="mode" value="cart" />
+            <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
+            <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
+            <input type="hidden" name="favorite_product_id" value="" />
 
-                <!--{if $tpl_stock_find}-->
-                    <!--{if $tpl_classcat_find1}-->
-                        <div class="classlist">
-                            <!--▼規格1-->
-                            <ul class="clearfix">
-                                <li><!--{$tpl_class_name1|h}-->：</li>
-                                <li>
-                                    <select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->">
-                                    <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
-                                    </select>
-                                    <!--{if $arrErr.classcategory_id1 != ""}-->
-                                    <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
-                                    <!--{/if}-->
-                                </li>
-                            </ul>
-                            <!--▲規格1-->
-                            <!--{if $tpl_classcat_find2}-->
-                            <!--▼規格2-->
-                            <ul class="clearfix">
-                                <li><!--{$tpl_class_name2|h}-->：</li>
-                                <li>
-                                    <select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
-                                    </select>
-                                    <!--{if $arrErr.classcategory_id2 != ""}-->
-                                    <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
-                                    <!--{/if}-->
-                                </li>
-                            </ul>
-                            <!--▲規格2-->
-                            <!--{/if}-->
-                        </div>
-                    <!--{/if}-->
-
-                    <!--★数量★-->
-                    <dl class="quantity">
-                        <dt>数量：</dt>
-                        <dd><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
-                            <!--{if $arrErr.quantity != ""}-->
-                                <br /><span class="attention"><!--{$arrErr.quantity}--></span>
-                            <!--{/if}-->
-                        </dd>
-                    </dl>
-
-                    <div class="cartin">
-                        <div class="cartin_btn">
-                            <div id="cartbtn_default">
-                                <!--★カゴに入れる★-->
-                                <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
-                                    <img src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" name="cart" id="cart" /></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="attention" id="cartbtn_dynamic"></div>
-                <!--{else}-->
-                    <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
-                <!--{/if}-->
-
-                <!--★お気に入り登録★-->
-                <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1 && $tpl_login === true}-->
-                    <div class="favorite_btn">
-                        <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
-                        <!--{if $arrErr[$add_favorite]}-->
-                            <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
-                        <!--{/if}-->
-                        <!--{if !$is_favorite}-->
-                            <a href="javascript:fnChangeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favorite_product');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favorite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" name="add_favorite_product" id="add_favorite_product" /></a>
-                        <!--{else}-->
-                            <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="お気に入り登録済" name="add_favorite_product" id="add_favorite_product" />
-                            <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tipsy.js"></script>
-                            <script type="text/javascript">
-                                var favoriteButton = $("#add_favorite_product");
-                                favoriteButton.tipsy({gravity: $.fn.tipsy.autoNS, fallback: "お気に入りに登録済み", fade: true });
-
-                                <!--{if $just_added_favorite == true}-->
-                                favoriteButton.load(function(){$(this).tipsy("show")});
-                                $(function(){
-                                    var tid = setTimeout('favoriteButton.tipsy("hide")',5000);
-                                });
+            <!--{if $tpl_stock_find}-->
+                <!--{if $tpl_classcat_find1}-->
+                    <div class="classlist">
+                        <!--▼規格1-->
+                        <ul class="clearfix">
+                            <li><!--{$tpl_class_name1|h}-->：</li>
+                            <li>
+                                <select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->">
+                                <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
+                                </select>
+                                <!--{if $arrErr.classcategory_id1 != ""}-->
+                                <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
                                 <!--{/if}-->
-                            </script>
+                            </li>
+                        </ul>
+                        <!--▲規格1-->
+                        <!--{if $tpl_classcat_find2}-->
+                        <!--▼規格2-->
+                        <ul class="clearfix">
+                            <li><!--{$tpl_class_name2|h}-->：</li>
+                            <li>
+                                <select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
+                                </select>
+                                <!--{if $arrErr.classcategory_id2 != ""}-->
+                                <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
+                                <!--{/if}-->
+                            </li>
+                        </ul>
+                        <!--▲規格2-->
                         <!--{/if}-->
                     </div>
                 <!--{/if}-->
-            </div>
+
+                <!--★数量★-->
+                <dl class="quantity">
+                    <dt>数量：</dt>
+                    <dd><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
+                        <!--{if $arrErr.quantity != ""}-->
+                            <br /><span class="attention"><!--{$arrErr.quantity}--></span>
+                        <!--{/if}-->
+                    </dd>
+                </dl>
+
+                <div class="cartin">
+                    <div class="cartin_btn">
+                        <div id="cartbtn_default">
+                            <!--★カゴに入れる★-->
+                            <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
+                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" name="cart" id="cart" /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="attention" id="cartbtn_dynamic"></div>
+            <!--{else}-->
+                <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
+            <!--{/if}-->
+
+            <!--★お気に入り登録★-->
+            <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1 && $tpl_login === true}-->
+                <div class="favorite_btn">
+                    <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
+                    <!--{if $arrErr[$add_favorite]}-->
+                        <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
+                    <!--{/if}-->
+                    <!--{if !$is_favorite}-->
+                        <a href="javascript:fnChangeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favorite_product');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favorite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" name="add_favorite_product" id="add_favorite_product" /></a>
+                    <!--{else}-->
+                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="お気に入り登録済" name="add_favorite_product" id="add_favorite_product" />
+                        <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tipsy.js"></script>
+                        <script type="text/javascript">
+                            var favoriteButton = $("#add_favorite_product");
+                            favoriteButton.tipsy({gravity: $.fn.tipsy.autoNS, fallback: "お気に入りに登録済み", fade: true });
+
+                            <!--{if $just_added_favorite == true}-->
+                            favoriteButton.load(function(){$(this).tipsy("show")});
+                            $(function(){
+                                var tid = setTimeout('favoriteButton.tipsy("hide")',5000);
+                            });
+                            <!--{/if}-->
+                        </script>
+                    <!--{/if}-->
+                </div>
+            <!--{/if}-->
         </div>
-        <!--▲買い物かご-->
     </div>
-    </form>
+    <!--▲買い物かご-->
+</div>
+</form>
 
     <!--詳細ここまで-->
 
@@ -304,8 +304,7 @@
                             <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" target="_blank" >
                         <!--{/if}-->
                         <img src="<!--{$arrFile[$ikey].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$ikey].width}-->" height="<!--{$arrFile[$ikey].height}-->" />
-                        <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                            </a>
+                        <!--{if $arrProduct[$lkey]|strlen >= 1}--></a>
                             <span class="mini">
                                 <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" target="_blank">
                                     画像を拡大する</a>
@@ -323,7 +322,7 @@
 
     <!--この商品に対するお客様の声-->
     <div id="customervoice_area">
-        <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_voice.png" alt="この商品に対するお客様の声" /></h2>
+        <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_voice.jpg" alt="この商品に対するお客様の声" /></h2>
 
         <div class="review_bloc clearfix">
             <p>この商品に対するご感想をぜひお寄せください。</p>
@@ -356,7 +355,7 @@
     <!--▼関連商品-->
     <!--{if $arrRecommend}-->
         <div id="whobought_area">
-            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_recommend.png" alt="その他のオススメ商品" /></h2>
+            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_recommend.jpg" alt="その他のオススメ商品" /></h2>
             <!--{foreach from=$arrRecommend item=arrItem name="arrRecommend"}-->
                 <div class="product_item">
                     <div class="productImage">

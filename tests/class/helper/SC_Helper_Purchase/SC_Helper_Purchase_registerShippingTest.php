@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_registerShippingTest extends SC_Helper_Purchase_TestBase
-{
+class SC_Helper_Purchase_registerShippingTest extends SC_Helper_Purchase_TestBase {
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
     $this->setUpShippingOnDb();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testRegisterShipping_元々存在しない受注IDの場合_新規にデータが作られる()
-  {
+  public function testRegisterShipping_元々存在しない受注IDの場合_新規にデータが作られる() {
     $order_id = '10';
     $arrParams = array(
         '20' =>
@@ -84,8 +80,7 @@ class SC_Helper_Purchase_registerShippingTest extends SC_Helper_Purchase_TestBas
     $this->assertNotNull($this->result[0]['update_date']);
   }
 
-  public function testRegisterShipping_元々存在する受注IDの場合_既存のデータが置き換えられる()
-  {
+  public function testRegisterShipping_元々存在する受注IDの場合_既存のデータが置き換えられる() {
     $order_id = '2';
     $arrParams = array(
         '30' =>
@@ -122,8 +117,7 @@ class SC_Helper_Purchase_registerShippingTest extends SC_Helper_Purchase_TestBas
     $this->assertNotNull($this->result[0]['update_date']);
   }
 
-  public function testRegisterShipping_配送日付が空の場合_エラーが起きず変換処理がスキップされる()
-  {
+  public function testRegisterShipping_配送日付が空の場合_エラーが起きず変換処理がスキップされる() {
     $order_id = '2';
     $arrParams = array(
         '30' =>
@@ -160,8 +154,7 @@ class SC_Helper_Purchase_registerShippingTest extends SC_Helper_Purchase_TestBas
     $this->assertNotNull($this->result[0]['update_date']);
   }
 
-  public function testRegisterShipping_非会員購入の場合_配送IDが設定される()
-  {
+  public function testRegisterShipping_非会員購入の場合_配送IDが設定される() {
     $order_id = '2';
     $arrParams = array(
         '30' =>

@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_XXX extends LC_Page_Ex 
-{
+class LC_Page_XXX extends LC_Page_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_XXX extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -52,8 +50,7 @@ class LC_Page_XXX extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
     }
 
     /**
@@ -61,8 +58,7 @@ class LC_Page_XXX extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'system/adminarea.tpl';
         $this->tpl_subno = 'adminarea';
@@ -58,8 +56,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -69,8 +66,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         if (strpos(HTTPS_URL,'https://') !== FALSE) {
             $this->tpl_enable_ssl = TRUE;
@@ -122,8 +118,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -134,8 +129,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      * @param array  $arrParams  $_POST値
      * @return void
      */
-    function initParam(&$objFormParam, &$arrParams)
-    {
+    function initParam(&$objFormParam, &$arrParams) {
 
         $objFormParam->addParam('ディレクトリ名', 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
         $objFormParam->addParam('SSL制限', 'admin_force_ssl', 1, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -152,8 +146,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      * @param array  $arrErr   エラーがあった項目用配列
      * @return void
      */
-    function lfCheckAdminArea(&$arrForm, &$arrErr)
-    {
+    function lfCheckAdminArea(&$arrForm, &$arrErr) {
         $admin_dir = trim($arrForm['admin_dir']) . '/';
 
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
@@ -172,8 +165,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
     }
 
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
-    function lfUpdateAdminData(&$arrForm)
-    {
+    function lfUpdateAdminData(&$arrForm) {
         $admin_dir = trim($arrForm['admin_dir']) . '/';
         $admin_force_ssl = 'false';
         if ($arrForm['admin_force_ssl'] == 1) {

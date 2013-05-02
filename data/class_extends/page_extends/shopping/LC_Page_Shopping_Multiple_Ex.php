@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/shopping/LC_Page_Shopping_Multiple.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Multiple_Ex extends LC_Page_Shopping_Multiple 
-{
+class LC_Page_Shopping_Multiple_Ex extends LC_Page_Shopping_Multiple {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Shopping_Multiple_Ex extends LC_Page_Shopping_Multiple
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Shopping_Multiple_Ex extends LC_Page_Shopping_Multiple
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Shopping_Multiple_Ex extends LC_Page_Shopping_Multiple
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

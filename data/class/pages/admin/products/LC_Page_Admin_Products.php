@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Products extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'products/index.tpl';
         $this->tpl_mainno = 'products';
@@ -58,7 +56,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
 
-        $objDate = new SC_Date_Ex();
+        $objDate = new SC_Date();
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE('Y'));
@@ -79,8 +77,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -90,8 +87,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -190,8 +186,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -201,8 +196,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
 
         // POSTされる値
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -233,8 +227,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfCheckError(&$objFormParam)
-    {
+    function lfCheckError(&$objFormParam) {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
@@ -244,8 +237,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
     }
 
     // カテゴリIDをキー、カテゴリ名を値にする配列を返す。
-    function lfGetIDName($arrCatKey, $arrCatVal)
-    {
+    function lfGetIDName($arrCatKey, $arrCatVal) {
         $max = count($arrCatKey);
         for ($cnt = 0; $cnt < $max; $cnt++) {
             $key = isset($arrCatKey[$cnt]) ? $arrCatKey[$cnt] : '';
@@ -262,23 +254,14 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      * @param array $arrParam 削除対象の値
      * @return void
      */
-    function doDelete($where, $arrParam = array())
-    {
+    function doDelete($where, $arrParam = array()) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrRet = $objQuery->getCol('product_id', "dtb_products", $where, $arrParam);
-        $product_ids = array();
-        foreach ($arrRet as $value) {
-            $product_ids[] = $value['product_id'];
-        }
         $sqlval['del_flg']     = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->begin();
         $objQuery->update('dtb_products_class', $sqlval, "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
         $objQuery->delete('dtb_customer_favorite_products', "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
-
-        $objRecomment = new SC_Helper_Recommend_Ex();
-        $objRecomment->deleteByProductIDs($product_ids);
-
+        $objQuery->delete('dtb_best_products', "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
         $objQuery->update('dtb_products', $sqlval, $where, $arrParam);
         $objQuery->commit();
     }
@@ -298,8 +281,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      * @param SC_FormParam $objDb SC_Helper_DB_Ex インスタンス
      * @return void
      */
-    function buildQuery($key, &$where, &$arrValues, &$objFormParam, &$objDb)
-    {
+    function buildQuery($key, &$where, &$arrValues, &$objFormParam, &$objDb) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         switch ($key) {
             // 商品ID
@@ -384,8 +366,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      * @param array $arrValues 検索条件のパラメーター
      * @return integer 検索結果の行数
      */
-    function getNumberOfLines($where, $arrValues)
-    {
+    function getNumberOfLines($where, $arrValues) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->count('dtb_products', $where, $arrValues);
     }
@@ -401,8 +382,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      * @param SC_Product $objProduct SC_Product インスタンス
      * @return array 商品の検索結果
      */
-    function findProducts($where, $arrValues, $limit, $offset, $order, &$objProduct)
-    {
+    function findProducts($where, $arrValues, $limit, $offset, $order, &$objProduct) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 読み込む列とテーブルの指定

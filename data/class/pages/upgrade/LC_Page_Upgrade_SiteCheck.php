@@ -31,8 +31,7 @@ require_once 'LC_Page_Upgrade_Base.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base 
-{
+class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base {
 
     // }}}
     // {{{ functions
@@ -42,16 +41,14 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function init()
-    {}
+    function init() {}
 
     /**
      * Page のプロセス.
      *
      * @return void
      */
-    function process($mode)
-    {
+    function process($mode) {
         $objLog  = new LC_Upgrade_Helper_LOG;
         $objJson = new LC_Upgrade_Helper_Json;
 
@@ -80,6 +77,5 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function destroy()
-    {}
+    function destroy() {}
 }

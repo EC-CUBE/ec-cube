@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -52,8 +50,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -63,8 +60,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         switch ($this->getMode()) {
             default:
@@ -92,8 +88,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -103,8 +98,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('ファイル名', 'file', MTEXT_LEN, 'a', array('EXIST_CHECK'));
     }
 
@@ -114,8 +108,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return boolen $file_check_flg エラーチェックの結果
      */
-    function checkErrorDispFile($objFormParam)
-    {
+    function checkErrorDispFile($objFormParam) {
         $file_check_flg = false;
 
         // FIXME パスのチェック関数が必要
@@ -133,8 +126,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function execFileView($objFormParam)
-    {
+    function execFileView($objFormParam) {
         $file = $objFormParam->getValue('file');
 
         // ソースとして表示するファイルを定義(直接実行しないファイル)

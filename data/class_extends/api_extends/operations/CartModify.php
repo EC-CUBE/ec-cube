@@ -30,7 +30,6 @@
  */
 require_once CLASS_REALDIR . 'api/operations/CartModify.php';
 
-class API_CartModify_Ex extends API_CartModify 
-{
+class API_CartModify_Ex extends API_CartModify {
 
 }

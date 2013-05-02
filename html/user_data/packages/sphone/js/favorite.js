@@ -5,8 +5,8 @@ function fnAddFavoriteSphone(favoriteProductId) {
     $.mobile.showPageLoadingMsg();
     //送信データを準備
     var postData = {};
-    $("#form1").find(':input').each(function(){
-        postData[$(this).attr('name')] = $(this).val();
+    $("#form1").find(':input').each(function(){  
+        postData[$(this).attr('name')] = $(this).val();  
     });
     postData["mode"] = "add_favorite_sphone";
     postData["favorite_product_id"] = favoriteProductId;

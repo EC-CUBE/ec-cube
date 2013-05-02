@@ -29,8 +29,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Query 
-{
+class SC_Query {
 
     var $option = '';
     var $where = '';
@@ -49,8 +48,7 @@ class SC_Query
      * @param boolean $force_run エラーが発生しても処理を続行する場合 true
      * @param boolean $new 新規に接続を行うかどうか
      */
-    function __construct($dsn = '', $force_run = false, $new = false)
-    {
+    function __construct($dsn = '', $force_run = false, $new = false) {
 
         if ($dsn == '') {
             $dsn = array('phptype'  => DB_TYPE,
@@ -100,8 +98,7 @@ class SC_Query
      * @param boolean $new 新規に接続を行うかどうか
      * @return SC_Query シングルトンの SC_Query インスタンス
      */
-    static function getSingletonInstance($dsn = '', $force_run = false, $new = false)
-    {
+    static function getSingletonInstance($dsn = '', $force_run = false, $new = false) {
         $objThis = SC_Query_Ex::getPoolInstance($dsn);
         if (is_null($objThis)) {
             $objThis = SC_Query_Ex::setPoolInstance(new SC_Query_Ex($dsn, $force_run, $new), $dsn);
@@ -121,8 +118,7 @@ class SC_Query
      * @deprecated PEAR::isError() を使用して下さい
      * @return boolean
      */
-    function isError()
-    {
+    function isError() {
         if (PEAR::isError($this->conn)) {
             return true;
         }
@@ -137,8 +133,7 @@ class SC_Query
      * @param array $arrWhereVal プレースホルダ
      * @return integer 件数
      */
-    function count($table, $where = '', $arrWhereVal = array())
-    {
+    function count($table, $where = '', $arrWhereVal = array()) {
         return $this->get('COUNT(*)', $table, $where, $arrWhereVal);
     }
 
@@ -150,8 +145,7 @@ class SC_Query
      * @param array $arrWhereVal プレースホルダ
      * @return boolean 有無
      */
-    function exists($table, $where = '', $arrWhereVal = array())
-    {
+    function exists($table, $where = '', $arrWhereVal = array()) {
         $sql_inner = $this->getSql('*', $table, $where, $arrWhereVal);
         $sql = "SELECT CASE WHEN EXISTS($sql_inner) THEN 1 ELSE 0 END";
         $res = $this->getOne($sql, $arrWhereVal);
@@ -168,8 +162,7 @@ class SC_Query
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array|null
      */
-    function select($cols, $from = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
-    {
+    function select($cols, $from = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
         $sqlse = $this->getSql($cols, $from, $where, $arrWhereVal);
         return $this->getAll($sqlse, $arrWhereVal, $fetchmode);
     }
@@ -180,8 +173,7 @@ class SC_Query
      * @param boolean $disp trueの場合、画面出力を行う.
      * @return string SQL文
      */
-    function getLastQuery($disp = true)
-    {
+    function getLastQuery($disp = true) {
         $sql = $this->conn->last_query;
         if ($disp) {
             echo $sql . ";<br />\n";
@@ -195,8 +187,7 @@ class SC_Query
      * @return MDB2_OK 成功した場合は MDB2_OK;
      *         失敗した場合は PEAR::Error オブジェクト
      */
-    function commit()
-    {
+    function commit() {
         return $this->conn->commit();
     }
 
@@ -206,8 +197,7 @@ class SC_Query
      * @return MDB2_OK 成功した場合は MDB2_OK;
      *         失敗した場合は PEAR::Error オブジェクト
      */
-    function begin()
-    {
+    function begin() {
         return $this->conn->beginTransaction();
     }
 
@@ -217,8 +207,7 @@ class SC_Query
      * @return MDB2_OK 成功した場合は MDB2_OK;
      *         失敗した場合は PEAR::Error オブジェクト
      */
-    function rollback()
-    {
+    function rollback() {
         return $this->conn->rollback();
     }
 
@@ -227,8 +216,7 @@ class SC_Query
      *
      * @return boolean トランザクションが開始されている場合 true
      */
-    function inTransaction()
-    {
+    function inTransaction() {
         return $this->conn->inTransaction();
     }
 
@@ -239,8 +227,7 @@ class SC_Query
      *
      * FIXME MDB2::exec() の実装であるべき
      */
-    function exec($str, $arrVal = array())
-    {
+    function exec($str, $arrVal = array()) {
         return $this->query($str, $arrVal);
     }
 
@@ -253,8 +240,7 @@ class SC_Query
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return boolean 結果
      */
-    function doCallbackAll($cbFunc, $sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
-    {
+    function doCallbackAll($cbFunc, $sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -286,8 +272,7 @@ class SC_Query
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは DB_FETCHMODE_ASSOC。
      * @return array データを含む2次元配列。失敗した場合に 0 または DB_Error オブジェクトを返します。
      */
-    function getAll($sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
-    {
+    function getAll($sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -320,8 +305,7 @@ class SC_Query
      * @param mixed $arrWhereVal プレースホルダ(参照)
      * @return string 構築済みの SELECT 文
      */
-    function getSql($cols, $from = '', $where = '', &$arrWhereVal = null)
-    {
+    function getSql($cols, $from = '', $where = '', &$arrWhereVal = null) {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
 
         $sqlse = "SELECT $cols";
@@ -357,8 +341,7 @@ class SC_Query
      * @param string $str 付与する SQL 文
      * @return SC_Query 自分自身のインスタンス
      */
-    function setOption($str)
-    {
+    function setOption($str) {
         $this->option = $str;
         return $this;
     }
@@ -372,8 +355,7 @@ class SC_Query
      * @param integer $offset OFFSET 句に付与する値
      * @return SC_Query 自分自身のインスタンス
      */
-    function setLimitOffset($limit, $offset = 0)
-    {
+    function setLimitOffset($limit, $offset = 0) {
         if (is_numeric($limit) && is_numeric($offset)) {
             $this->conn->setLimit($limit, $offset);
         }
@@ -388,8 +370,7 @@ class SC_Query
      * @param string $str GROUP BY 句に付与する文字列
      * @return SC_Query 自分自身のインスタンス
      */
-    function setGroupBy($str)
-    {
+    function setGroupBy($str) {
         if (strlen($str) == 0) {
             $this->groupby = '';
         } else {
@@ -406,8 +387,7 @@ class SC_Query
      * @param string $str WHERE 句に付与する AND 条件の文字列
      * @return SC_Query 自分自身のインスタンス
      */
-    function andWhere($str)
-    {
+    function andWhere($str) {
         if ($this->where != '') {
             $this->where .= ' AND ' . $str;
         } else {
@@ -424,8 +404,7 @@ class SC_Query
      * @param string $str WHERE 句に付与する OR 条件の文字列
      * @return SC_Query 自分自身のインスタンス
      */
-    function orWhere($str)
-    {
+    function orWhere($str) {
         if ($this->where != '') {
             $this->where .= ' OR ' . $str;
         } else {
@@ -443,8 +422,7 @@ class SC_Query
      * @param mixed $arrWhereVal プレースホルダ
      * @return SC_Query 自分自身のインスタンス
      */
-    function setWhere($where = '', $arrWhereVal = array())
-    {
+    function setWhere($where = '', $arrWhereVal = array()) {
         $this->where = $where;
         $this->arrWhereVal = $arrWhereVal;
         return $this;
@@ -458,8 +436,7 @@ class SC_Query
      * @param string $str ORDER BY 句に付与する文字列
      * @return SC_Query 自分自身のインスタンス
      */
-    function setOrder($str)
-    {
+    function setOrder($str) {
         if (strlen($str) == 0) {
             $this->order = '';
         } else {
@@ -476,8 +453,7 @@ class SC_Query
      * @param integer $limit LIMIT 句に設定する値
      * @return SC_Query 自分自身のインスタンス
      */
-    function setLimit($limit)
-    {
+    function setLimit($limit) {
         if (is_numeric($limit)) {
             $this->conn->setLimit($limit);
         }
@@ -492,8 +468,7 @@ class SC_Query
      * @param integer $offset OFFSET 句に設定する値
      * @return SC_Query 自分自身のインスタンス
      */
-    function setOffset($offset)
-    {
+    function setOffset($offset) {
         if (is_numeric($offset)) {
             $this->conn->setLimit($this->conn->limit, $offset);
         }
@@ -511,8 +486,7 @@ class SC_Query
      * @param string $arrFromVal FROM 句・WHERE 句で使用するプレースホルダ配列
      * @return integer|DB_Error|boolean 挿入件数またはエラー(DB_Error, false)
      */
-    function insert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array())
-    {
+    function insert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
         $strcol = '';
         $strval = '';
         $find = false;
@@ -569,8 +543,7 @@ class SC_Query
      * @param array $arrRawSqlVal 追加カラム用のプレースホルダ配列
      * @return
      */
-    function update($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array())
-    {
+    function update($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
         $arrCol = array();
         $arrValForQuery = array();
         $find = false;
@@ -625,8 +598,7 @@ class SC_Query
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return integer MAX文の実行結果
      */
-    function max($col, $table, $where = '', $arrWhereVal = array())
-    {
+    function max($col, $table, $where = '', $arrWhereVal = array()) {
         $ret = $this->get("MAX($col)", $table, $where, $arrWhereVal);
         return $ret;
     }
@@ -640,8 +612,7 @@ class SC_Query
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return integer MIN文の実行結果
      */
-    function min($col, $table, $where = '', $arrWhereVal = array())
-    {
+    function min($col, $table, $where = '', $arrWhereVal = array()) {
         $ret = $this->get("MIN($col)", $table, $where, $arrWhereVal);
         return $ret;
     }
@@ -655,8 +626,7 @@ class SC_Query
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
-    function get($col, $table = '', $where = '', $arrWhereVal = array())
-    {
+    function get($col, $table = '', $where = '', $arrWhereVal = array()) {
         $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
         // SQL文の実行
         $ret = $this->getOne($sqlse, $arrWhereVal);
@@ -670,8 +640,7 @@ class SC_Query
      * @param array $arrVal プレースホルダに挿入する値
      * @return mixed SQL の実行結果
      */
-    function getOne($sql, $arrVal = array())
-    {
+    function getOne($sql, $arrVal = array()) {
 
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -704,8 +673,7 @@ class SC_Query
      * @param integer $fetchmode 使用するフェッチモード。デフォルトは MDB2_FETCHMODE_ASSOC。
      * @return array array('カラム名' => '値', ...)の連想配列
      */
-    function getRow($col, $table = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
-    {
+    function getRow($col, $table = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC) {
 
         $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
@@ -738,8 +706,7 @@ class SC_Query
      * @param array $arrWhereVal プレースホルダに挿入する値
      * @return array SQL の実行結果の配列
      */
-    function getCol($col, $table = '', $where = '', $arrWhereVal = array())
-    {
+    function getCol($col, $table = '', $where = '', $arrWhereVal = array()) {
         $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -770,8 +737,7 @@ class SC_Query
      * @param array $arrWhereVal プレースホルダ
      * @return
      */
-    function delete($table, $where = '', $arrWhereVal = array())
-    {
+    function delete($table, $where = '', $arrWhereVal = array()) {
         if (strlen($where) <= 0) {
             $sqlde = "DELETE FROM $table";
         } else {
@@ -787,8 +753,7 @@ class SC_Query
      * @param string $seq_name 取得するシーケンス名
      * @param integer 次のシーケンス値
      */
-    function nextVal($seq_name)
-    {
+    function nextVal($seq_name) {
         return $this->conn->nextID($seq_name);
     }
 
@@ -798,8 +763,7 @@ class SC_Query
      * @param string $seq_name 取得するシーケンス名
      * @return integer 現在のシーケンス値
      */
-    function currVal($seq_name)
-    {
+    function currVal($seq_name) {
         return $this->conn->currID($seq_name);
     }
 
@@ -810,8 +774,7 @@ class SC_Query
      * @param integer $start 設定するシーケンス値
      * @return MDB2_OK
      */
-    function setVal($seq_name, $start)
-    {
+    function setVal($seq_name, $start) {
         $objManager =& $this->conn->loadModule('Manager');
 
         // XXX 値変更の役割のため、存在チェックは行なわない。存在しない場合、ここでエラーとなる。
@@ -839,8 +802,7 @@ class SC_Query
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
      * @return array SQL の実行結果の配列
      */
-    function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT)
-    {
+    function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT) {
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 
@@ -865,8 +827,7 @@ class SC_Query
      *
      * @return array シーケンス名の配列
      */
-    function listSequences()
-    {
+    function listSequences() {
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->listSequences();
     }
@@ -876,8 +837,7 @@ class SC_Query
      *
      * @return array テーブル名の配列
      */
-    function listTables()
-    {
+    function listTables() {
         return $this->dbFactory->listTables($this);
     }
 
@@ -887,8 +847,7 @@ class SC_Query
      * @param string $table テーブル名
      * @return array 指定のテーブルのカラム名の配列
      */
-    function listTableFields($table)
-    {
+    function listTableFields($table) {
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->listTableFields($table);
     }
@@ -899,8 +858,7 @@ class SC_Query
      * @param string $table テーブル名
      * @return array 指定のテーブルのインデックス一覧
      */
-    function listTableIndexes($table)
-    {
+    function listTableIndexes($table) {
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->listTableIndexes($table);
     }
@@ -913,8 +871,7 @@ class SC_Query
      * @param array $definition フィールド名など　通常のフィールド指定時は、$definition=array('fields' => array('フィールド名' => array()));
      *               MySQLのtext型フィールドを指定する場合は $definition['length'] = 'text_field(NNN)' が必要
      */
-    function createIndex($table, $name, $definition)
-    {
+    function createIndex($table, $name, $definition) {
         $definition = $this->dbFactory->sfGetCreateIndexDefinition($table, $name, $definition);
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->createIndex($table, $name, $definition);
@@ -926,8 +883,7 @@ class SC_Query
      * @param string $table テーブル名
      * @param string $name インデックス名
      */
-    function dropIndex($table, $name)
-    {
+    function dropIndex($table, $name) {
         $objManager =& $this->conn->loadModule('Manager');
         return $objManager->dropIndex($table, $name);
     }
@@ -938,8 +894,7 @@ class SC_Query
      * @param string $table テーブル名
      * @return array テーブル情報の配列
      */
-    function getTableInfo($table)
-    {
+    function getTableInfo($table) {
         $objManager =& $this->conn->loadModule('Reverse');
         return $objManager->tableInfo($table, NULL);
     }
@@ -955,8 +910,7 @@ class SC_Query
      * @param string $val クォートを行う文字列
      * @return string クォートされた文字列
      */
-    function quote($val)
-    {
+    function quote($val) {
         return $this->conn->quote($val);
     }
 
@@ -967,8 +921,7 @@ class SC_Query
      * @param array プレースホルダの連想配列
      * @return array テーブルに存在する列のみ抽出した連想配列
      */
-    function extractOnlyColsOf($table, $arrParams)
-    {
+    function extractOnlyColsOf($table, $arrParams) {
         $arrCols = $this->listTableFields($table);
         $arrResults = array();
         foreach ($arrParams as $key => $val) {
@@ -988,8 +941,7 @@ class SC_Query
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)、nullは指定無し
      * @return MDB2_Statement_Common プリペアドステートメントインスタンス
      */
-    function prepare($sql, $types = null, $result_types = MDB2_PREPARE_RESULT)
-    {
+    function prepare($sql, $types = null, $result_types = MDB2_PREPARE_RESULT) {
         $sth =& $this->conn->prepare($sql, $types, $result_types);
         if (PEAR::isError($sth)) {
             $msg = $this->traceError($sth, $sql);
@@ -1006,8 +958,7 @@ class SC_Query
      * @param array $arrVal プレースホルダに挿入する配列
      * @return MDB2_Result 結果セットのインスタンス
      */
-    function execute(&$sth, $arrVal = array())
-    {
+    function execute(&$sth, $arrVal = array()) {
 
         $arrStartInfo =& $this->lfStartDbTraceLog($sth, $arrVal);
         $affected =& $sth->execute((array)$arrVal);
@@ -1033,8 +984,7 @@ class SC_Query
      * @param array $arrVal プレースホルダ
      * @return string トレースしたエラー文字列
      */
-    function traceError($error, $sql = '', $arrVal = false)
-    {
+    function traceError($error, $sql = '', $arrVal = false) {
         $err = "SQL: [$sql]\n";
         if ($arrVal !== false) {
             $err .= 'PlaceHolder: [' . var_export($arrVal, true) . "]\n";
@@ -1051,8 +1001,7 @@ class SC_Query
     /**
      * エラー処理
      */
-    function error($msg)
-    {
+    function error($msg) {
         $msg = "DB処理でエラーが発生しました。\n" . $msg;
         if (!$this->force_run) {
             trigger_error($msg, E_USER_ERROR);
@@ -1071,8 +1020,7 @@ class SC_Query
      * @param mixed $result_types 返値の型指定またはDML実行(MDB2_PREPARE_MANIP)
      * @return array 実行結果の配列
      */
-    function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT)
-    {
+    function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT) {
 
         $n = $this->dbFactory->sfChangeMySQL($n);
 
@@ -1099,8 +1047,7 @@ class SC_Query
      * @param array $arrVal プレースホルダに挿入する配列
      * @return void
      */
-    private function lfStartDbTraceLog(&$objSth, &$arrVal)
-    {
+    private function lfStartDbTraceLog(&$objSth, &$arrVal) {
         if (!defined('SQL_QUERY_LOG_MODE') || SQL_QUERY_LOG_MODE === 0) {
             return;
         }
@@ -1135,8 +1082,7 @@ class SC_Query
      * @param array $arrVal プレースホルダに挿入する配列
      * @return void
      */
-    private function lfEndDbTraceLog(&$arrStartInfo, &$objSth, &$arrVal)
-    {
+    private function lfEndDbTraceLog(&$arrStartInfo, &$objSth, &$arrVal) {
         if (!defined('SQL_QUERY_LOG_MODE') || SQL_QUERY_LOG_MODE === 0) {
             return;
         }
@@ -1167,8 +1113,7 @@ class SC_Query
      * @param string $dsn データソース名
      * @return SC_Query プールしたインスタンス
      */
-    static function setPoolInstance(&$objThis, $dsn = '')
-    {
+    static function setPoolInstance(&$objThis, $dsn = '') {
         $key_str = serialize($dsn);
         return SC_Query_Ex::$arrPoolInstance[$key_str] = $objThis;
     }
@@ -1179,8 +1124,7 @@ class SC_Query
      * @param string $dsn データソース名
      * @return SC_Query|null
      */
-    static function getPoolInstance($dsn = '')
-    {
+    static function getPoolInstance($dsn = '') {
         $key_str = serialize($dsn);
         if (isset(SC_Query_Ex::$arrPoolInstance[$key_str])) {
             return SC_Query_Ex::$arrPoolInstance[$key_str];

@@ -33,24 +33,20 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfIsMatchHashPassword_authTypePlainTest extends Common_TestCase
-{
+class SC_Utils_sfIsMatchHashPassword_authTypePlainTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
   /**
-  public function testSfIsMatchHashPassword_文字列が一致する場合_trueが返る()
-  {
+  public function testSfIsMatchHashPassword_文字列が一致する場合_trueが返る() {
     $pass = 'ec-cube';
     $hashpass = 'ec-cube';
 
@@ -60,8 +56,7 @@ class SC_Utils_sfIsMatchHashPassword_authTypePlainTest extends Common_TestCase
     $this->verify('パスワード文字列比較結果');
   }
 
-  public function testSfIsMatchHashPassword_文字列が一致しない場合_falseが返る()
-  {
+  public function testSfIsMatchHashPassword_文字列が一致しない場合_falseが返る() {
     $pass = 'ec-cube';
     $hashpass = 'EC-cube';
 

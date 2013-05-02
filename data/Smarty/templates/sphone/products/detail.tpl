@@ -209,16 +209,6 @@
                         </p>
                     <!--{/if}-->
 
-                    <!--▼メーカー-->
-                    <!--{if $arrProduct.maker_name|strlen >= 1}-->
-                        <p class="maker">
-                            <span class="mini">メーカー：</span><span>
-                                <!--{$arrProduct.maker_name|h}-->
-                            </span>
-                        </p>
-                    <!--{/if}-->
-                    <!--▲メーカー-->
-
                     <!--▼メーカーURL-->
                     <!--{if $arrProduct.comment1|strlen >= 1}-->
                         <p class="sale_price">
@@ -369,7 +359,7 @@
             <div class="review_btn">
                 <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
                     <!--★新規コメントを書き込む★-->
-                    <a href="./review.php?product_id=<!--{$arrProduct.product_id}-->" target="_blank" class="btn_sub">新規コメントを書き込む</a>
+                    <a href="./review.php?product_id=<!--{$arrProduct.product_id}-->" target="_blank" class="btn_sub" />新規コメントを書き込む</a>
                 <!--{/if}-->
             </div>
             </div>
@@ -386,7 +376,7 @@
             </ul>
             <!--{/if}-->
         </div>
-    
+    </div>
     <!--お客様の声ここまで-->
 
 
@@ -423,7 +413,7 @@
     <!--▲その他おすすめ商品-->
 
     <div class="btn_area">
-        <p><a href="javascript:void(0);" class="btn_more" data-rel="back">戻る</a></p>
+        <p><a href="javascript:void(0);" class="btn_more" data-rel="back">商品一覧に戻る</a></p>
     </div>
 </section>
 

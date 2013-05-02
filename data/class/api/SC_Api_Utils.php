@@ -32,8 +32,7 @@ define('API_UPLOAD_REALDIR', DATA_REALDIR . 'downloads/api/');
 define('API_CLASS_EX_REALDIR', CLASS_EX_REALDIR . 'api_extends/operations/');
 define('API_CLASS_REALDIR', CLASS_REALDIR . 'api/operations/');
 
-class SC_Api_Utils 
-{
+class SC_Api_Utils {
 
     /** API XML Namspase Header */
     const API_XMLNS = 'http://www.ec-cube.net/ECCUBEApi/';
@@ -53,8 +52,7 @@ class SC_Api_Utils
      * @param string $access_key
      * @return string 秘密鍵文字列
      */
-    public function getOperationSubConfig($operation_name, $key_name = '', $arrApiConfig = '')
-    {
+    public function getOperationSubConfig($operation_name, $key_name = '', $arrApiConfig = '') {
         if (SC_Utils_Ex::isBlank($arrApiConfig)) {
             $arrApiConfig = SC_Api_Utils_Ex::getAuthConfig($operation_name);
         }
@@ -80,8 +78,7 @@ class SC_Api_Utils
      * @param string $operation_name
      * @return array 設定配列
      */
-    public function getApiConfig($operation_name)
-    {
+    public function getApiConfig($operation_name) {
         // 設定優先度 DB > plugin default > base
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'operation_name Like ? AND del_flg = 0 AND enable = 1';
@@ -114,8 +111,7 @@ class SC_Api_Utils
      * @param text $operation_name
      @ @rturn void
      */
-    public function printApiLog($msg, $start_time = '' , $operation_name = '')
-    {
+    public function printApiLog($msg, $start_time = '' , $operation_name = '') {
         if (!SC_Utils_Ex::isBlank($operation_name)) {
             $msg = 'API_' . $operation_name . ':' . $msg;
         }
@@ -132,8 +128,7 @@ class SC_Api_Utils
      * @param array $arrParam リクエストパラメーター
      * @return object APIオペレーションクラスオブジェクト
      */
-    public function loadApiOperation($operation_name, $arrParam = array())
-    {
+    public function loadApiOperation($operation_name, $arrParam = array()) {
         // API_UPLOADのほうが優先
         // API_UPLOAD > API_CLASS_EX > API_CLASS
         if (file_exists(API_UPLOAD_REALDIR . $operation_name . '.php')) {
@@ -159,8 +154,7 @@ class SC_Api_Utils
      *
      * @return array $arrFiles
      */
-    public function getApiDirFiles()
-    {
+    public function getApiDirFiles() {
         $arrFiles = array();
         // Core API ディレクトリ
         if (is_dir(API_CLASS_EX_REALDIR)) {
@@ -188,22 +182,19 @@ class SC_Api_Utils
         return $arrFiles;
     }
 
-    public function sendResponseJson($response_outer_name, &$arrResponse)
-    {
+    public function sendResponseJson($response_outer_name, &$arrResponse) {
         header('Content-Type: application/json; charset=UTF-8');
         $arrResponse['response_name'] = $response_outer_name;
         echo SC_Utils_Ex::jsonEncode($arrResponse);
     }
 
-    public function sendResponsePhp($response_outer_name, &$arrResponse)
-    {
+    public function sendResponsePhp($response_outer_name, &$arrResponse) {
         header('Content-Type: application/php; charset=UTF-8');
         $arrResponse['response_name'] = $response_outer_name;
         echo serialize($arrResponse);
     }
 
-    public function sendResponseXml($response_outer_name, &$arrResponse)
-    {
+    public function sendResponseXml($response_outer_name, &$arrResponse) {
         require_once 'XML/Serializer.php';
 
         $options = array(

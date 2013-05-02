@@ -32,8 +32,7 @@ require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_SystemError extends LC_Page_Error 
-{
+class LC_Page_Error_SystemError extends LC_Page_Error {
 
     /** PEAR_Error */
     var $pearResult;
@@ -52,8 +51,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_title = 'システムエラー';
     }
@@ -63,8 +61,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -74,8 +71,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $this->tpl_error = 'システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。';
 
@@ -97,8 +93,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function sendResponse()
-    {
+    function sendResponse() {
         $this->adminPage = GC_Utils_Ex::isAdminFunction();
 
         if ($this->adminPage) {
@@ -117,23 +112,20 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
     /**
      * トランザクショントークンに関して処理しないようにオーバーライド
      */
-    function doValidToken()
-    {
+    function doValidToken() {
     }
 
     /**
      * トランザクショントークンに関して処理しないようにオーバーライド
      */
-    function setTokenTo()
-    {
+    function setTokenTo() {
     }
 
     /**
@@ -141,8 +133,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return string
      */
-    function sfGetErrMsg()
-    {
+    function sfGetErrMsg() {
         $errmsg = '';
         $errmsg .= $this->lfGetErrMsgHead();
         $errmsg .= "\n";
@@ -174,8 +165,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return string
      */
-    function lfGetErrMsgHead()
-    {
+    function lfGetErrMsgHead() {
         $errmsg = '';
         $errmsg .= GC_Utils_Ex::getUrl() . "\n";
         $errmsg .= "\n";
@@ -191,8 +181,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function addDebugMsg($debugMsg)
-    {
+    function addDebugMsg($debugMsg) {
         $this->arrDebugMsg[] = rtrim($debugMsg, "\n");
     }
 }

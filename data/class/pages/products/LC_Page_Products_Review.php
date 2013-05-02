@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Products_Review.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Products_Review extends LC_Page_Ex 
-{
+class LC_Page_Products_Review extends LC_Page_Ex {
 
     // {{{ properties
 
@@ -53,8 +52,7 @@ class LC_Page_Products_Review extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -68,8 +66,7 @@ class LC_Page_Products_Review extends LC_Page_Ex
     /**
      * Page のプロセス.
      */
-    function process()
-    {
+    function process() {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -80,8 +77,7 @@ class LC_Page_Products_Review extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -140,8 +136,7 @@ class LC_Page_Products_Review extends LC_Page_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -151,8 +146,7 @@ class LC_Page_Products_Review extends LC_Page_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'aKV');
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('投稿者名', 'reviewer_name', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -169,8 +163,7 @@ class LC_Page_Products_Review extends LC_Page_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return array エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam)
-    {
+    function lfCheckError(&$objFormParam) {
         $arrErr = $objFormParam->checkError();
 
         $arrForm = $objFormParam->getHashArray();
@@ -198,16 +191,14 @@ class LC_Page_Products_Review extends LC_Page_Ex
      * @param integer $product_id 商品ID
      * @return string $product_name 商品名
      */
-    function lfGetProductName($product_id)
-    {
+    function lfGetProductName($product_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         return $objQuery->get('name', 'dtb_products', 'product_id = ? AND del_flg = 0 AND status = 1', array($product_id));
     }
 
     //登録実行
-    function lfRegistRecommendData(&$objFormParam)
-    {
+    function lfRegistRecommendData(&$objFormParam) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRegist = $objFormParam->getDbArray();
 

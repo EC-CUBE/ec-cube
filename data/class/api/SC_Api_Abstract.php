@@ -29,8 +29,7 @@
  * @version $Id$
  */
 
-abstract class SC_Api_Abstract 
-{
+abstract class SC_Api_Abstract {
 
     /** 認証タイプ */
     const API_AUTH_TYPE_REFERER = '1';          // リファラー
@@ -56,11 +55,9 @@ abstract class SC_Api_Abstract
     protected $status = true;
     protected $arrErr = array();
 
-    final public function __construct()
-    {}
+    final public function __construct() {}
 
-    final public function __destruct()
-    {}
+    final public function __destruct() {}
 
     abstract public function doAction($arrParam);
 
@@ -68,18 +65,15 @@ abstract class SC_Api_Abstract
 
     abstract protected function lfInitParam(&$objFormParam);
 
-    public function getResponseArray()
-    {
+    public function getResponseArray() {
         return $this->arrResponse;
     }
 
-    public function getErrorArray()
-    {
+    public function getErrorArray() {
         return $this->arrErr;
     }
 
-    public function getDefaultConfig()
-    {
+    public function getDefaultConfig() {
         $arrApiConfig = array();
         $arrApiConfig['operation_name'] = $this->operation_name;
         $arrApiConfig['operation_description'] = $this->operation_description;
@@ -90,27 +84,22 @@ abstract class SC_Api_Abstract
         return $arrApiConfig;
     }
 
-    protected function setResponse($key, $data)
-    {
+    protected function setResponse($key, $data) {
         $this->arrResponse[$key] = $data;
     }
 
-    protected function addError($arrErr)
-    {
+    protected function addError($arrErr) {
         $this->arrErr = array_merge((array)$this->arrErr, (array)$arrErr);
     }
 
-    protected function isParamError()
-    {
+    protected function isParamError() {
         return !SC_Utils_Ex::isBlank($this->arrErr);
     }
 
-    protected function checkErrorExtended($arrParam)
-    {
+    protected function checkErrorExtended($arrParam) {
     }
 
-    protected function doInitParam($arrParam = array())
-    {
+    protected function doInitParam($arrParam = array()) {
         $this->objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($this->objFormParam);
         $this->objFormParam->setParam($arrParam);
@@ -120,8 +109,7 @@ abstract class SC_Api_Abstract
         return $this->objFormParam->getHashArray();
     }
 
-    public function getRequestValidate()
-    {
+    public function getRequestValidate() {
         $arrParam = $this->objFormParam->getHashArray();
         if (!SC_Utils_Ex::isBlank($arrParam)) {
             return $arrParam;

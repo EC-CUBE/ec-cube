@@ -24,24 +24,20 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Session_getValueTest extends Common_TestCase
-{
+class SC_Session_getValueTest extends Common_TestCase {
 
-    protected function setUp()
-    {
+    protected function setUp() {
         parent::setUp();
         $this->objSiteSession = new SC_SiteSession_Ex();
     }
 
-    protected function tearDown()
-    {
+    protected function tearDown() {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testSetNowPage_セッションの値を取得する()
-    {
+    public function testSetNowPage_セッションの値を取得する() {
         $this->expected = $_SERVER['SCRIPT_NAME'];
         $this->actual = $this->objSiteSession->getValue('now_page');
         $this->verify("セッション値");

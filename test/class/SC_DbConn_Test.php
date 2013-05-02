@@ -31,8 +31,7 @@ require_once(realpath(dirname(__FILE__)) . "/../../data/class/SC_DbConn.php");
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_DbConn_Test extends PHPUnit_Framework_TestCase 
-{
+class SC_DbConn_Test extends PHPUnit_Framework_TestCase {
 
     /** SC_DbConn インスタンス */
     var $objDbConn;
@@ -40,28 +39,24 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     var $expected;
     var $actual;
 
-    function setUp()
-    {
+    function setUp() {
         $this->objDbConn = new SC_DbConn();
         $this->objDbConn->query('BEGIN');
     }
 
-    function tearDown()
-    {
+    function tearDown() {
         $this->objDbConn->query('ROLLBACK');
         $this->objDbConn = null;
     }
 
-    function verify()
-    {
+    function verify() {
         $this->assertEquals($this->expected, $this->actual);
     }
 
     /**
      * インスタンスを取得するテストケース.
      */
-    function testGetInstance()
-    {
+    function testGetInstance() {
         $this->expected = true;
         $this->actual = is_object($this->objDbConn);
 
@@ -71,8 +66,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn:query() を使用して, CREATE TABLE を実行するテストケース.
      */
-    function testCreateTable()
-    {
+    function testCreateTable() {
         $result = $this->createTestTable();
 
         $this->expected = false;
@@ -84,8 +78,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn::getAll() のテストケース.
      */
-    function testGetAll()
-    {
+    function testGetAll() {
         $this->createTestTable();
         $result = $this->setTestData(1, '2', 'f');
 
@@ -102,8 +95,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
      * SC_DbConn::getAll() のテストケース(エラー).
      */
     /*
-    function testGetAllIsError()
-    {
+    function testGetAllIsError() {
 
         // SC_DbConn::getAll() は接続エラーが発生すると 0 を返す
         $failur_dsn = "pgsql://user:pass@127.0.0.1:/xxxxx";
@@ -118,8 +110,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn::getOne() のテストケース.
      */
-    function testGetOne()
-    {
+    function testGetOne() {
         $this->createTestTable();
         $this->setTestData(1, '2', 'f');
         $this->setTestData(1, '2', 'f');
@@ -135,8 +126,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
      * SC_DbConn::getOne() のテストケース(エラー).
      */
     /*
-    function testGetOneIsError()
-    {
+    function testGetOneIsError() {
         $this->createTestTable();
         $this->setTestData(1, '2', 'f');
         $this->setTestData(1, '2', 'f');
@@ -152,8 +142,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn::getRow() のテストケース.
      */
-    function testGetRow()
-    {
+    function testGetRow() {
         $this->createTestTable();
         $this->setTestData(1, '1', 'f');
         $this->setTestData(2, '2', 'f');
@@ -167,8 +156,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn::getCol() のテストケース.
      */
-    function testGetCol()
-    {
+    function testGetCol() {
         $this->createTestTable();
         $this->setTestData(1, '1', 'f');
         $this->setTestData(2, '2', 'f');
@@ -185,8 +173,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
      * SC_DbConn::autoExecute() で INSERT を実行するテストケース.
      */
     /*
-    function testAutoExecuteOfInsert()
-    {
+    function testAutoExecuteOfInsert() {
         $this->createTestTable();
         $result = $this->setTestData(1, '2', 'f');
 
@@ -204,8 +191,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
      * SC_DbConn::autoExecute() で UPDATE を実行するテストケース.
      */
     /*
-    function testAutoExecuteOfUpdate()
-    {
+    function testAutoExecuteOfUpdate() {
         $this->createTestTable();
         $this->setTestData(1, '2', 'f');
 
@@ -227,8 +213,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn::query() で INSERT を実行するテストケース.
      */
-    function testQuery1()
-    {
+    function testQuery1() {
         $this->createTestTable();
         $sql = "INSERT INTO test_table VALUES (?, ?, ?, ?)";
         $data = array('1', '1', '1', 'f');
@@ -248,8 +233,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn::query() で UPDATE を実行するテストケース.
      */
-    function testQuery2()
-    {
+    function testQuery2() {
         $this->createTestTable();
         $this->setTestData(1, '2', 'f');
 
@@ -272,26 +256,22 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
     /**
      * SC_DbConn::prepare() は未使用
      */
-    function testPrepare()
-    {
+    function testPrepare() {
     }
 
     /**
      * SC_DbConn::execute() は未使用
      */
-    function testExecute()
-    {
+    function testExecute() {
     }
 
     /**
      * SC_DbConn::reset() は未使用
      */
-    function testReset()
-    {
+    function testReset() {
     }
 
-    function createTestTable()
-    {
+    function createTestTable() {
         $sql = "CREATE TABLE test_table ("
             . "id SERIAL PRIMARY KEY,"
             . "column1 numeric(9),"
@@ -301,8 +281,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
         return $this->objDbConn->query($sql);
     }
 
-    function setTestData($column1, $column2, $column3)
-    {
+    function setTestData($column1, $column2, $column3) {
         $fields_values = array($column1, $column2, $column3);
         $sql = "INSERT INTO test_table (column1, column2, column3) VALUES (?, ?, ?)";
         $result = $this->objDbConn->query($sql, $fields_values);

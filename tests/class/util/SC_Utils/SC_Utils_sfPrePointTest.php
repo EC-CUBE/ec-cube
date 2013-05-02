@@ -33,23 +33,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfPrePointTest extends Common_TestCase
-{
+class SC_Utils_sfPrePointTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfPrePoint_四捨五入の設定の場合_四捨五入された値が返る()
-  {
+  public function testSfPrePoint_四捨五入の設定の場合_四捨五入された値が返る() {
     $rule = 1; // 四捨五入
 
     $this->expected = 10;
@@ -58,8 +54,7 @@ class SC_Utils_sfPrePointTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfPrePoint_切り捨ての設定の場合_切り捨てされた値が返る()
-  {
+  public function testSfPrePoint_切り捨ての設定の場合_切り捨てされた値が返る() {
     $rule = 2; // 切り捨て 
 
     $this->expected = 9;
@@ -68,8 +63,7 @@ class SC_Utils_sfPrePointTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfPrePoint_切り上げの設定の場合_切り上げされた値が返る()
-  {
+  public function testSfPrePoint_切り上げの設定の場合_切り上げされた値が返る() {
     $rule = 3; // 切り上げ
 
     $this->expected = 10;
@@ -78,8 +72,7 @@ class SC_Utils_sfPrePointTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfPrePoint_存在しない選択肢の場合_切り上げされた値が返る()
-  {
+  public function testSfPrePoint_存在しない選択肢の場合_切り上げされた値が返る() {
     $rule = 4; // 存在しない選択肢
 
     $this->expected = 10;
@@ -88,8 +81,7 @@ class SC_Utils_sfPrePointTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfPrePoint_丸め方法の指定がない場合_定数で指定された値が使われる()
-  {
+  public function testSfPrePoint_丸め方法の指定がない場合_定数で指定された値が使われる() {
     $this->expected = array(9, 9);
     $this->actual = array(
       SC_Utils::sfPrePoint(100, 9.4),

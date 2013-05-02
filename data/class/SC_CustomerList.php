@@ -24,13 +24,11 @@
 /*  [名称] SC_CustomerList
  *  [概要] 会員検索用クラス
  */
-class SC_CustomerList extends SC_SelectSql_Ex 
-{
+class SC_CustomerList extends SC_SelectSql_Ex {
 
     var $arrColumnCSV;
 
-    function __construct($array, $mode = '')
-    {
+    function __construct($array, $mode = '') {
         parent::__construct($array);
 
         $objDb = new SC_Helper_DB_Ex();
@@ -328,14 +326,12 @@ class SC_CustomerList extends SC_SelectSql_Ex
     }
 
     // 検索用SQL
-    function getList()
-    {
+    function getList() {
         $this->select = 'SELECT customer_id,name01,name02,kana01,kana02,sex,email,email_mobile,tel01,tel02,tel03,pref,status,update_date,mailmaga_flg FROM dtb_customer ';
-        return $this->getSql(2);
+        return $this->getSql(0);
     }
 
-    function getListMailMagazine($is_mobile = false)
-    {
+    function getListMailMagazine($is_mobile = false) {
 
         $colomn = $this->getMailMagazineColumn($is_mobile);
         $this->select = "
@@ -347,15 +343,13 @@ class SC_CustomerList extends SC_SelectSql_Ex
     }
 
     // 検索総数カウント用SQL
-    function getListCount()
-    {
+    function getListCount() {
         $this->select = 'SELECT COUNT(customer_id) FROM dtb_customer ';
         return $this->getSql(1);
     }
 
     // CSVダウンロード用SQL
-    function getListCSV($arrColumnCSV)
-    {
+    function getListCSV($arrColumnCSV) {
         $this->arrColumnCSV = $arrColumnCSV;
         $i = 0;
         foreach ($this->arrColumnCSV as $val) {
@@ -368,8 +362,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         return $this->getSql(2);
     }
 
-    function getWhere()
-    {
+    function getWhere() {
         return array($this->where, $this->arrVal);
     }
 }

@@ -113,7 +113,7 @@ MYページナビ
     padding: 10px 0;
 }
 
-.historyBox {
+#historyBox {
     padding: 10px 10px 5px;
     background: #F7F5F0;
     border: #A9ABAD solid 1px;
@@ -122,13 +122,13 @@ MYページナビ
     -webkit-border-radius: 7px;
     margin-bottom: 10px;
 }
-.historyBox p {
+#historyBox p {
     font-size: 12px;
     width: 70%;
     display: inline;
     float: left;
 }
-.historyBox .btn_reorder {
+#historyBox .btn_reorder {
     width: 5em;
     float: right;
     padding: 15px;

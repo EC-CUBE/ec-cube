@@ -69,7 +69,7 @@
                                 <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->円
                             </p>
                             <ul>
-                                <li class="result"><span class="mini">数量</span></li>
+                                <li class="result"><span class="mini">数量</li>
                                 <li>
                                     <input type="number" name="<!--{$key}-->[<!--{$index}-->]" class="cartin_quantity txt" value="<!--{$arrForm[$key].value[$index]}-->" max="9" style="" />
                                 </li>

@@ -30,8 +30,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -41,8 +40,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'design/template.tpl';
         $this->tpl_subno    = 'template';
@@ -61,8 +59,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -72,8 +69,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -141,8 +137,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -152,8 +147,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('template_code', 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
     }
@@ -167,8 +161,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param integer $device_type_id 端末種別ID
      * @return void
      */
-    function doUpdateMasterData($template_code, $device_type_id)
-    {
+    function doUpdateMasterData($template_code, $device_type_id) {
         $masterData = new SC_DB_MasterData_Ex();
 
         $defineName = 'TEMPLATE_NAME';
@@ -203,8 +196,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param string $filepath SQLのファイルパス
      * @return void
      */
-    function updateBloc($filepath)
-    {
+    function updateBloc($filepath) {
         $sql = file_get_contents($filepath);
         if ($sql !== false) {
             // 改行、タブを1スペースに変換
@@ -226,8 +218,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param integer $device_type_id 端末種別ID
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
-    function doDelete($template_code, $device_type_id)
-    {
+    function doDelete($template_code, $device_type_id) {
         if ($template_code == $this->getTemplateName($device_type_id)
                 || $template_code == $this->getTemplateName($device_type_id, true)) {
             $this->arrErr['err'] = '※ デフォルトテンプレートと、選択中のテンプレートは削除出来ません<br />';
@@ -275,8 +266,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param integer $device_type_id 端末種別ID
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
-    function doRegister($template_code, $device_type_id)
-    {
+    function doRegister($template_code, $device_type_id) {
 
         $tpl_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         if (!is_dir($tpl_dir)) {
@@ -306,8 +296,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param string $template_code テンプレートコード
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
-    function doDownload($template_code)
-    {
+    function doDownload($template_code) {
         $from_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         $to_dir = SMARTY_TEMPLATES_REALDIR . $template_code . '/_packages/';
         if (SC_Utils_Ex::recursiveMkdir($to_dir) === false) {
@@ -328,8 +317,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param integer $device_type_id 端末種別ID
      * @return array テンプレート情報の配列
      */
-    function getAllTemplates($device_type_id)
-    {
+    function getAllTemplates($device_type_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         return $objQuery->select('*', 'dtb_templates', 'device_type_id = ?', array($device_type_id));
     }
@@ -341,8 +329,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      * @param boolean $isDefault デフォルトテンプレート名を返す場合 true
      * @return string テンプレート名
      */
-    function getTemplateName($device_type_id, $isDefault = false)
-    {
+    function getTemplateName($device_type_id, $isDefault = false) {
         switch ($device_type_id) {
             case DEVICE_TYPE_MOBILE:
                 return $isDefault ? MOBILE_DEFAULT_TEMPLATE_NAME : MOBILE_TEMPLATE_NAME;

@@ -33,7 +33,7 @@
             <th>タイトル<span class="attention"> *</span></th>
             <td>
                 <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
-                <input type="text" name="title" value="<!--{$arrForm.title.value|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
+                <input type="text" name="title" value="<!--{$arrForm.title|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
                 <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
             </td>
         </tr>
@@ -47,11 +47,11 @@
                 <!--{/if}-->
                 <select name="month" style="<!--{$arrErr.month|sfGetErrorColor}-->">
                     <option value="">--</option>
-                    <!--{html_options options=$arrMonth selected=$arrForm.month.value}-->
+                    <!--{html_options options=$arrMonth selected=$arrForm.month}-->
                 </select>月
                 <select name="day" style="<!--{$arrErr.day|sfGetErrorColor}-->">
                     <option value="">--</option>
-                    <!--{html_options options=$arrDay selected=$arrForm.day.value}-->
+                    <!--{html_options options=$arrDay selected=$arrForm.day}-->
                 </select>日
                 <br />
                 <span class="attention">振替休日は自動設定されないので、振替え先の日付を設定してください。</span>
@@ -99,10 +99,10 @@
             </td>
             <td class="center">
                 <!--{if $smarty.section.cnt.iteration != 1}-->
-                <a href="?" onclick="fnModeSubmit('up', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;">上へ</a>
+                <a href="?" onclick="fnModeSubmit('up', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;" />上へ</a>
                 <!--{/if}-->
                 <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                <a href="?" onclick="fnModeSubmit('down', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;">下へ</a>
+                <a href="?" onclick="fnModeSubmit('down', 'holiday_id', <!--{$arrHoliday[cnt].holiday_id}-->); return false;" />下へ</a>
                 <!--{/if}-->
             </td>
         </tr>

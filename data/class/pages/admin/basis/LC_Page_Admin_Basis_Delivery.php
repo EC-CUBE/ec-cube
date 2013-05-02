@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery.tpl';
         $this->tpl_subno = 'delivery';
@@ -60,8 +58,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -71,10 +68,9 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
-        $objDeliv = new SC_Helper_Delivery_Ex();
+        $objDb = new SC_Helper_DB_Ex();
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
@@ -91,25 +87,41 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
         switch ($mode) {
             case 'delete':
                 // ランク付きレコードの削除
-                $objDeliv->delete($_POST['deliv_id']);
+                $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'up':
-                $objDeliv->rankUp($_POST['deliv_id']);
+                $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'down':
-                $objDeliv->rankDown($_POST['deliv_id']);
+                $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             default:
                 break;
         }
-        $this->arrDelivList = $objDeliv->getList();
+        $this->arrDelivList = $this->lfGetDelivList();
 
+    }
+
+    /**
+     * 配送業者一覧の取得
+     *
+     * @return array
+     */
+    function lfGetDelivList() {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $col = 'deliv_id, name, service_name';
+        $where = 'del_flg = 0';
+        $table = 'dtb_deliv';
+        $objQuery->setOrder('rank DESC');
+
+        return $objQuery->select($col, $table, $where);
     }
 
     /**
@@ -118,8 +130,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      * @param string $mode
      * @return array
      */
-    function lfCheckError($mode, &$objFormParam)
-    {
+    function lfCheckError($mode, &$objFormParam) {
         $arrErr = array();
         switch ($mode) {
             case 'delete':
@@ -142,8 +153,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

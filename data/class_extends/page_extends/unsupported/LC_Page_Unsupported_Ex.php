@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/unsupported/LC_Page_Unsupported.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Unsupported_Ex extends LC_Page_Unsupported 
-{
+class LC_Page_Unsupported_Ex extends LC_Page_Unsupported {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Unsupported_Ex extends LC_Page_Unsupported
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Unsupported_Ex extends LC_Page_Unsupported
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Unsupported_Ex extends LC_Page_Unsupported
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

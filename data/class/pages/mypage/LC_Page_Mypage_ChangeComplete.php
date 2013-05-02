@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex 
-{
+class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_subtitle = '会員登録内容変更(完了ページ)';
         $this->tpl_mypageno = 'change';
@@ -54,8 +52,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
 
     }
@@ -75,8 +71,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

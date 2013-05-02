@@ -33,6 +33,5 @@ require_once CLASS_REALDIR . 'db/SC_DB_MasterData.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_DB_MasterData_Ex extends SC_DB_MasterData 
-{
+class SC_DB_MasterData_Ex extends SC_DB_MasterData {
 }

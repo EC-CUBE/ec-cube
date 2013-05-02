@@ -32,8 +32,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Home extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Home extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -43,8 +42,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'home.tpl';
         $this->tpl_subtitle = 'ホーム';
@@ -55,8 +53,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -66,8 +63,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         // DBバージョンの取得
         $this->db_version = $this->lfGetDBVersion();
@@ -115,8 +111,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -125,8 +120,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return string PHPバージョン情報
      */
-    function lfGetPHPVersion()
-    {
+    function lfGetPHPVersion() {
         return 'PHP ' . phpversion();
     }
 
@@ -135,8 +129,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return mixed DBバージョン情報
      */
-    function lfGetDBVersion()
-    {
+    function lfGetDBVersion() {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         return $dbFactory->sfGetDBVersion();
     }
@@ -146,8 +139,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer 会員数
      */
-    function lfGetCustomerCnt()
-    {
+    function lfGetCustomerCnt() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'COUNT(customer_id)';
         $table = 'dtb_customer';
@@ -161,8 +153,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
-    function lfGetOrderYesterday($method)
-    {
+    function lfGetOrderYesterday($method) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
@@ -177,8 +168,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
-    function lfGetOrderMonth($method)
-    {
+    function lfGetOrderMonth($method) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $month = date('Y/m', mktime());
 
@@ -193,8 +183,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer 会員の保持ポイント合計
      */
-    function lfGetTotalCustomerPoint()
-    {
+    function lfGetTotalCustomerPoint() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $col = 'SUM(point)';
@@ -208,8 +197,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer 昨日のレビュー書き込み数
      */
-    function lfGetReviewYesterday()
-    {
+    function lfGetReviewYesterday() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
@@ -223,8 +211,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer レビュー書き込み非表示数
      */
-    function lfGetReviewNonDisp()
-    {
+    function lfGetReviewNonDisp() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $table = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id';
@@ -237,15 +224,14 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return array 品切れ商品一覧
      */
-    function lfGetSoldOut()
-    {
+    function lfGetSoldOut() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $cols = 'product_id, name';
         $table = 'dtb_products';
         $where = 'product_id IN ('
                . 'SELECT product_id FROM dtb_products_class '
-               . 'WHERE del_flg = 0 AND stock_unlimited = ? AND stock <= 0)'
+               . 'WHERE stock_unlimited = ? AND stock <= 0)'
                . ' AND del_flg = 0';
         return $objQuery->select($cols, $table, $where, array(UNLIMITED_FLG_LIMITED));
     }
@@ -255,8 +241,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return array 新規受付一覧配列
      */
-    function lfGetNewOrder()
-    {
+    function lfGetNewOrder() {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $sql = <<< __EOS__
@@ -313,8 +298,7 @@ __EOS__;
      *
      * @return array 取得した情報配列
      */
-    function lfGetInfo()
-    {
+    function lfGetInfo() {
         // 更新情報の取得ON/OFF確認
         if (!ECCUBE_INFO) return array();
 

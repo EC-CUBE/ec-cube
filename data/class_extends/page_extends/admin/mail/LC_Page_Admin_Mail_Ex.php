@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/admin/mail/LC_Page_Admin_Mail.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_Ex extends LC_Page_Admin_Mail 
-{
+class LC_Page_Admin_Mail_Ex extends LC_Page_Admin_Mail {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Admin_Mail_Ex extends LC_Page_Admin_Mail
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Admin_Mail_Ex extends LC_Page_Admin_Mail
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Admin_Mail_Ex extends LC_Page_Admin_Mail
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

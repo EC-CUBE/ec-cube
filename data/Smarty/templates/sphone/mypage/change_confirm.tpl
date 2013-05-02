@@ -110,7 +110,7 @@
 
         <div class="btn_area">
             <ul class="btn_btm">
-                <li><input type="submit" value="完了ページへ" class="btn data-role-none" name="complete" id="complete" /></li>
+                <li><input type="submit" value="完了ページへ" class="btn data-role-none" alt="完了ページへ" name="complete" id="complete" /></li>
                 <li><a class="btn_back" href="Javascript:fnModeSubmit('return', '', '');" rel="external">戻る</a></li>
             </ul>
         </div>

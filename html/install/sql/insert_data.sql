@@ -827,7 +827,6 @@ INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (4, 'vodafone.ne.jp', 3);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (5, 'pdx.ne.jp', 4);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (6, 'disney.ne.jp', 5);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (7, 'willcom.com', 6);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (8, 'emnet.ne.jp', 7);
 
 INSERT INTO mtb_order_status (id, name, rank) VALUES (7, '決済処理中', 0);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (1, '新規受付', 1);
@@ -1222,7 +1221,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_PLUG
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', 'DATA_REALDIR . "downloads/tmp/plugin_install/"', 613, 'プラグイン一時展開用ディレクトリ（インストール用）');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_HTML_URLPATH', 'ROOT_URLPATH . "plugin/"', 614, 'プラグインURL'); 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_DAYS_LEN', '3', 700, '日数桁数');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'ダウンロードファイル登録可能拡張子(カンマ区切り)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWNLOAD_EXTENSION', '"zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv"', 701, 'ダウンロードファイル登録可能拡張子(カンマ区切り)"');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_SIZE', '50000', 702, 'ダウンロード販売ファイル用サイズ制限(KB)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PRODUCT_DOWN', '1', 703, '1:実商品 2:ダウンロード');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DOWN_TEMP_REALDIR', 'DATA_REALDIR . "download/temp/"', 704, 'ダウンロードファイル一時保存');

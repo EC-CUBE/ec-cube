@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfArrCombineTest extends Common_TestCase
-{
+class SC_Utils_sfArrCombineTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfArrCombine_入力の配列が空の場合_結果も空になる()
-  {
+  public function testSfArrCombine_入力の配列が空の場合_結果も空になる() {
     $keys = array();
     $values = array();
 
@@ -58,8 +54,7 @@ class SC_Utils_sfArrCombineTest extends Common_TestCase
   }
 
   // TODO 要確認　キーの方が短い場合はエラーで良いのでは？
-  public function testSfArrCombine_入力のキー配列の方が短い場合_余った値の配列の要素は無視される()
-  {
+  public function testSfArrCombine_入力のキー配列の方が短い場合_余った値の配列の要素は無視される() {
     $keys = array('apple', 'banana');
     $values = array('りんご', 'バナナ', 'オレンジ', '梨');
 
@@ -73,8 +68,7 @@ class SC_Utils_sfArrCombineTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfArrCombine_入力のキー配列の方が長い場合_余ったキーの配列の要素は空になる()
-  {
+  public function testSfArrCombine_入力のキー配列の方が長い場合_余ったキーの配列の要素は空になる() {
     $keys = array('apple', 'banana', 'orange', 'pear');
     $values = array('りんご', 'バナナ');
 

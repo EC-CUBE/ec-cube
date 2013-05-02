@@ -44,8 +44,7 @@ class LC_Page_Admin_Customer_SearchCustomer_Ex extends LC_Page_Admin_Customer_Se
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +53,7 @@ class LC_Page_Admin_Customer_SearchCustomer_Ex extends LC_Page_Admin_Customer_Se
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +62,7 @@ class LC_Page_Admin_Customer_SearchCustomer_Ex extends LC_Page_Admin_Customer_Se
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

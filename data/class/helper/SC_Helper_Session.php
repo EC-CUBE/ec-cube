@@ -12,8 +12,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_Session 
-{
+class SC_Helper_Session {
 
     var $objDb;
 
@@ -25,8 +24,7 @@ class SC_Helper_Session
      *
      * 各関数をセッションハンドラに保存する
      */
-    function __construct()
-    {
+    function __construct() {
         $this->objDb = new SC_Helper_DB_Ex();
         session_set_save_handler(array(&$this, 'sfSessOpen'),
                                  array(&$this, 'sfSessClose'),
@@ -50,8 +48,7 @@ class SC_Helper_Session
      * @param string $session_name セッション名(使用しない)
      * @return bool セッションが正常に開始された場合 true
      */
-    function sfSessOpen($save_path, $session_name)
-    {
+    function sfSessOpen($save_path, $session_name) {
         return true;
     }
 
@@ -60,8 +57,7 @@ class SC_Helper_Session
      *
      * @return bool セッションが正常に終了した場合 true
      */
-    function sfSessClose()
-    {
+    function sfSessClose() {
         return true;
     }
 
@@ -71,8 +67,7 @@ class SC_Helper_Session
      * @param string $id セッションID
      * @return string セッションデータの値
      */
-    function sfSessRead($id)
-    {
+    function sfSessRead($id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('sess_data', 'dtb_session', 'sess_id = ?', array($id));
         if (empty($arrRet)) {
@@ -89,8 +84,7 @@ class SC_Helper_Session
      * @param string $sess_data セッションデータの値
      * @return bool セッションの書き込みに成功した場合 true
      */
-    function sfSessWrite($id, $sess_data)
-    {
+    function sfSessWrite($id, $sess_data) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_session', 'sess_id = ?', array($id));
         $sqlval = array();
@@ -120,8 +114,7 @@ class SC_Helper_Session
      * @param string $id セッションID
      * @return bool セッションを正常に破棄した場合 true
      */
-    function sfSessDestroy($id)
-    {
+    function sfSessDestroy($id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete('dtb_session', 'sess_id = ?', array($id));
         return true;
@@ -134,8 +127,7 @@ class SC_Helper_Session
      *
      * @param integer $maxlifetime セッションの有効期限(使用しない)
      */
-    function sfSessGc($maxlifetime)
-    {
+    function sfSessGc($maxlifetime) {
         // MAX_LIFETIME以上更新されていないセッションを削除する。
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = "update_date < current_timestamp + '-". MAX_LIFETIME . " secs'";
@@ -161,8 +153,7 @@ class SC_Helper_Session
      * @access protected
      * @return string トランザクショントークンの文字列
      */
-    function getToken()
-    {
+    function getToken() {
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
             $_SESSION[TRANSACTION_ID_NAME] = SC_Helper_Session_Ex::createToken();
         }
@@ -175,8 +166,7 @@ class SC_Helper_Session
      * @access private
      * @return string トランザクショントークン用の文字列
      */
-    function createToken()
-    {
+    function createToken() {
         return sha1(uniqid(rand(), true));
     }
 
@@ -198,8 +188,7 @@ class SC_Helper_Session
      *                          デフォルト値は false
      * @return boolean トランザクショントークンが有効な場合 true
      */
-    function isValidToken($is_unset = false)
-    {
+    function isValidToken($is_unset = false) {
         // token の妥当性チェック
         $ret = $_REQUEST[TRANSACTION_ID_NAME] === $_SESSION[TRANSACTION_ID_NAME];
 
@@ -214,8 +203,7 @@ class SC_Helper_Session
      *
      * @return void
      */
-    function destroyToken()
-    {
+    function destroyToken() {
         unset($_SESSION[TRANSACTION_ID_NAME]);
     }
 
@@ -226,8 +214,7 @@ class SC_Helper_Session
      *
      * @return void
      */
-    function adminAuthorization()
-    {
+    function adminAuthorization() {
         $masterData = new SC_DB_MasterData_Ex();
         $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
         if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . '|', $_SERVER['SCRIPT_NAME'])) {

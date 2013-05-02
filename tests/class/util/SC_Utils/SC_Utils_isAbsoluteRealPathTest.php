@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_Test extends Common_TestCase
-{
+class SC_Utils_Test extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testIsAbsoluteRealPath_絶対パスの場合_trueが返る()
-  {
+  public function testIsAbsoluteRealPath_絶対パスの場合_trueが返る() {
 
     if (strpos(PHP_OS, 'WIN')) {
       $input = 'C:/Program Files/username/hoge/hoge.txt';
@@ -60,8 +56,7 @@ class SC_Utils_Test extends Common_TestCase
     $this->verify();
   }
 
-  public function testIsAbsoluteRealPath_相対パスの場合_trueが返る()
-  {
+  public function testIsAbsoluteRealPath_相対パスの場合_trueが返る() {
 
     if (strpos(PHP_OS, 'WIN')) {
       $input = './system32/hoge/hoge.txt';

@@ -26,27 +26,24 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 
 /**
  * SC_Helper_Purchase::registerOrderDetail()のテストクラス.
+ * TODO 他のfunctionと、SC_Query_Exのインスタンスの受け取り方が異なっている。
  *
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_registerOrderDetailTest extends SC_Helper_Purchase_TestBase
-{
+class SC_Helper_Purchase_registerOrderDetailTest extends SC_Helper_Purchase_TestBase {
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
     $this->setUpOrderDetail();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testRegisterOrderDetail_該当の受注が存在する場合_削除後に新しい情報が登録される()
-  {
+  public function testRegisterOrderDetail_該当の受注が存在する場合_削除後に新しい情報が登録される() {
     $params = array(
       array(
       'order_id' => '1001',
@@ -79,8 +76,7 @@ class SC_Helper_Purchase_registerOrderDetailTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testRegisterOrderDetail_該当の受注が存在しない場合_新しい情報が追加登録される()
-  {
+  public function testRegisterOrderDetail_該当の受注が存在しない場合_新しい情報が追加登録される() {
     $params = array(
       array(
       'order_id' => '1003',

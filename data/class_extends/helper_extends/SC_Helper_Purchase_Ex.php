@@ -33,6 +33,5 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_Purchase.php';
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_Helper_Purchase_Ex extends SC_Helper_Purchase 
-{
+class SC_Helper_Purchase_Ex extends SC_Helper_Purchase {
 }

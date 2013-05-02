@@ -5,24 +5,20 @@ require_once($HOME . "/tests/class/SC_Product/SC_Product_TestBase.php");
 /**
  *
  */
-class SC_Product_getProductsClassByProductIdsTest extends SC_Product_TestBase
-{
+class SC_Product_getProductsClassByProductIdsTest extends SC_Product_TestBase {
 
-    protected function setUp()
-    {
+    protected function setUp() {
         parent::setUp();
         $this->objProducts = new SC_Product_Ex();
     }
 
-    protected function tearDown()
-    {
+    protected function tearDown() {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetProductsClassByProductIds_商品IDなしは空配列を返す()
-    {
+    public function testGetProductsClassByProductIds_商品IDなしは空配列を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -36,8 +32,7 @@ class SC_Product_getProductsClassByProductIdsTest extends SC_Product_TestBase
         $this->verify('商品ID指定なし');
     }
     
-    public function testGetProductsClassByProductIds_指定の商品IDの情報を返す()
-    {
+    public function testGetProductsClassByProductIds_指定の商品IDの情報を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
@@ -77,8 +72,7 @@ class SC_Product_getProductsClassByProductIdsTest extends SC_Product_TestBase
         $this->verify('商品ID指定');
     }
     
-    public function testGetProductsClassByProductIds_削除商品含む商品情報を返す()
-    {
+    public function testGetProductsClassByProductIds_削除商品含む商品情報を返す() {
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();

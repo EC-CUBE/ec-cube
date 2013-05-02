@@ -22,20 +22,17 @@
  */
 
 //---- アップロードファイル加工クラス(thumb.phpとセットで使用する)
-class SC_Image 
-{
+class SC_Image {
 
     var $tmp_dir;
 
-    function __construct($tmp_dir)
-    {
+    function __construct($tmp_dir) {
         // ヘッダファイル読込
         $this->tmp_dir = rtrim($tmp_dir, '/') . '/';
     }
 
     //--- 一時ファイル生成(サムネイル画像生成用)
-    function makeTempImage($keyname, $max_width, $max_height)
-    {
+    function makeTempImage($keyname, $max_width, $max_height) {
         // 一意なIDを取得する。
         $mainname = uniqid('').'.';
         // 拡張子以外を置き換える。
@@ -46,8 +43,7 @@ class SC_Image
     }
 
     //--- ファイルを指定保存DIRへ移動
-    function moveTempImage($filename, $save_dir)
-    {
+    function moveTempImage($filename, $save_dir) {
         // コピー元ファイル、コピー先ディレクトリが存在する場合にのみ実行する
         $from_path = $this->tmp_dir.$filename;
         $to_path = $save_dir.'/'.$filename;
@@ -61,8 +57,7 @@ class SC_Image
     }
 
     //---- 指定ファイルを削除
-    function deleteImage($filename, $dir)
-    {
+    function deleteImage($filename, $dir) {
         if (file_exists($dir.'/'.$filename)) {
             unlink($dir.'/'.$filename);
         }
@@ -78,8 +73,7 @@ class SC_Image
      * @param integer $newFileName 新ファイル名
      * @param array 新ファイル名を格納した配列
      */
-    function MakeThumb($FromImgPath , $ToImgPath , $tmpMW , $tmpMH, $newFileName = '')
-    {
+    function MakeThumb($FromImgPath , $ToImgPath , $tmpMW , $tmpMH, $newFileName = '') {
         // 画像の最大横幅（単位：ピクセル）
         $ThmMaxWidth = LARGE_IMAGE_WIDTH;
 

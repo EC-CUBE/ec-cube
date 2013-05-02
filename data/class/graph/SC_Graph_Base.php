@@ -130,8 +130,7 @@ define('LEGEND_RIGHT', 10);
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Graph_Base 
-{
+class SC_Graph_Base {
 
     // {{{ properties
 
@@ -182,8 +181,7 @@ class SC_Graph_Base
     var $ARR_GRID_COLOR;
 
     // コンストラクタ
-    function __construct($bgw, $bgh, $left, $top)
-    {
+    function __construct($bgw, $bgh, $left, $top) {
         $this->init();
         // 画像作成
         $this->bgw = $bgw;
@@ -212,8 +210,7 @@ class SC_Graph_Base
     }
 
     // リサンプル(画像を滑らかに縮小する)
-    function resampled()
-    {
+    function resampled() {
         $new_width = $this->bgw * 0.8;
         $new_height = $this->bgh * 0.8;
         $tmp_image = imagecreatetruecolor($new_width, $new_height);
@@ -223,8 +220,7 @@ class SC_Graph_Base
     }
 
     // オブジェクトカラーの設定
-    function setColorList($arrRGB)
-    {
+    function setColorList($arrRGB) {
         $this->arrRGB = $arrRGB;
         $count = count($this->arrRGB);
         // 通常色の設定
@@ -238,14 +234,12 @@ class SC_Graph_Base
     }
 
     // 影のありなし
-    function setShadeOn($shade_on)
-    {
+    function setShadeOn($shade_on) {
         $this->shade_on = $shade_on;
     }
 
     // 画像を出力する
-    function outputGraph($header = true, $filename = '')
-    {
+    function outputGraph($header = true, $filename = '') {
         if ($header) {
             header('Content-type: image/png');
         }
@@ -260,8 +254,7 @@ class SC_Graph_Base
     }
 
     // 描画時のテキスト幅を求める
-    function getTextWidth($text, $font_size)
-    {
+    function getTextWidth($text, $font_size) {
         $text_len = strlen($text);
         $ret = $font_size * $text_len * TEXT_RATE;
         /*
@@ -274,8 +267,7 @@ class SC_Graph_Base
     }
 
     // テキストを出力する
-    function setText($font_size, $left, $top, $text, $color = NULL, $angle = 0, $labelbg = false)
-    {
+    function setText($font_size, $left, $top, $text, $color = NULL, $angle = 0, $labelbg = false) {
         // 時計回りに角度を変更
         $angle = -$angle;
         // ラベル背景
@@ -307,8 +299,7 @@ class SC_Graph_Base
     }
 
     // タイトルを出力する
-    function drawTitle($text, $font_size = TITLE_FONT_SIZE)
-    {
+    function drawTitle($text, $font_size = TITLE_FONT_SIZE) {
         // 出力位置の算出
         $text_width = $this->getTextWidth($text, $font_size);
         $left = ($this->bgw - $text_width) / 2;
@@ -317,8 +308,7 @@ class SC_Graph_Base
     }
 
     // ログを出力する
-    function debugPrint($text)
-    {
+    function debugPrint($text) {
         $text = mb_convert_encoding($text, 'UTF-8', CHAR_CODE);
         if (!isset($this->text_top)) {
             $this->text_top = FONT_SIZE + LINE_PAD;
@@ -329,8 +319,7 @@ class SC_Graph_Base
     }
 
     // カラーラベルを描画
-    function drawLegend($legend_max = '', $clabelbg = true)
-    {
+    function drawLegend($legend_max = '', $clabelbg = true) {
         // 凡例が登録されていなければ中止
         if (count($this->arrLegend) <= 0) {
             return;
@@ -379,8 +368,7 @@ class SC_Graph_Base
     }
 
     // カラーラベル背景の描画
-    function drawClabelBG($left, $top, $right, $bottom)
-    {
+    function drawClabelBG($left, $top, $right, $bottom) {
         // 影の描画
         if ($this->shade_on) {
             imagefilledrectangle($this->image, $left + 2, $top + 2, $right + 2, $bottom + 2, $this->shade_color);
@@ -391,8 +379,7 @@ class SC_Graph_Base
     }
 
     // 凡例をセットする
-    function setLegend($arrLegend)
-    {
+    function setLegend($arrLegend) {
         $this->arrLegend = array_values((array)$arrLegend);
     }
 
@@ -407,8 +394,7 @@ class SC_Graph_Base
      * @access protected
      * @return void
      */
-    function init()
-    {
+    function init() {
         // 凡例背景
         $this->ARR_LEGENDBG_COLOR = array(245,245,245);
         // ラベル背景
@@ -450,8 +436,7 @@ class SC_Graph_Base
      * @param integer $e 角度
      * @return array 円の中心点と直径から弧の終端座標の配列
      */
-    function lfGetArcPos($cx, $cy, $cw, $ch, $e)
-    {
+    function lfGetArcPos($cx, $cy, $cw, $ch, $e) {
         // 三角関数用の角度を求める
         $s = 90 - $e;
         $r = $cw / 2;
@@ -462,8 +447,7 @@ class SC_Graph_Base
     }
 
     /** 画像にテキストを描画する */
-    function lfImageText($dst_image, $text, $font_size, $left, $top, $font, $arrRGB)
-    {
+    function lfImageText($dst_image, $text, $font_size, $left, $top, $font, $arrRGB) {
         $color = ImageColorAllocate($dst_image, $arrRGB[0], $arrRGB[1], $arrRGB[2]);
         $text = mb_convert_encoding($text, 'UTF-8', CHAR_CODE);
         // 表示角度
@@ -473,8 +457,7 @@ class SC_Graph_Base
     }
 
     /** 表示色の取得 */
-    function lfGetImageColor($image, $array)
-    {
+    function lfGetImageColor($image, $array) {
         if (count($array) != 3) {
             return NULL;
         }
@@ -483,8 +466,7 @@ class SC_Graph_Base
     }
 
     /** 影用表示色の取得 */
-    function lfGetImageDarkColor($image, $array)
-    {
+    function lfGetImageDarkColor($image, $array) {
         if (count($array) != 3) {
             return NULL;
         }

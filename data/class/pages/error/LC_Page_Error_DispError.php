@@ -32,8 +32,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_DispError extends LC_Page_Admin_Ex 
-{
+class LC_Page_Error_DispError extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -45,8 +44,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         $this->template = LOGIN_FRAME;
         $this->tpl_mainpage = 'login_error.tpl';
         $this->tpl_title = 'ログインエラー';
@@ -56,9 +54,6 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
         // transformでフックしているばあいに, 再度エラーが発生するため, コールバックを無効化.
         $objHelperPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objHelperPlugin->arrRegistedPluginActions = array();
-
-        // キャッシュから店舗情報取得（DBへの接続は行わない）
-        $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisDataCache(false);
     }
 
     /**
@@ -66,8 +61,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -77,8 +71,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         switch ($this->type) {
             case LOGIN_ERROR:
@@ -106,16 +99,14 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
     /**
      * エラーページではトランザクショントークンの自動検証は行わない
      */
-    function doValidToken()
-    {
+    function doValidToken() {
         // queit.
     }
 }

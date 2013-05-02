@@ -57,7 +57,7 @@ function confirmSubmit(mode, msg) {
             <th>テンプレートコード</th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" />
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
             </td>
         </tr>
         <!--{assign var=key value="template_name"}-->
@@ -65,7 +65,7 @@ function confirmSubmit(mode, msg) {
             <th>テンプレート名</th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" />
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54">
             </td>
         </tr>
         <!--{assign var=key value="template_file"}-->
@@ -75,7 +75,7 @@ function confirmSubmit(mode, msg) {
             </th>
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> />
+                <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box54" size="64" <!--{if $arrErr[$key]}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}-->>
             </td>
         </tr>
     </table>

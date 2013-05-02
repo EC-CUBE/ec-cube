@@ -72,8 +72,7 @@ default:
  *
  * @return string
  */
-function getMode()
-{
+function getMode() {
     if (isset($_GET['mode'])) {
         return $_GET['mode'];
     } elseif (isset($_POST['mode'])) {
@@ -86,8 +85,7 @@ function getMode()
  * モジュールリスト一覧をjson出力する
  *
  */
-function displayProductsList()
-{
+function displayProductsList() {
     $arrRet = array(
         'status' => 'SUCCESS',
         'data'   => $GLOBALS['productsList']
@@ -104,8 +102,7 @@ function displayProductsList()
  *
  * @param array $arrProductsList
  */
-function updateModuleTable($arrProductsList)
-{
+function updateModuleTable($arrProductsList) {
     $table = 'dtb_module';
     $where = 'module_id = ?';
     $objQuery =& SC_Query_Ex::getSingletonInstance();

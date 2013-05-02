@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/upgrade/LC_Page_Upgrade_Base.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base 
-{
+class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function process($mode)
-    {
+    function process($mode) {
         $objLog  = new LC_Upgrade_Helper_Log;
         $objLog->start($mode);
 
@@ -247,13 +244,11 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
-    function initParam()
-    {
+    function initParam() {
         $this->objForm = new SC_FormParam_Ex();
         $this->objForm->addParam(
             'product_id', 'product_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
@@ -266,8 +261,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @param object $objRet
      */
-    function updateMdlTable($objRet)
-    {
+    function updateMdlTable($objRet) {
         $table = 'dtb_module';
         $where = 'module_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -300,8 +294,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      * @param array #arrCookies Cookie配列
      * @return
      */
-    function notifyDownload($mode, $arrCookies)
-    {
+    function notifyDownload($mode, $arrCookies) {
         $arrPOSTParams = array(
             'eccube_url' => HTTP_URL
         );
@@ -314,8 +307,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @return boolean
      */
-    function isValidAccess($mode)
-    {
+    function isValidAccess($mode) {
         $objLog = new LC_Upgrade_Helper_Log;
         switch ($mode) {
         // モジュールダウンロード
@@ -365,8 +357,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
         return false;
     }
 
-    function registerUpdateLog($arrLog, $objRet)
-    {
+    function registerUpdateLog($arrLog, $objRet) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrInsert = array(
             'log_id'      => $objQuery->nextVal('dtb_module_update_logs_log_id'),
@@ -388,8 +379,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      * 他の変数・関数とかぶらないよう、
      * LC_Update_Updater::execute()で処理を実行する.
      */
-    function fileExecute($productCode)
-    {
+    function fileExecute($productCode) {
         $file = DATA_REALDIR . 'downloads/update/' . $productCode . '_update.php';
         if (file_exists($file)) {
             @include_once $file;

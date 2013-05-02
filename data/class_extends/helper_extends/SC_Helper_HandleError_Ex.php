@@ -29,6 +29,5 @@ require_once CLASS_REALDIR . 'helper/SC_Helper_HandleError.php';
  * @package Page
  * @version $Id$
  */
-class SC_Helper_HandleError_Ex extends SC_Helper_HandleError 
-{
+class SC_Helper_HandleError_Ex extends SC_Helper_HandleError {
 }

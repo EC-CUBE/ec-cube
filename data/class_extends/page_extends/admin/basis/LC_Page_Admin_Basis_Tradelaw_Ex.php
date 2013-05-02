@@ -32,8 +32,7 @@ require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Tradelaw.php
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw 
-{
+class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw {
 
     // }}}
     // {{{ functions
@@ -43,8 +42,7 @@ class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -53,8 +51,7 @@ class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -63,8 +60,7 @@ class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

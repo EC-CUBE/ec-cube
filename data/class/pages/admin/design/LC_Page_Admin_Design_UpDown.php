@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'design/up_down.tpl';
         $this->tpl_subno    = 'up_down';
@@ -62,8 +60,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -75,8 +72,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -113,8 +109,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -124,8 +119,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      * @param object $objForm SC_FormParamのインスタンス
      * @return object SC_UploadFileのインスタンス
      */
-    function lfInitUploadFile($objForm)
-    {
+    function lfInitUploadFile($objForm) {
         $pkg_dir = SMARTY_TEMPLATES_REALDIR . $objForm->getValue('template_code');
         $objUpFile = new SC_UploadFile_Ex(TEMPLATE_TEMP_REALDIR, $pkg_dir);
         $objUpFile->addFile('テンプレートファイル', 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
@@ -138,8 +132,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParamのインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('テンプレートコード', 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
         $objFormParam->addParam('テンプレート名', 'template_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -152,8 +145,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      * @param object $objUpFile SC_UploadFileのインスタンス
      * @return array エラー情報を格納した連想配列, エラーが無ければ(多分)nullを返す
      */
-    function lfCheckError(&$objFormParam, &$objUpFile)
-    {
+    function lfCheckError(&$objFormParam, &$objUpFile) {
         $arrErr = $objFormParam->checkError();
         $template_code = $objFormParam->getValue('template_code');
 
@@ -204,8 +196,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      * @param object $objUpFile SC_UploadFileのインスタンス
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
-    function doUpload($objFormParam, $objUpFile)
-    {
+    function doUpload($objFormParam, $objUpFile) {
         $template_code = $objFormParam->getValue('template_code');
         $template_name = $objFormParam->getValue('template_name');
         $device_type_id = $objFormParam->getValue('device_type_id');

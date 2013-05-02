@@ -24,14 +24,12 @@
 /*  [名称] SC_Customer
  *  [概要] 会員管理クラス
  */
-class SC_Customer 
-{
+class SC_Customer {
 
     /** 会員情報 */
     var $customer_data;
 
-    function getCustomerDataFromEmailPass($pass, $email, $mobile = false)
-    {
+    function getCustomerDataFromEmailPass($pass, $email, $mobile = false) {
         // 小文字に変換
         $email = strtolower($email);
         $sql_mobile = $mobile ? ' OR email_mobile = ?' : '';
@@ -64,8 +62,7 @@ class SC_Customer
      * @return boolean 該当する会員が存在する場合は true、それ以外の場合
      *                 は false を返す。
      */
-    function checkMobilePhoneId()
-    {
+    function checkMobilePhoneId() {
         //docomo用にデータを取り出す。
         if (SC_MobileUserAgent_Ex::getCarrier() == 'docomo') {
             if ($_SESSION['mobile']['phone_id'] == '' && strlen($_SESSION['mobile']['phone_id']) == 0) {
@@ -90,8 +87,7 @@ class SC_Customer
      * @return boolean 該当する会員が存在し、パスワードが合っている場合は true、
      *                 それ以外の場合は false を返す。
      */
-    function getCustomerDataFromMobilePhoneIdPass($pass)
-    {
+    function getCustomerDataFromMobilePhoneIdPass($pass) {
         //docomo用にデータを取り出す。
         if (SC_MobileUserAgent_Ex::getCarrier() == 'docomo') {
             if ($_SESSION['mobile']['phone_id'] == '' && strlen($_SESSION['mobile']['phone_id']) == 0) {
@@ -121,8 +117,7 @@ class SC_Customer
      *
      * @return void
      */
-    function updateMobilePhoneId()
-    {
+    function updateMobilePhoneId() {
         if (!isset($_SESSION['mobile']['phone_id']) || $_SESSION['mobile']['phone_id'] === false) {
             return;
         }
@@ -140,8 +135,7 @@ class SC_Customer
     }
 
     // パスワードを確認せずにログイン
-    function setLogin($email)
-    {
+    function setLogin($email) {
         // 本登録された会員のみ
         $sql = 'SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -152,8 +146,7 @@ class SC_Customer
     }
 
     // セッション情報を最新の情報に更新する
-    function updateSession()
-    {
+    function updateSession() {
         $sql = 'SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0';
         $customer_id = $this->getValue('customer_id');
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -163,16 +156,14 @@ class SC_Customer
     }
 
     // ログイン情報をセッションに登録し、ログに書き込む
-    function startSession()
-    {
+    function startSession() {
         $_SESSION['customer'] = $this->customer_data;
         // セッション情報の保存
         GC_Utils_Ex::gfPrintLog('access : user='.$this->customer_data['customer_id'] ."\t".'ip='. $this->getRemoteHost(), CUSTOMER_LOG_REALFILE, false);
     }
 
     // ログアウト　$_SESSION['customer']を解放し、ログに書き込む
-    function EndSession()
-    {
+    function EndSession() {
         // セッション情報破棄の前にcustomer_idを保存
         $customer_id = $_SESSION['customer']['customer_id'];
 
@@ -192,8 +183,7 @@ class SC_Customer
     }
 
     // ログインに成功しているか判定する。
-    function isLoginSuccess($dont_check_email_mobile = false)
-    {
+    function isLoginSuccess($dont_check_email_mobile = false) {
         // ログイン時のメールアドレスとDBのメールアドレスが一致している場合
         if (isset($_SESSION['customer']['customer_id'])
             && SC_Utils_Ex::sfIsInt($_SESSION['customer']['customer_id'])
@@ -214,8 +204,7 @@ class SC_Customer
     }
 
     // パラメーターの取得
-    function getValue($keyname)
-    {
+    function getValue($keyname) {
         // ポイントはリアルタイム表示
         if ($keyname == 'point') {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -228,14 +217,12 @@ class SC_Customer
     }
 
     // パラメーターのセット
-    function setValue($keyname, $val)
-    {
+    function setValue($keyname, $val) {
         $_SESSION['customer'][$keyname] = $val;
     }
 
     // パラメーターがNULLかどうかの判定
-    function hasValue($keyname)
-    {
+    function hasValue($keyname) {
         if (isset($_SESSION['customer'][$keyname])) {
             return !SC_Utils_Ex::isBlank($_SESSION['customer'][$keyname]);
         }
@@ -243,8 +230,7 @@ class SC_Customer
     }
 
     // 誕生日月であるかどうかの判定
-    function isBirthMonth()
-    {
+    function isBirthMonth() {
         if (isset($_SESSION['customer']['birth'])) {
             $arrRet = preg_split('|[- :/]|', $_SESSION['customer']['birth']);
             $birth_month = intval($arrRet[1]);
@@ -265,8 +251,7 @@ class SC_Customer
      *
      * @return string $_SERVER['REMOTE_HOST'] 又は $_SERVER['REMOTE_ADDR']の文字列
      */
-    function getRemoteHost()
-    {
+    function getRemoteHost() {
 
         if (!empty($_SERVER['REMOTE_HOST'])) {
             return $_SERVER['REMOTE_HOST'];
@@ -278,8 +263,7 @@ class SC_Customer
     }
 
     //受注関連の会員情報を更新
-    function updateOrderSummary($customer_id)
-    {
+    function updateOrderSummary($customer_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order','customer_id = ? AND del_flg = 0 AND status <> ?',array($customer_id,ORDER_CANCEL));
         $objQuery->update('dtb_customer',$arrOrderSummary,'customer_id = ?',array($customer_id));
@@ -297,8 +281,7 @@ class SC_Customer
      * @param string $login_pass ログインパスワード
      * @return boolean ログインに成功した場合 true; 失敗した場合 false
      */
-    function doLogin($login_email, $login_pass)
-    {
+    function doLogin($login_email, $login_pass) {
         switch (SC_Display_Ex::detectDevice()) {
             case DEVICE_TYPE_MOBILE:
                 if (!$this->getCustomerDataFromMobilePhoneIdPass($login_pass) &&

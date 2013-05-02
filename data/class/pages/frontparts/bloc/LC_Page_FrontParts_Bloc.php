@@ -31,16 +31,14 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc extends LC_Page_Ex 
-{
+class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         // 開始時刻を設定する。
         $this->timeStart = microtime(true);
 
@@ -65,8 +63,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex
      * @param string $bloc_file ブロックファイル名
      * @return void
      */
-    function setTplMainpage($bloc_file)
-    {
+    function setTplMainpage($bloc_file) {
         if (SC_Utils_Ex::isAbsoluteRealPath($bloc_file)) {
             $this->tpl_mainpage = $bloc_file;
         } else {

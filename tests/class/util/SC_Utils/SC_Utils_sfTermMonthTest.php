@@ -31,47 +31,40 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfTermMonthTest extends Common_TestCase
-{
+class SC_Utils_sfTermMonthTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfTermMonth_締め日が月末より早い場合_設定した締め日の通りになる()
-  {
+  public function testSfTermMonth_締め日が月末より早い場合_設定した締め日の通りになる() {
     $this->expected = array('2012/9/16', '2012/10/15 23:59:59');
     $this->actual = SC_Utils::sfTermMonth(2012, 10, 15);
 
     $this->verify();
   }
 
-  public function testSfTermMonth_該当月の末日が締め日より早い場合_末日に合わせられる()
-  {
+  public function testSfTermMonth_該当月の末日が締め日より早い場合_末日に合わせられる() {
     $this->expected = array('2012/9/1', '2012/9/30 23:59:59');
     $this->actual = SC_Utils::sfTermMonth(2012, 9, 31);
 
     $this->verify();
   }
 
-  public function testSfTermMonth_前月の末日が締め日より早い場合_末日に合わせられる()
-  {
+  public function testSfTermMonth_前月の末日が締め日より早い場合_末日に合わせられる() {
     $this->expected = array('2012/10/1', '2012/10/31 23:59:59');
     $this->actual = SC_Utils::sfTermMonth(2012, 10, 31);
 
     $this->verify();
   }
 
-  public function testSfTermMonth_年をまたぐ場合_前月が前年十二月になる()
-  {
+  public function testSfTermMonth_年をまたぐ場合_前月が前年十二月になる() {
     $this->expected = array('2012/12/16', '2013/1/15 23:59:59');
     $this->actual = SC_Utils::sfTermMonth(2013, 1, 15);
 

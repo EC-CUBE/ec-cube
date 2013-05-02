@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex 
-{
+class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'order/mail.tpl';
         $this->tpl_mainno = 'order';
@@ -61,8 +59,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -72,8 +69,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
         $post = $_POST;
         //一括送信用の処理
         if (array_key_exists('mail_order_id',$post) and $post['mode'] == 'mail_select'){
@@ -156,8 +152,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * 指定された注文番号のメール履歴を取得する。
      * @var int order_id
      */
-    function getMailHistory($order_id)
-    {
+    function getMailHistory($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'send_date, subject, template_id, send_id';
         $where = 'order_id = ?';
@@ -170,8 +165,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * メールを送る。
      * @param SC_FormParam $objFormParam
      */
-    function doSend(&$objFormParam)
-    {
+    function doSend(&$objFormParam) {
         $arrErr = $objFormParam->checkerror();
 
         // メールの送信
@@ -196,8 +190,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * 確認画面を表示する為の準備
      * @param SC_FormParam $objFormParam
      */
-    function confirm(&$objFormParam)
-    {
+    function confirm(&$objFormParam) {
         $arrErr = $objFormParam->checkerror();
         // メールの送信
         if (count($arrErr) == 0) {
@@ -224,24 +217,16 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * テンプレートの文言をフォームに入れる。
      * @param SC_FormParam $objFormParam
      */
-    function changeData(&$objFormParam)
-    {
-        $template_id = $objFormParam->getValue('template_id');
+    function changeData(&$objFormParam) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // 未選択時
-        if (strlen($template_id) === 0) {
-            $mailTemplates = null;
-        }
-        // 有効選択時
-        elseif (SC_Utils_Ex::sfIsInt($template_id)) {
-            $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
-            $mailTemplates = $objMailtemplate->get($template_id);
-        }
-        // 不正選択時
-        else {
-            trigger_error('テンプレートの指定が不正。', E_USER_ERROR);
+        if (!SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
+            trigger_error('テンプレートが指定されていません。', E_USER_ERROR);
         }
 
+        $where = 'template_id = ?';
+        $arrWhereVal = array($objFormParam->getValue('template_id'));
+        $mailTemplates = $objQuery->getRow('subject, header, footer', 'dtb_mailtemplate', $where, $arrWhereVal);
         if (empty($mailTemplates)) {
             foreach (array('subject','header','footer') as $key) {
                 $objFormParam->setValue($key, '');
@@ -258,8 +243,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -267,8 +251,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * パラメーター情報の初期化
      * @param SC_FormParam $objFormParam
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
         $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));

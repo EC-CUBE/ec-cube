@@ -37,7 +37,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "none");
 
-            $('#' + inner_id).html('    URL <a href="#" onclick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
+            $('#' + inner_id).html('    URL <a href="#" onClick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
         }
     }else{
         for (i = 1; i <= cnt; i++) {
@@ -47,7 +47,7 @@ function lfnDispChange(){
             disp_id = 'disp_cat'+i;
             $('#' + disp_id).css("display", "");
 
-            $('#' + inner_id).html('    カテゴリ <a href="#" onclick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
+            $('#' + inner_id).html('    カテゴリ <a href="#" onClick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
         }
     }
 
@@ -234,7 +234,7 @@ function lfnDispChange(){
                 <th rowspan="2">複製</th>
             </tr>
             <tr>
-                <th nowrap="nowrap"><a href="#" onclick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
+                <th nowrap><a href="#" onClick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
             </tr>
 
             <!--{section name=cnt loop=$arrProducts}-->
@@ -243,7 +243,7 @@ function lfnDispChange(){
                 <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                     <td class="id" rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
                     <td class="thumbnail" rowspan="2">
-                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" />            </td>
+                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65">            </td>
                     <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
                         <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
                             <br />～ <!--{$arrProducts[cnt].product_code_max|h}-->

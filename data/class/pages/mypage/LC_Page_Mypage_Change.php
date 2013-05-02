@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex 
-{
+class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_subtitle = '会員登録内容変更(入力ページ)';
         $this->tpl_mypageno = 'change';
@@ -68,8 +66,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -77,8 +74,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      * Page のプロセス
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
@@ -169,8 +165,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -182,8 +177,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return void
      */
-    function lfRegistCustomerData(&$objFormParam, $customer_id)
-    {
+    function lfRegistCustomerData(&$objFormParam, $customer_id) {
         $arrRet             = $objFormParam->getHashArray();
         $sqlval             = $objFormParam->getDbArray();
         $sqlval['birth']    = SC_Utils_Ex::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
@@ -197,8 +191,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      * @param array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function lfCheckError($arrRequest)
-    {
+    function lfCheckError($arrRequest) {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -210,7 +203,29 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
         $objFormParam->setParam($arrData);
         // エラーチェック
         $arrErr = $objFormParam->checkError();
+        // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
+        if (!$this->lfInputNameCheck($addData['zip01'])) {
+            $arrErr['zip01'] = '※ 入力形式が不正です。<br />';
+        }
+        if (!$this->lfInputNameCheck($arrdata['zip02'])) {
+            $arrErr['zip02'] = '※ 入力形式が不正です。<br />';
+        }
 
         return $arrErr;
+    }
+
+    /**
+     * エラーチェック.
+     *
+     * @param string $value
+     * @return エラーなし：true エラー：false
+     */
+    function lfInputNameCheck($value) {
+        // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
+        if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author Seasoft 塚田将久
  * @version $Id$
  */
-class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex {
 
     var $arrLogList = array();
 
@@ -41,8 +40,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'system/log.tpl';
         $this->tpl_subno    = 'log';
@@ -57,8 +55,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -68,8 +65,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objFormParam = new SC_FormParam_Ex;
 
@@ -97,8 +93,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -107,8 +102,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('ファイル', 'log', null, '', array());
         $objFormParam->addParam('行数', 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), 50);
     }
@@ -118,8 +112,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return array $arrLogs 取得したログ
      */
-    function getEccubeLog($log_path_base)
-    {
+    function getEccubeLog($log_path_base) {
 
         $index = 0;
         $arrLogs = array();
@@ -166,8 +159,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * セキュリティ面をカバーする役割もある。
      */
-    function getLogPath($log_name)
-    {
+    function getLogPath($log_name) {
         if (strlen($log_name) === 0) {
             return LOG_REALFILE;
         }
@@ -183,8 +175,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      * TODO mtb_constants から動的生成したい。
      * @return void
      */
-    function loadLogList()
-    {
+    function loadLogList() {
         $this->arrLogList[''] = '標準ログファイル';
         $this->arrLogList['CUSTOMER'] = '会員ログイン ログファイル';
         $this->arrLogList['ADMIN'] = '管理機能ログファイル';

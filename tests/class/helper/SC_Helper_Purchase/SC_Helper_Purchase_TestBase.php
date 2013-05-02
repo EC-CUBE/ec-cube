@@ -30,16 +30,13 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_TestBase extends Common_TestCase
-{
+class SC_Helper_Purchase_TestBase extends Common_TestCase {
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
@@ -47,8 +44,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   /**
    * セッションに配送情報を設定します。
    */
-  protected function setUpShipping($shipping)
-  {
+  protected function setUpShipping($shipping) {
     if (!$shipping) {
       $shipping = $this->getSingleShipping(); 
     }
@@ -56,8 +52,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
     $_SESSION['shipping'] = $shipping;
   }
 
-  protected function getSingleShipping()
-  {
+  protected function getSingleShipping() {
     return array(
       '00001' => array(
         'shipment_id' => '00001',
@@ -66,8 +61,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
     );
   }
 
-  protected function getMultipleShipping()
-  {
+  protected function getMultipleShipping() {
     return array(
       '00001' => array(
         'shipment_id' => '00001',
@@ -87,8 +81,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   /**
    * DBに配送情報を設定します。
    */
-  protected function setUpShippingOnDb()
-  {
+  protected function setUpShippingOnDb() {
     $shippings = array(
       array(
         'update_date' => '2000-01-01 00:00:00',
@@ -122,8 +115,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   /**
    * DBに配送商品情報を設定します。
    */
-  protected function setUpShipmentItem()
-  {
+  protected function setUpShipmentItem() {
       $shipping_items = array(
         array(
           'shipping_id' => '1',
@@ -151,8 +143,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   /**
    * DBに商品クラス情報を設定します.
    */
-  protected function setUpProductClass()
-  {
+  protected function setUpProductClass() {
       $product_class = array(
         array(
           'update_date' => '2000-01-01 00:00:00',
@@ -165,7 +156,6 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
           'price01' => '1500',
           'price02' => '1500',
           'creator_id' => '1',
-          'stock' => '100',
           'del_flg' => '0'
         ),
         array(
@@ -175,14 +165,12 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
           'product_type_id' => '2',
           'price02' => '2500',
           'creator_id' => '1',
-          'stock' => '50',
           'del_flg' => '0'
         )
       );
 
     $this->objQuery->delete('dtb_products_class');
-    foreach ($product_class as $key => $item)
-{
+    foreach ($product_class as $key => $item) {
       $this->objQuery->insert('dtb_products_class', $item);
     }
     $this->setUpClassCategory();
@@ -192,8 +180,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   /**
    * DBに製品カテゴリ情報を登録します.
    */
-  protected function setUpClassCategory()
-  {
+  protected function setUpClassCategory() {
     $class_category = array(
       array(
         'update_date' => '2000-01-01 00:00:00',
@@ -220,8 +207,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   /** 
    * DBに製品情報を登録します.
    */
- protected function setUpProducts()
- {
+ protected function setUpProducts() {
    $products = array(
      array(
        'update_date' => '2000-01-01 00:00:00',
@@ -250,8 +236,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBに支払方法の情報を登録します.
   */
- protected function setUpPaymentOptions()
- {
+ protected function setUpPaymentOptions() {
    $payment_options = array(
      array(
        'deliv_id' => '2001',
@@ -304,8 +289,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBに配送業者の情報を登録します.
   */
- protected function setUpDeliv()
- {
+ protected function setUpDeliv() {
    $deliv = array(
      array(  // 削除フラグON
        'deliv_id' => '2001',
@@ -351,8 +335,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBにお届け時間の情報を登録します.
   */
- protected function setUpDelivTime()
- {
+ protected function setUpDelivTime() {
    $deliv_time = array(
      array(
        'deliv_id' => '1002',
@@ -380,8 +363,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBに支払方法の情報を登録します.
   */
- protected function setUpPayment()
- {
+ protected function setUpPayment() {
    $payment = array(
      array(
        'update_date' => '2000-01-01 00:00:00',
@@ -448,8 +430,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBに受注情報を設定します.
   */
-  protected function setUpOrder()
-  {
+  protected function setUpOrder() {
     $order = array(
       array(
         'update_date' => '2000-01-01 00:00:00',
@@ -484,8 +465,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBに受注一時情報を設定します.
   */
-  protected function setUpOrderTemp()
-  {
+  protected function setUpOrderTemp() {
     $order = array(
       array(
         'update_date' => '2000-01-01 00:00:00',
@@ -513,8 +493,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBに受注詳細を設定します.
   */
- protected function setUpOrderDetail()
- {
+ protected function setUpOrderDetail() {
    $order_detail = array(
      array(
        'order_detail_id' => '1001',
@@ -564,8 +543,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
  /**
   * DBに顧客情報を設定します。
   */
- protected function setUpCustomer()
- {
+ protected function setUpCustomer() {
    $customer = array(
      array(
        'customer_id' => '1001',

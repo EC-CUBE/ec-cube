@@ -31,23 +31,19 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfMakeHiddenArrayest extends Common_TestCase
-{
+class SC_Utils_sfMakeHiddenArrayest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfMakeHiddenArray__多段配列が1次元配列に変換される()
-  {
+  public function testSfMakeHiddenArray__多段配列が1次元配列に変換される() {
     $input_array = array(
       'vegetable' => '野菜',
       'fruit' => array(

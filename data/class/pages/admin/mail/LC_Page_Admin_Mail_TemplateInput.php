@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex 
-{
+class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->tpl_mainpage = 'mail/template_input.tpl';
         $this->tpl_mainno = 'mail';
@@ -60,8 +58,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         $this->action();
         $this->sendResponse();
     }
@@ -71,8 +68,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objMailHelper = new SC_Helper_Mail_Ex();
 
@@ -118,8 +114,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -130,8 +125,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      * @param integer template_id 更新時は指定
      * @return void
      */
-    function lfRegistData(&$objFormParam, $template_id = null)
-    {
+    function lfRegistData(&$objFormParam, $template_id = null) {
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = $objFormParam->getDbArray();
@@ -159,8 +153,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
-    {
+    function lfInitParam(&$objFormParam) {
         $objFormParam->addParam('メール形式', 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
         $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('本文', 'body', LLTEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));

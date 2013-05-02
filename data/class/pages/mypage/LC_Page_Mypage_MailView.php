@@ -31,8 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex 
-{
+class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
 
     // }}}
     // {{{ functions
@@ -42,8 +41,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
         $this->httpCacheControl('nocache');
     }
@@ -53,8 +51,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -63,8 +60,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
-    {
+    function action() {
 
         $objCustomer = new SC_Customer_Ex();
         if (!SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
@@ -104,8 +100,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 
@@ -117,8 +112,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return array
      */
-    function lfGetMailView($send_id, $customer_id)
-    {
+    function lfGetMailView($send_id, $customer_id) {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
         $col        = 'subject, mail_body';
         $where      = 'send_id = ? AND customer_id = ?';

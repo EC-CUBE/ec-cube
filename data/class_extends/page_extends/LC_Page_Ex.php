@@ -23,6 +23,5 @@
 
 require_once CLASS_REALDIR . 'pages/LC_Page.php';
 
-class LC_Page_Ex extends LC_Page 
-{
+class LC_Page_Ex extends LC_Page {
 }

@@ -31,22 +31,18 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_saveShippingTempTest extends SC_Helper_Purchase_TestBase
-{
+class SC_Helper_Purchase_saveShippingTempTest extends SC_Helper_Purchase_TestBase {
 
-  protected function setUp()
-  {
+  protected function setUp() {
     parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSaveShippingTemp_元々存在しない配送先IDの場合_新規に配列が作られる()
-  {
+  public function testSaveShippingTemp_元々存在しない配送先IDの場合_新規に配列が作られる() {
     $this->setUpShipping($this->getMultipleShipping());
 
     SC_Helper_Purchase::saveShippingTemp(
@@ -67,8 +63,7 @@ class SC_Helper_Purchase_saveShippingTempTest extends SC_Helper_Purchase_TestBas
     $this->verify('登録した配送情報');
   }
 
-  public function testSaveShippingTemp_元々存在する配送先IDの場合_情報がマージされる()
-  {
+  public function testSaveShippingTemp_元々存在する配送先IDの場合_情報がマージされる() {
     $this->setUpShipping($this->getMultipleShipping());
 
     SC_Helper_Purchase::saveShippingTemp(

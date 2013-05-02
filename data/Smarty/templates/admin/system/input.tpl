@@ -30,12 +30,12 @@ self.moveTo(20,20);self.focus();
 //-->
 </script>
 
-<form name="form1" id="form1" method="post" action="">
+<form name="form1" id="form1" method="post" action="" onsubmit="return fnRegistMember();">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="<!--{$tpl_mode|h}-->" />
-<input type="hidden" name="member_id" value="<!--{$tpl_member_id|h}-->" />
-<input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->" />
-<input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->" />
+<input type="hidden" name="mode" value="<!--{$tpl_mode|h}-->">
+<input type="hidden" name="member_id" value="<!--{$tpl_member_id|h}-->">
+<input type="hidden" name="pageno" value="<!--{$tpl_pageno|h}-->">
+<input type="hidden" name="old_login_id" value="<!--{$tpl_old_login_id|h}-->">
 
 <h2>メンバー登録/編集</h2>
 
@@ -94,8 +94,8 @@ self.moveTo(20,20);self.focus();
         <td>
             <!--{if $arrErr.work}--><span class="attention"><!--{$arrErr.work}--></span><!--{/if}-->
             <!--{assign var=key value="work"}-->
-            <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1"><!--{$arrWORK.1}--></label>
-            <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0"><!--{$arrWORK.0}--></label>
+            <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1">稼働</label>
+            <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0">非稼働</label>
             <span class="attention">※必須入力</span>
         </td>
     </tr>
@@ -103,7 +103,7 @@ self.moveTo(20,20);self.focus();
 
 <div class="btn-area">
     <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="if (!fnConfirm()) return false; fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '<!--{$tpl_mode|h}-->', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
     </ul>
 </div>
 </form>

@@ -29,10 +29,8 @@
 
 define('PDF_TEMPLATE_REALDIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
-class SC_Fpdf extends SC_Helper_FPDI 
-{
-    function __construct($download, $title, $tpl_pdf = 'nouhinsyo1.pdf')
-    {
+class SC_Fpdf extends SC_Helper_FPDI {
+    function __construct($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
         $this->FPDF();
         // デフォルトの設定
         $this->tpl_pdf = PDF_TEMPLATE_REALDIR . $tpl_pdf;  // テンプレートファイル
@@ -68,8 +66,7 @@ class SC_Fpdf extends SC_Helper_FPDI
         $this->pageno = $this->setSourceFile($this->tpl_pdf);
     }
 
-    function setData($arrData)
-    {
+    function setData($arrData) {
         $this->arrData = $arrData;
 
         // ページ番号よりIDを取得
@@ -95,8 +92,7 @@ class SC_Fpdf extends SC_Helper_FPDI
 
     }
 
-    function setShopData()
-    {
+    function setShopData() {
         // ショップ情報
 
         $objDb = new SC_Helper_DB_Ex();
@@ -133,8 +129,7 @@ class SC_Fpdf extends SC_Helper_FPDI
         $this->Image($logo_file, 124, 46, 40);
     }
 
-    function setMessageData()
-    {
+    function setMessageData() {
         // メッセージ
         $this->lfText(27, 70, $this->arrData['msg1'], 8);  //メッセージ1
         $this->lfText(27, 74, $this->arrData['msg2'], 8);  //メッセージ2
@@ -143,8 +138,7 @@ class SC_Fpdf extends SC_Helper_FPDI
         $this->lfText(158, 288, $text, 8);  //作成日
     }
 
-    function setOrderData()
-    {
+    function setOrderData() {
         $arrOrder = array();
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
@@ -183,7 +177,7 @@ class SC_Fpdf extends SC_Helper_FPDI
             $data[0] = $this->arrDisp['quantity'][$i];
 
             // 税込金額（単価）
-            $data[1] = SC_Helper_DB_Ex::sfCalcIncTax($this->arrDisp['price'][$i], $this->arrDisp['tax_rate'][$i], $this->arrDisp['tax_rule'][$i]);
+            $data[1] = SC_Helper_DB_Ex::sfCalcIncTax($this->arrDisp['price'][$i]);
 
             // 小計（商品毎）
             $data[2] = $data[0] * $data[1];
@@ -269,18 +263,16 @@ class SC_Fpdf extends SC_Helper_FPDI
      * @param string $str 入力文字列
      * @return string 変更後の文字列
      */
-    function setEtcData()
-    {
+    function setEtcData() {
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
         $this->SetFont('Gothic', 'B', 9);
         $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 2, 'L', 0, '');
         $this->SetFont('SJIS', '', 8);
-        $text = SC_Utils_Ex::rtrim($this->arrData['etc1'] . " \n" . $this->arrData['etc2'] . " \n" . $this->arrData['etc3']);
+        $text = SC_Utils_Ex::rtrim($this->arrData['etc1'] . "\n" . $this->arrData['etc2'] . "\n" . $this->arrData['etc3']);
         $this->MultiCell(0, 4, $text, '', 2, 'L', 0, '');
     }
 
-    function createPdf()
-    {
+    function createPdf() {
         // PDFをブラウザに送信
         ob_clean();
         if ($this->pdf_download == 1) {
@@ -299,8 +291,7 @@ class SC_Fpdf extends SC_Helper_FPDI
     }
 
     // PDF_Japanese::Text へのパーサー
-    function lfText($x, $y, $text, $size = 0, $style = '')
-    {
+    function lfText($x, $y, $text, $size = 0, $style = '') {
         // 退避
         $bak_font_style = $this->FontStyle;
         $bak_font_size = $this->FontSizePt;
@@ -313,8 +304,7 @@ class SC_Fpdf extends SC_Helper_FPDI
     }
 
     // 受注データの取得
-    function lfGetOrderData($order_id)
-    {
+    function lfGetOrderData($order_id) {
         if (SC_Utils_Ex::sfIsInt($order_id)) {
             // DBから受注情報を読み込む
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -338,10 +328,9 @@ class SC_Fpdf extends SC_Helper_FPDI
     }
 
     // 受注詳細データの取得
-    function lfGetOrderDetail($order_id)
-    {
+    function lfGetOrderDetail($order_id) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate, tax_rate, tax_rule';
+        $col = 'product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate';
         $where = 'order_id = ?';
         $objQuery->setOrder('order_detail_id');
         $arrRet = $objQuery->select($col, 'dtb_order_detail', $where, array($order_id));

@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage_MailView.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_MailView_Ex extends LC_Page_Mypage_MailView 
-{
+class LC_Page_Mypage_MailView_Ex extends LC_Page_Mypage_MailView {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Mypage_MailView_Ex extends LC_Page_Mypage_MailView
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Mypage_MailView_Ex extends LC_Page_Mypage_MailView
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Mypage_MailView_Ex extends LC_Page_Mypage_MailView
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

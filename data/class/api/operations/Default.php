@@ -30,8 +30,7 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_Default extends SC_Api_Abstract_Ex 
-{
+class API_Default extends SC_Api_Abstract_Ex {
 
     protected $operation_name = 'Default';
     protected $operation_description = 'Default Operation';
@@ -40,23 +39,19 @@ class API_Default extends SC_Api_Abstract_Ex
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam)
-    {
+    public function doAction($arrParam) {
         $this->arrResponse = array('DefaultEmpty' => array());
         return true;
     }
 
-    public function getRequestValidate()
-    {
+    public function getRequestValidate() {
         return array('DefaultResponse' => array());
     }
 
-    public function getResponseGroupName()
-    {
+    public function getResponseGroupName() {
         return 'DefaultResponse';
     }
 
-    protected function lfInitParam(&$objFormParam)
-    {
+    protected function lfInitParam(&$objFormParam) {
     }
 }

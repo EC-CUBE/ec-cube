@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/admin/order/LC_Page_Admin_Order_Status.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Status_Ex extends LC_Page_Admin_Order_Status 
-{
+class LC_Page_Admin_Order_Status_Ex extends LC_Page_Admin_Order_Status {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Admin_Order_Status_Ex extends LC_Page_Admin_Order_Status
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Admin_Order_Status_Ex extends LC_Page_Admin_Order_Status
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Admin_Order_Status_Ex extends LC_Page_Admin_Order_Status
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

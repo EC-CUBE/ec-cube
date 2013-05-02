@@ -34,24 +34,20 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_isAppInnerUrlTest extends Common_TestCase
-{
+class SC_Utils_isAppInnerUrlTest extends Common_TestCase {
 
 
-  protected function setUp()
-  {
+  protected function setUp() {
     // parent::setUp();
   }
 
-  protected function tearDown()
-  {
+  protected function tearDown() {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
   /**
-  public function testIsAppInnerUrl_非SSLかつアプリ内URLの場合_trueが返る()
-  {
+  public function testIsAppInnerUrl_非SSLかつアプリ内URLの場合_trueが返る() {
     $input = 'http://sample.eccube.jp/admin/';
     $this->expected = true;
     $this->actual = SC_Utils::isAppInnerUrl($input);
@@ -59,8 +55,7 @@ class SC_Utils_isAppInnerUrlTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testIsAppInnerUrl_非SSLかつアプリ外URLの場合_falseが返る()
-  {
+  public function testIsAppInnerUrl_非SSLかつアプリ外URLの場合_falseが返る() {
     $input = 'http://outside.eccube.jp/admin/';
     $this->expected = false;
     $this->actual = SC_Utils::isAppInnerUrl($input);
@@ -68,8 +63,7 @@ class SC_Utils_isAppInnerUrlTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testIsAppInnerUrl_SSLかつアプリ内URLの場合_trueが返る()
-  {
+  public function testIsAppInnerUrl_SSLかつアプリ内URLの場合_trueが返る() {
     $input = 'https://sample.eccube.jp/admin/';
     $this->expected = true;
     $this->actual = SC_Utils::isAppInnerUrl($input);
@@ -77,8 +71,7 @@ class SC_Utils_isAppInnerUrlTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testIsAppInnerUrl_SSLかつアプリ外URLの場合_falseが返る()
-  {
+  public function testIsAppInnerUrl_SSLかつアプリ外URLの場合_falseが返る() {
     $input = 'https://outside.eccube.jp/admin/';
     $this->expected = false;
     $this->actual = SC_Utils::isAppInnerUrl($input);

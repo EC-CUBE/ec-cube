@@ -33,8 +33,7 @@ require_once CLASS_REALDIR . 'pages/guide/LC_Page_Guide.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Guide_Ex extends LC_Page_Guide 
-{
+class LC_Page_Guide_Ex extends LC_Page_Guide {
 
     // }}}
     // {{{ functions
@@ -44,8 +43,7 @@ class LC_Page_Guide_Ex extends LC_Page_Guide
      *
      * @return void
      */
-    function init()
-    {
+    function init() {
         parent::init();
     }
 
@@ -54,8 +52,7 @@ class LC_Page_Guide_Ex extends LC_Page_Guide
      *
      * @return void
      */
-    function process()
-    {
+    function process() {
         parent::process();
     }
 
@@ -64,8 +61,7 @@ class LC_Page_Guide_Ex extends LC_Page_Guide
      *
      * @return void
      */
-    function destroy()
-    {
+    function destroy() {
         parent::destroy();
     }
 }

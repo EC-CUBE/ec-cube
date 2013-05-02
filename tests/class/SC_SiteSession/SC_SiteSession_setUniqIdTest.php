@@ -24,24 +24,20 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Session_setUniqIdTest extends Common_TestCase
-{
+class SC_Session_setUniqIdTest extends Common_TestCase {
 
-    protected function setUp()
-    {
+    protected function setUp() {
         parent::setUp();
         $this->objSiteSession = new SC_SiteSession_Ex();
     }
 
-    protected function tearDown()
-    {
+    protected function tearDown() {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testSetUniqId_ユニークなID設定する()
-    {
+    public function testSetUniqId_ユニークなID設定する() {
         $this->objSiteSession->setUniqId();
         $this->assertNotEmpty($_SESSION['site']['uniqid'], 'ユニークID');
     }

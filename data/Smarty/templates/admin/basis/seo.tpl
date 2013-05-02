@@ -24,7 +24,7 @@
 
 <form name="form1" id="form1" method="post" action="?" onSubmit="return window.confirm('登録しても宜しいですか');">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="confirm" />
+<input type="hidden" name="mode" value="confirm">
 <input type="hidden" name="device_type_id" value="" />
 <input type="hidden" name="page_id" value="" />
 <div id="basis" class="contents-main">

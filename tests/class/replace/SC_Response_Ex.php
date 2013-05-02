@@ -3,8 +3,7 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class/SC_Response.php
 /**
  * テスト用にexitしないSC_Responseクラスです。
  */
-class SC_Response_Ex extends SC_Response
-{
+class SC_Response_Ex extends SC_Response {
 
   /** exitしたかどうかを保持するフラグ */
   var $exited = FALSE;
@@ -14,8 +13,7 @@ class SC_Response_Ex extends SC_Response
   /**
    * SC_Response::actionExit()をラップし、PHPをexitさせないようにします。
    */
-  function actionExit()
-  {
+  function actionExit() {
     $this->exited = TRUE;
   }
 
@@ -23,8 +21,7 @@ class SC_Response_Ex extends SC_Response
    * SC_Response::sendRedirect()をラップし、PHPをexitさせないようにします。
    * また、リダイレクト先のパスを取得できるようにします。
    */
-  function sendRedirect($location, $arrQueryString = array(), $inheritQuerySring = false, $useSsl = null)
-  {
+  function sendRedirect($location, $arrQueryString = array(), $inheritQuerySring = false, $useSsl = null) {
     $this->exited = TRUE;
     $this->redirectPath = $location;
   }
@@ -32,16 +29,14 @@ class SC_Response_Ex extends SC_Response
   /**
    * actionExit()が呼ばれたかどうかを取得します。
    */
-  public function isExited()
-  {
+  public function isExited() {
     return $this->exited;
   }
 
   /**
    * sendRedirect()で指定されたパスを取得します。 
    */
-  public function getRedirectPath()
-  {
+  public function getRedirectPath() {
     return $this->redirectPath;
   }
 }

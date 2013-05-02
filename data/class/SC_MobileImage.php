@@ -29,8 +29,7 @@ require_once MOBILE_IMAGE_INC_REALDIR . 'image_converter.inc';
 /**
  * 画像変換クラス
  */
-class SC_MobileImage
-{
+class SC_MobileImage {
     /**
      * 画像を端末の解像度に合わせて変換する
      * output buffering 用コールバック関数
@@ -38,8 +37,7 @@ class SC_MobileImage
      * @param string 入力
      * @return string 出力
      */
-    static function handler($buffer)
-    {
+    static function handler($buffer) {
 
         // 端末情報を取得する
         $carrier = SC_MobileUserAgent_Ex::getCarrier();
@@ -99,11 +97,11 @@ class SC_MobileImage
             foreach ($images[1] as $key => $path) {
                 // resize_image.phpは除外
                 if (stripos($path, ROOT_URLPATH . 'resize_image.php') !== FALSE) {
-                    continue;
+                    break;
                 }
 
                 $realpath = html_entity_decode($path, ENT_QUOTES);
-                $realpath = substr_replace($realpath, HTML_REALDIR, 0, strlen(ROOT_URLPATH));
+                $realpath = preg_replace('|^' . ROOT_URLPATH . '|', HTML_REALDIR, $realpath);
                 $converted = $imageConverter->execute($realpath);
                 if (isset($converted['outputImageName'])) {
                     $buffer = str_replace($path, MOBILE_IMAGE_URLPATH . $converted['outputImageName'], $buffer);
