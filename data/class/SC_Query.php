@@ -29,7 +29,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Query 
+class SC_Query
 {
 
     var $option = '';
@@ -773,9 +773,9 @@ class SC_Query
     function delete($table, $where = '', $arrWhereVal = array())
     {
         if (strlen($where) <= 0) {
-            $sqlde = 'DELETE FROM "' . $table . '"';
+            $sqlde = 'DELETE FROM ' . $this->conn->quoteIdentifier($table);
         } else {
-            $sqlde = 'DELETE FROM "' . $table . '" WHERE ' . $where;
+            $sqlde = 'DELETE FROM ' . $this->conn->quoteIdentifier($table) . ' WHERE ' . $where;
         }
         $ret = $this->query($sqlde, $arrWhereVal, false, null, MDB2_PREPARE_MANIP);
         return $ret;

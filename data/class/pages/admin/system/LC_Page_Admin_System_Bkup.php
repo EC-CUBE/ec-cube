@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 {
 
     /** リストア中にエラーが発生したか */
@@ -319,7 +319,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
             }
 
             // 全データを取得
-            $sql = 'SELECT * FROM "' . $table . '"';
+            $sql = 'SELECT * FROM ' . $objQuery->conn->quoteIdentifier($table);
 
             $this->fpOutput =& $fp;
             $this->first_line = true;
