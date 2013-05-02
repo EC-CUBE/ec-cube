@@ -1,0 +1,21 @@
+language: php
+
+php:
+  - 5.4
+  - 5.3
+
+env:
+  - DB=mysql USER=root
+  - DB=pgsql USER=postgres
+
+before_script:
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE myapp_test;'; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql myapp_test < html/install/sql/create_table_mysql.sql; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql myapp_test < html/install/sql/insert_data.sql; fi"
+  - echo "<?php define('ECCUBE_INSTALL', 'ON');define('HTTP_URL', 'http://localhost/');define('HTTPS_URL', 'http://localhost/');define('ROOT_URLPATH', '/');define('DOMAIN_NAME', '');define('DB_TYPE', '$DB');define('DB_USER', '$USER');define('DB_PASSWORD', '');define('DB_SERVER', '127.0.0.1');define('DB_NAME', 'myapp_test');define('DB_PORT', '');define('ADMIN_DIR', 'admin/');define('ADMIN_FORCE_SSL', FALSE);define('ADMIN_ALLOW_HOSTS', 'a:0:{}');define('AUTH_MAGIC', 'chouteavaemicrouchaivojigiatriowioviamit');define('PASSWORD_HASH_ALGOS', 'sha256');define('MAIL_BACKEND', 'mail');define('SMTP_HOST', '');define('SMTP_PORT', '');define('SMTP_USER', '');define('SMTP_PASSWORD', '');" > data/config/config.php
+  - sh -c "if [ '$DB' = 'pgsql' ]; then psql -c 'create database myapp_test;' -U postgres; fi"
+  - sh -c "if [ '$DB' = 'pgsql' ]; then psql myapp_test < html/install/sql/create_table_pgsql.sql -U postgres; fi"
+  - sh -c "if [ '$DB' = 'pgsql' ]; then psql myapp_test < html/install/sql/insert_data.sql -U postgres; fi"
+  - cp tests/require.php.jenkins tests/require.php
+script:
+  - phpunit --bootstrap ./data/config/config.php --configuration tests/phpunit.xml.jenkins tests
