@@ -57,8 +57,18 @@ class SC_Helper_Plugin
         foreach ($arrPluginDataList as $arrPluginData) {
             // プラグイン本体ファイル名が取得したプラグインディレクトリ一覧にある事を確認
             if (array_search($arrPluginData['plugin_code'], $arrPluginDirectory) !== false) {
+                $plugin_file_path = PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . '/' . $arrPluginData['class_name'] . '.php';
+                // プラグイン本体ファイルが存在しない場合
+                if (!file_exists($plugin_file_path)) {
+                    // エラー出力
+                    $msg = 'プラグイン本体ファイルが存在しない。当該プラグインを無視して続行する。';
+                    $msg .= 'ファイル=' . var_export($plugin_file_path, true) . '; ';
+                    trigger_error($msg, E_USER_WARNING);
+                    // 次のプラグインへ続行
+                    continue 1;
+                }
                 // プラグイン本体ファイルをrequire.
-                require_once PLUGIN_UPLOAD_REALDIR . $arrPluginData['plugin_code'] . '/' . $arrPluginData['class_name'] . '.php';
+                require_once $plugin_file_path;
 
                 // プラグインのインスタンス生成.
                 $objPlugin = new $arrPluginData['class_name']($arrPluginData);
@@ -82,13 +92,6 @@ class SC_Helper_Plugin
     static function getSingletonInstance($plugin_activate_flg = true)
     {
         if (!isset($GLOBALS['_SC_Helper_Plugin_instance'])) {
-            // プラグインのローダーがDB接続を必要とするため、
-            // SC_Queryインスタンス生成後のみオブジェクトを生成する。
-            require_once CLASS_EX_REALDIR . 'SC_Query_Ex.php';
-            if (is_null(SC_Query_Ex::getPoolInstance())) {
-                return false;
-            }
-
             $GLOBALS['_SC_Helper_Plugin_instance'] = new SC_Helper_Plugin_Ex();
             $GLOBALS['_SC_Helper_Plugin_instance']->load($plugin_activate_flg);
         }
