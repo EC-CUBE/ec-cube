@@ -92,6 +92,13 @@ class SC_Helper_Plugin
     static function getSingletonInstance($plugin_activate_flg = true)
     {
         if (!isset($GLOBALS['_SC_Helper_Plugin_instance'])) {
+            // プラグインのローダーがDB接続を必要とするため、
+            // SC_Queryインスタンス生成後のみオブジェクトを生成する。
+            require_once CLASS_EX_REALDIR . 'SC_Query_Ex.php';
+            if (is_null(SC_Query_Ex::getPoolInstance())) {
+                return false;
+            }
+
             $GLOBALS['_SC_Helper_Plugin_instance'] = new SC_Helper_Plugin_Ex();
             $GLOBALS['_SC_Helper_Plugin_instance']->load($plugin_activate_flg);
         }
