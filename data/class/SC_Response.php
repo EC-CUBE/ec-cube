@@ -94,13 +94,16 @@ class SC_Response
     {
         // ローカルフックポイント処理
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $arrBacktrace = debug_backtrace();
-        if (is_object($arrBacktrace[0]['object'])) {
-            $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
-            $objPlugin->doAction($parent_class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
-            $class_name = get_class($arrBacktrace[0]['object']);
-            if ($class_name != $parent_class_name) {
-                $objPlugin->doAction($class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
+
+        if (is_object($objPlugin)) {
+            $arrBacktrace = debug_backtrace();
+            if (is_object($arrBacktrace[0]['object'])) {
+                $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
+                $objPlugin->doAction($parent_class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
+                $class_name = get_class($arrBacktrace[0]['object']);
+                if ($class_name != $parent_class_name) {
+                    $objPlugin->doAction($class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
+                }
             }
         }
 
@@ -124,33 +127,33 @@ class SC_Response
      */
     function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
     {
-
         // ローカルフックポイント処理
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
 
-        $arrBacktrace = debug_backtrace();
-        if (is_object($arrBacktrace[0]['object']) && method_exists($arrBacktrace[0]['object'], 'getMode')) {
-            $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
-            $objPlugin->doAction($parent_class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
-            $class_name = get_class($arrBacktrace[0]['object']);
-            if ($class_name != $parent_class_name) {
-                $objPlugin->doAction($class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($this));
+        if (is_object($objPlugin)) {
+            $arrBacktrace = debug_backtrace();
+            if (is_object($arrBacktrace[0]['object']) && method_exists($arrBacktrace[0]['object'], 'getMode')) {
+                $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
+                $objPlugin->doAction($parent_class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($arrBacktrace[0]['object']));
+                $class_name = get_class($arrBacktrace[0]['object']);
+                if ($class_name != $parent_class_name) {
+                    $objPlugin->doAction($class_name . '_action_' . $arrBacktrace[0]['object']->getMode(), array($this));
+                }
+            } elseif (is_object($arrBacktrace[0]['object'])) {
+                $pattern = '/^[a-zA-Z0-9_]+$/';
+                $mode = null;
+                if (isset($_GET['mode']) && preg_match($pattern, $_GET['mode'])) {
+                    $mode =  $_GET['mode'];
+                } elseif (isset($_POST['mode']) && preg_match($pattern, $_POST['mode'])) {
+                    $mode = $_POST['mode'];
+                }
+                $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
+                $objPlugin->doAction($parent_class_name . '_action_' . $mode, array($arrBacktrace[0]['object']));
+                $class_name = get_class($arrBacktrace[0]['object']);
+                if ($class_name != $parent_class_name) {
+                    $objPlugin->doAction($class_name . '_action_' . $mode, array($this));
+                }
             }
-        } elseif (is_object($arrBacktrace[0]['object'])) {
-            $pattern = '/^[a-zA-Z0-9_]+$/';
-            $mode = null;
-            if (isset($_GET['mode']) && preg_match($pattern, $_GET['mode'])) {
-                $mode =  $_GET['mode'];
-            } elseif (isset($_POST['mode']) && preg_match($pattern, $_POST['mode'])) {
-                $mode = $_POST['mode'];
-            }
-            $parent_class_name = get_parent_class($arrBacktrace[0]['object']);
-            $objPlugin->doAction($parent_class_name . '_action_' . $mode, array($arrBacktrace[0]['object']));
-            $class_name = get_class($arrBacktrace[0]['object']);
-            if ($class_name != $parent_class_name) {
-                $objPlugin->doAction($class_name . '_action_' . $mode, array($this));
-            }
-
         }
 
         // url-path → URL 変換

@@ -143,7 +143,9 @@ class SC_View
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
-            $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+            if (is_object($objPlugin)) {
+                $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+            }
         }
         return $source;
     }
@@ -159,7 +161,9 @@ class SC_View
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
-            $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+            if (is_object($objPlugin)) {
+                $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+            }
         }
         return $source;
     }
