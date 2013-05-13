@@ -85,7 +85,17 @@ class LC_Page_Cart extends LC_Page_Ex {
         $objFormParam = $this->lfInitParam($_POST);
         $this->mode = $this->getMode();
 
-        $this->cartKeys = $objCartSess->getKeys();
+        // モバイル対応
+	    if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+	        if (isset($_GET['cart_no'])) {
+	            $objFormParam->setValue('cart_no', $_GET['cart_no']);
+	        }
+	        if (isset($_GET['cartKey'])) {
+	                $objFormParam->setValue('cartKey', $_GET['cartKey']);
+	        }
+	    }
+		
+		$this->cartKeys = $objCartSess->getKeys();
         foreach ($this->cartKeys as $key) {
             // 商品購入中にカート内容が変更された。
             if ($objCartSess->getCancelPurchase($key)) {
