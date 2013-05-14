@@ -87,7 +87,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
             case 'complete':
                 $this->arrErr = $objFormParam->checkError();
                 // エラー無し
-                if (!SC_Utils_Ex::isBlank($this->arrErr)) {
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     // レビュー情報の更新
                     $this->lfRegistReviewData($this->arrForm['review_id'], $objFormParam);
                     // レビュー情報のDB取得

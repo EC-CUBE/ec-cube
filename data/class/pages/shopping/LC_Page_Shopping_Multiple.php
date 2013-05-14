@@ -306,7 +306,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex {
 
             if ($objCustomer->isLoginSuccess(true)) {
                 if ($other_deliv_id != 0) {
-                    $otherDeliv = $objAddress->get($other_deliv_id);
+                    $otherDeliv = $objAddress->getAddress($other_deliv_id);
                     foreach ($otherDeliv as $key => $val) {
                         $arrValues[$other_deliv_id]['shipping_' . $key] = $val;
                     }
