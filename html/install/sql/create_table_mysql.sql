@@ -1125,7 +1125,7 @@ CREATE TABLE dtb_mobile_ext_session_id (
 );
 
 CREATE TABLE dtb_module (
-    module_id int NOT NULL UNIQUE,
+    module_id int NOT NULL,
     module_code text NOT NULL,
     module_name text NOT NULL,
     sub_data text,
