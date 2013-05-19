@@ -70,13 +70,6 @@ class LC_Page_Abouts extends LC_Page_Ex
      */
     function action()
     {
-
-        $this->objSiteInfo->data = SC_Helper_DB_Ex::sfGetBasisData();
-        $this->objSiteInfo->data['pref'] =
-            isset($this->arrPref[$this->objSiteInfo->data['pref']])
-            ? $this->arrPref[$this->objSiteInfo->data['pref']] : '';
-
-
     }
 
     /**
