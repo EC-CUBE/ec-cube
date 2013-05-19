@@ -31,17 +31,10 @@
         <!--{* 共通CSS *}-->
         <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
 
-        <!--{if $tpl_page_category == "abouts"}-->
-            <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
-                <script src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
-            <!--{else}-->
-                <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-            <!--{/if}-->
-        <!--{/if}-->
+        <script src="<!--{$TPL_URLPATH}-->js/jquery-1.9.1.min.js"></script>
         <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
         <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
         <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
-        <script src="<!--{$TPL_URLPATH}-->js/jquery-1.8.1.min.js"></script>
         <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
         <script>//<![CDATA[
             $(function(){
@@ -50,13 +43,11 @@
         //]]></script>
         <script src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
         <script src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
-        <script src="<!--{$TPL_URLPATH}-->js/category.js"></script>
-        <script src="<!--{$TPL_URLPATH}-->js/news.js"></script>
 
         <!--{* jQuery Mobile *}-->
-        <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.2.1.min.css" />
+        <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.3.1.min.css" />
         <script src="<!--{$TPL_URLPATH}-->js/config.js"></script>
-        <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.2.1.min.js"></script>
+        <script src="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.3.1.min.js"></script>
 
         <!--{* スマートフォンカスタマイズ用CSS *}-->
         <link rel="stylesheet" media="screen" href="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.css" />

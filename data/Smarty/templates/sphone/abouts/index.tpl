@@ -22,33 +22,6 @@
  */
 *}-->
 
-<!--{assign var=_site value=$arrSiteInfo}-->
-<!--{if $_site.latitude && $_site.longitude}-->
-    <script type="text/javascript">//<![CDATA[
-        $(function() {
-            $("#maps").css({
-                'margin-top': '15px',
-                'margin-left': 'auto',
-                'margin-right': 'auto',
-                'width': '98%',
-                'height': '300px'
-            });
-            var lat = <!--{$_site.latitude}-->
-            var lng = <!--{$_site.longitude}-->
-            if (lat && lng) {
-                var latlng = new google.maps.LatLng(lat, lng);
-                var mapOptions = {zoom: 15,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP};
-                var map = new google.maps.Map($("#maps").get(0), mapOptions);
-                var marker = new google.maps.Marker({map: map, position: latlng});
-            } else {
-                $("#maps").remove();
-            }
-        });
-    //]]></script>
-<!--{/if}-->
-
 <section id="undercolumn">
     <!--☆当サイトについて -->
     <h2 class="title"><!--{$tpl_title|h}--></h2>
@@ -101,8 +74,31 @@
         <!--{/if}-->
     </dl>
 
-    <!--☆MAP -->
-    <div id="maps"></div>
+    <!--{if strlen($arrSiteInfo.latitude) >= 1 && strlen($arrSiteInfo.longitude) >= 1}-->
+        <script src="//maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript">//<![CDATA[
+            $(function() {
+                $("#maps").css({
+                    'margin-top': '15px',
+                    'margin-left': 'auto',
+                    'margin-right': 'auto',
+                    'width': '98%',
+                    'height': '300px'
+                });
+                var lat = "<!--{$arrSiteInfo.latitude|escape:'javascript'}-->";
+                var lng = "<!--{$arrSiteInfo.longitude|escape:'javascript'}-->";
+                var latlng = new google.maps.LatLng(lat, lng);
+                var mapOptions = {
+                    zoom: 15,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map($("#maps").get(0), mapOptions);
+                var marker = new google.maps.Marker({map: map, position: latlng});
+            });
+        //]]></script>
+        <div id="maps"></div>
+    <!--{/if}-->
 </section>
 
 <!--▼検索バー -->

@@ -20,14 +20,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<!--商品カテゴリここから-->
 <section id="category_area">
+    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
     <h2 class="title_block">商品カテゴリ</h2>
     <nav id="categorytree">
         <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$arrTree treeID="categorytreelist" display=1 level=0}-->
 
-        <script>//<![CDATA[
-        //]]></script>
     </nav>
-</section>
-<!-- ▲カテゴリ -->
+</section><!-- id="category_area" -->
