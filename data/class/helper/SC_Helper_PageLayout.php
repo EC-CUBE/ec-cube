@@ -161,6 +161,7 @@ class SC_Helper_PageLayout
     function getBlocPositions($device_type_id, $page_id, $has_realpath = true)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         $table = <<< __EOF__
         dtb_blocposition AS pos
             JOIN dtb_bloc AS bloc
@@ -173,18 +174,20 @@ __EOF__;
         if ($has_realpath) {
             $this->setBlocPathTo($device_type_id, $arrBlocs);
         }
-        
+
         //全ページ設定と各ページのブロックの重複を削除
+        $arrUniqBlocIds = array();
         foreach ($arrBlocs as $index => $arrBloc) {
-            if($arrBloc['anywhere'] == 1){
+            if ($arrBloc['anywhere'] == 1){
                 $arrUniqBlocIds[] = $arrBloc['bloc_id'];
             }
         }
         foreach ($arrBlocs as $bloc_index => $arrBlocData) {
-            if(in_array($arrBlocData['bloc_id'], $arrUniqBlocIds) && $arrBlocData['anywhere'] == 0){
+            if (in_array($arrBlocData['bloc_id'], $arrUniqBlocIds) && $arrBlocData['anywhere'] == 0){
                 unset($arrBlocs[$bloc_index]);
             }
         }
+
         return $arrBlocs;
     }
 

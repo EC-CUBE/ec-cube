@@ -235,8 +235,10 @@ class SC_Helper_Transform
      */
     public function insertBefore($html_snip)
     {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('insertBefore', $objElement[0], $html_snip);
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('insertBefore', $objElement[0], $html_snip);
+            }
         }
         return $this;
     }
@@ -250,8 +252,10 @@ class SC_Helper_Transform
      */
     public function insertAfter($html_snip)
     {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('insertAfter', $objElement[0], $html_snip);
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('insertAfter', $objElement[0], $html_snip);
+            }
         }
         return $this;
     }
@@ -265,8 +269,10 @@ class SC_Helper_Transform
      */
     public function appendFirst($html_snip)
     {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('appendFirst', $objElement[0], $html_snip);
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('appendFirst', $objElement[0], $html_snip);
+            }
         }
         return $this;
     }
@@ -280,8 +286,10 @@ class SC_Helper_Transform
      */
     public function appendChild($html_snip)
     {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('appendChild', $objElement[0], $html_snip);
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('appendChild', $objElement[0], $html_snip);
+            }
         }
         return $this;
     }
@@ -295,8 +303,10 @@ class SC_Helper_Transform
      */
     public function replaceElement($html_snip)
     {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
-            $this->lfSetTransform('replaceElement', $objElement[0], $html_snip);
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
+                $this->lfSetTransform('replaceElement', $objElement[0], $html_snip);
+            }
         }
         return $this;
     }
@@ -309,8 +319,10 @@ class SC_Helper_Transform
      */
     public function removeElement()
     {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
-            $this->lfSetTransform('replaceElement', $objElement[0], '');
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
+                $this->lfSetTransform('replaceElement', $objElement[0], '');
+            }
         }
         return $this;
     }
@@ -578,7 +590,6 @@ class SC_Helper_Transform
         } else {
             $this->arrSelectElements[$this->search_depth][$arrElement[0]] = array($elementNo, &$arrElement[1]);
         }
-
     }
 
 
