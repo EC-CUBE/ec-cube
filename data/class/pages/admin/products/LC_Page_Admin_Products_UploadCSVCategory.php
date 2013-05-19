@@ -257,7 +257,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
         $objQuery->commit();
 
         // カテゴリ件数を更新
-        SC_Helper_DB_EX::sfCountCategory($objQuery);
+        SC_Helper_DB_Ex::sfCountCategory($objQuery);
         return;
     }
 
@@ -609,7 +609,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
     {
         if (array_search($keyname, $this->arrFormKeyList) !== FALSE  //入力対象である
             && $item[$keyname] != ''   // 空ではない
-            && !SC_Helper_DB_EX::sfIsRecord($table, $keyname, (array)$item[$keyname]) //DBに存在するか
+            && !SC_Helper_DB_Ex::sfIsRecord($table, $keyname, (array)$item[$keyname]) //DBに存在するか
         ) {
             return false;
         }
