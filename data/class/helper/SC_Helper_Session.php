@@ -215,20 +215,24 @@ class SC_Helper_Session {
      * @return void
      */
     function adminAuthorization() {
-        $masterData = new SC_DB_MasterData_Ex();
-        $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
-        if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . '|', $_SERVER['SCRIPT_NAME'])) {
-            $is_auth = true;
-
-            foreach ($arrExcludes as $exclude) {
-                if (preg_match('|^' . ROOT_URLPATH . ADMIN_DIR . $exclude . '|', $_SERVER['SCRIPT_NAME'])) {
-                    $is_auth = false;
-                    break;
+        if (($script_path = realpath($_SERVER['SCRIPT_FILENAME'])) !== FALSE) {
+            $arrScriptPath = explode('/', str_replace('\\', '/', $script_path));
+            $arrAdminPath = explode('/', str_replace('\\', '/', substr(HTML_REALDIR . ADMIN_DIR, 0, -1)));
+            $arrDiff = array_diff_assoc($arrAdminPath, $arrScriptPath);
+            if (in_array(substr(ADMIN_DIR, 0, -1), $arrDiff)) {
+                return;
+            } else {
+                $masterData = new SC_DB_MasterData_Ex();
+                $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
+                foreach ($arrExcludes as $exclude) {
+                    $arrExcludesPath = explode('/', str_replace('\\', '/', HTML_REALDIR . ADMIN_DIR . $exclude));
+                    $arrDiff = array_diff_assoc($arrExcludesPath, $arrScriptPath);
+                    if (count($arrDiff) === 0) {
+                        return;
+                    }
                 }
             }
-            if ($is_auth) {
-                SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex());
-            }
         }
+        SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex());
     }
 }
