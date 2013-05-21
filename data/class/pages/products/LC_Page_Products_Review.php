@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Products_Review.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Products_Review extends LC_Page_Ex 
+class LC_Page_Products_Review extends LC_Page_Ex
 {
 
     // {{{ properties
@@ -202,7 +202,7 @@ class LC_Page_Products_Review extends LC_Page_Ex
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        return $objQuery->get('name', 'dtb_products', 'product_id = ? AND del_flg = 0 AND status = 1', array($product_id));
+        return $objQuery->get('name', 'dtb_products', 'product_id = ? AND ' . SC_Product_Ex::getProductDispConditions(), array($product_id));
     }
 
     //登録実行

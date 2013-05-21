@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Products_List extends LC_Page_Ex 
+class LC_Page_Products_List extends LC_Page_Ex
 {
 
     // {{{ properties
@@ -361,7 +361,7 @@ __EOS__;
         }
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
-        $searchCondition['where'] = 'alldtl.del_flg = 0 AND alldtl.status = 1 ';
+        $searchCondition['where'] = SC_Product_Ex::getProductDispConditions('alldtl');
 
         if (strlen($searchCondition['where_category']) >= 1) {
             $searchCondition['where'] .= ' AND EXISTS (SELECT * FROM dtb_product_categories WHERE ' . $searchCondition['where_category'] . ' AND product_id = alldtl.product_id)';
@@ -482,7 +482,7 @@ __EOS__;
 
     /**
      *
-     * @param type $objProduct 
+     * @param type $objProduct
      * @return void
      */
     function doDefault(&$objProduct)

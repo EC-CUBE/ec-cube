@@ -772,4 +772,10 @@ __EOS__;
 
         return $sql;
     }
+
+    function getProductDispConditions($tablename = null) {
+        $tablename = ($tablename) ? $tablename . '.' : null;
+        return $tablename . 'del_flg = 0 AND ' . $tablename . 'status = 1 ';
+    }
+
 }

@@ -50,7 +50,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * :TODO: 各ページの changefreq や priority を指定できるようにする
  * :TODO: filemtime 関数を使えば、静的なページの更新時間も取得できそう
  */
-class LC_Page_Sitemap extends LC_Page_Ex 
+class LC_Page_Sitemap extends LC_Page_Ex
 {
 
     // }}}
@@ -239,7 +239,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
     function getAllDetail()
     {
         $objQuery = SC_Query_Ex::getSingletonInstance();
-        $sql = 'SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1';
+        $sql = 'SELECT product_id, update_date FROM dtb_products WHERE ' . SC_Product_Ex::getProductDispConditions();
         $result = $objQuery->getAll($sql);
 
         $arrRet = array();

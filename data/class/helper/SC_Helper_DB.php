@@ -28,7 +28,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_Helper_DB.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_Helper_DB 
+class SC_Helper_DB
 {
 
     // {{{ properties
@@ -90,7 +90,7 @@ class SC_Helper_DB
         }
         return false;
     }
-    
+
     function sfColumnAdd($tableName, $colName, $colType) {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
         return $objQuery->query("ALTER TABLE $tableName ADD $colName $colType ");
@@ -184,7 +184,7 @@ class SC_Helper_DB
     /**
      * 基本情報のキャッシュデータファイルを生成する
      * データはsfGetBasisDataより取得。
-     * 
+     *
      * このメソッドが直接呼ばれるのは、
      *「基本情報管理＞SHOPマスター」の更新完了後。
      * sfGetBasisDataCacheでは、
@@ -725,7 +725,7 @@ class SC_Helper_DB
         }
 
         //共通のfrom/where文の構築
-        $sql_where = 'alldtl.del_flg = 0 AND alldtl.status = 1';
+        $sql_where = SC_Product_Ex::getProductDispConditions('alldtl');
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN) {
             $where_products_class = '(stock >= 1 OR stock_unlimited = 1)';
@@ -1160,10 +1160,10 @@ __EOS__;
         $oldRank = $objQuery->get('rank', $tableName, $getWhere, array($keyId));
 
         $max = $objQuery->max('rank', $tableName, $where);
-        
+
         // 更新するランク値を取得
         $newRank = $this->getNewRank($pos, $max);
-        // 他のItemのランクを調整する 
+        // 他のItemのランクを調整する
         $ret = $this->moveOtherItemRank($newRank, $oldRank, $objQuery, $tableName, $where);
         if (!$ret) {
             // 他のランク変更がなければ処理を行わない
@@ -1183,18 +1183,18 @@ __EOS__;
 
         $objQuery->commit();
     }
-    
+
     /**
      * 指定された位置の値をDB用のRANK値に変換する
      * 指定位置が1番目に移動なら、newRankは最大値
      * 指定位置が1番下へ移動なら、newRankは1
-     * 
+     *
      * @param int $position 指定された位置
      * @param int $maxRank 現在のランク最大値
      * @return int $newRank DBに登録するRANK値
-     */ 
+     */
     function getNewRank($position, $maxRank) {
-        
+
         if ($position > $maxRank) {
             $newRank = 1;
         } else if ($position < 1) {
@@ -1207,15 +1207,15 @@ __EOS__;
 
     /**
      * 指定した順位の商品から移動させる商品までのrankを１つずらす
-     * 
+     *
      * @param int $newRank
      * @param int $oldRank
      * @param object $objQuery
      * @param string $where
-     * @return boolean 
+     * @return boolean
      */
     function moveOtherItemRank($newRank, $oldRank, &$objQuery, $tableName, $addWhere) {
-        
+
         $sqlval = array();
         $arrRawSql = array();
         $where = 'rank BETWEEN ? AND ?';
@@ -1234,11 +1234,11 @@ __EOS__;
             //入れ替え先の順位が入れ替え元の順位と同じ場合なにもしない
             return false;
         }
-        
+
         return $objQuery->update($tableName, $sqlval, $where, $arrWhereVal, $arrRawSql);
-        
+
     }
-    
+
 
     /**
      * ランクを含むレコードを削除する.
@@ -1323,7 +1323,7 @@ __EOS__;
 
     /**
      * カテゴリ変更時の移動処理を行う.
-     * 
+     *
      * ※この関数って、どこからも呼ばれていないのでは？？
      *
      * @param SC_Query $objQuery SC_Query インスタンス
@@ -1621,7 +1621,7 @@ __EOS__;
 
     /**
      * レコード件数を計算.
-     * 
+     *
      * @param string $table
      * @param string $where
      * @param array $arrval

@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Rss_Products extends LC_Page_Ex 
+class LC_Page_Rss_Products extends LC_Page_Ex
 {
 
     // }}}
@@ -295,9 +295,9 @@ class LC_Page_Rss_Products extends LC_Page_Ex
     function lfGetProductsAllclass(&$objQuery)
     {
         // --- 商品一覧の取得
-        $objQuery->setWhere('del_flg = 0 AND status = 1');
-        $objQuery->setOrder('product_id');
         $objProduct = new SC_Product_Ex();
+        $objQuery->setWhere($objProduct->getProductDispConditions());
+        $objQuery->setOrder('product_id');
         $arrProductLsit = $objProduct->lists($objQuery);
         // 各商品のカテゴリIDとランクの取得
         $arrProducts = array();
