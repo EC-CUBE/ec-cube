@@ -41,7 +41,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_MasterData.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_MasterData 
+class SC_DB_MasterData
 {
 
     // {{{ properties
@@ -291,8 +291,10 @@ class SC_DB_MasterData
         }
         // ファイルの内容を書き出す.
         if (fwrite($handle, $data) === false) {
+            fclose($handle);
             return false;
         }
+        fclose($handle);
         return true;
     }
 
