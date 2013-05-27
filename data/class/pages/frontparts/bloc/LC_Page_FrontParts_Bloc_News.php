@@ -91,7 +91,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
                 $this->arrErr = $objFormParam->checkError(false);
                 if (empty($this->arrErr)) {
                     $arrData = $objFormParam->getHashArray();
-                    $json = $this->lfGetNewsDetailForJson($arrData, $objNews);
+                    $json = $this->lfGetNewsDetailForJson($arrData);
                     echo $json;
                     SC_Response_Ex::actionExit();
                 } else {
@@ -186,10 +186,10 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      * @param object $objNews
      * @return String $json 新着情報1件分のJSONを返す
      */
-    function lfGetNewsDetailForJson($arrData, SC_Helper_News_Ex $objNews)
+    function lfGetNewsDetailForJson($arrData)
     {
 
-        $arrNewsList = $objNews->get($arrData['news_id']);
+        $arrNewsList = SC_Helper_News_Ex::getNews($arrData['news_id']);
         $json =  SC_Utils_Ex::jsonEncode($arrNewsList);    //JSON形式
 
         return $json;

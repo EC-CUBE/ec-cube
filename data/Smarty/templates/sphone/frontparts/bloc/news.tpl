@@ -100,8 +100,8 @@
     var loadingState = 0;
     function getNewsDetail(newsId) {
         if (loadingState == 0) {
-            $.mobile.showPageLoadingMsg();
             loadingState = 1;
+            $.mobile.showPageLoadingMsg();
             $.ajax({
                 url: "<!--{$smarty.const.ROOT_URLPATH}-->frontparts/bloc/news.php",
                 type: "GET",
@@ -120,8 +120,8 @@
                         $.mobile.hidePageLoadingMsg();
                         loadingState = 0;
                     }
-                    else if (result[0] != null) {
-                        var news = result[0];
+                    else if (result != null) {
+                        var news = result;
                         var maxCnt = 0;
 
                         //件名をセット
@@ -145,9 +145,14 @@
                         $.mobile.changePage('#windowcolumn', {transition: "slideup"});
                         //ダイアログが開き終わるまで待機
                         setTimeout( function() {
-                            loadingState = 0;
                             $.mobile.hidePageLoadingMsg();
+                            loadingState = 0;
                         }, 1000);
+                    }
+                    else {
+                        $.mobile.hidePageLoadingMsg();
+                        loadingState = 0;
+                        alert('取得できませんでした。');
                     }
                 }
             });

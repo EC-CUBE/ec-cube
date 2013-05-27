@@ -37,7 +37,7 @@ class SC_Helper_News
      * @param boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
      * @return array
      */
-    public function getNews($news_id, $has_deleted = false)
+    static public function getNews($news_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*, cast(news_date as date) as cast_news_date';
