@@ -528,13 +528,14 @@ hr.dashed {
     clear: both;
 }
 .top_menu ul li {
-    width: 33%;
+    width: 33.33%;
     float: left;
     text-align: center;
     border-left: #747B83 solid 1px;
     border-right: #3D3D3D solid 1px;
     border-bottom: #141517 solid 1px;
     border-top: #A1A7AF solid 2px;
+    box-sizing: border-box;
 }
 .top_menu ul li img {
     margin: 0 auto;
