@@ -106,9 +106,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
                 $this->tpl_onload = "window.alert('特定商取引法の登録が完了しました。');";
             }
         } else {
-            $arrCol = $objFormParam->getKeyList(); // キー名一覧を取得
-            $col    = SC_Utils_Ex::sfGetCommaList($arrCol);
-            $arrRet = $objDb->sfGetBasisData(true, $col);
+            $arrRet = $objDb->sfGetBasisData();
             $objFormParam->setParam($arrRet);
         }
         $this->arrForm = $objFormParam->getFormParamList();

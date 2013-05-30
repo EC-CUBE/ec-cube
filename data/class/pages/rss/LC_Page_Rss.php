@@ -107,7 +107,7 @@ class LC_Page_RSS extends LC_Page_Ex
         $arrNews = $objNews->getList();
 
         $objDb = new SC_Helper_DB_Ex();
-        $arrInfo = $objDb->sfGetBasisData(FALSE, 'shop_name, email04');
+        $arrInfo = $objDb->sfGetBasisData();
 
         // RSS用に変換
         foreach ($arrNews as $key => $value) {

@@ -105,9 +105,7 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
                 $this->tpl_onload = "window.alert('ポイント設定が完了しました。');";
             }
         } else {
-            $arrCol = $objFormParam->getKeyList(); // キー名一覧を取得
-            $col    = SC_Utils_Ex::sfGetCommaList($arrCol);
-            $arrRet = $objDb->sfGetBasisData(true, $col);
+            $arrRet = $objDb->sfGetBasisData();
             $objFormParam->setParam($arrRet);
         }
         $this->arrForm = $objFormParam->getFormParamList();

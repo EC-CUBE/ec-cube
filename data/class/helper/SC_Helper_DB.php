@@ -128,29 +128,19 @@ class SC_Helper_DB
      * 2回目以降はキャッシュされた結果を使用する.
      *
      * @param boolean $force 強制的にDB取得するか
-     * @param string $col 取得カラムを指定する
      * @return array 店舗基本情報の配列
      */
-    function sfGetBasisData($force = false, $col = '')
+    function sfGetBasisData($force = false)
     {
-        static $data = array();
+        static $arrData = null;
 
-        if ($force || empty($data)) {
+        if ($force || is_null($arrData)) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-            if ($col === '') {
-                $arrRet = $objQuery->select('*', 'dtb_baseinfo');
-            } else {
-                $arrRet = $objQuery->select($col, 'dtb_baseinfo');
-            }
-
-            if (isset($arrRet[0])) {
-                $data = $arrRet[0];
-            } else {
-                $data = array();
-            }
+            $arrData = $objQuery->getRow('*', 'dtb_baseinfo');
         }
-        return $data;
+
+        return $arrData;
     }
 
     /**
