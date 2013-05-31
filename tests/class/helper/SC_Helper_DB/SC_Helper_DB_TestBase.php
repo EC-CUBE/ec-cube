@@ -131,7 +131,6 @@ class SC_Helper_DB_TestBase extends Common_TestCase
             'email02' => 'test2@test.com',
             'email03' => 'test3@test.com',
             'email04' => 'test4@test.com',
-            'email05' => 'test5@test.com',
             'free_rule' => '1000',
             'shop_name' => 'shopname',
             'shop_kana' => 'ショップネーム',

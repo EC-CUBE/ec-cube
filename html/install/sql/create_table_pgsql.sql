@@ -114,7 +114,6 @@ CREATE TABLE dtb_baseinfo (
     email02 text,
     email03 text,
     email04 text,
-    email05 text,
     free_rule numeric,
     shop_name text,
     shop_kana text,

@@ -573,7 +573,6 @@ function lfDispComplete($objPage)
     $sqlval['email02'] = $objWebParam->getValue('admin_mail');
     $sqlval['email03'] = $objWebParam->getValue('admin_mail');
     $sqlval['email04'] = $objWebParam->getValue('admin_mail');
-    $sqlval['email05'] = $objWebParam->getValue('admin_mail');
     $sqlval['top_tpl'] = 'default1';
     $sqlval['product_tpl'] = 'default1';
     $sqlval['detail_tpl'] = 'default1';
