@@ -43,7 +43,8 @@ class SC_Helper_Address_getListTest extends SC_Helper_Address_TestBase
                 'tel03' => '0000',
                 'fax01' => '111',
                 'fax02' => '1111',
-                'fax03' => '1111'
+                'fax03' => '1111',
+                'country_id' => null
                   )
 
                                 );
@@ -74,7 +75,8 @@ class SC_Helper_Address_getListTest extends SC_Helper_Address_TestBase
                 'tel03' => '0000',
                 'fax01' => '111',
                 'fax02' => '1111',
-                'fax03' => '1111'
+                'fax03' => '1111',
+                'country_id' => null
                   ),
             array(
                 'other_deliv_id' => '1000',
@@ -93,7 +95,8 @@ class SC_Helper_Address_getListTest extends SC_Helper_Address_TestBase
                 'tel03' => '0000',
                 'fax01' => '111',
                 'fax02' => '1111',
-                'fax03' => '1111'
+                'fax03' => '1111',
+                'country_id' => null
                   )
 
                                 );

@@ -56,7 +56,8 @@ class SC_Helper_Address_registAddressTest extends SC_Helper_Address_TestBase
                     'tel03' => '0003',
                     'fax01' => '112',
                     'fax02' => '1113',
-                    'fax03' => '1114'
+                    'fax03' => '1114',
+                    'country_id' => null
                 );
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $this->expected = '1002';
@@ -93,7 +94,8 @@ class SC_Helper_Address_registAddressTest extends SC_Helper_Address_TestBase
                 'tel03' => '0003',
                 'fax01' => '112',
                 'fax02' => '1113',
-                'fax03' => '1114'
+                'fax03' => '1114',
+                'country_id' => null
             );
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->objAddress->registAddress($arrSql);

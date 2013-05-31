@@ -53,7 +53,8 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
                 'tel03' => '0000',
                 'fax01' => '111',
                 'fax02' => '1111',
-                'fax03' => '1111'
+                'fax03' => '1111',
+                'country_id' => null
             );
         $this->actual = $this->objAddress->getAddress($other_deliv_id);
         

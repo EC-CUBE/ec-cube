@@ -65,6 +65,9 @@ class SC_Utils_sfPrintRTest extends Common_TestCase
   }
   */
   //////////////////////////////////////////
-
+    public function testDummyTest() {
+        // Warning が出るため空のテストを作成
+        $this->assertTrue(true);
+    }
 }
 

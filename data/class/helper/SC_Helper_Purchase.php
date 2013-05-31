@@ -371,7 +371,8 @@ class SC_Helper_Purchase
             $arrItems['productsClass'] = $product;
         }
         $arrItems['price'] = $arrItems['productsClass']['price02'];
-        $inctax = SC_Helper_DB_Ex::sfCalcIncTax($arrItems['price']);
+        $inctax = SC_Helper_TaxRule_Ex::sfCalcIncTax($arrItems['price'], $arrItems['productsClass']['product_id'],
+                                                     $arrItems['productsClass']['product_class_id']);
         $arrItems['total_inctax'] = $inctax * $arrItems['quantity'];
     }
 

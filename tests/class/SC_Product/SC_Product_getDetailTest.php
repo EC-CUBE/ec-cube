@@ -53,10 +53,10 @@ class SC_Product_getDetailTest extends SC_Product_TestBase
                 ,'status' => '1'
                 ,'del_flg' => '0'
                 ,'update_date' => $arrRet[0]
-                ,'price01_min_inctax' => SC_Helper_DB_Ex::sfCalcIncTax('1500')
-                ,'price01_max_inctax' => SC_Helper_DB_Ex::sfCalcIncTax('1500')
-                ,'price02_min_inctax' => SC_Helper_DB_Ex::sfCalcIncTax('1500')
-                ,'price02_max_inctax' => SC_Helper_DB_Ex::sfCalcIncTax('1500')
+                ,'price01_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+                ,'price01_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+                ,'price02_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+                ,'price02_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
                 ,'maker_id' => null
                 ,'comment4' => null
                 ,'comment5' => null

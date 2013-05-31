@@ -112,7 +112,8 @@ class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBas
       'order_birth' => '2012-01-01',
       'order_email' => 'mobile@example.com',
       'customer_id' => '1001',
-      'update_date' => 'CURRENT_TIMESTAMP'
+      'update_date' => 'CURRENT_TIMESTAMP',
+      'order_country_id' => ''
     );
     $helper = new SC_Helper_Purchase();
     $helper->copyFromCustomer($dest, $this->customer);

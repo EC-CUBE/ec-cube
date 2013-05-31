@@ -155,5 +155,8 @@ class SC_Helper_DB_TestBase extends Common_TestCase
         $this->objQuery->insert('dtb_baseinfo', $baseInfo);
     }   
 
-    
+    public function testDummyTest() {
+        // Warning が出るため空のテストを作成
+        $this->assertTrue(true);
+    }
 }
