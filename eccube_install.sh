@@ -25,7 +25,7 @@
 #######################################################################
 
 #######################################################################
-# Configuration 
+# Configuration
 #-- Shop Configuration
 CONFIG_PHP="data/config/config.php"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
@@ -33,33 +33,32 @@ SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 HTTP_URL=${HTTP_URL:-"http://test.local"}
 HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
+
+DBSERVER=${DBSERVER-"127.0.0.1"}
+DBNAME=${DBNAME:-"cube213_dev"}
+DBUSER=${DBUSER:-"cube213_dev_user"}
+DBPASS=${DBPASS:-"password"}
+
 ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
 AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 
 DBTYPE=$1;
 
 case "${DBTYPE}" in
-"pgsql" ) 
+"pgsql" )
     #-- DB Seting Postgres
     PSQL=psql
     PGUSER=postgres
     DROPDB=dropdb
     CREATEDB=createdb
-    DBSERVER="127.0.0.1"
-    DBNAME=cube212_dev
-    DBUSER=cube212_dev_user
-    DBPASS=password
     DBPORT=5432
 ;;
-"mysql" ) 
+"mysql" )
     #-- DB Seting MySQL
     MYSQL=mysql
     ROOTUSER=root
-    ROOTPASS=password
+    ROOTPASS=$DBPASS
     DBSERVER="127.0.0.1"
-    DBNAME=cube212_dev
-    DBUSER=cube212_dev_user
-    DBPASS=password
     DBPORT=3306
 ;;
 * ) echo "ERROR:: argument is invaid"
@@ -69,26 +68,26 @@ esac
 
 
 #######################################################################
-# Install 
+# Install
 
 #-- Update Permissions
 echo "update permissions..."
-chmod -R 777 "./html"
-chmod 755 "./data"
-chmod -R 777 "./data/Smarty"
-chmod -R 777 "./data/cache"
-chmod -R 777 "./data/class"
-chmod -R 755 "./data/class_extends"
-chmod 777 "./data/config"
-chmod -R 777 "./data/download"
-chmod -R 777 "./data/downloads"
-chmod 755 "./data/fonts"
-chmod 755 "./data/include"
-chmod 777 "./data/logs"
-chmod -R 777 "./data/module"
-chmod 755 "./data/smarty_extends"
-chmod 777 "./data/upload"
-chmod 777 "./data/upload/csv"
+chmod -R go+w "./html"
+chmod go+w "./data"
+chmod -R go+w "./data/Smarty"
+chmod -R go+w "./data/cache"
+chmod -R go+w "./data/class"
+chmod -R go+w "./data/class_extends"
+chmod go+w "./data/config"
+chmod -R go+w "./data/download"
+chmod -R go+w "./data/downloads"
+chmod go+w "./data/fonts"
+chmod go+w "./data/include"
+chmod go+w "./data/logs"
+chmod -R go+w "./data/module"
+chmod go+w "./data/smarty_extends"
+chmod go+w "./data/upload"
+chmod go+w "./data/upload/csv"
 
 #-- Setup Database
 SQL_DIR="./html/install/sql"
@@ -99,13 +98,45 @@ then
     rm ${OPTIONAL_SQL_FILE}
 fi
 
+SEQUENCES="
+dtb_best_products_best_id_seq
+dtb_bloc_bloc_id_seq
+dtb_category_category_id_seq
+dtb_class_class_id_seq
+dtb_classcategory_classcategory_id_seq
+dtb_csv_no_seq
+dtb_csv_sql_sql_id_seq
+dtb_customer_customer_id_seq
+dtb_deliv_deliv_id_seq
+dtb_holiday_holiday_id_seq
+dtb_kiyaku_kiyaku_id_seq
+dtb_mail_history_send_id_seq
+dtb_maker_maker_id_seq
+dtb_member_member_id_seq
+dtb_module_update_logs_log_id_seq
+dtb_news_news_id_seq
+dtb_order_order_id_seq
+dtb_order_detail_order_detail_id_seq
+dtb_other_deliv_other_deliv_id_seq
+dtb_pagelayout_page_id_seq
+dtb_payment_payment_id_seq
+dtb_products_class_product_class_id_seq
+dtb_products_product_id_seq
+dtb_review_review_id_seq
+dtb_send_history_send_id_seq
+dtb_mailmaga_template_template_id_seq
+dtb_plugin_plugin_id_seq
+dtb_plugin_hookpoint_plugin_hookpoint_id_seq
+dtb_api_config_api_config_id_seq
+dtb_api_account_api_account_id_seq
+"
+
 echo "create optional SQL..."
 echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', '1', '0', '0', '0', '1', current_timestamp);" >> ${OPTIONAL_SQL_FILE}
 echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, email05, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1', current_timestamp);" >> ${OPTIONAL_SQL_FILE}
 
-
 case "${DBTYPE}" in
-"pgsql" ) 
+"pgsql" )
     # PostgreSQL
     echo "dropdb..."
     sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
@@ -115,23 +146,36 @@ case "${DBTYPE}" in
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
     echo "insert data..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}
+    for S in $SEQUENCES
+    do
+	echo "CREATE SEQUENCE $S START 10000;" >> ${OPTIONAL_SQL_FILE}
+    done
     echo "execute optional SQL..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${OPTIONAL_SQL_FILE} ${DBNAME}
 ;;
-"mysql" ) 
+"mysql" )
+    DBPASS=`echo $DBPASS | tr -d " "`
+    if [ -n ${DBPASS} ]; then
+	PASSOPT="--password=$DBPASS"
+	CONFIGPASS=$DBPASS
+    fi
     # MySQL
     echo "dropdb..."
-    ${MYSQL} -u ${ROOTUSER} -p${ROOTPASS} -e "drop database ${DBNAME}"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database ${DBNAME}"
     echo "createdb..."
-    ${MYSQL} -u ${ROOTUSER} -p${ROOTPASS} -e "create database ${DBNAME}"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database ${DBNAME}"
     #echo "grant user..."
-    #${MYSQL} -u ${ROOTUSER} -p${ROOTPASS} -e "GRANT ALL ON ${DBNAME}.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
+    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON ${DBNAME}.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
     echo "create table..."
-    ${MYSQL} -u ${DBUSER} -p${DBPASS} ${DBNAME} < ${SQL_DIR}/create_table_mysql.sql
+    ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/create_table_mysql.sql
     echo "insert data..."
-    ${MYSQL} -u ${DBUSER} -p${DBPASS} ${DBNAME} < ${SQL_DIR}/insert_data.sql
+    ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/insert_data.sql
+    for S in $SEQUENCES
+    do
+	echo "CREATE TABLE $S ( sequence int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (sequence)) ENGINE=MyISAM DEFAULT CHARSET=utf8; LOCK TABLES $S WRITE; INSERT INTO $S VALUES (10000); UNLOCK TABLES;" >> ${OPTIONAL_SQL_FILE}
+    done
     echo "execute optional SQL..."
-    ${MYSQL} -u ${DBUSER} -p${DBPASS} ${DBNAME} < ${OPTIONAL_SQL_FILE}
+    ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${OPTIONAL_SQL_FILE}
 ;;
 esac
 
@@ -150,7 +194,7 @@ define('ROOT_URLPATH', '/');
 define('DOMAIN_NAME', '${DOMAIN_NAME}');
 define('DB_TYPE', '${DBTYPE}');
 define('DB_USER', '${DBUSER}');
-define('DB_PASSWORD', '${DBPASS}');
+define('DB_PASSWORD', '${CONFIGPASS}');
 define('DB_SERVER', '${DBSERVER}');
 define('DB_NAME', '${DBNAME}');
 define('DB_PORT', '${DBPORT}');
