@@ -440,7 +440,11 @@ function selectAll(target) {
                 <input type="checkbox" name="<!--{$key}-->" value="1" />削除<br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
+                商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}-->
+                <!--{if $arrRecommend[$recommend_no].product_code_min != $arrRecommend[$recommend_no].product_code_max}-->
+                    ～ <!--{$arrRecommend[$recommend_no].product_code_max}-->
+                <!--{/if}-->
+                <br />
                 商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>

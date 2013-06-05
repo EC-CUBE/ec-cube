@@ -281,7 +281,11 @@
                     </th>
                     <td>
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
-                            商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
+                            商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}-->
+                            <!--{if $arrRecommend[$recommend_no].product_code_min != $arrRecommend[$recommend_no].product_code_max}-->
+                                ～ <!--{$arrRecommend[$recommend_no].product_code_max}-->
+                            <!--{/if}-->
+                            <br />
                             商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                             コメント:<br />
                             <!--{$arrRecommend[$recommend_no].comment|h|nl2br}-->
