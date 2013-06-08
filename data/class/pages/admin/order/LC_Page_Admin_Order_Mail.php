@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex 
+class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -162,6 +157,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
         $col = 'send_date, subject, template_id, send_id';
         $where = 'order_id = ?';
         $objQuery->setOrder('send_date DESC');
+
         return $objQuery->select($col, 'dtb_mail_history', $where, array($order_id));
     }
 
@@ -189,6 +185,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
             // TODO $SC_SendMail から送信がちゃんと出来たか確認できたら素敵。
             return true;
         }
+
         return $arrErr;
     }
 
@@ -216,6 +213,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
             $this->tpl_mainpage = 'order/mail_confirm.tpl';
             return true;
         }
+
         return $arrErr;
     }
 

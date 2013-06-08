@@ -1,5 +1,4 @@
 <?php
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Log.php';
 require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
@@ -11,7 +10,7 @@ require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_Base extends LC_Page_Ex 
+class LC_Page_Upgrade_Base extends LC_Page_Ex
 {
     function isValidIP()
     {
@@ -26,6 +25,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
             return true;
         }
         $objLog->log('* refused ip ' . $_SERVER['REMOTE_ADDR']);
+
         return false;
     }
 
@@ -43,7 +43,6 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
 
         if (isset($arrRet[0]['auto_update_flg'])
         && $arrRet[0]['auto_update_flg'] === '1') {
-
             return true;
         }
 
@@ -86,6 +85,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
         if ($objSess->isSuccess() === SUCCESS) {
             return true;
         }
+
         return false;
     }
 
@@ -103,6 +103,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('*', 'dtb_ownersstore_settings');
+
         return isset($arrRet[0]['public_key'])
             ? $arrRet[0]['public_key']
             : null;

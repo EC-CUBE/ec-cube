@@ -35,7 +35,6 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
     modeHidden = mode;
 
     for(i = 0; i < arrTree.length; i++) {
-
         id = arrTree[i][0];
         level = arrTree[i][3];
 
@@ -151,7 +150,6 @@ function fnDrow(id, tree) {
 
 // 階層ツリーメニュー表示・非表示処理
 function fnTreeMenu(tName, imgName, path) {
-
     tMenu = $("#" + tName);
 
     if(tMenu.css("display") == 'none') {
@@ -170,7 +168,6 @@ function fnTreeMenu(tName, imgName, path) {
 
 // ファイルリストダブルクリック処理
 function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
-
     if(is_dir) {
         if(!is_parent) {
             for(cnt = 0; cnt < arrTree.length; cnt++) {
@@ -192,7 +189,6 @@ function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
 
 // フォルダオープン処理
 function fnFolderOpen(path) {
-
     // クリックしたフォルダ情報を保持
     document.form1[selectFileHidden].value = path;
     // treeの状態をセット
@@ -200,7 +196,6 @@ function fnFolderOpen(path) {
     // submit
     fnModeSubmit(modeHidden,'','');
 }
-
 
 // 閲覧ブラウザ取得
 function fnGetMyBrowser() {

@@ -32,7 +32,7 @@ class SC_Helper_Holiday
 {
     /**
      * 休日の情報を取得.
-     * 
+     *
      * @param integer $holiday_id 休日ID
      * @param boolean $has_deleted 削除された休日も含む場合 true; 初期値 false
      * @return array
@@ -45,6 +45,7 @@ class SC_Helper_Holiday
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select('*', 'dtb_holiday', $where, array($holiday_id));
+
         return $arrRet[0];
     }
 
@@ -65,12 +66,13 @@ class SC_Helper_Holiday
         $table = 'dtb_holiday';
         $objQuery->setOrder('rank DESC');
         $arrRet = $objQuery->select($col, $table, $where);
+
         return $arrRet;
     }
 
     /**
      * 休日の登録.
-     * 
+     *
      * @param array $sqlval
      * @return multiple 登録成功:休日ID, 失敗:FALSE
      */
@@ -94,12 +96,13 @@ class SC_Helper_Holiday
             $where = 'holiday_id = ?';
             $ret = $objQuery->update('dtb_holiday', $sqlval, $where, array($holiday_id));
         }
+
         return ($ret) ? $sqlval['holiday_id'] : FALSE;
     }
 
     /**
      * 休日の削除.
-     * 
+     *
      * @param integer $holiday_id 休日ID
      * @return void
      */
@@ -112,7 +115,7 @@ class SC_Helper_Holiday
 
     /**
      * 休日の表示順をひとつ上げる.
-     * 
+     *
      * @param integer $holiday_id 休日ID
      * @return void
      */
@@ -124,7 +127,7 @@ class SC_Helper_Holiday
 
     /**
      * 休日の表示順をひとつ下げる.
-     * 
+     *
      * @param integer $holiday_id 休日ID
      * @return void
      */
@@ -136,7 +139,7 @@ class SC_Helper_Holiday
 
     /**
      * 同じ日付の休日が存在するか確認.
-     * 
+     *
      * @param integer $month
      * @param integer $day
      * @param integer $holiday_id

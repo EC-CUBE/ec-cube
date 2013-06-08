@@ -135,14 +135,14 @@
                         var historyEl = $(".arrowBox").get(maxCnt);
                         historyEl = $(historyEl).clone(true).insertAfter(historyEl);
                         maxCnt++;
-                        
+
                         var regex = new RegExp('([0-9]{2,4}).([0-9]{1,2}).([0-9]{1,2}).([0-9]{1,2}).([0-9]{1,2}).');
                         var matches = history.create_date.match(regex);
                         var formatted_date = history.create_date;
                         if(matches != null){
                             formatted_date = matches[1]+'/'+matches[2]+'/'+matches[3]+' '+matches[4]+':'+matches[5];
                         }
-                        
+
                         var formatted_payment_total = history.payment_total.toString().replace(/([0-9]+?)(?=(?:[0-9]{3})+$)/g , '$1,');
 
                         //注文番号をセット

@@ -12,13 +12,10 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_Session 
+class SC_Helper_Session
 {
-
     var $objDb;
 
-    // }}}
-    // {{{ constructor
 
     /**
      * デフォルトコンストラクタ.
@@ -39,9 +36,6 @@ class SC_Helper_Session
         // XXX APC による MDB2 の破棄タイミングによる不具合を回避する目的
         register_shutdown_function('session_write_close');
     }
-
-    // }}}
-    // {{{ functions
 
     /**
      * セッションを開始する.
@@ -109,6 +103,7 @@ class SC_Helper_Session
                 $objQuery->insert('dtb_session', $sqlval);
             }
         }
+
         return true;
     }
 
@@ -124,6 +119,7 @@ class SC_Helper_Session
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete('dtb_session', 'sess_id = ?', array($id));
+
         return true;
     }
 
@@ -141,6 +137,7 @@ class SC_Helper_Session
         $limit = date("Y-m-d H:i:s",time() - MAX_LIFETIME);
         $where = "update_date < '". $limit . "' ";
         $objQuery->delete('dtb_session', $where);
+
         return true;
     }
 
@@ -167,6 +164,7 @@ class SC_Helper_Session
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
             $_SESSION[TRANSACTION_ID_NAME] = SC_Helper_Session_Ex::createToken();
         }
+
         return $_SESSION[TRANSACTION_ID_NAME];
     }
 
@@ -207,6 +205,7 @@ class SC_Helper_Session
         if ($is_unset || $ret === false) {
             SC_Helper_Session_Ex::destroyToken();
         }
+
         return $ret;
     }
 

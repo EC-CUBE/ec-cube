@@ -69,4 +69,3 @@ class SC_Helper_DB_sfDataExists extends SC_Helper_DB_TestBase
 
 }
 
-

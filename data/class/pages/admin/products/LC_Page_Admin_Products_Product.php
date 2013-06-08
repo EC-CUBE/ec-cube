@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/products/LC_Page_Admin_Products_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/products/LC_Page_Admin_Produ
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex 
+class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -79,7 +74,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
 
         // アップロードファイル情報の初期化
@@ -494,6 +488,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
         }
 
         $arrErr = array_merge((array)$arrErr, (array)$objErr->arrErr);
+
         return $arrErr;
     }
 
@@ -843,6 +838,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_products', $where, $sqlval);
+
         return $exists;
     }
 
@@ -962,6 +958,7 @@ __EOF__;
                 $arrRecommend[$i]['comment'] = $arrForm[$commentkey];
             }
         }
+
         return $arrRecommend;
     }
 
@@ -1140,7 +1137,7 @@ __EOF__;
         // 商品ステータス設定
         $objProduct = new SC_Product_Ex();
         $objProduct->setProductStatus($product_id, $arrList['product_status']);
-        
+
         // 税情報設定
         SC_Helper_TaxRule_Ex::setTaxRuleForProduct($arrList['tax_rate'], $arrList['product_id'], $arrList['product_class_id']);
 
@@ -1148,6 +1145,7 @@ __EOF__;
         $this->lfInsertRecommendProducts($objQuery, $arrList, $product_id);
 
         $objQuery->commit();
+
         return $product_id;
     }
 
@@ -1286,6 +1284,7 @@ __EOF__;
         } else {
             $objQuery->commit();
         }
+
         return !$err_flag;
     }
 
@@ -1313,6 +1312,7 @@ __EOF__;
             $dist_name = '_sub' .$arrRet[1];
             break;
         }
+
         return $dist_name;
     }
 

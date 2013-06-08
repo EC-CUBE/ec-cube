@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -166,6 +161,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
+
         return $objErr->arrErr;
     }
 
@@ -193,6 +189,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
             $data['name'] = $arrProducts[$data['product_id']]['name'];
             $arrReturnProducts[$data['rank']] = $data;
         }
+
         return $arrReturnProducts;
     }
 
@@ -247,6 +244,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
             'main_list_image' => $arrProduct['main_list_image'],
             'name' => $arrProduct['name']
         );
+
         return $return;
     }
 
@@ -265,6 +263,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
             }
             $arrItems[$rank]['rank'] = $rank;
         }
+
         return $arrItems;
     }
 

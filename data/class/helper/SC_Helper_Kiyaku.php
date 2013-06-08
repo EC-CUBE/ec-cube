@@ -32,7 +32,7 @@ class SC_Helper_Kiyaku
 {
     /**
      * 会員規約の情報を取得.
-     * 
+     *
      * @param integer $kiyaku_id 会員規約ID
      * @param boolean $has_deleted 削除された会員規約も含む場合 true; 初期値 false
      * @return array
@@ -45,6 +45,7 @@ class SC_Helper_Kiyaku
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select('*', 'dtb_kiyaku', $where, array($kiyaku_id));
+
         return $arrRet[0];
     }
 
@@ -65,12 +66,13 @@ class SC_Helper_Kiyaku
         $table = 'dtb_kiyaku';
         $objQuery->setOrder('rank DESC');
         $arrRet = $objQuery->select($col, $table, $where);
+
         return $arrRet;
     }
 
     /**
      * 会員規約の登録.
-     * 
+     *
      * @param array $sqlval
      * @return multiple 登録成功:会員規約ID, 失敗:FALSE
      */
@@ -94,12 +96,13 @@ class SC_Helper_Kiyaku
             $where = 'kiyaku_id = ?';
             $ret = $objQuery->update('dtb_kiyaku', $sqlval, $where, array($kiyaku_id));
         }
+
         return ($ret) ? $sqlval['kiyaku_id'] : FALSE;
     }
 
     /**
      * 会員規約の削除.
-     * 
+     *
      * @param integer $kiyaku_id 会員規約ID
      * @return void
      */
@@ -112,7 +115,7 @@ class SC_Helper_Kiyaku
 
     /**
      * 会員規約の表示順をひとつ上げる.
-     * 
+     *
      * @param integer $kiyaku_id 会員規約ID
      * @return void
      */
@@ -124,7 +127,7 @@ class SC_Helper_Kiyaku
 
     /**
      * 会員規約の表示順をひとつ下げる.
-     * 
+     *
      * @param integer $kiyaku_id 会員規約ID
      * @return void
      */
@@ -136,7 +139,7 @@ class SC_Helper_Kiyaku
 
     /**
      * 同じタイトルの規約が存在するか確認.
-     * 
+     *
      * @param string $title 規約タイトル
      * @param integer $kiyaku_id 会員規約ID
      * @return boolean 同名のタイトルが存在:TRUE
@@ -144,15 +147,15 @@ class SC_Helper_Kiyaku
     public function isTitleExist($title, $kiyaku_id = NULL)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         $where  = 'del_flg = 0 AND kiyaku_title = ?';
         $arrVal = array($title);
-        
+
         if(!SC_Utils_Ex::isBlank($kiyaku_id)) {
             $where   .= ' AND kiyaku_id <> ?';
             $arrVal[] = $kiyaku_id;
         }
-        
+
         $arrRet = $objQuery->select('kiyaku_id, kiyaku_title', 'dtb_kiyaku', $where, $arrVal);
 
         return !SC_Utils_Ex::isBlank($arrRet);

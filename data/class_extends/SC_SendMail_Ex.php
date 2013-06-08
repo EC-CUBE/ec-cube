@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'SC_SendMail.php';
 
 /**
@@ -33,6 +32,6 @@ require_once CLASS_REALDIR . 'SC_SendMail.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SendMail_Ex extends SC_SendMail 
+class SC_SendMail_Ex extends SC_SendMail
 {
 }

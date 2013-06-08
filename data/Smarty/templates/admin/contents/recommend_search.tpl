@@ -117,14 +117,14 @@ function func_submit( id ){
             <td><!--{$arr.name|h}--></td>
             <td class="center"><a href="" onclick="return func_submit(<!--{$arr.product_id}-->)">決定</a></td>
         </tr>
-        <!--▲商品<!--{$smarty.foreach.loop.iteration}-->-->    
+        <!--▲商品<!--{$smarty.foreach.loop.iteration}-->-->
         <!--{/foreach}-->
         <!--{if !$tpl_linemax>0}-->
         <tr>
             <td colspan="4">商品が登録されていません</td>
         </tr>
         <!--{/if}-->
-        
+
     </table>
     <!--{/if}-->
     <!--{* ▲検索結果表示 *}-->

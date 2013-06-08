@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_Product.php';
 
-class SC_Product_Ex extends SC_Product 
+class SC_Product_Ex extends SC_Product
 {
 }

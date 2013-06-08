@@ -21,7 +21,6 @@
  *}-->
 <script type="text/javascript">
 function lfnChangePort(db_type) {
-
     type = db_type.value;
 
     if (type == 'pgsql') {

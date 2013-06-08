@@ -291,7 +291,6 @@ function fnChangeDisabled(list, color) {
     }
 }
 
-
 // ログイン時の入力チェック
 function fnCheckLogin(formname) {
     var lstitem = new Array();
@@ -354,10 +353,8 @@ function fnCharCount(form,sch,cnt) {
     document.forms[form][cnt].value= document.forms[form][sch].value.length;
 }
 
-
 // テキストエリアのサイズを変更する.
 function ChangeSize(buttonSelector, textAreaSelector, max, min) {
-
     if ($(textAreaSelector).attr('rows') <= min) {
         $(textAreaSelector).attr('rows', max);
         $(buttonSelector).text('縮小');

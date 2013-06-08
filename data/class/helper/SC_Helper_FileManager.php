@@ -28,9 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_FileManager 
+class SC_Helper_FileManager
 {
-
     /**
      * 指定パス配下のディレクトリ取得する.
      *
@@ -55,7 +54,6 @@ class SC_Helper_FileManager
                 foreach ($arrDir as $file) {
                     // ./ と ../を除くファイルのみを取得
                     if ($file != '.' && $file != '..') {
-
                         $path = $dir.'/'.$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
                         $file_size = SC_Utils_Ex::sfCutString(SC_Helper_FileManager::sfGetDirSize($path), FILE_NAME_LEN);
@@ -133,7 +131,6 @@ class SC_Helper_FileManager
      */
     function sfGetFileTree($dir, $tree_status)
     {
-
         $cnt = 0;
         $arrTree = array();
         $default_rank = count(explode('/', $dir));
@@ -175,7 +172,6 @@ class SC_Helper_FileManager
      */
     function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status)
     {
-
         if (file_exists($dir)) {
             $handle = opendir($dir);
             if ($handle) {
@@ -332,6 +328,7 @@ class SC_Helper_FileManager
         if (fwrite($fp, $value) === false) {
             return false;
         }
+
         return fclose($fp);;
     }
 
@@ -400,6 +397,7 @@ class SC_Helper_FileManager
         SC_Helper_FileManager_Ex::deleteFile($dir . '/' . $unpacking_name);
         // 圧縮ファイル削除
         unlink($path);
+
         return $result;
     }
 
@@ -444,6 +442,7 @@ class SC_Helper_FileManager
             GC_Utils_Ex::gfPrintLog($path . ' を削除します.');
             $flg = @unlink($path);
         }
+
         return $flg;
     }
 }

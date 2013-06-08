@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Shopping_Complete.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Shopping_Complete extends LC_Page_Ex 
+class LC_Page_Shopping_Complete extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -67,7 +62,6 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
      */
     function action()
     {
-
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         unset($_SESSION['order_id']);
 

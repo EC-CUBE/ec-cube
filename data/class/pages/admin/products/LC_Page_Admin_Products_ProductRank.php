@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objDb = new SC_Helper_DB_Ex();
         $objCategory = new SC_Helper_Category_Ex();
 
@@ -104,7 +98,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
         }
 
         $this->arrTree = $objCategory->getTree();
-        $this->arrParentID = $objCategory->getTreeTrail($this->arrForm['parent_category_id']);     
+        $this->arrParentID = $objCategory->getTreeTrail($this->arrForm['parent_category_id']);
         $this->arrProductsList = $this->lfGetProduct($this->arrForm['parent_category_id']);
         $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
@@ -150,6 +144,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
         $objQuery->setOrder('rank DESC, alldtl.product_id DESC');
 
         $arrRet = $objQuery->select($col, $table, $where, array($category_id));
+
         return $arrRet;
     }
 
@@ -179,6 +174,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
             WHERE dtb_product_categories.category_id = ?
 __EOS__;
         $arrRet = $objQuery->query($sql, array($parent_category_id));
+
         return $arrRet;
     }
 

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,9 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex 
+class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
 {
-
     /** SC_FormParamのインスタンス */
     var $objForm;
 
@@ -43,8 +41,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
     /** バリデーションエラー情報を格納する連想配列 */
     var $arrErr;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.

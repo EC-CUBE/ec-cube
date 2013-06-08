@@ -81,7 +81,6 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
 
     }
 
-
     // best_idが存在するが、del_flg=1の場合、空が帰る。
     public function testGetBestProducts_おすすめIDがあり_かつ削除済みの場合_空が返る(){
 

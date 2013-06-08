@@ -30,7 +30,6 @@
  */
 require_once CLASS_REALDIR . 'api/operations/ItemLookup.php';
 
-class API_ItemLookup_Ex extends API_ItemLookup 
+class API_ItemLookup_Ex extends API_ItemLookup
 {
-
 }

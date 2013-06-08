@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_MobileUserAgent.php';
 
-class SC_MobileUserAgent_Ex extends SC_MobileUserAgent 
+class SC_MobileUserAgent_Ex extends SC_MobileUserAgent
 {
 }

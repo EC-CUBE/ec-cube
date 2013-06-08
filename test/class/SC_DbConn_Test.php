@@ -268,7 +268,6 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
         $this->verify();
     }
 
-
     /**
      * SC_DbConn::prepare() は未使用
      */
@@ -298,6 +297,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
             . "column2 varchar(20),"
             . "column3 char(1)"
             . ")";
+
         return $this->objDbConn->query($sql);
     }
 
@@ -309,6 +309,7 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
         if (PEAR::isError($result)) {
             var_dump($result);
         }
+
         return $result;
     }
 }

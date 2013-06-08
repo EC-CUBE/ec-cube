@@ -178,7 +178,6 @@ class SC_Fpdf extends SC_Helper_FPDI
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
-
             // 購入数量
             $data[0] = $this->arrDisp['quantity'][$i];
 

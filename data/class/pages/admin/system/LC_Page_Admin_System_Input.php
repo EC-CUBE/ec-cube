@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -93,7 +88,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
                 $this->arrForm = $objFormParam->getHashArray();
 
                 if (SC_Utils_Ex::isBlank($arrErr)) {
-
                     $this->insertMemberData($this->arrForm);
                     // 親ウィンドウを更新後、自ウィンドウを閉じる。
                     $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
@@ -122,7 +116,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
                 $this->arrForm = $objFormParam->getHashArray();
 
                 if (SC_Utils_Ex::isBlank($arrErr)) {
-
                     $this->updateMemberData($this->arrForm['member_id'], $this->arrForm);
                     // 親ウィンドウを更新後、自ウィンドウを閉じる。
                     $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
@@ -283,6 +276,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
         $where   = 'member_id = ?';
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->getRow($columns, $table, $where, array($id));
     }
 
@@ -300,6 +294,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
         $table = 'dtb_member';
 
         $exists = $objQuery->exists($table, $where, array($val));
+
         return $exists;
     }
 
@@ -312,7 +307,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      */
     function lfCheckPageNo($pageno)
     {
-
         $clean_pageno = '';
 
         // $pagenoが0以上の整数かチェック

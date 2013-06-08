@@ -22,9 +22,8 @@
  */
 
 // テキスト/HTML　メール送信
-class SC_SendMail 
+class SC_SendMail
 {
-
     var $to;            // 送信先
     var $subject;       // 題名
     var $body;          // 本文
@@ -250,6 +249,7 @@ class SC_SendMail
         }
         $arrHeader['Date'] = date('D, j M Y H:i:s O');
         $arrHeader['Content-Transfer-Encoding'] = '7bit';
+
         return $arrHeader;
     }
 
@@ -258,6 +258,7 @@ class SC_SendMail
     {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = 'text/plain; charset="ISO-2022-JP"';
+
         return $arrHeader;
     }
 
@@ -266,6 +267,7 @@ class SC_SendMail
     {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = 'text/html; charset="ISO-2022-JP"';
+
         return $arrHeader;
     }
 
@@ -309,6 +311,7 @@ class SC_SendMail
             GC_Utils_Ex::gfDebugLog($header);
             return false;
         }
+
         return true;
     }
 
@@ -361,6 +364,7 @@ class SC_SendMail
                 trigger_error('不明なバックエンド。[$backend = ' . var_export($backend, true) . ']', E_USER_ERROR);
                 exit;
         }
+
         return $arrParams;
     }
 }

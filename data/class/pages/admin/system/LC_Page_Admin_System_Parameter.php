@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,11 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
 {
-
-    // {{{ properties
-
     /** 定数キーとなる配列 */
     var $arrKeys;
 
@@ -45,8 +41,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
     /** 定数値となる配列 */
     var $arrValues;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -81,7 +75,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $masterData = new SC_DB_MasterData_Ex();
 
         // キーの配列を生成
@@ -165,6 +158,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
                                   $arrForm[$arrKeys[$i]]),
                             array('EXIST_CHECK_REVERSE', 'EVAL_CHECK'));
         }
+
         return $objErr->arrErr;
     }
 
@@ -182,6 +176,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
             $keys[$i] = $key;
             $i++;
         }
+
         return $keys;
     }
 }

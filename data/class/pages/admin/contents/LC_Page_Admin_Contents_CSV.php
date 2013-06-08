@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -75,7 +70,6 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター設定
@@ -148,6 +142,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
         } else {
             $arrData = array();
         }
+
         return $arrData;
     }
 
@@ -163,6 +158,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
         if (!isset($arrData['no'])) {
             $arrData['no'] = array();
         }
+
         return $arrData['no'];
     }
 
@@ -180,6 +176,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
             $arrData['disp_name'] = array();
         }
         $arrData = SC_Utils_Ex::sfArrCombine($arrData['no'], $arrData['disp_name']);
+
         return $arrData;
     }
 
@@ -209,6 +206,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
             $arrKey = array_keys($objCSV->arrSubnavi);
             $csv_id = $arrKey[0];
         }
+
         return $csv_id;
     }
 
@@ -224,6 +222,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
         if (!isset($arrData['no'])) {
             $arrData['no'] = array();
         }
+
         return $this->lfUpdCsvOutput($csv_id, $arrData['no']);
     }
 
@@ -256,6 +255,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
             }
         }
         $objQuery->commit();
+
         return true;
     }
 }

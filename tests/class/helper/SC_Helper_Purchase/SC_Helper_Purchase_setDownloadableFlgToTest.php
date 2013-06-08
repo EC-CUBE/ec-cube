@@ -111,7 +111,6 @@ class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_Tes
     $this->verify('ダウンロード可能フラグ設定結果');
   }
 
-
   //////////////////////////////////////////
 
 }

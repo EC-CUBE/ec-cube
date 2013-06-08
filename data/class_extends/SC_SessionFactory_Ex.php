@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_SessionFactory.php';
 
-class SC_SessionFactory_Ex extends SC_SessionFactory 
+class SC_SessionFactory_Ex extends SC_SessionFactory
 {
 }

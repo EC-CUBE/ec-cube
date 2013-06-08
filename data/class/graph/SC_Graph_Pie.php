@@ -71,6 +71,7 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
         }
         // 合計が360になるように補正しておく
         $arrRet[0] -= $new_total - 360;
+
         return $arrRet;
     }
 

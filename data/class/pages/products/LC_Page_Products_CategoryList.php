@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Products_CategoryList extends LC_Page_Ex 
+class LC_Page_Products_CategoryList extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -65,7 +60,6 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      */
     function action()
     {
-
         // カテゴリIDの正当性チェック
         $this->lfCheckCategoryId();
 
@@ -95,6 +89,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
         if ($category_id && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')) {
             return 0;
         }
+
         return $category_id;
     }
 
@@ -170,6 +165,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
         $objFormParam->setParam($arrRequest);
         // 入力値の変換
         $objFormParam->convParam();
+
         return $objFormParam;
     }
 

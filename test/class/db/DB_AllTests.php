@@ -42,6 +42,7 @@ class DB_AllTests extends PHPUnit_Framework_TestCase
         $suite = new PHPUnit_Framework_TestSuite('SC_DB');
         $suite->addTestSuite('SC_DB_DBFactory_Test');
         $suite->addTestSuite('SC_DB_MasterData_Test');
+
         return $suite;
     }
 }

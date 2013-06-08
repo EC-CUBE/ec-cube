@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -33,10 +32,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  */
 class LC_Page_XXX extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -90,7 +85,6 @@ class LC_Page_XXX extends LC_Page_Ex
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/XXX/LC_Page_XXX.php';
 
 /**
@@ -104,10 +98,6 @@ require_once CLASS_REALDIR . 'pages/XXX/LC_Page_XXX.php';
  */
 class LC_Page_XXX_Ex extends LC_Page_XXX
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -162,12 +152,9 @@ class LC_Page_XXX_Ex extends LC_Page_XXX
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
- // {{{ requires
 require_once './require.php';
 require_once CLASS_REALDIR . 'page_extends/LC_Page_XXX_Ex.php';
 
-// }}}
-// {{{ generate page
 
 $$objPage = new LC_Page_XXX_Ex();
 $$objPage-&gt;init();

@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -32,12 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Home extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Home extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -68,7 +63,6 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // DBバージョンの取得
         $this->db_version = $this->lfGetDBVersion();
 
@@ -138,6 +132,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
     function lfGetDBVersion()
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
+
         return $dbFactory->sfGetDBVersion();
     }
 
@@ -152,6 +147,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
         $col = 'COUNT(customer_id)';
         $table = 'dtb_customer';
         $where = 'del_flg = 0 AND status = 2';
+
         return $objQuery->get($col, $table, $where);
     }
 
@@ -168,6 +164,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getOrderYesterdaySql($method);
+
         return $objQuery->getOne($sql);
     }
 
@@ -185,6 +182,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getOrderMonthSql($method);
+
         return $objQuery->getOne($sql, array($month));
     }
 
@@ -200,6 +198,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
         $col = 'SUM(point)';
         $where = 'del_flg = 0';
         $from = 'dtb_customer';
+
         return $objQuery->get($col, $from, $where);
     }
 
@@ -215,6 +214,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $sql = $dbFactory->getReviewYesterdaySql();
+
         return $objQuery->getOne($sql);
     }
 
@@ -229,6 +229,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
 
         $table = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id';
         $where = 'A.del_flg = 0 AND A.status = 2 AND B.del_flg = 0';
+
         return $objQuery->count($table, $where);
     }
 
@@ -247,6 +248,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
                . 'SELECT product_id FROM dtb_products_class '
                . 'WHERE del_flg = 0 AND stock_unlimited = ? AND stock <= 0)'
                . ' AND del_flg = 0';
+
         return $objQuery->select($cols, $table, $where, array(UNLIMITED_FLG_LIMITED));
     }
 
@@ -305,6 +307,7 @@ __EOS__;
             $arrNewOrder[$key]['create_date'] = str_replace('-', '/', substr($val['create_date'], 0,19));
 
         }
+
         return $arrNewOrder;
     }
 
@@ -347,6 +350,7 @@ __EOS__;
         foreach ($arrTmpData as $objData) {
             $arrInfo[] = get_object_vars($objData);
         }
+
         return $arrInfo;
     }
 }

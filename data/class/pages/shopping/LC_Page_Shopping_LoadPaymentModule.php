@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -34,12 +33,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex 
+class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -57,7 +52,6 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
      */
     function process()
     {
-
         $order_id = $this->getOrderId();
         if ($order_id === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
@@ -105,6 +99,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
         if (file_exists($module_path)) {
             return $module_path;
         }
+
         return false;
     }
 
@@ -142,6 +137,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
             && SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
             return $_GET['order_id'];
         }
+
         return false;
     }
 

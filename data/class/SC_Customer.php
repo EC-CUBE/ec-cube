@@ -24,9 +24,8 @@
 /*  [名称] SC_Customer
  *  [概要] 会員管理クラス
  */
-class SC_Customer 
+class SC_Customer
 {
-
     /** 会員情報 */
     var $customer_data;
 
@@ -55,6 +54,7 @@ class SC_Customer
             $this->startSession();
             return true;
         }
+
         return false;
     }
 
@@ -79,6 +79,7 @@ class SC_Customer
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_customer', 'mobile_phone_id = ? AND del_flg = 0 AND status = 2', array($_SESSION['mobile']['phone_id']));
+
         return $exists;
     }
 
@@ -113,6 +114,7 @@ class SC_Customer
             $this->startSession();
             return true;
         }
+
         return false;
     }
 
@@ -210,6 +212,7 @@ class SC_Customer
                 return true;
             }
         }
+
         return false;
     }
 
@@ -239,6 +242,7 @@ class SC_Customer
         if (isset($_SESSION['customer'][$keyname])) {
             return !SC_Utils_Ex::isBlank($_SESSION['customer'][$keyname]);
         }
+
         return false;
     }
 
@@ -254,6 +258,7 @@ class SC_Customer
                 return true;
             }
         }
+
         return false;
     }
 
@@ -267,7 +272,6 @@ class SC_Customer
      */
     function getRemoteHost()
     {
-
         if (!empty($_SERVER['REMOTE_HOST'])) {
             return $_SERVER['REMOTE_HOST'];
         } elseif (!empty($_SERVER['REMOTE_ADDR'])) {

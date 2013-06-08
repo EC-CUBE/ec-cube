@@ -37,7 +37,7 @@
 <!--{/foreach}-->
 <div id="order" class="contents-main">
     <h2>メール配信</h2>
-    
+
     <!--{if $order_id_count == 1}-->
     <table class="list">
         <tr>

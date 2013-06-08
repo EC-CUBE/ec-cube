@@ -39,6 +39,7 @@ class Page_AllTests extends PHPUnit_Framework_TestCase
     {
         $suite = new PHPUnit_Framework_TestSuite('Page');
         $suite->addTestSuite('LC_Page_Test');
+
         return $suite;
     }
 }

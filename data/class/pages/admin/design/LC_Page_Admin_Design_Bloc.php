@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -74,7 +69,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
@@ -184,6 +178,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
     function getBlocTemplate($bloc_id, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrBloc = $objBloc->get($bloc_id);
+
         return $arrBloc;
     }
 
@@ -255,6 +250,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
         if (!SC_Utils_Ex::isBlank($arrBloc)) {
             $objErr->arrErr['filename'] = '※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。<br />';
         }
+
         return $objErr->arrErr;
     }
 }

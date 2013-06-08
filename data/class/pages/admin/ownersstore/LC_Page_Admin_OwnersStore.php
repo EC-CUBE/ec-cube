@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex 
+class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -281,6 +276,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         if (!empty($plugin)) {
             return true;
         }
+
         return false;
     }
 
@@ -300,6 +296,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         $array_file_name = array_diff($array_ext, array('tar','gz'));
         // 結合
         $plugin_code = implode('.', $array_file_name);
+
         return $plugin_code;
     }
 
@@ -312,6 +309,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     function getPluginDir($plugin_code)
     {
         $plugin_dir_path = PLUGIN_UPLOAD_REALDIR . $plugin_code . '/';
+
         return $plugin_dir_path;
     }
 
@@ -324,6 +322,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     function getHtmlPluginDir($plugin_code)
     {
         $plugin_html_dir_path = PLUGIN_HTML_REALDIR . $plugin_code . '/';
+
         return $plugin_html_dir_path;
     }
 
@@ -337,6 +336,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     function getPluginFilePath($plugin_code , $plugin_class)
     {
         $plugin_file_path = $this->getPluginDir($plugin_code) . $plugin_class . '.php';
+
         return $plugin_file_path;
     }
 
@@ -427,6 +427,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
 
         // 不要なファイルの削除
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
+
         return $arrErr;
     }
 
@@ -454,7 +455,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
 
     /**
      * プラグイン情報を取得します.
-     * 
+     *
      * @param ReflectionClass $objReflection
      * @return array プラグイン情報の配列
      */
@@ -487,6 +488,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
                 $arrPluginInfo[$key] = null;
             }
         }
+
         return $arrPluginInfo;
     }
 
@@ -557,6 +559,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
                     $arrErr['plugin_file'] .= $error;
             }
         }
+
         return $arrErr;
     }
 
@@ -639,6 +642,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
             $arrErr['plugin_file'] = '※ 解凍に失敗しました。<br/>';
             return $arrErr;
         }
+
         return $arrErr;
     }
 
@@ -746,6 +750,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         $where = 'plugin_id = ?';
         // UPDATEの実行
         $ret = $objQuery->update('dtb_plugin', $sqlval, $where, array($plugin_id));
+
         return $ret;
     }
 
@@ -757,7 +762,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
      */
     function registerData($arrPluginInfo)
     {
-
         // プラグイン情報をDB登録.
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
@@ -818,6 +822,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
                 }
             }
         }
+
         return $objQuery->commit();
     }
 
@@ -832,10 +837,11 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     {
         $arrErr = array();
         if (file_exists($file_path)) {
-            require_once $file_path; 
+            require_once $file_path;
         } else {
             $arrErr[$key] = '※ ' . $file_path .'の読み込みに失敗しました。<br/>';
         }
+
         return $arrErr;
     }
 
@@ -859,6 +865,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         } else {
             $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
+
         return $arrErr;
     }
 
@@ -904,6 +911,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         $where = 'plugin_id = ?';
         // UPDATEの実行
         $ret = $objQuery->update('dtb_plugin', $sqlval, $where, array($plugin_id));
+
         return $ret;
     }
 
@@ -952,6 +960,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
             }
             closedir($handle);
         }
+
         return false;
     }
 
@@ -969,6 +978,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         foreach ($arrayFile as  $value) {
             if ($value['filename'] === $file_path) return true;
         }
+
         return false;
     }
 
@@ -1019,6 +1029,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         foreach ($arrConflictPluginName as $conflictPluginName) {
             $conflict_alert_message .= '* ' .  $conflictPluginName . 'と競合する可能性があります。<br/>';
         }
+
         return $conflict_alert_message;
     }
 
@@ -1033,6 +1044,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         if (is_array($error) && count($error) > 0) {
             return true;
         }
+
         return false;
     }
 
@@ -1048,6 +1060,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
 
         $table = 'dtb_plugin_hookpoint';
         $where = 'plugin_id = ?';
+
         return $objQuery->select('*', $table, $where, array($plugin_id));
     }
 }

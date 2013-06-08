@@ -30,9 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_Default extends SC_Api_Abstract_Ex 
+class API_Default extends SC_Api_Abstract_Ex
 {
-
     protected $operation_name = 'Default';
     protected $operation_description = 'Default Operation';
     protected $default_auth_types = '99';
@@ -43,6 +42,7 @@ class API_Default extends SC_Api_Abstract_Ex
     public function doAction($arrParam)
     {
         $this->arrResponse = array('DefaultEmpty' => array());
+
         return true;
     }
 

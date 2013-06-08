@@ -36,7 +36,7 @@
         df = document.form1;
 
         // お届け先名のinputタグのnameを取得
-        var shipping_data = $('input[name^=shipping_name01]').attr('name'); 
+        var shipping_data = $('input[name^=shipping_name01]').attr('name');
         var shipping_slt  = shipping_data.split("shipping_name01");
 
         var shipping_key = "[0]";

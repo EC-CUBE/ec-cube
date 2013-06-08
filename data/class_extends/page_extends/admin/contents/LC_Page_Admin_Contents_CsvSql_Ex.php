@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/contents/LC_Page_Admin_Contents_CsvSql.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'pages/admin/contents/LC_Page_Admin_Contents_CsvSql
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_CsvSql_Ex extends LC_Page_Admin_Contents_CsvSql 
+class LC_Page_Admin_Contents_CsvSql_Ex extends LC_Page_Admin_Contents_CsvSql
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

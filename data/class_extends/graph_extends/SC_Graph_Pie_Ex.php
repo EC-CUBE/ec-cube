@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'graph/SC_Graph_Pie.php';
 
-class SC_Graph_Pie_Ex extends SC_Graph_Pie 
+class SC_Graph_Pie_Ex extends SC_Graph_Pie
 {
 }

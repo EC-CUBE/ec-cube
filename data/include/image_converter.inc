@@ -2,7 +2,7 @@
 /**
  * 画像ファイルの変換を行う
  */
-class ImageConverter 
+class ImageConverter
 {
     var $outputImageDir;         // 変換後の画像の保存先
     var $outputImageType;        // 変換後の画像の形式
@@ -229,6 +229,7 @@ class ImageConverter
                 }
             }
         }
+
         return array();
     }
 }

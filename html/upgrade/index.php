@@ -28,12 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-// {{{ requires
 require_once '../require.php';
 require_once '../' . ADMIN_DIR . 'require.php';
 
-// }}}
-// {{{ generate page
 
 $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
 $objPage = lfPageFactory($mode);

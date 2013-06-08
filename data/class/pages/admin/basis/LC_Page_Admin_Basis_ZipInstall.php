@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /** CSV ファイルの最大行数 */
@@ -43,9 +42,8 @@ define('ZIP_CSV_UTF8_REALFILE', DATA_REALDIR . 'downloads/KEN_ALL_utf-8.CSV');
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Basis_ZipInstall.php 16741 2007-11-08 00:43:24Z adachi $
  */
-class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
 {
-
     /** CSVの行数 */
     var $tpl_line = 0;
     var $tpl_mode;
@@ -58,8 +56,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
     /** 日本郵便から取得した ZIP アーカイブファイルの保管パス */
     var $zip_csv_temp_realfile;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -98,7 +94,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -307,6 +302,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         if (!$fp) {
             trigger_error(ZIP_CSV_UTF8_REALFILE . ' の読み込みに失敗しました。', E_USER_ERROR);
         }
+
         return $fp;
     }
 
@@ -335,6 +331,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
     function countMtbZip()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->count('mtb_zip');
     }
 

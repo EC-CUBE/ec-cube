@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -80,7 +75,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objNews = new SC_Helper_News_Ex();
 
         $objFormParam = new SC_FormParam_Ex();
@@ -184,6 +178,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         $objErr->doFunc(array('日付', 'year', 'month', 'day'), array('CHECK_DATE'));
+
         return $objErr->arrErr;
     }
 
@@ -205,7 +200,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 
     /**
      * 登録処理を実行.
-     * 
+     *
      * @param integer $news_id
      * @param array $sqlval
      * @param object $objNews
@@ -218,6 +213,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
         $sqlval['link_method'] = $this->checkLinkMethod($sqlval['link_method']);
         $sqlval['news_date'] = $this->getRegistDate($sqlval);
         unset($sqlval['year'], $sqlval['month'], $sqlval['day']);
+
         return $objNews->saveNews($sqlval);
     }
 
@@ -229,6 +225,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
     function getRegistDate($arrPost)
     {
         $registDate = $arrPost['year'] .'/'. $arrPost['month'] .'/'. $arrPost['day'];
+
         return $registDate;
     }
 
@@ -242,6 +239,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
         if (strlen($link_method) == 0) {
             $link_method = 1;
         }
+
         return $link_method;
     }
 

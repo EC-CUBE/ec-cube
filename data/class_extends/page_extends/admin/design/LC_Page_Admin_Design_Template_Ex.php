@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design_Template.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'pages/admin/design/LC_Page_Admin_Design_Template.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Template_Ex extends LC_Page_Admin_Design_Template 
+class LC_Page_Admin_Design_Template_Ex extends LC_Page_Admin_Design_Template
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

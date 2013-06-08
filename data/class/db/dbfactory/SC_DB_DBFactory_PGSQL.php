@@ -32,9 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory_PGSQL.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory 
+class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory
 {
-
     /**
      * DBのバージョンを取得する.
      *
@@ -46,6 +45,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
         $val = $objQuery->getOne('select version()');
         $arrLine = explode(' ' , $val);
+
         return $arrLine[0] . ' ' . str_replace(',', '', $arrLine[1]);
     }
 
@@ -143,6 +143,7 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory
                     END
             )
 __EOS__;
+
         return $sql;
     }
 
@@ -212,6 +213,7 @@ __EOS__;
             }
             $i++;
         }
+
         return $sql;
     }
 
@@ -241,6 +243,7 @@ __EOS__;
             .  ' ORDER BY 1,2;';
         $arrColList = $objQuery->getAll($sql, array('%' . $expression . '%'));
         $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
+
         return $arrColList[0];
     }
 
@@ -276,6 +279,7 @@ __EOS__;
         $col = 'tablename';
         $from = 'pg_tables';
         $where = "schemaname NOT IN ('pg_catalog', 'information_schema', 'sys')";
+
         return $objQuery->getCol($col, $from, $where);
     }
 }

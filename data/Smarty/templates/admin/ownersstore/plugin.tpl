@@ -24,7 +24,6 @@
 
 <script type="text/javascript">//<![CDATA[
     $(function() {
-
         /**
          * 「有効/有効にする」チェックボタン押下時
          */
@@ -104,7 +103,6 @@
             fnModeSubmit('update','plugin_code', plugin_code);
         }
     }
-
 
     /**
      * 優先度変更.

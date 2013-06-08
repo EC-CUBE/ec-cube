@@ -30,7 +30,6 @@
  */
 class SC_Product
 {
-
     /** 規格名一覧 */
     var $arrClassName;
     /** 規格分類名一覧 */
@@ -157,7 +156,6 @@ __EOS__;
         return $res;
     }
 
-
     /**
      * 商品IDを指定し、商品一覧を取得する
      *
@@ -246,7 +244,6 @@ __EOS__;
      */
     function setProductsClassByProductIds($arrProductId, $has_deleted = false)
     {
-
         foreach ($arrProductId as $productId) {
             $arrProductClasses = $this->getProductsClassFullByProductId($productId, $has_deleted);
 
@@ -480,7 +477,6 @@ __EOS__;
      */
     function setProductStatus($productId, $productStatusIds)
     {
-
         $val['product_id'] = $productId;
         $val['creator_id'] = $_SESSION['member_id'];
         $val['create_date'] = 'CURRENT_TIMESTAMP';
@@ -533,7 +529,6 @@ __EOS__;
      */
     function reduceStock($productClassId, $quantity)
     {
-
         if ($quantity == 0) {
             return false;
         }
@@ -775,6 +770,7 @@ __EOS__;
 
     function getProductDispConditions($tablename = null) {
         $tablename = ($tablename) ? $tablename . '.' : null;
+
         return $tablename . 'del_flg = 0 AND ' . $tablename . 'status = 1 ';
     }
 

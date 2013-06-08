@@ -28,9 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_Mobile 
+class SC_Helper_Mobile
 {
-
     /** 基本MimeType */
     var $defaultMimeType = 'application/force-download';
 
@@ -176,6 +175,7 @@ class SC_Helper_Mobile
             GC_Utils_Ex::gfPrintLog("Non-existent session id : sid=$sessionId");
             return false;
         }
+
         return session_id($sessionId);
     }
 
@@ -270,6 +270,7 @@ class SC_Helper_Mobile
     {
         $objURL = new Net_URL($url);
         $objURL->addQueryString(session_name(), session_id());
+
         return $objURL->getURL();
     }
 
@@ -481,6 +482,7 @@ class SC_Helper_Mobile
         if (array_key_exists($file_extension, $this->arrMimetypes)) {
             $mime_type = $this->arrMimetypes[$file_extension];
         }
+
         return $mime_type;
     }
 }

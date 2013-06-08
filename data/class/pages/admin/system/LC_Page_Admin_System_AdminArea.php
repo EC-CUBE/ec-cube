@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -71,7 +66,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         if (strpos(HTTPS_URL,'https://') !== FALSE) {
             $this->tpl_enable_ssl = TRUE;
         }
@@ -82,7 +76,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
         $this->initParam($objFormParam, $_POST);
 
         if (count($_POST) > 0) {
-
             // エラーチェック
             $arrErr = $objFormParam->checkError();
 
@@ -97,7 +90,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
             $this->lfCheckAdminArea($this->arrForm, $arrErr);
 
             if (SC_Utils_Ex::isBlank($arrErr) && $this->lfUpdateAdminData($this->arrForm)) {
-
                 $this->tpl_onload = "window.alert('管理機能の設定を変更しました。URLを変更した場合は、新しいURLにアクセスしてください。');";
             } else {
                 $this->tpl_onload = "window.alert('設定内容に誤りがあります。設定内容を確認してください。');";
@@ -105,7 +97,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
             }
 
         } else {
-
             $admin_dir = str_replace('/','',ADMIN_DIR);
             $this->arrForm = array('admin_dir'=>$admin_dir,'admin_force_ssl'=>ADMIN_FORCE_SSL,'admin_allow_hosts'=>'');
             if (defined('ADMIN_ALLOW_HOSTS')) {
@@ -136,7 +127,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      */
     function initParam(&$objFormParam, &$arrParams)
     {
-
         $objFormParam->addParam('ディレクトリ名', 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
         $objFormParam->addParam('SSL制限', 'admin_force_ssl', 1, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('IP制限', 'admin_allow_hosts', LTEXT_LEN, 'a', array('IP_CHECK', 'MAX_LENGTH_CHECK'));
@@ -221,6 +211,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
             fwrite($fp, $installData);
             fclose($fp);
         }
+
         return true;
     }
 }

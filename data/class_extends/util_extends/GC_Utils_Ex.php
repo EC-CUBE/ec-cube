@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'util/GC_Utils.php';
 
 /**
@@ -33,6 +32,6 @@ require_once CLASS_REALDIR . 'util/GC_Utils.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class GC_Utils_Ex extends GC_Utils 
+class GC_Utils_Ex extends GC_Utils
 {
 }

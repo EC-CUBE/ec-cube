@@ -24,9 +24,8 @@
 /*  [名称] SC_CustomerList
  *  [概要] 会員検索用クラス
  */
-class SC_CustomerList extends SC_SelectSql_Ex 
+class SC_CustomerList extends SC_SelectSql_Ex
 {
-
     var $arrColumnCSV;
 
     function __construct($array, $mode = '')
@@ -237,7 +236,6 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (!isset($this->arrSql['search_b_end_day'])) $this->arrSql['search_b_end_day'] = '';
         if ((strlen($this->arrSql['search_b_start_year']) > 0 && strlen($this->arrSql['search_b_start_month']) > 0 && strlen($this->arrSql['search_b_start_day']) > 0)
             || strlen($this->arrSql['search_b_end_year']) > 0 && strlen($this->arrSql['search_b_end_month']) > 0 && strlen($this->arrSql['search_b_end_day']) > 0) {
-
             $arrBirth = $this->selectTermRange($this->arrSql['search_b_start_year'], $this->arrSql['search_b_start_month'], $this->arrSql['search_b_start_day'],
                                                $this->arrSql['search_b_end_year'], $this->arrSql['search_b_end_month'], $this->arrSql['search_b_end_day'], 'birth');
             foreach ($arrBirth as $data) {
@@ -261,7 +259,6 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (!isset($this->arrSql['search_end_day'])) $this->arrSql['search_end_day'] = '';
         if ( (strlen($this->arrSql['search_start_year']) > 0 && strlen($this->arrSql['search_start_month']) > 0 && strlen($this->arrSql['search_start_day']) > 0) ||
                 (strlen($this->arrSql['search_end_year']) > 0 && strlen($this->arrSql['search_end_month']) >0 && strlen($this->arrSql['search_end_day']) > 0)) {
-
             $arrRegistTime = $this->selectTermRange($this->arrSql['search_start_year'], $this->arrSql['search_start_month'], $this->arrSql['search_start_day']
                             , $this->arrSql['search_end_year'], $this->arrSql['search_end_month'], $this->arrSql['search_end_day'], $regdate_col);
             foreach ($arrRegistTime as $data) {
@@ -331,18 +328,19 @@ class SC_CustomerList extends SC_SelectSql_Ex
     function getList()
     {
         $this->select = 'SELECT customer_id,name01,name02,kana01,kana02,sex,email,email_mobile,tel01,tel02,tel03,pref,status,update_date,mailmaga_flg FROM dtb_customer ';
+
         return $this->getSql(2);
     }
 
     function getListMailMagazine($is_mobile = false)
     {
-
         $colomn = $this->getMailMagazineColumn($is_mobile);
         $this->select = "
             SELECT
                 $colomn
             FROM
                 dtb_customer";
+
         return $this->getSql(0);
     }
 
@@ -350,6 +348,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
     function getListCount()
     {
         $this->select = 'SELECT COUNT(customer_id) FROM dtb_customer ';
+
         return $this->getSql(1);
     }
 
@@ -365,6 +364,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         }
 
         $this->select = 'SELECT ' .$state. ' FROM dtb_customer ';
+
         return $this->getSql(2);
     }
 

@@ -28,7 +28,6 @@
 <!--
 self.moveTo(20,20);self.focus();
 $(function() {
-
     var product_class_id = window.opener.jQuery('input[id^=product_class_id]');
     var product_code = window.opener.jQuery('input[id^=product_code]');
     var product_name = window.opener.jQuery('input[id^=product_name]');
@@ -54,9 +53,7 @@ $(function() {
 
     var index = 0;
     for (var i = 0; i < product_class_id.length; i++) {
-
         for (var j = 0; j < $(quantity[i]).val(); j++) {
-
             // 表示商品名
             var dispname = '';
 

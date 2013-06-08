@@ -28,7 +28,7 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_ClassAutoloader 
+class SC_ClassAutoloader
 {
     /**
      * クラスのオートローディング本体
@@ -69,7 +69,6 @@ class SC_ClassAutoloader
         //       プラグイン情報のキャッシュ化が行われれば、全部にフックさせることを可能に？
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance(true);
         if (is_object($objPlugin)) {
-
             // 元の設定を一時保存
             $plugin_class = $class;
             $plugin_classpath = $classpath;

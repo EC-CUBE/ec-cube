@@ -1,5 +1,5 @@
 
-		
+
 		function smartRollover() {
 	if(document.getElementsByTagName) {
 		var images = document.getElementsByTagName("img");

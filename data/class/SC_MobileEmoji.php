@@ -30,7 +30,7 @@ define('MOBILE_EMOJI_SUBSTITUTE', '');
 /**
  * 携帯端末の絵文字を扱うクラス
  */
-class SC_MobileEmoji 
+class SC_MobileEmoji
 {
     /**
      * 絵文字タグを各キャリア用の文字コードに変換する
@@ -42,6 +42,7 @@ class SC_MobileEmoji
     static function handler($buffer)
     {
         $replace_callback = create_function('$matches', 'return SC_MobileEmoji_Ex::indexToCode($matches[1]);');
+
         return preg_replace_callback('/\[emoji:(e?\d+)\]/', $replace_callback, $buffer);
     }
 

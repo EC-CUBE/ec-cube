@@ -14,8 +14,8 @@
  * Date:       2008/09/07<br>
  * Input:
  * <pre>
- *           - from       (required) - string 
- *           - to         (required) - string 
+ *           - from       (required) - string
+ *           - to         (required) - string
  *           - separator  (optional) - string default " ～ ". ie "-", "～<br />". 常にエスケープせずに出力するので注意.
  *           - escape     (optional) - string default true. other false. エスケープするか否か。
  * </pre>

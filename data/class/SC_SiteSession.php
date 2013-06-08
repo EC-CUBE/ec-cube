@@ -22,7 +22,7 @@
  */
 
 /* カートセッション管理クラス */
-class SC_SiteSession 
+class SC_SiteSession
 {
     /* コンストラクタ */
     function __construct()
@@ -48,6 +48,7 @@ class SC_SiteSession
                 return true;
             }
         }
+
         return false;
     }
 
@@ -69,6 +70,7 @@ class SC_SiteSession
         if (!isset($_SESSION['site']['uniqid']) || $_SESSION['site']['uniqid'] == '') {
             $this->setUniqId();
         }
+
         return $_SESSION['site']['uniqid'];
     }
 
@@ -87,6 +89,7 @@ class SC_SiteSession
                 return false;
             }
         }
+
         return true;
     }
 

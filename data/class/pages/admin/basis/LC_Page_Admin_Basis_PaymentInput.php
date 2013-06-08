@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,16 +30,11 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
 {
-
-    // {{{ properties
-
     /** SC_UploadFile インスタンス */
     var $objUpFile;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -75,7 +69,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objPayment = new SC_Helper_Payment_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $mode = $this->getMode();
@@ -172,13 +165,13 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     function lfInitFile()
     {
         $this->objUpFile->addFile('ロゴ画像', 'payment_image', array('gif','jpeg','jpg','png'), IMAGE_SIZE, false, CLASS_IMAGE_WIDTH, CLASS_IMAGE_HEIGHT);
+
         return $this->objUpFile;
     }
 
     /* パラメーター情報の初期化 */
     function lfInitParam($mode, &$objFormParam)
     {
-
         switch ($mode) {
             case 'edit':
                 $objFormParam->addParam('支払方法', 'payment_method', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -220,7 +213,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     /* DBへデータを登録する */
     function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '')
     {
-
         $sqlval = array_merge($objFormParam->getHashArray(), $this->objUpFile->getDBFileList());
         $sqlval['payment_id'] = $payment_id;
         $sqlval['creator_id'] = $member_id;
@@ -237,7 +229,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     /* 入力内容のチェック */
     function lfCheckError($post, $objFormParam, SC_Helper_Payment_Ex $objPayment)
     {
-
         // DBのデータを取得
         $arrPaymentData = $objPayment->get($post['payment_id']);
 

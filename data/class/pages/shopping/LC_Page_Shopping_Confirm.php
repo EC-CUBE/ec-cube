@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Confirm extends LC_Page_Ex 
+class LC_Page_Shopping_Confirm extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -74,7 +69,6 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      */
     function action()
     {
-
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -97,7 +91,6 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
         // カート内商品のチェック
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
         if (!SC_Utils_Ex::isBlank($this->tpl_message)) {
-
             SC_Response_Ex::sendRedirect(CART_URLPATH);
             SC_Response_Ex::actionExit();
         }

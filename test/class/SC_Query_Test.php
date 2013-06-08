@@ -121,7 +121,6 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase
         $this->verify();
     }
 
-
     /**
      * SC_Query::getOne() のテストケース.
      */
@@ -288,6 +287,7 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase
             . "column2 varchar(20),"
             . "column3 char(1)"
             . ")";
+
         return $this->objQuery->query($sql);
     }
 
@@ -297,6 +297,7 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase
         if (in_array('test_table', $tables)) {
             $this->objQuery->query("DROP TABLE test_table");
         }
+
         return;
     }
 
@@ -308,6 +309,7 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase
         if (PEAR::isError($result)) {
             var_dump($result);
         }
+
         return $result;
     }
 }

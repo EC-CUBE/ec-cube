@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -71,7 +66,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         switch ($this->getMode()) {
             case 'delete':
                 if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
@@ -107,7 +101,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
      */
     function lfDoSearch($search_pageno = 1)
     {
-
         // 引数の初期化
         if (SC_Utils_Ex::sfIsInt($search_pageno)===false) {
             $search_pageno = 1;

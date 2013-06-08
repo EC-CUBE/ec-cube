@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,14 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
 {
-
-    // {{{ properties
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +66,6 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objDb      = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $objCategory = new SC_Helper_Category_Ex();
@@ -435,6 +427,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $col   = 'category_id, category_name, level, rank';
         $where = 'del_flg = 0 AND parent_category_id = ?';
         $objQuery->setOption('ORDER BY rank DESC');
+
         return $objQuery->select($col, 'dtb_category', $where, array($parent_category_id));
     }
 
@@ -513,6 +506,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $level = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($parent_category_id));
+
         return $level >= LEVEL_MAX;
     }
 
@@ -545,6 +539,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
                 break;
             }
         }
+
         return $down_id;
     }
 
@@ -567,6 +562,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
                 break;
             }
         }
+
         return $up_id;
     }
 
@@ -575,6 +571,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $objDb = new SC_Helper_DB_Ex();
         // 子ID一覧を取得
         $arrRet = $objDb->sfGetChildrenArray($table, $pid_name, $id_name, $id);
+
         return count($arrRet);
     }
 
@@ -588,6 +585,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $arrRawVal = array(
             'rank' => "(rank + $count)",
         );
+
         return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
 
@@ -601,6 +599,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $arrRawVal = array(
             'rank' => "(rank - $count)",
         );
+
         return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
 
 /**
@@ -32,9 +31,8 @@ require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_SystemError extends LC_Page_Error 
+class LC_Page_Error_SystemError extends LC_Page_Error
 {
-
     /** PEAR_Error */
     var $pearResult;
 
@@ -44,8 +42,6 @@ class LC_Page_Error_SystemError extends LC_Page_Error
     /** デバッグ用のメッセージ配列 */
     var $arrDebugMsg = array();
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -76,7 +72,6 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      */
     function action()
     {
-
         $this->tpl_error = 'システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。';
 
         if (DEBUG_MODE) {
@@ -88,7 +83,6 @@ class LC_Page_Error_SystemError extends LC_Page_Error
             echo '<div>▲▲▲ デバッグ情報ここまで ▲▲▲</div>';
             echo '</div>';
         }
-
 
     }
 

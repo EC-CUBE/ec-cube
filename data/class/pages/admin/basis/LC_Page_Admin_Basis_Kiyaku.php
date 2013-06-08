@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objKiyaku = new SC_Helper_Kiyaku_Ex();
 
         $mode = $this->getMode();
@@ -158,7 +152,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
 
     /**
      * 登録処理を実行.
-     * 
+     *
      * @param integer $kiyaku_id
      * @param array $sqlval
      * @param object $objKiyaku
@@ -168,6 +162,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
     {
         $sqlval['kiyaku_id'] = $kiyaku_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
+
         return $objKiyaku->saveKiyaku($sqlval);
     }
 
@@ -206,6 +201,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
         if ($isTitleExist) {
             $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br />';
         }
+
         return $arrErr;
     }
 }

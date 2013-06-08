@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Admin_Products_ClassCategory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
 
         $this->lfInitParam($objFormParam);
@@ -176,6 +170,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
         $where = 'del_flg <> 1 AND class_id = ?';
         $objQuery->setOrder('rank DESC'); // XXX 降順
         $arrClassCat = $objQuery->select('name, classcategory_id', 'dtb_classcategory', $where, array($class_id));
+
         return $arrClassCat;
     }
 
@@ -191,6 +186,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
 
         $where = 'class_id = ?';
         $name = $objQuery->get('name', 'dtb_class', $where, array($class_id));
+
         return $name;
     }
 
@@ -205,6 +201,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'classcategory_id = ?';
         $name = $objQuery->get('name', 'dtb_classcategory', $where, array($classcategory_id));
+
         return $name;
     }
 
@@ -234,6 +231,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
             $ret = $objQuery->insert('dtb_classcategory', $sqlval);
         }
         $objQuery->commit();
+
         return $ret;
     }
 
@@ -252,6 +250,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
         $where = 'classcategory_id = ?';
         // UPDATEの実行
         $ret = $objQuery->update('dtb_classcategory', $sqlval, $where, array($arrForm['classcategory_id']));
+
         return $ret;
     }
 
@@ -279,6 +278,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
         if ($arrRet[0]['classcategory_id'] != $arrForm['classcategory_id'] && $arrRet[0]['name'] == $arrForm['name']) {
             $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br>';
         }
+
         return $arrErr;
     }
 

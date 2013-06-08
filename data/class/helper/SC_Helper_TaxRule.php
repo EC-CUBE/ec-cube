@@ -30,7 +30,6 @@
  */
 class SC_Helper_TaxRule
 {
-
     /**
      * 設定情報に基づいて税金付与した金額を返す
      *
@@ -51,6 +50,7 @@ class SC_Helper_TaxRule
     function sfTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
         $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
+
         return SC_Helper_TaxRule_Ex::calcTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
     }
 
@@ -76,6 +76,7 @@ class SC_Helper_TaxRule
     function calcTaxFromRuleId($price, $tax_rule_id = 0)
     {
         $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRuleData($tax_rule_id);
+
         return SC_Helper_TaxRule_Ex::calcTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
     }
 
@@ -110,9 +111,9 @@ class SC_Helper_TaxRule
                 $ret = ceil($ret);
                 break;
         }
+
         return $ret + $tax_adjust;
     }
-
 
     /**
      * 現在有効な税金設定情報を返す
@@ -271,7 +272,6 @@ class SC_Helper_TaxRule
         }
     }
 
-
     function getTaxRuleList($has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -284,6 +284,7 @@ class SC_Helper_TaxRule
 		// 適用日時順に更新
         $objQuery->setOrder('apply_date DESC');
         $arrRet = $objQuery->select($col, $table, $where);
+
         return $arrRet;
 
     }
@@ -295,10 +296,9 @@ class SC_Helper_TaxRule
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
         }
+
         return $objQuery->getRow('*', 'dtb_tax_rule', $where, array($tax_rule_id));
     }
-
-
 
     function getTaxRuleByTime($apply_date, $has_deleted = false)
     {
@@ -308,6 +308,7 @@ class SC_Helper_TaxRule
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select('*', 'dtb_tax_rule', $where, array($apply_date));
+
         return $arrRet[0];
     }
 

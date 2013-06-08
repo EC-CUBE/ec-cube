@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Order extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -95,7 +90,6 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -287,7 +281,6 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         switch ($key) {
-
             case 'search_product_name':
                 $where .= ' AND EXISTS (SELECT 1 FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?)';
                 $arrValues[] = sprintf('%%%s%%', $objFormParam->getValue($key));
@@ -453,6 +446,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
     function getNumberOfLines($where, $arrValues)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->count('dtb_order', $where, $arrValues);
     }
 
@@ -473,6 +467,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
             $objQuery->setLimitOffset($limit, $offset);
         }
         $objQuery->setOrder($order);
+
         return $objQuery->select('*', 'dtb_order', $where, $arrValues);
     }
 }

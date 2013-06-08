@@ -44,6 +44,7 @@ class TestSuite
         $suite->addTest(DB_AllTests::suite());
         $suite->addTest(Helper_AllTests::suite());
         $suite->addTest(Util_AllTests::suite());
+
         return $suite;
     }
 }

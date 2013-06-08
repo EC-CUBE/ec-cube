@@ -41,12 +41,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory 
+class SC_SessionFactory
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * パラメーター管理で設定したセッション維持設定に従って適切なオブジェクトを返す.
      *
@@ -54,7 +50,6 @@ class SC_SessionFactory
      */
     function getInstance()
     {
-
         $type = defined('SESSION_KEEP_METHOD')
             ? SESSION_KEEP_METHOD
             : '';
@@ -89,7 +84,8 @@ class SC_SessionFactory
      *
      */
     function initSession()
-    {}
+    {
+    }
 
     /**
      * Cookieを使用するかどうかを返す.
@@ -97,7 +93,8 @@ class SC_SessionFactory
      * @return boolean
      */
     function useCookie()
-    {}
+    {
+    }
 
 }
 /*

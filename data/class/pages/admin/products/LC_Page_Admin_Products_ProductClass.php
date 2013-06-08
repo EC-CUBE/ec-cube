@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -74,7 +69,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // 商品マスターの検索条件パラメーターを初期化
         $objFormParam = new SC_FormParam_Ex();
         $this->initParam($objFormParam);
@@ -85,7 +79,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         $this->arrSearchHidden = $objFormParam->getSearchArray();
 
         switch ($this->getMode()) {
-
             // 編集実行
             case 'edit':
                 $this->arrErr = $this->lfCheckProductsClass($objFormParam);
@@ -294,7 +287,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
             $arrPC['product_type_id'] = SC_Utils_Ex::isBlank($arrPC['product_type_id']) ? 0 : $arrPC['product_type_id'];
 
             $objQuery->insert('dtb_products_class', $arrPC);
-            
+
             // 税情報登録/更新
             SC_Helper_TaxRule_Ex::setTaxRuleForProduct($arrList['tax_rate'][$i], $arrPC['product_id'], $arrPC['product_class_id']);
         }
@@ -324,6 +317,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         $objErr->doFunc(array('規格1', 'class_id1'), array('EXIST_CHECK'));
         $objErr->doFunc(array('規格', 'class_id1', 'select_class_id2'), array('TOP_EXIST_CHECK'));
         $objErr->doFunc(array('規格1', '規格2', 'class_id1', 'class_id2'), array('DIFFERENT_CHECK'));
+
         return $objErr->arrErr;
     }
 
@@ -344,13 +338,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         }
 
         for ($i = 0; $i < $total; $i++) {
-
             /*
              * チェックボックスの入っている項目のみ, 必須チェックを行う.
              * エラーを配列で返す必要があるため, SC_CheckError を使用しない.
              */
             if (!SC_Utils_Ex::isBlank($arrValues['check'][$i])) {
-
                 /*
                  * 販売価格の必須チェック
                  */
@@ -402,6 +394,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
                 }
             }
         }
+
         return $arrErr;
     }
 
@@ -519,7 +512,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
                 // 消費税率を設定
                 $arrRet = SC_Helper_TaxRule_Ex::getTaxRule($arrValues['product_id'], $arrValues['product_class_id']);
                 $arrValues['tax_rate'] = $arrRet['tax_rate'];
-                
+
                 $arrMergeProductsClass[] = $arrValues;
             }
         }
@@ -718,6 +711,7 @@ __EOF__;
             $objQuery->setOrder('T1.rank DESC, T2.rank DESC');
             $arrParams = array($class_id1, $class_id2);
         }
+
         return $objQuery->select($col, $table, '', $arrParams);
     }
 
@@ -731,6 +725,7 @@ __EOF__;
     function getProductName($product_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->get('name', 'dtb_products', 'product_id = ?', array($product_id));
     }
 
@@ -755,6 +750,7 @@ __EOF__;
                 }
             }
         }
+
         return $results;
     }
 
@@ -771,6 +767,7 @@ __EOF__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate';
         $where = 'product_id = ? AND classcategory_id1 = 0 AND classcategory_id2 = 0';
+
         return $objQuery->getRow($col, 'dtb_products_class', $where, array($product_id));
     }
 

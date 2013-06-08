@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objMaker = new SC_Helper_Maker_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
@@ -88,7 +82,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
 
         // モードによる処理切り替え
         switch ($this->getMode()) {
-
             // 編集処理
             case 'edit':
                 // エラーチェック
@@ -179,7 +172,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
 
     /**
      * 登録処理を実行.
-     * 
+     *
      * @param integer $maker_id
      * @param array $sqlval
      * @param object $objMaker
@@ -189,6 +182,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
     {
         $sqlval['maker_id'] = $maker_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
+
         return $objMaker->saveMaker($sqlval);
     }
 
@@ -199,7 +193,6 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
      */
     function lfCheckError(&$objFormParam, SC_Helper_Maker_Ex &$objMaker)
     {
-
         $arrErr = $objFormParam->checkError();
         $arrForm = $objFormParam->getHashArray();
 

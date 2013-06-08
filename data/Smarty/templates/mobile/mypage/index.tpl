@@ -62,7 +62,7 @@
                     <font color="#ff0000"><!--{$arrCustomerOrderStatus[$order_status_id]|h}--></font><br>
                 <!--{/if}-->
             <!--{/if}-->
-            
+
             <div align="right"><a href="./history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">→詳細を見る</a></div><br>
         <!--{/section}-->
         <hr>

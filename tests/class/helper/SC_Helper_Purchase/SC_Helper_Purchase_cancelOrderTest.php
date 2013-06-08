@@ -182,4 +182,3 @@ class SC_Helper_Purchase_cancelOrderMock extends SC_Helper_Purchase
   }
 }
 
-

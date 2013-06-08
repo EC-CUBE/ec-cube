@@ -28,9 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_DBFactory 
+class SC_DB_DBFactory
 {
-
     /**
      * DB_TYPE に応じた DBFactory インスタンスを生成する.
      *
@@ -77,6 +76,7 @@ class SC_DB_DBFactory
                 return '';
             }
         }
+
         return $dsn;
     }
 
@@ -191,6 +191,7 @@ class SC_DB_DBFactory
     function listTables(SC_Query &$objQuery)
     {
         $objManager =& $objQuery->conn->loadModule('Manager');
+
         return $objManager->listTables();
     }
 }

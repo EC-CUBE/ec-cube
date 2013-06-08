@@ -37,7 +37,6 @@ SC_Utils::sfIsSuccess(new SC_Session());
 $plugin_id = isset($_GET['plugin_id']) ? $_GET['plugin_id'] : null;
 
 if (!empty($plugin_id) && is_numeric($plugin_id)) {
-
     GC_Utils::gfPrintLog('loading plugin ====> plugin_id = ' . $plugin_id);
     $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
 

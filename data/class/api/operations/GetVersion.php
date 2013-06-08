@@ -30,9 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_GetVersion extends SC_Api_Abstract_Ex 
+class API_GetVersion extends SC_Api_Abstract_Ex
 {
-
     protected $operation_name = 'GetVersion';
     protected $operation_description = 'EC-CUBE Version';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;
@@ -44,6 +43,7 @@ class API_GetVersion extends SC_Api_Abstract_Ex
     {
         $this->arrResponse = array(
             'Version' => ECCUBE_VERSION);
+
         return true;
     }
 

@@ -87,7 +87,6 @@ class SC_Helper_Maker_getMakerTest extends SC_Helper_Maker_TestBase
 
     }
 
-
     public function testGetMaker_おすすめIDがあり_かつ削除済みの場合_空が返る(){
 
         $this->expected = null;

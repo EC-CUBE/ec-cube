@@ -31,10 +31,8 @@
  * @version $Id$
  */
 
-
-class SC_Api_Operation 
+class SC_Api_Operation
 {
-
     /** API_DEBUG_MODE */
     const API_DEBUG_MODE = false;
 
@@ -73,6 +71,7 @@ class SC_Api_Operation
         if (SC_Utils_Ex::sfIsMatchHashPassword($member_password, $arrData['password'], $arrData['salt'])) {
             return true;
         }
+
         return false;
     }
 
@@ -109,6 +108,7 @@ class SC_Api_Operation
                $ret = true;
             }
         }
+
         return $ret;
     }
 
@@ -166,6 +166,7 @@ class SC_Api_Operation
         if ($signature === $arrParam['Signature']) {
             return true;
         }
+
         return false;
     }
 
@@ -185,6 +186,7 @@ class SC_Api_Operation
                 $ret = true;
             }
         }
+
         return $ret;
     }
 
@@ -198,6 +200,7 @@ class SC_Api_Operation
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $secret_key = $objQuery->get('api_secret_key', 'dtb_api_account', 'api_access_key = ? and enable = 1 and del_flg = 0', array($access_key));
+
         return $secret_key;
     }
 
@@ -263,6 +266,7 @@ class SC_Api_Operation
                 break;  // 1つでもfalseがあれば，その時点で終了
             }
         }
+
         return $result;
     }
 
@@ -395,6 +399,7 @@ class SC_Api_Operation
             $arrRet['Arguments'][] = array('_attributes' => array('Name' => htmlentities($key, ENT_NOQUOTES, 'UTF-8'), 'Value' => htmlentities($val, ENT_NOQUOTES, 'UTF-8')));
         }
         $arrRet['RequestProcessingTime'] = microtime(true) - $start_time;
+
         return $arrRet;
     }
 

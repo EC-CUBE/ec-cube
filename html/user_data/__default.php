@@ -9,9 +9,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  *
  * @package Page
  */
-class LC_Page_User extends LC_Page_Ex 
+class LC_Page_User extends LC_Page_Ex
 {
-
     /**
      * Page を初期化する.
      *
@@ -53,7 +52,6 @@ class LC_Page_User extends LC_Page_Ex
         parent::destroy();
     }
 }
-
 
 $objPage = new LC_Page_User();
 register_shutdown_function(array($objPage, 'destroy'));

@@ -22,9 +22,8 @@
  */
 
 // プラグインのユーティリティクラス.
-class SC_Plugin_Util 
+class SC_Plugin_Util
 {
-
     /**
      * 稼働中のプラグインを取得する。
      */
@@ -48,12 +47,13 @@ class SC_Plugin_Util
             $arrHookPoint = SC_Plugin_Util::getPluginHookPoint($plugin_id);
             $arrRet[$i]['plugin_hook_point'] = $arrHookPoint;
         }
+
         return $arrRet;
     }
 
     /**
      * インストールされているプラグインを取得する。
-     * 
+     *
      * @return array $arrRet インストールされているプラグイン.
      */
     function getAllPlugin()
@@ -67,12 +67,13 @@ class SC_Plugin_Util
             $objQuery->setOrder('plugin_id ASC');
         }
         $arrRet = $objQuery->select($col,$table);
+
         return $arrRet;
     }
 
     /**
      * プラグインIDをキーにプラグインを取得する。
-     * 
+     *
      * @param int $plugin_id プラグインID.
      * @return array プラグインの基本情報.
      */
@@ -83,13 +84,13 @@ class SC_Plugin_Util
         $table = 'dtb_plugin';
         $where = 'plugin_id = ?';
         $plugin = $objQuery->getRow($col, $table, $where, array($plugin_id));
+
         return $plugin;
     }
 
-
     /**
      * プラグインコードをキーにプラグインを取得する。
-     * 
+     *
      * @param string $plugin_code プラグインコード.
      * @return array プラグインの基本情報.
      */
@@ -100,12 +101,13 @@ class SC_Plugin_Util
         $table = 'dtb_plugin';
         $where = 'plugin_code = ?';
         $plugin = $objQuery->getRow($col, $table, $where, array($plugin_code));
+
         return $plugin;
     }
 
     /**
      * プラグインIDをキーにプラグインを削除する。
-     * 
+     *
      * @param string $plugin_id プラグインID.
      * @return array プラグインの基本情報.
      */
@@ -133,6 +135,7 @@ class SC_Plugin_Util
                 closedir($dh);
             }
         }
+
         return $arrPluginDirectory;
     }
 
@@ -148,6 +151,7 @@ class SC_Plugin_Util
         $cols = '*';
         $from = 'dtb_plugin_hookpoint';
         $where = 'plugin_id = ?';
+
         return $objQuery->select($cols, $from, $where, array($plugin_id));
     }
 
@@ -175,6 +179,7 @@ class SC_Plugin_Util
                 }
             }
         }
+
         return $arrErr;
     }
 }

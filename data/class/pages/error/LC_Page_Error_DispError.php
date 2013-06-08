@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -32,12 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_DispError extends LC_Page_Admin_Ex 
+class LC_Page_Error_DispError extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      * LC_Page_Adminクラス内でエラーページを表示しようとした際に無限ループに陥るのを防ぐため,
@@ -79,7 +74,6 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         switch ($this->type) {
             case LOGIN_ERROR:
                 $this->tpl_error='ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。';

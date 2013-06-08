@@ -132,4 +132,3 @@ class SC_Helper_DB_sfMoveRank extends SC_Helper_DB_TestBase
 
 }
 
-

@@ -43,17 +43,12 @@
  */
 class SC_DB_MasterData
 {
-
-    // {{{ properties
-
     /** SC_Query インスタンス */
     var $objQuery;
 
     /** デフォルトのテーブルカラム名 */
     var $columns = array('id', 'name', 'rank', 'remarks');
 
-    // }}}
-    // {{{ functions
 
     /**
      * マスターデータを取得する.
@@ -72,7 +67,6 @@ class SC_DB_MasterData
      */
     function getMasterData($name, $columns = array())
     {
-
         $columns = $this->getDefaultColumnName($columns);
 
         $filepath = MASTER_DATA_REALDIR . $name . '.serial';
@@ -105,7 +99,6 @@ class SC_DB_MasterData
      */
     function registMasterData($name, $columns, $masterData, $autoCommit = true)
     {
-
         $columns = $this->getDefaultColumnName($columns);
 
         $this->objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -123,6 +116,7 @@ class SC_DB_MasterData
         if ($autoCommit) {
             $this->objQuery->commit();
         }
+
         return $i;
     }
 
@@ -141,7 +135,6 @@ class SC_DB_MasterData
      */
     function updateMasterData($name, $columns, $masterData, $autoCommit = true)
     {
-
         $columns = $this->getDefaultColumnName($columns);
 
         $this->objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -159,6 +152,7 @@ class SC_DB_MasterData
         if ($autoCommit) {
             $this->objQuery->commit();
         }
+
         return $i;
     }
 
@@ -176,7 +170,6 @@ class SC_DB_MasterData
      */
     function insertMasterData($name, $key, $value, $comment, $autoCommit = true)
     {
-
         $columns = $this->getDefaultColumnName();
 
         $this->objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -194,6 +187,7 @@ class SC_DB_MasterData
         if ($autoCommit) {
             $this->objQuery->commit();
         }
+
         return 1;
     }
 
@@ -221,6 +215,7 @@ class SC_DB_MasterData
         if ($autoCommit) {
             $this->objQuery->commit();
         }
+
         return $result;
     }
 
@@ -260,7 +255,6 @@ class SC_DB_MasterData
      */
     function createCache($name, $columns = array(), $isDefine = false, $commentColumn = array())
     {
-
         // マスターデータを取得
         $masterData = $this->getDbMasterData($name, $columns);
 
@@ -295,6 +289,7 @@ class SC_DB_MasterData
             return false;
         }
         fclose($handle);
+
         return true;
     }
 
@@ -312,7 +307,6 @@ class SC_DB_MasterData
      */
     function getDbMasterData($name, $columns = array())
     {
-
         $columns = $this->getDefaultColumnName($columns);
 
         $this->objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -324,14 +318,11 @@ class SC_DB_MasterData
         // 結果を key => value 形式に格納
         $masterData = array();
         foreach ($results as $result) {
-
             $masterData[$result[$columns[0]]] = $result[$columns[1]];
         }
+
         return $masterData;
     }
-
-    // }}}
-    // {{{ private functions
 
     /**
      * デフォルトのカラム名の配列を返す.
@@ -345,7 +336,6 @@ class SC_DB_MasterData
      */
     function getDefaultColumnName($columns = array())
     {
-
         if (!empty($columns)) {
             return $columns;
         } else {
@@ -370,6 +360,7 @@ class SC_DB_MasterData
             }
             $data .= "define('" . $key . "', " . $val . ");\n";
         }
+
         return $data;
     }
 }

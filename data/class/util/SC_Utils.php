@@ -32,9 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_Utils.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_Utils 
+class SC_Utils
 {
-
     // インストール初期処理
     function sfInitInstall()
     {
@@ -86,6 +85,7 @@ class SC_Utils
         if ($resources === false) {
             $installer_url = SC_Utils_Ex::searchInstallerPath($path . '../');
         }
+
         return $installer_url;
     }
 
@@ -119,6 +119,7 @@ class SC_Utils
         }
 
         $path = join('/', $results);
+
         return $parse['scheme'] . '://' . $parse['host'] . ':' . $parse['port'] .'/' . $path;
     }
 
@@ -137,7 +138,6 @@ class SC_Utils
     /* エラーページの表示 */
     function sfDispError($type)
     {
-
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_DispError_Ex.php';
 
         $objPage = new LC_Page_Error_DispError_Ex();
@@ -151,7 +151,6 @@ class SC_Utils
     /* サイトエラーページの表示 */
     function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '')
     {
-
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_Ex.php';
 
         $objPage = new LC_Page_Error_Ex();
@@ -205,6 +204,7 @@ class SC_Utils
                 return false;
             }
         }
+
         return true;
     }
 
@@ -221,6 +221,7 @@ class SC_Utils
             $ret.='*';
             $i++;
         }
+
         return $ret;
     }
 
@@ -270,6 +271,7 @@ class SC_Utils
         } else {
             $date = '';
         }
+
         return $date;
     }
 
@@ -286,6 +288,7 @@ class SC_Utils
         } else {
             $date = '';
         }
+
         return $date;
     }
 
@@ -303,6 +306,7 @@ class SC_Utils
         if (strlen($value) >= 1 && strlen($value) <= INT_LEN && is_numeric($value)) {
             return true;
         }
+
         return false;
     }
 
@@ -316,6 +320,7 @@ class SC_Utils
     {
         if (strlen($value) > 1 && $value{0} === '0')
             return true;
+
         return false;
     }
 
@@ -342,6 +347,7 @@ class SC_Utils
         $path = $_SERVER['SCRIPT_NAME'];
         $arrVal = explode('/', $path);
         $cnt = count($arrVal);
+
         return $arrVal[($cnt - 2)];
     }
 
@@ -360,6 +366,7 @@ class SC_Utils
                 $conv.= '0';
             }
         }
+
         return $conv;
     }
 
@@ -383,6 +390,7 @@ class SC_Utils
                 $ret.= '0';
             }
         }
+
         return $ret;
     }
 
@@ -404,6 +412,7 @@ class SC_Utils
         } else {
             $ret = $array;
         }
+
         return $ret;
     }
 
@@ -421,6 +430,7 @@ class SC_Utils
         if (strlen($ret) != 0) {
             $ret .= '%';
         }
+
         return $ret;
     }
 
@@ -437,6 +447,7 @@ class SC_Utils
                 $arrRet[] = ($i + 1);
             }
         }
+
         return $arrRet;
     }
 
@@ -455,6 +466,7 @@ class SC_Utils
                 $conv.= '_';
             }
         }
+
         return $conv;
     }
 
@@ -475,6 +487,7 @@ class SC_Utils
             }
             $no++;
         }
+
         return $arr;
     }
 
@@ -501,13 +514,13 @@ class SC_Utils
             }
 
         }
+
         return $arrRet;
     }
 
     // キーと値をセットした配列を取得(値が複数の場合)
     function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = '')
     {
-
         $max = count($arrList);
 
         if ($len_max != '' && $max > $len_max) {
@@ -529,6 +542,7 @@ class SC_Utils
                 $keyValues[$key][] = $val;
             }
         }
+
         return $keyValues;
     }
 
@@ -571,6 +585,7 @@ class SC_Utils
         } else {
             return false;
         }
+
         return $line;
     }
 
@@ -585,7 +600,6 @@ class SC_Utils
     /*-----------------------------------------------------------------*/
     function sfCheckSetTerm($start_year, $start_month, $start_day, $end_year, $end_month, $end_day)
     {
-
         // 期間指定
         $error = 0;
         if ($start_month || $start_day || $start_year) {
@@ -603,6 +617,7 @@ class SC_Utils
         } else {
             $error = 1;
         }
+
         return array($date1, $date2, $error);
     }
 
@@ -620,6 +635,7 @@ class SC_Utils
                 return $key;
             }
         }
+
         return $default;
     }
 
@@ -628,6 +644,7 @@ class SC_Utils
         if ($val != '') {
             return 'background-color:' . ERR_COLOR;
         }
+
         return '';
     }
 
@@ -636,6 +653,7 @@ class SC_Utils
         if (! $val) {
             return ' disabled="disabled"';
         }
+
         return '';
     }
 
@@ -644,6 +662,7 @@ class SC_Utils
         if ((string)$param === (string)$value) {
             return 'checked="checked"';
         }
+
         return '';
     }
 
@@ -651,6 +670,7 @@ class SC_Utils
     {
         $ret = mb_ereg_replace("^[　 \n\r]*", '', $str);
         $ret = mb_ereg_replace("[　 \n\r]*$", '', $ret);
+
         return $ret;
     }
 
@@ -687,6 +707,7 @@ class SC_Utils
                 $ret = ceil($ret);
                 break;
         }
+
         return $ret;
     }
 
@@ -728,7 +749,7 @@ class SC_Utils
      * @param float $point_rate
      * @param int $rule
      * @param int $product_id
-     * @return int 
+     * @return int
      */
     function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = '')
     {
@@ -752,6 +773,7 @@ class SC_Utils
                 $ret = ceil($ret);
                 break;
         }
+
         return $ret;
     }
 
@@ -775,7 +797,7 @@ class SC_Utils
      * @param int $product_id
      * @param int $classcategory_id1 デフォルト値0
      * @param int $classcategory_id2 デフォルト値0
-     * @return int 
+     * @return int
      */
     function sfGetProductClassId($product_id, $classcategory_id1=0, $classcategory_id2=0)
     {
@@ -788,6 +810,7 @@ class SC_Utils
         }
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id, $classcategory_id1, $classcategory_id2));
+
         return $ret;
     }
 
@@ -795,6 +818,7 @@ class SC_Utils
     function sfTrimURL($url)
     {
         $ret = rtrim($url, '/');
+
         return $ret;
     }
 
@@ -812,6 +836,7 @@ class SC_Utils
         } else {
             $str = '';
         }
+
         return $str;
     }
 
@@ -830,6 +855,7 @@ class SC_Utils
                 }
             }
         }
+
         return $arrRet;
     }
 
@@ -857,6 +883,7 @@ class SC_Utils
                 $i++;
             }
         }
+
         return $array;
     }
 
@@ -884,6 +911,7 @@ class SC_Utils
         if ($add_point < 0) {
             $add_point = '0';
         }
+
         return $add_point;
     }
 
@@ -894,6 +922,7 @@ class SC_Utils
         $random = GC_Utils_Ex::gfMakePassword(8);
         // 同一ホスト内で一意なIDを生成
         $id = uniqid($head);
+
         return $id . $random;
     }
 
@@ -911,6 +940,7 @@ class SC_Utils
         }
         $str = preg_replace('|[/]+|', '/', $str);
         $ret = $head . $str;
+
         return $ret;
     }
 
@@ -937,7 +967,6 @@ class SC_Utils
 
         // 正常にファイルオープンした場合
         if ($ifp !== false) {
-
             $basename = basename($filepath);
             $outpath = $out_dir . 'enc_' . $basename;
 
@@ -957,6 +986,7 @@ class SC_Utils
             SC_Utils_Ex::sfDispError('');
             exit;
         }
+
         return $outpath;
     }
 
@@ -1005,6 +1035,7 @@ class SC_Utils
         if ($commadisp) {
             $ret = $ret . '...';
         }
+
         return $ret;
     }
 
@@ -1068,6 +1099,7 @@ class SC_Utils
                 }
             }
         }
+
         return $arrDst;
     }
 
@@ -1076,6 +1108,7 @@ class SC_Utils
     {
         $date = preg_replace("|\..*$|",'',$db_date);
         $time = strtotime($date);
+
         return $time;
     }
 
@@ -1092,7 +1125,6 @@ class SC_Utils
     // 2つの配列を用いて連想配列を作成する
     function sfArrCombine($arrKeys, $arrValues)
     {
-
         if (count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
 
         $keys = array_values($arrKeys);
@@ -1120,6 +1152,7 @@ class SC_Utils
                 $arrChildren[] = $arrData[$i][$id_name];
             }
         }
+
         return $arrChildren;
     }
 
@@ -1129,7 +1162,6 @@ class SC_Utils
      */
     function sfQuoteSmart($in)
     {
-
         if (is_int($in) || is_double($in)) {
             return $in;
         } elseif (is_bool($in)) {
@@ -1166,6 +1198,7 @@ class SC_Utils
                 }
             }
         }
+
         return;
     }
 
@@ -1219,6 +1252,7 @@ class SC_Utils
             }
         }
         umask($oldmask);
+
         return $mess;
     }
 
@@ -1266,6 +1300,7 @@ class SC_Utils
                 fclose($src_fp);
             }
         }
+
         return $version;
     }
 
@@ -1284,6 +1319,7 @@ class SC_Utils
                 $array[$key] = mb_convert_kana($array[$key] ,$val);
             }
         }
+
         return $array;
     }
 
@@ -1299,6 +1335,7 @@ class SC_Utils
         foreach ($defineIndexes as $key) {
             if (!isset($array[$key])) $array[$key] = '';
         }
+
         return $array;
     }
 
@@ -1317,6 +1354,7 @@ class SC_Utils
         foreach ($arrKey as $key) {
             if (isset($arrSrc[$key])) $arrRet[$key] = $arrSrc[$key];
         }
+
         return $arrRet;
     }
 
@@ -1354,6 +1392,7 @@ class SC_Utils
             }
             $html.= '</tr>';
         }
+
         return $html;
     }
 
@@ -1368,6 +1407,7 @@ class SC_Utils
         if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
             $filename .= 'noimage_main_list.jpg';
         }
+
         return $filename;
     }
 
@@ -1382,6 +1422,7 @@ class SC_Utils
         if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
             $filename .= 'noimage_main.png';
         }
+
         return $filename;
     }
 
@@ -1415,6 +1456,7 @@ class SC_Utils
     function sfGetUrl()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+
         return GC_Utils_Ex::getUrl();
     }
 
@@ -1426,6 +1468,7 @@ class SC_Utils
     function sfBacktraceToString($arrBacktrace)
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+
         return GC_Utils_Ex::toStringBacktrace($arrBacktrace);
     }
 
@@ -1437,6 +1480,7 @@ class SC_Utils
     function sfIsAdminFunction()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+
         return GC_Utils_Ex::isAdminFunction();
     }
 
@@ -1448,6 +1492,7 @@ class SC_Utils
     function sfIsFrontFunction()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+
         return GC_Utils_Ex::isFrontFunction();
     }
 
@@ -1459,13 +1504,13 @@ class SC_Utils
     function sfIsInstallFunction()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+
         return GC_Utils_Ex::isInstallFunction();
     }
 
     // 郵便番号から住所の取得
     function sfGetAddress($zipcode)
     {
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -1513,6 +1558,7 @@ class SC_Utils
     function sfMicrotimeFloat()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
+
         return microtime(true);
     }
 
@@ -1569,6 +1615,7 @@ class SC_Utils
         if (strlen($val) > 0) {
             return false;
         }
+
         return true;
     }
 
@@ -1587,6 +1634,7 @@ class SC_Utils
         if (!$host) return false;
         $host = preg_quote($host, '#');
         if (!preg_match("#^(http|https)://{$host}#i", $url)) return false;
+
         return true;
     }
 
@@ -1608,6 +1656,7 @@ class SC_Utils
         } else {
             $res = hash_hmac(PASSWORD_HASH_ALGOS, $str . ':' . AUTH_MAGIC, $salt);
         }
+
         return $res;
     }
 
@@ -1639,6 +1688,7 @@ class SC_Utils
                 }
             }
         }
+
         return $res;
     }
 
@@ -1658,6 +1708,7 @@ class SC_Utils
         } else {
             $page_max = SEARCH_PMAX;
         }
+
         return $page_max;
     }
 
@@ -1742,12 +1793,14 @@ class SC_Utils
          * 自クラスへ再帰する.
          */
         is_dir(dirname($pathname)) || SC_Utils::recursiveMkdir(dirname($pathname), $mode);
+
         return is_dir($pathname) || @mkdir($pathname, $mode);
     }
 
     function isAppInnerUrl($url)
     {
         $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
+
         return preg_match($pattern, $url) >= 1;
     }
 
@@ -1799,8 +1852,7 @@ class SC_Utils
      */
     function copyDirectory($source_path, $dest_path)
     {
-
-        $handle=opendir($source_path);  
+        $handle=opendir($source_path);
         while ($filename = readdir($handle)) {
             if ($filename === '.' || $filename === '..') continue;
             $cur_path = $source_path . $filename;
@@ -1851,6 +1903,7 @@ class SC_Utils
     static function trim($str, $charlist = null)
     {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
+
         return preg_replace('/(^' . $re . ')|(' . $re . '$)/us', '', $str);
     }
 
@@ -1864,6 +1917,7 @@ class SC_Utils
     static function ltrim($str, $charlist = null)
     {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
+
         return preg_replace('/^' . $re . '/us', '', $str);
     }
 
@@ -1877,6 +1931,7 @@ class SC_Utils
     static function rtrim($str, $charlist = null)
     {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
+
         return preg_replace('/' . $re . '$/us', '', $str);
     }
 
@@ -1897,26 +1952,26 @@ class SC_Utils
 
     /**
      * データ量の単位を付与する
-     * 
+     *
      * @param int $data
      * @return string
      */
     function getUnitDataSize($data)
     {
-
         if($data < 1000){
             $return = $data . "KB";
-        }elseif($data < 1000000){ 
+        }elseif($data < 1000000){
             $return = $data/1000 . "MB";
         }else{
             $return = $data/1000000 . "GB";
         }
+
         return $return;
     }
 
     /**
      * カテゴリーツリー状の配列を作成.
-     * 
+     *
      * @param string $primary_key
      * @param string $glue_key
      * @param integer $max_depth
@@ -1934,12 +1989,13 @@ class SC_Utils
         foreach ($arrTree as &$child) {
             SC_Utils_Ex::addChild($child, $primary_key, 1, $max_depth, $children);
         }
+
         return $arrTree;
     }
 
     /**
      * ツリーの親子をつなげるルーチン.
-     * 
+     *
      * @param array $target 親
      * @param string $primary_key 主キーの識別子
      * @param integer $level 親の階層
@@ -1961,7 +2017,7 @@ class SC_Utils
 
     /**
      * 配列のキーをIDにした配列を作成.
-     * 
+     *
      * @param string $ID_name IDが格納されているキー名
      * @param array $correction 元の配列
      * @return array
@@ -1974,12 +2030,13 @@ class SC_Utils
         }
         $return =& $arrTmp;
         unset($arrTmp);
+
         return $return;
     }
 
     /**
      * 階層情報が含まれている配列から親ID配列を取得する.
-     * 
+     *
      * @param integer $start_id 取得起点
      * @param string $primary_key 主キー名
      * @param string $glue_key 親IDキー名
@@ -2010,6 +2067,7 @@ class SC_Utils
                 $id = $root_id;
             }
         }
+
         return array_reverse($arrTrail);
     }
 }

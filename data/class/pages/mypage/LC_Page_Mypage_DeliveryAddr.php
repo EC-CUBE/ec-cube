@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex 
+class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +68,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
      */
     function action()
     {
-
         $objCustomer = new SC_Customer_Ex();
         $objAddress  = new SC_Helper_Address_Ex();
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
@@ -111,7 +105,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
                 $this->arrErr = $objAddress->errorCheck($objFormParam);
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
-
                     // TODO ここでやるべきではない
                     if (in_array($_POST['ParentPage'], $this->validUrl)) {
                         $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
@@ -126,7 +119,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
                     }
 
                     if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-
                         // モバイルの場合、元のページに遷移
                         SC_Response_Ex::sendRedirect($this->getLocation($_POST['ParentPage']));
                         SC_Response_Ex::actionExit();

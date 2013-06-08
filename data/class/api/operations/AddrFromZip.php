@@ -30,9 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_AddrFromZip extends SC_Api_Abstract_Ex 
+class API_AddrFromZip extends SC_Api_Abstract_Ex
 {
-
     protected $operation_name = 'AddrFromZip';
     protected $operation_description = '郵便番号から住所を検索します。';
     protected $default_auth_types = self::API_AUTH_TYPE_REFERER;
@@ -56,6 +55,7 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex
                 return true;
             }
         }
+
         return false;
     }
 

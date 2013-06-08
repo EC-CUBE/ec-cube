@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'db/SC_DB_DBFactory.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'db/SC_DB_DBFactory.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_DB_DBFactory_Ex extends SC_DB_DBFactory 
+class SC_DB_DBFactory_Ex extends SC_DB_DBFactory
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * DB_TYPE に応じた DBFactory インスタンスを生成する.
      *

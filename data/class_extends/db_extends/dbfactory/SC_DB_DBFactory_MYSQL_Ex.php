@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_MYSQL.php';
 
 /**
@@ -33,6 +32,6 @@ require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_MYSQL.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_DB_DBFactory_MYSQL_Ex extends SC_DB_DBFactory_MYSQL 
+class SC_DB_DBFactory_MYSQL_Ex extends SC_DB_DBFactory_MYSQL
 {
 }

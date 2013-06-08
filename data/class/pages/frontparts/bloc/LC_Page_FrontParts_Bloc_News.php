@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex 
+class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -65,7 +60,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      */
     function action()
     {
-
         $objNews = new SC_Helper_News_Ex();
         $objFormParam = new SC_FormParam_Ex();
         switch ($this->getMode()) {
@@ -164,7 +158,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      */
     function lfGetNewsForJson($arrData, SC_Helper_News_Ex $objNews)
     {
-
         $dispNumber = $arrData['disp_number'];
         $pageNo = $arrData['pageno'];
         $arrNewsList = $this->lfGetNews($dispNumber, $pageNo, $objNews);
@@ -188,7 +181,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      */
     function lfGetNewsDetailForJson($arrData)
     {
-
         $arrNewsList = SC_Helper_News_Ex::getNews($arrData['news_id']);
         $json =  SC_Utils_Ex::jsonEncode($arrNewsList);    //JSON形式
 
@@ -207,6 +199,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
         foreach ($arrErr as $val) {
             $messages .= $val . "\n";
         }
+
         return SC_Utils_Ex::jsonEncode(array('error' => $messages));
     }
 }

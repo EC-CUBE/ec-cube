@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/upgrade/LC_Page_Upgrade_Base.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'pages/upgrade/LC_Page_Upgrade_Base.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base 
+class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -306,6 +301,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             'eccube_url' => HTTP_URL
         );
         $objReq = $this->request($mode . '_commit', $arrPOSTParams, $arrCookies);
+
         return $objReq;
     }
 
@@ -362,6 +358,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objLog->log('* mode invalid ' . $mode);
             return false;
         }
+
         return false;
     }
 

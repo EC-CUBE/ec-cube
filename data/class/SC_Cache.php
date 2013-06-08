@@ -28,15 +28,14 @@ require DATA_REALDIR . 'module/Cache/Lite.php';
  */
 class SC_Cache
 {
-
     /**
      * Instance of PEAR::Cache_Lite class.
-     * @var object 
+     * @var object
      */
     static $_instance = NULL;
 
     /**
-     * Default cache lifetime. 
+     * Default cache lifetime.
      */
     const LIFETIME = MAX_LIFETIME;
 
@@ -47,7 +46,7 @@ class SC_Cache
 
     /**
      * Create Cache_Lite object and set it to static variable.
-     * 
+     *
      * @return void
      */
     public static function forge()
@@ -68,6 +67,7 @@ class SC_Cache
     public static function getInstance()
     {
         is_null(SC_Cache_Ex::$_instance) and SC_Cache_Ex::forge();
+
         return SC_Cache_Ex::$_instance;
     }
 

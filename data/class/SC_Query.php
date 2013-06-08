@@ -31,7 +31,6 @@
  */
 class SC_Query
 {
-
     var $option = '';
     var $where = '';
     var $arrWhereVal = array();
@@ -51,7 +50,6 @@ class SC_Query
      */
     function __construct($dsn = '', $force_run = false, $new = false)
     {
-
         if ($dsn == '') {
             $dsn = array('phptype'  => DB_TYPE,
                          'username' => DB_USER,
@@ -126,6 +124,7 @@ class SC_Query
         if (PEAR::isError($this->conn)) {
             return true;
         }
+
         return false;
     }
 
@@ -155,6 +154,7 @@ class SC_Query
         $sql_inner = $this->getSql('*', $table, $where, $arrWhereVal);
         $sql = "SELECT CASE WHEN EXISTS($sql_inner) THEN 1 ELSE 0 END";
         $res = $this->getOne($sql, $arrWhereVal);
+
         return (bool)$res;
     }
 
@@ -171,6 +171,7 @@ class SC_Query
     function select($cols, $from = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
     {
         $sqlse = $this->getSql($cols, $from, $where, $arrWhereVal);
+
         return $this->getAll($sqlse, $arrWhereVal, $fetchmode);
     }
 
@@ -186,6 +187,7 @@ class SC_Query
         if ($disp) {
             echo $sql . ";<br />\n";
         }
+
         return $sql;
     }
 
@@ -255,7 +257,6 @@ class SC_Query
      */
     function doCallbackAll($cbFunc, $sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
     {
-
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
         $sth =& $this->prepare($sql);
@@ -275,6 +276,7 @@ class SC_Query
             }
         }
         $sth->free();
+
         return $result;
     }
 
@@ -288,7 +290,6 @@ class SC_Query
      */
     function getAll($sql, $arrVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
     {
-
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
         $sth =& $this->prepare($sql);
@@ -360,6 +361,7 @@ class SC_Query
     function setOption($str)
     {
         $this->option = $str;
+
         return $this;
     }
 
@@ -377,6 +379,7 @@ class SC_Query
         if (is_numeric($limit) && is_numeric($offset)) {
             $this->conn->setLimit($limit, $offset);
         }
+
         return $this;
     }
 
@@ -395,6 +398,7 @@ class SC_Query
         } else {
             $this->groupby = 'GROUP BY ' . $str;
         }
+
         return $this;
     }
 
@@ -413,6 +417,7 @@ class SC_Query
         } else {
             $this->where = $str;
         }
+
         return $this;
     }
 
@@ -431,6 +436,7 @@ class SC_Query
         } else {
             $this->where = $str;
         }
+
         return $this;
     }
 
@@ -447,6 +453,7 @@ class SC_Query
     {
         $this->where = $where;
         $this->arrWhereVal = $arrWhereVal;
+
         return $this;
     }
 
@@ -465,6 +472,7 @@ class SC_Query
         } else {
             $this->order = 'ORDER BY ' . $str;
         }
+
         return $this;
     }
 
@@ -481,6 +489,7 @@ class SC_Query
         if (is_numeric($limit)) {
             $this->conn->setLimit($limit);
         }
+
         return $this;
     }
 
@@ -497,6 +506,7 @@ class SC_Query
         if (is_numeric($offset)) {
             $this->conn->setLimit($this->conn->limit, $offset);
         }
+
         return $this;
     }
 
@@ -628,6 +638,7 @@ class SC_Query
     function max($col, $table, $where = '', $arrWhereVal = array())
     {
         $ret = $this->get("MAX($col)", $table, $where, $arrWhereVal);
+
         return $ret;
     }
 
@@ -643,6 +654,7 @@ class SC_Query
     function min($col, $table, $where = '', $arrWhereVal = array())
     {
         $ret = $this->get("MIN($col)", $table, $where, $arrWhereVal);
+
         return $ret;
     }
 
@@ -660,6 +672,7 @@ class SC_Query
         $sqlse = $this->getSql($col, $table, $where, $arrWhereVal);
         // SQL文の実行
         $ret = $this->getOne($sqlse, $arrWhereVal);
+
         return $ret;
     }
 
@@ -672,7 +685,6 @@ class SC_Query
      */
     function getOne($sql, $arrVal = array())
     {
-
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
         $sth =& $this->prepare($sql);
@@ -706,7 +718,6 @@ class SC_Query
      */
     function getRow($col, $table = '', $where = '', $arrWhereVal = array(), $fetchmode = MDB2_FETCHMODE_ASSOC)
     {
-
         $sql = $this->getSql($col, $table, $where, $arrWhereVal);
         $sql = $this->dbFactory->sfChangeMySQL($sql);
 
@@ -778,6 +789,7 @@ class SC_Query
             $sqlde = 'DELETE FROM ' . $this->conn->quoteIdentifier($table) . ' WHERE ' . $where;
         }
         $ret = $this->query($sqlde, $arrWhereVal, false, null, MDB2_PREPARE_MANIP);
+
         return $ret;
     }
 
@@ -824,6 +836,7 @@ class SC_Query
         if (PEAR::isError($ret)) {
             $this->error("setVal -> createSequence [$seq_name] [$start]");
         }
+
         return $ret;
     }
 
@@ -841,7 +854,6 @@ class SC_Query
      */
     function query($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT)
     {
-
         $n = $this->dbFactory->sfChangeMySQL($n);
 
         $sth =& $this->prepare($n, $types, $result_types);
@@ -868,6 +880,7 @@ class SC_Query
     function listSequences()
     {
         $objManager =& $this->conn->loadModule('Manager');
+
         return $objManager->listSequences();
     }
 
@@ -890,6 +903,7 @@ class SC_Query
     function listTableFields($table)
     {
         $objManager =& $this->conn->loadModule('Manager');
+
         return $objManager->listTableFields($table);
     }
 
@@ -902,6 +916,7 @@ class SC_Query
     function listTableIndexes($table)
     {
         $objManager =& $this->conn->loadModule('Manager');
+
         return $objManager->listTableIndexes($table);
     }
 
@@ -917,6 +932,7 @@ class SC_Query
     {
         $definition = $this->dbFactory->sfGetCreateIndexDefinition($table, $name, $definition);
         $objManager =& $this->conn->loadModule('Manager');
+
         return $objManager->createIndex($table, $name, $definition);
     }
 
@@ -929,6 +945,7 @@ class SC_Query
     function dropIndex($table, $name)
     {
         $objManager =& $this->conn->loadModule('Manager');
+
         return $objManager->dropIndex($table, $name);
     }
 
@@ -941,6 +958,7 @@ class SC_Query
     function getTableInfo($table)
     {
         $objManager =& $this->conn->loadModule('Reverse');
+
         return $objManager->tableInfo($table, NULL);
     }
 
@@ -976,6 +994,7 @@ class SC_Query
                 $arrResults[$key] = $val;
             }
         }
+
         return $arrResults;
     }
 
@@ -995,6 +1014,7 @@ class SC_Query
             $msg = $this->traceError($sth, $sql);
             $this->error($msg);
         }
+
         return $sth;
     }
 
@@ -1008,7 +1028,6 @@ class SC_Query
      */
     function execute(&$sth, $arrVal = array())
     {
-
         $arrStartInfo =& $this->lfStartDbTraceLog($sth, $arrVal);
         $affected =& $sth->execute((array)$arrVal);
         $this->lfEndDbTraceLog($arrStartInfo, $sth, $arrVal);
@@ -1019,6 +1038,7 @@ class SC_Query
             $this->error($msg);
         }
         $this->conn->last_query = stripslashes($sth->query);
+
         return $affected;
     }
 
@@ -1073,7 +1093,6 @@ class SC_Query
      */
     function getQueryDefsFields($n ,$arr = array(), $ignore_err = false, $types = null, $result_types = MDB2_PREPARE_RESULT)
     {
-
         $n = $this->dbFactory->sfChangeMySQL($n);
 
         $sth =& $this->prepare($n, $types, $result_types);
@@ -1170,6 +1189,7 @@ class SC_Query
     static function setPoolInstance(&$objThis, $dsn = '')
     {
         $key_str = serialize($dsn);
+
         return SC_Query_Ex::$arrPoolInstance[$key_str] = $objThis;
     }
 

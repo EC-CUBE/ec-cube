@@ -101,7 +101,6 @@ function makeSignature()
     $('#form').submit();
 }
 
-
 </script>
 </head>
 <body>

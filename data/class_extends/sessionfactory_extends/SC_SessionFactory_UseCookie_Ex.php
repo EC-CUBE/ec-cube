@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'sessionfactory/SC_SessionFactory_UseCookie.php';
 
-class SC_SessionFactory_UseCookie_Ex extends SC_SessionFactory_UseCookie 
+class SC_SessionFactory_UseCookie_Ex extends SC_SessionFactory_UseCookie
 {
 }

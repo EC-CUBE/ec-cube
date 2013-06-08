@@ -42,7 +42,6 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
         parent::tearDown();
     }
 
-
     // best_idを指定して更新される。
     public function testSaveBestProducts_ベストIDがある場合_更新される(){
 
@@ -92,7 +91,6 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
         $this->verify();
     }
 
-
     // best_idがnullでデータインサートされる。
     public function testSaveBestProducts_ベストIDがない場合_インサートされる(){
 
@@ -136,9 +134,7 @@ class SC_Helper_BestProducts_saveBestProductsTest extends SC_Helper_BestProducts
             $this->verify();
         }
 
-
     }
-
 
     // best_idがnull、かつrankがnullの場合、想定されたランクが登録される
     public function testSaveBestProducts_インサート処理でrankがsetされてない場合_採番された値がセットされる(){

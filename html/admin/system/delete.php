@@ -20,12 +20,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-// {{{ requires
 require_once '../require.php';
 require_once CLASS_EX_REALDIR . 'page_extends/admin/system/LC_Page_Admin_System_Delete_Ex.php';
 
-// }}}
-// {{{ generate page
 
 $objPage = new LC_Page_Admin_System_Delete_Ex();
 register_shutdown_function(array($objPage, 'destroy'));

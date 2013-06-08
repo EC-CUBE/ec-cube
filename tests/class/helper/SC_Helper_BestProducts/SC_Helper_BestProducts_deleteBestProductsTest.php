@@ -42,7 +42,6 @@ class SC_Helper_BestProducts_deleteBestProductsTest extends SC_Helper_BestProduc
         parent::tearDown();
     }
 
-
     // データが削除されていることを確認
     public function testDeleteBestProducts_データが削除される(){
 
@@ -68,7 +67,6 @@ class SC_Helper_BestProducts_deleteBestProductsTest extends SC_Helper_BestProduc
 
         $this->verify();
     }
-
 
 }
 

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping extends LC_Page_Ex 
+class LC_Page_Shopping extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -79,7 +74,6 @@ class LC_Page_Shopping extends LC_Page_Ex
      */
     function action()
     {
-
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -97,7 +91,6 @@ class LC_Page_Shopping extends LC_Page_Ex
 
         // ログイン済みの場合は次画面に遷移
         if ($objCustomer->isLoginSuccess(true)) {
-
             SC_Response_Ex::sendRedirect(
                     $this->getNextlocation($this->cartKey, $this->tpl_uniqid,
                                            $objCustomer, $objPurchase,
@@ -128,18 +121,15 @@ class LC_Page_Shopping extends LC_Page_Ex
                 if (SC_Utils_Ex::isBlank($this->arrErr)
                     && $objCustomer->doLogin($objFormParam->getValue('login_email'),
                                              $objFormParam->getValue('login_pass'))) {
-
                     // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
                     if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
                         if (!$objCustomer->hasValue('email_mobile')) {
-
                             SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                             SC_Response_Ex::actionExit();
                         }
                     }
                     // スマートフォンの場合はログイン成功を返す
                     elseif (SC_Display_Ex::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
-
                         echo SC_Utils_Ex::jsonEncode(array('success' =>
                                                      $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                                             $objCustomer, $objPurchase,
@@ -288,7 +278,6 @@ class LC_Page_Shopping extends LC_Page_Ex
      */
     function lfInitParam(&$objFormParam)
     {
-
         $objFormParam->addParam('お名前(姓)', 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(名)', 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(フリガナ・姓)', 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'KANA_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -521,6 +510,7 @@ class LC_Page_Shopping extends LC_Page_Ex
             default:
                 $msg = 'メールアドレスもしくはパスワードが正しくありません。';
         }
+
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }
 }

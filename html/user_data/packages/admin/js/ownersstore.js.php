@@ -51,6 +51,7 @@ OwnersStore.prototype = {
             $('body', 'html').css({height: 'auto', width: 'auto'});
             $('html').css('overflow', "");
         }
+
         return false;
     },
     // show loading page

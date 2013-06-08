@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Customer extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -100,7 +95,6 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター設定
@@ -206,6 +200,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
         $objHelperMail = new SC_Helper_Mail_Ex();
         $objHelperMail->setPage($this);
         $objHelperMail->sfSendRegistMail($arrData['secret_key'], $customer_id);
+
         return true;
     }
 
@@ -234,6 +229,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
         $order = 'update_date DESC, customer_id DESC';
 
         list($where, $arrVal) = $objSelect->getWhere();
+
         return $objCSV->sfDownloadCsv('2', $where, $arrVal, $order, true);
     }
 }

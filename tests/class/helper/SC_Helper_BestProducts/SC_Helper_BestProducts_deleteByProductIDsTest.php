@@ -41,7 +41,6 @@ class SC_Helper_BestProducts_deleteByProductIDsTest extends SC_Helper_BestProduc
         parent::tearDown();
     }
 
-
     public function testDeleteByProductIDs_データが削除される(){
 
         $objHelperBestProducts = new SC_Helper_BestProducts_Ex();
@@ -72,7 +71,6 @@ class SC_Helper_BestProducts_deleteByProductIDsTest extends SC_Helper_BestProduc
         $this->verify();
 
     }
-
 
 }
 

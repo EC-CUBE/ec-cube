@@ -81,6 +81,5 @@ class SC_Product_getBuyLimitTest extends SC_Product_TestBase
         $this->verify('販売数＜在庫数制限');
     }
 
-
     
 }

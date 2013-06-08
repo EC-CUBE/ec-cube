@@ -28,12 +28,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_Helper_PageLayout.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_Helper_PageLayout 
+class SC_Helper_PageLayout
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * ページのレイアウト情報を取得し, 設定する.
      *
@@ -49,7 +45,6 @@ class SC_Helper_PageLayout
      */
     function sfGetPageLayout(&$objPage, $preview = false, $url = '', $device_type_id = DEVICE_TYPE_PC)
     {
-
         // URLを元にページ情報を取得
         if ($preview === false) {
             $url = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '', $url);
@@ -126,6 +121,7 @@ class SC_Helper_PageLayout
         }
         $objQuery->setOrder('page_id');
         $arrParams = array_merge(array($page_id, $device_type_id), $arrParams);
+
         return $objQuery->select('*', 'dtb_pagelayout', $where, $arrParams);
     }
 
@@ -146,6 +142,7 @@ class SC_Helper_PageLayout
         if ($has_realpath) {
             $this->setBlocPathTo($device_type_id, $arrBlocs);
         }
+
         return $arrBlocs;
     }
 
@@ -211,6 +208,7 @@ __EOF__;
             // ファイルの削除
             $this->lfDelFile($arrPageData[0]['filename'], $device_type_id);
         }
+
         return $ret;
     }
 
@@ -220,7 +218,7 @@ __EOF__;
      * dtb_pagelayout の削除後に呼び出すこと。
      *
      * @access private
-     * @param string $filename 
+     * @param string $filename
      * @param integer $device_type_id 端末種別ID
      * @return void // TODO boolean にするべき?
      */
@@ -266,6 +264,7 @@ __EOF__;
         if ($arrPages[0]['edit_flg'] != 2) {
             return true;
         }
+
         return false;
     }
 
@@ -301,6 +300,7 @@ __EOF__;
         if ($isUser) {
             $dir = $userPath . USER_PACKAGE_DIR . $templateName . '/';
         }
+
         return $dir;
     }
 
@@ -334,11 +334,9 @@ __EOF__;
         if ($hasPackage) {
             return $userDir . USER_PACKAGE_DIR . $templateName . '/';
         }
+
         return $userDir;
     }
-
-    // }}}
-    // {{{ private functions
 
     /**
      * ブロックの php_path, tpl_path を設定する.

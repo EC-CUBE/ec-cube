@@ -30,9 +30,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id: $
  */
-abstract class SC_Plugin_Base 
+abstract class SC_Plugin_Base
 {
-
     protected $arrSelfInfo;
 
     /**

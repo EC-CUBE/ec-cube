@@ -22,7 +22,7 @@
  */
 
 /* アップロードファイル管理クラス */
-class SC_UploadFile 
+class SC_UploadFile
 {
     var $temp_dir;
     var $save_dir;
@@ -137,6 +137,7 @@ class SC_UploadFile
                 $cnt++;
             }
         }
+
         return $objErr->arrErr[$keyname];
     }
 
@@ -169,6 +170,7 @@ class SC_UploadFile
                 $cnt++;
             }
         }
+
         return $objErr->arrErr[$keyname];
     }
 
@@ -221,6 +223,7 @@ class SC_UploadFile
             }
             $cnt++;
         }
+
         return $filepath;
     }
 
@@ -231,7 +234,6 @@ class SC_UploadFile
 
         for ($cnt = 0; $cnt < count($this->keyname); $cnt++) {
             if (isset($this->temp_file[$cnt]) && $this->temp_file[$cnt] != '') {
-
                 $objImage->moveTempImage($this->temp_file[$cnt], $this->save_dir);
 
                 // すでに保存ファイルがあった場合は削除する。
@@ -239,7 +241,6 @@ class SC_UploadFile
                     && $this->save_file[$cnt] != ''
                     && !preg_match('|^sub/|', $this->save_file[$cnt])
                 ) {
-
                     $objImage->deleteImage($this->save_file[$cnt], $this->save_dir);
                 }
             }
@@ -278,6 +279,7 @@ class SC_UploadFile
             }
             $cnt++;
         }
+
         return $arrRet;
     }
 
@@ -351,6 +353,7 @@ class SC_UploadFile
             }
             $cnt++;
         }
+
         return $arrRet;
     }
 
@@ -365,6 +368,7 @@ class SC_UploadFile
                 $arrRet = $this->save_file[$cnt];
             }
         }
+
         return $arrRet;
     }
     function getFormKikakuDownFile()
@@ -379,6 +383,7 @@ class SC_UploadFile
             }
             $cnt++;
         }
+
         return $arrRet;
     }
 
@@ -395,6 +400,7 @@ class SC_UploadFile
             }
             $cnt++;
         }
+
         return $dbFileList;
     }
 
@@ -487,6 +493,7 @@ class SC_UploadFile
             }
             $cnt++;
         }
+
         return $arrRet;
     }
 
@@ -515,7 +522,6 @@ class SC_UploadFile
      */
     function lfGetTmpImageName($rename, $keyname = '', $uploadfile = '')
     {
-
         if ($rename === true) {
             // 一意なIDを取得し、画像名をリネームし保存
             $uniqname = date('mdHi') . '_' . uniqid('');
@@ -525,6 +531,7 @@ class SC_UploadFile
             $uniqname =  preg_replace('/(.+)\.(.+?)$/','$1', $uploadfile);
         }
         $dst_file = $this->temp_dir . $uniqname;
+
         return $dst_file;
     }
 }

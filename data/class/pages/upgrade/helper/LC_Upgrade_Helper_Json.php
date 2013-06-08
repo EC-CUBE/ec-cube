@@ -3,7 +3,7 @@
  * Enter description here...
  *
  */
-class LC_Upgrade_Helper_Json extends Services_JSON 
+class LC_Upgrade_Helper_Json extends Services_JSON
 {
     /** */
     var $arrData = array(
@@ -37,6 +37,7 @@ class LC_Upgrade_Helper_Json extends Services_JSON
         if ($this->arrData['status'] === OSTORE_STATUS_SUCCESS) {
             return true;
         }
+
         return false;
     }
 

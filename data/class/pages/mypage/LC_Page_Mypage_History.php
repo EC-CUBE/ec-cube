@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex 
+class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +68,6 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      */
     function action()
     {
-
         $objCustomer    = new SC_Customer_Ex();
         $objDb          = new SC_Helper_DB_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
@@ -102,13 +96,13 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
         foreach ($this->tpl_arrOrderDetail as $product_index => $arrOrderProductDetail) {
             //必要なのは商品の販売金額のみなので、遅い場合は、別途SQL作成した方が良い
-            $arrTempProductDetail = $objProduct->getProductsClass($arrOrderProductDetail['product_class_id']); 
+            $arrTempProductDetail = $objProduct->getProductsClass($arrOrderProductDetail['product_class_id']);
             if($this->tpl_arrOrderDetail[$product_index]['price'] != $arrTempProductDetail['price02']) {
                 $this->is_price_change = true;
             }
             $this->tpl_arrOrderDetail[$product_index]['product_price'] = ($arrTempProductDetail['price02'])?$arrTempProductDetail['price02']:0;
         }
-        
+
         $this->tpl_arrOrderDetail = $this->setMainListImage($this->tpl_arrOrderDetail);
         $objPurchase->setDownloadableFlgTo($this->tpl_arrOrderDetail);
         // モバイルダウンロード対応処理
@@ -141,6 +135,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
         $col        = 'send_date, subject, template_id, send_id';
         $where      = 'order_id = ?';
         $objQuery->setOrder('send_date DESC');
+
         return $objQuery->select($col, 'dtb_mail_history', $where, array($order_id));
     }
 
@@ -184,6 +179,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
             $arrOrderDetails[$i]['main_list_image'] = $arrProduct[0]['main_list_image'];
             $i++;
         }
+
         return $arrOrderDetails;
     }
 
@@ -204,6 +200,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
             $arrOrderDetails[$i]['down_filename'] = $arrProduct[0]['down_filename'];
             $i++;
         }
+
         return $arrOrderDetails;
     }
 

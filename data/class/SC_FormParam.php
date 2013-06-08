@@ -29,9 +29,8 @@
  * @package SC
  * @author LOCKON CO.,LTD.
  */
-class SC_FormParam 
+class SC_FormParam
 {
-
     /**
      * 何も入力されていないときに表示する値
      * キーはキー名
@@ -259,6 +258,7 @@ class SC_FormParam
                 $arrErr[$key] = preg_replace("/<br(\s+\/)?>/i", '', $arrErr[$key]);
             }
         }
+
         return $arrErr;
     }
 
@@ -293,7 +293,6 @@ class SC_FormParam
             $objErr->doFunc(array($disp_name, 0, $length), array($func));
             if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
                 foreach ($objErr->arrErr as $message) {
-
                     if (!SC_Utils_Ex::isBlank($message)) {
                         // 再帰した場合は多次元配列のエラーメッセージを生成
                         $error_var = '$arrErr[$error_key]';
@@ -356,6 +355,7 @@ class SC_FormParam
                 $arrRet[$keyname] = $this->getValue($keyname);
             }
         }
+
         return $arrRet;
     }
 
@@ -368,6 +368,7 @@ class SC_FormParam
                 $dbArray[$key] = $this->getValue($key);
             }
         }
+
         return $dbArray;
     }
 
@@ -380,6 +381,7 @@ class SC_FormParam
     function getSwapArray($arrKey = array())
     {
         $arrTmp = $this->getHashArray($arrKey);
+
         return SC_Utils_Ex::sfSwapArray($arrTmp);
     }
 
@@ -393,6 +395,7 @@ class SC_FormParam
     function getCount()
     {
         $count = count($this->keyname);
+
         return $count;
     }
 
@@ -410,6 +413,7 @@ class SC_FormParam
             // 入力値
             $formParamList[$key]['value'] = $this->getValue($key);
         }
+
         return $formParamList;
     }
 
@@ -445,6 +449,7 @@ class SC_FormParam
                 $ret = $default;
             }
         }
+
         return $ret;
     }
 
@@ -515,6 +520,7 @@ class SC_FormParam
                 $arrResults[$key] = $this->getValue($key);
             }
         }
+
         return $arrResults;
     }
 
@@ -537,6 +543,7 @@ class SC_FormParam
             // 入力値
             $formDispArray[$index]['value'] = $this->getValue($key);
         }
+
         return $formDispArray;
     }
 

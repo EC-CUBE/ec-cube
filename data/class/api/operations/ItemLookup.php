@@ -30,9 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_ItemLookup extends SC_Api_Abstract_Ex 
+class API_ItemLookup extends SC_Api_Abstract_Ex
 {
-
     protected $operation_name = 'ItemLookup';
     protected $operation_description = '商品詳細情報を取得します。';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -33,7 +32,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  */
 class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 {
-
     /** リストア中にエラーが発生したか */
     var $tpl_restore_err = false;
 
@@ -43,8 +41,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         'snapshot_num',         // Postgres Plus Advanced Server 9.1
     );
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -82,7 +78,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex;
 
         // パラメーターの初期化
@@ -93,7 +88,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 
         $this->mode = $this->getMode();
         switch ($this->mode) {
-
             // バックアップを作成する
             case 'bkup':
 
@@ -108,7 +102,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 
                 // エラーがなければバックアップ処理を行う
                 if (SC_Utils_Ex::isBlank($arrErrTmp[1]) && SC_Utils_Ex::isBlank($arrErrTmp[2])) {
-
                     $arrData = $objFormParam->getHashArray();
 
                     $work_dir = $this->bkup_dir . $arrData['bkup_name'] . '/';
@@ -170,7 +163,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 
                 // エラーがなければリストア処理を行う
                 if (SC_Utils_Ex::isBlank($arrErr)) {
-
                     $arrData = $objFormParam->getHashArray();
 
                     // DBとファイルを削除
@@ -187,7 +179,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 
                 // エラーがなければダウンロード処理を行う
                 if (SC_Utils_Ex::isBlank($arrErr)) {
-
                     $arrData = $objFormParam->getHashArray();
 
                     $filename = $arrData['list_name'] . $this->bkup_ext;
@@ -237,7 +228,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      */
     function initParam(&$objFormParam, &$arrParams)
     {
-
         $objFormParam->addParam('バックアップ名', 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->addParam('バックアップメモ', 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('バックアップ名(リスト)', 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
@@ -255,7 +245,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      */
     function lfCheckError(&$arrForm, $mode)
     {
-
         switch ($mode) {
             case 'bkup':
                 $name = $arrForm['bkup_name'];
@@ -306,7 +295,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 
         // 各テーブル情報を取得する
         foreach ($arrTableList as $table) {
-
             if ($table == 'dtb_bkup' || $table == 'mtb_zip') {
                 continue;
             }
@@ -384,6 +372,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         $line .= SC_Helper_CSV_Ex::sfArrayToCsv($data);
         $line .= "\n";
         SC_Utils_Ex::extendTimeOut();
+
         return fwrite($this->fpOutput, $line);
     }
 
@@ -413,6 +402,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
             $ret .= is_null($seq) ? '0' : $seq;
             $ret .= "\r\n";
         }
+
         return $ret;
     }
 
@@ -540,7 +530,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      */
     function lfExeInsertSQL(&$objQuery, $dir, $mode)
     {
-
         $tbl_flg = false;
         $col_flg = false;
         $ret = true;
@@ -630,7 +619,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     // 選択したバックアップをDBから削除
     function lfDeleteBackUp(&$arrForm, $bkup_dir, $bkup_ext)
     {
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $del_file = $bkup_dir.$arrForm['list_name'] . $bkup_ext;

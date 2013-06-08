@@ -25,7 +25,7 @@
  * オーナーズストア管理用ログクラス
  *
  */
-class LC_Upgrade_Helper_Log 
+class LC_Upgrade_Helper_Log
 {
     /**
      * 開始メッセージを出力

@@ -78,9 +78,4 @@ class SC_Helper_Kiyaku_getKiyakuTest extends SC_Helper_Kiyaku_TestBase
         $this->verify('規約詳細取得');
     }
 
-
-
-
-
-
 }

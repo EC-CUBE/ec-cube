@@ -39,6 +39,7 @@ class Util_AllTests extends PHPUnit_Framework_TestCase
     {
         $suite = new PHPUnit_Framework_TestSuite('Util');
         $suite->addTestSuite('SC_Utils_Test');
+
         return $suite;
     }
 }

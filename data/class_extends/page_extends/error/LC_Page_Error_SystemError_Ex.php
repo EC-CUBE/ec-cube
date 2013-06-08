@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/error/LC_Page_Error_SystemError.php';
 
 /**
@@ -34,12 +33,8 @@ require_once CLASS_REALDIR . 'pages/error/LC_Page_Error_SystemError.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError 
+class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

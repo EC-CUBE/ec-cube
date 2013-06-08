@@ -39,7 +39,7 @@ class SC_Helper_Bloc
 
     /**
      * ブロックの情報を取得.
-     * 
+     *
      * @param integer $bloc_id ブロックID
      * @return array
      */
@@ -57,6 +57,7 @@ class SC_Helper_Bloc
         if (file_exists($tpl_path)) {
             $arrRet['bloc_html'] = file_get_contents($tpl_path);
         }
+
         return $arrRet;
     }
 
@@ -72,12 +73,13 @@ class SC_Helper_Bloc
         $where = 'device_type_id = ?';
         $table = 'dtb_bloc';
         $arrRet = $objQuery->select($col, $table, $where, array($this->device_type_id));
+
         return $arrRet;
     }
 
     /**
      * where句で条件を指定してブロック一覧を取得.
-     * 
+     *
      * @param string $where
      * @param array $sqlval
      */
@@ -89,12 +91,13 @@ class SC_Helper_Bloc
         array_unshift($sqlval, $this->device_type_id);
         $table = 'dtb_bloc';
         $arrRet = $objQuery->select($col, $table, $where, $sqlval);
+
         return $arrRet;
     }
 
     /**
      * ブロックの登録.
-     * 
+     *
      * @param array $sqlval
      * @return multiple 登録成功:ブロックID, 失敗:FALSE
      */
@@ -143,12 +146,13 @@ class SC_Helper_Bloc
         }
 
         $objQuery->commit();
+
         return $arrValues['bloc_id'];
     }
 
     /**
      * ブロックの削除.
-     * 
+     *
      * @param integer $bloc_id
      * @return boolean
      */
@@ -183,16 +187,17 @@ class SC_Helper_Bloc
             return false;
         }
         $objQuery->commit();
+
         return true;
     }
 
     /**
      * 端末種別IDのメンバー変数を取得.
-     * 
+     *
      * @return integer 端末種別ID
      */
     public function getDeviceTypeID()
     {
-        return $this->device_type_id; 
+        return $this->device_type_id;
     }
 }

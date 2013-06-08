@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_ResizeImage extends LC_Page_Ex 
+class LC_Page_ResizeImage extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -75,7 +70,6 @@ class LC_Page_ResizeImage extends LC_Page_Ex
         // NO_IMAGE_REALFILE以外のファイル名が渡された場合、ファイル名のチェックを行う
         if (strlen($arrForm['image']) >= 1
             && $arrForm['image'] !== NO_IMAGE_REALFILE) {
-
             // ファイル名が正しく、ファイルが存在する場合だけ、$fileを設定
             if (!$this->lfCheckFileName()) {
                 GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php image=' . $arrForm['image']);
@@ -128,7 +122,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex
      * @param string $file 画像ファイル名
      * @param integer $width 画像の幅
      * @param integer $height 画像の高さ
-     * 
+     *
      * @return void
      */
     function lfOutputImage($file, $width, $height)

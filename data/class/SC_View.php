@@ -23,9 +23,8 @@
 
 require_once realpath(dirname(__FILE__)) . '/../module/Smarty/libs/Smarty.class.php';
 
-class SC_View 
+class SC_View
 {
-
     var $_smarty;
 
     var $objPage;
@@ -109,12 +108,13 @@ class SC_View
             $time = $time_end - $this->time_start;
             $res .= '処理時間: ' . sprintf('%.3f', $time) . '秒';
         }
+
         return $res;
     }
 
     /**
      * Pageオブジェクトをセットします.
-     * @param LC_Page_Ex $objPage 
+     * @param LC_Page_Ex $objPage
      * @return void
      */
     function setPage($objPage)
@@ -123,7 +123,7 @@ class SC_View
     }
 
     /**
-     * Smartyのfilterをセットします. 
+     * Smartyのfilterをセットします.
      * @return void
      */
     function registFilter()
@@ -147,6 +147,7 @@ class SC_View
                 $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
             }
         }
+
         return $source;
     }
 
@@ -165,6 +166,7 @@ class SC_View
                 $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
             }
         }
+
         return $source;
     }
 
@@ -213,7 +215,6 @@ class SC_View
      */
     function assignTemplatePath($device_type_id)
     {
-
         // テンプレート変数を割り当て
         $this->assign('TPL_URLPATH', SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
 

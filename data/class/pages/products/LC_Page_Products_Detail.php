@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 if (file_exists(MODULE_REALDIR . 'mdl_gmopg/inc/function.php')) {
@@ -34,9 +33,8 @@ if (file_exists(MODULE_REALDIR . 'mdl_gmopg/inc/function.php')) {
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Products_Detail.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Products_Detail extends LC_Page_Ex 
+class LC_Page_Products_Detail extends LC_Page_Ex
 {
-
     /** 商品ステータス */
     var $arrSTATUS;
 
@@ -58,8 +56,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     /** モード */
     var $mode;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -265,6 +261,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         ) {
                 SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
+
         return $product_id;
     }
 
@@ -275,6 +272,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
             $objUpFile->addFile("詳細-サブ画像$cnt", "sub_image$cnt", array('jpg'), IMAGE_SIZE);
         }
+
         return $objUpFile;
     }
 
@@ -290,7 +288,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     /* 規格選択セレクトボックスの作成(モバイル) */
     function lfMakeSelectMobile(&$objPage, $product_id,$request_classcategory_id1)
     {
-
         $classcat_find1 = false;
         $classcat_find2 = false;
 
@@ -373,6 +370,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     function lfGetProductsClass($product_id)
     {
         $objProduct = new SC_Product_Ex();
+
         return $objProduct->getProductsClassFullByProductId($product_id);
     }
 
@@ -404,7 +402,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     /* 入力内容のチェック */
     function lfCheckError($mode,&$objFormParam,$tpl_classcat_find1 = null ,$tpl_classcat_find2 = null)
     {
-
         switch ($mode) {
         case 'add_favorite_sphone':
         case 'add_favorite':
@@ -446,6 +443,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         $objQuery->setLimit(REVIEW_REGIST_MAX);
         $arrWhereVal = array($id);
         $arrReview = $objQuery->select($col, $from, $where, $arrWhereVal);
+
         return $arrReview;
     }
 
@@ -467,6 +465,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
                 $subImageFlag = true;
             }
         }
+
         return $subImageFlag;
     }
 
@@ -502,8 +501,8 @@ class LC_Page_Products_Detail extends LC_Page_Ex
 
     /**
      * Add product(s) into the cart.
-     * 
-     * @return void 
+     *
+     * @return void
      */
     function doCart()
     {
@@ -529,7 +528,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     /**
      * Add product to authenticated user's favorites.
      *
-     * @param type $objCustomer 
+     * @param type $objCustomer
      * @return void
      */
     function doAddFavorite(&$objCustomer)
@@ -539,7 +538,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex
             $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
             if (count($this->arrErr) == 0) {
                 if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite', array($this));
 
@@ -552,7 +550,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     /**
      * Add product to authenticated user's favorites. (for Smart phone)
      *
-     * @param type $objCustomer 
+     * @param type $objCustomer
      * @return void
      */
     function doAddFavoriteSphone($objCustomer)
@@ -562,7 +560,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex
             $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
             if (count($this->arrErr) == 0) {
                 if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite_sphone', array($this));
 
@@ -576,9 +573,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /**
-     * 
-     * 
-     * @return void 
+     *
+     *
+     * @return void
      */
     function doDefault()
     {
@@ -588,7 +585,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /**
-     * 
+     *
      * @return void
      */
     function doMobileSelect()
@@ -606,7 +603,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
 
     /**
      *
-     * @return type 
+     * @return type
      */
     function doMobileSelect2()
     {
@@ -631,7 +628,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /**
-     * 
+     *
      * @return void
      */
     function doMobileSelectItem()
@@ -675,7 +672,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
 
     /**
      *
-     * @return void 
+     * @return void
      */
     function doMobileCart()
     {
@@ -688,7 +685,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
 
     /**
      *
-     * @return void 
+     * @return void
      */
     function doMobileDefault()
     {

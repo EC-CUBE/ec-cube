@@ -20,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Tradelaw.php';
 
 /**
@@ -32,12 +31,8 @@ require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Tradelaw.php
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw 
+class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

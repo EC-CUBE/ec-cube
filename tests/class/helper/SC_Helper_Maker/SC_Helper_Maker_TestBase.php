@@ -43,7 +43,6 @@ class SC_Helper_Maker_TestBase extends Common_TestCase
         parent::tearDown();
     }
 
-
     /**
      * DBにお勧め情報を登録します.
      */

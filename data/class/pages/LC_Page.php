@@ -32,11 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page 
+class LC_Page
 {
-
-    // {{{ properties
-
     /** メインテンプレート */
     var $tpl_mainpage;
 
@@ -76,8 +73,6 @@ class LC_Page
     /** プラグインを実行フラグ */
     var $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -119,7 +114,8 @@ class LC_Page
      * @return void
      */
     function process()
-    {}
+    {
+    }
 
     /**
      * Page のレスポンス送信.
@@ -188,8 +184,8 @@ class LC_Page
 
     /**
      * ローカルフックポイントを生成し、実行します.
-     * 
-     * @param SC_Helper_Plugin_Ex $objPlugin 
+     *
+     * @param SC_Helper_Plugin_Ex $objPlugin
      * @return void
      */
     function doLocalHookpointBefore(SC_Helper_Plugin_Ex $objPlugin)
@@ -207,8 +203,8 @@ class LC_Page
 
     /**
      * ローカルフックポイントを生成し、実行します.
-     * 
-     * @param SC_Helper_Plugin_Ex $objPlugin 
+     *
+     * @param SC_Helper_Plugin_Ex $objPlugin
      * @return void
      */
     function doLocalHookpointAfter(SC_Helper_Plugin_Ex $objPlugin)
@@ -392,6 +388,7 @@ class LC_Page
         } elseif (isset($_POST['mode']) && preg_match($pattern, $_POST['mode'])) {
             $mode = $_POST['mode'];
         }
+
         return $mode;
     }
 

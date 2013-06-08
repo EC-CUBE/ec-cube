@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +68,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objLayout = new SC_Helper_PageLayout_Ex();
 
         $objFormParam = new SC_FormParam_Ex();
@@ -193,6 +187,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
             $this->arrErr['err'] = '※ CSSの書き込みに失敗しました<br />';
             return false;
         }
+
         return true;
     }
 
@@ -208,6 +203,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
             $this->arrErr['err'] = '※ CSSの削除に失敗しました<br />';
             return false;
         }
+
         return true;
     }
 
@@ -230,6 +226,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
                 );
             }
         }
+
         return $arrCSSList;
     }
 
@@ -266,6 +263,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
                 $objErr->arrErr['css_name'] = '※ 同じファイル名のデータが存在しています。別の名称を付けてください。<br />';
             }
         }
+
         return $objErr->arrErr;
     }
 
@@ -283,7 +281,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * 文字列に[./]表記がないかをチェックします
      * @param string $str
-     * @return boolean 
+     * @return boolean
      */
     function checkPath($str)
     {
@@ -291,6 +289,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
         if (preg_match('|\./|', $str)) {
             return false;
         }
+
         return true;
     }
 }

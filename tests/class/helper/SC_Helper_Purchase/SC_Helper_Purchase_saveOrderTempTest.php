@@ -149,4 +149,3 @@ class SC_Helper_Purchase_saveOrderTempMock extends SC_Helper_Purchase
   }
 }
 
-

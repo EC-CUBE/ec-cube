@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -33,10 +32,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $$Id$$
  */
-class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
 {
-
-    // {{{ properties
     /** エラー情報 **/
     var $arrErr;
 
@@ -58,8 +55,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
     /** 登録フォームカラム情報 **/
     var $arrFormKeyList;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -99,7 +94,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // CSV管理ヘルパー
         $objCSV = new SC_Helper_CSV_Ex();
         // CSV構造読み込み
@@ -258,6 +252,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
 
         // カテゴリ件数を更新
         SC_Helper_DB_Ex::sfCountCategory($objQuery);
+
         return;
     }
 
@@ -347,6 +342,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
         if (count($objErr->arrErr) == 0) {
             $objErr->arrErr = $this->lfCheckErrorDetail($arrRet, $objErr->arrErr);
         }
+
         return $objErr->arrErr;
     }
 
@@ -408,6 +404,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
                                         $sqlval['category_name'],
                                         $_SESSION['member_id']);
         }
+
         return $category_id;
     }
 
@@ -431,6 +428,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
                     break;
             }
         }
+
         return $arrCSVFrame;
     }
 
@@ -451,6 +449,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
         if ($sqlval['parent_category_id'] == '') {
             $sqlval['parent_category_id'] = (string)'0';
         }
+
         return $sqlval;
     }
 
@@ -518,6 +517,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
                 $arrErr['parent_category_id'] = '※ ' . LEVEL_MAX . '階層以上の登録はできません。';
             }
         }
+
         return $arrErr;
     }
 
@@ -594,6 +594,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
             $microtime = sprintf('%06d', $line_no);
             $time .= ".$microtime";
         }
+
         return $time;
     }
 
@@ -613,6 +614,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
         ) {
             return false;
         }
+
         return true;
     }
 

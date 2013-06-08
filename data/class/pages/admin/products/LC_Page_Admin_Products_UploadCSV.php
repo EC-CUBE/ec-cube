@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  *
  * FIXME 同一商品IDで商品規格違いを登録できない。(更新は可能)
  */
-class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /** TAGエラーチェックフィールド情報 */
     var $arrTagCheckItem;
 
@@ -100,7 +95,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $this->objDb = new SC_Helper_DB_Ex();
 
         // CSV管理ヘルパー
@@ -231,6 +225,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             }
             SC_Utils_Ex::extendTimeOut();
         }
+
         return $errFlag;
     }
 
@@ -275,7 +270,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         $errFlag = $this->lfReadCSVFile($objFormParam, $fp);
         if (!$errFlag) {
             rewind($fp);
-            // CSVからの読み込み、保存 
+            // CSVからの読み込み、保存
             $errFlag = $this->lfReadCSVFile($objFormParam, $fp, $objQuery);
         }
 
@@ -382,6 +377,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         if (count($objErr->arrErr) == 0) {
             $objErr->arrErr = $this->lfCheckErrorDetail($arrRet, $objErr->arrErr);
         }
+
         return $objErr->arrErr;
     }
 
@@ -580,6 +576,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
                     break;
             }
         }
+
         return $arrCSVFrame;
     }
 
@@ -604,6 +601,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         if ($sqlval['creator_id'] == '') {
             $sqlval['creator_id'] = $_SESSION['member_id'];
         }
+
         return $sqlval;
     }
 
@@ -656,6 +654,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
                 trigger_error('', E_USER_ERROR);
             }
         }
+
         return $sqlval;
     }
 
@@ -717,7 +716,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             $recommend_product_id_key = 'recommend_product_id' . $i;
             if ((array_search($recommend_product_id_key, $this->arrFormKeyList) !== FALSE)
              && ($item[$recommend_product_id_key] != '')) {
-
                 // 商品IDの存在チェック
                 if (!$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item[$recommend_product_id_key])) {
                     $arrErr[$recommend_product_id_key] = "※ 指定の関連商品ID($i)は、登録されていません。";
@@ -781,6 +779,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
                 $arrErr['down_realfilename'] = '※ ダウンロード商品の場合はダウンロード商品用ファイルアップロードは必須です。';
             }
         }
+
         return $arrErr;
     }
 
@@ -801,6 +800,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             $microtime = sprintf('%06d', $line_no);
             $time .= ".$microtime";
         }
+
         return $time;
     }
 
@@ -832,6 +832,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
                 return false;
             }
         }
+
         return true;
     }
 
@@ -866,6 +867,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         if ($count != $db_count) {
             return false;
         }
+
         return true;
     }
 
@@ -885,6 +887,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         ) {
             return false;
         }
+
         return true;
     }
 
@@ -904,6 +907,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         ) {
             return false;
         }
+
         return true;
     }
 }

@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_Image.php';
 
-class SC_Image_Ex extends SC_Image 
+class SC_Image_Ex extends SC_Image
 {
 }

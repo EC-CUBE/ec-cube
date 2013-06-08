@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex 
+class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -69,7 +64,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
      */
     function action()
     {
-
         $objCustomer    = new SC_Customer_Ex();
         $customer_id    = $objCustomer->getValue('customer_id');
         $objAddress     = new SC_Helper_Address_Ex();
@@ -80,7 +74,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
         $objFormParam->convParam();
 
         switch ($this->getMode()) {
-
             // お届け先の削除
             case 'delete':
                 if ($objFormParam->checkError()) {
@@ -158,6 +151,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
                 $arrOtherDeliv[$key]['prefname'] = $arrPref[$arrDeliv['pref']];
             }
         }
+
         return $arrOtherDeliv;
     }
 }

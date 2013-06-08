@@ -45,8 +45,6 @@ class SC_Helper_Maker_saveMakerTest extends SC_Helper_Maker_TestBase
         parent::tearDown();
     }
 
-
-
     public function testSaveMaker_メーカーIDを指定すると更新される(){
     //public function testSaveMaker_update(){
         $sqlVal = array(
@@ -68,8 +66,6 @@ class SC_Helper_Maker_saveMakerTest extends SC_Helper_Maker_TestBase
 
         $this->verify();
     }
-
-
 
     public function testSaveMaker_メーカーIDがない場合_インサートされる(){
     //public function testSaveMaker_insert(){

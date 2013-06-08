@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'SC_Initial.php';
 
 /**
@@ -32,6 +31,6 @@ require_once CLASS_REALDIR . 'SC_Initial.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Initial_Ex extends SC_Initial 
+class SC_Initial_Ex extends SC_Initial
 {
 }

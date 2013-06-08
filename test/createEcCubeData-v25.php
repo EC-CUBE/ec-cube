@@ -681,6 +681,7 @@ class CreateEcCubeData
     function lfGetTotalCategoryrank($existingMaxRank = 0)
     {
         $TotalCategoryrank = (TOP_CATEGORIES_VOLUME * MIDDLE_CATEGORIES_VOLUME * SMALL_CATEGORIES_VOLUME) + (MIDDLE_CATEGORIES_VOLUME * TOP_CATEGORIES_VOLUME) + TOP_CATEGORIES_VOLUME + $existingMaxRank;
+
         return $TotalCategoryrank;
     }
 

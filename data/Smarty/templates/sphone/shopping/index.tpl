@@ -27,7 +27,6 @@
         if (checkLogin == false) {
             return false;
         } else {
-
             var postData = new Object;
             postData['<!--{$smarty.const.TRANSACTION_ID_NAME}-->'] = "<!--{$transactionid}-->";
             postData['mode'] = 'login';

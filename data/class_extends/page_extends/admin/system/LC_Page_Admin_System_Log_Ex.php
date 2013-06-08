@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Log.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'pages/admin/system/LC_Page_Admin_System_Log.php';
  * @author Seasoft 塚田将久
  * @version $Id$
  */
-class LC_Page_Admin_System_Log_Ex extends LC_Page_Admin_System_Log 
+class LC_Page_Admin_System_Log_Ex extends LC_Page_Admin_System_Log
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

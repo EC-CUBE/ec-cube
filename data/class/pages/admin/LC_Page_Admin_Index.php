@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Index extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Index extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -77,7 +72,6 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
 
@@ -140,6 +134,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
                 $this->lfSetIncorrectData($arrForm['login_id']);
             }
         }
+
         return $arrErr;
     }
 
@@ -165,6 +160,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
         if (SC_Utils_Ex::sfIsMatchHashPassword($pass, $arrData['password'], $arrData['salt'])) {
             return true;
         }
+
         return false;
     }
 
@@ -213,6 +209,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
         } else {
             $objSess->SetSession('last_login', $last_login);
         }
+
         return $objSess->GetSID();
     }
 

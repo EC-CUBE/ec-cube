@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
 /**
@@ -31,11 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex 
+class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
 {
-
-    // }}}
-    // {{{ functions
     public $arrParentID;
 
     /**
@@ -66,7 +62,6 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
      */
     function action()
     {
-
         // モバイル判定
         switch (SC_Display_Ex::detectDevice()) {
             case DEVICE_TYPE_MOBILE:
@@ -80,7 +75,6 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
                 $this->arrTree = $this->lfGetCatTree($this->tpl_category_id, true);
                 break;
         }
-
 
     }
 
@@ -118,6 +112,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
         if (empty($arrCategoryId)) {
             $arrCategoryId = array(0);
         }
+
         return $arrCategoryId;
     }
 
@@ -136,7 +131,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
         $this->arrParentID = array();
         foreach ($arrParentCategoryId as $category_id) {
             $arrParentID = $objCategory->getTreeTrail($category_id);
-            $this->arrParentID = array_merge($this->arrParentID, $arrParentID); 
+            $this->arrParentID = array_merge($this->arrParentID, $arrParentID);
             $this->root_parent_id[] = $arrParentID[0];
         }
 
@@ -178,6 +173,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
             $cat['has_children'] = count($arrChildrenID) > 0;
             $arrMainCat[] = $cat;
         }
+
         return $arrMainCat;
     }
 }

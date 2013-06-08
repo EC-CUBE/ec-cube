@@ -32,7 +32,7 @@
                 <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
                 <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
-                <!--{if $is_price_change == true}-->    
+                <!--{if $is_price_change == true}-->
                     <div class="attention" Align="right">※金額が変更されている商品があるため、再注文時はご注意ください。</div>
                 <!--{/if}-->
             </p>

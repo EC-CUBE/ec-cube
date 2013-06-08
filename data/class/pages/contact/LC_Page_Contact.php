@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Contact extends LC_Page_Ex 
+class LC_Page_Contact extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -81,7 +76,6 @@ class LC_Page_Contact extends LC_Page_Ex
      */
     function action()
     {
-
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
@@ -148,9 +142,6 @@ class LC_Page_Contact extends LC_Page_Ex
         parent::destroy();
     }
 
-    // }}}
-    // {{{ protected functions
-
     /**
      * お問い合わせ入力時のパラメーター情報の初期化を行う.
      *
@@ -159,7 +150,6 @@ class LC_Page_Contact extends LC_Page_Ex
      */
     function lfInitParam(&$objFormParam)
     {
-
         $objFormParam->addParam('お名前(姓)', 'name01', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(名)', 'name02', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(フリガナ・姓)', 'kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK', 'KANA_CHECK'));
@@ -190,6 +180,7 @@ class LC_Page_Contact extends LC_Page_Ex
         $objErr = new SC_CheckError_Ex($arrForm);
         $objErr->arrErr = $objFormParam->checkError();
         $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', 'email02') ,array('EQUAL_CHECK'));
+
         return $objErr->arrErr;
     }
 

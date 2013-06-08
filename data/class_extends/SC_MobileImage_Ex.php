@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_MobileImage.php';
 
-class SC_MobileImage_Ex extends SC_MobileImage 
+class SC_MobileImage_Ex extends SC_MobileImage
 {
 }

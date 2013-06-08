@@ -44,7 +44,7 @@
         </div>
         <!--{foreach item=shippingItem name=shippingItem from=$arrShipping}-->
             <h3>お届け先<!--{if $isMultiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
-        <div class="historyBox">	
+        <div class="historyBox">
         <p>
             <!--{if $isMultiple}-->
                     <!--{foreach item=item from=$shippingItem.shipment_item}-->
@@ -57,7 +57,7 @@
                                 <!--{if $item.productsClass.classcategory_name2 != ""}-->
                                     <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br />
                                 <!--{/if}-->
-                        
+
                         <em>単価：&nbsp;</em><!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|number_format}-->円<br />
                         <em>数量：&nbsp;</em><!--{$item.quantity}--><br />
                         <!--{* XXX 購入小計と誤差が出るためコメントアウト
@@ -74,7 +74,7 @@
             <em>電話番号</em>：&nbsp;<!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--><br />
                             <!--{if $shippingItem.shipping_fax01 > 0}-->
             <em>FAX番号</em>：&nbsp;<!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br />
-                            <!--{/if}-->            
+                            <!--{/if}-->
             <em>お届け日</em>：&nbsp;<!--{$shippingItem.shipping_date|default:'指定なし'|h}--><br />
             <em>お届け時間</em>：&nbsp;<!--{$shippingItem.shipping_time|default:'指定なし'|h}--><br />
 </p>

@@ -28,15 +28,14 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Helper_Mail 
+class SC_Helper_Mail
 {
-
     /** メールテンプレートのパス */
     var $arrMAILTPLPATH;
 
     /**
      * LC_Pageオブジェクト.
-     * 
+     *
      * @var LC_Page
      */
     protected $objPage;
@@ -53,7 +52,7 @@ class SC_Helper_Mail
 
     /**
      * LC_Pageオブジェクトをセットします.
-     * 
+     *
      * @param LC_Page $objPage
      */
     function setPage(LC_Page $objPage)
@@ -63,7 +62,7 @@ class SC_Helper_Mail
 
     /**
      * LC_Pageオブジェクトを返します.
-     * 
+     *
      * @return LC_Page
      */
     function getPage()
@@ -74,7 +73,6 @@ class SC_Helper_Mail
     /* DBに登録されたテンプレートメールの送信 */
     function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '')
     {
-
         // メールテンプレート情報の取得
         $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
         $mailtemplate = $objMailtemplate->get($template_id);
@@ -106,7 +104,6 @@ class SC_Helper_Mail
     /* 受注完了メール送信 */
     function sfSendOrderMail($order_id, $template_id, $subject = '', $header = '', $footer = '', $send = true)
     {
-
         $arrTplVar = new stdClass();
         $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $arrTplVar->arrInfo = $arrInfo;
@@ -270,6 +267,7 @@ class SC_Helper_Mail
         $subject = $objMailView->fetch('mail_templates/mail_title.tpl');
         // #1940 (SC_Helper_Mail#sfMakeSubject 先頭に改行を含む値を返す) 対応
         $subject = trim($subject);
+
         return $subject;
     }
 
@@ -306,6 +304,7 @@ class SC_Helper_Mail
         if (!empty($arrRet[0]['customer_id'])) {
             return true;
         }
+
         return false;
     }
 
@@ -372,6 +371,7 @@ class SC_Helper_Mail
         $objMail->setTo($to_addr, $arrCustomerData['name01'] . $arrCustomerData['name02'] .' 様');
 
         $objMail->sendMail();
+
         return true;
     }
 
@@ -400,6 +400,7 @@ class SC_Helper_Mail
         $objQuery->setOrder('create_date DESC');
 
         $arrResults = $objQuery->select('*', 'dtb_mailmaga_template', $where, $arrValues);
+
         return $arrResults;
     }
 
@@ -428,6 +429,7 @@ class SC_Helper_Mail
         $objQuery->setOrder('create_date DESC');
 
         $arrResults = $objQuery->select('*', 'dtb_send_history', $where, $arrValues);
+
         return $arrResults;
     }
 
@@ -465,7 +467,6 @@ class SC_Helper_Mail
         }
 
         foreach ($arrDestinationList as $arrDestination) {
-
             // お名前の変換
             $customerName = trim($arrDestination['name']);
             $subjectBody = preg_replace('/{name}/', $customerName, $arrMail['subject']);
@@ -525,6 +526,7 @@ class SC_Helper_Mail
         } else {
             $sendResut = $objMail->sendHtmlMail();
         }
+
         return;
     }
 }

@@ -26,7 +26,6 @@
 <script type="text/javascript">
 <!--
 function lfnCheckSubmit( fm ){
-
     var err = '';
     /*
     if ( ! fm["title"].value ){
@@ -72,7 +71,7 @@ function lfnSortItem(mode,data){
             flag = false;
         }
     }
-    
+
     if ( flag ){
         document.form1["mode"].value = mode;
         document.form1["best_id"].value = data;

@@ -29,9 +29,8 @@
  * @author Hirokazu Fukuda
  * @version $Id$
  */
-class SC_Helper_Customer 
+class SC_Helper_Customer
 {
-
     /**
      * 会員情報の登録・編集処理を行う.
      *
@@ -95,7 +94,7 @@ class SC_Helper_Customer
                 $arrData['reminder_answer'] = SC_Utils_Ex::sfGetHashString($arrData['reminder_answer'], $salt);
             }
         }
-        
+
         //デフォルト国IDを追加
         $arrData['country_id'] = DEFAULT_COUNTRY_ID;
 
@@ -471,7 +470,6 @@ class SC_Helper_Customer
      */
     function sfCustomerMypageErrorCheck(&$objFormParam, $isAdmin = false)
     {
-
         $objFormParam->toLower('email_mobile');
         $objFormParam->toLower('email_mobile02');
 
@@ -675,6 +673,7 @@ class SC_Helper_Customer
                                     $page_max,
                                     'fnNaviSearchOnlyPage',
                                     NAVI_PMAX);
+
         return array($linemax, $arrData, $objNavi);
     }
 
@@ -712,6 +711,7 @@ class SC_Helper_Customer
             'del_flg' => '1',
         );
         SC_Helper_Customer_Ex::sfEditCustomerData($arrVal, $customer_id);
+
         return true;
     }
 }

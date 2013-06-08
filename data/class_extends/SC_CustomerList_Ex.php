@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_CustomerList.php';
 
-class SC_CustomerList_Ex extends SC_CustomerList 
+class SC_CustomerList_Ex extends SC_CustomerList
 {
 }

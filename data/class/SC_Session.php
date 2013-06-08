@@ -22,9 +22,8 @@
  */
 
 /* セッション管理クラス */
-class SC_Session 
+class SC_Session
 {
-
     /** ログインユーザ名 */
     var $login_id;
 
@@ -109,6 +108,7 @@ class SC_Session
         if (empty($_SESSION['uniqid'])) {
             $this->setUniqId();
         }
+
         return $this->GetSession('uniqid');
     }
 

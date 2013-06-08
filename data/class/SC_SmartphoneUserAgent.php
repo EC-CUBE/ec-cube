@@ -26,9 +26,8 @@
  *
  * @auther Yu Nobira
  */
-class SC_SmartphoneUserAgent 
+class SC_SmartphoneUserAgent
 {
-
     /**
      * スマートフォンかどうかを判別する。
      * $_SESSION['pc_disp'] = true の場合はPC表示。
@@ -60,6 +59,7 @@ class SC_SmartphoneUserAgent
     function getSmartphonePcFlag()
     {
         $_SESSION['pc_disp'] = empty($_SESSION['pc_disp']) ? false : $_SESSION['pc_disp'];
+
         return $_SESSION['pc_disp'];
     }
 

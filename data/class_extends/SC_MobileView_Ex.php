@@ -23,6 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_MobileView.php';
 
-class SC_MobileView_Ex extends SC_MobileView 
+class SC_MobileView_Ex extends SC_MobileView
 {
 }

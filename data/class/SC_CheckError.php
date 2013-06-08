@@ -26,7 +26,7 @@
  * [概要] エラーチェッククラス
  *----------------------------------------------------------------------
  */
-class SC_CheckError 
+class SC_CheckError
 {
     var $arrErr = array();
     var $arrParam;
@@ -936,7 +936,6 @@ class SC_CheckError
         $this->createParam($value);
         // 年が入力されている。
         if (strlen($this->arrParam[$value[1]]) >= 1) {
-
             // 年の数字チェック、最小数値制限チェック
             $this->doFunc(array($value[0].'(年)', $value[1], BIRTH_YEAR), array('NUM_CHECK', 'MIN_CHECK'));
             // 上のチェックでエラーある場合、中断する。
@@ -975,7 +974,6 @@ class SC_CheckError
     // value[7] = end_day
     function CHECK_SET_TERM($value)
     {
-
         // 期間指定
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[5]])) {
             return;
@@ -988,7 +986,6 @@ class SC_CheckError
             $this->arrErr[$value[5]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0)) {
-
             $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d',$this->arrParam[$value[4]]) .'000000';
             $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d',$this->arrParam[$value[7]]) .'235959';
 
@@ -1026,7 +1023,6 @@ class SC_CheckError
     /*-----------------------------------------------------------------*/
     function CHECK_SET_TERM2($value)
     {
-
         // 期間指定
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[8]])) {
             return;
@@ -1039,7 +1035,6 @@ class SC_CheckError
             $this->arrErr[$value[8]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0)) {
-
             $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d',$this->arrParam[$value[4]]) .sprintf('%02d',$this->arrParam[$value[5]]).sprintf('%02d',$this->arrParam[$value[6]]).sprintf('%02d',$this->arrParam[$value[7]]);
             $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf('%02d',$this->arrParam[$value[11]]).sprintf('%02d',$this->arrParam[$value[12]]).sprintf('%02d',$this->arrParam[$value[13]]);
 
@@ -1070,7 +1065,6 @@ class SC_CheckError
     // value[5] = end_month
     function CHECK_SET_TERM3($value)
     {
-
         // 期間指定
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[4]])) {
             return;
@@ -1083,7 +1077,6 @@ class SC_CheckError
             $this->arrErr[$value[4]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && (strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0))) {
-
             $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]);
             $date2 = $this->arrParam[$value[4]] .sprintf('%02d', $this->arrParam[$value[5]]);
 
@@ -1246,6 +1239,7 @@ class SC_CheckError
          * string ではなく int 型の数値が入る場合がある.
          */
         $string = (string) $string;
+
         return strlen($string) > 0 && !ctype_digit($string);
     }
 }

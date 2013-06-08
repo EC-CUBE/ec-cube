@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -33,9 +32,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  */
 class LC_Page_Products_List extends LC_Page_Ex
 {
-
-    // {{{ properties
-
     /** テンプレートクラス名1 */
     var $tpl_class_name1 = array();
 
@@ -60,8 +56,6 @@ class LC_Page_Products_List extends LC_Page_Ex
     /** ランダム文字列 **/
     var $tpl_rnd = '';
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -98,7 +92,6 @@ class LC_Page_Products_List extends LC_Page_Ex
      */
     function action()
     {
-
         $objProduct = new SC_Product_Ex();
 
         $this->arrForm = $_REQUEST;
@@ -136,7 +129,6 @@ class LC_Page_Products_List extends LC_Page_Ex
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $this->tpl_linemax, $objProduct);
 
         switch ($this->getMode()) {
-
             case 'json':
                 $this->doJson($objProduct);
                 break;
@@ -166,7 +158,6 @@ class LC_Page_Products_List extends LC_Page_Ex
      */
     function lfGetCategoryId($category_id)
     {
-
         // 指定なしの場合、0 を返す
         if (empty($category_id)) return 0;
 
@@ -191,7 +182,6 @@ class LC_Page_Products_List extends LC_Page_Ex
     /* 商品一覧の表示 */
     function lfGetProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct)
     {
-
         $arrOrderVal = array();
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -244,13 +234,13 @@ __EOS__;
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);
         $arrProducts['productStatus'] = $objProduct->getProductStatus($arrProductId);
+
         return $arrProducts;
     }
 
     /* 入力内容のチェック */
     function lfCheckError($product_id, &$arrForm, $tpl_classcat_find1, $tpl_classcat_find2)
     {
-
         // 入力データを渡す。
         $objErr = new SC_CheckError_Ex($arrForm);
 
@@ -324,6 +314,7 @@ __EOS__;
         if (strlen($arrSearchData['name']) > 0) {
             $arrSearch['name']      = $arrSearchData['name'];
         }
+
         return $arrSearch;
     }
 
@@ -338,6 +329,7 @@ __EOS__;
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($searchCondition['where_for_count']);
         $objProduct = new SC_Product_Ex();
+
         return $objProduct->findProductCount($objQuery, $searchCondition['arrval']);
     }
 
@@ -411,7 +403,6 @@ __EOS__;
         $js_fnOnLoad = '';
         foreach ($arrProducts as $key => $value) {
             if ($arrProducts[$key]['product_id'] == $product_id) {
-
                 $arrProducts[$key]['product_class_id']  = $arrForm['product_class_id'];
                 $arrProducts[$key]['classcategory_id1'] = $arrForm['classcategory_id1'];
                 $arrProducts[$key]['classcategory_id2'] = $arrForm['classcategory_id2'];
@@ -420,6 +411,7 @@ __EOS__;
                 $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProducts[$key]['product_id']}, '{$arrForm['classcategory_id2']}');";
             }
         }
+
         return $js_fnOnLoad;
     }
 
@@ -445,7 +437,6 @@ __EOS__;
      */
     function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage)
     {
-
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
             for ($i = 0; $i < count($arrValues); $i++) {
                 $product_status_id = $arrValues[$i];
@@ -459,6 +450,7 @@ __EOS__;
                 }
             }
         }
+
         return $arrProducts;
     }
 

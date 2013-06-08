@@ -30,9 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_CartClear extends SC_Api_Abstract_Ex 
+class API_CartClear extends SC_Api_Abstract_Ex
 {
-
     protected $operation_name = 'CartClear';
     protected $operation_description = 'カートのクリア';
     protected $default_auth_types = self::API_AUTH_TYPE_SESSION_TOKEN;
@@ -44,6 +43,7 @@ class API_CartClear extends SC_Api_Abstract_Ex
     {
         $this->arrResponse = array(
             'Version' => ECCUBE_VERSION);
+
         return true;
     }
 

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -33,9 +32,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  */
 class LC_Page_Products_Review extends LC_Page_Ex
 {
-
-    // {{{ properties
-
     /** おすすめレベル */
     var $arrRECOMMEND;
 
@@ -45,8 +41,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
     /** 入力禁止URL */
     var $arrReviewDenyURL;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -82,7 +76,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

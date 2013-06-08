@@ -29,9 +29,8 @@
  * @version $Id$
  */
 
-abstract class SC_Api_Abstract 
+abstract class SC_Api_Abstract
 {
-
     /** 認証タイプ */
     const API_AUTH_TYPE_REFERER = '1';          // リファラー
     const API_AUTH_TYPE_SESSION_TOKEN = '2';    // CSRF TOKEN
@@ -87,6 +86,7 @@ abstract class SC_Api_Abstract
         $arrApiConfig['enable'] = $this->default_enable;
         $arrApiConfig['is_log'] = $this->default_is_log;
         $arrApiConfig['sub_data'] = $this->default_sub_data;
+
         return $arrApiConfig;
     }
 
@@ -117,6 +117,7 @@ abstract class SC_Api_Abstract
         $this->objFormParam->convParam();
         $this->arrErr = $this->objFormParam->checkError(false);
         $this->arrErr = array_merge((array)$this->arrErr, (array)$this->checkErrorExtended($arrParam));
+
         return $this->objFormParam->getHashArray();
     }
 
@@ -126,6 +127,7 @@ abstract class SC_Api_Abstract
         if (!SC_Utils_Ex::isBlank($arrParam)) {
             return $arrParam;
         }
+
         return;
     }
 

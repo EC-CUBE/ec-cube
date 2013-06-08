@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -79,7 +74,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date_Ex(1901);
         $objDate->setStartYear(RELEASE_YEAR);
@@ -156,7 +150,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      */
     function createPdf(&$objFormParam)
     {
-
         $arrErr = $this->lfCheckError($objFormParam);
         $arrRet = $objFormParam->getHashArray();
 
@@ -230,7 +223,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
         if (!is_numeric($month)) {
             $arrErr['month'] = '発行月は数値で入力してください。';
         } else if (0 >= $month && 12 < $month) {
-
             $arrErr['month'] = '発行月は1〜12の間で入力してください。';
         }
 
@@ -238,13 +230,12 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
         if (!is_numeric($day)) {
             $arrErr['day'] = '発行日は数値で入力してください。';
         } else if (0 >= $day && 31 < $day) {
-
             $arrErr['day'] = '発行日は1〜31の間で入力してください。';
         }
-        
+
         $objError->doFunc(array('発行日', 'year', 'month', 'day'), array('CHECK_DATE'));
         $arrErr = array_merge($arrErr, $objError->arrErr);
-        
+
         return $arrErr;
     }
 

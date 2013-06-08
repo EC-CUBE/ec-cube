@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,11 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Forgot extends LC_Page_Ex 
+class LC_Page_Forgot extends LC_Page_Ex
 {
-
-    // {{{ properties
-
     /** フォームパラメーターの配列 */
     var $objFormParam;
 
@@ -48,8 +44,6 @@ class LC_Page_Forgot extends LC_Page_Ex
     /** エラーメッセージ */
     var $errmsg;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -90,7 +84,6 @@ class LC_Page_Forgot extends LC_Page_Ex
      */
     function action()
     {
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
 
@@ -169,6 +162,7 @@ class LC_Page_Forgot extends LC_Page_Ex
         } else {
             $errmsg = 'お名前に間違いがあるか、このメールアドレスは登録されていません。';
         }
+
         return $errmsg;
     }
 
@@ -188,6 +182,7 @@ class LC_Page_Forgot extends LC_Page_Ex
         } else {
             $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
         }
+
         return;
     }
 
@@ -212,7 +207,6 @@ class LC_Page_Forgot extends LC_Page_Ex
         $result = $objQuery->select($cols, $table, $where, $arrVal);
         if (isset($result[0]['reminder']) and isset($arrReminder[$result[0]['reminder']])
                 and $result[0]['reminder'] == $arrForm['reminder']) {
-
             $is_authorized = false;
             if (empty($result[0]['salt'])) {
                 // 旧バージョン(2.11未満)からの移行を考慮
@@ -249,6 +243,7 @@ class LC_Page_Forgot extends LC_Page_Ex
             //SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
             $errmsg = '秘密の質問が一致しませんでした。';
         }
+
         return $errmsg;
     }
 
@@ -266,6 +261,7 @@ class LC_Page_Forgot extends LC_Page_Ex
         // 秘密の質問チェックの追加
         $objFormParam->addParam('パスワード確認用の質問', 'reminder', STEXT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('パスワード確認用の質問の答え', 'reminder_answer', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+
         return;
     }
 
@@ -316,6 +312,7 @@ class LC_Page_Forgot extends LC_Page_Ex
             );
         $objMail->setTo($email, $customer_name . ' 様');
         $objMail->sendMail();
+
         return;
     }
 

@@ -20,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -30,12 +29,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Total extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Total extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -105,7 +100,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         if (isset($_GET['draw_image']) && $_GET['draw_image'] != '') {
             define('DRAW_IMAGE' , true);
         } else {
@@ -127,7 +121,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
 
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (empty($this->arrErr)) {
-
                     // 日付
                     list($sdate, $edate) = $this->lfSetStartEndDate($objFormParam);
 
@@ -233,7 +226,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     /* 入力内容のチェック */
     function lfCheckError(&$objFormParam)
     {
-
         $objFormParam->convParam();
         $objErr         = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
@@ -260,7 +252,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     /* サブナビを移動しても日付が残るようにセッションに入力期間を記録する */
     function lfSaveDateSession($session, $arrForm)
     {
-
         // session の初期化をする
         if (!isset($session['total'])) {
             $session['total'] = $this->lfGetDateInit();
@@ -306,12 +297,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     /* 折れ線グラフの作成 */
     function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate, $xincline)
     {
-
         $ret_path = '';
 
         // 結果が0行以上ある場合のみグラフを生成する。
         if (count($arrResults) > 0 && $this->install_GD) {
-
             // グラフの生成
             $arrList = SC_Utils_Ex::sfArrKeyValue($arrResults, $keyname, 'total');
 
@@ -359,13 +348,13 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
             // ファイルパスを返す
             $ret_path = GRAPH_URLPATH . $pngname;
         }
+
         return $ret_path;
     }
 
     // 円グラフの作成
     function lfGetGraphPie($arrResults, $keyname, $type, $title = '', $sdate = '', $edate = '')
     {
-
         $ret_path = '';
         // 結果が0行以上ある場合のみグラフを生成する。
         if (count($arrResults) > 0 && $this->install_GD) {
@@ -404,6 +393,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
             // ファイルパスを返す
             $ret_path = GRAPH_URLPATH . $pngname;
         }
+
         return $ret_path;
     }
 
@@ -451,18 +441,19 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
             // ファイルパスを返す
             $ret_path = GRAPH_URLPATH . $pngname;
         }
+
         return $ret_path;
     }
 
     // グラフ用のPNGファイル名
     function lfGetGraphPng($keyname)
     {
-
         if ($_POST['search_startyear_m'] != '') {
             $pngname = sprintf('%s_%02d%02d.png', $keyname, substr($_POST['search_startyear_m'],2), $_POST['search_startmonth_m']);
         } else {
             $pngname = sprintf('%s_%02d%02d%02d_%02d%02d%02d.png', $keyname, substr($_POST['search_startyear'], 2), $_POST['search_startmonth'], $_POST['search_startday'], substr($_POST['search_endyear'],2), $_POST['search_endmonth'], $_POST['search_endday']);
         }
+
         return $pngname;
     }
 
@@ -630,7 +621,6 @@ __EOS__;
     /** 年代別集計 **/
     function lfGetOrderAge($type, $sdate, $edate)
     {
-
         $objQuery = SC_Query_Ex::getSingletonInstance();
 
         list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
@@ -726,7 +716,6 @@ __EOS__;
      */
     function lfAddBlankLine($arrResults, $type, $st, $ed)
     {
-
         $arrDateList = $this->lfDateTimeArray($type, $st, $ed);
 
         foreach ($arrResults as $arrResult) {
@@ -735,15 +724,14 @@ __EOS__;
         }
 
         foreach ($arrDateList as $date) {
-
             if (array_key_exists($date, $arrDateResults)) {
-
                 $arrRet[] = $arrDateResults[$date];
 
             } else {
                 $arrRet[]['str_date'] = $date;
             }
         }
+
         return $arrRet;
     }
 
@@ -787,6 +775,7 @@ __EOS__;
                 $tmp += $nAday;
             }
         }
+
         return $arrDateList;
     }
 
@@ -797,7 +786,6 @@ __EOS__;
     {
         // 検索結果が0でない場合
         if (count($arrResults) > 0) {
-
             // 合計の計算
             foreach ($arrResults as $arrResult) {
                 foreach ($arrResult as $key => $value) {
@@ -827,6 +815,7 @@ __EOS__;
             }
             $csv_data.= SC_Utils_Ex::sfGetCSVList($arrRet[$i]);
         }
+
         return $csv_data;
     }
 

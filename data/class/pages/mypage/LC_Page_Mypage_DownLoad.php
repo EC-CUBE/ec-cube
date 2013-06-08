@@ -20,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -30,11 +29,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author CUORE CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_DownLoad extends LC_Page_Ex 
+class LC_Page_Mypage_DownLoad extends LC_Page_Ex
 {
-
-    // {{{ properties
-
     /** フォームパラメーターの配列 */
     var $objFormParam;
 
@@ -48,8 +44,6 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
                                 'pdf' => 'application/pdf'
         );
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -82,7 +76,6 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
      */
     function action()
     {
-
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
         if (!$objCustomer->isLoginSuccess(true)) {
@@ -195,6 +188,7 @@ __EOS__;
         $where .= ' = 1';
         $arrRet = $objQuery->select($col, $table, $where,
                                     array($customer_id, $order_id, $product_id, $product_class_id));
+
         return $arrRet[0];
     }
 
@@ -212,6 +206,7 @@ __EOS__;
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
+
         return $objErr->arrErr;
     }
 

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 define('CALENDAR_ROOT', DATA_REALDIR.'module/Calendar'.DIRECTORY_SEPARATOR);
 require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
@@ -32,12 +31,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $ $
  */
-class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex 
+class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -66,7 +61,6 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
      */
     function action()
     {
-
         // カレンダーデータ取得
         $this->arrCalendar = $this->lfGetCalendar(2);
 

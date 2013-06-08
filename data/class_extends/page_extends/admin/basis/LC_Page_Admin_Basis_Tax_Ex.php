@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Tax.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Tax.php';
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Basis_Tax_Ex.php 22567 2013-03-09 12:18:54Z yomoro $
  */
-class LC_Page_Admin_Basis_Tax_Ex extends LC_Page_Admin_Basis_Tax 
+class LC_Page_Admin_Basis_Tax_Ex extends LC_Page_Admin_Basis_Tax
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

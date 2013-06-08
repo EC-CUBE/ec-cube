@@ -29,21 +29,14 @@
  */
 class SC_Initial
 {
-
-    // {{{ cunstructor
-
     /**
      * コンストラクタ.
      */
     function __construct()
     {
-
         /** EC-CUBEのバージョン */
         define('ECCUBE_VERSION', '2.13.0-dev');
     }
-
-    // }}}
-    // {{{ functions
 
     /**
      * 初期設定を行う.
@@ -74,7 +67,6 @@ class SC_Initial
      */
     function requireInitialConfig()
     {
-
         define('CONFIG_REALFILE', realpath(dirname(__FILE__)) . '/../config/config.php');
         if (file_exists(CONFIG_REALFILE)) {
             require_once CONFIG_REALFILE;
@@ -158,7 +150,6 @@ class SC_Initial
      */
     function defineDirectoryIndex()
     {
-
         // DirectoryIndex の実ファイル名
         if (!defined('DIR_INDEX_FILE')) {
             define('DIR_INDEX_FILE', 'index.php');
@@ -190,7 +181,6 @@ class SC_Initial
      */
     function defineParameter()
     {
-
         $errorMessage
             = '<div style="color: #F00; font-weight: bold; background-color: #FEB; text-align: center">'
             . CACHE_REALDIR
@@ -202,7 +192,6 @@ class SC_Initial
 
             // キャッシュが無ければ, 初期データからコピー
         } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
-
             $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
             if (is_writable(CACHE_REALDIR)) {
                 $handle = fopen(CACHE_REALDIR . 'mtb_constants.php', 'w');

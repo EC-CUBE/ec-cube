@@ -81,7 +81,6 @@ class SC_Helper_BestProducts_getByRankTest extends SC_Helper_BestProducts_TestBa
 
     }
 
-
     // rankが存在するが、del_flg=1の場合、空が帰る。
     public function testGetByRank_ランクが存在かつ_削除の場合_空が返る(){
 

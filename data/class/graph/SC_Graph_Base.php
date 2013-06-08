@@ -130,11 +130,8 @@ define('LEGEND_RIGHT', 10);
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Graph_Base 
+class SC_Graph_Base
 {
-
-    // {{{ properties
-
     var $arrRGB;
     var $arrColor;
     var $arrDarkColor;
@@ -396,9 +393,6 @@ class SC_Graph_Base
         $this->arrLegend = array_values((array)$arrLegend);
     }
 
-    // }}}
-    // {{{ protected functions
-
     /**
      * クラスの初期化を行う.
      *
@@ -458,6 +452,7 @@ class SC_Graph_Base
         // 位置を求める
         $x = $cx + ($r * cos(deg2rad($s)));
         $y = $cy - (($r * sin(deg2rad($s))) * ($ch / $cw));
+
         return array(round($x), round($y));
     }
 
@@ -479,6 +474,7 @@ class SC_Graph_Base
             return NULL;
         }
         $ret = imagecolorallocate($image, $array[0], $array[1], $array[2]);
+
         return $ret;
     }
 
@@ -497,6 +493,7 @@ class SC_Graph_Base
             $i++;
         }
         $ret = imagecolorallocate($image, $dark[0], $dark[1], $dark[2]);
+
         return $ret;
     }
 }

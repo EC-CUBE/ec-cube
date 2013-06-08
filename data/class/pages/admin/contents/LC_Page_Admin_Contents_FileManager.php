@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -71,7 +66,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // フォーム操作クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -133,7 +127,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
                         $disp_error = '※ ディレクトリをダウンロードすることは出来ません。<br/>';
                         $this->setDispError('select_file', $disp_error);
                     } else {
-
                         // ファイルダウンロード
                         $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
                         SC_Response_Ex::actionExit();
@@ -306,6 +299,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         if (SC_Utils_Ex::isBlank($this->getMode())) {
             $setParam['now_dir'] = $setParam['top_dir'];
         }
+
         return $setParam;
     }
 
@@ -336,6 +330,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         if ($objFileManager->sfCreateFile($create_dir.'/'.$objFormParam->getValue('create_file'), 0755)) {
             $create_dir_flg = true;
         }
+
         return $create_dir_flg;
     }
 
@@ -353,6 +348,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         if (!strpos($objFormParam->getValue('select_file'), $objFormParam->getValue('top_dir'))) {
             $view_flg = true;
         }
+
         return $view_flg;
     }
 
@@ -434,6 +430,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         } else {
             $select_dir = $top_dir;
         }
+
         return $select_dir;
     }
 
@@ -453,6 +450,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
             $parent_dir .= "$val/";
         }
         $parent_dir = rtrim($parent_dir, '/');
+
         return $parent_dir;
     }
 

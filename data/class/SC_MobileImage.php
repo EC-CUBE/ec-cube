@@ -29,7 +29,7 @@ require_once MOBILE_IMAGE_INC_REALDIR . 'image_converter.inc';
 /**
  * 画像変換クラス
  */
-class SC_MobileImage 
+class SC_MobileImage
 {
     /**
      * 画像を端末の解像度に合わせて変換する
@@ -40,14 +40,12 @@ class SC_MobileImage
      */
     static function handler($buffer)
     {
-
         // 端末情報を取得する
         $carrier = SC_MobileUserAgent_Ex::getCarrier();
         $model   = SC_MobileUserAgent_Ex::getModel();
 
         // 携帯電話の場合のみ処理を行う
         if ($carrier !== FALSE) {
-
             // HTML中のIMGタグを取得する
             $images = array();
             $pattern = '/<img\s+[^<>]*src=[\'"]?([^>"\'\s]+)[\'"]?[^>]*>/i';
@@ -112,6 +110,7 @@ class SC_MobileImage
                 }
             }
         }
+
         return $buffer;
     }
 }

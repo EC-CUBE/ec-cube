@@ -25,9 +25,8 @@
  * クッキー用クラス
  *
  */
-class SC_Cookie 
+class SC_Cookie
 {
-
     var $expire;
 
     // コンストラクタ

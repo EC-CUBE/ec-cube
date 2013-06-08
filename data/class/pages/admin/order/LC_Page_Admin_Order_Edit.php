@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex.php';
 
 /**
@@ -33,7 +32,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  */
 class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 {
-
     var $arrShippingKeys = array(
         'shipping_id',
         'shipping_name01',
@@ -82,8 +80,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         'tax_rule'
     );
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -137,7 +133,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     function action()
     {
-
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
@@ -685,6 +680,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         }
 
         $objFormParam->setParam($arrValues);
+
         return $arrErr;
     }
 
@@ -702,7 +698,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     function doRegister($order_id, &$objPurchase, &$objFormParam, &$message, &$arrValuesBefore)
     {
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrValues = $objFormParam->getDbArray();
 
@@ -825,6 +820,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
         $objPurchase->registerShipping($order_id, $arrShippingValues, false);
         $objQuery->commit();
+
         return $order_id;
     }
 
@@ -857,7 +853,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     function doDeleteProduct($delete_no, &$objFormParam)
     {
-
         $select_shipping_id    = $objFormParam->getValue('select_shipping_id');
 
         //変更前のproduct_class_idが他の届け先にも存在するか
@@ -931,6 +926,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         if (!SC_Utils_Ex::isBlank($ancor_key)) {
             return "location.hash='#" . htmlentities(urlencode($ancor_key), ENT_QUOTES) . "'";
         }
+
         return '';
     }
 
@@ -943,7 +939,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     function shipmentAddProduct(&$objFormParam, $add_product_class_id)
     {
-
         //複数配送に商品情報追加
         $select_shipping_id = $objFormParam->getValue('select_shipping_id');
 
@@ -958,7 +953,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                 }
             }
         }else{
-
             //届け先に選択商品がない場合
             $objProduct = new SC_Product_Ex();
             $arrAddProductInfo = $objProduct->getDetailAndProductsClass($add_product_class_id);
@@ -1148,7 +1142,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             //$objFormParam->setParam($arrUpdateParams);
             return $arrUpdateParams;
         }
-
 
     /**
      * 受注商品一覧側に商品を追加

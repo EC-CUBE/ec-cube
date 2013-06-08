@@ -32,12 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory_UseCookie extends SC_SessionFactory_Ex 
+class SC_SessionFactory_UseCookie extends SC_SessionFactory_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * セッションパラメーターの指定
      * ・ブラウザを閉じるまで有効

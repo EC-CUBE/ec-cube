@@ -24,7 +24,7 @@
 
 <!--{strip}-->
     お探しの商品名・型番を入力してください。<br>
-    
+
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <center>
             <input type="hidden" name="mode" value="search">

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,14 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Regist extends LC_Page_Ex 
+class LC_Page_Regist extends LC_Page_Ex
 {
-
-    // {{{ properties
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -68,7 +61,6 @@ class LC_Page_Regist extends LC_Page_Ex
      */
     function action()
     {
-
         switch ($this->getMode()) {
             case 'regist':
             //--　本登録完了のためにメールから接続した場合
@@ -86,7 +78,6 @@ class LC_Page_Regist extends LC_Page_Ex
                 SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, '無効なアクセスです。');
                 break;
         }
-
 
     }
 
@@ -133,7 +124,6 @@ class LC_Page_Regist extends LC_Page_Ex
         $objErr     = new SC_CheckError_Ex($array);
 
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
-
             if (!is_numeric(SC_Helper_Customer_Ex::sfGetCustomerId($array['id'], true))) {
                 $objErr->arrErr['id'] = '※ 既に会員登録が完了しているか、無効なURLです。<br>';
             }
@@ -141,6 +131,7 @@ class LC_Page_Regist extends LC_Page_Ex
         } else {
             $objErr->arrErr['id'] = '無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。';
         }
+
         return $objErr->arrErr;
     }
 

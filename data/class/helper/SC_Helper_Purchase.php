@@ -31,9 +31,8 @@
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_Helper_Purchase 
+class SC_Helper_Purchase
 {
-
     var $arrShippingKey = array(
         'name01', 'name02', 'kana01', 'kana02',
         'sex', 'zip01', 'zip02', 'country_id','pref', 'addr01', 'addr02',
@@ -186,6 +185,7 @@ class SC_Helper_Purchase
         if (!$in_transaction) {
             $objQuery->commit();
         }
+
         return $uniqid;
     }
 
@@ -241,6 +241,7 @@ class SC_Helper_Purchase
     function getOrderTemp($uniqId)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->getRow('*', 'dtb_order_temp', 'order_temp_id = ?', array($uniqId));
     }
 
@@ -253,6 +254,7 @@ class SC_Helper_Purchase
     function getOrderTempByOrderId($order_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->getRow('*', 'dtb_order_temp', 'order_id = ?', array($order_id));
     }
 
@@ -288,10 +290,10 @@ class SC_Helper_Purchase
             $this->copyFromCustomer($sqlval, $objCustomer);
         }
         $exists = $this->getOrderTemp($uniqId);
-        
+
         //国ID追加
         $sqlval['order_country_id'] = DEFAULT_COUNTRY_ID;
-        
+
         if (SC_Utils_Ex::isBlank($exists)) {
             $sqlval['order_temp_id'] = $uniqId;
             $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
@@ -385,6 +387,7 @@ class SC_Helper_Purchase
         foreach (SC_Helper_Purchase_Ex::getShippingTemp($is_multiple) as $val) {
             $results[] = $val['shipping_pref'];
         }
+
         return $results;
     }
 
@@ -476,7 +479,6 @@ class SC_Helper_Purchase
         )
     ) {
         if ($objCustomer->isLoginSuccess(true)) {
-
             foreach ($keys as $key) {
                 if (in_array($key, $keys)) {
                     $dest[$prefix . '_' . $key] = $objCustomer->getValue($key);
@@ -543,6 +545,7 @@ class SC_Helper_Purchase
         foreach ($this->arrShippingKey as $key) {
             $arrKey[] = 'shipping_' . $key;
         }
+
         return SC_Utils_Ex::sfArrayIntersectKeys($arrSrc, $arrKey);
     }
 
@@ -602,6 +605,7 @@ class SC_Helper_Purchase
         }
         //お届け可能日のスタート値から、お届け日の配列を取得する
         $arrDelivDate = $this->getDateArray($start_day, DELIV_DATE_END_MAX);
+
         return $arrDelivDate;
     }
 
@@ -627,6 +631,7 @@ class SC_Helper_Purchase
         } else {
             $arrDate = false;
         }
+
         return $arrDate;
     }
 
@@ -650,7 +655,6 @@ class SC_Helper_Purchase
         $objQuery->delete($table, $where, array($order_id));
 
         foreach ($arrParams as $key => $arrShipping) {
-
             $arrValues = $objQuery->extractOnlyColsOf($table, $arrShipping);
 
             // 配送日付を timestamp に変換
@@ -824,7 +828,6 @@ class SC_Helper_Purchase
 
         $exists = $objQuery->exists($table, $where, array($order_id));
         if ($exists) {
-
             $this->sfUpdateOrderStatus($order_id, $arrValues['status'],
                                        $arrValues['add_point'],
                                        $arrValues['use_point'],
@@ -858,6 +861,7 @@ class SC_Helper_Purchase
             $this->sfUpdateOrderNameCol($order_id);
 
         }
+
         return $order_id;
     }
 
@@ -901,6 +905,7 @@ class SC_Helper_Purchase
             $where .= ' AND customer_id = ?';
             $arrValues[] = $customer_id;
         }
+
         return $objQuery->getRow('*', 'dtb_order', $where, $arrValues);
     }
 
@@ -954,6 +959,7 @@ __EOS__;
                 ON T2.product_class_id = T3.product_class_id
 __EOS__;
         $objQuery->setOrder('T2.order_detail_id');
+
         return $objQuery->select($col, $from, 'T1.order_id = ?', array($order_id));
     }
 
@@ -1013,6 +1019,7 @@ __EOS__;
                         =& $this->getShipmentItems($order_id, $shipping_id);
             }
         }
+
         return $arrResults;
     }
 
@@ -1045,6 +1052,7 @@ __EOS__;
                     =& $objProduct->getDetailAndProductsClass($product_class_id);
             }
         }
+
         return $arrResults;
     }
 
@@ -1277,7 +1285,7 @@ __EOS__;
      * 加える機会を与える.
      *
      * $orderId が使われていない。
-     * 
+     *
      * @param integer $orderId 注文番号
      * @param SC_CartSession $objCartSession カート情報のインスタンス
      * @param SC_Customer $objCustomer SC_Customer インスタンス
@@ -1322,6 +1330,7 @@ __EOS__;
     public function getNextOrderID()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->nextVal('dtb_order_order_id');
     }
 }

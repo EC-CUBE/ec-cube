@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_FrontParts_LoginCheck.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex 
+class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -68,7 +63,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
      */
     function action()
     {
-
         // 会員管理クラス
         $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
@@ -130,7 +124,6 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
                             $objMobile = new SC_Helper_Mobile_Ex();
                             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                                 if (!$objCustomer->hasValue('email_mobile')) {
-
                                     SC_Response_Ex::sendRedirectFromUrlPath('entry/email_mobile.php');
                                     SC_Response_Ex::actionExit();
                                 }
@@ -142,7 +135,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
                             echo SC_Utils_Ex::jsonEncode(array('success' => $url));
                         } else {
                             SC_Response_Ex::sendRedirect($url);
-                        }                        
+                        }
                         SC_Response_Ex::actionExit();
                     } else {
                         // --- ログインに失敗した場合
@@ -190,11 +183,9 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
                 // 画面遷移の制御
                 $mypage_url_search = strpos('.'.$url, 'mypage');
                 if ($mypage_url_search == 2) {
-
                     // マイページログイン中はログイン画面へ移行
                     SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
                 } else {
-
                     // 上記以外の場合、トップへ遷移
                     SC_Response_Ex::sendRedirect(HTTP_URL);
                 }
@@ -250,6 +241,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
             default:
                 $msg = 'メールアドレスもしくはパスワードが正しくありません。';
         }
+
         return SC_Utils_Ex::jsonEncode(array('login_error' => $msg));
     }
 }

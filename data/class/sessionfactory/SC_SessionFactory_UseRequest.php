@@ -32,13 +32,10 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex 
+class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
 {
-
     var $state = null;
 
-    // }}}
-    // {{{ functions
 
     /**
      * PC/モバイルのセッション管理オブジェクトを切り替える
@@ -183,6 +180,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
             GC_Utils_Ex::gfPrintLog("Non-existent session id : sid=$sessionId");
             return false;
         }
+
         return session_id($sessionId);
     }
 
@@ -240,7 +238,7 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
  * セッションデータ管理クラスの基底クラス
  *
  */
-class LC_UseRequest_State 
+class LC_UseRequest_State
 {
     /** 名前空間(pc/mobile) */
     var $namespace = '';
@@ -279,6 +277,7 @@ class LC_UseRequest_State
             return true;
         }
         GC_Utils_Ex::gfPrintLog("NameSpace $namespace not found in session data : sid=" . session_id());
+
         return false;
     }
 
@@ -292,6 +291,7 @@ class LC_UseRequest_State
     function getValue($key)
     {
         $namespace = $this->getNameSpace();
+
         return isset($_SESSION[$namespace][$key])
             ? $_SESSION[$namespace][$key]
             : null;
@@ -343,6 +343,7 @@ class LC_UseRequest_State
         }
         $date = date('Y/m/d H:i:s', $expire);
         GC_Utils_Ex::gfPrintLog("Session expired at $date : sid=" . session_id());
+
         return false;
     }
 
@@ -375,12 +376,12 @@ class LC_UseRequest_State
     {
         $ip = $this->getIp();
         if (!empty($_SERVER['REMOTE_ADDR']) && $ip === $_SERVER['REMOTE_ADDR']) {
-
             return true;
         }
 
         $msg = sprintf('Ip Addr mismatch : %s != %s(expected) : sid=%s', $_SERVER['REMOTE_ADDR'], $ip, session_id());
         GC_Utils_Ex::gfPrintLog($msg);
+
         return false;
     }
 
@@ -407,6 +408,7 @@ class LC_UseRequest_State
                 return false;
             }
         }
+
         return true;
     }
 
@@ -415,16 +417,16 @@ class LC_UseRequest_State
      *
      */
     function inisializeSessionData()
-    {}
+    {
+    }
 }
 
 /**
  * PCサイト用のセッションデータ管理クラス
  *
  */
-class LC_UseRequest_State_PC extends LC_UseRequest_State 
+class LC_UseRequest_State_PC extends LC_UseRequest_State
 {
-
     /**
      * コンストラクタ
      * セッションのデータ構造は下のようになる.
@@ -466,6 +468,7 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State
         $msg = sprintf('User agent model mismatch : %s != %s(expected), sid=%s',
                        $_SERVER['HTTP_USER_AGENT'], $ua, session_id());
         GC_Utils_Ex::gfPrintLog($msg);
+
         return false;
     }
 
@@ -486,9 +489,8 @@ class LC_UseRequest_State_PC extends LC_UseRequest_State
  * モバイルサイト用のセッションデータ管理クラス
  *
  */
-class LC_UseRequest_State_Mobile extends LC_UseRequest_State 
+class LC_UseRequest_State_Mobile extends LC_UseRequest_State
 {
-
     /**
      * コンストラクタ
      * セッションのデータ構造は下のようになる.
@@ -529,6 +531,7 @@ class LC_UseRequest_State_Mobile extends LC_UseRequest_State
         if (!empty($model) && $model === $modelInSession) {
             return true;
         }
+
         return false;
     }
 

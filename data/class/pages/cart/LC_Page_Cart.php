@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,11 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Cart extends LC_Page_Ex 
+class LC_Page_Cart extends LC_Page_Ex
 {
-
-    // {{{ properties
-
     /** 商品規格情報の配列 */
     var $arrData;
 
@@ -45,8 +41,6 @@ class LC_Page_Cart extends LC_Page_Ex
     /** メッセージ */
     public $tpl_message = '';
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -81,14 +75,13 @@ class LC_Page_Cart extends LC_Page_Ex
      */
     function action()
     {
-
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
 
         $objFormParam = $this->lfInitParam($_POST);
         $this->mode = $this->getMode();
-        
+
         // モバイル対応
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
             if (isset($_GET['cart_no'])) {
@@ -109,7 +102,7 @@ class LC_Page_Cart extends LC_Page_Ex
 
         $cart_no = $objFormParam->getValue('cart_no');
         $cartKey = $objFormParam->getValue('cartKey');
-        
+
         // エラーチェック
         $arrError = $objFormParam->checkError();
         if(isset($arrError) && !empty($arrError)) {
@@ -245,6 +238,7 @@ class LC_Page_Cart extends LC_Page_Ex
         $objFormParam->setParam($arrRequest);
         // 入力値の変換
         $objFormParam->convParam();
+
         return $objFormParam;
     }
 
@@ -266,6 +260,7 @@ class LC_Page_Cart extends LC_Page_Ex
         $objFormParam->setParam($arrRequest);
         // 入力値の変換
         $objFormParam->convParam();
+
         return $objFormParam;
     }
 
@@ -283,6 +278,7 @@ class LC_Page_Cart extends LC_Page_Ex
         if ($res != 1) {
             return false;
         }
+
         return true;
     }
 

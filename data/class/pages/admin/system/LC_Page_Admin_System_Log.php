@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,9 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author Seasoft 塚田将久
  * @version $Id$
  */
-class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
 {
-
     var $arrLogList = array();
 
     /**
@@ -70,7 +68,6 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex;
 
         // パラメーター情報初期化
@@ -120,7 +117,6 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      */
     function getEccubeLog($log_path_base)
     {
-
         $index = 0;
         $arrLogs = array();
         for ($gen = 0 ; $gen <= MAX_LOG_QUANTITY; $gen++) {
@@ -158,6 +154,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
                 }
             }
         }
+
         return $arrLogs;
     }
 

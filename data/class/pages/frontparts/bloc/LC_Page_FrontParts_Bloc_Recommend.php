@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_FrontParts_Bloc_Best5 - Copy.php -1   $
  */
-class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex 
+class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -65,7 +60,6 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      */
     function action()
     {
-
         // 基本情報を渡す
         $objSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
         $this->arrInfo = $objSiteInfo->data;
@@ -126,6 +120,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
                 }
             }
         }
+
         return $response;
     }
 }

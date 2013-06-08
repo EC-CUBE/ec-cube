@@ -32,7 +32,7 @@ class SC_Helper_News
 {
     /**
      * ニュースの情報を取得.
-     * 
+     *
      * @param integer $news_id ニュースID
      * @param boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
      * @return array
@@ -46,6 +46,7 @@ class SC_Helper_News
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select($col, 'dtb_news', $where, array($news_id));
+
         return $arrRet[0];
     }
 
@@ -75,12 +76,13 @@ class SC_Helper_News
             }
         }
         $arrRet = $objQuery->select($col, $table, $where);
+
         return $arrRet;
     }
 
     /**
      * ニュースの登録.
-     * 
+     *
      * @param array $sqlval
      * @return multiple 登録成功:ニュースID, 失敗:FALSE
      */
@@ -104,12 +106,13 @@ class SC_Helper_News
             $where = 'news_id = ?';
             $ret = $objQuery->update('dtb_news', $sqlval, $where, array($news_id));
         }
+
         return ($ret) ? $sqlval['news_id'] : FALSE;
     }
 
     /**
      * ニュースの削除.
-     * 
+     *
      * @param integer $news_id ニュースID
      * @return void
      */
@@ -122,7 +125,7 @@ class SC_Helper_News
 
     /**
      * ニュースの表示順をひとつ上げる.
-     * 
+     *
      * @param integer $news_id ニュースID
      * @return void
      */
@@ -134,7 +137,7 @@ class SC_Helper_News
 
     /**
      * ニュースの表示順をひとつ下げる.
-     * 
+     *
      * @param integer $news_id ニュースID
      * @return void
      */
@@ -146,7 +149,7 @@ class SC_Helper_News
 
     /**
      * ニュースの表示順を指定する.
-     * 
+     *
      * @param integer $news_id ニュースID
      * @param integer $rank 移動先の表示順
      * @return void
@@ -159,7 +162,7 @@ class SC_Helper_News
 
     /**
      * ニュース記事数を計算.
-     * 
+     *
      * @param boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
      * @return integer ニュース記事数
      */
@@ -171,6 +174,7 @@ class SC_Helper_News
         } else {
             $where = '';
         }
+
         return $objDb->countRecords('dtb_news', $where);
     }
 }

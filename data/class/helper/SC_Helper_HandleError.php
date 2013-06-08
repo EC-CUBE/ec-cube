@@ -29,9 +29,8 @@
  * @package Helper
  * @version $Id$
  */
-class SC_Helper_HandleError 
+class SC_Helper_HandleError
 {
-
     /**
      * 処理の読み込みを行う
      *
@@ -50,7 +49,6 @@ class SC_Helper_HandleError
         error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_STRICT);
 
         if (!(defined('SAFE') && SAFE === true) && !(defined('INSTALL_FUNCTION') && INSTALL_FUNCTION === true)) {
-
             // E_USER_ERROR または警告を捕捉した場合のエラーハンドラ
             set_error_handler(array(__CLASS__, 'handle_warning'), E_USER_ERROR | E_WARNING | E_USER_WARNING | E_CORE_WARNING | E_COMPILE_WARNING);
 
@@ -142,6 +140,7 @@ class SC_Helper_HandleError
                 exit;
             }
         }
+
         return $buffer;
     }
 

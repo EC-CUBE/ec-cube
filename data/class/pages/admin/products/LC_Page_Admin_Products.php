@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -92,7 +87,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $objProduct = new SC_Product_Ex();
@@ -203,7 +197,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
      */
     function lfInitParam(&$objFormParam)
     {
-
         // POSTされる値
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カテゴリID', 'category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -252,6 +245,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
             $val = isset($arrCatVal[$cnt]) ? $arrCatVal[$cnt] : '';
             $arrRet[$key] = $val;
         }
+
         return $arrRet;
     }
 
@@ -387,6 +381,7 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
     function getNumberOfLines($where, $arrValues)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->count('dtb_products', $where, $arrValues);
     }
 

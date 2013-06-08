@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-class SC_InstallView extends SC_View_Ex 
+class SC_InstallView extends SC_View_Ex
 {
     function __construct($template_dir, $compile_dir = COMPILE_REALDIR)
     {

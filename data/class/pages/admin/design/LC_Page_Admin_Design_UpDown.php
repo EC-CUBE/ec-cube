@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -77,7 +72,6 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
@@ -129,6 +123,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
         $pkg_dir = SMARTY_TEMPLATES_REALDIR . $objForm->getValue('template_code');
         $objUpFile = new SC_UploadFile_Ex(TEMPLATE_TEMP_REALDIR, $pkg_dir);
         $objUpFile->addFile('テンプレートファイル', 'template_file', array(), TEMPLATE_SIZE, true, 0, 0, false);
+
         return $objUpFile;
     }
 
@@ -192,6 +187,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
                 $arrErr['template_file'] = $make_temp_error;
             }
         }
+
         return $arrErr;
     }
 
@@ -262,6 +258,7 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
         SC_Utils_Ex::sfCopyDir($from_dir, $to_dir);
 
         $objQuery->commit();
+
         return true;
     }
 }

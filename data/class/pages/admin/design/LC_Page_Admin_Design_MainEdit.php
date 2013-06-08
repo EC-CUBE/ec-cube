@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +68,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -194,6 +188,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
         }
         // ファイル名を画面表示用に加工しておく
         $arrPageData[0]['filename'] = preg_replace('|^' . preg_quote(USER_DIR) . '|', '', $arrPageData[0]['filename']);
+
         return $arrPageData[0];
     }
 
@@ -258,6 +253,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
         }
 
         $objQuery->commit();
+
         return $arrParams['page_id'];
     }
 
@@ -304,6 +300,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
             $objQuery->update($table, $arrValues, 'page_id = ? AND device_type_id = ?',
                               array($arrValues['page_id'], $arrValues['device_type_id']));
         }
+
         return $arrValues['page_id'];
     }
 
@@ -352,6 +349,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
         if ($exists) {
             $objErr->arrErr['filename'] = '※ 同じURLのデータが存在しています。別のURLを入力してください。<br />';
         }
+
         return $objErr->arrErr;
     }
 

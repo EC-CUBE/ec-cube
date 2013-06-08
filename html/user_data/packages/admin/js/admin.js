@@ -240,7 +240,6 @@ function fnmerumagaupdateConfirm() {
 
 // フォームに代入してからサブミットする。
 function fnInsertValAndSubmit( fm, ele, val, msg ){
-
     if ( msg ){
         ret = window.confirm(msg);
     } else {
@@ -270,7 +269,6 @@ function fnSetDisabled ( f_name, e_name, flag ) {
         }
     }
 }
-
 
 //リストボックス内の項目を移動する
 function fnMoveCat(sel1, sel2, mode_name) {

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objHoliday = new SC_Helper_Holiday_Ex();
 
         $objDate = new SC_Date_Ex();
@@ -157,7 +151,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
 
     /**
      * 登録処理を実行.
-     * 
+     *
      * @param integer $holiday_id
      * @param array $sqlval
      * @param object $objHoliday
@@ -167,6 +161,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
     {
         $sqlval['holiday_id'] = $holiday_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
+
         return $objHoliday->save($sqlval);
     }
 
@@ -205,6 +200,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
         if ($objHoliday->isDateExist($arrForm['month'], $arrForm['day'], $arrForm['holiday_id'])) {
             $arrErr['date'] = '※ 既に同じ日付の登録が存在します。<br>';
         }
+
         return $arrErr;
     }
 }

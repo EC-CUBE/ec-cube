@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +68,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objMailHelper = new SC_Helper_Mail_Ex();
 
         switch ($this->getMode()) {

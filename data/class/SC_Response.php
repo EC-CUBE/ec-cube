@@ -29,7 +29,6 @@
  */
 class SC_Response
 {
-
     /**
      * コンテンツタイプ
      * Enter description here ...

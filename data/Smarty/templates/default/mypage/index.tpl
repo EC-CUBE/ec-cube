@@ -63,7 +63,7 @@
                         <!--{assign var=payment_id value="`$arrOrder[cnt].payment_id`"}-->
                         <td class="alignC"><!--{$arrPayment[$payment_id]|h}--></td>
                         <td class="alignR"><!--{$arrOrder[cnt].payment_total|number_format}-->円</td>
-                        
+
                         <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
                             <!--{assign var=order_status_id value="`$arrOrder[cnt].status`"}-->
                             <!--{if $order_status_id != $smarty.const.ORDER_PENDING }-->

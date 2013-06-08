@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -52,18 +51,12 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  */
 class LC_Page_Sitemap extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ properties
-
     /** 動的に生成しないページの配列 */
     var $staticURL;
 
     /** ページリスト */
     var $arrPageList;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -205,6 +198,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
                 $arrRet[] = $arrPage;
             }
         }
+
         return $arrRet;
     }
 
@@ -215,7 +209,6 @@ class LC_Page_Sitemap extends LC_Page_Ex
      */
     function getAllProducts()
     {
-
         // XXX: 商品登録の無いカテゴリは除外する方が良い気もする
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = 'SELECT category_id FROM dtb_category WHERE del_flg = 0';
@@ -228,6 +221,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
             $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
             $arrRet[] = $arrPage;
         }
+
         return $arrRet;
     }
 
@@ -244,12 +238,12 @@ class LC_Page_Sitemap extends LC_Page_Ex
 
         $arrRet = array();
         foreach ($result as $row) {
-
             $arrPage['update_date'] = $row['update_date'];
 
             $arrPage['url'] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
             $arrRet[] = $arrPage;
         }
+
         return $arrRet;
     }
 

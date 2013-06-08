@@ -30,9 +30,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Batch_Update extends SC_Batch 
+class SC_Batch_Update extends SC_Batch
 {
-
     /**
      * 変換したいファイルの拡張子をカンマ区切りで羅列.
      */
@@ -77,7 +76,6 @@ class SC_Batch_Update extends SC_Batch
 
         foreach ($fileArrays as $path) {
             if (is_file($path)) {
-
                 // ファイル名を取得
                 $fileName = pathinfo($path, PATHINFO_BASENAME);
 
@@ -108,7 +106,6 @@ class SC_Batch_Update extends SC_Batch
                 // 変換対象を順に処理
                 foreach ($includeArray as $include) {
                     if ($suffix == $include) {
-
                         // ファイル内容を取得
                         $contents = file_get_contents($path);
 
@@ -187,6 +184,7 @@ class SC_Batch_Update extends SC_Batch
             $this->printLog($msg);
         }
         umask($oldMask);
+
         return $arrLog;
     }
 
@@ -207,6 +205,7 @@ class SC_Batch_Update extends SC_Batch
         if (is_array($dirs)) {
             foreach ($dirs as $dir) $this->listdirs($dir);
         }
+
         return $alldirs;
     }
 

@@ -12,19 +12,14 @@
    * @author LOCKON CO.,LTD.
    * @version $Id$
    */
-class SC_Helper_CSV 
+class SC_Helper_CSV
 {
-
-    // {{{ properties
-
     /** 項目英名 */
     var $arrSubnavi;
 
     /** 項目名 */
     var $arrSubnaviName;
 
-    // }}}
-    // {{{ constructor
 
     /**
      * デフォルトコンストラクタ.
@@ -33,9 +28,6 @@ class SC_Helper_CSV
     {
         $this->init();
     }
-
-    // }}}
-    // {{{ functions
 
     /**
      * 項目情報を初期化する.
@@ -139,6 +131,7 @@ class SC_Helper_CSV
         $objQuery->setOrder($order);
 
         $arrRet = $objQuery->select($cols, $table, $where, $arrVal);
+
         return $arrRet;
     }
 
@@ -161,6 +154,7 @@ class SC_Helper_CSV
                 $result = false;
             }
         }
+
         return $result;
     }
 
@@ -181,6 +175,7 @@ class SC_Helper_CSV
                 $result = false;
             }
         }
+
         return $result;
     }
 
@@ -218,6 +213,7 @@ class SC_Helper_CSV
         $line .= "\r\n";
         fwrite($this->fpOutput, $line);
         SC_Utils_Ex::extendTimeOut();
+
         return true;
     }
 
@@ -263,6 +259,7 @@ class SC_Helper_CSV
 
         //テンポラリファイル削除
         unlink($tmp_filename);
+
         return $res;
     }
 
@@ -316,7 +313,6 @@ class SC_Helper_CSV
      */
     function lfDownloadCsv($arrData, $prefix = '')
     {
-
         if ($prefix == '') {
             $dir_name = SC_Utils_Ex::sfUpDirName();
             $file_name = $dir_name . date('ymdHis') .'.csv';

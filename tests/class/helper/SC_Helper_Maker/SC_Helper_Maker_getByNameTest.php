@@ -85,7 +85,6 @@ class SC_Helper_Maker_getByNameTest extends SC_Helper_Maker_TestBase
 
     }
 
-
     public function testGetByName_おすすめIDがあり_かつ削除済みの場合_空が返る(){
 
         $this->expected = null;

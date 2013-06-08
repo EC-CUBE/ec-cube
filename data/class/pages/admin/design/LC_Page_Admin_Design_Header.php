@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -74,7 +69,6 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
@@ -155,6 +149,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
         $objErr->doFunc(array('division', 'division', STEXT_LEN), array('EXIST_CHECK'));
+
         return $objErr->arrErr;
     }
 
@@ -176,6 +171,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
             $this->arrErr['err'] = '※ ファイルの書き込みに失敗しました<br />';
             return false;
         }
+
         return true;
     }
 

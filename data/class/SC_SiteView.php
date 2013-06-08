@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-class SC_SiteView extends SC_View_Ex 
+class SC_SiteView extends SC_View_Ex
 {
     function __construct($setPrevURL = true)
     {

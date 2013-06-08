@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_Review.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_Review
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review 
+class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -76,7 +71,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
      */
     function action()
     {
-
         // パラメーター情報の初期化
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -158,6 +152,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
         if (empty($arrReview)) {
             SC_Utils_Ex::sfDispError('');
         }
+
         return $arrReview[0];
     }
 

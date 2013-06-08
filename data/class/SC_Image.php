@@ -22,9 +22,8 @@
  */
 
 //---- アップロードファイル加工クラス(thumb.phpとセットで使用する)
-class SC_Image 
+class SC_Image
 {
-
     var $tmp_dir;
 
     function __construct($tmp_dir)
@@ -42,6 +41,7 @@ class SC_Image
         $newFileName = preg_replace("/^.*\./", $mainname, $_FILES[$keyname]['name']);
         $result  = $this->MakeThumb($_FILES[$keyname]['tmp_name'], $this->tmp_dir , $max_width, $max_height, $newFileName);
         GC_Utils_Ex::gfDebugLog($result);
+
         return $newFileName;
     }
 

@@ -719,7 +719,6 @@ function lfInitWebParam($objWebParam)
 // DBパラメーター情報の初期化
 function lfInitDBParam($objDBParam)
 {
-
     if (defined('DB_SERVER')) {
         $db_server = DB_SERVER;
     } else {
@@ -897,7 +896,6 @@ function lfDropSequence($arrSequences, $arrDsn)
 
     // 接続エラー
     if (!PEAR::isError($objDB)) {
-
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
             SC_Utils::sfFlush(true);
@@ -937,7 +935,6 @@ function lfCreateSequence($arrSequences, $arrDsn)
 
     // 接続エラー
     if (!PEAR::isError($objDB)) {
-
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
             SC_Utils::sfFlush(true);
@@ -1124,7 +1121,6 @@ function getSequences()
         array('dtb_tax_rule', 'tax_rule_id'),
     );
 }
-
 
 /**
  * 管理機能のディレクトリ名の変更

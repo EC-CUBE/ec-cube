@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -79,7 +74,6 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // ADMIN_ID以外の管理者件数を取得
         $linemax = $this->getMemberCount('del_flg <> 1 AND member_id <> ' . ADMIN_ID);
 
@@ -121,6 +115,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_member';
+
         return $objQuery->count($table, $where);
     }
 
@@ -140,6 +135,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
         $objQuery->setOrder('rank DESC');
         $objQuery->setLimitOffset(MEMBER_PMAX, $startno);
         $arrMemberData = $objQuery->select($col, $from, $where, array(ADMIN_ID));
+
         return $arrMemberData;
     }
 
@@ -152,7 +148,6 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
      */
     function lfCheckPageNo($pageno)
     {
-
         $clean_pageno = '';
 
         // $pagenoが0以上の整数かチェック

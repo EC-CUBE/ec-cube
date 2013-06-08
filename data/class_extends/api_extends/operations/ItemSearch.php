@@ -30,7 +30,6 @@
  */
 require_once CLASS_REALDIR . 'api/operations/ItemSearch.php';
 
-class API_ItemSearch_Ex extends API_ItemSearch 
+class API_ItemSearch_Ex extends API_ItemSearch
 {
-
 }

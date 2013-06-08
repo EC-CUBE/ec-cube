@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Design extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +68,6 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam, intval($_REQUEST['bloc_cnt']));
@@ -207,6 +201,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
                 $i++;
             }
         }
+
         return $arrResults;
     }
 
@@ -241,6 +236,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
                 return true;
             }
         }
+
         return false;
     }
 
@@ -257,6 +253,7 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrPageData[0]['page_id'] = 0;
         $objQuery->update('dtb_pagelayout', $arrPageData[0], 'page_id = 0 AND device_type_id = ?', array(DEVICE_TYPE_PC));
+
         return $arrPageData[0]['filename'];
     }
 

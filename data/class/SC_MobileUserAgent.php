@@ -27,7 +27,7 @@
  * 対象とする携帯端末は $_SERVER から決定する。
  * すべてのメソッドはクラスメソッド。
  */
-class SC_MobileUserAgent 
+class SC_MobileUserAgent
 {
     /**
      * 携帯端末のキャリアを表す文字列を取得する。
@@ -78,6 +78,7 @@ class SC_MobileUserAgent
         } elseif ($objAgent->isEZweb()) {
             $id = @$_SERVER['HTTP_X_UP_SUBNO'];
         }
+
         return isset($id) ? $id : false;
     }
 
@@ -136,19 +137,19 @@ class SC_MobileUserAgent
     }
 
     /**
-     * EC-CUBE がサポートする携帯キャリアかどうかを判別する。 
-     * 
+     * EC-CUBE がサポートする携帯キャリアかどうかを判別する。
+     *
      * ※一部モジュールで使用。ただし、本メソッドは将来的に削除しますので新規ご利用は控えてください。
-     * 
-     * @return boolean サポートしている場合は true、それ以外の場合は false を返す。 
+     *
+     * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
      */
     function isMobile()
-    { 
-        $objAgent =& Net_UserAgent_Mobile::singleton(); 
-        if (Net_UserAgent_Mobile::isError($objAgent)) { 
-            return false; 
-        } else { 
-            return $objAgent->isDoCoMo() || $objAgent->isEZweb() || $objAgent->isVodafone(); 
-        } 
+    {
+        $objAgent =& Net_UserAgent_Mobile::singleton();
+        if (Net_UserAgent_Mobile::isError($objAgent)) {
+            return false;
+        } else {
+            return $objAgent->isDoCoMo() || $objAgent->isEZweb() || $objAgent->isVodafone();
+        }
     }
 }

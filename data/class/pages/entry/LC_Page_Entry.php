@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,14 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Entry.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Entry extends LC_Page_Ex 
+class LC_Page_Entry extends LC_Page_Ex
 {
-
-    // {{{ properties
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      * @return void
@@ -78,7 +71,6 @@ class LC_Page_Entry extends LC_Page_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
 
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam);
@@ -140,7 +132,6 @@ class LC_Page_Entry extends LC_Page_Ex
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
                 $this->arrForm  = $objFormParam->getHashArray();
                 if (empty($this->arrErr)) {
-
                     $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
 
                     $this->lfSendMail($uniqid, $this->arrForm);
@@ -175,8 +166,6 @@ class LC_Page_Entry extends LC_Page_Ex
         parent::destroy();
     }
 
-    // }}}
-    // {{{ protected functions
     /**
      * 会員情報の登録
      *
@@ -186,6 +175,7 @@ class LC_Page_Entry extends LC_Page_Ex
     function lfRegistCustomerData($sqlval)
     {
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
+
         return $sqlval['secret_key'];
     }
 
@@ -227,6 +217,7 @@ class LC_Page_Entry extends LC_Page_Ex
             // PHONE_IDを取り出す
             $arrResults['mobile_phone_id']  =  SC_MobileUserAgent_Ex::getId();
         }
+
         return $arrResults;
     }
 
@@ -294,12 +285,12 @@ class LC_Page_Entry extends LC_Page_Ex
      */
     function lfCheckReferer(&$post, $referer)
     {
-
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
             && empty($post)
             && (preg_match('/kiyaku.php/', basename($referer)) === 0)) {
             return false;
             }
+
         return true;
     }
 

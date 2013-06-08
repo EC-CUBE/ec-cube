@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,16 +30,11 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex 
+class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex
 {
-
-    // {{{ properties
-
     /** ページナンバー */
     var $tpl_pageno;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -179,7 +173,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex
     /* 仕方がない処理。。 */
     function lfMakeWhere($tablename, $arrProductId)
     {
-
         // 取得した表示すべきIDだけを指定して情報を取得。
         $where = '';
         if (is_array($arrProductId) && !empty($arrProductId)) {
@@ -188,6 +181,7 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex
             // 一致させない
             $where = '0<>0';
         }
+
         return $where;
     }
 

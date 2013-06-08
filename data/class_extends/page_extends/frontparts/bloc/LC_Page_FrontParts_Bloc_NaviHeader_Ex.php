@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc_NaviHeader.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'pages/frontparts/bloc/LC_Page_FrontParts_Bloc_Navi
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_NaviHeader_Ex extends LC_Page_FrontParts_Bloc_NaviHeader 
+class LC_Page_FrontParts_Bloc_NaviHeader_Ex extends LC_Page_FrontParts_Bloc_NaviHeader
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

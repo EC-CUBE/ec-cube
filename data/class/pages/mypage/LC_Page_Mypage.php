@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,16 +30,11 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex 
+class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
 {
-
-    // {{{ properties
-
     /** ページナンバー */
     var $tpl_pageno;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -79,7 +73,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
      */
     function action()
     {
-
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getvalue('customer_id');
 
@@ -106,7 +99,7 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
         $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-        
+
         $this->json_payment = SC_Utils::jsonEncode($this->arrPayment);
         $this->json_customer_order_status = SC_Utils::jsonEncode($this->arrCustomerOrderStatus);
     }

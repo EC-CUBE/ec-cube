@@ -30,9 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_BrowseNodeLookup extends SC_Api_Abstract_Ex 
+class API_BrowseNodeLookup extends SC_Api_Abstract_Ex
 {
-
     protected $operation_name = 'BrowseNodeLookup';
     protected $operation_description = 'カテゴリ取得';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;
@@ -102,6 +101,7 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex
             // TODO: Ancestors 親ノード
             return true;
         }
+
         return false;
     }
 

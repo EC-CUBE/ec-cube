@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex 
+class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -65,7 +60,6 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      */
     function action()
     {
-
         $objCustomer = new SC_Customer_Ex();
         if (!SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -123,6 +117,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
         $col        = 'subject, mail_body';
         $where      = 'send_id = ? AND customer_id = ?';
         $arrWhereVal = array($send_id, $customer_id);
+
         return $objQuery->select($col, 'dtb_mail_history LEFT JOIN dtb_order ON dtb_mail_history.order_id = dtb_order.order_id', $where, $arrWhereVal);
     }
 }

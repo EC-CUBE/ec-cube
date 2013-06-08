@@ -145,8 +145,6 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
 
     }
 
-
-
     public function testGetList_ページングが想定した結果が返る_表示件数1_ページ番号2(){
 
         $this->setUpBestProducts();
@@ -171,7 +169,6 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
         $this->verify();
 
     }
-
 
     public function testGetList_ページングが想定した結果が返る_表示件数1_ページ番号0(){
 

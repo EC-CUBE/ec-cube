@@ -22,9 +22,8 @@
  */
 
 /* ---- SQL文を作るクラス ---- */
-class SC_SelectSql 
+class SC_SelectSql
 {
-
     var $sql;
 
     var $select;
@@ -58,13 +57,13 @@ class SC_SelectSql
     function addSearchStr($val)
     {
         $return = '%' .$val. '%';
+
         return $return;
     }
 
     //-- 範囲検索（○　~　○　まで）
     function selectRange($from, $to, $column)
     {
-
         // ある単位のみ検索($from = $to)
         if ($from == $to) {
             $this->setWhere($column .' = ?');
@@ -82,6 +81,7 @@ class SC_SelectSql
             $this->setWhere($column .' BETWEEN ? AND ?');
             $return = array($from, $to);
         }
+
         return $return;
     }
 
@@ -130,7 +130,6 @@ class SC_SelectSql
     {
         $return = array();
         foreach ($arr as $data) {
-
             if (count($arr) > 1) {
                 if (!is_null($data)) {
                     $item .= $ItemStr . ' = ? OR ';
@@ -148,6 +147,7 @@ class SC_SelectSql
             $item = '(' . rtrim($item, ' OR ') . ')';
         }
         $this->setWhere($item);
+
         return $return;
     }
 
@@ -168,6 +168,7 @@ class SC_SelectSql
 
         $item = "({$item}) ";
         $this->setWhere($item);
+
         return $return;
     }
     // NULLもしくは''で検索する場合
@@ -187,6 +188,7 @@ class SC_SelectSql
         }
         $item = "({$item}) ";
         $this->setWhere($item);
+
         return $return;
     }
 
@@ -199,7 +201,6 @@ class SC_SelectSql
     */
     function setWhereByOR($arrWhere)
     {
-
         $count = count($arrWhere);
 
         for ($i = 0; $i < $count; $i++) {
@@ -211,11 +212,9 @@ class SC_SelectSql
         $statement = '(' . rtrim($statement, ' OR ') . ')';
 
         if ($this->where) {
-
             $this->where .= ' AND ' . $statement;
 
         } else {
-
             $this->where = 'WHERE ' . $statement;
         }
     }
@@ -242,11 +241,9 @@ class SC_SelectSql
     {
         if ($where != '') {
             if ($this->where) {
-
                 $this->where .= ' AND ' . $where;
 
             } else {
-
                 $this->where = 'WHERE ' . $where;
             }
         }
@@ -254,14 +251,12 @@ class SC_SelectSql
 
     function setOrder($order)
     {
-
             $this->order =  'ORDER BY ' . $order;
 
     }
 
     function setGroup($group)
     {
-
         $this->group =  'GROUP BY ' . $group;
 
     }

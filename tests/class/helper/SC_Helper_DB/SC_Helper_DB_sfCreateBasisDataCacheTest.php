@@ -68,6 +68,7 @@ class SC_Helper_DB_sfCreateBasisDataCacheMock extends SC_Helper_DB_Ex
             'id' => '1',
             'company_name' => 'testshop'
         );
+
         return $arrData;
     }
 }

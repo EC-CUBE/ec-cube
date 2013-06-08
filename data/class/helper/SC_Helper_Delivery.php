@@ -29,10 +29,9 @@
  * @version $Id:$
  */
 class SC_Helper_Delivery {
-
     /**
      * 配送方法の情報を取得.
-     * 
+     *
      * @param integer $deliv_id 配送方法ID
      * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
@@ -92,12 +91,13 @@ class SC_Helper_Delivery {
         $table = 'dtb_deliv';
         $objQuery->setOrder('rank DESC');
         $arrRet = $objQuery->select($col, $table, $where, $arrVal);
+
         return $arrRet;
     }
 
     /**
      * 配送方法の登録.
-     * 
+     *
      * @param array $sqlval
      * @return integer $deliv_id
      */
@@ -209,7 +209,7 @@ class SC_Helper_Delivery {
 
     /**
      * 配送方法の削除.
-     * 
+     *
      * @param integer $deliv_id 配送方法ID
      * @return void
      */
@@ -222,7 +222,7 @@ class SC_Helper_Delivery {
 
     /**
      * 配送方法の表示順をひとつ上げる.
-     * 
+     *
      * @param integer $deliv_id 配送方法ID
      * @return void
      */
@@ -234,7 +234,7 @@ class SC_Helper_Delivery {
 
     /**
      * 配送方法の表示順をひとつ下げる.
-     * 
+     *
      * @param integer $deliv_id 配送方法ID
      * @return void
      */
@@ -246,7 +246,7 @@ class SC_Helper_Delivery {
 
     /**
      * 同じ内容の配送方法が存在するか確認.
-     * 
+     *
      * @param array $arrDeliv
      * @return boolean
      */
@@ -259,12 +259,13 @@ class SC_Helper_Delivery {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrDeliv['deliv_id'], $arrDeliv['service_name'])) > 0) ? true : false);
         }
+
         return $ret;
     }
 
     /**
      * 配送方法IDをキー, 名前を値とする配列を取得.
-     * 
+     *
      * @param string $type 値のタイプ
      * @return array
      */
@@ -288,6 +289,7 @@ class SC_Helper_Delivery {
         foreach ($results as $val) {
             $arrDelivTime[$val['time_id']] = $val['deliv_time'];
         }
+
         return $arrDelivTime;
     }
 
@@ -301,6 +303,7 @@ class SC_Helper_Delivery {
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('rank');
+
         return $objQuery->getCol('payment_id', 'dtb_payment_options', 'deliv_id = ?', array($deliv_id), MDB2_FETCHMODE_ORDERED);
     }
 
@@ -330,6 +333,7 @@ __EOS__;
         foreach ($pref_id as $pref) {
             $result += $objQuery->getOne($sql, array($pref, $deliv_id));
         }
+
         return $result;
     }
 
@@ -346,6 +350,7 @@ __EOS__;
         $col = 'fee_id, fee, pref';
         $where = 'deliv_id = ?';
         $table = 'dtb_delivfee';
+
         return $objQuery->select($col, $table, $where, array($deliv_id));
     }
 }

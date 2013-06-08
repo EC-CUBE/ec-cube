@@ -32,7 +32,7 @@ class SC_Helper_BestProducts
 {
     /**
      * おすすめ商品の情報を取得.
-     * 
+     *
      * @param integer $best_id おすすめ商品ID
      * @param boolean $has_deleted 削除されたおすすめ商品も含む場合 true; 初期値 false
      * @return array
@@ -46,12 +46,13 @@ class SC_Helper_BestProducts
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select($col, 'dtb_best_products', $where, array($best_id));
+
         return $arrRet[0];
     }
 
     /**
      * おすすめ商品の情報をランクから取得.
-     * 
+     *
      * @param integer $rank ランク
      * @param boolean $has_deleted 削除されたおすすめ商品も含む場合 true; 初期値 false
      * @return array
@@ -65,6 +66,7 @@ class SC_Helper_BestProducts
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select($col, 'dtb_best_products', $where, array($rank));
+
         return $arrRet[0];
     }
 
@@ -94,12 +96,13 @@ class SC_Helper_BestProducts
             }
         }
         $arrRet = $objQuery->select($col, $table, $where);
+
         return $arrRet;
     }
 
     /**
      * おすすめ商品の登録.
-     * 
+     *
      * @param array $sqlval
      * @return multiple 登録成功:おすすめ商品ID, 失敗:FALSE
      */
@@ -125,12 +128,13 @@ class SC_Helper_BestProducts
             $where = 'best_id = ?';
             $ret = $objQuery->update('dtb_best_products', $sqlval, $where, array($best_id));
         }
+
         return ($ret) ? $sqlval['best_id'] : FALSE;
     }
 
     /**
      * おすすめ商品の削除.
-     * 
+     *
      * @param integer $best_id おすすめ商品ID
      * @return void
      */
@@ -143,7 +147,7 @@ class SC_Helper_BestProducts
 
     /**
      * 商品IDの配列からおすすめ商品を削除.
-     * 
+     *
      * @param array $productIDs 商品ID
      * @return void
      */
@@ -160,7 +164,7 @@ class SC_Helper_BestProducts
 
     /**
      * おすすめ商品の表示順をひとつ上げる.
-     * 
+     *
      * @param integer $best_id おすすめ商品ID
      * @return void
      */
@@ -173,7 +177,7 @@ class SC_Helper_BestProducts
 
     /**
      * おすすめ商品の表示順をひとつ下げる.
-     * 
+     *
      * @param integer $best_id おすすめ商品ID
      * @return void
      */

@@ -81,6 +81,7 @@ class SC_Helper_Address
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $address = $objQuery->select('*', 'dtb_other_deliv', 'other_deliv_id = ?', array($other_deliv_id));
+
         return $address ? $address[0] : FALSE;
     }
 
@@ -99,6 +100,7 @@ class SC_Helper_Address
         if ($startno != '') {
             $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         }
+
         return $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customer_id));
     }
 
@@ -136,6 +138,7 @@ class SC_Helper_Address
     function errorCheck(&$objFormParam)
     {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
+
         return $objErr->arrErr;
     }
 }

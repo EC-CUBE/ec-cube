@@ -32,7 +32,7 @@ class SC_Helper_Maker
 {
     /**
      * メーカーの情報を取得.
-     * 
+     *
      * @param integer $maker_id メーカーID
      * @param boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
      * @return array
@@ -45,12 +45,13 @@ class SC_Helper_Maker
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select('*', 'dtb_maker', $where, array($maker_id));
+
         return $arrRet[0];
     }
 
     /**
      * 名前からメーカーの情報を取得.
-     * 
+     *
      * @param integer $name メーカー名
      * @param boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
      * @return array
@@ -63,6 +64,7 @@ class SC_Helper_Maker
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select('*', 'dtb_maker', $where, array($name));
+
         return $arrRet[0];
     }
 
@@ -83,12 +85,13 @@ class SC_Helper_Maker
         $table = 'dtb_maker';
         $objQuery->setOrder('rank DESC');
         $arrRet = $objQuery->select($col, $table, $where);
+
         return $arrRet;
     }
 
     /**
      * メーカーの登録.
-     * 
+     *
      * @param array $sqlval
      * @return multiple 登録成功:メーカーID, 失敗:FALSE
      */
@@ -112,12 +115,13 @@ class SC_Helper_Maker
             $where = 'maker_id = ?';
             $ret = $objQuery->update('dtb_maker', $sqlval, $where, array($maker_id));
         }
+
         return ($ret) ? $sqlval['maker_id'] : FALSE;
     }
 
     /**
      * メーカーの削除.
-     * 
+     *
      * @param integer $maker_id メーカーID
      * @return void
      */
@@ -130,7 +134,7 @@ class SC_Helper_Maker
 
     /**
      * メーカーの表示順をひとつ上げる.
-     * 
+     *
      * @param integer $maker_id メーカーID
      * @return void
      */
@@ -142,7 +146,7 @@ class SC_Helper_Maker
 
     /**
      * メーカーの表示順をひとつ下げる.
-     * 
+     *
      * @param integer $maker_id メーカーID
      * @return void
      */
@@ -154,7 +158,7 @@ class SC_Helper_Maker
 
     /**
      * メーカーIDをキー, 名前を値とする配列を取得.
-     * 
+     *
      * @return array
      */
     public static function getIDValueList()

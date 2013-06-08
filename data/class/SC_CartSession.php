@@ -66,6 +66,7 @@ class SC_CartSession
         $ret = isset($this->cartSession[$productTypeId]['cancel_purchase'])
             ? $this->cartSession[$productTypeId]['cancel_purchase'] : '';
         $this->cartSession[$productTypeId]['cancel_purchase'] = false;
+
         return $ret;
     }
 
@@ -77,13 +78,11 @@ class SC_CartSession
         for ($i = 1; $i <= $max; $i++) {
             if ($this->cartSession[$productTypeId][$i]['quantity']
                 != $_SESSION[$this->key_tmp][$i]['quantity']) {
-
                 $change = true;
                 break;
             }
             if ($this->cartSession[$productTypeId][$i]['id']
                 != $_SESSION[$this->key_tmp][$i]['id']) {
-
                 $change = true;
                 break;
             }
@@ -95,6 +94,7 @@ class SC_CartSession
         } else {
             $this->cartSession[$productTypeId]['cancel_purchase'] = false;
         }
+
         return $this->cartSession[$productTypeId]['cancel_purchase'];
     }
 
@@ -105,6 +105,7 @@ class SC_CartSession
         foreach ($this->cartSession[$productTypeId] as $key => $value) {
             $count[] = $this->cartSession[$productTypeId][$key]['cart_no'];
         }
+
         return max($count) + 1;
     }
 
@@ -131,6 +132,7 @@ class SC_CartSession
                 return $total;
             }
         }
+
         return 0;
     }
 
@@ -160,6 +162,7 @@ class SC_CartSession
                 }
             }
         }
+
         return $max;
     }
 
@@ -171,6 +174,7 @@ class SC_CartSession
         for ($i = 0; $i <= $max; $i++) {
             $total+= $this->cartSession[$productTypeId][$i]['quantity'];
         }
+
         return $total;
     }
 
@@ -181,7 +185,6 @@ class SC_CartSession
         $total = 0;
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
-
             if (!isset($this->cartSession[$productTypeId][$i]['price'])) {
                 $this->cartSession[$productTypeId][$i]['price'] = '';
             }
@@ -198,6 +201,7 @@ class SC_CartSession
                 $this->cartSession[$productTypeId][$i]['id'][0]);
             $total+= ($incTax * $quantity);
         }
+
         return $total;
     }
 
@@ -215,6 +219,7 @@ class SC_CartSession
                 $this->cartSession[$productTypeId][$i]['id'][0]);
             $total+= ($tax * $quantity);
         }
+
         return $total;
     }
 
@@ -241,6 +246,7 @@ class SC_CartSession
                 $total+= ($point * $quantity);
             }
         }
+
         return $total;
     }
 
@@ -253,7 +259,6 @@ class SC_CartSession
         $find = false;
         $max = $this->getMax($productTypeId);
         for ($i = 0; $i <= $max; $i++) {
-
             if ($this->cartSession[$productTypeId][$i]['id'] == $product_class_id) {
                 $val = $this->cartSession[$productTypeId][$i]['quantity'] + $quantity;
                 if (strlen($val) <= INT_LEN) {
@@ -364,7 +369,6 @@ class SC_CartSession
         for ($i = 0; $i <= $max; $i++) {
             if (isset($this->cartSession[$productTypeId][$i]['cart_no'])
                 && $this->cartSession[$productTypeId][$i]['cart_no'] != '') {
-
                 // 商品情報は常に取得
                 // TODO 同一インスタンス内では1回のみ呼ぶようにしたい
                 $this->cartSession[$productTypeId][$i]['productsClass']
@@ -393,6 +397,7 @@ class SC_CartSession
                 $this->adjustSessionProductsClass($this->cartSession[$productTypeId][$i]['productsClass']);
             }
         }
+
         return $arrRet;
     }
 
@@ -414,6 +419,7 @@ class SC_CartSession
                 $i++;
             }
         }
+
         return $results;
     }
 
@@ -432,6 +438,7 @@ class SC_CartSession
                 $productClassIDs[] = $this->cartSession[$productTypeId][$i]['id'];
             }
         }
+
         return $productClassIDs;
     }
 
@@ -561,7 +568,6 @@ class SC_CartSession
                 $this->delProduct($arrItem['cart_no'], $productTypeId);
                 $tpl_message .= "※ 現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。\n";
             } else {
-
                 /*
                  * 配送業者のチェック
                  */
@@ -592,6 +598,7 @@ class SC_CartSession
                 }
             }
         }
+
         return $tpl_message;
     }
 
@@ -654,7 +661,6 @@ class SC_CartSession
     function calculate($productTypeId, &$objCustomer, $use_point = 0,
         $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0
     ) {
-
         $results = array();
         $total_point = $this->getAllProductsPoint($productTypeId);
         $results['tax'] = $this->getAllProductsTax($productTypeId);
@@ -708,6 +714,7 @@ class SC_CartSession
                 $results['add_point'] = 0;
             }
         }
+
         return $results;
     }
 
@@ -726,6 +733,7 @@ class SC_CartSession
                 unset($this->cartSession[$key]);
             }
         }
+
         return array_keys($this->cartSession);
     }
 

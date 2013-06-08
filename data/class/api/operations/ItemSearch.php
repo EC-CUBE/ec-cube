@@ -30,9 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_ItemSearch extends SC_Api_Abstract_Ex 
+class API_ItemSearch extends SC_Api_Abstract_Ex
 {
-
     protected $operation_name = 'ItemSearch';
     protected $operation_description = '商品検索・商品一覧情報を取得します。';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;
@@ -44,7 +43,6 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
     {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
-
             $masterData                 = new SC_DB_MasterData_Ex();
             $arrSTATUS            = $masterData->getMasterData('mtb_status');
             $arrSTATUS_IMAGE      = $masterData->getMasterData('mtb_status_image');
@@ -107,7 +105,6 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
         return 'Items';
     }
 
-
     /**
      * 商品一覧の取得
      *
@@ -116,7 +113,6 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
      */
     protected function getProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct)
     {
-
         $arrOrderVal = array();
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -179,6 +175,7 @@ __EOS__;
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);
         $arrProducts['productStatus'] = $objProduct->getProductStatus($arrProductId);
+
         return $arrProducts;
 
     }
@@ -250,7 +247,6 @@ __EOS__;
         return $searchCondition;
     }
 
-
     /**
      * 商品情報配列に商品ステータス情報を追加する
      *
@@ -261,7 +257,6 @@ __EOS__;
      */
     protected function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage)
     {
-
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
             for ($i = 0; $i < count($arrValues); $i++) {
                 $product_status_id = $arrValues[$i];
@@ -275,6 +270,7 @@ __EOS__;
                 }
             }
         }
+
         return $arrProducts;
     }
 

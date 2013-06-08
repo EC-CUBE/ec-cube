@@ -32,9 +32,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory_MYSQL.php 15267 2007-08-09 12:31:52Z nanasess $
  */
-class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory 
+class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
 {
-
     /** SC_Query インスタンス */
     var $objQuery;
 
@@ -48,6 +47,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
         $val = $objQuery->getOne('select version()');
+
         return 'MySQL ' . $val;
     }
 
@@ -70,6 +70,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
         $sql = $this->sfChangeTrunc($sql);
         // ARRAY_TO_STRINGをGROUP_CONCATに変換する
         $sql = $this->sfChangeArrayToString($sql);
+
         return $sql;
     }
 
@@ -82,6 +83,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
+
         return $arrRet;
     }
 
@@ -218,6 +220,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
             $i++;
         }
         $sql .= ')';
+
         return $sql;
     }
 
@@ -235,6 +238,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
         $sql = 'SHOW TABLES LIKE '. $objQuery->quote('%' . $expression . '%');
         $arrColList = $objQuery->getAll($sql);
         $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
+
         return $arrColList[0];
     }
 
@@ -248,6 +252,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     function sfChangeILIKE($sql)
     {
         $changesql = preg_replace('/(^|[^\w])ILIKE([^\w]|$)/i', '$1LIKE$2', $sql);
+
         return $changesql;
     }
 
@@ -261,6 +266,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     function sfChangeRANDOM($sql)
     {
         $changesql = preg_replace('/(^|[^\w])RANDOM\(/i', '$1RAND(', $sql);
+
         return $changesql;
     }
 
@@ -274,6 +280,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     function sfChangeTrunc($sql)
     {
         $changesql = preg_replace('/(^|[^\w])TRUNC([^\w]|$)/i', '$1TRUNCATE$2', $sql);
+
         return $changesql;
     }
 
@@ -294,6 +301,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
                 $sql = str_replace($item[0], $replace, $sql);
             }
         }
+
         return $sql;
     }
 
@@ -319,6 +327,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
                 }
             }
         }
+
         return $definition;
     }
 

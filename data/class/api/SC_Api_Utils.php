@@ -32,9 +32,8 @@ define('API_UPLOAD_REALDIR', DATA_REALDIR . 'downloads/api/');
 define('API_CLASS_EX_REALDIR', CLASS_EX_REALDIR . 'api_extends/operations/');
 define('API_CLASS_REALDIR', CLASS_REALDIR . 'api/operations/');
 
-class SC_Api_Utils 
+class SC_Api_Utils
 {
-
     /** API XML Namspase Header */
     const API_XMLNS = 'http://www.ec-cube.net/ECCUBEApi/';
 
@@ -70,6 +69,7 @@ class SC_Api_Utils
                 }
             }
         }
+
         return false;
     }
 
@@ -104,6 +104,7 @@ class SC_Api_Utils
                 $arrApiConfig = $objApi->getDefaultConfig();
             }
         }
+
         return $arrApiConfig;
     }
 
@@ -185,6 +186,7 @@ class SC_Api_Utils
                 closedir($dh);
             }
         }
+
         return $arrFiles;
     }
 

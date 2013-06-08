@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex 
+class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -116,6 +111,7 @@ ORDER BY update_date DESC
 END;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->getAll($sql);
+
         return isset($arrRet) ? $arrRet : array();
     }
 
@@ -124,6 +120,7 @@ END;
         $objForm = new SC_FormParam_Ex();
         $objForm->addParam('log_id', 'log_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_GET);
+
         return $objForm;
     }
 
@@ -145,6 +142,7 @@ WHERE
 END;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->getAll($sql, array($log_id));
+
         return isset($arrRet[0]) ? $arrRet[0] : array();
     }
 }

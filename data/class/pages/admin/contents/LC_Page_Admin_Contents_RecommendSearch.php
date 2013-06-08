@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -69,7 +64,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -143,6 +137,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
+
         return $objErr->arrErr;
     }
 
@@ -186,6 +181,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
                     break;
             }
         }
+
         return array(
             'where'=>$where,
             'bind' => $bind
@@ -206,6 +202,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setWhere($where);
         $linemax = $objProduct->findProductCount($objQuery, $bind);
+
         return $linemax;   // 何件が該当しました。表示用
     }
 
@@ -239,6 +236,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
         // 表示順序
         $order = 'update_date DESC, product_id DESC';
         $objQuery->setOrder($order);
+
         return $objProduct->getListByProductIds($objQuery, $arrProductId);
     }
 }

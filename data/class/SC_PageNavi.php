@@ -34,7 +34,7 @@
             document.form1.submit();
         }
 */
-class SC_PageNavi 
+class SC_PageNavi
 {
     var $now_page;      // 現在のページ番号
     var $max_page;      // 最終のページ番号
@@ -72,7 +72,6 @@ class SC_PageNavi
         }
 
         if ($all_row > 1) {
-
             //「前へ」「次へ」の設定
             $before = '';
             $next = '';
@@ -119,7 +118,6 @@ class SC_PageNavi
             $this->arrPagenavi['arrPageno'] = array();
             $page_number = '';
             for ($i = $disp_min; $i <= $disp_max; $i++) {
-
                 if ($i == $this->now_page) {
                     $page_number .= "<strong>$i</strong>";
                 } else {

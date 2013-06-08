@@ -22,7 +22,7 @@
  */
 
 /* 日時表示用クラス */
-class SC_Date 
+class SC_Date
 {
     var $start_year;
     var $month;
@@ -101,6 +101,7 @@ class SC_Date
                 $year_array[$default_key] = '----';
             }
         }
+
         return $year_array;
     }
 
@@ -120,19 +121,20 @@ class SC_Date
             $key = substr($i, -2);
             $year_array[$key] = $key;
         }
+
         return $year_array;
     }
 
     function getZeroMonth()
     {
-
         $month_array = array();
         for ($i=1; $i <= 12; $i++) {
             $val = sprintf('%02d', $i);
             $month_array[$val] = $val;
         }
+
         return $month_array;
-    }   
+    }
 
     function getMonth($default = false)
     {
@@ -143,8 +145,9 @@ class SC_Date
         for ($i=0; $i < 12; $i++) {
             $month_array[$i + 1 ] = $i + 1;
         }
+
         return $month_array;
-    }   
+    }
 
     function getDay($default = false)
     {
@@ -161,7 +164,6 @@ class SC_Date
 
     function getHour()
     {
-
         $hour_array = array();
         for ($i=0; $i<=23; $i++) {
             $hour_array[$i] = $i;
@@ -172,7 +174,6 @@ class SC_Date
 
     function getMinutes()
     {
-
         $minutes_array = array();
         for ($i=0; $i<=59; $i++) {
             $minutes_array[$i] = $i;
@@ -183,14 +184,14 @@ class SC_Date
 
     function getMinutesInterval()
     {
-
         $minutes_array = array('00'=>'00', '30'=>'30');
+
         return $minutes_array;
     }
 
     /**
      * 休日の判定.
-     * 
+     *
      * @param integer $year
      * @param integer $month
      * @param integer $day
@@ -212,12 +213,13 @@ class SC_Date
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * 休日情報をスタティック変数にセット.
-     * 
+     *
      * @return void
      */
     private function setArrHoliday()
@@ -233,7 +235,7 @@ class SC_Date
 
     /**
      * 定休日情報をスタティック変数にセット.
-     * 
+     *
      * @return void
      */
     private function setRegularHoliday()

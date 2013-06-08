@@ -30,9 +30,8 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class GC_Utils 
+class GC_Utils
 {
-
     /**
      * ログファイルに変数の詳細を出力
      *
@@ -68,6 +67,7 @@ class GC_Utils
             }
         }
         $str = $traces[$bklv]['class'] . '::' . $traces[$bklv]['function'] . '(' . $traces[$bklv - 1]['line'] . ') ';
+
         return $str;
     }
 
@@ -114,6 +114,7 @@ class GC_Utils
                 break 1;
             }
         }
+
         return array_reverse($arrReturn);
     }
 
@@ -217,7 +218,6 @@ class GC_Utils
      */
     function gfLogRotation($max_log, $max_size, $path)
     {
-
         // ファイルが存在しない場合、終了
         if (!file_exists($path)) return;
 
@@ -255,7 +255,6 @@ class GC_Utils
      *----------------------------------------------------------------------*/
     function gfMakePassword($pwLength)
     {
-
         // 乱数表のシードを決定
         srand((double)microtime() * 54234853);
 
@@ -293,6 +292,7 @@ class GC_Utils
                 $mailaddrs[] =  trim($addr);
             }
         }
+
         return implode(', ', $mailaddrs); //複数アドレスはカンマ区切りにする
     }
 
@@ -351,6 +351,7 @@ class GC_Utils
                 return $constant_name;
             }
         }
+
         return $error_type;
     }
 

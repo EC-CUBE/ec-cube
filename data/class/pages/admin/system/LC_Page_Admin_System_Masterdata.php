@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $this->arrMasterDataName = $this->getMasterDataNames(array('mtb_pref', 'mtb_zip', 'mtb_constants'));
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -122,7 +116,6 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      */
     function checkMasterDataName(&$arrParams, &$arrMasterDataName)
     {
-
         if (in_array($arrParams['master_data_name'], $arrMasterDataName)) {
             $master_data_name = $arrParams['master_data_name'];
             return $master_data_name;
@@ -153,6 +146,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
             }
             $i++;
         }
+
         return $arrMasterDataName;
     }
 
@@ -166,10 +160,8 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      */
     function checkUniqueID(&$arrParams)
     {
-
         $arrId = $arrParams['id'];
         for ($i = 0; $i < count($arrId); $i++) {
-
             $id = $arrId[$i];
             // 空の値は無視
             if ($arrId[$i] != '') {
@@ -193,10 +185,8 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      */
     function registMasterData($arrParams, &$masterData, $master_data_name)
     {
-
         $arrTmp = array();
         foreach ($arrParams['id'] as $key => $val) {
-
             // ID が空のデータは生成しない
             if ($val != '') {
                 $arrTmp[$val] = $arrParams['name'][$key];

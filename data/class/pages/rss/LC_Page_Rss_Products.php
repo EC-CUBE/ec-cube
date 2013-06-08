@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -33,10 +32,6 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  */
 class LC_Page_Rss_Products extends LC_Page_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -67,7 +62,6 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      */
     function action()
     {
-
         $objView = new SC_SiteView_Ex();
 
         //店舗情報をセット
@@ -183,6 +177,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
                 $arrProduct[$key]['stock_unlimited'] = NULL;
             }
         }
+
         return $arrProduct;
     }
 
@@ -196,6 +191,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品一覧を取得
         $arrProduct = $objQuery->getAll('SELECT product_id, name AS product_name FROM dtb_products');
+
         return $arrProduct;
     }
 
@@ -240,6 +236,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
                 $arrProduct[$key]['point_rate']
             );
         }
+
         return $arrProduct;
     }
 
@@ -283,6 +280,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
                 $arrProduct[$key] = array_merge($val, $arrCategory[0]);
             }
         }
+
         return $arrProduct;
     }
 

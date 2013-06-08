@@ -27,7 +27,7 @@
  * @package Helper
  * @version $Id$
  */
-class SC_Helper_Plugin 
+class SC_Helper_Plugin
 {
     // プラグインのインスタンスの配列.
     var $arrPluginInstances = array();
@@ -46,7 +46,6 @@ class SC_Helper_Plugin
      */
     function load($plugin_activate_flg = true)
     {
-
         if (!defined('CONFIG_REALFILE') || !file_exists(CONFIG_REALFILE)) return; // インストール前
         if (GC_Utils_Ex::isInstallFunction()) return; // インストール中
         if ($plugin_activate_flg === false) return;
@@ -102,6 +101,7 @@ class SC_Helper_Plugin
             $GLOBALS['_SC_Helper_Plugin_instance'] = new SC_Helper_Plugin_Ex();
             $GLOBALS['_SC_Helper_Plugin_instance']->load($plugin_activate_flg);
         }
+
         return $GLOBALS['_SC_Helper_Plugin_instance'];
     }
 
@@ -126,10 +126,8 @@ class SC_Helper_Plugin
 
         if (array_key_exists($hook_point, $this->arrRegistedPluginActions)
             && is_array($this->arrRegistedPluginActions[$hook_point])) {
-
             krsort($this->arrRegistedPluginActions[$hook_point]);
             foreach ($this->arrRegistedPluginActions[$hook_point] as $arrFuncs) {
-
                 foreach ($arrFuncs as $func) {
                     if (!is_null($func['function'])) {
                         if ($hook_point == 'loadClassFileChange') {
@@ -161,7 +159,7 @@ class SC_Helper_Plugin
 
     /**
      * スーパーフックポイントを登録します.
-     * 
+     *
      * @param Object $objPlugin プラグインのインスタンス
      * @param string $hook_point スーパーフックポイント
      * @param string $function_name 実行する関数名
@@ -207,6 +205,7 @@ class SC_Helper_Plugin
         }
         $idx = $this->makeActionUniqueId($hook_point, $function, $priority);
         $this->arrRegistedPluginActions[$hook_point][$priority][$idx] = array('function' => $function);
+
         return true;
     }
 
@@ -270,6 +269,7 @@ class SC_Helper_Plugin
                 }
             }
         }
+
         return $arrBlocs;
     }
 
@@ -305,7 +305,7 @@ class SC_Helper_Plugin
      *
      * @param string    $hook_point  hook point
      * @param array     $arrArgs     argument passing to callback function
-     * @param boolean   $plugin_activate_flg 
+     * @param boolean   $plugin_activate_flg
      * @return void
      */
     public static function hook($hook_point, $arrArgs = array(), $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG)

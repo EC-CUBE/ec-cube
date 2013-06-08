@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -73,7 +68,6 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objDb = new SC_Helper_DB_Ex();
 
         $objFormParam = new SC_FormParam_Ex();
@@ -173,6 +167,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex
         // 検索結果の取得
         // FIXME 商品コードの表示
         $arrProducts = $objQuery->select('*', SC_Product_Ex::alldtlSQL(), $where, $arrWhereVal);
+
         return $arrProducts;
     }
 }

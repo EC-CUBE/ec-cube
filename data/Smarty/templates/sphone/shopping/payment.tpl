@@ -208,7 +208,7 @@
                                         <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
                                     </select>
                                 <!--{/if}-->
-                                
+
                                 <!--★お届け時間★-->
                                 <!--{assign var=key value="deliv_time_id`$index`"}-->
                                 <span class="attention"><!--{$arrErr[$key]}--></span>

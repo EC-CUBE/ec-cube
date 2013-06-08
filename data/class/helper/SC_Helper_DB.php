@@ -30,9 +30,6 @@
  */
 class SC_Helper_DB
 {
-
-    // {{{ properties
-
     /** ルートカテゴリ取得フラグ */
     var $g_root_on;
 
@@ -45,8 +42,6 @@ class SC_Helper_DB
     /** 選択中カテゴリID */
     var $g_category_id;
 
-    // }}}
-    // {{{ functions
 
     /**
      * カラムの存在チェックと作成を行う.
@@ -88,11 +83,13 @@ class SC_Helper_DB
         if ($add) {
             return $this->sfColumnAdd($tableName, $colName, $colType);
         }
+
         return false;
     }
 
     function sfColumnAdd($tableName, $colName, $colType) {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
+
         return $objQuery->query("ALTER TABLE $tableName ADD $colName $colType ");
     }
 
@@ -238,7 +235,6 @@ class SC_Helper_DB
     /* 選択中のアイテムのルートカテゴリIDを取得する */
     function sfGetRootId()
     {
-
         if (!$this->g_root_on) {
             $this->g_root_on = true;
 
@@ -261,6 +257,7 @@ class SC_Helper_DB
             }
             $this->g_root_id = $root_id;
         }
+
         return $this->g_root_id;
     }
 
@@ -296,6 +293,7 @@ class SC_Helper_DB
             $rollback_point = '';
             $point = '';
         }
+
         return array($point, $rollback_point);
     }
 
@@ -508,6 +506,7 @@ class SC_Helper_DB
             $name = $arrRet[$cnt]['category_name'];
             $arrList[$id] = str_repeat($head, $arrRet[$cnt]['level']) . $name;
         }
+
         return $arrList;
     }
 
@@ -587,6 +586,7 @@ class SC_Helper_DB
             // 不正な場合は、空の配列を返す。
             $category_id = array();
         }
+
         return $category_id;
     }
 
@@ -678,7 +678,6 @@ class SC_Helper_DB
 
         // 登録するカテゴリ情報と比較
         foreach ($arrCurrentCat as $category_id) {
-
             // 登録しないカテゴリを削除
             if (!in_array($category_id, $arrCategory_id)) {
                 $this->removeProductByCategories($category_id, $product_id);
@@ -881,6 +880,7 @@ __EOS__;
     function sfGetChildsID($table, $pid_name, $id_name, $id)
     {
         $arrRet = $this->sfGetChildrenArray($table, $pid_name, $id_name, $id);
+
         return $arrRet;
     }
 
@@ -939,6 +939,7 @@ __EOS__;
     function sfGetParents($table, $pid_name, $id_name, $id)
     {
         $arrRet = SC_Helper_DB_Ex::sfGetParentsArray($table, $pid_name, $id_name, $id);
+
         return $arrRet;
     }
 
@@ -977,6 +978,7 @@ __EOS__;
             $child = array($child);
         }
         $parent = $objQuery->get($pid_name, $table, "$id_name = ?", $child);
+
         return $parent;
     }
 
@@ -1020,6 +1022,7 @@ __EOS__;
             $val = $arrList[$cnt][$valname];
             $arrRet[$key] = $val;
         }
+
         return $arrRet;
     }
 
@@ -1184,7 +1187,6 @@ __EOS__;
      * @return int $newRank DBに登録するRANK値
      */
     function getNewRank($position, $maxRank) {
-
         if ($position > $maxRank) {
             $newRank = 1;
         } else if ($position < 1) {
@@ -1192,6 +1194,7 @@ __EOS__;
         } else {
             $newRank = $maxRank - $position + 1;
         }
+
         return $newRank;
     }
 
@@ -1205,7 +1208,6 @@ __EOS__;
      * @return boolean
      */
     function moveOtherItemRank($newRank, $oldRank, &$objQuery, $tableName, $addWhere) {
-
         $sqlval = array();
         $arrRawSql = array();
         $where = 'rank BETWEEN ? AND ?';
@@ -1228,7 +1230,6 @@ __EOS__;
         return $objQuery->update($tableName, $sqlval, $where, $arrWhereVal, $arrRawSql);
 
     }
-
 
     /**
      * ランクを含むレコードを削除する.
@@ -1308,6 +1309,7 @@ __EOS__;
 
         $objQuery->setOrder('level');
         $arrRet = $objQuery->select($col, $table, $where, $arrId);
+
         return $arrRet;
     }
 
@@ -1390,6 +1392,7 @@ __EOS__;
         if ($ret != '') {
             return true;
         }
+
         return false;
     }
 
@@ -1447,6 +1450,7 @@ __EOS__;
                 $this->g_maker_id = array();
             }
         }
+
         return $this->g_maker_id;
     }
 
@@ -1488,6 +1492,7 @@ __EOS__;
             $name = $arrRet[$cnt]['name'];
             $arrList[$id] = $name;
         }
+
         return $arrList;
     }
 
@@ -1621,6 +1626,7 @@ __EOS__;
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'COUNT(*)';
+
         return $objQuery->get($col, $table, $where, $arrval);
     }
 }

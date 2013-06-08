@@ -84,4 +84,3 @@ class SC_Helper_DB_sfColumnExistsMock extends SC_Helper_DB_Ex
     }
 }
 
-

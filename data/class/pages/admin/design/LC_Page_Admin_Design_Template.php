@@ -30,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -74,7 +70,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
@@ -85,7 +80,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
         $template_code = $objFormParam->getValue('template_code');
 
         switch ($this->getMode()) {
-
             // 登録ボタン押下時
             case 'register':
                 $this->arrErr = $objFormParam->checkError();
@@ -114,7 +108,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
             case 'download':
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-
                     if ($this->doDownload($template_code) !== false) {
                         // ブラウザに出力し, 終了する
                         SC_Response_Ex::actionExit();
@@ -277,7 +270,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
      */
     function doRegister($template_code, $device_type_id)
     {
-
         $tpl_dir = USER_TEMPLATE_REALDIR . $template_code . '/';
         if (!is_dir($tpl_dir)) {
             $this->arrErr['err'] = '※ ' . $tpl_dir . 'が見つかりません<br />';
@@ -294,6 +286,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
         // コンパイルファイルのクリア処理
         $objView = new SC_AdminView_Ex();
         $objView->_smarty->clear_compiled_tpl();
+
         return true;
     }
 
@@ -319,6 +312,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
             $this->arrErr['err'] = '※ アーカイブファイルの作成に失敗しました<br />';
             return false;
         }
+
         return true;
     }
 
@@ -331,6 +325,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
     function getAllTemplates($device_type_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         return $objQuery->select('*', 'dtb_templates', 'device_type_id = ?', array($device_type_id));
     }
 
@@ -354,6 +349,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
             default:
                 break;
         }
+
         return $isDefault ? DEFAULT_TEMPLATE_NAME : TEMPLATE_NAME;
     }
 }

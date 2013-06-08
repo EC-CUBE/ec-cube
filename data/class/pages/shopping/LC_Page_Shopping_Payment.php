@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,19 +30,14 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Shopping_Payment extends LC_Page_Ex 
+class LC_Page_Shopping_Payment extends LC_Page_Ex
 {
-
-    // {{{ properties
-
     /** フォームパラメーターの配列 */
     var $objFormParam;
 
     /** 会員情報のインスタンス */
     var $objCustomer;
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -78,7 +72,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
      */
     function action()
     {
-
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
@@ -154,7 +147,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 }
 
                 if (SC_Display_Ex::detectDevice() != DEVICE_TYPE_MOBILE) {
-
                     echo SC_Utils_Ex::jsonEncode($arrSelectedDeliv);
                     SC_Response_Ex::actionExit();
                 } else {
@@ -341,6 +333,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 $objErr->arrErr['use_point'] = '※ 選択した支払方法では、ポイントは'.($subtotal - $arrPayments['rule_max']).'ポイントまでご利用いただけます。<br>';
             }
         }
+
         return $objErr->arrErr;
     }
 
@@ -379,7 +372,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
      */
     function lfRegistData($uniqid, $arrForm, &$objPurchase, $arrPayment)
     {
-
         $arrForm['order_temp_id'] = $uniqid;
         $arrForm['update_date'] = 'CURRENT_TIMESTAMP';
 
@@ -426,6 +418,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
         }
         $arrResults['arrPayment'] = $arrPayment;
         $arrResults['img_show'] = $this->hasPaymentImage($arrResults['arrPayment']);
+
         return $arrResults;
     }
 
@@ -442,6 +435,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 return true;
             }
         }
+
         return false;
     }
 

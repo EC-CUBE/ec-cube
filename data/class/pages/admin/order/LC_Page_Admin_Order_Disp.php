@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex.php';
 
 /**
@@ -31,9 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Order_Disp.php 20767 2011-03-22 10:07:32Z nanasess $
  */
-class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex 
+class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
 {
-
     var $arrShippingKeys = array(
         'shipping_id',
         'shipping_name01',
@@ -67,8 +65,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         'shipment_quantity',
     );
 
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
@@ -114,7 +110,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      */
     function action()
     {
-
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
 

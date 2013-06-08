@@ -25,7 +25,6 @@
 <script type="text/javascript">
 <!--
     function fnSelectCheckSubmit(action){
-
         var fm = document.form1;
 
         if (!fm["pdf_order_id[]"]) {
@@ -74,10 +73,9 @@
         fm.mode.value = tmpMode;
         fm.action = tmpAction;
     }
-    
-    
-    function fnSelectMailCheckSubmit(action){
 
+
+    function fnSelectMailCheckSubmit(action){
         var fm = document.form1;
 
         if (!fm["mail_order_id[]"]) {
@@ -103,12 +101,11 @@
             alert('チェックボックスが選択されていません');
             return false;
         }
-        
+
         fm.mode.value="mail_select";
         fm.action=action;
         fm.submit();
     }
-
 
 //-->
 </script>

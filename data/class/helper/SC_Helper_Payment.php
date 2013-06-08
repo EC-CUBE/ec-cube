@@ -32,7 +32,7 @@ class SC_Helper_Payment
 {
     /**
      * 支払方法の情報を取得.
-     * 
+     *
      * @param integer $payment_id 支払方法ID
      * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
@@ -45,6 +45,7 @@ class SC_Helper_Payment
             $where .= ' AND del_flg = 0';
         }
         $arrRet = $objQuery->select('*', 'dtb_payment', $where, array($payment_id));
+
         return $arrRet[0];
     }
 
@@ -65,6 +66,7 @@ class SC_Helper_Payment
         $table = 'dtb_payment';
         $objQuery->setOrder('rank DESC');
         $arrRet = $objQuery->select($col, $table, $where);
+
         return $arrRet;
     }
 
@@ -103,12 +105,13 @@ class SC_Helper_Payment
                 $arrPayment[] = $data;
             }
         }
+
         return $arrPayment;
     }
 
     /**
      * 支払方法の登録.
-     * 
+     *
      * @param array $sqlval
      * @return void
      */
@@ -136,7 +139,7 @@ class SC_Helper_Payment
 
     /**
      * 支払方法の削除.
-     * 
+     *
      * @param integer $payment_id 支払方法ID
      * @return void
      */
@@ -149,7 +152,7 @@ class SC_Helper_Payment
 
     /**
      * 支払方法の表示順をひとつ上げる.
-     * 
+     *
      * @param integer $payment_id 支払方法ID
      * @return void
      */
@@ -161,7 +164,7 @@ class SC_Helper_Payment
 
     /**
      * 支払方法の表示順をひとつ下げる.
-     * 
+     *
      * @param integer $payment_id 支払方法ID
      * @return void
      */
@@ -183,12 +186,13 @@ class SC_Helper_Payment
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?', array($payment_id));
+
         return !SC_Utils_Ex::isBlank($memo03);
     }
 
     /**
      * 支払方法IDをキー, 名前を値とする配列を取得.
-     * 
+     *
      * @return array
      */
     public static function getIDValueList()

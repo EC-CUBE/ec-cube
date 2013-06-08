@@ -97,4 +97,3 @@ class SC_CartSession_setShipmentItemTempForSoleMock extends SC_CartSession
   }
 }
 
-

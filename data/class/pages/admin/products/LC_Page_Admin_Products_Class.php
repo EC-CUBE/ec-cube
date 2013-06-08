@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
 
         $this->lfInitParam($objFormParam);
@@ -171,6 +165,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
         $where = 'del_flg <> 1';
         $objQuery->setOrder('rank DESC');
         $arrClass = $objQuery->select('name, class_id', 'dtb_class', $where);
+
         return $arrClass;
     }
 
@@ -185,6 +180,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'class_id = ?';
         $class_name = $objQuery->get('name', 'dtb_class', $where, array($class_id));
+
         return $class_name;
     }
 
@@ -206,6 +202,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
         // INSERTの実行
         $sqlval['class_id'] = $objQuery->nextVal('dtb_class_class_id');
         $ret = $objQuery->insert('dtb_class', $sqlval);
+
         return $ret;
     }
 
@@ -224,6 +221,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
         $where = 'class_id = ?';
         // UPDATEの実行
         $ret = $objQuery->update('dtb_class', $sqlval, $where, array($arrForm['class_id']));
+
         return $ret;
     }
 
@@ -242,6 +240,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
         $ret = $objDb->sfDeleteRankRecord('dtb_class', 'class_id', $class_id, '', true);
         $where= 'class_id = ?';
         $objQuery->delete('dtb_classcategory', $where, array($class_id));
+
         return $ret;
     }
 
@@ -269,6 +268,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
         if ($arrClass[0]['class_id'] != $arrForm['class_id'] && $arrClass[0]['name'] == $arrForm['name']) {
             $arrErr['name'] = '※ 既に同じ内容の登録が存在します。<br>';
         }
+
         return $arrErr;
     }
 

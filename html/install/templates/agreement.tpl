@@ -23,7 +23,6 @@
 <!--
 // ラジオボタンによる表示・非表示
 function fnChangeVisible(check_id, mod_id){
-
     if (document.getElementById(check_id).checked){
         document.getElementById(mod_id).onclick = false;
         document.getElementById(mod_id).src = '../img/install/next.jpg';

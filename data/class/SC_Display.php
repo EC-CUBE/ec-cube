@@ -29,7 +29,6 @@
  */
 class SC_Display
 {
-
     var $response;
 
     /** 端末種別を保持する */
@@ -110,7 +109,6 @@ class SC_Display
      */
     function setDevice($device = DEVICE_TYPE_PC)
     {
-
         switch ($device) {
             case DEVICE_TYPE_MOBILE:
                 if (USE_MOBILE === false) {
@@ -163,6 +161,7 @@ class SC_Display
                 SC_Display_Ex::$device = DEVICE_TYPE_PC;
             }
         }
+
         return SC_Display_Ex::$device;
     }
 

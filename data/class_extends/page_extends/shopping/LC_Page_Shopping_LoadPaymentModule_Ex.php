@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/shopping/LC_Page_Shopping_LoadPaymentModule.php';
 
 /**
@@ -33,12 +32,8 @@ require_once CLASS_REALDIR . 'pages/shopping/LC_Page_Shopping_LoadPaymentModule.
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPaymentModule 
+class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPaymentModule
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *

@@ -45,6 +45,7 @@ class Helper_AllTests extends PHPUnit_Framework_TestCase
         $suite->addTestSuite('SC_Helper_Session_Test');
         $suite->addTestSuite('SC_Helper_Purchase_Test');
         $suite->addTestSuite('SC_Helper_Address_Test');
+
         return $suite;
     }
 }

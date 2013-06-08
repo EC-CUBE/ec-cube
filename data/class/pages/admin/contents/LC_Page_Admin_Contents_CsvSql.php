@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -117,7 +112,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
             case 'csv_output':
                 $this->arrErr = $this->lfCheckOutputError($objFormParam);
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
-
                     $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
                     SC_Response_Ex::actionExit();
                 }
@@ -179,6 +173,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
                 $arrErr['csv_sql'] = '※ SQL文が不正です。SQL文を見直してください';
             }
         }
+
         return $arrErr;
     }
 
@@ -199,6 +194,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
+
         return $arrErr;
     }
 
@@ -218,6 +214,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
+
         return $arrErr;
     }
 
@@ -237,6 +234,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
         if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
         }
+
         return $arrErr;
     }
 
@@ -271,6 +269,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
                 $arrRet[ $table ] = 'マスターテーブル: ' . $table;
             }
         }
+
         return $arrRet;
     }
 
@@ -289,6 +288,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
         // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
         $arrColList = $objQuery->listTableFields($table);
         $arrColList= SC_Utils_Ex::sfArrCombine($arrColList, $arrColList);
+
         return $arrColList;
     }
 
@@ -304,6 +304,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_csv_sql';
         $objQuery->setOrder('sql_id');
+
         return $objQuery->select('*', $table, $where, $arrVal);
     }
 
@@ -323,6 +324,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
         if (PEAR::isError($objErrMsg)) {
             $err = $objErrMsg->message . "\n" . $objErrMsg->userinfo;
         }
+
         return $err;
     }
 
@@ -345,6 +347,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
             $arrData = $this->lfGetSqlList('sql_id = ?', array($sql_id));
             return $arrData[0];
         }
+
         return array();
     }
 
@@ -402,6 +405,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
             $arrSqlVal['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrSqlVal);
         }
+
         return $sql_id;
     }
 
@@ -420,6 +424,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
             $objQuery->delete($table, $where, array($sql_id));
             return true;
         }
+
         return false;
     }
 
@@ -491,6 +496,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
             ,'USE\s'
             ,'HELP\s'
             );
+
         return $arrList;
     }
 }

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex 
+class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -70,7 +65,6 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         $objFormParam = new SC_FormParam_Ex();
 
         // パラメーターの初期化
@@ -111,7 +105,6 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
      */
     function initForm(&$objFormParam, &$arrParams)
     {
-
         $objFormParam->addParam('モード', 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('テーブル名', 'table_name');
         $objFormParam->addParam('カラム名', 'column_name');
@@ -144,6 +137,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
             }
         }
         $message = "window.alert('インデックスの変更が完了しました。');";
+
         return $message;
     }
 
@@ -183,6 +177,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
                 }
             }
         }
+
         return $arrTarget;
     }
 
@@ -213,6 +208,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
                 $arrIndexList[$key]['indexflag'] = '1';
             }
         }
+
         return $arrIndexList;
     }
 

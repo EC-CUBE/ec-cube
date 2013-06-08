@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'db/SC_DB_MasterData.php';
 
 /**
@@ -33,6 +32,6 @@ require_once CLASS_REALDIR . 'db/SC_DB_MasterData.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_DB_MasterData_Ex extends SC_DB_MasterData 
+class SC_DB_MasterData_Ex extends SC_DB_MasterData
 {
 }

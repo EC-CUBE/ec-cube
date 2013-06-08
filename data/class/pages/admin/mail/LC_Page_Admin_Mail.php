@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,12 +30,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail extends LC_Page_Admin_Ex 
+class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
 {
-
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
@@ -97,7 +92,6 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
      */
     function action()
     {
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParamSearchCustomer($objFormParam);
@@ -229,6 +223,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
                 $return[$line['template_id']] = '【' . $this->arrHtmlmail[$line['mail_method']] . '】' . $line['subject'];
             }
         }
+
         return $return;
     }
 
@@ -289,6 +284,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
                 $objQuery->insert('dtb_send_customer', $dtb_send_customer);
             }
         }
+
         return $send_id;
     }
 
@@ -300,12 +296,12 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
      */
     function lfGetMailQuery($send_id)
     {
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 送信履歴より、送信条件確認画面
         $sql = 'SELECT search_data FROM dtb_send_history WHERE send_id = ?';
         $searchData = $objQuery->getOne($sql, array($_GET['send_id']));
+
         return unserialize($searchData);
     }
 }
