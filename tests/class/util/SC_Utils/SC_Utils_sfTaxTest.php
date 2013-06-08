@@ -80,6 +80,5 @@ class SC_Utils_sfTaxTest extends Common_TestCase
 
     $this->verify('税額');
   }
-
 }
 

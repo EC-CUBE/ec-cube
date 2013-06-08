@@ -65,6 +65,5 @@ class SC_Utils_getSfPassLenTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

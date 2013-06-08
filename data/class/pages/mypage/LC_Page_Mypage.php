@@ -35,7 +35,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
     /** ページナンバー */
     var $tpl_pageno;
 
-
     /**
      * Page を初期化する.
      *

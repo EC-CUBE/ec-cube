@@ -59,5 +59,4 @@ class SC_Date_getZeroMonthTest extends Common_TestCase
 
         $this->verify("配列の最低値");
     }
-
 }

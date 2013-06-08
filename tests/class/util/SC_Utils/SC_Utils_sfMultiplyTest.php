@@ -55,6 +55,5 @@ class SC_Utils_sfMultiplyTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

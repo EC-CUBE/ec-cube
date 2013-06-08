@@ -66,8 +66,6 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
 
         //おすすめ商品表示
         $this->arrBestProducts = $this->lfGetRanking();
-
-
     }
 
     /**

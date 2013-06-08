@@ -140,7 +140,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
         }
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
-
     }
 
     /**

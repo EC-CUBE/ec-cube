@@ -67,6 +67,5 @@ class SC_Helper_BestProducts_deleteBestProductsTest extends SC_Helper_BestProduc
 
         $this->verify();
     }
-
 }
 

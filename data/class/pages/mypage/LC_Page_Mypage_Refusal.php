@@ -72,7 +72,6 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
                 $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
                 $objCustomer->EndSession();
 
-
                 SC_Response_Ex::sendRedirect('refusal_complete.php');
 
             default:
@@ -101,5 +100,4 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
     {
         return SC_Helper_Customer_Ex::delete($customer_id);
     }
-
 }

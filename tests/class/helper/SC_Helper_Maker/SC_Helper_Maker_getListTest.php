@@ -39,8 +39,6 @@ class SC_Helper_Maker_getListTest extends SC_Helper_Maker_TestBase
         parent::setUp();
         $this->objHelperMaker = new SC_Helper_Maker_Ex();
         $this->setUpMaker();
-
-
     }
 
     protected function tearDown()
@@ -80,7 +78,6 @@ class SC_Helper_Maker_getListTest extends SC_Helper_Maker_TestBase
 
         $this->actual = $this->objHelperMaker->getList();
         $this->verify();
-
     }
 
     public function testGetList_一覧取得has_deleteをtrueにした場合削除済みデータも取得(){
@@ -106,8 +103,6 @@ class SC_Helper_Maker_getListTest extends SC_Helper_Maker_TestBase
 
         $this->actual = $this->objHelperMaker->getList(true);
         $this->verify();
-
     }
-
 }
 

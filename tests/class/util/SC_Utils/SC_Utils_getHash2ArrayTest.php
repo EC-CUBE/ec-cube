@@ -66,6 +66,5 @@ class SC_Utils_getHash2ArrayTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

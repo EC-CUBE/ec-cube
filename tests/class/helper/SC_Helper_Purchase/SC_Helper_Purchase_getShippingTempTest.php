@@ -73,6 +73,5 @@ class SC_Helper_Purchase_getShippingTempTest extends SC_Helper_Purchase_TestBase
 
     $this->verify('配送情報');
   }
-
 }
 

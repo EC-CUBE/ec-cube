@@ -67,6 +67,5 @@ class SC_Helper_Purchase_extractShippingTest extends SC_Helper_Purchase_TestBase
   }
 
   //////////////////////////////////////////
-
 }
 

@@ -158,7 +158,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
         // 入力値の取得
         $this->arrForm      = $objFormParam->getFormParamList();
         $this->tpl_subtitle = $this->arrTitle[$objFormParam->getValue('page')];
-
     }
 
     /**
@@ -726,7 +725,6 @@ __EOS__;
         foreach ($arrDateList as $date) {
             if (array_key_exists($date, $arrDateResults)) {
                 $arrRet[] = $arrDateResults[$date];
-
             } else {
                 $arrRet[]['str_date'] = $date;
             }
@@ -761,7 +759,6 @@ __EOS__;
 
         if ($type == 'hour') {
             $arrDateList = array('00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23');
-
         } else {
             $arrDateList = array();
             $tmp    = strtotime($st);

@@ -69,6 +69,5 @@ class SC_Utils_sfArrayIntersectKeysTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

@@ -67,8 +67,6 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex
         $this->hasDownload = $objCart->hasProductType(PRODUCT_TYPE_DOWNLOAD);
         // 旧仕様との互換のため、不自然なセットとなっている
         $this->arrCartList = array(0 => $this->lfGetCartData($objCart));
-
-
     }
 
     /**

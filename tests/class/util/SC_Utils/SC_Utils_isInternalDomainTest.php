@@ -74,6 +74,5 @@ class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

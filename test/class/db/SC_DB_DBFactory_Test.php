@@ -183,7 +183,6 @@ class SC_DB_DBFactory_Test extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
-
 }
 
 /*

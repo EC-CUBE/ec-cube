@@ -147,7 +147,6 @@ class SC_Utils_Test extends PHPUnit_Framework_TestCase
 
             $relative = '..\\foo\\bar';
             $this->assertFalse(SC_Utils::isAbsoluteRealPath($relative));
-
         }
 
         $empty = '';

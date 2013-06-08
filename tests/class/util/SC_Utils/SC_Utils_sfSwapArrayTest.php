@@ -79,6 +79,5 @@ class SC_Utils_sfSwapArrayTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

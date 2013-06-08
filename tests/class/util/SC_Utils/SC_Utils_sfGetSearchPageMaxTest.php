@@ -83,6 +83,5 @@ class SC_Utils_sfGetSearchPageMaxTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

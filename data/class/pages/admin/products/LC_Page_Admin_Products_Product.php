@@ -283,7 +283,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
 
         // 関連商品の読み込み
         $this->arrRecommend = $this->lfGetRecommendProducts($this->arrForm);
-
     }
 
     /**
@@ -1178,7 +1177,6 @@ __EOF__;
             $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
             // UPDATEの実行
             $objQuery->update('dtb_products_class', $sqlval, 'product_class_id = ?', array($sqlval['product_class_id']));
-
         }
     }
 

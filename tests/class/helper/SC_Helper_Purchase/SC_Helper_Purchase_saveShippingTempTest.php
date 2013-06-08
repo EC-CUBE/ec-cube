@@ -89,6 +89,5 @@ class SC_Helper_Purchase_saveShippingTempTest extends SC_Helper_Purchase_TestBas
     
     $this->verify('更新した配送情報');
   }
-
 }
 

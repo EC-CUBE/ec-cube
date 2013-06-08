@@ -41,7 +41,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
     /** 入力禁止URL */
     var $arrReviewDenyURL;
 
-
     /**
      * Page を初期化する.
      *
@@ -102,7 +101,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
                     //登録実行
                     $this->lfRegistRecommendData($objFormParam);
 
-
                     //レビュー書き込み完了ページへ
                     SC_Response_Ex::sendRedirect('review_complete.php');
                     SC_Response_Ex::actionExit();
@@ -124,8 +122,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
         }
 
         $this->setTemplate($this->tpl_mainpage);
-
-
     }
 
     /**

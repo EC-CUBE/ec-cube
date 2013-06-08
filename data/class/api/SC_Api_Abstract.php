@@ -130,5 +130,4 @@ abstract class SC_Api_Abstract
 
         return;
     }
-
 }

@@ -132,7 +132,6 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
                 // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
 
-
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 SC_Response_Ex::actionExit();
                 break;
@@ -153,7 +152,6 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
                 // 決済モジュールを使用する場合
                 if ($this->use_module) {
                     $objPurchase->completeOrder(ORDER_PENDING);
-
 
                     SC_Response_Ex::sendRedirect(SHOPPING_MODULE_URLPATH);
                 }

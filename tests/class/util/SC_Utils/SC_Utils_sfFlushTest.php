@@ -68,6 +68,5 @@ class SC_Utils_sfFlushTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

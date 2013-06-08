@@ -131,7 +131,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
         }
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
-
     }
 
     /**
@@ -156,7 +155,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
         $objFormParam->addParam('CSSファイル名', 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('旧CSSファイル名', 'old_css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('CSSデータ', 'css_data');
-
     }
 
     /**

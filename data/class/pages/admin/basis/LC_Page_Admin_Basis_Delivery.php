@@ -103,7 +103,6 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
                 break;
         }
         $this->arrDelivList = $objDeliv->getList();
-
     }
 
     /**

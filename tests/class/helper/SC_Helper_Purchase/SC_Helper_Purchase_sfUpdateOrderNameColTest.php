@@ -99,6 +99,5 @@ class SC_Helper_Purchase_sfUpdateOrderNameColTest extends SC_Helper_Purchase_Tes
   }
 
   //////////////////////////////////////////
-
 }
 

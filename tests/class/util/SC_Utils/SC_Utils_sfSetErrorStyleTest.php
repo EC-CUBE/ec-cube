@@ -56,6 +56,5 @@ class SC_Utils_sfSetErrorStyleTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

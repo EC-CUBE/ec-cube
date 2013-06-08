@@ -74,6 +74,5 @@ class SC_Utils_sfRmDupSlashTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

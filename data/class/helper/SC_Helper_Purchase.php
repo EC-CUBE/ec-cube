@@ -804,8 +804,6 @@ class SC_Helper_Purchase
                           'order_temp_id = ?',
                           array(SC_SiteSession_Ex::getUniqId()));
 
-
-
         return $orderParams['order_id'];
     }
 
@@ -859,7 +857,6 @@ class SC_Helper_Purchase
                                        $arrValues['use_point'],
                                        $arrValues);
             $this->sfUpdateOrderNameCol($order_id);
-
         }
 
         return $order_id;
@@ -936,7 +933,6 @@ class SC_Helper_Purchase
 __EOS__;
         if ($has_order_status) {
             $col .= 'T1.status AS status, T1.payment_date AS payment_date,';
-
         }
         $col .= <<< __EOS__
             CASE WHEN
@@ -1215,7 +1211,6 @@ __EOS__;
                               $sql_where,
                               array($order_id),
                               array('shipping_time' => "($sql_sub)"));
-
         }
 
         $objQuery->update($tgt_table, array(),

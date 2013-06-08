@@ -112,7 +112,6 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
         $this->SelectedStatus = $status;
         //検索結果の表示
         $this->lfStatusDisp($status, $objFormParam->getValue('search_pageno'));
-
     }
 
     /**

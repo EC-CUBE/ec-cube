@@ -94,7 +94,6 @@ class SC_Utils_sfIsSuccessTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 
 class SC_Session_Mock extends SC_Session
@@ -106,6 +105,5 @@ class SC_Session_Mock extends SC_Session
   {
     return $this->is_success;
   }
-
 }
 

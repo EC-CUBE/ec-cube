@@ -45,7 +45,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         $this->tpl_subno = 'file';
         $this->tpl_maintitle = 'コンテンツ管理';
         $this->tpl_subtitle = 'ファイル管理';
-
     }
 
     /**
@@ -193,7 +192,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         $this->setDispParam('tpl_now_file', $objFormParam->getValue('now_dir'));
         // ディレクトリツリー表示
         $this->setDispTree($objFileManager, $objFormParam);
-
     }
 
     /**
@@ -506,5 +504,4 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         }
         $this->setDispParam('tpl_is_top_dir', $is_top_dir);
     }
-
 }

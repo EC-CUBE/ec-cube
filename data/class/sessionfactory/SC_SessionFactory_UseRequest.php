@@ -36,7 +36,6 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
 {
     var $state = null;
 
-
     /**
      * PC/モバイルのセッション管理オブジェクトを切り替える
      *

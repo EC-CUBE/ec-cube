@@ -75,6 +75,5 @@ class SC_Utils_arrayDefineIndexesTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

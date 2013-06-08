@@ -77,5 +77,4 @@ class SC_Helper_Kiyaku_getKiyakuTest extends SC_Helper_Kiyaku_TestBase
         $this->actual = $this->objKiyaku->getKiyaku($kiyaku_id, $has_deleted);
         $this->verify('規約詳細取得');
     }
-
 }

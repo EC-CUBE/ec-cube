@@ -56,7 +56,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     /** モード */
     var $mode;
 
-
     /**
      * Page を初期化する.
      *

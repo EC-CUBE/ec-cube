@@ -111,7 +111,6 @@ class LC_Page_Rss_Products extends LC_Page_Ex
         header('Content-type: application/xml');
         P_DETAIL_URLPATH;
 
-
         //画面表示
         $objView->display($this->tpl_mainpage, true);
     }

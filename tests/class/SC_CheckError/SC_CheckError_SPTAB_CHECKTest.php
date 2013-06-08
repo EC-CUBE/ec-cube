@@ -137,5 +137,4 @@ class SC_CheckError_SPTAB_CHECKTest extends Common_TestCase
         $this->actual = $objErr->arrErr['form'];
         $this->verify('');
     }
-
 }

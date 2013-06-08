@@ -143,6 +143,5 @@ class SC_Utils_isBlankTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

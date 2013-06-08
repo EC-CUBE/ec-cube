@@ -102,7 +102,6 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
         // カテゴリ取得
         $this->arrCatList = $objDb->sfGetCategoryList();
         $this->setTemplate('contents/recommend_search.tpl');
-
     }
 
     /**

@@ -65,6 +65,5 @@ class SC_Helper_Purchase_getShippingPrefTest extends SC_Helper_Purchase_TestBase
 
     $this->verify('配送先の都道府県');
   }
-
 }
 

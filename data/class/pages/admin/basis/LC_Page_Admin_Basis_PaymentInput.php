@@ -35,7 +35,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     /** SC_UploadFile インスタンス */
     var $objUpFile;
 
-
     /**
      * Page を初期化する.
      *
@@ -148,7 +147,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
         // HIDDEN用に配列を渡す。
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
-
     }
 
     /**

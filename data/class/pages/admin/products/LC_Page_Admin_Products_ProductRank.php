@@ -102,7 +102,6 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
         $this->arrProductsList = $this->lfGetProduct($this->arrForm['parent_category_id']);
         $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
-
     }
 
     /**

@@ -100,7 +100,6 @@ function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode
         }
         tree += '<a href="javascript:fnFolderOpen(\''+ arrTree[i][2] +'\')"><img src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'">&nbsp;'+ file_name +'</a><br/>';
         tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
-
     }
     fnDrow(view_id, tree);
     //document.tree_form.tree_test2.focus();
@@ -157,7 +156,6 @@ function fnTreeMenu(tName, imgName, path) {
         tMenu.show();
         // 階層の開いた状態を保持
         arrTreeStatus.push(path);
-
     } else {
         fnChgImg(IMG_PLUS, imgName);
         tMenu.hide();

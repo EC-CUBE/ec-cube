@@ -132,10 +132,8 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
     $this->actual['second'] = Test_Utils::mapArray($result[1], array(
       'order_id', 'shipping_id', 'product_class_id', 'product_name', 'price', 'productsClass'));
     $this->verify('配送情報');
-
   }
 
   //////////////////////////////////////////
-
 }
 

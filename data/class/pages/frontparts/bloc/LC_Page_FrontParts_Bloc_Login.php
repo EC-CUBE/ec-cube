@@ -88,8 +88,6 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex
         $this->tpl_disable_logout = $this->lfCheckDisableLogout();
         //スマートフォン版ログアウト処理で不正なページ移動エラーを防ぐ為、トークンをセット
         $this->transactionid = SC_Helper_Session_Ex::getToken();
-
-
     }
 
     /**

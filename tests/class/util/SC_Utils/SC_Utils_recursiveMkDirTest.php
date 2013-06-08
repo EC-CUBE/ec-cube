@@ -74,6 +74,5 @@ class SC_Utils_recursiveMkdirTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

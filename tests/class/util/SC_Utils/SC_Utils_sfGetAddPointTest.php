@@ -71,6 +71,5 @@ class SC_Utils_sfGetAddPointTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

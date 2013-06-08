@@ -103,7 +103,6 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
             $objFormParam->setParam($arrRet);
         }
         $this->arrForm = $objFormParam->getFormParamList();
-
     }
 
     /**

@@ -89,6 +89,5 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
   }
 
   //////////////////////////////////////////
-
 }
 

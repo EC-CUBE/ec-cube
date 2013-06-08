@@ -91,7 +91,6 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
 
         // 取得範囲を指定(開始行番号、行数のセット)して管理者データを取得
         $this->list_data = $this->getMemberData($objNavi->start_row);
-
     }
 
     /**

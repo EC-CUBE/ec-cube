@@ -56,7 +56,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
     /** 日本郵便から取得した ZIP アーカイブファイルの保管パス */
     var $zip_csv_temp_realfile;
 
-
     /**
      * Page を初期化する.
      *
@@ -155,7 +154,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         $this->tpl_csv_datetime = $this->lfGetCsvDatetime();
         // XXX PHP4 を切捨てたら、ダウンロードの必要性チェックなども行いたい
         // $arrHeader = get_headers(ZIP_DOWNLOAD_URL, 1);
-
     }
 
     /**

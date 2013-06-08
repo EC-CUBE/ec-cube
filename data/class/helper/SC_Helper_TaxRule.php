@@ -224,7 +224,6 @@ class SC_Helper_TaxRule
             $calc_rule = $arrRet['calc_rule'];
             // 税情報を設定
             SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id, $product_class_id, $pref_id, $country_id);
-
         }
     }
 
@@ -286,7 +285,6 @@ class SC_Helper_TaxRule
         $arrRet = $objQuery->select($col, $table, $where);
 
         return $arrRet;
-
     }
 
     function getTaxRuleData($tax_rule_id, $has_deleted = false)

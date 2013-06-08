@@ -125,7 +125,6 @@ class SC_Helper_Purchase_registerOrderCompleteTest extends SC_Helper_Purchase_Te
   }
 
   //////////////////////////////////////////
-
 }
 
 class SC_Helper_Purchase_registerOrderCompleteMock extends SC_Helper_Purchase

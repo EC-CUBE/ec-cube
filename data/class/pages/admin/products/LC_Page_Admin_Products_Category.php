@@ -180,7 +180,6 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         // ぱんくずの生成
         $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
-
     }
 
     /**

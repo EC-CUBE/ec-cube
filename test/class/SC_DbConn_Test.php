@@ -178,7 +178,6 @@ class SC_DbConn_Test extends PHPUnit_Framework_TestCase
         $this->actual = $this->objDbConn->getCol("SELECT column1, column2 FROM test_table WHERE id < ?", 'column1', array(3));
 
         $this->verify();
-
     }
 
     /**

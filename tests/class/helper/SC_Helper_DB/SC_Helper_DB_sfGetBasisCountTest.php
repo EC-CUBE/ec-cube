@@ -65,5 +65,4 @@ class SC_Helper_DB_sfGetBasisCount extends SC_Helper_DB_TestBase
         $this->actual = $this->helper->sfGetBasisCount();
         $this->verify();
     }
-
 }

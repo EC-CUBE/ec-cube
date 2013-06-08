@@ -58,5 +58,4 @@ class SC_Helper_DB_sfColumnAdd extends SC_Helper_DB_TestBase
         $this->objQuery->query("ALTER TABLE $tableName DROP $colName");
         $this->verify();
     }
-
 }

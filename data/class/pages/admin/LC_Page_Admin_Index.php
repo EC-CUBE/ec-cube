@@ -99,7 +99,6 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
 
         // 管理者ログインテンプレートフレームの設定
         $this->setTemplate(LOGIN_FRAME);
-
     }
 
     /**

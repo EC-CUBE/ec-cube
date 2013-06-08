@@ -41,7 +41,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
     /** バリデーションエラー情報を格納する連想配列 */
     var $arrErr;
 
-
     /**
      * Page を初期化する.
      *

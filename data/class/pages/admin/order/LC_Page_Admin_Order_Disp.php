@@ -65,7 +65,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         'shipment_quantity',
     );
 
-
     /**
      * Page を初期化する.
      *
@@ -128,7 +127,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         $this->setTemplate($this->tpl_mainpage);
-
     }
 
     /**
@@ -321,5 +319,4 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
             $objFormParam->setValue('customer_point', $arrCustomer['point']);
         }
     }
-
 }

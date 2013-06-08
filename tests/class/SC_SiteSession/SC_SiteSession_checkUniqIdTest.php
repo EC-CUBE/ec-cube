@@ -67,5 +67,4 @@ class SC_Session_checkUniqIdTest extends Common_TestCase
         $this->actual = $this->objSiteSession->checkUniqId();
         $this->verify('ユニークID不一致');
     }
-
 }

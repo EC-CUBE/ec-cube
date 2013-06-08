@@ -102,7 +102,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
             if (defined('ADMIN_ALLOW_HOSTS')) {
                 $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
                 $this->arrForm['admin_allow_hosts'] = implode("\n",$allow_hosts);
-
             }
         }
 
@@ -132,7 +131,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
         $objFormParam->addParam('IP制限', 'admin_allow_hosts', LTEXT_LEN, 'a', array('IP_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
-
     }
 
     /**

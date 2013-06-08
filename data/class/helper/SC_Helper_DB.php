@@ -42,7 +42,6 @@ class SC_Helper_DB
     /** 選択中カテゴリID */
     var $g_category_id;
 
-
     /**
      * カラムの存在チェックと作成を行う.
      *
@@ -1228,7 +1227,6 @@ __EOS__;
         }
 
         return $objQuery->update($tableName, $sqlval, $where, $arrWhereVal, $arrRawSql);
-
     }
 
     /**

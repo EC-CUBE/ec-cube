@@ -62,6 +62,5 @@ class SC_Utils_sfTrimURLTest extends Common_TestCase
     $this->verify();
   }
   //////////////////////////////////////////
-
 }
 

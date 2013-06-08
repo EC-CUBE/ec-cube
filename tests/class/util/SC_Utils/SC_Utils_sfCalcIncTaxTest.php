@@ -80,6 +80,5 @@ class SC_Utils_sfCalcIncTaxTest extends Common_TestCase
 
     $this->verify('税込価格');
   }
-
 }
 

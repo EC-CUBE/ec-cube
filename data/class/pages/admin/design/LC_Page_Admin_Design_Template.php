@@ -126,7 +126,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
             GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
         }
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
-
     }
 
     /**

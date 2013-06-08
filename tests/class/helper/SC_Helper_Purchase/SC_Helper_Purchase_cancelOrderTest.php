@@ -149,7 +149,6 @@ class SC_Helper_Purchase_cancelOrderTest extends SC_Helper_Purchase_TestBase
   }
 
   //////////////////////////////////////////
-
 }
 
 class SC_Helper_Purchase_cancelOrderMock extends SC_Helper_Purchase

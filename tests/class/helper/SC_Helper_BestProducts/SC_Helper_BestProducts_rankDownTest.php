@@ -53,6 +53,5 @@ class SC_Helper_BestProducts_rankDownTest extends SC_Helper_BestProducts_TestBas
 
         $this->verify();
     }
-
 }
 

@@ -69,6 +69,5 @@ class SC_Helper_Purchase_isUsePointTest extends SC_Helper_Purchase_TestBase
 
     $this->verify('ポイント加算するかどうか');
   }
-
 }
 

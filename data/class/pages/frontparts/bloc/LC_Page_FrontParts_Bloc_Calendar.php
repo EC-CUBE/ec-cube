@@ -63,8 +63,6 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
     {
         // カレンダーデータ取得
         $this->arrCalendar = $this->lfGetCalendar(2);
-
-
     }
 
     /**

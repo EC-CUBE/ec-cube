@@ -213,7 +213,6 @@ class SC_SelectSql
 
         if ($this->where) {
             $this->where .= ' AND ' . $statement;
-
         } else {
             $this->where = 'WHERE ' . $statement;
         }
@@ -242,7 +241,6 @@ class SC_SelectSql
         if ($where != '') {
             if ($this->where) {
                 $this->where .= ' AND ' . $where;
-
             } else {
                 $this->where = 'WHERE ' . $where;
             }
@@ -252,13 +250,11 @@ class SC_SelectSql
     function setOrder($order)
     {
             $this->order =  'ORDER BY ' . $order;
-
     }
 
     function setGroup($group)
     {
         $this->group =  'GROUP BY ' . $group;
-
     }
 
     function clearSql()

@@ -61,6 +61,5 @@ class SC_Utils_clearCompliedTemplateTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

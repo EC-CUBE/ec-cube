@@ -61,6 +61,5 @@ class SC_Utils_sfGetRandomStringTest extends Common_TestCase
     
     $this->verify('文字列長');
   }
-
 }
 

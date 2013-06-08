@@ -24,7 +24,6 @@
 require_once '../require.php';
 require_once CLASS_EX_REALDIR . 'page_extends/admin/ownersstore/LC_Page_Admin_OwnersStore_Settings_Ex.php';
 
-
 $objPage = new LC_Page_Admin_OwnersStore_Settings_Ex();
 $objPage->init();
 $objPage->process();

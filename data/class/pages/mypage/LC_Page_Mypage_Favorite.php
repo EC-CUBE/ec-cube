@@ -35,7 +35,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex
     /** ページナンバー */
     var $tpl_pageno;
 
-
     /**
      * Page を初期化する.
      *
@@ -99,8 +98,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex
         $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-
-
     }
 
     /**

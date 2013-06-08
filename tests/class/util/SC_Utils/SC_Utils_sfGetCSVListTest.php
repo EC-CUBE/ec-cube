@@ -67,6 +67,5 @@ class SC_Utils_sfGetCSVListTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

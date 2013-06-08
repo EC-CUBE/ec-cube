@@ -31,13 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 require_once '../require.php';
 require_once '../' . ADMIN_DIR . 'require.php';
 
-
 $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
 $objPage = lfPageFactory($mode);
 $objPage->init();
 register_shutdown_function(array($objPage, 'destroy'));
 $objPage->process($mode);
-
 
 function lfPageFactory($mode)
 {

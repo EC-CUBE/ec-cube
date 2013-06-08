@@ -68,7 +68,6 @@ class SC_Helper_Purchase_setShipmentItemTempForSoleTest extends SC_Helper_Purcha
   }
 
   //////////////////////////////////////////
-
 }
 
 class SC_Helper_Purchase_setShipmentItemTempForSoleMock extends SC_Helper_Purchase

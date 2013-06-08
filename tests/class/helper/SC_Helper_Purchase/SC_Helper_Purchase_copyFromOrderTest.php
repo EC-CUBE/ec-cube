@@ -113,6 +113,5 @@ class SC_Helper_Purchase_copyFromOrderTest extends SC_Helper_Purchase_TestBase
      $this->verify();
   }
   //////////////////////////////////////////
-
 }
 

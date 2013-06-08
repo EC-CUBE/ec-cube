@@ -126,7 +126,6 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
         // カテゴリ取得
         $objDb = new SC_Helper_DB_Ex();
         $this->arrCatList = $objDb->sfGetCategoryList('level = 1');
-
     }
 
     /**
@@ -266,5 +265,4 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
         return $arrItems;
     }
-
 }

@@ -136,7 +136,6 @@ class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase
   }
 
   //////////////////////////////////////////
-
 }
 
 class SC_Helper_Purchase_completeOrderMock extends SC_Helper_Purchase
@@ -186,7 +185,6 @@ class SC_Helper_Purchase_completeOrderMock extends SC_Helper_Purchase
       'cartKey' => $cartKey
     );
   }
-
 }
 
 ?>

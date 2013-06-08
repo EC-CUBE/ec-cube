@@ -41,7 +41,6 @@ class LC_Page_Cart extends LC_Page_Ex
     /** メッセージ */
     public $tpl_message = '';
 
-
     /**
      * Page を初期化する.
      *
@@ -53,7 +52,6 @@ class LC_Page_Cart extends LC_Page_Ex
         $this->tpl_title = '現在のカゴの中';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
-
     }
 
     /**
@@ -133,7 +131,6 @@ class LC_Page_Cart extends LC_Page_Ex
                     // カートを購入モードに設定
                     $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
 
-
                     // 購入ページへ
                     SC_Response_Ex::sendRedirect(SHOPPING_URL);
                     SC_Response_Ex::actionExit();
@@ -208,8 +205,6 @@ class LC_Page_Cart extends LC_Page_Ex
 
         // すべてのカートの内容を取得する
         $this->cartItems = $objCartSess->getAllCartList();
-
-
     }
 
     /**

@@ -138,7 +138,6 @@ class SC_Helper_Purchase_saveOrderTempTest extends SC_Helper_Purchase_TestBase
   }
 
   //////////////////////////////////////////
-
 }
 
 class SC_Helper_Purchase_saveOrderTempMock extends SC_Helper_Purchase

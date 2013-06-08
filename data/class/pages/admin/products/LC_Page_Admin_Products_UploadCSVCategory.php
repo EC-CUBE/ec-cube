@@ -55,7 +55,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
     /** 登録フォームカラム情報 **/
     var $arrFormKeyList;
 
-
     /**
      * Page を初期化する.
      *
@@ -617,5 +616,4 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
 
         return true;
     }
-
 }

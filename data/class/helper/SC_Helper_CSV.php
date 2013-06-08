@@ -20,7 +20,6 @@ class SC_Helper_CSV
     /** 項目名 */
     var $arrSubnaviName;
 
-
     /**
      * デフォルトコンストラクタ.
      */

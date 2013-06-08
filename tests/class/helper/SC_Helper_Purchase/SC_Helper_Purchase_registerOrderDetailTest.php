@@ -117,5 +117,4 @@ class SC_Helper_Purchase_registerOrderDetailTest extends SC_Helper_Purchase_Test
         }
     }
   //////////////////////////////////////////
-
 }

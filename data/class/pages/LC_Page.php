@@ -73,7 +73,6 @@ class LC_Page
     /** プラグインを実行フラグ */
     var $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG;
 
-
     /**
      * Page を初期化する.
      *

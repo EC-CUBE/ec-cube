@@ -38,7 +38,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
     /** 会員情報のインスタンス */
     var $objCustomer;
 
-
     /**
      * Page を初期化する.
      *
@@ -175,7 +174,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                     // 正常に登録されたことを記録しておく
                     $objSiteSess->setRegistFlag();
 
-
                     // 確認ページへ移動
                     SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                     SC_Response_Ex::actionExit();
@@ -188,7 +186,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
 
                 // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
-
 
                 $url = null;
                 if ($this->is_multiple) {
@@ -234,8 +231,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
-
-
     }
 
     /**

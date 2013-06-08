@@ -36,5 +36,4 @@ class SC_Helper_Address_deleteAddressTest extends SC_Helper_Address_TestBase
         
         $this->verify('登録配送先削除');
     }
-
 }

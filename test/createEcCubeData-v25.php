@@ -79,7 +79,6 @@ $end = microtime(true);
 print("データの生成が完了しました!\n");
 printf("所要時間 %f 秒\n", $end - $start);
 
-
 // }}}
 // {{{ classes
 
@@ -684,5 +683,4 @@ class CreateEcCubeData
 
         return $TotalCategoryrank;
     }
-
 }

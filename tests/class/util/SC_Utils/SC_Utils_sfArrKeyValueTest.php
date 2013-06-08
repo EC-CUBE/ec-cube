@@ -102,6 +102,5 @@ class SC_Utils_sfArrKeyValueTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

@@ -199,6 +199,5 @@ class SC_Utils_sfCopyDirTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

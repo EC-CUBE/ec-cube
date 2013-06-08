@@ -92,7 +92,6 @@ class SC_Fpdf extends SC_Helper_FPDI
         $this->setMessageData();
         $this->setOrderData();
         $this->setEtcData();
-
     }
 
     private function setShopData()
@@ -200,7 +199,6 @@ class SC_Fpdf extends SC_Helper_FPDI
             $arrOrder[$i][1]  = number_format($data[0]);
             $arrOrder[$i][2]  = number_format($data[1]).$monetary_unit;
             $arrOrder[$i][3]  = number_format($data[2]).$monetary_unit;
-
         }
 
         $arrOrder[$i][0] = '';

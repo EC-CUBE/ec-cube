@@ -71,6 +71,5 @@ class SC_Utils_sfNoImageMainListTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

@@ -83,6 +83,5 @@ class SC_Utils_getRealURLTest extends Common_TestCase
     $this->verify();
   }
   //////////////////////////////////////////
-
 }
 

@@ -131,7 +131,6 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
         $this->arrClassCat = $this->lfGetClassCat($class_id);
         // POSTデータを引き継ぐ
         $this->tpl_classcategory_id = $classcategory_id;
-
     }
 
     /**

@@ -95,7 +95,6 @@ class SC_SessionFactory
     function useCookie()
     {
     }
-
 }
 /*
  * Local variables:

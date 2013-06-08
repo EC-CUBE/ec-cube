@@ -75,6 +75,5 @@ class SC_Utils_Test extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

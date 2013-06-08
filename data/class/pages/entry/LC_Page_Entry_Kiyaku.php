@@ -71,8 +71,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
         }
 
         $this->tpl_kiyaku_text = $this->lfMakeKiyakuText($arrKiyaku, $this->max, $this->offset);
-
-
     }
 
     /**
@@ -132,5 +130,4 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
     {
         return is_numeric($offset) === true ? intval($offset) : 1;
     }
-
 }

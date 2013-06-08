@@ -40,7 +40,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
     function init()
     {
         parent::init();
-
     }
 
     /**
@@ -83,8 +82,6 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
 
         $this->tpl_name = $objCustomer->getValue('name01');
         $this->arrForm  = $objFormParam->getFormParamList();
-
-
     }
 
     /**

@@ -128,7 +128,6 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
         $this->arrClassCatCount = SC_Utils_Ex::sfGetClassCatCount();
         // POSTデータを引き継ぐ
         $this->tpl_class_id = $class_id;
-
     }
 
     /**

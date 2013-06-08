@@ -66,6 +66,5 @@ class SC_Utils_sfGetUnderChildrenArrayTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

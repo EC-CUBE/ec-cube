@@ -62,6 +62,5 @@ class SC_Utils_sfTrimTest extends Common_TestCase
 
     $this->verify('トリム結果');
   }
-
 }
 

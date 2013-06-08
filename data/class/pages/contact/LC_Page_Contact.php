@@ -116,7 +116,6 @@ class LC_Page_Contact extends LC_Page_Ex
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $this->lfSendMail($this);
 
-
                     // 完了ページへ移動する
                     SC_Response_Ex::sendRedirect('complete.php');
                     SC_Response_Ex::actionExit();

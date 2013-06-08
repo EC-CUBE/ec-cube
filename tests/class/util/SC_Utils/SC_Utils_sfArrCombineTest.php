@@ -90,6 +90,5 @@ class SC_Utils_sfArrCombineTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

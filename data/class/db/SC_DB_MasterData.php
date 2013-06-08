@@ -49,7 +49,6 @@ class SC_DB_MasterData
     /** デフォルトのテーブルカラム名 */
     var $columns = array('id', 'name', 'rank', 'remarks');
 
-
     /**
      * マスターデータを取得する.
      *

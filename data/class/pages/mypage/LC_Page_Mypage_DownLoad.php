@@ -44,7 +44,6 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
                                 'pdf' => 'application/pdf'
         );
 
-
     /**
      * Page を初期化する.
      *

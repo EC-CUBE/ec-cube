@@ -113,5 +113,4 @@ abstract class SC_Plugin_Base
     {
         return $this->arrSelfInfo;
     }
-
 }

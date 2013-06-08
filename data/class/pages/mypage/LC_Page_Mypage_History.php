@@ -109,8 +109,6 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
         $this->lfSetAU($this->tpl_arrOrderDetail);
         // 受注メール送信履歴の取得
         $this->tpl_arrMailHistory = $this->lfGetMailHistory($order_id);
-
-
     }
 
     /**

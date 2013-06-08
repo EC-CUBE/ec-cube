@@ -59,6 +59,5 @@ class SC_Helper_Purchase_unsetShippingTempTest extends SC_Helper_Purchase_TestBa
 
     $this->verify('セッション情報が空かどうか');
   }
-
 }
 

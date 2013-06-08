@@ -144,7 +144,6 @@ class SC_SendMail
         );
         // PEAR::Mailを使ってメール送信オブジェクト作成
         $this->objMail =& Mail::factory('smtp', $arrHost);
-
     }
 
     /**

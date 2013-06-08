@@ -74,8 +74,6 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc_Ex
         $this->maker_id = $this->lfGetSelectedMakerId($product_id, $maker_id);
         // メーカー検索用選択リスト
         $this->arrMakerList = $this->lfGetMakerList();
-
-
     }
 
     /**
@@ -201,5 +199,4 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc_Ex
 
         return $arrMakerList;
     }
-
 }

@@ -47,7 +47,6 @@ class LC_Page_Error extends LC_Page_Ex
     /** モバイルサイトの場合 true */
     var $is_mobile = false;
 
-
     /**
      * Page を初期化する.
      *

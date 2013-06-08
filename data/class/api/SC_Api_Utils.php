@@ -228,5 +228,4 @@ class SC_Api_Utils
         header('Content-Type: text/xml; charset=UTF-8');
         echo $xml;
     }
-
 }

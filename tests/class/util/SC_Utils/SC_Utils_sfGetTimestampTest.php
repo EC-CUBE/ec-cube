@@ -104,6 +104,5 @@ class SC_Utils_sfGetTimestampTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

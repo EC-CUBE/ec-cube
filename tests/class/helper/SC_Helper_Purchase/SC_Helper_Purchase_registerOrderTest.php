@@ -186,7 +186,6 @@ class SC_Helper_Purchase_registerOrderTest extends SC_Helper_Purchase_TestBase
     }
 
   //////////////////////////////////////////
-
 }
 
 class SC_Helper_Purchase_registerOrderMock extends SC_Helper_Purchase

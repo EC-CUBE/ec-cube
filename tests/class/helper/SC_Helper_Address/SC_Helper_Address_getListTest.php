@@ -104,5 +104,4 @@ class SC_Helper_Address_getListTest extends SC_Helper_Address_TestBase
         
         $this->verify('配送先一覧取得');
     }
-
 }

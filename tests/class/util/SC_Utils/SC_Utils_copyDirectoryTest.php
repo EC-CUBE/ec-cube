@@ -122,7 +122,6 @@ class SC_Utils_copyDirectoryTest extends Common_TestCase
     Test_Utils::array_append($this->actual, Test_Utils::mapCols(SC_Helper_FileManager::sfGetFileList(self::$TMP_DIR . "/dst/dir20"), "file_name"));
     
     $this->verify('コピー先のファイル一覧');
-
   }
 
   public function testCopyDirectory_コピー先のファイルが元々存在する場合_上書きされる()
@@ -158,10 +157,8 @@ class SC_Utils_copyDirectoryTest extends Common_TestCase
     $this->actual[] = $read_result;
 
     $this->verify('コピー先のファイル一覧');
-
   }
 
   //////////////////////////////////////////
-
 }
 

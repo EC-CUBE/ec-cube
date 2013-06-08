@@ -44,7 +44,6 @@ class LC_Page_Forgot extends LC_Page_Ex
     /** エラーメッセージ */
     var $errmsg;
 
-
     /**
      * Page を初期化する.
      *
@@ -315,5 +314,4 @@ class LC_Page_Forgot extends LC_Page_Ex
 
         return;
     }
-
 }

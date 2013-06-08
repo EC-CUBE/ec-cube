@@ -157,7 +157,6 @@ class CreateEcCubeCustomerData
         print("\n");
         lfPrintLog("createCustomers DONE.(" . CUSTOMERS_VOLUME . " data created)");
     }
-
 }
 
 /** テスト用スクリプトのログ出力関数 */

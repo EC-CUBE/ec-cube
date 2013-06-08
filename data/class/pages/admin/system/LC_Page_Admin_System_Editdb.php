@@ -83,7 +83,6 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
 
         //インデックスの現在値を取得
         $this->arrForm = $this->lfGetIndexList();
-
     }
 
     /**
@@ -111,7 +110,6 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
         $objFormParam->addParam('インデックス', 'indexflag');
         $objFormParam->addParam('インデックス（変更後）', 'indexflag_new');
         $objFormParam->setParam($arrParams);
-
     }
 
     function lfDoChange(&$objFormParam)
@@ -211,5 +209,4 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
 
         return $arrIndexList;
     }
-
 }

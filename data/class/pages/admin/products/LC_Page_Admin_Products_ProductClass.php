@@ -153,7 +153,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         $objFormParam->setValue('product_name',
                 $this->getProductName($objFormParam->getValue('product_id')));
         $this->arrForm = $objFormParam->getFormParamList();
-
     }
 
     /**

@@ -56,6 +56,5 @@ class SC_Utils_encodeRFC3986Test extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

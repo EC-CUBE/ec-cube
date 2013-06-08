@@ -96,7 +96,6 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
-
     }
 
     /**

@@ -82,5 +82,4 @@ class SC_CheckError_EXIST_CHECK_REVERSETest extends Common_TestCase
         $this->actual = $objErr->arrErr['form'];
         $this->verify('');
     }
-
 }

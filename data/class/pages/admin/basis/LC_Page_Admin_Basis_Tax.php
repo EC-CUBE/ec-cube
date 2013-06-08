@@ -35,7 +35,6 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
     /** エラー情報 */
     var $arrErr;
 
-
     /**
      * Page を初期化する.
      *
@@ -65,7 +64,6 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
             $arrMinutes[$minutes] = $minutes;
         }
         $this->arrMinutes = $arrMinutes;
-
     }
 
     /**
@@ -158,7 +156,6 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
 
         // 税規約情報読み込み
         $this->arrTaxrule = $objTaxRule->getTaxRuleList();
-
     }
 
     /**
@@ -189,7 +186,6 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
         $objFormParam->addParam('適用時', 'apply_date_hour', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('適用分', 'apply_date_minutes', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('適用日時', 'apply_date_year', 'apply_date_month', 'apply_date_day', INT_LEN, 'n', array("CHECK_DATE"));
-
     }
 
     /**

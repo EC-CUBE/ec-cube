@@ -318,7 +318,6 @@ class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCas
         $this->setClassCombination($class_combination_id, 100, 3000001, 2);
         $this->setClassCombination(100, null, 2000001, 1);
 
-
         $this->expected = array(
                                 array('class_id1' => 2,
                                       'class_id2' => 3,

@@ -107,6 +107,5 @@ class SC_Helper_Purchase_clearShipmentItemTempTest extends SC_Helper_Purchase_Te
 
     $this->verify('配送商品');
   }
-
 }
 

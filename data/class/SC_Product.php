@@ -773,5 +773,4 @@ __EOS__;
 
         return $tablename . 'del_flg = 0 AND ' . $tablename . 'status = 1 ';
     }
-
 }

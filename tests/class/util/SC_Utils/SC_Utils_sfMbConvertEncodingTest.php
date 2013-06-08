@@ -63,6 +63,5 @@ class SC_Utils_sfMbConvertEncodingTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

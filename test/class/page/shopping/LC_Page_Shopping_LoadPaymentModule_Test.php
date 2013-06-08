@@ -109,7 +109,6 @@ class LC_Page_Shopping_LoadPaymentModule_Test extends PHPUnit_Framework_TestCase
         $this->actual = $this->objPage->getModulePath($order_id);
 
         $this->assertFalse($this->actual);
-
     }
 
     function verify()

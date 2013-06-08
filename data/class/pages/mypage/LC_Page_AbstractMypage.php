@@ -80,7 +80,6 @@ class LC_Page_AbstractMypage extends LC_Page_Ex
             }
             $this->tpl_title        = 'MYページ(ログイン)';
             $this->tpl_mainpage     = 'mypage/login.tpl';
-
         } else {
             //マイページ会員情報表示用共通処理
             $this->tpl_login     = true;

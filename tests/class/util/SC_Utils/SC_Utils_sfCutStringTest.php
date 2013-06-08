@@ -170,6 +170,5 @@ class SC_Utils_sfCutStringTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

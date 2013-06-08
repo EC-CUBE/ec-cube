@@ -121,7 +121,6 @@ class SC_Helper_Purchase_rollbackOrderTest extends SC_Helper_Purchase_TestBase
     $this->verify();
   }
   //////////////////////////////////////////
-
 }
 
 class SC_Helper_Purchase_rollbackOrderMock extends SC_Helper_Purchase

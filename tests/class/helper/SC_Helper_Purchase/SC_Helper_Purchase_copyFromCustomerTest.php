@@ -168,6 +168,5 @@ class SC_Helper_Purchase_copyFromCustomerTest extends SC_Helper_Purchase_TestBas
   }
 
   //////////////////////////////////////////
-
 }
 

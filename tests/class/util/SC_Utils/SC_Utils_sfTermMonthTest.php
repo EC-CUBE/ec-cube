@@ -79,6 +79,5 @@ class SC_Utils_sfTermMonthTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

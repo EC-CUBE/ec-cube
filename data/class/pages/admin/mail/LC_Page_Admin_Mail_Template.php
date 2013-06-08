@@ -82,7 +82,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
                 break;
         }
         $this->arrTemplates = $objMailHelper->sfGetMailmagaTemplate();
-
     }
 
     /**
@@ -108,5 +107,4 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
                           'template_id = ?',
                           array($template_id));
     }
-
 }

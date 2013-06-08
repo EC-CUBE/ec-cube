@@ -65,6 +65,5 @@ class SC_Utils_sfGetHashString_authTypeHmacTest extends Common_TestCase
 
     $this->assertNotEquals('入力前後の文字列', $input, $output);
   }
-
 }
 

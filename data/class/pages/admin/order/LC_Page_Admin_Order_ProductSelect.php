@@ -122,7 +122,6 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
         // カテゴリ取得
         $this->arrCatList = $objDb->sfGetCategoryList();
         $this->setTemplate($this->tpl_mainpage);
-
     }
 
     /**

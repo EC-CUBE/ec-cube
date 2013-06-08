@@ -106,7 +106,6 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
                             $data['pref'] = $arrAdsList[0]['state'];
                             $data['addr01'] = $arrAdsList[0]['city']. $arrAdsList[0]['town'];
                             $objFormParam->setParam($data);
-
                         }
                         // 該当無し
                         else {
@@ -141,7 +140,6 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
 
                     //セッション情報を最新の状態に更新する
                     $objCustomer->updateSession();
-
 
                     // 完了ページに移動させる。
                     SC_Response_Ex::sendRedirect('change_complete.php');

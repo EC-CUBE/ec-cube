@@ -122,6 +122,5 @@ class SC_Utils_sfIsIntTest extends Common_TestCase
     $this->verify('整数かどうか');
   }
   */
-
 }
 

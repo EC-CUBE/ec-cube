@@ -101,7 +101,6 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
 
         // お知らせ一覧の取得
         $this->arrInfo = $this->lfGetInfo();
-
     }
 
     /**
@@ -305,7 +304,6 @@ __EOS__;
         $arrNewOrder = $objQuery->getAll($sql, ORDER_CANCEL);
         foreach ($arrNewOrder as $key => $val) {
             $arrNewOrder[$key]['create_date'] = str_replace('-', '/', substr($val['create_date'], 0,19));
-
         }
 
         return $arrNewOrder;

@@ -34,7 +34,6 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
     protected function setUp()
     {
         parent::setUp();
-
     }
 
     protected function tearDown()
@@ -58,7 +57,6 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
     public function testGetList_データがある場合_想定した結果が返る(){
 
         $this->setUpBestProducts();
-
 
         $this->expected = array(
             0=>array(
@@ -88,16 +86,13 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
             )
         );
 
-
         $this->actual = SC_Helper_BestProducts_Ex::getList();
         $this->verify();
-
     }
 
     public function testGetList_一覧取得has_deleteをtrueにした場合削除済みデータも取得(){
 
         $this->setUpBestProducts();
-
 
         $this->expected = array(
             0=>array(
@@ -139,10 +134,8 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
             )
         );
 
-
         $this->actual = SC_Helper_BestProducts_Ex::getList(0,0,true);
         $this->verify();
-
     }
 
     public function testGetList_ページングが想定した結果が返る_表示件数1_ページ番号2(){
@@ -164,16 +157,13 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
             )
         );
 
-
         $this->actual = SC_Helper_BestProducts_Ex::getList(1,2);
         $this->verify();
-
     }
 
     public function testGetList_ページングが想定した結果が返る_表示件数1_ページ番号0(){
 
         $this->setUpBestProducts();
-
 
         $this->expected = array(
             0=>array(
@@ -192,8 +182,6 @@ class SC_Helper_BestProducts_getListTest extends SC_Helper_BestProducts_TestBase
 
         $this->actual = SC_Helper_BestProducts_Ex::getList(1,0);
         $this->verify();
-
     }
-
 }
 

@@ -66,6 +66,5 @@ class SC_Utils_sfGetErrorColorTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

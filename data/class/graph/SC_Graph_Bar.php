@@ -96,5 +96,4 @@ class SC_Graph_Bar extends SC_Graph_Line_Ex
             $this->setText(FONT_SIZE, $x_pos, $y_pos, number_format($arrData[$i]));
         }
     }
-
 }

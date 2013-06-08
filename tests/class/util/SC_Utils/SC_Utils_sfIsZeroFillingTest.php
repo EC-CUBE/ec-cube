@@ -68,6 +68,5 @@ class SC_Utils_sfIsZeroFillingTest extends Common_TestCase
 
     $this->verify('ゼロ詰めされているかどうか');
   }
-
 }
 

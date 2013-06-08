@@ -596,6 +596,5 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
      $this->objQuery->insert('dtb_customer', $item);
    }
  }
-
 }
 

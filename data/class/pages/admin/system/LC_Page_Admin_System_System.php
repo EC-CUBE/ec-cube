@@ -80,7 +80,6 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex
         }
 
         $this->arrSystemInfo = $this->getSystemInfo();
-
     }
 
     /**

@@ -63,6 +63,5 @@ class SC_Utils_sfGetCheckedTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

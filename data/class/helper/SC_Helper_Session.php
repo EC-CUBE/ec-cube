@@ -16,7 +16,6 @@ class SC_Helper_Session
 {
     var $objDb;
 
-
     /**
      * デフォルトコンストラクタ.
      *

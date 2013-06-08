@@ -70,7 +70,6 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex
             $this->tpl_body = $mailHistory[0]['mail_body'];
         }
         $this->setTemplate($this->tpl_mainpage);
-
     }
 
     /**

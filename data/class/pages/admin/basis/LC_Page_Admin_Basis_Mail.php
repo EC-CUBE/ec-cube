@@ -97,7 +97,6 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
                     if ($this->arrErr) {
                         // エラーメッセージ
                         $this->tpl_msg = 'エラーが発生しました';
-
                     } else {
                         // 正常
                         $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id'], $objMailtemplate);

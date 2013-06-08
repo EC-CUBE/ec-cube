@@ -129,6 +129,5 @@ class SC_Helper_DB_sfMoveRank extends SC_Helper_DB_TestBase
         $this->actual = $this->objQuery->get($col, $table, $getWhere, $arrWhereVal);
         $this->verify();
     }
-
 }
 

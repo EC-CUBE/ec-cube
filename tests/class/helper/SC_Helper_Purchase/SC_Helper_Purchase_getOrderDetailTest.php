@@ -154,6 +154,5 @@ class SC_Helper_Purchase_getOrderDetailTest extends SC_Helper_Purchase_TestBase
   }
 
   //////////////////////////////////////////
-
 }
 

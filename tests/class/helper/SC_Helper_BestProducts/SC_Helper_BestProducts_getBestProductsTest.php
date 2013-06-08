@@ -59,7 +59,6 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
 
         $best_id = '1001';
 
-
         $this->expected = array(
             'category_id' => '0',
             'rank' => '1',
@@ -78,7 +77,6 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
             ));
 
         $this->verify();
-
     }
 
     // best_idが存在するが、del_flg=1の場合、空が帰る。
@@ -90,14 +88,12 @@ class SC_Helper_BestProducts_getBestProductsTest extends SC_Helper_BestProducts_
         $this->actual = SC_Helper_BestProducts_Ex::getBestProducts($best_id);
 
         $this->verify();
-
     }
 
     // best_idが存在するが、del_flg=1の場合、かつ。$has_deleted=trueを指定
     public function testGetBestProducts_削除済みでかつhas_deletedがtrueの場合_対応した結果が返る(){
 
         $best_id = '1002';
-
 
         $this->expected = array(
             'category_id' => '0',

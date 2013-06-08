@@ -63,6 +63,5 @@ class SC_Date_getMinutesTest extends Common_TestCase
 
         $this->verify("配列の最大値");
     }
-
 }
 

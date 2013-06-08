@@ -66,6 +66,5 @@ class SC_Utils_sfErrorHeaderTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

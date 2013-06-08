@@ -68,6 +68,5 @@ class SC_Utils_sfGetEnabledTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

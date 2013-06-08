@@ -62,8 +62,6 @@ class LC_Page_Products_ReviewComplete extends LC_Page_Ex
     function action()
     {
         $this->setTemplate('products/review_complete.tpl');
-
-
     }
 
     /**

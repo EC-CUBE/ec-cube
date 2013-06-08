@@ -80,7 +80,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
         }
 
         list($this->tpl_linemax, $this->arrDataList, $this->arrPagenavi) = $this->lfDoSearch($_POST['search_pageno']);
-
     }
 
     /**

@@ -41,7 +41,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         'snapshot_num',         // Postgres Plus Advanced Server 9.1
     );
 
-
     /**
      * Page を初期化する.
      *
@@ -206,7 +205,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         $this->arrErr = isset($arrErr) ? $arrErr : array();
         $this->arrForm = isset($arrForm) ? $arrForm : array();
         $this->arrBkupList = $arrBkupList;
-
     }
 
     /**
@@ -233,7 +231,6 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         $objFormParam->addParam('バックアップ名(リスト)', 'list_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
-
     }
 
     /**
@@ -628,7 +625,5 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         }
 
         $objQuery->delete('dtb_bkup', 'bkup_name = ?', array($arrForm['list_name']));
-
     }
-
 }

@@ -78,7 +78,6 @@ class SC_Helper_BestProducts_getByRankTest extends SC_Helper_BestProducts_TestBa
             ));
 
         $this->verify();
-
     }
 
     // rankが存在するが、del_flg=1の場合、空が帰る。
@@ -90,7 +89,6 @@ class SC_Helper_BestProducts_getByRankTest extends SC_Helper_BestProducts_TestBa
         $this->actual = SC_Helper_BestProducts_Ex::getByRank($rank);
 
         $this->verify();
-
     }
 
     // rankが存在するが、del_flg=1の場合、かつ。$has_deleted=trueを指定

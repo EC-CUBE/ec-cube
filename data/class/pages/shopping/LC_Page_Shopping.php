@@ -183,7 +183,6 @@ class LC_Page_Shopping extends LC_Page_Ex
 
                     $objSiteSess->setRegistFlag();
 
-
                     SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                     SC_Response_Ex::actionExit();
                 }
@@ -212,7 +211,6 @@ class LC_Page_Shopping extends LC_Page_Ex
                     $this->lfRegistData($this->tpl_uniqid, $objPurchase, $objCustomer, $objFormParam, true);
 
                     $objSiteSess->setRegistFlag();
-
 
                     SC_Response_Ex::sendRedirect(MULTIPLE_URLPATH);
                     SC_Response_Ex::actionExit();

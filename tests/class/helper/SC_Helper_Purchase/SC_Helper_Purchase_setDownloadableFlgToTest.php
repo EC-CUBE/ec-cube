@@ -112,6 +112,5 @@ class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_Tes
   }
 
   //////////////////////////////////////////
-
 }
 

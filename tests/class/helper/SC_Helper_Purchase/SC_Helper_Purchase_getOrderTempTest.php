@@ -73,6 +73,5 @@ class SC_Helper_Purchase_getOrderTempTest extends SC_Helper_Purchase_TestBase
   }
 
   //////////////////////////////////////////
-
 }
 

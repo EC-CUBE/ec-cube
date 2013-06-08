@@ -100,6 +100,5 @@ class SC_Helper_Purchase_getOrderTest extends SC_Helper_Purchase_TestBase
   }
 
   //////////////////////////////////////////
-
 }
 

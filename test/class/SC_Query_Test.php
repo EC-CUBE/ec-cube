@@ -166,7 +166,6 @@ class SC_Query_Test extends PHPUnit_Framework_TestCase
         $this->actual = $this->objQuery->getCol('column1', 'test_table', "id < ?",  array(3));
 
         $this->verify();
-
     }
 
     /**

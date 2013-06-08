@@ -69,8 +69,6 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
 
         $this->lfAddCartProducts($arrOrderDetail);
         SC_Response_Ex::sendRedirect(CART_URLPATH);
-
-
     }
 
     /**

@@ -74,7 +74,6 @@ class SC_Helper_DB_sfColumnExists extends SC_Helper_DB_TestBase
         $this->actual = $this->helper->sfColumnExists($tableName, $colName, $colType, $dsn, $add);
         $this->verify();
     }
-
 }
 
 class SC_Helper_DB_sfColumnExistsMock extends SC_Helper_DB_Ex

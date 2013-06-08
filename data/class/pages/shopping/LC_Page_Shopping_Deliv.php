@@ -123,7 +123,6 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
                 $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
                 $objSiteSess->setRegistFlag();
 
-
                 SC_Response_Ex::sendRedirect(SHOPPING_PAYMENT_URLPATH);
                 SC_Response_Ex::actionExit();
                 break;

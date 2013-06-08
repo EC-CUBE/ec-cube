@@ -265,5 +265,4 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
             return $input_pos;
         }
     }
-
 }

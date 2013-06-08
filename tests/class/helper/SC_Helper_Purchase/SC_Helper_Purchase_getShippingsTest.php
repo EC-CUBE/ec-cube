@@ -103,10 +103,8 @@ class SC_Helper_Purchase_getShippingsTest extends SC_Helper_Purchase_TestBase
       'order_id', 'shipping_id', 'shipping_name01', 'shipping_date'));
     $this->actual['shipment_item_count'] = count($result['1']['shipment_item']);
     $this->verify('配送情報');
-
   }
 
   //////////////////////////////////////////
-
 }
 

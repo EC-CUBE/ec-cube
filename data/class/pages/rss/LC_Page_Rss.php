@@ -75,7 +75,6 @@ class LC_Page_RSS extends LC_Page_Ex
         //セットしたデータをテンプレートファイルに出力
         $objView->assignobj($this);
 
-
         //画面表示
         $objView->display($this->tpl_mainpage, true);
     }

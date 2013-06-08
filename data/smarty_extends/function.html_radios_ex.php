@@ -110,7 +110,6 @@ function smarty_function_html_radios_ex($params, &$smarty)
     if (isset($options)) {
         foreach ($options as $_key=>$_val)
             $_html_result[] = smarty_function_html_radios_output_ex($name, $_key, $_val, $selected, $extra, $separator, $labels, $label_ids, $tags);
-
     } else {
         foreach ($values as $_i=>$_key) {
             $_val = isset($output[$_i]) ? $output[$_i] : '';
@@ -124,7 +123,6 @@ function smarty_function_html_radios_ex($params, &$smarty)
     } else {
         return implode("\n",$_html_result);
     }
-
 }
 
 function smarty_function_html_radios_output_ex($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids, $tags)

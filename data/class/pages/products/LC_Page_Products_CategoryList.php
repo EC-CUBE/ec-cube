@@ -69,8 +69,6 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
         $this->arrCategory = $arrCategoryData['arrCategory'];
         $this->arrChildren = $arrCategoryData['arrChildren'];
         $this->tpl_subtitle = $this->arrCategory['category_name'];
-
-
     }
 
     /**
@@ -168,5 +166,4 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
 
         return $objFormParam;
     }
-
 }

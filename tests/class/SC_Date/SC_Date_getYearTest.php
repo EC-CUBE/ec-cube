@@ -113,6 +113,5 @@ class SC_Date_getYearTest extends Common_TestCase
         $this->actual = array_search('----', $return);
         $this->verify("デフォルトキー");
     }
-
 }
 

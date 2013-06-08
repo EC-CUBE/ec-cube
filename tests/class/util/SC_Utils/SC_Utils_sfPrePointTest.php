@@ -100,6 +100,5 @@ class SC_Utils_sfPrePointTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

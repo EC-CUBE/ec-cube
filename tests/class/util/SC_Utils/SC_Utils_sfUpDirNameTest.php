@@ -57,6 +57,5 @@ class SC_Utils_sfUpDirNameTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

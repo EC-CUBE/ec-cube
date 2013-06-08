@@ -86,6 +86,5 @@ class SC_Utils_sfGetCommaListTest extends Common_TestCase
 
     $this->verify('連結済みの文字列');
   }
-
 }
 

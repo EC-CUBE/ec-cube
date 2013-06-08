@@ -69,8 +69,6 @@ class SC_Helper_BestProducts_deleteByProductIDsTest extends SC_Helper_BestProduc
         $this->actual = $objHelperBestProducts->getBestProducts('1003');
 
         $this->verify();
-
     }
-
 }
 

@@ -97,7 +97,6 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
                                                  $objCartSess, $objAddress);
                     $objSiteSess->setRegistFlag();
 
-
                     SC_Response_Ex::sendRedirect('payment.php');
                     SC_Response_Ex::actionExit();
                 }

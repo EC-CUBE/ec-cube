@@ -74,6 +74,5 @@ class SC_Utils_sfMakeHiddenArrayest extends Common_TestCase
     $this->verify();
   }
   //////////////////////////////////////////
-
 }
 

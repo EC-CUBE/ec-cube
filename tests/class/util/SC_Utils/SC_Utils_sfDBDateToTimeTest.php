@@ -65,6 +65,5 @@ class SC_Utils_sfDBDatetoTimeTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

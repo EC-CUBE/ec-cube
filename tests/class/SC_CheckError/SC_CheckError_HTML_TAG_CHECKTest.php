@@ -77,5 +77,4 @@ class SC_CheckError_HTML_TAG_CHECKTest extends Common_TestCase
         $this->actual = $objErr->arrErr['form'];
         $this->verify('');
     }
-
 }

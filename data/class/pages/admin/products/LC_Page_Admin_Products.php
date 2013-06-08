@@ -66,7 +66,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
         $this->arrEndYear = $objDate->getYear();
         $this->arrEndMonth = $objDate->getMonth();
         $this->arrEndDay = $objDate->getDay();
-
     }
 
     /**
@@ -176,7 +175,6 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
         // カテゴリの読込
         list($this->arrCatKey, $this->arrCatVal) = $objDb->sfGetLevelCatList(false);
         $this->arrCatList = $this->lfGetIDName($this->arrCatKey, $this->arrCatVal);
-
     }
 
     /**

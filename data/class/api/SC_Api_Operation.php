@@ -132,7 +132,6 @@ class SC_Api_Operation
         $allow_account_id = SC_Api_Operation_Ex::getOperationSubConfig($operation_name, 'allow_account_id', $arrApiConfig);
         if (!SC_Utils_Ex::isBlank($allow_account_id) and) {
             $arrAllowAccountIds = explode('|', $allow_account_id);
-
         }
 */
 
@@ -419,5 +418,4 @@ class SC_Api_Operation
                 break;
         }
     }
-
 }

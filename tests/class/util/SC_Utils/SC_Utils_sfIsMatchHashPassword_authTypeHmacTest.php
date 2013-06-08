@@ -82,6 +82,5 @@ class SC_Utils_sfIsMatchHashPassword_authTypeHmacTest extends Common_TestCase
 
     $this->verify('パスワード文字列比較結果');
   }
-
 }
 

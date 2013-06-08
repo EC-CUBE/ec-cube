@@ -84,7 +84,6 @@ class SC_Helper_Maker_getMakerTest extends SC_Helper_Maker_TestBase
             ));
 
         $this->verify();
-
     }
 
     public function testGetMaker_おすすめIDがあり_かつ削除済みの場合_空が返る(){
@@ -94,14 +93,12 @@ class SC_Helper_Maker_getMakerTest extends SC_Helper_Maker_TestBase
         $result = $this->objHelperMaker->getMaker("1002");
 
         $this->verify();
-
     }
 
     // best_idが存在するが、del_flg=1の場合、かつ。$has_deleted=trueを指定
     public function testGetMaker_削除済みでかつhas_deletedがtrueの場合_対応した結果が返る(){
 
         $best_id = '1002';
-
 
         $this->expected = array(
             'maker_id' => '1002',

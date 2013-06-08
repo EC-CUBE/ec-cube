@@ -77,6 +77,5 @@ class SC_Utils_sfEncodeFileTest extends Common_TestCase
   //TODO ファイルが開けなかった場合はexitするためテスト不可
 
   //////////////////////////////////////////
-
 }
 

@@ -160,7 +160,6 @@ class SC_Helper_Purchase_registerShipmentItemTest extends SC_Helper_Purchase_Tes
     $this->actual['first'] = $result[0];
 
     $this->verify('登録された配送商品情報');
-
   }
 
   public function testRegisterShipmentItem_DBに存在しないカラムを指定した場合_エラーなく登録できる()
@@ -203,10 +202,8 @@ class SC_Helper_Purchase_registerShipmentItemTest extends SC_Helper_Purchase_Tes
     $this->actual['first'] = $result[0];
 
     $this->verify('登録された配送商品情報');
-
   }
   
   //////////////////////////////////////////
-
 }
 

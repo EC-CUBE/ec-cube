@@ -93,6 +93,5 @@ class SC_Utils_sfDispDBDateTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

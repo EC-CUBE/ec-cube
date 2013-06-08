@@ -70,5 +70,4 @@ class SC_Helper_Kiyaku_isTitleExistTest extends SC_Helper_Kiyaku_TestBase
 
         $this->verify('規約タイトル重複');
     }
-
 }

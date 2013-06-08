@@ -70,6 +70,5 @@ class SC_Utils_sfGetUniqRandomIdTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

@@ -56,6 +56,5 @@ class SC_Utils_jsonEncodeTest extends Common_TestCase
   }
 
   //////////////////////////////////////////
-
 }
 

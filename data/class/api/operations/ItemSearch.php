@@ -177,7 +177,6 @@ __EOS__;
         $arrProducts['productStatus'] = $objProduct->getProductStatus($arrProductId);
 
         return $arrProducts;
-
     }
 
     /**
@@ -273,5 +272,4 @@ __EOS__;
 
         return $arrProducts;
     }
-
 }

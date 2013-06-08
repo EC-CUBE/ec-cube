@@ -79,7 +79,6 @@ class SC_Helper_Maker_saveMakerTest extends SC_Helper_Maker_TestBase
 
             $maker_id = $this->objHelperMaker->saveMaker($sqlVal);
 
-
             $this->expected = array(
                 'name' => 'フジスリー',
                 'rank' => '5',
@@ -102,6 +101,5 @@ class SC_Helper_Maker_saveMakerTest extends SC_Helper_Maker_TestBase
         }
 
     }
-
 }
 

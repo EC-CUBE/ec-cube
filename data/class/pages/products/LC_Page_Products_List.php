@@ -56,7 +56,6 @@ class LC_Page_Products_List extends LC_Page_Ex
     /** ランダム文字列 **/
     var $tpl_rnd = '';
 
-
     /**
      * Page を初期化する.
      *

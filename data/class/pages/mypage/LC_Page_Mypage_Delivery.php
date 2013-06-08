@@ -94,7 +94,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
                     $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
                     $this->arrOtherDeliv = $arrOtherDeliv;
 
-
                     echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
                     SC_Response_Ex::actionExit();
                     break;
@@ -112,8 +111,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
 
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-
-
     }
 
     /**

@@ -199,6 +199,5 @@ class SC_Helper_Purchase_registerShippingTest extends SC_Helper_Purchase_TestBas
   }
 
   //////////////////////////////////////////
-
 }
 

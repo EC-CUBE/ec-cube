@@ -78,6 +78,5 @@ class SC_Helper_Purchase_cleanupSessionTest extends SC_Helper_Purchase_TestBase
   }
   
   //////////////////////////////////////////
-
 }
 

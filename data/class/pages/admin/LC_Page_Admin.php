@@ -139,5 +139,4 @@ class LC_Page_Admin extends LC_Page_Ex
         // ログ出力
         GC_Utils_Ex::gfPrintLog($mess, '');
     }
-
 }

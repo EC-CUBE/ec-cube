@@ -200,6 +200,5 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
         // TODO カラム名はメタデータから取得した方が良い
         $masterData->registMasterData($master_data_name, array('id', 'name', 'rank'), $arrTmp, false);
         $masterData->objQuery->commit();
-
     }
 }
