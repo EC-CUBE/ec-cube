@@ -610,11 +610,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     {
         $objProduct = new SC_Product_Ex();
 
-        $arrErr = $objFormParam->checkError();
-
-        if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
-            return $arrErr;
-        }
+        $arrErr = array();
+        $arrErrTemp = $objFormParam->checkError();
 
         $arrValues = $objFormParam->getHashArray();
 
@@ -678,6 +675,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         }
 
         $objFormParam->setParam($arrValues);
+        $arrErr = array_merge($arrErr, $arrErrTemp);
 
         return $arrErr;
     }
