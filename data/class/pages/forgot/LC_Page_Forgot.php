@@ -149,7 +149,7 @@ class LC_Page_Forgot extends LC_Page_Ex {
     function lfCheckForgotMail(&$arrForm, &$arrReminder) {
         $errmsg = NULL;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $where = '(email Like ? OR email_mobile Like ?) AND name01 Like ? AND name02 Like ? AND del_flg = 0';
+        $where = '(email = ? OR email_mobile = ?) AND name01 = ? AND name02 = ? AND del_flg = 0';
         $arrVal = array($arrForm['email'], $arrForm['email'], $arrForm['name01'], $arrForm['name02']);
         $result = $objQuery->select('reminder, status', 'dtb_customer', $where, $arrVal);
         if (isset($result[0]['reminder']) and isset($arrReminder[$result[0]['reminder']])) {
@@ -197,8 +197,8 @@ class LC_Page_Forgot extends LC_Page_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = 'customer_id, reminder, reminder_answer, salt';
         $table = 'dtb_customer';
-        $where = '(email Like ? OR email_mobile Like ?)'
-                    . ' AND name01 Like ? AND name02 Like ?'
+        $where = '(email = ? OR email_mobile = ?)'
+                    . ' AND name01 = ? AND name02 = ?'
                     . ' AND status = 2 AND del_flg = 0';
         $arrVal = array($arrForm['email'], $arrForm['email'],
                             $arrForm['name01'], $arrForm['name02']);

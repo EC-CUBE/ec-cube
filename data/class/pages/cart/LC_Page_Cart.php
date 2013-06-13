@@ -82,10 +82,20 @@ class LC_Page_Cart extends LC_Page_Ex {
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
 
-        $objFormParam = $this->lfInitParam($_REQUEST);
+        $objFormParam = $this->lfInitParam($_POST);
         $this->mode = $this->getMode();
 
-        $this->cartKeys = $objCartSess->getKeys();
+        // モバイル対応
+	    if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+	        if (isset($_GET['cart_no'])) {
+	            $objFormParam->setValue('cart_no', $_GET['cart_no']);
+	        }
+	        if (isset($_GET['cartKey'])) {
+	                $objFormParam->setValue('cartKey', $_GET['cartKey']);
+	        }
+	    }
+		
+		$this->cartKeys = $objCartSess->getKeys();
         foreach ($this->cartKeys as $key) {
             // 商品購入中にカート内容が変更された。
             if ($objCartSess->getCancelPurchase($key)) {
@@ -95,6 +105,13 @@ class LC_Page_Cart extends LC_Page_Ex {
 
         $cart_no = $objFormParam->getValue('cart_no');
         $cartKey = $objFormParam->getValue('cartKey');
+        
+        // エラーチェック
+        $arrError = $objFormParam->checkError();
+        if(isset($arrError) && !empty($arrError)) {
+            SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
+            SC_Response_Ex::actionExit();
+        }
 
         switch ($this->mode) {
             case 'confirm':
@@ -206,7 +223,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         // PC版での値引き継ぎ用
         $objFormParam->addParam(t('c_Category ID_01'), 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用
-        $objFormParam->addParam(t('c_Quantity_01'), 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam(t('c_Quantity_01'), 'quantity', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換
