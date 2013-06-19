@@ -402,7 +402,8 @@ __EOS__;
                 $arrProducts[$key]['classcategory_id2'] = $arrForm['classcategory_id2'];
                 $arrProducts[$key]['quantity']          = $arrForm['quantity'];
                 $arrProducts[$key]['arrErr']            = $arrErr;
-                $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProducts[$key]['product_id']}, '{$arrForm['classcategory_id2']}');";
+                $classcategory_id2 = SC_Utils_Ex::jsonEncode($arrForm['classcategory_id2']);
+                $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProducts[$key]['product_id']}, {$classcategory_id2});";
             }
         }
         return $js_fnOnLoad;
