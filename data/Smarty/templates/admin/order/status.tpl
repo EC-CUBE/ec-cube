@@ -64,18 +64,18 @@
             <!--{$tpl_strnavi}-->
         </p>
 
-        <table class="list center">
+        <table class="list">
             <col width="5%" />
-            <col width="7%" />
-            <col width="9%" />
-            <col width="15%" />
+            <col width="10%" />
+            <col width="8%" />
+            <col width="13%" />
             <col width="20%" />
             <col width="10%" />
             <col width="10%" />
             <col width="12%" />
             <col width="12%" />
             <tr>
-                <th><label for="move_check">選択</label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
+                <th><label for="move_check">選択<br /></label> <input type="checkbox" name="move_check" id="move_check" onclick="fnAllCheck(this, 'input[name=move[]]')" /></th>
                 <th>対応状況</th>
                 <th>注文番号</th>
                 <th>受注日</th>
@@ -88,16 +88,16 @@
             <!--{section name=cnt loop=$arrStatus}-->
             <!--{assign var=status value="`$arrStatus[cnt].status`"}-->
             <tr style="background:<!--{$arrORDERSTATUS_COLOR[$status]}-->;">
-                <td><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
-                <td><!--{$arrORDERSTATUS[$status]}--></td>
-                <td><a href="#" onclick="fnOpenWindow('./disp.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></a></td>
-                <td><!--{$arrStatus[cnt].create_date|sfDispDBDate:false}--></td>
-                <td><!--{$arrStatus[cnt].order_name01|h}--><!--{$arrStatus[cnt].order_name02|h}--></td>
+                <td class="center"><input type="checkbox" name="move[]" value="<!--{$arrStatus[cnt].order_id}-->" ></td>
+                <td class="center"><!--{$arrORDERSTATUS[$status]}--></td>
+                <td class="center"><a href="#" onclick="fnOpenWindow('./disp.php?order_id=<!--{$arrStatus[cnt].order_id}-->','order_disp','800','900'); return false;" ><!--{$arrStatus[cnt].order_id}--></a></td>
+                <td class="center"><!--{$arrStatus[cnt].create_date|sfDispDBDate}--></td>
+                <td><!--{$arrStatus[cnt].order_name01|h}--> <!--{$arrStatus[cnt].order_name02|h}--></td>
                 <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
-                <td><!--{$arrPayment[$payment_id]|h}--></td>
+                <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>
                 <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
-                <td><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--></td>
-                <td><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
+                <td class="center"><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--></td>
+                <td class="center"><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
             </tr>
             <!--{/section}-->
         </table>
