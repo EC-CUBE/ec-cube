@@ -53,6 +53,8 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
         parent::process();
         $this->action();
         $this->sendResponse();
+        // プラグインなどで order_id を取得する場合があるため,  ここで unset する
+        unset($_SESSION['order_id']);
     }
 
     /**
@@ -63,7 +65,6 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
     function action()
     {
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-        unset($_SESSION['order_id']);
     }
 
     /**
