@@ -66,10 +66,10 @@
                 <!--{else}-->
                     <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
                 <!--{/if}-->
-                <!--{$disp_name|sfCutString:10:false|h}--></a><br />
+                <!--{$disp_name|sfCutString:10:false|h|escape}--></a><br />
             <!--{else}-->
                 <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ">
-                <!--{$disp_name|sfCutString:10:false|h}--></a><br />
+                <!--{$disp_name|sfCutString:10:false|h|escape}--></a><br />
             <!--{/if}-->
 
             <!--{if $arrTree[cnt].display == true}-->
@@ -121,9 +121,9 @@
                 <td class="center"><!--{$arrList[cnt].category_id}--></td>
                 <td>
                 <!--{if $arrList[cnt].level != $smarty.const.LEVEL_MAX}-->
-                    <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h}--></a>
+                    <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h|escape}--></a>
                 <!--{else}-->
-                    <!--{$arrList[cnt].category_name|h}-->
+                    <!--{$arrList[cnt].category_name|h|escape}-->
                 <!--{/if}-->
                 </td>
                 <td class="center">
