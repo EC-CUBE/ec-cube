@@ -61,7 +61,7 @@
                 <!--{if $arrErr.category_name}-->
                 <span class="attention"><!--{$arrErr.category_name}--></span>
                 <!--{/if}-->
-                <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+                <input type="text" name="category_name" value="<!--{$arrForm.category_name|h|escape}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
                 <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
         </div>
 
@@ -87,9 +87,9 @@
                 <td class="center"><!--{$arrList[cnt].category_id}--></td>
                 <td>
                 <!--{if $arrList[cnt].level != $smarty.const.LEVEL_MAX}-->
-                    <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h}--></a>
+                    <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h|escape}--></a>
                 <!--{else}-->
-                    <!--{$arrList[cnt].category_name|h}-->
+                    <!--{$arrList[cnt].category_name|h|escape}-->
                 <!--{/if}-->
                 </td>
                 <td class="center">
