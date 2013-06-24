@@ -137,6 +137,13 @@ class LC_Page_Shopping extends LC_Page_Ex
                         SC_Response_Ex::actionExit();
                     }
 
+		    // クッキー保存判定
+		    if ($objFormParam->getValue('login_memory') == '1' && $objFormParam->getValue('login_email') != '') {
+			    $objCookie->setCookie('login_email', $objFormParam->getValue('login_email'));
+		    } else {
+			    $objCookie->setCookie('login_email', '');
+		    }
+
                     SC_Response_Ex::sendRedirect(
                             $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                    $objCustomer, $objPurchase,
