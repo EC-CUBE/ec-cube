@@ -668,9 +668,8 @@ class SC_Utils
 
     function sfTrim($str)
     {
-        $ret = mb_ereg_replace("^[　 \n\r]*", '', $str);
-        $ret = mb_ereg_replace("[　 \n\r]*$", '', $ret);
-
+        $ret = preg_replace("/^[　 \n\r]*/u", '', $str);
+        $ret = preg_replace("/[　 \n\r]*$/u", '', $ret);
         return $ret;
     }
 
