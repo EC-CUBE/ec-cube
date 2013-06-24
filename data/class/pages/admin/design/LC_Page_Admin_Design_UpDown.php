@@ -150,10 +150,11 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
     {
         $arrErr = $objFormParam->checkError();
         $template_code = $objFormParam->getValue('template_code');
+        $template_name = $objFormParam->getValue('template_name');
 
         // 同名のフォルダが存在する場合はエラー
-        if (file_exists(USER_TEMPLATE_REALDIR . $template_code)) {
-            $arrErr['template_code'] = '※ 同名のファイルがすでに存在します。<br/>';
+        if (file_exists(USER_TEMPLATE_REALDIR . $template_name) && $template_name != "") {
+            $arrErr['template_name'] = '※ 同名のファイルがすでに存在します。<br/>';
         }
 
         // 登録不可の文字列チェック
