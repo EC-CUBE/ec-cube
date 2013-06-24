@@ -110,20 +110,10 @@
             <dd>
                 <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
                 <input type="tel" name="tel01"
-                       value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
-                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                       style="<!--{$arrErr.tel01|sfGetErrorColor}-->"
-                       class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                <input type="tel" name="tel02"
-                       value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->"
-                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                       style="<!--{$arrErr.tel02|sfGetErrorColor}-->"
-                       class="boxShort text data-role-none" />&nbsp;－&nbsp;
-                <input type="tel" name="tel03"
-                       value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->"
-                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                       style="<!--{$arrErr.tel03|sfGetErrorColor}-->"
-                       class="boxShort text data-role-none" />
+                    value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
+                    maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                    style="<!--{$arrErr.tel01|sfGetErrorColor}-->"
+                    class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="tel02" value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel02|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="text" name="tel03" value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel03|sfGetErrorColor}-->" class="boxShort text data-role-none" />
             </dd>
 
             <dt>メールアドレス&nbsp;<span class="attention">※</span></dt>

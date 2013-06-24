@@ -74,8 +74,8 @@
         fm.mode.value = tmpMode;
         fm.action = tmpAction;
     }
-
-
+    
+    
     function fnSelectMailCheckSubmit(action){
 
         var fm = document.form1;
@@ -103,7 +103,7 @@
             alert('チェックボックスが選択されていません');
             return false;
         }
-
+        
         fm.mode.value="mail_select";
         fm.action=action;
         fm.submit();
