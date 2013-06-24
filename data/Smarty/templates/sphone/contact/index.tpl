@@ -61,7 +61,7 @@
                 <input type="text" name="kana01"
                     value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
+                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->"class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
                 <input type="text" name="kana02"
                     value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
@@ -78,10 +78,10 @@
                 <p>
                     <input type="tel" name="zip01"
                         value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
-                        maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
+                        max="<!--{$smarty.const.ZIP01_LEN}-->"
                         style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02"
                         value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
-                        maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
+                        max="<!--{$smarty.const.ZIP02_LEN}-->"
                         style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
                 </p>
 
@@ -92,7 +92,7 @@
             <dd>
                 <span class="attention"><!--{$arrErr.pref}--><!--{$arrErr.addr01}--><!--{$arrErr.addr02}--></span>
                 <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->" class="boxHarf top data-role-none">
-                    <option value="">都道府県</option>
+                    <option value="" selected="selected">都道府県</option>
                     <!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}-->
                 </select>
 
@@ -110,10 +110,20 @@
             <dd>
                 <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
                 <input type="tel" name="tel01"
-                    value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
-                    maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                    style="<!--{$arrErr.tel01|sfGetErrorColor}-->"
-                    class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="tel02" value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel02|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="text" name="tel03" value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel03|sfGetErrorColor}-->" class="boxShort text data-role-none" />
+                       value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
+                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                       style="<!--{$arrErr.tel01|sfGetErrorColor}-->"
+                       class="boxShort text data-role-none" />&nbsp;－&nbsp;
+                <input type="tel" name="tel02"
+                       value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->"
+                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                       style="<!--{$arrErr.tel02|sfGetErrorColor}-->"
+                       class="boxShort text data-role-none" />&nbsp;－&nbsp;
+                <input type="tel" name="tel03"
+                       value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->"
+                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                       style="<!--{$arrErr.tel03|sfGetErrorColor}-->"
+                       class="boxShort text data-role-none" />
             </dd>
 
             <dt>メールアドレス&nbsp;<span class="attention">※</span></dt>
