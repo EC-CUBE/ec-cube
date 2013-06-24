@@ -94,7 +94,7 @@ function lfPopwinSubmit(formName) {
         <th>帳票メッセージ</th>
         <td><!--{if $arrErr.msg1}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
             1行目：<input type="text" name="msg1" size="40" value="<!--{$arrForm.msg1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
-            <!--{if $arrErr.msg2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
+            <!--{if $arrErr.msg2}--><span class="attention"><!--{$arrErr.msg2}--></span><!--{/if}-->
             2行目：<input type="text" name="msg2" size="40" value="<!--{$arrForm.msg2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
             <!--{if $arrErr.msg3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
             3行目：<input type="text" name="msg3" size="40" value="<!--{$arrForm.msg3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN*3/5}-->"/><br />
@@ -103,12 +103,12 @@ function lfPopwinSubmit(formName) {
     </tr>
     <tr>
         <th>備考</th>
-        <td>
-            1行目：<input type="text" name="etc1" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-            <!--{if $arrErr.etc2}--><span class="attention"><!--{$arrErr.msg1}--></span><!--{/if}-->
-            2行目：<input type="text" name="etc2" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-            <!--{if $arrErr.etc3}--><span class="attention"><!--{$arrErr.msg3}--></span><!--{/if}-->
-            3行目：<input type="text" name="etc3" size="40" value="" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+        <td><!--{if $arrErr.etc1}--><span class="attention"><!--{$arrErr.etc1}--></span><!--{/if}-->
+            1行目：<input type="text" name="etc1" size="40" value="<!--{$arrForm.etc1|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+            <!--{if $arrErr.etc2}--><span class="attention"><!--{$arrErr.etc2}--></span><!--{/if}-->
+            2行目：<input type="text" name="etc2" size="40" value="<!--{$arrForm.etc2|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
+	    <!--{if $arrErr.etc3}--><span class="attention"><!--{$arrErr.etc3}--></span><!--{/if}-->
+            3行目：<input type="text" name="etc3" size="40" value="<!--{$arrForm.etc3|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
             <span style="font-size: 80%;">※未入力時は表示されません。</span><br />
         </td>
     </tr>
