@@ -152,6 +152,9 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
         $arrErr = $this->lfCheckError($objFormParam);
         $arrRet = $objFormParam->getHashArray();
 
+	//タイトルが入力されていなければ、デフォルトのタイトルを表示
+	if($arrRet['title'] == '') $arrRet['title'] = 'お買上げ明細書(納品書)';
+
         $this->arrForm = $arrRet;
         // エラー入力なし
         if (count($arrErr) == 0) {
@@ -191,7 +194,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
         $objFormParam->addParam('発行日', 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('帳票の種類', 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ダウンロード方法', 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('帳票タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('帳票タイトル', 'title', STEXT_LEN, 'KVa', array ('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('帳票メッセージ1行目', 'msg1', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('帳票メッセージ2行目', 'msg2', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('帳票メッセージ3行目', 'msg3', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
