@@ -1168,7 +1168,7 @@ class SC_CheckError
         $targetStr     = $this->arrParam[$value[1]];
         $prohibitedStr = str_replace(array('|', '/'), array('\|', '\/'), $value[2]);
 
-        $pattern = '/' . join('|', $prohibitedStr) . '/i';
+        $pattern = '/' . join('\b|\b', $prohibitedStr) . '\b/i';
         if (preg_match_all($pattern, $targetStr, $matches)) {
             $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は入力できません。<br />';
         }
