@@ -32,10 +32,10 @@
             <!--{else}-->
                 <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ" />
             <!--{/if}-->
-            <!--{$disp_name|sfCutString:10:false|h|escape}--></a>
+            <!--{$disp_name|sfCutString:10:false|h}--></a>
         <!--{else}-->
             <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ" />
-            <!--{$disp_name|sfCutString:10:false|h|escape}-->
+            <!--{$disp_name|sfCutString:10:false|h}-->
         <!--{/if}-->
         <!--{if in_array($child.category_id, $arrParentID)}-->
             <!--{assign var=disp_child value=1}-->

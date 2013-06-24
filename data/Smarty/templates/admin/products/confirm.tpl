@@ -61,7 +61,7 @@
             <td>
                 <!--{section name=cnt loop=$arrForm.arrCategoryId}-->
                     <!--{assign var=key value=$arrForm.arrCategoryId[cnt]}-->
-                    <!--{$arrCatList[$key]|sfTrim}--><br />
+                    <!--{$arrCatList[$key]|sfTrim|h}--><br />
                 <!--{/section}-->
             </td>
         </tr>
