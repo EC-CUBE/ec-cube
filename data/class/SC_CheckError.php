@@ -103,7 +103,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[0]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if (strlen($this->arrParam[$value[0]]) == 0) {
             $this->arrErr[$value[0]] = t('c_* T_ARG1 is blank. <br />_01', array('T_ARG1' => $value[1]));
         }
@@ -182,7 +182,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] !== $this->arrParam[$value[3]]) {
             $this->arrErr[$value[2]] = t('c_* T_ARG1 and T_ARG2 do not match. <br />_01', array('T_ARG1' => $value[0], 'T_ARG2' => $value[1]));
@@ -200,7 +200,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] == $this->arrParam[$value[3]]) {
             $this->arrErr[$value[2]] = t('c_* The same value cannot be used for T_ARG1 and T_ARG2. <br />_01', array('T_ARG1' => $value[0], 'T_ARG2' => $value[1]));
@@ -218,7 +218,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] != '' && $this->arrParam[$value[3]] != '' && ($this->arrParam[$value[2]] > $this->arrParam[$value[3]])) {
             $this->arrErr[$value[2]] = t('c_* It is not possible to enter a larger value for T_ARG1 than for T_ARG2. <br />_01', array('T_ARG1' => $value[0], 'T_ARG2' => $value[1]));
@@ -929,7 +929,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[5]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = t('c_* Specify T_ARG1 correctly. <br />_01', array('T_ARG1' => $value[0]));
         }
@@ -979,7 +979,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[8]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = t('c_* Specify T_ARG1 correctly. <br />_01', array('T_ARG1' => $value[0]));
         }
@@ -1022,7 +1022,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[4]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = t('c_* Specify T_ARG1 correctly. <br />_01', array('T_ARG1' => $value[0]));
         }
@@ -1134,7 +1134,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[0]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ($this->evalCheck($value[1]) === false) {
             $this->arrErr[$value[0]] = t('c_* The T_ARG1 format is incorrect. <br />_01', array('T_ARG1' => $value[0]));
         }
@@ -1163,11 +1163,20 @@ class SC_CheckError {
      * @return void
      */
     function createParam($value) {
-        foreach ($value as $key) {
-            if (is_string($key) || is_int($key)) {
-                if (!isset($this->arrParam[$key]))  $this->arrParam[$key] = '';
-            }
-        }
+         foreach ($value as $val_key => $key) {
+             if ($val_key != 0 && (is_string($key) || is_int($key))) {
+                 if (!is_numeric($key) && preg_match('/^[a-z0-9_]+$/i', $key)) {
+                     if (!isset($this->arrParam[$key])) $this->arrParam[$key] = '';
+                     if (strlen($this->arrParam[$key]) > 0
+                           && (preg_match('/^[[:alnum:]\-\_]*[\.\/\\\\]*\.\.(\/|\\\\)/',$this->arrParam[$key]) || !preg_match('/\A[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f]+\z/u', $this->arrParam[$key])))
+                           ) {
+                         $this->arrErr[$value[1]] = '※ ' . $value[0] . ' is not a valid character.<br />';
+                     }
+                 } else if (preg_match('/[^a-z0-9_]/i', $key)) {
+                     trigger_error('', E_USER_ERROR);
+                 }
+             }
+         }
     }
 
     /**
