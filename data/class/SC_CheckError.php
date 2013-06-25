@@ -1168,8 +1168,7 @@ class SC_CheckError {
                  if (!is_numeric($key) && preg_match('/^[a-z0-9_]+$/i', $key)) {
                      if (!isset($this->arrParam[$key])) $this->arrParam[$key] = '';
                      if (strlen($this->arrParam[$key]) > 0
-                           && (preg_match('/^[[:alnum:]\-\_]*[\.\/\\\\]*\.\.(\/|\\\\)/',$this->arrParam[$key]) || !preg_match('/\A[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f]+\z/u', $this->arrParam[$key])))
-                           ) {
+                           && (preg_match('/^[[:alnum:]\-\_]*[\.\/\\\\]*\.\.(\/|\\\\)/',$this->arrParam[$key]) || !preg_match('/\A[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f]+\z/u', $this->arrParam[$key]))) {
                          $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に禁止された記号の並びまたは制御文字が入っています。<br />';
                      }
                  } else if (preg_match('/[^a-z0-9_]/i', $key)) {
