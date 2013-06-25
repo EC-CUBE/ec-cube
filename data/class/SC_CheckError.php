@@ -103,7 +103,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[0]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if (strlen($this->arrParam[$value[0]]) == 0) {
             $this->arrErr[$value[0]] = '※ ' . $value[0] . 'が入力されていません。<br />';
         }
@@ -182,7 +182,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] !== $this->arrParam[$value[3]]) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . 'が一致しません。<br />';
@@ -200,7 +200,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] == $this->arrParam[$value[3]]) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'と' . $value[1] . 'は、同じ値を使用できません。<br />';
@@ -218,7 +218,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[3]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         // 文字数の取得
         if ($this->arrParam[$value[2]] != '' && $this->arrParam[$value[3]] != '' && ($this->arrParam[$value[2]] > $this->arrParam[$value[3]])) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'は' . $value[1] . 'より大きい値を入力できません。<br />';
@@ -929,7 +929,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[5]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
@@ -979,7 +979,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[8]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0 || strlen($this->arrParam[$value[4]]) > 0 || strlen($this->arrParam[$value[5]]) > 0) && ! checkdate($this->arrParam[$value[3]], $this->arrParam[$value[4]], $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
@@ -1022,7 +1022,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[2]]) || isset($this->arrErr[$value[4]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ((strlen($this->arrParam[$value[2]]) > 0 || strlen($this->arrParam[$value[3]]) > 0) && ! checkdate($this->arrParam[$value[3]], 1, $this->arrParam[$value[2]])) {
             $this->arrErr[$value[2]] = '※ ' . $value[0] . 'を正しく指定してください。<br />';
         }
@@ -1134,7 +1134,7 @@ class SC_CheckError {
         if (isset($this->arrErr[$value[0]])) {
             return;
         }
-        $this->createParam($value);
+        // $this->createParam($value);
         if ($this->evalCheck($value[1]) === false) {
             $this->arrErr[$value[0]] = '※ ' . $value[0] . ' の形式が不正です。<br />';
         }
@@ -1163,11 +1163,20 @@ class SC_CheckError {
      * @return void
      */
     function createParam($value) {
-        foreach ($value as $key) {
-            if (is_string($key) || is_int($key)) {
-                if (!isset($this->arrParam[$key]))  $this->arrParam[$key] = '';
-            }
-        }
+         foreach ($value as $val_key => $key) {
+             if ($val_key != 0 && (is_string($key) || is_int($key))) {
+                 if (!is_numeric($key) && preg_match('/^[a-z0-9_]+$/i', $key)) {
+                     if (!isset($this->arrParam[$key])) $this->arrParam[$key] = '';
+                     if (strlen($this->arrParam[$key]) > 0
+                           && (preg_match('/^[[:alnum:]\-\_]*[\.\/\\\\]*\.\.(\/|\\\\)/',$this->arrParam[$key]) || !preg_match('/\A[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f]+\z/u', $this->arrParam[$key])))
+                           ) {
+                         $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に禁止された記号の並びまたは制御文字が入っています。<br />';
+                     }
+                 } else if (preg_match('/[^a-z0-9_]/i', $key)) {
+                     trigger_error('', E_USER_ERROR);
+                 }
+             }
+         }
     }
 
     /**
