@@ -356,6 +356,37 @@ class SC_CartSession
     }
 
     /**
+     * getCartList用にcartSession情報をセットする
+     *
+     * @param integer $product_type_id 商品種別ID
+     * @param integer $key 
+     * @return void
+     */
+    function setCartSession4getCartList($productTypeId, $key)
+    {
+        $objProduct = new SC_Product_Ex();
+
+        $this->cartSession[$productTypeId][$key]['productsClass']
+            =& $objProduct->getDetailAndProductsClass($this->cartSession[$productTypeId][$key]['id']);
+
+        $price = $this->cartSession[$productTypeId][$key]['productsClass']['price02'];
+        $this->cartSession[$productTypeId][$key]['price'] = $price;
+
+        $this->cartSession[$productTypeId][$key]['point_rate']
+            = $this->cartSession[$productTypeId][$key]['productsClass']['point_rate'];
+
+        $quantity = $this->cartSession[$productTypeId][$key]['quantity'];
+        $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price,
+            $this->cartSession[$productTypeId][$key]['productsClass']['product_id'],
+            $this->cartSession[$productTypeId][$key]['id'][0]);
+
+        $total = $incTax * $quantity;
+
+        $this->cartSession[$productTypeId][$key]['price_inctax'] = $incTax;
+        $this->cartSession[$productTypeId][$key]['total_inctax'] = $total;
+    }
+
+    /**
      * 商品種別ごとにカート内商品の一覧を取得する.
      *
      * @param integer $productTypeId 商品種別ID
@@ -363,32 +394,26 @@ class SC_CartSession
      */
     function getCartList($productTypeId)
     {
-        $objProduct = new SC_Product_Ex();
         $max = $this->getMax($productTypeId);
         $arrRet = array();
+
+        $const_name = '_CALLED_SC_CARTSESSION_GETCARTLIST_' . $productTypeId;
+        if (defined($const_name)) {
+            $is_first = true;
+        } else {
+            define($const_name, true);
+            $is_first = false;
+        }
+
         for ($i = 0; $i <= $max; $i++) {
             if (isset($this->cartSession[$productTypeId][$i]['cart_no'])
                 && $this->cartSession[$productTypeId][$i]['cart_no'] != '') {
                 // 商品情報は常に取得
-                // TODO 同一インスタンス内では1回のみ呼ぶようにしたい
-                $this->cartSession[$productTypeId][$i]['productsClass']
-                    =& $objProduct->getDetailAndProductsClass($this->cartSession[$productTypeId][$i]['id']);
 
-                $price = $this->cartSession[$productTypeId][$i]['productsClass']['price02'];
-                $this->cartSession[$productTypeId][$i]['price'] = $price;
-
-                $this->cartSession[$productTypeId][$i]['point_rate']
-                    = $this->cartSession[$productTypeId][$i]['productsClass']['point_rate'];
-
-                $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-                $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price,
-                    $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                    $this->cartSession[$productTypeId][$i]['id'][0]);
-
-                $total = $incTax * $quantity;
-
-                $this->cartSession[$productTypeId][$i]['price_inctax'] = $incTax;
-                $this->cartSession[$productTypeId][$i]['total_inctax'] = $total;
+                // 同一セッション内では初回のみDB参照するようにしている
+                if (!$is_first) {
+                    $this->setCartSession4getCartList($productTypeId, $i);
+                }
 
                 $arrRet[] = $this->cartSession[$productTypeId][$i];
 
