@@ -93,7 +93,21 @@ class LC_Page_Products_List extends LC_Page_Ex
     {
         $objProduct = new SC_Product_Ex();
 
-        $this->arrForm = $_REQUEST;
+        // パラメーター管理クラス
+        $objFormParam = new SC_FormParam_Ex();        
+        
+        // パラメーター情報の初期化
+        $this->lfInitParam($objFormParam);
+        
+        // 値の設定
+        $objFormParam->setParam($_REQUEST);
+        
+        // 入力値の変換
+        $objFormParam->convParam();
+        
+        // 値の取得
+        $this->arrForm = $objFormParam->getHashArray();
+
         //modeの取得
         $this->mode = $this->getMode();
 
@@ -148,6 +162,26 @@ class LC_Page_Products_List extends LC_Page_Ex
     function destroy()
     {
         parent::destroy();
+    }
+
+    /* パラメーター情報の初期化 */
+    function lfInitParam(&$objFormParam)
+    {
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品名', 'name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+
+        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('メーカーID', 'maker_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        
+        $objFormParam->addParam('ソート順', 'orderby', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品ID', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('お気に入り商品ID', 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+
+        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品規格ID', 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品規格ID', 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('個数', 'quantity', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
