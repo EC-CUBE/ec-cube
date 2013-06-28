@@ -289,8 +289,8 @@ class SC_FormParam
                                       $length, $depth, $key);
             }
         } else {
-            $objErr = new SC_CheckError_Ex(array(0 => $value));
-            $objErr->doFunc(array($disp_name, 0, $length), array($func));
+            $objErr = new SC_CheckError_Ex(array(($error_last_key ? $error_last_key : $error_key) => $value));
+            $objErr->doFunc(array($disp_name, ($error_last_key ? $error_last_key : $error_key), $length), array($func));
             if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
                 foreach ($objErr->arrErr as $message) {
                     if (!SC_Utils_Ex::isBlank($message)) {
