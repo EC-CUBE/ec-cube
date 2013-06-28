@@ -106,10 +106,8 @@ class LC_Page_ResizeImage extends LC_Page_Ex
      */
     function lfCheckFileName()
     {
-        //$pattern = '|^[0-9]+_[0-9a-z]+\.[a-z]{3}$|';
-        $pattern = '|\./|';
         $file    = trim($_GET['image']);
-        if (preg_match_all($pattern, $file, $matches)) {
+        if (!preg_match("/^[[:alnum:]_\.-]+$/i", $file)) {
             return false;
         } else {
             return true;
