@@ -29,10 +29,10 @@
 self.moveTo(20,20);self.focus();
 
 function func_submit( id ){
-    var fm = window.opener.document.form<!--{$smarty.get.rank}-->;
+    var fm = window.opener.document.form<!--{$rank|h}-->;
     fm.product_id.value = id;
     fm.mode.value = 'set_item';
-    fm.rank.value = '<!--{$smarty.get.rank}-->';
+    fm.rank.value = '<!--{$rank|h}-->';
     fm.submit();
     window.close();
     return false;

@@ -70,6 +70,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
 
+        $rank = intval($_GET['rank']);
+
         switch ($this->getMode()) {
             case 'search':
                 // POST値の引き継ぎ
@@ -101,6 +103,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
 
         // カテゴリ取得
         $this->arrCatList = $objDb->sfGetCategoryList();
+        $this->rank       = $rank;
         $this->setTemplate('contents/recommend_search.tpl');
     }
 
