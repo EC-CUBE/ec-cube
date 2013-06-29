@@ -144,6 +144,8 @@
         <!--▼商品-->
         <form name="product_form<!--{$id|h}-->" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="product_id" value="<!--{$id|h}-->" />
+        <input type="hidden" name="product_class_id" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
         <div class="list_area clearfix">
             <a name="product<!--{$id|h}-->"></a>
             <div class="listphoto">
@@ -194,10 +196,6 @@
                 </div>
 
                 <!--▼買い物かご-->
-                <input type="hidden" name="product_id" value="<!--{$id|h}-->" />
-                <input type="hidden" name="product_class_id" id="product_class_id<!--{$id|h}-->" value="<!--{$tpl_product_class_id[$id]}-->" />
-                <input type="hidden" name="category_id" value="<!--{$arrSearchData.category_id|h}-->" />
-
                 <div class="cart_area clearfix">
                     <!--{if $tpl_stock_find[$id]}-->
                         <!--{if $tpl_classcat_find1[$id]}-->
