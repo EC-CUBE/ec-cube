@@ -1,4 +1,3 @@
-<!-- -*- coding: utf-8 -*- -->
 <?php
 /*
  * This file is part of EC-CUBE
@@ -74,6 +73,8 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      */
     function action()
     {
+        SC_Response_Ex::sendHttpStatus(500);
+
         switch ($this->type) {
             case LOGIN_ERROR:
                 $this->tpl_error='ＩＤまたはパスワードが正しくありません。<br />もう一度ご確認のうえ、再度入力してください。';

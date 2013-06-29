@@ -71,6 +71,8 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      */
     function action()
     {
+        SC_Response_Ex::sendHttpStatus(500);
+
         $this->tpl_error = 'システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。';
 
         if (DEBUG_MODE) {
