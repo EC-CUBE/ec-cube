@@ -57,6 +57,7 @@ class SC_Initial
         $this->stripslashesDeepGpc();
         $this->resetSuperglobalsRequest();  // stripslashesDeepGpc メソッドより後で実行
         $this->setTimezone();               // 本当はエラーハンドラーより先に読みたい気も
+        $this->normalizeHostname();         // defineConstants メソッドより後で実行
     }
 
     /**
@@ -487,5 +488,50 @@ class SC_Initial
     function setTimezone()
     {
         date_default_timezone_set('Asia/Tokyo');
+    }
+
+    /**
+     * ホスト名を正規化する
+     *
+     * @return void
+     */
+    function normalizeHostname()
+    {
+        if (
+            // パラメーター
+            !USE_NORMALIZE_HOSTNAME
+            // コマンドライン実行の場合
+            || !isset($_SERVER['REQUEST_URI'])
+            // POSTの場合
+            || $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            // 処理せず戻る
+            return;
+        }
+
+        $netUrlRequest = new Net_URL($_SERVER['REQUEST_URI']);
+        // 要求を受けたホスト名
+        $request_hostname = $netUrlRequest->host;
+
+        $netUrlCorrect = new Net_URL(SC_Utils_Ex::sfIsHTTPS() ? HTTPS_URL : HTTP_URL);
+        // 設定上のホスト名
+        $correct_hostname = $netUrlCorrect->host;
+
+        // ホスト名が不一致の場合
+        if ($request_hostname !== $correct_hostname) {
+            // ホスト名を書き換え
+            $netUrlRequest->host = $correct_hostname;
+            // 正しい URL
+            $correct_url = $netUrlRequest->getUrl();
+            // 警告
+            $msg = 'ホスト名不一致を検出。リダイレクト実行。';
+            $msg .= '要求値=' . var_export($request_hostname, true) . ' ';
+            $msg .= '設定値=' . var_export($correct_hostname, true) . ' ';
+            $msg .= 'リダイレクト先=' . var_export($correct_url, true) . ' ';
+            trigger_error($msg, E_USER_WARNING);
+            // リダイレクト(恒久的)
+            SC_Response_Ex::sendHttpStatus(301);
+            SC_Response_Ex::sendRedirect($correct_url);
+        }
     }
 }

@@ -1255,6 +1255,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SMARTY_FORCE_COMPIL
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_RETRY_INTERVAL', '0', 1411, 'ログイン失敗時の遅延時間(秒)(ブルートフォースアタック対策)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_ORDER_STATUS_DISP_FLAG', 'true', 1412, 'MYページ：ご注文状況表示フラグ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_COUNTRY_ID', 392, 1413, 'デフォルト国コード ISO_3166-1に準拠');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_NORMALIZE_HOSTNAME', true, 1414, 'ホスト名を正規化するか (true:する false:しない)');
 
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
