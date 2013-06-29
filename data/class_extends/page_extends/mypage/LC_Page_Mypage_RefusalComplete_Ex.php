@@ -53,14 +53,4 @@ class LC_Page_Mypage_RefusalComplete_Ex extends LC_Page_Mypage_RefusalComplete
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

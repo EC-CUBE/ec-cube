@@ -141,16 +141,6 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
 }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 登録処理を実行.
      *
      * @param integer $kiyaku_id

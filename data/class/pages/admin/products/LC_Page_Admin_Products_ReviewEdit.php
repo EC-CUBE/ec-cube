@@ -102,16 +102,6 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス

@@ -84,16 +84,6 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex
         $this->arrInstallLogs = $this->getLogs();
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     function getLogs()
     {
         $sql =<<<END

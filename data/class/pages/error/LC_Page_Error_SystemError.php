@@ -108,16 +108,6 @@ class LC_Page_Error_SystemError extends LC_Page_Error
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * トランザクショントークンに関して処理しないようにオーバーライド
      */
     function doValidToken()

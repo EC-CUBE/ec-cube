@@ -86,14 +86,4 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex
 
         return $mailHistory;
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

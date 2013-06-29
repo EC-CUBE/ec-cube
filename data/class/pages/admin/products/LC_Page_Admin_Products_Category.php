@@ -509,16 +509,6 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         return $level >= LEVEL_MAX;
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     // 並びが1つ下のIDを取得する。
     function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id)
     {

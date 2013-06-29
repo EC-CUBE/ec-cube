@@ -81,16 +81,6 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 会員情報を削除する
      *
      * @access private

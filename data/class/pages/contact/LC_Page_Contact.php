@@ -132,16 +132,6 @@ class LC_Page_Contact extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * お問い合わせ入力時のパラメーター情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス

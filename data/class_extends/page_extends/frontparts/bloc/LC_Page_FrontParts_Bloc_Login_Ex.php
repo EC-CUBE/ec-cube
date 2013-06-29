@@ -53,14 +53,4 @@ class LC_Page_FrontParts_Bloc_Login_Ex extends LC_Page_FrontParts_Bloc_Login
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

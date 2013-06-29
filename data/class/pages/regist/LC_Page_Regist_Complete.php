@@ -63,14 +63,4 @@ class LC_Page_Regist_Complete extends LC_Page_Ex
     function action()
     {
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

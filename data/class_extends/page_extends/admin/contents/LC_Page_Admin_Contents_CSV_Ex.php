@@ -53,14 +53,4 @@ class LC_Page_Admin_Contents_CSV_Ex extends LC_Page_Admin_Contents_CSV
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

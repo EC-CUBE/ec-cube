@@ -53,14 +53,4 @@ class LC_Page_FrontParts_LoginCheck_Ex extends LC_Page_FrontParts_LoginCheck
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

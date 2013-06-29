@@ -68,14 +68,4 @@ class LC_Page_Order extends LC_Page_Ex
         $objDb = new SC_Helper_DB_Ex();
         $this->arrOrder = $objDb->sfGetBasisData();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

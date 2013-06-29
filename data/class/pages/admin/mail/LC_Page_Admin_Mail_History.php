@@ -83,16 +83,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 実行履歴の取得
      *
      * @param integer $search_pageno 表示したいページ番号

@@ -237,16 +237,6 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
         }
     }
 
-    /**
-     * デストラクタ
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     function initParam()
     {
         $this->objForm = new SC_FormParam_Ex();

@@ -109,16 +109,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報を更新する.
      *
      * 画面の設定値で mtb_constants テーブルの値とキャッシュを更新する.

@@ -80,16 +80,6 @@ class LC_Page_RSS extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 新着情報を取得する
      *
      * @return array $arrNews 取得結果を配列で返す

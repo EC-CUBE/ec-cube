@@ -236,17 +236,6 @@ class LC_Page_Products_Detail extends LC_Page_Ex
             $this->tpl_login = true;
             $this->is_favorite = SC_Helper_DB_Ex::sfDataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($objCustomer->getValue('customer_id'), $product_id));
         }
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
     }
 
     /* プロダクトIDの正当性チェック */

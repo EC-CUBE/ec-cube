@@ -91,16 +91,6 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * lfCheckDisableLogout.
      *
      * @return boolean

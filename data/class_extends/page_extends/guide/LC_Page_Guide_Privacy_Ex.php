@@ -53,14 +53,4 @@ class LC_Page_Guide_Privacy_Ex extends LC_Page_Guide_Privacy
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

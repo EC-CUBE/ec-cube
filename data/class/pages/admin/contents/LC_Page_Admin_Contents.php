@@ -159,16 +159,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 入力されたパラメーターのエラーチェックを行う。
      * @param Object $objFormParam
      * @return Array エラー内容

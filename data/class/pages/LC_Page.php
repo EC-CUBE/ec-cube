@@ -167,11 +167,12 @@ class LC_Page
     }
 
     /**
-     * デストラクタ.
+     * デストラクタ
      *
+     * ・ブロックの基底クラス (LC_Page_FrontParts_Bloc) では、継承していない。
      * @return void
      */
-    function destroy()
+    function __destruct()
     {
         // 一定時間以上かかったページの場合、ログ出力する。
         // エラー画面の表示では $this->timeStart が出力されない

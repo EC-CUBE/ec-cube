@@ -169,14 +169,4 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
         }
 
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -73,16 +73,6 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * カートの情報を取得する
      *
      * @param SC_CartSession $objCart カートセッション管理クラス

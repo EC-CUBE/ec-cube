@@ -72,14 +72,4 @@ class LC_Page_Mypage_RefusalComplete extends LC_Page_Ex
     function action()
     {
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

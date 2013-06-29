@@ -109,16 +109,6 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 前方互換用
      *
      * @deprecated 2.12.4

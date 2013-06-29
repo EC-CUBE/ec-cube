@@ -53,14 +53,4 @@ class LC_Page_Admin_System_Parameter_Ex extends LC_Page_Admin_System_Parameter
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -149,16 +149,6 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
         $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     /* ファイル情報の初期化 */
     function lfInitFile()
     {

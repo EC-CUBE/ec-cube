@@ -171,16 +171,6 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * フォームパラメーター初期化
      *
      * @param object $objFormParam

@@ -160,16 +160,6 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
         $this->tpl_subtitle = $this->arrTitle[$objFormParam->getValue('page')];
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     /* デフォルト値の取得 */
     function lfGetDateDefault()
     {

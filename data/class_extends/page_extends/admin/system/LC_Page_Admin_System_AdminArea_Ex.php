@@ -53,14 +53,4 @@ class LC_Page_Admin_System_AdminArea_Ex extends LC_Page_Admin_System_AdminArea
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

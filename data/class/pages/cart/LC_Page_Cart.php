@@ -208,16 +208,6 @@ class LC_Page_Cart extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * ユーザ入力値の処理
      *
      * @return object

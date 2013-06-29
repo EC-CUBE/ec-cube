@@ -53,14 +53,4 @@ class LC_Page_Admin_Products_ReviewEdit_Ex extends LC_Page_Admin_Products_Review
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -53,14 +53,4 @@ class LC_Page_Admin_OwnersStore_Ex extends LC_Page_Admin_OwnersStore
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

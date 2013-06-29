@@ -71,16 +71,6 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
         $this->tpl_subtitle = $this->arrCategory['category_name'];
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     /* カテゴリIDの正当性チェック */
     function lfCheckCategoryId($category_id)
     {

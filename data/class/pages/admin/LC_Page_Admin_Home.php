@@ -104,16 +104,6 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * PHPバージョンの取得
      *
      * @return string PHPバージョン情報

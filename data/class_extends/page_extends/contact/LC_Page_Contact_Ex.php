@@ -53,14 +53,4 @@ class LC_Page_Contact_Ex extends LC_Page_Contact
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

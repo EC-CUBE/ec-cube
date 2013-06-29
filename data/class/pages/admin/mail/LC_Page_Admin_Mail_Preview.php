@@ -85,14 +85,4 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex
 
         $this->setTemplate($this->tpl_mainpage);
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

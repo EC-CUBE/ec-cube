@@ -112,16 +112,6 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 受注メール送信履歴の取得
      *
      * @param integer $order_id 注文番号

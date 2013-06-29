@@ -53,14 +53,4 @@ class LC_Page_Api_Xml_Ex extends LC_Page_Api_Xml
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -85,16 +85,6 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * メールテンプレートの削除
      * @param integer 削除したいテンプレートのID
      * @return void

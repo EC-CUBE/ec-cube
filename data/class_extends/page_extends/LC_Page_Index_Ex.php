@@ -53,14 +53,4 @@ class LC_Page_Index_Ex extends LC_Page_Index
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

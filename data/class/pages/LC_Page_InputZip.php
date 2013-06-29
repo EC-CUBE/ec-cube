@@ -83,16 +83,6 @@ class LC_Page_InputZip extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 入力エラーのチェック.
      *
      * @param array $arrRequest リクエスト値($_GET)

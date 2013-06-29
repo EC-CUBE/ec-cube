@@ -101,16 +101,6 @@ class LC_Page_MyPage_Favorite extends LC_Page_AbstractMypage_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * お気に入りを取得する
      *
      * @param mixed $customer_id

@@ -53,14 +53,4 @@ class LC_Page_Shopping_Deliv_Ex extends LC_Page_Shopping_Deliv
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

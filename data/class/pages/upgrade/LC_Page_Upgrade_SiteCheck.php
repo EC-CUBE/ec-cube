@@ -72,11 +72,12 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
     }
 
     /**
-     * デストラクタ.
+     * デストラクタ
      *
+     * XXX 旧実装が親クラスのデストラクタを呼んでいなかったので、その仕様を維持している。
      * @return void
      */
-    function destroy()
+    function __destruct()
     {
     }
 }

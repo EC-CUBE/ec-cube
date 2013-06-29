@@ -108,16 +108,6 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * メルマガテンプレートデータの登録・更新を行う
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス

@@ -82,16 +82,6 @@ class LC_Page_ResizeImage extends LC_Page_Ex
         $this->lfOutputImage($file, $arrForm['width'], $arrForm['height']);
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('画像ファイル名', 'image', STEXT_LEN, 'a',  array('MAX_LENGTH_CHECK'));

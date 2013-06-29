@@ -53,14 +53,4 @@ class LC_Page_Regist_Ex extends LC_Page_Regist
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

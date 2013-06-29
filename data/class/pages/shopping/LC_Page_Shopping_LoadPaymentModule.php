@@ -68,16 +68,6 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 受注IDをキーにして, 決済モジュールのパスを取得する.
      *
      * 決済モジュールが取得できた場合は, require 可能な決済モジュールのパスを返す.

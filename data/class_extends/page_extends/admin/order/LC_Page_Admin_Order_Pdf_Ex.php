@@ -53,14 +53,4 @@ class LC_Page_Admin_Order_Pdf_Ex extends LC_Page_Admin_Order_Pdf
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

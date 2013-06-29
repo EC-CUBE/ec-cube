@@ -53,14 +53,4 @@ class LC_Page_FrontParts_Bloc_Category_Ex extends LC_Page_FrontParts_Bloc_Catego
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

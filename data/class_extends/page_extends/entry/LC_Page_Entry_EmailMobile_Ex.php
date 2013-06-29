@@ -53,14 +53,4 @@ class LC_Page_Entry_EmailMobile_Ex extends LC_Page_Entry_EmailMobile
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

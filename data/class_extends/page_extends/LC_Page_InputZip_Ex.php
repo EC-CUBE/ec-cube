@@ -53,14 +53,4 @@ class LC_Page_InputZip_Ex extends LC_Page_InputZip
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

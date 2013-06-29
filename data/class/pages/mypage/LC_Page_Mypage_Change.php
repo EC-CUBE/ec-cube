@@ -157,16 +157,6 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      *  会員情報を登録する
      *
      * @param mixed $objFormParam

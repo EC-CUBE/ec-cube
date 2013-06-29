@@ -53,14 +53,4 @@ class LC_Page_Admin_System_Input_Ex extends LC_Page_Admin_System_Input
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

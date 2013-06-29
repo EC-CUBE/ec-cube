@@ -157,16 +157,6 @@ class LC_Page_Entry extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 会員情報の登録
      *
      * @access private

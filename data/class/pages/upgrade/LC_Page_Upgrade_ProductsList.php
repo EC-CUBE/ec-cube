@@ -148,14 +148,4 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base
             return;
         }
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -75,14 +75,4 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex
         $objSess = new SC_Session_Ex();
         $objSess->logout();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

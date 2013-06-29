@@ -50,20 +50,4 @@ class LC_Page_XXX extends LC_Page_Ex
     function process()
     {
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }
-/*
- * Local variables:
- * coding: utf-8
- * End:
- */
-?>

@@ -53,14 +53,4 @@ class LC_Page_Admin_Mail_Template_Ex extends LC_Page_Admin_Mail_Template
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

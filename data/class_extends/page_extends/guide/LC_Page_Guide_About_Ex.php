@@ -53,14 +53,4 @@ class LC_Page_Guide_About_Ex extends LC_Page_Guide_About
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -105,16 +105,6 @@ class LC_Page_Admin_Basis_Point extends LC_Page_Admin_Ex
         $this->arrForm = $objFormParam->getFormParamList();
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     /* パラメーター情報の初期化 */
     function lfInitParam(&$objFormParam)
     {

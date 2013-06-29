@@ -141,7 +141,6 @@ class SC_Utils
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_DispError_Ex.php';
 
         $objPage = new LC_Page_Error_DispError_Ex();
-        register_shutdown_function(array($objPage, 'destroy'));
         $objPage->init();
         $objPage->type = $type;
         $objPage->process();
@@ -154,7 +153,6 @@ class SC_Utils
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_Ex.php';
 
         $objPage = new LC_Page_Error_Ex();
-        register_shutdown_function(array($objPage, 'destroy'));
         $objPage->init();
         $objPage->type = $type;
         $objPage->objSiteSess = $objSiteSess;

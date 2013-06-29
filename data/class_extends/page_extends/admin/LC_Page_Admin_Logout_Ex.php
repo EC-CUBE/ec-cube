@@ -53,14 +53,4 @@ class LC_Page_Admin_Logout_Ex extends LC_Page_Admin_Logout
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

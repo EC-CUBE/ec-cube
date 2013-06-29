@@ -65,16 +65,6 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 利用規約を取得し、ページオブジェクトに格納する。
      *
      * @param integer $index 規約のインデックス

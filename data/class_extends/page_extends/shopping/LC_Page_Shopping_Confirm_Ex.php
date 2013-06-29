@@ -53,14 +53,4 @@ class LC_Page_Shopping_Confirm_Ex extends LC_Page_Shopping_Confirm
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

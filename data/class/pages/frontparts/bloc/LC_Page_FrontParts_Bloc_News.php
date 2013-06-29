@@ -102,16 +102,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 新着情報パラメーター初期化
      *
      * @param array $objFormParam フォームパラメータークラス

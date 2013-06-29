@@ -53,14 +53,4 @@ class LC_Page_FrontParts_Bloc_News_Ex extends LC_Page_FrontParts_Bloc_News
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

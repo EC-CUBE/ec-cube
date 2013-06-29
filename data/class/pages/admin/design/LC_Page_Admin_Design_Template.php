@@ -129,16 +129,6 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化
      *
      * @param object $objFormParam SC_FormParamインスタンス

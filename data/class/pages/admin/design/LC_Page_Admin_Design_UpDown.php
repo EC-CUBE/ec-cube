@@ -102,16 +102,6 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * SC_UploadFileクラスの初期化.
      *
      * @param object $objForm SC_FormParamのインスタンス

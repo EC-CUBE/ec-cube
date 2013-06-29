@@ -135,16 +135,6 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化
      *
      * XXX URL のフィールドは, 実際は filename なので注意

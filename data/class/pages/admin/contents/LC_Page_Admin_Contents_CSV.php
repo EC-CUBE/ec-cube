@@ -181,16 +181,6 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * CSV名からCSV_IDを取得する。
      *
      * @param string $subno_csv CSV名

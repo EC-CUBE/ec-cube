@@ -97,16 +97,6 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * マスターデータ名チェックを行う
      *
      * @access private

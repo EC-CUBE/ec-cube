@@ -70,16 +70,6 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * カートの情報を取得する
      *
      * @param SC_CartSession $objCart カートセッション管理クラス

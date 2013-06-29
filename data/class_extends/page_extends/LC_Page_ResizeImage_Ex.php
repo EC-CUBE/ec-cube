@@ -53,14 +53,4 @@ class LC_Page_ResizeImage_Ex extends LC_Page_ResizeImage
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -173,16 +173,6 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化（初期会員検索時）
      *
      * @param array $objFormParam フォームパラメータークラス

@@ -56,16 +56,6 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * Page のアクション.
      *
      * @return void

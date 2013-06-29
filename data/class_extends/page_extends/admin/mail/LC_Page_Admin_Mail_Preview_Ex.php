@@ -53,14 +53,4 @@ class LC_Page_Admin_Mail_Preview_Ex extends LC_Page_Admin_Mail_Preview
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

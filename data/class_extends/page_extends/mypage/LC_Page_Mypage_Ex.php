@@ -53,14 +53,4 @@ class LC_Page_Mypage_Ex extends LC_Page_Mypage
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

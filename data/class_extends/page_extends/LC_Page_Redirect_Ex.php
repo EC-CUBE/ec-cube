@@ -53,14 +53,4 @@ class LC_Page_Redirect_Ex extends LC_Page_Redirect
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

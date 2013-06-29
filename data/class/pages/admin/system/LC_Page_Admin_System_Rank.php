@@ -101,16 +101,6 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
         SC_Response_Ex::sendRedirect(ADMIN_SYSTEM_URLPATH);
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     // ランキングを上げる。
     function lfRunkUp($id)
     {

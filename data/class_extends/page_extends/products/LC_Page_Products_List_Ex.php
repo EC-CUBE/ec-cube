@@ -53,14 +53,4 @@ class LC_Page_Products_List_Ex extends LC_Page_Products_List
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

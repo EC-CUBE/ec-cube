@@ -62,14 +62,4 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
     function action()
     {
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

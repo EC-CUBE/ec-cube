@@ -53,14 +53,4 @@ class LC_Page_Admin_Design_CSS_Ex extends LC_Page_Admin_Design_CSS
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

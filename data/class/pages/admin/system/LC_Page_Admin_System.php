@@ -94,16 +94,6 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * dtb_memberからWHERE句に該当する件数を取得する.
      *
      * @access private

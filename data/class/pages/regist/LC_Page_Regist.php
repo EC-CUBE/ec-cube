@@ -82,16 +82,6 @@ class LC_Page_Regist extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 仮会員を本会員にUpdateする
      *
      * @param mixed $array

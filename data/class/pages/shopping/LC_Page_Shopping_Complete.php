@@ -68,16 +68,6 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 決済モジュールから遷移する場合があるため, トークンチェックしない.
      */
     function doValidToken()

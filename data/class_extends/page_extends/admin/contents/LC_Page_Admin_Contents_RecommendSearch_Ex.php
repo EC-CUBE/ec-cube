@@ -53,14 +53,4 @@ class LC_Page_Admin_Contents_RecommendSearch_Ex extends LC_Page_Admin_Contents_R
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

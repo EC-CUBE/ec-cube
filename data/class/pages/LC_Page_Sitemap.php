@@ -130,16 +130,6 @@ class LC_Page_Sitemap extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * Sitemap の <url /> を生成する.
      *
      * @param string $loc ページの URL ※必須

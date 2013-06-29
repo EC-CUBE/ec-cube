@@ -62,14 +62,4 @@ class LC_Page_Guide_Charge extends LC_Page_Ex
     function action()
     {
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

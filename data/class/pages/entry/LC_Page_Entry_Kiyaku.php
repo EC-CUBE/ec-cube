@@ -74,16 +74,6 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 規約文の作成
      *
      * @param mixed $arrKiyaku

@@ -172,16 +172,6 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      *  パラメーター情報の初期化
      *  @param SC_FormParam
      */

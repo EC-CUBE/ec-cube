@@ -360,14 +360,4 @@ __EOS__;
         }
         fclose($handle);
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

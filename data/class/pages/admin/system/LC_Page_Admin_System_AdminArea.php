@@ -108,16 +108,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター初期化.
      *
      * @param object $objFormParam

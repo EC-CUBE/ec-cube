@@ -67,14 +67,4 @@ class LC_Page_Contact_Complete extends LC_Page_Ex
 
 
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

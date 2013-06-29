@@ -53,14 +53,4 @@ class LC_Page_Sitemap_Ex extends LC_Page_Sitemap
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -195,16 +195,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParamインスタンス

@@ -112,16 +112,6 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
 
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     function lfRegistMailTemplate($post, $member_id, SC_Helper_Mailtemplate_Ex $objMailtemplate)
     {
         $post['creator_id'] = $member_id;

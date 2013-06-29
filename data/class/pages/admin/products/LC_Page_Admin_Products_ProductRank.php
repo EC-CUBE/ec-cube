@@ -104,16 +104,6 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     /* 商品読み込み */
     function lfGetProduct($category_id)
     {

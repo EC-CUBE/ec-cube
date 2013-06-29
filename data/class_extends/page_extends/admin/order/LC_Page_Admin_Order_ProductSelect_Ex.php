@@ -53,14 +53,4 @@ class LC_Page_Admin_Order_ProductSelect_Ex extends LC_Page_Admin_Order_ProductSe
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

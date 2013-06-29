@@ -265,16 +265,6 @@ class LC_Page_Forgot extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パスワード変更お知らせメールを送信する.
      *
      * @param array $CONF 店舗基本情報の配列

@@ -53,14 +53,4 @@ class LC_Page_Admin_Basis_Tax_Ex extends LC_Page_Admin_Basis_Tax
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

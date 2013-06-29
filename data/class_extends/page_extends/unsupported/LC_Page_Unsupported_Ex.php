@@ -53,14 +53,4 @@ class LC_Page_Unsupported_Ex extends LC_Page_Unsupported
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

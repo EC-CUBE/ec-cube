@@ -53,14 +53,4 @@ class LC_Page_AbstractMypage_Ex extends LC_Page_AbstractMypage
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

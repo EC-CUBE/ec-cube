@@ -207,16 +207,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター初期化.
      *
      * @param SC_FormParam_Ex $objFormParam

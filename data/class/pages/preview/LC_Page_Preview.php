@@ -69,14 +69,4 @@ class LC_Page_Preview extends LC_Page_Ex
         }
         SC_Utils_Ex::sfDispSiteError(PAGE_ERROR);
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

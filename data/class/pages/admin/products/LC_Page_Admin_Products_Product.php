@@ -286,16 +286,6 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化
      * - 編集/複製モード
      *

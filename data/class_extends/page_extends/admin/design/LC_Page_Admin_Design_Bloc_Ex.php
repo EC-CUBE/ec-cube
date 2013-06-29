@@ -53,14 +53,4 @@ class LC_Page_Admin_Design_Bloc_Ex extends LC_Page_Admin_Design_Bloc
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

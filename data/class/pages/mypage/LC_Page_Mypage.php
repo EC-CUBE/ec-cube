@@ -104,16 +104,6 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 受注履歴を返す
      *
      * @param mixed $customer_id

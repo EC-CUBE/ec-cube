@@ -292,16 +292,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * ファイル情報の初期化を行う.
      *
      * @return void

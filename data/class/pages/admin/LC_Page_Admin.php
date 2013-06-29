@@ -114,16 +114,6 @@ class LC_Page_Admin extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 前方互換用
      *
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること

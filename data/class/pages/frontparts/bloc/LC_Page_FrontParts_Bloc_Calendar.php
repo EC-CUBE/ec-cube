@@ -66,16 +66,6 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * カレンダー情報取得.
      *
      * @param integer $disp_month 表示する月数

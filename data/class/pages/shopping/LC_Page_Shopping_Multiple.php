@@ -114,16 +114,6 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * フォームを初期化する.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス

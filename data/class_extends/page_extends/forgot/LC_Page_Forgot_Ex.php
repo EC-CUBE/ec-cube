@@ -53,14 +53,4 @@ class LC_Page_Forgot_Ex extends LC_Page_Forgot
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

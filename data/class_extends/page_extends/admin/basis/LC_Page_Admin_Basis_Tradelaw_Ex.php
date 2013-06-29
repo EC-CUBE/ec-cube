@@ -52,14 +52,4 @@ class LC_Page_Admin_Basis_Tradelaw_Ex extends LC_Page_Admin_Basis_Tradelaw
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

@@ -130,14 +130,4 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
 
         return $arrErr;
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

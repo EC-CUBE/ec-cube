@@ -53,14 +53,4 @@ class LC_Page_Admin_Basis_DeliveryInput_Ex extends LC_Page_Admin_Basis_DeliveryI
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

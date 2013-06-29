@@ -129,16 +129,6 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーターの初期化を行う
      * @param Object $objFormParam
      */

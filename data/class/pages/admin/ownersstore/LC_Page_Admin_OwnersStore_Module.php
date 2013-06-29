@@ -70,14 +70,4 @@ class LC_Page_Admin_OwnersStore_Module extends LC_Page_Admin_Ex
     {
         // nothing.
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

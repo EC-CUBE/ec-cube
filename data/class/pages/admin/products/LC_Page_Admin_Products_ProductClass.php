@@ -156,16 +156,6 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター初期化
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス

@@ -234,16 +234,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーターの初期化を行い, 初期値を設定する.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス

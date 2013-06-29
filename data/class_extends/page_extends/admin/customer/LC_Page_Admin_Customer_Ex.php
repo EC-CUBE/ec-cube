@@ -53,14 +53,4 @@ class LC_Page_Admin_Customer_Ex extends LC_Page_Admin_Customer
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

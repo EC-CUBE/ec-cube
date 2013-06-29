@@ -130,15 +130,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
     }
 
     /**
-     * デストラクタ.
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメータ情報の初期化を行う.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス

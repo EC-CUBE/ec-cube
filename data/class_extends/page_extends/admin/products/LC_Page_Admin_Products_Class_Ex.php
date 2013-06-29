@@ -53,14 +53,4 @@ class LC_Page_Admin_Products_Class_Ex extends LC_Page_Admin_Products_Class
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

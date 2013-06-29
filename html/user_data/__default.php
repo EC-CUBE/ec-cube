@@ -41,19 +41,8 @@ class LC_Page_User extends LC_Page_Ex
     function action()
     {
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }
 
 $objPage = new LC_Page_User();
-register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();

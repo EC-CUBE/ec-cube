@@ -87,8 +87,8 @@ class SC_Response
 
     /**
      * アプリケーションのexit処理をする。以降の出力は基本的に停止する。
-     * 各クラス内部で勝手にexitするな！
-    */
+     * 各クラス内では、exit を直接呼び出さない。
+     */
     function actionExit()
     {
         // ローカルフックポイント処理
@@ -107,7 +107,7 @@ class SC_Response
         }
 
         exit;
-        // exitしてますが、実際は、LC_Page::destroy() が呼ばれるはず
+        // デストラクタが実行される。
     }
 
     /**

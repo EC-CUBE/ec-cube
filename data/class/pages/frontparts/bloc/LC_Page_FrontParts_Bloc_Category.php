@@ -79,16 +79,6 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * 選択中のカテゴリIDを取得する.
      *
      * @param array $arrRequest リクエスト配列

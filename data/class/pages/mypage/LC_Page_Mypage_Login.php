@@ -62,14 +62,4 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex
     {
         SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

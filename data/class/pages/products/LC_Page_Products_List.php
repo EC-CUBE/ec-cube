@@ -154,16 +154,6 @@ class LC_Page_Products_List extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化
      * 
      * @param array $objFormParam フォームパラメータークラス

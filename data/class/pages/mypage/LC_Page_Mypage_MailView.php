@@ -94,16 +94,6 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * GETで指定された受注idのメール送信内容を返す
      *
      * @param mixed $send_id

@@ -53,14 +53,4 @@ class LC_Page_Admin_Products_ProductRank_Ex extends LC_Page_Admin_Products_Produ
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

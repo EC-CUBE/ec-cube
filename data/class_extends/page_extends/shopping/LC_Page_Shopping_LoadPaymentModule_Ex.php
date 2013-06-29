@@ -53,14 +53,4 @@ class LC_Page_Shopping_LoadPaymentModule_Ex extends LC_Page_Shopping_LoadPayment
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

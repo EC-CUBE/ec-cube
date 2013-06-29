@@ -53,14 +53,4 @@ class LC_Page_Admin_System_Rank_Ex extends LC_Page_Admin_System_Rank
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

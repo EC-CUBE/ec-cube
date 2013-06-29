@@ -67,14 +67,4 @@ class LC_Page_Api_Json extends LC_Page_Ex
         SC_Api_Operation_Ex::sendApiResponse('json', $response_outer, $arrResponse);
         SC_Response_Ex::actionExit();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

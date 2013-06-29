@@ -97,16 +97,6 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * エラーページではトランザクショントークンの自動検証は行わない
      */
     function doValidToken()

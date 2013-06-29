@@ -53,14 +53,4 @@ class LC_Page_FrontParts_Bloc_NaviFooter_Ex extends LC_Page_FrontParts_Bloc_Navi
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

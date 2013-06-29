@@ -116,16 +116,6 @@ class LC_Page_Rss_Products extends LC_Page_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * lfGetProductsDetailData.
      *
      * @param str $mode モード

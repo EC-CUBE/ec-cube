@@ -68,14 +68,4 @@ class LC_Page_Admin_Order_Multiple extends LC_Page_Admin_Ex
     {
         $this->setTemplate($this->tpl_mainpage);
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

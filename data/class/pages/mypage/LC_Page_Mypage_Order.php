@@ -71,16 +71,6 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
         SC_Response_Ex::sendRedirect(CART_URLPATH);
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     // 受注詳細データの取得
     function lfGetOrderDetail($order_id)
     {

@@ -239,16 +239,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * テーブル一覧を取得する.
      *
      * @return array テーブル名一覧

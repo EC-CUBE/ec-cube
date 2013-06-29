@@ -54,14 +54,4 @@ class LC_Page_Error_SystemError_Ex extends LC_Page_Error_SystemError
     {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

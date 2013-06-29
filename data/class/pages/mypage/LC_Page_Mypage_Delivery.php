@@ -114,16 +114,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * フォームパラメータの初期化
      *
      * @return SC_FormParam

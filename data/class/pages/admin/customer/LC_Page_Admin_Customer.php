@@ -140,16 +140,6 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化
      *
      * @param array $objFormParam フォームパラメータークラス

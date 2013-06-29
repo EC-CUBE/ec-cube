@@ -156,16 +156,6 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         // $arrHeader = get_headers(ZIP_DOWNLOAD_URL, 1);
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     function lfAutoCommitZip()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();

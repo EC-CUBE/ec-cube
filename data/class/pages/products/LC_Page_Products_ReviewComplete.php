@@ -63,14 +63,4 @@ class LC_Page_Products_ReviewComplete extends LC_Page_Ex
     {
         $this->setTemplate('products/review_complete.tpl');
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

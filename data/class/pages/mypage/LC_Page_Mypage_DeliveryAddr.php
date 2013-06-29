@@ -152,16 +152,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
 
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
-
     /* 登録実行 */
     function lfRegistData($objAddress, $objFormParam, $customer_id)
     {

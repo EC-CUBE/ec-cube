@@ -67,14 +67,4 @@ class LC_Page_Api extends LC_Page_Ex
         SC_Api_Operation_Ex::sendApiResponse('xml', $response_outer, $arrResponse);
         SC_Response_Ex::actionExit();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }
