@@ -92,19 +92,18 @@ class LC_Page_Products_List extends LC_Page_Ex
     function action()
     {
         $objProduct = new SC_Product_Ex();
-
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();        
-        
+
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
-        
+
         // 値の設定
         $objFormParam->setParam($_REQUEST);
-        
+
         // 入力値の変換
         $objFormParam->convParam();
-        
+
         // 値の取得
         $this->arrForm = $objFormParam->getHashArray();
 
@@ -147,7 +146,7 @@ class LC_Page_Products_List extends LC_Page_Ex
                 break;
 
             default:
-                $this->doDefault($objProduct);
+                $this->doDefault($objProduct, $objFormParam);
                 break;
         }
 
@@ -164,24 +163,28 @@ class LC_Page_Products_List extends LC_Page_Ex
         parent::destroy();
     }
 
-    /* パラメーター情報の初期化 */
+    /**
+     * パラメーター情報の初期化
+     * 
+     * @param array $objFormParam フォームパラメータークラス
+     * @return void
+     */
     function lfInitParam(&$objFormParam)
     {
-        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('商品名', 'name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-
+        // 抽出条件
+        // XXX カートインしていない場合、チェックしていない
         $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メーカーID', 'maker_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        
-        $objFormParam->addParam('ソート順', 'orderby', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('商品ID', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('お気に入り商品ID', 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-
-        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('商品規格ID', 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('商品規格ID', 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('個数', 'quantity', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品名', 'name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('表示順序', 'orderby', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ページ番号', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('表示件数', 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        // カートイン
+        $objFormParam->addParam('規格1', 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('規格2', 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
@@ -272,21 +275,20 @@ __EOS__;
     }
 
     /* 入力内容のチェック */
-    function lfCheckError($product_id, &$arrForm, $tpl_classcat_find1, $tpl_classcat_find2)
+    function lfCheckError($objFormParam)
     {
         // 入力データを渡す。
+        $arrForm =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrForm);
+        $objErr->arrErr = $objFormParam->checkError();
 
-        // 複数項目チェック
-        if ($tpl_classcat_find1[$product_id]) {
-            $objErr->doFunc(array('規格1', 'classcategory_id1', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        // 動的チェック
+        if ($this->tpl_classcat_find1[$arrForm['product_id']]) {
+            $objErr->doFunc(array('規格1', 'classcategory_id1'), array('EXIST_CHECK'));
         }
-        if ($tpl_classcat_find2[$product_id]) {
-            $objErr->doFunc(array('規格2', 'classcategory_id2', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        if ($this->tpl_classcat_find2[$arrForm['product_id']]) {
+            $objErr->doFunc(array('規格2', 'classcategory_id2'), array('EXIST_CHECK'));
         }
-
-        $objErr->doFunc(array('商品規格ID', 'product_class_id', INT_LEN), array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array('数量', 'quantity', INT_LEN), array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
         return $objErr->arrErr;
     }
@@ -456,8 +458,9 @@ __EOS__;
      */
     function lfAddCart($arrForm, $referer)
     {
-        $product_class_id = $arrForm['product_class_id'];
         $objCartSess = new SC_CartSession_Ex();
+
+        $product_class_id = $arrForm['product_class_id'];
         $objCartSess->addProduct($product_class_id, $arrForm['quantity']);
     }
 
@@ -511,7 +514,7 @@ __EOS__;
      * @param type $objProduct
      * @return void
      */
-    function doDefault(&$objProduct)
+    function doDefault(&$objProduct, &$objFormParam)
     {
         //商品一覧の表示処理
         $strnavi            = $this->objNavi->strnavi;
@@ -559,7 +562,7 @@ __EOS__;
             }
 
             // 入力内容のチェック
-            $arrErr = $this->lfCheckError($target_product_id, $this->arrForm, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
+            $arrErr = $this->lfCheckError($objFormParam);
             if (empty($arrErr)) {
                 $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
 
@@ -579,8 +582,7 @@ __EOS__;
             $_SESSION['cart_referer_url'] = $netURL->getURL();
         }
 
-        $this->tpl_javascript   .= 'function fnOnLoad()
-        {' . $js_fnOnLoad . '}';
+        $this->tpl_javascript   .= 'function fnOnLoad() {' . $js_fnOnLoad . '}';
         $this->tpl_onload       .= 'fnOnLoad(); ';
     }
 }
