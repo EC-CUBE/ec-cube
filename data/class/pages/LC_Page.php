@@ -73,6 +73,8 @@ class LC_Page
     /** プラグインを実行フラグ */
     var $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG;
 
+    /** POST に限定する mode */
+    var $arrLimitPostMode = array();
     /**
      * Page を初期化する.
      *
@@ -114,6 +116,8 @@ class LC_Page
      */
     function process()
     {
+        // POST に限定された mode か検証する。
+        $this->checkLimitPostMode();
     }
 
     /**
@@ -368,24 +372,21 @@ class LC_Page
     /**
      * リクエストパラメーター 'mode' を取得する.
      *
-     * 1. $_GET['mode'] の値を取得する.
-     * 2. 1 が存在しない場合は $_POST['mode'] の値を取得する.
-     * 3. どちらも存在しない場合は null を返す.
+     * 1. $_REQUEST['mode'] の値を取得する.
+     * 2. 存在しない場合は null を返す.
      *
      * mode に, 半角英数字とアンダーバー(_) 以外の文字列が検出された場合は null を
      * 返す.
      *
      * @access protected
-     * @return string $_GET['mode'] 又は $_POST['mode'] の文字列
+     * @return string|null $_REQUEST['mode'] の文字列
      */
     function getMode()
     {
         $pattern = '/^[a-zA-Z0-9_]+$/';
         $mode = null;
-        if (isset($_GET['mode']) && preg_match($pattern, $_GET['mode'])) {
-            $mode =  $_GET['mode'];
-        } elseif (isset($_POST['mode']) && preg_match($pattern, $_POST['mode'])) {
-            $mode = $_POST['mode'];
+        if (isset($_REQUEST['mode']) && preg_match($pattern, $_REQUEST['mode'])) {
+            $mode =  $_REQUEST['mode'];
         }
 
         return $mode;
@@ -460,5 +461,18 @@ class LC_Page
     function p($val)
     {
         SC_Utils_Ex::sfPrintR($val);
+    }
+
+    /**
+     * POST に限定された mode か検証する。
+     *
+     * POST 以外で、POST に限定された mode を実行しようとした場合、落とす。
+     * @return void
+     */
+    function checkLimitPostMode() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' && in_array($mode = $this->getMode(), $this->arrLimitPostMode)) {
+            $msg = "REQUEST_METHOD=[{$_SERVER['REQUEST_METHOD']}]では実行不能な mode=[$mode] が指定されました。";
+            trigger_error($msg, E_USER_ERROR);
+        }
     }
 }

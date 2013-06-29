@@ -69,6 +69,14 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         $this->arrSTATUS_IMAGE = $masterData->getMasterData('mtb_status_image');
         $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
         $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
+
+        // POST に限定する mode
+        $this->arrLimitPostMode[] = 'cart';
+        $this->arrLimitPostMode[] = 'add_favorite';
+        $this->arrLimitPostMode[] = 'add_favorite_sphone';
+        $this->arrLimitPostMode[] = 'select';
+        $this->arrLimitPostMode[] = 'select2';
+        $this->arrLimitPostMode[] = 'selectItem';
     }
 
     /**
