@@ -197,7 +197,6 @@ class SC_Helper_TaxRule
                 }
             }
             $data_c[$cache_key] = $arrRet;
-            GC_Utils_Ex::gfPrintLog('tax_key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
         }
 
         return $data_c[$cache_key];
