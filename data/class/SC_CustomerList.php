@@ -60,7 +60,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (strlen($this->arrSql['search_name']) > 0) {
             $this->setWhere('(' . $dbFactory->concatColumn(array('name01', 'name02')) . ' LIKE ?)');
             $searchName = $this->addSearchStr($this->arrSql['search_name']);
-            $this->arrVal[] = mb_ereg_replace('[ 　]+','',$searchName);
+            $this->arrVal[] = preg_replace('/[ 　]+/u','',$searchName);
         }
 
         // 名前(フリガナ)
@@ -68,7 +68,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (strlen($this->arrSql['search_kana']) > 0) {
             $this->setWhere('(' . $dbFactory->concatColumn(array('kana01', 'kana02')) . ' LIKE ?)');
             $searchKana = $this->addSearchStr($this->arrSql['search_kana']);
-            $this->arrVal[] = mb_ereg_replace('[ 　]+','',$searchKana);
+            $this->arrVal[] = preg_replace('/[ 　]+/u','',$searchKana);
         }
 
         // 都道府県

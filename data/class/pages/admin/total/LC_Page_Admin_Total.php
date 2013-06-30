@@ -403,7 +403,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
             $objGraphBar = new SC_Graph_Bar();
 
             foreach ($arrList as $key => $value) {
-                $arrKey[] = mb_ereg_replace('～', '-', $key);
+                $arrKey[] = preg_replace('/～/u', '-', $key);
             }
 
             // グラフ描画
