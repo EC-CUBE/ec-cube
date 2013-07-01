@@ -26,8 +26,25 @@
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
 
+        <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
         <meta name="format-detection" content="telephone=no">
+        <!--{if $arrPageLayout.author|strlen >= 1}-->
+            <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />
+        <!--{/if}-->
+        <!--{if $arrPageLayout.description|strlen >= 1}-->
+            <meta name="description" content="<!--{$arrPageLayout.description|h}-->" />
+        <!--{/if}-->
+        <!--{if $arrPageLayout.keyword|strlen >= 1}-->
+            <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
+        <!--{/if}-->
+        <!--{if $arrPageLayout.meta_robots|strlen >= 1}-->
+            <meta name="robots" content="<!--{$arrPageLayout.meta_robots|h}-->" />
+        <!--{/if}-->
+
+        <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
+        <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
         <!--{* 共通CSS *}-->
         <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
 
@@ -57,21 +74,6 @@
         <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
         <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
 
-        <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
-        <!--{if $arrPageLayout.author|strlen >= 1}-->
-            <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />
-        <!--{/if}-->
-        <!--{if $arrPageLayout.description|strlen >= 1}-->
-            <meta name="description" content="<!--{$arrPageLayout.description|h}-->" />
-        <!--{/if}-->
-        <!--{if $arrPageLayout.keyword|strlen >= 1}-->
-            <meta name="keywords" content="<!--{$arrPageLayout.keyword|h}-->" />
-        <!--{/if}-->
-        <!--{if $arrPageLayout.meta_robots|strlen >= 1}-->
-            <meta name="robots" content="<!--{$arrPageLayout.meta_robots|h}-->" />
-        <!--{/if}-->
-        <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
-        <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
         <!--{* iPhone用アイコン画像 *}-->
         <link rel="apple-touch-icon" href="<!--{$TPL_URLPATH}-->img/common/apple-touch-icon.png" />
 
@@ -82,25 +84,23 @@
             });
         //]]></script>
 
-        <!--{* ▼Head COLUMN*}-->
+        <!--{* ▼Head COLUMN *}-->
             <!--{if $arrPageLayout.HeadNavi|@count > 0}-->
-                <!--{* ▼上ナビ *}-->
-                    <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
-                        <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> ここから*}-->
-                            <!--{if $HeadNaviItem.php_path != ""}-->
-                                <!--{include_php file=$HeadNaviItem.php_path items=$HeadNaviItem}-->
-                            <!--{else}-->
-                                <!--{include file=$HeadNaviItem.tpl_path items=$HeadNaviItem}-->
-                            <!--{/if}-->
-                        <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> ここまで*}-->
-                    <!--{/foreach}-->
-                <!--{* ▲上ナビ *}-->
+                <!--{foreach key=HeadNaviKey item=HeadNaviItem from=$arrPageLayout.HeadNavi}-->
+                    <!--{* ▼<!--{$HeadNaviItem.bloc_name}--> *}-->
+                        <!--{if $HeadNaviItem.php_path != ""}-->
+                            <!--{include_php file=$HeadNaviItem.php_path items=$HeadNaviItem}-->
+                        <!--{else}-->
+                            <!--{include file=$HeadNaviItem.tpl_path items=$HeadNaviItem}-->
+                        <!--{/if}-->
+                    <!--{* ▲<!--{$HeadNaviItem.bloc_name}--> *}-->
+                <!--{/foreach}-->
             <!--{/if}-->
-        <!--{* ▲Head COLUMN*}-->
+        <!--{* ▲Head COLUMN *}-->
     </head>
 
-    <!-- ▼BODY部 スタート -->
+    <!-- ▼BODY部 -->
     <!--{include file='./site_main.tpl'}-->
-    <!-- ▲BODY部 エンド -->
+    <!-- ▲BODY部 -->
 
 </html>

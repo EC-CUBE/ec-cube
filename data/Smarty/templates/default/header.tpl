@@ -25,9 +25,7 @@
     <div id="header" class="clearfix">
         <div id="logo_area">
             <p id="site_description">EC-CUBE発!世界中を旅して見つけた立方体グルメを立方隊長が直送！</p>
-            <h1>
-                <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/common/logo.gif" alt="EC-CUBE ONLINE SHOPPING SITE" /><span><!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}--></span></a>
-            </h1>
+            <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/common/logo.gif" alt="<!--{$arrSiteInfo.shop_name|h}-->/<!--{$tpl_title|h}-->" /></a>
         </div>
         <div id="header_utility">
             <div id="headerInternalColumn">

@@ -45,7 +45,6 @@ class LC_Page_Contact extends LC_Page_Ex
         } else {
             $this->tpl_title = 'お問い合わせ(入力ページ)';
         }
-        $this->tpl_page_category = 'contact';
         $this->httpCacheControl('nocache');
 
         $masterData = new SC_DB_MasterData_Ex();

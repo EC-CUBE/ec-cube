@@ -369,7 +369,7 @@ header {
     clear: both;
     min-height: 40px;
 }
-header h1 {
+header #logo_area {
     width: 47%;
     height: 25px;
     float: left;
@@ -379,14 +379,14 @@ header h1 {
     max-width: 150px;
     position: relative;
 }
-header h1 a {
+header #logo_area a {
     display: block;
     margin: 0;
     padding: 0;
     cursor: pointer;
     vertical-align: middle;
 }
-header h1 img {
+header #logo_area img {
     width: 150px;
     height: 25px;
     margin: -5px 0 0 0;

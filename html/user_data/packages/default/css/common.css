@@ -12,7 +12,7 @@ body {
     letter-spacing: 0.1em;
 }
 
-/*写真*/
+/* 写真 */
 img.picture {
     border: 1px solid #ccc;
 }
@@ -301,17 +301,10 @@ div#undercolumn_login .login_area h4 {
     margin: auto;
     width: 980px;
 }
-#logo_area {
-    padding-left: 10px;
-    float: left;
-    width: 390px;
-    text-align: left;
-}
 #header_utility {
     float: right;
     width: 580px;
 }
-
 #errorHeader {
     color: #F00;
     font-weight: bold;
@@ -321,17 +314,17 @@ div#undercolumn_login .login_area h4 {
     padding: 5px;
 }
 
+
 /* ロゴ
 ----------------------------------------------- */
+#logo_area {
+    padding-left: 10px;
+    float: left;
+    width: 390px;
+    text-align: left;
+}
 #site_description {
     font-size: 90%;
-}
-#logo_area h1 {
-    width: 378px;
-    height: 33px;
-}
-#logo_area h1 span {
-    display: none; /* テキストロゴ非表示 */
 }
 
 

@@ -40,7 +40,6 @@ class LC_Page_Order extends LC_Page_Ex
     function init()
     {
         parent::init();
-        $this->tpl_page_category = 'order';
         $this->tpl_title = '特定商取引に関する法律に基づく表記';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');

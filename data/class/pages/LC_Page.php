@@ -52,9 +52,6 @@ class LC_Page
     /** タイトル */
     var $tpl_title;
 
-    /** カテゴリ */
-    var $tpl_page_category;
-
     /** ログインメールアドレス */
     var $tpl_login_email;
 

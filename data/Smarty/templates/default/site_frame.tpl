@@ -24,23 +24,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
+<title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" media="all" />
-<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" />
-<!--{if $tpl_page_category == "abouts"}-->
-<!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
-<script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
-<!--{else}-->
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<!--{/if}-->
-<!--{/if}-->
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/css.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
-<title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
 <!--{if $arrPageLayout.author|strlen >= 1}-->
     <meta name="author" content="<!--{$arrPageLayout.author|h}-->" />
 <!--{/if}-->
@@ -55,6 +41,20 @@
 <!--{/if}-->
 <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
+<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" media="all" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" />
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/css.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
+<!--{if $tpl_page_class_name === "LC_Page_Abouts"}-->
+    <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
+        <script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+    <!--{else}-->
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <!--{/if}-->
+<!--{/if}-->
 
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
