@@ -12,12 +12,8 @@ body {
     letter-spacing: 0.1em;
 }
 
-select {
-    border: solid 1px #ccc;
-}
-
 /*写真*/
-.picture {
+img.picture {
     border: 1px solid #ccc;
 }
 
@@ -35,7 +31,7 @@ select {
 /* コンテンツ */
 #container {
     margin: 0 auto;
-    padding: 0 0 30px 0;
+    padding: 0 0 30px;
     width: 980px;
     background: #fff;
     text-align: left;
@@ -45,24 +41,48 @@ select {
 /* ==============================================
  カラム指定
 =============================================== */
-/* ヘッダーとフッターの上下
-[注意]ブロック移動時はbloc.css内で調整が必要 */
-#topcolumn,
-#bottomcolumn,
-#footerbottomcolumn {
+
+/* メイン部
+----------------------------------------------- */
+#main_column {
+    padding: 10px 0 0;
+}
+
+/* 1カラム時 */
+#main_column.colnum1 {
     margin: 0 auto;
-    padding: 15px;
-    width: 950px;
-    background: #fff;
-    text-align: left;
+    width: 80%;
 }
 
-/* 中央カラム */
-.main_column {
-    padding: 10px 0 20px;
+/* 2カラム時 (共通) */
+#main_column.colnum2 {
+    width: 78%;
 }
 
-/* サイドカラム */
+/* 2カラム時 (メイン部が左) */
+#main_column.colnum2.left {
+    padding-left: 1.5%;
+    float: left;
+}
+
+/* 2カラム時 (メイン部が右) */
+#main_column.colnum2.right {
+    padding-right: 1.5%;
+    float: right;
+}
+
+/* 3カラム時 */
+#main_column.colnum3 {
+    padding-left: 0.5%;
+    width: 59%;
+    float: left;
+}
+
+/* サイドカラム
+----------------------------------------------- */
+.side_column {
+    padding: 10px 0 0;
+}
 #leftcolumn {
     float: left;
     width: 20%;
@@ -72,31 +92,16 @@ select {
     width: 20%;
 }
 
-/* 1カラム設定 */
-#one_maincolumn {
-    margin: 0 auto;
-    width: 80%;
-}
-
-/* 2カラム設定 (メイン部が左) */
-#two_maincolumn_left {
-    padding-left: 1.5%;
-    float: left;
-    width: 78%;
-}
-
-/* 2カラム設定 (メイン部が右) */
-#two_maincolumn_right {
-    padding-right: 1.5%;
-    width: 78%;
-    float: right;
-}
-
-/* 3カラム設定 */
-#three_maincolumn {
-    padding-left: 0.5%;
-    width: 59%;
-    float: left;
+/* 他
+----------------------------------------------- */
+/* ヘッダーとフッターの上下 */
+#topcolumn,
+#bottomcolumn,
+#footerbottomcolumn {
+    margin: 0px;
+    background: #fff;
+    text-align: left;
+    clear: both;
 }
 
 /* 下層コンテンツ */
@@ -200,9 +205,11 @@ h5 {
 
 /* フォーム
 ----------------------------------------------- */
+select {
+    border: solid 1px #ccc;
+}
 input[type='text'],
-input[type='password'],
-.select {
+input[type='password'] {
     border: solid 1px #ccc;
     padding: 2px;
 }
@@ -245,12 +252,8 @@ input[type='password'],
 }
 
 /* フォームが縦に重なり合う場合に併用する余白 */
-.top {
+.top { /* FIXME 簡素な単語は単独で使用しない */
     margin-bottom: 5px;
-}
-
-.ng_top {
-    margin-bottom: 0 !important;
 }
 
 
@@ -266,10 +269,7 @@ h2.title {
     font-size: 170%;
 }
 
-#one_maincolumn .sub_area h3,
-#two_maincolumn_right .sub_area h3,
-#two_maincolumn_left .sub_area h3,
-#three_maincolumn .sub_area h3,
+#main_column .sub_area h3,
 #undercolumn_login .login_area h3,
 #undercolumn_shopping h3,
 #mypagecolumn h3,

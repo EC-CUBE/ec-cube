@@ -91,19 +91,12 @@
         <!--{* ▲LEFT COLUMN *}-->
 
         <!--{* ▼CENTER COLUMN *}-->
-        <div
-            <!--{if $tpl_column_num == 3}-->
-                id="three_maincolumn"
-            <!--{elseif $tpl_column_num == 2}-->
-                <!--{if $arrPageLayout.LeftNavi|@count == 0}-->
-                    id="two_maincolumn_left"
-                <!--{else}-->
-                    id="two_maincolumn_right"
+        <div id="main_column"
+            class="colnum<!--{$tpl_column_num|h}-->
+                <!--{if $tpl_column_num == 2}-->
+                    <!--{" "}--><!--{if $arrPageLayout.LeftNavi|@count == 0}-->left<!--{else}-->right<!--{/if}-->
                 <!--{/if}-->
-            <!--{elseif $tpl_column_num == 1}-->
-                id="one_maincolumn"
-            <!--{/if}-->
-            class="main_column"
+            "
         >
             <!--{* ▼メイン上部 *}-->
             <!--{if $arrPageLayout.MainHead|@count > 0}-->
