@@ -61,7 +61,7 @@
                 <input type="text" name="kana01"
                     value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->"class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
+                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
                 <input type="text" name="kana02"
                     value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
@@ -78,10 +78,10 @@
                 <p>
                     <input type="tel" name="zip01"
                         value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
-                        max="<!--{$smarty.const.ZIP01_LEN}-->"
+                        maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
                         style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02"
                         value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
-                        max="<!--{$smarty.const.ZIP02_LEN}-->"
+                        maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
                         style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
                 </p>
 
