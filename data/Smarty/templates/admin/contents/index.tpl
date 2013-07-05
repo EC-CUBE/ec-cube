@@ -85,7 +85,10 @@
     </div>
 </form>
 
-    <h2>新着情報一覧</h2>
+    <h2>新着情報一覧
+        <a class="btn-normal" href="">新規登録</a>
+    </h2>
+
     <!--{if $arrErr.moveposition}-->
     <p><span class="attention"><!--{$arrErr.moveposition}--></span></p>
     <!--{/if}-->
