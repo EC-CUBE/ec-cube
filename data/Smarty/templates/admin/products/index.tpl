@@ -57,7 +57,7 @@ function lfnDispChange(){
 
 
 <div id="products" class="contents-main">
-<form ]="search_form" id="search_form" method="post" action="?">
+<form name="search_form" id="search_form" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="search" />
     <h2>検索条件設定</h2>
