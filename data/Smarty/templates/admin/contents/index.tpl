@@ -26,7 +26,7 @@
 <form name="form1" id="form1" method="post" action="?">
 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
 <input type="hidden" name="mode" value="" />
-<input type="hidden" name="news_id" value="<!--{$arrForm.news_id.value|h}-->" />
+<input type="hidden" name="news_id" value="<!--{$arrForm.news_id.value|default:$tpl_news_id|h}-->" />
     <!--{* ▼登録テーブルここから *}-->
     <table>
         <tr>
