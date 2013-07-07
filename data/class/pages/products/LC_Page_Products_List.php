@@ -93,7 +93,7 @@ class LC_Page_Products_List extends LC_Page_Ex
     {
         $objProduct = new SC_Product_Ex();
         // パラメーター管理クラス
-        $objFormParam = new SC_FormParam_Ex();        
+        $objFormParam = new SC_FormParam_Ex();
 
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
@@ -138,7 +138,7 @@ class LC_Page_Products_List extends LC_Page_Ex
             $urlParam .= "&mode={$this->mode}&name={$searchNameUrl}&orderby={$this->orderby}";
         }
         $this->objNavi      = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
-        $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $this->tpl_linemax, $objProduct);
+        $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $objProduct);
 
         switch ($this->getMode()) {
             case 'json':
@@ -155,7 +155,7 @@ class LC_Page_Products_List extends LC_Page_Ex
 
     /**
      * パラメーター情報の初期化
-     * 
+     *
      * @param array $objFormParam フォームパラメータークラス
      * @return void
      */
@@ -206,7 +206,7 @@ class LC_Page_Products_List extends LC_Page_Ex
     }
 
     /* 商品一覧の表示 */
-    function lfGetProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct)
+    function lfGetProductsList($searchCondition, $disp_number, $startno, &$objProduct)
     {
         $arrOrderVal = array();
 
@@ -426,7 +426,7 @@ __EOS__;
     function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id)
     {
         $js_fnOnLoad = '';
-        foreach ($arrProducts as $key => $value) {
+        foreach (array_keys($arrProducts) as $key) {
             if ($arrProducts[$key]['product_id'] == $product_id) {
                 $arrProducts[$key]['product_class_id']  = $arrForm['product_class_id'];
                 $arrProducts[$key]['classcategory_id1'] = $arrForm['classcategory_id1'];
@@ -446,7 +446,7 @@ __EOS__;
      *
      * @return void
      */
-    function lfAddCart($arrForm, $referer)
+    function lfAddCart($arrForm)
     {
         $objCartSess = new SC_CartSession_Ex();
 
@@ -554,7 +554,7 @@ __EOS__;
             // 入力内容のチェック
             $arrErr = $this->lfCheckError($objFormParam);
             if (empty($arrErr)) {
-                $this->lfAddCart($this->arrForm, $_SERVER['HTTP_REFERER']);
+                $this->lfAddCart($this->arrForm);
 
                 // 開いているカテゴリーツリーを維持するためのパラメーター
                 $arrQueryString = array(
