@@ -93,7 +93,7 @@ class LC_Page_RSS extends LC_Page_Ex
         $arrInfo = $objDb->sfGetBasisData();
 
         // RSS用に変換
-        foreach ($arrNews as $key => $value) {
+        foreach (array_keys($arrNews) as $key) {
             $netUrlHttpUrl = new Net_URL(HTTP_URL);
 
             $row =& $arrNews[$key];
