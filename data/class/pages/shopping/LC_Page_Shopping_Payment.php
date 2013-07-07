@@ -138,7 +138,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 $this->arrErr = $objFormParam->checkError();
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $deliv_id = $objFormParam->getValue('deliv_id');
-                    $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
+                    $arrSelectedDeliv = $this->getSelectedDeliv($objCartSess, $deliv_id);
                     $arrSelectedDeliv['error'] = false;
                 } else {
                     $arrSelectedDeliv = array('error' => true);
@@ -160,7 +160,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 $this->setFormParams($objFormParam, $_POST, false, $this->arrShipping);
 
                 $deliv_id = $objFormParam->getValue('deliv_id');
-                $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
+                $arrSelectedDeliv = $this->getSelectedDeliv($objCartSess, $deliv_id);
                 $this->arrPayment = $arrSelectedDeliv['arrPayment'];
                 $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
                 $this->img_show = $arrSelectedDeliv['img_show'];
@@ -191,7 +191,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 if ($this->is_multiple) {
                     $url = MULTIPLE_URLPATH . '?from=multiple';
                 } elseif ($objCustomer->isLoginSuccess(true)) {
-                    if ($product_type_id == PRODUCT_TYPE_DOWNLOAD) {
+                    if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
                         $url = CART_URLPATH;
                     } else {
                         $url = DELIV_URLPATH;
@@ -216,7 +216,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
 
                 if (!SC_Utils_Ex::isBlank($deliv_id)) {
                     $objFormParam->setValue('deliv_id', $deliv_id);
-                    $arrSelectedDeliv = $this->getSelectedDeliv($objPurchase, $objCartSess, $deliv_id);
+                    $arrSelectedDeliv = $this->getSelectedDeliv($objCartSess, $deliv_id);
                     $this->arrPayment = $arrSelectedDeliv['arrPayment'];
                     $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
                     $this->img_show = $arrSelectedDeliv['img_show'];
@@ -274,7 +274,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
             }
         }
 
-        $objFormParam->setParam($arrParam);
+        $objFormParam->setParam($arrShipping);
         $objFormParam->convParam();
     }
 
@@ -288,7 +288,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
      */
     function lfCheckError(&$objFormParam, $subtotal, $max_point)
     {
-        $objPurchase = new SC_Helper_Purchase_Ex();
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrForm);
@@ -336,7 +335,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
          * SC_Purchase::getShippingTemp() で取得して,
          * リファレンスで代入すると, セッションに添字を追加できない？
          */
-        foreach ($_SESSION['shipping'] as $key => $value) {
+        foreach (array_keys($_SESSION['shipping']) as $key) {
             $shipping_id = $_SESSION['shipping'][$key]['shipping_id'];
             $time_id = $objFormParam->getValue('deliv_time_id' . $shipping_id);
             $_SESSION['shipping'][$key]['deliv_id'] = $deliv_id;
@@ -382,12 +381,11 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
      * - 'arrPayment' - 支払い方法の配列
      * - 'img_show' - 支払い方法の画像の有無
      *
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
      * @param SC_CartSession $objCartSess SC_CartSession インスタンス
      * @param integer $deliv_id 配送業者ID
      * @return array 支払い方法, お届け時間を格納した配列
      */
-    function getSelectedDeliv(&$objPurchase, &$objCartSess, $deliv_id)
+    function getSelectedDeliv(&$objCartSess, $deliv_id)
     {
         $arrResults = array();
         $arrResults['arrDelivTime'] = SC_Helper_Delivery_Ex::getDelivTime($deliv_id);
