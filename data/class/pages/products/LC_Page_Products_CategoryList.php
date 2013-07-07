@@ -65,7 +65,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
 
         // カテゴリ情報を取得する。
         $objFormParam = $this->lfInitParam($_REQUEST);
-        $arrCategoryData = $this->lfGetCategories($objFormParam->getValue('category_id'), true, $this);
+        $arrCategoryData = $this->lfGetCategories($objFormParam->getValue('category_id'), true);
         $this->arrCategory = $arrCategoryData['arrCategory'];
         $this->arrChildren = $arrCategoryData['arrChildren'];
         $this->tpl_subtitle = $this->arrCategory['category_name'];
@@ -87,10 +87,9 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      *
      * @param string $category_id カテゴリID
      * @param boolean $count_check 有効な商品がないカテゴリを除くかどうか
-     * @param object &$objPage ページオブジェクト
      * @return void
      */
-    function lfGetCategories($category_id, $count_check = false, &$objPage)
+    function lfGetCategories($category_id, $count_check = false)
     {
         // カテゴリの正しいIDを取得する。
         $category_id = $this->lfCheckCategoryId($category_id);
