@@ -209,7 +209,6 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      */
     function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer, $objAddress)
     {
-        GC_Utils_Ex::gfDebugLog('register deliv. deliv_check=' . $deliv_check);
         $arrValues = array();
         // 会員登録住所がチェックされている場合
         if ($other_deliv_id == 0) {
