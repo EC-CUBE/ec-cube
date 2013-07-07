@@ -862,7 +862,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true)
                         // エラー文を取得する
                         preg_match('/\[(.*)\]/', $ret->userinfo, $arrKey);
                         $arrErr['all'] .= $arrKey[0] . '<br />';
-                        $objPage->update_mess .= '>> テーブル構成の変更に失敗しました。<br />';
+                        $arrErr['all'] .= '>> テーブル構成の変更に失敗しました。<br />';
                         GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
                         break;
                     } else {
