@@ -745,10 +745,9 @@ class SC_Utils
      * @param int $price
      * @param float $point_rate
      * @param int $rule
-     * @param int $product_id
      * @return int
      */
-    function sfPrePoint($price, $point_rate, $rule = POINT_RULE, $product_id = '')
+    function sfPrePoint($price, $point_rate, $rule = POINT_RULE)
     {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
