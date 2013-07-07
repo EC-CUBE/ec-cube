@@ -73,7 +73,6 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objHelperMail = new SC_Helper_Mail_Ex();
 
         $this->is_multiple = $objPurchase->isMultiple();
 
