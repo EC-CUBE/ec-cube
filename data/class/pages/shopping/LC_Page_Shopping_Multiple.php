@@ -78,8 +78,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
 
-        $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase,
-                                            $objAddress, $this->tpl_uniqid);
+        $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase, $objAddress);
         $this->tpl_addrmax = count($this->addrs) - 2; // 「選択してください」と会員の住所をカウントしない
         $this->lfInitParam($objFormParam);
 
@@ -94,7 +93,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
                     $_SESSION['multiple_temp'] = $objFormParam->getHashArray();
                     $this->saveMultipleShippings($this->tpl_uniqid, $objFormParam,
                                                  $objCustomer, $objPurchase,
-                                                 $objCartSess, $objAddress);
+                                                 $objAddress);
                     $objSiteSess->setRegistFlag();
 
                     SC_Response_Ex::sendRedirect('payment.php');
@@ -148,7 +147,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
         $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
         $arrItems = array();
         $index = 0;
-        foreach ($cartLists as $key => $value) {
+        foreach (array_keys($cartLists) as $key) {
             $arrProductsClass = $cartLists[$key]['productsClass'];
             $quantity = (int) $cartLists[$key]['quantity'];
             for ($i = 0; $i < $quantity; $i++) {
@@ -172,10 +171,9 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      *
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @param integer $uniqid 受注一時テーブルのユニークID
      * @return array 配送住所のプルダウン用連想配列
      */
-    function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress, $uniqid)
+    function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress)
     {
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
@@ -287,10 +285,9 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param SC_Customer $objCustomer SC_Customer インスタンス
      * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @param SC_CartSession $objCartSess SC_CartSession インスタンス
      * @return void
      */
-    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objCartSess, &$objAddress)
+    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objAddress)
     {
         $arrParams = $objFormParam->getSwapArray();
 
