@@ -20,23 +20,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<div id="undercolumn">
-    <div id="undercolumn_error">
-        <div class="message_area">
-            <!--★エラーメッセージ-->
-            <p class="error"><!--{$tpl_error}--></p>
-        </div>
+<!--{strip}-->
+    <div id="undercolumn">
+        <div id="undercolumn_error">
+            <div class="message_area">
+                <!--★エラーメッセージ-->
+                <p class="error"><!--{$tpl_error}--></p>
+            </div>
 
-        <div class="btn_area">
-            <ul>
-                <li>
-                    <!--{if $return_top}-->
-                        <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" border="0" name="b_toppage" /></a>
-                    <!--{else}-->
-                        <a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','b_back');" onmouseOut="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','b_back');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="b_back" id="b_back" /></a>
-                    <!--{/if}-->
-                </li>
-            </ul>
+            <div class="btn_area">
+                <ul>
+                    <li>
+                        <!--{if $return_top}-->
+                            <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" border="0" name="b_toppage" /></a>
+                        <!--{else}-->
+                            <a href="javascript:history.back()" onmouseOver="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','b_back');" onmouseOut="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','b_back');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="b_back" id="b_back" /></a>
+                        <!--{/if}-->
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
+<!--{/strip}-->

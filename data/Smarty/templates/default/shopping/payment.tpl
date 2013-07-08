@@ -237,7 +237,7 @@
             </div>
             <!--{/if}-->
 
-            <!-- ▼ポイント使用 ここから -->
+            <!-- ▼ポイント使用 -->
             <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
                 <div class="point_area">
                     <h3>ポイント使用の指定</h3>
@@ -259,7 +259,7 @@
                     </div>
                 </div>
             <!--{/if}-->
-            <!-- ▲ポイント使用 ここまで -->
+            <!-- ▲ポイント使用 -->
 
             <div class="pay_area02">
                 <h3>その他お問い合わせ</h3>
@@ -272,7 +272,6 @@
                     <p class="attention"> (<!--{$smarty.const.LTEXT_LEN}-->文字まで)</p>
                 </div>
             </div>
-
 
             <div class="btn_area">
                 <ul>
