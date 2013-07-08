@@ -55,10 +55,3 @@
         <div class="btn-area-bottom"></div>
     </div>
 </form>
-
-
-
-<!--{* オペビルダー用 *}-->
-<!--{if "sfViewAdminOpe"|function_exists === TRUE}-->
-<!--{include file=`$smarty.const.MODULE_REALDIR`mdl_opebuilder/admin_ope_view.tpl}-->
-<!--{/if}-->

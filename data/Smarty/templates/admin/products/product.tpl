@@ -341,11 +341,6 @@ function selectAll(target) {
             </tr>
         </table>
 
-        <!--{* オペビルダー用 *}-->
-        <!--{if "sfViewAdminOpe"|function_exists === TRUE}-->
-        <!--{include file=`$smarty.const.MODULE_REALDIR`mdl_opebuilder/admin_ope_view.tpl}-->
-        <!--{/if}-->
-
         <div class="btn">
             <a class="btn-normal" href="javascript:;" onclick="selectAll('category_id'); lfDispSwitch('sub_detail'); return false;"><span>サブ情報表示/非表示</span></a>
         </div>

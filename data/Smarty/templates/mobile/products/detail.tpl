@@ -58,11 +58,6 @@
         <br>
     <!--{/if}-->
 
-    <!--{* オペビルダー用 *}-->
-    <!--{if "sfViewDetailOpe"|function_exists === TRUE}-->
-        <!--{include file=`$smarty.const.MODULE_REALDIR`mdl_opebuilder/detail_ope_mb_view.tpl}-->
-    <!--{/if}-->
-
     <!--★詳細メインコメント★-->
     [emoji:76]<!--{$arrProduct.main_comment|nl2br_html}--><br>
     <br>
