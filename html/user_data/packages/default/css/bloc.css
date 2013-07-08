@@ -123,7 +123,7 @@
 #news_area dl.newslist {
     background: url("../img/background/line_dot_01.gif") repeat-x bottom;
 }
-#news_area dl.newslist:last-child {
+#news_area dl.newslist:last-child { /* IE9 未満では無効 (影響度合いが低いので黙殺) */
     background: none;
 }
 #news_area dl.newslist dt {

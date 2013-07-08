@@ -252,7 +252,7 @@ input[type='password'] {
 }
 
 /* フォームが縦に重なり合う場合に併用する余白 */
-.top { /* FIXME 簡素な単語は単独で使用しない */
+.top { /* FIXME 簡素な単語は、単独で、込み入った指定に使用しない */
     margin-bottom: 5px;
 }
 
