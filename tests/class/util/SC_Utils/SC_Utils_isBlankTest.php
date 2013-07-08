@@ -130,7 +130,7 @@ class SC_Utils_isBlankTest extends Common_TestCase
     $this->assertTrue(SC_Utils::isBlank($input), $input);
   }
 
-  public function testIsBlank_すべてのホワイトスペースを並べた場合_trueが返る()
+  public function testIsBlank_全てのホワイトスペースを並べた場合_trueが返る()
   {
     $input = " \t　\n\r\x0B\0";
     $this->assertTrue(SC_Utils::isBlank($input), $input);

@@ -26,7 +26,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 
 /**
  * SC_Utils::sfGetUniqRandomId()のテストクラス.
- * ランダムな生成結果をすべてテストすることはできないため,
+ * ランダムな生成結果を全てテストすることはできないため,
  * 文字数とランダム性のみをチェックする.
  *
  * @author Hiroko Tamagawa

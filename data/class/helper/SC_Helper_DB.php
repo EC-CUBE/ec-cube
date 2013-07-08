@@ -906,7 +906,7 @@ __EOS__;
     }
 
     /**
-     * 親ID直下の子IDをすべて取得する.
+     * 親ID直下の子IDを全て取得する.
      *
      * @param array $arrData 親カテゴリの配列
      * @param string $pid_name 親ID名
@@ -926,7 +926,7 @@ __EOS__;
     }
 
     /**
-     * 所属するすべての階層の親IDを配列で返す.
+     * 所属する全ての階層の親IDを配列で返す.
      *
      * @param SC_Query $objQuery SC_Query インスタンス
      * @param string $table テーブル名

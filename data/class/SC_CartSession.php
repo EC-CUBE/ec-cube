@@ -427,9 +427,9 @@ class SC_CartSession
     }
 
     /**
-     * すべてのカートの内容を取得する.
+     * 全てのカートの内容を取得する.
      *
-     * @return array すべてのカートの内容
+     * @return array 全てのカートの内容
      */
     function getAllCartList()
     {
@@ -468,7 +468,7 @@ class SC_CartSession
     }
 
     /**
-     * 商品種別ID を指定して, カート内の商品をすべて削除する.
+     * 商品種別ID を指定して, カート内の商品を全て削除する.
      *
      * @param integer $productTypeId 商品種別ID
      * @return void

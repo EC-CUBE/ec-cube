@@ -46,7 +46,7 @@ class SC_Helper_Purchase_copyFromOrderTest extends SC_Helper_Purchase_TestBase
   }
 
   /////////////////////////////////////////
-  public function testCopyFromOrder_すべてデフォルト設定にした場合_デフォルトの接頭辞・キーでコピーされる()
+  public function testCopyFromOrder_全てデフォルト設定にした場合_デフォルトの接頭辞・キーでコピーされる()
   {
      $dest = array();
      $src = array(

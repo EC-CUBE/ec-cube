@@ -21,7 +21,7 @@ class SC_Helper_News_getCount extends SC_Helper_News_TestBase
 
     /////////////////////////////////////////
 
-    public function testGetCount_削除されたニュースも含む場合_すべてのニュース件数を取得()
+    public function testGetCount_削除されたニュースも含む場合_全てのニュース件数を取得()
     {   
         $this->setUpNews();
         $has_deleted = true;

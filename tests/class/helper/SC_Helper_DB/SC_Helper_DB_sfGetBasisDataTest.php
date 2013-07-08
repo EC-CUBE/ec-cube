@@ -45,7 +45,7 @@ class SC_Helper_DB_sfGetBasisData extends SC_Helper_DB_TestBase
     }
 
     /////////////////////////////////////////
-    public function testsfGetBasisData_条件を指定しない場合_baseinfoをすべて返す()
+    public function testsfGetBasisData_条件を指定しない場合_baseinfoを全て返す()
     {
         $this->setUpBasisData();
         $this->expected = array(

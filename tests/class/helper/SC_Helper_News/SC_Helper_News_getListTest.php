@@ -21,7 +21,7 @@ class SC_Helper_News_getListTest extends SC_Helper_News_TestBase
 
     /////////////////////////////////////////
 
-    public function testGetList_削除されたニュースも含む場合_すべてのニュース一覧が取得できる()
+    public function testGetList_削除されたニュースも含む場合_全てのニュース一覧が取得できる()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->setUpNews();

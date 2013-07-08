@@ -33,7 +33,7 @@
 
         <!--★インフォメーション★-->
         <div class="refusetxt">
-            <p>会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、すべて削除されますがよろしいでしょうか？</p>
+            <p>会員を退会された場合には、現在保存されている購入履歴や、お届け先などの情報は、全て削除されますがよろしいでしょうか？</p>
             <div class="btn_area">
                 <p><input class="btn data-role-none" type="submit" value="会員退会手続き" name="refusal" id="refusal" /></p>
             </div>

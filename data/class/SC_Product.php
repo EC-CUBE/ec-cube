@@ -430,11 +430,11 @@ __EOS__;
     }
 
     /**
-     * 商品IDに紐づいた, 商品規格をすべての組み合わせごとに取得する.
+     * 商品IDに紐づいた, 商品規格を全ての組み合わせごとに取得する.
      *
      * @param array $productId 商品ID
      * @param boolean $has_deleted 削除された商品規格も含む場合 true; 初期値 false
-     * @return array すべての組み合わせの商品規格の配列
+     * @return array 全ての組み合わせの商品規格の配列
      */
     function getProductsClassFullByProductId($productId, $has_deleted = false)
     {

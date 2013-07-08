@@ -398,7 +398,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         // 登録データ対象取得
         $arrList = $objFormParam->getHashArray();
 
-        // 登録時間を生成(DBのCURRENT_TIMESTAMPだとcommitした際、すべて同一の時間になってしまう)
+        // 登録時間を生成(DBのCURRENT_TIMESTAMPだとcommitした際、全て同一の時間になってしまう)
         $arrList['update_date'] = $this->lfGetDbFormatTimeWithLine($line);
 
         // 商品登録情報を生成する。

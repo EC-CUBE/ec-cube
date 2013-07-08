@@ -390,7 +390,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * 規格の組み合わせ一覧を表示する.
      *
-     * 規格1, 規格2における規格分類のすべての組み合わせを取得し,
+     * 規格1, 規格2における規格分類の全ての組み合わせを取得し,
      * 該当商品の商品規格の内容を取得後, フォームに設定する.
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
@@ -402,7 +402,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         $class_id1 = $objFormParam->getValue('class_id1');
         $class_id2 = $objFormParam->getValue('class_id2');
 
-        // すべての組み合わせを取得し, フォームに設定
+        // 全ての組み合わせを取得し, フォームに設定
         $arrClassCat = $this->getAllClassCategory($class_id1, $class_id2);
         $total = count($arrClassCat);
         $objFormParam->setValue('total', $total);
@@ -435,7 +435,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      */
     function initDispParam(&$objFormParam)
     {
-        // 登録チェックボックス初期化(すべてチェックを外す)
+        // 登録チェックボックス初期化(全てチェックを外す)
         $objFormParam->setValue('check', '');
 
         // 規格2が選択されていない場合、規格2名称初期化
@@ -458,7 +458,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         $objProduct = new SC_Product_Ex();
         $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id);
 
-        // 規格のデフォルト値(すべての組み合わせ)を取得し, フォームに反映
+        // 規格のデフォルト値(全ての組み合わせ)を取得し, フォームに反映
         $class_id1 = $existsProductsClass[0]['class_id1'];
         $class_id2 = $existsProductsClass[0]['class_id2'];
         $objFormParam->setValue('class_id1', $class_id1);
@@ -663,7 +663,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     }
 
     /**
-     * 規格ID1, 規格ID2の規格分類すべてを取得する.
+     * 規格ID1, 規格ID2の規格分類全てを取得する.
      *
      * @param integer $class_id1 規格ID1
      * @param integer $class_id2 規格ID2
@@ -719,10 +719,10 @@ __EOF__;
     }
 
     /**
-     * 規格分類の登録された, すべての規格を取得する.
+     * 規格分類の登録された, 全ての規格を取得する.
      *
      * @access private
-     * @return array 規格分類の登録された, すべての規格
+     * @return array 規格分類の登録された, 全ての規格
      */
     function getAllClass()
     {
@@ -763,7 +763,7 @@ __EOF__;
     /**
      * チェックボックスの値を埋める.
      *
-     * チェックボックスが, すべて空で submit されると, $_POST の値が全く渡らない
+     * チェックボックスが, 全て空で submit されると, $_POST の値が全く渡らない
      * ため, SC_FormParam::getValue() で取得できない.
      * これを防ぐため, $_POST[$key] を直接操作し, 指定の長さで空白の配列を作成する
      *

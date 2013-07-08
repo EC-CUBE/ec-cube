@@ -203,7 +203,7 @@ class LC_Page_Cart extends LC_Page_Ex
         $this->lfGetCartPrevUrl($_SESSION,$_SERVER['HTTP_REFERER']);
         $this->tpl_prev_url = (isset($_SESSION['cart_prev_url'])) ? $_SESSION['cart_prev_url'] : '';
 
-        // すべてのカートの内容を取得する
+        // 全てのカートの内容を取得する
         $this->cartItems = $objCartSess->getAllCartList();
     }
 

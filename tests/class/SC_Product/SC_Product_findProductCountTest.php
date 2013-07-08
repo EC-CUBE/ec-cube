@@ -21,7 +21,7 @@ class SC_Product_findProductCountTest extends SC_Product_TestBase
 
     /////////////////////////////////////////
 
-    public function testFindProductCount_すべての商品数を返す()
+    public function testFindProductCount_全ての商品数を返す()
     {
         $this->setUpProductClass();
         $this->setUpProducts();

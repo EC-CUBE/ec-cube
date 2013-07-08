@@ -194,7 +194,7 @@ function lfnDispChange(){
                 <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
                 <!--検索結果-->
                 <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-                    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;">検索結果をすべて削除</a>
+                    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;">検索結果を全て削除</a>
                 <!--{/if}-->
                 <a class="btn-tool" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
                 <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>

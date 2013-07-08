@@ -61,7 +61,7 @@ class SC_Helper_Purchase_isUsePointTest extends SC_Helper_Purchase_TestBase
     $this->verify('ポイントを使用するかどうか');
   }
 
-  // TODO 要確認：本当にキャンセルのとき以外はすべてTRUEで良いのか、現在の使われ方の都合か
+  // TODO 要確認：本当にキャンセルのとき以外は全てTRUEで良いのか、現在の使われ方の都合か
   public function testIsUsePoint_ステータスがキャンセル以外の場合_TRUEが返る()
   {
     $this->expected = TRUE;

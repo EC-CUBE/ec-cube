@@ -513,7 +513,7 @@ INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create
 
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '第1条 (会員)', '1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
 2. 「会員情報」とは、会員が当社に開示した会員の属性に関する情報および会員の取引に関する履歴等の情報をいいます。
-3. 本規約は、すべての会員に適用され、登録手続時および登録後にお守りいただく規約です。', 12, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+3. 本規約は、全ての会員に適用され、登録手続時および登録後にお守りいただく規約です。', 12, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '第2条 (登録)', '1. 会員資格
 本規約に同意の上、所定の入会申込みをされたお客様は、所定の登録手続完了後に会員としての資格を有します。会員登録手続は、会員となるご本人が行ってください。代理による登録は一切認められません。なお、過去に会員資格が取り消された方やその他当社が相応しくないと判断した方からの会員申込はお断りする場合があります。
 
@@ -523,7 +523,7 @@ INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, 
 3. パスワードの管理
 (1)パスワードは会員本人のみが利用できるものとし、第三者に譲渡・貸与できないものとします。
 (2)パスワードは、他人に知られることがないよう定期的に変更する等、会員本人が責任をもって管理してください。
-(3)パスワードを用いて当社に対して行われた意思表示は、会員本人の意思表示とみなし、そのために生じる支払等はすべて会員の責任となります。', 11, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+(3)パスワードを用いて当社に対して行われた意思表示は、会員本人の意思表示とみなし、そのために生じる支払等は全て会員の責任となります。', 11, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '第3条 (変更)', '1. 会員は、氏名、住所など当社に届け出た事項に変更があった場合には、速やかに当社に連絡するものとします。
 2. 変更登録がなされなかったことにより生じた損害について、当社は一切責任を負いません。また、変更登録がなされた場合でも、変更登録前にすでに手続がなされた取引は、変更登録前の情報に基づいて行われますのでご注意ください。', 10, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '第4条 (退会)', '会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。', 9, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

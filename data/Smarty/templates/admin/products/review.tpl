@@ -126,7 +126,7 @@
             <div class="btn">
                 <span class="attention"><!--検索結果数--><!--{$tpl_linemax|h}-->件</span>&nbsp;が該当しました。
                 <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-                    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
+                    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果を全て削除</span></a>
                 <!--{/if}-->
                 <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span>CSV ダウンロード</span></a>
             </div>

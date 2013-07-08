@@ -516,7 +516,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $col = "$pid_name";
         $where = "$id_name = ?";
         $pid = $objQuery->get($col, $table, $where, $id);
-        // すべての子を取得する。
+        // 全ての子を取得する。
         $col = "$id_name";
         $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
         $arrRet = $objQuery->select($col, $table, $where, array($pid));
@@ -539,7 +539,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $col = "$pid_name";
         $where = "$id_name = ?";
         $pid = $objQuery->get($col, $table, $where, $id);
-        // すべての子を取得する。
+        // 全ての子を取得する。
         $col = "$id_name";
         $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
         $arrRet = $objQuery->select($col, $table, $where, array($pid));

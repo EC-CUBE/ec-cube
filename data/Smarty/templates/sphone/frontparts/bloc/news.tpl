@@ -84,7 +84,7 @@
                         }
                     }
 
-                    //すべての新着情報を表示したか判定
+                    //全ての新着情報を表示したか判定
                     var newsPageCount = result.news_page_count;
                     if (parseInt(newsPageCount) <= newsPageNo) {
                         $("#btn_more_news").hide();

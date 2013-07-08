@@ -120,7 +120,7 @@ function fnCancelEnter()
 function fnModeSubmit(mode, keyname, keyid) {
     switch(mode) {
     case 'delete_category':
-        if(!window.confirm('選択したカテゴリとカテゴリ内のすべてのカテゴリを削除します')){
+        if(!window.confirm('選択したカテゴリとカテゴリ内の全てのカテゴリを削除します')){
             return;
         }
         break;
@@ -135,7 +135,7 @@ function fnModeSubmit(mode, keyname, keyid) {
         }
         break;
     case 'delete_all':
-        if(!window.confirm('検索結果をすべて削除しても宜しいですか')){
+        if(!window.confirm('検索結果を全て削除しても宜しいですか')){
             return;
         }
         break;

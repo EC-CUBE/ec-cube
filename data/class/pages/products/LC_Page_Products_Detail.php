@@ -299,7 +299,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         // 規格2クラス名の取得
         $objPage->tpl_class_name2 = $arrClassName[$arrProductsClass[0]['class_id2']];
 
-        // すべての組み合わせ数
+        // 全ての組み合わせ数
         $count = count($arrProductsClass);
 
         $classcat_id1 = '';

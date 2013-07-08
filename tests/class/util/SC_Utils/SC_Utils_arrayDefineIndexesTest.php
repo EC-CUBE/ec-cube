@@ -46,7 +46,7 @@ class SC_Utils_arrayDefineIndexesTest extends Common_TestCase
   }
 
   /////////////////////////////////////////
-  public function testArrayDefineIndexes_チェック対象のキーがすべて存在する場合_配列に変化がない()
+  public function testArrayDefineIndexes_チェック対象のキーが全て存在する場合_配列に変化がない()
   {
     $input_array = array('apple' => 'りんご', 'banana' => 'バナナ', 'orange' => 'オレンジ');
     $defineIndexes = array('banana', 'orange');

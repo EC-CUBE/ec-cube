@@ -49,7 +49,7 @@ class SC_Helper_Purchase_unsetShippingTempTest extends SC_Helper_Purchase_TestBa
   }
 
   /////////////////////////////////////////
-  public function testUnsetShippingTemp__配送情報がすべて破棄される()
+  public function testUnsetShippingTemp__配送情報が全て破棄される()
   {
     SC_Helper_Purchase::unsetShippingTemp(TRUE);
 

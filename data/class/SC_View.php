@@ -190,7 +190,7 @@ class SC_View
         }
     }
 
-    // オブジェクト内の変数をすべて割り当てる。
+    // オブジェクト内の変数を全て割り当てる。
     function assignobj($obj)
     {
         $data = get_object_vars($obj);
@@ -200,7 +200,7 @@ class SC_View
         }
     }
 
-    // 連想配列内の変数をすべて割り当てる。
+    // 連想配列内の変数を全て割り当てる。
     function assignarray($array)
     {
         foreach ($array as $key => $val) {

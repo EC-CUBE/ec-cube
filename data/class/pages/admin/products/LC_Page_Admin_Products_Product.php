@@ -1199,7 +1199,7 @@ __EOF__;
      */
     function lfInsertRecommendProducts(&$objQuery, $arrList, $product_id)
     {
-        // 一旦関連商品をすべて削除する
+        // 一旦関連商品を全て削除する
         $objQuery->delete('dtb_recommend_products', 'product_id = ?', array($product_id));
         $sqlval['product_id'] = $product_id;
         $rank = RECOMMEND_PRODUCT_MAX;

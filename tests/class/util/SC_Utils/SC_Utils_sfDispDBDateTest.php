@@ -73,7 +73,7 @@ class SC_Utils_sfDispDBDateTest extends Common_TestCase
 
     $this->verify();
   }
-  public function testSfDispDBDate_年月日すべて存在する場合_フォーマット済み文字列が返る()
+  public function testSfDispDBDate_年月日全て存在する場合_フォーマット済み文字列が返る()
   {
     $dbdate = '2012-1-23 1:12:24';
     

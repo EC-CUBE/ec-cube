@@ -34,8 +34,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * このモジュールにより, 以下のページのサイトマップが生成される.
  * 1. $staticURL で指定したページ
  * 2. 管理画面のデザイン管理から生成したページ
- * 3. 公開されているすべての商品一覧ページ
- * 4. 公開されているすべての商品詳細ページ
+ * 3. 公開されている全ての商品一覧ページ
+ * 4. 公開されている全ての商品詳細ページ
  *
  * このモジュールを設置後, 各検索エンジンにサイトマップを登録することにより, 検索エンジンの
  * インデックス化が促進される.
@@ -159,7 +159,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
     /**
      * TOPページの情報を取得する.
      *
-     * @param array $arrPageList すべてのページ情報の配列
+     * @param array $arrPageList 全てのページ情報の配列
      * @return array TOPページの情報
      */
     function getTopPage($arrPageList)
@@ -174,9 +174,9 @@ class LC_Page_Sitemap extends LC_Page_Ex
     }
 
     /**
-     * すべての編集可能ページの情報を取得する.
+     * 全ての編集可能ページの情報を取得する.
      *
-     * @param array $arrPageList すべてのページ情報の配列
+     * @param array $arrPageList 全てのページ情報の配列
      * @return array 編集可能ページ
      */
     function getEditablePage($arrPageList)
@@ -192,7 +192,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
     }
 
     /**
-     * すべての商品一覧ページを取得する.
+     * 全ての商品一覧ページを取得する.
      *
      * @return array 検索エンジンからアクセス可能な商品一覧ページの情報
      */
@@ -215,7 +215,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
     }
 
     /**
-     * すべての商品詳細ページを取得する.
+     * 全ての商品詳細ページを取得する.
      *
      * @return array 検索エンジンからアクセス可能な商品詳細ページの情報
      */

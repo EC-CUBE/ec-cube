@@ -36,7 +36,7 @@
                 <div class="message_area">
                     <div class="btn_area">
                         <p>退会手続きが完了した時点で、現在保存されている購入履歴や、<br />
-                        お届け先等の情報はすべてなくなりますのでご注意ください。</p>
+                        お届け先等の情報は全てなくなりますのでご注意ください。</p>
                         <ul>
                             <li>
                                 <a href="./refusal.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not_on.jpg','refuse_not');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg','refuse_not');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg" alt="いいえ、退会しません" name="refuse_not" id="refuse_not" /></a>

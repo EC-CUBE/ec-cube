@@ -150,7 +150,7 @@
                 }
                 pageNo++;
 
-                //すべてのお届け先を表示したか判定
+                //全てのお届け先を表示したか判定
                 if (parseInt(result.delivCount) <= $(".delivBox").length) {
                     $("#btn_more_delivery").hide();
                 }

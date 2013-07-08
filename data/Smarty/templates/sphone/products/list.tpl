@@ -217,7 +217,7 @@
                 }
                 pageNo++;
 
-                //すべての商品を表示したか判定
+                //全ての商品を表示したか判定
                 if (parseInt($("#productscount").text()) <= $(".list_area").length) {
                     $("#btn_more_product").hide();
                 }

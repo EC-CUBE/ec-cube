@@ -394,9 +394,9 @@ class SC_CheckError
             }
         }
 
-        // すべての項目が満たされていない場合を判定(一部だけ入力されている状態)
+        // 全ての項目が満たされていない場合を判定(一部だけ入力されている状態)
         if ($cnt > 0 && $cnt < 3) {
-            $this->arrErr[$value[1]] .= '※ ' . $value[0] . 'はすべての項目を入力してください。<br />';
+            $this->arrErr[$value[1]] .= '※ ' . $value[0] . 'は全ての項目を入力してください。<br />';
         }
 
         $total_count = 0;
@@ -430,7 +430,7 @@ class SC_CheckError
             }
         }
 
-        // すべての項目が入力されていない場合はエラーとする。
+        // 全ての項目が入力されていない場合はエラーとする。
         $blank = false;
 
         for ($i = 1; $i < $max; $i++) {
@@ -444,7 +444,7 @@ class SC_CheckError
         }
     }
 
-    /* 関連項目がすべて満たされているか判定
+    /* 関連項目が全て満たされているか判定
         value[0]    : 項目名
         value[1]    : 判定対象要素名
     */
@@ -462,7 +462,7 @@ class SC_CheckError
         $blank = false;
         $input = false;
 
-        // すべての項目がブランクでないか、すべての項目が入力されていない場合はエラーとする。
+        // 全ての項目がブランクでないか、全ての項目が入力されていない場合はエラーとする。
         for ($i = 1; $i < $max; $i++) {
             if (strlen($this->arrParam[$value[$i]]) <= 0) {
                 $blank = true;
@@ -472,7 +472,7 @@ class SC_CheckError
         }
 
         if ($blank && $input) {
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は全ての項目を入力して下さい。<br />';
         }
     }
 
@@ -493,7 +493,7 @@ class SC_CheckError
 
         $input = false;
 
-        // すべての項目がブランクでないか、すべての項目が入力されていない場合はエラーとする。
+        // 全ての項目がブランクでないか、全ての項目が入力されていない場合はエラーとする。
         for ($i = 1; $i < $max; $i++) {
             if (strlen($this->arrParam[$value[$i]]) > 0) {
                 $input = true;
@@ -524,7 +524,7 @@ class SC_CheckError
         $blank = false;
         $error = false;
 
-        // すべての項目がブランクでないか、すべての項目が入力されていない場合はエラーとする。
+        // 全ての項目がブランクでないか、全ての項目が入力されていない場合はエラーとする。
         for ($i = 1; $i < $max; $i++) {
             if (strlen($this->arrParam[$value[$i]]) <= 0) {
                 $blank = true;
@@ -870,7 +870,7 @@ class SC_CheckError
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0) {
             // 年月日のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0)) {
-                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は全ての項目を入力して下さい。<br />';
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
                 $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が正しくありません。<br />';
             }
@@ -894,7 +894,7 @@ class SC_CheckError
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0 || $this->arrParam[$value[3]] > 0 || $this->arrParam[$value[4]] >= 0 || $this->arrParam[$value[5]] >= 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0)) {
-                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は全ての項目を入力して下さい。<br />';
             } else if (! checkdate($this->arrParam[$value[2]], $this->arrParam[$value[3]], $this->arrParam[$value[1]])) {
                 $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が正しくありません。<br />';
             }
@@ -915,7 +915,7 @@ class SC_CheckError
         if ($this->arrParam[$value[1]] > 0 || $this->arrParam[$value[2]] > 0) {
             // 年月日時のどれかが入力されていない。
             if (!(strlen($this->arrParam[$value[1]]) > 0 && strlen($this->arrParam[$value[2]]) > 0)) {
-                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'はすべての項目を入力して下さい。<br />';
+                $this->arrErr[$value[1]] = '※ ' . $value[0] . 'は全ての項目を入力して下さい。<br />';
             } else if (! checkdate($this->arrParam[$value[2]], 1, $this->arrParam[$value[1]])) {
                 $this->arrErr[$value[1]] = '※ ' . $value[0] . 'が正しくありません。<br />';
             }

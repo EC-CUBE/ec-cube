@@ -64,7 +64,7 @@ class SC_Utils_sfRmDupSlashTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfRmDupSlash_上記以外の場合_すべての重複スラッシュが1つになる()
+  public function testSfRmDupSlash_上記以外の場合_全ての重複スラッシュが1つになる()
   {
     $input = 'hoge//www.example.co.jp///aaa//bb/co.php';
     $this->expected = 'hoge/www.example.co.jp/aaa/bb/co.php';

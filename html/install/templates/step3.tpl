@@ -67,7 +67,7 @@
                 <span class="attention top"><!--{$arrErr.all}--></span>
                 <!--{if $arrErr.all != ""}-->
                     <ul class="btn-area">
-                        <li><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('drop'); return false;">既存データをすべて削除する</a></li>
+                        <li><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('drop'); return false;">既存データを全て削除する</a></li>
                     </ul>
                 <!--{/if}-->
             <!--{/if}-->

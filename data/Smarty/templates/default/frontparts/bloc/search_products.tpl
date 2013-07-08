@@ -32,7 +32,7 @@
                         <dt>商品カテゴリから選ぶ</dt>
                         <dd><input type="hidden" name="mode" value="search" />
                         <select name="category_id" class="box145">
-                            <option label="すべての商品" value="">全ての商品</option>
+                            <option label="全ての商品" value="">全ての商品</option>
                             <!--{html_options options=$arrCatList selected=$category_id}-->
                         </select>
                         </dd>
@@ -41,7 +41,7 @@
                         <!--{if $arrMakerList}-->
                         <dt>メーカーから選ぶ</dt>
                         <dd><select name="maker_id" class="box145">
-                            <option label="すべてのメーカー" value="">すべてのメーカー</option>
+                            <option label="全てのメーカー" value="">全てのメーカー</option>
                             <!--{html_options options=$arrMakerList selected=$maker_id}-->
                         </select>
                         </dd>

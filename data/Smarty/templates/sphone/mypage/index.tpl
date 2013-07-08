@@ -161,7 +161,7 @@
                 }
                 pageNo++;
 
-                //すべての商品を表示したか判定
+                //全ての商品を表示したか判定
                 if (parseInt($("#historycount").text()) <= $(".arrowBox").length) {
                     $("#btn_more_history").hide();
                 }

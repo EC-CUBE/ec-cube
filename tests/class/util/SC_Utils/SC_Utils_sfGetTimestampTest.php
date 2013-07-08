@@ -79,7 +79,7 @@ class SC_Utils_sfGetTimestampTest extends Common_TestCase
     $this->verify();
   }
 
-  public function testSfGetTimestamp_年月日すべて設定されている場合_連結された文字列が返る()
+  public function testSfGetTimestamp_年月日全て設定されている場合_連結された文字列が返る()
   {
     $year = '1999';
     $month = '09';
