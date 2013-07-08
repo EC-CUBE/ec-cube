@@ -26,6 +26,7 @@
     <div align="center"><!--{$tpl_class_name2}--></div>
     <hr>
 
+<p><!--{$tpl_class_name1}-->は「<!--{$arrClassCat1[$arrForm.classcategory_id1.value]|h}-->」を選択しています。</p>
     <!--{if $arrErr.classcategory_id2 != ""}-->
         <font color="#FF0000">※<!--{$tpl_class_name2}-->を入力して下さい｡</font><br>
     <!--{/if}-->
