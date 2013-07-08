@@ -27,7 +27,7 @@
 <div id="window_area">
     <h2 class="title"><!--{$tpl_title|h}--></h2>
     <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
-    入力後、一番下の「登録する」ボタンをクリックしてください。</p>
+        入力後、一番下の「登録する」ボタンをクリックしてください。</p>
 
     <form name="form1" id="form1" method="post" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -40,7 +40,7 @@
         </table>
         <div class="btn_area">
             <ul>
-		<li><a class="btn-action" href="javascript:" onclick="fnSetFormSubmit('form1', 'mode', 'edit'); return false;"><img onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="登録する"></a></li>
+                <li><a class="btn-action" href="javascript:" onclick="fnSetFormSubmit('form1', 'mode', 'edit'); return false;"><img onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="登録する"></a></li>
             </ul>
         </div>
     </form>

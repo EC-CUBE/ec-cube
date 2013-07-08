@@ -40,43 +40,43 @@
         <!--{/if}-->
 
         <!--{if $tpl_linemax > 0}-->
-        <form name="form1" method="post" action="?" >
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-            <input type="hidden" name="mode" value="" />
-            <input type="hidden" name="other_deliv_id" value="" />
-            <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
+            <form name="form1" method="post" action="?" >
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+                <input type="hidden" name="mode" value="" />
+                <input type="hidden" name="other_deliv_id" value="" />
+                <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
 
-            <table summary="お届け先">
-            <col width="5%" />
-            <col width="25%" />
-            <col width="50%" />
-            <col width="10%" />
-            <col width="10%" />
-                <tr>
-                    <th colspan="5">お届け先</th>
-                </tr>
-                <!--{section name=cnt loop=$arrOtherDeliv}-->
-                    <!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}-->
+                <table summary="お届け先">
+                <col width="5%" />
+                <col width="25%" />
+                <col width="50%" />
+                <col width="10%" />
+                <col width="10%" />
                     <tr>
-                        <td class="alignC"><!--{$smarty.section.cnt.iteration}--></td>
-                        <td><label for="add<!--{$smarty.section.cnt.iteration}-->">お届け先住所</label></td>
-                        <td>
-                            〒<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br />
-                            <!--{$arrPref[$OtherPref]|h}--><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
-                            <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
-                        </td>
-                        <td class="alignC">
-                            <a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>
-                        </td>
-                        <td class="alignC">
-                            <a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;">削除</a>
-                        </td>
+                        <th colspan="5">お届け先</th>
                     </tr>
-                <!--{/section}-->
-            </table>
-        </form>
+                    <!--{section name=cnt loop=$arrOtherDeliv}-->
+                        <!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}-->
+                        <tr>
+                            <td class="alignC"><!--{$smarty.section.cnt.iteration}--></td>
+                            <td><label for="add<!--{$smarty.section.cnt.iteration}-->">お届け先住所</label></td>
+                            <td>
+                                〒<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br />
+                                <!--{$arrPref[$OtherPref]|h}--><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
+                                <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
+                            </td>
+                            <td class="alignC">
+                                <a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>
+                            </td>
+                            <td class="alignC">
+                                <a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;">削除</a>
+                            </td>
+                        </tr>
+                    <!--{/section}-->
+                </table>
+            </form>
         <!--{else}-->
-        <p class="delivempty"><strong>新しいお届け先はありません。</strong></p>
+            <p class="delivempty"><strong>新しいお届け先はありません。</strong></p>
         <!--{/if}-->
     </div>
 </div>
