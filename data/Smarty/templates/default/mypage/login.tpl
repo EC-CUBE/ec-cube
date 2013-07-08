@@ -36,9 +36,9 @@
             <div class="inputbox">
                 <dl class="formlist clearfix">
                     <!--{assign var=key value="login_email"}-->
-                    <span class="attention"><!--{$arrErr[$key]}--></span>
                     <dt>メールアドレス&nbsp;：</dt>
                     <dd>
+                        <span class="attention"><!--{$arrErr[$key]}--></span>
                         <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->; ime-mode: disabled;" class="box300" />
                         <p class="login_memory">
                             <!--{assign var=key value="login_memory"}-->
@@ -48,12 +48,12 @@
                     </dd>
                 </dl>
                 <dl class="formlist clearfix">
+                    <!--{assign var=key value="login_pass"}-->
                     <dt>
-                        <!--{assign var=key value="login_pass"}-->
-                        <span class="attention"><!--{$arrErr[$key]}--></span>
                         パスワード&nbsp;：
                     </dt>
                     <dd>
+                        <span class="attention"><!--{$arrErr[$key]}--></span>
                         <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box300" />
                     </dd>
                 </dl>
