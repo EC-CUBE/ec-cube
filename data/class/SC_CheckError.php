@@ -779,7 +779,7 @@ class SC_CheckError
             return;
         }
 
-        $this->createParam($value);
+        // $this->createParam($value);
         if ($value[2] != '') {
             $dir = $value[2];
         } else {
