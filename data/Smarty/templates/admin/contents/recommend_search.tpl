@@ -42,9 +42,9 @@ function func_submit( id ){
 
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="#">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input name="mode" type="hidden" value="search" />
-<input name="search_pageno" type="hidden" value="" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input name="mode" type="hidden" value="search" />
+    <input name="search_pageno" type="hidden" value="" />
     <table class="form">
         <col width="20%" />
         <col width="80%" />

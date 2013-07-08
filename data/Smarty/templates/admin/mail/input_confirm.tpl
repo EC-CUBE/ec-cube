@@ -33,45 +33,45 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
 //-->
 </script>
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="template">
-<input type="hidden" name="subject" value="<!--{$arrForm.subject.value|h}-->">
-<input type="hidden" name="body" value="<!--{$arrForm.body.value|h}-->">
-<input type="hidden" name="mail_method" value="<!--{$arrForm.mail_method.value|h}-->">
-<input type="hidden" name="template_id" value="<!--{$arrForm.template_id.value|h}-->">
-<!--{foreach key=key item=item from=$arrHidden}-->
-    <!--{if is_array($item)}-->
-        <!--{foreach item=c_item from=$item}-->
-            <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
-        <!--{/foreach}-->
-    <!--{else}-->
-        <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-    <!--{/if}-->
-<!--{/foreach}-->
-<div id="mail" class="contents-main">
-    <table class="form">
-        <tr>
-            <th>Subject<span class="attention"> *</span></th>
-            <td><!--{$arrForm.subject.value|h}--></td>
-        </tr>
-        <!--{if $arrForm.mail_method.value ne 2}-->
-            <tr>
-                <td colspan="2"><a href="javascript:;" onclick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a>
-            </tr>
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="template">
+    <input type="hidden" name="subject" value="<!--{$arrForm.subject.value|h}-->">
+    <input type="hidden" name="body" value="<!--{$arrForm.body.value|h}-->">
+    <input type="hidden" name="mail_method" value="<!--{$arrForm.mail_method.value|h}-->">
+    <input type="hidden" name="template_id" value="<!--{$arrForm.template_id.value|h}-->">
+    <!--{foreach key=key item=item from=$arrHidden}-->
+        <!--{if is_array($item)}-->
+            <!--{foreach item=c_item from=$item}-->
+                <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
         <!--{/if}-->
-        <tr>
-            <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
-            <td><!--{$arrForm.body.value|h|nl2br}--></td>
-        </tr>
-    </table>
+    <!--{/foreach}-->
+    <div id="mail" class="contents-main">
+        <table class="form">
+            <tr>
+                <th>Subject<span class="attention"> *</span></th>
+                <td><!--{$arrForm.subject.value|h}--></td>
+            </tr>
+            <!--{if $arrForm.mail_method.value ne 2}-->
+                <tr>
+                    <td colspan="2"><a href="javascript:;" onclick="winSubmitMail('','form2','preview',650,700); return false;">HTMLで確認</a>
+                </tr>
+            <!--{/if}-->
+            <tr>
+                <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
+                <td><!--{$arrForm.body.value|h|nl2br}--></td>
+            </tr>
+        </table>
 
-    <div class="btn-area">
-        <ul>
-            <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
-        </ul>
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
+            </ul>
+        </div>
     </div>
-</div>
 </form>
 <form name="form2" id="form2" method="post" action="./preview.php" target="_blank">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />

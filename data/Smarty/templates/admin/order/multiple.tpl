@@ -148,27 +148,27 @@ function func_submit() {
 
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="<!--{$smarty.server.REQUEST_URI|h}-->">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input name="mode" type="hidden" value="search" />
-<input name="anchor_key" type="hidden" value="" />
-<input name="search_pageno" type="hidden" value="" />
-<input name="no" type="hidden" value="<!--{$tpl_no}-->" />
-<table summary="配送情報" class="list">
-    <thead>
-        <tr>
-            <th>商品コード</th>
-            <th>商品名/規格1/規格2</th>
-            <th>数量</th>
-            <th>お届け先</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-<div class="btn-area">
-    <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="func_submit(); return false;"><span class="btn-next">決定</span></a></li>
-    </ul>
-</div>
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input name="mode" type="hidden" value="search" />
+    <input name="anchor_key" type="hidden" value="" />
+    <input name="search_pageno" type="hidden" value="" />
+    <input name="no" type="hidden" value="<!--{$tpl_no}-->" />
+    <table summary="配送情報" class="list">
+        <thead>
+            <tr>
+                <th>商品コード</th>
+                <th>商品名/規格1/規格2</th>
+                <th>数量</th>
+                <th>お届け先</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="func_submit(); return false;"><span class="btn-next">決定</span></a></li>
+        </ul>
+    </div>
 </form>
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_footer.tpl"}-->

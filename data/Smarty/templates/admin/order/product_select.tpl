@@ -135,38 +135,38 @@
 
 <!--▼検索フォーム-->
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input name="mode" type="hidden" value="search" />
-<input name="anchor_key" type="hidden" value="" />
-<input name="search_pageno" type="hidden" value="" />
-<input name="shipping_id" type="hidden" value="<!--{$shipping_id}-->" />
-<input name="no" type="hidden" value="<!--{$tpl_no|h}-->" />
-<table class="form">
-    <col width="20%" />
-    <col width="80%" />
-    <tr>
-        <th>カテゴリ</th>
-        <td>
-            <select name="search_category_id">
-                <option value="" selected="selected">選択してください</option>
-                <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>商品名</th>
-        <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="35" class="box35" /></td>
-    </tr>
-    <tr>
-        <th>商品コード</th>
-        <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="35" class="box35" /></td>
-    </tr>
-</table>
-<div class="btn-area">
-    <ul>
-        <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next">検索を開始</span></a></li>
-    </ul>
-</div>
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input name="mode" type="hidden" value="search" />
+    <input name="anchor_key" type="hidden" value="" />
+    <input name="search_pageno" type="hidden" value="" />
+    <input name="shipping_id" type="hidden" value="<!--{$shipping_id}-->" />
+    <input name="no" type="hidden" value="<!--{$tpl_no|h}-->" />
+    <table class="form">
+        <col width="20%" />
+        <col width="80%" />
+        <tr>
+            <th>カテゴリ</th>
+            <td>
+                <select name="search_category_id">
+                    <option value="" selected="selected">選択してください</option>
+                    <!--{html_options options=$arrCatList selected=$arrForm.search_category_id}-->
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>商品名</th>
+            <td><input type="text" name="search_name" value="<!--{$arrForm.search_name|h}-->" size="35" class="box35" /></td>
+        </tr>
+        <tr>
+            <th>商品コード</th>
+            <td><input type="text" name="search_product_code" value="<!--{$arrForm.search_product_code|h}-->" size="35" class="box35" /></td>
+        </tr>
+    </table>
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;"><span class="btn-next">検索を開始</span></a></li>
+        </ul>
+    </div>
 </form>
 <!--▼検索結果表示-->
 <!--{if $tpl_linemax}-->

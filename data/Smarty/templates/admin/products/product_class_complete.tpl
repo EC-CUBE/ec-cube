@@ -23,18 +23,18 @@
 *}-->
 
 <form name="form1" id="form1" method="post" action="./product_class.php">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="" />
-<input type="hidden" name="product_id" value="" />
-<!--{foreach key=key item=item from=$arrSearchHidden}-->
-    <!--{if is_array($item)}-->
-        <!--{foreach item=c_item from=$item}-->
-        <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
-        <!--{/foreach}-->
-    <!--{else}-->
-        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
-    <!--{/if}-->
-<!--{/foreach}-->
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="" />
+    <input type="hidden" name="product_id" value="" />
+    <!--{foreach key=key item=item from=$arrSearchHidden}-->
+        <!--{if is_array($item)}-->
+            <!--{foreach item=c_item from=$item}-->
+            <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
+            <!--{/foreach}-->
+        <!--{else}-->
+            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+        <!--{/if}-->
+    <!--{/foreach}-->
     <div id="complete">
         <div class="complete-top"></div>
         <div class="contents">

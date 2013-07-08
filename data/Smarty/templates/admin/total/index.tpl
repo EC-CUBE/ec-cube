@@ -96,13 +96,13 @@
     <!--{* 検索結果一覧ここから *}-->
     <!--{if count($arrResults) > 0}-->
         <form name="form1" id="form1" method="post" action="?">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="search" />
-        <input type="hidden" name="type" value="<!--{$arrForm.type.value|h}-->" />
-        <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
-        <!--{foreach key=key item=item from=$arrHidden}-->
-            <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-        <!--{/foreach}-->
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="mode" value="search" />
+            <input type="hidden" name="type" value="<!--{$arrForm.type.value|h}-->" />
+            <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
+            <!--{foreach key=key item=item from=$arrHidden}-->
+                <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+            <!--{/foreach}-->
 
             <!--検索結果表示テーブル-->
             <h2><!--{include file=$tpl_graphsubtitle}--></h2>
@@ -128,19 +128,19 @@
     <!--{else}-->
         <!--{if $smarty.post.mode == 'search'}-->
             <form name="form1" id="form1" method="post" action="?">
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-            <input type="hidden" name="mode" value="search" />
-            <input type="hidden" name="type" value="<!--{$arrForm.type.value|h}-->" />
-            <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
-            <!--{foreach key=key item=item from=$arrHidden}-->
-                <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-            <!--{/foreach}-->
-            <!--検索結果表示テーブル-->
-            <h2><!--{include file=$tpl_graphsubtitle}--></h2>
-            <div class="message">
-                該当するデータはありません。
-            </div>
-            <!--検索結果表示テーブル-->
+                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+                <input type="hidden" name="mode" value="search" />
+                <input type="hidden" name="type" value="<!--{$arrForm.type.value|h}-->" />
+                <input type="hidden" name="page" value="<!--{$arrForm.page.value|h}-->" />
+                <!--{foreach key=key item=item from=$arrHidden}-->
+                    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+                <!--{/foreach}-->
+                <!--検索結果表示テーブル-->
+                <h2><!--{include file=$tpl_graphsubtitle}--></h2>
+                <div class="message">
+                    該当するデータはありません。
+                </div>
+                <!--検索結果表示テーブル-->
             </form>
         <!--{/if}-->
     <!--{/if}-->

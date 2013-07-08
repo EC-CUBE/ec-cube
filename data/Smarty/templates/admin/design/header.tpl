@@ -33,11 +33,11 @@
     <!--{* ▼ヘッダー編集ここから *}-->
     <h2>ヘッダー編集</h2>
     <form name="form_header" id="form_header" method="post" action="?" >
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="mode" value="" />
-    <input type="hidden" name="division" value="header" />
-    <input type="hidden" name="header_row" value="<!--{$header_row}-->" />
-    <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="" />
+        <input type="hidden" name="division" value="header" />
+        <input type="hidden" name="header_row" value="<!--{$header_row}-->" />
+        <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
         <textarea id="header-area" class="top" name="header" rows="<!--{$header_row}-->" style="width: 100%;"><!--{"\n"}--><!--{$header_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">
@@ -56,11 +56,11 @@
     <!--{* ▼フッター編集ここから *}-->
     <h2>フッター編集</h2>
     <form name="form_footer" id="form_footer" method="post" action="?" >
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="mode" value="" />
-    <input type="hidden" name="division" value="footer" />
-    <input type="hidden" name="footer_row" value="<!--{$footer_row}-->" />
-    <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="" />
+        <input type="hidden" name="division" value="footer" />
+        <input type="hidden" name="footer_row" value="<!--{$footer_row}-->" />
+        <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
         <textarea id="footer-area" class="top" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{"\n"}--><!--{$footer_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">

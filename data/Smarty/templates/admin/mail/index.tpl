@@ -24,8 +24,8 @@
 
 <div id="mail" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="search" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="search" />
     <h2>配信先検索条件設定</h2>
 
     <!--{* 検索条件設定テーブルここから *}-->
@@ -63,21 +63,20 @@
     </div>
 </form>
 
-
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back')}-->
 
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="" />
-<!--{foreach key=key item=item from=$arrHidden}-->
-<!--{if is_array($item)}-->
-    <!--{foreach item=c_item from=$item}-->
-        <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="" />
+    <!--{foreach key=key item=item from=$arrHidden}-->
+    <!--{if is_array($item)}-->
+        <!--{foreach item=c_item from=$item}-->
+            <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+        <!--{/foreach}-->
+    <!--{else}-->
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+    <!--{/if}-->
     <!--{/foreach}-->
-<!--{else}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-<!--{/if}-->
-<!--{/foreach}-->
 
     <h2>検索結果一覧</h2>
     <div class="btn">
@@ -89,38 +88,37 @@
             <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span>配信内容を設定する</span></a>
         <!--{/if}-->
     </div>
+
     <!--{if count($arrResults) > 0}-->
+        <!--{include file=$tpl_pager}-->
 
-    <!--{include file=$tpl_pager}-->
-
-    <!--検索結果表示テーブル-->
-    <table class="list">
-    <col width="10%" />
-    <col width="25%" />
-    <col width="35%" />
-    <col width="15%" />
-    <col width="15%" />
-        <tr>
-            <th>会員ID</th>
-            <th>名前</th>
-            <th>メールアドレス</th>
-            <th>希望配信</th>
-            <th>登録・更新日</th>
-        </tr>
-        <!--{section name=i loop=$arrResults}-->
-        <tr>
-            <td class="center"><!--{$arrResults[i].customer_id}--></td>
-            <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
-            <td><!--{$arrResults[i].email|h}--></td>
-            <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
-            <td class="center"><!--{$arrHtmlmail[$key]}--></td>
-            <td class="center"><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
-        </tr>
-        <!--{/section}-->
-    </table>
-    <!--検索結果表示テーブル-->
+        <!--検索結果表示テーブル-->
+        <table class="list">
+        <col width="10%" />
+        <col width="25%" />
+        <col width="35%" />
+        <col width="15%" />
+        <col width="15%" />
+            <tr>
+                <th>会員ID</th>
+                <th>名前</th>
+                <th>メールアドレス</th>
+                <th>希望配信</th>
+                <th>登録・更新日</th>
+            </tr>
+            <!--{section name=i loop=$arrResults}-->
+            <tr>
+                <td class="center"><!--{$arrResults[i].customer_id}--></td>
+                <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
+                <td><!--{$arrResults[i].email|h}--></td>
+                <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
+                <td class="center"><!--{$arrHtmlmail[$key]}--></td>
+                <td class="center"><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
+            </tr>
+            <!--{/section}-->
+        </table>
+        <!--検索結果表示テーブル-->
     <!--{/if}-->
-
 </form>
 
 <!--{/if}-->
