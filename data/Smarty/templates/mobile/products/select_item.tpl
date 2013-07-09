@@ -26,8 +26,12 @@
     <div align="center">数量指定</div>
     <hr>
 
-<p><!--{$tpl_class_name1}-->は「<!--{$arrClassCat1[$arrForm.classcategory_id1.value]|h}-->」を選択しています。</p>
-<p><!--{$tpl_class_name2}-->は「<!--{$arrClassCat2[$arrForm.classcategory_id2.value]|h}-->」を選択しています。</p>
+    <!--{if $arrForm.classcategory_id1.value}-->
+        <p><!--{$tpl_class_name1}-->は「<!--{$arrClassCat1[$arrForm.classcategory_id1.value]|h}-->」を選択しています。</p>
+    <!--{/if}-->
+    <!--{if $arrForm.classcategory_id2.value}-->
+        <p><!--{$tpl_class_name2}-->は「<!--{$arrClassCat2[$arrForm.classcategory_id2.value]|h}-->」を選択しています。</p>
+    <!--{/if}-->
     <!--{if $arrErr.quantity != ""}-->
         <font color="#FF0000">※数量を入力して下さい｡</font><br>
     <!--{/if}-->
