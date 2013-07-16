@@ -72,7 +72,15 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex
         }
 
         $this->setTemplate($this->tpl_mainpage);
-        // $debug_message = 'block：' . $this->tpl_mainpage . "\n";
-        // GC_Utils_Ex::gfDebugLog($debug_message);
+    }
+
+    /**
+     * デストラクタ
+     *
+     * @return void
+     */
+    function __destruct()
+    {
+        // 親がリクエスト単位を意図した処理なので、断絶する。
     }
 }
