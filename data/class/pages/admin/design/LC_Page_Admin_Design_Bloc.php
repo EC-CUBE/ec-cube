@@ -166,7 +166,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      */
     function getBlocTemplate($bloc_id, SC_Helper_Bloc_Ex &$objBloc)
     {
-        $arrBloc = $objBloc->get($bloc_id);
+        $arrBloc = $objBloc->getBloc($bloc_id);
 
         return $arrBloc;
     }
