@@ -108,8 +108,8 @@ $(function() {
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br />
                     <span class="ex-text">管理機能のディレクトリ名です。<br />
-                     下記で管理機能にアクセスする場合の[管理機能]の部分です。<br />
-                     https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/<span class="bold">[ディレクトリ]</span>/</span><br />
+                     下記URLで管理機能にアクセスする場合の[管理機能ディレクトリ]の部分です。<br />
+                     <!--{$arrForm.secure_url.value|h}--><span class="bold">[管理機能ディレクトリ]</span>/</span><br />
                     </td>
                 </tr>
                 <tr>
