@@ -26,11 +26,11 @@
     <div align="center">数量指定</div>
     <hr>
 
-    <!--{if $arrForm.classcategory_id1.value}-->
+    <!--{if $tpl_classcat_find1}-->
         <p><!--{$tpl_class_name1}-->は「<!--{$arrClassCat1[$arrForm.classcategory_id1.value]|h}-->」を選択しています。</p>
-    <!--{/if}-->
-    <!--{if $arrForm.classcategory_id2.value}-->
-        <p><!--{$tpl_class_name2}-->は「<!--{$arrClassCat2[$arrForm.classcategory_id2.value]|h}-->」を選択しています。</p>
+        <!--{if $tpl_classcat_find2}-->
+            <p><!--{$tpl_class_name2}-->は「<!--{$arrClassCat2[$arrForm.classcategory_id2.value]|h}-->」を選択しています。</p>
+        <!--{/if}-->
     <!--{/if}-->
     <!--{if $arrErr.quantity != ""}-->
         <font color="#FF0000">※数量を入力して下さい｡</font><br>
