@@ -104,12 +104,13 @@ $(function() {
                         半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
                     </th>
                     <td>
-                    <!--{assign var=key value="admin_dir"}-->
-                    <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br />
-                    <span class="ex-text">管理機能のディレクトリ名です。<br />
-                     下記URLで管理機能にアクセスする場合の[管理機能ディレクトリ]の部分です。<br />
-                     <!--{$arrForm.secure_url.value|h}--><span class="bold">[管理機能ディレクトリ]</span>/</span><br />
+                        <!--{assign var=key value="admin_dir"}-->
+                        <span class="attention"><!--{$arrErr[$key]}--></span>
+                        <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" />
+                        <div class="ex-text">
+                            管理機能にアクセスする下記URLの [管理機能ディレクトリ] の部分です。<br />
+                            <!--{$arrForm.secure_url.value|h}--><span class="bold">[管理機能ディレクトリ]</span>/
+                        </div>
                     </td>
                 </tr>
                 <tr>
