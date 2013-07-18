@@ -786,8 +786,10 @@ function lfCheckWebError($objWebParam)
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objWebParam->getValue('admin_dir');
-    if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
-        $objErr->arrErr['admin_dir'] = '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
+    if ($newAdminDir) {
+        if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
+            $objErr->arrErr['admin_dir'] = '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
+        }
     }
 
     return $objErr->arrErr;
