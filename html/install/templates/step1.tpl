@@ -103,7 +103,7 @@ $(function() {
                     <td>
                     <!--{assign var=key value="admin_dir"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:'admin'|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br />
+                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->;" size="50" /><br />
                     <span class="ex-text">管理機能のディレクトリ名です。<br />
                      下記で管理機能にアクセスする場合の[管理機能]の部分です。<br />
                      https://[ホスト名].[ドメイン名]/[ショップディレクトリ]/<span class="bold">[ディレクトリ]</span>/</span><br />

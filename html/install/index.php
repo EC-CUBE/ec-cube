@@ -39,9 +39,6 @@ ob_start();
 
 $ownDir = realpath(dirname(__FILE__)) . '/';
 
-if (!defined('ADMIN_DIR')) {
-    define('ADMIN_DIR', 'admin/');
-}
 
 define('INSTALL_LOG', './temp/install.log');
 ini_set('max_execution_time', 300);
@@ -660,7 +657,9 @@ function lfInitWebParam($objWebParam)
     }
 
     // 管理機能のディレクトリ名を取得（再インストール時）
-    $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    if (defined('ADMIN_DIR')) {
+        $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    }
 
     if (defined('ADMIN_FORCE_SSL')) {
         $admin_force_ssl = ADMIN_FORCE_SSL;
@@ -1129,6 +1128,10 @@ function getSequences()
  */
 function renameAdminDir($adminDir)
 {
+    if (!defined('ADMIN_DIR')) {
+       define('ADMIN_DIR', 'admin/');
+    }
+
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     if ($adminDir === $oldAdminDir) {
         return true;
