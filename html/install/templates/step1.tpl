@@ -99,7 +99,10 @@ $(function() {
                 <col width="30%" />
                 <col width="70%" />
                 <tr>
-                    <th>ディレクトリ<br/>半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字</th>
+                    <th>
+                        ディレクトリ<span class="attention">※</span><br/>
+                        半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
+                    </th>
                     <td>
                     <!--{assign var=key value="admin_dir"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
