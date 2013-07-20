@@ -109,33 +109,6 @@ class SC_CartSession
         return max($count) + 1;
     }
 
-    /**
-     * 商品ごとの合計価格
-     * XXX 実際には、「商品」ではなく、「カートの明細行(≒商品規格)」のような気がします。
-     *
-     * @param integer $id
-     * @return string 商品ごとの合計価格(税込み)
-     * @deprecated SC_CartSession::getCartList() を使用してください
-     */
-    function getProductTotal($id, $productTypeId)
-    {
-        $max = $this->getMax($productTypeId);
-        for ($i = 0; $i <= $max; $i++) {
-            if (isset($this->cartSession[$productTypeId][$i]['id'])
-                && $this->cartSession[$productTypeId][$i]['id'] == $id
-            ) {
-                // 税込み合計
-                $price = $this->cartSession[$productTypeId][$i]['price'];
-                $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-                $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price, 0, $id[0]);
-                $total = $incTax * $quantity;
-                return $total;
-            }
-        }
-
-        return 0;
-    }
-
     // 値のセット
     function setProductValue($id, $key, $val, $productTypeId)
     {
@@ -179,7 +152,7 @@ class SC_CartSession
     }
 
     // 全商品の合計価格
-    function getAllProductsTotal($productTypeId)
+    function getAllProductsTotal($productTypeId, $pref_id = 0, $country_id = 0)
     {
         // 税込み合計
         $total = 0;
@@ -195,18 +168,18 @@ class SC_CartSession
                 $this->cartSession[$productTypeId][$i]['quantity'] = '';
             }
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
-
             $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price,
                 $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                $this->cartSession[$productTypeId][$i]['id'][0]);
+                $this->cartSession[$productTypeId][$i]['id'][0],
+                $pref_id, $country_id);
+
             $total+= ($incTax * $quantity);
         }
-
         return $total;
     }
 
     // 全商品の合計税金
-    function getAllProductsTax($productTypeId)
+    function getAllProductsTax($productTypeId, $pref_id = 0, $country_id = 0)
     {
         // 税合計
         $total = 0;
@@ -216,7 +189,9 @@ class SC_CartSession
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
             $tax = SC_Helper_TaxRule_Ex::sfTax($price,
                 $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                $this->cartSession[$productTypeId][$i]['id'][0]);
+                $this->cartSession[$productTypeId][$i]['id'][0],
+                $pref_id, $country_id);
+
             $total+= ($tax * $quantity);
         }
 
@@ -361,6 +336,8 @@ class SC_CartSession
      * @param integer $product_type_id 商品種別ID
      * @param integer $key 
      * @return void
+     *
+     * MEMO: せっかく一回だけ読み込みにされてますが、税率対応の関係でちょっと保留
      */
     function setCartSession4getCartList($productTypeId, $key)
     {
@@ -390,12 +367,16 @@ class SC_CartSession
      * 商品種別ごとにカート内商品の一覧を取得する.
      *
      * @param integer $productTypeId 商品種別ID
+     * @param integer $pref_id 税金計算用注文者都道府県ID
+     * @param integer $country_id 税金計算用注文者国ID
      * @return array カート内商品一覧の配列
      */
-    function getCartList($productTypeId)
+    function getCartList($productTypeId, $pref_id = 0, $country_id = 0)
     {
+        $objProduct = new SC_Product_Ex();
         $max = $this->getMax($productTypeId);
         $arrRet = array();
+/*
 
         $const_name = '_CALLED_SC_CARTSESSION_GETCARTLIST_' . $productTypeId;
         if (defined($const_name)) {
@@ -405,15 +386,45 @@ class SC_CartSession
             $is_first = false;
         }
 
+*/
         for ($i = 0; $i <= $max; $i++) {
             if (isset($this->cartSession[$productTypeId][$i]['cart_no'])
                 && $this->cartSession[$productTypeId][$i]['cart_no'] != '') {
-                // 商品情報は常に取得
 
+                // 商品情報は常に取得
+                // TODO: 同一インスタンス内では1回のみ呼ぶようにしたい
+                // TODO: ここの商品の合計処理は getAllProductsTotalや getAllProductsTaxとで類似重複なので統一出来そう
+/*
                 // 同一セッション内では初回のみDB参照するようにしている
                 if (!$is_first) {
                     $this->setCartSession4getCartList($productTypeId, $i);
                 }
+*/
+
+                $this->cartSession[$productTypeId][$i]['productsClass']
+                    =& $objProduct->getDetailAndProductsClass($this->cartSession[$productTypeId][$i]['id']);
+
+                $price = $this->cartSession[$productTypeId][$i]['productsClass']['price02'];
+                $this->cartSession[$productTypeId][$i]['price'] = $price;
+
+                $this->cartSession[$productTypeId][$i]['point_rate']
+                    = $this->cartSession[$productTypeId][$i]['productsClass']['point_rate'];
+
+                $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
+
+                $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule(
+                                    $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
+                                    $this->cartSession[$productTypeId][$i]['id'][0],
+                                    $pref_id,
+                                    $country_id);
+                $incTax = $price + SC_Helper_TaxRule_Ex::calcTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);
+
+                $total = $incTax * $quantity;
+                $this->cartSession[$productTypeId][$i]['price_inctax'] = $incTax;
+                $this->cartSession[$productTypeId][$i]['total_inctax'] = $total;
+                $this->cartSession[$productTypeId][$i]['tax_rate'] = $arrTaxRule['tax_rate'];
+                $this->cartSession[$productTypeId][$i]['tax_rule'] = $arrTaxRule['tax_rule'];
+                $this->cartSession[$productTypeId][$i]['tax_adjust'] = $arrTaxRule['tax_adjust'];
 
                 $arrRet[] = $this->cartSession[$productTypeId][$i];
 
@@ -681,20 +692,21 @@ class SC_CartSession
      * @param integer $charge 手数料
      * @param integer $discount 値引き
      * @param integer $deliv_id 配送業者ID
+     * @param integer $order_pref 注文者の都道府県ID
+     * @param integer $order_country_id 注文者の国
      * @return array カートの計算結果の配列
      */
     function calculate($productTypeId, &$objCustomer, $use_point = 0,
-        $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0
+        $deliv_pref = '', $charge = 0, $discount = 0, $deliv_id = 0,
+        $order_pref = 0, $order_country_id = 0
     ) {
+
         $results = array();
         $total_point = $this->getAllProductsPoint($productTypeId);
-        $results['tax'] = $this->getAllProductsTax($productTypeId);
-        $results['subtotal'] = $this->getAllProductsTotal($productTypeId);
+        // MEMO: 税金計算は注文者の住所基準
+        $results['tax'] = $this->getAllProductsTax($productTypeId, $order_pref, $order_country_id);
+        $results['subtotal'] = $this->getAllProductsTotal($productTypeId, $oder_pref, $order_country_id);
         $results['deliv_fee'] = 0;
-
-        $arrTaxInfo = SC_Helper_TaxRule_Ex::getTaxRule();
-        $results['order_tax_rate'] = $arrTaxInfo['tax_rate'];
-        $results['order_tax_rule'] = $arrTaxInfo['calc_rule'];
 
         // 商品ごとの送料を加算
         if (OPTION_PRODUCT_DELIV_FEE == 1) {
