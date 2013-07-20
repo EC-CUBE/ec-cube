@@ -273,41 +273,20 @@ class LC_Page_Shopping extends LC_Page_Ex
      */
     function lfInitParam(&$objFormParam)
     {
-        $objFormParam->addParam('お名前(姓)', 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('お名前(名)', 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('お名前(フリガナ・姓)', 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'KANA_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('お名前(フリガナ・名)', 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'KANA_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('郵便番号1', 'order_zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam('郵便番号2', 'order_zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam('都道府県', 'order_pref', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('住所1', 'order_addr01', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('住所2', 'order_addr02', MTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('電話番号1', 'order_tel01', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号2', 'order_tel02', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号3', 'order_tel03', TEL_ITEM_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号1', 'order_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号2', 'order_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号3', 'order_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('メールアドレス', 'order_email', null, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
-        $objFormParam->addParam('メールアドレス（確認）', 'order_email02', null, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'), '', false);
-        $objFormParam->addParam('年', 'year', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam('月', 'month', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam('日', 'day', INT_LEN, 'n', array('MAX_LENGTH_CHECK'), '', false);
-        $objFormParam->addParam('性別', 'order_sex', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('職業', 'order_job', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam, 'order_');
+        SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, false, false, 'order_');
+
+        // 不要なパラメーターの削除
+        // XXX: 共通化したことをうまく使えば、以前あった購入同時会員登録も復活出来そうですが
+        $objFormParam->removeParam('order_password');
+        $objFormParam->removeParam('order_password02');
+        $objFormParam->removeParam('order_reminder');
+        $objFormParam->removeParam('order_reminder_answer');
+        $objFormParam->removeParam('order_mailmaga_flg');
+
         $objFormParam->addParam('別のお届け先', 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('お名前(姓)', 'shipping_name01', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('お名前(名)', 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('お名前(フリガナ・姓)', 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('お名前(フリガナ・名)', 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('郵便番号1', 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam('郵便番号2', 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
-        $objFormParam->addParam('都道府県', 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('住所1', 'shipping_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('住所2', 'shipping_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('電話番号1', 'shipping_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号2', 'shipping_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号3', 'shipping_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+
+        SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam, 'shipping_');
     }
 
     /**
@@ -408,37 +387,22 @@ class LC_Page_Shopping extends LC_Page_Ex
      */
     function lfCheckError(&$objFormParam)
     {
-        // 入力値の変換
-        $objFormParam->convParam();
-        $objFormParam->toLower('order_mail');
-        $objFormParam->toLower('order_mail_check');
-
-        $arrParams = $objFormParam->getHashArray();
-        $objErr = new SC_CheckError_Ex($arrParams);
-        $objErr->arrErr = $objFormParam->checkError();
+        $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam, 'order_');
 
         // 別のお届け先チェック
         if (isset($arrParams['deliv_check']) && $arrParams['deliv_check'] == '1') {
-            $objErr->doFunc(array('お名前(姓)', 'shipping_name01'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('お名前(名)', 'shipping_name02'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('お名前(フリガナ・姓)', 'shipping_kana01'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('お名前(フリガナ・名)', 'shipping_kana02'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('郵便番号1', 'shipping_zip01'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('郵便番号2', 'shipping_zip02'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('都道府県', 'shipping_pref'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('住所1', 'shipping_addr01'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('住所2', 'shipping_addr02'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('電話番号1', 'shipping_tel01'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('電話番号2', 'shipping_tel02'), array('EXIST_CHECK'));
-            $objErr->doFunc(array('電話番号3', 'shipping_tel03'), array('EXIST_CHECK'));
+            $objErr2 = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam, 'shipping_');
+            $objErr->arrErr = array_merge((array)$objErr->arrErr, (array)$objErr2->arrErr);
+        } else {
+            // shipping系のエラーは無視
+            foreach ($objErr->arrErr as $key => $val) {
+                if (substr($key, 0, strlen('shipping_')) == 'shipping_') {
+                    unset($objErr->arrErr[$key]);
+                }
+            }
         }
 
         // 複数項目チェック
-        $objErr->doFunc(array('TEL', 'order_tel01', 'order_tel02', 'order_tel03'), array('TEL_CHECK'));
-        $objErr->doFunc(array('FAX', 'order_fax01', 'order_fax02', 'order_fax03'), array('TEL_CHECK'));
-        $objErr->doFunc(array('郵便番号', 'order_zip01', 'order_zip02'), array('ALL_EXIST_CHECK'));
-        $objErr->doFunc(array('TEL', 'shipping_tel01', 'shipping_tel02', 'shipping_tel03'), array('TEL_CHECK'));
-        $objErr->doFunc(array('郵便番号', 'shipping_zip01', 'shipping_zip02'), array('ALL_EXIST_CHECK'));
         $objErr->doFunc(array('生年月日', 'year', 'month', 'day'), array('CHECK_BIRTHDAY'));
         $objErr->doFunc(array('メールアドレス', 'メールアドレス（確認）', 'order_email', 'order_email02'), array('EQUAL_CHECK'));
 
