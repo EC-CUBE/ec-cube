@@ -24,7 +24,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * 税金管理 のページクラス.
+ * 税金設定 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,7 +47,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
         $this->tpl_subno = 'tax';
         $this->tpl_mainno = 'basis';
         $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '税金管理';
+        $this->tpl_subtitle = '税金設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXCALCRULE = $masterData->getMasterData('mtb_taxrule');
@@ -64,6 +64,9 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
             $arrMinutes[$minutes] = $minutes;
         }
         $this->arrMinutes = $arrMinutes;
+
+        $this->arrEnable = array( '1' => '有効', '0' => '無効');
+
     }
 
     /**
@@ -101,6 +104,20 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
 
         // モードによる処理切り替え
         switch ($this->getMode()) {
+            // 共通設定登録
+            case 'param_edit':
+                $arrErr = $this->lfCheckError($objFormParam, $objTaxRule);
+                if (SC_Utils_Ex::isBlank($arrErr['product_tax_flg'])) {
+                    // POST値の引き継ぎ
+                    $arrParam = $objFormParam->getHashArray();
+                    // 登録実行
+                    if ($this->doParamRegist($arrParam)) {
+                        // 完了メッセージ
+                        $this->tpl_onload = "alert('登録が完了しました。');";
+                    }
+                }
+                break;
+
             // 編集処理
             case 'edit':
                 // エラーチェック
@@ -166,6 +183,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
      */
     function lfInitParam(&$objFormParam)
     {
+        $objFormParam->addParam('商品個別 税率設定機能', 'product_tax_flg', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'), OPTION_PRODUCT_TAX_RULE);
         $objFormParam->addParam('税規約ID', 'tax_rule_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('消費税率', 'tax_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('課税規則', 'calc_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -188,12 +206,43 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
      */
     function doRegist($tax_rule_id, $arrParam, SC_Helper_TaxRule_Ex $objTaxRule)
     {
-        $apply_date = SC_Utils_Ex::sfGetTimestampistime($arrParam['apply_date_year'], sprintf("%02d",$arrParam['apply_date_month']), sprintf("%02d",$arrParam['apply_date_day']),sprintf("%02d",$arrParam['apply_date_hour']), sprintf("%02d",$arrParam['apply_date_minutes']));
+        $apply_date = SC_Utils_Ex::sfGetTimestampistime(
+                $arrParam['apply_date_year'],
+                sprintf("%02d", $arrParam['apply_date_month']),
+                sprintf("%02d", $arrParam['apply_date_day']),
+                sprintf("%02d", $arrParam['apply_date_hour']),
+                sprintf("%02d", $arrParam['apply_date_minutes'])
+                );
 
         $calc_rule = $arrParam['calc_rule'];
         $tax_rate = $arrParam['tax_rate'];
 
         return $objTaxRule->setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id);
+    }
+
+    /**
+     * 共通設定の登録処理を実行.
+     *
+     * @param array $arrParam
+     * @return boolean
+     */
+    function doParamRegist($arrParam)
+    {
+        $arrData = array();
+        foreach ($arrParam as $key => $val) {
+            switch ($key) {
+            case 'product_tax_flg':
+                $arrData['OPTION_PRODUCT_TAX_RULE'] = $val;
+                break;
+            default:
+            }
+        }
+        $masterData = new SC_DB_MasterData_Ex();
+        // DBのデータを更新
+        $res = $masterData->updateMasterData('mtb_constants', array(), $arrData);
+        // キャッシュを生成
+        $masterData->createCache('mtb_constants', array(), true, array('id', 'remarks'));
+        return $res;
     }
 
     /**
@@ -217,7 +266,13 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
         }
 
         if ($arrForm['tax_rule_id'] != '0') {
-        $apply_date = SC_Utils_Ex::sfGetTimestampistime($arrForm['apply_date_year'], sprintf("%02d",$arrForm['apply_date_month']), sprintf("%02d",$arrForm['apply_date_day']),sprintf("%02d",$arrForm['apply_date_hour']), sprintf("%02d",$arrForm['apply_date_minutes']));
+        $apply_date = SC_Utils_Ex::sfGetTimestampistime(
+                $arrForm['apply_date_year'],
+                sprintf("%02d", $arrForm['apply_date_month']),
+                sprintf("%02d", $arrForm['apply_date_day']),
+                sprintf("%02d", $arrForm['apply_date_hour']),
+                sprintf("%02d", $arrForm['apply_date_minutes'])
+                );
 
         // 税規約情報読み込み
         $arrTaxRuleByTime = $objTaxRule->getTaxRuleByTime($apply_date);
