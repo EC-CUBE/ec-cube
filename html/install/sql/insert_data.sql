@@ -1256,6 +1256,9 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LOGIN_RETRY_INTERVA
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MYPAGE_ORDER_STATUS_DISP_FLAG', 'true', 1412, 'MYページ：ご注文状況表示フラグ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_COUNTRY_ID', 392, 1413, 'デフォルト国コード ISO_3166-1に準拠');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('USE_NORMALIZE_HOSTNAME', true, 1414, 'ホスト名を正規化するか (true:する false:しない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FORM_COUNTRY_ENABLE', 'false', 1414, '各種フォームで国の指定を有効にする(true:有効 false:無効)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_PRODUCT_TAX_RULE', '0', 1415, '商品ごとの税率設定(軽減税率対応 有効:1 無効:0) ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TAX_RULE_PRIORITY', '"product_id,product_class_id,pref_id,country_id"', 1416, '複数箇所の税率設定時における優先度設定。カンマ区切りスペース不可で記述。後に書いてあるキーに一致するほど優先される。デフォルト：''product_id,product_class_id,pref_id,country_id''（国＞地域（県）＞規格単位＞商品単位）');
 
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
