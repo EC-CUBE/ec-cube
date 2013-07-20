@@ -865,7 +865,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
             }
             $arrInstallErr = $objPluginInstaller->execPlugin();
             if ($arrInstallErr) {
-                $arrErr['plugin_file'] = "プラグインのインストールにしっぱいしました.<br/>";
+                $arrErr['plugin_file'] = "プラグインのインストールに失敗しました.<br/>";
             }
         } else {
             $arrErr['plugin_file'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
