@@ -43,6 +43,7 @@ class LC_Page_Entry extends LC_Page_Ex
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->arrJob       = $masterData->getMasterData('mtb_job');
         $this->arrReminder  = $masterData->getMasterData('mtb_reminder');
+        $this->arrCountry   = $masterData->getMasterData('mtb_country');
 
         // 生年月日選択肢の取得
         $objDate            = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
