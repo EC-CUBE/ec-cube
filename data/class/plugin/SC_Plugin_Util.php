@@ -154,11 +154,11 @@ class SC_Plugin_Util
         $where = 'plugin_id = ?';
         switch ($use_type) {
             case 1:
-                $where .= ' AND use_flg = true';
+                $where .= ' AND use_flg = 1';
             break;
 
             case 2:
-                $where .= ' AND use_flg = false';
+                $where .= ' AND use_flg = 0';
             break;
 
             case 3:
@@ -182,11 +182,11 @@ class SC_Plugin_Util
         $from = 'dtb_plugin_hookpoint LEFT JOIN dtb_plugin USING(plugin_id)';
         switch ($use_type) {
             case 1:
-                $where = 'enable = 1 AND use_flg = true';
+                $where = 'enable = 1 AND use_flg = 1';
             break;
 
             case 2:
-                $where = 'enable = 1 AND use_flg = false';
+                $where = 'enable = 1 AND use_flg = 0';
             break;
 
             case 3:
@@ -234,9 +234,9 @@ class SC_Plugin_Util
      * フックポイントのON/OFF変更
      *
      * @param intger $plugin_hookpoint_id  フックポイントID
-     * @return bolean $use_flg：ture=ON、false=OFF
+     * @return bolean $use_flg：1=ON、0=OFF
      */
-    function setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg = false) {
+    function setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg = 0) {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['use_flg'] = $use_flg;
         $objQuery->update('dtb_plugin_hookpoint', $sqlval, 'plugin_hookpoint_id = ?', array($plugin_hookpoint_id));
@@ -256,7 +256,7 @@ class SC_Plugin_Util
             $hookPoints = SC_Plugin_Util::getPluginHookPoint($plugin_id, '');
         } else {
             $hookPoints = SC_Plugin_Util::getPluginHookPointList(1);
-            $where .= ' AND T1.use_flg = true';
+            $where .= ' AND T1.use_flg = 1';
         }
 
         $conflict_alert_message = '';
