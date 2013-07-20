@@ -1108,6 +1108,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_LOG_REALFILE'
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEBUG_LOG_REALFILE', '""', 145, 'デバッグログファイル(未入力:標準ログファイル・管理画面ログファイル)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ERROR_LOG_REALFILE', 'DATA_REALDIR . "logs/error.log"', 146, 'エラーログファイル(未入力:標準ログファイル・管理画面ログファイル)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DB_LOG_REALFILE', 'DATA_REALDIR . "logs/db.log"', 147, 'DBログファイル');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PLUGIN_LOG_REALFILE', 'DATA_REALDIR . "logs/plugin.log"', 148, 'プラグインログファイル');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_TEMP_REALDIR', 'HTML_REALDIR . "upload/temp_image/"', 150, '画像一時保存');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_SAVE_REALDIR', 'HTML_REALDIR . "upload/save_image/"', 151, '画像保存先');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('IMAGE_TEMP_URLPATH', 'ROOT_URLPATH . "upload/temp_image/"', 152, '画像一時保存URL');

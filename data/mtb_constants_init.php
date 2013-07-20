@@ -175,6 +175,8 @@ define('DEBUG_LOG_REALFILE', "");
 define('ERROR_LOG_REALFILE', DATA_REALDIR . "logs/error.log");
 /** DBログファイル */
 define('DB_LOG_REALFILE', DATA_REALDIR . "logs/db.log");
+/** DBログファイル */
+define('PLUGIN_LOG_REALFILE', DATA_REALDIR . "logs/plugin.log");
 /** 画像一時保存 */
 define('IMAGE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_image/");
 /** 画像保存先 */
