@@ -40,6 +40,7 @@ class SC_Plugin_Installer {
         $this->arrInstallData['copy_direcrtory'] = array();
         $this->arrInstallData['insert'] = array();
         $this->arrInstallData['update'] = array();
+        $this->arrInstallData['delete'] = array();
         $this->arrInstallData['remove_file'] = array();
         $this->arrInstallData['remove_directory'] = array();
     }
@@ -48,7 +49,6 @@ class SC_Plugin_Installer {
         $this->log("start");
         
         $plugin_code = $this->arrPlugin['plugin_code'];
-
 
         // テーブル作成SQLなどを実行
         $arrSql = $this->arrInstallData['sql'];
@@ -146,7 +146,7 @@ class SC_Plugin_Installer {
     }
     
     public function removeDirectory($dist) {
-       $this->arrInstallData['remove_file'][] = array(
+       $this->arrInstallData['remove_directory'][] = array(
             'dist' => $dist
         );     
     }
@@ -170,7 +170,7 @@ class SC_Plugin_Installer {
      * @param type $col
      * @param type $type 
      */
-    function sqlAterTableAddColumn($table_name, $col_name, $col_type) {
+    function addColumn($table_name, $col_name, $col_type) {
         $sql = "ALTER TABLE $table_name ADD $col_name $col_type ";
         $this->sql($sql);
     }
@@ -182,13 +182,12 @@ class SC_Plugin_Installer {
      * @param type $col
      * @param type $type 
      */
-    function sqlAterTableDropColumn($table_name, $col_name) {
+    function dropColumn($table_name, $col_name) {
         $sql = "ALTER TABLE $table_name DROP $col_name";
         $this->sql($sql);
     }
     
-    
-    function sqlInsert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
+    function insert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
         $this->arrInstallData['insert'][] = array(
             'table' => $table,
             'arrVal' => $arrVal, 
@@ -199,7 +198,7 @@ class SC_Plugin_Installer {
         );
     }
     
-    function sqlUpdate($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
+    function update($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
         $this->arrInstallData['update'][] = array(
             'table' => $table,
             'arrVal' => $arrVal, 
@@ -230,13 +229,6 @@ class SC_Plugin_Installer {
             $objQuery->force_run = false;
             return $error_message;
         }
-        
-        //$ret = $sth->execute($params);
-        //if (PEAR::isError($ret)) {
-        //    $error_message = $ret->message . ":" . $ret->userinfo;
-        //    $objQuery->force_run = false;
-        //    return $error_message;            
-        //}
         
         $sth->free();
         // force_runをもとに戻す.
