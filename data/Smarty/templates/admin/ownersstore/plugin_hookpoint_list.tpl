@@ -33,17 +33,17 @@
             var value = event.target.value;
             var id = event.target.id;
 
-            if(value === 'f') {
+            if(value === '0') {
                 result = window.confirm('無効にしても宜しいですか？');
                 if(result === false) {
                     //$(event.target).attr("checked", "checked");
-                    event.target.value = 't';
+                    event.target.value = '1';
                 }
-            } else if(value === 't') {
+            } else if(value === '1') {
                 result = window.confirm('有効にしても宜しいですか？');
                 if(result === false) {
                     //$(event.target).attr("checked", "checked");
-                    event.target.value = 'f ';
+                    event.target.value = '0';
                 }
             }
             // プラグインフックID
@@ -89,9 +89,9 @@
                     <!--{if in_array($val.hook_point, $arrConflict)}--><br /><span class="attention">※ 競合中</span><!--{/if}-->
                 </td>
                 <!--{/if}-->
-                <td<!--{if $val.use_flg == "f"}--> bgcolor="grey"<!--{/if}-->><!--{$val.priority}--></td>
-                <td<!--{if $val.use_flg == "f"}--> bgcolor="grey"<!--{/if}-->><!--{$val.plugin_name}--></td>
-                <td<!--{if $val.use_flg == "f"}--> bgcolor="grey"<!--{/if}-->>
+                <td<!--{if $val.use_flg == "0"}--> bgcolor="grey"<!--{/if}-->><!--{$val.priority}--></td>
+                <td<!--{if $val.use_flg == "0"}--> bgcolor="grey"<!--{/if}-->><!--{$val.plugin_name}--></td>
+                <td<!--{if $val.use_flg == "0"}--> bgcolor="grey"<!--{/if}-->>
                 <!--{html_radios name="plugin_hookpoint_use[`$val.plugin_hookpoint_id`]" options=$arrUse selected=$val.use_flg id=$val.plugin_hookpoint_id}-->
                 </td>
             </tr>

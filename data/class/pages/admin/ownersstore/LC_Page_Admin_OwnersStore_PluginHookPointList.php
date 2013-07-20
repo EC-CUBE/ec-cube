@@ -51,8 +51,9 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
         $this->tpl_maintitle = 'オーナーズストア';
         $this->tpl_subtitle = 'プラグインフックポイント管理';
 
-        $this->arrUse[t] = 'ON';
-        $this->arrUse[f] = 'OFF';
+        $this->arrUse = array();
+        $this->arrUse[1] = 'ON';
+        $this->arrUse[0] = 'OFF';
     }
 
     /**
@@ -75,7 +76,7 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
-        $this->initParam($objFormParam, $mode);
+        $this->initParam($objFormParam);
         $objFormParam->setParam($_POST);
 
         $mode = $this->getMode();
@@ -87,8 +88,8 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
                 if (!(count($this->arrErr) > 0)) {
                     $arrPluginHookpointUse = $objFormParam->getValue('plugin_hookpoint_use');
                     $plugin_hookpoint_id = $objFormParam->getValue('plugin_hookpoint_id');
-                $use_flg = ($arrPluginHookpointUse[$plugin_hookpoint_id] == 't') ? true :false;
-                SC_Plugin_Util_Ex::setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg);
+                    $use_flg = ($arrPluginHookpointUse[$plugin_hookpoint_id] == 1) ? 1 : 0;
+                    SC_Plugin_Util_Ex::setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg);
                 }
                 break;
             default:
@@ -98,7 +99,8 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
         $arrRet = SC_Plugin_Util_Ex::getPluginHookPointList();
         // 競合チェック
         $this->arrConflict = SC_Plugin_Util_Ex::checkConflictPlugin();
-        foreach ($arrRet AS $key=>$val) {
+        $arrHookPoint = array();
+        foreach ($arrRet AS $key => $val) {
             $arrHookPoint[$val['hook_point']][$val['plugin_id']] = $val;
         }
         $this->arrHookPoint = $arrHookPoint;
