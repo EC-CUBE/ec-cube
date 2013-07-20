@@ -470,4 +470,9 @@ define('LOGIN_RETRY_INTERVAL', 0);
 define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
 /** デフォルト国コード ISO_3166-1に準拠 */
 define('DEFAULT_COUNTRY_ID', 392);
-
+/** 各種フォームで国の指定を有効にする(true:有効 false:無効) */
+define('FORM_COUNTRY_ENABLE', false);
+/** 商品ごとの税率設定(軽減税率対応 有効:1 無効:0) */
+define('OPTION_PRODUCT_TAX_RULE', 0);
+/** 複数箇所の税率設定時における優先度設定。カンマ区切りスペース不可で記述。後に書いてあるキーに一致するほど優先される。デフォルト：'product_id,product_class_id,pref_id,country_id'（国＞地域（県）＞規格単位＞商品単位）*/
+define('TAX_RULE_PRIORITY', "product_id,product_class_id,pref_id,country_id");
