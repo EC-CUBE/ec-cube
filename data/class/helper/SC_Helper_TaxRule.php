@@ -128,55 +128,60 @@ class SC_Helper_TaxRule
         $product_class_id = $product_class_id > 0 ? $product_class_id : 0;
         $pref_id = $pref_id > 0 ? $pref_id : 0;
         $country_id = $country_id > 0 ? $country_id : 0;
-
-        $objCustomer = new SC_Customer_Ex();
-        if ($objCustomer->isLoginSuccess(true)) {
-            if ($country_id == 0) {
-                $objCustomer->getValue('country_id');
-            }
-            if ($pref_id == 0) {
-                $objCustomer->getValue('pref');
+        // ログイン済み会員で国と地域指定が無い場合は、会員情報をデフォルトで利用。管理画面では利用しない
+        if (!(defined('ADMIN_FUNCTION') && ADMIN_FUNCTION == true)) {
+            $objCustomer = new SC_Customer_Ex();
+            if ($objCustomer->isLoginSuccess(true)) {
+                if ($country_id == 0) {
+                    $country_id = $objCustomer->getValue('country_id');
+                }
+                if ($pref_id == 0) {
+                    $pref_id = $objCustomer->getValue('pref');
+                }
             }
         }
 
-        // リクエストの配列化
-        $arrRequest = array('product_id' => $product_id,
-                        'product_class_id' => $product_class_id,
-                        'pref_id' => $pref_id,
-                        'country_id' => $country_id);
-
-        // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
-        // 後に書いてあるほど優先される、詳細後述MEMO参照
-        $arrPriorityKeys = array('product_id', 'product_class_id', 'pref_id', 'country_id');    // TODO: パラメーター設定に持っていく
-        $cache_key = "$product_id,$product_class_id,$pref_id,$country_id";
+        // 一覧画面の速度向上のため商品単位税率設定がOFFの時はキャッシュキーを丸めてしまう
+        if (OPTION_PRODUCT_TAX_RULE == 1) {
+            $cache_key = "$product_id,$product_class_id,$pref_id,$country_id";
+        } else {
+            $cache_key = "$pref_id,$country_id";
+        }
 
         // 複数回呼出があるのでキャッシュ化
         static $data_c = array();
 
         if (empty($data_c[$cache_key])) {
             $arrRet = array();
+            // リクエストの配列化
+            $arrRequest = array('product_id' => $product_id,
+                            'product_class_id' => $product_class_id,
+                            'pref_id' => $pref_id,
+                            'country_id' => $country_id);
+
+            // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
+            // 後に書いてあるほど優先される、詳細後述MEMO参照
+            $arrPriorityKeys = explode(',', TAX_RULE_PRIORITY);
 
             // 条件に基づいて税の設定情報を取得
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $table = 'dtb_tax_rule';
-            $cols = '*, CASE WHEN apply_date IS NULL THEN 1 ELSE 0 END as nullorder';
+            $cols = '*';
             $where = '((product_id = 0 OR product_id = ?)'
                         . ' OR (product_class_id = 0 OR product_class_id = ?))'
                         . ' AND (pref_id = 0 OR pref_id = ?)'
                         . ' AND (country_id = 0 OR country_id = ?)'
-                        . ' AND (apply_date < CURRENT_TIMESTAMP OR apply_date IS NULL)'
+                        . ' AND apply_date < CURRENT_TIMESTAMP'
                         . ' AND del_flg = 0';
 
             $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
-            $order = 'nullorder ASC, apply_date DESC';
+            $order = 'apply_date DESC';
             $objQuery->setOrder($order);
             $arrData = $objQuery->select($cols, $table, $where, $arrVal);
             // 優先度付け
             // MEMO: 税の設定は相反する設定を格納可能だが、その中で優先度を付けるため
             //       キーの優先度により、利用する税設定を判断する
             //       優先度が同等の場合、適用日付で判断する
-
-            // XXXX: ビット演算で優先順位を判断という雑な事してます。すいません
             foreach ($arrData as $data_key => $data) {
                 $res = 0;
                 foreach ($arrPriorityKeys as $key_no => $key) {
@@ -196,9 +201,12 @@ class SC_Helper_TaxRule
                     $arrRet = $data;
                 }
             }
+            // XXXX: 互換性のためtax_ruleにもcalc_ruleを設定
+            $arrRet['tax_rule'] = $arrRet['calc_rule'];
             $data_c[$cache_key] = $arrRet;
         }
 
+        GC_Utils_Ex::gfDebugLog('tax_key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
         return $data_c[$cache_key];
     }
 
@@ -216,11 +224,14 @@ class SC_Helper_TaxRule
     function setTaxRuleForProduct($tax_rate, $product_id = 0, $product_class_id = 0, $tax_adjust=0, $pref_id = 0, $country_id = 0)
     {
         // 基本設定を取得
-        $arrRet = SC_Helper_taxRule_Ex::getTaxRule();
+        $arrRet = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id);
+
         // 基本設定の消費税率と一緒であれば設定しない
         if( $arrRet['tax_rate'] != $tax_rate ) {
             // 課税規則は基本設定のものを使用
             $calc_rule = $arrRet['calc_rule'];
+            // 日付は登録時点を設定
+            $apply_date = date('Y/m/d H:i:s');
             // 税情報を設定
             SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id, $product_class_id, $pref_id, $country_id);
         }
@@ -279,7 +290,7 @@ class SC_Helper_TaxRule
             $where .= 'del_flg = 0 AND product_id = 0 AND product_class_id = 0';
         }
         $table = 'dtb_tax_rule';
-		// 適用日時順に更新
+        // 適用日時順に更新
         $objQuery->setOrder('apply_date DESC');
         $arrRet = $objQuery->select($col, $table, $where);
 

@@ -33,9 +33,10 @@
  */
 class SC_Helper_Purchase
 {
+
     var $arrShippingKey = array(
         'name01', 'name02', 'kana01', 'kana02',
-        'sex', 'zip01', 'zip02', 'country_id','pref', 'addr01', 'addr02',
+        'sex', 'zip01', 'zip02', 'country_id', 'zipcode', 'pref', 'addr01', 'addr02',
         'tel01', 'tel02', 'tel03', 'fax01', 'fax02', 'fax03',
     );
 
@@ -770,7 +771,7 @@ class SC_Helper_Purchase
         $this->registerOrder($orderParams['order_id'], $orderParams);
 
         // 詳細情報を取得
-        $cartItems = $objCartSession->getCartList($cartKey);
+        $cartItems = $objCartSession->getCartList($cartKey, $orderParams['order_pref'], $orderParams['order_country_id']);
 
         // 詳細情報を生成
         $objProduct = new SC_Product_Ex();
@@ -788,8 +789,9 @@ class SC_Helper_Purchase
             $arrDetail[$i]['point_rate'] = $item['point_rate'];
             $arrDetail[$i]['price'] = $item['price'];
             $arrDetail[$i]['quantity'] = $item['quantity'];
-            $arrDetail[$i]['tax_rate'] = $orderParams['order_tax_rate'];
-            $arrDetail[$i]['tax_rule'] = $orderParams['order_tax_rule'];
+            $arrDetail[$i]['tax_rate'] = $item['tax_rate'];
+            $arrDetail[$i]['tax_rule'] = $item['tax_rule'];
+            $arrDetail[$i]['tax_adjuts'] = $item['tax_adjust'];
 
             // 在庫の減少処理
             if (!$objProduct->reduceStock($p['product_class_id'], $item['quantity'])) {
