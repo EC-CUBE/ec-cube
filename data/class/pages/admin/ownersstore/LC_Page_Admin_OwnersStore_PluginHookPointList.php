@@ -90,6 +90,8 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
                     $plugin_hookpoint_id = $objFormParam->getValue('plugin_hookpoint_id');
                     $use_flg = ($arrPluginHookpointUse[$plugin_hookpoint_id] == 1) ? 1 : 0;
                     SC_Plugin_Util_Ex::setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg);
+                    // Smartyコンパイルファイルをクリア
+                    SC_Utils_Ex::clearCompliedTemplate();
                 }
                 break;
             default:
