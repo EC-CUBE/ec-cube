@@ -27,7 +27,7 @@
 
 ■ご請求金額
 ご注文番号：<!--{$arrOrder.order_id}-->
-お支払合計：￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
+お支払合計：￥<!--{$arrOrder.payment_total|number_format|default:0}-->
 ご決済方法：<!--{$arrOrder.payment_method}-->
 メッセージ：<!--{$Message_tmp}-->
 
@@ -44,18 +44,18 @@
 <!--{section name=cnt loop=$arrOrderDetail}-->
 商品コード：<!--{$arrOrderDetail[cnt].product_code}-->
 商品名：<!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
-単価：￥ <!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrOrderDetail[cnt].tax_rate:$arrOrderDetail[cnt].tax_rule|number_format}-->
+単価：￥<!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrOrderDetail[cnt].tax_rate:$arrOrderDetail[cnt].tax_rule|number_format}-->
 数量：<!--{$arrOrderDetail[cnt].quantity}-->
 
 <!--{/section}-->
 
-小　計 ￥ <!--{$arrOrder.subtotal|number_format|default:0}--> <!--{if 0 < $arrOrder.tax}-->(うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->）<!--{/if}-->
+小　計 ￥<!--{$arrOrder.subtotal|number_format|default:0}--> <!--{if 0 < $arrOrder.tax}-->(うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->）<!--{/if}-->
 
-値引き ￥ <!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|number_format|default:0}-->
-送　料 ￥ <!--{$arrOrder.deliv_fee|number_format|default:0}-->
-手数料 ￥ <!--{$arrOrder.charge|number_format|default:0}-->
+値引き ￥<!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|number_format|default:0}-->
+送　料 ￥<!--{$arrOrder.deliv_fee|number_format|default:0}-->
+手数料 ￥<!--{$arrOrder.charge|number_format|default:0}-->
 ===============================================================
-合　計 ￥ <!--{$arrOrder.payment_total|number_format|default:0}-->
+合　計 ￥<!--{$arrOrder.payment_total|number_format|default:0}-->
 
 <!--{if count($arrShipping) >= 1}-->
 ■配送情報
@@ -73,7 +73,7 @@
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
 商品コード：<!--{$item.product_code}-->
 商品名：<!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
-単価：￥ <!--{$item.price|sfCalcIncTax:$arrOrder.order_tax_rate:$arrOrder.order_tax_rule|number_format}-->
+単価：￥<!--{$item.price|sfCalcIncTax:$arrOrder.order_tax_rate:$arrOrder.order_tax_rule|number_format}-->
 数量：<!--{$item.quantity}-->
 
 <!--{/foreach}-->
