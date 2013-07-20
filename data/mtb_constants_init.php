@@ -18,7 +18,7 @@ define('USER_TEMPLATE_REALDIR', USER_REALDIR . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
 define('TEMPLATE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_template/");
 /** ユーザー作成画面のデフォルトPHPファイル */
-define('USER_DEF_PHP_REALFILE', USER_REALDIR . "__default.php");
+define('USER_DEF_PHP_REALFILE', DATA_REALDIR . "__default.php");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_DIR', "downloads/module/");
 /** ダウンロードモジュール保存ディレクトリ */
