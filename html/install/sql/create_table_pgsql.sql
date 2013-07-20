@@ -1180,6 +1180,7 @@ CREATE TABLE dtb_plugin_hookpoint (
     plugin_id int NOT NULL,
     hook_point text NOT NULL,
     callback text,
+    use_flg booelan NOT NULL DEFAULT true,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     PRIMARY KEY (plugin_hookpoint_id)

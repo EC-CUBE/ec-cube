@@ -143,16 +143,63 @@ class SC_Plugin_Util
      * プラグインIDをキーに, プラグインフックポイントを取得する.
      *
      * @param integer $plugin_id
+     * @param integer $use_type 1=有効のみ 2=無効のみ 3=全て
      * @return array フックポイントの一覧
      */
-    function getPluginHookPoint($plugin_id)
+    function getPluginHookPoint($plugin_id, $use_type = 1)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = '*';
         $from = 'dtb_plugin_hookpoint';
         $where = 'plugin_id = ?';
+        switch ($use_type) {
+            case 1:
+                $where .= ' AND use_flg = true';
+            break;
 
+            case 2:
+                $where .= ' AND use_flg = false';
+            break;
+
+            case 3:
+            default:
+            break;
+        }
         return $objQuery->select($cols, $from, $where, array($plugin_id));
+    }
+
+    /**
+     *  プラグインフックポイントを取得する.
+     *
+     * @param integer $use_type 1=有効のみ 2=無効のみ 3=全て
+     * @return array フックポイントの一覧
+     */
+    function getPluginHookPointList($use_type = 3)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->setOrder('hook_point ASC, priority DESC');
+        $cols = 'dtb_plugin_hookpoint.*, dtb_plugin.priority, dtb_plugin.plugin_name';
+        $from = 'dtb_plugin_hookpoint LEFT JOIN dtb_plugin USING(plugin_id)';
+        switch ($use_type) {
+            case 1:
+                $where = 'enable = 1 AND use_flg = true';
+            break;
+
+            case 2:
+                $where = 'enable = 1 AND use_flg = false';
+            break;
+
+            case 3:
+            default:
+                $where = '';
+            break;
+        }
+        return $objQuery->select($cols, $from, $where);
+        //$arrList = array();
+        //foreach ($arrRet AS $key=>$val) {
+        //    $arrList[$val['hook_point']][$val['plugin_id']] = $val;
+        //}
+        //return $arrList;
     }
 
     /**
@@ -182,4 +229,68 @@ class SC_Plugin_Util
 
         return $arrErr;
     }
+
+    /**
+     * フックポイントのON/OFF変更
+     *
+     * @param intger $plugin_hookpoint_id  フックポイントID
+     * @return bolean $use_flg：ture=ON、false=OFF
+     */
+    function setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg = false) {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $sqlval['use_flg'] = $use_flg;
+        $objQuery->update('dtb_plugin_hookpoint', $sqlval, 'plugin_hookpoint_id = ?', array($plugin_hookpoint_id));
+    }
+
+    /**
+     * フックポイントで衝突する可能性のあるプラグインを判定.メッセージを返します.
+     *
+     * @param int $plugin_id プラグインID
+     * @return string $conflict_alert_message メッセージ
+     */
+    function checkConflictPlugin($plugin_id = '')
+    {
+        // フックポイントを取得します.
+        $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ?';
+        if ($plugin_id > 0) {
+            $hookPoints = SC_Plugin_Util::getPluginHookPoint($plugin_id, '');
+        } else {
+            $hookPoints = SC_Plugin_Util::getPluginHookPointList(1);
+            $where .= ' AND T1.use_flg = true';
+        }
+
+        $conflict_alert_message = '';
+        $arrConflictPluginName = array();
+        $arrConflictHookPoint = array();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->setGroupBy('T1.hook_point, T1.plugin_id, T2.plugin_name');
+        $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 ON T1.plugin_id = T2.plugin_id';
+        foreach ($hookPoints as $hookPoint) {
+            // 競合するプラグインを取得する,
+            $conflictPlugins = $objQuery->select('T1.hook_point, T1.plugin_id, T2.plugin_name', $table, $where, array($hookPoint['hook_point'], $hookPoint['plugin_id'], PLUGIN_ENABLE_TRUE));
+
+            // プラグイン名重複を削除する為、専用の配列に格納し直す.
+            foreach ($conflictPlugins as $conflictPlugin) {
+                // プラグイン名が見つからなければ配列に格納
+                if (!in_array($conflictPlugin['plugin_name'], $arrConflictPluginName)) {
+                    $arrConflictPluginName[] = $conflictPlugin['plugin_name'];
+                }
+                // プラグイン名が見つからなければ配列に格納
+                if (!in_array($conflictPlugin['hook_point'], $arrConflictHookPoint)) {
+                    $arrConflictHookPoint[] = $conflictPlugin['hook_point'];
+                }
+            }
+        }
+
+        if ($plugin_id > 0) {
+            // メッセージをセットします.
+            foreach ($arrConflictPluginName as $conflictPluginName) {
+                $conflict_alert_message .= '* ' .  $conflictPluginName . 'と競合する可能性があります。<br/>';
+            }
+            return $conflict_alert_message;
+        } else {
+            return $arrConflictHookPoint;
+        }
+    }
+
 }

@@ -200,7 +200,8 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
             $plugins[$key]['config_flg'] = $this->isContainsFile(PLUGIN_UPLOAD_REALDIR . $plugin['plugin_code'], 'config.php');
             if ($plugins[$key]['enable'] === PLUGIN_ENABLE_TRUE) {
                 // 競合するプラグインがあるかを判定.
-                $plugins[$key]['conflict_message']= $this->checkConflictPlugin($plugin['plugin_id']);
+                //$plugins[$key]['conflict_message']= $this->checkConflictPlugin($plugin['plugin_id']);
+                $plugins[$key]['conflict_message'] = SC_Plugin_Util_Ex::checkConflictPlugin($plugin['plugin_id']);
             }
         }
         $this->plugins = $plugins;
@@ -339,6 +340,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
      */
     function installPlugin($archive_file_name, $key)
     {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+        
         // 一時展開ディレクトリにファイルがある場合は事前に削除.
         $arrFileHash = SC_Helper_FileManager_Ex::sfGetFileList(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
         if (count($arrFileHash) > 0) {
@@ -411,10 +415,14 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
 
         $arrErr = $this->execPlugin($plugin, $plugin['class_name'], 'install');
         if ($this->isError($arrErr) === true) {
+            // エラー時, transactionがabortしてるのでロールバック
+            $objQuery->rollback();
             $this->rollBack(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, $plugin['plugin_id'], $plugin_html_dir_path);
             return $arrErr;
         }
 
+        $objQuery->commit();
+        
         // 不要なファイルの削除
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
 
@@ -754,7 +762,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     {
         // プラグイン情報をDB登録.
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
         $arr_sqlval_plugin = array();
         $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
         $arr_sqlval_plugin['plugin_id'] = $plugin_id;
@@ -846,16 +853,24 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
      */
     function execPlugin($obj, $class_name, $exec_func)
     {
+        $objPluginInstaller = new SC_Plugin_Installer($exec_func, $obj);
+
         $arrErr = array();
         if (method_exists($class_name, $exec_func) === true) {
-            $ret = call_user_func(array($class_name, $exec_func), $obj);
+            $ret = call_user_func_array(
+                    array($class_name, $exec_func),
+                    array($obj, $objPluginInstaller));
             if (!(is_null($ret) || $ret === true)) {
                 $arrErr[$obj['plugin_code']] = $ret;
             }
+            $arrInstallErr = $objPluginInstaller->execPlugin();
+            if ($arrInstallErr) {
+                $arrErr['plugin_file'] = "プラグインのインストールにしっぱいしました.<br/>";
+            }
         } else {
-            $arrErr['plugin_error'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
+            $arrErr['plugin_file'] = '※ ' . $class_name . '.php に' . $exec_func . 'が見つかりません。<br/>';
         }
-
+        
         return $arrErr;
     }
 

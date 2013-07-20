@@ -187,5 +187,8 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
         if (defined('DB_LOG_REALFILE') && strlen(DB_LOG_REALFILE) >= 1) {
             $this->arrLogList['DB'] = 'DBログファイル';
         }
+        if (defined('PLUGIN_LOG_REALFILE') && strlen(PLUGIN_LOG_REALFILE) >= 1) {
+            $this->arrLogList['PLUGIN'] = 'プラグインログファイル';
+        }
     }
 }
