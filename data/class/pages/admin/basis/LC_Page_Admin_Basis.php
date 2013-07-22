@@ -79,33 +79,41 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
     {
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
-
         $this->lfInitParam($objFormParam, $_POST);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        $this->arrForm = $objFormParam->getHashArray();
+
         $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
 
-        if ($this->getMode() === 'confirm') {
-            $objFormParam->setParam($_POST);
-            $objFormParam->convParam();
+        switch($this->getMode()){
+        	case 'confirm':
+	            $this->arrErr = $this->lfCheckError($objFormParam);
+				if (!empty($this->arrErr)) {
+	                return;
+	            }
+	            $this->tpl_subtitle = 'SHOPマスター(確認)';
+	            $this->tpl_mainpage = 'basis/confirm.tpl';
+        		break;
 
-            $this->arrErr = $this->lfCheckError($objFormParam);
+    		case 'return':
+    		    break;
 
-            if (!empty($this->arrErr)) {
-                $this->arrForm = $objFormParam->getHashArray();
-                return;
-            }
+        	case 'complete':
+	            $arrData = $objFormParam->getDbArray();
+	            SC_Helper_DB_Ex::registerBasisData($arrData);
 
-            $arrData = $objFormParam->getDbArray();
-            SC_Helper_DB_Ex::registerBasisData($arrData);
-
-            // キャッシュファイル更新
-            $objDb->sfCreateBasisDataCache();
-            $this->tpl_onload .= "window.alert('SHOPマスターの登録が完了しました。');";
+	            // キャッシュファイル更新
+	            $objDb->sfCreateBasisDataCache();
+	            $this->tpl_onload .= "window.alert('SHOPマスターの登録が完了しました。');";
+	        // breakはつけない
+            default:
+	            $arrRet = $objDb->sfGetBasisData(true);
+		        $objFormParam->setParam($arrRet);
+		        $this->arrForm = $objFormParam->getHashArray();
+		        $this->arrForm['regular_holiday_ids'] = explode('|', $this->arrForm['regular_holiday_ids']);
+		        break;
         }
-
-        $arrRet = $objDb->sfGetBasisData(true);
-        $objFormParam->setParam($arrRet);
-        $this->arrForm = $objFormParam->getHashArray();
-        $this->arrForm['regular_holiday_ids'] = explode('|', $this->arrForm['regular_holiday_ids']);
     }
 
     /**
