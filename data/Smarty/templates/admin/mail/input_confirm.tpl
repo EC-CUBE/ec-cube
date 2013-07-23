@@ -51,7 +51,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
     <div id="mail" class="contents-main">
         <table class="form">
             <tr>
-                <th>Subject<span class="attention"> *</span></th>
+                <th>Subject</th>
                 <td><!--{$arrForm.subject.value|h}--></td>
             </tr>
             <!--{if $arrForm.mail_method.value ne 2}-->
@@ -60,7 +60,7 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
                 </tr>
             <!--{/if}-->
             <tr>
-                <th>本文<span class="attention"> *</span><br />（名前差し込み時は {name} といれてください）</th>
+                <th>本文</th>
                 <td><!--{$arrForm.body.value|h|nl2br}--></td>
             </tr>
         </table>
