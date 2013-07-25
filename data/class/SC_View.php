@@ -41,9 +41,6 @@ class SC_View
         $this->_smarty->left_delimiter = '<!--{';
         $this->_smarty->right_delimiter = '}-->';
         $this->_smarty->register_modifier('sfDispDBDate', array('SC_Utils_Ex', 'sfDispDBDate'));
-        $this->_smarty->register_modifier('sfConvSendDateToDisp', array('SC_Utils_Ex', 'sfConvSendDateToDisp'));
-        $this->_smarty->register_modifier('sfConvSendWdayToDisp', array('SC_Utils_Ex', 'sfConvSendWdayToDisp'));
-        $this->_smarty->register_modifier('sfGetVal', array('SC_Utils_Ex', 'sfGetVal'));
         $this->_smarty->register_modifier('sfGetErrorColor', array('SC_Utils_Ex', 'sfGetErrorColor'));
         $this->_smarty->register_modifier('sfTrim', array('SC_Utils_Ex', 'sfTrim'));
         $this->_smarty->register_modifier('sfCalcIncTax', array('SC_Helper_DB_Ex', 'sfCalcIncTax'));
@@ -56,7 +53,6 @@ class SC_View
         $this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . '/../smarty_extends');
         $this->_smarty->register_modifier('sfMbConvertEncoding', array('SC_Utils_Ex', 'sfMbConvertEncoding'));
         $this->_smarty->register_modifier('sfGetEnabled', array('SC_Utils_Ex', 'sfGetEnabled'));
-        $this->_smarty->register_modifier('sfGetCategoryId', array('SC_Utils_Ex', 'sfGetCategoryId'));
         $this->_smarty->register_modifier('sfNoImageMainList', array('SC_Utils_Ex', 'sfNoImageMainList'));
         // XXX register_function で登録すると if で使用できないのではないか？
         $this->_smarty->register_function('sfIsHTTPS', array('SC_Utils_Ex', 'sfIsHTTPS'));
