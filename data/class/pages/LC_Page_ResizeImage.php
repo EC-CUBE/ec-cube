@@ -63,27 +63,32 @@ class LC_Page_ResizeImage extends LC_Page_Ex
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_GET);
-        $arrForm  = $objFormParam->getHashArray();
+        $arrErr = $objFormParam->checkError();
+        if (SC_Utils_Ex::isBlank($arrErr)) {
 
-        $file = NO_IMAGE_REALFILE;
+            $arrForm  = $objFormParam->getHashArray();
 
-        // NO_IMAGE_REALFILE以外のファイル名が渡された場合、ファイル名のチェックを行う
-        if (strlen($arrForm['image']) >= 1
-            && $arrForm['image'] !== NO_IMAGE_REALFILE) {
-            // ファイル名が正しく、ファイルが存在する場合だけ、$fileを設定
-            if (!$this->lfCheckFileName()) {
-                GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php image=' . $arrForm['image']);
-            } elseif (file_exists(IMAGE_SAVE_REALDIR . $arrForm['image'])) {
-                $file = IMAGE_SAVE_REALDIR . $arrForm['image'];
+            // TODO: ファイル名を直接指定するような処理は避けるべき
+            // NO_IMAGE_REALFILE以外のファイル名が直接渡された場合、ファイル名のチェックを行う
+            if (strlen($arrForm['image']) >= 1 && $arrForm['image'] !== NO_IMAGE_REALFILE ) {
+                if (!$this->lfCheckFileName($arrForm['image'])) {
+                    GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php image=' . $arrForm['image']);
+                }
+                $file = SC_Utils_Ex::getSaveImagePath($arrForm['image']);
+            } else {
+                // 商品画像を取得する
+                $file = $this->lfGetProductImage($arrForm);
             }
-        }
 
-        // リサイズ画像の出力
-        $this->lfOutputImage($file, $arrForm['width'], $arrForm['height']);
+            // リサイズ画像の出力
+            $this->lfOutputImage($file, $arrForm['width'], $arrForm['height']);
+        }
     }
 
     function lfInitParam(&$objFormParam)
     {
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n',  array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品イメージキー', 'image_key', STEXT_LEN, '',  array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('画像ファイル名', 'image', STEXT_LEN, 'a',  array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('画像の幅', 'width', STEXT_LEN, 'n',  array('NUM_CHECK'));
         $objFormParam->addParam('画像の高さ', 'height', STEXT_LEN, 'n',  array('NUM_CHECK'));
@@ -92,16 +97,43 @@ class LC_Page_ResizeImage extends LC_Page_Ex
     /**
      * ファイル名の形式をチェック.
      *
+     * @deprecated 2.13.0 商品IDを渡す事を推奨
+     * @param $image
      * @return boolean 正常な形式:true 不正な形式:false
      */
-    function lfCheckFileName()
+    function lfCheckFileName($image)
     {
-        $file    = trim($_GET['image']);
+        $file    = trim($image);
         if (!preg_match("/^[[:alnum:]_\.-]+$/i", $file)) {
             return false;
         } else {
             return true;
         }
+    }
+
+    /**
+     * 商品画像のパスを取得する
+     *
+     * @param $arrForm
+     * @return string 指定された商品画像のパス
+     */
+    function lfGetProductImage($arrForm)
+    {
+        $objQuery = SC_Query_Ex::getSingletonInstance();
+        $table = 'dtb_products';
+        $col = $arrForm['image_key'];
+        $product_id = $arrForm['product_id'];
+        //指定されたカラムが存在する場合にのみ商品テーブルからファイル名を取得
+        if (SC_Helper_DB_Ex::sfColumnExists($table, $col, '', '', false)) {
+            $product_image = $objQuery->get($col, $table, 'product_id = ?', array($product_id));
+        } else {
+            GC_Utils_Ex::gfPrintLog('invalid access :resize_image.php image_key=' . $col);
+            $product_image = '';
+        }
+        // ファイル名が正しく、ファイルが存在する場合だけ、$fileを設定
+        $file = SC_Utils_Ex::getSaveImagePath($product_image);
+
+        return $file;
     }
 
     /**

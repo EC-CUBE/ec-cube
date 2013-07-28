@@ -1393,6 +1393,23 @@ class SC_Utils
     }
 
     /**
+     * 指定の画像のパスを返す
+     *
+     * @param $filename
+     * @return string $file 画像のパス、画像が存在しない場合、NO_IMAGE_REALFILEを返す
+     */
+    function getSaveImagePath($filename)
+    {
+        $file = NO_IMAGE_REALFILE;
+
+        // ファイル名が与えられており、ファイルが存在する場合だけ、$fileを設定
+        if (!SC_Utils_Ex::isBlank($filename) && file_exists(IMAGE_SAVE_REALDIR . $filename)) {
+            $file = IMAGE_SAVE_REALDIR . $filename;
+        }
+        return $file;
+    }
+
+    /**
      * 一覧-メイン画像のファイル指定がない場合、専用の画像ファイルに書き換える。
      *
      * @param string &$filename ファイル名
