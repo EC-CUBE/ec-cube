@@ -161,7 +161,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
                 // 購入完了ページ
                 else {
                     $objPurchase->completeOrder(ORDER_NEW);
-                    SC_Helper_Purchase_Ex::sendOrderMail($this->arrForm['order_id']);
+                    SC_Helper_Purchase_Ex::sendOrderMail($this->arrForm['order_id'], $this); 
 
                     SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }

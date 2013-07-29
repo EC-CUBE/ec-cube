@@ -1061,11 +1061,18 @@ __EOS__;
      * PC の場合は PC 用の文面でメールを送信する.
      *
      * @param integer $orderId 受注ID
+     * @param object $objPage LC_Page インスタンス
      * @return void
      */
-    function sendOrderMail($orderId)
+    function sendOrderMail($orderId, &$objPage = NULL)
     {
         $mailHelper = new SC_Helper_Mail_Ex();
+
+        // setPageは、プラグインの処理に必要(see #1798)
+        if (is_object($objPage)) {
+            $mailHelper->setPage($objPage);
+        }
+
         $template_id =
             SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ? 2 : 1;
         $mailHelper->sfSendOrderMail($orderId, $template_id);
