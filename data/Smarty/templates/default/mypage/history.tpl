@@ -31,7 +31,15 @@
             <p>
                 <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
-                <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+                <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}--><br />
+                <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG}-->
+                    <span class="st">ご注文状況：&nbsp;</span>
+                    <!--{if $tpl_arrOrderData.status != $smarty.const.ORDER_PENDING}-->
+                        <!--{$arrCustomerOrderStatus[$tpl_arrOrderData.status]|h}-->
+                    <!--{else}-->
+                        <span class="attention"><!--{$arrCustomerOrderStatus[$tpl_arrOrderData.status]|h}--></span>
+                    <!--{/if}-->
+                <!--{/if}-->
                 <!--{if $is_price_change == true}-->
                     <div class="attention" Align="right">※金額が変更されている商品があるため、再注文時はご注意ください。</div>
                 <!--{/if}-->
