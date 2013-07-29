@@ -251,7 +251,7 @@ class SC_Helper_Mail
     }
 
     //件名にテンプレートを用いる
-    function sfMakeSubject($subject, &$objMailView)
+    function sfMakeSubject($subject, &$objMailView = NULL)
     {
         if (empty($objMailView)) {
             $objMailView = new SC_SiteView_Ex();
