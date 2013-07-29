@@ -277,7 +277,7 @@ class LC_Page_Entry extends LC_Page_Ex
     function lfCheckReferer(&$post, $referer)
     {
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
-            && empty($post)
+            && SC_Utils_Ex::isBlank($post)
             && (preg_match('/kiyaku.php/', basename($referer)) === 0)) {
             return false;
             }
