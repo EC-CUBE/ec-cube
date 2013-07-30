@@ -74,14 +74,14 @@ class LC_Page_Entry extends LC_Page_Ex
     {
         $objFormParam = new SC_FormParam_Ex();
 
+        // PC時は規約ページからの遷移でなければエラー画面へ遷移する
+        if ($this->lfCheckReferer($_POST, $_SERVER['HTTP_REFERER']) === false) {
+            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+        }
+
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam);
         $objFormParam->setParam($_POST);
         $arrForm  = $objFormParam->getHashArray();
-
-        // PC時は規約ページからの遷移でなければエラー画面へ遷移する
-        if ($this->lfCheckReferer($arrForm, $_SERVER['HTTP_REFERER']) === false) {
-            SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
-        }
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
         if (!empty($arrForm['return'])) {
@@ -277,7 +277,7 @@ class LC_Page_Entry extends LC_Page_Ex
     function lfCheckReferer(&$post, $referer)
     {
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
-            && SC_Utils_Ex::isBlank($post)
+            && empty($post)
             && (preg_match('/kiyaku.php/', basename($referer)) === 0)) {
             return false;
             }
