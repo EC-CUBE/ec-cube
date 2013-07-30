@@ -60,12 +60,16 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      */
     function action()
     {
+        $objFormParam = $this->lfInitParam($_REQUEST);
+
         // カテゴリIDの正当性チェック
-        $this->lfCheckCategoryId();
+        $category_id = $this->lfCheckCategoryId($objFormParam->getValue('category_id'));
+        if ($category_id == 0) {
+            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
+        }
 
         // カテゴリ情報を取得する。
-        $objFormParam = $this->lfInitParam($_REQUEST);
-        $arrCategoryData = $this->lfGetCategories($objFormParam->getValue('category_id'), true);
+        $arrCategoryData = $this->lfGetCategories($category_id, true);
         $this->arrCategory = $arrCategoryData['arrCategory'];
         $this->arrChildren = $arrCategoryData['arrChildren'];
         $this->tpl_subtitle = $this->arrCategory['category_name'];
@@ -91,12 +95,6 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      */
     function lfGetCategories($category_id, $count_check = false)
     {
-        // カテゴリの正しいIDを取得する。
-        $category_id = $this->lfCheckCategoryId($category_id);
-        if ($category_id == 0) {
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
-        }
-
         $arrCategory = null;    // 選択されたカテゴリ
         $arrChildren = array(); // 子カテゴリ
 
