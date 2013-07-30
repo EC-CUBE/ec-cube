@@ -603,6 +603,13 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         // プラグインクラスファイルのUPDATE処理を実行.
         $arrErr = $this->execPlugin($target_plugin, 'plugin_update', 'update');
 
+        // プラグイン情報を更新
+        if ($this->registerData($arrPluginInfo, 'update') === false) {
+            $this->rollBack(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR);
+            $arrErr['plugin_file'] = '※ プラグイン情報の更新に失敗しました。<br/>';
+            return $arrErr;
+        }
+
         // 保存ディレクトリの削除.
         SC_Helper_FileManager_Ex::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
 
@@ -756,15 +763,14 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
      * プラグイン情報をDB登録.
      *
      * @param array $arrPluginInfo プラグイン情報を格納した連想配列.
+     * @param string $mode モード
      * @return array エラー情報を格納した連想配列.
      */
-    function registerData($arrPluginInfo)
+    function registerData($arrPluginInfo, $mode = 'install')
     {
         // プラグイン情報をDB登録.
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arr_sqlval_plugin = array();
-        $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
-        $arr_sqlval_plugin['plugin_id'] = $plugin_id;
         $arr_sqlval_plugin['plugin_name'] = $arrPluginInfo['PLUGIN_NAME'];
         $arr_sqlval_plugin['plugin_code'] = $arrPluginInfo['PLUGIN_CODE'];
         $arr_sqlval_plugin['class_name'] = $arrPluginInfo['CLASS_NAME'];
@@ -785,8 +791,26 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         $arr_sqlval_plugin['priority'] = 0;
         $arr_sqlval_plugin['enable'] = PLUGIN_ENABLE_FALSE;
         $arr_sqlval_plugin['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery->insert('dtb_plugin', $arr_sqlval_plugin);
-
+        if ($mode === 'install') {
+            // 新規登録
+            $plugin_id = $objQuery->nextVal('dtb_plugin_plugin_id');
+            $arr_sqlval_plugin['plugin_id'] = $plugin_id;
+            $objQuery->insert('dtb_plugin', $arr_sqlval_plugin);
+        } elseif($mode === 'update') {
+            // 情報を更新
+            $plugin_id = $objQuery->get('plugin_id', 'dtb_plugin', 'plugin_code = ? ', array($arrPluginInfo['PLUGIN_CODE']));
+            $arrUnsetKeys = array('plugin_code', 'priority', 'enable');
+            foreach ($arrUnsetKeys as $key) {
+                unset($arr_sqlval_plugin[$key]);
+            }
+            $objQuery->update('dtb_plugin', $arr_sqlval_plugin, 'plugin_id = ?', array($plugin_id));
+            // 該当プラグインのフックポイントを一旦削除
+            $objQuery->delete('dtb_plugin_hookpoint', 'plugin_id = ? ', array($plugin_id));
+        } else {
+            GC_Utils_Ex::gfPrintLog("モードの指定が不正($mode)", ERROR_LOG_REALFILE);
+            return false;
+        }
+        
         // フックポイントをDB登録.
         $hook_point = $arrPluginInfo['HOOK_POINTS'];
         if ($hook_point !== null) {
