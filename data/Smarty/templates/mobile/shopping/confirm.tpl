@@ -68,6 +68,20 @@
             <br>
         <!--{/if}-->
 
+        【ご注文者】<br>
+        〒<!--{$arrForm.order_zip01|h}-->-<!--{$arrForm.order_zip02|h}--><br>
+        <!--{$arrPref[$arrForm.order_pref]}--><!--{$arrForm.order_addr01|h}--><!--{$arrForm.order_addr02|h}--><br>
+        <!--{$arrForm.order_name01|h}--> <!--{$arrForm.order_name02|h}--><br>
+        <!--{$arrForm.order_tel01}-->-<!--{$arrForm.order_tel02}-->-<!--{$arrForm.order_tel03}--><br>
+        <!--{if $arrForm.order_fax01 > 0}-->
+            <!--{$arrForm.order_fax01}-->-<!--{$arrForm.order_fax02}-->-<!--{$arrForm.order_fax03}--><br>
+        <!--{/if}-->
+        <!--{$arrForm.order_email|h}--><br>
+        性別：<!--{$arrSex[$arrForm.order_sex]|h}--><br>
+        職業：<!--{$arrJob[$arrForm.order_job]|default:'(未登録)'|h}--><br>
+        生年月日：<!--{$arrForm.order_birth|regex_replace:"/ .+/":""|regex_replace:"/-/":"/"|default:'(未登録)'|h}--><br>
+        <br>
+
         <!--{if $arrShipping}-->
             【お届け先】<br>
             <!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->

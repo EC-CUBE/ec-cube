@@ -40,10 +40,11 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
     function init()
     {
         parent::init();
-        $this->tpl_title = 'ご入力内容のご確認';
+        $this->tpl_title = '入力内容のご確認';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
         $this->arrReminder = $masterData->getMasterData('mtb_reminder');
         $this->arrDeliv = SC_Helper_Delivery_Ex::getIDValueList('service_name');

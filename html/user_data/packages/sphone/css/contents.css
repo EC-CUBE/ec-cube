@@ -464,6 +464,7 @@ dl.point dl {
     float: right;
     text-align: right;
 }
+.customer_confirm dt,
 .deliv_confirm dt {
     font-size: 14px;
     font-weight: bold;
@@ -478,6 +479,7 @@ dl.point dl {
     position: relative;
     display: block;
 }
+.customer_confirm dd,
 .deliv_confirm dd {
     font-size: 12px;
     padding: 10px;
@@ -486,10 +488,12 @@ dl.point dl {
     line-height: 1.3;
 }
 
+.customer_confirm dd:last-child, 
 .deliv_confirm dd:last-child {
     border-bottom: none;
 }
 
+.customer_confirm dd p.deliv_name,
 .deliv_confirm dd p.deliv_name {
     margin-bottom: 3px;
     font-size: 14px;

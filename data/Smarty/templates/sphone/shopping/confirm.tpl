@@ -166,6 +166,30 @@
             </div><!-- /.form_area -->
         </section>
 
+        <!--★注文者の確認★-->
+        <section class="customerconfirm_area">
+        <h3 class="subtitle">ご注文者</h3>
+        <div class="form_area">
+        <div class="formBox">
+            <dl class="customer_confirm">
+                <dd>
+                    <p>〒<!--{$arrForm.order_zip01|h}-->-<!--{$arrForm.order_zip02|h}--><br />
+                        <!--{$arrPref[$arrForm.order_pref]}--><!--{$arrForm.order_addr01|h}--><!--{$arrForm.order_addr02|h}--></p>
+                    <p class="deliv_name"><!--{$arrForm.order_name01|h}--> <!--{$arrForm.order_name02|h}--></p>
+                    <p><!--{$arrForm.order_tel01}-->-<!--{$arrForm.order_tel02}-->-<!--{$arrForm.order_tel03}--></p>
+                    <!--{if $arrForm.order_fax01 > 0}-->
+                        <p><!--{$arrForm.order_fax01}-->-<!--{$arrForm.order_fax02}-->-<!--{$arrForm.order_fax03}--></p>
+                    <!--{/if}-->
+                    <p><!--{$arrForm.order_email|h}--></p>
+                    <p>性別：<!--{$arrSex[$arrForm.order_sex]|h}--></p>
+                    <p>職業：<!--{$arrJob[$arrForm.order_job]|default:'(未登録)'|h}--></p>
+                    <p>生年月日：<!--{$arrForm.order_birth|regex_replace:"/ .+/":""|regex_replace:"/-/":"/"|default:'(未登録)'|h}--></p>
+                </dd>
+            </dl>
+        </div>
+        </div>
+        </section>
+
         <!--★お届け先の確認★-->
         <!--{if $arrShipping}-->
             <section class="delivconfirm_area">
