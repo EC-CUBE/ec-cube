@@ -84,7 +84,7 @@
                         <!--{if $orderDetail.is_downloadable}-->
                             <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
                         <!--{else}-->
-                            <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
+                            <!--{if $orderDetail.payment_date == ""}-->
                                 <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（入金確認中）
                             <!--{else}-->
                                 <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（期限切れ）
