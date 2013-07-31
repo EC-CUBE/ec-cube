@@ -291,10 +291,17 @@ class LC_Page
      * EC-CUBE のWEBルート(/html/)を / としたパスを返す
      *
      * @param string $path 結果を取得するためのパス
-     * @return string EC-CUBE のWEBルート(/html/)を / としたパス
+     * @return string EC-CUBE のWEBルート(/html/)からのパス。
      */
     function getRootPath($path)
     {
+        // realpath 関数は、QUERY_STRING を扱えないため、退避する。
+        $query_string = '';
+        if (preg_match('/^(.+)\\?(.+)$/', $path, $arrMatch)) {
+            $path = $arrMatch[1];
+            $query_string = $arrMatch[2];
+        }
+
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $path = str_replace('\\', '/', $path);
         $htmlPath = str_replace('\\', '/', HTML_REALDIR);
@@ -311,6 +318,9 @@ class LC_Page
         } else {
             $realPath = realpath($path);
         }
+        if ($realPath === false) {
+            trigger_error('realpath でエラー発生。', E_USER_ERROR);
+        }
         $realPath = str_replace('\\', '/', $realPath);
 
         // $path が / で終わっている場合、realpath によって削られた末尾の / を復元する。
@@ -319,8 +329,15 @@ class LC_Page
         }
 
         // HTML_REALDIR を削除した文字列を取得.
-        $rootPath = str_replace($htmlPath, '', $realPath);
-        $rootPath = ltrim($rootPath, '/');
+        if (substr($realPath, 0, strlen($htmlPath)) !== $htmlPath) {
+            trigger_error('不整合', E_USER_ERROR);
+        }
+        $rootPath = substr($realPath, strlen($htmlPath));
+
+        // QUERY_STRING を復元する。
+        if (strlen($query_string) >= 1) {
+            $rootPath .= '?' . $query_string;
+        }
 
         return $rootPath;
     }
