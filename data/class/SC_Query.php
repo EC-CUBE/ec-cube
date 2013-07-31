@@ -1028,9 +1028,18 @@ class SC_Query
      */
     function execute(&$sth, $arrVal = array())
     {
+        // #1658 (SC_Query の各種メソッドでプレースホルダの数に誤りがあるとメモリリークが発生する) 対応
+        // TODO 現状は PEAR 内のバックトレースを抑制することで、メモリーリークの影響を小さくしている。
+        //      根本的には、そのバックトレースが、どこに居座っているかを特定して、対策すべき。
+        $pear_property =& PEAR5::getStaticProperty('PEAR_Error', 'skiptrace');
+        $bak = $pear_property;
+        $pear_property = true;
+
         $arrStartInfo =& $this->lfStartDbTraceLog($sth, $arrVal);
         $affected =& $sth->execute((array)$arrVal);
         $this->lfEndDbTraceLog($arrStartInfo, $sth, $arrVal);
+
+        $pear_property = $bak;
 
         if (PEAR::isError($affected)) {
             $sql = isset($sth->query) ? $sth->query : '';
