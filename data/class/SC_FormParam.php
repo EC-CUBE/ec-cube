@@ -549,43 +549,30 @@ class SC_FormParam
 
     /**
      * パラメーターの削除
+     *
      * addParamの逆の関数
-     * カスタマイズおよびプラグインで使用されるのを想定
      */
     function removeParam($keyname)
     {
         $index = array_search($keyname, $this->keyname);
 
         if ($index !== FALSE) {
-            // $this->paramに歯抜けが存在する場合は、NULLで埋めておく。
-            // 最後に配列を詰める際に、全ての項目が埋まっている必要がある。
-            foreach ($this->keyname as $key => $value) {
-                if (!isset($this->param[$key])) {
-                    $this->param[$key] = NULL;
-                }
-            }
-            // $this->paramがソートされていない時があるのでソート。
-            ksort($this->param);
-
             // 削除
             unset($this->disp_name[$index]);
             unset($this->keyname[$index]);
             unset($this->length[$index]);
             unset($this->convert[$index]);
             unset($this->arrCheck[$index]);
-            unset($this->default[$index]);
+            unset($this->arrDefault[$keyname]);
             unset($this->input_db[$index]);
-            unset($this->param[$index]);
 
             // 歯抜けになった配列を詰める
-            $this->disp_name = array_merge($this->disp_name);
-            $this->keyname = array_merge($this->keyname);
-            $this->length = array_merge($this->length);
-            $this->convert = array_merge($this->convert);
-            $this->arrCheck = array_merge($this->arrCheck);
-            $this->default = array_merge($this->default);
-            $this->input_db = array_merge($this->input_db);
-            $this->param = array_merge($this->param);
+            $this->disp_name    = array_merge($this->disp_name);
+            $this->keyname      = array_merge($this->keyname);
+            $this->length       = array_merge($this->length);
+            $this->convert      = array_merge($this->convert);
+            $this->arrCheck     = array_merge($this->arrCheck);
+            $this->input_db     = array_merge($this->input_db);
         }
     }
 
