@@ -43,7 +43,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id: mysql.php,v 1.65 2008/02/22 19:23:49 quipo Exp $
+// $Id: mysql.php 327310 2012-08-27 15:16:18Z danielc $
 //
 
 require_once 'MDB2/Driver/Datatype/Common.php';
@@ -89,6 +89,35 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
     }
 
     // }}}
+    // {{{ getDeclaration()
+
+    /**
+     * Obtain DBMS specific SQL code portion needed to declare
+     * of the given type
+     *
+     * @param string $type  type to which the value should be converted to
+     * @param string $name  name the field to be declared.
+     * @param string $field definition of the field
+     *
+     * @return string DBMS-specific SQL code portion that should be used to
+     *                declare the specified field.
+     * @access public
+     */
+    function getDeclaration($type, $name, $field)
+    {
+        // MySQL DDL syntax forbids combining NOT NULL with DEFAULT NULL.
+        // To get a default of NULL for NOT NULL columns, omit it.
+        if (   isset($field['notnull'])
+            && !empty($field['notnull'])
+            && array_key_exists('default', $field) // do not use isset() here!
+            && null === $field['default']
+        ) {
+            unset($field['default']);
+        }
+        return parent::getDeclaration($type, $name, $field);
+    }
+
+    // }}}
     // {{{ getTypeDeclaration()
 
     /**
@@ -116,8 +145,8 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
      */
     function getTypeDeclaration($field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -179,7 +208,15 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
         case 'timestamp':
             return 'DATETIME';
         case 'float':
-            return 'DOUBLE';
+            $l = '';
+            if (!empty($field['length'])) {
+                $l = '(' . $field['length'];
+                if (!empty($field['scale'])) {
+                    $l .= ',' . $field['scale'];
+                }
+                $l .= ')';
+            }
+            return 'DOUBLE' . $l;
         case 'decimal':
             $length = !empty($field['length']) ? $field['length'] : 18;
             $scale = !empty($field['scale']) ? $field['scale'] : $db->options['decimal_places'];
@@ -219,8 +256,8 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
      */
     function _getIntegerDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -236,6 +273,9 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
 
         $notnull = empty($field['notnull']) ? '' : ' NOT NULL';
         $unsigned = empty($field['unsigned']) ? '' : ' UNSIGNED';
+        if (empty($default) && empty($notnull)) {
+            $default = ' DEFAULT NULL';
+        }
         $name = $db->quoteIdentifier($name, true);
         return $name.' '.$this->getTypeDeclaration($field).$unsigned.$default.$notnull.$autoinc;
     }
@@ -308,8 +348,8 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
      */
     function _getDecimalDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -346,23 +386,29 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
      */
     function matchPattern($pattern, $operator = null, $field = null)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $match = '';
-        if (!is_null($operator)) {
-            $field = is_null($field) ? '' : $field.' ';
+        if (null !== $operator) {
+            $field = (null === $field) ? '' : $field.' ';
             $operator = strtoupper($operator);
             switch ($operator) {
             // case insensitive
             case 'ILIKE':
                 $match = $field.'LIKE ';
                 break;
+            case 'NOT ILIKE':
+                $match = $field.'NOT LIKE ';
+                break;
             // case sensitive
             case 'LIKE':
                 $match = $field.'LIKE BINARY ';
+                break;
+            case 'NOT LIKE':
+                $match = $field.'NOT LIKE BINARY ';
                 break;
             default:
                 return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
@@ -504,6 +550,9 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
         case 'real':
             $type[] = 'float';
             $unsigned = preg_match('/ unsigned/i', $field['type']);
+            if ($decimal !== false) {
+                $length = $length.','.$decimal;
+            }
             break;
         case 'unknown':
         case 'decimal':
@@ -531,8 +580,8 @@ class MDB2_Driver_Datatype_mysql extends MDB2_Driver_Datatype_Common
             $length = null;
             break;
         default:
-            $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            $db = $this->getDBInstance();
+            if (MDB2::isError($db)) {
                 return $db;
             }
 

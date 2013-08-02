@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id: Common.php,v 1.139 2008/12/04 11:50:42 afz Exp $
+// $Id: Common.php 328137 2012-10-25 02:26:35Z danielc $
 
 require_once 'MDB2/LOB.php';
 
@@ -100,8 +100,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     function getValidTypes()
     {
         $types = $this->valid_default_values;
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
         if (!empty($db->options['datatype_map'])) {
@@ -145,8 +145,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         $types = is_array($types) ? $types : array($types);
         foreach ($types as $key => $type) {
             if (!isset($this->valid_default_values[$type])) {
-                $db =& $this->getDBInstance();
-                if (PEAR::isError($db)) {
+                $db = $this->getDBInstance();
+                if (MDB2::isError($db)) {
                     return $db;
                 }
                 if (empty($db->options['datatype_map'][$type])) {
@@ -209,8 +209,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             return fopen('MDB2LOB://'.$lob_index.'@'.$this->db_index, 'r+');
         }
 
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -232,11 +232,11 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function convertResult($value, $type, $rtrim = true)
     {
-        if (is_null($value)) {
+        if (null === $value) {
             return null;
         }
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
         if (!empty($db->options['datatype_map'][$type])) {
@@ -263,13 +263,17 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function convertResultRow($types, $row, $rtrim = true)
     {
-        $types = $this->_sortResultFieldTypes(array_keys($row), $types);
+        //$types = $this->_sortResultFieldTypes(array_keys($row), $types);
+        $keys = array_keys($row);
+        if (is_int($keys[0])) {
+            $types = $this->_sortResultFieldTypes($keys, $types);
+        }
         foreach ($row as $key => $value) {
             if (empty($types[$key])) {
                 continue;
             }
             $value = $this->convertResult($row[$key], $types[$key], $rtrim);
-            if (PEAR::isError($value)) {
+            if (MDB2::isError($value)) {
                 return $value;
             }
             $row[$key] = $value;
@@ -313,7 +317,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         if (count($types)) {
             reset($types);
             foreach (array_keys($sorted_types) as $k) {
-                if (is_null($sorted_types[$k])) {
+                if (null === $sorted_types[$k]) {
                     $sorted_types[$k] = current($types);
                     next($types);
                 }
@@ -338,8 +342,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function getDeclaration($type, $name, $field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -387,8 +391,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function getTypeDeclaration($field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -453,14 +457,14 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function _getDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $name = $db->quoteIdentifier($name, true);
         $declaration_options = $db->datatype->_getDeclarationOptions($field);
-        if (PEAR::isError($declaration_options)) {
+        if (MDB2::isError($declaration_options)) {
             return $declaration_options;
         }
         return $name.' '.$this->getTypeDeclaration($field).$declaration_options;
@@ -501,17 +505,17 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         $default = '';
         if (array_key_exists('default', $field)) {
             if ($field['default'] === '') {
-                $db =& $this->getDBInstance();
-                if (PEAR::isError($db)) {
+                $db = $this->getDBInstance();
+                if (MDB2::isError($db)) {
                     return $db;
                 }
                 $valid_default_values = $this->getValidTypes();
                 $field['default'] = $valid_default_values[$field['type']];
-                if ($field['default'] === ''&& ($db->options['portability'] & MDB2_PORTABILITY_EMPTY_TO_NULL)) {
+                if ($field['default'] === '' && ($db->options['portability'] & MDB2_PORTABILITY_EMPTY_TO_NULL)) {
                     $field['default'] = ' ';
                 }
             }
-            if (!is_null($field['default'])) {
+            if (null !== $field['default']) {
                 $default = ' DEFAULT ' . $this->quote($field['default'], $field['type']);
             }
         }
@@ -524,7 +528,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
     // }}}
     // {{{ _getCharsetFieldDeclaration()
-    
+
     /**
      * Obtain DBMS specific SQL code portion needed to set the CHARACTER SET
      * of a field declaration to be used in statements like CREATE TABLE.
@@ -583,8 +587,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     function _getIntegerDeclaration($name, $field)
     {
         if (!empty($field['unsigned'])) {
-            $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            $db = $this->getDBInstance();
+            if (MDB2::isError($db)) {
                 return $db;
             }
 
@@ -651,8 +655,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function _getCLOBDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -687,8 +691,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function _getBLOBDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -875,8 +879,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         $type = !empty($current['type']) ? $current['type'] : null;
 
         if (!method_exists($this, "_compare{$type}Definition")) {
-            $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            $db = $this->getDBInstance();
+            if (MDB2::isError($db)) {
                 return $db;
             }
             if (!empty($db->options['datatype_map_callback'][$type])) {
@@ -905,9 +909,9 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         }
 
         $previous_default = array_key_exists('default', $previous) ? $previous['default'] :
-            ($previous_notnull ? '' : null);
+            null;
         $default = array_key_exists('default', $current) ? $current['default'] :
-            ($notnull ? '' : null);
+            null;
         if ($previous_default !== $default) {
             $change['default'] = true;
         }
@@ -929,6 +933,11 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     function _compareIntegerDefinition($current, $previous)
     {
         $change = array();
+        $previous_length = !empty($previous['length']) ? $previous['length'] : 4;
+        $length = !empty($current['length']) ? $current['length'] : 4;
+        if ($previous_length != $length) {
+            $change['length'] = $length;
+        }
         $previous_unsigned = !empty($previous['unsigned']) ? $previous['unsigned'] : false;
         $unsigned = !empty($current['unsigned']) ? $current['unsigned'] : false;
         if ($previous_unsigned != $unsigned) {
@@ -1114,12 +1123,12 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function quote($value, $type = null, $quote = true, $escape_wildcards = false)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
-        if (is_null($value)
+        if ((null === $value)
             || ($value === '' && $db->options['portability'] & MDB2_PORTABILITY_EMPTY_TO_NULL)
         ) {
             if (!$quote) {
@@ -1128,7 +1137,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             return 'NULL';
         }
 
-        if (is_null($type)) {
+        if (null === $type) {
             switch (gettype($value)) {
             case 'integer':
                 $type = 'integer';
@@ -1218,13 +1227,13 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             return $value;
         }
 
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $value = $db->escape($value, $escape_wildcards);
-        if (PEAR::isError($value)) {
+        if (MDB2::isError($value)) {
             return $value;
         }
         return "'".$value."'";
@@ -1247,15 +1256,15 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         $close = false;
         if (preg_match('/^(\w+:\/\/)(.*)$/', $value, $match)) {
             $close = true;
-            if ($match[1] == 'file://') {
+            if (strtolower($match[1]) == 'file://') {
                 $value = $match[2];
             }
             $value = @fopen($value, 'r');
         }
 
         if (is_resource($value)) {
-            $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            $db = $this->getDBInstance();
+            if (MDB2::isError($db)) {
                 return $db;
             }
 
@@ -1288,9 +1297,15 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function _quoteLOB($value, $quote, $escape_wildcards)
     {
-        $value = $this->_readFile($value);
-        if (PEAR::isError($value)) {
-            return $value;
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
+            return $db;
+        }
+        if ($db->options['lob_allow_url_include']) {
+            $value = $this->_readFile($value);
+            if (MDB2::isError($value)) {
+                return $value;
+            }
         }
         return $this->_quoteText($value, $quote, $escape_wildcards);
     }
@@ -1369,11 +1384,11 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     function _quoteDate($value, $quote, $escape_wildcards)
     {
         if ($value === 'CURRENT_DATE') {
-            $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            $db = $this->getDBInstance();
+            if (MDB2::isError($db)) {
                 return $db;
             }
-            if (isset($db->function) && is_a($db->function, 'MDB2_Driver_Function_Common')) {
+            if (isset($db->function) && is_object($this->function) && is_a($db->function, 'MDB2_Driver_Function_Common')) {
                 return $db->function->now('date');
             }
             return 'CURRENT_DATE';
@@ -1398,11 +1413,11 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     function _quoteTimestamp($value, $quote, $escape_wildcards)
     {
         if ($value === 'CURRENT_TIMESTAMP') {
-            $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            $db = $this->getDBInstance();
+            if (MDB2::isError($db)) {
                 return $db;
             }
-            if (isset($db->function) && is_a($db->function, 'MDB2_Driver_Function_Common')) {
+            if (isset($db->function) && is_object($db->function) && is_a($db->function, 'MDB2_Driver_Function_Common')) {
                 return $db->function->now('timestamp');
             }
             return 'CURRENT_TIMESTAMP';
@@ -1427,11 +1442,11 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     function _quoteTime($value, $quote, $escape_wildcards)
     {
         if ($value === 'CURRENT_TIME') {
-            $db =& $this->getDBInstance();
-            if (PEAR::isError($db)) {
+            $db = $this->getDBInstance();
+            if (MDB2::isError($db)) {
                 return $db;
             }
-            if (isset($db->function) && is_a($db->function, 'MDB2_Driver_Function_Common')) {
+            if (isset($db->function) && is_object($this->function) && is_a($db->function, 'MDB2_Driver_Function_Common')) {
                 return $db->function->now('time');
             }
             return 'CURRENT_TIME';
@@ -1517,8 +1532,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function writeLOBToFile($lob, $file)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -1554,7 +1569,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function _retrieveLOB(&$lob)
     {
-        if (is_null($lob['value'])) {
+        if (null === $lob['value']) {
             $lob['value'] = $lob['resource'];
         }
         $lob['loaded'] = true;
@@ -1681,27 +1696,38 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function matchPattern($pattern, $operator = null, $field = null)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $match = '';
-        if (!is_null($operator)) {
+        if (null !== $operator) {
             $operator = strtoupper($operator);
             switch ($operator) {
             // case insensitive
             case 'ILIKE':
-                if (is_null($field)) {
+                if (null === $field) {
                     return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
                         'case insensitive LIKE matching requires passing the field name', __FUNCTION__);
                 }
                 $db->loadModule('Function', null, true);
                 $match = $db->function->lower($field).' LIKE ';
                 break;
+            case 'NOT ILIKE':
+                if (null === $field) {
+                    return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
+                        'case insensitive NOT ILIKE matching requires passing the field name', __FUNCTION__);
+                }
+                $db->loadModule('Function', null, true);
+                $match = $db->function->lower($field).' NOT LIKE ';
+                break;
             // case sensitive
             case 'LIKE':
-                $match = is_null($field) ? 'LIKE ' : $field.' LIKE ';
+                $match = (null === $field) ? 'LIKE ' : ($field.' LIKE ');
+                break;
+            case 'NOT LIKE':
+                $match = (null === $field) ? 'NOT LIKE ' : ($field.' NOT LIKE ');
                 break;
             default:
                 return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
@@ -1713,11 +1739,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             if ($key % 2) {
                 $match.= $value;
             } else {
-                if ($operator === 'ILIKE') {
-                    $value = strtolower($value);
-                }
                 $escaped = $db->escape($value);
-                if (PEAR::isError($escaped)) {
+                if (MDB2::isError($escaped)) {
                     return $escaped;
                 }
                 $match.= $db->escapePattern($escaped);
@@ -1755,8 +1778,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function mapNativeDatatype($field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -1784,8 +1807,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function _mapNativeDatatype($field)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -1805,8 +1828,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     function mapPrepareDatatype($type)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
