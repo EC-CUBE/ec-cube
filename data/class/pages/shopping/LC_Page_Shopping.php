@@ -43,6 +43,7 @@ class LC_Page_Shopping extends LC_Page_Ex
         $this->tpl_title = 'ログイン';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
+        $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->tpl_onload = 'fnCheckInputDeliv();';
@@ -137,12 +138,12 @@ class LC_Page_Shopping extends LC_Page_Ex
                         SC_Response_Ex::actionExit();
                     }
 
-		    // クッキー保存判定
-		    if ($objFormParam->getValue('login_memory') == '1' && $objFormParam->getValue('login_email') != '') {
-			    $objCookie->setCookie('login_email', $objFormParam->getValue('login_email'));
-		    } else {
-			    $objCookie->setCookie('login_email', '');
-		    }
+                    // クッキー保存判定
+                    if ($objFormParam->getValue('login_memory') == '1' && $objFormParam->getValue('login_email') != '') {
+                        $objCookie->setCookie('login_email', $objFormParam->getValue('login_email'));
+                    } else {
+                        $objCookie->setCookie('login_email', '');
+                    }
 
                     SC_Response_Ex::sendRedirect(
                             $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
@@ -172,7 +173,6 @@ class LC_Page_Shopping extends LC_Page_Ex
                     }
                 }
                 break;
-
             // お客様情報登録
             case 'nonmember_confirm':
                 $this->tpl_mainpage = $nonmember_mainpage;
@@ -197,7 +197,6 @@ class LC_Page_Shopping extends LC_Page_Ex
 
             // 前のページに戻る
             case 'return':
-
                 SC_Response_Ex::sendRedirect(CART_URLPATH);
                 SC_Response_Ex::actionExit();
                 break;
@@ -239,9 +238,8 @@ class LC_Page_Shopping extends LC_Page_Ex
                     $this->tpl_mainpage = $nonmember_mainpage;
                     $this->tpl_title = $nonmember_title;
                     $this->lfInitParam($objFormParam);
-                }
-                // 通常はログインページ
-                else {
+                } else {
+                    // 通常はログインページ
                     $this->lfInitLoginFormParam($objFormParam);
                 }
 
@@ -249,14 +247,19 @@ class LC_Page_Shopping extends LC_Page_Ex
                 break;
         }
 
+        // 入力値の取得
+        // TODO: getFormParamListに統一したいが顧客登録系がgetHashArrayなので現在は切替方式
+        if ($this->tpl_mainpage == $nonmember_mainpage) {
+            $this->arrForm = $objFormParam->getHashArray();
+        } else {
+            $this->arrForm = $objFormParam->getFormParamList();
+        }
+
         // 記憶したメールアドレスを取得
         $this->tpl_login_email = $objCookie->getCookie('login_email');
         if (!SC_Utils_Ex::isBlank($this->tpl_login_email)) {
             $this->tpl_login_memory = '1';
         }
-
-        // 入力値の取得
-        $this->arrForm = $objFormParam->getFormParamList();
 
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
@@ -298,8 +301,8 @@ class LC_Page_Shopping extends LC_Page_Ex
     function lfInitLoginFormParam(&$objFormParam)
     {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('メールアドレス', 'login_email', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('メールアドレス', 'login_email', '' , 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
     }
 
     /**

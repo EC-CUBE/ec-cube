@@ -42,6 +42,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
+        $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->tpl_title = 'お届け先の指定';
         $this->httpCacheControl('nocache');
     }
@@ -150,7 +151,9 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
             default:
                 // 配送IDの取得
                 $shippingData = $objPurchase->getShippingTemp();
-                $arrShippingId = array_keys($shippingData);
+                if (!SC_Utils_Ex::isBlank($shippingData)) {
+                    $arrShippingId = array_keys($shippingData);
+                }
                 if (isset($arrShippingId[0])) {
                     $this->arrForm['deliv_check']['value'] = $arrShippingId[0] == 0 ? -1 : $arrShippingId[0];
                 }
@@ -166,6 +169,9 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
                 'name02'            => $objCustomer->getValue('name02'),
                 'kana01'            => $objCustomer->getValue('kana01'),
                 'kana02'            => $objCustomer->getValue('kana02'),
+                'company_name'      => $objCustomer->getValue('company_name'),
+                'country_id'           => $objCustomer->getValue('country_id'),
+                'zipcode'           => $objCustomer->getValue('zipcode'),
                 'zip01'             => $objCustomer->getValue('zip01'),
                 'zip02'             => $objCustomer->getValue('zip02'),
                 'pref'              => $objCustomer->getValue('pref'),

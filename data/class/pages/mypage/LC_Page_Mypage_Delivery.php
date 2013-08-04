@@ -44,6 +44,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
         $this->tpl_mypageno = 'delivery';
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
+        $this->arrCountry   = $masterData->getMasterData('mtb_country');
         $this->httpCacheControl('nocache');
     }
 

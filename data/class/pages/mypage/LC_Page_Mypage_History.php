@@ -47,6 +47,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
         $masterData             = new SC_DB_MasterData_Ex();
         $this->arrMAILTEMPLATE  = $masterData->getMasterData('mtb_mail_template');
         $this->arrPref          = $masterData->getMasterData('mtb_pref');
+        $this->arrCountry       = $masterData->getMasterData('mtb_country');
         $this->arrWDAY          = $masterData->getMasterData('mtb_wday');
         $this->arrProductType   = $masterData->getMasterData('mtb_product_type');
         $this->arrCustomerOrderStatus = $masterData->getMasterData('mtb_customer_order_status');
@@ -97,10 +98,22 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
         foreach ($this->tpl_arrOrderDetail as $product_index => $arrOrderProductDetail) {
             //必要なのは商品の販売金額のみなので、遅い場合は、別途SQL作成した方が良い
             $arrTempProductDetail = $objProduct->getProductsClass($arrOrderProductDetail['product_class_id']);
-            if($this->tpl_arrOrderDetail[$product_index]['price'] != $arrTempProductDetail['price02']) {
+            // 税計算
+            $this->tpl_arrOrderDetail[$product_index]['price_inctax'] = $this->tpl_arrOrderDetail[$product_index]['price']  +
+                SC_Helper_TaxRule_Ex::calcTax (
+                    $this->tpl_arrOrderDetail[$product_index]['price'],
+                    $this->tpl_arrOrderDetail[$product_index]['tax_rate'],
+                    $this->tpl_arrOrderDetail[$product_index]['tax_rule']
+                    );
+            $arrTempProductDetail['price02_inctax'] = SC_Helper_TaxRule_Ex::sfCalcIncTax(
+                    $arrTempProductDetail['price02'],
+                    $arrTempProductDetail['product_id'],
+                    $arrTempProductDetail['product_class_id']
+                    );
+            if($this->tpl_arrOrderDetail[$product_index]['price_inctax'] != $arrTempProductDetail['price02_inctax']) {
                 $this->is_price_change = true;
             }
-            $this->tpl_arrOrderDetail[$product_index]['product_price'] = ($arrTempProductDetail['price02'])?$arrTempProductDetail['price02']:0;
+            $this->tpl_arrOrderDetail[$product_index]['product_price_inctax'] = ($arrTempProductDetail['price02_inctax']) ? $arrTempProductDetail['price02_inctax'] : 0 ;
         }
 
         $this->tpl_arrOrderDetail = $this->setMainListImage($this->tpl_arrOrderDetail);

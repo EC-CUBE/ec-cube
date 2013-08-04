@@ -43,6 +43,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
         $this->tpl_title = '入力内容のご確認';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
+        $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
@@ -107,7 +108,6 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
 
         // 一時受注テーブルの読込
         $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);
-
         // カート集計を元に最終計算
         $arrCalcResults = $objCartSess->calculate($this->cartKey, $objCustomer,
                                                   $arrOrderTemp['use_point'],
@@ -162,7 +162,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
                 // 購入完了ページ
                 else {
                     $objPurchase->completeOrder(ORDER_NEW);
-                    SC_Helper_Purchase_Ex::sendOrderMail($this->arrForm['order_id'], $this); 
+                    SC_Helper_Purchase_Ex::sendOrderMail($this->arrForm['order_id'], $this);
 
                     SC_Response_Ex::sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }
