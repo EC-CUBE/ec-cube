@@ -107,7 +107,7 @@
                             </ul>
                         </td>
                         <td class="alignR">
-                            <!--{$item.price|sfCalcIncTax|number_format}-->円
+                            <!--{$item.price_inctax|number_format}-->円
                         </td>
                         <td class="alignR"><!--{$item.quantity|number_format}--></td>
                         <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
@@ -118,12 +118,14 @@
                     <td class="alignR"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
                 </tr>
                 <!--{if $smarty.const.USE_POINT !== false}-->
+                    <!--{if $arrForm.use_point > 0}-->
                     <tr>
                         <th colspan="4" class="alignR" scope="row">値引き（ポイントご使用時）</th>
                         <td class="alignR">
                             <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
                             -<!--{$discount|number_format|default:0}-->円</td>
                     </tr>
+                    <!--{/if}-->
                 <!--{/if}-->
                 <tr>
                     <th colspan="4" class="alignR" scope="row">送料</th>
@@ -186,6 +188,20 @@
                         <td><!--{$arrForm.order_kana01|h}--> <!--{$arrForm.order_kana02|h}--></td>
                     </tr>
                     <tr>
+                        <th scope="row">会社名</th>
+                        <td><!--{$arrForm.order_company_name|h}--></td>
+                    </tr>
+                    <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                    <tr>
+                        <th scope="row">国</th>
+                        <td><!--{$arrCountry[$arrForm.order_country_id]|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ZIPCODE</th>
+                        <td><!--{$arrForm.order_zipcode|h}--></td>
+                    </tr>
+                    <!--{/if}-->
+                    <tr>
                         <th scope="row">郵便番号</th>
                         <td>〒<!--{$arrForm.order_zip01|h}-->-<!--{$arrForm.order_zip02|h}--></td>
                     </tr>
@@ -238,11 +254,8 @@
                         <tr>
                             <th scope="col">商品写真</th>
                             <th scope="col">商品名</th>
-                            <th scope="col">単価</th>
                             <th scope="col">数量</th>
-                            <!--{* XXX 購入小計と誤差が出るためコメントアウト
                             <th scope="col">小計</th>
-                            *}-->
                         </tr>
                         <!--{foreach item=item from=$shippingItem.shipment_item}-->
                             <tr>
@@ -261,13 +274,10 @@
                                         <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
                                     <!--{/if}-->
                                 </td>
-                                <td class="alignR">
-                                    <!--{$item.price|sfCalcIncTax|number_format}-->円
-                                </td>
                                 <td class="alignC"><!--{$item.quantity}--></td>
-                                <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                                <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
-                                *}-->
+                                <td class="alignR">
+                                    <!--{$item.total_inctax|number_format}-->円
+                                </td>
                             </tr>
                         <!--{/foreach}-->
                     </table>
@@ -285,6 +295,20 @@
                             <th scope="row">お名前(フリガナ)</th>
                             <td><!--{$shippingItem.shipping_kana01|h}--> <!--{$shippingItem.shipping_kana02|h}--></td>
                         </tr>
+                        <tr>
+                            <th scope="row">会社名</th>
+                            <td><!--{$shippingItem.shipping_company_name|h}--></td>
+                        </tr>
+                        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                        <tr>
+                            <th scope="row">国</th>
+                            <td><!--{$arrCountry[$shippingItem.shipping_country_id]|h}--></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">ZIPCODE</th>
+                            <td><!--{$shippingItem.shipping_zipcode|h}--></td>
+                        </tr>
+                        <!--{/if}-->
                         <tr>
                             <th scope="row">郵便番号</th>
                             <td>〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--></td>

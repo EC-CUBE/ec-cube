@@ -204,9 +204,9 @@ class SC_Helper_TaxRule
             // XXXX: 互換性のためtax_ruleにもcalc_ruleを設定
             $arrRet['tax_rule'] = $arrRet['calc_rule'];
             $data_c[$cache_key] = $arrRet;
+            GC_Utils_Ex::gfDebugLog('tax_key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
         }
 
-        GC_Utils_Ex::gfDebugLog('tax_key=' . $cache_key . ' result_tax=' . print_r($data_c[$cache_key],true));
         return $data_c[$cache_key];
     }
 

@@ -193,6 +193,14 @@
                 </td>
             </tr>
             <tr>
+                <th>会社名</th>
+                <td>
+                    <!--{assign var=key1 value="order_company_name"}-->
+                    <span class="attention"><!--{$arrErr[$key1]}--></span>
+                    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="30" class="box30" />
+                </td>
+            </tr>
+            <tr>
                 <th>メールアドレス</th>
                 <td>
                     <!--{assign var=key1 value="order_email"}-->
@@ -228,6 +236,30 @@
                     <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
                 </td>
             </tr>
+            <!--{assign var=key1 value="order_country_id"}-->
+            <!--{assign var=key2 value="order_zipcode"}-->
+            <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
+            <input type="hidden" name="<!--{$key1}-->" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+            <!--{else}-->
+            <tr>
+                <th>国</th>
+                <td>
+                    <span class="attention"><!--{$arrErr[$key1]}--></span>
+                    <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                            <option value="" selected="selected">国を選択</option>
+                            <!--{html_options options=$arrCountry selected=$arrForm[$key1].value|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>ZIP CODE</th>
+                <td>
+                    <span class="attention"><!--{$arrErr[$key2]}--></span>
+                    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->;" size="15" class="box15"/>
+                </td>
+            </tr>
+            <!--{/if}-->
+
             <tr>
                 <th>住所</th>
                 <td>
@@ -322,8 +354,6 @@
                 <input type="hidden" name="product_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_id.value[$product_index]|h}-->" id="product_id_<!--{$product_index}-->" />
                 <input type="hidden" name="product_class_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_class_id.value[$product_index]|h}-->" id="product_class_id_<!--{$product_index}-->" />
                 <input type="hidden" name="point_rate[<!--{$product_index}-->]" value="<!--{$arrForm.point_rate.value[$product_index]|h}-->" id="point_rate_<!--{$product_index}-->" />
-                <input type="hidden" name="tax_rate[<!--{$product_index}-->]" value="<!--{$arrForm.tax_rate.value[$product_index]|h}-->" id="tax_rate_<!--{$product_index}-->" />
-                <input type="hidden" name="tax_rule[<!--{$product_index}-->]" value="<!--{$arrForm.tax_rule.value[$product_index]|h}-->" id="tax_rule_<!--{$product_index}-->" />
                 </td>
                 <td align="center">
                     <!--{assign var=key value="price"}-->
@@ -339,7 +369,14 @@
                 <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
                 <!--{assign var=tax_rate value=`$arrForm.tax_rate.value[$product_index]`}-->
                 <!--{assign var=tax_rule value=`$arrForm.tax_rule.value[$product_index]`}-->
-                <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format}--> 円(税率<!--{$tax_rate|number_format}-->%)</td>
+                <input type="hidden" name="tax_rule[<!--{$product_index}-->]" value="<!--{$arrForm.tax_rule.value[$product_index]|h}-->" id="tax_rule_<!--{$product_index}-->" />
+
+                <td class="right">
+                    <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format}--> 円<br />
+                    <!--{assign var=key value="tax_rate"}-->
+                    <span class="attention"><!--{$arrErr[$key][$product_index]}--></span>
+                    税率<input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->" />%
+                </td>
                 <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円</td>
             </tr>
             <!--{/section}-->
@@ -537,6 +574,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>会社名</th>
+                    <td>
+                        <!--{assign var=key1 value="shipping_company_name"}-->
+                        <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
+                        <input type="text" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key1]|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->" size="30" class="box30" />
+                    </td>
+                </tr>
+                <tr>
                     <th>TEL</th>
                     <td>
                         <!--{assign var=key1 value="shipping_tel01"}-->
@@ -564,6 +609,28 @@
                         <input type="text" name="<!--{$key3}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key3]|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3][$shipping_index]|sfGetErrorColor}-->" size="6" class="box6" />
                     </td>
                 </tr>
+                <!--{assign var=key1 value="shipping_country_id"}-->
+                <!--{assign var=key2 value="shipping_zipcode"}-->
+                <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
+                <input type="hidden" name="<!--{$key1}-->[<!--{$shipping_index}-->]" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+                <!--{else}-->
+                <tr>
+                    <th>国</th>
+                    <td>
+                        <span class="attention"><!--{$arrErr[$key1][$shipping_index]}--></span>
+                        <select name="<!--{$key1}-->[<!--{$shipping_index}-->]" style="<!--{$arrErr[$key1][$shipping_index]|sfGetErrorColor}-->">
+                                <!--{html_options options=$arrCountry selected=$arrShipping[$key1]|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>ZIP CODE</th>
+                    <td>
+                        <span class="attention"><!--{$arrErr[$key2][$shipping_index]}--></span>
+                        <input type="text" name="<!--{$key2}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$key2]|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2][$shipping_index]|sfGetErrorColor}-->;" size="15" class="box15"/>
+                    </td>
+                </tr>
+                <!--{/if}-->
                 <tr>
                     <th>住所</th>
                     <td>

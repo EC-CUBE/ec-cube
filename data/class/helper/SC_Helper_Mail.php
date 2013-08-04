@@ -48,6 +48,7 @@ class SC_Helper_Mail
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrMAILTPLPATH =  $masterData->getMasterData('mtb_mail_tpl_path');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
+        $this->arrCountry = $masterData->getMasterData('mtb_country');
     }
 
     /**
@@ -178,6 +179,8 @@ class SC_Helper_Mail
 
         // 都道府県変換
         $arrTplVar->arrPref = $this->arrPref;
+        // 国変換
+        $arrTplVar->arrCountry = $this->arrCountry;
 
         $objCustomer = new SC_Customer_Ex();
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');

@@ -89,9 +89,13 @@
                             </label>
                         </td>
                         <td>
-                            <!--{assign var=key value=$arrAddr[cnt].pref}-->
-                            <!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
-                            <!--{$arrAddr[cnt].name01|h}--> <!--{$arrAddr[cnt].name02|h}-->
+                            <!--{assign var=key1 value=$arrAddr[cnt].pref}-->
+                            <!--{assign var=key2 value=$arrAddr[cnt].country_id}-->
+                            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                            <!--{$arrCountry[$key2]|h}--><br/>
+                            <!--{/if}-->
+                            <!--{$arrPref[$key1]|h}--><!--{$arrAddr[cnt].addr01|h}--><!--{$arrAddr[cnt].addr02|h}--><br />
+                            <!--{$arrAddr[cnt].company_name|h}--> <!--{$arrAddr[cnt].name01|h}--> <!--{$arrAddr[cnt].name02|h}-->
                         </td>
                         <td class="alignC">
                             <!--{if !$smarty.section.cnt.first}-->

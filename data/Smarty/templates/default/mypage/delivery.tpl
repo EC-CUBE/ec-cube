@@ -57,13 +57,17 @@
                     </tr>
                     <!--{section name=cnt loop=$arrOtherDeliv}-->
                         <!--{assign var=OtherPref value="`$arrOtherDeliv[cnt].pref`"}-->
+                        <!--{assign var=OtherCountry value="`$arrOtherDeliv[cnt].country_id`"}-->
                         <tr>
                             <td class="alignC"><!--{$smarty.section.cnt.iteration}--></td>
                             <td><label for="add<!--{$smarty.section.cnt.iteration}-->">お届け先住所</label></td>
                             <td>
+                                <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                                <!--{$arrCountry[$OtherCountry]|h}--><br/>
+                                <!--{/if}-->
                                 〒<!--{$arrOtherDeliv[cnt].zip01}-->-<!--{$arrOtherDeliv[cnt].zip02}--><br />
                                 <!--{$arrPref[$OtherPref]|h}--><!--{$arrOtherDeliv[cnt].addr01|h}--><!--{$arrOtherDeliv[cnt].addr02|h}--><br />
-                                <!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
+                                <!--{$arrOtherDeliv[cnt].company_name|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name01|h}-->&nbsp;<!--{$arrOtherDeliv[cnt].name02|h}-->
                             </td>
                             <td class="alignC">
                                 <a href="./delivery_addr.php" onclick="win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>

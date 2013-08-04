@@ -99,6 +99,33 @@
                 </td>
             </tr>
             <tr>
+                <th>会社名</th>
+                <td>
+                    <span class="attention"><!--{$arrErr.company_name}--></span>
+                    <input type="text" name="company_name" value="<!--{$arrForm.company_name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.company_name != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                </td>
+            </tr>
+            <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
+            <input type="hidden" name="country_id" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+            <!--{else}-->
+            <tr>
+                <th>国<span class="attention"> *</span></th>
+                <td>
+                    <span class="attention"><!--{$arrErr.country_id}--></span>
+                    <select name="country_id" <!--{if $arrErr.country_id != ""}--><!--{sfSetErrorStyle}--><!--{/if}-->>
+                            <!--{html_options options=$arrCountry selected=$arrForm.country_id|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>ZIP CODE</th>
+                <td>
+                    <span class="attention"><!--{$arrErr.zipcode}--></span>
+                    <input type="text" name="zipcode" value="<!--{$arrForm.zipcode|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.zipcode != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                </td>
+            </tr>
+            <!--{/if}-->
+            <tr>
                 <th>郵便番号<span class="attention"> *</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>

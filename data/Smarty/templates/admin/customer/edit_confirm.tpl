@@ -76,6 +76,20 @@ function func_return(){
                 <td><!--{$arrForm.kana01|h}--><!--{$arrForm.kana02|h}-->　様</td>
             </tr>
             <tr>
+                <th>会社名</th>
+                <td><!--{$arrForm.company_name|h}--></td>
+            </tr>
+            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            <tr>
+                <th>国</th>
+                <td><!--{$arrCountry[$arrForm.country_id]|h}--></td>
+            </tr>
+            <tr>
+                <th>ZIPCODE</th>
+                <td><!--{$arrForm.zipcode|h}--></td>
+            </tr>
+            <!--{/if}-->
+            <tr>
                 <th>郵便番号</th>
                 <td>〒 <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
             </tr>

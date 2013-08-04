@@ -38,7 +38,7 @@
         </td>
     </tr>
     <tr>
-        <th>お名前(フリガナ)<span class="attention">※</span></th>
+        <th>お名前(フリガナ)<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><span class="attention">※</span><!--{/if}--></th>
         <td>
             <!--{assign var=key1 value="`$prefix`kana01"}-->
             <!--{assign var=key2 value="`$prefix`kana02"}-->
@@ -50,13 +50,50 @@
         </td>
     </tr>
     <tr>
-        <th>郵便番号<span class="attention">※</span></th>
+        <th>会社名</th>
         <td>
-            <!--{assign var=key1 value="`$prefix`zip01"}-->
-            <!--{assign var=key2 value="`$prefix`zip02"}-->
-            <!--{assign var=key3 value="`$prefix`pref"}-->
-            <!--{assign var=key4 value="`$prefix`addr01"}-->
-            <!--{assign var=key5 value="`$prefix`addr02"}-->
+            <!--{assign var=key1 value="`$prefix`company_name"}-->
+            <!--{if $arrErr[$key1]}-->
+                <div class="attention"><!--{$arrErr[$key1]}--></div>
+            <!--{/if}-->
+            <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: active;" class="box300" />&nbsp;
+        </td>
+    </tr>
+    <!--{assign var=key1 value="`$prefix`zip01"}-->
+    <!--{assign var=key2 value="`$prefix`zip02"}-->
+    <!--{assign var=key3 value="`$prefix`pref"}-->
+    <!--{assign var=key4 value="`$prefix`addr01"}-->
+    <!--{assign var=key5 value="`$prefix`addr02"}-->
+    <!--{assign var=key6 value="`$prefix`country_id"}-->
+    <!--{assign var=key7 value="`$prefix`zipcode"}-->
+    <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
+    <input type="hidden" name="<!--{$key6}-->" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+    <!--{else}-->
+    <tr>
+        <th>国<span class="attention">※</span></th>
+        <td>
+            <!--{if $arrErr[$key6]}-->
+                <div class="attention"><!--{$arrErr[$key6]}--></div>
+            <!--{/if}-->
+            <select name="<!--{$key6}-->" style="<!--{$arrErr[$key6]|sfGetErrorColor}-->">
+                    <option value="" selected="selected">国を選択</option>
+                    <!--{html_options options=$arrCountry selected=$arrForm[$key6]|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th>ZIP CODE</th>
+        <td>
+            <!--{if $arrErr[$key7]}-->
+                <div class="attention"><!--{$arrErr[$key7]}--></div>
+            <!--{/if}-->
+            <input type="text" name="<!--{$key7}-->" value="<!--{$arrForm[$key7]|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" class="box120" style="<!--{$arrErr[$key7]|sfGetErrorColor}-->; ime-mode: disabled;" />
+        </td>
+    </tr>
+    <!--{/if}-->
+    <tr>
+        <th>郵便番号<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><span class="attention">※</span><!--{/if}--></th>
+        <td>
             <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
                 <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
             <!--{/if}-->

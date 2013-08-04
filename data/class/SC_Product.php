@@ -298,6 +298,7 @@ __EOS__;
                 }
 
                 // 価格
+                // TODO: ここでprice01,price02を税込みにしてよいのか？ _inctax を付けるべき？要検証
                 $arrClassCats2['price01']
                     = strlen($arrProductsClass['price01'])
                     ? number_format(SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProductsClass['price01'], $productId, $arrProductsClass['product_class_id']))
