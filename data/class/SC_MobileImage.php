@@ -97,11 +97,11 @@ class SC_MobileImage
             foreach ($images[1] as $key => $path) {
                 // resize_image.phpは除外
                 if (stripos($path, ROOT_URLPATH . 'resize_image.php') !== FALSE) {
-                    break;
+                    continue;
                 }
 
                 $realpath = html_entity_decode($path, ENT_QUOTES);
-                $realpath = preg_replace('|^' . ROOT_URLPATH . '|', HTML_REALDIR, $realpath);
+                $realpath = substr_replace($realpath, HTML_REALDIR, 0, strlen(ROOT_URLPATH));
                 $converted = $imageConverter->execute($realpath);
                 if (isset($converted['outputImageName'])) {
                     $buffer = str_replace($path, MOBILE_IMAGE_URLPATH . $converted['outputImageName'], $buffer);
