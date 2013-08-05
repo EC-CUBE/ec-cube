@@ -84,8 +84,9 @@ class SC_Helper_Purchase_registerOrderCompleteTest extends SC_Helper_Purchase_Te
             'point_rate' => '5',
             'price' => '1000',
             'quantity' => '10',
-            'tax_rate' => '5',
-            'tax_rule' => '1'
+            'tax_rate' => null,
+            'tax_rule' => null,
+            'tax_adjuts' => null
           )
         )
       ),

@@ -112,7 +112,9 @@ class SC_Helper_DB_sfGetBasisData extends SC_Helper_DB_TestBase
             'latitude' => '30.0001',
             'longitude' => '45.0001',
             'downloadable_days' => '10',
-            'downloadable_days_unlimited' => '0'
+            'downloadable_days_unlimited' => '0',
+            'zipcode' => null,
+            'law_zipcode' => null
         );
         $this->actual = $this->helper->sfGetBasisData(true);
         $this->verify();
@@ -214,7 +216,9 @@ class SC_Helper_DB_sfGetBasisData extends SC_Helper_DB_TestBase
             'downloadable_days' => '10',
             'downloadable_days_unlimited' => '0',
             'country_id' => null,
-            'law_country_id' => null
+            'law_country_id' => null,
+            'zipcode' => null,
+            'law_zipcode' => null
         );
         $this->actual = $this->helper->sfGetBasisData(false);
         $this->verify();

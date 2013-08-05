@@ -97,7 +97,9 @@ class SC_Helper_Address_registAddressTest extends SC_Helper_Address_TestBase
                 'fax01' => '112',
                 'fax02' => '1113',
                 'fax03' => '1114',
-                'country_id' => null
+                'country_id' => null,
+                'company_name' => null,
+                'zipcode' => null
             );
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->objAddress->registAddress($arrSql);
