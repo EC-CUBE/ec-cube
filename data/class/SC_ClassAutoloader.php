@@ -118,6 +118,16 @@ class SC_ClassAutoloader
                 }
             }
         }
-        include $classpath;
+        if (file_exists($classpath)) {
+            include $classpath;
+        } else {
+            $arrPath = explode(PATH_SEPARATOR, get_include_path());
+            foreach ($arrPath as $path) {
+                if (file_exists($path . '/' .$classpath)) {
+                    include $classpath;
+                    break;
+                }
+            }
+        }
     }
 }
