@@ -86,6 +86,21 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
         $payment = $objPayment->get($order['payment_id']);
         $module_path = $payment['module_path'];
 
+        /*
+         * 2.12.x までは dtb_payment.module_path がフルパスとなっていた.
+         * 2.13.x より, MODULE_REALDIR からのパスでも対応できるよう修正
+         * http://svn.ec-cube.net/open_trac/ticket/2292
+         */
+        if (realpath($module_path) !== false) {
+            $module_path = str_replace('\\', '/', realpath($module_path));
+        } else {
+            $module_path = str_replace('\\', '/', $module_path);
+        }
+        $module_realdir = str_replace('\\', '/', realpath(MODULE_REALDIR) . '/');
+        if (strpos($module_path, $module_realdir) !== false) {
+            $module_path = str_replace($module_realdir, '', $module_path);
+        }
+        $module_path = $module_realdir . $module_path;
         if (file_exists($module_path)) {
             return $module_path;
         }
