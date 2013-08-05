@@ -72,6 +72,11 @@ class LC_Page_Entry extends LC_Page_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         $objFormParam = new SC_FormParam_Ex();
 
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する

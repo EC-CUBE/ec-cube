@@ -71,6 +71,11 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();

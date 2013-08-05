@@ -61,6 +61,11 @@ class LC_Page_Index extends LC_Page_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         $this->tpl_title = '';
         $objCustomer = new SC_Customer_Ex();
         $this->isLogin = $objCustomer->isLoginSuccess(true);

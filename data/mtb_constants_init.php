@@ -480,4 +480,7 @@ define('FORM_COUNTRY_ENABLE', false);
 define('OPTION_PRODUCT_TAX_RULE', 0);
 /** 複数箇所の税率設定時における優先度設定。カンマ区切りスペース不可で記述。後に書いてあるキーに一致するほど優先される。デフォルト：'product_id,product_class_id,pref_id,country_id'（国＞地域（県）＞規格単位＞商品単位） */
 define('TAX_RULE_PRIORITY', "product_id,product_class_id,pref_id,country_id");
+/** 決済処理中ステータスのロールバックを行う時間の設定(秒) */
+define('PENDING_ORDER_CANCEL_TIME', 900);
+
 

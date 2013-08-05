@@ -91,6 +91,11 @@ class LC_Page_Products_List extends LC_Page_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         $objProduct = new SC_Product_Ex();
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();

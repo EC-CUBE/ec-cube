@@ -62,6 +62,11 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         $arrKiyaku = $this->lfGetKiyakuData();
         $this->max = count($arrKiyaku);
 

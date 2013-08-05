@@ -98,6 +98,11 @@ class LC_Page_Products_Detail extends LC_Page_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         // 会員クラス
         $objCustomer = new SC_Customer_Ex();
 

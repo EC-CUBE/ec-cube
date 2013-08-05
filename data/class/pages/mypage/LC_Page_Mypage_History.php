@@ -70,6 +70,11 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         $objCustomer    = new SC_Customer_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objProduct  = new SC_Product();

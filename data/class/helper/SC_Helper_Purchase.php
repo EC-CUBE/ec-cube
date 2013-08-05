@@ -1337,4 +1337,89 @@ __EOS__;
 
         return $objQuery->nextVal('dtb_order_order_id');
     }
+	
+	/**
+     * 決済処理中スタータスの全受注検索
+     */
+    public function checkDbAllPendingOrder() {
+        $term = PENDING_ORDER_CANCEL_TIME;
+        if (!SC_Utils_Ex::isBlank($term) && preg_match("/^[0-9]+$/", $term)) {
+            $target_time = strtotime('-' . $term . ' sec');
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $arrVal = array(date('Y/m/d H:i:s',$target_time), ORDER_PENDING);
+            $objQuery->begin();
+            $arrOrders = $objQuery->select('order_id', 'dtb_order', 'create_date <= ? and status = ? and del_flg = 0', $arrVal);
+            if (!SC_Utils_Ex::isBlank($arrOrders)) {
+                foreach ($arrOrders as $key => $arrOrder) {
+                    $order_id = $arrOrder['order_id'];
+                    $this->cancelOrder($order_id, ORDER_PENDING_ERROR, false);
+                    GC_Utils_Ex::gfPrintLog('order cancel.(time expire) order_id=' . $order_id);
+                }
+            }
+            $objQuery->commit();
+        }
+    }
+
+    public function checkDbMyPendignOrder() {
+        $objCustomer = new SC_Customer_Ex();
+        if ($objCustomer->isLoginSuccess(true)) {
+            $customer_id = $objCustomer->getValue('customer_id');
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $arrVal = array($customer_id, ORDER_PENDING);
+            $objQuery->setOrder('create_date desc');
+            $objQuery->begin();
+            $arrOrders = $objQuery->select('order_id,create_date', 'dtb_order', 'customer_id = ? and status = ? and del_flg = 0', $arrVal);
+            if (!SC_Utils_Ex::isBlank($arrOrders)) {
+                foreach ($arrOrders as $key => $arrOrder) {
+                    $order_id = $arrOrder['order_id'];
+                    if ($key == 0) {
+                        $objCartSess = new SC_CartSession_Ex();
+                        $cartKeys = $objCartSess->getKeys();
+                        $term = PENDING_ORDER_CANCEL_TIME;
+                        if(preg_match("/^[0-9]+$/", $term)){
+                            $target_time = strtotime('-' . $term . ' sec');
+                            $create_time = strtotime($arrOrder['create_date']);
+                            if (SC_Utils_Ex::isBlank($cartKeys) && $target_time < $create_time) {
+                                $this->rollbackOrder($order_id, ORDER_CANCEL, true);
+                                GC_Utils_Ex::gfPrintLog('order rollback.(my pending) order_id=' . $order_id);
+                            } else {
+                                $this->cancelOrder($order_id, ORDER_CANCEL, true);
+                                if ($target_time > $create_time) {
+                                    GC_Utils_Ex::gfPrintLog('order cancel.(my pending and time expire) order_id=' . $order_id);
+                                } else {
+                                    GC_Utils_Ex::gfPrintLog('order cancel.(my pending and set cart) order_id=' . $order_id);
+                                }
+                            }
+                        }
+                    } else {
+                        $this->cancelOrder($order_id, ORDER_CANCEL, true);
+                        GC_Utils_Ex::gfPrintLog('order cancel.(my old pending) order_id=' . $order_id);
+                    }
+                }
+            }
+            $objQuery->commit();
+        }
+    }
+
+    public function checkSessionPendingOrder() {
+        if (!SC_Utils_Ex::isBlank($_SESSION['order_id'])) {
+            $order_id = $_SESSION['order_id'];
+            unset($_SESSION['order_id']);
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $objQuery->begin();
+            $arrOrder =  $this->getOrder($order_id);
+            if ($arrOrder['status'] == ORDER_PENDING) {
+                $objCartSess = new SC_CartSession_Ex();
+                $cartKeys = $objCartSess->getKeys();
+                if (SC_Utils_Ex::isBlank($cartKeys)) {
+                    $this->rollbackOrder($order_id, ORDER_CANCEL, true);
+                    GC_Utils_Ex::gfPrintLog('order rollback.(session pending) order_id=' . $order_id);
+                } else {
+                    $this->cancelOrder($order_id, ORDER_CANCEL, true);
+                    GC_Utils_Ex::gfPrintLog('order rollback.(session pending and set card) order_id=' . $order_id);
+                }
+            }
+            $objQuery->commit();
+        }
+    }
 }

@@ -59,6 +59,11 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
      */
     function action()
     {
+		//決済処理中ステータスのロールバック
+		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
+		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
+		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+		
         //受注詳細データの取得
         $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
 
