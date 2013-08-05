@@ -1352,7 +1352,7 @@ __EOS__;
             if (!SC_Utils_Ex::isBlank($arrOrders)) {
                 foreach ($arrOrders as $key => $arrOrder) {
                     $order_id = $arrOrder['order_id'];
-                    $this->cancelOrder($order_id, ORDER_PENDING_ERROR, false);
+                    SC_Helper_Purchase_Ex::cancelOrder($order_id, ORDER_PENDING_ERROR, false);
                     GC_Utils_Ex::gfPrintLog('order cancel.(time expire) order_id=' . $order_id);
                 }
             }
@@ -1380,10 +1380,10 @@ __EOS__;
                             $target_time = strtotime('-' . $term . ' sec');
                             $create_time = strtotime($arrOrder['create_date']);
                             if (SC_Utils_Ex::isBlank($cartKeys) && $target_time < $create_time) {
-                                $this->rollbackOrder($order_id, ORDER_CANCEL, true);
+                                SC_Helper_Purchase_Ex::rollbackOrder($order_id, ORDER_CANCEL, true);
                                 GC_Utils_Ex::gfPrintLog('order rollback.(my pending) order_id=' . $order_id);
                             } else {
-                                $this->cancelOrder($order_id, ORDER_CANCEL, true);
+                                SC_Helper_Purchase_Ex::cancelOrder($order_id, ORDER_CANCEL, true);
                                 if ($target_time > $create_time) {
                                     GC_Utils_Ex::gfPrintLog('order cancel.(my pending and time expire) order_id=' . $order_id);
                                 } else {
@@ -1392,7 +1392,7 @@ __EOS__;
                             }
                         }
                     } else {
-                        $this->cancelOrder($order_id, ORDER_CANCEL, true);
+                        SC_Helper_Purchase_Ex::cancelOrder($order_id, ORDER_CANCEL, true);
                         GC_Utils_Ex::gfPrintLog('order cancel.(my old pending) order_id=' . $order_id);
                     }
                 }
@@ -1407,15 +1407,15 @@ __EOS__;
             unset($_SESSION['order_id']);
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $objQuery->begin();
-            $arrOrder =  $this->getOrder($order_id);
+            $arrOrder =  SC_Helper_Purchase_Ex::getOrder($order_id);
             if ($arrOrder['status'] == ORDER_PENDING) {
                 $objCartSess = new SC_CartSession_Ex();
                 $cartKeys = $objCartSess->getKeys();
                 if (SC_Utils_Ex::isBlank($cartKeys)) {
-                    $this->rollbackOrder($order_id, ORDER_CANCEL, true);
+                    SC_Helper_Purchase_Ex::rollbackOrder($order_id, ORDER_CANCEL, true);
                     GC_Utils_Ex::gfPrintLog('order rollback.(session pending) order_id=' . $order_id);
                 } else {
-                    $this->cancelOrder($order_id, ORDER_CANCEL, true);
+                    SC_Helper_Purchase_Ex::cancelOrder($order_id, ORDER_CANCEL, true);
                     GC_Utils_Ex::gfPrintLog('order rollback.(session pending and set card) order_id=' . $order_id);
                 }
             }
