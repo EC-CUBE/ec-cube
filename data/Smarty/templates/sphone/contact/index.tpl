@@ -79,10 +79,10 @@
                     <input type="tel" name="zip01"
                         value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
                         maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
-                        style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02"
+                        style="<!--{$arrErr.zip01|sfGetErrorColor}-->;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02"
                         value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
                         maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
-                        style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
+                        style="<!--{$arrErr.zip02|sfGetErrorColor}-->;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
                 </p>
 
                 <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">郵便番号から住所自動入力</a>
