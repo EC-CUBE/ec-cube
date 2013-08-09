@@ -26,7 +26,7 @@ require_once CLASS_REALDIR . 'pages/mypage/LC_Page_Mypage.php';
 /**
  * MyPage のページクラス(拡張).
  *
- * LC_Page_MyPage をカスタマイズする場合はこのクラスを編集する.
+ * LC_Page_Mypage をカスタマイズする場合はこのクラスを編集する.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
