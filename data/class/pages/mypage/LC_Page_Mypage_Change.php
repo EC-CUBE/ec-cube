@@ -80,7 +80,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
         if (!empty($_POST['return'])) {
-            $_POST['mode'] = 'return';
+            $_REQUEST['mode'] = 'return';
         }
 
         // パラメーター管理クラス,パラメーター情報の初期化
@@ -113,16 +113,14 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
                             $this->arrErr['zip01'] = '※該当する住所が見つかりませんでした。<br>';
                         }
                     }
-                    $this->arrForm  = $objFormParam->getHashArray();
                     break;
                 }
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam);
-                $this->arrForm = $objFormParam->getHashArray();
 
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
                     //パスワード表示
-                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
+                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($objFormParam->getValue('password')));
 
                     $this->tpl_mainpage = 'mypage/change_confirm.tpl';
                     $this->tpl_title    = '会員登録(確認ページ)';
@@ -132,7 +130,6 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
             // 会員登録と完了画面
             case 'complete':
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerMypageErrorCheck($objFormParam);
-                $this->arrForm = $objFormParam->getHashArray();
 
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
@@ -148,13 +145,13 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
                 break;
             // 確認ページからの戻り
             case 'return':
-                $this->arrForm = $objFormParam->getHashArray();
+                // quiet.
                 break;
             default:
-                $this->arrForm = SC_Helper_Customer_Ex::sfGetCustomerData($customer_id);
+                $objFormParam->setParam(SC_Helper_Customer_Ex::sfGetCustomerData($customer_id));
                 break;
         }
-
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
     /**

@@ -29,7 +29,7 @@
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="complete">
             <!--{foreach from=$arrForm key=key item=item}-->
-                <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+                <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item.value|h}-->" />
             <!--{/foreach}-->
 
             <table summary="入力内容確認">
@@ -38,60 +38,60 @@
                 <tr>
                     <th>お名前</th>
                     <td>
-                        <!--{$arrForm.name01|h}-->&nbsp;
-                        <!--{$arrForm.name02|h}-->
+                        <!--{$arrForm.name01.value|h}-->&nbsp;
+                        <!--{$arrForm.name02.value|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>お名前(フリガナ)</th>
                     <td>
-                        <!--{$arrForm.kana01|h}-->&nbsp;
-                        <!--{$arrForm.kana02|h}-->
+                        <!--{$arrForm.kana01.value|h}-->&nbsp;
+                        <!--{$arrForm.kana02.value|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>会社名</th>
                     <td>
-                        <!--{$arrForm.company_name|h}-->
+                        <!--{$arrForm.company_name.value|h}-->
                     </td>
                 </tr>
                 <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
                 <tr>
                     <th>国</th>
                     <td>
-                        <!--{$arrCountry[$arrForm.country_id]|h}-->
+                        <!--{$arrCountry[$arrForm.country_id].value|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>ZIP CODE</th>
                     <td>
-                        <!--{$arrForm.zipcode|h}-->
+                        <!--{$arrForm.zipcode.value|h}-->
                     </td>
                 </tr>
                 <!--{/if}-->
                 <tr>
                     <th>郵便番号</th>
                     <td>
-                        〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}-->
+                        〒<!--{$arrForm.zip01.value|h}--> - <!--{$arrForm.zip02.value|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>住所</th>
                     <td>
-                        <!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}-->
+                        <!--{$arrPref[$arrForm.pref.value]|h}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>電話番号</th>
                     <td>
-                        <!--{$arrForm.tel01|h}--> - <!--{$arrForm.tel02|h}--> - <!--{$arrForm.tel03|h}-->
+                        <!--{$arrForm.tel01.value|h}--> - <!--{$arrForm.tel02.value|h}--> - <!--{$arrForm.tel03.value|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>FAX</th>
                     <td>
-                        <!--{if strlen($arrForm.fax01) > 0 && strlen($arrForm.fax02) > 0 && strlen($arrForm.fax03) > 0}-->
-                            <!--{$arrForm.fax01|h}--> - <!--{$arrForm.fax02|h}--> - <!--{$arrForm.fax03|h}-->
+                        <!--{if strlen($arrForm.fax01.value) > 0 && strlen($arrForm.fax02.value) > 0 && strlen($arrForm.fax03.value) > 0}-->
+                            <!--{$arrForm.fax01.value|h}--> - <!--{$arrForm.fax02.value|h}--> - <!--{$arrForm.fax03.value|h}-->
                         <!--{else}-->
                             未登録
                         <!--{/if}-->
@@ -100,13 +100,13 @@
                 <tr>
                     <th>メールアドレス</th>
                     <td>
-                        <a href="mailto:<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a>
+                        <a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->"><!--{$arrForm.email.value|escape:'hexentity'}--></a>
                     </td>
                 </tr>
                 <tr>
                     <th>性別</th>
                     <td>
-                        <!--{if $arrForm.sex eq 1}-->
+                        <!--{if $arrForm.sex.value eq 1}-->
                         男性
                         <!--{else}-->
                         女性
@@ -115,13 +115,13 @@
                 </tr>
                 <tr>
                     <th>職業</th>
-                    <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
+                    <td><!--{$arrJob[$arrForm.job.value]|default:"未登録"|h}--></td>
                 </tr>
                 <tr>
                     <th>生年月日</th>
                     <td>
-                        <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}-->
-                            <!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日
+                        <!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}-->
+                            <!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日
                         <!--{else}-->
                         未登録
                         <!--{/if}-->
@@ -135,16 +135,16 @@
                 <tr>
                     <th>パスワードを忘れた時のヒント</th>
                     <td>
-                        質問：<!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                        答え：<!--{$arrForm.reminder_answer|h}-->
+                        質問：<!--{$arrReminder[$arrForm.reminder.value]|h}--><br />
+                        答え：<!--{$arrForm.reminder_answer.value|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>メールマガジン送付について</th>
                     <td>
-                        <!--{if $arrForm.mailmaga_flg eq 1}-->
+                        <!--{if $arrForm.mailmaga_flg.value eq 1}-->
                         HTMLメール＋テキストメールを受け取る
-                        <!--{elseif $arrForm.mailmaga_flg eq 2}-->
+                        <!--{elseif $arrForm.mailmaga_flg.value eq 2}-->
                         テキストメールを受け取る
                         <!--{else}-->
                         受け取らない

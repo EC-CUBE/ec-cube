@@ -86,11 +86,10 @@ class LC_Page_Entry extends LC_Page_Ex
 
         SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam);
         $objFormParam->setParam($_POST);
-        $arrForm  = $objFormParam->getHashArray();
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($arrForm['return'])) {
-            $_POST['mode'] = 'return';
+        if (!empty($_POST['return'])) {
+            $_REQUEST['mode'] = 'return';
         }
 
         switch ($this->getMode()) {
@@ -117,17 +116,15 @@ class LC_Page_Entry extends LC_Page_Ex
                             $this->arrErr['zip01'] = '※該当する住所が見つかりませんでした。<br>';
                         }
                     }
-                    $this->arrForm  = $objFormParam->getHashArray();
                     break;
                 }
 
                 //-- 確認
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
-                $this->arrForm  = $objFormParam->getHashArray();
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
                     //パスワード表示
-                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
+                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($objFormParam->getValue('password')));
 
                     $this->tpl_mainpage = 'entry/confirm.tpl';
                     $this->tpl_title    = '会員登録(確認ページ)';
@@ -136,17 +133,16 @@ class LC_Page_Entry extends LC_Page_Ex
             case 'complete':
                 //-- 会員登録と完了画面
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
-                $this->arrForm  = $objFormParam->getHashArray();
                 if (empty($this->arrErr)) {
                     $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
 
-                    $this->lfSendMail($uniqid, $this->arrForm);
+                    $this->lfSendMail($uniqid, $objFormParam->getHashArray());
 
                     // 仮会員が無効の場合
                     if (CUSTOMER_CONFIRM_MAIL == false) {
                         // ログイン状態にする
                         $objCustomer = new SC_Customer_Ex();
-                        $objCustomer->setLogin($this->arrForm['email']);
+                        $objCustomer->setLogin($objFormParam->getValue('email'));
                     }
 
                     // 完了ページに移動させる。
@@ -154,12 +150,12 @@ class LC_Page_Entry extends LC_Page_Ex
                 }
                 break;
             case 'return':
-                $this->arrForm  = $objFormParam->getHashArray();
+                // quiet.
                 break;
             default:
                 break;
         }
-
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
     /**

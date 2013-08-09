@@ -33,10 +33,10 @@
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="complete" />
-            <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
+            <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value|h}-->" />
             <!--{foreach from=$arrForm key=key item=item}-->
                 <!--{if $key ne "mode" && $key ne "subm"}-->
-                <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
+                <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item.value|h}-->" />
                 <!--{/if}-->
             <!--{/foreach}-->
             <table summary=" " class="delivname">
@@ -44,57 +44,57 @@
                 <col width="70%" />
                 <tr>
                     <th>お名前</th>
-                    <td><!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--></td>
+                    <td><!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--></td>
                 </tr>
                 <tr>
                     <th>お名前(フリガナ)</th>
-                    <td><!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--></td>
+                    <td><!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--></td>
                 </tr>
                 <tr>
                     <th>会社名</th>
                     <td>
-                        <!--{$arrForm.company_name|h}-->
+                        <!--{$arrForm.company_name.value|h}-->
                     </td>
                 </tr>
                 <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
                 <tr>
                     <th>国</th>
                     <td>
-                        <!--{$arrCountry[$arrForm.country_id]|h}-->
+                        <!--{$arrCountry[$arrForm.country_id.value]|h}-->
                     </td>
                 </tr>
                 <tr>
                     <th>ZIP CODE</th>
                     <td>
-                        <!--{$arrForm.zipcode|h}-->
+                        <!--{$arrForm.zipcode.value|h}-->
                     </td>
                 </tr>
                 <!--{/if}-->
                 <tr>
                     <th>郵便番号</th>
-                    <td><!--{$arrForm.zip01}-->-<!--{$arrForm.zip02}--></td>
+                    <td><!--{$arrForm.zip01.value}-->-<!--{$arrForm.zip02.value}--></td>
                 </tr>
                 <tr>
                     <th>住所</th>
-                    <td><!--{$arrPref[$arrForm.pref]}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--></td>
+                    <td><!--{$arrPref[$arrForm.pref.value]}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--></td>
                 </tr>
                 <tr>
                     <th>電話番号</th>
-                    <td><!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02}-->-<!--{$arrForm.tel03}--></td>
+                    <td><!--{$arrForm.tel01.value|h}-->-<!--{$arrForm.tel02.value}-->-<!--{$arrForm.tel03.value}--></td>
                 </tr>
                 <tr>
                     <th>FAX</th>
-                    <td><!--{if strlen($arrForm.fax01) > 0}--><!--{$arrForm.fax01}-->-<!--{$arrForm.fax02}-->-<!--{$arrForm.fax03}--><!--{else}-->未登録<!--{/if}--></td>
+                    <td><!--{if strlen($arrForm.fax01.value) > 0}--><!--{$arrForm.fax01.value}-->-<!--{$arrForm.fax02.value}-->-<!--{$arrForm.fax03.value}--><!--{else}-->未登録<!--{/if}--></td>
                 </tr>
                 <tr>
                     <th>メールアドレス</th>
-                    <td><a href="<!--{$arrForm.email|escape:'hex'}-->"><!--{$arrForm.email|escape:'hexentity'}--></a></td>
+                    <td><a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->"><!--{$arrForm.email.value|escape:'hexentity'}--></a></td>
                 </tr>
                 <tr>
                     <th>携帯メールアドレス</th>
                     <td>
-                        <!--{if strlen($arrForm.email_mobile) > 0}-->
-                        <a href="<!--{$arrForm.email_mobile|escape:'hex'}-->"><!--{$arrForm.email_mobile|escape:'hexentity'}--></a>
+                        <!--{if strlen($arrForm.email_mobile.value) > 0}-->
+                        <a href="mailto:<!--{$arrForm.email_mobile.value|escape:'hex'}-->"><!--{$arrForm.email_mobile.value|escape:'hexentity'}--></a>
                         <!--{else}-->
                         未登録
                         <!--{/if}-->
@@ -102,15 +102,15 @@
                 </tr>
                 <tr>
                     <th>性別</th>
-                    <td><!--{$arrSex[$arrForm.sex]}--></td>
+                    <td><!--{$arrSex[$arrForm.sex.value]}--></td>
                 </tr>
                 <tr>
                     <th>職業</th>
-                    <td><!--{$arrJob[$arrForm.job]|default:"未登録"|h}--></td>
+                    <td><!--{$arrJob[$arrForm.job.value]|default:"未登録"|h}--></td>
                 </tr>
                 <tr>
                     <th>生年月日</th>
-                    <td><!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日<!--{else}-->未登録<!--{/if}--></td>
+                    <td><!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}--><!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日<!--{else}-->未登録<!--{/if}--></td>
                 </tr>
                 <tr>
                     <th>希望するパスワード<br />
@@ -119,12 +119,12 @@
                 </tr>
                 <tr>
                     <th>パスワードを忘れた時のヒント</th>
-                    <td>質問：&nbsp;<!--{$arrReminder[$arrForm.reminder]|h}--><br />
-                            答え：&nbsp;<!--{$arrForm.reminder_answer|h}--></td>
+                    <td>質問：&nbsp;<!--{$arrReminder[$arrForm.reminder.value]|h}--><br />
+                            答え：&nbsp;<!--{$arrForm.reminder_answer.value|h}--></td>
                 </tr>
                 <tr>
                     <th>メールマガジン送付について</th>
-                    <td><!--{$arrMAILMAGATYPE[$arrForm.mailmaga_flg]}--></td>
+                    <td><!--{$arrMAILMAGATYPE[$arrForm.mailmaga_flg.value]}--></td>
                 </tr>
             </table>
 

@@ -27,39 +27,39 @@
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
         <input type="hidden" name="mode" value="complete">
         <!--{foreach from=$arrForm key=key item=item}-->
-            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
+            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item.value|h}-->">
         <!--{/foreach}-->
         下記の内容でご登録してもよろしいですか？<br>
         <br>
 
         【個人情報】<br>
-        <!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--><br>
-        <!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--><br>
-        <!--{if $arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
-        <!--{$arrJob[$arrForm.job]|h}--><br>
-        <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日生まれ<!--{else}-->生年月日 未登録<!--{/if}--><br>
-        〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br>
-        <!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--><br>
-        <!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}--><br>
-        <!--{if $arrForm.fax01 > 0}-->
-            <!--{$arrForm.fax01|h}-->-<!--{$arrForm.fax02|h}-->-<!--{$arrForm.fax03|h}--><br>
+        <!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--><br>
+        <!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--><br>
+        <!--{if $arrForm.sex.value eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
+        <!--{$arrJob[$arrForm.job.value]|h}--><br>
+        <!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}--><!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日生まれ<!--{else}-->生年月日 未登録<!--{/if}--><br>
+        〒<!--{$arrForm.zip01.value|h}--> - <!--{$arrForm.zip02.value|h}--><br>
+        <!--{$arrPref[$arrForm.pref.value]|h}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--><br>
+        <!--{$arrForm.tel01.value|h}-->-<!--{$arrForm.tel02.value|h}-->-<!--{$arrForm.tel03.value|h}--><br>
+        <!--{if $arrForm.fax01.value > 0}-->
+            <!--{$arrForm.fax01.value|h}-->-<!--{$arrForm.fax02.value|h}-->-<!--{$arrForm.fax03.value|h}--><br>
         <!--{/if}-->
         <br>
 
         【携帯ﾒｰﾙｱﾄﾞﾚｽ】<br>
-        <!--{$arrForm.email_mobile|default:"未登録"|h}--><br>
+        <!--{$arrForm.email_mobile.value|default:"未登録"|h}--><br>
         <br>
 
         【ﾊﾟｽﾜｰﾄﾞ確認用質問】<br>
-        <!--{$arrReminder[$arrForm.reminder]|h}--><br>
+        <!--{$arrReminder[$arrForm.reminder.value]|h}--><br>
         <br>
 
         【質問の答え】<br>
-        <!--{$arrForm.reminder_answer|h}--><br>
+        <!--{$arrForm.reminder_answer.value|h}--><br>
         <br>
 
         【ﾒｰﾙﾏｶﾞｼﾞﾝﾞ】<br>
-        <!--{if $arrForm.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
+        <!--{if $arrForm.mailmaga_flg.value eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
         <br>
 
         <center>

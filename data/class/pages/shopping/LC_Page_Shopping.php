@@ -253,12 +253,7 @@ class LC_Page_Shopping extends LC_Page_Ex
         }
 
         // 入力値の取得
-        // TODO: getFormParamListに統一したいが顧客登録系がgetHashArrayなので現在は切替方式
-        if ($this->tpl_mainpage == $nonmember_mainpage) {
-            $this->arrForm = $objFormParam->getHashArray();
-        } else {
-            $this->arrForm = $objFormParam->getFormParamList();
-        }
+        $this->arrForm = $objFormParam->getFormParamList();
 
         // 記憶したメールアドレスを取得
         $this->tpl_login_email = $objCookie->getCookie('login_email');

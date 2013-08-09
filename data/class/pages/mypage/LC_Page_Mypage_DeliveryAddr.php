@@ -98,7 +98,6 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
         $objFormParam   = new SC_FormParam_Ex();
         $objAddress->setFormParam($objFormParam);
         $objFormParam->setParam($_POST);
-        $this->arrForm  = $objFormParam->getHashArray();
 
         switch ($this->getMode()) {
             // 入力は必ずedit
@@ -140,11 +139,12 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
                     }
 
                     //別のお届け先情報取得
-                    $this->arrForm = $arrOtherDeliv;
+                    $objFormParam->setParam($arrOtherDeliv);
                 }
                 break;
         }
 
+        $this->arrForm = $objFormParam->getFormParamList();
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_mainpage = 'mypage/delivery_addr.tpl';
         } else {
