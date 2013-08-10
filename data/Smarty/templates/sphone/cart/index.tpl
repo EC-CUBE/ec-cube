@@ -106,7 +106,7 @@
                             <!--{foreach from=$cartItems[$key] item=arrItem}-->
                                 <!--▼商品 -->
                                 <div class="cartitemBox">
-                                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrItem.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrItem.productsClass.name|h}-->" class="photoL" />
+                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrItem.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$arrItem.productsClass.name|h}-->" class="photoL" />
                                     <div class="cartinContents">
                                         <div>
                                             <p><em><!--{$arrItem.productsClass.name|h}--></em><br />

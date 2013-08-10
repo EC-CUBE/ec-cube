@@ -118,8 +118,8 @@
                                     <!--{if $item.productsClass.main_image|strlen >= 1}-->
                                         <a class="expansion" target="_blank" href="<!--{$smarty.const.IMAGE_SAVE_URLPATH|h}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->">
                                     <!--{/if}-->
-                                    <img src="<!--{$smarty.const.ROOT_URLPATH|h}-->resize_image.php?image=<!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$item.productsClass.name|h}-->" />
-                                    <!--{if $item.productsClass.main_image|strlen >= 1}-->
+                                            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65;" alt="<!--{$item.productsClass.name|h}-->" />
+                                            <!--{if $item.productsClass.main_image|strlen >= 1}-->
                                         </a>
                                     <!--{/if}-->
                                     </td>

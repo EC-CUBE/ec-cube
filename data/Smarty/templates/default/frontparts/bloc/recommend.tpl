@@ -30,7 +30,7 @@
                         <div class="product_item clearfix">
                             <div class="productImage">
                                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->">
-                                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?product_id=<!--{$arrProduct.product_id|u}-->&amp;image_key=main_list_image&amp;width=80&amp;height=80" alt="<!--{$arrProduct.name|h}-->" />
+                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_list_image|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$arrProduct.name|h}-->" />
                                 </a>
                             </div>
                             <div class="productContents">

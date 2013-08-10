@@ -28,7 +28,7 @@
             <!--{section name=cnt loop=$arrBestProducts}-->
                 <li id="mainImage<!--{$smarty.section.cnt.index}-->">
                     <div class="recommendblock clearfix">
-                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" />
+                        <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$arrBestProducts[cnt].name|h}-->" />
                         <div class="productContents">
                             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a></h3>
                             <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>

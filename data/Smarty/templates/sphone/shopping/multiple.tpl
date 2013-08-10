@@ -55,7 +55,7 @@
                 <div class="formBox">
                     <!--▼商品 -->
                     <div class="delivitemBox">
-                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrForm.name.value[$index]|h}-->" class="photoL" />
+                        <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrForm.main_list_image.value[$index]|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$arrForm.name.value[$index]|h}-->" class="photoL" /></a>
                         <div class="delivContents">
 
                             <p>

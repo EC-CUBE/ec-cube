@@ -243,7 +243,8 @@ function lfnDispChange(){
                         <tr style="background:<!--{$arrPRODUCTSTATUS_COLOR[$status]}-->;">
                             <td class="id" rowspan="2"><!--{$arrProducts[cnt].product_id}--></td>
                             <td class="thumbnail" rowspan="2">
-                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" />            </td>
+                            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProducts[cnt].main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65;" alt="" />
+                            </td>
                             <td rowspan="2"><!--{$arrProducts[cnt].product_code_min|h}-->
                                 <!--{if $arrProducts[cnt].product_code_min != $arrProducts[cnt].product_code_max}-->
                                     <br />～ <!--{$arrProducts[cnt].product_code_max|h}-->

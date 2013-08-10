@@ -102,7 +102,7 @@ function func_submit( id ){
         <!--▼商品<!--{$smarty.foreach.loop.iteration}-->-->
         <tr class="<!--{if $arr.status == "2"}-->hidden<!--{/if}-->">
             <td class="center">
-                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arr.main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="" />
+                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arr.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65;" alt="" />
             </td>
             <td>
                 <!--{assign var=codemin value=`$arr.product_code_min`}-->

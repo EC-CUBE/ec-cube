@@ -88,7 +88,7 @@
                             </td>
                             <td align="center">
                                 <!--{* 商品画像 *}-->
-                                <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrProducts[cnt].name|h}-->">
+                                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProductsList[cnt].main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65;" alt="<!--{$arrProducts[cnt].name|h}-->" />
                             </td>
                             <!--{assign var=rank value=`$rank+1`}-->
                             <td align="center">

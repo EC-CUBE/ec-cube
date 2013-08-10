@@ -278,7 +278,7 @@
                 <tr>
                     <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
                         <!--{if $arrRecommend[$recommend_no].product_id|strlen >= 1}-->
-                            <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&amp;width=65&amp;height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
+                            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65;" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                         <!--{/if}-->
                     </th>
                     <td>
