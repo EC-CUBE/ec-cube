@@ -60,10 +60,11 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex
      */
     function action()
     {
-		//決済処理中ステータスのロールバック
-		SC_Helper_Purchase_Ex::checkSessionPendingOrder();
-		SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
-		SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+        //決済処理中ステータスのロールバック
+        $objPurchase = new SC_Helper_Purchase_Ex();
+        $objPurchase->checkSessionPendingOrder();
+        $objPurchase->checkDbMyPendignOrder();
+        $objPurchase->checkDbAllPendingOrder();
 		
         SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
     }
