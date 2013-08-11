@@ -141,6 +141,7 @@ class LC_Page
         }
 
         $this->objDisplay->prepare($this);
+        $this->objDisplay->addHeader('Vary', 'User-Agent');
         $this->objDisplay->response->write();
     }
 
