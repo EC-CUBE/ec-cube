@@ -609,11 +609,22 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     function lfCheckError(&$objFormParam)
     {
         $objProduct = new SC_Product_Ex();
+        $arrValues = $objFormParam->getHashArray();
 
         $arrErr = array();
         $arrErrTemp = $objFormParam->checkError();
+        $arrErrDate = array();
+        foreach ($arrValues['shipping_date_year'] as $key_index => $year) {
+            $month = $arrValues['shipping_date_month'][$key_index];
+            $day = $arrValues['shipping_date_day'][$key_index];
+            $objError = new SC_CheckError_Ex(array('shipping_date_year' => $year,
+                'shipping_date_month' => $month,
+                'shipping_date_day' => $day));
+            $objError->doFunc(array('お届け日', 'shipping_date_year', 'shipping_date_month', 'shipping_date_day'), array('CHECK_DATE'));
+            $arrErrDate['shipping_date_year'][$key_index] = $objError->arrErr['shipping_date_year'];
+        }
+        $arrErrTemp = array_merge($arrErrTemp, $arrErrDate);
 
-        $arrValues = $objFormParam->getHashArray();
 
         // 商品の種類数
         $max = count($arrValues['quantity']);
