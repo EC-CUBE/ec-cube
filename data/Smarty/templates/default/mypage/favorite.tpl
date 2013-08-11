@@ -71,7 +71,7 @@
                             </td>
                             <td>
                                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->">
-                                    <!--{$arrFavorite[cnt].name}--></a>
+                                    <!--{$arrFavorite[cnt].name|h}--></a>
                             </td>
                             <td class="alignR sale_price">
                                 <span class="price">
