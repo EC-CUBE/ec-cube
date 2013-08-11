@@ -60,6 +60,12 @@ class SC_Helper_PageLayout
         }
 
         $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageData[0]['filename'] . '.tpl';
+
+        if (!file_exists($objPage->tpl_mainpage)) {
+            $msg = 'メイン部のテンプレートが存在しません。[' . $objPage->tpl_mainpage . ']';
+            trigger_error($msg, E_USER_ERROR);
+        }
+
         $objPage->arrPageLayout =& $arrPageData[0];
         if (strlen($objPage->arrPageLayout['author']) === 0) {
             $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
