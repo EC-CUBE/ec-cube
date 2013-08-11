@@ -88,6 +88,12 @@
         }
     });
 
+    function quantityCopyForSingleShipping(product_index){
+        var product_index = parseInt(product_index);
+        var input_quantity = $('input[name^="quantity[' + product_index + ']"]').val();
+        $('input[name^="shipment_quantity[0][' + product_index + ']"]').val(input_quantity);
+    }
+
 //-->
 </script>
 <form name="form1" id="form1" method="post" action="?">
@@ -363,7 +369,7 @@
                 <td align="center">
                     <!--{assign var=key value="quantity"}-->
                     <span class="attention"><!--{$arrErr[$key][$product_index]}--></span>
-                    <input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->" />
+                    <input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->"  onChange="quantityCopyForSingleShipping('<!--{$product_index}-->')" />
                 </td>
                 <!--{assign var=price value=`$arrForm.price.value[$product_index]`}-->
                 <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
