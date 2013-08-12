@@ -39,6 +39,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      */
     function init()
     {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->httpCacheControl('nocache');
     }

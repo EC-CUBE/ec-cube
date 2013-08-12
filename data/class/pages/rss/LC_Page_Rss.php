@@ -39,6 +39,7 @@ class LC_Page_RSS extends LC_Page_Ex
      */
     function init()
     {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_mainpage = 'rss/index.tpl';
         $this->encode = 'UTF-8';

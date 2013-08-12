@@ -39,6 +39,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
      */
     function init()
     {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_title    = 'お届け先の追加･変更';
         $masterData         = new SC_DB_MasterData_Ex();

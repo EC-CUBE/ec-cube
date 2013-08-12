@@ -39,6 +39,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      */
     function init()
     {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_message = '住所を検索しています。';
     }

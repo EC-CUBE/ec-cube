@@ -51,6 +51,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      */
     function init()
     {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_title = 'パスワードを忘れた方';
         $this->tpl_mainpage = 'forgot/index.tpl';

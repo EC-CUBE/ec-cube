@@ -12,6 +12,17 @@ require_once CLASS_REALDIR . 'pages/upgrade/helper/LC_Upgrade_Helper_Json.php';
  */
 class LC_Page_Upgrade_Base extends LC_Page_Ex
 {
+    /**
+     * Page を初期化する.
+     *
+     * @return void
+     */
+    function init()
+    {
+        $this->skip_load_page_layout = true;
+        parent::init();
+    }
+
     function isValidIP()
     {
         $objLog  = new LC_Upgrade_Helper_Log;

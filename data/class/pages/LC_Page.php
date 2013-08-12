@@ -72,6 +72,10 @@ class LC_Page
 
     /** POST に限定する mode */
     var $arrLimitPostMode = array();
+
+    /** ページレイアウトを読み込むか */
+    var $skip_load_page_layout = false;
+
     /**
      * Page を初期化する.
      *
@@ -87,9 +91,11 @@ class LC_Page
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
-        $layout = new SC_Helper_PageLayout_Ex();
-        $layout->sfGetPageLayout($this, false, $_SERVER['SCRIPT_NAME'],
-                                 $this->objDisplay->detectDevice());
+        if (!$this->skip_load_page_layout) {
+            $layout = new SC_Helper_PageLayout_Ex();
+            $layout->sfGetPageLayout($this, false, $_SERVER['SCRIPT_NAME'],
+                                     $this->objDisplay->detectDevice());
+        }
 
         // スーパーフックポイントを実行.
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
