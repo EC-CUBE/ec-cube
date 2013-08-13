@@ -49,17 +49,14 @@
         <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
 
         <script src="<!--{$TPL_URLPATH}-->js/jquery-1.9.1.min.js"></script>
-        <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
-        <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
-        <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
+        <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
+        <script src="<!--{$TPL_URLPATH}-->js/eccube_sphone.js"></script>
         <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
         <script>//<![CDATA[
             $(function(){
                 $('.header_navi li, .recommendblock, .list_area, .newslist li, .bubbleBox, .arrowBox, .category_body, .navBox li,#mypagecolumn .cartitemBox').biggerlink();
             });
         //]]></script>
-        <script src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
-        <script src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
 
         <!--{* jQuery Mobile *}-->
         <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.3.1.min.css" />
@@ -72,7 +69,6 @@
         <!--{* スマートフォンカスタマイズ用JS *}-->
         <script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
         <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
-        <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
 
         <!--{* iPhone用アイコン画像 *}-->
         <link rel="apple-touch-icon" href="<!--{$TPL_URLPATH}-->img/common/apple-touch-icon.png" />

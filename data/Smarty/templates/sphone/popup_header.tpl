@@ -32,17 +32,14 @@
     <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
 
     <script src="<!--{$TPL_URLPATH}-->js/jquery-1.9.1.min.js"></script>
-    <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/navi.js"></script>
-    <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/win_op.js"></script>
-    <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/site.js"></script>
+    <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
+    <script src="<!--{$TPL_URLPATH}-->js/eccube_sphone.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
     <script type="text/javascript">
         $(function(){
             $('.recommendblock, .list_area, .newslist li, .bubbleBox, .arrowBox').biggerlink();
         });
     </script>
-    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/btn.js"></script>
-    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/barbutton.js"></script>
 
     <!--{* jQuery Mobile *}-->
     <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->js/jquery.mobile/jquery.mobile-1.3.1.min.css" />
@@ -52,7 +49,6 @@
     <!--{* スマートフォンカスタマイズ用JS *}-->
     <script src="<!--{$TPL_URLPATH}-->js/jquery.autoResizeTextAreaQ-0.1.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/jquery.flickslide.js"></script>
-    <script src="<!--{$TPL_URLPATH}-->js/favorite.js"></script>
 
     <title><!--{$arrSiteInfo.shop_name|h}--><!--{if $tpl_subtitle|strlen >= 1}--> / <!--{$tpl_subtitle|h}--><!--{elseif $tpl_title|strlen >= 1}--> / <!--{$tpl_title|h}--><!--{/if}--></title>
     <!--{if $arrPageLayout.author|strlen >= 1}-->

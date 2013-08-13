@@ -21,7 +21,6 @@
  *}-->
 
 <section id="category_area">
-    <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/category.js"></script>
     <h2 class="title_block">商品カテゴリ</h2>
     <nav id="categorytree">
         <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$arrTree treeID="" display=1 level=0}-->

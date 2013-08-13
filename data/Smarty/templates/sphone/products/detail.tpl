@@ -20,7 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<script src="<!--{$smarty.const.ROOT_URLPATH}-->js/products.js"></script>
 <script src="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.js"></script>
 <script>//<![CDATA[
     // 規格2に選択肢を割り当てる。
