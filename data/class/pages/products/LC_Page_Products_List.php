@@ -538,7 +538,7 @@ __EOS__;
         // 商品ステータスを取得
         $this->productStatus = $this->arrProducts['productStatus'];
         unset($this->arrProducts['productStatus']);
-        $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
+        $this->tpl_javascript .= 'eccube.productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_PC) {
             //onloadスクリプトを設定. 在庫ありの商品のみ出力する
             foreach ($this->arrProducts as $arrProduct) {

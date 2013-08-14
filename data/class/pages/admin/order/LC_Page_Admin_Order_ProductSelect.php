@@ -160,7 +160,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      */
     function getTplJavascript(&$objProduct)
     {
-        return 'productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
+        return 'eccube.productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
     }
 
     /**

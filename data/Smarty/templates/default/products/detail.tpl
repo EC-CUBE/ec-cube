@@ -29,7 +29,7 @@
         var product_id = $form.find('input[name=product_id]').val();
         var $sele1 = $form.find('select[name=classcategory_id1]');
         var $sele2 = $form.find('select[name=classcategory_id2]');
-        setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
+        eccube.common.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
     $(document).ready(function() {
         $('a.expansion').facebox({

@@ -59,11 +59,11 @@
         }
 
         if(!class1_id){
-            err_text = productsClassCategories[product_id]['__unselected2']['#0']['stock_find'] ? '' : '只今品切れ中です';
+            err_text = eccube.productsClassCategories[product_id]['__unselected2']['#0']['stock_find'] ? '' : '只今品切れ中です';
         }else if(class1_id && !class2_id){
-            err_text = productsClassCategories[product_id][class1_id]['#0']['stock_find'] ? '' : '只今品切れ中です';
+            err_text = eccube.productsClassCategories[product_id][class1_id]['#0']['stock_find'] ? '' : '只今品切れ中です';
         }else{
-            err_text = productsClassCategories[product_id][class1_id]['#' + class2_id]['stock_find'] ? '' : '只今品切れ中です';
+            err_text = eccube.productsClassCategories[product_id][class1_id]['#' + class2_id]['stock_find'] ? '' : '只今品切れ中です';
         }
 
         if (err_text != '') {
@@ -97,7 +97,7 @@
                 }
 
                 // 規格2に選択肢を割り当てる
-                classcats = productsClassCategories[product_id][sele1.value];
+                classcats = eccube.productsClassCategories[product_id][sele1.value];
                 i = 0;
                 for (var classcat_id2_key in classcats) {
                     classcategory_id2 = classcats[classcat_id2_key].classcategory_id2;
@@ -116,7 +116,7 @@
         product_id = form.product_id.value;
         classcat_id1 = form.classcategory_id1.value;
         classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
-        classcat2 = productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
+        classcat2 = eccube.productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
         // 商品規格
         eleDynamic = document.getElementById('product_class_id' + product_id);
         if (
@@ -127,7 +127,7 @@
             eleDynamic.value = classcat2.product_class_id;
         } else {
             // 規格が1つのみの場合
-            classcat1 = productsClassCategories[product_id][classcat_id1]['#0'];
+            classcat1 = eccube.productsClassCategories[product_id][classcat_id1]['#0'];
             eleDynamic.value = classcat1.product_class_id;
         }
     }
