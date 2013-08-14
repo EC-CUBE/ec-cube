@@ -23,7 +23,7 @@
 <div id="undercolumn">
     <div id="undercolumn_login">
         <h2 class="title"><!--{$tpl_title|h}--></h2>
-        <form name="member_form" id="member_form" method="post" action="?" onsubmit="return fnCheckLogin('member_form')">
+        <form name="member_form" id="member_form" method="post" action="?" onsubmit="return eccube.common.checkLoginFormInputted('member_form')">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="login" />
 

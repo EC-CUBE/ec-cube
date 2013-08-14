@@ -39,7 +39,7 @@
 <!--{strip}-->
     <div class="block_outer">
         <div id="header_login_area" class="clearfix">
-            <form name="header_login_form" id="header_login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('header_login_form')">
+            <form name="header_login_form" id="header_login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return eccube.common.checkLoginFormInputted('header_login_form')">
                 <input type="hidden" name="mode" value="login" />
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />

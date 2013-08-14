@@ -20,162 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// ページナビで使用する。
-function fnNaviPage(pageno) {
-    document.form1['pageno'].value = pageno;
-    document.form1.submit();
-}
-
-function fnSearchPageNavi(pageno) {
-    document.form1['pageno'].value = pageno;
-    document.form1['mode'].value = 'search';
-    document.form1.submit();
-}
-
-function fnSubmit(){
-    document.form1.submit();
-}
-
-// ポイント入力制限。
-function fnCheckInputPoint() {
-    if(document.form1['point_check']) {
-        list = new Array(
-            'use_point'
-        );
-
-        if(!document.form1['point_check'][0].checked) {
-            color = "#dddddd";
-            flag = true;
-        } else {
-            color = "";
-            flag = false;
-        }
-
-        len = list.length
-        for(i = 0; i < len; i++) {
-            if(document.form1[list[i]]) {
-                var current_color = document.form1[list[i]].style.backgroundColor;
-                if (color != "#dddddd" && (current_color == "#ffe8e8" || current_color == "rgb(255, 232, 232)"))
-                {
-                    continue;
-                }
-                document.form1[list[i]].disabled = flag;
-                document.form1[list[i]].style.backgroundColor = color;
-            }
-        }
-    }
-}
-
-// 別のお届け先入力制限。
-function fnCheckInputDeliv() {
-    if(!document.form1) {
-        return;
-    }
-    if(document.form1['deliv_check']) {
-        list = new Array(
-            'shipping_name01',
-            'shipping_name02',
-            'shipping_kana01',
-            'shipping_kana02',
-            'shipping_pref',
-            'shipping_zip01',
-            'shipping_zip02',
-            'shipping_addr01',
-            'shipping_addr02',
-            'shipping_tel01',
-            'shipping_tel02',
-            'shipping_tel03'
-        );
-
-        if(!document.form1['deliv_check'].checked) {
-            fnChangeDisabled(list, '#dddddd');
-        } else {
-            fnChangeDisabled(list, '');
-        }
-    }
-}
-
-// 最初に設定されていた色を保存しておく。
-var g_savecolor = [];
-
-function fnChangeDisabled(list, color) {
-    len = list.length;
-
-    for(i = 0; i < len; i++) {
-        if(document.form1[list[i]]) {
-            if(color == "") {
-                // 有効にする。
-                document.form1[list[i]].disabled = false;
-                document.form1[list[i]].style.backgroundColor = g_savecolor[list[i]];
-            } else {
-                // 無効にする。
-                document.form1[list[i]].disabled = true;
-                g_savecolor[list[i]] = document.form1[list[i]].style.backgroundColor;
-                document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";
-            }
-        }
-    }
-}
-
-// ログイン時の入力チェック
-function fnCheckLogin(formname) {
-    var lstitem = [];
-
-    lstitem[0] = 'login_email';
-    lstitem[1] = 'login_pass';
-
-    var max = lstitem.length;
-    var errflg = false;
-    var cnt = 0;
-
-    //　必須項目のチェック
-    for(cnt = 0; cnt < max; cnt++) {
-        if(document.forms[formname][lstitem[cnt]].value == "") {
-            errflg = true;
-            break;
-        }
-    }
-
-    // 必須項目が入力されていない場合
-    if(errflg == true) {
-        alert('メールアドレス/パスワードを入力して下さい。');
-        return false;
-    } else {
-        return true;
-    }
-}
-
-start_time = new Date();
-
-//親ウィンドウのページを変更する.
-function fnUpdateParent(url) {
-    // 親ウィンドウの存在確認
-    if(eccube.common.isOpener()) {
-        window.opener.location.href = url;
-    } else {
-        window.close();
-    }
-}
-
-//文字数をカウントする。
-//引数1：フォーム名称
-//引数2：文字数カウント対象
-//引数3：カウント結果格納対象
-function fnCharCount(form,sch,cnt) {
-    document.forms[form][cnt].value= document.forms[form][sch].value.length;
-}
-
-// テキストエリアのサイズを変更する.
-function ChangeSize(buttonSelector, textAreaSelector, max, min) {
-    if ($(textAreaSelector).attr('rows') <= min) {
-        $(textAreaSelector).attr('rows', max);
-        $(buttonSelector).text('縮小');
-    } else {
-        $(textAreaSelector).attr('rows', min);
-        $(buttonSelector).text('拡大');
-    }
-}
-
 $(function() {
     // 規格1選択時
     $('select[name=classcategory_id1]')
@@ -509,6 +353,170 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
 
     common.changeAction = function(url) {
         document.form1.action = url;
+    };
+
+    // ページナビで使用する。
+    common.movePage = function(pageno, mode, form) {
+        if (typeof form !== 'undefined') {
+            form = 'form1';
+        }
+        document.forms[form]['pageno'].value = pageno;
+        if (typeof mode !== 'undefined') {
+            document.forms[form]['mode'].value = 'search';
+        }
+        document.forms[form].submit();
+    };
+
+    common.submitForm = function(form){
+        if (typeof form !== 'undefined') {
+            form = 'form1';
+        }
+        document.forms[form].submit();
+    }
+
+    // ポイント入力制限。
+    common.togglePointForm = function() {
+        if(document.form1['point_check']) {
+            var list = ['use_point'];
+            var color;
+            var flag;
+
+            if(!document.form1['point_check'][0].checked) {
+                color = "#dddddd";
+                flag = true;
+            } else {
+                color = "";
+                flag = false;
+            }
+
+            var len = list.length;
+            for(i = 0; i < len; i++) {
+                if(document.form1[list[i]]) {
+                    var current_color = document.form1[list[i]].style.backgroundColor;
+                    if (color != "#dddddd" && (current_color == "#ffe8e8" || current_color == "rgb(255, 232, 232)"))
+                    {
+                        continue;
+                    }
+                    document.form1[list[i]].disabled = flag;
+                    document.form1[list[i]].style.backgroundColor = color;
+                }
+            }
+        }
+    }
+
+    // 別のお届け先入力制限。
+    common.toggleDeliveryForm = function() {
+        if(!document.form1) {
+            return;
+        }
+        if(document.form1['deliv_check']) {
+            var list = [
+                'shipping_name01',
+                'shipping_name02',
+                'shipping_kana01',
+                'shipping_kana02',
+                'shipping_pref',
+                'shipping_zip01',
+                'shipping_zip02',
+                'shipping_addr01',
+                'shipping_addr02',
+                'shipping_tel01',
+                'shipping_tel02',
+                'shipping_tel03'
+            ];
+
+            if(!document.form1['deliv_check'].checked) {
+                eccube.common.changeDisabled(list, '#dddddd');
+            } else {
+                eccube.common.changeDisabled(list, '');
+            }
+        }
+    };
+
+    // 最初に設定されていた色を保存しておく。
+    common.savedColor = [];
+
+    common.changeDisabled = function(list, color) {
+        var len = list.length;
+
+        for(i = 0; i < len; i++) {
+            if(document.form1[list[i]]) {
+                if(color == "") {
+                    // 有効にする。
+                    document.form1[list[i]].disabled = false;
+                    document.form1[list[i]].style.backgroundColor = eccube.common.savedColor[list[i]];
+                } else {
+                    // 無効にする。
+                    document.form1[list[i]].disabled = true;
+                    eccube.common.savedColor[list[i]] = document.form1[list[i]].style.backgroundColor;
+                    document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";
+                }
+            }
+        }
+    };
+
+    // ログイン時の入力チェック
+    common.checkLoginFormInputted = function(form, emailKey, passKey) {
+        var checkItems = [];
+
+        if (typeof emailKey === 'undefined') {
+            checkItems[0] = 'login_email';
+        } else {
+            checkItems[0] = emailKey;
+        }
+        if (typeof passKey === 'undefined') {
+            checkItems[1] = 'login_pass';
+        } else {
+            checkItems[1] = passKey;
+        }
+
+        var max = checkItems.length;
+        var errorFlag = false;
+
+        //　必須項目のチェック
+        for(var cnt = 0; cnt < max; cnt++) {
+            if(document.forms[form][checkItems[cnt]].value == "") {
+                errorFlag = true;
+                break;
+            }
+        }
+
+        // 必須項目が入力されていない場合
+        if(errorFlag == true) {
+            alert('メールアドレス/パスワードを入力して下さい。');
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    //親ウィンドウのページを変更する.
+    common.changeParentUrl = function(url) {
+        // 親ウィンドウの存在確認
+        if(eccube.common.isOpener()) {
+            window.opener.location.href = url;
+        } else {
+            window.close();
+        }
+    };
+
+    //文字数をカウントする。
+    //引数1：フォーム名称
+    //引数2：文字数カウント対象
+    //引数3：カウント結果格納対象
+    common.countChars = function(form,sch,cnt) {
+        document.forms[form][cnt].value= document.forms[form][sch].value.length;
+    };
+
+    // テキストエリアのサイズを変更する.
+    common.toggleRows = function(buttonSelector, textAreaSelector, max, min) {
+        if ($(textAreaSelector).attr('rows') <= min) {
+            $(textAreaSelector).attr('rows', max);
+            $(buttonSelector).text('縮小');
+        } else {
+            $(textAreaSelector).attr('rows', min);
+            $(buttonSelector).text('拡大');
+        }
     };
 
     // 名前空間の重複を防ぐ

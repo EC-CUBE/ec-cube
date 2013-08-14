@@ -25,13 +25,13 @@
     function fnChangeOrderby(orderby) {
         eccube.common.setValue('orderby', orderby);
         eccube.common.setValue('pageno', 1);
-        fnSubmit();
+        eccube.common.submitForm();
     }
     // 表示件数を変更
     function fnChangeDispNumber(dispNumber) {
         eccube.common.setValue('disp_number', dispNumber);
         eccube.common.setValue('pageno', 1);
-        fnSubmit();
+        eccube.common.submitForm();
     }
 //]]></script>
 

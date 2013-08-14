@@ -20,16 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-//親ウィンドウのページを変更する。
-function fnUpdateParent(url) {
-    // 親ウィンドウの存在確認
-    if(eccube.common.isOpener()) {
-        window.opener.location.href = url;
-    } else {
-        window.close();
-    }
-}
-
 // 親ウィンドウをポストさせる。
 function fnSubmitParent() {
     // 親ウィンドウの存在確認
@@ -197,10 +187,10 @@ function fnCheckStockLimit(icolor) {
             'stock'
             );
         if(document.form1['stock_unlimited'].checked) {
-            fnChangeDisabled(list, icolor);
+            eccube.common.changeDisabled(list, icolor);
             document.form1['stock'].value = "";
         } else {
-            fnChangeDisabled(list, '');
+            eccube.common.changeDisabled(list, '');
         }
     }
 }
@@ -329,10 +319,10 @@ function fnCheckLimit(elem1, elem2, icolor) {
                 elem1
             );
         if(document.form1[elem2].checked) {
-            fnChangeDisabled(list, icolor);
+            eccube.common.changeDisabled(list, icolor);
             document.form1[elem1].value = "";
         } else {
-            fnChangeDisabled(list, '');
+            eccube.common.changeDisabled(list, '');
         }
     }
 }

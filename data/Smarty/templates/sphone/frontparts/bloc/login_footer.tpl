@@ -22,7 +22,7 @@
 
 <section class="footer_status_area">
     <!--{if $tpl_login}-->
-        <form name="login_form_footer" id="login_form_footer" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return fnCheckLogin('login_form_footer')">
+        <form name="login_form_footer" id="login_form_footer" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return eccube.common.checkLoginFormInputted('login_form_footer')">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="logout" />
             <input type="hidden" name="url" value="<!--{$smarty.server.SCRIPT_NAME|h}-->" />

@@ -83,7 +83,7 @@ function fnTargetSelf(){
                 <div>
                     <textarea id="tpl_data" class="top" name="tpl_data" rows="<!--{$text_row}-->" style="width: 98%;"><!--{"\n"}--><!--{$arrForm.tpl_data.value|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.common.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
             </td>
         </tr>

@@ -48,7 +48,7 @@
                     <textarea name="body" cols="90" rows="40" class="area90 top" <!--{if $arrErr.body}--><!--{sfSetErrorStyle}--><!--{/if}-->><!--{"\n"}--><!--{$arrForm.body|h}--></textarea>
                     <!--{if $arrErr.body}--><br /><span class="attention"><!--{$arrErr.body}--></span><!--{/if}-->
                     <div>
-                        <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','body','cnt_footer'); return false;" name="next" id="next"><span>文字数カウント</span></a>
+                        <a class="btn-normal" href="javascript:;" onclick="eccube.common.countChars('form1','body','cnt_footer'); return false;" name="next" id="next"><span>文字数カウント</span></a>
                         <span>今までに入力したのは<input type="text" name="cnt_footer" size="4" class="box4" readonly = true style="text-align:right" />文字です。</span>
                     </div>
                 </td>

@@ -230,7 +230,7 @@
 
             <dt class="bg_head">
                 <!--{assign var=key value="deliv_check"}-->
-                <input class="radio_btn data-role-none" type="checkbox" name="<!--{$key}-->" value="1" onchange="fnDelivToggle($('#add_deliv_area')); fnCheckInputDeliv();" <!--{$arrForm[$key].value|sfGetChecked:1}--> id="deliv_label" />
+                <input class="radio_btn data-role-none" type="checkbox" name="<!--{$key}-->" value="1" onchange="fnDelivToggle($('#add_deliv_area')); eccube.common.toggleDeliveryForm();" <!--{$arrForm[$key].value|sfGetChecked:1}--> id="deliv_label" />
                 <label for="deliv_label"><span class="fb">お届け先を指定</span></label>
             </dt>
             <dd>

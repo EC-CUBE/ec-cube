@@ -308,7 +308,7 @@ $(function() {
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnSubmit(); return false;"><span class="btn-next">確認ページへ</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.submitForm(); return false;"><span class="btn-next">確認ページへ</span></a></li>
             </ul>
         </div>
     </div>

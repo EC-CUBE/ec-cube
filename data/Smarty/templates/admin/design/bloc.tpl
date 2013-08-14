@@ -61,7 +61,7 @@
                     <textarea class="top" id="<!--{$key}-->" name="<!--{$key}-->" rows="<!--{$text_row}-->" style="width: 99%;"><!--{"\n"}--><!--{$arrForm[$key].value|smarty:nodefaults|h}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
                     <div>
-                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
+                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.common.toggleRows('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
                     </div>
                 </td>
             </tr>

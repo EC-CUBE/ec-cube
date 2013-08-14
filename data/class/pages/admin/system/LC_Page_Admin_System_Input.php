@@ -91,7 +91,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
                     $this->insertMemberData($this->arrForm);
                     // 親ウィンドウを更新後、自ウィンドウを閉じる。
                     $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
-                    $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
+                    $this->tpl_onload = "eccube.common.changeParentUrl('".$url."'); window.close();";
                 } else {
                     // 入力された値を保持する
                     $this->tpl_mode      = $this->getMode();
@@ -118,7 +118,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
                     $this->updateMemberData($this->arrForm['member_id'], $this->arrForm);
                     // 親ウィンドウを更新後、自ウィンドウを閉じる。
                     $url = ADMIN_SYSTEM_URLPATH . '?pageno=' . $this->arrForm['pageno'];
-                    $this->tpl_onload = "fnUpdateParent('".$url."'); window.close();";
+                    $this->tpl_onload = "eccube.common.changeParentUrl('".$url."'); window.close();";
                 } else {
                     // 入力された値を保持する
                     $this->tpl_mode      = $this->getMode();
