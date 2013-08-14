@@ -171,13 +171,13 @@
                             <ul>
                                 <li>
                                     <!--{if $tpl_prev_url != ""}-->
-                                        <a href="<!--{$tpl_prev_url|h}-->" onmouseover="chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back_on.jpg','back<!--{$key|h}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg','back<!--{$key|h}-->');">
+                                        <a href="<!--{$tpl_prev_url|h}-->" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back_on.jpg','back<!--{$key|h}-->');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg','back<!--{$key|h}-->');">
                                             <img src="<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key|h}-->" /></a>
                                     <!--{/if}-->
                                 </li>
                                 <li>
                                     <!--{if strlen($tpl_error) == 0}-->
-                                        <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep_on.jpg',this)" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
+                                        <input type="image" onmouseover="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep_on.jpg',this)" onmouseout="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
                                     <!--{/if}-->
                                 </li>
                             </ul>

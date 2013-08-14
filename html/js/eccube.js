@@ -20,56 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-function chgImg(fileName,img){
-    if (typeof(img) == "object") {
-        img.src = fileName;
-    } else {
-        document.images[img].src = fileName;
-    }
-}
-
-function chgImgImageSubmit(fileName,imgObj){
-    imgObj.src = fileName;
-}
-
-// 郵便番号入力呼び出し.
-function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
-    zip1 = document.form1[tagname1].value;
-    zip2 = document.form1[tagname2].value;
-
-    if(zip1.length == 3 && zip2.length == 4) {
-        $.get(
-            php_url,
-            {zip1: zip1, zip2: zip2, input1: input1, input2: input2},
-            function(data) {
-                arrdata = data.split("|");
-                if (arrdata.length > 1) {
-                    fnPutAddress(input1, input2, arrdata[0], arrdata[1], arrdata[2]);
-                } else {
-                    alert(data);
-                }
-            }
-        );
-    } else {
-        alert("郵便番号を正しく入力して下さい。");
-    }
-}
-
-// 郵便番号から検索した住所を渡す.
-function fnPutAddress(input1, input2, state, city, town) {
-    if(state != "") {
-        // 項目に値を入力する.
-        document.form1[input1].selectedIndex = state;
-        document.form1[input2].value = city + town;
-    }
-}
-
-function fnSetFocus(name) {
-    if(document.form1[name]) {
-        document.form1[name].focus();
-    }
-}
-
 // セレクトボックスに項目を割り当てる.
 function fnSetSelect(name1, name2, val) {
     sele1 = document.form1[name1];
@@ -534,6 +484,56 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
             }
         } else {
             return false;
+        }
+    };
+
+    common.chgImg = function(fileName,img){
+        if (typeof(img) == "object") {
+            img.src = fileName;
+        } else {
+            document.images[img].src = fileName;
+        }
+    };
+
+    common.chgImgImageSubmit = function(fileName,imgObj){
+        imgObj.src = fileName;
+    };
+
+    // 郵便番号入力呼び出し.
+    common.getAddress = function(php_url, tagname1, tagname2, input1, input2) {
+        var zip1 = document.form1[tagname1].value;
+        var zip2 = document.form1[tagname2].value;
+
+        if(zip1.length == 3 && zip2.length == 4) {
+            $.get(
+                php_url,
+                {zip1: zip1, zip2: zip2, input1: input1, input2: input2},
+                function(data) {
+                    var arrData = data.split("|");
+                    if (arrData.length > 1) {
+                        eccube.common.putAddress(input1, input2, arrData[0], arrData[1], arrData[2]);
+                    } else {
+                        alert(data);
+                    }
+                }
+            );
+        } else {
+            alert("郵便番号を正しく入力して下さい。");
+        }
+    };
+
+    // 郵便番号から検索した住所を渡す.
+    common.putAddress = function(input1, input2, state, city, town) {
+        if(state != "") {
+            // 項目に値を入力する.
+            document.form1[input1].selectedIndex = state;
+            document.form1[input2].value = city + town;
+        }
+    };
+
+    common.setFocus = function(name) {
+        if(document.form1[name]) {
+            document.form1[name].focus();
         }
     };
 

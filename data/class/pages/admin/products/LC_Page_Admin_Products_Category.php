@@ -45,7 +45,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $this->tpl_mainpage = 'products/category.tpl';
         $this->tpl_mainno = 'products';
         $this->tpl_subno  = 'category';
-        $this->tpl_onload = " fnSetFocus('category_name'); ";
+        $this->tpl_onload = " eccube.common.setFocus('category_name'); ";
     }
 
     /**

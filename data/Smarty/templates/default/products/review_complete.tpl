@@ -31,7 +31,7 @@
     </div>
     <div class="btn_area">
         <ul>
-            <li><a href="javascript:window.close()" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.jpg','b_close');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.jpg','b_close');">
+            <li><a href="javascript:window.close()" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.jpg','b_close');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.jpg','b_close');">
                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_close.jpg" alt="閉じる" border="0" name="b_close" /></a></li>
         </ul>
     </div>
