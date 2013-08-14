@@ -62,7 +62,7 @@
                             <input type="image" onmouseover="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular_on.jpg',this)" onmouseout="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg" alt="上記のお届け先のみに送る" name="singular" id="singular" />
                         </li>
                         <li>
-                        <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple_on.jpg','several');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple.jpg','several');">
+                        <a href="javascript:;" onclick="eccube.common.setModeAndSubmit('multiple', '', ''); return false" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple_on.jpg','several');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_multiple.jpg','several');">
                             <img src="<!--{$TPL_URLPATH}-->img/button/btn_multiple.jpg" alt="複数のお届け先に送る" border="0" name="several" id="several" /></a>
                         </li>
                     <!--{else}-->

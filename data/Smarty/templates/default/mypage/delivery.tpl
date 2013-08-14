@@ -73,7 +73,7 @@
                                 <a href="./delivery_addr.php" onclick="eccube.common.win02('./delivery_addr.php?other_deliv_id=<!--{$arrOtherDeliv[cnt].other_deliv_id}-->','deliv_disp','600','640'); return false;">変更</a>
                             </td>
                             <td class="alignC">
-                                <a href="#" onclick="fnModeSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;">削除</a>
+                                <a href="#" onclick="eccube.common.setModeAndSubmit('delete','other_deliv_id','<!--{$arrOtherDeliv[cnt].other_deliv_id}-->'); return false;">削除</a>
                             </td>
                         </tr>
                     <!--{/section}-->

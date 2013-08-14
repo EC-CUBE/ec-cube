@@ -131,7 +131,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="?" onclick="fnModeSubmit('return', '', ''); return false;" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back');">
+                        <a href="?" onclick="eccube.common.setModeAndSubmit('return', '', ''); return false;" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back');">
                             <img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back" id="back" /></a>
                     </li>
                     <li>

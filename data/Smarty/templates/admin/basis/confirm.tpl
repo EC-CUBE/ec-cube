@@ -160,7 +160,7 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('return','',''); return false;"><span class="btn-prev">前のページに戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="eccube.common.setModeAndSubmit('return','',''); return false;"><span class="btn-prev">前のページに戻る</span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="fnSubmit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>

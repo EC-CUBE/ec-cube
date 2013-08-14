@@ -38,7 +38,7 @@
                         </p>
                         <!--{if !$tpl_disable_logout}-->
                             <p class="btn">
-                                <input type="image" onmouseover="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout_on.jpg',this)" onmouseout="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout.jpg" onclick="fnFormModeSubmit('login_form', 'logout', '', ''); return false;" alt="ログアウト" />
+                                <input type="image" onmouseover="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout_on.jpg',this)" onmouseout="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout.jpg" onclick="eccube.common.fnFormModeSubmit('login_form', 'logout', '', ''); return false;" alt="ログアウト" />
                             </p>
                         <!--{/if}-->
                     <!--{else}-->

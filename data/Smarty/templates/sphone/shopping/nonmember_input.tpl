@@ -340,7 +340,7 @@
                 </dd>
                 <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
                     <dd class="pb">
-                        <a class="btn_more" href="javascript:fnModeSubmit('multiple', '', '');">お届け先を複数指定する</a>
+                        <a class="btn_more" href="javascript:eccube.common.setModeAndSubmit('multiple', '', '');">お届け先を複数指定する</a>
                     </dd>
                 <!--{/if}-->
             </div>

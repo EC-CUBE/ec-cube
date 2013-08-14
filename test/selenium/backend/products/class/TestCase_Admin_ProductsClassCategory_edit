@@ -37,7 +37,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@onclick=&quot;fnModeSubmit('pre_edit','classcategory_id', 8); return false;&quot;]</td>
+	<td>//a[@onclick=&quot;eccube.common.setModeAndSubmit('pre_edit','classcategory_id', 8); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>

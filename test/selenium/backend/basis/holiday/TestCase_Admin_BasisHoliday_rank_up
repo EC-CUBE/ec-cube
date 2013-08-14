@@ -17,7 +17,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@onclick=&quot;fnModeSubmit('up', 'holiday_id', 1); return false;&quot;]</td>
+	<td>//a[@onclick=&quot;eccube.common.setModeAndSubmit('up', 'holiday_id', 1); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>

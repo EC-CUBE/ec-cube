@@ -318,7 +318,7 @@
         <a name="order_products"></a>
         <h2 id="order_products">
             受注商品情報
-            <a class="btn-normal" href="javascript:;" name="recalculate" onclick="fnModeSubmit('recalculate','anchor_key','order_products');">計算結果の確認</a>
+            <a class="btn-normal" href="javascript:;" name="recalculate" onclick="eccube.common.setModeAndSubmit('recalculate','anchor_key','order_products');">計算結果の確認</a>
             <!--{if $arrForm.shipping_quantity.value <= 1}-->
             <a class="btn-normal" href="javascript:;" name="add_product" onclick="eccube.common.win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->&amp;shipping_id=<!--{$top_shipping_id}-->', 'search', '615', '500'); return false;">商品の追加</a>
             <!--{/if}-->
@@ -353,7 +353,7 @@
                     <!--{if $arrForm.shipping_quantity.value <= 1}-->
                         <a class="btn-normal" href="javascript:;" name="change" onclick="eccube.common.win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$product_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->&amp;shipping_id=<!--{$top_shipping_id}-->', 'search', '615', '500'); return false;">変更</a>
                         <!--{if count($arrForm.quantity.value) > 1}-->
-                            <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$product_index}-->); fnSetFormVal('form1', 'select_shipping_id', '<!--{$top_shipping_id}-->'); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
+                            <a class="btn-normal" href="javascript:;" name="delete" onclick="eccube.common.setValue('delete_no', <!--{$product_index}-->, 'form1'); eccube.common.setValue(select_shipping_id', '<!--{$top_shipping_id}-->', 'form1'); eccube.common.setModeAndSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
                         <!--{/if}-->
                     <!--{/if}-->
                 <input type="hidden" name="product_type_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_type_id.value[$product_index]|h}-->" id="product_type_id_<!--{$product_index}-->" />
@@ -518,7 +518,7 @@
                                     <br />
                                     <a class="btn-normal" href="javascript:;" name="change" onclick="eccube.common.win03('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?no=<!--{$item_index}-->&amp;order_id=<!--{$arrForm.order_id.value|h}-->&amp;shipping_id=<!--{$shipping_index}-->', 'search', '615', '500'); return false;">変更</a>
                                     <!--{if count($arrForm.quantity.value) > 1}-->
-                                    <a class="btn-normal" href="javascript:;" name="delete" onclick="fnSetFormVal('form1', 'delete_no', <!--{$item_index}-->);fnSetFormVal('form1', 'select_shipping_id', <!--{$shipping_index}-->); fnModeSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
+                                    <a class="btn-normal" href="javascript:;" name="delete" onclick="eccube.common.setValue('delete_no', <!--{$item_index}-->, 'form1'); eccube.common.setValue('select_shipping_id', <!--{$shipping_index}-->, 'form1'); eccube.common.setModeAndSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
                                     <!--{/if}-->
                                 </td>
                                 <td class="right">
@@ -705,7 +705,7 @@
                 <td>
                     <!--{assign var=key value="deliv_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('deliv','anchor_key','deliv');">
+                    <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="eccube.common.setModeAndSubmit('deliv','anchor_key','deliv');">
                         <option value="" selected="">選択してください</option>
                         <!--{html_options options=$arrDeliv selected=$arrForm[$key].value}-->
                     </select>
@@ -716,7 +716,7 @@
                 <td>
                     <!--{assign var=key value="payment_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('payment','anchor_key','deliv');">
+                    <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="eccube.common.setModeAndSubmit('payment','anchor_key','deliv');">
                         <option value="" selected="">選択してください</option>
                         <!--{html_options options=$arrPayment selected=$arrForm[$key].value}-->
                     </select>
@@ -748,7 +748,7 @@
         <div class="btn-area">
             <ul>
                 <!--{if count($arrSearchHidden) > 0}-->
-                <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.common.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
                 <!--{/if}-->
                 <li><a class="btn-action" href="javascript:;" onclick="return fnFormConfirm(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>

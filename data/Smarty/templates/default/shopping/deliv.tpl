@@ -38,7 +38,7 @@
             <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
                 <div class="add_multiple">
                     <p>この商品を複数の<br />お届け先に送りますか？</p>
-                    <a href="javascript:;" onclick="fnModeSubmit('multiple', '', ''); return false" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.jpg','several');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" name="several" id="several" /></a>
+                    <a href="javascript:;" onclick="eccube.common.setModeAndSubmit('multiple', '', ''); return false" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address_on.jpg','several');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg','several');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" name="several" id="several" /></a>
                 </div>
             <!--{/if}-->
         </div>
@@ -106,7 +106,7 @@
                         </td>
                         <td class="alignC">
                             <!--{if !$smarty.section.cnt.first}-->
-                                <a href="?" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a>
+                                <a href="?" onclick="eccube.common.setModeAndSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->'); return false">削除</a>
                                 <!--{else}-->
                                     -
                                 <!--{/if}-->

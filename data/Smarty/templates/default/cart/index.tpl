@@ -112,7 +112,7 @@
                             </tr>
                             <!--{foreach from=$cartItems[$key] item=item}-->
                                 <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR|h}-->;<!--{/if}-->">
-                                    <td class="alignC"><a href="?" onclick="fnFormModeSubmit('form<!--{$key|h}-->', 'delete', 'cart_no', '<!--{$item.cart_no|h}-->'); return false;">削除</a>
+                                    <td class="alignC"><a href="?" onclick="eccube.common.fnFormModeSubmit('form<!--{$key|h}-->', 'delete', 'cart_no', '<!--{$item.cart_no|h}-->'); return false;">削除</a>
                                     </td>
                                     <td class="alignC">
                                     <!--{if $item.productsClass.main_image|strlen >= 1}-->
@@ -136,8 +136,8 @@
                                     </td>
                                     <td class="alignC"><!--{$item.quantity|h}-->
                                         <ul id="quantity_level">
-                                            <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key|h}-->','up','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a></li>
-                                            <li><a href="?" onclick="fnFormModeSubmit('form<!--{$key|h}-->','down','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a></li>
+                                            <li><a href="?" onclick="eccube.common.fnFormModeSubmit('form<!--{$key|h}-->','up','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a></li>
+                                            <li><a href="?" onclick="eccube.common.fnFormModeSubmit('form<!--{$key|h}-->','down','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a></li>
                                         </ul>
                                     </td>
                                     <td class="alignR"><!--{$item.total_inctax|number_format|h}-->円</td>

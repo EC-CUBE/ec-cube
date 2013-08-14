@@ -159,10 +159,6 @@ function fnClassCatPage(class_id) {
     location.href =  "./classcategory.php?class_id=" + class_id;
 }
 
-function fnSetFormValue(name, val) {
-    document.form1[name].value = val;
-}
-
 function fnListCheck(list) {
     len = list.length;
     for(cnt = 0; cnt < len; cnt++) {

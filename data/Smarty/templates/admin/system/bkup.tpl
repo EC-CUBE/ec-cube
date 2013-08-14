@@ -26,7 +26,7 @@
     function fnRestore(list_name) {
         if (window.confirm('リストアしますか?')) {
             document.body.style.cursor = 'wait';
-            fnModeSubmit('restore', 'list_name', list_name);
+            eccube.common.setModeAndSubmit('restore', 'list_name', list_name);
         }
     }
 </script>
@@ -87,9 +87,9 @@
                         <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
                         <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
                         <td align="center"><a href="javascript:;" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">リストア</a></td>
-                        <td align="center"><a href="javascript:;" onclick="fnModeSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">ダウンロード</a></td>
+                        <td align="center"><a href="javascript:;" onclick="eccube.common.setModeAndSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">ダウンロード</a></td>
                         <td align="center">
-                            <a href="javascript:;" onclick="fnModeSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">削除</a>
+                            <a href="javascript:;" onclick="eccube.common.setModeAndSubmit('delete','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">削除</a>
                         </td>
                     </tr>
                 <!--{/section}-->

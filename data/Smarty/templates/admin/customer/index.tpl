@@ -77,7 +77,7 @@
             </select> 件</p>
             <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                    <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
                 </ul>
             </div>
         </div>
@@ -103,7 +103,7 @@
             <div class="btn">
                 <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
                 <!--検索結果-->
-                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
+                <a class="btn-normal" href="javascript:;" onclick="eccube.common.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
                 <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</a>
             </div>
             <!--{if count($arrData) > 0}-->

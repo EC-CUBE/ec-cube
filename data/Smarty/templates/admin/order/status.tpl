@@ -37,7 +37,7 @@
                     style="padding-right: 1em;"
                     <!--{if $key != $SelectedStatus}-->
                         href="javascript:;"
-                        onclick="document.form1.search_pageno.value='1'; fnModeSubmit('search','status','<!--{$key}-->' ); return false;"
+                        onclick="document.form1.search_pageno.value='1'; eccube.common.setModeAndSubmit('search','status','<!--{$key}-->' ); return false;"
                     <!--{/if}-->
                 ><!--{$item}--></a>
             <!--{/foreach}-->

@@ -262,7 +262,7 @@
         <div class="btn-area">
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索画面に戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnSetFormSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next">確認ページへ</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.setValueAndSubmit('form1', 'mode', 'confirm'); return false;"><span class="btn-next">確認ページへ</span></a></li>
             </ul>
         </div>
 

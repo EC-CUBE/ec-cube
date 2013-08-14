@@ -44,7 +44,7 @@
                     <select name="search_startmonth_m" style="<!--{$arrErr.search_startyear_m|sfGetErrorColor}-->">
                         <!--{html_options options=$arrMonth selected=$arrForm.search_startmonth_m.value}-->
                     </select>月度 (<!--{if $smarty.const.CLOSE_DAY == 31}-->末<!--{else}--><!--{$smarty.const.CLOSE_DAY}--><!--{/if}-->日締め)
-                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form1', 'search', '', ''); return false;" name="subm">月度で集計する</a>
+                    <a class="btn-normal" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('search_form1', 'search', '', ''); return false;" name="subm">月度で集計する</a>
                 </form>
             </td>
         </tr>
@@ -85,7 +85,7 @@
                         <option value="">--</option>
                         <!--{html_options options=$arrDay selected=$arrForm.search_endday.value|h}-->
                     </select>日
-                    <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('search_form2', 'search', '', ''); return false;" name="subm">期間で集計する</a>
+                    <a class="btn-normal" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('search_form2', 'search', '', ''); return false;" name="subm">期間で集計する</a>
                 </form>
             </td>
         </tr>
@@ -108,7 +108,7 @@
             <h2><!--{include file=$tpl_graphsubtitle}--></h2>
 
             <div class="btn">
-                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span>CSVダウンロード</span></a>
+                <a class="btn-normal" href="javascript:;" onclick="eccube.common.setModeAndSubmit('csv','',''); return false;"><span>CSVダウンロード</span></a>
             </div>
 
             <!--{* グラフ表示 *}-->

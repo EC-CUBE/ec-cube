@@ -23,7 +23,7 @@
     </table>
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'param_edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', 'param_edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>
 
@@ -92,7 +92,7 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>
     <!--{if count($arrTaxrule) > 0}-->
@@ -123,7 +123,7 @@
             </td>
             <td class="center">
             <!--{if $tpl_tax_rule_id != $arrTaxrule[cnt].tax_rule_id}-->
-                <a href="?" onclick="fnModeSubmit('pre_edit', 'tax_rule_id', '<!--{$arrTaxrule[cnt].tax_rule_id}-->'); return false;">編集</a>
+                <a href="?" onclick="eccube.common.setModeAndSubmit('pre_edit', 'tax_rule_id', '<!--{$arrTaxrule[cnt].tax_rule_id}-->'); return false;">編集</a>
             <!--{else}-->
                 編集中
             <!--{/if}-->
@@ -132,7 +132,7 @@
             <!--{if $arrTaxrule[cnt].tax_rule_id == 0}-->
                 -
             <!--{else}-->
-                <a href="?" onclick="fnModeSubmit('delete', 'tax_rule_id', '<!--{$arrTaxrule[cnt].tax_rule_id}-->'); return false;">削除</a>
+                <a href="?" onclick="eccube.common.setModeAndSubmit('delete', 'tax_rule_id', '<!--{$arrTaxrule[cnt].tax_rule_id}-->'); return false;">削除</a>
             <!--{/if}-->
             </td>
         </tr>

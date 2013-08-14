@@ -62,7 +62,7 @@
                                     <!--{else}-->
                                     <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->～<!--{$arrFavorite[cnt].price02_max_inctax|number_format}-->
                                     <!--{/if}-->円</span></p>
-                                <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
+                                <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="javascript:eccube.common.setModeAndSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
                             </div>
                         </div><!--▲商品 -->
                     <!--{/section}-->
@@ -157,7 +157,7 @@
                         price.append(priceVale);
 
                         //削除ボタンをセット
-                        $($(".favoriteBox p.btn_delete img").get(maxCnt)).attr("onclick", "javascript:fnModeSubmit('delete_favorite','product_id','" + product.product_id + "');");
+                        $($(".favoriteBox p.btn_delete img").get(maxCnt)).attr("onclick", "javascript:eccube.common.setModeAndSubmit('delete_favorite','product_id','" + product.product_id + "');");
 
                     }
                 }

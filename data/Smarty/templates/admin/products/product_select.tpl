@@ -64,7 +64,7 @@ function func_submit( id ){
         </tr>
     </table>
     <div class="btn-area">
-        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next">検索を開始</span></a>
+        <a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', 'search', '', ''); return false;" name="subm"><span class="btn-next">検索を開始</span></a>
     </div>
 
     <!--▼検索結果表示-->

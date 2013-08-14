@@ -45,7 +45,7 @@
             if(result === true){
                 // プラグインID
                 var plugin_id = event.target.value;
-                fnModeSubmit(mode, 'plugin_id', plugin_id);
+                eccube.common.setModeAndSubmit(mode, 'plugin_id', plugin_id);
             }
         });
 
@@ -79,7 +79,7 @@
      */
     function install() {
         if (window.confirm('プラグインをインストールしても宜しいでしょうか？')){
-            fnModeSubmit('install','','');
+            eccube.common.setModeAndSubmit('install','','');
         }
     }
 
@@ -88,8 +88,8 @@
      */
     function uninstall(plugin_id, plugin_code) {
         if (window.confirm('一度削除したデータは元に戻せません。\nプラグインを削除しても宜しいですか？')){
-            fnSetFormValue('plugin_id', plugin_id);
-            fnModeSubmit('uninstall', 'plugin_code', plugin_code);
+            eccube.common.setValue('plugin_id', plugin_id);
+            eccube.common.setModeAndSubmit('uninstall', 'plugin_code', plugin_code);
         }
     }
 
@@ -99,8 +99,8 @@
     function update(plugin_id, plugin_code) {
         if (window.confirm('プラグインをアップデートしても宜しいですか？')){
             removeUpdateFile('update_file_' + plugin_id);
-            fnSetFormValue('plugin_id', plugin_id);
-            fnModeSubmit('update','plugin_code', plugin_code);
+            eccube.common.setValue('plugin_id', plugin_id);
+            eccube.common.setModeAndSubmit('update','plugin_code', plugin_code);
         }
     }
 
@@ -109,8 +109,8 @@
      */
     function update_priority(plugin_id, plugin_code) {
         var priority = $("*[name=priority_" + plugin_code +"]").val();
-        fnSetFormValue('priority', priority);
-        fnModeSubmit('priority','plugin_id',plugin_id);
+        eccube.common.setValue('priority', priority);
+        eccube.common.setModeAndSubmit('priority','plugin_id',plugin_id);
     }
 
 //]]></script>

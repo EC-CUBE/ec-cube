@@ -62,7 +62,7 @@
                 <td>
                     <!--{assign var=key value="template_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="fnModeSubmit('change', '', '');">
+                    <select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="eccube.common.setModeAndSubmit('change', '', '');">
                     <option value="" selected="selected">選択してください</option>
                     <!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|h}-->
                     </select>
@@ -98,8 +98,8 @@
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.common.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
             </ul>
         </div>
     </div>

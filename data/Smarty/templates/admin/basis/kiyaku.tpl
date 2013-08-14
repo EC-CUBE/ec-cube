@@ -48,7 +48,7 @@
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
 
@@ -69,7 +69,7 @@
                     <td><!--{* 規格名 *}--><!--{$arrKiyaku[cnt].kiyaku_title|h}--></td>
                     <td align="center">
                         <!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->
-                        <a href="?" onclick="fnModeSubmit('pre_edit', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
+                        <a href="?" onclick="eccube.common.setModeAndSubmit('pre_edit', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
                         <!--{else}-->
                         編集中
                         <!--{/if}-->
@@ -78,15 +78,15 @@
                         <!--{if $arrClassCatCount[$class_id] > 0}-->
                         -
                         <!--{else}-->
-                        <a href="?" onclick="fnModeSubmit('delete', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">削除</a>
+                        <a href="?" onclick="eccube.common.setModeAndSubmit('delete', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">削除</a>
                         <!--{/if}-->
                     </td>
                     <td align="center">
                         <!--{if $smarty.section.cnt.iteration != 1}-->
-                        <a href="?" onclick="fnModeSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">上へ</a>
+                        <a href="?" onclick="eccube.common.setModeAndSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">上へ</a>
                         <!--{/if}-->
                         <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                        <a href="?" onclick="fnModeSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">下へ</a>
+                        <a href="?" onclick="eccube.common.setModeAndSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">下へ</a>
                         <!--{/if}-->
                     </td>
                 </tr>

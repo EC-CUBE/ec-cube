@@ -20,109 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// セレクトボックスに項目を割り当てる.
-function fnSetSelect(name1, name2, val) {
-    sele1 = document.form1[name1];
-    sele2 = document.form1[name2];
-
-    if(sele1 && sele2) {
-        index=sele1.selectedIndex;
-
-        // セレクトボックスのクリア
-        count=sele2.options.length
-        for(i = count; i >= 0; i--) {
-            sele2.options[i]=null;
-        }
-
-        // セレクトボックスに値を割り当てる。
-        len = lists[index].length
-        for(i = 0; i < len; i++) {
-            sele2.options[i]=new Option(lists[index][i], vals[index][i]);
-            if(val != "" && vals[index][i] == val) {
-                sele2.options[i].selected = true;
-            }
-        }
-    }
-}
-
-// モードとキーを指定してSUBMITを行う。
-function fnModeSubmit(mode, keyname, keyid) {
-    switch(mode) {
-        case 'delete_category':
-            if(!window.confirm('選択したカテゴリとカテゴリ内の全てのカテゴリを削除します')){
-                return;
-            }
-            break;
-        case 'delete':
-            if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
-                return;
-            }
-            break;
-        case 'confirm':
-            if(!window.confirm('登録しても宜しいですか')){
-                return;
-            }
-            break;
-        case 'delete_all':
-            if(!window.confirm('検索結果を全て削除しても宜しいですか')){
-                return;
-            }
-            break;
-        default:
-            break;
-    }
-    document.form1['mode'].value = mode;
-    if(keyname != "" && keyid != "") {
-        document.form1[keyname].value = keyid;
-    }
-    document.form1.submit();
-}
-
-function fnFormModeSubmit(form, mode, keyname, keyid) {
-    switch(mode) {
-        case 'delete':
-            if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
-                return;
-            }
-            break;
-        case 'confirm':
-            if(!window.confirm('登録しても宜しいですか')){
-                return;
-            }
-            break;
-        case 'regist':
-            if(!window.confirm('登録しても宜しいですか')){
-                return;
-            }
-            break;
-        default:
-            break;
-    }
-    document.forms[form]['mode'].value = mode;
-    if(keyname != "" && keyid != "") {
-        document.forms[form][keyname].value = keyid;
-    }
-    document.forms[form].submit();
-}
-
-function fnSetFormSubmit(form, key, val) {
-    document.forms[form][key].value = val;
-    document.forms[form].submit();
-    return false;
-}
-
-function fnSetVal(key, val) {
-    fnSetFormVal('form1', key, val);
-}
-
-function fnSetFormVal(form, key, val) {
-    document.forms[form][key].value = val;
-}
-
-function fnChangeAction(url) {
-    document.form1.action = url;
-}
-
 // ページナビで使用する。
 function fnNaviPage(pageno) {
     document.form1['pageno'].value = pageno;
@@ -535,6 +432,83 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
         if(document.form1[name]) {
             document.form1[name].focus();
         }
+    };
+
+    // モードとキーを指定してSUBMITを行う。
+    common.setModeAndSubmit = function(mode, keyname, keyid) {
+        switch(mode) {
+            case 'delete_category':
+                if(!window.confirm('選択したカテゴリとカテゴリ内の全てのカテゴリを削除します')){
+                    return;
+                }
+                break;
+            case 'delete':
+                if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+                    return;
+                }
+                break;
+            case 'confirm':
+                if(!window.confirm('登録しても宜しいですか')){
+                    return;
+                }
+                break;
+            case 'delete_all':
+                if(!window.confirm('検索結果を全て削除しても宜しいですか')){
+                    return;
+                }
+                break;
+            default:
+                break;
+        }
+        document.form1['mode'].value = mode;
+        if(keyname != "" && keyid != "") {
+            document.form1[keyname].value = keyid;
+        }
+        document.form1.submit();
+    };
+
+    common.fnFormModeSubmit = function(form, mode, keyname, keyid) {
+        switch(mode) {
+            case 'delete':
+                if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
+                    return;
+                }
+                break;
+            case 'confirm':
+                if(!window.confirm('登録しても宜しいですか')){
+                    return;
+                }
+                break;
+            case 'regist':
+                if(!window.confirm('登録しても宜しいですか')){
+                    return;
+                }
+                break;
+            default:
+                break;
+        }
+        document.forms[form]['mode'].value = mode;
+        if(keyname != "" && keyid != "") {
+            document.forms[form][keyname].value = keyid;
+        }
+        document.forms[form].submit();
+    };
+
+    common.setValueAndSubmit = function(form, key, val) {
+        document.forms[form][key].value = val;
+        document.forms[form].submit();
+        return false;
+    };
+
+    common.setValue = function(key, val, form) {
+        if (typeof form === 'undefined') {
+            form = 'form1';
+        }
+        document.forms[form][key].value = val;
+    };
+
+    common.changeAction = function(url) {
+        document.form1.action = url;
     };
 
     // 名前空間の重複を防ぐ

@@ -46,7 +46,7 @@
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="eccube.common.fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
                 </ul>
         </div>
 
@@ -69,7 +69,7 @@
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="eccube.common.fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
                 </ul>
         </div>
 
