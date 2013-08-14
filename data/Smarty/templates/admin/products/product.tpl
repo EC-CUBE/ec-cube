@@ -436,7 +436,7 @@ function selectAll(target) {
             <td>
                 <a name="<!--{$anckey}-->"></a>
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|h}-->" />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;">変更</a>
+                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); eccube.common.win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;">変更</a>
                 <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
                 <input type="checkbox" name="<!--{$key}-->" value="1" />削除<br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->

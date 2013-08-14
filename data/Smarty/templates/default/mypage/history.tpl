@@ -264,7 +264,7 @@
                 <td class="alignC"><!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
                 <!--{assign var=key value="`$tpl_arrMailHistory[cnt].template_id`"}-->
                 <td class="alignC"><!--{$arrMAILTEMPLATE[$key]|h}--></td>
-                <td><a href="#" onclick="win02('./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></td>
+                <td><a href="#" onclick="eccube.common.win02('./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></td>
             </tr>
             <!--{/section}-->
         </table>

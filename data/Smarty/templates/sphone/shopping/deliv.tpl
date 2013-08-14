@@ -69,7 +69,7 @@
                                     <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">追加登録住所</label>
                                 </p>
                                 <ul class="edit">
-                                    <li><a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
+                                    <li><a rel="external" href="javascript:void(0);" onclick="eccube.common.win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
                                     <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
                                 </ul>
                             </dt>
@@ -84,7 +84,7 @@
 
                 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
                     <div class="inner">
-                        <a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
+                        <a rel="external" href="javascript:void(0);" onclick="eccube.common.win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
                     </div>
                 <!--{/if}-->
             </div><!-- /.formBox -->

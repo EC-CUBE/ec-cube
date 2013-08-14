@@ -23,7 +23,7 @@
 //親ウィンドウのページを変更する。
 function fnUpdateParent(url) {
     // 親ウィンドウの存在確認
-    if(fnIsopener()) {
+    if(eccube.common.isOpener()) {
         window.opener.location.href = url;
     } else {
         window.close();
@@ -33,7 +33,7 @@ function fnUpdateParent(url) {
 // 親ウィンドウをポストさせる。
 function fnSubmitParent() {
     // 親ウィンドウの存在確認
-    if(fnIsopener()) {
+    if(eccube.common.isOpener()) {
         window.opener.document.form1.submit();
     } else {
         window.close();

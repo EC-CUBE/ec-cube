@@ -32,44 +32,6 @@ function chgImgImageSubmit(fileName,imgObj){
     imgObj.src = fileName;
 }
 
-function win01(URL,Winname,Wwidth,Wheight){
-    var WIN;
-    WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=no,resizable=no,toolbar=no,location=no,directories=no,status=no");
-    WIN.focus();
-}
-
-function win02(URL,Winname,Wwidth,Wheight){
-    var WIN;
-    WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-    WIN.focus();
-}
-
-function win03(URL,Winname,Wwidth,Wheight){
-    var WIN;
-    WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
-    WIN.focus();
-}
-
-function winSubmit(URL,formName,Winname,Wwidth,Wheight){
-    var WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
-    document.forms[formName].target = Winname;
-    WIN.focus();
-}
-
-// 親ウィンドウの存在確認.
-function fnIsopener() {
-    var ua = navigator.userAgent;
-    if( !!window.opener ) {
-        if( ua.indexOf('MSIE 4')!=-1 && ua.indexOf('Win')!=-1 ) {
-            return !window.opener.closed;
-        } else {
-            return typeof window.opener.document == 'object';
-        }
-    } else {
-        return false;
-    }
-}
-
 // 郵便番号入力呼び出し.
 function fnCallAddress(php_url, tagname1, tagname2, input1, input2) {
     zip1 = document.form1[tagname1].value;
@@ -102,14 +64,6 @@ function fnPutAddress(input1, input2, state, city, town) {
     }
 }
 
-function fnOpenNoMenu(URL) {
-    window.open(URL,"nomenu","scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-}
-
-function fnOpenWindow(URL,name,width,height) {
-    window.open(URL,name,"width="+width+",height="+height+",scrollbars=yes,resizable=no,toolbar=no,location=no,directories=no,status=no");
-}
-
 function fnSetFocus(name) {
     if(document.form1[name]) {
         document.form1[name].focus();
@@ -139,18 +93,6 @@ function fnSetSelect(name1, name2, val) {
             }
         }
     }
-}
-
-// Enterキー入力をキャンセルする。(IEに対応)
-function fnCancelEnter()
-{
-    if (gCssUA.indexOf("WIN") != -1 && gCssUA.indexOf("MSIE") != -1) {
-        if (window.event.keyCode == 13)
-        {
-            return false;
-        }
-    }
-    return true;
 }
 
 // モードとキーを指定してSUBMITを行う。
@@ -307,7 +249,7 @@ function fnCheckInputDeliv() {
 }
 
 // 最初に設定されていた色を保存しておく。
-var g_savecolor = new Array();
+var g_savecolor = [];
 
 function fnChangeDisabled(list, color) {
     len = list.length;
@@ -330,7 +272,7 @@ function fnChangeDisabled(list, color) {
 
 // ログイン時の入力チェック
 function fnCheckLogin(formname) {
-    var lstitem = new Array();
+    var lstitem = [];
 
     lstitem[0] = 'login_email';
     lstitem[1] = 'login_pass';
@@ -356,30 +298,16 @@ function fnCheckLogin(formname) {
     }
 }
 
-// 時間の計測.
-function fnPassTime(){
-    end_time = new Date();
-    time = end_time.getTime() - start_time.getTime();
-    alert((time/1000));
-}
 start_time = new Date();
 
 //親ウィンドウのページを変更する.
 function fnUpdateParent(url) {
     // 親ウィンドウの存在確認
-    if(fnIsopener()) {
+    if(eccube.common.isOpener()) {
         window.opener.location.href = url;
     } else {
         window.close();
     }
-}
-
-//特定のキーをSUBMITする.
-function fnKeySubmit(keyname, keyid) {
-    if(keyname != "" && keyid != "") {
-        document.form1[keyname].value = keyid;
-    }
-    document.form1.submit();
 }
 
 //文字数をカウントする。
@@ -562,4 +490,58 @@ function checkStock($form, product_id, classcat_id1, classcat_id2) {
         $product_class_id_dynamic.val('');
     }
 }
+
+(function( window, undefined ){
+
+    var common = {};
+
+    common.win01 = function(URL,Winname,Wwidth,Wheight){
+        var WIN;
+        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=no,resizable=no,toolbar=no,location=no,directories=no,status=no");
+        WIN.focus();
+    };
+
+    common.win02 = function(URL,Winname,Wwidth,Wheight){
+        var WIN;
+        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
+        WIN.focus();
+    };
+
+    common.win03 = function(URL,Winname,Wwidth,Wheight){
+        var WIN;
+        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
+        WIN.focus();
+    };
+
+    common.winSubmit = function(URL,formName,Winname,Wwidth,Wheight){
+        var WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
+        document.forms[formName].target = Winname;
+        WIN.focus();
+    };
+
+    common.openWindow = function(URL,name,width,height) {
+        window.open(URL,name,"width="+width+",height="+height+",scrollbars=yes,resizable=no,toolbar=no,location=no,directories=no,status=no");
+    };
+
+    // 親ウィンドウの存在確認.
+    common.isOpener = function() {
+        var ua = navigator.userAgent;
+        if( !!window.opener ) {
+            if( ua.indexOf('MSIE 4')!=-1 && ua.indexOf('Win')!=-1 ) {
+                return !window.opener.closed;
+            } else {
+                return typeof window.opener.document == 'object';
+            }
+        } else {
+            return false;
+        }
+    };
+
+    // 名前空間の重複を防ぐ
+    if (window.eccube === undefined) {
+        window.eccube = {};
+    }
+    // グローバルに使用できるようにする
+    window.eccube.common = common;
+})(window);
 
