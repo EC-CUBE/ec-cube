@@ -29,7 +29,7 @@
 self.moveTo(20,20);self.focus();
 
 function lfPopwinSubmit(formName) {
-    eccube.common.win02('about:blank','pdf','1000','900');
+    eccube.win02('about:blank','pdf','1000','900');
     document[formName].target = "pdf";
     document[formName].submit();
     return false;

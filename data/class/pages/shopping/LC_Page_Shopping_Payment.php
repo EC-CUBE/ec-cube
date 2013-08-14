@@ -46,7 +46,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
     function init()
     {
         parent::init();
-        $this->tpl_onload = 'eccube.common.togglePointForm();';
+        $this->tpl_onload = 'eccube.togglePointForm();';
         $this->tpl_title = 'お支払方法・お届け時間等の指定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');

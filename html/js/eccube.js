@@ -22,38 +22,44 @@
 
 (function( window, undefined ){
 
-    var common = {};
 
-    common.win01 = function(URL,Winname,Wwidth,Wheight){
+    // 名前空間の重複を防ぐ
+    if (window.eccube === undefined) {
+        window.eccube = {};
+    }
+
+    var eccube = window.eccube;
+
+    eccube.win01 = function(URL,Winname,Wwidth,Wheight){
         var WIN;
         WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=no,resizable=no,toolbar=no,location=no,directories=no,status=no");
         WIN.focus();
     };
 
-    common.win02 = function(URL,Winname,Wwidth,Wheight){
+    eccube.win02 = function(URL,Winname,Wwidth,Wheight){
         var WIN;
         WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
         WIN.focus();
     };
 
-    common.win03 = function(URL,Winname,Wwidth,Wheight){
+    eccube.win03 = function(URL,Winname,Wwidth,Wheight){
         var WIN;
         WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
         WIN.focus();
     };
 
-    common.winSubmit = function(URL,formName,Winname,Wwidth,Wheight){
+    eccube.winSubmit = function(URL,formName,Winname,Wwidth,Wheight){
         var WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
         document.forms[formName].target = Winname;
         WIN.focus();
     };
 
-    common.openWindow = function(URL,name,width,height) {
+    eccube.openWindow = function(URL,name,width,height) {
         window.open(URL,name,"width="+width+",height="+height+",scrollbars=yes,resizable=no,toolbar=no,location=no,directories=no,status=no");
     };
 
     // 親ウィンドウの存在確認.
-    common.isOpener = function() {
+    eccube.isOpener = function() {
         var ua = navigator.userAgent;
         if( !!window.opener ) {
             if( ua.indexOf('MSIE 4')!=-1 && ua.indexOf('Win')!=-1 ) {
@@ -66,7 +72,7 @@
         }
     };
 
-    common.chgImg = function(fileName,img){
+    eccube.chgImg = function(fileName,img){
         if (typeof(img) == "object") {
             img.src = fileName;
         } else {
@@ -74,12 +80,12 @@
         }
     };
 
-    common.chgImgImageSubmit = function(fileName,imgObj){
+    eccube.chgImgImageSubmit = function(fileName,imgObj){
         imgObj.src = fileName;
     };
 
     // 郵便番号入力呼び出し.
-    common.getAddress = function(php_url, tagname1, tagname2, input1, input2) {
+    eccube.getAddress = function(php_url, tagname1, tagname2, input1, input2) {
         var zip1 = document.form1[tagname1].value;
         var zip2 = document.form1[tagname2].value;
 
@@ -90,7 +96,7 @@
                 function(data) {
                     var arrData = data.split("|");
                     if (arrData.length > 1) {
-                        eccube.common.putAddress(input1, input2, arrData[0], arrData[1], arrData[2]);
+                        eccube.putAddress(input1, input2, arrData[0], arrData[1], arrData[2]);
                     } else {
                         alert(data);
                     }
@@ -102,7 +108,7 @@
     };
 
     // 郵便番号から検索した住所を渡す.
-    common.putAddress = function(input1, input2, state, city, town) {
+    eccube.putAddress = function(input1, input2, state, city, town) {
         if(state != "") {
             // 項目に値を入力する.
             document.form1[input1].selectedIndex = state;
@@ -110,14 +116,14 @@
         }
     };
 
-    common.setFocus = function(name) {
+    eccube.setFocus = function(name) {
         if(document.form1[name]) {
             document.form1[name].focus();
         }
     };
 
     // モードとキーを指定してSUBMITを行う。
-    common.setModeAndSubmit = function(mode, keyname, keyid) {
+    eccube.setModeAndSubmit = function(mode, keyname, keyid) {
         switch(mode) {
             case 'delete_category':
                 if(!window.confirm('選択したカテゴリとカテゴリ内の全てのカテゴリを削除します')){
@@ -149,7 +155,7 @@
         document.form1.submit();
     };
 
-    common.fnFormModeSubmit = function(form, mode, keyname, keyid) {
+    eccube.fnFormModeSubmit = function(form, mode, keyname, keyid) {
         switch(mode) {
             case 'delete':
                 if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
@@ -176,25 +182,25 @@
         document.forms[form].submit();
     };
 
-    common.setValueAndSubmit = function(form, key, val) {
+    eccube.setValueAndSubmit = function(form, key, val) {
         document.forms[form][key].value = val;
         document.forms[form].submit();
         return false;
     };
 
-    common.setValue = function(key, val, form) {
+    eccube.setValue = function(key, val, form) {
         if (typeof form === 'undefined') {
             form = 'form1';
         }
         document.forms[form][key].value = val;
     };
 
-    common.changeAction = function(url) {
+    eccube.changeAction = function(url) {
         document.form1.action = url;
     };
 
     // ページナビで使用する。
-    common.movePage = function(pageno, mode, form) {
+    eccube.movePage = function(pageno, mode, form) {
         if (typeof form !== 'undefined') {
             form = 'form1';
         }
@@ -205,15 +211,15 @@
         document.forms[form].submit();
     };
 
-    common.submitForm = function(form){
+    eccube.submitForm = function(form){
         if (typeof form !== 'undefined') {
             form = 'form1';
         }
         document.forms[form].submit();
-    }
+    };
 
     // ポイント入力制限。
-    common.togglePointForm = function() {
+    eccube.togglePointForm = function() {
         if(document.form1['point_check']) {
             var list = ['use_point'];
             var color;
@@ -240,10 +246,10 @@
                 }
             }
         }
-    }
+    };
 
     // 別のお届け先入力制限。
-    common.toggleDeliveryForm = function() {
+    eccube.toggleDeliveryForm = function() {
         if(!document.form1) {
             return;
         }
@@ -264,17 +270,17 @@
             ];
 
             if(!document.form1['deliv_check'].checked) {
-                eccube.common.changeDisabled(list, '#dddddd');
+                eccube.changeDisabled(list, '#dddddd');
             } else {
-                eccube.common.changeDisabled(list, '');
+                eccube.changeDisabled(list, '');
             }
         }
     };
 
     // 最初に設定されていた色を保存しておく。
-    common.savedColor = [];
+    eccube.savedColor = [];
 
-    common.changeDisabled = function(list, color) {
+    eccube.changeDisabled = function(list, color) {
         var len = list.length;
 
         for(i = 0; i < len; i++) {
@@ -282,11 +288,11 @@
                 if(color == "") {
                     // 有効にする。
                     document.form1[list[i]].disabled = false;
-                    document.form1[list[i]].style.backgroundColor = eccube.common.savedColor[list[i]];
+                    document.form1[list[i]].style.backgroundColor = eccube.savedColor[list[i]];
                 } else {
                     // 無効にする。
                     document.form1[list[i]].disabled = true;
-                    eccube.common.savedColor[list[i]] = document.form1[list[i]].style.backgroundColor;
+                    eccube.savedColor[list[i]] = document.form1[list[i]].style.backgroundColor;
                     document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";
                 }
             }
@@ -294,7 +300,7 @@
     };
 
     // ログイン時の入力チェック
-    common.checkLoginFormInputted = function(form, emailKey, passKey) {
+    eccube.checkLoginFormInputted = function(form, emailKey, passKey) {
         var checkItems = [];
 
         if (typeof emailKey === 'undefined') {
@@ -329,9 +335,9 @@
     };
 
     //親ウィンドウのページを変更する.
-    common.changeParentUrl = function(url) {
+    eccube.changeParentUrl = function(url) {
         // 親ウィンドウの存在確認
-        if(eccube.common.isOpener()) {
+        if(eccube.isOpener()) {
             window.opener.location.href = url;
         } else {
             window.close();
@@ -342,12 +348,12 @@
     //引数1：フォーム名称
     //引数2：文字数カウント対象
     //引数3：カウント結果格納対象
-    common.countChars = function(form,sch,cnt) {
+    eccube.countChars = function(form,sch,cnt) {
         document.forms[form][cnt].value= document.forms[form][sch].value.length;
     };
 
     // テキストエリアのサイズを変更する.
-    common.toggleRows = function(buttonSelector, textAreaSelector, max, min) {
+    eccube.toggleRows = function(buttonSelector, textAreaSelector, max, min) {
         if ($(textAreaSelector).attr('rows') <= min) {
             $(textAreaSelector).attr('rows', max);
             $(buttonSelector).text('縮小');
@@ -360,7 +366,7 @@
     /**
      * 規格2のプルダウンを設定する.
      */
-    common.setClassCategories = function($form, product_id, $sele1, $sele2, selected_id2) {
+    eccube.setClassCategories = function($form, product_id, $sele1, $sele2, selected_id2) {
         if ($sele1 && $sele1.length) {
             var classcat_id1 = $sele1.val() ? $sele1.val() : '';
             if ($sele2 && $sele2.length) {
@@ -388,7 +394,7 @@
                     }
                     $sele2.append(option);
                 }
-                eccube.common.checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2',
+                eccube.checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2',
                     $sele2.val() ? $sele2.val() : '');
             }
         }
@@ -397,7 +403,7 @@
     /**
      * 規格の選択状態に応じて, フィールドを設定する.
      */
-    common.checkStock = function($form, product_id, classcat_id1, classcat_id2) {
+    eccube.checkStock = function($form, product_id, classcat_id1, classcat_id2) {
 
         classcat_id2 = classcat_id2 ? classcat_id2 : '';
 
@@ -491,12 +497,8 @@
         }
     };
 
-    // 名前空間の重複を防ぐ
-    if (window.eccube === undefined) {
-        window.eccube = {};
-    }
     // グローバルに使用できるようにする
-    window.eccube.common = common;
+    window.eccube = eccube;
 
     /**
      * Initialize.
@@ -512,10 +514,10 @@
 
                 // 規格1のみの場合
                 if (!$sele2.length) {
-                    eccube.common.checkStock($form, product_id, $sele1.val(), '0');
+                    eccube.checkStock($form, product_id, $sele1.val(), '0');
                     // 規格2ありの場合
                 } else {
-                    eccube.common.setClassCategories($form, product_id, $sele1, $sele2);
+                    eccube.setClassCategories($form, product_id, $sele1, $sele2);
                 }
             });
 
@@ -526,7 +528,7 @@
                 var product_id = $form.find('input[name=product_id]').val();
                 var $sele1 = $form.find('select[name=classcategory_id1]');
                 var $sele2 = $(this);
-                eccube.common.checkStock($form, product_id, $sele1.val(), $sele2.val());
+                eccube.checkStock($form, product_id, $sele1.val(), $sele2.val());
             });
     });
 })(window);

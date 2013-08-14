@@ -23,7 +23,7 @@
 // 親ウィンドウをポストさせる。
 function fnSubmitParent() {
     // 親ウィンドウの存在確認
-    if(eccube.common.isOpener()) {
+    if(eccube.isOpener()) {
         window.opener.document.form1.submit();
     } else {
         window.close();
@@ -187,10 +187,10 @@ function fnCheckStockLimit(icolor) {
             'stock'
             );
         if(document.form1['stock_unlimited'].checked) {
-            eccube.common.changeDisabled(list, icolor);
+            eccube.changeDisabled(list, icolor);
             document.form1['stock'].value = "";
         } else {
-            eccube.common.changeDisabled(list, '');
+            eccube.changeDisabled(list, '');
         }
     }
 }
@@ -319,10 +319,10 @@ function fnCheckLimit(elem1, elem2, icolor) {
                 elem1
             );
         if(document.form1[elem2].checked) {
-            eccube.common.changeDisabled(list, icolor);
+            eccube.changeDisabled(list, icolor);
             document.form1[elem1].value = "";
         } else {
-            eccube.common.changeDisabled(list, '');
+            eccube.changeDisabled(list, '');
         }
     }
 }

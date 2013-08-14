@@ -50,7 +50,7 @@
                 <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
                 <!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
                 <td><!--{$arrMAILTEMPLATE[$key]|h}--></td>
-                <td><a href="?" onclick="eccube.common.win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|h}--></a></td>
+                <td><a href="?" onclick="eccube.win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|h}--></a></td>
             </tr>
             <!--{/section}-->
         </table>
@@ -62,7 +62,7 @@
                 <td>
                     <!--{assign var=key value="template_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="eccube.common.setModeAndSubmit('change', '', '');">
+                    <select name="template_id" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" onchange="eccube.setModeAndSubmit('change', '', '');">
                     <option value="" selected="selected">選択してください</option>
                     <!--{html_options options=$arrMAILTEMPLATE selected=$arrForm[$key].value|h}-->
                     </select>
@@ -98,8 +98,8 @@
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.common.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
             </ul>
         </div>
     </div>

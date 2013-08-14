@@ -112,7 +112,7 @@
                             </tr>
                             <!--{foreach from=$cartItems[$key] item=item}-->
                                 <tr style="<!--{if $item.error}-->background-color: <!--{$smarty.const.ERR_COLOR|h}-->;<!--{/if}-->">
-                                    <td class="alignC"><a href="?" onclick="eccube.common.fnFormModeSubmit('form<!--{$key|h}-->', 'delete', 'cart_no', '<!--{$item.cart_no|h}-->'); return false;">削除</a>
+                                    <td class="alignC"><a href="?" onclick="eccube.fnFormModeSubmit('form<!--{$key|h}-->', 'delete', 'cart_no', '<!--{$item.cart_no|h}-->'); return false;">削除</a>
                                     </td>
                                     <td class="alignC">
                                     <!--{if $item.productsClass.main_image|strlen >= 1}-->
@@ -136,8 +136,8 @@
                                     </td>
                                     <td class="alignC"><!--{$item.quantity|h}-->
                                         <ul id="quantity_level">
-                                            <li><a href="?" onclick="eccube.common.fnFormModeSubmit('form<!--{$key|h}-->','up','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a></li>
-                                            <li><a href="?" onclick="eccube.common.fnFormModeSubmit('form<!--{$key|h}-->','down','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a></li>
+                                            <li><a href="?" onclick="eccube.fnFormModeSubmit('form<!--{$key|h}-->','up','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a></li>
+                                            <li><a href="?" onclick="eccube.fnFormModeSubmit('form<!--{$key|h}-->','down','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a></li>
                                         </ul>
                                     </td>
                                     <td class="alignR"><!--{$item.total_inctax|number_format|h}-->円</td>
@@ -171,13 +171,13 @@
                             <ul>
                                 <li>
                                     <!--{if $tpl_prev_url != ""}-->
-                                        <a href="<!--{$tpl_prev_url|h}-->" onmouseover="eccube.common.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back_on.jpg','back<!--{$key|h}-->');" onmouseout="eccube.common.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg','back<!--{$key|h}-->');">
+                                        <a href="<!--{$tpl_prev_url|h}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back_on.jpg','back<!--{$key|h}-->');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg','back<!--{$key|h}-->');">
                                             <img src="<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key|h}-->" /></a>
                                     <!--{/if}-->
                                 </li>
                                 <li>
                                     <!--{if strlen($tpl_error) == 0}-->
-                                        <input type="image" onmouseover="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep_on.jpg',this)" onmouseout="eccube.common.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
+                                        <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep_on.jpg',this)" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
                                     <!--{/if}-->
                                 </li>
                             </ul>

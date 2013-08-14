@@ -46,13 +46,13 @@
         <div class="basis-zip-item">
             <h2>自動登録</h2>
             <p>下の [削除] <!--{if !$tpl_skip_update_csv}-->[郵便番号CSV更新] <!--{/if}-->[DB手動登録] を順に実行します。ただし、タイムアウトした場合、DBは元の状態に戻ります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="eccube.common.setModeAndSubmit('auto', '', ''); return false;"><span class="btn-next">自動登録</span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('auto', '', ''); return false;"><span class="btn-next">自動登録</span></a></p>
         </div>
 
         <div class="basis-zip-item">
             <h2>DB手動登録</h2>
             <p>指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="eccube.common.setModeAndSubmit('manual', '', ''); return false;"><span class="btn-next">手動登録</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8" /><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('manual', '', ''); return false;"><span class="btn-next">手動登録</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8" /><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
 
         <div class="basis-zip-item">
@@ -67,14 +67,14 @@
                 <!--{/if}-->
             <!--{else}-->
                 <p>日本郵便の WEB サイトから、郵便番号CSVを取得します。</p>
-                <p><a class="btn-normal" href="javascript:;" onclick="eccube.common.setModeAndSubmit('update_csv', '', ''); return false;"><span class="btn-next">更新</span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+                <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('update_csv', '', ''); return false;"><span class="btn-next">更新</span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
             <!--{/if}-->
         </div>
 
         <div class="basis-zip-item end">
             <h2>削除</h2>
             <p>全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="eccube.common.setModeAndSubmit('delete', '', ''); return false;"><span class="btn-next">削除</span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('delete', '', ''); return false;"><span class="btn-next">削除</span></a></p>
         </div>
     </form>
 <!--{else}-->

@@ -45,7 +45,7 @@
                 <!--☆右にスライドボタン -->
                 <div class="bubbleBox">
                     <div class="bubble_announce clearfix">
-                        <p class="fb"><a rel="external" href="javascript:eccube.common.setModeAndSubmit('multiple', '', '');">複数のお届け先に送りますか？</a></p>
+                        <p class="fb"><a rel="external" href="javascript:eccube.setModeAndSubmit('multiple', '', '');">複数のお届け先に送りますか？</a></p>
                     </div>
                     <div class="bubble_arrow_line"><!--矢印空タグ --></div>
                     <div class="bubble_arrow"><!--矢印空タグ --></div>
@@ -69,8 +69,8 @@
                                     <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">追加登録住所</label>
                                 </p>
                                 <ul class="edit">
-                                    <li><a rel="external" href="javascript:void(0);" onclick="eccube.common.win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
-                                    <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="eccube.common.setModeAndSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
+                                    <li><a rel="external" href="javascript:void(0);" onclick="eccube.win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
+                                    <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="eccube.setModeAndSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
                                 </ul>
                             </dt>
                         <!--{/if}-->
@@ -84,13 +84,13 @@
 
                 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
                     <div class="inner">
-                        <a rel="external" href="javascript:void(0);" onclick="eccube.common.win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
+                        <a rel="external" href="javascript:void(0);" onclick="eccube.win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
                     </div>
                 <!--{/if}-->
             </div><!-- /.formBox -->
 
             <ul class="btn_btm">
-                <li><a rel="external" href="javascript:eccube.common.setModeAndSubmit('customer_addr','','');" class="btn">選択したお届け先に送る</a></li>
+                <li><a rel="external" href="javascript:eccube.setModeAndSubmit('customer_addr','','');" class="btn">選択したお届け先に送る</a></li>
                 <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH}-->" class="btn_back">戻る</a></li>
             </ul>
 

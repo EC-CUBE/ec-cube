@@ -26,7 +26,7 @@
             <!--{* カテゴリ名表示 *}-->
             <!--{assign var=disp_name value="`$child.category_id`.`$child.category_name`"}-->
             <!--{if $child.level != $smarty.const.LEVEL_MAX}-->
-                <a href="?" onclick="eccube.common.setModeAndSubmit('tree', 'parent_category_id', <!--{$child.category_id}-->); return false;">
+                <a href="?" onclick="eccube.setModeAndSubmit('tree', 'parent_category_id', <!--{$child.category_id}-->); return false;">
                 <!--{if $arrForm.parent_category_id == $child.category_id}-->
                     <img src="<!--{$TPL_URLPATH}-->img/contents/folder_open.gif" alt="フォルダ" />
                 <!--{else}-->

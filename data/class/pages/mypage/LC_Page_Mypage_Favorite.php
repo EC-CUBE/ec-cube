@@ -127,7 +127,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
         $objPage->tpl_linemax = $linemax;   // 何件が該当しました。表示用
 
         // ページ送りの取得
-        $objNavi        = new SC_PageNavi_Ex($objPage->tpl_pageno, $linemax, SEARCH_PMAX, 'eccube.common.movePage', NAVI_PMAX);
+        $objNavi        = new SC_PageNavi_Ex($objPage->tpl_pageno, $linemax, SEARCH_PMAX, 'eccube.movePage', NAVI_PMAX);
         $this->tpl_strnavi = $objNavi->strnavi; // 表示文字列
         $startno        = $objNavi->start_row;
 

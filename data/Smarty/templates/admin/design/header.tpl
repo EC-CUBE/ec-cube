@@ -41,12 +41,12 @@
 
         <textarea id="header-area" class="top" name="header" rows="<!--{$header_row}-->" style="width: 100%;"><!--{"\n"}--><!--{$header_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">
-            <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.common.toggleRows('#header-area-resize-btn', '#header-area', 50, 13); $('input[name=header_row]').val($('#header-area').attr('rows'));return false;"><span>拡大</span></a>
+            <a id="header-area-resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#header-area-resize-btn', '#header-area', 50, 13); $('input[name=header_row]').val($('#header-area').attr('rows'));return false;"><span>拡大</span></a>
         </div>
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="eccube.common.fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="eccube.fnFormModeSubmit('form_header','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
                 </ul>
         </div>
 
@@ -64,12 +64,12 @@
 
         <textarea id="footer-area" class="top" name="footer" rows="<!--{$footer_row}-->" style="width: 100%;"><!--{"\n"}--><!--{$footer_data|h|smarty:nodefaults}--></textarea>
         <div class="btn">
-            <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.common.toggleRows('#footer-area-resize-btn', '#footer-area', 50, 13); $('input[name=footer_row]').val($('#footer-area').attr('rows'));return false;"><span>拡大</span></a>
+            <a id="footer-area-resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#footer-area-resize-btn', '#footer-area', 50, 13); $('input[name=footer_row]').val($('#footer-area').attr('rows'));return false;"><span>拡大</span></a>
         </div>
 
         <div class="btn-area">
                 <ul>
-                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="eccube.common.fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="eccube.fnFormModeSubmit('form_footer','regist','',''); return false;"><span class="btn-next">登録する</span></a></li>
                 </ul>
         </div>
 

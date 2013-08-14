@@ -52,7 +52,7 @@
                 <td><!--{$arrMagazineType[$type]}--></td>
                 <td><a href="./template_input.php?mode=edit&amp;template_id=<!--{$arrTemplates[data].template_id}-->">編集</a></td>
                 <td><a href="#" onclick="fnDelete('?mode=delete&amp;id=<!--{$arrTemplates[data].template_id}-->'); return false;">削除</a></td>
-                <td><a href="#" onclick="eccube.common.win03('./preview.php?mode=template&amp;template_id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank">プレビュー</a></td>
+                <td><a href="#" onclick="eccube.win03('./preview.php?mode=template&amp;template_id=<!--{$arrTemplates[data].template_id}-->','preview','650','700'); return false;" target="_blank">プレビュー</a></td>
             </tr>
             <!--{/section}-->
         </table>

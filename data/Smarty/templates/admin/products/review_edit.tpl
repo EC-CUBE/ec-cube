@@ -103,8 +103,8 @@
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./review.php'; eccube.common.setModeAndSubmit('search','',''); return false;" ><span class="btn-prev">検索画面に戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.setModeAndSubmit('complete','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1.action='./review.php'; eccube.setModeAndSubmit('search','',''); return false;" ><span class="btn-prev">検索画面に戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('complete','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
     </div>

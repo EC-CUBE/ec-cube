@@ -79,10 +79,10 @@
                         <!--{assign var=key value="payment_image"}-->
                         <span class="attention"><!--{$arrErr[$key]}--></span>
                         <!--{if $arrFile[$key].filepath != ""}-->
-                        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<br /><a href="" onclick="eccube.common.setModeAndSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                        <img src="<!--{$arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->">　<br /><a href="" onclick="eccube.setModeAndSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                         <!--{/if}-->
                         <input type="file" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                        <a class="btn-normal" href="javascript:;" name="btn" onclick="eccube.common.setModeAndSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                        <a class="btn-normal" href="javascript:;" name="btn" onclick="eccube.setModeAndSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
                     </td>
                 </tr>
             </table>
@@ -90,7 +90,7 @@
         <div class="btn-area">
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="location.href='./payment.php';"><span class="btn-prev">前のページに戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
     </div>

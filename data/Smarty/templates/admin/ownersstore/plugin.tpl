@@ -45,7 +45,7 @@
             if(result === true){
                 // プラグインID
                 var plugin_id = event.target.value;
-                eccube.common.setModeAndSubmit(mode, 'plugin_id', plugin_id);
+                eccube.setModeAndSubmit(mode, 'plugin_id', plugin_id);
             }
         });
 
@@ -79,7 +79,7 @@
      */
     function install() {
         if (window.confirm('プラグインをインストールしても宜しいでしょうか？')){
-            eccube.common.setModeAndSubmit('install','','');
+            eccube.setModeAndSubmit('install','','');
         }
     }
 
@@ -88,8 +88,8 @@
      */
     function uninstall(plugin_id, plugin_code) {
         if (window.confirm('一度削除したデータは元に戻せません。\nプラグインを削除しても宜しいですか？')){
-            eccube.common.setValue('plugin_id', plugin_id);
-            eccube.common.setModeAndSubmit('uninstall', 'plugin_code', plugin_code);
+            eccube.setValue('plugin_id', plugin_id);
+            eccube.setModeAndSubmit('uninstall', 'plugin_code', plugin_code);
         }
     }
 
@@ -99,8 +99,8 @@
     function update(plugin_id, plugin_code) {
         if (window.confirm('プラグインをアップデートしても宜しいですか？')){
             removeUpdateFile('update_file_' + plugin_id);
-            eccube.common.setValue('plugin_id', plugin_id);
-            eccube.common.setModeAndSubmit('update','plugin_code', plugin_code);
+            eccube.setValue('plugin_id', plugin_id);
+            eccube.setModeAndSubmit('update','plugin_code', plugin_code);
         }
     }
 
@@ -109,8 +109,8 @@
      */
     function update_priority(plugin_id, plugin_code) {
         var priority = $("*[name=priority_" + plugin_code +"]").val();
-        eccube.common.setValue('priority', priority);
-        eccube.common.setModeAndSubmit('priority','plugin_id',plugin_id);
+        eccube.setValue('priority', priority);
+        eccube.setModeAndSubmit('priority','plugin_id',plugin_id);
     }
 
 //]]></script>
@@ -153,7 +153,7 @@
                     <!--ロゴ-->
                     <td class="center plugin_img">
                         <!--{if $plugin.plugin_site_url != '' }-->
-                            <a href="?" onclick="eccube.common.win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$plugin.logo}-->" width="65" height="65" /></a>&nbsp;
+                            <a href="?" onclick="eccube.win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$plugin.logo}-->" width="65" height="65" /></a>&nbsp;
                         <!--{else}-->
                             <img src="<!--{$plugin.logo}-->" width="65" height="65"/>
                         <!--{/if}-->
@@ -165,7 +165,7 @@
                                 <!-- ▼plugin_site_urlが設定されている場合はリンクとして表示 -->
                                 <span class="plugin_name">
                                 <!--{if $plugin.plugin_site_url != '' }-->
-                                    <a href="?" onclick="eccube.common.win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}--></a>&nbsp;
+                                    <a href="?" onclick="eccube.win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}--></a>&nbsp;
                                 <!--{else}-->
                                     <sapn><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}-->&nbsp;</sapn>
                                 <!--{/if}-->
@@ -176,7 +176,7 @@
                                 <!--{if $plugin.author != ''}-->
                                     <!-- ▼author_site_urlが設定されている場合はリンクとして表示 -->
                                     <!--{if $plugin.author_site_url != '' }-->
-                                        <span>(by <a href="?" onclick="eccube.common.win03('<!--{$plugin.author_site_url|h}-->','author_site_url','620','760'); return false;"><!--{$plugin.author|default:'-'|h}--></a>)</span>
+                                        <span>(by <a href="?" onclick="eccube.win03('<!--{$plugin.author_site_url|h}-->','author_site_url','620','760'); return false;"><!--{$plugin.author|default:'-'|h}--></a>)</span>
                                     <!--{else}-->
                                         <span>(by <!--{$plugin.author|default:'-'|h}-->)</span>
                                     <!--{/if}-->
@@ -189,7 +189,7 @@
                                 <span class="attention"><!--{$arrErr[$plugin.plugin_code]}--></span>
                                 <!-- 設定 -->
                                     <!--{if $plugin.config_flg == true && $plugin.status != $smarty.const.PLUGIN_STATUS_UPLOADED}-->
-                                        <a href="?" onclick="eccube.common.win02('../load_plugin_config.php?plugin_id=<!--{$plugin.plugin_id}-->', 'load', 615, 400);return false;">プラグイン設定</a>&nbsp;|&nbsp;
+                                        <a href="?" onclick="eccube.win02('../load_plugin_config.php?plugin_id=<!--{$plugin.plugin_id}-->', 'load', 615, 400);return false;">プラグイン設定</a>&nbsp;|&nbsp;
                                     <!--{else}-->
                                         <span>プラグイン設定&nbsp;|&nbsp;</span>
                                     <!--{/if}-->

@@ -80,7 +80,7 @@ function confirmSubmit(mode, msg) {
             </tr>
         </table>
         <div class="btn-area">
-            <a class="btn-action" href="javascript:;" onclick="eccube.common.setModeAndSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
+            <a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('upload', '', '');return false;"><span class="btn-next">この内容で登録する</span></a>
         </div>
     </div>
 </form>

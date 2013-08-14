@@ -29,7 +29,7 @@
     <div id="basis" class="contents-main">
         <div class="btn">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name="subm2" onclick="eccube.common.changeAction('./delivery_input.php'); eccube.common.setModeAndSubmit('pre_edit','',''); return false;">
+                <li><a class="btn-action" href="javascript:;" name="subm2" onclick="eccube.changeAction('./delivery_input.php'); eccube.setModeAndSubmit('pre_edit','',''); return false;">
                     <span class="btn-next">配送方法<!--{if $smarty.const.INPUT_DELIV_FEE}-->・配送料<!--{/if}-->を新規入力</span></a></li>
             </ul>
         </div>
@@ -50,16 +50,16 @@
                 <tr>
                     <td><!--{$arrDelivList[cnt].name|h}--></td>
                     <td><!--{$arrDelivList[cnt].service_name|h}--></td>
-                    <td align="center"><a href="?" onclick="eccube.common.changeAction('./delivery_input.php'); eccube.common.setModeAndSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
+                    <td align="center"><a href="?" onclick="eccube.changeAction('./delivery_input.php'); eccube.setModeAndSubmit('pre_edit', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
                         編集</a></td>
-                    <td align="center"><a href="?" onclick="eccube.common.setModeAndSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
+                    <td align="center"><a href="?" onclick="eccube.setModeAndSubmit('delete', 'deliv_id', <!--{$arrDelivList[cnt].deliv_id}-->); return false;">
                         削除</a></td>
                     <td align="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="eccube.common.setModeAndSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">上へ</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('up','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">上へ</a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="eccube.common.setModeAndSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('down','deliv_id', '<!--{$arrDelivList[cnt].deliv_id}-->'); return false;">下へ</a>
                     <!--{/if}-->
                     </td>
                 </tr>

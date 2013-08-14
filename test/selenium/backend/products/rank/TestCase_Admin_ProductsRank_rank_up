@@ -27,7 +27,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@onclick=&quot;eccube.common.setModeAndSubmit('up','product_id', '5'); return false;&quot;]</td>
+	<td>//a[@onclick=&quot;eccube.setModeAndSubmit('up','product_id', '5'); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>

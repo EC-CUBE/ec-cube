@@ -42,7 +42,7 @@
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
 
@@ -66,7 +66,7 @@
                     <td align="center"><a href="<!--{$smarty.const.ROOT_URLPATH}-->" onclick="fnClassCatPage(<!--{$arrClass[cnt].class_id}-->); return false;">分類登録</a></td>
                     <td align="center">
                         <!--{if $tpl_class_id != $arrClass[cnt].class_id}-->
-                            <a href="?" onclick="eccube.common.setModeAndSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">編集</a>
+                            <a href="?" onclick="eccube.setModeAndSubmit('pre_edit', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">編集</a>
                         <!--{else}-->
                             編集中
                         <!--{/if}-->
@@ -75,15 +75,15 @@
                         <!--{if $arrClassCatCount[$class_id] > 0}-->
                             -
                         <!--{else}-->
-                            <a href="?" onclick="eccube.common.setModeAndSubmit('delete', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">削除</a>
+                            <a href="?" onclick="eccube.setModeAndSubmit('delete', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">削除</a>
                         <!--{/if}-->
                     </td>
                     <td align="center">
                         <!--{if $smarty.section.cnt.iteration != 1}-->
-                            <a href="?" onclick="eccube.common.setModeAndSubmit('up', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">上へ</a>
+                            <a href="?" onclick="eccube.setModeAndSubmit('up', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">上へ</a>
                         <!--{/if}-->
                         <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                            <a href="?" onclick="eccube.common.setModeAndSubmit('down', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">下へ</a>
+                            <a href="?" onclick="eccube.setModeAndSubmit('down', 'class_id', <!--{$arrClass[cnt].class_id}-->); return false;">下へ</a>
                         <!--{/if}-->
                     </td>
                 </tr>

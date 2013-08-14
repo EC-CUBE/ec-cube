@@ -46,7 +46,7 @@ class LC_Page_Shopping extends LC_Page_Ex
         $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrJob = $masterData->getMasterData('mtb_job');
-        $this->tpl_onload = 'eccube.common.toggleDeliveryForm();';
+        $this->tpl_onload = 'eccube.toggleDeliveryForm();';
 
         $objDate = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
         $this->arrYear = $objDate->getYear('', START_BIRTH_YEAR, '');

@@ -71,8 +71,8 @@ function submitRegister() {
                 <td><input type="radio" name="template_code" value="<!--{$tplcode|h}-->" <!--{if $tplcode == $tpl_select}-->checked="checked"<!--{/if}--> /></td>
                 <td class="left"><!--{$tpl.template_name|h}--></td>
                 <td class="left">data/Smarty/templates/<!--{$tplcode|h}-->/</td>
-                <td><span class="icon_confirm"><a href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
-                <td><span class="icon_delete"><a href="javascript:;" onclick="eccube.common.fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;">削除</a></span></td>
+                <td><span class="icon_confirm"><a href="javascript:;" onclick="eccube.fnFormModeSubmit('form2', 'download','template_code','<!--{$tplcode}-->');return false;">ダウンロード</a></span></td>
+                <td><span class="icon_delete"><a href="javascript:;" onclick="eccube.fnFormModeSubmit('form2', 'delete','template_code','<!--{$tplcode}-->');return false;">削除</a></span></td>
             </tr>
             <!--{/foreach}-->
         </table>

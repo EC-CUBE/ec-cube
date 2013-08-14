@@ -83,7 +83,7 @@ function fnTargetSelf(){
                 <div>
                     <textarea id="tpl_data" class="top" name="tpl_data" rows="<!--{$text_row}-->" style="width: 98%;"><!--{"\n"}--><!--{$arrForm.tpl_data.value|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.common.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
             </td>
         </tr>
@@ -131,7 +131,7 @@ function fnTargetSelf(){
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); eccube.common.fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
         </ul>
     </div>
 
@@ -165,7 +165,7 @@ function fnTargetSelf(){
                 </td>
                 <td class="center">
                     <!--{if $item.edit_flg == 1}-->
-                        <a href="javascript:;" onclick="fnTargetSelf(); eccube.common.fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;">削除</a>
+                        <a href="javascript:;" onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;">削除</a>
                     <!--{/if}-->
                 </td>
             </tr>

@@ -47,7 +47,7 @@
                 }
             }
             // プラグインフックID
-            eccube.common.setModeAndSubmit('update_use', 'plugin_hookpoint_id', id);
+            eccube.setModeAndSubmit('update_use', 'plugin_hookpoint_id', id);
         });
     });
 

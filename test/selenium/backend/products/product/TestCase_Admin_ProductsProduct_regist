@@ -82,7 +82,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.common.setModeAndSubmit('upload_image', 'image_key', 'main_list_image'); return false;&quot;]</td>
+	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', 'main_list_image'); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>
@@ -92,7 +92,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.common.setModeAndSubmit('upload_image', 'image_key', 'main_image'); return false;&quot;]</td>
+	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', 'main_image'); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>
@@ -102,7 +102,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.common.setModeAndSubmit('upload_image', 'image_key', 'main_large_image'); return false;&quot;]</td>
+	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', 'main_large_image'); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>
@@ -122,7 +122,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.common.setModeAndSubmit('upload_image', 'image_key', 'main_list_image'); return false;&quot;]</td>
+	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', 'main_list_image'); return false;&quot;]</td>
 	<td></td>
 </tr>
 </tbody></table>

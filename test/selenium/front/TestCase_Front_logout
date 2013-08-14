@@ -17,7 +17,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@type='image' and @onclick=&quot;eccube.common.fnFormModeSubmit('login_form', 'logout', '', ''); return false;&quot;]</td>
+	<td>//input[@type='image' and @onclick=&quot;eccube.fnFormModeSubmit('login_form', 'logout', '', ''); return false;&quot;]</td>
 	<td></td>
 </tr>
 </tbody></table>

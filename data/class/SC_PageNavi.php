@@ -28,7 +28,7 @@
         $objPage->tpl_pageno = $_POST['pageno'];
     ・$func_nameに指定するJavaScriptの例
         // ページナビで使用する。
-        eccube.common.movePage = function(pageno, mode, form) {
+        eccube.movePage = function(pageno, mode, form) {
             if (typeof form !== 'undefined') {
                 form = 'form1';
             }
