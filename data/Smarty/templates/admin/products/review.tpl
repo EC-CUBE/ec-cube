@@ -102,7 +102,7 @@
             <div class="btn-area">
                 <ul>
                     <li>
-                        <a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
                 </ul>
             </div>
         </div>
@@ -126,9 +126,9 @@
             <div class="btn">
                 <span class="attention"><!--検索結果数--><!--{$tpl_linemax|h}-->件</span>&nbsp;が該当しました。
                 <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-                    <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('delete_all','',''); return false;"><span>検索結果を全て削除</span></a>
+                    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果を全て削除</span></a>
                 <!--{/if}-->
-                <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;"><span>CSV ダウンロード</span></a>
+                <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;"><span>CSV ダウンロード</span></a>
             </div>
             <!--{if $arrReview > 0 & $tpl_linemax > 0}-->
 
@@ -154,8 +154,8 @@
                             <!--{assign var=key value="`$arrReview[cnt].recommend_level`"}-->
                             <td><!--{$arrRECOMMEND[$key]|h}--></td>
                             <td class="menu"><!--{if $arrReview[cnt].status eq 1}-->表示<!--{elseif $arrReview[cnt].status eq 2}-->非表示<!--{/if}--></td>
-                            <td class="menu"><a href="javascript:;" onclick="eccube.changeAction('./review_edit.php'); eccube.setModeAndSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">編集</a></td>
-                            <td class="menu"><a href="javascript:;" onclick="eccube.setModeAndSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>
+                            <td class="menu"><a href="javascript:;" onclick="fnChangeAction('./review_edit.php'); fnModeSubmit('','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">編集</a></td>
+                            <td class="menu"><a href="javascript:;" onclick="fnModeSubmit('delete','review_id','<!--{$arrReview[cnt].review_id}-->'); return false;">削除</a></td>
                         </tr>
                     <!--{/section}-->
                 </table>

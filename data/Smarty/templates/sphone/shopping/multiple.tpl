@@ -34,7 +34,7 @@
     <!--★ボタン★-->
     <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
         <div class="btn_area_top">
-            <a rel="external" href="javascript:void(0);" class="btn_sub addbtn" onclick="eccube.win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;">新しいお届け先を追加</a>
+            <a rel="external" href="javascript:void(0);" class="btn_sub addbtn" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;">新しいお届け先を追加</a>
         </div>
     <!--{/if}-->
 

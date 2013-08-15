@@ -26,19 +26,19 @@
         var product_id = $form.find('input[name=product_id]').val();
         var $sele1 = $form.find('select[name=classcategory_id1]');
         var $sele2 = $form.find('select[name=classcategory_id2]');
-        eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
+        setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
     // 並び順を変更
     function fnChangeOrderby(orderby) {
-        eccube.setValue('orderby', orderby);
-        eccube.setValue('pageno', 1);
-        eccube.submitForm();
+        fnSetVal('orderby', orderby);
+        fnSetVal('pageno', 1);
+        fnSubmit();
     }
     // 表示件数を変更
     function fnChangeDispNumber(dispNumber) {
-        eccube.setValue('disp_number', dispNumber);
-        eccube.setValue('pageno', 1);
-        eccube.submitForm();
+        fnSetVal('disp_number', dispNumber);
+        fnSetVal('pageno', 1);
+        fnSubmit();
     }
     // カゴに入れる
     function fnInCart(productForm) {
@@ -190,7 +190,7 @@
                     <!--★商品詳細を見る★-->
                     <div class="detail_btn">
                         <!--{assign var=name value="detail`$id`"}-->
-                        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_detail_on.jpg','<!--{$name}-->');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_detail.jpg','<!--{$name}-->');">
+                        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrProduct.product_id|u}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_detail_on.jpg','<!--{$name}-->');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_detail.jpg','<!--{$name}-->');">
                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_detail.jpg" alt="商品詳細を見る" name="<!--{$name}-->" id="<!--{$name}-->" /></a>
                     </div>
 
@@ -238,7 +238,7 @@
                                 <div class="cartin_btn">
                                     <!--★カゴに入れる★-->
                                     <div id="cartbtn_default_<!--{$id}-->">
-                                        <input type="image" id="cart<!--{$id}-->" src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" onclick="fnInCart(this.form); return false;" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg', this);" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg', this);" />
+                                        <input type="image" id="cart<!--{$id}-->" src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" onclick="fnInCart(this.form); return false;" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg', this);" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg', this);" />
                                     </div>
                                     <div class="attention" id="cartbtn_dynamic_<!--{$id}-->"></div>
                                 </div>

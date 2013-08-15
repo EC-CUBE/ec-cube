@@ -181,7 +181,7 @@ function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
         fnFolderOpen(path);
     } else {
         // Download
-        eccube.setModeAndSubmit('download','','');
+        fnModeSubmit('download','','');
     }
 }
 
@@ -192,7 +192,7 @@ function fnFolderOpen(path) {
     // treeの状態をセット
     setTreeStatus(treeStatusHidden);
     // submit
-    eccube.setModeAndSubmit(modeHidden,'','');
+    fnModeSubmit(modeHidden,'','');
 }
 
 // 閲覧ブラウザ取得

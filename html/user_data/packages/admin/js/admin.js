@@ -20,10 +20,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+//親ウィンドウのページを変更する。
+function fnUpdateParent(url) {
+    // 親ウィンドウの存在確認
+    if(fnIsopener()) {
+        window.opener.location.href = url;
+    } else {
+        window.close();
+    }
+}
+
 // 親ウィンドウをポストさせる。
 function fnSubmitParent() {
     // 親ウィンドウの存在確認
-    if(eccube.isOpener()) {
+    if(fnIsopener()) {
         window.opener.document.form1.submit();
     } else {
         window.close();
@@ -149,6 +159,10 @@ function fnClassCatPage(class_id) {
     location.href =  "./classcategory.php?class_id=" + class_id;
 }
 
+function fnSetFormValue(name, val) {
+    document.form1[name].value = val;
+}
+
 function fnListCheck(list) {
     len = list.length;
     for(cnt = 0; cnt < len; cnt++) {
@@ -187,10 +201,10 @@ function fnCheckStockLimit(icolor) {
             'stock'
             );
         if(document.form1['stock_unlimited'].checked) {
-            eccube.changeDisabled(list, icolor);
+            fnChangeDisabled(list, icolor);
             document.form1['stock'].value = "";
         } else {
-            eccube.changeDisabled(list, '');
+            fnChangeDisabled(list, '');
         }
     }
 }
@@ -319,10 +333,10 @@ function fnCheckLimit(elem1, elem2, icolor) {
                 elem1
             );
         if(document.form1[elem2].checked) {
-            eccube.changeDisabled(list, icolor);
+            fnChangeDisabled(list, icolor);
             document.form1[elem1].value = "";
         } else {
-            eccube.changeDisabled(list, '');
+            fnChangeDisabled(list, '');
         }
     }
 }

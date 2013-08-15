@@ -137,7 +137,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', 'main_large_image'); return false;&quot;]</td>
+	<td>//a[@name='btn' and @onclick=&quot;selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', 'main_large_image'); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>

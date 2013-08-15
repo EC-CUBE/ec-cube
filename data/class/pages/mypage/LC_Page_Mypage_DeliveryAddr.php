@@ -89,7 +89,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
          * TODO 購入遷移とMyPageで別クラスにすべき
          */
         if (!$objCustomer->isLoginSuccess(true) && $ParentPage != MULTIPLE_URLPATH) {
-            $this->tpl_onload = "eccube.changeParentUrl('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
+            $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
         }
 
         // other_deliv_id のあるなしで追加か編集か判定しているらしい
@@ -108,7 +108,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
                 if (empty($this->arrErr)) {
                     // TODO ここでやるべきではない
                     if (in_array($_POST['ParentPage'], $this->validUrl)) {
-                        $this->tpl_onload = "eccube.changeParentUrl('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
+                        $this->tpl_onload = "fnUpdateParent('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
                     } else {
                         SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
                     }

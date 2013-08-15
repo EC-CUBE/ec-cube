@@ -73,13 +73,13 @@
                     <!--{* インストール済みなら設定ボタン表示 *}-->
                     <!--{if $product.installed_flg}-->
                         <span class="icon_confirm">
-                        <a href="#" onclick="eccube.win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
+                        <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
                             設定</a>
                         </span>
                     <!--{else}-->
                         <div id='ownersstore_settings<!--{$product.product_id|h}-->' style="display:none">
                         <span class="icon_confirm">
-                        <a href="#" onclick="eccube.win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
+                        <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
                             設定</a>
                         </span>
                         </div>

@@ -23,15 +23,15 @@
 <script type="text/javascript">//<![CDATA[
     // 並び順を変更
     function fnChangeOrderby(orderby) {
-        eccube.setValue('orderby', orderby);
-        eccube.setValue('pageno', 1);
-        eccube.submitForm();
+        fnSetVal('orderby', orderby);
+        fnSetVal('pageno', 1);
+        fnSubmit();
     }
     // 表示件数を変更
     function fnChangeDispNumber(dispNumber) {
-        eccube.setValue('disp_number', dispNumber);
-        eccube.setValue('pageno', 1);
-        eccube.submitForm();
+        fnSetVal('disp_number', dispNumber);
+        fnSetVal('pageno', 1);
+        fnSubmit();
     }
 //]]></script>
 

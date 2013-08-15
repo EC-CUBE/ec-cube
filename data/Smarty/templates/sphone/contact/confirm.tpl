@@ -69,7 +69,7 @@
         <div class="btn_area">
             <ul class="btn_btm">
                 <li><input type="submit" value="送信" class="btn data-role-none" name="send" id="send" /></li>
-                <li><a class="btn_back" href="?" onClick="eccube.setModeAndSubmit('return', '', ''); return false;">戻る</a></li>
+                <li><a class="btn_back" href="?" onClick="fnModeSubmit('return', '', ''); return false;">戻る</a></li>
             </ul>
         </div>
     </form>

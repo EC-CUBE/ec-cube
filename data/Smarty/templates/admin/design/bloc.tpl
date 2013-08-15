@@ -61,14 +61,14 @@
                     <textarea class="top" id="<!--{$key}-->" name="<!--{$key}-->" rows="<!--{$text_row}-->" style="width: 99%;"><!--{"\n"}--><!--{$arrForm[$key].value|smarty:nodefaults|h}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" />
                     <div>
-                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
+                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#bloc_html', 50, 13); return false;">拡大</a>
                     </div>
                 </td>
             </tr>
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name='subm' onclick="eccube.fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnFormModeSubmit('form_bloc','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
             </ul>
         </div>
         <!--{* ▲ブロック設定 *}-->
@@ -92,7 +92,7 @@
                     </td>
                     <td class="center">
                         <!--{if $item.deletable_flg == 1}-->
-                            <a href="javascript:;" onclick="eccube.fnFormModeSubmit('form_bloc','delete','bloc_id',<!--{$item.bloc_id|h}-->);">削除</a>
+                            <a href="javascript:;" onclick="fnFormModeSubmit('form_bloc','delete','bloc_id',<!--{$item.bloc_id|h}-->);">削除</a>
                             <input type="hidden" value="<!--{$item.bloc_id|h}-->" name="del_id<!--{$item.bloc_id|h}-->" />
                         <!--{/if}-->
                     </td>

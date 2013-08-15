@@ -58,8 +58,8 @@ function fnTargetSelf(){
                         </td>
                         <td>
                             <div class="btn">
-                                <a class="btn-normal" href="javascript:;" name='csv' onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->); return false;"><span>CSV出力</span></a>
-                                <a class="btn-normal" href="javascript:;" name='del' onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->); return false;"><span>削除</span></a>
+                                <a class="btn-normal" href="javascript:;" name='csv' onclick="fnTargetSelf(); fnFormModeSubmit('form1','csv_output','csv_output_id',<!--{$item.sql_id}-->); return false;"><span>CSV出力</span></a>
+                                <a class="btn-normal" href="javascript:;" name='del' onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','sql_id',<!--{$item.sql_id}-->); return false;"><span>削除</span></a>
                             </div>
                         </td>
                     </tr>
@@ -68,7 +68,7 @@ function fnTargetSelf(){
         <!--{/if}-->
 
         <div class="btn addnew">
-            <a class="btn-normal" href="javascript:;" name='subm' onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1','new_page','',''); return false;"><span>SQLを新規入力</span></a>
+            <a class="btn-normal" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span>SQLを新規入力</span></a>
         </div>
 
 
@@ -98,7 +98,7 @@ function fnTargetSelf(){
         </div>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name="subm" onclick="fnTargetSelf(); fnFormModeSubmit('form1', 'confirm', '', '')"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
 

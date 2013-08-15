@@ -23,7 +23,7 @@
 *}-->
 
 <!--★★メインコンテンツ★★-->
-<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data" onSubmit="eccube.winSubmit('','form1', 'upload', 500, 400)">
+<form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data" onSubmit="winSubmit('','form1', 'upload', 500, 400)">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="csv_upload" />
     <div id="products" class="contents-main">
@@ -63,7 +63,7 @@
         <!--▲登録テーブルここまで-->
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'csv_upload', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
         <!--{if $arrRowErr}-->

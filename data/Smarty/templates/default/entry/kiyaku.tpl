@@ -35,11 +35,11 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot_on.jpg','b_noagree');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg','b_noagree');">
+                        <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot_on.jpg','b_noagree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg','b_noagree');">
                             <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg" alt="同意しない" border="0" name="b_noagree" /></a>
                     </li>
                     <li>
-                        <a href="<!--{$smarty.const.ENTRY_URL}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree_on.jpg','b_agree');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg','b_agree');">
+                        <a href="<!--{$smarty.const.ENTRY_URL}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree_on.jpg','b_agree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg','b_agree');">
                     <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" border="0" name="b_agree" /></a>
                     </li>
                 </ul>

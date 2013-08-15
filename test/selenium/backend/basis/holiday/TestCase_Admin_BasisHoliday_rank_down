@@ -22,7 +22,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@onclick=&quot;eccube.setModeAndSubmit('down', 'holiday_id', 1); return false;&quot;]</td>
+	<td>//a[@onclick=&quot;fnModeSubmit('down', 'holiday_id', 1); return false;&quot;]</td>
 	<td></td>
 </tr>
 </tbody></table>

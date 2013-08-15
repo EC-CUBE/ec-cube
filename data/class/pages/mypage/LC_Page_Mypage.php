@@ -85,7 +85,7 @@ class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex
         $this->objNavi = new SC_PageNavi_Ex($_REQUEST['pageno'],
                                             $this->lfGetOrderHistory($customer_id),
                                             SEARCH_PMAX,
-                                            'eccube.movePage',
+                                            'fnNaviPage',
                                             NAVI_PMAX,
                                             'pageno=#page#',
                                             SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);

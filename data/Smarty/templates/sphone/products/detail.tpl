@@ -28,7 +28,7 @@
         var product_id = $form.find('input[name=product_id]').val();
         var $sele1 = $form.find('select[name=classcategory_id1]');
         var $sele2 = $form.find('select[name=classcategory_id2]');
-        eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
+        setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
     $(function(){
         $('#detailphotoblock ul li').flickSlide({target:'#detailphotoblock>ul', duration:5000, parentArea:'#detailphotoblock', height: 200});
@@ -301,7 +301,7 @@
                 <!--{if $tpl_login}-->
                     <!--{if !$is_favorite}-->
                         <div class="btn_favorite">
-                            <p><a rel="external" href="javascript:void(0);" onclick="eccube.addFavoriteSphone(<!--{$arrProduct.product_id|h}-->); return false;" class="btn_sub">お気に入りに追加</a></p>
+                            <p><a rel="external" href="javascript:void(0);" onclick="fnAddFavoriteSphone(<!--{$arrProduct.product_id|h}-->); return false;" class="btn_sub">お気に入りに追加</a></p>
                         </div>
                     <!--{else}-->
                         <div class="btn_favorite">

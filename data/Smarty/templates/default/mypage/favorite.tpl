@@ -62,7 +62,7 @@
                         <!--{assign var=product_id value="`$arrFavorite[cnt].product_id`"}-->
                         <tr>
                             <td class="alignC">
-                                <a href="javascript:eccube.setModeAndSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">
+                                <a href="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">
                                     削除</a>
                             </td>
                             <td class="alignC">

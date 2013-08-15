@@ -59,7 +59,7 @@ function lfnCheckSetItem( rank ){
     }
 
     if ( flag ){
-        eccube.win03('./recommend_search.php?rank=' + rank,'search','615','600');
+        win03('./recommend_search.php?rank=' + rank,'search','615','600');
     }
 }
 

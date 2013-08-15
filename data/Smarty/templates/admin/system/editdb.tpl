@@ -26,7 +26,7 @@
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
     <div class="btn">
-        <a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next">変更する</span></a>
+        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next">変更する</span></a>
     </div>
     <table class="list">
         <col width="5%" />
@@ -61,5 +61,5 @@
         <!--{/section}-->
     </table>
 
-    <a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('index_form', 'confirm', '', ''); return false;"><span class="btn-next">変更する</span></a>
+    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', ''); return false;"><span class="btn-next">変更する</span></a>
 </form>

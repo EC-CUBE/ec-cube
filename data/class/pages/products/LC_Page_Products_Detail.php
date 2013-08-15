@@ -147,7 +147,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
             $this->js_lnOnload .= $this->lfMakeSelect();
         }
 
-        $this->tpl_javascript .= 'eccube.classCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories[$product_id]) . ';';
+        $this->tpl_javascript .= 'classCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories[$product_id]) . ';';
         $this->tpl_javascript .= 'function lnOnLoad()
         {' . $this->js_lnOnload . '}';
         $this->tpl_onload .= 'lnOnLoad();';

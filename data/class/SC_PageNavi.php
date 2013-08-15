@@ -27,17 +27,12 @@
     ・ソースの最初に以下を記述する。
         $objPage->tpl_pageno = $_POST['pageno'];
     ・$func_nameに指定するJavaScriptの例
-        // ページナビで使用する。
-        eccube.movePage = function(pageno, mode, form) {
-            if (typeof form !== 'undefined') {
-                form = 'form1';
-            }
-            document.forms[form]['pageno'].value = pageno;
-            if (typeof mode !== 'undefined') {
-                document.forms[form]['mode'].value = 'search';
-            }
-            document.forms[form].submit();
-        };
+        // ページナビで使用する
+        function fnNaviPage(pageno)
+        {
+            document.form1['pageno'].value = pageno;
+            document.form1.submit();
+        }
 */
 class SC_PageNavi
 {
