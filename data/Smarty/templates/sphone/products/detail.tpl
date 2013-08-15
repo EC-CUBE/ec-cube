@@ -301,7 +301,7 @@
                 <!--{if $tpl_login}-->
                     <!--{if !$is_favorite}-->
                         <div class="btn_favorite">
-                            <p><a rel="external" href="javascript:void(0);" onclick="fnAddFavoriteSphone(<!--{$arrProduct.product_id|h}-->); return false;" class="btn_sub">お気に入りに追加</a></p>
+                            <p><a rel="external" href="javascript:void(0);" onclick="eccube.addFavoriteSphone(<!--{$arrProduct.product_id|h}-->); return false;" class="btn_sub">お気に入りに追加</a></p>
                         </div>
                     <!--{else}-->
                         <div class="btn_favorite">

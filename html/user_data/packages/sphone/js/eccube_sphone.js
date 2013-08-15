@@ -20,123 +20,101 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-function setTopButton(topURL) {
-    if(!topURL){
-        topURL = "/";
+(function( window, undefined ){
+
+    // 名前空間の重複を防ぐ
+    if (window.eccube === undefined) {
+        window.eccube = {};
     }
-    var buttonText = "TOPへ";
-    var buttonId = "btn-top";
 
-    //ボタンの生成・設定
-    var btn = document.createElement('div');
-    var a = document.createElement('a');
-    btn.id = buttonId;
-    btn.onclick = function(){location=topURL;};
-    a.href = topURL;
-    a.innerText = buttonText;
+    var eccube = window.eccube;
 
-    /* 背景色の設定 ---------------------*/
-    //最初の見出しの背景色を取得、設定
-    var obj = document.getElementsByTagName('h2')[0];
-    var col = document.defaultView.getComputedStyle(obj,null).getPropertyValue('background-color');
-    btn.style.backgroundColor = col;
+    eccube.smartRollover = function() {
+        if (document.getElementsByTagName) {
+            var images = document.getElementsByTagName("img");
 
-    //省略表示用テキストの生成
-    var spn = document.createElement('span');
-    spn.innerText = obj.innerText;
-    obj.innerText = "";
-    spn.style.display = "inline-block";
-    spn.style.maxWidth = "50%";
-    spn.style.overflow = "hidden";
-    spn.style.textOverflow = "ellipsis";
-    obj.appendChild(spn);
-
-    //ボタンを追加
-    btn.appendChild(a);
-    document.getElementsByTagName('body')[0].appendChild(btn);;
-}
-
-function smartRollover() {
-    if (document.getElementsByTagName) {
-        var images = document.getElementsByTagName("img");
-
-        for (var i=0; i < images.length; i++) {
-            if (images[i].getAttribute("src").match("_off.")) {
-                images[i].onmouseover = function() {
-                    this.setAttribute("src", this.getAttribute("src").replace("_off.", "_on."));
-                }
-                images[i].onmouseout = function() {
-                    this.setAttribute("src", this.getAttribute("src").replace("_on.", "_off."));
+            for (var i=0; i < images.length; i++) {
+                if (images[i].getAttribute("src").match("_off.")) {
+                    images[i].onmouseover = function() {
+                        this.setAttribute("src", this.getAttribute("src").replace("_off.", "_on."));
+                    };
+                    images[i].onmouseout = function() {
+                        this.setAttribute("src", this.getAttribute("src").replace("_on.", "_off."));
+                    };
                 }
             }
         }
+    };
+
+    if (window.addEventListener) {
+        window.addEventListener("load", eccube.smartRollover, false);
+    } else if (window.attachEvent) {
+        window.attachEvent("onload", eccube.smartRollover);
     }
-}
 
-if (window.addEventListener) {
-    window.addEventListener("load", smartRollover, false);
-} else if (window.attachEvent) {
-    window.attachEvent("onload", smartRollover);
-}
+    /*------------------------------------------
+     お気に入りを登録する
+     ------------------------------------------*/
+    eccube.addFavoriteSphone = function(favoriteProductId) {
+        $.mobile.showPageLoadingMsg();
+        //送信データを準備
+        var postData = {};
+        var form = $("#form1");
+        form.find(':input').each(function(){
+            postData[$(this).attr('name')] = $(this).val();
+        });
+        postData["mode"] = "add_favorite_sphone";
+        postData["favorite_product_id"] = favoriteProductId;
 
-/*------------------------------------------
- お気に入りを登録する
- ------------------------------------------*/
-function fnAddFavoriteSphone(favoriteProductId) {
-    $.mobile.showPageLoadingMsg();
-    //送信データを準備
-    var postData = {};
-    $("#form1").find(':input').each(function(){
-        postData[$(this).attr('name')] = $(this).val();
-    });
-    postData["mode"] = "add_favorite_sphone";
-    postData["favorite_product_id"] = favoriteProductId;
-
-    $.ajax({
-        type: "POST",
-        url: $("#form1").attr('action'),
-        data: postData,
-        cache: false,
-        dataType: "text",
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            alert(textStatus);
-            $.mobile.hidePageLoadingMsg();
-        },
-        success: function(result){
-            if (result == "true") {
-                alert("お気に入りに登録しました");
-                $(".btn_favorite").html("<p>お気に入り登録済み</p>");
-            } else {
-                alert("お気に入りの登録に失敗しました");
+        $.ajax({
+            type: "POST",
+            url: form.attr('action'),
+            data: postData,
+            cache: false,
+            dataType: "text",
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                alert(textStatus);
+                $.mobile.hidePageLoadingMsg();
+            },
+            success: function(result){
+                if (result == "true") {
+                    alert("お気に入りに登録しました");
+                    $(".btn_favorite").html("<p>お気に入り登録済み</p>");
+                } else {
+                    alert("お気に入りの登録に失敗しました");
+                }
+                $.mobile.hidePageLoadingMsg();
             }
-            $.mobile.hidePageLoadingMsg();
-        }
-    });
-}
+        });
+    };
 
-/*------------------------------------------
- 初期化
- ------------------------------------------*/
-$(function(){
-    //level?クラスを持つノード全てを走査し初期化
-    $("#categorytree li").each(function(){
-        if ($(this).children("ul").length) {
-            //▶を表示し、リストオープンイベントを追加
-            var tgt = $(this).children('span.category_header');
-            var linkObj = $("<a>");
-            linkObj.text('＋');
-            tgt
-                .click(function(){
-                    $(this).siblings("ul").toggle('fast', function(){
-                        if ($(this).css('display') === 'none') {
-                            tgt.children('a').text('＋');
-                        } else {
-                            tgt.children('a').text('－');
-                        }
-                    });
-                })
-                .addClass('plus')
-                .append(linkObj);
-        }
+    // グローバルに使用できるようにする
+    window.eccube = eccube;
+
+    /*------------------------------------------
+     初期化
+     ------------------------------------------*/
+    $(function(){
+        //level?クラスを持つノード全てを走査し初期化
+        $("#categorytree li").each(function(){
+            if ($(this).children("ul").length) {
+                //▶を表示し、リストオープンイベントを追加
+                var tgt = $(this).children('span.category_header');
+                var linkObj = $("<a>");
+                linkObj.text('＋');
+                tgt
+                    .click(function(){
+                        $(this).siblings("ul").toggle('fast', function(){
+                            if ($(this).css('display') === 'none') {
+                                tgt.children('a').text('＋');
+                            } else {
+                                tgt.children('a').text('－');
+                            }
+                        });
+                    })
+                    .addClass('plus')
+                    .append(linkObj);
+            }
+        });
     });
-});
+})(window);
