@@ -156,7 +156,7 @@
     };
 
     eccube.fnFormModeSubmit = function(form, mode, keyname, keyid) {
-        var formDom = $("form#" + form);
+        var formElement = $("form#" + form);
         switch(mode) {
             case 'delete':
                 if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
@@ -176,17 +176,17 @@
             default:
                 break;
         }
-        formDom.find("input[name='mode']").val(mode);
+        formElement.find("input[name='mode']").val(mode);
         if(keyname != "" && keyid != "") {
-            formDom.find("*[name=" + keyname + "]").val(keyid);
+            formElement.find("*[name=" + keyname + "]").val(keyid);
         }
-        formDom.submit();
+        formElement.submit();
     };
 
     eccube.setValueAndSubmit = function(form, key, val) {
-        var formDom = $("form#" + form);
-        formDom.find("*[name=" + key + "]").val(val);
-        formDom.submit();
+        var formElement = $("form#" + form);
+        formElement.find("*[name=" + key + "]").val(val);
+        formElement.submit();
         return false;
     };
 
@@ -194,8 +194,8 @@
         if (typeof form === 'undefined') {
             form = 'form1';
         }
-        var formDom = $("form#" + form);
-        formDom.find("*[name=" + key + "]").val(val);
+        var formElement = $("form#" + form);
+        formElement.find("*[name=" + key + "]").val(val);
     };
 
     eccube.changeAction = function(url) {
@@ -207,12 +207,12 @@
         if (typeof form === 'undefined') {
             form = 'form1';
         }
-        var formDom = $("form#" + form);
-        formDom.find("input[name=pageno]").val(pageno);
+        var formElement = $("form#" + form);
+        formElement.find("input[name=pageno]").val(pageno);
         if (typeof mode !== 'undefined') {
-            formDom.find("input[name='mode']").val('search');
+            formElement.find("input[name='mode']").val('search');
         }
-        formDom.submit();
+        formElement.submit();
     };
 
     eccube.submitForm = function(form){
@@ -305,7 +305,7 @@
 
     // ログイン時の入力チェック
     eccube.checkLoginFormInputted = function(form, emailKey, passKey) {
-        var formDom = $("form#" + form);
+        var formElement = $("form#" + form);
         var checkItems = [];
 
         if (typeof emailKey === 'undefined') {
@@ -324,7 +324,7 @@
 
         //　必須項目のチェック
         for(var cnt = 0; cnt < max; cnt++) {
-            if(formDom.find("input[name=" + checkItems[cnt] + "]").val() == "") {
+            if(formElement.find("input[name=" + checkItems[cnt] + "]").val() == "") {
                 errorFlag = true;
                 break;
             }
@@ -354,8 +354,8 @@
     //引数2：文字数カウント対象
     //引数3：カウント結果格納対象
     eccube.countChars = function(form,sch,cnt) {
-        var formDom = $("form#" + form);
-        formDom.find("input[name="+cnt+"]").val(formDom.find("*[name="+sch+"]").val().length);
+        var formElement = $("form#" + form);
+        formElement.find("input[name="+cnt+"]").val(formElement.find("*[name="+sch+"]").val().length);
     };
 
     // テキストエリアのサイズを変更する.
