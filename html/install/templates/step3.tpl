@@ -22,7 +22,7 @@
 <script type="text/javascript">
 <!--
     // モードとキーを指定してSUBMITを行う。
-    function eccube.setModeAndSubmit(mode) {
+    eccube.setModeAndSubmit = function(mode) {
         switch(mode) {
         case 'drop':
             if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
@@ -34,7 +34,7 @@
         }
         document.form1['mode'].value = mode;
         document.form1.submit();
-    }
+    };
 //-->
 </script>
 
