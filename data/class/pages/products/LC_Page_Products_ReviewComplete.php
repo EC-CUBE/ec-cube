@@ -39,7 +39,6 @@ class LC_Page_Products_ReviewComplete extends LC_Page_Ex
      */
     function init()
     {
-        $this->skip_load_page_layout = true;
         parent::init();
     }
 

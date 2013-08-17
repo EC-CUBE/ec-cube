@@ -48,8 +48,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
      */
     function init()
     {
-        $this->skip_load_page_layout = true;
-
         parent::init();
 
         $masterData = new SC_DB_MasterData_Ex();
