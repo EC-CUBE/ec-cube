@@ -1337,7 +1337,7 @@ __EOS__;
 
         return $objQuery->nextVal('dtb_order_order_id');
     }
-	
+
 	/**
      * 決済処理中スタータスの全受注検索
      */
@@ -1350,7 +1350,7 @@ __EOS__;
             $objQuery->begin();
             $arrOrders = $objQuery->select('order_id', 'dtb_order', 'create_date <= ? and status = ? and del_flg = 0', $arrVal);
             if (!SC_Utils_Ex::isBlank($arrOrders)) {
-                foreach ($arrOrders as $key => $arrOrder) {
+                foreach ($arrOrders as $arrOrder) {
                     $order_id = $arrOrder['order_id'];
                     SC_Helper_Purchase_Ex::cancelOrder($order_id, ORDER_PENDING_ERROR, false);
                     GC_Utils_Ex::gfPrintLog('order cancel.(time expire) order_id=' . $order_id);
