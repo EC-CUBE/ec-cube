@@ -360,7 +360,6 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
      */
     function setDispPath($objFormParam)
     {
-        $tpl_now_dir = '';
         // Windows 環境で DIRECTORY_SEPARATOR が JavaScript に渡るとエスケープ文字と勘違いするので置換
         $html_realdir = str_replace(DIRECTORY_SEPARATOR, '/', HTML_REALDIR);
         $arrNowDir = preg_split('/\//', str_replace($html_realdir, '', $objFormParam->getValue('now_dir')));
