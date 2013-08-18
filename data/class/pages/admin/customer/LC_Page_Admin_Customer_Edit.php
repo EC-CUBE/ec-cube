@@ -279,7 +279,6 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      */
     function lfRegistData(&$objFormParam)
     {
-        $objQuery   =& SC_Query_Ex::getSingletonInstance();
         // 登録用データ取得
         $arrData = $objFormParam->getDbArray();
         // 足りないものを作る
