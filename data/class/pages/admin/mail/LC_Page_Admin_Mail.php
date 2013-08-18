@@ -289,7 +289,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
 
         // 送信履歴より、送信条件確認画面
         $sql = 'SELECT search_data FROM dtb_send_history WHERE send_id = ?';
-        $searchData = $objQuery->getOne($sql, array($_GET['send_id']));
+        $searchData = $objQuery->getOne($sql, array($send_id));
 
         return unserialize($searchData);
     }
