@@ -248,7 +248,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
     {
         $objQuery = SC_Query_Ex::getSingletonInstance();     // DB操作オブジェクト
         $sql = '';                      // データ取得SQL生成用
-        $arrRet = array();              // データ取得用
+        $arrPageList = array();              // データ取得用
 
         // SQL生成(url と update_date 以外は不要？)
         $sql .= ' SELECT';
