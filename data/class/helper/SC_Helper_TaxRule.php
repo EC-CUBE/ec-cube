@@ -233,7 +233,7 @@ class SC_Helper_TaxRule
             // 日付は登録時点を設定
             $apply_date = date('Y/m/d H:i:s');
             // 税情報を設定
-            SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id, $product_class_id, $pref_id, $country_id);
+            SC_Helper_TaxRule_Ex::setTaxRule($calc_rule, $tax_rate, $apply_date, NULL, $tax_adjust, $product_id, $product_class_id, $pref_id, $country_id);
         }
     }
 
