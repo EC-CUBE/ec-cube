@@ -50,7 +50,7 @@
                 <td><!--{$arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
                 <!--{assign var=key value="`$arrMailHistory[cnt].template_id`"}-->
                 <td><!--{$arrMAILTEMPLATE[$key]|h}--></td>
-                <td><a href="?" onclick="eccube.win02('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|h}--></a></td>
+                <td><a href="?" onclick="eccube.openWindow('./mail_view.php?send_id=<!--{$arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$arrMailHistory[cnt].subject|h}--></a></td>
             </tr>
             <!--{/section}-->
         </table>

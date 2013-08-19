@@ -153,7 +153,7 @@
                     <!--ロゴ-->
                     <td class="center plugin_img">
                         <!--{if $plugin.plugin_site_url != '' }-->
-                            <a href="?" onclick="eccube.win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><img src="<!--{$plugin.logo}-->" width="65" height="65" /></a>&nbsp;
+                            <a href="?" onclick="eccube.openWindow('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760',{menubar:'no'}); return false;"><img src="<!--{$plugin.logo}-->" width="65" height="65" /></a>&nbsp;
                         <!--{else}-->
                             <img src="<!--{$plugin.logo}-->" width="65" height="65"/>
                         <!--{/if}-->
@@ -165,7 +165,7 @@
                                 <!-- ▼plugin_site_urlが設定されている場合はリンクとして表示 -->
                                 <span class="plugin_name">
                                 <!--{if $plugin.plugin_site_url != '' }-->
-                                    <a href="?" onclick="eccube.win03('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760'); return false;"><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}--></a>&nbsp;
+                                    <a href="?" onclick="eccube.openWindow('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760',{menubar:'no'}); return false;"><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}--></a>&nbsp;
                                 <!--{else}-->
                                     <sapn><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}-->&nbsp;</sapn>
                                 <!--{/if}-->
@@ -176,7 +176,7 @@
                                 <!--{if $plugin.author != ''}-->
                                     <!-- ▼author_site_urlが設定されている場合はリンクとして表示 -->
                                     <!--{if $plugin.author_site_url != '' }-->
-                                        <span>(by <a href="?" onclick="eccube.win03('<!--{$plugin.author_site_url|h}-->','author_site_url','620','760'); return false;"><!--{$plugin.author|default:'-'|h}--></a>)</span>
+                                        <span>(by <a href="?" onclick="eccube.openWindow('<!--{$plugin.author_site_url|h}-->','author_site_url','620','760',{menubar:'no'}); return false;"><!--{$plugin.author|default:'-'|h}--></a>)</span>
                                     <!--{else}-->
                                         <span>(by <!--{$plugin.author|default:'-'|h}-->)</span>
                                     <!--{/if}-->
@@ -189,7 +189,7 @@
                                 <span class="attention"><!--{$arrErr[$plugin.plugin_code]}--></span>
                                 <!-- 設定 -->
                                     <!--{if $plugin.config_flg == true && $plugin.status != $smarty.const.PLUGIN_STATUS_UPLOADED}-->
-                                        <a href="?" onclick="eccube.win02('../load_plugin_config.php?plugin_id=<!--{$plugin.plugin_id}-->', 'load', 615, 400);return false;">プラグイン設定</a>&nbsp;|&nbsp;
+                                        <a href="?" onclick="eccube.openWindow('../load_plugin_config.php?plugin_id=<!--{$plugin.plugin_id}-->', 'load', 615, 400);return false;">プラグイン設定</a>&nbsp;|&nbsp;
                                     <!--{else}-->
                                         <span>プラグイン設定&nbsp;|&nbsp;</span>
                                     <!--{/if}-->

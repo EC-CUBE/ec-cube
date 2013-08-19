@@ -30,32 +30,43 @@
 
     var eccube = window.eccube;
 
-    eccube.win01 = function(URL,Winname,Wwidth,Wheight){
-        var WIN;
-        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=no,resizable=no,toolbar=no,location=no,directories=no,status=no");
-        WIN.focus();
+    eccube.defaults = {
+        'formId':'form1',
+        "windowFeatures":{
+            'scrollbars':'yes',
+            'resizable':'yes',
+            'toolbar':'no',
+            'location':'no',
+            'directories':'no',
+            'status':'no',
+            'focus':true,
+            'formTarget':''
+        }
     };
 
-    eccube.win02 = function(URL,Winname,Wwidth,Wheight){
-        var WIN;
-        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-        WIN.focus();
-    };
-
-    eccube.win03 = function(URL,Winname,Wwidth,Wheight){
-        var WIN;
-        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
-        WIN.focus();
-    };
-
-    eccube.winSubmit = function(URL,formName,Winname,Wwidth,Wheight){
-        var WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
-        document.forms[formName].target = Winname;
-        WIN.focus();
-    };
-
-    eccube.openWindow = function(URL,name,width,height) {
-        window.open(URL,name,"width="+width+",height="+height+",scrollbars=yes,resizable=no,toolbar=no,location=no,directories=no,status=no");
+    eccube.openWindow = function(URL,name,width,height,option) {
+        var features = "width="+width+",height="+height;
+        if (option === undefined) {
+            option = eccube.defaults.windowFeatures;
+        } else {
+            option = $.extend(eccube.defaults.windowFeatures, option);
+        }
+        features = features + ",scrollbars=" + option.scrollbars +
+                ",resizable=" + option.resizable +
+                ",toolbar=" + option.toolbar +
+                ",location=" + option.location +
+                ",directories=" + option.directories +
+                ",status=" + option.status;
+        if (option.hasOwnProperty('menubar')) {
+            features = features + ",menubar=" + option.menubar;
+        }
+        var WIN = window.open(URL,name,features);
+        if (option.formTarget !== "") {
+            document.forms[option.formTarget].target = name;
+        }
+        if (option.focus) {
+            WIN.focus();
+        }
     };
 
     // 親ウィンドウの存在確認.
@@ -192,7 +203,7 @@
 
     eccube.setValue = function(key, val, form) {
         if (typeof form === 'undefined') {
-            form = 'form1';
+            form = eccube.defaults.formId;
         }
         var formElement = $("form#" + form);
         formElement.find("*[name=" + key + "]").val(val);
@@ -205,7 +216,7 @@
     // ページナビで使用する。
     eccube.movePage = function(pageno, mode, form) {
         if (typeof form === 'undefined') {
-            form = 'form1';
+            form = eccube.defaults.formId;
         }
         var formElement = $("form#" + form);
         formElement.find("input[name=pageno]").val(pageno);
@@ -217,7 +228,7 @@
 
     eccube.submitForm = function(form){
         if (typeof form === 'undefined') {
-            form = 'form1';
+            form = eccube.defaults.formId;
         }
         $("form#" + form).submit();
     };
