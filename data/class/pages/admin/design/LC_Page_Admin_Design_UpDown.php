@@ -210,7 +210,6 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
         );
         $objQuery->insert('dtb_templates', $arrValues);
 
-        $is_error = false;
         // フォルダ作成
         if (!file_exists($template_dir)) {
             if (!mkdir($template_dir)) {

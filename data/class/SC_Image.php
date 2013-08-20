@@ -86,9 +86,6 @@ class SC_Image
         // 画像の最大縦幅（単位：ピクセル）
         $ThmMaxHeight = LARGE_IMAGE_HEIGHT;
 
-        //サムネイル画像の接頭文字
-        $PreWord = $head;
-
         //拡張子取得
         $array_ext = explode('.', $FromImgPath);
         $ext = $array_ext[count($array_ext) - 1];
@@ -142,7 +139,7 @@ class SC_Image
         // サムネイル画像ファイル名作成処理
         $tmp = array_pop(explode('/',$FromImgPath)); // /の一番最後を切り出し
         $FromFileName = array_shift(explode('.',$tmp)); // .で区切られた部分を切り出し
-        $ToFile = $PreWord.$FromFileName; // 拡張子以外の部分までを作成
+        $ToFile = $FromFileName; // 拡張子以外の部分までを作成
 
         $ImgNew = imagecreatetruecolor($re_size[0],$re_size[1]);
 

@@ -334,7 +334,7 @@ class SC_CartSession
      * getCartList用にcartSession情報をセットする
      *
      * @param integer $product_type_id 商品種別ID
-     * @param integer $key 
+     * @param integer $key
      * @return void
      *
      * MEMO: せっかく一回だけ読み込みにされてますが、税率対応の関係でちょっと保留
@@ -705,7 +705,7 @@ class SC_CartSession
         $total_point = $this->getAllProductsPoint($productTypeId);
         // MEMO: 税金計算は注文者の住所基準
         $results['tax'] = $this->getAllProductsTax($productTypeId, $order_pref, $order_country_id);
-        $results['subtotal'] = $this->getAllProductsTotal($productTypeId, $oder_pref, $order_country_id);
+        $results['subtotal'] = $this->getAllProductsTotal($productTypeId, $order_pref, $order_country_id);
         $results['deliv_fee'] = 0;
 
         // 商品ごとの送料を加算

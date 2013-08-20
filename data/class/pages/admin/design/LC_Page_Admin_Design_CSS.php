@@ -161,8 +161,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
      */
     function doRegister($css_dir, $css_name, $old_css_name, $css_path, $css_data)
     {
-        $objFileManager = new SC_Helper_FileManager_Ex();
-
         if (!SC_Utils_Ex::isBlank($old_css_name)
             && $old_css_name != $css_name) {
             if (!unlink($css_dir . $old_css_name . '.css')) {
@@ -231,7 +229,6 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
         $objErr->arrErr =& $arrErr;
         $objErr->doFunc(array('CSSファイル名', 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
 
-        $device_type_id = $objFormParam->getValue('device_type_id');
         $css_name = $objFormParam->getValue('css_name');
         $old_css_name = $objFormParam->getValue('old_css_name', $css_name);
 

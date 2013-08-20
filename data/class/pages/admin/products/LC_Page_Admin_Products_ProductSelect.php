@@ -125,7 +125,7 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex
                     }
                     break;
                 case 'search_product_code':
-                    $where .= ' AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ? GROUP BY product_id)';
+                    $where .= ' AND product_id IN (SELECT product_id FROM dtb_products_class WHERE product_code LIKE ?)';
                     $arrWhereVal[] = "$val%";
                     break;
                 default:

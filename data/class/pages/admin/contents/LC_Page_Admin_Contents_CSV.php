@@ -208,7 +208,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
      */
     function lfSetDefaultCsvOutput($csv_id)
     {
-        $arrData = $this->lfGetCSVColumn($csv_id, '', $order = 'no');
+        $arrData = $this->lfGetCSVColumn($csv_id, '', 'no');
         if (!isset($arrData['no'])) {
             $arrData['no'] = array();
         }

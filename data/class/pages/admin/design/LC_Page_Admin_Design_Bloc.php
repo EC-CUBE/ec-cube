@@ -80,7 +80,6 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
         $objBloc = new SC_Helper_Bloc_Ex($this->device_type_id);
-        $objLayout = new SC_Helper_PageLayout_Ex();
 
         switch ($this->getMode()) {
             // 登録/更新
