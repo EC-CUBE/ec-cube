@@ -31,18 +31,20 @@
 
     eccube.smartRollover = function() {
         if (document.getElementsByTagName) {
-            var images = document.getElementsByTagName("img");
+            var images = $("img");
+            var re = /_off¥./;
 
-            for (var i=0; i < images.length; i++) {
-                if (images[i].getAttribute("src").match("_off.")) {
-                    images[i].onmouseover = function() {
+            images.each(function(){
+                var target = $(this);
+                if (target.attr("src").match(re)) {
+                    target.on("vmouseover", function(){
                         this.setAttribute("src", this.getAttribute("src").replace("_off.", "_on."));
-                    };
-                    images[i].onmouseout = function() {
+                    });
+                    target.on("vmouseout", function(){
                         this.setAttribute("src", this.getAttribute("src").replace("_on.", "_off."));
-                    };
+                    });
                 }
-            }
+            });
         }
     };
 
@@ -72,16 +74,16 @@
             data: postData,
             cache: false,
             dataType: "text",
-            error: function(XMLHttpRequest, textStatus, errorThrown){
-                alert(textStatus);
+            error: function(XMLHttpRequest, textStatus){
+                window.alert(textStatus);
                 $.mobile.hidePageLoadingMsg();
             },
             success: function(result){
-                if (result == "true") {
-                    alert("お気に入りに登録しました");
+                if (result === "true") {
+                    window.alert("お気に入りに登録しました");
                     $(".btn_favorite").html("<p>お気に入り登録済み</p>");
                 } else {
-                    alert("お気に入りの登録に失敗しました");
+                    window.alert("お気に入りの登録に失敗しました");
                 }
                 $.mobile.hidePageLoadingMsg();
             }
@@ -96,19 +98,19 @@
      ------------------------------------------*/
     $(function(){
         //level?クラスを持つノード全てを走査し初期化
-        $("#categorytree li").each(function(){
-            if ($(this).children("ul").length) {
+        $("#categorytree").find("li").each(function(){
+            if ($(this).find("> ul").length) {
                 //▶を表示し、リストオープンイベントを追加
-                var tgt = $(this).children('span.category_header');
+                var tgt = $(this).find("> span.category_header");
                 var linkObj = $("<a>");
-                linkObj.text('＋');
+                linkObj.html('＋');
                 tgt
                     .click(function(){
                         $(this).siblings("ul").toggle('fast', function(){
                             if ($(this).css('display') === 'none') {
-                                tgt.children('a').text('＋');
+                                tgt.children('a').html('＋');
                             } else {
-                                tgt.children('a').text('－');
+                                tgt.children('a').html('－');
                             }
                         });
                     })
