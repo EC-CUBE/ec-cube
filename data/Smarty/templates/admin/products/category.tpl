@@ -38,7 +38,7 @@
     <input type="hidden" name="keySet" value="" />
     <div id="products" class="contents-main">
         <div class="btn">
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('csv','',''); return false;">CSV ダウンロード</a>
+            <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
             <a class="btn-normal" href='../contents/csv.php?tpl_subno_csv=category'>CSV 出力項目設定</a>
         </div>
 
@@ -62,7 +62,7 @@
                     <span class="attention"><!--{$arrErr.category_name}--></span>
                     <!--{/if}-->
                     <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
-                    <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('edit','',''); return false;"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
+                    <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('edit','',''); return false;"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
             </div>
 
             <h2><!--{* jQuery で挿入される *}--></h2>
@@ -87,28 +87,28 @@
                     <td class="center"><!--{$arrList[cnt].category_id}--></td>
                     <td>
                     <!--{if $arrList[cnt].level != $smarty.const.LEVEL_MAX}-->
-                        <a href="?" onclick="fnModeSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h}--></a>
+                        <a href="?" onclick="eccube.setModeAndSubmit('tree', 'parent_category_id', <!--{$arrList[cnt].category_id}-->); return false"><!--{$arrList[cnt].category_name|h}--></a>
                     <!--{else}-->
                         <!--{$arrList[cnt].category_name|h}-->
                     <!--{/if}-->
                     </td>
                     <td class="center">
                         <!--{if $arrForm.category_id != $arrList[cnt].category_id}-->
-                        <a href="?" onclick="fnModeSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">編集</a>
+                        <a href="?" onclick="eccube.setModeAndSubmit('pre_edit', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">編集</a>
                         <!--{else}-->
                         編集中
                         <!--{/if}-->
                     </td>
                     <td class="center">
-                        <a href="?" onclick="fnModeSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">削除</a>
+                        <a href="?" onclick="eccube.setModeAndSubmit('delete', 'category_id', <!--{$arrList[cnt].category_id}-->); return false;">削除</a>
                     </td>
                     <td class="center">
                     <!--{* 移動 *}-->
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="fnModeSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;">上へ</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('up','category_id', <!--{$arrList[cnt].category_id}-->); return false;">上へ</a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="fnModeSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;">下へ</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('down','category_id', <!--{$arrList[cnt].category_id}-->); return false;">下へ</a>
                     <!--{/if}-->
                     </td>
 

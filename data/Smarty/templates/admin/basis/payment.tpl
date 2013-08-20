@@ -29,7 +29,7 @@
     <div id="basis" class="contents-main">
         <div class="btn">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name="subm2" onclick="fnChangeAction('./payment_input.php'); fnModeSubmit('','',''); return false;">
+                <li><a class="btn-action" href="javascript:;" name="subm2" onclick="eccube.changeAction('./payment_input.php'); eccube.setModeAndSubmit('','',''); return false;">
                     <span class="btn-next">支払方法を新規入力</span></a></li>
             </ul>
         </div>
@@ -62,14 +62,14 @@
                 <td class="center">
                     <!--{if $arrPaymentListFree[cnt].rule_max > 0}--><!--{$arrPaymentListFree[cnt].rule_max|number_format|h}--><!--{else}-->0<!--{/if}-->円
                     <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
-                <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnChangeAction('./payment_input.php'); fnModeSubmit('pre_edit', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
-                <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="fnModeSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
+                <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="eccube.changeAction('./payment_input.php'); eccube.setModeAndSubmit('pre_edit', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
+                <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="eccube.setModeAndSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
                 <td class="center">
                 <!--{if $smarty.section.cnt.iteration != 1}-->
-                <a href="?" onclick="fnModeSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">上へ</a>
+                <a href="?" onclick="eccube.setModeAndSubmit('up','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">上へ</a>
                 <!--{/if}-->
                 <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                <a href="?" onclick="fnModeSubmit('down','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">下へ</a>
+                <a href="?" onclick="eccube.setModeAndSubmit('down','payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">下へ</a>
                 <!--{/if}-->
                 </td>
             </tr>

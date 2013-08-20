@@ -39,10 +39,10 @@
                         お届け先等の情報は全てなくなりますのでご注意ください。</p>
                         <ul>
                             <li>
-                                <a href="./refusal.php" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not_on.jpg','refuse_not');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg','refuse_not');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg" alt="いいえ、退会しません" name="refuse_not" id="refuse_not" /></a>
+                                <a href="./refusal.php" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not_on.jpg','refuse_not');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg','refuse_not');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg" alt="いいえ、退会しません" name="refuse_not" id="refuse_not" /></a>
                             </li>
                             <li>
-                                <input type="image" onmouseover="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do_on.jpg',this);" onmouseout="chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.jpg" alt="はい、退会します" name="refuse_do" id="refuse_do" />
+                                <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do_on.jpg',this);" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.jpg" alt="はい、退会します" name="refuse_do" id="refuse_do" />
                             </li>
                         </ul>
                     </div>

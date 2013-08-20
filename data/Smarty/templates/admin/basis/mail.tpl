@@ -84,7 +84,7 @@ function checkFlagAndSubmit(){
                 <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)
                 </span>
                 <div>
-                    <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','header','cnt_header'); return false;"><span>文字数カウント</span></a>
+                    <a class="btn-normal" href="javascript:;" onclick="eccube.countChars('form1','header','cnt_header'); return false;"><span>文字数カウント</span></a>
                     今までに入力したのは
                     <input type="text" name="cnt_header" size="4" class="box4" readonly="readonly" style="text-align:right" />
                     文字です。
@@ -104,7 +104,7 @@ function checkFlagAndSubmit(){
                 <textarea name="footer" cols="75" rows="12" class="area75" onChange="setFlag();" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
                 <div>
-                    <a class="btn-normal" href="javascript:;" onclick="fnCharCount('form1','footer','cnt_footer'); return false;"><span>文字数カウント</span></a>
+                    <a class="btn-normal" href="javascript:;" onclick="eccube.countChars('form1','footer','cnt_footer'); return false;"><span>文字数カウント</span></a>
                     今までに入力したのは
                     <input type="text" name="cnt_footer" size="4" class="box4" readonly="readonly" style="text-align:right" />
                     文字です。
@@ -115,7 +115,7 @@ function checkFlagAndSubmit(){
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'regist', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
     </div>

@@ -80,7 +80,7 @@
                 <!--{if $arrSearchData}-->
                     <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <!--{/if}-->
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next">続けて登録を行う</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next">続けて登録を行う</span></a></li>
             </ul>
         </div>
         <div class="btn-area-bottom"></div>

@@ -54,14 +54,14 @@
                     <textarea id="css" class="top" name="<!--{$key}-->" cols="90" rows="<!--{$area_row}-->" align="left" style="width: 650px;"><!--{"\n"}--><!--{$arrForm[$key].value|h}--></textarea>
                     <input type="hidden" name="area_row" value="<!--{$area_row}-->" />
                     <div class="btn">
-                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#css', 50, 30); return false;">拡大</a>
+                        <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#css', 50, 30); return false;">拡大</a>
                     </div>
                 </td>
             </tr>
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form_css','confirm','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form_css','confirm','',''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
         <!--▲CSS設定　ここまで-->
@@ -85,7 +85,7 @@
                     <a href="?css_name=<!--{$item.css_name|h}-->&amp;device_type_id=<!--{$device_type_id|h}-->">編集</a>
                 </td>
                 <td class="center" style="background:<!--{if $item.css_name == $css_name}--><!--{$smarty.const.SELECT_RGB}--><!--{else}-->#ffffff<!--{/if}-->;">
-                    <a href="javascript:;" onclick="fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name|h}-->'); return false;">削除</a>
+                    <a href="javascript:;" onclick="eccube.fnFormModeSubmit('form_css','delete','css_name','<!--{$item.css_name|h}-->'); return false;">削除</a>
                 </td>
             </tr>
             <!--{/foreach}-->

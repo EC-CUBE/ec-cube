@@ -143,7 +143,7 @@ class LC_Page_Products_List extends LC_Page_Ex
             $searchNameUrl = urlencode(mb_convert_encoding($this->arrSearchData['name'], 'SJIS-win', 'UTF-8'));
             $urlParam .= "&mode={$this->mode}&name={$searchNameUrl}&orderby={$this->orderby}";
         }
-        $this->objNavi      = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'fnNaviPage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
+        $this->objNavi      = new SC_PageNavi_Ex($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'eccube.movePage', NAVI_PMAX, $urlParam, SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $objProduct);
 
         switch ($this->getMode()) {
@@ -538,7 +538,7 @@ __EOS__;
         // 商品ステータスを取得
         $this->productStatus = $this->arrProducts['productStatus'];
         unset($this->arrProducts['productStatus']);
-        $this->tpl_javascript .= 'var productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
+        $this->tpl_javascript .= 'eccube.productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . ';';
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_PC) {
             //onloadスクリプトを設定. 在庫ありの商品のみ出力する
             foreach ($this->arrProducts as $arrProduct) {

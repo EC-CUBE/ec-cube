@@ -162,7 +162,7 @@ $(function() {
                     <span class="attention"><!--{$arrErr.zip01}--></span>
                     <span class="attention"><!--{$arrErr.zip02}--></span>
                     〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="3" size="6" class="box6" style="<!--{if $arrErr.zip01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="4"    size="6" class="box6" style="<!--{if $arrErr.zip02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
-                    <a class="btn-normal" href="javascript:;" name="address_input" onclick="fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;">所在地入力</a>
+                    <a class="btn-normal" href="javascript:;" name="address_input" onclick="eccube.getAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'zip01', 'zip02', 'pref', 'addr01'); return false;">所在地入力</a>
                 </td>
             </tr>
             <tr>
@@ -308,7 +308,7 @@ $(function() {
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnSubmit(); return false;"><span class="btn-next">確認ページへ</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.submitForm(); return false;"><span class="btn-next">確認ページへ</span></a></li>
             </ul>
         </div>
     </div>

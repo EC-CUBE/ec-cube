@@ -325,7 +325,7 @@ function fnTargetSelf(){
                     </td>
                 </tr>
             </table>
-            <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_bloc','',''); return false;"><span>ブロックを新規入力</span></a></div>
+            <div class="btn"><a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1','new_bloc','',''); return false;"><span>ブロックを新規入力</span></a></div>
         </div>
         <!--{* ▲未使用ブロックここまで *}-->
             <div class="btn-area">
@@ -333,7 +333,7 @@ function fnTargetSelf(){
                 <!--{if $device_type_id == $smarty.const.DEVICE_TYPE_PC}-->
                     <li><a class="btn-action" href="javascript:;" name='preview' onclick="doPreview();"><span class="btn-prev">プレビュー</span></a></li>
                 <!--{/if}-->
-                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+                    <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
                 </ul>
             </div>
         <!--▲レイアウト編集　ここまで-->
@@ -341,7 +341,7 @@ function fnTargetSelf(){
         <!--▼ページ一覧　ここから-->
         <h2 style="clear: both;">編集可能ページ一覧</h2>
         <div class="btn addnew">
-            <a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form1','new_page','',''); return false;"><span>ページを新規入力</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1','new_page','',''); return false;"><span>ページを新規入力</span></a>
         </div>
         <table class="list">
         <tr>
@@ -365,7 +365,7 @@ function fnTargetSelf(){
                 </td>
                 <td class="center">
                     <!--{if $item.edit_flg == 1}-->
-                        <a href="#" onclick="fnTargetSelf(); fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;">削除</a>
+                        <a href="#" onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form1','delete','page_id','<!--{$item.page_id|h}-->'); return false;">削除</a>
                     <!--{/if}-->
                 </td>
             </tr>

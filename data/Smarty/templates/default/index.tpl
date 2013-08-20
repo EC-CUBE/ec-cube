@@ -22,7 +22,7 @@
 
 <!--{strip}-->
     <div id="main_image">
-        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main_on.jpg','bnr_top_main');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg','bnr_top_main');">
+        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main_on.jpg','bnr_top_main');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg','bnr_top_main');">
             <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="詳細はこちら" id="bnr_top_main" name="bnr_top_main" />
         </a>
     </div>

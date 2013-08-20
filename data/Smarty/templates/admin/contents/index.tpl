@@ -80,7 +80,7 @@
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
     </form>
@@ -128,21 +128,21 @@
                 </td>
                 <td>
                     <!--{if $arrNews[data].news_id != $tpl_news_id}-->
-                    <a href="#" onclick="fnFormModeSubmit('move','pre_edit','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">編集</a>
+                    <a href="#" onclick="eccube.fnFormModeSubmit('move','pre_edit','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">編集</a>
                     <!--{else}-->
                     編集中
                     <!--{/if}-->
                 </td>
-                <td><a href="#" onclick="fnFormModeSubmit('move','delete','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">削除</a></td>
+                <td><a href="#" onclick="eccube.fnFormModeSubmit('move','delete','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">削除</a></td>
                 <td>
                     <!--{if count($arrNews) != 1}-->
-                    <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;">移動</a><br />
+                    <input type="text" name="pos-<!--{$arrNews[data].news_id|h}-->" size="3" class="box3" />番目へ<a href="?" onclick="eccube.fnFormModeSubmit('move', 'moveRankSet','news_id', '<!--{$arrNews[data].news_id|h}-->'); return false;">移動</a><br />
                     <!--{/if}-->
                     <!--{if $smarty.section.data.iteration != 1}-->
-                    <a href="?" onclick="fnFormModeSubmit('move','up','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">上へ</a>
+                    <a href="?" onclick="eccube.fnFormModeSubmit('move','up','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">上へ</a>
                     <!--{/if}-->
                     <!--{if !$smarty.section.data.last}-->
-                    <a href="?" onclick="fnFormModeSubmit('move','down','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">下へ</a>
+                    <a href="?" onclick="eccube.fnFormModeSubmit('move','down','news_id','<!--{$arrNews[data].news_id|h}-->'); return false;">下へ</a>
                     <!--{/if}-->
                 </td>
             </tr>

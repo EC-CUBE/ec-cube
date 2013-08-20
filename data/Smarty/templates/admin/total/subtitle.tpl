@@ -27,27 +27,27 @@
     <!--{if $smarty.post.type == 'day' || $smarty.post.type == ''}-->
         <span class="over">日別</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'day');">日別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'day');">日別</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'month'}-->
         <span class="over">月別</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'month');">月別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'month');">月別</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'year'}-->
         <span class="over">年別</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'year');">年別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'year');">年別</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'wday'}-->
         <span class="over">曜日別</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'wday');">曜日別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'wday');">曜日別</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'hour'}-->
         <span class="over">時間別</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'hour');">時間別</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'hour');">時間別</a>&nbsp;
     <!--{/if}-->
     ）
 <!--{/if}-->
@@ -57,17 +57,17 @@
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
         <span class="over">全体</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">全体</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'all');">全体</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'member'}-->
         <span class="over">会員</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'member');">会員</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'nonmember'}-->
         <span class="over">非会員</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
     <!--{/if}-->
     ）
 <!--{/if}-->
@@ -77,17 +77,17 @@
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
         <span class="over">全体</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">全体</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'all');">全体</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'member'}-->
         <span class="over">会員</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'member');">会員</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'nonmember'}-->
         <span class="over">非会員</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
     <!--{/if}-->
     ）
 <!--{/if}-->
@@ -100,17 +100,17 @@
     <!--{if $smarty.post.type == 'all' || $smarty.post.type == ''}-->
         <span class="over">全体</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'all');">全体</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'all');">全体</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'member'}-->
         <span class="over">会員</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'member');">会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'member');">会員</a>&nbsp;
     <!--{/if}-->
     <!--{if $smarty.post.type == 'nonmember'}-->
         <span class="over">非会員</span>&nbsp;
     <!--{else}-->
-        <a href="?" onclick="document.form1.mode.value='search'; return fnSetFormSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
+        <a href="?" onclick="document.form1.mode.value='search'; return eccube.setValueAndSubmit('form1', 'type', 'nonmember');">非会員</a>&nbsp;
     <!--{/if}-->
     ）*}-->
 <!--{/if}-->

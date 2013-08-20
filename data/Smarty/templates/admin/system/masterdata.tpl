@@ -30,7 +30,7 @@
             <select name="master_data_name" id="master_data_name">
             <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
             </select>
-            <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', ''); return false;"><span>選択</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'show', '', ''); return false;"><span>選択</span></a>
         </div>
     </form>
 

@@ -22,7 +22,7 @@
 
 <script>
     function ajaxLogin() {
-        var checkLogin = fnCheckLogin('member_form');
+        var checkLogin = eccube.checkLoginFormInputted('member_form');
 
         if (checkLogin == false) {
             return false;

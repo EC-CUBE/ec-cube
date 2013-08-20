@@ -120,7 +120,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
         // 該当件数表示用
         $this->tpl_linemax = $linemax;
 
-        $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, SEARCH_PMAX, 'fnNaviPage', NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, SEARCH_PMAX, 'eccube.movePage', NAVI_PMAX);
         $startno = $objNavi->start_row;
         $this->tpl_start_row = $objNavi->start_row;
         $this->tpl_strnavi = $objNavi->strnavi;     // Navi表示文字列

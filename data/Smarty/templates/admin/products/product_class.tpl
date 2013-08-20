@@ -156,10 +156,10 @@
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
             <!--{if $arrForm.total.value > 0}-->
-                <li><a class="btn-action" href="javascript:;" onclick="fnModeSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
             <!--{/if}-->
             </ul>
         </div>
@@ -302,10 +302,10 @@
                         <!--{if $arrForm[$key].value[$index] != ""}-->
                             <!--{$arrForm[$key].value[$index]|h}--><br />
                             <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                            <a href="?" onclick="fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;">[ファイルの取り消し]</a>
+                            <a href="?" onclick="eccube.fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;">[ファイルの取り消し]</a>
                         <!--{else}-->
                         <input type="file" name="<!--{$key}-->[<!--{$index}-->]" size="10" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-                        <a class="btn-normal" href="javascript:;" name="btn" onclick="fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;">アップロード</a>
+                        <a class="btn-normal" href="javascript:;" name="btn" onclick="eccube.fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;">アップロード</a>
                         <!--{/if}-->
                     </td>
                 </tr>
@@ -314,7 +314,7 @@
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">確認ページへ</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">確認ページへ</span></a></li>
             </ul>
         </div>
 

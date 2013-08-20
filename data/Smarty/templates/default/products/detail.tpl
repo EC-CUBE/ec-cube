@@ -29,7 +29,7 @@
         var product_id = $form.find('input[name=product_id]').val();
         var $sele1 = $form.find('select[name=classcategory_id1]');
         var $sele2 = $form.find('select[name=classcategory_id2]');
-        setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
+        eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
     $(document).ready(function() {
         $('a.expansion').facebox({
@@ -242,7 +242,7 @@
                             <div class="cartin_btn">
                                 <div id="cartbtn_default">
                                     <!--★カゴに入れる★-->
-                                    <a href="javascript:void(document.form1.submit())" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
+                                    <a href="javascript:void(document.form1.submit())" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
                                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" name="cart" id="cart" /></a>
                                 </div>
                             </div>
@@ -260,7 +260,7 @@
                                 <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
                             <!--{/if}-->
                             <!--{if !$is_favorite}-->
-                                <a href="javascript:fnChangeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); fnModeSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favorite_product');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favorite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" name="add_favorite_product" id="add_favorite_product" /></a>
+                                <a href="javascript:eccube.changeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); eccube.setModeAndSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favorite_product');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favorite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" name="add_favorite_product" id="add_favorite_product" /></a>
                             <!--{else}-->
                                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="お気に入り登録済" name="add_favorite_product" id="add_favorite_product" />
                                 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tipsy.js"></script>
@@ -330,9 +330,9 @@
                 <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
                     <!--★新規コメントを書き込む★-->
                     <a href="./review.php"
-                        onclick="win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
-                        onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment_on.jpg','review');"
-                        onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg','review');" target="_blank">
+                        onclick="eccube.win02('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
+                        onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment_on.jpg','review');"
+                        onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg','review');" target="_blank">
                         <img src="<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg" alt="新規コメントを書き込む" name="review" id="review" /></a>
                 <!--{/if}-->
             </div>
