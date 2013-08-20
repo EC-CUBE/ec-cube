@@ -57,7 +57,7 @@
 
     function fnOpenPdfSettingPage(action){
         var fm = document.form1;
-        eccube.win02("about:blank", "pdf_input", "620","650");
+        eccube.openWindow("about:blank", "pdf_input", "620","650");
 
         // 退避
         tmpTarget = fm.target;
@@ -390,7 +390,7 @@
                                 <td class="center"><!--{$arrORDERSTATUS[$status]}--></td>
                                 <td class="center">
                                     <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->">一括出力</label><br />
-                                    <a href="./" onClick="eccube.win02('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','620','650'); return false;"><span class="icon_class">個別出力</span></a>
+                                    <a href="./" onClick="eccube.openWindow('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','620','650'); return false;"><span class="icon_class">個別出力</span></a>
                                 </td>
                                 <td class="center"><a href="?" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_ORDER_EDIT_URLPATH}-->'); eccube.setModeAndSubmit('pre_edit', 'order_id', '<!--{$arrResults[cnt].order_id}-->'); return false;"><span class="icon_edit">編集</span></a></td>
                                 <td class="center">

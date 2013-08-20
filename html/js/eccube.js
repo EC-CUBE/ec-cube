@@ -30,42 +30,57 @@
 
     var eccube = window.eccube;
 
-    eccube.win01 = function(URL,Winname,Wwidth,Wheight){
-        var WIN;
-        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=no,resizable=no,toolbar=no,location=no,directories=no,status=no");
-        WIN.focus();
+    eccube.defaults = {
+        formId:'form1',
+        windowFeatures:{
+            scrollbars:'yes',
+            resizable:'yes',
+            toolbar:'no',
+            location:'no',
+            directories:'no',
+            status:'no',
+            focus:true,
+            formTarget:''
+        }
     };
 
-    eccube.win02 = function(URL,Winname,Wwidth,Wheight){
-        var WIN;
-        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no");
-        WIN.focus();
-    };
-
-    eccube.win03 = function(URL,Winname,Wwidth,Wheight){
-        var WIN;
-        WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
-        WIN.focus();
-    };
-
-    eccube.winSubmit = function(URL,formName,Winname,Wwidth,Wheight){
-        var WIN = window.open(URL,Winname,"width="+Wwidth+",height="+Wheight+",scrollbars=yes,resizable=yes,toolbar=no,location=no,directories=no,status=no,menubar=no");
-        document.forms[formName].target = Winname;
-        WIN.focus();
-    };
-
-    eccube.openWindow = function(URL,name,width,height) {
-        window.open(URL,name,"width="+width+",height="+height+",scrollbars=yes,resizable=no,toolbar=no,location=no,directories=no,status=no");
+    eccube.openWindow = function(URL,name,width,height,option) {
+        var features = "width="+width+",height="+height;
+        if (option === undefined) {
+            option = eccube.defaults.windowFeatures;
+        } else {
+            option = $.extend(eccube.defaults.windowFeatures, option);
+        }
+        features = features + ",scrollbars=" + option.scrollbars +
+                ",resizable=" + option.resizable +
+                ",toolbar=" + option.toolbar +
+                ",location=" + option.location +
+                ",directories=" + option.directories +
+                ",status=" + option.status;
+        if (option.hasOwnProperty('menubar')) {
+            features = features + ",menubar=" + option['menubar'];
+        }
+        var WIN = window.open(URL,name,features);
+        if (option.formTarget !== "") {
+            document.forms[option.formTarget].target = name;
+        }
+        if (option.focus) {
+            WIN.focus();
+        }
     };
 
     // 親ウィンドウの存在確認.
     eccube.isOpener = function() {
         var ua = navigator.userAgent;
-        if( !!window.opener ) {
-            if( ua.indexOf('MSIE 4')!=-1 && ua.indexOf('Win')!=-1 ) {
-                return !window.opener.closed;
+        if( window.opener ) {
+            if( ua.indexOf('MSIE 4') !== -1 && ua.indexOf('Win') !== -1 ) {
+                if (window.opener.hasOwnProperty('closed')) {
+                    return !window.opener['closed'];
+                } else {
+                    return false;
+                }
             } else {
-                return typeof window.opener.document == 'object';
+                return typeof window.opener.document === 'object';
             }
         } else {
             return false;
@@ -73,7 +88,7 @@
     };
 
     eccube.chgImg = function(fileName,img){
-        if (typeof(img) == "object") {
+        if (typeof(img) === "object") {
             img.src = fileName;
         } else {
             document.images[img].src = fileName;
@@ -86,10 +101,10 @@
 
     // 郵便番号入力呼び出し.
     eccube.getAddress = function(php_url, tagname1, tagname2, input1, input2) {
-        var zip1 = document.form1[tagname1].value;
-        var zip2 = document.form1[tagname2].value;
+        var zip1 = document['form1'][tagname1].value;
+        var zip2 = document['form1'][tagname2].value;
 
-        if(zip1.length == 3 && zip2.length == 4) {
+        if(zip1.length === 3 && zip2.length === 4) {
             $.get(
                 php_url,
                 {zip1: zip1, zip2: zip2, input1: input1, input2: input2},
@@ -98,27 +113,27 @@
                     if (arrData.length > 1) {
                         eccube.putAddress(input1, input2, arrData[0], arrData[1], arrData[2]);
                     } else {
-                        alert(data);
+                        window.alert(data);
                     }
                 }
             );
         } else {
-            alert("郵便番号を正しく入力して下さい。");
+            window.alert("郵便番号を正しく入力して下さい。");
         }
     };
 
     // 郵便番号から検索した住所を渡す.
     eccube.putAddress = function(input1, input2, state, city, town) {
-        if(state != "") {
+        if(state !== "") {
             // 項目に値を入力する.
-            document.form1[input1].selectedIndex = state;
-            document.form1[input2].value = city + town;
+            document['form1'][input1].selectedIndex = state;
+            document['form1'][input2].value = city + town;
         }
     };
 
     eccube.setFocus = function(name) {
-        if(document.form1[name]) {
-            document.form1[name].focus();
+        if(document['form1'].hasOwnProperty(name)) {
+            document['form1'][name].focus();
         }
     };
 
@@ -148,11 +163,11 @@
             default:
                 break;
         }
-        document.form1['mode'].value = mode;
-        if(keyname != "" && keyid != "") {
-            document.form1[keyname].value = keyid;
+        document['form1']['mode'].value = mode;
+        if(keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
+            document['form1'][keyname].value = keyid;
         }
-        document.form1.submit();
+        document['form1'].submit();
     };
 
     eccube.fnFormModeSubmit = function(form, mode, keyname, keyid) {
@@ -177,7 +192,7 @@
                 break;
         }
         formElement.find("input[name='mode']").val(mode);
-        if(keyname != "" && keyid != "") {
+        if(keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
             formElement.find("*[name=" + keyname + "]").val(keyid);
         }
         formElement.submit();
@@ -192,20 +207,20 @@
 
     eccube.setValue = function(key, val, form) {
         if (typeof form === 'undefined') {
-            form = 'form1';
+            form = eccube.defaults.formId;
         }
         var formElement = $("form#" + form);
         formElement.find("*[name=" + key + "]").val(val);
     };
 
     eccube.changeAction = function(url) {
-        document.form1.action = url;
+        document['form1'].action = url;
     };
 
     // ページナビで使用する。
     eccube.movePage = function(pageno, mode, form) {
         if (typeof form === 'undefined') {
-            form = 'form1';
+            form = eccube.defaults.formId;
         }
         var formElement = $("form#" + form);
         formElement.find("input[name=pageno]").val(pageno);
@@ -217,19 +232,19 @@
 
     eccube.submitForm = function(form){
         if (typeof form === 'undefined') {
-            form = 'form1';
+            form = eccube.defaults.formId;
         }
         $("form#" + form).submit();
     };
 
     // ポイント入力制限。
     eccube.togglePointForm = function() {
-        if(document.form1['point_check']) {
+        if(document['form1']['point_check']) {
             var list = ['use_point'];
             var color;
             var flag;
 
-            if(!document.form1['point_check'][0].checked) {
+            if(!document['form1']['point_check'][0].checked) {
                 color = "#dddddd";
                 flag = true;
             } else {
@@ -238,15 +253,15 @@
             }
 
             var len = list.length;
-            for(i = 0; i < len; i++) {
-                if(document.form1[list[i]]) {
-                    var current_color = document.form1[list[i]].style.backgroundColor;
-                    if (color != "#dddddd" && (current_color == "#ffe8e8" || current_color == "rgb(255, 232, 232)"))
+            for(var i = 0; i < len; i++) {
+                if(document['form1'][list[i]]) {
+                    var current_color = document['form1'][list[i]].style.backgroundColor;
+                    if (color !== "#dddddd" && (current_color === "#ffe8e8" || current_color === "rgb(255, 232, 232)"))
                     {
                         continue;
                     }
-                    document.form1[list[i]].disabled = flag;
-                    document.form1[list[i]].style.backgroundColor = color;
+                    document['form1'][list[i]].disabled = flag;
+                    document['form1'][list[i]].style.backgroundColor = color;
                 }
             }
         }
@@ -254,10 +269,10 @@
 
     // 別のお届け先入力制限。
     eccube.toggleDeliveryForm = function() {
-        if(!document.form1) {
+        if(!document['form1']) {
             return;
         }
-        if(document.form1['deliv_check']) {
+        if(document['form1']['deliv_check']) {
             var list = [
                 'shipping_name01',
                 'shipping_name02',
@@ -273,7 +288,7 @@
                 'shipping_tel03'
             ];
 
-            if(!document.form1['deliv_check'].checked) {
+            if(!document['form1']['deliv_check'].checked) {
                 eccube.changeDisabled(list, '#dddddd');
             } else {
                 eccube.changeDisabled(list, '');
@@ -287,17 +302,17 @@
     eccube.changeDisabled = function(list, color) {
         var len = list.length;
 
-        for(i = 0; i < len; i++) {
-            if(document.form1[list[i]]) {
-                if(color == "") {
+        for(var i = 0; i < len; i++) {
+            if(document['form1'][list[i]]) {
+                if(color === "") {
                     // 有効にする。
-                    document.form1[list[i]].disabled = false;
-                    document.form1[list[i]].style.backgroundColor = eccube.savedColor[list[i]];
+                    document['form1'][list[i]].removeAttribute('disabled');
+                    document['form1'][list[i]].style.backgroundColor = eccube.savedColor[list[i]];
                 } else {
                     // 無効にする。
-                    document.form1[list[i]].disabled = true;
-                    eccube.savedColor[list[i]] = document.form1[list[i]].style.backgroundColor;
-                    document.form1[list[i]].style.backgroundColor = color;//"#f0f0f0";
+                    document['form1'][list[i]].setAttribute('disabled', 'disabled');
+                    eccube.savedColor[list[i]] = document['form1'][list[i]].style.backgroundColor;
+                    document['form1'][list[i]].style.backgroundColor = color;//"#f0f0f0";
                 }
             }
         }
@@ -324,15 +339,15 @@
 
         //　必須項目のチェック
         for(var cnt = 0; cnt < max; cnt++) {
-            if(formElement.find("input[name=" + checkItems[cnt] + "]").val() == "") {
+            if(formElement.find("input[name=" + checkItems[cnt] + "]").val() === "") {
                 errorFlag = true;
                 break;
             }
         }
 
         // 必須項目が入力されていない場合
-        if(errorFlag == true) {
-            alert('メールアドレス/パスワードを入力して下さい。');
+        if(errorFlag === true) {
+            window.alert('メールアドレス/パスワードを入力して下さい。');
             return false;
         } else {
             return true;
@@ -382,23 +397,25 @@
                 var classcat2;
 
                 // 商品一覧時
-                if (eccube.productsClassCategories !== undefined) {
-                    classcat2 = eccube.productsClassCategories[product_id][classcat_id1];
+                if (eccube.hasOwnProperty('productsClassCategories')) {
+                    classcat2 = eccube['productsClassCategories'][product_id][classcat_id1];
                 }
                 // 詳細表示時
                 else {
-                    classcat2 = eccube.classCategories[classcat_id1];
+                    classcat2 = eccube['classCategories'][classcat_id1];
                 }
 
                 // 規格2の要素を設定
                 for (var key in classcat2) {
-                    var id = classcat2[key]['classcategory_id2'];
-                    var name = classcat2[key]['name'];
-                    var option = $('<option />').val(id ? id : '').text(name);
-                    if (id == selected_id2) {
-                        option.attr('selected', true);
+                    if (classcat2.hasOwnProperty(key)) {
+                        var id = classcat2[key]['classcategory_id2'];
+                        var name = classcat2[key]['name'];
+                        var option = $('<option />').val(id ? id : '').text(name);
+                        if (id === selected_id2) {
+                            option.attr('selected', true);
+                        }
+                        $sele2.append(option);
                     }
-                    $sele2.append(option);
                 }
                 eccube.checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2',
                     $sele2.val() ? $sele2.val() : '');
@@ -416,19 +433,18 @@
         var classcat2;
 
         // 商品一覧時
-        if (typeof eccube.productsClassCategories != 'undefined') {
-            classcat2 = eccube.productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
+        if (eccube.hasOwnProperty('productsClassCategories')) {
+            classcat2 = eccube['productsClassCategories'][product_id][classcat_id1]['#' + classcat_id2];
         }
         // 詳細表示時
         else {
-            classcat2 = eccube.classCategories[classcat_id1]['#' + classcat_id2];
+            classcat2 = eccube['classCategories'][classcat_id1]['#' + classcat_id2];
         }
 
         // 商品コード
         var $product_code_default = $form.find('[id^=product_code_default]');
         var $product_code_dynamic = $form.find('[id^=product_code_dynamic]');
-        if (classcat2
-            && typeof classcat2['product_code'] != 'undefined') {
+        if (classcat2 && typeof classcat2['product_code'] !== 'undefined') {
             $product_code_default.hide();
             $product_code_dynamic.show();
             $product_code_dynamic.text(classcat2['product_code']);
@@ -452,9 +468,7 @@
         // 通常価格
         var $price01_default = $form.find('[id^=price01_default]');
         var $price01_dynamic = $form.find('[id^=price01_dynamic]');
-        if (classcat2
-            && typeof classcat2['price01'] != 'undefined'
-            && String(classcat2['price01']).length >= 1) {
+        if (classcat2 && typeof classcat2['price01'] !== 'undefined' && String(classcat2['price01']).length >= 1) {
 
             $price01_dynamic.text(classcat2['price01']).show();
             $price01_default.hide();
@@ -466,9 +480,7 @@
         // 販売価格
         var $price02_default = $form.find('[id^=price02_default]');
         var $price02_dynamic = $form.find('[id^=price02_dynamic]');
-        if (classcat2
-            && typeof classcat2['price02'] != 'undefined'
-            && String(classcat2['price02']).length >= 1) {
+        if (classcat2 && typeof classcat2['price02'] !== 'undefined' && String(classcat2['price02']).length >= 1) {
 
             $price02_dynamic.text(classcat2['price02']).show();
             $price02_default.hide();
@@ -480,9 +492,7 @@
         // ポイント
         var $point_default = $form.find('[id^=point_default]');
         var $point_dynamic = $form.find('[id^=point_dynamic]');
-        if (classcat2
-            && typeof classcat2['point'] != 'undefined'
-            && String(classcat2['point']).length >= 1) {
+        if (classcat2 && typeof classcat2['point'] !== 'undefined' && String(classcat2['point']).length >= 1) {
 
             $point_dynamic.text(classcat2['point']).show();
             $point_default.hide();
@@ -493,10 +503,7 @@
 
         // 商品規格
         var $product_class_id_dynamic = $form.find('[id^=product_class_id]');
-        if (classcat2
-            && typeof classcat2['product_class_id'] != 'undefined'
-            && String(classcat2['product_class_id']).length >= 1) {
-
+        if (classcat2 && typeof classcat2['product_class_id'] !== 'undefined' && String(classcat2['product_class_id']).length >= 1) {
             $product_class_id_dynamic.val(classcat2['product_class_id']);
         } else {
             $product_class_id_dynamic.val('');
