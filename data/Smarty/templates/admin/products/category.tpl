@@ -22,7 +22,6 @@
  */
 *}-->
 
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/breadcrumbs.js"></script>
 <script type="text/javascript">//<![CDATA[
     $(function() {
         $('h2').breadcrumbs({

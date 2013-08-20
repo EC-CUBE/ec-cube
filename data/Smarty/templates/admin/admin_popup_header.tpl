@@ -33,7 +33,7 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/admin_contents.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
-<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/admin.js"></script>
+<script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/eccube.admin.js"></script>
 <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <script type="text/javascript">//<![CDATA[

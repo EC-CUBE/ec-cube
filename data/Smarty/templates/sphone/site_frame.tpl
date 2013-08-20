@@ -50,7 +50,7 @@
 
         <script src="<!--{$TPL_URLPATH}-->js/jquery-1.9.1.min.js"></script>
         <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
-        <script src="<!--{$TPL_URLPATH}-->js/eccube_sphone.js"></script>
+        <script src="<!--{$TPL_URLPATH}-->js/eccube.sphone.js"></script>
         <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
         <script>//<![CDATA[
             $(function(){
