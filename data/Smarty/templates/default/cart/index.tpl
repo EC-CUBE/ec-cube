@@ -177,7 +177,7 @@
                                 </li>
                                 <li>
                                     <!--{if strlen($tpl_error) == 0}-->
-                                        <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep_on.jpg',this)" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg',this)" src="<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
+                                        <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH|h}-->img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
                                     <!--{/if}-->
                                 </li>
                             </ul>

@@ -59,7 +59,7 @@
                 <ul>
                     <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
                         <li>
-                            <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular_on.jpg',this)" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg" alt="上記のお届け先のみに送る" name="singular" id="singular" />
+                            <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_singular.jpg" alt="上記のお届け先のみに送る" name="singular" id="singular" />
                         </li>
                         <li>
                             <a href="javascript:;" onclick="eccube.setModeAndSubmit('multiple', '', ''); return false">
@@ -68,7 +68,7 @@
                         </li>
                     <!--{else}-->
                         <li>
-                            <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next_on.jpg',this)" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_next.jpg',this)" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="singular" id="singular" />
+                            <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="singular" id="singular" />
                         </li>
                     <!--{/if}-->
                 </ul>

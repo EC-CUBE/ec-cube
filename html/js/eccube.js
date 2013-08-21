@@ -87,10 +87,6 @@
         }
     };
 
-    eccube.chgImgImageSubmit = function(fileName,imgObj){
-        imgObj.src = fileName;
-    };
-
     // 郵便番号入力呼び出し.
     eccube.getAddress = function(php_url, tagname1, tagname2, input1, input2) {
         var zip1 = document['form1'][tagname1].value;
