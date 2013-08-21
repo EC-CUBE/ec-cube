@@ -32,9 +32,9 @@
                 <ul>
                     <li>
                         <!--{if $return_top}-->
-                            <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage_on.jpg','b_toppage');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg','b_toppage');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" border="0" name="b_toppage" /></a>
+                            <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" /></a>
                         <!--{else}-->
-                            <a href="javascript:history.back()" onmouseOver="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','b_back');" onmouseOut="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','b_back');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="b_back" id="b_back" /></a>
+                            <a href="javascript:history.back()"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" /></a>
                         <!--{/if}-->
                     </li>
                 </ul>

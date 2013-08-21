@@ -43,7 +43,7 @@
                     <!--{/if}-->
                 </div>
                 <div class="btn">
-                    <a href="<!--{$smarty.const.CART_URLPATH}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart_on.jpg','button_cart');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg','button_cart');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg" alt="カゴの中を見る" border="0" name="button_cart" id="button_cart" /></a>
+                    <a href="<!--{$smarty.const.CART_URLPATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg" alt="カゴの中を見る" /></a>
                 </div>
             </div>
         </div>

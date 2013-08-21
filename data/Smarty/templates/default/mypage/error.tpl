@@ -29,7 +29,7 @@
 </div>
 
 <div class="button">
-    <a href="javascript:window.close()" onmouseOver="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close_on.gif','close');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_close.gif','close');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" alt="閉じる" name="close" id="close" /></a>
+    <a href="javascript:window.close()"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_close.gif" alt="閉じる" /></a>
 </div>
 
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

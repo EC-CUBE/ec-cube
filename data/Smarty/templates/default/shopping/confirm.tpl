@@ -367,7 +367,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="./payment.php" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','back<!--{$key}-->');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','back<!--{$key}-->');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key}-->" /></a>
+                        <a href="./payment.php"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key}-->" /></a>
                     </li>
                     <!--{if $use_module}-->
                     <li>

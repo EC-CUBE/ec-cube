@@ -40,7 +40,11 @@
         </table>
         <div class="btn_area">
             <ul>
-                <li><a class="btn-action" href="javascript:" onclick="eccube.setValueAndSubmit('form1', 'mode', 'edit'); return false;"><img onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete_on.jpg',this);" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="登録する"></a></li>
+                <li>
+                    <a class="btn-action" href="javascript:" onclick="eccube.setValueAndSubmit('form1', 'mode', 'edit'); return false;">
+                        <img class="hover_change_submit" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="登録する" />
+                    </a>
+                </li>
             </ul>
         </div>
     </form>

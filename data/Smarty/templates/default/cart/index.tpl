@@ -171,8 +171,8 @@
                             <ul>
                                 <li>
                                     <!--{if $tpl_prev_url != ""}-->
-                                        <a href="<!--{$tpl_prev_url|h}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back_on.jpg','back<!--{$key|h}-->');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg','back<!--{$key|h}-->');">
-                                            <img src="<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key|h}-->" /></a>
+                                        <a href="<!--{$tpl_prev_url|h}-->">
+                                            <img class="hover_change_image" src="<!--{$TPL_URLPATH|h}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key|h}-->" /></a>
                                     <!--{/if}-->
                                 </li>
                                 <li>
