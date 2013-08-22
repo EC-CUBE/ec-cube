@@ -1352,7 +1352,7 @@ __EOS__;
             if (!SC_Utils_Ex::isBlank($arrOrders)) {
                 foreach ($arrOrders as $arrOrder) {
                     $order_id = $arrOrder['order_id'];
-                    SC_Helper_Purchase_Ex::cancelOrder($order_id, ORDER_PENDING_ERROR, false);
+                    SC_Helper_Purchase_Ex::cancelOrder($order_id, ORDER_CANCEL, false);
                     GC_Utils_Ex::gfPrintLog('order cancel.(time expire) order_id=' . $order_id);
                 }
             }
