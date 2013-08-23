@@ -122,6 +122,7 @@ class SC_Initial
         ini_set('default_charset', CHAR_CODE);
         ini_set('mbstring.detect_order', 'auto');
         ini_set('mbstring.substitute_character', 'none');
+        ini_set('pcre.backtrack_limit', 1000000);
 
         mb_language('ja'); // mb_internal_encoding() より前に
         // TODO .htaccess の mbstring.language を削除できないか検討
