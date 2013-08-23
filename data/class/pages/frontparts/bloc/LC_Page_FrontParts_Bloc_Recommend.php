@@ -99,7 +99,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
             foreach ($arrRecommends as $key => $value) {
                 if (isset($arrProducts[$value['product_id']])) {
                     $product = $arrProducts[$value['product_id']];
-                    if ($product['status'] == 1 && (!NOSTOCK_HIDDEN || ($product['stock_max'] >= 1 || $product['stock_unlimited_max'] == 1)) {
+                    if ($product['status'] == 1 && (!NOSTOCK_HIDDEN || ($product['stock_max'] >= 1 || $product['stock_unlimited_max'] == 1))) {
                         $response[] = array_merge($value, $arrProducts[$value['product_id']]);
                     }
                 } else {
