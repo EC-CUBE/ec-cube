@@ -48,7 +48,7 @@
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <p class="btn">
                     <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id|h}-->" />
-                    <input type="image" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re_on.jpg', this);" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg', this);" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />
+                    <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />
                 </p>
             </form>
         </div>
@@ -272,7 +272,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','change');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="change" id="change" /></a>
+                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" /></a>
                 </li>
             </ul>
         </div>

@@ -242,8 +242,9 @@
                             <div class="cartin_btn">
                                 <div id="cartbtn_default">
                                     <!--★カゴに入れる★-->
-                                    <a href="javascript:void(document.form1.submit())" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin_on.jpg','cart');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg','cart');">
-                                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" name="cart" id="cart" /></a>
+                                    <a href="javascript:void(document.form1.submit())">
+                                        <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" />
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -260,7 +261,7 @@
                                 <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
                             <!--{/if}-->
                             <!--{if !$is_favorite}-->
-                                <a href="javascript:eccube.changeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); eccube.setModeAndSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg','add_favorite_product');" onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg','add_favorite_product');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" name="add_favorite_product" id="add_favorite_product" /></a>
+                                <a href="javascript:eccube.changeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); eccube.setModeAndSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" /></a>
                             <!--{else}-->
                                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="お気に入り登録済" name="add_favorite_product" id="add_favorite_product" />
                                 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tipsy.js"></script>
@@ -331,9 +332,9 @@
                     <!--★新規コメントを書き込む★-->
                     <a href="./review.php"
                         onclick="eccube.openWindow('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
-                        onmouseover="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment_on.jpg','review');"
-                        onmouseout="eccube.chgImg('<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg','review');" target="_blank">
-                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg" alt="新規コメントを書き込む" name="review" id="review" /></a>
+                        target="_blank">
+                        <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg" alt="新規コメントを書き込む" />
+                    </a>
                 <!--{/if}-->
             </div>
         </div>

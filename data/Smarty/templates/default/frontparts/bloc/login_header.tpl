@@ -1,3 +1,4 @@
+<!--{if !$tpl_login}-->
 <script type="text/javascript">//<![CDATA[
     $(function(){
         var $login_email = $('#header_login_area input[name=login_email]');
@@ -36,10 +37,11 @@
         });
     });
 //]]></script>
+<!--{/if}-->
 <!--{strip}-->
     <div class="block_outer">
         <div id="header_login_area" class="clearfix">
-            <form name="header_login_form" id="header_login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php" onsubmit="return eccube.checkLoginFormInputted('header_login_form')">
+            <form name="header_login_form" id="header_login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php"<!--{if !$tpl_login}--> onsubmit="return eccube.checkLoginFormInputted('header_login_form')"<!--{/if}-->>
                 <input type="hidden" name="mode" value="login" />
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
@@ -51,7 +53,7 @@
                                 / 所持ポイント: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>&nbsp;&nbsp;
                             <!--{/if}-->
                             <!--{if !$tpl_disable_logout}-->
-                                <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout_on.jpg',this)" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="eccube.fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;" alt="ログアウト" />
+                                <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="eccube.fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;" alt="ログアウト" />
                             <!--{/if}-->
                         </p>
                     <!--{else}-->
@@ -64,7 +66,7 @@
                             </li>
                             <li class="password"><input type="password" class="box100" name="login_pass" title="パスワードを入力して下さい" /></li>
                             <li class="btn">
-                                <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_login_on.jpg',this)" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/common/btn_header_login.jpg',this)" src="<!--{$TPL_URLPATH}-->img/common/btn_header_login.jpg" />
+                                <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/common/btn_header_login.jpg" />
                             </li>
                             <li class="forgot">
                                 <a href="<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="eccube.openWindow('<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','400',{scrollbars:'no',resizable:'no'}); return false;" target="_blank">パスワードを忘れた方</a>

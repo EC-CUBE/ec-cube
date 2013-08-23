@@ -88,12 +88,16 @@ function fnChangeVisible(check_id, mod_id){
         <tr><td align="left" class="fs12"><input type="radio" id="agreement_yes" name="<!--{$key}-->" value=true onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if $arrHidden[$key]}-->checked<!--{/if}-->><label for="agreement_yes">同意する</label>　<input type="radio" id="agreement_no" name="<!--{$key}-->" value=false onclick="fnChangeVisible('agreement_yes', 'next');" <!--{if !$arrHidden[$key]|h}-->checked<!--{/if}-->><label for="agreement_no">同意しない</label></td></tr>
     </table>
 
-    <table width="500" border="0" cellspacing="1" cellpadding="8" summary=" ">
+    <table width="500" border="0" cellspacing="1" cellpadding="8">
         <tr><td height="20"></td></tr>
         <tr>
             <td align="center">
-            <a href="#" onmouseover="eccube.chgImg('../img/install/back_on.jpg','back')" onmouseout="eccube.chgImg('../img/install/back.jpg','back')" onclick="document.form1['mode'].value='return_welcome';document.form1.submit();" /><img  width="105" src="../img/install/back.jpg"  height="24" alt="前へ戻る" border="0" name="back"></a>
-            <a href="#" onclick="document.form1.submit();"><input type='image' onMouseover="eccube.chgImgImageSubmit('../img/install/next_on.jpg',this)" onMouseout="eccube.chgImgImageSubmit('../img/install/next.jpg',this)" src="../img/install/next.jpg" width="105" height="24" alt="次へ進む" border="0" name="next" id="next"></a>
+                <a href="#" onclick="document.form1['mode'].value='return_welcome';document.form1.submit();">
+                    <img class="hover_change_image" width="105" src="../img/install/back.jpg" height="24" alt="前へ戻る" name="back">
+                </a>
+                <a href="#" onclick="document.form1.submit();">
+                    <input type='image' class="hover_change_image" src="../img/install/next.jpg" width="105" height="24" alt="次へ進む" name="next" id="next">
+                </a>
             </td>
         </tr>
         <tr><td height="30"></td></tr>

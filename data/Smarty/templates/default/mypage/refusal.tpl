@@ -39,7 +39,7 @@
                     <div class="btn_area">
                         <ul>
                             <li>
-                                <input type="image" onmouseover="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse_on.jpg',this);" onmouseout="eccube.chgImgImageSubmit('<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg',this);" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg" alt="会員退会を行う" name="refusal" id="refusal" />
+                                <input type="image" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg" alt="会員退会を行う" class="hover_change_image" name="refusal" id="refusal" />
                             </li>
                         </ul>
                     </div>

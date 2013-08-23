@@ -87,18 +87,6 @@
         }
     };
 
-    eccube.chgImg = function(fileName,img){
-        if (typeof(img) === "object") {
-            img.src = fileName;
-        } else {
-            document.images[img].src = fileName;
-        }
-    };
-
-    eccube.chgImgImageSubmit = function(fileName,imgObj){
-        imgObj.src = fileName;
-    };
-
     // 郵便番号入力呼び出し.
     eccube.getAddress = function(php_url, tagname1, tagname2, input1, input2) {
         var zip1 = document['form1'][tagname1].value;
@@ -543,5 +531,20 @@
                 var $sele2 = $(this);
                 eccube.checkStock($form, product_id, $sele1.val(), $sele2.val());
             });
+
+        // マウスオーバーで画像切り替え
+        $(".hover_change_image").each(function(){
+            var target = $(this);
+            var srcOrig = target.attr("src");
+            var srcOver = srcOrig.substr(0, srcOrig.lastIndexOf('.')) + '_on' + srcOrig.substr(srcOrig.lastIndexOf('.'));
+            target.hover(
+                function(){
+                    target.attr("src", srcOver);
+                },
+                function(){
+                    target.attr("src", srcOrig);
+                }
+            );
+        });
     });
 })(window);
