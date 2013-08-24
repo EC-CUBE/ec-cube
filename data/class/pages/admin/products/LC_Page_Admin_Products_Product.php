@@ -588,7 +588,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
         if (isset($arrForm['category_id']) && !is_array($arrForm['category_id'])) {
             $arrForm['category_id'] = unserialize($arrForm['category_id']);
         }
-        $this->tpl_json_category_id = SC_Utils_Ex::jsonEncode($arrForm['category_id']);
+        $this->tpl_json_category_id = !empty($arrForm['category_id']) ? SC_Utils_Ex::jsonEncode($arrForm['category_id']) : SC_Utils_Ex::jsonEncode(array());
         if ($arrForm['status'] == '') {
             $arrForm['status'] = DEFAULT_PRODUCT_DISP;
         }
