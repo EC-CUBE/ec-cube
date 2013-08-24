@@ -37,7 +37,7 @@ class LC_Page_Regist extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -48,7 +48,7 @@ class LC_Page_Regist extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -60,7 +60,7 @@ class LC_Page_Regist extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         switch ($this->getMode()) {
             case 'regist':
@@ -89,7 +89,7 @@ class LC_Page_Regist extends LC_Page_Ex
      * @access private
      * @return string $arrRegist['secret_key'] 本登録ID
      */
-    function lfRegistData($array)
+    public function lfRegistData($array)
     {
         $objQuery                   = SC_Query_Ex::getSingletonInstance();
         $arrRegist['secret_key']    = SC_Helper_Customer_Ex::sfGetUniqSecretKey(); //本登録ID発行
@@ -110,7 +110,7 @@ class LC_Page_Regist extends LC_Page_Ex
      * @access private
      * @return array エラーの配列
      */
-    function lfCheckError($array)
+    public function lfCheckError($array)
     {
         $objErr     = new SC_CheckError_Ex($array);
 
@@ -133,7 +133,7 @@ class LC_Page_Regist extends LC_Page_Ex
      * @access private
      * @return void
      */
-    function lfSendRegistMail($registSecretKey)
+    public function lfSendRegistMail($registSecretKey)
     {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objCustomer    = new SC_Customer_Ex();

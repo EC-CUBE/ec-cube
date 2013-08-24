@@ -37,7 +37,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -51,7 +51,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
     }
@@ -61,7 +61,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objView = new SC_SiteView_Ex();
 
@@ -119,11 +119,11 @@ class LC_Page_Rss_Products extends LC_Page_Ex
     /**
      * lfGetProductsDetailData.
      *
-     * @param str $mode モード
-     * @param str $product_id 商品ID
+     * @param  str   $mode       モード
+     * @param  str   $product_id 商品ID
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsDetailData($mode, $product_id)
+    public function lfGetProductsDetailData($mode, $product_id)
     {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品詳細を取得
@@ -176,7 +176,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsListData()
+    public function lfGetProductsListData()
     {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品一覧を取得
@@ -190,7 +190,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex
      *
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsAllData()
+    public function lfGetProductsAllData()
     {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品情報を取得
@@ -233,11 +233,11 @@ class LC_Page_Rss_Products extends LC_Page_Ex
     /**
      * 商品情報を取得する
      *
-     * @param SC_Query $objQuery DB操作クラス
-     * @param integer $product_id 商品ID
-     * @return array $arrProduct 取得結果を配列で返す
+     * @param  SC_Query $objQuery   DB操作クラス
+     * @param  integer  $product_id 商品ID
+     * @return array    $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsDetail(&$objQuery, $product_id = 'all')
+    public function lfGetProductsDetail(&$objQuery, $product_id = 'all')
     {
         $objProduct = new SC_Product_Ex();
 
@@ -277,10 +277,10 @@ class LC_Page_Rss_Products extends LC_Page_Ex
     /**
      * 商品情報を取得する(vw_products_allclass使用)
      *
-     * @param SC_Query $objQuery DB操作クラス
-     * @return array $arrProduct 取得結果を配列で返す
+     * @param  SC_Query $objQuery DB操作クラス
+     * @return array    $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsAllclass(&$objQuery)
+    public function lfGetProductsAllclass(&$objQuery)
     {
         // --- 商品一覧の取得
         $objProduct = new SC_Product_Ex();

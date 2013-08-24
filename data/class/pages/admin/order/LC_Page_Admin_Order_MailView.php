@@ -37,7 +37,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/mail_view.tpl';
@@ -50,7 +50,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -61,7 +61,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $send_id = $_GET['send_id'];
         if (SC_Utils_Ex::sfIsInt($send_id)) {
@@ -77,7 +77,7 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex
      * メールの履歴を取り出す。
      * @param int $send_id
      */
-    function getMailHistory($send_id)
+    public function getMailHistory($send_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'subject, mail_body';

@@ -33,11 +33,11 @@ class SC_Helper_News
     /**
      * ニュースの情報を取得.
      *
-     * @param integer $news_id ニュースID
-     * @param boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
+     * @param  integer $news_id     ニュースID
+     * @param  boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
      * @return array
      */
-    static public function getNews($news_id, $has_deleted = false)
+    public static function getNews($news_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*, cast(news_date as date) as cast_news_date';
@@ -53,9 +53,9 @@ class SC_Helper_News
     /**
      * ニュース一覧の取得.
      *
-     * @param integer $dispNumber 表示件数
-     * @param integer $pageNumber ページ番号
-     * @param boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
+     * @param  integer $dispNumber  表示件数
+     * @param  integer $pageNumber  ページ番号
+     * @param  boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
      * @return array
      */
     public function getList($dispNumber = 0, $pageNumber = 0, $has_deleted = false)
@@ -83,7 +83,7 @@ class SC_Helper_News
     /**
      * ニュースの登録.
      *
-     * @param array $sqlval
+     * @param  array    $sqlval
      * @return multiple 登録成功:ニュースID, 失敗:FALSE
      */
     public function saveNews($sqlval)
@@ -113,7 +113,7 @@ class SC_Helper_News
     /**
      * ニュースの削除.
      *
-     * @param integer $news_id ニュースID
+     * @param  integer $news_id ニュースID
      * @return void
      */
     public function deleteNews($news_id)
@@ -126,7 +126,7 @@ class SC_Helper_News
     /**
      * ニュースの表示順をひとつ上げる.
      *
-     * @param integer $news_id ニュースID
+     * @param  integer $news_id ニュースID
      * @return void
      */
     public function rankUp($news_id)
@@ -138,7 +138,7 @@ class SC_Helper_News
     /**
      * ニュースの表示順をひとつ下げる.
      *
-     * @param integer $news_id ニュースID
+     * @param  integer $news_id ニュースID
      * @return void
      */
     public function rankDown($news_id)
@@ -150,8 +150,8 @@ class SC_Helper_News
     /**
      * ニュースの表示順を指定する.
      *
-     * @param integer $news_id ニュースID
-     * @param integer $rank 移動先の表示順
+     * @param  integer $news_id ニュースID
+     * @param  integer $rank    移動先の表示順
      * @return void
      */
     public function moveRank($news_id, $rank)
@@ -163,7 +163,7 @@ class SC_Helper_News
     /**
      * ニュース記事数を計算.
      *
-     * @param boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
+     * @param  boolean $has_deleted 削除されたニュースも含む場合 true; 初期値 false
      * @return integer ニュース記事数
      */
     public function getCount($has_deleted = false)

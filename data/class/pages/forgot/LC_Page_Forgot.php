@@ -33,23 +33,23 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 class LC_Page_Forgot extends LC_Page_Ex
 {
     /** フォームパラメーターの配列 */
-    var $objFormParam;
+    public $objFormParam;
 
     /** 秘密の質問の答え */
-    var $arrReminder;
+    public $arrReminder;
 
     /** 変更後パスワード */
-    var $temp_password;
+    public $temp_password;
 
     /** エラーメッセージ */
-    var $errmsg;
+    public $errmsg;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -70,7 +70,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -82,7 +82,7 @@ class LC_Page_Forgot extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -139,11 +139,11 @@ class LC_Page_Forgot extends LC_Page_Ex
     /**
      * メールアドレス・名前確認
      *
-     * @param array $arrForm フォーム入力値
-     * @param array $arrReminder リマインダー質問リスト
+     * @param  array  $arrForm     フォーム入力値
+     * @param  array  $arrReminder リマインダー質問リスト
      * @return string エラー文字列 問題が無ければNULL
      */
-    function lfCheckForgotMail(&$arrForm, &$arrReminder)
+    public function lfCheckForgotMail(&$arrForm, &$arrReminder)
     {
         $errmsg = NULL;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -155,7 +155,7 @@ class LC_Page_Forgot extends LC_Page_Ex
             if ($result[0]['status'] == '2') {
                 // 正会員
                 $arrForm['reminder'] = $result[0]['reminder'];
-            } else if ($result[0]['status'] == '1') {
+            } elseif ($result[0]['status'] == '1') {
                 // 仮会員
                 $errmsg = 'ご入力のemailアドレスは現在仮登録中です。<br/>登録の際にお送りしたメールのURLにアクセスし、<br/>本会員登録をお願いします。';
             }
@@ -169,11 +169,11 @@ class LC_Page_Forgot extends LC_Page_Ex
     /**
      * メールアドレス確認におけるパラメーター情報の初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
-     * @param array $device_type デバイスタイプ
+     * @param  array $objFormParam フォームパラメータークラス
+     * @param  array $device_type  デバイスタイプ
      * @return void
      */
-    function lfInitMailCheckParam(&$objFormParam, $device_type)
+    public function lfInitMailCheckParam(&$objFormParam, $device_type)
     {
         $objFormParam->addParam('お名前(姓)', 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(名)', 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
@@ -189,11 +189,11 @@ class LC_Page_Forgot extends LC_Page_Ex
     /**
      * 秘密の質問確認
      *
-     * @param array $arrForm フォーム入力値
-     * @param array $arrReminder リマインダー質問リスト
+     * @param  array  $arrForm     フォーム入力値
+     * @param  array  $arrReminder リマインダー質問リスト
      * @return string エラー文字列 問題が無ければNULL
      */
-    function lfCheckForgotSecret(&$arrForm, &$arrReminder)
+    public function lfCheckForgotSecret(&$arrForm, &$arrReminder)
     {
         $errmsg = '';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -213,8 +213,7 @@ class LC_Page_Forgot extends LC_Page_Ex
                 if ($result[0]['reminder_answer'] == $arrForm['reminder_answer']) {
                     $is_authorized = true;
                 }
-            }
-            elseif (SC_Utils_Ex::sfIsMatchHashPassword($arrForm['reminder_answer'],
+            } elseif (SC_Utils_Ex::sfIsMatchHashPassword($arrForm['reminder_answer'],
                     $result[0]['reminder_answer'], $result[0]['salt'])) {
                 $is_authorized = true;
             }
@@ -250,11 +249,11 @@ class LC_Page_Forgot extends LC_Page_Ex
     /**
      * 秘密の質問確認におけるパラメーター情報の初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
-     * @param array $device_type デバイスタイプ
+     * @param  array $objFormParam フォームパラメータークラス
+     * @param  array $device_type  デバイスタイプ
      * @return void
      */
-    function lfInitSecretCheckParam(&$objFormParam, $device_type)
+    public function lfInitSecretCheckParam(&$objFormParam, $device_type)
     {
         // メールチェックと同等のチェックを再度行う
         $this->lfInitMailCheckParam($objFormParam, $device_type);
@@ -268,15 +267,15 @@ class LC_Page_Forgot extends LC_Page_Ex
     /**
      * パスワード変更お知らせメールを送信する.
      *
-     * @param array $CONF 店舗基本情報の配列
-     * @param string $email 送信先メールアドレス
-     * @param string $customer_name 送信先氏名
-     * @param string $new_password 変更後の新パスワード
+     * @param  array  $CONF          店舗基本情報の配列
+     * @param  string $email         送信先メールアドレス
+     * @param  string $customer_name 送信先氏名
+     * @param  string $new_password  変更後の新パスワード
      * @return void
      *
      * FIXME: メールテンプレート編集の方に足すのが望ましい
      */
-    function lfSendMail(&$CONF, $email, $customer_name, $new_password)
+    public function lfSendMail(&$CONF, $email, $customer_name, $new_password)
     {
         // パスワード変更お知らせメール送信
         $objMailText = new SC_SiteView_Ex(false);

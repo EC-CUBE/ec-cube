@@ -37,7 +37,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'products/review_edit.tpl';
@@ -58,7 +58,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -69,7 +69,7 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター情報の初期化
         $objFormParam = new SC_FormParam_Ex();
@@ -104,10 +104,10 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
     /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
@@ -128,10 +128,10 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
     /**
      * レビュー情報のDB取得
      *
-     * @param integer $review_id レビューID
-     * @return array レビュー情報
+     * @param  integer $review_id レビューID
+     * @return array   レビュー情報
      */
-    function lfGetReviewData($review_id)
+    public function lfGetReviewData($review_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $select='review_id, A.product_id, reviewer_name, sex, recommend_level, ';
@@ -149,11 +149,11 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
     /**
      * レビュー情報の更新
      *
-     * @param integer $review_id レビューID
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  integer      $review_id    レビューID
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfRegistReviewData($review_id, &$objFormParam)
+    public function lfRegistReviewData($review_id, &$objFormParam)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrValues = $objFormParam->getDbArray();

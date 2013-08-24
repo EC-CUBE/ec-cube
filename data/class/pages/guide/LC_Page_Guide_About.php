@@ -37,7 +37,7 @@ class LC_Page_Guide_About extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     $masterData = new SC_DB_MasterData_Ex();
@@ -49,7 +49,7 @@ class LC_Page_Guide_About extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -61,7 +61,7 @@ class LC_Page_Guide_About extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
     }
 }

@@ -34,27 +34,27 @@ class SC_Response
      * Enter description here ...
      * @var unknown_type
      */
-    var $contentType;
-    var $body;
-    var $statusCode;
-    var $header = array();
+    public $contentType;
+    public $body;
+    public $statusCode;
+    public $header = array();
 
     /**
      *
      * Enter description here ...
      */
-    var $encoding;
+    public $encoding;
 
     /**
      * レスポンス出力を書き込む.
      */
-    function write()
+    public function write()
     {
         $this->sendHeader();
         echo $this->body;
     }
 
-    function sendHeader()
+    public function sendHeader()
     {
         // HTTPのヘッダ
         foreach ($this->header as $name => $head) {
@@ -65,22 +65,22 @@ class SC_Response
         }
     }
 
-    function setContentType($contentType)
+    public function setContentType($contentType)
     {
         $this->header['Content-Type'] = $contentType;
     }
 
-    function setResposeBody($body)
+    public function setResposeBody($body)
     {
         $this->body = $body;
     }
 
-    function addHeader($name, $value)
+    public function addHeader($name, $value)
     {
         $this->header[$name] = $value;
     }
 
-    function containsHeader($name)
+    public function containsHeader($name)
     {
         return isset($this->header[$name]);
     }
@@ -89,7 +89,7 @@ class SC_Response
      * アプリケーションのexit処理をする。以降の出力は基本的に停止する。
      * 各クラス内では、exit を直接呼び出さない。
      */
-    function actionExit()
+    public function actionExit()
     {
         // ローカルフックポイント処理
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
@@ -117,14 +117,14 @@ class SC_Response
      * 1. 引数 $inheritQueryString が true の場合、$_SERVER['QUERY_STRING']
      * 2. $location に含まれる searchpart
      * 3. 引数 $arrQueryString
-     * @param string $location 「url-path」「現在のURLからのパス」「URL」のいずれか。「../」の解釈は行なわない。
-     * @param array $arrQueryString URL に付加する searchpart
-     * @param bool $inheritQueryString 現在のリクエストの searchpart を継承するか
-     * @param bool|null $useSsl true:HTTPSを強制, false:HTTPを強制, null:継承
+     * @param  string    $location           「url-path」「現在のURLからのパス」「URL」のいずれか。「../」の解釈は行なわない。
+     * @param  array     $arrQueryString     URL に付加する searchpart
+     * @param  bool      $inheritQueryString 現在のリクエストの searchpart を継承するか
+     * @param  bool|null $useSsl             true:HTTPSを強制, false:HTTPを強制, null:継承
      * @return void
      * @static
      */
-    function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
+    public function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
     {
         // ローカルフックポイント処理
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
@@ -222,11 +222,11 @@ class SC_Response
      * /html/ からのパスを指定してリダイレクトする
      *
      * FIXME メソッド名を分かりやすくしたい。現状だと、引数が「url-path より後」とも「url-path」とも読み取れる。(前者が意図したいところ)
-     * @param string $location /html/ からのパス。先頭に / を含むかは任意。「../」の解釈は行なわない。
+     * @param  string $location /html/ からのパス。先頭に / を含むかは任意。「../」の解釈は行なわない。
      * @return void
      * @static
      */
-    function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
+    public function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
     {
         $location = ROOT_URLPATH . ltrim($location, '/');
         SC_Response_Ex::sendRedirect($location, $arrQueryString, $inheritQueryString, $useSsl);
@@ -235,7 +235,7 @@ class SC_Response
     /**
      * @static
      */
-    function reload($arrQueryString = array(), $removeQueryString = false)
+    public function reload($arrQueryString = array(), $removeQueryString = false)
     {
         // 現在の URL を取得
         $netUrl = new Net_URL($_SERVER['REQUEST_URI']);
@@ -248,12 +248,12 @@ class SC_Response
         SC_Response_Ex::sendRedirect($netUrl->getURL(), $arrQueryString);
     }
 
-    function setHeader($headers)
+    public function setHeader($headers)
     {
         $this->header = $headers;
     }
 
-    function setStatusCode($statusCode = null)
+    public function setStatusCode($statusCode = null)
     {
         $this->statusCode = $statusCode;
     }
@@ -261,7 +261,7 @@ class SC_Response
     /**
      * HTTPステータスコードを送出する。
      *
-     * @param integer $statusCode HTTPステータスコード
+     * @param  integer $statusCode HTTPステータスコード
      * @return void
      * @author Seasoft (新規作成)
      * @see Moony_Action::status() (オリジナル)
@@ -273,7 +273,7 @@ class SC_Response
      * @license http://www.gnu.org/licenses/fdl.html GFDL (邦訳)
      * @static
      */
-    function sendHttpStatus($statusCode)
+    public function sendHttpStatus($statusCode)
     {
         $protocol = $_SERVER['SERVER_PROTOCOL'];
         $httpVersion = (strpos($protocol, '1.1') !== false) ? '1.1' : '1.0';

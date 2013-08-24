@@ -37,7 +37,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/status.tpl';
@@ -56,7 +56,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -67,7 +67,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
 
@@ -118,7 +118,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
      *  パラメーター情報の初期化
      *  @param SC_FormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('変更前対応状況', 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -133,7 +133,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
      *  入力内容のチェック
      *  @param SC_FormParam
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。
         $arrRet = $objFormParam->getHashArray();
@@ -144,7 +144,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
     }
 
     // 対応状況一覧の表示
-    function lfStatusDisp($status,$pageno)
+    public function lfStatusDisp($status,$pageno)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -180,7 +180,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
     /**
      * 対応状況の更新
      */
-    function lfStatusMove($statusId, $arrOrderId)
+    public function lfStatusMove($statusId, $arrOrderId)
     {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -207,7 +207,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
     /**
      * 受注テーブルの論理削除
      */
-    function lfDelete($arrOrderId)
+    public function lfDelete($arrOrderId)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

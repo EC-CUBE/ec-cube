@@ -37,7 +37,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         // 開始時刻を設定する。
         $this->timeStart = microtime(true);
@@ -60,10 +60,10 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex
     /**
      * ブロックファイルに応じて tpl_mainpage を設定する
      *
-     * @param string $bloc_file ブロックファイル名
+     * @param  string $bloc_file ブロックファイル名
      * @return void
      */
-    function setTplMainpage($bloc_file)
+    public function setTplMainpage($bloc_file)
     {
         if (SC_Utils_Ex::isAbsoluteRealPath($bloc_file)) {
             $this->tpl_mainpage = $bloc_file;
@@ -79,7 +79,7 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex
      *
      * @return void
      */
-    function __destruct()
+    public function __destruct()
     {
         // 親がリクエスト単位を意図した処理なので、断絶する。
     }

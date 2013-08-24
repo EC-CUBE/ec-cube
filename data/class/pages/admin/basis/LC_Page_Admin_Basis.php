@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/index.tpl';
@@ -64,7 +64,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -75,7 +75,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -86,33 +86,33 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
 
         $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
 
-        switch($this->getMode()){
-        	case 'confirm':
-	            $this->arrErr = $this->lfCheckError($objFormParam);
-				if (!empty($this->arrErr)) {
-	                return;
-	            }
-	            $this->tpl_subtitle = 'SHOPマスター(確認)';
-	            $this->tpl_mainpage = 'basis/confirm.tpl';
-        		break;
+        switch ($this->getMode()) {
+            case 'confirm':
+                $this->arrErr = $this->lfCheckError($objFormParam);
+                if (!empty($this->arrErr)) {
+                    return;
+                }
+                $this->tpl_subtitle = 'SHOPマスター(確認)';
+                $this->tpl_mainpage = 'basis/confirm.tpl';
+                break;
 
-    		case 'return':
-    		    break;
+            case 'return':
+                break;
 
-        	case 'complete':
-	            $arrData = $objFormParam->getDbArray();
-	            SC_Helper_DB_Ex::registerBasisData($arrData);
+            case 'complete':
+                $arrData = $objFormParam->getDbArray();
+                SC_Helper_DB_Ex::registerBasisData($arrData);
 
-	            // キャッシュファイル更新
-	            $objDb->sfCreateBasisDataCache();
-	            $this->tpl_onload .= "window.alert('SHOPマスターの登録が完了しました。');";
-	        // breakはつけない
+                // キャッシュファイル更新
+                $objDb->sfCreateBasisDataCache();
+                $this->tpl_onload .= "window.alert('SHOPマスターの登録が完了しました。');";
+            // breakはつけない
             default:
-	            $arrRet = $objDb->sfGetBasisData(true);
-		        $objFormParam->setParam($arrRet);
-		        $this->arrForm = $objFormParam->getHashArray();
-		        $this->arrForm['regular_holiday_ids'] = explode('|', $this->arrForm['regular_holiday_ids']);
-		        break;
+                $arrRet = $objDb->sfGetBasisData(true);
+                $objFormParam->setParam($arrRet);
+                $this->arrForm = $objFormParam->getHashArray();
+                $this->arrForm['regular_holiday_ids'] = explode('|', $this->arrForm['regular_holiday_ids']);
+                break;
         }
     }
 
@@ -121,7 +121,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
      *
      * @deprecated 2.12.4
      */
-    function lfUpdateData($arrData)
+    public function lfUpdateData($arrData)
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         SC_Helper_DB_Ex::registerBasisData($arrData);
@@ -132,13 +132,13 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
      *
      * @deprecated 2.12.4
      */
-    function lfInsertData($arrData)
+    public function lfInsertData($arrData)
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         SC_Helper_DB_Ex::registerBasisData($arrData);
     }
 
-    function lfInitParam(&$objFormParam, $post)
+    public function lfInitParam(&$objFormParam, $post)
     {
         $objFormParam->addParam('会社名', 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('会社名(フリガナ)', 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK','MAX_LENGTH_CHECK'));
@@ -188,7 +188,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
     }
 
     // 入力エラーチェック
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $arrErr = $objFormParam->checkError();
         $post = $objFormParam->getHashArray();
@@ -200,6 +200,6 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
         $objErr->doFunc(array('TEL', 'tel01', 'tel02', 'tel03'), array('TEL_CHECK'));
         $objErr->doFunc(array('FAX', 'fax01', 'fax02', 'fax03'), array('TEL_CHECK'));
 
-        return array_merge((array)$arrErr, (array)$objErr->arrErr);
+        return array_merge((array) $arrErr, (array) $objErr->arrErr);
     }
 }

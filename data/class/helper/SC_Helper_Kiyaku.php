@@ -33,8 +33,8 @@ class SC_Helper_Kiyaku
     /**
      * 会員規約の情報を取得.
      *
-     * @param integer $kiyaku_id 会員規約ID
-     * @param boolean $has_deleted 削除された会員規約も含む場合 true; 初期値 false
+     * @param  integer $kiyaku_id   会員規約ID
+     * @param  boolean $has_deleted 削除された会員規約も含む場合 true; 初期値 false
      * @return array
      */
     public function getKiyaku($kiyaku_id, $has_deleted = false)
@@ -52,7 +52,7 @@ class SC_Helper_Kiyaku
     /**
      * 会員規約一覧の取得.
      *
-     * @param boolean $has_deleted 削除された会員規約も含む場合 true; 初期値 false
+     * @param  boolean $has_deleted 削除された会員規約も含む場合 true; 初期値 false
      * @return array
      */
     public function getList($has_deleted = false)
@@ -73,7 +73,7 @@ class SC_Helper_Kiyaku
     /**
      * 会員規約の登録.
      *
-     * @param array $sqlval
+     * @param  array    $sqlval
      * @return multiple 登録成功:会員規約ID, 失敗:FALSE
      */
     public function saveKiyaku($sqlval)
@@ -103,7 +103,7 @@ class SC_Helper_Kiyaku
     /**
      * 会員規約の削除.
      *
-     * @param integer $kiyaku_id 会員規約ID
+     * @param  integer $kiyaku_id 会員規約ID
      * @return void
      */
     public function deleteKiyaku($kiyaku_id)
@@ -116,7 +116,7 @@ class SC_Helper_Kiyaku
     /**
      * 会員規約の表示順をひとつ上げる.
      *
-     * @param integer $kiyaku_id 会員規約ID
+     * @param  integer $kiyaku_id 会員規約ID
      * @return void
      */
     public function rankUp($kiyaku_id)
@@ -128,7 +128,7 @@ class SC_Helper_Kiyaku
     /**
      * 会員規約の表示順をひとつ下げる.
      *
-     * @param integer $kiyaku_id 会員規約ID
+     * @param  integer $kiyaku_id 会員規約ID
      * @return void
      */
     public function rankDown($kiyaku_id)
@@ -140,8 +140,8 @@ class SC_Helper_Kiyaku
     /**
      * 同じタイトルの規約が存在するか確認.
      *
-     * @param string $title 規約タイトル
-     * @param integer $kiyaku_id 会員規約ID
+     * @param  string  $title     規約タイトル
+     * @param  integer $kiyaku_id 会員規約ID
      * @return boolean 同名のタイトルが存在:TRUE
      */
     public function isTitleExist($title, $kiyaku_id = NULL)
@@ -151,7 +151,7 @@ class SC_Helper_Kiyaku
         $where  = 'del_flg = 0 AND kiyaku_title = ?';
         $arrVal = array($title);
 
-        if(!SC_Utils_Ex::isBlank($kiyaku_id)) {
+        if (!SC_Utils_Ex::isBlank($kiyaku_id)) {
             $where   .= ' AND kiyaku_id <> ?';
             $arrVal[] = $kiyaku_id;
         }

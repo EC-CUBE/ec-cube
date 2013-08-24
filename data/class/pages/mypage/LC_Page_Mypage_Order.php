@@ -37,7 +37,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -48,7 +48,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -58,14 +58,14 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         //受注詳細データの取得
         $arrOrderDetail = $this->lfGetOrderDetail($_POST['order_id']);
 
@@ -79,7 +79,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
     }
 
     // 受注詳細データの取得
-    function lfGetOrderDetail($order_id)
+    public function lfGetOrderDetail($order_id)
     {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
 
@@ -99,7 +99,7 @@ class LC_Page_Mypage_Order extends LC_Page_AbstractMypage_Ex
     }
 
     // 商品をカートに追加
-    function lfAddCartProducts($arrOrderDetail)
+    public function lfAddCartProducts($arrOrderDetail)
     {
         $objCartSess = new SC_CartSession_Ex();
         foreach ($arrOrderDetail as $order_row) {

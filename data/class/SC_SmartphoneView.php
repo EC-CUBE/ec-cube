@@ -23,12 +23,12 @@
 
 class SC_SmartphoneView extends SC_SiteView_Ex
 {
-    function __construct($setPrevURL = true)
+    public function __construct($setPrevURL = true)
     {
         parent::__construct($setPrevURL);
     }
 
-    function init()
+    public function init()
     {
         parent::init();
 

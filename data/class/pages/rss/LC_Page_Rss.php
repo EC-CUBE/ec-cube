@@ -37,7 +37,7 @@ class LC_Page_RSS extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -51,7 +51,7 @@ class LC_Page_RSS extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $objView = new SC_SiteView_Ex(false);
 
@@ -85,7 +85,7 @@ class LC_Page_RSS extends LC_Page_Ex
      *
      * @return array $arrNews 取得結果を配列で返す
      */
-    function lfGetNews()
+    public function lfGetNews()
     {
         $objNews = new SC_Helper_News_Ex();
         $arrNews = $objNews->getList();

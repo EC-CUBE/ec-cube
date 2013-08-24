@@ -32,7 +32,7 @@ class SC_Cache
      * Instance of PEAR::Cache_Lite class.
      * @var object
      */
-    static $_instance = NULL;
+    public static $_instance = NULL;
 
     /**
      * Default cache lifetime.
@@ -74,10 +74,10 @@ class SC_Cache
     /**
      * Get data from cache.
      *
-     * @param   string  $id         cache id
-     * @param   string  $group      name of the cache group
-     * @param   int     $lifeTime   custom lifetime
-     * @return  mixed   data of cache (else : false)
+     * @param  string $id       cache id
+     * @param  string $group    name of the cache group
+     * @param  int    $lifeTime custom lifetime
+     * @return mixed  data of cache (else : false)
      */
     public static function get($id, $group = 'default', $lifeTime = NULL)
     {
@@ -97,10 +97,10 @@ class SC_Cache
     /**
      * Save data into cache.
      *
-     * @param   mixed   $data   data of cache
-     * @param   string  $id     cache id
-     * @param   string  $group  name of the cache group
-     * @return  void
+     * @param  mixed  $data  data of cache
+     * @param  string $id    cache id
+     * @param  string $group name of the cache group
+     * @return void
      */
     public static function save($data, $id, $group = 'default')
     {
@@ -112,7 +112,7 @@ class SC_Cache
     /**
      * Clean cache.
      *
-     * @param string $group name of the cache group
+     * @param  string $group name of the cache group
      * @return void
      */
     public static function clean($group = FALSE)

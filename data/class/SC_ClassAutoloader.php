@@ -114,6 +114,7 @@ class SC_ClassAutoloader
                     $base_class_str = str_replace(array('<?php', '?>'), '', $base_class_str);
                     $base_class_str = preg_replace($exp, $replace, $base_class_str, 1);
                     eval($base_class_str);
+
                     return;
                 }
             }

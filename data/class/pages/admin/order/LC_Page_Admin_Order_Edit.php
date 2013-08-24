@@ -32,7 +32,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  */
 class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 {
-    var $arrShippingKeys = array(
+    public $arrShippingKeys = array(
         'shipping_id',
         'shipping_name01',
         'shipping_name02',
@@ -58,7 +58,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         'time_id',
     );
 
-    var $arrShipmentItemKeys = array(
+    public $arrShipmentItemKeys = array(
         'shipment_product_class_id',
         'shipment_product_code',
         'shipment_product_name',
@@ -68,7 +68,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         'shipment_quantity',
     );
 
-    var $arrProductKeys = array(
+    public $arrProductKeys = array(
         'product_id',
         'product_class_id',
         'product_type_id',
@@ -88,7 +88,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/edit.tpl';
@@ -123,7 +123,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -134,7 +134,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -257,9 +257,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                 $customer_birth = $this->setCustomerTo($objFormParam->getValue('edit_customer_id'),
                                      $objFormParam);
                 // 加算ポイントの計算
-                if (USE_POINT === true && $this->tpl_mode == 'add'){
+                if (USE_POINT === true && $this->tpl_mode == 'add') {
                     $birth_point = 0;
-                    if ($customer_birth){
+                    if ($customer_birth) {
                         $arrRet = preg_split('|[- :/]|', $customer_birth);
                         $birth_date = intval($arrRet[1]);
                         $now_date   = intval(date('m'));
@@ -311,10 +311,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
@@ -438,10 +438,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 複数配送用フォームの初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitMultipleParam(&$objFormParam)
+    public function lfInitMultipleParam(&$objFormParam)
     {
         $objFormParam->addParam('商品規格ID', 'multiple_product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品コード', 'multiple_product_code', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
@@ -456,10 +456,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 複数配送入力フォームで入力された値を SC_FormParam へ設定する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function setMultipleItemTo(&$objFormParam)
+    public function setMultipleItemTo(&$objFormParam)
     {
         $arrMultipleKey = array('multiple_shipping_id',
                 'multiple_product_class_id',
@@ -533,11 +533,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 受注データを取得して, SC_FormParam へ設定する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param integer $order_id 取得元の受注ID
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  integer      $order_id     取得元の受注ID
      * @return void
      */
-    function setOrderToFormParam(&$objFormParam, $order_id)
+    public function setOrderToFormParam(&$objFormParam, $order_id)
     {
         $objPurchase = new SC_Helper_Purchase_Ex();
 
@@ -603,10 +603,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 入力内容のチェックを行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array エラーメッセージの配列
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objProduct = new SC_Product_Ex();
         $arrValues = $objFormParam->getHashArray();
@@ -624,7 +624,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             $arrErrDate['shipping_date_year'][$key_index] = $objError->arrErr['shipping_date_year'];
         }
         $arrErrTemp = array_merge($arrErrTemp, $arrErrDate);
-
 
         // 商品の種類数
         $max = count($arrValues['quantity']);
@@ -694,16 +693,16 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * DB更新処理
      *
-     * @param integer $order_id 受注ID
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param string $message 通知メッセージ
-     * @param array $arrValuesBefore 更新前の受注情報
-     * @return integer $order_id 受注ID
+     * @param  integer            $order_id        受注ID
+     * @param  SC_Helper_Purchase $objPurchase     SC_Helper_Purchase インスタンス
+     * @param  SC_FormParam       $objFormParam    SC_FormParam インスタンス
+     * @param  string             $message         通知メッセージ
+     * @param  array              $arrValuesBefore 更新前の受注情報
+     * @return integer            $order_id 受注ID
      *
      * エラー発生時は負数を返す。
      */
-    function doRegister($order_id, &$objPurchase, &$objFormParam, &$message, &$arrValuesBefore)
+    public function doRegister($order_id, &$objPurchase, &$objFormParam, &$message, &$arrValuesBefore)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrValues = $objFormParam->getDbArray();
@@ -798,7 +797,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             //商品単価を複数配送にも反映する
             foreach ($arrDetail as $product_detail) {
                 foreach ($arrAllShipmentItem[$shipping_index]['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {
-                    if($product_detail['product_class_id'] == $shipment_product_class_id){
+                    if ($product_detail['product_class_id'] == $shipment_product_class_id) {
                         $arrAllShipmentItem[$shipping_index]['shipment_price'][$relation_index] = $product_detail['price'];
                     }
                 }
@@ -836,17 +835,17 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      *
      * 小画面で選択した受注商品をフォームに反映させる.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function doRegisterProduct(&$objFormParam)
+    public function doRegisterProduct(&$objFormParam)
     {
         $product_class_id = $objFormParam->getValue('add_product_class_id');
         if (SC_Utils_Ex::isBlank($product_class_id)) {
             $product_class_id = $objFormParam->getValue('edit_product_class_id');
             $changed_no = $objFormParam->getValue('no');
             $this->shipmentEditProduct($objFormParam, $product_class_id, $changed_no);
-        }else{
+        } else {
             $this->shipmentAddProduct($objFormParam, $product_class_id);
         }
     }
@@ -854,11 +853,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 受注商品を削除する.
      *
-     * @param integer $delete_no 削除する受注商品の項番
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  integer      $delete_no    削除する受注商品の項番
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function doDeleteProduct($delete_no, &$objFormParam)
+    public function doDeleteProduct($delete_no, &$objFormParam)
     {
         $select_shipping_id    = $objFormParam->getValue('select_shipping_id');
 
@@ -874,7 +873,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $is_product_delete = true;
         foreach ($arrNewShipments['shipment_product_class_id'] as $shipping_id => $arrShipmentProductClassIds) {
             foreach ($arrShipmentProductClassIds as $relation_index => $shipment_product_class_id) {
-                if(in_array($delete_product_class_id, $arrShipmentProductClassIds)){
+                if (in_array($delete_product_class_id, $arrShipmentProductClassIds)) {
                     $is_product_delete = false;
                     break;
                 }
@@ -882,7 +881,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         }
 
         //商品情報から削除
-        if($is_product_delete){
+        if ($is_product_delete) {
             $this->checkDeleteProducts($objFormParam, $arrPreProductClassIds, $delete_product_class_id, $this->arrProductKeys);
         }
     }
@@ -890,10 +889,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * お届け先を追加する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function addShipping(&$objFormParam)
+    public function addShipping(&$objFormParam)
     {
         $objFormParam->setValue('shipping_quantity',
                                 $objFormParam->getValue('shipping_quantity') + 1);
@@ -905,11 +904,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 会員情報をフォームに設定する.
      *
-     * @param integer $customer_id 会員ID
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  integer      $customer_id  会員ID
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function setCustomerTo($customer_id, &$objFormParam)
+    public function setCustomerTo($customer_id, &$objFormParam)
     {
         $arrCustomer = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
         foreach ($arrCustomer as $key => $val) {
@@ -924,10 +923,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * アンカーキーを取得する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam                   $objFormParam SC_FormParam インスタンス
      * @return アンカーキーの文字列
      */
-    function getAnchorKey(&$objFormParam)
+    public function getAnchorKey(&$objFormParam)
     {
         $ancor_key = $objFormParam->getValue('anchor_key');
         if (!SC_Utils_Ex::isBlank($ancor_key)) {
@@ -940,11 +939,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 商品を追加
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param integer $add_product_class_id 追加商品規格ID
+     * @param  SC_FormParam $objFormParam         SC_FormParam インスタンス
+     * @param  integer      $add_product_class_id 追加商品規格ID
      * @return void
      */
-    function shipmentAddProduct(&$objFormParam, $add_product_class_id)
+    public function shipmentAddProduct(&$objFormParam, $add_product_class_id)
     {
         //複数配送に商品情報追加
         $select_shipping_id = $objFormParam->getValue('select_shipping_id');
@@ -954,12 +953,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
         if($arrShipmentProducts['shipment_product_class_id'] && in_array($add_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])){
             foreach ($arrShipmentProducts['shipment_product_class_id'][$select_shipping_id] as $relation_index => $shipment_product_class_id) {
-                if($shipment_product_class_id == $add_product_class_id){
+                if ($shipment_product_class_id == $add_product_class_id) {
                     $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$relation_index]++;
                     break;
                 }
             }
-        }else{
+        } else {
             //届け先に選択商品がない場合
             $objProduct = new SC_Product_Ex();
             $arrAddProductInfo = $objProduct->getDetailAndProductsClass($add_product_class_id);
@@ -981,12 +980,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 商品を変更
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param integer $add_product_class_id 変更商品規格ID
-     * @param integer $change_no 変更対象
+     * @param  SC_FormParam $objFormParam         SC_FormParam インスタンス
+     * @param  integer      $add_product_class_id 変更商品規格ID
+     * @param  integer      $change_no            変更対象
      * @return void
      */
-    function shipmentEditProduct(&$objFormParam, $edit_product_class_id, $change_no)
+    public function shipmentEditProduct(&$objFormParam, $edit_product_class_id, $change_no)
     {
         $arrPreProductClassIds = $objFormParam->getValue('product_class_id');
         $select_shipping_id    = $objFormParam->getValue('select_shipping_id');
@@ -995,18 +994,18 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
         //既にあるデータは１つだけ数量を１増やす
         $pre_shipment_product_class_id = $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id][$change_no];
-        if($pre_shipment_product_class_id == $edit_product_class_id) {
+        if ($pre_shipment_product_class_id == $edit_product_class_id) {
             $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$change_no] ++;
-        }elseif(in_array($edit_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])){
+        } elseif (in_array($edit_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])) {
             //配送先データ削除
             $arrShipmentProducts = $this->deleteShipment($objFormParam, $this->arrShipmentItemKeys , $select_shipping_id, $change_no);
             foreach ($arrShipmentProducts['shipment_product_class_id'][$select_shipping_id] as $relation_index => $shipment_product_class_id) {
-                if($shipment_product_class_id == $edit_product_class_id){
+                if ($shipment_product_class_id == $edit_product_class_id) {
                     $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$relation_index] ++;
                     break;
                 }
             }
-        }else{
+        } else {
             $objProduct = new SC_Product_Ex();
             $arrAddProductInfo = $objProduct->getDetailAndProductsClass($edit_product_class_id);
 
@@ -1023,14 +1022,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $is_product_delete = true;
         //変更前のproduct_class_idが他の届け先にも存在するか
         foreach ($arrNewShipmentProducts['shipment_product_class_id'] as $shipping_id => $arrShipmentProductClassIds) {
-            if(in_array($pre_shipment_product_class_id, $arrShipmentProductClassIds)){
+            if (in_array($pre_shipment_product_class_id, $arrShipmentProductClassIds)) {
                 $is_product_delete = false;
                 break;
             }
         }
 
         //商品情報から削除
-        if($is_product_delete){
+        if ($is_product_delete) {
             $this->checkDeleteProducts($objFormParam, $arrPreProductClassIds, $pre_shipment_product_class_id, $this->arrProductKeys);
         }
     }
@@ -1038,10 +1037,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 複数配送のパラメータを取り出す
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array 配送データ
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        配送データ
      */
-    function getShipmentProducts(&$objFormParam)
+    public function getShipmentProducts(&$objFormParam)
     {
         $arrShipmentProducts['shipment_product_class_id']    = $objFormParam->getValue('shipment_product_class_id');
         $arrShipmentProducts['shipment_product_code']        = $objFormParam->getValue('shipment_product_code');
@@ -1052,7 +1051,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $arrShipmentProducts['shipment_quantity']            = $objFormParam->getValue('shipment_quantity');
 
         foreach ($arrShipmentProducts as $key => $value) {
-            if(!is_array($value)){
+            if (!is_array($value)) {
                 $arrShipmentProducts[$key] = array();
             }
         }
@@ -1063,13 +1062,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 変更対象のデータを上書きする
      *
-     * @param array   $arrShipmentProducts  変更対象配列
-     * @param array   $arrProductInfo       上書きデータ
-     * @param integer $shipping_id          配送先ID
-     * @param array   $no                   変更対象
+     * @param  array   $arrShipmentProducts 変更対象配列
+     * @param  array   $arrProductInfo      上書きデータ
+     * @param  integer $shipping_id         配送先ID
+     * @param  array   $no                  変更対象
      * @return void
      */
-    function changeShipmentProducts(&$arrShipmentProducts, $arrProductInfo, $shipping_id, $no)
+    public function changeShipmentProducts(&$arrShipmentProducts, $arrProductInfo, $shipping_id, $no)
     {
         $arrShipmentProducts['shipment_product_class_id'][$shipping_id][$no]    = $arrProductInfo['product_class_id'];
         $arrShipmentProducts['shipment_product_code'][$shipping_id][$no]        = $arrProductInfo['product_code'];
@@ -1083,10 +1082,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 商品側の総量計算&セット
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function setProductsQuantity(&$objFormParam)
+    public function setProductsQuantity(&$objFormParam)
     {
         $arrShipmentsItems = $objFormParam->getSwapArray(array('shipment_product_class_id','shipment_quantity'));
         foreach ($arrShipmentsItems as $arritems) {
@@ -1106,21 +1105,21 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 削除対象の確認、削除をする
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param array   $arrProductClassIds　     削除対象配列の商品規格ID
-     * @param integer $delete_product_class_id　削除商品規格ID
-     * @param array   $arrDeleteKeys            削除項目
+     * @param  SC_FormParam $objFormParam                               SC_FormParam インスタンス
+     * @param  array        $arrProductClassIds　                      削除対象配列の商品規格ID
+     * @param  integer      $delete_product_class_id　削除商品規? ?ID
+     * @param  array        $arrDeleteKeys                              削除項目
      * @return void
      */
-    function checkDeleteProducts(&$objFormParam, $arrProductClassIds, $delete_product_class_id, $arrDeleteKeys)
+    public function checkDeleteProducts(&$objFormParam, $arrProductClassIds, $delete_product_class_id, $arrDeleteKeys)
     {
         foreach ($arrProductClassIds as $relation_index => $product_class_id) {
             //product_class_idの重複はないので、１つ削除したら完了
-            if($product_class_id == $delete_product_class_id){
+            if ($product_class_id == $delete_product_class_id) {
                 foreach ($arrDeleteKeys as $delete_key) {
                     $arrProducts = $objFormParam->getValue($delete_key);
                     foreach ($arrProducts as $index => $product_info) {
-                        if($index != $relation_index){
+                        if ($index != $relation_index) {
                             $arrUpdateParams[$delete_key][] = $product_info;
                         }
                     }
@@ -1134,19 +1133,19 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 配送先商品の削除の削除
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param array   $arrShipmentDeleteKeys   削除項目
-     * @param integer $delete_shipping_id　    削除配送ID
-     * @param array   $delete_no               削除対象
+     * @param  SC_FormParam $objFormParam          SC_FormParam インスタンス
+     * @param  array        $arrShipmentDeleteKeys 削除項目
+     * @param  integer      $delete_shipping_id　 削除配送ID
+     * @param  array        $delete_no             削除対象
      * @return void
      */
-    function deleteShipment(&$objFormParam, $arrShipmentDeletKeys, $delete_shipping_id, $delete_no)
+    public function deleteShipment(&$objFormParam, $arrShipmentDeletKeys, $delete_shipping_id, $delete_no)
     {
             foreach ($arrShipmentDeletKeys as $delete_key) {
                 $arrShipments = $objFormParam->getValue($delete_key);
-                foreach ($arrShipments as $shipp_id => $arrKeyData){
+                foreach ($arrShipments as $shipp_id => $arrKeyData) {
                     foreach ($arrKeyData as $relation_index => $shipment_info) {
-                        if($relation_index != $delete_no || $shipp_id != $delete_shipping_id){
+                        if ($relation_index != $delete_no || $shipp_id != $delete_shipping_id) {
                             $arrUpdateParams[$delete_key][$shipp_id][] = $shipment_info;
                         }
                     }
@@ -1159,13 +1158,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 受注商品一覧側に商品を追加
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param array   $arrProductClassIds　     対象配列の商品規格ID
-     * @param integer $indert_product_class_id　追加商品規格ID
-     * @param array   $arrAddProductInfo        追加データ
-     * @return array  $arrAddProducts           更新データ
+     * @param  SC_FormParam $objFormParam                    SC_FormParam インスタンス
+     * @param  array        $arrProductClassIds　           対象配列の商品規格ID
+     * @param  integer      $indert_product_class_id　追?? 商品規格ID
+     * @param  array        $arrAddProductInfo               追加データ
+     * @return array        $arrAddProducts           更新データ
      */
-    function checkInsertOrderProducts(&$objFormParam, $arrProductClassIds, $insert_product_class_id, $arrAddProductInfo)
+    public function checkInsertOrderProducts(&$objFormParam, $arrProductClassIds, $insert_product_class_id, $arrAddProductInfo)
     {
         if(!$arrProductClassIds || !in_array($insert_product_class_id, $arrProductClassIds)){
             $arrAddProducts = array();
@@ -1184,8 +1183,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                 $arrAddProducts[$insert_key]   = (is_array($value))? $value: array();
                 $arrAddProducts[$insert_key][] = $arrAddProductInfo[$insert_key];
             }
+
             return $arrAddProducts;
-        }else{
+        } else {
             //受注商品の数量は、複数配送側の集計で出しているので、重複しても数量を増やさない。
             return null;
         }

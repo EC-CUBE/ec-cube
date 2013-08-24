@@ -37,7 +37,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
@@ -52,7 +52,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -64,14 +64,14 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -191,16 +191,15 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
         $this->arrAddr = array_merge($addr, $objAddress->getList($objCustomer->getValue('customer_id')));
         $this->tpl_addrmax = count($this->arrAddr) - 1; // 会員の住所をカウントしない
 
-
     }
 
     /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('その他のお届け先ID', 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お届け先チェック', 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
@@ -213,13 +212,13 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      * その他のお届け先がチェックされている場合は, その他のお届け先からお届け先を取得する.
      * お届け先チェックの値が不正な場合は false を返す.
      *
-     * @param integer $other_deliv_id
-     * @param string $uniqid 受注一時テーブルのユニークID
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @return boolean お届け先チェックの値が妥当な場合 true
+     * @param  integer            $other_deliv_id
+     * @param  string             $uniqid         受注一時テーブルのユニークID
+     * @param  SC_Helper_Purchase $objPurchase    SC_Helper_Purchase インスタンス
+     * @param  SC_Customer        $objCustomer    SC_Customer インスタンス
+     * @return boolean            お届け先チェックの値が妥当な場合 true
      */
-    function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer, $objAddress)
+    public function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer, $objAddress)
     {
         $arrValues = array();
         // 会員登録住所がチェックされている場合

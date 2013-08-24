@@ -14,14 +14,14 @@
  */
 class SC_Helper_Session
 {
-    var $objDb;
+    public $objDb;
 
     /**
      * デフォルトコンストラクタ.
      *
      * 各関数をセッションハンドラに保存する
      */
-    function __construct()
+    public function __construct()
     {
         $this->objDb = new SC_Helper_DB_Ex();
         session_set_save_handler(array(&$this, 'sfSessOpen'),
@@ -39,11 +39,11 @@ class SC_Helper_Session
     /**
      * セッションを開始する.
      *
-     * @param string $save_path セッションを保存するパス(使用しない)
-     * @param string $session_name セッション名(使用しない)
-     * @return bool セッションが正常に開始された場合 true
+     * @param  string $save_path    セッションを保存するパス(使用しない)
+     * @param  string $session_name セッション名(使用しない)
+     * @return bool   セッションが正常に開始された場合 true
      */
-    function sfSessOpen($save_path, $session_name)
+    public function sfSessOpen($save_path, $session_name)
     {
         return true;
     }
@@ -53,7 +53,7 @@ class SC_Helper_Session
      *
      * @return bool セッションが正常に終了した場合 true
      */
-    function sfSessClose()
+    public function sfSessClose()
     {
         return true;
     }
@@ -61,10 +61,10 @@ class SC_Helper_Session
     /**
      * セッションのデータをDBから読み込む.
      *
-     * @param string $id セッションID
+     * @param  string $id セッションID
      * @return string セッションデータの値
      */
-    function sfSessRead($id)
+    public function sfSessRead($id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('sess_data', 'dtb_session', 'sess_id = ?', array($id));
@@ -78,11 +78,11 @@ class SC_Helper_Session
     /**
      * セッションのデータをDBに書き込む.
      *
-     * @param string $id セッションID
-     * @param string $sess_data セッションデータの値
-     * @return bool セッションの書き込みに成功した場合 true
+     * @param  string $id        セッションID
+     * @param  string $sess_data セッションデータの値
+     * @return bool   セッションの書き込みに成功した場合 true
      */
-    function sfSessWrite($id, $sess_data)
+    public function sfSessWrite($id, $sess_data)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists('dtb_session', 'sess_id = ?', array($id));
@@ -111,10 +111,10 @@ class SC_Helper_Session
     /**
      * セッションを破棄する.
      *
-     * @param string $id セッションID
-     * @return bool セッションを正常に破棄した場合 true
+     * @param  string $id セッションID
+     * @return bool   セッションを正常に破棄した場合 true
      */
-    function sfSessDestroy($id)
+    public function sfSessDestroy($id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->delete('dtb_session', 'sess_id = ?', array($id));
@@ -129,7 +129,7 @@ class SC_Helper_Session
      *
      * @param integer $maxlifetime セッションの有効期限(使用しない)
      */
-    function sfSessGc($maxlifetime)
+    public function sfSessGc($maxlifetime)
     {
         // MAX_LIFETIME以上更新されていないセッションを削除する。
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -158,7 +158,7 @@ class SC_Helper_Session
      * @access protected
      * @return string トランザクショントークンの文字列
      */
-    function getToken()
+    public function getToken()
     {
         if (empty($_SESSION[TRANSACTION_ID_NAME])) {
             $_SESSION[TRANSACTION_ID_NAME] = SC_Helper_Session_Ex::createToken();
@@ -173,7 +173,7 @@ class SC_Helper_Session
      * @access private
      * @return string トランザクショントークン用の文字列
      */
-    function createToken()
+    public function createToken()
     {
         return sha1(uniqid(rand(), true));
     }
@@ -196,7 +196,7 @@ class SC_Helper_Session
      *                          デフォルト値は false
      * @return boolean トランザクショントークンが有効な場合 true
      */
-    function isValidToken($is_unset = false)
+    public function isValidToken($is_unset = false)
     {
         // token の妥当性チェック
         $ret = $_REQUEST[TRANSACTION_ID_NAME] === $_SESSION[TRANSACTION_ID_NAME];
@@ -213,7 +213,7 @@ class SC_Helper_Session
      *
      * @return void
      */
-    function destroyToken()
+    public function destroyToken()
     {
         unset($_SESSION[TRANSACTION_ID_NAME]);
     }
@@ -225,7 +225,7 @@ class SC_Helper_Session
      *
      * @return void
      */
-    function adminAuthorization()
+    public function adminAuthorization()
     {
         if (($script_path = realpath($_SERVER['SCRIPT_FILENAME'])) !== FALSE) {
             $arrScriptPath = explode('/', str_replace('\\', '/', $script_path));

@@ -23,12 +23,12 @@
 
 class SC_AdminView extends SC_View_Ex
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
 
-    function init()
+    public function init()
     {
         parent::init();
 

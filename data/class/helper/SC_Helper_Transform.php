@@ -46,7 +46,7 @@ class SC_Helper_Transform
     /**
      * SmartyのHTMLソースをDOMに変換しておく
      *
-     * @param string $source 変形対象のテンプレート
+     * @param  string $source 変形対象のテンプレート
      * @return void
      */
     public function __construct($source)
@@ -114,8 +114,7 @@ class SC_Helper_Transform
             $this->footer_source = $arrMatches[3];
         } elseif (preg_match('/^.*?<body[^>]*>.+<\/body>.*$/is', $source)) {
             $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></html>';
-        }
-        else {
+        } else {
             $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><body><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></body></html>';
         }
 
@@ -126,10 +125,10 @@ class SC_Helper_Transform
     /**
      * jQueryライクなセレクタを用いてエレメントを選択する
      *
-     * @param string  $selector      セレクタ
-     * @param integer $index         インデックス（指定がある場合）
-     * @param boolean $require       エレメントが見つからなかった場合、エラーとするか
-     * @param string  $err_msg       エラーメッセージ
+     * @param  string                                $selector セレクタ
+     * @param  integer                               $index    インデックス（指定がある場合）
+     * @param  boolean                               $require  エレメントが見つからなかった場合、エラーとするか
+     * @param  string                                $err_msg  エラーメッセージ
      * @return SC_Helper_Transformオブジェクト
      */
     public function select($selector, $index = NULL, $require = true, $err_msg = NULL)
@@ -166,10 +165,10 @@ class SC_Helper_Transform
     /**
      * jQueryライクなセレクタを用いて、選択したエレメント内をさらに絞り込む
      *
-     * @param string  $selector      セレクタ
-     * @param integer $index         インデックス（指定がある場合）
-     * @param boolean $require       エレメントが見つからなかった場合、エラーとするか
-     * @param string  $err_msg       エラーメッセージ
+     * @param  string                                $selector セレクタ
+     * @param  integer                               $index    インデックス（指定がある場合）
+     * @param  boolean                               $require  エレメントが見つからなかった場合、エラーとするか
+     * @param  string                                $err_msg  エラーメッセージ
      * @return SC_Helper_Transformオブジェクト
      */
     public function find($selector, $index = NULL, $require = true, $err_msg = NULL)
@@ -209,7 +208,7 @@ class SC_Helper_Transform
     /**
      * 選択状態を指定数戻す
      *
-     * @param int $back_num 選択状態を戻す数
+     * @param  int                                   $back_num 選択状態を戻す数
      * @return SC_Helper_Transformオブジェクト
      */
     public function end($back_num = 1)
@@ -226,7 +225,7 @@ class SC_Helper_Transform
     /**
      * 要素の前にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
+     * @param  string                                $html_snip 挿入するHTMLの断片
      * @return SC_Helper_Transformオブジェクト
      */
     public function insertBefore($html_snip)
@@ -243,7 +242,7 @@ class SC_Helper_Transform
     /**
      * 要素の後にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
+     * @param  string                                $html_snip 挿入するHTMLの断片
      * @return SC_Helper_Transformオブジェクト
      */
     public function insertAfter($html_snip)
@@ -260,7 +259,7 @@ class SC_Helper_Transform
     /**
      * 要素の先頭にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
+     * @param  string                                $html_snip 挿入するHTMLの断片
      * @return SC_Helper_Transformオブジェクト
      */
     public function appendFirst($html_snip)
@@ -277,7 +276,7 @@ class SC_Helper_Transform
     /**
      * 要素の末尾にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
+     * @param  string                                $html_snip 挿入するHTMLの断片
      * @return SC_Helper_Transformオブジェクト
      */
     public function appendChild($html_snip)
@@ -294,7 +293,7 @@ class SC_Helper_Transform
     /**
      * 要素を指定したHTMLに置換
      *
-     * @param string $html_snip 置換後のHTMLの断片
+     * @param  string                                $html_snip 置換後のHTMLの断片
      * @return SC_Helper_Transformオブジェクト
      */
     public function replaceElement($html_snip)
@@ -360,6 +359,7 @@ class SC_Helper_Transform
             );
             $html = $this->header_source.$html.$this->footer_source;
             $html = str_replace($this->arrSmartyTagsSub, $this->arrSmartyTagsOrg, $html);
+
             return $html;
         } else {
             return $this->html_source;
@@ -371,7 +371,7 @@ class SC_Helper_Transform
      *
      * コメント形式への置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
     protected function lfCaptureSmartyTags2Comment(array $arrMatches)
@@ -389,7 +389,7 @@ class SC_Helper_Transform
      *
      * コメント形式への置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
     protected function lfCaptureHeadTags2Comment(array $arrMatches)
@@ -412,7 +412,7 @@ class SC_Helper_Transform
      *
      * HTMLエレメント内部の処理
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
     protected function lfCaptureSmartyTagsInTag(array $arrMatches)
@@ -430,7 +430,7 @@ class SC_Helper_Transform
      *
      * ダミーへの置換実行
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
     protected function lfCaptureSmartyTags2Temptag(array $arrMatches)
@@ -448,7 +448,7 @@ class SC_Helper_Transform
      *
      * クォート内（＝属性値）内にあるSmartyタグ（ダミーに置換済み）を、テキストに置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
     protected function lfCaptureSmartyTagsInQuote(array $arrMatches)
@@ -467,12 +467,12 @@ class SC_Helper_Transform
      *
      * テキストへの置換実行
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
     protected function lfCaptureSmartyTags2Value(array $arrMatches)
     {
-        $tag_idx = (int)$arrMatches[1];
+        $tag_idx = (int) $arrMatches[1];
         $substitute_tag = sprintf('###%08d###', $tag_idx);
         $this->arrSmartyTagsSub[$tag_idx] = $substitute_tag;
 
@@ -484,12 +484,12 @@ class SC_Helper_Transform
      *
      * エレメント内部にあって、属性値ではないものを、ダミーの属性として置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
     protected function lfCaptureSmartyTags2Attr(array $arrMatches)
     {
-        $tag_idx = (int)$arrMatches[1];
+        $tag_idx = (int) $arrMatches[1];
         $substitute_tag = sprintf('rel%08d="######"', $tag_idx);
         $this->arrSmartyTagsSub[$tag_idx] = $substitute_tag;
 
@@ -534,8 +534,8 @@ class SC_Helper_Transform
     /**
      * セレクタ文字列をツリー検索用の正規表現に変換する
      *
-     * @param string $selector      セレクタ
-     * @param string $parent_index  セレクタ検索時の親要素の位置（子孫要素検索のため）
+     * @param  string $selector     セレクタ
+     * @param  string $parent_index セレクタ検索時の親要素の位置（子孫要素検索のため）
      * @return string 正規表現文字列
      */
     protected function lfSelector2Regex($selector, $parent_index = NULL)
@@ -569,8 +569,8 @@ class SC_Helper_Transform
     /**
      * 見つかった要素をプロパティに登録
      *
-     * @param integer $elementNo  エレメントのインデックス
-     * @param array   $arrElement インデックスとDOMオブジェクトをペアとした配列
+     * @param  integer $elementNo  エレメントのインデックス
+     * @param  array   $arrElement インデックスとDOMオブジェクトをペアとした配列
      * @return void
      */
     protected function lfAddElement($elementNo, array &$arrElement)
@@ -585,9 +585,9 @@ class SC_Helper_Transform
     /**
      * DOMを用いた変形を実行する
      *
-     * @param string $mode       実行するメソッドの種類
-     * @param string $target_key 対象のエレメントの完全なセレクタ
-     * @param string $html_snip  HTMLコード
+     * @param  string  $mode       実行するメソッドの種類
+     * @param  string  $target_key 対象のエレメントの完全なセレクタ
+     * @param  string  $html_snip  HTMLコード
      * @return boolean
      */
     protected function lfSetTransform($mode, $target_key, $html_snip)
@@ -639,8 +639,7 @@ class SC_Helper_Transform
                     break;
             }
             $this->snip_count++;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, 'テンプレートの操作に失敗しました。');
         }
 
@@ -650,9 +649,9 @@ class SC_Helper_Transform
     /**
      * セレクタエラーを記録する
      *
-     * @param string  $selector    セレクタ
-     * @param integer $type        エラーの種類
-     * @param string  $err_msg     エラーメッセージ
+     * @param  string  $selector セレクタ
+     * @param  integer $type     エラーの種類
+     * @param  string  $err_msg  エラーメッセージ
      * @return void
      */
     protected function lfSetError($selector, $type, $err_msg = NULL)

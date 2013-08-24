@@ -37,7 +37,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'products/product_rank.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
         $objCategory = new SC_Helper_Category_Ex();
@@ -105,7 +105,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
     }
 
     /* 商品読み込み */
-    function lfGetProduct($category_id)
+    public function lfGetProduct($category_id)
     {
         // FIXME SC_Product クラスを使用した実装
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -140,7 +140,7 @@ class LC_Page_Admin_Products_ProductRank extends LC_Page_Admin_Ex
     /*
      * 商品の数値指定での並び替え実行
      */
-    function lfRenumber($parent_category_id)
+    public function lfRenumber($parent_category_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -167,19 +167,19 @@ __EOS__;
         return $arrRet;
     }
 
-    function lfRankUp(&$objDb, $parent_category_id, $product_id)
+    public function lfRankUp(&$objDb, $parent_category_id, $product_id)
     {
         $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankUp('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
-    function lfRankDown(&$objDb, $parent_category_id, $product_id)
+    public function lfRankDown(&$objDb, $parent_category_id, $product_id)
     {
         $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankDown('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
-    function lfRankMove(&$objDb, $parent_category_id, $product_id)
+    public function lfRankMove(&$objDb, $parent_category_id, $product_id)
     {
         $key = 'pos-'.$product_id;
         $input_pos = mb_convert_kana($_POST[$key], 'n');

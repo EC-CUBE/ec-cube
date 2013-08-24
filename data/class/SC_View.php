@@ -25,17 +25,17 @@ require_once realpath(dirname(__FILE__)) . '/../module/Smarty/libs/Smarty.class.
 
 class SC_View
 {
-    var $_smarty;
+    public $_smarty;
 
-    var $objPage;
+    public $objPage;
 
     // コンストラクタ
-    function __construct()
+    public function __construct()
     {
         $this->init();
     }
 
-    function init()
+    public function init()
     {
         $this->_smarty = new Smarty;
         $this->_smarty->left_delimiter = '<!--{';
@@ -70,13 +70,13 @@ class SC_View
     }
 
     // テンプレートに値を割り当てる
-    function assign($val1, $val2)
+    public function assign($val1, $val2)
     {
         $this->_smarty->assign($val1, $val2);
     }
 
     // テンプレートの処理結果を取得
-    function fetch($template)
+    public function fetch($template)
     {
         return $this->_smarty->fetch($template);
     }
@@ -84,11 +84,11 @@ class SC_View
     /**
      * SC_Display用にレスポンスを返す
      * @global string $GLOBAL_ERR
-     * @param array $template
-     * @param boolean $no_error
+     * @param  array   $template
+     * @param  boolean $no_error
      * @return string
      */
-    function getResponse($template, $no_error = false)
+    public function getResponse($template, $no_error = false)
     {
         if (!$no_error) {
             global $GLOBAL_ERR;
@@ -110,10 +110,10 @@ class SC_View
 
     /**
      * Pageオブジェクトをセットします.
-     * @param LC_Page_Ex $objPage
+     * @param  LC_Page_Ex $objPage
      * @return void
      */
-    function setPage($objPage)
+    public function setPage($objPage)
     {
        $this->objPage = $objPage;
     }
@@ -122,7 +122,7 @@ class SC_View
      * Smartyのfilterをセットします.
      * @return void
      */
-    function registFilter()
+    public function registFilter()
     {
         $this->_smarty->register_prefilter(array(&$this, 'prefilter_transform'));
         $this->_smarty->register_outputfilter(array(&$this, 'outputfilter_transform'));
@@ -130,11 +130,11 @@ class SC_View
 
     /**
      * prefilter用のフィルタ関数。プラグイン用のフックポイント処理を実行
-     * @param string $source ソース
-     * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
-     * @return string $source ソース
+     * @param  string          $source ソース
+     * @param  Smarty_Compiler $smarty Smartyのコンパイラクラス
+     * @return string          $source ソース
      */
-    function prefilter_transform($source, &$smarty)
+    public function prefilter_transform($source, &$smarty)
     {
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
@@ -149,11 +149,11 @@ class SC_View
 
     /**
      * outputfilter用のフィルタ関数。プラグイン用のフックポイント処理を実行
-     * @param string $source ソース
-     * @param Smarty_Compiler $smarty Smartyのコンパイラクラス
-     * @return string $source ソース
+     * @param  string          $source ソース
+     * @param  Smarty_Compiler $smarty Smartyのコンパイラクラス
+     * @return string          $source ソース
      */
-    function outputfilter_transform($source, &$smarty)
+    public function outputfilter_transform($source, &$smarty)
     {
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
@@ -167,7 +167,7 @@ class SC_View
     }
 
     // テンプレートの処理結果を表示
-    function display($template, $no_error = false)
+    public function display($template, $no_error = false)
     {
         if (!$no_error) {
             global $GLOBAL_ERR;
@@ -187,7 +187,7 @@ class SC_View
     }
 
     // オブジェクト内の変数を全て割り当てる。
-    function assignobj($obj)
+    public function assignobj($obj)
     {
         $data = get_object_vars($obj);
 
@@ -197,7 +197,7 @@ class SC_View
     }
 
     // 連想配列内の変数を全て割り当てる。
-    function assignarray($array)
+    public function assignarray($array)
     {
         foreach ($array as $key => $val) {
             $this->_smarty->assign($key, $val);
@@ -209,7 +209,7 @@ class SC_View
      *
      * @param integer $device_type_id 端末種別ID
      */
-    function assignTemplatePath($device_type_id)
+    public function assignTemplatePath($device_type_id)
     {
         // テンプレート変数を割り当て
         $this->assign('TPL_URLPATH', SC_Helper_PageLayout_Ex::getUserDir($device_type_id, true));
@@ -224,7 +224,7 @@ class SC_View
     }
 
     // デバッグ
-    function debug($var = true)
+    public function debug($var = true)
     {
         $this->_smarty->debugging = $var;
     }

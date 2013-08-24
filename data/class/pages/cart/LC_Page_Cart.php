@@ -33,10 +33,10 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 class LC_Page_Cart extends LC_Page_Ex
 {
     /** 商品規格情報の配列 */
-    var $arrData;
+    public $arrData;
 
     /** 動作モード */
-    var $mode;
+    public $mode;
 
     /** メッセージ */
     public $tpl_message = '';
@@ -46,7 +46,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = '現在のカゴの中';
@@ -59,7 +59,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -71,14 +71,14 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -109,7 +109,7 @@ class LC_Page_Cart extends LC_Page_Ex
 
         // エラーチェック
         $arrError = $objFormParam->checkError();
-        if(isset($arrError) && !empty($arrError)) {
+        if (isset($arrError) && !empty($arrError)) {
             SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
             SC_Response_Ex::actionExit();
         }
@@ -218,7 +218,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return object
      */
-    function lfInitParam($arrRequest)
+    public function lfInitParam($arrRequest)
     {
         $objFormParam = new SC_FormParam_Ex();
         $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -238,7 +238,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return object
      */
-    function lfInitParam4OpenCategoryTree($arrRequest)
+    public function lfInitParam4OpenCategoryTree($arrRequest)
     {
         $objFormParam = new SC_FormParam_Ex();
 
@@ -260,7 +260,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return
      */
-    function lfUpdateOrderTempid($pre_uniqid,$uniqid)
+    public function lfUpdateOrderTempid($pre_uniqid,$uniqid)
     {
         $sqlval['order_temp_id'] = $uniqid;
         $where = 'order_temp_id = ?';
@@ -278,7 +278,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return void
      */
-    function lfGetCartPrevUrl(&$session,$referer)
+    public function lfGetCartPrevUrl(&$session,$referer)
     {
         if (!preg_match('/cart/', $referer)) {
             if (!empty($session['cart_referer_url'])) {
@@ -303,7 +303,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return void
      */
-    function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey)
+    public function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey)
     {
         // 正常に登録されたことを記録しておく
         $objSiteSess->setRegistFlag();

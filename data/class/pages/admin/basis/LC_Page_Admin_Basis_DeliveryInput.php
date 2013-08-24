@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery_input.tpl';
@@ -57,7 +57,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -68,7 +68,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($this->mode, $objFormParam);
@@ -99,7 +99,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam($mode, &$objFormParam)
+    public function lfInitParam($mode, &$objFormParam)
     {
         $objFormParam = new SC_FormParam_Ex();
 
@@ -138,7 +138,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
      *
      * @return $deliv_id
      */
-    function lfRegistData($arrRet, $member_id)
+    public function lfRegistData($arrRet, $member_id)
     {
         $objDelivery = new SC_Helper_Delivery_Ex();
 
@@ -188,7 +188,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
     }
 
     /* 配送業者情報の取得 */
-    function lfGetDelivData(&$objFormParam)
+    public function lfGetDelivData(&$objFormParam)
     {
         $objDelivery = new SC_Helper_Delivery_Ex();
 
@@ -221,7 +221,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
     }
 
     /* 入力内容のチェック */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();

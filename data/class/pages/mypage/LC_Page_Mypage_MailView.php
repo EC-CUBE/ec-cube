@@ -37,7 +37,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -49,7 +49,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -59,7 +59,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCustomer = new SC_Customer_Ex();
         if (!SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
@@ -102,7 +102,7 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return array
      */
-    function lfGetMailView($send_id, $customer_id)
+    public function lfGetMailView($send_id, $customer_id)
     {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
         $col        = 'subject, mail_body';

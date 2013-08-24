@@ -38,7 +38,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'home.tpl';
@@ -50,7 +50,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -61,7 +61,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // DBバージョンの取得
         $this->db_version = $this->lfGetDBVersion();
@@ -108,7 +108,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return string PHPバージョン情報
      */
-    function lfGetPHPVersion()
+    public function lfGetPHPVersion()
     {
         return 'PHP ' . phpversion();
     }
@@ -118,7 +118,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return mixed DBバージョン情報
      */
-    function lfGetDBVersion()
+    public function lfGetDBVersion()
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
 
@@ -130,7 +130,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer 会員数
      */
-    function lfGetCustomerCnt()
+    public function lfGetCustomerCnt()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'COUNT(customer_id)';
@@ -143,10 +143,10 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
     /**
      * 昨日の売上データの取得
      *
-     * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
+     * @param  string  $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
-    function lfGetOrderYesterday($method)
+    public function lfGetOrderYesterday($method)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -160,10 +160,10 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
     /**
      * 今月の売上データの取得
      *
-     * @param string $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
+     * @param  string  $method 取得タイプ 件数:'COUNT' or 金額:'SUM'
      * @return integer 結果数値
      */
-    function lfGetOrderMonth($method)
+    public function lfGetOrderMonth($method)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $month = date('Y/m', mktime());
@@ -180,7 +180,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer 会員の保持ポイント合計
      */
-    function lfGetTotalCustomerPoint()
+    public function lfGetTotalCustomerPoint()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -196,7 +196,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer 昨日のレビュー書き込み数
      */
-    function lfGetReviewYesterday()
+    public function lfGetReviewYesterday()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -212,7 +212,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return integer レビュー書き込み非表示数
      */
-    function lfGetReviewNonDisp()
+    public function lfGetReviewNonDisp()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -227,7 +227,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return array 品切れ商品一覧
      */
-    function lfGetSoldOut()
+    public function lfGetSoldOut()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -246,7 +246,7 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
      *
      * @return array 新規受付一覧配列
      */
-    function lfGetNewOrder()
+    public function lfGetNewOrder()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -304,7 +304,7 @@ __EOS__;
      *
      * @return array 取得した情報配列
      */
-    function lfGetInfo()
+    public function lfGetInfo()
     {
         // 更新情報の取得ON/OFF確認
         if (!ECCUBE_INFO) return array();
@@ -332,6 +332,7 @@ __EOS__;
 
         if (empty($arrTmpData)) {
             SC_Utils_Ex::sfErrorHeader('>> 更新情報の取得に失敗しました。');
+
             return array();
         }
         $arrInfo = array();

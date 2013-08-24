@@ -24,16 +24,16 @@
 // 円グラフ生成クラス
 class SC_Graph_Pie extends SC_Graph_Base_Ex
 {
-    var $cw;
-    var $ch;
-    var $cz;
-    var $cx;
-    var $cy;
-    var $arrLabel;
-    var $arrData;
+    public $cw;
+    public $ch;
+    public $cz;
+    public $cx;
+    public $cy;
+    public $arrLabel;
+    public $arrData;
 
     // コンストラクタ
-    function __construct($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP)
+    public function __construct($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP)
     {
         parent::__construct($bgw, $bgh, $left, $top);
         // サイズ設定
@@ -43,7 +43,7 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
     }
 
     // データを360°値に変換する
-    function getCircleData($array)
+    public function getCircleData($array)
     {
         $total = '';
         $new_total = '';
@@ -76,14 +76,14 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
     }
 
     // 円の位置設定を行う
-    function setPosition($cx, $cy)
+    public function setPosition($cx, $cy)
     {
         $this->cx = $cx;
         $this->cy = $cy;
     }
 
     // 円のサイズ設定を行う
-    function setSize($cw, $ch, $cz = 0)
+    public function setSize($cw, $ch, $cz = 0)
     {
         $this->cw = $cw;
         $this->ch = $ch;
@@ -91,7 +91,7 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
     }
 
     // 影の描画
-    function drawShade()
+    public function drawShade()
     {
         $move = 1;
         for ($i = ($this->cy + $this->cz); $i <= ($this->cy + $this->cz + ($this->cz * PIE_SHADE_IMPACT)); $i++) {
@@ -101,13 +101,13 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
     }
 
     // データをセットする
-    function setData($arrData)
+    public function setData($arrData)
     {
         $this->arrData = array_values($arrData);
     }
 
     // 円グラフを描画する
-    function drawGraph()
+    public function drawGraph()
     {
         $x = $this->cx;
         $y = $this->cy;
@@ -197,7 +197,7 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
     }
 
     // 円グラフのラベルを描画する
-    function drawLabel($arrRad)
+    public function drawLabel($arrRad)
     {
         $start = 0;
         foreach ($arrRad as $key => $rad) {

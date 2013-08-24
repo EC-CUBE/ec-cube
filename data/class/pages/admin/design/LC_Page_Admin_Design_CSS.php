@@ -37,7 +37,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'design/css.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objLayout = new SC_Helper_PageLayout_Ex();
 
@@ -136,10 +136,10 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param object $objFormParam SC_FormParamインスタンス
+     * @param  object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('CSSファイル名', 'css_name', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
@@ -152,25 +152,27 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
      *
      * ファイルの作成に失敗した場合は, エラーメッセージを出力する.
      *
-     * @param string $css_dir CSS ディレクトリ
-     * @param string $css_name CSSファイル名
-     * @param string $old_css_name 旧CSSファイル名
-     * @param string $css_path CSSファイルの絶対パス
-     * @param string $css_data 書き込みを行うデータ
+     * @param  string  $css_dir      CSS ディレクトリ
+     * @param  string  $css_name     CSSファイル名
+     * @param  string  $old_css_name 旧CSSファイル名
+     * @param  string  $css_path     CSSファイルの絶対パス
+     * @param  string  $css_data     書き込みを行うデータ
      * @return boolean 登録が成功した場合 true; 失敗した場合 false
      */
-    function doRegister($css_dir, $css_name, $old_css_name, $css_path, $css_data)
+    public function doRegister($css_dir, $css_name, $old_css_name, $css_path, $css_data)
     {
         if (!SC_Utils_Ex::isBlank($old_css_name)
             && $old_css_name != $css_name) {
             if (!unlink($css_dir . $old_css_name . '.css')) {
                 $this->arrErr['err'] = '※ 旧ファイルの削除に失敗しました<br />';
+
                 return false;
             }
         }
 
         if (!SC_Helper_FileManager_Ex::sfWriteFile($css_path, $css_data)) {
             $this->arrErr['err'] = '※ CSSの書き込みに失敗しました<br />';
+
             return false;
         }
 
@@ -180,13 +182,14 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * 削除を実行する.
      *
-     * @param string $css_path CSSファイルの絶対パス
+     * @param  string  $css_path CSSファイルの絶対パス
      * @return boolean 削除が成功した場合 true; 失敗した場合 false
      */
-    function doDelete($css_path)
+    public function doDelete($css_path)
     {
         if (!unlink($css_path)) {
             $this->arrErr['err'] = '※ CSSの削除に失敗しました<br />';
+
             return false;
         }
 
@@ -196,10 +199,10 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * CSSファイルのリストを取得.
      *
-     * @param array $css_dir CSSディレクトリ
+     * @param  array $css_dir CSSディレクトリ
      * @return array ファイルリスト
      */
-    function getCSSList($css_dir)
+    public function getCSSList($css_dir)
     {
         $objFileManager = new SC_Helper_FileManager_Ex();
 
@@ -219,10 +222,10 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * エラーチェックを行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array エラーメッセージの配列
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam, &$arrErr)
+    public function lfCheckError(&$objFormParam, &$arrErr)
     {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
@@ -255,20 +258,20 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * CSSディレクトリを取得する.
      *
-     * @param integer $device_type_id 端末種別ID
-     * @return string CSSディレクトリ
+     * @param  integer $device_type_id 端末種別ID
+     * @return string  CSSディレクトリ
      */
-    function getCSSDir($device_type_id)
+    public function getCSSDir($device_type_id)
     {
         return SC_Helper_PageLayout_Ex::getTemplatePath($device_type_id, true) . 'css/';
     }
 
     /**
      * 文字列に[./]表記がないかをチェックします
-     * @param string $str
+     * @param  string  $str
      * @return boolean
      */
-    function checkPath($str)
+    public function checkPath($str)
     {
         // 含む場合はfalse
         if (preg_match('|\./|', $str)) {

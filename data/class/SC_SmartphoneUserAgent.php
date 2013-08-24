@@ -34,7 +34,7 @@ class SC_SmartphoneUserAgent
      *
      * @return boolean
      */
-    function isSmartphone()
+    public function isSmartphone()
     {
         $nu = new Net_UserAgent_Mobile();
         // SPでかつPC表示OFFの場合
@@ -46,7 +46,7 @@ class SC_SmartphoneUserAgent
      *
      * @return boolean
      */
-    function isNonSmartphone()
+    public function isNonSmartphone()
     {
         return !SC_SmartphoneUserAgent_Ex::isSmartphone();
     }
@@ -56,7 +56,7 @@ class SC_SmartphoneUserAgent
      *
      * @return string
      */
-    function getSmartphonePcFlag()
+    public function getSmartphonePcFlag()
     {
         $_SESSION['pc_disp'] = empty($_SESSION['pc_disp']) ? false : $_SESSION['pc_disp'];
 
@@ -66,7 +66,7 @@ class SC_SmartphoneUserAgent
     /**
      * PC表示ON
      */
-    function setPcDisplayOn()
+    public function setPcDisplayOn()
     {
         $_SESSION['pc_disp'] = true;
     }
@@ -74,7 +74,7 @@ class SC_SmartphoneUserAgent
     /**
      * PC表示OFF
      */
-    function setPcDisplayOff()
+    public function setPcDisplayOff()
     {
         $_SESSION['pc_disp'] = false;
     }

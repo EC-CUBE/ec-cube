@@ -32,7 +32,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  */
 class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
 {
-    var $arrShippingKeys = array(
+    public $arrShippingKeys = array(
         'shipping_id',
         'shipping_name01',
         'shipping_name02',
@@ -55,7 +55,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         'time_id',
     );
 
-    var $arrShipmentItemKeys = array(
+    public $arrShipmentItemKeys = array(
         'shipment_product_class_id',
         'shipment_product_code',
         'shipment_product_name',
@@ -70,7 +70,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/disp.tpl';
@@ -96,7 +96,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -107,7 +107,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -132,10 +132,10 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
     /**
      * パラメータ情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         // 検索条件のパラメータを初期化
         parent::lfInitParam($objFormParam);
@@ -244,11 +244,11 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
     /**
      * 受注データを取得して, SC_FormParam へ設定する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param integer $order_id 取得元の受注ID
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  integer      $order_id     取得元の受注ID
      * @return void
      */
-    function setOrderToFormParam(&$objFormParam, $order_id)
+    public function setOrderToFormParam(&$objFormParam, $order_id)
     {
         $objPurchase = new SC_Helper_Purchase_Ex();
 

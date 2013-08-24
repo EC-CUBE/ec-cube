@@ -35,15 +35,15 @@
 class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
 {
     /** SC_Query インスタンス */
-    var $objQuery;
+    public $objQuery;
 
     /**
      * DBのバージョンを取得する.
      *
-     * @param string $dsn データソース名
+     * @param  string $dsn データソース名
      * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = '')
+    public function sfGetDBVersion($dsn = '')
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
         $val = $objQuery->getOne('select version()');
@@ -55,10 +55,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      * MySQL 用の SQL 文に変更する.
      *
      * @access private
-     * @param string $sql SQL 文
+     * @param  string $sql SQL 文
      * @return string MySQL 用に置換した SQL 文
      */
-    function sfChangeMySQL($sql)
+    public function sfChangeMySQL($sql)
     {
         // 改行、タブを1スペースに変換
         $sql = preg_replace("/[\r\n\t]/",' ',$sql);
@@ -79,7 +79,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      *
      * @return array 文字コード情報
      */
-    function getCharSet()
+    public function getCharSet()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
@@ -90,10 +90,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     /**
      * 昨日の売上高・売上件数を算出する SQL を返す.
      *
-     * @param string $method SUM または COUNT
+     * @param  string $method SUM または COUNT
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
-    function getOrderYesterdaySql($method)
+    public function getOrderYesterdaySql($method)
     {
         return 'SELECT ' . $method . '(total) FROM dtb_order '
                . 'WHERE del_flg = 0 '
@@ -104,10 +104,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     /**
      * 当月の売上高・売上件数を算出する SQL を返す.
      *
-     * @param string $method SUM または COUNT
+     * @param  string $method SUM または COUNT
      * @return string 当月の売上高・売上件数を算出する SQL
      */
-    function getOrderMonthSql($method)
+    public function getOrderMonthSql($method)
     {
         return 'SELECT '.$method.'(total) FROM dtb_order '
                . 'WHERE del_flg = 0 '
@@ -121,7 +121,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      *
      * @return string 昨日のレビュー書き込み件数を算出する SQL
      */
-    function getReviewYesterdaySql()
+    public function getReviewYesterdaySql()
     {
         return 'SELECT COUNT(*) FROM dtb_review AS A '
                . 'LEFT JOIN dtb_products AS B '
@@ -137,7 +137,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      *
      * @return string 検索条件の SQL
      */
-    function getSendHistoryWhereStartdateSql()
+    public function getSendHistoryWhereStartdateSql()
     {
         return 'start_date BETWEEN date_add(CURRENT_TIMESTAMP,INTERVAL -5 minute) AND date_add(CURRENT_TIMESTAMP,INTERVAL 5 minute)';
     }
@@ -145,10 +145,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     /**
      * ダウンロード販売の検索条件の SQL を返す.
      *
-     * @param string $dtb_order_alias
+     * @param  string $dtb_order_alias
      * @return string 検索条件の SQL
      */
-    function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order')
+    public function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order')
     {
         return '(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(CURRENT_TIMESTAMP) <= DATE(DATE_ADD(' . $dtb_order_alias . '.payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))';
     }
@@ -156,10 +156,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     /**
      * 売上集計の期間別集計のSQLを返す
      *
-     * @param mixed $type
+     * @param  mixed  $type
      * @return string 検索条件のSQL
      */
-    function getOrderTotalDaysWhereSql($type)
+    public function getOrderTotalDaysWhereSql($type)
     {
         switch ($type) {
             case 'month':
@@ -196,7 +196,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      *
      * @return string 年代抽出部分の SQL
      */
-    function getOrderTotalAgeColSql()
+    public function getOrderTotalAgeColSql()
     {
         return 'TRUNC((YEAR(create_date) - YEAR(order_birth)) - (RIGHT(create_date, 5) < RIGHT(order_birth, 5)), -1)';
     }
@@ -204,10 +204,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     /**
      * 文字列連結を行う.
      *
-     * @param array $columns 連結を行うカラム名
+     * @param  array  $columns 連結を行うカラム名
      * @return string 連結後の SQL 文
      */
-    function concatColumn($columns)
+    public function concatColumn($columns)
     {
         $sql = 'concat(';
         $i = 0;
@@ -229,10 +229,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      *
      * 引数に部分一致するテーブル名を配列で返す.
      *
-     * @param string $expression 検索文字列
-     * @return array テーブル名の配列
+     * @param  string $expression 検索文字列
+     * @return array  テーブル名の配列
      */
-    function findTableNames($expression = '')
+    public function findTableNames($expression = '')
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = 'SHOW TABLES LIKE '. $objQuery->quote('%' . $expression . '%');
@@ -246,10 +246,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      * ILIKE句 を LIKE句へ変換する.
      *
      * @access private
-     * @param string $sql SQL文
+     * @param  string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeILIKE($sql)
+    public function sfChangeILIKE($sql)
     {
         $changesql = preg_replace('/(^|[^\w])ILIKE([^\w]|$)/i', '$1LIKE$2', $sql);
 
@@ -260,10 +260,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      * RANDOM() を RAND() に変換する.
      *
      * @access private
-     * @param string $sql SQL文
+     * @param  string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeRANDOM($sql)
+    public function sfChangeRANDOM($sql)
     {
         $changesql = preg_replace('/(^|[^\w])RANDOM\(/i', '$1RAND(', $sql);
 
@@ -274,10 +274,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      * TRUNC() を TRUNCATE() に変換する.
      *
      * @access private
-     * @param string $sql SQL文
+     * @param  string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeTrunc($sql)
+    public function sfChangeTrunc($sql)
     {
         $changesql = preg_replace('/(^|[^\w])TRUNC([^\w]|$)/i', '$1TRUNCATE$2', $sql);
 
@@ -288,10 +288,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      * ARRAY_TO_STRING(ARRAY(A),B) を GROUP_CONCAT() に変換する.
      *
      * @access private
-     * @param string $sql SQL文
+     * @param  string $sql SQL文
      * @return string 変換後の SQL 文
      */
-    function sfChangeArrayToString($sql)
+    public function sfChangeArrayToString($sql)
     {
         if (strpos(strtoupper($sql), 'ARRAY_TO_STRING') !== FALSE) {
             preg_match_all('/ARRAY_TO_STRING.*?\(.*?ARRAY\(.*?SELECT (.+?) FROM (.+?) WHERE (.+?)\).*?\,.*?\'(.+?)\'.*?\)/is', $sql, $match, PREG_SET_ORDER);
@@ -310,11 +310,11 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      *
      * 引数に部分一致するテーブル名を配列で返す.
      *
-     * @param string $table 対象テーブル名
-     * @param string $name 対象カラム名
-     * @return array インデックス設定情報配列
+     * @param  string $table 対象テーブル名
+     * @param  string $name  対象カラム名
+     * @return array  インデックス設定情報配列
      */
-    function sfGetCreateIndexDefinition($table, $name, $definition)
+    public function sfGetCreateIndexDefinition($table, $name, $definition)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrTblInfo = $objQuery->getTableInfo($table);
@@ -336,7 +336,7 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      *
      * @return string
      */
-    function getDummyFromClauseSql()
+    public function getDummyFromClauseSql()
     {
         return 'FROM DUAL';
     }
@@ -344,10 +344,10 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
     /**
      * 各 DB に応じた SC_Query での初期化を行う
      *
-     * @param SC_Query $objQuery SC_Query インスタンス
+     * @param  SC_Query $objQuery SC_Query インスタンス
      * @return void
      */
-    function initObjQuery(SC_Query &$objQuery)
+    public function initObjQuery(SC_Query &$objQuery)
     {
         $objQuery->exec('SET SESSION storage_engine = InnoDB');
         $objQuery->exec("SET SESSION sql_mode = 'ANSI'");

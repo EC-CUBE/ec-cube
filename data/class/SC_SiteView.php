@@ -23,7 +23,7 @@
 
 class SC_SiteView extends SC_View_Ex
 {
-    function __construct($setPrevURL = true)
+    public function __construct($setPrevURL = true)
     {
         parent::__construct();
 
@@ -32,7 +32,7 @@ class SC_SiteView extends SC_View_Ex
         }
     }
 
-    function init()
+    public function init()
     {
         parent::init();
 
@@ -42,7 +42,7 @@ class SC_SiteView extends SC_View_Ex
         $this->assignTemplatePath(DEVICE_TYPE_PC);
     }
 
-    function setPrevURL()
+    public function setPrevURL()
     {
             $objCartSess = new SC_CartSession_Ex();
             $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);

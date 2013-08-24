@@ -38,7 +38,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -48,7 +48,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -59,7 +59,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // カレンダーデータ取得
         $this->arrCalendar = $this->lfGetCalendar(2);
@@ -68,10 +68,10 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
     /**
      * カレンダー情報取得.
      *
-     * @param integer $disp_month 表示する月数
-     * @return array カレンダー情報の配列を返す
+     * @param  integer $disp_month 表示する月数
+     * @return array   カレンダー情報の配列を返す
      */
-    function lfGetCalendar($disp_month = 1)
+    public function lfGetCalendar($disp_month = 1)
     {
         $objDate = new SC_Date_Ex();
         $arrCalendar = array();

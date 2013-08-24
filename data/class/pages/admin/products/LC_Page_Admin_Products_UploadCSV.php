@@ -35,27 +35,27 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
 {
     /** TAGエラーチェックフィールド情報 */
-    var $arrTagCheckItem;
+    public $arrTagCheckItem;
 
     /** 商品テーブルカラム情報 (登録処理用) **/
-    var $arrProductColumn;
+    public $arrProductColumn;
 
     /** 商品規格テーブルカラム情報 (登録処理用) **/
-    var $arrProductClassColumn;
+    public $arrProductClassColumn;
 
     /** 登録フォームカラム情報 **/
-    var $arrFormKeyList;
+    public $arrFormKeyList;
 
-    var $arrRowErr;
+    public $arrRowErr;
 
-    var $arrRowResult;
+    public $arrRowResult;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'products/upload_csv.tpl';
@@ -82,7 +82,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -93,7 +93,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $this->objDb = new SC_Helper_DB_Ex();
 
@@ -137,11 +137,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 登録/編集結果のメッセージをプロパティへ追加する
      *
-     * @param integer $line_count 行数
-     * @param stirng $message メッセージ
+     * @param  integer $line_count 行数
+     * @param  stirng  $message    メッセージ
      * @return void
      */
-    function addRowResult($line_count, $message)
+    public function addRowResult($line_count, $message)
     {
         $this->arrRowResult[] = $line_count . '行目：' . $message;
     }
@@ -149,11 +149,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 登録/編集結果のエラーメッセージをプロパティへ追加する
      *
-     * @param integer $line_count 行数
-     * @param stirng $message メッセージ
+     * @param  integer $line_count 行数
+     * @param  stirng  $message    メッセージ
      * @return void
      */
-    function addRowErr($line_count, $message)
+    public function addRowErr($line_count, $message)
     {
         $this->arrRowErr[] = $line_count . '行目：' . $message;
     }
@@ -166,7 +166,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      * @param $objQuery 保存を行うためのクエリ(指定がない場合、テストのみを行う)
      * @return boolean errFlag. 読み込みに失敗した場合true
      */
-    function lfReadCSVFile(&$objFormParam, &$fp, $objQuery = null)
+    public function lfReadCSVFile(&$objFormParam, &$fp, $objQuery = null)
     {
         $dry_run = ($objQuery===null) ? true : false;
         // 登録対象の列数
@@ -234,7 +234,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function doUploadCsv(&$objFormParam, &$objUpFile)
+    public function doUploadCsv(&$objFormParam, &$objUpFile)
     {
         // ファイルアップロードのチェック
         $this->arrErr['csv_file'] = $objUpFile->makeTempFile('csv_file');
@@ -244,6 +244,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         $arrErr = $objUpFile->checkExists();
         if (count($arrErr) > 0) {
             $this->arrErr = $arrErr;
+
             return;
         }
         // 一時ファイル名の取得
@@ -281,6 +282,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
 
         if ($errFlag) {
             $objQuery->rollback();
+
             return;
         }
 
@@ -296,7 +298,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfInitFile(&$objUpFile)
+    public function lfInitFile(&$objUpFile)
     {
         $objUpFile->addFile('CSVファイル', 'csv_file', array('csv'), CSV_SIZE, true, 0, 0, false);
     }
@@ -307,7 +309,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      * @param array CSV構造設定配列
      * @return void
      */
-    function lfInitParam(&$objFormParam, &$arrCSVFrame)
+    public function lfInitParam(&$objFormParam, &$arrCSVFrame)
     {
         // 固有の初期値調整
         $arrCSVFrame = $this->lfSetParamDefaultValue($arrCSVFrame);
@@ -353,7 +355,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
@@ -376,7 +378,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfInitTableInfo()
+    public function lfInitTableInfo()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $this->arrProductColumn = $objQuery->listTableFields('dtb_products');
@@ -388,11 +390,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * FIXME: 商品登録の実処理自体は、LC_Page_Admin_Products_Productと共通化して欲しい。
      *
-     * @param SC_Query $objQuery SC_Queryインスタンス
-     * @param string|integer $line 処理中の行数
+     * @param  SC_Query       $objQuery SC_Queryインスタンス
+     * @param  string|integer $line     処理中の行数
      * @return void
      */
-    function lfRegistProduct($objQuery, $line = '', &$objFormParam)
+    public function lfRegistProduct($objQuery, $line = '', &$objFormParam)
     {
         $objProduct = new SC_Product_Ex();
         // 登録データ対象取得
@@ -457,13 +459,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      *
      * FIXME: 商品規格登録の実処理自体は、LC_Page_Admin_Products_Productと共通化して欲しい。
      *
-     * @param SC_Query $objQuery SC_Queryインスタンス
-     * @param array $arrList 商品規格情報配列
-     * @param integer $product_id 商品ID
-     * @param integer $product_class_id 商品規格ID
+     * @param  SC_Query $objQuery         SC_Queryインスタンス
+     * @param  array    $arrList          商品規格情報配列
+     * @param  integer  $product_id       商品ID
+     * @param  integer  $product_class_id 商品規格ID
      * @return void
      */
-    function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_id)
+    public function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_id)
     {
         $objProduct = new SC_Product_Ex();
 
@@ -510,12 +512,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      * FIXME: 商品規格登録の実処理自体は、LC_Page_Admin_Products_Productと共通化して欲しい。
      *        DELETE/INSERT ではなく UPDATEへの変更も・・・
      *
-     * @param SC_Query $objQuery SC_Queryインスタンス
-     * @param array $arrList 商品規格情報配列
-     * @param integer $product_id 商品ID
+     * @param  SC_Query $objQuery   SC_Queryインスタンス
+     * @param  array    $arrList    商品規格情報配列
+     * @param  integer  $product_id 商品ID
      * @return void
      */
-    function lfRegistReccomendProducts($objQuery, $arrList, $product_id)
+    public function lfRegistReccomendProducts($objQuery, $arrList, $product_id)
     {
         $objQuery->delete('dtb_recommend_products', 'product_id = ?', array($product_id));
         for ($i = 1; $i <= RECOMMEND_PRODUCT_MAX; $i++) {
@@ -541,10 +543,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 初期値の設定
      *
-     * @param array $arrCSVFrame CSV構造配列
+     * @param  array $arrCSVFrame CSV構造配列
      * @return array $arrCSVFrame CSV構造配列
      */
-    function lfSetParamDefaultValue(&$arrCSVFrame)
+    public function lfSetParamDefaultValue(&$arrCSVFrame)
     {
         foreach ($arrCSVFrame as $key => $val) {
             switch ($val['col']) {
@@ -576,7 +578,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      * @param array $sqlval 商品登録情報配列
      * @return $sqlval 登録情報配列
      */
-    function lfSetProductDefaultData(&$sqlval)
+    public function lfSetProductDefaultData(&$sqlval)
     {
         //新規登録時のみ設定する項目
         if ($sqlval['product_id'] == '') {
@@ -598,11 +600,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 商品規格データ登録前に特殊な値の持ち方をする部分のデータ部分の初期値補正を行う
      *
-     * @param array $sqlval 商品登録情報配列
+     * @param array   $sqlval     商品登録情報配列
      * @param boolean $upload_flg 更新フラグ(更新の場合true)
      * @return $sqlval 登録情報配列
      */
-    function lfSetProductClassDefaultData(&$sqlval, $upload_flg)
+    public function lfSetProductClassDefaultData(&$sqlval, $upload_flg)
     {
         //新規登録時のみ設定する項目
         if ($sqlval['product_class_id'] == '') {
@@ -629,7 +631,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             }
         } else {
             // 初期登録の場合は、在庫数設定がされていない場合、在庫無制限フラグ = 無制限。
-            if (strlen($sqlval['stock']) === 0){
+            if (strlen($sqlval['stock']) === 0) {
                 //更新の場合は、sqlvalのキーにstockがある場合のみ対象
                 if (!$upload_flg or ($upload_flg and array_key_exists('stock', $sqlval))) {
                     $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
@@ -655,7 +657,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      * @param array エラー配列
      * @return array エラー配列
      */
-    function lfCheckErrorDetail($item, $arrErr)
+    public function lfCheckErrorDetail($item, $arrErr)
     {
         // 規格IDの存在チェック
         // FIXME 規格分類ID自体のが有効かを主眼においたチェックをすべきと感じる。
@@ -707,7 +709,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             if ((array_search($recommend_product_id_key, $this->arrFormKeyList) !== FALSE)
              && ($item[$recommend_product_id_key] != '')) {
                 // 商品IDの存在チェック
-                if (!$this->objDb->sfIsRecord('dtb_products', 'product_id', (array)$item[$recommend_product_id_key])) {
+                if (!$this->objDb->sfIsRecord('dtb_products', 'product_id', (array) $item[$recommend_product_id_key])) {
                     $arrErr[$recommend_product_id_key] = "※ 指定の関連商品ID($i)は、登録されていません。";
                     continue;
                 }
@@ -742,7 +744,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         if ($item['stock'] == '') {
             if (array_search('stock_unlimited', $this->arrFormKeyList) === FALSE) {
                 $arrErr['stock'] = '※ 在庫数は必須です（無制限フラグ項目がある場合のみ空欄許可）。';
-            } else if ($item['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
+            } elseif ($item['stock_unlimited'] != UNLIMITED_FLG_UNLIMITED) {
                 $arrErr['stock'] = '※ 在庫数または在庫無制限フラグのいずれかの入力が必須です。';
             }
         }
@@ -779,10 +781,10 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
      * 指定された行番号をmicrotimeに付与してDB保存用の時間を生成する。
      * トランザクション内のCURRENT_TIMESTAMPは全てcommit()時の時間に統一されてしまう為。
      *
-     * @param string $line_no 行番号
+     * @param  string $line_no 行番号
      * @return string $time DB保存用の時間文字列
      */
-    function lfGetDbFormatTimeWithLine($line_no = '')
+    public function lfGetDbFormatTimeWithLine($line_no = '')
     {
         $time = date('Y-m-d H:i:s');
         // 秒以下を生成
@@ -797,13 +799,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 指定されたキーと複数値の有効性の配列内確認
      *
-     * @param string $arr チェック対象配列
-     * @param string $keyname フォームキー名
-     * @param array  $item 入力データ配列
-     * @param string $delimiter 分割文字
+     * @param  string  $arr       チェック対象配列
+     * @param  string  $keyname   フォームキー名
+     * @param  array   $item      入力データ配列
+     * @param  string  $delimiter 分割文字
      * @return boolean true:有効なデータがある false:有効ではない
      */
-    function lfIsArrayRecordMulti($arr, $keyname, $item, $delimiter = ',')
+    public function lfIsArrayRecordMulti($arr, $keyname, $item, $delimiter = ',')
     {
         if (array_search($keyname, $this->arrFormKeyList) === FALSE) {
             return true;
@@ -829,14 +831,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 指定されたキーと複数値の有効性のDB確認
      *
-     * @param string $table テーブル名
-     * @param string $tblkey テーブルキー名
-     * @param string $keyname フォームキー名
-     * @param array  $item 入力データ配列
-     * @param string $delimiter 分割文字
+     * @param  string  $table     テーブル名
+     * @param  string  $tblkey    テーブルキー名
+     * @param  string  $keyname   フォームキー名
+     * @param  array   $item      入力データ配列
+     * @param  string  $delimiter 分割文字
      * @return boolean true:有効なデータがある false:有効ではない
      */
-    function lfIsDbRecordMulti($table, $tblkey, $keyname, $item, $delimiter = ',')
+    public function lfIsDbRecordMulti($table, $tblkey, $keyname, $item, $delimiter = ',')
     {
         if (array_search($keyname, $this->arrFormKeyList) === FALSE) {
             return true;
@@ -864,16 +866,16 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 指定されたキーと値の有効性のDB確認
      *
-     * @param string $table テーブル名
-     * @param string $keyname キー名
-     * @param array  $item 入力データ配列
+     * @param  string  $table   テーブル名
+     * @param  string  $keyname キー名
+     * @param  array   $item    入力データ配列
      * @return boolean true:有効なデータがある false:有効ではない
      */
-    function lfIsDbRecord($table, $keyname, $item)
+    public function lfIsDbRecord($table, $keyname, $item)
     {
         if (array_search($keyname, $this->arrFormKeyList) !== FALSE  //入力対象である
             && $item[$keyname] != ''   // 空ではない
-            && !$this->objDb->sfIsRecord($table, $keyname, (array)$item[$keyname]) //DBに存在するか
+            && !$this->objDb->sfIsRecord($table, $keyname, (array) $item[$keyname]) //DBに存在するか
         ) {
             return false;
         }
@@ -884,12 +886,12 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     /**
      * 指定されたキーと値の有効性の配列内確認
      *
-     * @param string $arr チェック対象配列
-     * @param string $keyname キー名
-     * @param array  $item 入力データ配列
+     * @param  string  $arr     チェック対象配列
+     * @param  string  $keyname キー名
+     * @param  array   $item    入力データ配列
      * @return boolean true:有効なデータがある false:有効ではない
      */
-    function lfIsArrayRecord($arr, $keyname, $item)
+    public function lfIsArrayRecord($arr, $keyname, $item)
     {
         if (array_search($keyname, $this->arrFormKeyList) !== FALSE //入力対象である
             && $item[$keyname] != '' // 空ではない

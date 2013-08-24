@@ -37,7 +37,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -58,7 +58,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // 基本情報を渡す
         $objSiteInfo = SC_Helper_DB_Ex::sfGetBasisData();
@@ -73,7 +73,7 @@ class LC_Page_FrontParts_Bloc_Recommend extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return array $arrBestProducts 検索結果配列
      */
-    function lfGetRanking()
+    public function lfGetRanking()
     {
         $objRecommend = new SC_Helper_BestProducts_Ex();
 

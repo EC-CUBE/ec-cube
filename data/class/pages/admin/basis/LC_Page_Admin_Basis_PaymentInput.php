@@ -33,14 +33,14 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
 {
     /** SC_UploadFile インスタンス */
-    var $objUpFile;
+    public $objUpFile;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/payment_input.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objPayment = new SC_Helper_Payment_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -146,11 +146,11 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
         // FORM表示用配列を渡す。
         $this->arrFile = $this->objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
         // HIDDEN用に配列を渡す。
-        $this->arrHidden = array_merge((array)$this->arrHidden, (array)$this->objUpFile->getHiddenFileList());
+        $this->arrHidden = array_merge((array) $this->arrHidden, (array) $this->objUpFile->getHiddenFileList());
     }
 
     /* ファイル情報の初期化 */
-    function lfInitFile()
+    public function lfInitFile()
     {
         $this->objUpFile->addFile('ロゴ画像', 'payment_image', array('gif','jpeg','jpg','png'), IMAGE_SIZE, false, CLASS_IMAGE_WIDTH, CLASS_IMAGE_HEIGHT);
 
@@ -158,7 +158,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam($mode, &$objFormParam)
+    public function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {
             case 'edit':
@@ -199,7 +199,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     }
 
     /* DBへデータを登録する */
-    function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '')
+    public function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '')
     {
         $sqlval = array_merge($objFormParam->getHashArray(), $this->objUpFile->getDBFileList());
         $sqlval['payment_id'] = $payment_id;
@@ -215,7 +215,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     /*　利用条件の数値チェック */
 
     /* 入力内容のチェック */
-    function lfCheckError($post, $objFormParam, SC_Helper_Payment_Ex $objPayment)
+    public function lfCheckError($post, $objFormParam, SC_Helper_Payment_Ex $objPayment)
     {
         // DBのデータを取得
         $arrPaymentData = $objPayment->get($post['payment_id']);

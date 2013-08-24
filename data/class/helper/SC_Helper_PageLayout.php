@@ -37,13 +37,13 @@ class SC_Helper_PageLayout
      * 設定する.
      *
      * @access public
-     * @param LC_Page $objPage LC_Page インスタンス
-     * @param boolean $preview プレビュー表示の場合 true
-     * @param string $url ページのURL($_SERVER['SCRIPT_NAME'] の情報)
-     * @param integer $device_type_id 端末種別ID
+     * @param  LC_Page $objPage        LC_Page インスタンス
+     * @param  boolean $preview        プレビュー表示の場合 true
+     * @param  string  $url            ページのURL($_SERVER['SCRIPT_NAME'] の情報)
+     * @param  integer $device_type_id 端末種別ID
      * @return void
      */
-    function sfGetPageLayout(&$objPage, $preview = false, $url = '', $device_type_id = DEVICE_TYPE_PC)
+    public function sfGetPageLayout(&$objPage, $preview = false, $url = '', $device_type_id = DEVICE_TYPE_PC)
     {
         // URLを元にページ情報を取得
         if ($preview === false) {
@@ -113,13 +113,13 @@ class SC_Helper_PageLayout
      * $page_id が null の場合は, $page_id が 0 以外のものを検索する.
      *
      * @access public
-     * @param integer $device_type_id 端末種別ID
-     * @param integer $page_id ページID; null の場合は, 0 以外を検索する.
-     * @param string $where 追加の検索条件
-     * @param array $arrParams 追加の検索パラメーター
-     * @return array ページ属性の配列
+     * @param  integer $device_type_id 端末種別ID
+     * @param  integer $page_id        ページID; null の場合は, 0 以外を検索する.
+     * @param  string  $where          追加の検索条件
+     * @param  array   $arrParams      追加の検索パラメーター
+     * @return array   ページ属性の配列
      */
-    function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array())
+    public function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array())
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'device_type_id = ? ' . (SC_Utils_Ex::isBlank($where) ? $where : 'AND ' . $where);
@@ -139,13 +139,13 @@ class SC_Helper_PageLayout
      * ブロック情報を取得する.
      *
      * @access public
-     * @param integer $device_type_id 端末種別ID
-     * @param string $where 追加の検索条件
-     * @param array $arrParams 追加の検索パラメーター
-     * @param boolean $has_realpath php_path, tpl_path の絶対パスを含める場合 true
-     * @return array ブロック情報の配列
+     * @param  integer $device_type_id 端末種別ID
+     * @param  string  $where          追加の検索条件
+     * @param  array   $arrParams      追加の検索パラメーター
+     * @param  boolean $has_realpath   php_path, tpl_path の絶対パスを含める場合 true
+     * @return array   ブロック情報の配列
      */
-    function getBlocs($device_type_id = DEVICE_TYPE_PC, $where = '', $arrParams = array(), $has_realpath = true)
+    public function getBlocs($device_type_id = DEVICE_TYPE_PC, $where = '', $arrParams = array(), $has_realpath = true)
     {
         $objBloc = new SC_Helper_Bloc_Ex($device_type_id);
         $arrBlocs = $objBloc->getWhere($where, $arrParams);
@@ -160,12 +160,12 @@ class SC_Helper_PageLayout
      * ブロック配置情報を取得する.
      *
      * @access public
-     * @param integer $device_type_id 端末種別ID
-     * @param integer $page_id ページID
-     * @param boolean $has_realpath php_path, tpl_path の絶対パスを含める場合 true
-     * @return array 配置情報を含めたブロックの配列
+     * @param  integer $device_type_id 端末種別ID
+     * @param  integer $page_id        ページID
+     * @param  boolean $has_realpath   php_path, tpl_path の絶対パスを含める場合 true
+     * @return array   配置情報を含めたブロックの配列
      */
-    function getBlocPositions($device_type_id, $page_id, $has_realpath = true)
+    public function getBlocPositions($device_type_id, $page_id, $has_realpath = true)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -185,12 +185,12 @@ __EOF__;
         //全ページ設定と各ページのブロックの重複を削除
         $arrUniqBlocIds = array();
         foreach ($arrBlocs as $index => $arrBloc) {
-            if ($arrBloc['anywhere'] == 1){
+            if ($arrBloc['anywhere'] == 1) {
                 $arrUniqBlocIds[] = $arrBloc['bloc_id'];
             }
         }
         foreach ($arrBlocs as $bloc_index => $arrBlocData) {
-            if (in_array($arrBlocData['bloc_id'], $arrUniqBlocIds) && $arrBlocData['anywhere'] == 0){
+            if (in_array($arrBlocData['bloc_id'], $arrUniqBlocIds) && $arrBlocData['anywhere'] == 0) {
                 unset($arrBlocs[$bloc_index]);
             }
         }
@@ -204,11 +204,11 @@ __EOF__;
      * XXX ファイルを確実に削除したかどうかのチェック
      *
      * @access public
-     * @param integer $page_id ページID
-     * @param integer $device_type_id 端末種別ID
+     * @param  integer $page_id        ページID
+     * @param  integer $device_type_id 端末種別ID
      * @return integer 削除数
      */
-    function lfDelPageData($page_id, $device_type_id = DEVICE_TYPE_PC)
+    public function lfDelPageData($page_id, $device_type_id = DEVICE_TYPE_PC)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // page_id が空でない場合にはdeleteを実行
@@ -228,11 +228,11 @@ __EOF__;
      * dtb_pagelayout の削除後に呼び出すこと。
      *
      * @access private
-     * @param string $filename
-     * @param integer $device_type_id 端末種別ID
-     * @return void // TODO boolean にするべき?
+     * @param  string  $filename
+     * @param  integer $device_type_id 端末種別ID
+     * @return void    // TODO boolean にするべき?
      */
-    function lfDelFile($filename, $device_type_id)
+    public function lfDelFile($filename, $device_type_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -261,11 +261,11 @@ __EOF__;
      * 編集可能ページかどうか.
      *
      * @access public
-     * @param integer $device_type_id 端末種別ID
-     * @param integer $page_id ページID
-     * @return 編集可能ページの場合 true
+     * @param  integer                   $device_type_id 端末種別ID
+     * @param  integer                   $page_id        ページID
+     * @return 編集可能ページの� �合 true
      */
-    function isEditablePage($device_type_id, $page_id)
+    public function isEditablePage($device_type_id, $page_id)
     {
         if ($page_id == 0) {
             return false;
@@ -282,11 +282,11 @@ __EOF__;
      * テンプレートのパスを取得する.
      *
      * @access public
-     * @param integer $device_type_id 端末種別ID
-     * @param boolean $isUser USER_REALDIR 以下のパスを返す場合 true
-     * @return string テンプレートのパス
+     * @param  integer $device_type_id 端末種別ID
+     * @param  boolean $isUser         USER_REALDIR 以下のパスを返す場合 true
+     * @return string  テンプレートのパス
      */
-    function getTemplatePath($device_type_id = DEVICE_TYPE_PC, $isUser = false)
+    public function getTemplatePath($device_type_id = DEVICE_TYPE_PC, $isUser = false)
     {
         $templateName = '';
         switch ($device_type_id) {
@@ -321,11 +321,11 @@ __EOF__;
      * を取得する.
      *
      * @access public
-     * @param integer $device_type_id 端末種別ID
-     * @param boolean $hasPackage パッケージのパスも含める場合 true
-     * @return string 端末に応じた DocumentRoot から user_data までのパス
+     * @param  integer $device_type_id 端末種別ID
+     * @param  boolean $hasPackage     パッケージのパスも含める場合 true
+     * @return string  端末に応じた DocumentRoot から user_data までのパス
      */
-    function getUserDir($device_type_id = DEVICE_TYPE_PC, $hasPackage = false)
+    public function getUserDir($device_type_id = DEVICE_TYPE_PC, $hasPackage = false)
     {
         switch ($device_type_id) {
         case DEVICE_TYPE_MOBILE:
@@ -352,11 +352,11 @@ __EOF__;
      * ブロックの php_path, tpl_path を設定する.
      *
      * @access private
-     * @param integer $device_type_id 端末種別ID
-     * @param array $arrBlocs 設定するブロックの配列
+     * @param  integer $device_type_id 端末種別ID
+     * @param  array   $arrBlocs       設定するブロックの配列
      * @return void
      */
-    function setBlocPathTo($device_type_id = DEVICE_TYPE_PC, &$arrBlocs = array())
+    public function setBlocPathTo($device_type_id = DEVICE_TYPE_PC, &$arrBlocs = array())
     {
         foreach ($arrBlocs as $key => $value) {
             $arrBloc =& $arrBlocs[$key];
@@ -370,10 +370,10 @@ __EOF__;
      * カラム数を取得する.
      *
      * @access private
-     * @param array $arrPageLayout レイアウト情報の配列
+     * @param  array   $arrPageLayout レイアウト情報の配列
      * @return integer $col_num カラム数
      */
-    function getColumnNum($arrPageLayout)
+    public function getColumnNum($arrPageLayout)
     {
         // メインは確定
         $col_num = 1;
@@ -381,7 +381,6 @@ __EOF__;
         if (count($arrPageLayout['LeftNavi']) > 0) $col_num++;
         // RIGHT NAVI
         if (count($arrPageLayout['RightNavi']) > 0) $col_num++;
-
         return $col_num;
     }
 }

@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/payment.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objPayment = new SC_Helper_Payment_Ex();
 
@@ -76,6 +76,7 @@ class LC_Page_Admin_Basis_Payment extends LC_Page_Admin_Ex
             $this->arrErr = $objFormParam->checkError();
             if (!empty($this->arrErr['payment_id'])) {
                 trigger_error('', E_USER_ERROR);
+
                 return;
             }
             $post = $objFormParam->getHashArray();

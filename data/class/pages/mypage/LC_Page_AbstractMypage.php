@@ -37,7 +37,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         // mypage 共通
@@ -51,7 +51,7 @@ class LC_Page_AbstractMypage extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         // ログインチェック

@@ -37,7 +37,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'customer/search_customer.tpl';
@@ -50,7 +50,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -61,7 +61,7 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -92,10 +92,10 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
     }
@@ -103,10 +103,10 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex
     /**
      * エラーチェック
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
     }
@@ -114,10 +114,10 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex
     /**
      * 会員一覧を検索する処理
      *
-     * @param array $arrParam 検索パラメーター連想配列
+     * @param  array  $arrParam 検索パラメーター連想配列
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfDoSearch($arrParam)
+    public function lfDoSearch($arrParam)
     {
         return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }

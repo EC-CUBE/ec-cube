@@ -37,7 +37,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = '入力内容のご確認';
@@ -57,7 +57,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -69,14 +69,14 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();

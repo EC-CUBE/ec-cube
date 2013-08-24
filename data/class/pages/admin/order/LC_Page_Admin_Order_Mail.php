@@ -37,7 +37,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/mail.tpl';
@@ -56,7 +56,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -67,18 +67,18 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $post = $_POST;
         //一括送信用の処理
-        if (array_key_exists('mail_order_id',$post) and $post['mode'] == 'mail_select'){
+        if (array_key_exists('mail_order_id',$post) and $post['mode'] == 'mail_select') {
             $post['order_id_array'] = implode(',',$post['mail_order_id']);
-        } else if(!array_key_exists('order_id_array',$post)){
+        } elseif (!array_key_exists('order_id_array',$post)) {
             $post['order_id_array'] = $post['order_id'];
         }
 
         //一括送信処理変数チェック(ここですべきかは課題)
-        if (preg_match("/^[0-9|\,]*$/",$post['order_id_array'])){
+        if (preg_match("/^[0-9|\,]*$/",$post['order_id_array'])) {
             $this->order_id_array = $post['order_id_array'];
         } else {
             //エラーで元に戻す
@@ -87,7 +87,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
         }
 
         //メール本文の確認例は初めの1受注とする
-        if (!SC_Utils_Ex::isBlank($this->order_id_array)){
+        if (!SC_Utils_Ex::isBlank($this->order_id_array)) {
             $order_id_array = split(',',$this->order_id_array);
             $post['order_id'] = intval($order_id_array[0]);
             $this->order_id_count = count($order_id_array);
@@ -151,7 +151,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * 指定された注文番号のメール履歴を取得する。
      * @var int order_id
      */
-    function getMailHistory($order_id)
+    public function getMailHistory($order_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'send_date, subject, template_id, send_id';
@@ -166,7 +166,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * メールを送る。
      * @param SC_FormParam $objFormParam
      */
-    function doSend(&$objFormParam)
+    public function doSend(&$objFormParam)
     {
         $arrErr = $objFormParam->checkerror();
 
@@ -174,7 +174,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
         if (count($arrErr) == 0) {
             // 注文受付メール(複数受注ID対応)
             $order_id_array = explode(',',$this->order_id_array);
-            foreach ($order_id_array as $order_id){
+            foreach ($order_id_array as $order_id) {
                 $objMail = new SC_Helper_Mail_Ex();
                 $objSendMail = $objMail->sfSendOrderMail($order_id,
                 $objFormParam->getValue('template_id'),
@@ -193,7 +193,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * 確認画面を表示する為の準備
      * @param SC_FormParam $objFormParam
      */
-    function confirm(&$objFormParam)
+    public function confirm(&$objFormParam)
     {
         $arrErr = $objFormParam->checkerror();
         // メールの送信
@@ -211,6 +211,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
             $this->tpl_body = mb_convert_encoding($objSendMail->body, CHAR_CODE, 'auto');
             $this->tpl_to = $objSendMail->tpl_to;
             $this->tpl_mainpage = 'order/mail_confirm.tpl';
+
             return true;
         }
 
@@ -222,7 +223,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * テンプレートの文言をフォームに入れる。
      * @param SC_FormParam $objFormParam
      */
-    function changeData(&$objFormParam)
+    public function changeData(&$objFormParam)
     {
         $template_id = $objFormParam->getValue('template_id');
 
@@ -255,7 +256,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
      * パラメーター情報の初期化
      * @param SC_FormParam $objFormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);

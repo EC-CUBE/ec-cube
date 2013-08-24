@@ -37,7 +37,7 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
@@ -49,7 +49,7 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -60,7 +60,7 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         parent::action();
 
@@ -75,12 +75,12 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
     /**
      * カートの情報を取得する
      *
-     * @param SC_CartSession $objCart カートセッション管理クラス
-     * @param Array $arrInfo 基本情報配列
-     * @param Array $cartKeys 商品種類配列
-     * @return array $arrCartList カートデータ配列
+     * @param  SC_CartSession $objCart  カートセッション管理クラス
+     * @param  Array          $arrInfo  基本情報配列
+     * @param  Array          $cartKeys 商品種類配列
+     * @return array          $arrCartList カートデータ配列
      */
-    function lfGetCartData($objCart, $arrInfo, $cartKeys)
+    public function lfGetCartData($objCart, $arrInfo, $cartKeys)
     {
         $cartList = array();
         foreach ($cartKeys as $key) {

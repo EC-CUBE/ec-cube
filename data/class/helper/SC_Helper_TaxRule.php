@@ -33,10 +33,10 @@ class SC_Helper_TaxRule
     /**
      * 設定情報に基づいて税金付与した金額を返す
      *
-     * @param integer $price 計算対象の金額
+     * @param  integer $price 計算対象の金額
      * @return integer 税金付与した金額
      */
-    function sfCalcIncTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
+    public function sfCalcIncTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
         return $price + SC_Helper_TaxRule_Ex::sfTax($price, $product_id, $product_class_id, $pref_id, $country_id);
     }
@@ -44,10 +44,10 @@ class SC_Helper_TaxRule
     /**
      * 設定情報に基づいて税金の金額を返す
      *
-     * @param integer $price 計算対象の金額
+     * @param  integer $price 計算対象の金額
      * @return integer 税金した金額
      */
-    function sfTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
+    public function sfTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
         $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id, $pref_id, $country_id);
 
@@ -58,10 +58,10 @@ class SC_Helper_TaxRule
      * 設定情報IDに基づいて税金付与した金額を返す
      * (受注データのようにルールが決まっている場合用)
      *
-     * @param integer $price 計算対象の金額
+     * @param  integer $price 計算対象の金額
      * @return integer 税金付与した金額
      */
-    function calcIncTaxFromRuleId($price, $tax_rule_id = 0)
+    public function calcIncTaxFromRuleId($price, $tax_rule_id = 0)
     {
         return $price + SC_Helper_TaxRule_Ex::calcTaxFromRuleId($price, $tax_rule_id);
     }
@@ -70,10 +70,10 @@ class SC_Helper_TaxRule
      * 設定情報IDに基づいて税金の金額を返す
      * (受注データのようにルールが決まっている場合用)
      *
-     * @param integer $price 計算対象の金額
+     * @param  integer $price 計算対象の金額
      * @return integer 税金した金額
      */
-    function calcTaxFromRuleId($price, $tax_rule_id = 0)
+    public function calcTaxFromRuleId($price, $tax_rule_id = 0)
     {
         $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRuleData($tax_rule_id);
 
@@ -84,12 +84,12 @@ class SC_Helper_TaxRule
      * 税金額を計算する
      *
      * @param integer $price 計算対象の金額
-     * @param integer $tax 税率(%単位)
+     * @param integer $tax   税率(%単位)
      *     XXX integer のみか不明
-     * @param integer $tax_rule 端数処理
+     * @param  integer $tax_rule 端数処理
      * @return integer 税金額
      */
-    function calcTax ($price, $tax, $calc_rule, $tax_adjust = 0)
+    public function calcTax ($price, $tax, $calc_rule, $tax_adjust = 0)
     {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
@@ -118,10 +118,10 @@ class SC_Helper_TaxRule
     /**
      * 現在有効な税金設定情報を返す
      *
-     * @param integer $price 計算対象の金額
-     * @return array 税設定情報
+     * @param  integer $price 計算対象の金額
+     * @return array   税設定情報
      */
-    function getTaxRule ($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    public function getTaxRule ($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
         // 初期化
         $product_id = $product_id > 0 ? $product_id : 0;
@@ -213,21 +213,21 @@ class SC_Helper_TaxRule
     /**
      * 税金設定情報を登録する（商品管理用）
      *
-     * @param decimal $tax_rate 消費税率
-     * @param integer $product_id 商品ID
-     * @param integer $product_class_id 商品規格ID
-     * @param decimal $tax_adjust 消費税加算額
-     * @param integer $pref_id 県ID
-     * @param integer $country_id 国ID
+     * @param  decimal $tax_rate         消費税率
+     * @param  integer $product_id       商品ID
+     * @param  integer $product_class_id 商品規格ID
+     * @param  decimal $tax_adjust       消費税加算額
+     * @param  integer $pref_id          県ID
+     * @param  integer $country_id       国ID
      * @return void
      */
-    function setTaxRuleForProduct($tax_rate, $product_id = 0, $product_class_id = 0, $tax_adjust=0, $pref_id = 0, $country_id = 0)
+    public function setTaxRuleForProduct($tax_rate, $product_id = 0, $product_class_id = 0, $tax_adjust=0, $pref_id = 0, $country_id = 0)
     {
         // 基本設定を取得
         $arrRet = SC_Helper_TaxRule_Ex::getTaxRule($product_id, $product_class_id);
 
         // 基本設定の消費税率と一緒であれば設定しない
-        if( $arrRet['tax_rate'] != $tax_rate ) {
+        if ($arrRet['tax_rate'] != $tax_rate) {
             // 課税規則は基本設定のものを使用
             $calc_rule = $arrRet['calc_rule'];
             // 日付は登録時点を設定
@@ -243,7 +243,7 @@ class SC_Helper_TaxRule
      * @param
      * @return
      */
-    function setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    public function setTaxRule($calc_rule, $tax_rate, $apply_date, $tax_rule_id=NULL, $tax_adjust=0, $product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
         $table = 'dtb_tax_rule';
         $arrValues = array();
@@ -256,14 +256,14 @@ class SC_Helper_TaxRule
 
         // 新規か更新か？
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        if($tax_rule_id == NULL && $product_id != 0 && $product_class_id != 0){
+        if ($tax_rule_id == NULL && $product_id != 0 && $product_class_id != 0) {
             $where = 'product_id = ? AND product_class_id= ? AND pref_id = ? AND country_id = ?';
             $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
             $arrCheck = $objQuery->getRow('*', 'dtb_tax_rule', $where, $arrVal);
             $tax_rule_id = $arrCheck['tax_rule_id'];
         }
 
-        if($tax_rule_id == NULL) {
+        if ($tax_rule_id == NULL) {
             // 税情報を新規
             // INSERTの実行
             $arrValues['tax_rule_id'] = $objQuery->nextVal('dtb_tax_rule_tax_rule_id');
@@ -281,7 +281,7 @@ class SC_Helper_TaxRule
         }
     }
 
-    function getTaxRuleList($has_deleted = false)
+    public function getTaxRuleList($has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'tax_rule_id, tax_rate, calc_rule, apply_date';
@@ -297,7 +297,7 @@ class SC_Helper_TaxRule
         return $arrRet;
     }
 
-    function getTaxRuleData($tax_rule_id, $has_deleted = false)
+    public function getTaxRuleData($tax_rule_id, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'tax_rule_id = ?';
@@ -308,7 +308,7 @@ class SC_Helper_TaxRule
         return $objQuery->getRow('*', 'dtb_tax_rule', $where, array($tax_rule_id));
     }
 
-    function getTaxRuleByTime($apply_date, $has_deleted = false)
+    public function getTaxRuleByTime($apply_date, $has_deleted = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'apply_date = ?';
@@ -323,10 +323,10 @@ class SC_Helper_TaxRule
     /**
      * 税規約の削除.
      *
-     * @param integer $tax_rule_id 税規約ID
+     * @param  integer $tax_rule_id 税規約ID
      * @return void
      */
-    function deleteTaxRuleData($tax_rule_id)
+    public function deleteTaxRuleData($tax_rule_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

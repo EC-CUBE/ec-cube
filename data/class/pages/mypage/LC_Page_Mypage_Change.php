@@ -37,7 +37,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_subtitle = '会員登録内容変更(入力ページ)';
@@ -64,7 +64,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -73,7 +73,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      * Page のプロセス
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
@@ -162,7 +162,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return void
      */
-    function lfRegistCustomerData(&$objFormParam, $customer_id)
+    public function lfRegistCustomerData(&$objFormParam, $customer_id)
     {
         $arrRet             = $objFormParam->getHashArray();
         $sqlval             = $objFormParam->getDbArray();
@@ -174,10 +174,10 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
     /**
      * 入力エラーのチェック.
      *
-     * @param array $arrRequest リクエスト値($_GET)
+     * @param  array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function lfCheckError($arrRequest)
+    public function lfCheckError($arrRequest)
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();

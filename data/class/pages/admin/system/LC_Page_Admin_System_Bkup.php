@@ -33,10 +33,10 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 {
     /** リストア中にエラーが発生したか */
-    var $tpl_restore_err = false;
+    public $tpl_restore_err = false;
 
     /** 対象外とするシーケンス生成器 */
-    var $arrExcludeSequence = array(
+    public $arrExcludeSequence = array(
         'plsql_profiler_runid', // Postgres Plus Advanced Server 9.1
         'snapshot_num',         // Postgres Plus Advanced Server 9.1
     );
@@ -46,7 +46,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'system/bkup.tpl';
@@ -64,7 +64,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -75,7 +75,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex;
 
@@ -127,7 +127,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
                     $this->tpl_onload = "alert('バックアップ完了しました');";
                 } else {
                     $arrForm = $objFormParam->getHashArray();
-                    $arrErr = array_merge((array)$arrErrTmp[1],(array)$arrErrTmp[2]);
+                    $arrErr = array_merge((array) $arrErrTmp[1],(array) $arrErrTmp[2]);
                 }
                 break;
 
@@ -210,11 +210,11 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * パラメーター初期化.
      *
-     * @param object $objFormParam
-     * @param array  $arrParams  $_POST値
+     * @param  object $objFormParam
+     * @param  array  $arrParams    $_POST値
      * @return void
      */
-    function initParam(&$objFormParam, &$arrParams)
+    public function initParam(&$objFormParam, &$arrParams)
     {
         $objFormParam->addParam('バックアップ名', 'bkup_name', STEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
         $objFormParam->addParam('バックアップメモ', 'bkup_memo', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
@@ -230,7 +230,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      * @param string $mode
      * @return $arrErr
      */
-    function lfCheckError(&$arrForm, $mode)
+    public function lfCheckError(&$arrForm, $mode)
     {
         switch ($mode) {
             case 'bkup':
@@ -263,10 +263,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * バックアップファイル作成.
      *
-     * @param string $bkup_name
+     * @param  string      $bkup_name
      * @return boolean|int 結果。true:成功 int:失敗 FIXME 本来は int ではなく、エラーメッセージを戻すべき
      */
-    function lfCreateBkupData($bkup_name, $work_dir)
+    public function lfCreateBkupData($bkup_name, $work_dir)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $csv_autoinc = '';
@@ -345,10 +345,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * CSV作成 テンポラリファイル出力 コールバック関数
      *
-     * @param mixed $data 出力データ
+     * @param  mixed   $data 出力データ
      * @return boolean true (true:固定 false:中断)
      */
-    function cbOutputCSV($data)
+    public function cbOutputCSV($data)
     {
         $line = '';
         if ($this->first_line) {
@@ -371,7 +371,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      * @return string シーケンス一覧の文字列
      * @return string $ret
      */
-    function lfGetAutoIncrement()
+    public function lfGetAutoIncrement()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrSequences = $objQuery->listSequences();
@@ -394,7 +394,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     }
 
     // バックアップテーブルにデータを更新する
-    function lfUpdBkupData($data)
+    public function lfUpdBkupData($data)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -409,7 +409,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * バックアップの一覧を取得する
      */
-    function lfGetBkupData($sql_option = '', $filter_bkup_name = '')
+    public function lfGetBkupData($sql_option = '', $filter_bkup_name = '')
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -457,12 +457,12 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * バックアップファイルをリストアする
      *
-     * @param string $bkup_name
-     * @param string $bkup_dir
-     * @param string $bkup_ext
+     * @param  string $bkup_name
+     * @param  string $bkup_dir
+     * @param  string $bkup_ext
      * @return void
      */
-    function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode)
+    public function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -510,12 +510,12 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * CSVファイルからインサート実行.
      *
-     * @param object $objQuery
-     * @param string $dir
-     * @param string $mode
+     * @param  object $objQuery
+     * @param  string $dir
+     * @param  string $mode
      * @return void
      */
-    function lfExeInsertSQL(&$objQuery, $dir, $mode)
+    public function lfExeInsertSQL(&$objQuery, $dir, $mode)
     {
         $tbl_flg = false;
         $col_flg = false;
@@ -538,6 +538,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
                 if ($mode === 'restore_config') {
                     continue;
                 }
+
                 return false;
             }
 
@@ -584,7 +585,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * シーケンス生成器を復元する
      */
-    function restoreSequence(&$objQuery, $csv)
+    public function restoreSequence(&$objQuery, $csv)
     {
         // csvファイルからデータの取得
         $arrCsvData = file($csv);
@@ -604,7 +605,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     }
 
     // 選択したバックアップをDBから削除
-    function lfDeleteBackUp(&$arrForm, $bkup_dir, $bkup_ext)
+    public function lfDeleteBackUp(&$arrForm, $bkup_dir, $bkup_ext)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

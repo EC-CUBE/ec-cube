@@ -38,7 +38,7 @@ class LC_Page_Admin_Order_Multiple extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/multiple.tpl';
@@ -53,7 +53,7 @@ class LC_Page_Admin_Order_Multiple extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -64,7 +64,7 @@ class LC_Page_Admin_Order_Multiple extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $this->setTemplate($this->tpl_mainpage);
     }

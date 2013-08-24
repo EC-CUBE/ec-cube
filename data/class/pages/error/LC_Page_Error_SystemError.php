@@ -34,20 +34,20 @@ require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
 class LC_Page_Error_SystemError extends LC_Page_Error
 {
     /** PEAR_Error */
-    var $pearResult;
+    public $pearResult;
 
     /** PEAR_Error がセットされていない場合用のバックトレーススタック */
-    var $backtrace;
+    public $backtrace;
 
     /** デバッグ用のメッセージ配列 */
-    var $arrDebugMsg = array();
+    public $arrDebugMsg = array();
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = 'システムエラー';
@@ -58,7 +58,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -69,7 +69,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         SC_Response_Ex::sendHttpStatus(500);
 
@@ -92,7 +92,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function sendResponse()
+    public function sendResponse()
     {
         $this->adminPage = GC_Utils_Ex::isAdminFunction();
 
@@ -110,14 +110,14 @@ class LC_Page_Error_SystemError extends LC_Page_Error
     /**
      * トランザクショントークンに関して処理しないようにオーバーライド
      */
-    function doValidToken()
+    public function doValidToken()
     {
     }
 
     /**
      * トランザクショントークンに関して処理しないようにオーバーライド
      */
-    function setTokenTo()
+    public function setTokenTo()
     {
     }
 
@@ -126,7 +126,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return string
      */
-    function sfGetErrMsg()
+    public function sfGetErrMsg()
     {
         $errmsg = '';
         $errmsg .= $this->lfGetErrMsgHead();
@@ -159,7 +159,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return string
      */
-    function lfGetErrMsgHead()
+    public function lfGetErrMsgHead()
     {
         $errmsg = '';
         $errmsg .= GC_Utils_Ex::getUrl() . "\n";
@@ -176,7 +176,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
      *
      * @return void
      */
-    function addDebugMsg($debugMsg)
+    public function addDebugMsg($debugMsg)
     {
         $this->arrDebugMsg[] = rtrim($debugMsg, "\n");
     }

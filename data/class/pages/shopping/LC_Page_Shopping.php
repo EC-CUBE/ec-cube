@@ -37,7 +37,7 @@ class LC_Page_Shopping extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = 'ログイン';
@@ -61,7 +61,7 @@ class LC_Page_Shopping extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -73,14 +73,14 @@ class LC_Page_Shopping extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
@@ -272,10 +272,10 @@ class LC_Page_Shopping extends LC_Page_Ex
     /**
      * お客様情報入力時のパラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam, 'order_');
         SC_Helper_Customer_Ex::sfCustomerRegisterParam($objFormParam, false, false, 'order_');
@@ -296,10 +296,10 @@ class LC_Page_Shopping extends LC_Page_Ex
     /**
      * ログイン時のパラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitLoginFormParam(&$objFormParam)
+    public function lfInitLoginFormParam(&$objFormParam)
     {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('メールアドレス', 'login_email', '' , 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
@@ -313,20 +313,21 @@ class LC_Page_Shopping extends LC_Page_Ex
      * 支払方法選択画面のパスを返す.
      * それ以外は, お届け先選択画面のパスを返す.
      *
-     * @param integer $product_type_id 商品種別ID
-     * @param string $uniqid 受注一時テーブルのユニークID
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @param SC_SiteSession $objSiteSess SC_SiteSession インスタンス
-     * @return string 遷移先のパス
+     * @param  integer            $product_type_id 商品種別ID
+     * @param  string             $uniqid          受注一時テーブルのユニークID
+     * @param  SC_Customer        $objCustomer     SC_Customer インスタンス
+     * @param  SC_Helper_Purchase $objPurchase     SC_Helper_Purchase インスタンス
+     * @param  SC_SiteSession     $objSiteSess     SC_SiteSession インスタンス
+     * @return string             遷移先のパス
      */
-    function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase, &$objSiteSess)
+    public function getNextLocation($product_type_id, $uniqid, &$objCustomer, &$objPurchase, &$objSiteSess)
     {
         switch ($product_type_id) {
             case PRODUCT_TYPE_DOWNLOAD:
                 $objPurchase->unsetAllShippingTemp(true);
                 $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
                 $objSiteSess->setRegistFlag();
+
                 return 'payment.php';
 
             case PRODUCT_TYPE_NORMAL:
@@ -339,13 +340,13 @@ class LC_Page_Shopping extends LC_Page_Ex
      * データの一時登録を行う.
      *
      * 非会員向けの処理
-     * @param integer $uniqid 受注一時テーブルのユニークID
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param boolean $isMultiple 複数配送の場合 true
+     * @param integer            $uniqid       受注一時テーブルのユニークID
+     * @param SC_Helper_Purchase $objPurchase  SC_Helper_Purchase インスタンス
+     * @param SC_Customer        $objCustomer  SC_Customer インスタンス
+     * @param SC_FormParam       $objFormParam SC_FormParam インスタンス
+     * @param boolean            $isMultiple   複数配送の場合 true
      */
-    function lfRegistData($uniqid, &$objPurchase, &$objCustomer, &$objFormParam, $isMultiple = false)
+    public function lfRegistData($uniqid, &$objPurchase, &$objCustomer, &$objFormParam, $isMultiple = false)
     {
         $arrParams = $objFormParam->getHashArray();
 
@@ -386,17 +387,17 @@ class LC_Page_Shopping extends LC_Page_Ex
      *
      * 追加の必須チェック, 相関チェックを行うため, SC_CheckError を使用する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array エラー情報の配
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        エラー情報の配
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam, 'order_');
 
         // 別のお届け先チェック
         if (isset($arrParams['deliv_check']) && $arrParams['deliv_check'] == '1') {
             $objErr2 = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam, 'shipping_');
-            $objErr->arrErr = array_merge((array)$objErr->arrErr, (array)$objErr2->arrErr);
+            $objErr->arrErr = array_merge((array) $objErr->arrErr, (array) $objErr2->arrErr);
         } else {
             // shipping系のエラーは無視
             foreach ($objErr->arrErr as $key => $val) {
@@ -419,12 +420,12 @@ class LC_Page_Shopping extends LC_Page_Ex
      * 受注一時テーブル, セッションの配送情報から入力済みの購入情報を取得し,
      * フォームに設定する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @param integer $uniqid 購入一時情報のユニークID
+     * @param  SC_FormParam       $objFormParam SC_FormParam インスタンス
+     * @param  SC_Helper_Purchase $objPurchase  SC_Helper_Purchase インスタンス
+     * @param  integer            $uniqid       購入一時情報のユニークID
      * @return void
      */
-    function setFormParams(&$objFormParam, &$objPurchase, $uniqid)
+    public function setFormParams(&$objFormParam, &$objPurchase, $uniqid)
     {
         $arrOrderTemp = $objPurchase->getOrderTemp($uniqid);
         if (SC_Utils_Ex::isBlank($arrOrderTemp)) {
@@ -463,7 +464,7 @@ class LC_Page_Shopping extends LC_Page_Ex
      * @return string JSON 形式のエラーメッセージ
      * @see LC_PageError
      */
-    function lfGetErrorMessage($error)
+    public function lfGetErrorMessage($error)
     {
         switch ($error) {
             case TEMP_LOGIN_ERROR:

@@ -24,23 +24,23 @@
 // 折れ線グラフ生成クラス
 class SC_Graph_Line extends SC_Graph_Base_Ex
 {
-    var $area_width;
-    var $area_height;
-    var $ygrid_on;
-    var $graph_max;     // グラフのエリア最大値(Y軸頂点の値)
-    var $arrXLabel;
-    var $XLabelAngle;   // X軸ラベル角度
-    var $XTitle;        // X軸タイトル
-    var $YTitle;        // Y軸タイトル
-    var $arrDataList;   // グラフデータを格納
-    var $arrPointList;  // 折れ線座標を格納
-    var $line_max;      // 複数の描画の場合に加算していく
+    public $area_width;
+    public $area_height;
+    public $ygrid_on;
+    public $graph_max;     // グラフのエリア最大値(Y軸頂点の値)
+    public $arrXLabel;
+    public $XLabelAngle;   // X軸ラベル角度
+    public $XTitle;        // X軸タイトル
+    public $YTitle;        // Y軸タイトル
+    public $arrDataList;   // グラフデータを格納
+    public $arrPointList;  // 折れ線座標を格納
+    public $line_max;      // 複数の描画の場合に加算していく
 
-    var $x_margin;
-    var $y_margin;
+    public $x_margin;
+    public $y_margin;
 
     // コンストラクタ
-    function __construct(
+    public function __construct(
         $bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,
         $area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
         parent::__construct($bgw, $bgh, $left, $top);
@@ -55,13 +55,13 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // X軸ラベルの角度セット
-    function setXLabelAngle($Angle)
+    public function setXLabelAngle($Angle)
     {
         $this->XLabelAngle = $Angle;
     }
 
     // Y軸タイトル
-    function drawYTitle()
+    public function drawYTitle()
     {
         // Y軸にタイトルを入れる
         if ($this->YTitle != '') {
@@ -73,7 +73,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // X軸タイトル
-    function drawXTitle()
+    public function drawXTitle()
     {
         // Y軸にタイトルを入れる
         if ($this->XTitle != '') {
@@ -85,7 +85,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // Y軸の描画
-    function drawYLine()
+    public function drawYLine()
     {
         imageline($this->image, $this->left, $this->top, $this->left, $this->top + $this->area_height, $this->flame_color);
         // 目盛り幅を求める(中間点は自動)
@@ -111,7 +111,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // X軸の描画
-    function drawXLine($bar = false)
+    public function drawXLine($bar = false)
     {
         imageline($this->image, $this->left, $this->top + $this->area_height, $this->left + $this->area_width, $this->top + $this->area_height, $this->flame_color);
         $arrPointList = $this->arrPointList[0];
@@ -155,13 +155,13 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // グリッド表示
-    function setYGridOn($ygrid_on)
+    public function setYGridOn($ygrid_on)
     {
         $this->ygrid_on = $ygrid_on;
     }
 
     // ポイントの描画
-    function setMark($line_no, $left, $top, $size = LINE_MARK_SIZE)
+    public function setMark($line_no, $left, $top, $size = LINE_MARK_SIZE)
     {
         // 偶数に変換しておく
         $size += $size % 2;
@@ -177,7 +177,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // Y軸目盛りに値を入れる
-    function setYScale()
+    public function setYScale()
     {
         // 1目盛りの値
         $number = intval($this->graph_max / LINE_Y_SCALE);
@@ -194,7 +194,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     //
-    function setMax($arrData)
+    public function setMax($arrData)
     {
         // データの最大値を取得する。
         $data_max = max($arrData);
@@ -211,7 +211,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // グラフの描画
-    function drawGraph()
+    public function drawGraph()
     {
         // グラフ背景を描画
         $this->drawYLine();
@@ -237,7 +237,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // ラインを描画する
-    function drawLine($line_no)
+    public function drawLine($line_no)
     {
         $arrPointList = $this->arrPointList[$line_no];
 
@@ -254,7 +254,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // マークを描画する
-    function drawMark($line_no)
+    public function drawMark($line_no)
     {
         $arrPointList = $this->arrPointList[$line_no];
         $count = count($arrPointList);
@@ -266,7 +266,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // ラベルを描画する
-    function drawLabel($line_no)
+    public function drawLabel($line_no)
     {
         $arrData = $this->arrDataList[$line_no];
         $arrPointList = $this->arrPointList[$line_no];
@@ -282,9 +282,9 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // データをセットする
-    function setData($arrData)
+    public function setData($arrData)
     {
-        $this->arrDataList[$this->line_max] = array_values((array)$arrData);
+        $this->arrDataList[$this->line_max] = array_values((array) $arrData);
         $this->setMax($this->arrDataList[$this->line_max]);
         // 値の描画変換率
         $rate = $this->area_height / $this->graph_max;
@@ -304,19 +304,19 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // X軸ラベルをセットする
-    function setXLabel($arrXLabel)
+    public function setXLabel($arrXLabel)
     {
-        $this->arrXLabel = array_values((array)$arrXLabel);
+        $this->arrXLabel = array_values((array) $arrXLabel);
     }
 
     // X軸タイトルをセットする
-    function setXTitle($title)
+    public function setXTitle($title)
     {
         $this->XTitle = $title;
     }
 
     // Y軸タイトルをセットする
-    function setYTitle($title)
+    public function setYTitle($title)
     {
         $this->YTitle = $title;
     }

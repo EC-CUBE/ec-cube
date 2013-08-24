@@ -37,7 +37,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -58,7 +58,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         switch ($this->getMode()) {
             default:
@@ -84,10 +84,10 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
     /**
      * 初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('ファイル名', 'file', MTEXT_LEN, 'a', array('EXIST_CHECK'));
     }
@@ -95,10 +95,10 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
     /**
      * 表示するファイルにエラーチェックを行う
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return boolen $file_check_flg エラーチェックの結果
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return boolen       $file_check_flg エラーチェックの結果
      */
-    function checkErrorDispFile($objFormParam)
+    public function checkErrorDispFile($objFormParam)
     {
         $file_check_flg = false;
 
@@ -117,7 +117,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function execFileView($objFormParam)
+    public function execFileView($objFormParam)
     {
         $file = $objFormParam->getValue('file');
 

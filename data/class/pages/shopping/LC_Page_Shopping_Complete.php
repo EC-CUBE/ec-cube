@@ -37,7 +37,7 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = 'ご注文完了';
@@ -48,7 +48,7 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -62,7 +62,7 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
     }
@@ -70,7 +70,7 @@ class LC_Page_Shopping_Complete extends LC_Page_Ex
     /**
      * 決済モジュールから遷移する場合があるため, トークンチェックしない.
      */
-    function doValidToken()
+    public function doValidToken()
     {
         // nothing.
     }

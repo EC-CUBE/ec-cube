@@ -37,7 +37,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'customer/index.tpl';
@@ -82,7 +82,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -93,7 +93,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -142,10 +142,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -154,10 +154,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     /**
      * エラーチェック
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         return SC_Helper_Customer_Ex::sfCheckErrorSearchParam($objFormParam);
     }
@@ -165,10 +165,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     /**
      * 会員を削除する処理
      *
-     * @param integer $customer_id 会員ID
+     * @param  integer $customer_id 会員ID
      * @return boolean true:成功 false:失敗
      */
-    function lfDoDeleteCustomer($customer_id)
+    public function lfDoDeleteCustomer($customer_id)
     {
         return SC_Helper_Customer_Ex::delete($customer_id);
     }
@@ -176,10 +176,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     /**
      * 会員に登録メールを再送する処理
      *
-     * @param integer $customer_id 会員ID
+     * @param  integer $customer_id 会員ID
      * @return boolean true:成功 false:失敗
      */
-    function lfDoResendMail($customer_id)
+    public function lfDoResendMail($customer_id)
     {
         $arrData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
         if (SC_Utils_Ex::isBlank($arrData) or $arrData['del_flg'] == 1) {
@@ -197,10 +197,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     /**
      * 会員一覧を検索する処理
      *
-     * @param array $arrParam 検索パラメーター連想配列
+     * @param  array  $arrParam 検索パラメーター連想配列
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfDoSearch($arrParam)
+    public function lfDoSearch($arrParam)
     {
         return SC_Helper_Customer_Ex::sfGetSearchData($arrParam);
     }
@@ -208,10 +208,10 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     /**
      * 会員一覧CSVを検索してダウンロードする処理
      *
-     * @param array $arrParam 検索パラメーター連想配列
+     * @param  array   $arrParam 検索パラメーター連想配列
      * @return boolean true:成功 false:失敗
      */
-    function lfDoCSV($arrParam)
+    public function lfDoCSV($arrParam)
     {
         $objSelect = new SC_CustomerList_Ex($arrParam, 'customer');
         $objCSV = new SC_Helper_CSV_Ex();

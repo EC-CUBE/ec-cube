@@ -27,7 +27,7 @@ class SC_Plugin_Util
     /**
      * 稼働中のプラグインを取得する。
      */
-    function getEnablePlugin()
+    public function getEnablePlugin()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
@@ -56,7 +56,7 @@ class SC_Plugin_Util
      *
      * @return array $arrRet インストールされているプラグイン.
      */
-    function getAllPlugin()
+    public function getAllPlugin()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
@@ -74,10 +74,10 @@ class SC_Plugin_Util
     /**
      * プラグインIDをキーにプラグインを取得する。
      *
-     * @param int $plugin_id プラグインID.
+     * @param  int   $plugin_id プラグインID.
      * @return array プラグインの基本情報.
      */
-    function getPluginByPluginId($plugin_id)
+    public function getPluginByPluginId($plugin_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
@@ -91,10 +91,10 @@ class SC_Plugin_Util
     /**
      * プラグインコードをキーにプラグインを取得する。
      *
-     * @param string $plugin_code プラグインコード.
-     * @return array プラグインの基本情報.
+     * @param  string $plugin_code プラグインコード.
+     * @return array  プラグインの基本情報.
      */
-    function getPluginByPluginCode($plugin_code)
+    public function getPluginByPluginCode($plugin_code)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';
@@ -108,10 +108,10 @@ class SC_Plugin_Util
     /**
      * プラグインIDをキーにプラグインを削除する。
      *
-     * @param string $plugin_id プラグインID.
-     * @return array プラグインの基本情報.
+     * @param  string $plugin_id プラグインID.
+     * @return array  プラグインの基本情報.
      */
-    function deletePluginByPluginId($plugin_id)
+    public function deletePluginByPluginId($plugin_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'plugin_id = ?';
@@ -124,7 +124,7 @@ class SC_Plugin_Util
      *
      * @return array $arrPluginDirectory
      */
-    function getPluginDirectory()
+    public function getPluginDirectory()
     {
         $arrPluginDirectory = array();
         if (is_dir(PLUGIN_UPLOAD_REALDIR)) {
@@ -142,11 +142,11 @@ class SC_Plugin_Util
     /**
      * プラグインIDをキーに, プラグインフックポイントを取得する.
      *
-     * @param integer $plugin_id
-     * @param integer $use_type 1=有効のみ 2=無効のみ 3=全て
-     * @return array フックポイントの一覧
+     * @param  integer $plugin_id
+     * @param  integer $use_type  1=有効のみ 2=無効のみ 3=全て
+     * @return array   フックポイントの一覧
      */
-    function getPluginHookPoint($plugin_id, $use_type = 1)
+    public function getPluginHookPoint($plugin_id, $use_type = 1)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $cols = '*';
@@ -165,16 +165,17 @@ class SC_Plugin_Util
             default:
             break;
         }
+
         return $objQuery->select($cols, $from, $where, array($plugin_id));
     }
 
     /**
      *  プラグインフックポイントを取得する.
      *
-     * @param integer $use_type 1=有効のみ 2=無効のみ 3=全て
-     * @return array フックポイントの一覧
+     * @param  integer $use_type 1=有効のみ 2=無効のみ 3=全て
+     * @return array   フックポイントの一覧
      */
-    function getPluginHookPointList($use_type = 3)
+    public function getPluginHookPointList($use_type = 3)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('hook_point ASC, priority DESC');
@@ -194,6 +195,7 @@ class SC_Plugin_Util
                 $where = '';
             break;
         }
+
         return $objQuery->select($cols, $from, $where);
         //$arrList = array();
         //foreach ($arrRet AS $key=>$val) {
@@ -205,10 +207,10 @@ class SC_Plugin_Util
     /**
      * プラグイン利用に必須のモジュールチェック
      *
-     * @param string $key  エラー情報を格納するキー
-     * @return array $arrErr エラー情報を格納した連想配列.
+     * @param  string $key エラー情報を格納するキー
+     * @return array  $arrErr エラー情報を格納した連想配列.
      */
-    function checkExtension($key)
+    public function checkExtension($key)
     {
         // プラグイン利用に必須のモジュール
         // 'EC-CUBEバージョン' => array('モジュール名')
@@ -233,10 +235,11 @@ class SC_Plugin_Util
     /**
      * フックポイントのON/OFF変更
      *
-     * @param intger $plugin_hookpoint_id  フックポイントID
+     * @param  intger $plugin_hookpoint_id フックポイントID
      * @return bolean $use_flg：1=ON、0=OFF
      */
-    function setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg = 0) {
+    public function setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg = 0)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['use_flg'] = $use_flg;
         $objQuery->update('dtb_plugin_hookpoint', $sqlval, 'plugin_hookpoint_id = ?', array($plugin_hookpoint_id));
@@ -245,10 +248,10 @@ class SC_Plugin_Util
     /**
      * フックポイントで衝突する可能性のあるプラグインを判定.メッセージを返します.
      *
-     * @param int $plugin_id プラグインID
+     * @param  int    $plugin_id プラグインID
      * @return string $conflict_alert_message メッセージ
      */
-    function checkConflictPlugin($plugin_id = '')
+    public function checkConflictPlugin($plugin_id = '')
     {
         // フックポイントを取得します.
         $where = 'T1.hook_point = ? AND NOT T1.plugin_id = ? AND T2.enable = ?';
@@ -287,6 +290,7 @@ class SC_Plugin_Util
             foreach ($arrConflictPluginName as $conflictPluginName) {
                 $conflict_alert_message .= '* ' .  $conflictPluginName . 'と競合する可能性があります。<br/>';
             }
+
             return $conflict_alert_message;
         } else {
             return $arrConflictHookPoint;

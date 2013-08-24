@@ -32,14 +32,14 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  */
 class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
 {
-    var $arrLogList = array();
+    public $arrLogList = array();
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'system/log.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex;
 
@@ -94,7 +94,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('ファイル', 'log', null, '', array());
         $objFormParam->addParam('行数', 'line_max', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), 50);
@@ -105,7 +105,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * @return array $arrLogs 取得したログ
      */
-    function getEccubeLog($log_path_base)
+    public function getEccubeLog($log_path_base)
     {
         $index = 0;
         $arrLogs = array();
@@ -153,7 +153,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      *
      * セキュリティ面をカバーする役割もある。
      */
-    function getLogPath($log_name)
+    public function getLogPath($log_name)
     {
         if (strlen($log_name) === 0) {
             return LOG_REALFILE;
@@ -170,7 +170,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
      * TODO mtb_constants から動的生成したい。
      * @return void
      */
-    function loadLogList()
+    public function loadLogList()
     {
         $this->arrLogList[''] = '標準ログファイル';
         $this->arrLogList['CUSTOMER'] = '会員ログイン ログファイル';

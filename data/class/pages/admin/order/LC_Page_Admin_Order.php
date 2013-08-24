@@ -37,7 +37,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/index.tpl';
@@ -77,7 +77,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -88,7 +88,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -177,10 +177,10 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('注文番号1', 'search_order_id1', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('注文番号2', 'search_order_id2', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -225,10 +225,10 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
     /**
      * 入力内容のチェックを行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
@@ -261,13 +261,13 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      *
      * 構築内容は, 引数の $where 及び $arrValues にそれぞれ追加される.
      *
-     * @param string $key 検索条件のキー
-     * @param string $where 構築する WHERE 句
-     * @param array $arrValues 構築するクエリパラメーター
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  string       $key          検索条件のキー
+     * @param  string       $where        構築する WHERE 句
+     * @param  array        $arrValues    構築するクエリパラメーター
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function buildQuery($key, &$where, &$arrValues, &$objFormParam)
+    public function buildQuery($key, &$where, &$arrValues, &$objFormParam)
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         switch ($key) {
@@ -397,11 +397,11 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
     /**
      * 受注を削除する.
      *
-     * @param string $where 削除対象の WHERE 句
-     * @param array $arrParam 削除対象の値
+     * @param  string $where    削除対象の WHERE 句
+     * @param  array  $arrParam 削除対象の値
      * @return void
      */
-    function doDelete($where, $arrParam = array())
+    public function doDelete($where, $arrParam = array())
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg']     = 1;
@@ -415,12 +415,12 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
      * 構築に成功した場合は, ファイル名と出力内容を配列で返す.
      * 構築に失敗した場合は, false を返す.
      *
-     * @param string $where 検索条件の WHERE 句
-     * @param array $arrVal 検索条件のパラメーター
-     * @param string $order 検索結果の並び順
+     * @param  string $where  検索条件の WHERE 句
+     * @param  array  $arrVal 検索条件のパラメーター
+     * @param  string $order  検索結果の並び順
      * @return void
      */
-    function doOutputCSV($where, $arrVal, $order)
+    public function doOutputCSV($where, $arrVal, $order)
     {
         $objCSV = new SC_Helper_CSV_Ex();
         $objCSV->sfDownloadCsv('3', $where, $arrVal, $order, true);
@@ -429,11 +429,11 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
     /**
      * 検索結果の行数を取得する.
      *
-     * @param string $where 検索条件の WHERE 句
-     * @param array $arrValues 検索条件のパラメーター
+     * @param  string  $where     検索条件の WHERE 句
+     * @param  array   $arrValues 検索条件のパラメーター
      * @return integer 検索結果の行数
      */
-    function getNumberOfLines($where, $arrValues)
+    public function getNumberOfLines($where, $arrValues)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -443,14 +443,14 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
     /**
      * 受注を検索する.
      *
-     * @param string $where 検索条件の WHERE 句
-     * @param array $arrValues 検索条件のパラメーター
-     * @param integer $limit 表示件数
-     * @param integer $offset 開始件数
-     * @param string $order 検索結果の並び順
-     * @return array 受注の検索結果
+     * @param  string  $where     検索条件の WHERE 句
+     * @param  array   $arrValues 検索条件のパラメーター
+     * @param  integer $limit     表示件数
+     * @param  integer $offset    開始件数
+     * @param  string  $order     検索結果の並び順
+     * @return array   受注の検索結果
      */
-    function findOrders($where, $arrValues, $limit, $offset, $order)
+    public function findOrders($where, $arrValues, $limit, $offset, $order)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         if ($limit != 0) {

@@ -20,17 +20,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-class SC_Plugin_Installer {
-    
+class SC_Plugin_Installer
+{
     protected $exec_func;
-    
+
     protected $plugin_code;
-    
+
     protected $arrPlugin;
-    
+
     protected $arrInstallData;
-    
-    public function __construct($exec_func, $arrPlugin) {
+
+    public function __construct($exec_func, $arrPlugin)
+    {
         $this->exec_func   = $exec_func;
         $this->plugin_code = $arrPlugin['plugin_code'];
         $this->arrPlugin   = $arrPlugin;
@@ -44,10 +45,11 @@ class SC_Plugin_Installer {
         $this->arrInstallData['remove_file'] = array();
         $this->arrInstallData['remove_directory'] = array();
     }
-    
-    public function execPlugin() {
+
+    public function execPlugin()
+    {
         $this->log("start");
-        
+
         $plugin_code = $this->arrPlugin['plugin_code'];
 
         // テーブル作成SQLなどを実行
@@ -64,19 +66,19 @@ class SC_Plugin_Installer {
                 $arrErr[] = $error_message;
             }
         }
-        
+
         if (count($arrErr) > 0) {
             return $arrErr;
         }
-        
+
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         // SQLの実行
         foreach ($arrSql as $sql) {
             $this->log("exec sql: " . $sql['sql']);
             $objQuery->query($sql['sql'], $sql['params']);
         }
-        
+
         $arrInsertQuery = $this->arrInstallData['insert'];
         foreach ($arrInsertQuery as $query) {
             $objQuery->insert(
@@ -88,7 +90,7 @@ class SC_Plugin_Installer {
                     $query['arrFromVal']
             );
         }
-        
+
         $arrUpdateQuery = $this->arrInstallData['update'];
         foreach ($arrUpdateQuery as $query) {
             $objQuery->update(
@@ -100,7 +102,7 @@ class SC_Plugin_Installer {
                     $query['arrRawSqlVal']
             );
         }
-        
+
         // プラグインのディレクトリコピー
         $arrCopyDirectories = $this->arrInstallData['copy_directory'];
 
@@ -121,103 +123,114 @@ class SC_Plugin_Installer {
             copy(PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $file['src'],
                  PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $file['dist']);
         }
-        
-        $this->log("end");         
+
+        $this->log("end");
     }
 
-    public function copyFile($src, $dist) {
+    public function copyFile($src, $dist)
+    {
         $this->arrInstallData['copy_file'][] = array(
             'src'  => $src,
             'dist' => $dist
         );
     }
- 
-    public function copyDirectory($src, $dist) {
+
+    public function copyDirectory($src, $dist)
+    {
         $this->arrInstallData['copy_directory'][] = array(
             'src'  => $src,
             'dist' => $dist
-        );        
+        );
     }
-    
-    public function removeFile($dist) {
+
+    public function removeFile($dist)
+    {
         $this->arrInstallData['remove_file'][] = array(
             'dist' => $dist
         );
     }
-    
-    public function removeDirectory($dist) {
+
+    public function removeDirectory($dist)
+    {
        $this->arrInstallData['remove_directory'][] = array(
             'dist' => $dist
-        );     
+        );
     }
 
-    public function sql($sql, array $params = array()) {
+    public function sql($sql, array $params = array())
+    {
         $this->arrInstallData['sql'][] = array(
             'sql'    => $sql,
             'params' => $params
         );
     }
-    
-    protected function log($msg) {
+
+    protected function log($msg)
+    {
         $msg = sprintf("%s %s: %s", $this->plugin_code, $this->exec_func, $msg);
         GC_Utils::gfPrintLog($msg, PLUGIN_LOG_REALFILE);
     }
-    
+
     /**
      * カラム追加クエリの追加
-     * 
+     *
      * @param type $table
      * @param type $col
-     * @param type $type 
+     * @param type $type
      */
-    function addColumn($table_name, $col_name, $col_type) {
+    public function addColumn($table_name, $col_name, $col_type)
+    {
         $sql = "ALTER TABLE $table_name ADD $col_name $col_type ";
         $this->sql($sql);
     }
-    
+
     /**
      * カラム削除クエリの追加
-     * 
+     *
      * @param type $table
      * @param type $col
-     * @param type $type 
+     * @param type $type
      */
-    function dropColumn($table_name, $col_name) {
+    public function dropColumn($table_name, $col_name)
+    {
         $sql = "ALTER TABLE $table_name DROP $col_name";
         $this->sql($sql);
     }
-    
-    function insert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array()) {
+
+    public function insert($table, $arrVal, $arrSql = array(), $arrSqlVal = array(), $from = '', $arrFromVal = array())
+    {
         $this->arrInstallData['insert'][] = array(
             'table' => $table,
-            'arrVal' => $arrVal, 
-            'arrSql' => $arrSql, 
-            'arrSqlVal' => $arrSqlVal, 
+            'arrVal' => $arrVal,
+            'arrSql' => $arrSql,
+            'arrSqlVal' => $arrSqlVal,
             'form' =>$from,
             'arrFromVal' => $arrFromVal
         );
     }
-    
-    function update($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array()) {
+
+    public function update($table, $arrVal, $where = '', $arrWhereVal = array(), $arrRawSql = array(), $arrRawSqlVal = array())
+    {
         $this->arrInstallData['update'][] = array(
             'table' => $table,
-            'arrVal' => $arrVal, 
-            'where' => $where, 
-            'arrWhereVal' => $arrWhereVal, 
+            'arrVal' => $arrVal,
+            'where' => $where,
+            'arrWhereVal' => $arrWhereVal,
             'arrRawSql' =>$arrRawSql,
             'arrRawSqlVal' => $arrRawSqlVal
         );
     }
-    
+
     /**
-     * 
+     *
      * @param string $sql
-     * @param type $params
+     * @param type   $params
      */
-    protected function verifySql($sql, $params) {
+    protected function verifySql($sql, $params)
+    {
         // FIXME $paramsのチェックも行いたい.
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        
+
         // force runを有効にし, システムエラーを回避する
         $objQuery->force_run = true;
 
@@ -227,13 +240,14 @@ class SC_Plugin_Installer {
         if (PEAR::isError($sth)) {
             $error_message = $sth->message . ":" . $sth->userinfo;
             $objQuery->force_run = false;
+
             return $error_message;
         }
-        
+
         $sth->free();
         // force_runをもとに戻す.
         $objQuery->force_run = false;
-        
+
         return $error_message;
     }
 }

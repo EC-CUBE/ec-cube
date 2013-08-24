@@ -37,7 +37,7 @@ class LC_Page_Order extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = '特定商取引に関する法律に基づく表記';
@@ -50,7 +50,7 @@ class LC_Page_Order extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -62,7 +62,7 @@ class LC_Page_Order extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
         $this->arrOrder = $objDb->sfGetBasisData();

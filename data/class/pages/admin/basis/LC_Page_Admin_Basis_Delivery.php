@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDeliv = new SC_Helper_Delivery_Ex();
         $mode = $this->getMode();
@@ -78,6 +78,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['deliv_id'])) {
                 trigger_error('', E_USER_ERROR);
+
                 return;
             }
         }
@@ -108,10 +109,10 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック
      *
-     * @param string $mode
+     * @param  string $mode
      * @return array
      */
-    function lfCheckError($mode, &$objFormParam)
+    public function lfCheckError($mode, &$objFormParam)
     {
         $arrErr = array();
         switch ($mode) {

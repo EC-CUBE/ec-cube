@@ -17,13 +17,13 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
     }
 
-    function isValidIP()
+    public function isValidIP()
     {
         $objLog  = new LC_Upgrade_Helper_Log;
         $masterData = new SC_DB_MasterData_Ex();
@@ -33,6 +33,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
             && in_array($_SERVER['REMOTE_ADDR'], $arrOstoreIPs))
         {
             $objLog->log('* ip ok ' . $_SERVER['REMOTE_ADDR']);
+
             return true;
         }
         $objLog->log('* refused ip ' . $_SERVER['REMOTE_ADDR']);
@@ -43,10 +44,10 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
     /**
      * 自動アップデートが有効かどうかを判定する.
      *
-     * @param integer $product_id
+     * @param  integer $product_id
      * @return boolean
      */
-    function autoUpdateEnable($product_id)
+    public function autoUpdateEnable($product_id)
     {
         $where = 'module_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -63,11 +64,11 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
     /**
      * 配信サーバーへリクエストを送信する.
      *
-     * @param string $mode
-     * @param array $arrParams 追加パラメーター.連想配列で渡す.
+     * @param  string        $mode
+     * @param  array         $arrParams 追加パラメーター.連想配列で渡す.
      * @return string|object レスポンスボディ|エラー時にはPEAR::Errorオブジェクトを返す.
      */
-    function request($mode, $arrParams = array(), $arrCookies = array())
+    public function request($mode, $arrParams = array(), $arrCookies = array())
     {
         $objReq = new HTTP_Request();
         $objReq->setUrl(OSTORE_URL . 'upgrade/index.php');
@@ -89,7 +90,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
         }
     }
 
-    function isLoggedInAdminPage()
+    public function isLoggedInAdminPage()
     {
         $objSess = new SC_Session_Ex();
 
@@ -105,12 +106,12 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
      *
      * @return string
      */
-    function createSeed()
+    public function createSeed()
     {
         return sha1(uniqid(rand(), true) . time());
     }
 
-    function getPublicKey()
+    public function getPublicKey()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrRet = $objQuery->select('*', 'dtb_ownersstore_settings');
@@ -123,7 +124,7 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
     /**
      * オーナーズストアからの POST のため, トークンチェックしない.
      */
-    function doValidToken()
+    public function doValidToken()
     {
         // nothing.
     }

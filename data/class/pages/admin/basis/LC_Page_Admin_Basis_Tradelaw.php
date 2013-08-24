@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/tradelaw.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
 
@@ -107,7 +107,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('販売業者', 'law_company', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('運営責任者', 'law_manager', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -132,7 +132,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
         $objFormParam->addParam('返品・交換について', 'law_term06', MLTEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    function lfUpdateData($sqlval)
+    public function lfUpdateData($sqlval)
     {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -140,7 +140,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
         $objQuery->update('dtb_baseinfo', $sqlval);
     }
 
-    function lfInsertData($sqlval)
+    public function lfInsertData($sqlval)
     {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -149,7 +149,7 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
     }
 
     /* 入力内容のチェック */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();

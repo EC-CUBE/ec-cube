@@ -37,7 +37,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
 
@@ -57,7 +57,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -68,7 +68,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
 
@@ -173,12 +173,12 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
     /**
      * フォームパラメーター初期化
      *
-     * @param object $objFormParam
-     * @param array  $arrParams $_POST値
-     * @param string $mode editの時は指定
+     * @param  object $objFormParam
+     * @param  array  $arrParams    $_POST値
+     * @param  string $mode         editの時は指定
      * @return void
      */
-    function initForm(&$objFormParam, &$arrParams, $mode = '')
+    public function initForm(&$objFormParam, &$arrParams, $mode = '')
     {
         $objFormParam->addParam('メンバーID', 'member_id', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam('名前', 'name', STEXT_LEN, 'KV', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -206,7 +206,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      * @param void
      * @return array エラー情報の連想配列
      */
-    function validateData(&$objFormParam, &$arrParams, $mode)
+    public function validateData(&$objFormParam, &$arrParams, $mode)
     {
         $arrErr = $objFormParam->checkError();
         if (isset($arrErr) && count($arrErr) > 0) return $arrErr;
@@ -252,10 +252,10 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
     /**
      * DBからmember_idに対応する管理者データを取得する
      *
-     * @param integer $id メンバーID
-     * @return array 管理者データの連想配列, 無い場合は空の配列を返す
+     * @param  integer $id メンバーID
+     * @return array   管理者データの連想配列, 無い場合は空の配列を返す
      */
-    function getMemberData($id)
+    public function getMemberData($id)
     {
         $table   = 'dtb_member';
         $columns = 'name,department,login_id,authority, work';
@@ -269,11 +269,11 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
     /**
      *  値が登録済みかどうかを調べる
      *
-     * @param string $where WHERE句
-     * @param string $val 検索したい値
+     * @param  string  $where WHERE句
+     * @param  string  $val   検索したい値
      * @return boolean 登録済みならtrue, 未登録ならfalse
      */
-    function memberDataExists($where, $val)
+    public function memberDataExists($where, $val)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -291,7 +291,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      * @param  integer $pageno ページの番号
      * @return integer $clean_pageno チェック後のページの番号
      */
-    function lfCheckPageNo($pageno)
+    public function lfCheckPageNo($pageno)
     {
         $clean_pageno = '';
 
@@ -314,7 +314,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      * @param array 管理者データの連想配列
      * @return void
      */
-    function insertMemberData($arrMemberData)
+    public function insertMemberData($arrMemberData)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -345,7 +345,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      * @param array 管理者データの連想配列
      * @return void
      */
-    function updateMemberData($member_id, $arrMemberData)
+    public function updateMemberData($member_id, $arrMemberData)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

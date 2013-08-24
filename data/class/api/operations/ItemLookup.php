@@ -66,6 +66,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex
                 $this->setResponse('DetailPageURL', HTTP_URL . 'products/detail.php?product_id=' . $arrProduct['product_id']);
                 $this->setResponse('Title', $arrProduct['name']);
                 $this->setResponse('ItemAttributes', $arrProduct);
+
                 return true;
             } else {
                 $this->addError('ItemLookup.Error', '※ 要求された情報は見つかりませんでした。');

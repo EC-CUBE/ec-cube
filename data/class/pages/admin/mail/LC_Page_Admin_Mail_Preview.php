@@ -37,7 +37,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_subtitle = 'プレビュー';
@@ -49,7 +49,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -60,7 +60,7 @@ class LC_Page_Admin_Mail_Preview extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objMailHelper = new SC_Helper_Mail_Ex();
 

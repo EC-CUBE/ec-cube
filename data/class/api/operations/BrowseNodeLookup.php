@@ -45,9 +45,9 @@ class API_BrowseNodeLookup extends SC_Api_Abstract_Ex
         if (!$this->isParamError()) {
             $category_id = $arrRequest['BrowseNodeId'];
             if ($category_id
-                 && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')) {
+                 && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')) {
                 $category_id = '0';
-            } else if (SC_Utils_Ex::isBlank($category_id)) {
+            } elseif (SC_Utils_Ex::isBlank($category_id)) {
                 $category_id = '0';
             }
             // LC_Page_Products_CategoryList::lfGetCategories() と相当類似しているので共通化したい

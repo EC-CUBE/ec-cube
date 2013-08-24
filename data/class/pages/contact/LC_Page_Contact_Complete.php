@@ -37,7 +37,7 @@ class LC_Page_Contact_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = 'お問い合わせ(完了ページ)';
@@ -49,7 +49,7 @@ class LC_Page_Contact_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -61,10 +61,9 @@ class LC_Page_Contact_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // do nothing...
-
 
     }
 }

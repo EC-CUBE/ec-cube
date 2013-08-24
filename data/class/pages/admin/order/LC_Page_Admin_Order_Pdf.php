@@ -37,7 +37,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/pdf_input.tpl';
@@ -61,7 +61,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -72,7 +72,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date_Ex(1901);
@@ -112,7 +112,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      *
      * PDF作成フォームのデフォルト値の生成
      */
-    function createFromValues($order_id,$pdf_order_id)
+    public function createFromValues($order_id,$pdf_order_id)
     {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
@@ -147,13 +147,13 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      * PDFの作成
      * @param SC_FormParam $objFormParam
      */
-    function createPdf(&$objFormParam)
+    public function createPdf(&$objFormParam)
     {
         $arrErr = $this->lfCheckError($objFormParam);
         $arrRet = $objFormParam->getHashArray();
 
-	//タイトルが入力されていなければ、デフォルトのタイトルを表示
-	if($arrRet['title'] == '') $arrRet['title'] = 'お買上げ明細書(納品書)';
+    //タイトルが入力されていなければ、デフォルトのタイトルを表示
+    if($arrRet['title'] == '') $arrRet['title'] = 'お買上げ明細書(納品書)';
 
         $this->arrForm = $arrRet;
         // エラー入力なし
@@ -165,6 +165,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
                 $objFpdf->setData($arrPdfData);
             }
             $objFpdf->createPdf();
+
             return true;
         } else {
             return $arrErr;
@@ -175,7 +176,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      *  パラメーター情報の初期化
      *  @param SC_FormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('注文番号', 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -199,7 +200,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      *  @var SC_FormParam
      */
 
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。
         $arrParams = $objFormParam->getHashArray();
@@ -214,14 +215,14 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
         $month = $objFormParam->getValue('month');
         if (!is_numeric($month)) {
             $arrErr['month'] = '発行月は数値で入力してください。';
-        } else if (0 >= $month && 12 < $month) {
+        } elseif (0 >= $month && 12 < $month) {
             $arrErr['month'] = '発行月は1〜12の間で入力してください。';
         }
 
         $day = $objFormParam->getValue('day');
         if (!is_numeric($day)) {
             $arrErr['day'] = '発行日は数値で入力してください。';
-        } else if (0 >= $day && 31 < $day) {
+        } elseif (0 >= $day && 31 < $day) {
             $arrErr['day'] = '発行日は1〜31の間で入力してください。';
         }
 

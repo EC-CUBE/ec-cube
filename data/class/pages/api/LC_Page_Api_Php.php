@@ -38,7 +38,7 @@ class LC_Page_Api_Php extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -48,7 +48,7 @@ class LC_Page_Api_Php extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
 //        $this->sendResponse();
@@ -59,7 +59,7 @@ class LC_Page_Api_Php extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $arrParam = $_REQUEST;
 

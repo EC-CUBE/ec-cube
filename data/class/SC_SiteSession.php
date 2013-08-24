@@ -25,7 +25,7 @@
 class SC_SiteSession
 {
     /* コンストラクタ */
-    function __construct()
+    public function __construct()
     {
         // 前ページでの登録成功判定を引き継ぐ
         $_SESSION['site']['pre_regist_success'] =
@@ -41,7 +41,7 @@ class SC_SiteSession
     }
 
     /* 前ページが正当であるかの判定 */
-    function isPrePage()
+    public function isPrePage()
     {
         if ($_SESSION['site']['pre_page'] != '' && $_SESSION['site']['now_page'] != '') {
             if ($_SESSION['site']['pre_regist_success'] || $_SESSION['site']['pre_page'] == $_SESSION['site']['now_page']) {
@@ -52,19 +52,19 @@ class SC_SiteSession
         return false;
     }
 
-    function setNowPage($path)
+    public function setNowPage($path)
     {
         $_SESSION['site']['now_page'] = $path;
     }
 
     /* 値の取得 */
-    function getValue($keyname)
+    public function getValue($keyname)
     {
         return $_SESSION['site'][$keyname];
     }
 
     /* ユニークIDの取得 */
-    function getUniqId()
+    public function getUniqId()
     {
         // ユニークIDがセットされていない場合はセットする。
         if (!isset($_SESSION['site']['uniqid']) || $_SESSION['site']['uniqid'] == '') {
@@ -75,14 +75,14 @@ class SC_SiteSession
     }
 
     /* ユニークIDのセット */
-    function setUniqId()
+    public function setUniqId()
     {
         // 予測されないようにランダム文字列を付与する。
         $_SESSION['site']['uniqid'] = SC_Utils_Ex::sfGetUniqRandomId();
     }
 
     /* ユニークIDのチェック */
-    function checkUniqId()
+    public function checkUniqId()
     {
         if (!empty($_POST['uniqid'])) {
             if ($_POST['uniqid'] != $_SESSION['site']['uniqid']) {
@@ -94,13 +94,13 @@ class SC_SiteSession
     }
 
     /* ユニークIDの解除 */
-    function unsetUniqId()
+    public function unsetUniqId()
     {
         $_SESSION['site']['uniqid'] = '';
     }
 
     /* 登録成功を記録 */
-    function setRegistFlag()
+    public function setRegistFlag()
     {
         $_SESSION['site']['regist_success'] = true;
     }

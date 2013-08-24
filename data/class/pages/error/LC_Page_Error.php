@@ -33,19 +33,19 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 class LC_Page_Error extends LC_Page_Ex
 {
     /** エラー種別 */
-    var $type;
+    public $type;
 
     /** SC_SiteSession インスタンス */
-    var $objSiteSess;
+    public $objSiteSess;
 
     /** TOPへ戻るフラグ */
-    var $return_top = false;
+    public $return_top = false;
 
     /** エラーメッセージ */
-    var $err_msg = '';
+    public $err_msg = '';
 
     /** モバイルサイトの場合 true */
-    var $is_mobile = false;
+    public $is_mobile = false;
 
     /**
      * Page を初期化する.
@@ -54,7 +54,7 @@ class LC_Page_Error extends LC_Page_Ex
      * ここでは, parent::init() を行わない.
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_title = 'エラー';
@@ -76,7 +76,7 @@ class LC_Page_Error extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -88,7 +88,7 @@ class LC_Page_Error extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         SC_Response_Ex::sendHttpStatus(500);
 
@@ -174,7 +174,7 @@ class LC_Page_Error extends LC_Page_Ex
     /**
      * エラーページではトランザクショントークンの自動検証は行わない
      */
-    function doValidToken()
+    public function doValidToken()
     {
         // queit.
     }

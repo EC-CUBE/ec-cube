@@ -33,8 +33,8 @@ class SC_Helper_Holiday
     /**
      * 休日の情報を取得.
      *
-     * @param integer $holiday_id 休日ID
-     * @param boolean $has_deleted 削除された休日も含む場合 true; 初期値 false
+     * @param  integer $holiday_id  休日ID
+     * @param  boolean $has_deleted 削除された休日も含む場合 true; 初期値 false
      * @return array
      */
     public function get($holiday_id, $has_deleted = false)
@@ -52,7 +52,7 @@ class SC_Helper_Holiday
     /**
      * 休日一覧の取得.
      *
-     * @param boolean $has_deleted 削除された休日も含む場合 true; 初期値 false
+     * @param  boolean $has_deleted 削除された休日も含む場合 true; 初期値 false
      * @return array
      */
     public function getList($has_deleted = false)
@@ -73,7 +73,7 @@ class SC_Helper_Holiday
     /**
      * 休日の登録.
      *
-     * @param array $sqlval
+     * @param  array    $sqlval
      * @return multiple 登録成功:休日ID, 失敗:FALSE
      */
     public function save($sqlval)
@@ -103,7 +103,7 @@ class SC_Helper_Holiday
     /**
      * 休日の削除.
      *
-     * @param integer $holiday_id 休日ID
+     * @param  integer $holiday_id 休日ID
      * @return void
      */
     public function delete($holiday_id)
@@ -116,7 +116,7 @@ class SC_Helper_Holiday
     /**
      * 休日の表示順をひとつ上げる.
      *
-     * @param integer $holiday_id 休日ID
+     * @param  integer $holiday_id 休日ID
      * @return void
      */
     public function rankUp($holiday_id)
@@ -128,7 +128,7 @@ class SC_Helper_Holiday
     /**
      * 休日の表示順をひとつ下げる.
      *
-     * @param integer $holiday_id 休日ID
+     * @param  integer $holiday_id 休日ID
      * @return void
      */
     public function rankDown($holiday_id)
@@ -140,9 +140,9 @@ class SC_Helper_Holiday
     /**
      * 同じ日付の休日が存在するか確認.
      *
-     * @param integer $month
-     * @param integer $day
-     * @param integer $holiday_id
+     * @param  integer $month
+     * @param  integer $day
+     * @param  integer $holiday_id
      * @return boolean 同日付の休日が存在:true
      */
     public function isDateExist($month, $day, $holiday_id = NULL)

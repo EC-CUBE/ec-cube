@@ -37,7 +37,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'order/product_select.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -127,10 +127,10 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
     /**
      * 商品取得
      *
-     * @param array $arrProductId
+     * @param array      $arrProductId
      * @param SC_Product $objProduct
      */
-    function getProductList($arrProductId, &$objProduct)
+    public function getProductList($arrProductId, &$objProduct)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -145,7 +145,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * ロード時に実行するJavascriptを生成
      * @param array $arrProducts
      */
-    function getFnOnload($arrProducts)
+    public function getFnOnload($arrProducts)
     {
         foreach ($arrProducts as $arrProduct) {
             $js_fnOnLoad .= "fnSetClassCategories(document.product_form{$arrProduct['product_id']});";
@@ -158,17 +158,17 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * 規格クラス用JavaScript生成
      * @param SC_Product $objProduct
      */
-    function getTplJavascript(&$objProduct)
+    public function getTplJavascript(&$objProduct)
     {
         return 'eccube.productsClassCategories = ' . SC_Utils_Ex::jsonEncode($objProduct->classCategories) . '; ';
     }
 
     /**
      * 検索結果の取得
-     * @param array $whereAndBind string whereと array bindの連想配列
+     * @param array      $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
      */
-    function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
+    public function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
@@ -186,10 +186,10 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
     /**
      *
      * 検索結果対象となる商品の数を返す。
-     * @param array $whereAndBind
+     * @param array      $whereAndBind
      * @param SC_Product $objProduct
      */
-    function getLineCount($whereAndBind,&$objProduct)
+    public function getLineCount($whereAndBind,&$objProduct)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
@@ -204,10 +204,10 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
     /**
      *
      * POSTされた値からSQLのWHEREとBINDを配列で返す。
-     * @return array ('where' => where string, 'bind' => databind array)
-     * @param SC_FormParam $objFormParam
+     * @return array        ('where' => where string, 'bind' => databind array)
+     * @param  SC_FormParam $objFormParam
      */
-    function createWhere(&$objFormParam,&$objDb)
+    public function createWhere(&$objFormParam,&$objDb)
     {
         $arrForm = $objFormParam->getHashArray();
         $where = 'alldtl.del_flg = 0';
@@ -226,7 +226,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
                     list($tmp_where, $tmp_bind) = $objDb->sfGetCatWhere($val);
                     if ($tmp_where != '') {
                         $where.= ' AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
-                        $bind = array_merge((array)$bind, (array)$tmp_bind);
+                        $bind = array_merge((array) $bind, (array) $tmp_bind);
                     }
                     break;
                 case 'search_product_code':
@@ -249,7 +249,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * リクエストパラメーターnoを取ってくる。
      * @param unknown_type $globalParams
      */
-    function getNo($globalParams)
+    public function getNo($globalParams)
     {
         foreach ($globalParams as $params) {
             if (isset($params['no']) && $params['no']!= '') {
@@ -264,7 +264,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * リクエストパラメーター shipping_id を取ってくる。
      * @param unknown_type $globalParams
      */
-    function getShippingId($globalParams)
+    public function getShippingId($globalParams)
     {
         foreach ($globalParams as $params) {
             if (isset($params['shipping_id']) && $params['shipping_id']!= '') {
@@ -280,7 +280,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @param $arrProduct_id
      * @param $productList
      */
-    function sortProducts($arrProduct_id,$productList)
+    public function sortProducts($arrProduct_id,$productList)
     {
         $products  = array();
         foreach ($productList as $item) {
@@ -298,7 +298,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * パラメーター情報の初期化
      * @param SC_FormParam $objFormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('オーダーID', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));

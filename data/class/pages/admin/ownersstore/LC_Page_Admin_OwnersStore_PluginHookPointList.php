@@ -31,7 +31,7 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_OwnersStore.php 22567 2013-02-18 10:09:54Z shutta $
  */
-class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex 
+class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
 {
 
     // }}}
@@ -42,7 +42,7 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'ownersstore/plugin_hookpoint_list.tpl';
@@ -61,7 +61,7 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -72,7 +72,7 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -113,7 +113,7 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function destroy()
+    public function destroy()
     {
         parent::destroy();
     }
@@ -121,11 +121,11 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
     /**
      * パラメーター初期化.
      *
-     * @param SC_FormParam_Ex $objFormParam
-     * @param string $mode モード
+     * @param  SC_FormParam_Ex $objFormParam
+     * @param  string          $mode         モード
      * @return void
      */
-    function initParam(&$objFormParam)
+    public function initParam(&$objFormParam)
     {
         $objFormParam->addParam('モード', 'mode', STEXT_LEN, '', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ON/OFFフラグ', 'plugin_hookpoint_use', INT_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));

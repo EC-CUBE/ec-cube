@@ -37,7 +37,7 @@ class LC_Page_Unsupported extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = '未対応デバイス';
@@ -48,14 +48,14 @@ class LC_Page_Unsupported extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
         $this->sendResponse();
     }
 
-    function action()
+    public function action()
     {
     }
 }

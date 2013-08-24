@@ -37,7 +37,7 @@ class LC_Page_Entry_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->httpCacheControl('nocache');
@@ -48,7 +48,7 @@ class LC_Page_Entry_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -60,7 +60,7 @@ class LC_Page_Entry_Complete extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // カートが空かどうかを確認する。
         $objCartSess            = new SC_CartSession_Ex();

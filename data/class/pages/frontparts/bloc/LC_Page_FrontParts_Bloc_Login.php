@@ -37,7 +37,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_login = false;
@@ -50,7 +50,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -61,7 +61,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
@@ -95,7 +95,7 @@ class LC_Page_FrontParts_Bloc_Login extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return boolean
      */
-    function lfCheckDisableLogout()
+    public function lfCheckDisableLogout()
     {
         $masterData = new SC_DB_MasterData_Ex();
         $arrDisableLogout = $masterData->getMasterData('mtb_disable_logout');

@@ -37,7 +37,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -48,7 +48,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -59,7 +59,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -86,7 +86,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex
         }
     }
 
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n',  array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品イメージキー', 'image_key', STEXT_LEN, '',  array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
@@ -102,7 +102,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex
      * @param $image
      * @return boolean 正常な形式:true 不正な形式:false
      */
-    function lfCheckFileName($image)
+    public function lfCheckFileName($image)
     {
         $file    = trim($image);
         if (!preg_match("/^[[:alnum:]_\.-]+$/i", $file)) {
@@ -118,7 +118,7 @@ class LC_Page_ResizeImage extends LC_Page_Ex
      * @param $arrForm
      * @return string 指定された商品画像のパス
      */
-    function lfGetProductImage($arrForm)
+    public function lfGetProductImage($arrForm)
     {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $table = 'dtb_products';
@@ -140,13 +140,13 @@ class LC_Page_ResizeImage extends LC_Page_Ex
     /**
      * 画像の出力
      *
-     * @param string $file 画像ファイル名
-     * @param integer $width 画像の幅
+     * @param string  $file   画像ファイル名
+     * @param integer $width  画像の幅
      * @param integer $height 画像の高さ
      *
      * @return void
      */
-    function lfOutputImage($file, $width, $height)
+    public function lfOutputImage($file, $width, $height)
     {
         $objThumb = new gdthumb();
         $objThumb->Main($file, $width, $height, '', true);

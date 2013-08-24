@@ -39,7 +39,7 @@ class SC_MobileEmoji
      * @param string 入力
      * @return string 出力
      */
-    static function handler($buffer)
+    public static function handler($buffer)
     {
         $replace_callback = create_function('$matches', 'return SC_MobileEmoji_Ex::indexToCode($matches[1]);');
 
@@ -49,10 +49,10 @@ class SC_MobileEmoji
     /**
      * 絵文字番号を絵文字を表す Shift JIS の文字列に変換する。
      *
-     * @param string $index 絵文字番号
+     * @param  string $index 絵文字番号
      * @return string 絵文字を表す Shift JIS の文字列を返す。
      */
-    function indexToCode($index)
+    public function indexToCode($index)
     {
         $carrier = SC_MobileUserAgent_Ex::getCarrier();
         if ($carrier === false) {

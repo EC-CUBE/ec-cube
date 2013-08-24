@@ -37,7 +37,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_subtitle = 'お届け先追加･変更';
@@ -53,7 +53,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -63,7 +63,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCustomer    = new SC_Customer_Ex();
         $customer_id    = $objCustomer->getValue('customer_id');
@@ -119,7 +119,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
      *
      * @return SC_FormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('お届け先ID', 'other_deliv_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('現在ページ', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
@@ -132,7 +132,7 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
      * @param array $arrPref
      * return array
      */
-    function setPref($arrOtherDeliv, $arrPref)
+    public function setPref($arrOtherDeliv, $arrPref)
     {
         if (is_array($arrOtherDeliv)) {
             foreach ($arrOtherDeliv as $key => $arrDeliv) {

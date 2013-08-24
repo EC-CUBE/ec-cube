@@ -38,7 +38,7 @@ class SC_MobileImage
      * @param string 入力
      * @return string 出力
      */
-    static function handler($buffer)
+    public static function handler($buffer)
     {
         // 端末情報を取得する
         $carrier = SC_MobileUserAgent_Ex::getCarrier();

@@ -37,7 +37,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'contents/index.tpl';
@@ -62,7 +62,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -73,7 +73,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objNews = new SC_Helper_News_Ex();
 
@@ -90,6 +90,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 if (!SC_Utils_Ex::isBlank($this->arrErr['news_id'])) {
                     trigger_error('', E_USER_ERROR);
+
                     return;
                 }
 
@@ -160,10 +161,10 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 
     /**
      * 入力されたパラメーターのエラーチェックを行う。
-     * @param Object $objFormParam
-     * @return Array エラー内容
+     * @param  Object $objFormParam
+     * @return Array  エラー内容
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
@@ -176,7 +177,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
      * パラメーターの初期化を行う
      * @param Object $objFormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('news_id', 'news_id');
         $objFormParam->addParam('日付(年)', 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -191,12 +192,12 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
     /**
      * 登録処理を実行.
      *
-     * @param integer $news_id
-     * @param array $sqlval
-     * @param object $objNews
+     * @param  integer  $news_id
+     * @param  array    $sqlval
+     * @param  object   $objNews
      * @return multiple
      */
-    function doRegist($news_id, $sqlval, SC_Helper_News_Ex $objNews)
+    public function doRegist($news_id, $sqlval, SC_Helper_News_Ex $objNews)
     {
         $sqlval['news_id'] = $news_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -209,10 +210,10 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 
     /**
      * データの登録日を返す。
-     * @param Array $arrPost POSTのグローバル変数
+     * @param  Array  $arrPost POSTのグローバル変数
      * @return string 登録日を示す文字列
      */
-    function getRegistDate($arrPost)
+    public function getRegistDate($arrPost)
     {
         $registDate = $arrPost['year'] .'/'. $arrPost['month'] .'/'. $arrPost['day'];
 
@@ -221,10 +222,10 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 
     /**
      * チェックボックスの値が空の時は無効な値として1を格納する
-     * @param int $link_method
+     * @param  int $link_method
      * @return int
      */
-    function checkLinkMethod($link_method)
+    public function checkLinkMethod($link_method)
     {
         if (strlen($link_method) == 0) {
             $link_method = 1;
@@ -237,21 +238,22 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
      * ニュースの日付の値をフロントでの表示形式に合わせるために分割
      * @param String $news_date
      */
-    function splitNewsDate($news_date)
+    public function splitNewsDate($news_date)
     {
         return explode('-', $news_date);
     }
 
     /**
      * POSTされたランクの値を取得する
-     * @param Object $objFormParam
+     * @param Object  $objFormParam
      * @param Integer $news_id
      */
-    function getPostRank($news_id)
+    public function getPostRank($news_id)
     {
         if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
             $key = 'pos-' . $news_id;
             $input_pos = $_POST[$key];
+
             return $input_pos;
         }
     }

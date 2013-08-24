@@ -37,7 +37,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'system/adminarea.tpl';
@@ -53,7 +53,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -64,7 +64,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         if (strpos(HTTPS_URL,'https://') !== FALSE) {
             $this->tpl_enable_ssl = TRUE;
@@ -110,11 +110,11 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
     /**
      * パラメーター初期化.
      *
-     * @param object $objFormParam
-     * @param array  $arrParams  $_POST値
+     * @param  object $objFormParam
+     * @param  array  $arrParams    $_POST値
      * @return void
      */
-    function initParam(&$objFormParam, &$arrParams)
+    public function initParam(&$objFormParam, &$arrParams)
     {
         $objFormParam->addParam('ディレクトリ名', 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
         $objFormParam->addParam('SSL制限', 'admin_force_ssl', 1, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -126,11 +126,11 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
     /**
      * 管理機能ディレクトリのチェック.
      *
-     * @param array  $arrForm  $this->arrForm値
-     * @param array  $arrErr   エラーがあった項目用配列
+     * @param  array $arrForm $this->arrForm値
+     * @param  array $arrErr  エラーがあった項目用配列
      * @return void
      */
-    function lfCheckAdminArea(&$arrForm, &$arrErr)
+    public function lfCheckAdminArea(&$arrForm, &$arrErr)
     {
         $admin_dir = trim($arrForm['admin_dir']) . '/';
 
@@ -150,7 +150,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
     }
 
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
-    function lfUpdateAdminData(&$arrForm)
+    public function lfUpdateAdminData(&$arrForm)
     {
         $admin_dir = trim($arrForm['admin_dir']) . '/';
         $admin_force_ssl = 'false';
@@ -177,6 +177,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
                 //管理機能ディレクトリのリネーム
                 if (!rename(HTML_REALDIR . ADMIN_DIR,HTML_REALDIR . $admin_dir)) {
                     $this->arrErr['admin_dir'] .= ROOT_URLPATH . ADMIN_DIR . 'のディレクトリ名を変更できませんでした。';
+
                     return false;
                 }
                 $diff ++;

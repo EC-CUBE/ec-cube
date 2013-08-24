@@ -37,7 +37,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'contents/recommend.tpl';
@@ -54,7 +54,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -65,7 +65,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -132,7 +132,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      * パラメーターの初期化を行う
      * @param Object $objFormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('おすすめ商品ID', 'best_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -143,10 +143,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * 入力されたパラメーターのエラーチェックを行う。
-     * @param Object $objFormParam
-     * @return Array エラー内容
+     * @param  Object $objFormParam
+     * @return Array  エラー内容
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
@@ -156,10 +156,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * 既に登録されている内容を取得する
-     * @param Object $objRecommend
-     * @return Array $arrReturnProducts データベースに登録されているおすすめ商品の配列
+     * @param  Object $objRecommend
+     * @return Array  $arrReturnProducts データベースに登録されているおすすめ商品の配列
      */
-    function getRecommendProducts(SC_Helper_BestProducts_Ex &$objRecommend)
+    public function getRecommendProducts(SC_Helper_BestProducts_Ex &$objRecommend)
     {
         $arrList = $objRecommend->getList();
         // product_id の一覧を作成
@@ -184,11 +184,11 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * おすすめ商品の新規登録を行う。
-     * @param Array $arrPost POSTの値を格納した配列
-     * @param Integer $member_id 登録した管理者を示すID
-     * @param Object $objRecommend
+     * @param Array   $arrPost      POSTの値を格納した配列
+     * @param Integer $member_id    登録した管理者を示すID
+     * @param Object  $objRecommend
      */
-    function insertRecommendProduct($arrPost,$member_id, SC_Helper_BestProducts_Ex &$objRecommend)
+    public function insertRecommendProduct($arrPost,$member_id, SC_Helper_BestProducts_Ex &$objRecommend)
     {
         // 古いおすすめ商品のデータを削除する。
         $this->deleteProduct($arrPost, $objRecommend);
@@ -204,11 +204,11 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * データを削除する
-     * @param Array $arrPost POSTの値を格納した配列
-     * @param Object $objRecommend
+     * @param  Array  $arrPost      POSTの値を格納した配列
+     * @param  Object $objRecommend
      * @return void
      */
-    function deleteProduct($arrPost, SC_Helper_BestProducts_Ex &$objRecommend)
+    public function deleteProduct($arrPost, SC_Helper_BestProducts_Ex &$objRecommend)
     {
         if ($arrPost['best_id']) {
             $target = $arrPost['best_id'];
@@ -221,10 +221,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * 商品情報を取得する
-     * @param Integer $product_id 商品ID
-     * @return Array $return 商品のデータを格納した配列
+     * @param  Integer $product_id 商品ID
+     * @return Array   $return 商品のデータを格納した配列
      */
-    function getProduct($product_id)
+    public function getProduct($product_id)
     {
         $objProduct = new SC_Product_Ex();
         $arrProduct = $objProduct->getDetail($product_id);
@@ -239,10 +239,10 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * 商品のデータを表示用に処理する
-     * @param Array $arrPost POSTのデータを格納した配列
+     * @param Array $arrPost  POSTのデータを格納した配列
      * @param Array $arrItems フロントに表示される商品の情報を格納した配列
      */
-    function setProducts($arrPost,$arrItems)
+    public function setProducts($arrPost,$arrItems)
     {
         $arrProduct = $this->getProduct($arrPost['product_id']);
         if (count($arrProduct) > 0) {

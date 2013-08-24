@@ -33,8 +33,8 @@ class SC_Helper_Mailtemplate
     /**
      * メールテンプレートの情報を取得.
      *
-     * @param integer $template_id メールテンプレートID
-     * @param boolean $has_deleted 削除されたメールテンプレートも含む場合 true; 初期値 false
+     * @param  integer $template_id メールテンプレートID
+     * @param  boolean $has_deleted 削除されたメールテンプレートも含む場合 true; 初期値 false
      * @return array
      */
     public function get($template_id, $has_deleted = false)
@@ -53,7 +53,7 @@ class SC_Helper_Mailtemplate
     /**
      * メールテンプレート一覧の取得.
      *
-     * @param boolean $has_deleted 削除されたメールテンプレートも含む場合 true; 初期値 false
+     * @param  boolean $has_deleted 削除されたメールテンプレートも含む場合 true; 初期値 false
      * @return array
      */
     public function getList($has_deleted = false)
@@ -73,7 +73,7 @@ class SC_Helper_Mailtemplate
     /**
      * メールテンプレートの登録.
      *
-     * @param array $sqlval
+     * @param  array    $sqlval
      * @return multiple 登録成功:メールテンプレートID, 失敗:FALSE
      */
     public function save($sqlval)

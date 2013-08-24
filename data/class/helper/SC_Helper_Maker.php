@@ -33,8 +33,8 @@ class SC_Helper_Maker
     /**
      * メーカーの情報を取得.
      *
-     * @param integer $maker_id メーカーID
-     * @param boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
+     * @param  integer $maker_id    メーカーID
+     * @param  boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
      * @return array
      */
     public function getMaker($maker_id, $has_deleted = false)
@@ -52,8 +52,8 @@ class SC_Helper_Maker
     /**
      * 名前からメーカーの情報を取得.
      *
-     * @param integer $name メーカー名
-     * @param boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
+     * @param  integer $name        メーカー名
+     * @param  boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
      * @return array
      */
     public function getByName($name, $has_deleted = false)
@@ -71,7 +71,7 @@ class SC_Helper_Maker
     /**
      * メーカー一覧の取得.
      *
-     * @param boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
+     * @param  boolean $has_deleted 削除されたメーカーも含む場合 true; 初期値 false
      * @return array
      */
     public function getList($has_deleted = false)
@@ -92,7 +92,7 @@ class SC_Helper_Maker
     /**
      * メーカーの登録.
      *
-     * @param array $sqlval
+     * @param  array    $sqlval
      * @return multiple 登録成功:メーカーID, 失敗:FALSE
      */
     public function saveMaker($sqlval)
@@ -122,7 +122,7 @@ class SC_Helper_Maker
     /**
      * メーカーの削除.
      *
-     * @param integer $maker_id メーカーID
+     * @param  integer $maker_id メーカーID
      * @return void
      */
     public function delete($maker_id)
@@ -135,7 +135,7 @@ class SC_Helper_Maker
     /**
      * メーカーの表示順をひとつ上げる.
      *
-     * @param integer $maker_id メーカーID
+     * @param  integer $maker_id メーカーID
      * @return void
      */
     public function rankUp($maker_id)
@@ -147,7 +147,7 @@ class SC_Helper_Maker
     /**
      * メーカーの表示順をひとつ下げる.
      *
-     * @param integer $maker_id メーカーID
+     * @param  integer $maker_id メーカーID
      * @return void
      */
     public function rankDown($maker_id)

@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/holiday.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objHoliday = new SC_Helper_Holiday_Ex();
 
@@ -87,6 +87,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
                 $this->arrErr = $this->lfCheckError($objFormParam, $objHoliday);
                 if (!SC_Utils_Ex::isBlank($this->arrErr['holiday_id'])) {
                     trigger_error('', E_USER_ERROR);
+
                     return;
                 }
 
@@ -142,12 +143,12 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
     /**
      * 登録処理を実行.
      *
-     * @param integer $holiday_id
-     * @param array $sqlval
-     * @param object $objHoliday
+     * @param  integer  $holiday_id
+     * @param  array    $sqlval
+     * @param  object   $objHoliday
      * @return multiple
      */
-    function doRegist($holiday_id, $sqlval, SC_Helper_Holiday_Ex $objHoliday)
+    public function doRegist($holiday_id, $sqlval, SC_Helper_Holiday_Ex $objHoliday)
     {
         $sqlval['holiday_id'] = $holiday_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -155,7 +156,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
         return $objHoliday->save($sqlval);
     }
 
-    function lfInitParam($mode, &$objFormParam)
+    public function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {
             case 'edit':
@@ -177,11 +178,11 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック
      *
-     * @param object $objFormParam
-     * @param object $objHoliday
+     * @param  object $objFormParam
+     * @param  object $objHoliday
      * @return array
      */
-    function lfCheckError(&$objFormParam, SC_Helper_Holiday_Ex &$objHoliday)
+    public function lfCheckError(&$objFormParam, SC_Helper_Holiday_Ex &$objHoliday)
     {
         $arrErr = $objFormParam->checkError();
         $arrForm = $objFormParam->getHashArray();

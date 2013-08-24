@@ -37,7 +37,7 @@ class LC_Page_Guide_Usage extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Guide_Usage extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -59,7 +59,7 @@ class LC_Page_Guide_Usage extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
     }
 }

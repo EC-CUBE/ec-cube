@@ -37,7 +37,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'products/product_class.tpl';
@@ -56,7 +56,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -67,7 +67,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // 商品マスターの検索条件パラメーターを初期化
         $objFormParam = new SC_FormParam_Ex();
@@ -158,10 +158,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * パラメーター初期化
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function initParam(&$objFormParam)
+    public function initParam(&$objFormParam)
     {
         // 商品マスター検索パラメーター引き継ぎ
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -210,10 +210,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * 規格の登録または更新を行う.
      *
-     * @param array $arrList 入力フォームの内容
+     * @param array   $arrList    入力フォームの内容
      * @param integer $product_id 登録を行う商品ID
      */
-    function registerProductClass($arrList, $product_id, $total)
+    public function registerProductClass($arrList, $product_id, $total)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objDb = new SC_Helper_DB_Ex();
@@ -300,7 +300,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      *
      * @return array エラーの配列
      */
-    function lfCheckSelectClass()
+    public function lfCheckSelectClass()
     {
         $objErr = new SC_CheckError_Ex();
         $objErr->doFunc(array('規格1', 'class_id1'), array('EXIST_CHECK'));
@@ -313,10 +313,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * 商品規格エラーチェック.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array エラー結果の配列
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        エラー結果の配列
      */
-    function lfCheckProductsClass(&$objFormParam)
+    public function lfCheckProductsClass(&$objFormParam)
     {
         $arrValues = $objFormParam->getHashArray();
         $arrErr = $objFormParam->checkError();
@@ -349,8 +349,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
                 /*
                  * 消費税率の必須チェック
                  */
-                if (SC_Utils_Ex::isBlank($arrValues['tax_rate'][$i]))
-                {
+                if (SC_Utils_Ex::isBlank($arrValues['tax_rate'][$i])) {
                     $arrErr['tax_rate'][$i] = '※ 消費税率が入力されていません。<br />';
                 }
                 /*
@@ -393,10 +392,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      * 規格1, 規格2における規格分類の全ての組み合わせを取得し,
      * 該当商品の商品規格の内容を取得後, フォームに設定する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function doDisp(&$objFormParam)
+    public function doDisp(&$objFormParam)
     {
         $product_id = $objFormParam->getValue('product_id');
         $class_id1 = $objFormParam->getValue('class_id1');
@@ -430,10 +429,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * 「表示する」ボタンをクリックされたときのパラメーター初期化処理
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function initDispParam(&$objFormParam)
+    public function initDispParam(&$objFormParam)
     {
         // 登録チェックボックス初期化(全てチェックを外す)
         $objFormParam->setValue('check', '');
@@ -448,11 +447,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * 規格編集画面を表示する
      *
-     * @param integer $product_id 商品ID
-     * @param bool $existsValue
-     * @param bool $usepostValue
+     * @param integer $product_id   商品ID
+     * @param bool    $existsValue
+     * @param bool    $usepostValue
      */
-    function doPreEdit(&$objFormParam)
+    public function doPreEdit(&$objFormParam)
     {
         $product_id = $objFormParam->getValue('product_id');
         $objProduct = new SC_Product_Ex();
@@ -534,7 +533,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      * @param $product_id
      * @return void
      */
-    function doDelete($product_id)
+    public function doDelete($product_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -569,17 +568,17 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      * SC_CheckError クラスや, SC_UploadFile クラスが多次元配列に対応して
      * いないため, 独自のロジックを使用している.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function doFileUpload(&$objFormParam)
+    public function doFileUpload(&$objFormParam)
     {
         $index   = $objFormParam->getValue('upload_index');
         $arrDownRealFiles = $objFormParam->getValue('down_realfilename');
 
         if ($_FILES['down_realfilename']['size'][$index] <= 0) {
             $this->arrErr['down_realfilename'][$index] = '※ ファイルがアップロードされていません';
-        } else if ($_FILES['down_realfilename']['size'][$index] > DOWN_SIZE *  1024) {
+        } elseif ($_FILES['down_realfilename']['size'][$index] > DOWN_SIZE *  1024) {
             $size = DOWN_SIZE;
             $byte = 'KB';
             if ($size >= 1000) {
@@ -632,10 +631,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
      *
      * TODO 一時ファイルの削除
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function doFileDelete(&$objFormParam)
+    public function doFileDelete(&$objFormParam)
     {
         $objImage = new SC_Image_Ex(DOWN_TEMP_REALDIR);
         $arrRealFileName = $objFormParam->getValue('down_realfilename');
@@ -648,10 +647,10 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * アップロードした一時ファイルを保存する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function doUploadComplete(&$objFormParam)
+    public function doUploadComplete(&$objFormParam)
     {
         $objImage = new SC_Image_Ex(DOWN_TEMP_REALDIR);
         $arrRealFileName = $objFormParam->getValue('down_realfilename');
@@ -665,11 +664,11 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * 規格ID1, 規格ID2の規格分類全てを取得する.
      *
-     * @param integer $class_id1 規格ID1
-     * @param integer $class_id2 規格ID2
-     * @return array 規格と規格分類の配列
+     * @param  integer $class_id1 規格ID1
+     * @param  integer $class_id2 規格ID2
+     * @return array   規格と規格分類の配列
      */
-    function getAllClassCategory($class_id1, $class_id2 = null)
+    public function getAllClassCategory($class_id1, $class_id2 = null)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -708,10 +707,10 @@ __EOF__;
      * 商品名を取得する.
      *
      * @access private
-     * @param integer $product_id 商品ID
-     * @return string 商品名の文字列
+     * @param  integer $product_id 商品ID
+     * @return string  商品名の文字列
      */
-    function getProductName($product_id)
+    public function getProductName($product_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -724,7 +723,7 @@ __EOF__;
      * @access private
      * @return array 規格分類の登録された, 全ての規格
      */
-    function getAllClass()
+    public function getAllClass()
     {
         $arrClass = SC_Helper_DB_Ex::sfGetIDValueList('dtb_class', 'class_id', 'name');
 
@@ -748,10 +747,10 @@ __EOF__;
      *
      * 商品IDをキーにし, デフォルトに設定されている商品規格を取得する.
      *
-     * @param integer $product_id 商品ID
-     * @return array 商品規格の配列
+     * @param  integer $product_id 商品ID
+     * @return array   商品規格の配列
      */
-    function getProductsClass($product_id)
+    public function getProductsClass($product_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'product_code, price01, price02, stock, stock_unlimited, sale_limit, deliv_fee, point_rate';
@@ -767,11 +766,11 @@ __EOF__;
      * ため, SC_FormParam::getValue() で取得できない.
      * これを防ぐため, $_POST[$key] を直接操作し, 指定の長さで空白の配列を作成する
      *
-     * @param string $key $_POST のキー
-     * @param integer $size 作成する配列のサイズ
+     * @param  string  $key  $_POST のキー
+     * @param  integer $size 作成する配列のサイズ
      * @return void
      */
-    function fillCheckboxesValue($key, $size)
+    public function fillCheckboxesValue($key, $size)
     {
         if (empty($_POST[$key])) {
             $_POST[$key] = array_pad(array(), $size, '');
