@@ -952,7 +952,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         //届け先に選択済みの商品がある場合
         $arrShipmentProducts = $this->getShipmentProducts($objFormParam);
 
-        if(in_array($add_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])){
+        if($arrShipmentProducts['shipment_product_class_id'] && in_array($add_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])){
             foreach ($arrShipmentProducts['shipment_product_class_id'][$select_shipping_id] as $relation_index => $shipment_product_class_id) {
                 if($shipment_product_class_id == $add_product_class_id){
                     $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$relation_index]++;
@@ -1167,7 +1167,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     function checkInsertOrderProducts(&$objFormParam, $arrProductClassIds, $insert_product_class_id, $arrAddProductInfo)
     {
-        if(is_array($arrProductClassIds) && !in_array($insert_product_class_id, $arrProductClassIds)){
+        if(!$arrProductClassIds || !in_array($insert_product_class_id, $arrProductClassIds)){
             $arrAddProducts = array();
 
             $arrAddProductInfo['product_name'] = ($arrAddProductInfo['product_name'])?
