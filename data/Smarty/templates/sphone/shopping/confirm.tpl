@@ -97,7 +97,7 @@
                         <!--{foreach from=$arrCartItems item=item}-->
                             <!--▼商品 -->
                             <div class="cartconfirmBox">
-                                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$item.productsClass.name|h}-->" class="photoL" />
+                                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80px;" alt="<!--{$item.productsClass.name|h}-->" class="photoL" />
                                 <div class="cartconfirmContents">
                                     <div>
                                         <p><em><!--{$item.productsClass.name|h}--></em><br />
@@ -229,9 +229,9 @@
                                         <div class="cartconfirmBox">
                                             <!--{if $item.productsClass.main_image|strlen >= 1}-->
                                                 <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" target="_blank">
-                                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$item.productsClass.name|h}-->" class="photoL" /></a>
+                                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80px;" alt="<!--{$item.productsClass.name|h}-->" class="photoL" /></a>
                                             <!--{else}-->
-                                                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$item.productsClass.name|h}-->" class="photoL" />
+                                                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80px;" alt="<!--{$item.productsClass.name|h}-->" class="photoL" />
                                             <!--{/if}-->
                                             <div class="cartconfirmContents">
                                                 <p>

@@ -361,7 +361,7 @@
                 <div class="product_item">
                     <div class="productImage">
                         <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->">
-                            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrItem.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65;" alt="<!--{$rrItem.name|h}-->" />
+                            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrItem.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$arrItem.name|h}-->" /></a>
                     </div>
                     <!--{assign var=price02_min value=`$arrItem.price02_min_inctax`}-->
                     <!--{assign var=price02_max value=`$arrItem.price02_max_inctax`}-->

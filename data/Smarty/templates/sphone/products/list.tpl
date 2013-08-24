@@ -74,7 +74,7 @@
         <!--▼商品-->
         <div class="list_area clearfix">
             <!--★画像★-->
-            <p class="listphoto"><img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$arrProduct.name|h}-->" /></p>
+            <p class="listphoto"><img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80px;" alt="<!--{$arrProduct.name|h}-->" /></p>
             <div class="listrightblock">
                 <div class="statusArea">
                     <!--▼商品ステータス-->
