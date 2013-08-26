@@ -81,7 +81,7 @@ class LC_Page_Entry extends LC_Page_Ex
         $objFormParam = new SC_FormParam_Ex();
 
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
-        if ($this->lfCheckReferer($_POST, $_SERVER['HTTP_REFERER']) === false) {
+        if ($this->lfCheckReferer() === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
         }
 
@@ -269,20 +269,30 @@ class LC_Page_Entry extends LC_Page_Ex
      * 以下の内容をチェックし, 妥当であれば true を返す.
      * 1. 規約ページからの遷移かどうか
      * 2. PC及びスマートフォンかどうか
-     * 3. $post に何も含まれていないかどうか
+     * 3. 自分自身(会員登録ページ)からの遷移はOKとする
      *
      * @access protected
-     * @param  array   $post    $_POST のデータ
-     * @param  string  $referer $_SERVER['HTTP_REFERER'] のデータ
      * @return boolean kiyaku.php からの妥当な遷移であれば true
      */
-    public function lfCheckReferer(&$post, $referer)
+    public function lfCheckReferer()
     {
+        $arrRefererParseUrl = parse_url($_SERVER['HTTP_REFERER']);
+        $referer_urlpath = $arrRefererParseUrl['path'];
+
+        $kiyaku_urlpath = ROOT_URLPATH . 'entry/kiyaku.php';
+
+        $arrEntryParseUrl = parse_url(ENTRY_URL);
+        $entry_urlpath = $arrEntryParseUrl['path'];
+
+        $allowed_urlpath = array(
+            $kiyaku_urlpath,
+            $entry_urlpath,
+        );
+
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
-            && empty($post)
-            && (preg_match('/kiyaku.php/', basename($referer)) === 0)) {
+            && !in_array($referer_urlpath, $allowed_urlpath)) {
             return false;
-            }
+        }
 
         return true;
     }
