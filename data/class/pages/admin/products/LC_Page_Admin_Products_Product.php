@@ -984,7 +984,7 @@ __EOF__;
      */
     public function lfSetOnloadJavaScript_InputPage($anchor_hash = '')
     {
-        return "fnCheckStockLimit('" . DISABLED_RGB . "');fnInitSelect('category_id_unselect'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
+        return "eccube.checkStockLimit('" . DISABLED_RGB . "');fnInitSelect('category_id_unselect'); fnMoveSelect('category_id_unselect', 'category_id');" . $anchor_hash;
     }
 
     /**

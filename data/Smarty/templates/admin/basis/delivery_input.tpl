@@ -111,7 +111,7 @@
 
         <!--{if $smarty.const.INPUT_DELIV_FEE}-->
         <h2>配送料登録</h2>
-        <div class="btn">※全国一律送料 <input type="text" name="fee_all" class="box10" /> 円に設定する　<a class="btn-normal" href="javascript:;" onclick="fnSetDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span>反映</span></a></div>
+        <div class="btn">※全国一律送料 <input type="text" name="fee_all" class="box10" /> 円に設定する　<a class="btn-normal" href="javascript:;" onclick="eccube.setDelivFee(<!--{$smarty.const.DELIVFEE_MAX}-->); return false;"><span>反映</span></a></div>
         <table>
             <!--{section name=cnt loop=$smarty.const.DELIVFEE_MAX}-->
             <!--{assign var=type value="`$smarty.section.cnt.index%2`"}-->

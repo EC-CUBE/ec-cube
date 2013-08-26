@@ -62,7 +62,7 @@
     }
 
     function fnFormConfirm() {
-        if (fnConfirm()) {
+        if (eccube.doConfirm()) {
             document.form1.submit();
         }
     }

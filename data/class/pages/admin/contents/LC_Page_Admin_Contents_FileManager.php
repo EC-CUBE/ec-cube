@@ -453,7 +453,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
         $tpl_onload = '';
         // ツリーを表示する divタグid, ツリー配列変数名, 現在ディレクトリ, 選択ツリーhidden名, ツリー状態hidden名, mode hidden名
         $now_dir = $objFormParam->getValue('now_dir');
-        $treeView = "fnTreeView('tree', arrTree, '$now_dir', 'tree_select_file', 'tree_status', 'move');";
+        $treeView = "eccube.fileManager.viewFileTree('tree', arrTree, '$now_dir', 'tree_select_file', 'tree_status', 'move');";
         if (!empty($this->tpl_onload)) {
             $tpl_onload .= $treeView;
         } else {

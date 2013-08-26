@@ -32,12 +32,12 @@ function setFlag(){
 function checkFlagAndSubmit(){
     if ( flag == 1 ){
         if( confirm("内容が変更されています。続行すれば変更内容は破棄されます。宜しいでしょうか？") ){
-            fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
+            eccube.setValueAndSubmit('form1', 'mode', 'id_set');
         } else {
             return false;
         }
     } else {
-        fnSetvalAndSubmit( 'form1', 'mode', 'id_set' );
+        eccube.setValueAndSubmit('form1', 'mode', 'id_set');
     }
 }
 

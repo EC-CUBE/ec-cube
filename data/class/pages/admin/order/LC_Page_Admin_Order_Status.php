@@ -161,7 +161,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
         $page_max = ORDER_STATUS_MAX;
 
         // ページ送りの取得
-        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, 'fnNaviSearchOnlyPage', NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, 'eccube.moveSearchPage', NAVI_PMAX);
         $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
         $startno = $objNavi->start_row;
 

@@ -67,8 +67,8 @@ function winSubmitMail(URL,formName,Winname,Wwidth,Wheight){
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" name="subm03" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name="subm02" onclick="return eccube.insertValueAndSubmit( document.form1, 'mode', 'regist_back', '' ); return false;"><span class="btn-prev">テンプレート設定画面へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" name="subm03" onclick="return eccube.insertValueAndSubmit( document.form1, 'mode', 'regist_complete', '' ); return false;"><span class="btn-next">配信する</span></a></li>
             </ul>
         </div>
     </div>

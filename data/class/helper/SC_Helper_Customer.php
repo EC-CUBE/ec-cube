@@ -690,7 +690,7 @@ class SC_Helper_Customer
         $objNavi = new SC_PageNavi_Ex($arrParam['search_pageno'],
                                     $linemax,
                                     $page_max,
-                                    'fnNaviSearchOnlyPage',
+                                    'eccube.moveSearchPage',
                                     NAVI_PMAX);
 
         return array($linemax, $arrData, $objNavi);

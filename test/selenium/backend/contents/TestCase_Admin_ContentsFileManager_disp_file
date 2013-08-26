@@ -17,7 +17,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[@onclick=&quot;eccube.setValue('select_file', 'C:/workspace/eccube/html/user_data/test.txt', 'form1');fnSelectFile('select_file8', '#808080');eccube.setModeAndSubmit('view','',''); return false;&quot;]</td>
+	<td>//a[@onclick=&quot;eccube.setValue('select_file', 'C:/workspace/eccube/html/user_data/test.txt', 'form1');eccube.fileManager.selectFile('select_file8', '#808080');eccube.setModeAndSubmit('view','',''); return false;&quot;]</td>
 	<td></td>
 </tr>
 </tbody></table>

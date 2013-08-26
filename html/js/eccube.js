@@ -186,10 +186,18 @@
         formElement.submit();
     };
 
-    eccube.setValueAndSubmit = function(form, key, val) {
-        var formElement = $("form#" + form);
-        formElement.find("*[name=" + key + "]").val(val);
-        formElement.submit();
+    eccube.setValueAndSubmit = function(form, key, val, msg) {
+        var ret;
+        if (msg !== undefined) {
+            ret = window.confirm(msg);
+        } else {
+            ret = true;
+        }
+        if (ret) {
+            var formElement = $("form#" + form);
+            formElement.find("*[name=" + key + "]").val(val);
+            formElement.submit();
+        }
         return false;
     };
 
