@@ -39,7 +39,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -49,7 +49,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -60,7 +60,7 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // モバイル判定
         switch (SC_Display_Ex::detectDevice()) {
@@ -81,10 +81,10 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
     /**
      * 選択中のカテゴリIDを取得する.
      *
-     * @param array $arrRequest リクエスト配列
+     * @param  array $arrRequest リクエスト配列
      * @return array $arrCategoryId 選択中のカテゴリID
      */
-    function lfGetSelectedCategoryId($arrRequest)
+    public function lfGetSelectedCategoryId($arrRequest)
     {
             // 商品ID取得
         $product_id = '';
@@ -109,11 +109,11 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
     /**
      * カテゴリツリーの取得.
      *
-     * @param array $arrParentCategoryId 親カテゴリの配列
-     * @param boolean $count_check 登録商品数をチェックする場合はtrue
-     * @return array $arrRet カテゴリツリーの配列を返す
+     * @param  array   $arrParentCategoryId 親カテゴリの配列
+     * @param  boolean $count_check         登録商品数をチェックする場合はtrue
+     * @return array   $arrRet カテゴリツリーの配列を返す
      */
-    function lfGetCatTree($arrParentCategoryId, $count_check = false)
+    public function lfGetCatTree($arrParentCategoryId, $count_check = false)
     {
         $objCategory = new SC_Helper_Category_Ex($count_check);
         $arrTree = $objCategory->getTree();
@@ -131,10 +131,10 @@ class LC_Page_FrontParts_Bloc_Category extends LC_Page_FrontParts_Bloc_Ex
     /**
      * メインカテゴリの取得.
      *
-     * @param boolean $count_check 登録商品数をチェックする場合はtrue
-     * @return array $arrMainCat メインカテゴリの配列を返す
+     * @param  boolean $count_check 登録商品数をチェックする場合はtrue
+     * @return array   $arrMainCat メインカテゴリの配列を返す
      */
-    function lfGetMainCat($count_check = false)
+    public function lfGetMainCat($count_check = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '*';

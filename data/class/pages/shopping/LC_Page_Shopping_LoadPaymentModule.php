@@ -40,7 +40,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -51,11 +51,12 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $order_id = $this->getOrderId();
         if ($order_id === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+
             return;
         }
 
@@ -63,6 +64,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
         if ($module_path === false) {
             $msg = 'モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。';
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
+
             return;
         }
         require_once $module_path;
@@ -74,11 +76,11 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
      * 決済モジュールが取得できた場合は, require 可能な決済モジュールのパスを返す.
      * 受注IDが無効な場合, 取得したパスにファイルが存在しない場合は false
      *
-     * @param integer $order_id 受注ID
+     * @param  integer        $order_id 受注ID
      * @return string|boolean 成功した場合は決済モジュールのパス;
      *                        失敗した場合 false
      */
-    function getModulePath($order_id)
+    public function getModulePath($order_id)
     {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPayment = new SC_Helper_Payment_Ex();
@@ -124,7 +126,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
      * @return integer|boolean 受注IDの取得に成功した場合は受注IDを返す;
      *                         失敗した場合は, false を返す.
      */
-    function getOrderId()
+    public function getOrderId()
     {
         if (isset($_SESSION['order_id'])
             && !SC_Utils_Ex::isBlank($_SESSION['order_id'])
@@ -150,7 +152,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
     /**
      * 決済モジュールから遷移する場合があるため, トークンチェックしない.
      */
-    function doValidToken()
+    public function doValidToken()
     {
         // nothing.
     }

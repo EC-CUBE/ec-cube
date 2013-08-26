@@ -37,7 +37,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'mail/template.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objMailHelper = new SC_Helper_Mail_Ex();
 
@@ -89,7 +89,7 @@ class LC_Page_Admin_Mail_Template extends LC_Page_Admin_Ex
      * @param integer 削除したいテンプレートのID
      * @return void
      */
-    function lfDeleteMailTemplate($template_id)
+    public function lfDeleteMailTemplate($template_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_mailmaga_template',

@@ -52,6 +52,7 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex
                             'Town' => $arrAddrList[0]['town'],
                         )
                     );
+
                 return true;
             }
         }

@@ -89,7 +89,7 @@
                 <!--▼商品 -->
                 <!--{foreach from=$tpl_arrOrderDetail item=orderDetail}-->
                     <div>
-                        <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80;" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" />
+                        <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$orderDetail.main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80px;" alt="<!--{$orderDetail.product_name|h}-->" class="photoL" />
                         <div class="cartinContents">
                             <div>
                                 <p><em><!--→商品名--><a<!--{if $orderDetail.enable}--> href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$orderDetail.product_id|u}-->"<!--{/if}--> rel="external"><!--{$orderDetail.product_name|h}--></a><!--←商品名--></em></p>

@@ -28,12 +28,13 @@
  * @author pineray
  * @version $Id:$
  */
-class SC_Helper_Delivery {
+class SC_Helper_Delivery
+{
     /**
      * 配送方法の情報を取得.
      *
-     * @param integer $deliv_id 配送方法ID
-     * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
+     * @param  integer $deliv_id    配送方法ID
+     * @param  boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
     public function get($deliv_id, $has_deleted = false)
@@ -68,8 +69,8 @@ class SC_Helper_Delivery {
     /**
      * 配送方法一覧の取得.
      *
-     * @param integer $product_type_id 商品種別ID
-     * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
+     * @param  integer $product_type_id 商品種別ID
+     * @param  boolean $has_deleted     削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
     public function getList($product_type_id = null, $has_deleted = false)
@@ -98,7 +99,7 @@ class SC_Helper_Delivery {
     /**
      * 配送方法の登録.
      *
-     * @param array $sqlval
+     * @param  array   $sqlval
      * @return integer $deliv_id
      */
     public function save($sqlval)
@@ -210,7 +211,7 @@ class SC_Helper_Delivery {
     /**
      * 配送方法の削除.
      *
-     * @param integer $deliv_id 配送方法ID
+     * @param  integer $deliv_id 配送方法ID
      * @return void
      */
     public function delete($deliv_id)
@@ -223,7 +224,7 @@ class SC_Helper_Delivery {
     /**
      * 配送方法の表示順をひとつ上げる.
      *
-     * @param integer $deliv_id 配送方法ID
+     * @param  integer $deliv_id 配送方法ID
      * @return void
      */
     public function rankUp($deliv_id)
@@ -235,7 +236,7 @@ class SC_Helper_Delivery {
     /**
      * 配送方法の表示順をひとつ下げる.
      *
-     * @param integer $deliv_id 配送方法ID
+     * @param  integer $deliv_id 配送方法ID
      * @return void
      */
     public function rankDown($deliv_id)
@@ -247,7 +248,7 @@ class SC_Helper_Delivery {
     /**
      * 同じ内容の配送方法が存在するか確認.
      *
-     * @param array $arrDeliv
+     * @param  array   $arrDeliv
      * @return boolean
      */
     public function checkExist($arrDeliv)
@@ -266,7 +267,7 @@ class SC_Helper_Delivery {
     /**
      * 配送方法IDをキー, 名前を値とする配列を取得.
      *
-     * @param string $type 値のタイプ
+     * @param  string $type 値のタイプ
      * @return array
      */
     public static function getIDValueList($type = 'name')
@@ -277,8 +278,8 @@ class SC_Helper_Delivery {
     /**
      * 配送業者IDからお届け時間の配列を取得する.
      *
-     * @param integer $deliv_id 配送業者ID
-     * @return array お届け時間の配列
+     * @param  integer $deliv_id 配送業者ID
+     * @return array   お届け時間の配列
      */
     public static function getDelivTime($deliv_id)
     {
@@ -296,8 +297,8 @@ class SC_Helper_Delivery {
     /**
      * 配送業者ID から, 有効な支払方法IDを取得する.
      *
-     * @param integer $deliv_id 配送業者ID
-     * @return array 有効な支払方法IDの配列
+     * @param  integer $deliv_id 配送業者ID
+     * @return array   有効な支払方法IDの配列
      */
     public static function getPayments($deliv_id)
     {
@@ -310,9 +311,9 @@ class SC_Helper_Delivery {
     /**
      * 都道府県から配送料金を取得する.
      *
-     * @param integer|array $pref_id 都道府県ID 又は都道府県IDの配列
-     * @param integer $deliv_id 配送業者ID
-     * @return string 指定の都道府県, 配送業者の配送料金
+     * @param  integer|array $pref_id  都道府県ID 又は都道府県IDの配列
+     * @param  integer       $deliv_id 配送業者ID
+     * @return string        指定の都道府県, 配送業者の配送料金
      */
     public static function getDelivFee($pref_id, $deliv_id = 0)
     {
@@ -340,8 +341,8 @@ __EOS__;
     /**
      * 配送業者ID から, 配送料金の一覧を取得する.
      *
-     * @param integer $deliv_id 配送業者ID
-     * @return array 配送料金の配列
+     * @param  integer $deliv_id 配送業者ID
+     * @return array   配送料金の配列
      */
     public static function getDelivFeeList($deliv_id)
     {

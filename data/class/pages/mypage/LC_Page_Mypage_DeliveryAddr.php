@@ -37,7 +37,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -56,7 +56,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -68,7 +68,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCustomer = new SC_Customer_Ex();
         $objAddress  = new SC_Helper_Address_Ex();
@@ -77,7 +77,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
         // GETでページを指定されている場合には指定ページに戻す
         if (isset($_GET['page'])) {
             $ParentPage = htmlspecialchars($_GET['page'], ENT_QUOTES);
-        } else if (isset($_POST['ParentPage'])) {
+        } elseif (isset($_POST['ParentPage'])) {
             $ParentPage = htmlspecialchars($_POST['ParentPage'], ENT_QUOTES);
         }
         $this->ParentPage = $ParentPage;
@@ -155,7 +155,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
     }
 
     /* 登録実行 */
-    function lfRegistData($objAddress, $objFormParam, $customer_id)
+    public function lfRegistData($objAddress, $objFormParam, $customer_id)
     {
         $arrRet     = $objFormParam->getHashArray();
         $sqlval     = $objFormParam->getDbArray();
@@ -166,7 +166,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
         $objAddress->registAddress($sqlval);
     }
 
-    function lfRegistDataNonMember($objFormParam)
+    public function lfRegistDataNonMember($objFormParam)
     {
         $arrRegistColumn = $objFormParam->getDbArray();
         foreach ($arrRegistColumn as $key => $val) {

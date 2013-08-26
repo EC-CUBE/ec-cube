@@ -37,7 +37,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = 'お届け先の複数指定';
@@ -49,7 +49,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -61,14 +61,14 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
@@ -121,10 +121,10 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
     /**
      * フォームを初期化する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品名', 'name');
@@ -144,11 +144,11 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
     /**
      * カートの商品を数量ごとに分割し, フォームに設定する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param SC_CartSession $objCartSess SC_CartSession インスタンス
+     * @param  SC_FormParam   $objFormParam SC_FormParam インスタンス
+     * @param  SC_CartSession $objCartSess  SC_CartSession インスタンス
      * @return void
      */
-    function setParamToSplitItems(&$objFormParam, &$objCartSess)
+    public function setParamToSplitItems(&$objFormParam, &$objCartSess)
     {
         $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
         $arrItems = array();
@@ -175,11 +175,11 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      * 会員ログイン済みの場合は, 会員登録住所及び追加登録住所を取得する.
      * 非会員の場合は, 「お届け先の指定」画面で入力した住所を取得する.
      *
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
-     * @return array 配送住所のプルダウン用連想配列
+     * @param  SC_Customer        $objCustomer SC_Customer インスタンス
+     * @param  SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
+     * @return array              配送住所のプルダウン用連想配列
      */
-    function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress)
+    public function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress)
     {
         $masterData = new SC_DB_MasterData_Ex();
         $arrPref = $masterData->getMasterData('mtb_pref');
@@ -228,10 +228,10 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
     /**
      * 入力チェックを行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array エラー情報の配列
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        エラー情報の配列
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objCartSess = new SC_CartSession_Ex();
 
@@ -287,13 +287,13 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      *
      * 会員ログインしている場合は, その他のお届け先から住所情報を取得する.
      *
-     * @param integer $uniqid 一時受注テーブルのユニークID
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param SC_Customer $objCustomer SC_Customer インスタンス
-     * @param SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
+     * @param  integer            $uniqid       一時受注テーブルのユニークID
+     * @param  SC_FormParam       $objFormParam SC_FormParam インスタンス
+     * @param  SC_Customer        $objCustomer  SC_Customer インスタンス
+     * @param  SC_Helper_Purchase $objPurchase  SC_Helper_Purchase インスタンス
      * @return void
      */
-    function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objAddress)
+    public function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objAddress)
     {
         $arrParams = $objFormParam->getSwapArray();
 
@@ -333,7 +333,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
 
         //不必要な配送先を削除
         foreach ($_SESSION['shipping'] as $id=>$arrShipping) {
-            if (!isset($arrShipping['shipment_item'])){
+            if (!isset($arrShipping['shipment_item'])) {
                 $objPurchase->unsetOneShippingTemp($id);
             }
         }

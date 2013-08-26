@@ -45,23 +45,23 @@ define('ZIP_CSV_UTF8_REALFILE', DATA_REALDIR . 'downloads/KEN_ALL_utf-8.CSV');
 class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
 {
     /** CSVの行数 */
-    var $tpl_line = 0;
-    var $tpl_mode;
-    var $exec;
-    var $tpl_count_mtb_zip;
+    public $tpl_line = 0;
+    public $tpl_mode;
+    public $exec;
+    public $tpl_count_mtb_zip;
 
     /** CSV の更新日時 */
-    var $tpl_csv_datetime;
+    public $tpl_csv_datetime;
 
     /** 日本郵便から取得した ZIP アーカイブファイルの保管パス */
-    var $zip_csv_temp_realfile;
+    public $zip_csv_temp_realfile;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/zip_install.tpl';
@@ -71,7 +71,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         $this->tpl_mainno = 'basis';
 
         $this->tpl_mode = $this->getMode();
-        $this->exec = (boolean)$_GET['exec'];
+        $this->exec = (boolean) $_GET['exec'];
         $this->zip_csv_temp_realfile = DATA_REALDIR . 'downloads/tmp/ken_all.zip';
     }
 
@@ -80,7 +80,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -91,7 +91,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -156,7 +156,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         // $arrHeader = get_headers(ZIP_DOWNLOAD_URL, 1);
     }
 
-    function lfAutoCommitZip()
+    public function lfAutoCommitZip()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -172,7 +172,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfDeleteZip()
+    public function lfDeleteZip()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -188,7 +188,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfInitParam($tpl_mode, &$objFormParam)
+    public function lfInitParam($tpl_mode, &$objFormParam)
     {
         if ($tpl_mode == 'manual') {
             $objFormParam->addParam('開始行', 'startRowNum', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -200,7 +200,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function insertMtbZip($start = 1)
+    public function insertMtbZip($start = 1)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -283,7 +283,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         <?php
     }
 
-    function openZipCsv()
+    public function openZipCsv()
     {
         $this->convertZipCsv();
         $fp = fopen(ZIP_CSV_UTF8_REALFILE, 'r');
@@ -294,7 +294,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         return $fp;
     }
 
-    function convertZipCsv()
+    public function convertZipCsv()
     {
         if (file_exists(ZIP_CSV_UTF8_REALFILE)) return;
 
@@ -316,14 +316,14 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         fclose($fpr);
     }
 
-    function countMtbZip()
+    public function countMtbZip()
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         return $objQuery->count('mtb_zip');
     }
 
-    function countZipCsv()
+    public function countZipCsv()
     {
         $line = 0;
         $fp = $this->openZipCsv();
@@ -349,16 +349,16 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfDownloadZipFileFromJp()
+    public function lfDownloadZipFileFromJp()
     {
         // Proxy経由を可能とする。
         // TODO Proxyの設定は「data/module/HTTP/Request.php」内の「function HTTP_Request」へ記述する。いずれは、外部設定としたい。
-        $req = new HTTP_Request();
+        $req = new HTTP_Request2();
 
         $req->setURL(ZIP_DOWNLOAD_URL);
 
         // 郵便番号CSVをdownloadする。
-        $res = $req->sendRequest();
+        $res = $req->send();
         if (!$res || strlen($res) > 1) {
             trigger_error(ZIP_DOWNLOAD_URL . ' の取得に失敗しました。', E_USER_ERROR);
         }
@@ -368,7 +368,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
         if (!$fp) {
             trigger_error($this->zip_csv_temp_realfile . ' を開けません。', E_USER_ERROR);
         }
-        $res = fwrite($fp, $req->getResponseBody());
+        $res = fwrite($fp, $res->getBody());
         if (!$res) {
             trigger_error($this->zip_csv_temp_realfile . ' への書き込みに失敗しました。', E_USER_ERROR);
         }
@@ -379,7 +379,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfExtractZipFile()
+    public function lfExtractZipFile()
     {
         $zip = zip_open($this->zip_csv_temp_realfile);
         if (!is_resource($zip)) {
@@ -433,7 +433,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
      *
      * @return string CSV の更新日時 (整形済みテキスト)
      */
-    function lfGetCsvDatetime()
+    public function lfGetCsvDatetime()
     {
         return date('Y/m/d H:i:s', filemtime(ZIP_CSV_REALFILE));
     }

@@ -37,7 +37,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -59,7 +59,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCustomer    = new SC_Customer_Ex();
         $objFormParam   = new SC_FormParam_Ex();
@@ -90,7 +90,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
      * @access public
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('メールアドレス', 'email_mobile', null, 'a',
                                 array('NO_SPTAB', 'EXIST_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'EMAIL_CHECK', 'MOBILE_EMAIL_CHECK'));
@@ -104,7 +104,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
      * @access private
      * @return array エラー情報の配列
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objFormParam->convParam();
         $objErr         = new SC_CheckError_Ex();
@@ -127,7 +127,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
      * @access private
      * @return void
      */
-    function lfRegistEmailMobile($email_mobile, $customer_id)
+    public function lfRegistEmailMobile($email_mobile, $customer_id)
     {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_customer',

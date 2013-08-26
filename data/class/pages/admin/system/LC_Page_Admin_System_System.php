@@ -37,7 +37,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'system/system.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
 
@@ -85,11 +85,11 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex
     /**
      * フォームパラメーター初期化.
      *
-     * @param object $objFormParam
-     * @param array $arrParams $_GET値
+     * @param  object $objFormParam
+     * @param  array  $arrParams    $_GET値
      * @return void
      */
-    function initForm(&$objFormParam, &$arrParams)
+    public function initForm(&$objFormParam, &$arrParams)
     {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
@@ -100,7 +100,7 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex
      *
      * @return array システム情報
      */
-    function getSystemInfo()
+    public function getSystemInfo()
     {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
 

@@ -33,35 +33,35 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 class LC_Page_Products_List extends LC_Page_Ex
 {
     /** テンプレートクラス名1 */
-    var $tpl_class_name1 = array();
+    public $tpl_class_name1 = array();
 
     /** テンプレートクラス名2 */
-    var $tpl_class_name2 = array();
+    public $tpl_class_name2 = array();
 
     /** JavaScript テンプレート */
-    var $tpl_javascript;
+    public $tpl_javascript;
 
-    var $orderby;
+    public $orderby;
 
-    var $mode;
+    public $mode;
 
     /** 検索条件(内部データ) */
-    var $arrSearchData = array();
+    public $arrSearchData = array();
 
     /** 検索条件(表示用) */
-    var $arrSearch = array();
+    public $arrSearch = array();
 
-    var $tpl_subtitle = '';
+    public $tpl_subtitle = '';
 
     /** ランダム文字列 **/
-    var $tpl_rnd = '';
+    public $tpl_rnd = '';
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
 
@@ -77,7 +77,7 @@ class LC_Page_Products_List extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -89,14 +89,14 @@ class LC_Page_Products_List extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objProduct = new SC_Product_Ex();
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -162,10 +162,10 @@ class LC_Page_Products_List extends LC_Page_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         // 抽出条件
         // XXX カートインしていない場合、チェックしていない
@@ -188,7 +188,7 @@ class LC_Page_Products_List extends LC_Page_Ex
      *
      * @return integer カテゴリID
      */
-    function lfGetCategoryId($category_id)
+    public function lfGetCategoryId($category_id)
     {
         // 指定なしの場合、0 を返す
         if (empty($category_id)) return 0;
@@ -196,7 +196,7 @@ class LC_Page_Products_List extends LC_Page_Ex
         // 正当性チェック
         if (!SC_Utils_Ex::sfIsInt($category_id)
             || SC_Utils_Ex::sfIsZeroFilling($category_id)
-            || !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')
+            || !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')
             ) {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
@@ -212,7 +212,7 @@ class LC_Page_Products_List extends LC_Page_Ex
     }
 
     /* 商品一覧の表示 */
-    function lfGetProductsList($searchCondition, $disp_number, $startno, &$objProduct)
+    public function lfGetProductsList($searchCondition, $disp_number, $startno, &$objProduct)
     {
         $arrOrderVal = array();
 
@@ -271,7 +271,7 @@ __EOS__;
     }
 
     /* 入力内容のチェック */
-    function lfCheckError($objFormParam)
+    public function lfCheckError($objFormParam)
     {
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
@@ -294,7 +294,7 @@ __EOS__;
      *
      * @return void
      */
-    function lfGetDisplayNum($display_number)
+    public function lfGetDisplayNum($display_number)
     {
         // 表示件数
         return (SC_Utils_Ex::sfIsInt($display_number))
@@ -307,7 +307,7 @@ __EOS__;
      *
      * @return str
      */
-    function lfGetPageTitle($mode, $category_id = 0)
+    public function lfGetPageTitle($mode, $category_id = 0)
     {
         if ($mode == 'search') {
             return '検索結果';
@@ -316,6 +316,7 @@ __EOS__;
         } else {
             $objCategory = new SC_Helper_Category_Ex();
             $arrCat = $objCategory->get($category_id);
+
             return $arrCat['category_name'];
         }
     }
@@ -325,7 +326,7 @@ __EOS__;
      *
      * @return array
      */
-    function lfGetSearchConditionDisp($arrSearchData)
+    public function lfGetSearchConditionDisp($arrSearchData)
     {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $arrSearch  = array('category' => '指定なし', 'maker' => '指定なし', 'name' => '指定なし');
@@ -354,7 +355,7 @@ __EOS__;
      *
      * @return int
      */
-    function lfGetProductAllNum($searchCondition)
+    public function lfGetProductAllNum($searchCondition)
     {
         // 検索結果対象となる商品の数を取得
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
@@ -369,7 +370,7 @@ __EOS__;
      *
      * @return array
      */
-    function lfGetSearchCondition($arrSearchData)
+    public function lfGetSearchCondition($arrSearchData)
     {
         $searchCondition = array(
             'where'             => '',
@@ -429,7 +430,7 @@ __EOS__;
      *
      * @return str
      */
-    function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id)
+    public function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id)
     {
         $js_fnOnLoad = '';
         foreach (array_keys($arrProducts) as $key) {
@@ -452,7 +453,7 @@ __EOS__;
      *
      * @return void
      */
-    function lfAddCart($arrForm)
+    public function lfAddCart($arrForm)
     {
         $objCartSess = new SC_CartSession_Ex();
 
@@ -463,12 +464,12 @@ __EOS__;
     /**
      * 商品情報配列に商品ステータス情報を追加する
      *
-     * @param Array $arrProducts 商品一覧情報
-     * @param Array $arrStatus 商品ステータス配列
-     * @param Array $arrStatusImage スタータス画像配列
+     * @param  Array $arrProducts    商品一覧情報
+     * @param  Array $arrStatus      商品ステータス配列
+     * @param  Array $arrStatusImage スタータス画像配列
      * @return Array $arrProducts 商品一覧情報
      */
-    function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage)
+    public function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage)
     {
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
             for ($i = 0; $i < count($arrValues); $i++) {
@@ -491,7 +492,7 @@ __EOS__;
      *
      * @return void
      */
-    function doJson()
+    public function doJson()
     {
         $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
         SC_Product_Ex::setPriceTaxTo($this->arrProducts);
@@ -507,10 +508,10 @@ __EOS__;
 
     /**
      *
-     * @param type $objProduct
+     * @param  type $objProduct
      * @return void
      */
-    function doDefault(&$objProduct, &$objFormParam)
+    public function doDefault(&$objProduct, &$objFormParam)
     {
         //商品一覧の表示処理
         $strnavi            = $this->objNavi->strnavi;

@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/mail.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $masterData = new SC_DB_MasterData_Ex();
         $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
@@ -112,13 +112,13 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
 
     }
 
-    function lfRegistMailTemplate($post, $member_id, SC_Helper_Mailtemplate_Ex $objMailtemplate)
+    public function lfRegistMailTemplate($post, $member_id, SC_Helper_Mailtemplate_Ex $objMailtemplate)
     {
         $post['creator_id'] = $member_id;
         $objMailtemplate->save($post);
     }
 
-    function lfInitParam($mode, &$objFormParam)
+    public function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {
             case 'regist':

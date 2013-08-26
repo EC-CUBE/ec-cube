@@ -32,7 +32,7 @@ class LC_Upgrade_Helper_Log
      *
      * @param string $mode
      */
-    function start($mode)
+    public function start($mode)
     {
         $message = "##### $mode start #####";
         $this->log($message);
@@ -42,7 +42,7 @@ class LC_Upgrade_Helper_Log
      *
      * @param string $mode
      */
-    function end()
+    public function end()
     {
         $message = '##### end #####';
         $this->log($message);
@@ -52,7 +52,7 @@ class LC_Upgrade_Helper_Log
      *
      * @param string $message
      */
-    function log($message)
+    public function log($message)
     {
         GC_Utils_Ex::gfPrintLog($message, OSTORE_LOG_REALFILE);
     }
@@ -60,9 +60,9 @@ class LC_Upgrade_Helper_Log
      * エラーメッセージを出力
      *
      * @param string $code
-     * @param mixed $val
+     * @param mixed  $val
      */
-    function error($code, $val = null)
+    public function error($code, $val = null)
     {
         $format = '* error! code:%s / debug:%s';
         $message = sprintf($format, $code, serialize($val));

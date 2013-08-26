@@ -37,7 +37,7 @@ class LC_Page_Abouts extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = '当サイトについて';
@@ -50,7 +50,7 @@ class LC_Page_Abouts extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -62,7 +62,7 @@ class LC_Page_Abouts extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
     }
 }

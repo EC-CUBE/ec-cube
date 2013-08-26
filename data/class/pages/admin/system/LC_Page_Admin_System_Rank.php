@@ -37,7 +37,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -58,7 +58,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // チェック後のデータを格納
         $arrClean = array();
@@ -102,7 +102,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
     }
 
     // ランキングを上げる。
-    function lfRunkUp($id)
+    public function lfRunkUp($id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -133,7 +133,7 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
     }
 
     // ランキングを下げる。
-    function lfRunkDown($id)
+    public function lfRunkDown($id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

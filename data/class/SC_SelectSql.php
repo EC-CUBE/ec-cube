@@ -24,17 +24,17 @@
 /* ---- SQL文を作るクラス ---- */
 class SC_SelectSql
 {
-    var $sql;
+    public $sql;
 
-    var $select;
-    var $where;
-    var $order;
-    var $group;
-    var $arrSql;
-    var $arrVal;
+    public $select;
+    public $where;
+    public $order;
+    public $group;
+    public $arrSql;
+    public $arrVal;
 
     //--　コンストラクタ。
-    function __construct($array = '')
+    public function __construct($array = '')
     {
         if (is_array($array)) {
             $this->arrSql = $array;
@@ -42,7 +42,7 @@ class SC_SelectSql
     }
 
     //-- SQL分生成
-    function getSql($mode = '')
+    public function getSql($mode = '')
     {
         $this->sql = $this->select .' '. $this->where .' '. $this->group .' ';
 
@@ -54,7 +54,7 @@ class SC_SelectSql
     }
 
         // 検索用
-    function addSearchStr($val)
+    public function addSearchStr($val)
     {
         $return = '%' .$val. '%';
 
@@ -62,7 +62,7 @@ class SC_SelectSql
     }
 
     //-- 範囲検索（○　~　○　まで）
-    function selectRange($from, $to, $column)
+    public function selectRange($from, $to, $column)
     {
         // ある単位のみ検索($from = $to)
         if ($from == $to) {
@@ -86,7 +86,7 @@ class SC_SelectSql
     }
 
     //--　期間検索（○年○月○日か~○年○月○日まで）
-    function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column)
+    public function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column)
     {
         $return = array();
 
@@ -126,7 +126,7 @@ class SC_SelectSql
     }
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx) AND ...
-    function setItemTerm($arr, $ItemStr)
+    public function setItemTerm($arr, $ItemStr)
     {
         $return = array();
         foreach ($arr as $data) {
@@ -152,7 +152,7 @@ class SC_SelectSql
     }
 
     //　NULL値が必要な場合
-    function setItemTermWithNull($arr, $ItemStr)
+    public function setItemTermWithNull($arr, $ItemStr)
     {
         $return = array();
         $item = " {$ItemStr} IS NULL ";
@@ -172,7 +172,7 @@ class SC_SelectSql
         return $return;
     }
     // NULLもしくは''で検索する場合
-    function setItemTermWithNullAndSpace($arr, $ItemStr)
+    public function setItemTermWithNullAndSpace($arr, $ItemStr)
     {
         $return = array();
         $count = count($arr);
@@ -199,7 +199,7 @@ class SC_SelectSql
                                                             'value'  => $_POST['show_site1']);
 
     */
-    function setWhereByOR($arrWhere)
+    public function setWhereByOR($arrWhere)
     {
         $count = count($arrWhere);
 
@@ -225,7 +225,7 @@ class SC_SelectSql
      * @param $with_where boolean 必要に応じて WHERE を前置するか
      * @return string WHERE
      */
-    function getWhere($with_where = false)
+    public function getWhere($with_where = false)
     {
         $where = $this->where;
 
@@ -236,7 +236,7 @@ class SC_SelectSql
         return $where;
     }
 
-    function setWhere($where)
+    public function setWhere($where)
     {
         if ($where != '') {
             if ($this->where) {
@@ -247,17 +247,17 @@ class SC_SelectSql
         }
     }
 
-    function setOrder($order)
+    public function setOrder($order)
     {
             $this->order =  'ORDER BY ' . $order;
     }
 
-    function setGroup($group)
+    public function setGroup($group)
     {
         $this->group =  'GROUP BY ' . $group;
     }
 
-    function clearSql()
+    public function clearSql()
     {
         $this->select = '';
         $this->where = '';
@@ -265,7 +265,7 @@ class SC_SelectSql
         $this->order = '';
     }
 
-    function setSelect($sql)
+    public function setSelect($sql)
     {
         $this->select = $sql;
     }

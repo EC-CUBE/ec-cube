@@ -33,14 +33,14 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
 class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
 {
     /** ページナンバー */
-    var $tpl_pageno;
+    public $tpl_pageno;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_subtitle = 'お気に入り一覧';
@@ -52,7 +52,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -62,7 +62,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCustomer = new SC_Customer_Ex();
 
@@ -108,7 +108,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return array お気に入り商品一覧
      */
-    function lfGetFavoriteProduct($customer_id, &$objPage)
+    public function lfGetFavoriteProduct($customer_id, &$objPage)
     {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objProduct     = new SC_Product_Ex();
@@ -116,7 +116,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
         $objQuery->setOrder('f.create_date DESC');
         $where = 'f.customer_id = ? and p.status = 1';
         if (NOSTOCK_HIDDEN) {
-            $where .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = dtb_customer_favorite_products.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
+            $where .= ' AND EXISTS(SELECT * FROM dtb_products_class WHERE product_id = f.product_id AND del_flg = 0 AND (stock >= 1 OR stock_unlimited = 1))';
         }
         $arrProductId  = $objQuery->getCol('f.product_id', 'dtb_customer_favorite_products f inner join dtb_products p using (product_id)', $where, array($customer_id));
 
@@ -158,7 +158,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
     }
 
     /* 仕方がない処理。。 */
-    function lfMakeWhere($tablename, $arrProductId)
+    public function lfMakeWhere($tablename, $arrProductId)
     {
         // 取得した表示すべきIDだけを指定して情報を取得。
         $where = '';
@@ -173,7 +173,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
     }
 
     // お気に入り商品削除
-    function lfDeleteFavoriteProduct($customer_id, $product_id)
+    public function lfDeleteFavoriteProduct($customer_id, $product_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

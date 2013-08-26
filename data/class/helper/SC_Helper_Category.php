@@ -37,7 +37,7 @@ class SC_Helper_Category
      *
      * @param boolean $count_check 登録商品数をチェックする場合はtrue
      */
-    function __construct($count_check = FALSE)
+    public function __construct($count_check = FALSE)
     {
         $this->count_check = $count_check;
     }
@@ -45,7 +45,7 @@ class SC_Helper_Category
     /**
      * カテゴリーの情報を取得.
      *
-     * @param integer $category_id カテゴリーID
+     * @param  integer $category_id カテゴリーID
      * @return array
      */
     public function get($category_id)
@@ -66,8 +66,8 @@ class SC_Helper_Category
     /**
      * カテゴリー一覧の取得.
      *
-     * @param boolean $cid_to_key 配列のキーをカテゴリーIDにする場合はtrue
-     * @return array カテゴリー一覧の配列
+     * @param  boolean $cid_to_key 配列のキーをカテゴリーIDにする場合はtrue
+     * @return array   カテゴリー一覧の配列
      */
     public function getList($cid_to_key = FALSE)
     {
@@ -94,6 +94,7 @@ class SC_Helper_Category
                 // 配列のキーをカテゴリーIDに
                 $cidIsKey[$this->count_check] = SC_Utils_Ex::makeArrayIDToKey('category_id', $arrCategory[$this->count_check]);
             }
+
             return $cidIsKey[$this->count_check];
         }
 
@@ -119,8 +120,8 @@ class SC_Helper_Category
     /**
      * 親カテゴリーIDの配列を取得.
      *
-     * @param integer $category_id 起点のカテゴリーID
-     * @param boolean $id_only IDだけの配列を返す場合はtrue
+     * @param  integer $category_id 起点のカテゴリーID
+     * @param  boolean $id_only     IDだけの配列を返す場合はtrue
      * @return array
      */
     public function getTreeTrail($category_id, $id_only = TRUE)

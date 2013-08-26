@@ -36,7 +36,7 @@ class LC_Page_Entry extends LC_Page_Ex
      * Page を初期化する.
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $masterData         = new SC_DB_MasterData_Ex();
@@ -59,7 +59,7 @@ class LC_Page_Entry extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -70,14 +70,14 @@ class LC_Page_Entry extends LC_Page_Ex
      * Page のプロセス
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objFormParam = new SC_FormParam_Ex();
 
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
@@ -165,7 +165,7 @@ class LC_Page_Entry extends LC_Page_Ex
      * @access private
      * @return uniqid
      */
-    function lfRegistCustomerData($sqlval)
+    public function lfRegistCustomerData($sqlval)
     {
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
 
@@ -183,7 +183,7 @@ class LC_Page_Entry extends LC_Page_Ex
      * @access private
      * @return $arrResults
      */
-    function lfMakeSqlVal(&$objFormParam)
+    public function lfMakeSqlVal(&$objFormParam)
     {
         $arrForm                = $objFormParam->getHashArray();
         $arrResults             = $objFormParam->getDbArray();
@@ -220,7 +220,7 @@ class LC_Page_Entry extends LC_Page_Ex
      * @access private
      * @return void
      */
-    function lfSendMail($uniqid, $arrForm)
+    public function lfSendMail($uniqid, $arrForm)
     {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
@@ -272,11 +272,11 @@ class LC_Page_Entry extends LC_Page_Ex
      * 3. $post に何も含まれていないかどうか
      *
      * @access protected
-     * @param array $post $_POST のデータ
-     * @param string $referer $_SERVER['HTTP_REFERER'] のデータ
+     * @param  array   $post    $_POST のデータ
+     * @param  string  $referer $_SERVER['HTTP_REFERER'] のデータ
      * @return boolean kiyaku.php からの妥当な遷移であれば true
      */
-    function lfCheckReferer(&$post, $referer)
+    public function lfCheckReferer(&$post, $referer)
     {
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
             && empty($post)
@@ -290,10 +290,10 @@ class LC_Page_Entry extends LC_Page_Ex
     /**
      * 入力エラーのチェック.
      *
-     * @param array $arrRequest リクエスト値($_GET)
+     * @param  array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function lfCheckError($arrRequest)
+    public function lfCheckError($arrRequest)
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();

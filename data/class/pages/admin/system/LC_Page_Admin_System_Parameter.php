@@ -33,20 +33,20 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
 {
     /** 定数キーとなる配列 */
-    var $arrKeys;
+    public $arrKeys;
 
     /** 定数コメントとなる配列 */
-    var $arrComments;
+    public $arrComments;
 
     /** 定数値となる配列 */
-    var $arrValues;
+    public $arrValues;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'system/parameter.tpl';
@@ -61,7 +61,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -72,7 +72,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $masterData = new SC_DB_MasterData_Ex();
 
@@ -116,7 +116,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
      * @access private
      * @return void
      */
-    function update(&$arrKeys, &$arrForm)
+    public function update(&$arrKeys, &$arrForm)
     {
         $data = array();
         $masterData = new SC_DB_MasterData_Ex();
@@ -135,10 +135,10 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
      * エラーチェックを行う.
      *
      * @access private
-     * @param array $arrForm $_POST 値
+     * @param  array $arrForm $_POST 値
      * @return void
      */
-    function errorCheck(&$arrKeys, &$arrForm)
+    public function errorCheck(&$arrKeys, &$arrForm)
     {
         $objErr = new SC_CheckError_Ex($arrForm);
         for ($i = 0; $i < count($arrKeys); $i++) {
@@ -156,7 +156,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
      * @access private
      * @return array パラメーターのキーの配列
      */
-    function getParamKeys(&$masterData)
+    public function getParamKeys(&$masterData)
     {
         $keys = array();
         $i = 0;

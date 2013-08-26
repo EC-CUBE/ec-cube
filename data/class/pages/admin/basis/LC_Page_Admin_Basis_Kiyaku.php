@@ -37,7 +37,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'basis/kiyaku.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objKiyaku = new SC_Helper_Kiyaku_Ex();
 
@@ -83,6 +83,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
                 $this->arrErr = $this->lfCheckError($objFormParam, $objKiyaku);
                 if (!SC_Utils_Ex::isBlank($this->arrErr['kiyaku_id'])) {
                     trigger_error('', E_USER_ERROR);
+
                     return;
                 }
 
@@ -143,12 +144,12 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
     /**
      * 登録処理を実行.
      *
-     * @param integer $kiyaku_id
-     * @param array $sqlval
-     * @param object $objKiyaku
+     * @param  integer  $kiyaku_id
+     * @param  array    $sqlval
+     * @param  object   $objKiyaku
      * @return multiple
      */
-    function doRegist($kiyaku_id, $sqlval, SC_Helper_Kiyaku_Ex &$objKiyaku)
+    public function doRegist($kiyaku_id, $sqlval, SC_Helper_Kiyaku_Ex &$objKiyaku)
     {
         $sqlval['kiyaku_id'] = $kiyaku_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -156,7 +157,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
         return $objKiyaku->saveKiyaku($sqlval);
     }
 
-    function lfInitParam($mode, &$objFormParam)
+    public function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {
             case 'confirm':
@@ -177,11 +178,11 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック
      *
-     * @param string $mode
-     * @param object $objKiyaku
+     * @param  string $mode
+     * @param  object $objKiyaku
      * @return array
      */
-    function lfCheckError($objFormParam, SC_Helper_Kiyaku_Ex &$objKiyaku)
+    public function lfCheckError($objFormParam, SC_Helper_Kiyaku_Ex &$objKiyaku)
     {
         $arrErr = $objFormParam->checkError();
         $arrForm = $objFormParam->getHashArray();

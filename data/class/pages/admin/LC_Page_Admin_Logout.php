@@ -37,7 +37,7 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
     }
@@ -57,7 +57,7 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $this->lfDoLogout();
 
@@ -70,7 +70,7 @@ class LC_Page_Admin_Logout extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfDoLogout()
+    public function lfDoLogout()
     {
         $objSess = new SC_Session_Ex();
         $objSess->logout();

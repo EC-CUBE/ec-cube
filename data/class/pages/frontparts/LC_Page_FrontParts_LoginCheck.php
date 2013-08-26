@@ -39,7 +39,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -50,7 +50,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -61,14 +61,14 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         // 会員管理クラス
         $objCustomer = new SC_Customer_Ex();
         // クッキー管理クラス
@@ -207,10 +207,10 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
     /**
      * パラメーター情報の初期化.
      *
-     * @param SC_FormParam $objFormParam パラメーター管理クラス
+     * @param  SC_FormParam $objFormParam パラメーター管理クラス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('メールアドレス', 'login_email', MTEXT_LEN, 'a', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -227,7 +227,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
      * @return string JSON 形式のエラーメッセージ
      * @see LC_PageError
      */
-    function lfGetErrorMessage($error)
+    public function lfGetErrorMessage($error)
     {
         switch ($error) {
             case TEMP_LOGIN_ERROR:

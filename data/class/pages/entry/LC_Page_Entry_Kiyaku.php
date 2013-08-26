@@ -37,7 +37,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_title = 'ご利用規約';
@@ -48,7 +48,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -60,14 +60,14 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         SC_Helper_Purchase_Ex::checkSessionPendingOrder();
         SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
         SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
-		
+
         $arrKiyaku = $this->lfGetKiyakuData();
         $this->max = count($arrKiyaku);
 
@@ -88,7 +88,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      * @access public
      * @return string 規約の内容をテキストエリアで表示するように整形したデータ
      */
-    function lfMakeKiyakuText($arrKiyaku, $max, $offset)
+    public function lfMakeKiyakuText($arrKiyaku, $max, $offset)
     {
         $this->tpl_kiyaku_text = '';
         for ($i = 0; $i < $max; $i++) {
@@ -106,7 +106,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      * @access private
      * @return array $arrKiyaku 規約の配列
      */
-    function lfGetKiyakuData()
+    public function lfGetKiyakuData()
     {
         $objKiyaku = new SC_Helper_Kiyaku_Ex();
         $arrKiyaku = $objKiyaku->getList();
@@ -122,7 +122,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      * @access private
      * @return int
      */
-    function lfSetOffset($offset)
+    public function lfSetOffset($offset)
     {
         return is_numeric($offset) === true ? intval($offset) : 1;
     }

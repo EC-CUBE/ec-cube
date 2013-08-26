@@ -26,9 +26,9 @@
  */
 class SC_CustomerList extends SC_SelectSql_Ex
 {
-    var $arrColumnCSV;
+    public $arrColumnCSV;
 
-    function __construct($array, $mode = '')
+    public function __construct($array, $mode = '')
     {
         parent::__construct($array);
 
@@ -308,7 +308,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
             // カテゴリで絞込みが可能の場合
             if ($tmp_where != '') {
                 $this->setWhere(' customer_id IN (SELECT distinct customer_id FROM dtb_order WHERE order_id IN (SELECT distinct order_id FROM dtb_order_detail WHERE product_id IN (SELECT product_id FROM dtb_product_categories WHERE '.$tmp_where.') AND del_flg = 0)) ');
-                $this->arrVal = array_merge((array)$this->arrVal, (array)$tmp_arrval);
+                $this->arrVal = array_merge((array) $this->arrVal, (array) $tmp_arrval);
             }
         }
 
@@ -325,14 +325,14 @@ class SC_CustomerList extends SC_SelectSql_Ex
     }
 
     // 検索用SQL
-    function getList()
+    public function getList()
     {
         $this->select = 'SELECT customer_id,name01,name02,kana01,kana02,sex,email,email_mobile,tel01,tel02,tel03,pref,status,update_date,mailmaga_flg FROM dtb_customer ';
 
         return $this->getSql(2);
     }
 
-    function getListMailMagazine($is_mobile = false)
+    public function getListMailMagazine($is_mobile = false)
     {
         $colomn = $this->getMailMagazineColumn($is_mobile);
         $this->select = "
@@ -345,7 +345,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
     }
 
     // 検索総数カウント用SQL
-    function getListCount()
+    public function getListCount()
     {
         $this->select = 'SELECT COUNT(customer_id) FROM dtb_customer ';
 
@@ -353,7 +353,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
     }
 
     // CSVダウンロード用SQL
-    function getListCSV($arrColumnCSV)
+    public function getListCSV($arrColumnCSV)
     {
         $this->arrColumnCSV = $arrColumnCSV;
         $i = 0;
@@ -368,7 +368,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         return $this->getSql(2);
     }
 
-    function getWhere()
+    public function getWhere()
     {
         return array(parent::getWhere(), $this->arrVal);
     }

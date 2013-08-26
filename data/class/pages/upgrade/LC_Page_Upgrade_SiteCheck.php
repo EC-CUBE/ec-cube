@@ -37,7 +37,7 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function init()
+    public function init()
     {
     }
 
@@ -46,7 +46,7 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function process($mode)
+    public function process($mode)
     {
         $objLog  = new LC_Upgrade_Helper_LOG;
         $objJson = new LC_Upgrade_Helper_Json;
@@ -57,6 +57,7 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
             $objJson->setError(OSTORE_E_C_INVALID_ACCESS);
             $objJson->display();
             $objLog->error(OSTORE_E_C_INVALID_ACCESS);
+
             return;
         }
 
@@ -77,7 +78,7 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
      * XXX 旧実装が親クラスのデストラクタを呼んでいなかったので、その仕様を維持している。
      * @return void
      */
-    function __destruct()
+    public function __destruct()
     {
     }
 }

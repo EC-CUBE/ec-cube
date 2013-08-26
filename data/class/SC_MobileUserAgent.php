@@ -37,7 +37,7 @@ class SC_MobileUserAgent
      * @return string|false 携帯端末のキャリアを表す文字列を返す。
      *                      携帯端末ではない場合は false を返す。
      */
-    function getCarrier()
+    public function getCarrier()
     {
         $objAgent =& Net_UserAgent_Mobile::singleton();
         if (Net_UserAgent_Mobile::isError($objAgent)) {
@@ -68,7 +68,7 @@ class SC_MobileUserAgent
      *
      * @return string|false 取得したIDを返す。取得できなかった場合は false を返す。
      */
-    function getId()
+    public function getId()
     {
         $objAgent =& Net_UserAgent_Mobile::singleton();
         if (Net_UserAgent_Mobile::isError($objAgent)) {
@@ -88,7 +88,7 @@ class SC_MobileUserAgent
      *
      * @return string 携帯端末のモデルを表す文字列を返す。
      */
-    function getModel()
+    public function getModel()
     {
         $objAgent =& Net_UserAgent_Mobile::singleton();
         if (Net_UserAgent_Mobile::isError($objAgent)) {
@@ -112,19 +112,21 @@ class SC_MobileUserAgent
      *
      * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
      */
-    function isSupported()
+    public function isSupported()
     {
         $objAgent =& Net_UserAgent_Mobile::singleton();
 
         // 携帯端末だと認識されたが、User-Agent の形式が未知の場合
         if (Net_UserAgent_Mobile::isError($objAgent)) {
             GC_Utils_Ex::gfPrintLog($objAgent->toString());
+
             return false;
         }
 
         if ($objAgent->isDoCoMo()) {
             $arrUnsupportedSeries = array('501i', '502i', '209i', '210i');
             $arrUnsupportedModels = array('SH821i', 'N821i', 'P821i ', 'P651ps', 'R691i', 'F671i', 'SH251i', 'SH251iS');
+
             return !in_array($objAgent->getSeries(), $arrUnsupportedSeries) && !in_array($objAgent->getModel(), $arrUnsupportedModels);
         } elseif ($objAgent->isEZweb()) {
             return $objAgent->isWAP2();
@@ -143,7 +145,7 @@ class SC_MobileUserAgent
      *
      * @return boolean サポートしている場合は true、それ以外の場合は false を返す。
      */
-    function isMobile()
+    public function isMobile()
     {
         $objAgent =& Net_UserAgent_Mobile::singleton();
         if (Net_UserAgent_Mobile::isError($objAgent)) {

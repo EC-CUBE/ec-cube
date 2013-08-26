@@ -8,14 +8,14 @@ $GLOBALS[SJIS_widths] = $SJIS_widths;
 class SC_Helper_FPDI extends PDF_Japanese
 {
     /** SJIS 変換を有効とするか */
-    var $enable_conv_sjis = true;
+    public $enable_conv_sjis = true;
 
     /**
      * PDF_Japanese の明朝フォントに加えゴシックフォントを追加定義
      *
      * @return void
      */
-    function AddSJISFont()
+    public function AddSJISFont()
     {
         parent::AddSJISFont();
         $cw = $GLOBALS['SJIS_widths'];
@@ -24,7 +24,7 @@ class SC_Helper_FPDI extends PDF_Japanese
         $this->AddCIDFonts('Gothic', 'KozGoPro-Medium-Acro,MS-PGothic,Osaka', $cw, $c_map, $registry);
     }
 
-    function SJISMultiCell()
+    public function SJISMultiCell()
     {
         $arrArg = func_get_args();
 
@@ -44,7 +44,7 @@ class SC_Helper_FPDI extends PDF_Japanese
      *
      * FIXME: 後の列の高さが大きい場合、表示が乱れる。
      */
-    function FancyTable($header, $data, $w)
+    public function FancyTable($header, $data, $w)
     {
         $base_x = $this->x;
         // Colors, line width and bold font
@@ -94,18 +94,18 @@ class SC_Helper_FPDI extends PDF_Japanese
         $this->x = $base_x;
     }
 
-    function Text($x, $y, $txt)
+    public function Text($x, $y, $txt)
     {
         parent::Text($x, $y, $this->lfConvSjis($txt));
     }
 
-    function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link='')
+    public function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link='')
     {
         parent::Cell($w, $h, $this->lfConvSjis($txt), $border, $ln, $align, $fill, $link);
     }
 
     // 文字コードSJIS変換 -> japanese.phpで使用出来る文字コードはSJIS-winのみ
-    function lfConvSjis($conv_str)
+    public function lfConvSjis($conv_str)
     {
         if ($this->enable_conv_sjis) {
             $conv_str = mb_convert_encoding($conv_str, 'SJIS-win', CHAR_CODE);

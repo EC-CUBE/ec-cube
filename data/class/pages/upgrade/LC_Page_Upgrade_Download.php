@@ -39,7 +39,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -49,7 +49,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @return void
      */
-    function process($mode)
+    public function process($mode)
     {
         $objLog  = new LC_Upgrade_Helper_Log;
         $objLog->start($mode);
@@ -63,6 +63,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->setError(OSTORE_E_C_INVALID_ACCESS);
             $objJson->display();
             $objLog->error(OSTORE_E_C_INVALID_ACCESS);
+
             return;
         }
 
@@ -75,6 +76,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->display();
             $objLog->error(OSTORE_E_C_INVALID_PARAM, $_POST);
             $objLog->log('* post param check error ' . print_r($arrErr, true));
+
             return;
         }
 
@@ -84,6 +86,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->setError(OSTORE_E_C_AUTOUP_DISABLE);
             $objJson->display();
             $objLog->error(OSTORE_E_C_AUTOUP_DISABLE, $_POST);
+
             return;
         }
 
@@ -99,6 +102,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->setError(OSTORE_E_C_NO_KEY);
             $objJson->display();
             $objLog->error(OSTORE_E_C_NO_KEY);
+
             return;
         }
 
@@ -132,6 +136,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->setError(OSTORE_E_C_HTTP_REQ);
             $objJson->display();
             $objLog->error(OSTORE_E_C_HTTP_REQ, $objReq);
+
             return;
         }
 
@@ -141,6 +146,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->setError(OSTORE_E_C_HTTP_RESP);
             $objJson->display();
             $objLog->error(OSTORE_E_C_HTTP_RESP, $objReq);
+
             return;
         }
 
@@ -153,6 +159,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->setError(OSTORE_E_C_FAILED_JSON_PARSE);
             $objJson->display();
             $objLog->error(OSTORE_E_C_FAILED_JSON_PARSE, $objReq);
+
             return;
         }
 
@@ -173,6 +180,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
                 $objJson->setError(OSTORE_E_C_PERMISSION);
                 $objJson->display();
                 $objLog->error(OSTORE_E_C_PERMISSION, $dir . $filename);
+
                 return;
             }
 
@@ -183,6 +191,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
                 $objJson->setError(OSTORE_E_C_PERMISSION);
                 $objJson->display();
                 $objLog->error(OSTORE_E_C_PERMISSION, $exract_dir);
+
                 return;
             }
 
@@ -202,6 +211,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
                 $objLog->error(OSTORE_E_C_BATCH_ERR, $arrCopyLog);
                 $this->registerUpdateLog($arrCopyLog, $objRet->data);
                 $this->updateMdlTable($objRet->data);
+
                 return;
             }
 
@@ -228,16 +238,18 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $objJson->setSUCCESS($productData, 'インストール/アップデートに成功しました。');
             $objJson->display();
             $objLog->end();
+
             return;
         } else {
             // 配信サーバー側でエラーを補足
             echo $body;
             $objLog->error($objRet->errcode, $objReq);
+
             return;
         }
     }
 
-    function initParam()
+    public function initParam()
     {
         $this->objForm = new SC_FormParam_Ex();
         $this->objForm->addParam(
@@ -251,7 +263,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @param object $objRet
      */
-    function updateMdlTable($objRet)
+    public function updateMdlTable($objRet)
     {
         $table = 'dtb_module';
         $where = 'module_id = ?';
@@ -285,7 +297,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      * @param array #arrCookies Cookie配列
      * @return
      */
-    function notifyDownload($mode, $arrCookies)
+    public function notifyDownload($mode, $arrCookies)
     {
         $arrPOSTParams = array(
             'eccube_url' => HTTP_URL
@@ -300,7 +312,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      *
      * @return boolean
      */
-    function isValidAccess($mode)
+    public function isValidAccess($mode)
     {
         $objLog = new LC_Upgrade_Helper_Log;
         switch ($mode) {
@@ -308,6 +320,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
         case 'download':
             if ($this->isLoggedInAdminPage() === true) {
                 $objLog->log('* admin login ok');
+
                 return true;
             }
             break;
@@ -324,6 +337,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $arrErr = $objForm->checkError();
             if ($arrErr) {
                 $objLog->log('* invalid param ' . print_r($arrErr, true));
+
                 return false;
             }
 
@@ -331,6 +345,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $public_key = $this->getPublicKey();
             if (empty($public_key)) {
                 $objLog->log('* public_key not found');
+
                 return false;
             }
 
@@ -341,18 +356,20 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             if ($this->isValidIP()
             && $public_key_sha1 === sha1($public_key . $sha1_key)) {
                 $objLog->log('* auto update login ok');
+
                 return true;
             }
             break;
         default:
             $objLog->log('* mode invalid ' . $mode);
+
             return false;
         }
 
         return false;
     }
 
-    function registerUpdateLog($arrLog, $objRet)
+    public function registerUpdateLog($arrLog, $objRet)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrInsert = array(
@@ -375,7 +392,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
      * 他の変数・関数とかぶらないよう、
      * LC_Update_Updater::execute()で処理を実行する.
      */
-    function fileExecute($productCode)
+    public function fileExecute($productCode)
     {
         $file = DATA_REALDIR . 'downloads/update/' . $productCode . '_update.php';
         if (file_exists($file)) {

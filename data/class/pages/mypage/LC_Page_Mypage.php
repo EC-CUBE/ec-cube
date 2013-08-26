@@ -33,14 +33,14 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
 class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex
 {
     /** ページナンバー */
-    var $tpl_pageno;
+    public $tpl_pageno;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mypageno = 'index';
@@ -60,7 +60,7 @@ class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -70,14 +70,14 @@ class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         $objCustomer = new SC_Customer_Ex();
         $customer_id = $objCustomer->getValue('customer_id');
 
@@ -113,11 +113,11 @@ class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex
      * 受注履歴を返す
      *
      * @param mixed $customer_id
-     * @param mixed $startno 0以上の場合は受注履歴を返却する -1の場合は件数を返す
+     * @param mixed $startno     0以上の場合は受注履歴を返却する -1の場合は件数を返す
      * @access private
      * @return void
      */
-    function lfGetOrderHistory($customer_id, $startno = -1)
+    public function lfGetOrderHistory($customer_id, $startno = -1)
     {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
 

@@ -37,7 +37,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -58,7 +58,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      * Page のAction
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = $this->lfInitParam($_REQUEST);
 
@@ -76,9 +76,9 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
     }
 
     /* カテゴリIDの正当性チェック */
-    function lfCheckCategoryId($category_id)
+    public function lfCheckCategoryId($category_id)
     {
-        if ($category_id && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array)$category_id, 'del_flg = 0')) {
+        if ($category_id && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')) {
             return 0;
         }
 
@@ -89,11 +89,11 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      * 選択されたカテゴリとその子カテゴリの情報を取得し、
      * ページオブジェクトに格納する。
      *
-     * @param string $category_id カテゴリID
-     * @param boolean $count_check 有効な商品がないカテゴリを除くかどうか
+     * @param  string  $category_id カテゴリID
+     * @param  boolean $count_check 有効な商品がないカテゴリを除くかどうか
      * @return void
      */
-    function lfGetCategories($category_id, $count_check = false)
+    public function lfGetCategories($category_id, $count_check = false)
     {
         $arrCategory = null;    // 選択されたカテゴリ
         $arrChildren = array(); // 子カテゴリ
@@ -142,7 +142,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
      *
      * @return object
      */
-    function lfInitParam($arrRequest)
+    public function lfInitParam($arrRequest)
     {
         $objFormParam = new SC_FormParam_Ex();
         $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));

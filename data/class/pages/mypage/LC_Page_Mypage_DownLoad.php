@@ -32,15 +32,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 class LC_Page_Mypage_DownLoad extends LC_Page_Ex
 {
     /** フォームパラメーターの配列 */
-    var $objFormParam;
+    public $objFormParam;
 
     /** 基本Content-Type */
-    var $defaultContentType = 'Application/octet-stream';
+    public $defaultContentType = 'Application/octet-stream';
 
     /** 拡張Content-Type配列
      * Application/octet-streamで対応出来ないファイルタイプのみ拡張子をキーに記述する
      * 拡張子が本配列に存在しない場合は $defaultContentTypeを利用する */
-    var $arrContentType = array('apk' => 'application/vnd.android.package-archive',
+    public $arrContentType = array('apk' => 'application/vnd.android.package-archive',
                                 'pdf' => 'application/pdf'
         );
 
@@ -49,7 +49,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -61,7 +61,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         ob_end_clean();
         parent::process();
@@ -74,7 +74,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // ログインチェック
         $objCustomer = new SC_Customer_Ex();
@@ -101,7 +101,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
      * todo たいした処理でないのに異常に処理が重い
      * @return void
      */
-    function sendResponse()
+    public function sendResponse()
     {
         // TODO sendResponseをオーバーライドしている為、afterフックポイントが実行されない.直接実行する.(#1790)
         $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
@@ -156,13 +156,13 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
     /**
      * 商品情報の読み込みを行う.
      *
-     * @param integer $customer_id 会員ID
-     * @param integer $order_id 受注ID
-     * @param integer $product_id 商品ID
-     * @param integer $product_class_id 商品規格ID
-     * @return array 商品情報の配列
+     * @param  integer $customer_id      会員ID
+     * @param  integer $order_id         受注ID
+     * @param  integer $product_id       商品ID
+     * @param  integer $product_class_id 商品規格ID
+     * @return array   商品情報の配列
      */
-    function lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id)
+    public function lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = <<< __EOS__
@@ -194,7 +194,7 @@ __EOS__;
     }
 
     /* パラメーター情報の初期化 */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('customer_id', 'customer_id', INT_LEN, 'n', array('EXIST_CHECK','NUM_CHECK'));
         $objFormParam->addParam('order_id', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
@@ -203,7 +203,7 @@ __EOS__;
     }
 
     /* 入力内容のチェック */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
@@ -214,10 +214,10 @@ __EOS__;
     /**
      * モバイル端末用ヘッダー出力処理
      *
-     * @param string $realpath ダウンロードファイルパス
+     * @param string $realpath       ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileHeader($realpath,$sdown_filename)
+    public function lfMobileHeader($realpath,$sdown_filename)
     {
         $objHelperMobile = new SC_Helper_Mobile_Ex();
         //ファイルの拡張子からコンテンツタイプを取得する
@@ -232,10 +232,10 @@ __EOS__;
     /**
      * モバイル端末（AU）ダウンロード処理
      *
-     * @param string $realpath ダウンロードファイルパス
+     * @param string $realpath       ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileAuDownload($realpath,$sdown_filename)
+    public function lfMobileAuDownload($realpath,$sdown_filename)
     {
         //モバイル用ヘッダー出力
         $this->lfMobileHeader($realpath,$sdown_filename);
@@ -264,10 +264,10 @@ __EOS__;
     /**
      * モバイル端末（AU以外）ダウンロード処理
      *
-     * @param string $realpath ダウンロードファイルパス
+     * @param string $realpath       ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfMobileDownload($realpath,$sdown_filename)
+    public function lfMobileDownload($realpath,$sdown_filename)
     {
         //モバイル用ヘッダー出力
         $this->lfMobileHeader($realpath,$sdown_filename);
@@ -323,10 +323,10 @@ __EOS__;
     /**
      * モバイル端末以外ダウンロード処理
      *
-     * @param string $realpath ダウンロードファイルパス
+     * @param string $realpath       ダウンロードファイルパス
      * @param string $sdown_filename ダウンロード時の指定ファイル名
      */
-    function lfDownload($realpath,$sdown_filename)
+    public function lfDownload($realpath,$sdown_filename)
     {
         // 拡張子を取得
         $extension = pathinfo($realpath, PATHINFO_EXTENSION);

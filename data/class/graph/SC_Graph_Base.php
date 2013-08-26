@@ -132,54 +132,54 @@ define('LEGEND_RIGHT', 10);
  */
 class SC_Graph_Base
 {
-    var $arrRGB;
-    var $arrColor;
-    var $arrDarkColor;
-    var $image;
-    var $left;
-    var $top;
-    var $shade_color;
-    var $flame_color;
-    var $shade_on;
-    var $text_color;
-    var $labelbg_color;
-    var $bgw;
-    var $bgh;
-    var $clabelbg_color;
-    var $title_color;
-    var $text_top;
-    var $mark_color;
-    var $arrLegend;
+    public $arrRGB;
+    public $arrColor;
+    public $arrDarkColor;
+    public $image;
+    public $left;
+    public $top;
+    public $shade_color;
+    public $flame_color;
+    public $shade_on;
+    public $text_color;
+    public $labelbg_color;
+    public $bgw;
+    public $bgh;
+    public $clabelbg_color;
+    public $title_color;
+    public $text_top;
+    public $mark_color;
+    public $arrLegend;
 
     /** グラフ背景 */
-    var $ARR_GRAPH_RGB;
+    public $ARR_GRAPH_RGB;
 
     /** 背景色 */
-    var $ARR_BG_COLOR;
+    public $ARR_BG_COLOR;
 
     /** 影の色 */
-    var $ARR_SHADE_COLOR;
+    public $ARR_SHADE_COLOR;
 
     /** 縁の色 */
-    var $ARR_FLAME_COLOR;
+    public $ARR_FLAME_COLOR;
 
     /** 文字色 */
-    var $ARR_TEXT_COLOR;
+    public $ARR_TEXT_COLOR;
 
     /** ラベル背景 */
-    var $ARR_LABELBG_COLOR;
+    public $ARR_LABELBG_COLOR;
 
     /** 凡例背景 */
-    var $ARR_LEGENDBG_COLOR;
+    public $ARR_LEGENDBG_COLOR;
 
     /** タイトル文字色 */
-    var $ARR_TITLE_COLOR;
+    public $ARR_TITLE_COLOR;
 
     /** グリッド線色 */
-    var $ARR_GRID_COLOR;
+    public $ARR_GRID_COLOR;
 
     // コンストラクタ
-    function __construct($bgw, $bgh, $left, $top)
+    public function __construct($bgw, $bgh, $left, $top)
     {
         $this->init();
         // 画像作成
@@ -209,7 +209,7 @@ class SC_Graph_Base
     }
 
     // リサンプル(画像を滑らかに縮小する)
-    function resampled()
+    public function resampled()
     {
         $new_width = $this->bgw * 0.8;
         $new_height = $this->bgh * 0.8;
@@ -220,7 +220,7 @@ class SC_Graph_Base
     }
 
     // オブジェクトカラーの設定
-    function setColorList($arrRGB)
+    public function setColorList($arrRGB)
     {
         $this->arrRGB = $arrRGB;
         $count = count($this->arrRGB);
@@ -235,13 +235,13 @@ class SC_Graph_Base
     }
 
     // 影のありなし
-    function setShadeOn($shade_on)
+    public function setShadeOn($shade_on)
     {
         $this->shade_on = $shade_on;
     }
 
     // 画像を出力する
-    function outputGraph($header = true, $filename = '')
+    public function outputGraph($header = true, $filename = '')
     {
         if ($header) {
             header('Content-type: image/png');
@@ -257,7 +257,7 @@ class SC_Graph_Base
     }
 
     // 描画時のテキスト幅を求める
-    function getTextWidth($text, $font_size)
+    public function getTextWidth($text, $font_size)
     {
         $text_len = strlen($text);
         $ret = $font_size * $text_len * TEXT_RATE;
@@ -267,11 +267,12 @@ class SC_Graph_Base
             $arrPos = imagettfbbox($font_size, 0, FONT_REALFILE, $text);
             $ret = $arrPos[2] - $arrPos[0];
         */
+
         return $ret;
     }
 
     // テキストを出力する
-    function setText($font_size, $left, $top, $text, $color = NULL, $angle = 0, $labelbg = false)
+    public function setText($font_size, $left, $top, $text, $color = NULL, $angle = 0, $labelbg = false)
     {
         // 時計回りに角度を変更
         $angle = -$angle;
@@ -304,7 +305,7 @@ class SC_Graph_Base
     }
 
     // タイトルを出力する
-    function drawTitle($text, $font_size = TITLE_FONT_SIZE)
+    public function drawTitle($text, $font_size = TITLE_FONT_SIZE)
     {
         // 出力位置の算出
         $text_width = $this->getTextWidth($text, $font_size);
@@ -314,7 +315,7 @@ class SC_Graph_Base
     }
 
     // ログを出力する
-    function debugPrint($text)
+    public function debugPrint($text)
     {
         $text = mb_convert_encoding($text, 'UTF-8', CHAR_CODE);
         if (!isset($this->text_top)) {
@@ -326,7 +327,7 @@ class SC_Graph_Base
     }
 
     // カラーラベルを描画
-    function drawLegend($legend_max = '', $clabelbg = true)
+    public function drawLegend($legend_max = '', $clabelbg = true)
     {
         // 凡例が登録されていなければ中止
         if (count($this->arrLegend) <= 0) {
@@ -376,7 +377,7 @@ class SC_Graph_Base
     }
 
     // カラーラベル背景の描画
-    function drawClabelBG($left, $top, $right, $bottom)
+    public function drawClabelBG($left, $top, $right, $bottom)
     {
         // 影の描画
         if ($this->shade_on) {
@@ -388,9 +389,9 @@ class SC_Graph_Base
     }
 
     // 凡例をセットする
-    function setLegend($arrLegend)
+    public function setLegend($arrLegend)
     {
-        $this->arrLegend = array_values((array)$arrLegend);
+        $this->arrLegend = array_values((array) $arrLegend);
     }
 
     /**
@@ -401,7 +402,7 @@ class SC_Graph_Base
      * @access protected
      * @return void
      */
-    function init()
+    public function init()
     {
         // 凡例背景
         $this->ARR_LEGENDBG_COLOR = array(245,245,245);
@@ -438,13 +439,13 @@ class SC_Graph_Base
     /**
      * 円の中心点と直径から弧の終端座標を算出する.
      *
-     * @param integer $cx 中心点X座標
-     * @param integer $cy 中心点Y座標
-     * @param integer $r 半径
-     * @param integer $e 角度
-     * @return array 円の中心点と直径から弧の終端座標の配列
+     * @param  integer $cx 中心点X座標
+     * @param  integer $cy 中心点Y座標
+     * @param  integer $r  半径
+     * @param  integer $e  角度
+     * @return array   円の中心点と直径から弧の終端座標の配列
      */
-    function lfGetArcPos($cx, $cy, $cw, $ch, $e)
+    public function lfGetArcPos($cx, $cy, $cw, $ch, $e)
     {
         // 三角関数用の角度を求める
         $s = 90 - $e;
@@ -457,7 +458,7 @@ class SC_Graph_Base
     }
 
     /** 画像にテキストを描画する */
-    function lfImageText($dst_image, $text, $font_size, $left, $top, $font, $arrRGB)
+    public function lfImageText($dst_image, $text, $font_size, $left, $top, $font, $arrRGB)
     {
         $color = ImageColorAllocate($dst_image, $arrRGB[0], $arrRGB[1], $arrRGB[2]);
         $text = mb_convert_encoding($text, 'UTF-8', CHAR_CODE);
@@ -468,7 +469,7 @@ class SC_Graph_Base
     }
 
     /** 表示色の取得 */
-    function lfGetImageColor($image, $array)
+    public function lfGetImageColor($image, $array)
     {
         if (count($array) != 3) {
             return NULL;
@@ -479,7 +480,7 @@ class SC_Graph_Base
     }
 
     /** 影用表示色の取得 */
-    function lfGetImageDarkColor($image, $array)
+    public function lfGetImageDarkColor($image, $array)
     {
         if (count($array) != 3) {
             return NULL;

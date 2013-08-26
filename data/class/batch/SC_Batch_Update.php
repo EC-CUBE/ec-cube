@@ -35,20 +35,20 @@ class SC_Batch_Update extends SC_Batch
     /**
      * 変換したいファイルの拡張子をカンマ区切りで羅列.
      */
-    var $includes = 'php,inc,tpl,css,sql,js,png,jpg,gif,swf,txt,doc,pdf';
+    public $includes = 'php,inc,tpl,css,sql,js,png,jpg,gif,swf,txt,doc,pdf';
 
     /**
      * 除外するファイル名をカンマ区切りで羅列.
      */
-    var $excludes = 'distinfo.php';
+    public $excludes = 'distinfo.php';
 
     /**
      * バッチ処理を実行する.
      *
-     * @param string $target アップデータファイルのディレクトリパス
+     * @param  string $target アップデータファイルのディレクトリパス
      * @return void
      */
-    function execute($target = '.')
+    public function execute($target = '.')
     {
         $msg = '';
         $oldMask = umask(0);
@@ -67,6 +67,7 @@ class SC_Batch_Update extends SC_Batch
             $msg = 'バックアップディレクトリの作成に失敗しました';
             $arrLog['err'][] = $msg;
             $this->printLog($msg);
+
             return $arrLog;
         }
 
@@ -195,7 +196,7 @@ class SC_Batch_Update extends SC_Batch
      * @return array $dir より下層に存在するパス名の配列
      * @see http://www.php.net/glob
      */
-    function listdirs($dir)
+    public function listdirs($dir)
     {
         static $alldirs = array();
         $dirs = glob($dir . '/*');
@@ -214,7 +215,7 @@ class SC_Batch_Update extends SC_Batch
      *
      * @param string $path 絶対パス
      */
-    function lfMkdirRecursive($path)
+    public function lfMkdirRecursive($path)
     {
         $path = dirname($path);
 
@@ -238,7 +239,7 @@ class SC_Batch_Update extends SC_Batch
         }
     }
 
-    function makeDistInfo($bkupDistInfoArray)
+    public function makeDistInfo($bkupDistInfoArray)
     {
         $src = "<?php\n"
              . '$distifo = array(' . "\n";
@@ -251,7 +252,7 @@ class SC_Batch_Update extends SC_Batch
         return $src;
     }
 
-    function printLog($msg)
+    public function printLog($msg)
     {
         GC_Utils_Ex::gfPrintLog($msg, DATA_REALDIR . 'logs/ownersstore_batch_update.log');
     }

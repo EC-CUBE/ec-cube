@@ -37,7 +37,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'design/bloc.tpl';
@@ -56,7 +56,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -67,7 +67,7 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -144,10 +144,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param object $objFormParam SC_FormParamインスタンス
+     * @param  object $objFormParam SC_FormParamインスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('ブロックID', 'bloc_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -159,11 +159,11 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
     /**
      * ブロックのテンプレートを取得する.
      *
-     * @param integer $bloc_id ブロックID
-     * @param SC_Helper_Bloc_Ex $objBloc SC_Helper_Bloc_Ex インスタンス
-     * @return array ブロック情報の配列
+     * @param  integer           $bloc_id ブロックID
+     * @param  SC_Helper_Bloc_Ex $objBloc SC_Helper_Bloc_Ex インスタンス
+     * @return array             ブロック情報の配列
      */
-    function getBlocTemplate($bloc_id, SC_Helper_Bloc_Ex &$objBloc)
+    public function getBlocTemplate($bloc_id, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrBloc = $objBloc->getBloc($bloc_id);
 
@@ -176,12 +176,12 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
      * ファイルの作成に失敗した場合は, エラーメッセージを出力し,
      * データベースをロールバックする.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param SC_Helper_Bloc $objBloc SC_Helper_Bloc インスタンス
+     * @param  SC_FormParam    $objFormParam SC_FormParam インスタンス
+     * @param  SC_Helper_Bloc  $objBloc      SC_Helper_Bloc インスタンス
      * @return integer|boolean 登録が成功した場合, 登録したブロックID;
      *                         失敗した場合 false
      */
-    function doRegister(&$objFormParam, SC_Helper_Bloc_Ex &$objBloc)
+    public function doRegister(&$objFormParam, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrParams = $objFormParam->getHashArray();
         $result = $objBloc->save($arrParams);
@@ -196,11 +196,11 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
     /**
      * 削除を実行する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param SC_Helper_Bloc $objBloc SC_Helper_Bloc インスタンス
-     * @return boolean 登録が成功した場合 true; 失敗した場合 false
+     * @param  SC_FormParam   $objFormParam SC_FormParam インスタンス
+     * @param  SC_Helper_Bloc $objBloc      SC_Helper_Bloc インスタンス
+     * @return boolean        登録が成功した場合 true; 失敗した場合 false
      */
-    function doDelete(&$objFormParam, SC_Helper_Bloc_Ex &$objBloc)
+    public function doDelete(&$objFormParam, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrParams = $objFormParam->getHashArray();
         $result = $objBloc->delete($arrParams['bloc_id']);
@@ -215,10 +215,10 @@ class LC_Page_Admin_Design_Bloc extends LC_Page_Admin_Ex
     /**
      * エラーチェックを行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array エラーメッセージの配列
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam, &$arrErr, SC_Helper_Bloc_Ex &$objBloc)
+    public function lfCheckError(&$objFormParam, &$arrErr, SC_Helper_Bloc_Ex &$objBloc)
     {
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);

@@ -32,7 +32,7 @@ class SC_Helper_Bloc
 {
     private $device_type_id = NULL;
 
-    function __construct($devide_type_id = DEVICE_TYPE_PC)
+    public function __construct($devide_type_id = DEVICE_TYPE_PC)
     {
         $this->device_type_id = $devide_type_id;
     }
@@ -40,7 +40,7 @@ class SC_Helper_Bloc
     /**
      * ブロックの情報を取得.
      *
-     * @param integer $bloc_id ブロックID
+     * @param  integer $bloc_id ブロックID
      * @return array
      */
     public function getBloc($bloc_id)
@@ -81,7 +81,7 @@ class SC_Helper_Bloc
      * where句で条件を指定してブロック一覧を取得.
      *
      * @param string $where
-     * @param array $sqlval
+     * @param array  $sqlval
      */
     public function getWhere($where = '', $sqlval = array())
     {
@@ -98,7 +98,7 @@ class SC_Helper_Bloc
     /**
      * ブロックの登録.
      *
-     * @param array $sqlval
+     * @param  array    $sqlval
      * @return multiple 登録成功:ブロックID, 失敗:FALSE
      */
     public function save($sqlval)
@@ -142,6 +142,7 @@ class SC_Helper_Bloc
         $bloc_path = $bloc_dir . $arrValues['tpl_path'];
         if (!SC_Helper_FileManager_Ex::sfWriteFile($bloc_path, $sqlval['bloc_html'])) {
             $objQuery->rollback();
+
             return false;
         }
 
@@ -153,7 +154,7 @@ class SC_Helper_Bloc
     /**
      * ブロックの削除.
      *
-     * @param integer $bloc_id
+     * @param  integer $bloc_id
      * @return boolean
      */
     public function delete($bloc_id)
@@ -184,6 +185,7 @@ class SC_Helper_Bloc
 
         if ($is_error) {
             $objQuery->rollback();
+
             return false;
         }
         $objQuery->commit();

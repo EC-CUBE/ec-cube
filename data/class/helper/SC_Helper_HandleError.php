@@ -36,7 +36,7 @@ class SC_Helper_HandleError
      *
      * @return void
      */
-    static function load()
+    public static function load()
     {
         // E_DEPRECATED 定数 (for PHP < 5.3)
         // TODO バージョン互換処理に統合したい。
@@ -75,14 +75,14 @@ class SC_Helper_HandleError
      * E_WARNING, E_USER_WARNING が発生した場合、ログを記録して、true を返す。
      * (エラー画面・エラー文言は表示させない。)
      *
-     * @param integer $errno エラーコード
-     * @param string $errstr エラーメッセージ
-     * @param string $errfile エラーが発生したファイル名
-     * @param integer $errline エラーが発生した行番号
+     * @param  integer      $errno   エラーコード
+     * @param  string       $errstr  エラーメッセージ
+     * @param  string       $errfile エラーが発生したファイル名
+     * @param  integer      $errline エラーが発生した行番号
      * @return void|boolean E_USER_ERROR が発生した場合は, エラーページへリダイレクト;
      *                      E_WARNING, E_USER_WARNING が発生した場合、true を返す
      */
-    static function handle_warning($errno, $errstr, $errfile, $errline)
+    public static function handle_warning($errno, $errstr, $errfile, $errline)
     {
         // error_reporting 設定に含まれていないエラーコードは処理しない
         if (!(error_reporting() & $errno)) {
@@ -106,6 +106,7 @@ class SC_Helper_HandleError
             case E_COMPILE_WARNING:
                 $message = "Warning($error_type_name): $errstr on [$errfile($errline)]";
                 GC_Utils_Ex::gfPrintLog($message, ERROR_LOG_REALFILE);
+
                 return true;
 
             default:
@@ -122,7 +123,7 @@ class SC_Helper_HandleError
      * この関数が実行され, エラーが捕捉されると, DEBUG_MODE が無効な場合,
      * エラーページへリダイレクトする.
      *
-     * @param string $buffer 出力バッファリングの内容
+     * @param  string      $buffer 出力バッファリングの内容
      * @return string|void エラーが捕捉された場合は, エラーページへリダイレクトする;
      *                     エラーが捕捉されない場合は, 出力バッファリングの内容を返す
      */
@@ -152,7 +153,7 @@ class SC_Helper_HandleError
      *
      * @return void
      */
-    static function handle_error()
+    public static function handle_error()
     {
         // 最後のエラーを確実に捉えるため、先頭で呼び出す。
         $arrError = error_get_last();
@@ -187,10 +188,10 @@ class SC_Helper_HandleError
     /**
      * エラー画面を表示する
      *
-     * @param string|null $errstr エラーメッセージ
+     * @param  string|null $errstr エラーメッセージ
      * @return void
      */
-    static function displaySystemError($errstr = null)
+    public static function displaySystemError($errstr = null)
     {
         ob_clean();
 

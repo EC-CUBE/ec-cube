@@ -35,7 +35,7 @@
 class SC_Utils
 {
     // インストール初期処理
-    function sfInitInstall()
+    public function sfInitInstall()
     {
         // インストール済みが定義されていない。
         if (!defined('ECCUBE_INSTALL')) {
@@ -61,10 +61,10 @@ class SC_Utils
      * インストーラのパスが見つかった場合は, その URL を返す.
      * DocumentRoot まで検索しても見つからない場合は /install/index.php を返す.
      *
-     * @param string $path 検索対象のパス
+     * @param  string $path 検索対象のパス
      * @return string インストーラの URL
      */
-    function searchInstallerPath($path)
+    public function searchInstallerPath($path)
     {
         $installer = 'install/' . DIR_INDEX_PATH;
 
@@ -100,10 +100,10 @@ class SC_Utils
      * ↓
      * http://www.example.jp/index.php
      *
-     * @param string $url http(s):// から始まる URL
+     * @param  string $url http(s):// から始まる URL
      * @return string $url を絶対パスに変換した URL
      */
-    function getRealURL($url)
+    public function getRealURL($url)
     {
         $parse = parse_url($url);
         $tmp = explode('/', $parse['path']);
@@ -124,7 +124,7 @@ class SC_Utils
     }
 
     // 装飾付きエラーメッセージの表示
-    function sfErrorHeader($mess, $print = false)
+    public function sfErrorHeader($mess, $print = false)
     {
         global $GLOBAL_ERR;
         $GLOBAL_ERR.= '<div id="errorHeader">';
@@ -136,7 +136,7 @@ class SC_Utils
     }
 
     /* エラーページの表示 */
-    function sfDispError($type)
+    public function sfDispError($type)
     {
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_DispError_Ex.php';
 
@@ -148,7 +148,7 @@ class SC_Utils
     }
 
     /* サイトエラーページの表示 */
-    function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '')
+    public function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '')
     {
         require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_Ex.php';
 
@@ -168,14 +168,14 @@ class SC_Utils
      *
      * @deprecated 2.12.0 trigger_error($debugMsg, E_USER_ERROR) を使用すること
      */
-    function sfDispException($debugMsg = null)
+    public function sfDispException($debugMsg = null)
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         trigger_error($debugMsg, E_USER_ERROR);
     }
 
     /* 認証の可否判定 */
-    function sfIsSuccess($objSess, $disp_error = true)
+    public function sfIsSuccess($objSess, $disp_error = true)
     {
         $ret = $objSess->IsSuccess();
         if ($ret != SUCCESS) {
@@ -183,6 +183,7 @@ class SC_Utils
                 // エラーページの表示
                 SC_Utils_Ex::sfDispError($ret);
             }
+
             return false;
         }
         // リファラーチェック(CSRFの暫定的な対策)
@@ -209,10 +210,10 @@ class SC_Utils
     /**
      * 文字列をアスタリスクへ変換する.
      *
-     * @param string $passlen 変換する文字列
+     * @param  string $passlen 変換する文字列
      * @return string アスタリスクへ変換した文字列
      */
-    function sfPassLen($passlen)
+    public function sfPassLen($passlen)
     {
         $ret = '';
         for ($i=0;$i<$passlen;true) {
@@ -228,7 +229,7 @@ class SC_Utils
      *
      * @return bool
      */
-    function sfIsHTTPS()
+    public function sfIsHTTPS()
     {
         // HTTPS時には$_SERVER['HTTPS']には空でない値が入る
         // $_SERVER['HTTPS'] != 'off' はIIS用
@@ -245,7 +246,7 @@ class SC_Utils
      *  @param  obj  SC_Session, SC_SiteSession
      *  @return bool
      */
-    function sfIsValidTransition($objSess)
+    public function sfIsValidTransition($objSess)
     {
         // 前画面からPOSTされるuniqidが正しいものかどうかをチェック
         $uniqid = $objSess->getUniqId();
@@ -257,7 +258,7 @@ class SC_Utils
     }
 
     /* DB用日付文字列取得 */
-    function sfGetTimestamp($year, $month, $day, $last = false)
+    public function sfGetTimestamp($year, $month, $day, $last = false)
     {
         if ($year != '' && $month != '' && $day != '') {
             if ($last) {
@@ -274,7 +275,7 @@ class SC_Utils
     }
 
     /* DB用日付日時文字列取得 */
-    function sfGetTimestampistime($year, $month, $day, $hour, $minutes, $last = false)
+    public function sfGetTimestampistime($year, $month, $day, $hour, $minutes, $last = false)
     {
         if ($year != '' && $month != '' && $day != '' && $hour != '' && $minutes != '') {
             if ($last) {
@@ -299,7 +300,7 @@ class SC_Utils
      *  @return bool
      */
     //
-    function sfIsInt($value)
+    public function sfIsInt($value)
     {
         if (strlen($value) >= 1 && strlen($value) <= INT_LEN && is_numeric($value)) {
             return true;
@@ -311,18 +312,19 @@ class SC_Utils
     /*
      * 桁が0で埋められているかを判定する
      *
-     * @param string $value 検査対象
+     * @param  string  $value 検査対象
      * @return boolean 0で埋められている
      */
-    function sfIsZeroFilling($value)
+    public function sfIsZeroFilling($value)
     {
         if (strlen($value) > 1 && $value{0} === '0')
+
             return true;
 
         return false;
     }
 
-    function sfGetCSVData($data, $prefix = '')
+    public function sfGetCSVData($data, $prefix = '')
     {
         if ($prefix == '') {
             $dir_name = SC_Utils_Ex::sfUpDirName();
@@ -336,11 +338,12 @@ class SC_Utils
         }
 
         /* データを出力 */
+
         return array($file_name, $data);
     }
 
     /* 1階層上のディレクトリ名を取得する */
-    function sfUpDirName()
+    public function sfUpDirName()
     {
         $path = $_SERVER['SCRIPT_NAME'];
         $arrVal = explode('/', $path);
@@ -353,7 +356,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeCBValue($keyname, $max)
+    public function sfMergeCBValue($keyname, $max)
     {
         $conv = '';
         $cnt = 1;
@@ -372,7 +375,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeCheckBoxes($array, $max)
+    public function sfMergeCheckBoxes($array, $max)
     {
         $ret = '';
         $arrTmp = array();
@@ -396,7 +399,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeParamCheckBoxes($array)
+    public function sfMergeParamCheckBoxes($array)
     {
         $ret = '';
         if (is_array($array)) {
@@ -418,7 +421,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfSearchCheckBoxes($array)
+    public function sfSearchCheckBoxes($array)
     {
         $max = max($array);
         $ret = '';
@@ -436,7 +439,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfSplitCheckBoxes($val)
+    public function sfSplitCheckBoxes($val)
     {
         $arrRet = array();
         $len = strlen($val);
@@ -453,7 +456,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfMergeCBSearchValue($keyname, $max)
+    public function sfMergeCBSearchValue($keyname, $max)
     {
         $conv = '';
         $cnt = 1;
@@ -472,7 +475,7 @@ class SC_Utils
     /**
      * @deprecated
      */
-    function sfSplitCBValue($val, $keyname = '')
+    public function sfSplitCBValue($val, $keyname = '')
     {
         $arr = array();
         $len = strlen($val);
@@ -490,7 +493,7 @@ class SC_Utils
     }
 
     // キーと値をセットした配列を取得
-    function sfArrKeyValue($arrList, $keyname, $valname, $len_max = '', $keysize = '')
+    public function sfArrKeyValue($arrList, $keyname, $valname, $len_max = '', $keysize = '')
     {
         $arrRet = array();
         $max = count($arrList);
@@ -517,7 +520,7 @@ class SC_Utils
     }
 
     // キーと値をセットした配列を取得(値が複数の場合)
-    function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = '')
+    public function sfArrKeyValues($arrList, $keyname, $valname, $len_max = '', $keysize = '', $connect = '')
     {
         $max = count($arrList);
 
@@ -545,7 +548,7 @@ class SC_Utils
     }
 
     // 配列の値をカンマ区切りで返す。
-    function sfGetCommaList($array, $space=true, $arrPop = array())
+    public function sfGetCommaList($array, $space=true, $arrPop = array())
     {
         if (count($array) > 0) {
             $line = '';
@@ -563,6 +566,7 @@ class SC_Utils
             } else {
                 $line = preg_replace("/,$/", '', $line);
             }
+
             return $line;
         } else {
             return false;
@@ -571,7 +575,7 @@ class SC_Utils
     }
 
     /* 配列の要素をCSVフォーマットで出力する。*/
-    function sfGetCSVList($array)
+    public function sfGetCSVList($array)
     {
         $line = '';
         if (count($array) > 0) {
@@ -596,7 +600,7 @@ class SC_Utils
     /*            ２．終了年月日 (YYYY/MM/DD 235959)
     /*            ３．エラー (0 = OK, 1 = NG)
     /*-----------------------------------------------------------------*/
-    function sfCheckSetTerm($start_year, $start_month, $start_day, $end_year, $end_month, $end_day)
+    public function sfCheckSetTerm($start_year, $start_month, $start_day, $end_year, $end_month, $end_day)
     {
         // 期間指定
         $error = 0;
@@ -620,13 +624,13 @@ class SC_Utils
     }
 
     // エラー箇所の背景色を変更するためのfunction SC_Viewで読み込む
-    function sfSetErrorStyle()
+    public function sfSetErrorStyle()
     {
         return 'style="background-color:'.ERR_COLOR.'"';
     }
 
     // 一致した値のキー名を取得
-    function sfSearchKey($array, $word, $default)
+    public function sfSearchKey($array, $word, $default)
     {
         foreach ($array as $key => $val) {
             if ($val == $word) {
@@ -637,7 +641,7 @@ class SC_Utils
         return $default;
     }
 
-    function sfGetErrorColor($val)
+    public function sfGetErrorColor($val)
     {
         if ($val != '') {
             return 'background-color:' . ERR_COLOR;
@@ -646,7 +650,7 @@ class SC_Utils
         return '';
     }
 
-    function sfGetEnabled($val)
+    public function sfGetEnabled($val)
     {
         if (! $val) {
             return ' disabled="disabled"';
@@ -655,19 +659,20 @@ class SC_Utils
         return '';
     }
 
-    function sfGetChecked($param, $value)
+    public function sfGetChecked($param, $value)
     {
-        if ((string)$param === (string)$value) {
+        if ((string) $param === (string) $value) {
             return 'checked="checked"';
         }
 
         return '';
     }
 
-    function sfTrim($str)
+    public function sfTrim($str)
     {
         $ret = preg_replace("/^[　 \n\r]*/u", '', $str);
         $ret = preg_replace("/[　 \n\r]*$/u", '', $ret);
+
         return $ret;
     }
 
@@ -677,12 +682,12 @@ class SC_Utils
      * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
      *
      * @param integer $price 計算対象の金額
-     * @param integer $tax 税率(%単位)
+     * @param integer $tax   税率(%単位)
      *     XXX integer のみか不明
-     * @param integer $tax_rule 端数処理
+     * @param  integer $tax_rule 端数処理
      * @return integer 税金額
      */
-    function sfTax($price, $tax, $tax_rule)
+    public function sfTax($price, $tax, $tax_rule)
     {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
@@ -714,18 +719,18 @@ class SC_Utils
      * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfTax() を使用する
      *
      * @param integer $price 計算対象の金額
-     * @param integer $tax 税率(%単位)
+     * @param integer $tax   税率(%単位)
      *     XXX integer のみか不明
-     * @param integer $tax_rule 端数処理
+     * @param  integer $tax_rule 端数処理
      * @return integer 税金付与した金額
      */
-    function sfCalcIncTax($price, $tax, $tax_rule)
+    public function sfCalcIncTax($price, $tax, $tax_rule)
     {
         return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
 
     // 桁数を指定して四捨五入
-    function sfRound($value, $pow = 0)
+    public function sfRound($value, $pow = 0)
     {
         $adjust = pow(10 ,$pow-1);
 
@@ -742,12 +747,12 @@ class SC_Utils
     /**
      * ポイント付与
      * $product_id が使われていない。
-     * @param int $price
-     * @param float $point_rate
-     * @param int $rule
+     * @param  int   $price
+     * @param  float $point_rate
+     * @param  int   $rule
      * @return int
      */
-    function sfPrePoint($price, $point_rate, $rule = POINT_RULE)
+    public function sfPrePoint($price, $point_rate, $rule = POINT_RULE)
     {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
@@ -774,7 +779,7 @@ class SC_Utils
     }
 
     /* 規格分類の件数取得 */
-    function sfGetClassCatCount()
+    public function sfGetClassCatCount()
     {
         $sql = 'select count(dtb_class.class_id) as count, dtb_class.class_id ';
         $sql.= 'from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ';
@@ -790,12 +795,12 @@ class SC_Utils
 
     /**
      * 商品IDとカテゴリIDから商品規格IDを取得する
-     * @param int $product_id
-     * @param int $classcategory_id1 デフォルト値0
-     * @param int $classcategory_id2 デフォルト値0
+     * @param  int $product_id
+     * @param  int $classcategory_id1 デフォルト値0
+     * @param  int $classcategory_id2 デフォルト値0
      * @return int
      */
-    function sfGetProductClassId($product_id, $classcategory_id1=0, $classcategory_id2=0)
+    public function sfGetProductClassId($product_id, $classcategory_id1=0, $classcategory_id2=0)
     {
         $where = 'product_id = ? AND classcategory_id1 = ? AND classcategory_id2 = ?';
         if (!$classcategory_id1) { //NULLが入ってきた場合への対策
@@ -811,7 +816,7 @@ class SC_Utils
     }
 
     /* 文末の「/」をなくす */
-    function sfTrimURL($url)
+    public function sfTrimURL($url)
     {
         $ret = rtrim($url, '/');
 
@@ -819,7 +824,7 @@ class SC_Utils
     }
 
     /* DBから取り出した日付の文字列を調整する。*/
-    function sfDispDBDate($dbdate, $time = true)
+    public function sfDispDBDate($dbdate, $time = true)
     {
         list($y, $m, $d, $H, $M) = preg_split('/[- :]/', $dbdate);
 
@@ -837,7 +842,7 @@ class SC_Utils
     }
 
     /* 配列をキー名ごとの配列に変更する */
-    function sfSwapArray($array, $isColumnName = true)
+    public function sfSwapArray($array, $isColumnName = true)
     {
         $arrRet = array();
         foreach ($array as $key1 => $arr1) {
@@ -864,7 +869,7 @@ class SC_Utils
      * @param array 必須キーの配列
      * @return array 連想配列の値のみの配列
      */
-    function getHash2Array($hash, $requires = array())
+    public function getHash2Array($hash, $requires = array())
     {
         $array = array();
         $i = 0;
@@ -884,7 +889,7 @@ class SC_Utils
     }
 
     /* かけ算をする（Smarty用) */
-    function sfMultiply($num1, $num2)
+    public function sfMultiply($num1, $num2)
     {
         return $num1 * $num2;
     }
@@ -894,12 +899,12 @@ class SC_Utils
      *
      * ・店舗基本情報に基づいた計算は SC_Helper_DB::sfGetAddPoint() を使用する
      *
-     * @param integer $totalpoint
-     * @param integer $use_point
-     * @param integer $point_rate
+     * @param  integer $totalpoint
+     * @param  integer $use_point
+     * @param  integer $point_rate
      * @return integer 加算ポイント
      */
-    function sfGetAddPoint($totalpoint, $use_point, $point_rate)
+    public function sfGetAddPoint($totalpoint, $use_point, $point_rate)
     {
         // 購入商品の合計ポイントから利用したポイントのポイント換算価値を引く方式
         $add_point = $totalpoint - intval($use_point * ($point_rate / 100));
@@ -912,7 +917,7 @@ class SC_Utils
     }
 
     /* 一意かつ予測されにくいID */
-    function sfGetUniqRandomId($head = '')
+    public function sfGetUniqRandomId($head = '')
     {
         // 予測されないようにランダム文字列を付与する。
         $random = GC_Utils_Ex::gfMakePassword(8);
@@ -923,12 +928,12 @@ class SC_Utils
     }
 
     // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
-    function sfRmDupSlash($istr)
+    public function sfRmDupSlash($istr)
     {
         if (preg_match('|^http://|', $istr)) {
             $str = substr($istr, 7);
             $head = 'http://';
-        } else if (preg_match('|^https://|', $istr)) {
+        } elseif (preg_match('|^https://|', $istr)) {
             $str = substr($istr, 8);
             $head = 'https://';
         } else {
@@ -952,12 +957,12 @@ class SC_Utils
      * TODO fwrite などでのエラーハンドリング
      *
      * @access public
-     * @param string $filepath 変換するテキストファイルのパス
-     * @param string $enc_type 変換後のファイルエンコーディングの種類を表す文字列
-     * @param string $out_dir 変換後のファイルを出力するディレクトリを表す文字列
+     * @param  string $filepath 変換するテキストファイルのパス
+     * @param  string $enc_type 変換後のファイルエンコーディングの種類を表す文字列
+     * @param  string $out_dir  変換後のファイルを出力するディレクトリを表す文字列
      * @return string 変換後のテキストファイルのパス
      */
-    function sfEncodeFile($filepath, $enc_type, $out_dir)
+    public function sfEncodeFile($filepath, $enc_type, $out_dir)
     {
         $ifp = fopen($filepath, 'r');
 
@@ -986,7 +991,7 @@ class SC_Utils
         return $outpath;
     }
 
-    function sfCutString($str, $len, $byte = true, $commadisp = true)
+    public function sfCutString($str, $len, $byte = true, $commadisp = true)
     {
         if ($byte) {
             if (strlen($str) > ($len + 2)) {
@@ -1036,7 +1041,7 @@ class SC_Utils
     }
 
     // 年、月、締め日から、先月の締め日+1、今月の締め日を求める。
-    function sfTermMonth($year, $month, $close_day)
+    public function sfTermMonth($year, $month, $close_day)
     {
         $end_year = $year;
         $end_month = $month;
@@ -1079,7 +1084,7 @@ class SC_Utils
     }
 
     // 再帰的に多段配列を検索して一次元配列(Hidden引渡し用配列)に変換する。
-    function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = '')
+    public function sfMakeHiddenArray($arrSrc, $arrDst = array(), $parent_key = '')
     {
         if (is_array($arrSrc)) {
             foreach ($arrSrc as $key => $val) {
@@ -1100,7 +1105,7 @@ class SC_Utils
     }
 
     // DB取得日時をタイムに変換
-    function sfDBDatetoTime($db_date)
+    public function sfDBDatetoTime($db_date)
     {
         $date = preg_replace("|\..*$|",'',$db_date);
         $time = strtotime($date);
@@ -1113,13 +1118,13 @@ class SC_Utils
      *
      * XXX この関数を使っている箇所は、ほぼ設計誤りと思われる。変数にフェッチするか、出力時のエンコーディングで対応すべきと見受ける。
      */
-    function sfMbConvertEncoding($str, $encode = CHAR_CODE)
+    public function sfMbConvertEncoding($str, $encode = CHAR_CODE)
     {
         return mb_convert_encoding($str, $encode);
     }
 
     // 2つの配列を用いて連想配列を作成する
-    function sfArrCombine($arrKeys, $arrValues)
+    public function sfArrCombine($arrKeys, $arrValues)
     {
         if (count($arrKeys) <= 0 and count($arrValues) <= 0) return array();
 
@@ -1132,12 +1137,11 @@ class SC_Utils
             $combine_ary[$keys[$i]] = $vals[$i];
         }
         if (is_array($combine_ary)) return $combine_ary;
-
         return false;
     }
 
     /* 階層構造のテーブルから与えられたIDの直属の子を取得する */
-    function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent)
+    public function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent)
     {
         $max = count($arrData);
 
@@ -1156,7 +1160,7 @@ class SC_Utils
      * SQLシングルクォート対応
      * @deprecated SC_Query::quote() を使用すること
      */
-    function sfQuoteSmart($in)
+    public function sfQuoteSmart($in)
     {
         if (is_int($in) || is_double($in)) {
             return $in;
@@ -1170,7 +1174,7 @@ class SC_Utils
     }
 
     // ディレクトリを再帰的に生成する
-    function sfMakeDir($path)
+    public function sfMakeDir($path)
     {
         static $count = 0;
         $count++;  // 無限ループ回避
@@ -1199,7 +1203,7 @@ class SC_Utils
     }
 
     // ディレクトリ以下のファイルを再帰的にコピー
-    function sfCopyDir($src, $des, $mess = '', $override = false)
+    public function sfCopyDir($src, $des, $mess = '', $override = false)
     {
         if (!is_dir($src)) {
             return false;
@@ -1255,10 +1259,10 @@ class SC_Utils
     /**
      * ブラウザに強制的に送出する
      *
-     * @param boolean|string $output 半角スペース256文字+改行を出力するか。または、送信する文字列を指定。
+     * @param  boolean|string $output 半角スペース256文字+改行を出力するか。または、送信する文字列を指定。
      * @return void
      */
-    function sfFlush($output = false, $sleep = 0)
+    public function sfFlush($output = false, $sleep = 0)
     {
         // 出力をバッファリングしない(==日本語自動変換もしない)
         while (@ob_end_flush());
@@ -1267,7 +1271,7 @@ class SC_Utils
             // IEのために半角スペース256文字+改行を出力
             //echo str_repeat(' ', 256) . "\n";
             echo str_pad('', 256) . "\n";
-        } else if ($output !== false) {
+        } elseif ($output !== false) {
             echo $output;
         }
 
@@ -1281,7 +1285,7 @@ class SC_Utils
     }
 
     // @versionの記載があるファイルからバージョンを取得する。
-    function sfGetFileVersion($path)
+    public function sfGetFileVersion($path)
     {
         if (file_exists($path)) {
             $src_fp = fopen($path, 'rb');
@@ -1303,12 +1307,12 @@ class SC_Utils
     /**
      * $array の要素を $arrConvList で指定した方式で mb_convert_kana を適用する.
      *
-     * @param array $array 変換する文字列の配列
-     * @param array $arrConvList mb_convert_kana の適用ルール
+     * @param  array $array       変換する文字列の配列
+     * @param  array $arrConvList mb_convert_kana の適用ルール
      * @return array 変換後の配列
      * @see mb_convert_kana
      */
-    function mbConvertKanaWithArray($array, $arrConvList)
+    public function mbConvertKanaWithArray($array, $arrConvList)
     {
         foreach ($arrConvList as $key => $val) {
             if (isset($array[$key])) {
@@ -1322,11 +1326,11 @@ class SC_Utils
     /**
      * 配列の添字が未定義の場合は空文字を代入して定義する.
      *
-     * @param array $array 添字をチェックする配列
-     * @param array $defineIndexes チェックする添字
+     * @param  array $array         添字をチェックする配列
+     * @param  array $defineIndexes チェックする添字
      * @return array 添字を定義した配列
      */
-    function arrayDefineIndexes($array, $defineIndexes)
+    public function arrayDefineIndexes($array, $defineIndexes)
     {
         foreach ($defineIndexes as $key) {
             if (!isset($array[$key])) $array[$key] = '';
@@ -1340,11 +1344,11 @@ class SC_Utils
      *
      * $arrSrc に含まない要素は返されない。
      *
-     * @param array $arrSrc
-     * @param array $arrKey
+     * @param  array $arrSrc
+     * @param  array $arrKey
      * @return array
      */
-    function sfArrayIntersectKeys($arrSrc, $arrKey)
+    public function sfArrayIntersectKeys($arrSrc, $arrKey)
     {
         $arrRet = array();
         foreach ($arrKey as $key) {
@@ -1359,7 +1363,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::printXMLDeclaration を使用すること
      */
-    function printXMLDeclaration()
+    public function printXMLDeclaration()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         GC_Utils_Ex::printXMLDeclaration();
@@ -1370,7 +1374,7 @@ class SC_Utils
      *
      * @return string
      */
-    function getTableTag($array)
+    public function getTableTag($array)
     {
         $html = '<table>';
         $html.= '<tr>';
@@ -1398,7 +1402,7 @@ class SC_Utils
      * @param $filename
      * @return string $file 画像のパス、画像が存在しない場合、NO_IMAGE_REALFILEを返す
      */
-    function getSaveImagePath($filename)
+    public function getSaveImagePath($filename)
     {
         $file = NO_IMAGE_REALFILE;
 
@@ -1406,6 +1410,7 @@ class SC_Utils
         if (!SC_Utils_Ex::isBlank($filename) && file_exists(IMAGE_SAVE_REALDIR . $filename)) {
             $file = IMAGE_SAVE_REALDIR . $filename;
         }
+
         return $file;
     }
 
@@ -1415,7 +1420,7 @@ class SC_Utils
      * @param string &$filename ファイル名
      * @return string
      */
-    function sfNoImageMainList($filename = '')
+    public function sfNoImageMainList($filename = '')
     {
         if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
             $filename .= 'noimage_main_list.jpg';
@@ -1430,7 +1435,7 @@ class SC_Utils
      * @param string &$filename ファイル名
      * @return string
      */
-    function sfNoImageMain($filename = '')
+    public function sfNoImageMain($filename = '')
     {
         if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
             $filename .= 'noimage_main.png';
@@ -1440,7 +1445,7 @@ class SC_Utils
     }
 
     /* デバッグ用 ------------------------------------------------------------------------------------------------*/
-    function sfPrintR($obj)
+    public function sfPrintR($obj)
     {
         echo '<div style="font-size: 12px;color: #00FF00;">' . "\n";
         echo '<strong>**デバッグ中**</strong><br />' . "\n";
@@ -1453,10 +1458,10 @@ class SC_Utils
     /**
      * ランダムな文字列を取得する
      *
-     * @param integer $length 文字数
-     * @return string ランダムな文字列
+     * @param  integer $length 文字数
+     * @return string  ランダムな文字列
      */
-    function sfGetRandomString($length = 1)
+    public function sfGetRandomString($length = 1)
     {
         return Text_Password::create($length);
     }
@@ -1466,7 +1471,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::getUrl を使用すること
      */
-    function sfGetUrl()
+    public function sfGetUrl()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
 
@@ -1478,7 +1483,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::toStringBacktrace を使用すること
      */
-    function sfBacktraceToString($arrBacktrace)
+    public function sfBacktraceToString($arrBacktrace)
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
 
@@ -1490,7 +1495,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::isAdminFunction を使用すること
      */
-    function sfIsAdminFunction()
+    public function sfIsAdminFunction()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
 
@@ -1502,7 +1507,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::isFrontFunction を使用すること
      */
-    function sfIsFrontFunction()
+    public function sfIsFrontFunction()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
 
@@ -1514,7 +1519,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 GC_Utils_Ex::isInstallFunction を使用すること
      */
-    function sfIsInstallFunction()
+    public function sfIsInstallFunction()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
 
@@ -1522,7 +1527,7 @@ class SC_Utils
     }
 
     // 郵便番号から住所の取得
-    function sfGetAddress($zipcode)
+    public function sfGetAddress($zipcode)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -1568,7 +1573,7 @@ class SC_Utils
      *
      * @deprecated 2.12.0 microtime(true) を使用する。
      */
-    function sfMicrotimeFloat()
+    public function sfMicrotimeFloat()
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
 
@@ -1592,11 +1597,11 @@ class SC_Utils
      * 引数 $greedy が true の場合は, 全角スペース, ネストした空の配列も
      * 空白と判断する.
      *
-     * @param mixed $val チェック対象の変数
-     * @param boolean $greedy '貧欲'にチェックを行う場合 true
+     * @param  mixed   $val    チェック対象の変数
+     * @param  boolean $greedy '貧欲'にチェックを行う場合 true
      * @return boolean $val が空白と判断された場合 true
      */
-    function isBlank($val, $greedy = true)
+    public function isBlank($val, $greedy = true)
     {
         if (is_array($val)) {
             if ($greedy) {
@@ -1614,6 +1619,7 @@ class SC_Utils
                         return false;
                     }
                 }
+
                 return $array_result;
             } else {
                 return empty($val);
@@ -1637,10 +1643,10 @@ class SC_Utils
      *
      * 戻り値：一致(true) 不一致(false)
      *
-     * @param string $url
+     * @param  string  $url
      * @return boolean
      */
-    function sfIsInternalDomain($url)
+    public function sfIsInternalDomain($url)
     {
         $netURL = new Net_URL(HTTP_URL);
         $host = $netURL->host;
@@ -1654,11 +1660,11 @@ class SC_Utils
     /**
      * パスワードのハッシュ化
      *
-     * @param string $str 暗号化したい文言
-     * @param string $salt salt
+     * @param  string $str  暗号化したい文言
+     * @param  string $salt salt
      * @return string ハッシュ暗号化された文字列
      */
-    function sfGetHashString($str, $salt)
+    public function sfGetHashString($str, $salt)
     {
         $res = '';
         if ($salt == '') {
@@ -1676,12 +1682,12 @@ class SC_Utils
     /**
      * パスワード文字列のハッシュ一致判定
      *
-     * @param string $pass 確認したいパスワード文字列
-     * @param string $hashpass 確認したいパスワードハッシュ文字列
-     * @param string $salt salt
+     * @param  string  $pass     確認したいパスワード文字列
+     * @param  string  $hashpass 確認したいパスワードハッシュ文字列
+     * @param  string  $salt     salt
      * @return boolean 一致判定
      */
-    function sfIsMatchHashPassword($pass, $hashpass, $salt)
+    public function sfIsMatchHashPassword($pass, $hashpass, $salt)
     {
         $res = false;
         if ($hashpass != '') {
@@ -1711,10 +1717,10 @@ class SC_Utils
      * フォームの入力値から最大表示件数を取得する
      * 取得できなかった場合は, 定数 SEARCH_PMAX の値を返す
      *
-     * @param string $search_page_max 表示件数の選択値
+     * @param  string  $search_page_max 表示件数の選択値
      * @return integer 1ページあたりの最大表示件数
      */
-    function sfGetSearchPageMax($search_page_max)
+    public function sfGetSearchPageMax($search_page_max)
     {
         if (SC_Utils_Ex::sfIsInt($search_page_max) && $search_page_max > 0) {
             $page_max = intval($search_page_max);
@@ -1732,18 +1738,19 @@ class SC_Utils
      * json_encode() 関数が使用可能な場合は json_encode() 関数を使用する.
      * 使用できない場合は, Services_JSON::encode() 関数を使用する.
      *
-     * @param mixed $value JSON 形式にエンコードする値
+     * @param  mixed  $value JSON 形式にエンコードする値
      * @return string JSON 形式にした文字列
      * @see json_encode()
      * @see Services_JSON::encode()
      */
-    function jsonEncode($value)
+    public function jsonEncode($value)
     {
         if (function_exists('json_encode')) {
             return json_encode($value);
         } else {
             GC_Utils_Ex::gfPrintLog(' *use Services_JSON::encode(). faster than using the json_encode!');
             $objJson = new Services_JSON();
+
             return $objJson->encode($value);
         }
     }
@@ -1755,18 +1762,19 @@ class SC_Utils
      * json_decode() 関数が使用可能な場合は json_decode() 関数を使用する.
      * 使用できない場合は, Services_JSON::decode() 関数を使用する.
      *
-     * @param string $json JSON 形式にエンコードされた文字列
-     * @return mixed デコードされた PHP の型
+     * @param  string $json JSON 形式にエンコードされた文字列
+     * @return mixed  デコードされた PHP の型
      * @see json_decode()
      * @see Services_JSON::decode()
      */
-    function jsonDecode($json)
+    public function jsonDecode($json)
     {
         if (function_exists('json_decode')) {
             return json_decode($json);
         } else {
             GC_Utils_Ex::gfPrintLog(' *use Services_JSON::decode(). faster than using the json_decode!');
             $objJson = new Services_JSON();
+
             return $objJson->decode($json);
         }
     }
@@ -1780,7 +1788,7 @@ class SC_Utils
      * @param string チェック対象のパス
      * @return boolean 絶対パスの場合 true
      */
-    function isAbsoluteRealPath($realpath)
+    public function isAbsoluteRealPath($realpath)
     {
         if (strpos(PHP_OS, 'WIN') === false) {
             return substr($realpath, 0, 1) == '/';
@@ -1794,12 +1802,12 @@ class SC_Utils
      *
      * mkdir 関数の $recursive パラメーターを PHP4 でサポートする.
      *
-     * @param string $pathname ディレクトリのパス
-     * @param integer $mode 作成するディレクトリのパーミッション
+     * @param  string  $pathname ディレクトリのパス
+     * @param  integer $mode     作成するディレクトリのパーミッション
      * @return boolean 作成に成功した場合 true; 失敗した場合 false
      * @see http://jp.php.net/mkdir
      */
-    function recursiveMkdir($pathname, $mode = 0777)
+    public function recursiveMkdir($pathname, $mode = 0777)
     {
         /*
          * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
@@ -1810,7 +1818,7 @@ class SC_Utils
         return is_dir($pathname) || @mkdir($pathname, $mode);
     }
 
-    function isAppInnerUrl($url)
+    public function isAppInnerUrl($url)
     {
         $pattern = '/^(' . preg_quote(HTTP_URL, '/') . '|' . preg_quote(HTTPS_URL, '/') . ')/';
 
@@ -1822,12 +1830,12 @@ class SC_Utils
      *
      * ループの中で呼び出すことを意図している。
      * 暴走スレッドが残留する確率を軽減するため、set_time_limit(0) とはしていない。
-     * @param integer $seconds 最大実行時間を延長する秒数。
+     * @param  integer $seconds 最大実行時間を延長する秒数。
      * @return boolean 成功=true, 失敗=false
      */
-    function extendTimeOut($seconds = null)
+    public function extendTimeOut($seconds = null)
     {
-        $safe_mode = (boolean)ini_get('safe_mode');
+        $safe_mode = (boolean) ini_get('safe_mode');
         if ($safe_mode) return false;
 
         if (is_null($seconds)) {
@@ -1848,7 +1856,7 @@ class SC_Utils
      * コンパイルファイルを削除します.
      * @return void
      */
-    function clearCompliedTemplate()
+    public function clearCompliedTemplate()
     {
         // コンパイルファイルの削除処理
         SC_Helper_FileManager_Ex::deleteFile(COMPILE_REALDIR, false);
@@ -1859,11 +1867,11 @@ class SC_Utils
 
     /**
      * 指定されたパスの配下を再帰的にコピーします.
-     * @param string $imageDir コピー元ディレクトリのパス
-     * @param string $destDir コピー先ディレクトリのパス
+     * @param  string $imageDir コピー元ディレクトリのパス
+     * @param  string $destDir  コピー先ディレクトリのパス
      * @return void
      */
-    function copyDirectory($source_path, $dest_path)
+    public function copyDirectory($source_path, $dest_path)
     {
         $handle=opendir($source_path);
         while ($filename = readdir($handle)) {
@@ -1884,12 +1892,12 @@ class SC_Utils
 
     /**
      * 文字列を区切り文字を挟み反復する
-     * @param string $input 繰り返す文字列。
-     * @param string $multiplier input を繰り返す回数。
-     * @param string $separator 区切り文字
+     * @param  string $input      繰り返す文字列。
+     * @param  string $multiplier input を繰り返す回数。
+     * @param  string $separator  区切り文字
      * @return string
      */
-    function repeatStrWithSeparator($input, $multiplier, $separator = ',')
+    public function repeatStrWithSeparator($input, $multiplier, $separator = ',')
     {
         return implode($separator, array_fill(0, $multiplier, $input));
     }
@@ -1898,10 +1906,10 @@ class SC_Utils
      * RFC3986に準拠したURIエンコード
      * MEMO: PHP5.3.0未満では、~のエンコードをしてしまうための処理
      *
-     * @param string $str 文字列
+     * @param  string $str 文字列
      * @return string RFC3986エンコード文字列
      */
-    function encodeRFC3986($str)
+    public function encodeRFC3986($str)
     {
         return str_replace('%7E', '~', rawurlencode($str));
     }
@@ -1909,11 +1917,11 @@ class SC_Utils
     /**
      * マルチバイト対応の trim
      *
-     * @param string $str 入力文字列
-     * @param string $charlist 削除する文字を指定
+     * @param  string $str      入力文字列
+     * @param  string $charlist 削除する文字を指定
      * @return string 変更後の文字列
      */
-    static function trim($str, $charlist = null)
+    public static function trim($str, $charlist = null)
     {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
 
@@ -1923,11 +1931,11 @@ class SC_Utils
     /**
      * マルチバイト対応の ltrim
      *
-     * @param string $str 入力文字列
-     * @param string $charlist 削除する文字を指定
+     * @param  string $str      入力文字列
+     * @param  string $charlist 削除する文字を指定
      * @return string 変更後の文字列
      */
-    static function ltrim($str, $charlist = null)
+    public static function ltrim($str, $charlist = null)
     {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
 
@@ -1937,11 +1945,11 @@ class SC_Utils
     /**
      * マルチバイト対応の rtrim
      *
-     * @param string $str 入力文字列
-     * @param string $charlist 削除する文字を指定
+     * @param  string $str      入力文字列
+     * @param  string $charlist 削除する文字を指定
      * @return string 変更後の文字列
      */
-    static function rtrim($str, $charlist = null)
+    public static function rtrim($str, $charlist = null)
     {
         $re = SC_Utils_Ex::getTrimPregPattern($charlist);
 
@@ -1951,10 +1959,10 @@ class SC_Utils
     /**
      * 文字列のトリム処理で使用する PCRE のパターン
      *
-     * @param string $charlist 削除する文字を指定
+     * @param  string $charlist 削除する文字を指定
      * @return string パターン
      */
-    static function getTrimPregPattern($charlist = null)
+    public static function getTrimPregPattern($charlist = null)
     {
         if (is_null($charlist)) {
             return '\s+';
@@ -1966,16 +1974,16 @@ class SC_Utils
     /**
      * データ量の単位を付与する
      *
-     * @param int $data
+     * @param  int    $data
      * @return string
      */
-    function getUnitDataSize($data)
+    public function getUnitDataSize($data)
     {
-        if($data < 1000){
+        if ($data < 1000) {
             $return = $data . "KB";
-        }elseif($data < 1000000){
+        } elseif ($data < 1000000) {
             $return = $data/1000 . "MB";
-        }else{
+        } else {
             $return = $data/1000000 . "GB";
         }
 
@@ -1985,12 +1993,12 @@ class SC_Utils
     /**
      * カテゴリーツリー状の配列を作成.
      *
-     * @param string $primary_key
-     * @param string $glue_key
-     * @param integer $max_depth
-     * @param array $correction
-     * @param integer $root_id
-     * @return array ツリーの配列
+     * @param  string  $primary_key
+     * @param  string  $glue_key
+     * @param  integer $max_depth
+     * @param  array   $correction
+     * @param  integer $root_id
+     * @return array   ツリーの配列
      */
     public static function buildTree($primary_key, $glue_key, $max_depth, $correction = array(), $root_id = 0)
     {
@@ -2009,11 +2017,11 @@ class SC_Utils
     /**
      * ツリーの親子をつなげるルーチン.
      *
-     * @param array $target 親
-     * @param string $primary_key 主キーの識別子
-     * @param integer $level 親の階層
-     * @param integer $max_depth 階層の深さの最大値
-     * @param array $children 子の配列（キーが親ID）
+     * @param  array   $target      親
+     * @param  string  $primary_key 主キーの識別子
+     * @param  integer $level       親の階層
+     * @param  integer $max_depth   階層の深さの最大値
+     * @param  array   $children    子の配列（キーが親ID）
      * @return void
      */
     public static function addChild(&$target, $primary_key, $level, $max_depth, &$children = array())
@@ -2031,8 +2039,8 @@ class SC_Utils
     /**
      * 配列のキーをIDにした配列を作成.
      *
-     * @param string $ID_name IDが格納されているキー名
-     * @param array $correction 元の配列
+     * @param  string $ID_name    IDが格納されているキー名
+     * @param  array  $correction 元の配列
      * @return array
      */
     public static function makeArrayIDToKey($ID_name, $correction = array())
@@ -2050,14 +2058,14 @@ class SC_Utils
     /**
      * 階層情報が含まれている配列から親ID配列を取得する.
      *
-     * @param integer $start_id 取得起点
-     * @param string $primary_key 主キー名
-     * @param string $glue_key 親IDキー名
-     * @param array $correction 階層構造が含まれている配列
-     * @param boolean $cid_is_key キーがIDの配列の場合はtrue
-     * @param integer $root_id ルートID
-     * @param boolean $id_only IDだけの配列を返す場合はtrue
-     * @return array 親ID配列
+     * @param  integer $start_id    取得起点
+     * @param  string  $primary_key 主キー名
+     * @param  string  $glue_key    親IDキー名
+     * @param  array   $correction  階層構造が含まれている配列
+     * @param  boolean $cid_is_key  キーがIDの配列の場合はtrue
+     * @param  integer $root_id     ルートID
+     * @param  boolean $id_only     IDだけの配列を返す場合はtrue
+     * @return array   親ID配列
      */
     public static function getTreeTrail($start_id, $primary_key, $glue_key, $correction = array(), $cid_is_key = FALSE, $root_id = 0, $id_only = TRUE)
     {

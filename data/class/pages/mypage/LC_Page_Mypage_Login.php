@@ -37,7 +37,7 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->httpCacheControl('nocache');
@@ -48,7 +48,7 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -58,14 +58,14 @@ class LC_Page_Mypage_Login extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objPurchase->checkSessionPendingOrder();
         $objPurchase->checkDbMyPendignOrder();
         $objPurchase->checkDbAllPendingOrder();
-		
+
         SC_Response_Ex::sendRedirect(DIR_INDEX_PATH);
     }
 }

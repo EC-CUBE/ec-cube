@@ -37,7 +37,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'login.tpl';
@@ -49,7 +49,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -60,7 +60,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -94,10 +94,10 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('ID', 'login_id', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK' ,'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('PASSWORD', 'password', ID_MAX_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -108,10 +108,10 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      *
      * TODO: ブルートフォースアタック対策チェックの実装
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return array $arrErr エラー配列
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 書式チェック
         $arrErr = $objFormParam->checkError();
@@ -130,11 +130,11 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     /**
      * 有効な管理者ID/PASSかどうかチェックする
      *
-     * @param string $login_id ログインID文字列
-     * @param string $pass ログインパスワード文字列
+     * @param  string  $login_id ログインID文字列
+     * @param  string  $pass     ログインパスワード文字列
      * @return boolean ログイン情報が有効な場合 true
      */
-    function lfIsLoginMember($login_id, $pass)
+    public function lfIsLoginMember($login_id, $pass)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //パスワード、saltの取得
@@ -156,10 +156,10 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     /**
      * 管理者ログイン設定処理
      *
-     * @param string $login_id ログインID文字列
+     * @param  string $login_id ログインID文字列
      * @return void
      */
-    function lfDoLogin($login_id)
+    public function lfDoLogin($login_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         //メンバー情報取得
@@ -176,14 +176,14 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     /**
      * ログイン情報セッション登録
      *
-     * @param integer $member_id メンバーID
-     * @param string $login_id ログインID文字列
-     * @param integer $authority 権限ID
-     * @param string $login_name ログイン表示名
-     * @param string $last_login 最終ログイン日時(YYYY/MM/DD HH:ii:ss形式) またはNULL
-     * @return string $sid 設定したセッションのセッションID
+     * @param  integer $member_id  メンバーID
+     * @param  string  $login_id   ログインID文字列
+     * @param  integer $authority  権限ID
+     * @param  string  $login_name ログイン表示名
+     * @param  string  $last_login 最終ログイン日時(YYYY/MM/DD HH:ii:ss形式) またはNULL
+     * @return string  $sid 設定したセッションのセッションID
      */
-    function lfSetLoginSession($member_id, $login_id, $authority, $login_name, $last_login)
+    public function lfSetLoginSession($member_id, $login_id, $authority, $login_name, $last_login)
     {
         $objSess = new SC_Session_Ex();
         // 認証済みの設定
@@ -205,14 +205,14 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     /**
      * ログイン情報の記録
      *
-     * @param mixed $sid セッションID
-     * @param integer $member_id メンバーID
-     * @param string $login_id ログインID文字列
-     * @param integer $authority 権限ID
-     * @param string $last_login 最終ログイン日時(YYYY/MM/DD HH:ii:ss形式) またはNULL
+     * @param  mixed   $sid        セッションID
+     * @param  integer $member_id  メンバーID
+     * @param  string  $login_id   ログインID文字列
+     * @param  integer $authority  権限ID
+     * @param  string  $last_login 最終ログイン日時(YYYY/MM/DD HH:ii:ss形式) またはNULL
      * @return void
      */
-    function lfSetLoginData($sid, $member_id, $login_id, $authority, $last_login)
+    public function lfSetLoginData($sid, $member_id, $login_id, $authority, $last_login)
     {
         // ログイン記録ログ出力
         $str_log = "login: user=$login_id($member_id) auth=$authority "
@@ -233,10 +233,10 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      *
      * TODO: ブルートフォースアタック対策の実装
      *
-     * @param string $login_id ログイン失敗時に投入されたlogin_id文字列
+     * @param  string $login_id ログイン失敗時に投入されたlogin_id文字列
      * @return void
      */
-    function lfSetIncorrectData($error_login_id)
+    public function lfSetIncorrectData($error_login_id)
     {
         GC_Utils_Ex::gfPrintLog($error_login_id . ' password incorrect.');
     }

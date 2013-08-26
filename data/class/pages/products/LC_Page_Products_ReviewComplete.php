@@ -37,7 +37,7 @@ class LC_Page_Products_ReviewComplete extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true; 
         parent::init();
@@ -48,7 +48,7 @@ class LC_Page_Products_ReviewComplete extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -60,7 +60,7 @@ class LC_Page_Products_ReviewComplete extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $this->setTemplate('products/review_complete.tpl');
     }

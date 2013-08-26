@@ -44,10 +44,10 @@
 class SC_DB_MasterData
 {
     /** SC_Query インスタンス */
-    var $objQuery;
+    public $objQuery;
 
     /** デフォルトのテーブルカラム名 */
-    var $columns = array('id', 'name', 'rank', 'remarks');
+    public $columns = array('id', 'name', 'rank', 'remarks');
 
     /**
      * マスターデータを取得する.
@@ -59,12 +59,12 @@ class SC_DB_MasterData
      *
      * 返り値は, key => value 形式の配列である.
      *
-     * @param string $name マスターデータ名
-     * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
+     * @param string $name    マスターデータ名
+     * @param array  $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
      * @return array マスターデータ
      */
-    function getMasterData($name, $columns = array())
+    public function getMasterData($name, $columns = array())
     {
         $columns = $this->getDefaultColumnName($columns);
 
@@ -89,14 +89,14 @@ class SC_DB_MasterData
      * 既存のキャッシュが存在する場合は上書きする.
      * $masterData は key => value 形式の配列である必要がある.
      *
-     * @param string $name マスターデータ名
-     * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
+     * @param string $name    マスターデータ名
+     * @param array  $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
-     * @param array $masterData マスターデータ
-     * @param bool $autoCommit トランザクションを自動的に commit する場合 true
+     * @param  array   $masterData マスターデータ
+     * @param  bool    $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの登録数
      */
-    function registMasterData($name, $columns, $masterData, $autoCommit = true)
+    public function registMasterData($name, $columns, $masterData, $autoCommit = true)
     {
         $columns = $this->getDefaultColumnName($columns);
 
@@ -125,14 +125,14 @@ class SC_DB_MasterData
      * 引数 $masterData の値でマスターデータを更新する.
      * $masterData は key => value 形式の配列である必要がある.
      *
-     * @param string $name マスターデータ名
-     * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
+     * @param string $name    マスターデータ名
+     * @param array  $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
-     * @param array $masterData マスターデータ
-     * @param bool $autoCommit トランザクションを自動的に commit する場合 true
+     * @param  array   $masterData マスターデータ
+     * @param  bool    $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの更新数
      */
-    function updateMasterData($name, $columns, $masterData, $autoCommit = true)
+    public function updateMasterData($name, $columns, $masterData, $autoCommit = true)
     {
         $columns = $this->getDefaultColumnName($columns);
 
@@ -161,13 +161,13 @@ class SC_DB_MasterData
      * 引数 $masterData の値でマスターデータを更新する.
      * $masterData は key => value 形式の配列である必要がある.
      *
-     * @param string $name マスターデータ名
-     * @param string $key キー名
-     * @param string $comment コメント
-     * @param bool $autoCommit トランザクションを自動的に commit する場合 true
+     * @param  string  $name       マスターデータ名
+     * @param  string  $key        キー名
+     * @param  string  $comment    コメント
+     * @param  bool    $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの更新数
      */
-    function insertMasterData($name, $key, $value, $comment, $autoCommit = true)
+    public function insertMasterData($name, $key, $value, $comment, $autoCommit = true)
     {
         $columns = $this->getDefaultColumnName();
 
@@ -196,11 +196,11 @@ class SC_DB_MasterData
      * 引数 $name のマスターデータを削除し,
      * キャッシュも削除する.
      *
-     * @param string $name マスターデータ名
-     * @param bool $autoCommit トランザクションを自動的に commit する場合 true
+     * @param  string  $name       マスターデータ名
+     * @param  bool    $autoCommit トランザクションを自動的に commit する場合 true
      * @return integer マスターデータの削除数
      */
-    function deleteMasterData($name, $autoCommit = true)
+    public function deleteMasterData($name, $autoCommit = true)
     {
         $this->objQuery =& SC_Query_Ex::getSingletonInstance();
         if ($autoCommit) {
@@ -221,10 +221,10 @@ class SC_DB_MasterData
     /**
      * マスターデータのキャッシュを消去する.
      *
-     * @param string $name マスターデータ名
-     * @return bool 消去した場合 true
+     * @param  string $name マスターデータ名
+     * @return bool   消去した場合 true
      */
-    function clearCache($name)
+    public function clearCache($name)
     {
         $masterDataFile = MASTER_DATA_REALDIR . $name . '.php';
         if (is_file($masterDataFile)) {
@@ -245,14 +245,14 @@ class SC_DB_MasterData
      * 引数 $isDefine が true の場合は, 定数を生成する.
      * 定数コメントを生成する場合は, $commentColumn を指定する.
      *
-     * @param string $name マスターデータ名
-     * @param array $masterData マスターデータ
-     * @param bool $isDefine 定数を生成する場合 true
-     * @param array $commentColumn [0] => キー, [1] => コメント文字列,
+     * @param string $name          マスターデータ名
+     * @param array  $masterData    マスターデータ
+     * @param bool   $isDefine      定数を生成する場合 true
+     * @param array  $commentColumn [0] => キー, [1] => コメント文字列,
      *                             [2] => 表示順 を表すカラム名を格納した配列
      * @return bool キャッシュの生成に成功した場合 true
      */
-    function createCache($name, $columns = array(), $isDefine = false, $commentColumn = array())
+    public function createCache($name, $columns = array(), $isDefine = false, $commentColumn = array())
     {
         // マスターデータを取得
         $masterData = $this->getDbMasterData($name, $columns);
@@ -285,6 +285,7 @@ class SC_DB_MasterData
         // ファイルの内容を書き出す.
         if (fwrite($handle, $data) === false) {
             fclose($handle);
+
             return false;
         }
         fclose($handle);
@@ -299,12 +300,12 @@ class SC_DB_MasterData
      *
      * 返り値は, key => value 形式の配列である.
      *
-     * @param string $name マスターデータ名
-     * @param array $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
+     * @param string $name    マスターデータ名
+     * @param array  $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
      * @return array マスターデータ
      */
-    function getDbMasterData($name, $columns = array())
+    public function getDbMasterData($name, $columns = array())
     {
         $columns = $this->getDefaultColumnName($columns);
 
@@ -333,7 +334,7 @@ class SC_DB_MasterData
      *                        を表すカラム名を格納した配列
      * @return array カラム名を格納した配列
      */
-    function getDefaultColumnName($columns = array())
+    public function getDefaultColumnName($columns = array())
     {
         if (!empty($columns)) {
             return $columns;
@@ -346,11 +347,11 @@ class SC_DB_MasterData
      * マスターデータの配列を定数定義の文字列として出力する.
      *
      * @access private
-     * @param array $masterData マスターデータの配列
-     * @param array $comments コメントの配列
+     * @param  array  $masterData マスターデータの配列
+     * @param  array  $comments   コメントの配列
      * @return string 定数定義の文字列
      */
-    function getMasterDataAsDefine($masterData, $comments = array())
+    public function getMasterDataAsDefine($masterData, $comments = array())
     {
         $data = '';
         foreach ($masterData as $key => $val) {

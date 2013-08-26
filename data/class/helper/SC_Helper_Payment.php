@@ -33,8 +33,8 @@ class SC_Helper_Payment
     /**
      * 支払方法の情報を取得.
      *
-     * @param integer $payment_id 支払方法ID
-     * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
+     * @param  integer $payment_id  支払方法ID
+     * @param  boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
     public function get($payment_id, $has_deleted = false)
@@ -52,7 +52,7 @@ class SC_Helper_Payment
     /**
      * 支払方法一覧の取得.
      *
-     * @param boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
+     * @param  boolean $has_deleted 削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
     public function getList($has_deleted = false)
@@ -73,10 +73,10 @@ class SC_Helper_Payment
     /**
      * 購入金額に応じた支払方法を取得する.
      *
-     * @param integer $total 購入金額
-     * @return array 購入金額に応じた支払方法の配列
+     * @param  integer $total 購入金額
+     * @return array   購入金額に応じた支払方法の配列
      */
-    function getByPrice($total)
+    public function getByPrice($total)
     {
         // 削除されていない支払方法を取得
         $payments = $this->getList();
@@ -112,7 +112,7 @@ class SC_Helper_Payment
     /**
      * 支払方法の登録.
      *
-     * @param array $sqlval
+     * @param  array $sqlval
      * @return void
      */
     public function save($sqlval)
@@ -140,7 +140,7 @@ class SC_Helper_Payment
     /**
      * 支払方法の削除.
      *
-     * @param integer $payment_id 支払方法ID
+     * @param  integer $payment_id 支払方法ID
      * @return void
      */
     public function delete($payment_id)
@@ -153,7 +153,7 @@ class SC_Helper_Payment
     /**
      * 支払方法の表示順をひとつ上げる.
      *
-     * @param integer $payment_id 支払方法ID
+     * @param  integer $payment_id 支払方法ID
      * @return void
      */
     public function rankUp($payment_id)
@@ -165,7 +165,7 @@ class SC_Helper_Payment
     /**
      * 支払方法の表示順をひとつ下げる.
      *
-     * @param integer $payment_id 支払方法ID
+     * @param  integer $payment_id 支払方法ID
      * @return void
      */
     public function rankDown($payment_id)
@@ -179,7 +179,7 @@ class SC_Helper_Payment
      *
      * dtb_payment.memo03 に値が入っている場合は決済モジュールと見なす.
      *
-     * @param integer $payment_id 支払い方法ID
+     * @param  integer $payment_id 支払い方法ID
      * @return boolean 決済モジュールを使用する支払い方法の場合 true
      */
     public static function useModule($payment_id)

@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-define('CALENDAR_ROOT', DATA_REALDIR.'module/Calendar'.DIRECTORY_SEPARATOR);
 require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
 /**
@@ -38,7 +37,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -48,7 +47,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -59,7 +58,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // カレンダーデータ取得
         $this->arrCalendar = $this->lfGetCalendar(2);
@@ -68,10 +67,10 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
     /**
      * カレンダー情報取得.
      *
-     * @param integer $disp_month 表示する月数
-     * @return array カレンダー情報の配列を返す
+     * @param  integer $disp_month 表示する月数
+     * @return array   カレンダー情報の配列を返す
      */
-    function lfGetCalendar($disp_month = 1)
+    public function lfGetCalendar($disp_month = 1)
     {
         $objDate = new SC_Date_Ex();
         $arrCalendar = array();

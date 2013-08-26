@@ -37,7 +37,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_subtitle = '退会手続き(入力ページ)';
@@ -49,7 +49,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -59,7 +59,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         switch ($this->getMode()) {
             case 'confirm':
@@ -86,7 +86,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      * @access private
      * @return void
      */
-    function lfDeleteCustomer($customer_id)
+    public function lfDeleteCustomer($customer_id)
     {
         return SC_Helper_Customer_Ex::delete($customer_id);
     }

@@ -37,7 +37,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_subtitle = '会員登録内容変更(完了ページ)';
@@ -49,7 +49,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -59,7 +59,7 @@ class LC_Page_Mypage_ChangeComplete extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
     }
 }

@@ -37,7 +37,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'system/editdb.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
 
@@ -88,11 +88,11 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
     /**
      * フォームパラメーター初期化
      *
-     * @param object $objFormParam
-     * @param array $arrParams $_POST値
+     * @param  object $objFormParam
+     * @param  array  $arrParams    $_POST値
      * @return void
      */
-    function initForm(&$objFormParam, &$arrParams)
+    public function initForm(&$objFormParam, &$arrParams)
     {
         $objFormParam->addParam('モード', 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('テーブル名', 'table_name');
@@ -102,13 +102,14 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
         $objFormParam->setParam($arrParams);
     }
 
-    function lfDoChange(&$objFormParam)
+    public function lfDoChange(&$objFormParam)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrTarget = $this->lfGetTargetData($objFormParam);
         $message = '';
         if (is_array($arrTarget) && count($arrTarget) == 0) {
             $message = "window.alert('変更対象となるデータはありませんでした。');";
+
             return $message;
         } elseif (!is_array($arrTarget) && $arrTarget != '') {
             return $arrTarget; // window.alert が返ってきているはず。
@@ -129,7 +130,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
         return $message;
     }
 
-    function lfGetTargetData(&$objFormParam)
+    public function lfGetTargetData(&$objFormParam)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrIndexFlag    = $objFormParam->getValue('indexflag');
@@ -156,6 +157,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
             if (count($arrErr) != 0) {
                 // 通常の送信ではエラーにならないはずです。
                 $message = "window.alert('不正なデータがあったため処理を中断しました。');";
+
                 return $message;
             }
             if ($param['indexflag'] != $param['indexflag_new']) {
@@ -174,7 +176,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function lfGetIndexList()
+    public function lfGetIndexList()
     {
         // データベースからインデックス設定一覧を取得する
         $objQuery =& SC_Query_Ex::getSingletonInstance();

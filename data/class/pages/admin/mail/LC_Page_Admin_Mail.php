@@ -37,7 +37,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'mail/index.tpl';
@@ -79,7 +79,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -90,7 +90,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -175,10 +175,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化（初期会員検索時）
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParamSearchCustomer(&$objFormParam)
+    public function lfInitParamSearchCustomer(&$objFormParam)
     {
         SC_Helper_Customer_Ex::sfSetSearchParam($objFormParam);
         $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
@@ -188,10 +188,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の追加（テンプレート選択）
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfAddParamSelectTemplate(&$objFormParam)
+    public function lfAddParamSelectTemplate(&$objFormParam)
     {
         $objFormParam->addParam('メール形式', 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
         $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
@@ -202,10 +202,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * メルマガテンプレート一覧情報の取得
      *
-     * @param array $arrTemplate SC_Helper_Mail_Ex::sfGetMailmagaTemplate()の戻り値
+     * @param  array $arrTemplate SC_Helper_Mail_Ex::sfGetMailmagaTemplate()の戻り値
      * @return array key:template_id value:サブジェクト【配信形式】
      */
-    function lfGetMailTemplateList($arrTemplate)
+    public function lfGetMailTemplateList($arrTemplate)
     {
         if (is_array($arrTemplate)) {
             foreach ($arrTemplate as $line) {
@@ -219,11 +219,11 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * テンプレートIDから情報の取得して$objFormParamにset_paramする
      *
-     * @param array $objFormParam フォームパラメータークラス
-     * @param array $template_id テンプレートID
+     * @param  array $objFormParam フォームパラメータークラス
+     * @param  array $template_id  テンプレートID
      * @return void
      */
-    function lfGetTemplateData(&$objFormParam, $template_id)
+    public function lfGetTemplateData(&$objFormParam, $template_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('template_id DESC');
@@ -237,7 +237,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
      *
      * @return integer 登録した行の dtb_send_history.send_id の値
      */
-    function lfRegisterData(&$objFormParam)
+    public function lfRegisterData(&$objFormParam)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -280,10 +280,10 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * 配信履歴から条件を取得する
      *
-     * @param integer $send_id　配信履歴番号
+     * @param  integer $send_id　� �信履歴番号
      * @return array
      */
-    function lfGetMailQuery($send_id)
+    public function lfGetMailQuery($send_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

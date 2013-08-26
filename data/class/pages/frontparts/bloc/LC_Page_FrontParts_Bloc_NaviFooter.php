@@ -37,7 +37,7 @@ class LC_Page_FrontParts_Bloc_NaviFooter extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_FrontParts_Bloc_NaviFooter extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -58,7 +58,7 @@ class LC_Page_FrontParts_Bloc_NaviFooter extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         parent::action();
     }

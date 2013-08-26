@@ -41,14 +41,14 @@
 */
 class SC_PageNavi
 {
-    var $now_page;      // 現在のページ番号
-    var $max_page;      // 最終のページ番号
-    var $start_row;     // 開始レコード
-    var $strnavi;       // ページ送り文字列
-    var $arrPagenavi = array(); // ページ
+    public $now_page;      // 現在のページ番号
+    public $max_page;      // 最終のページ番号
+    public $start_row;     // 開始レコード
+    public $strnavi;       // ページ送り文字列
+    public $arrPagenavi = array(); // ページ
 
     // コンストラクタ
-    function __construct($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true)
+    public function __construct($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true)
     {
         $this->arrPagenavi['mode'] = 'search';
 
@@ -138,7 +138,7 @@ class SC_PageNavi
 
             if ($before && $next) {
                 $this->strnavi = $before .(($display_number) ? $page_number : ' | ') .$next;
-            } else if ($before || $next) {
+            } elseif ($before || $next) {
                 $this->strnavi = $before .(($display_number) ? $page_number : '') .$next;
             }
         } else {

@@ -48,7 +48,7 @@ class SC_SessionFactory
      *
      * @return SC_SessionFactory
      */
-    function getInstance()
+    public function getInstance()
     {
         $type = defined('SESSION_KEEP_METHOD')
             ? SESSION_KEEP_METHOD
@@ -83,7 +83,7 @@ class SC_SessionFactory
      * セッションの初期化を行う.
      *
      */
-    function initSession()
+    public function initSession()
     {
     }
 
@@ -92,7 +92,7 @@ class SC_SessionFactory
      *
      * @return boolean
      */
-    function useCookie()
+    public function useCookie()
     {
     }
 }

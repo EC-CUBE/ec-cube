@@ -37,7 +37,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'mail/history.tpl';
@@ -53,7 +53,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -64,7 +64,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         switch ($this->getMode()) {
             case 'delete':
@@ -85,10 +85,10 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
     /**
      * 実行履歴の取得
      *
-     * @param integer $search_pageno 表示したいページ番号
-     * @return array( integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
+     * @param  integer $search_pageno 表示したいページ番号
+     * @return array(  integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfDoSearch($search_pageno = 1)
+    public function lfDoSearch($search_pageno = 1)
     {
         // 引数の初期化
         if (SC_Utils_Ex::sfIsInt($search_pageno)===false) {
@@ -124,10 +124,10 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
 
     /**
      * 送信履歴の削除
-     * @param integer $send_id　削除したい送信履歴のID
+     * @param  integer $send_id　削除したい送信履歴のID
      * @return void
      */
-    function lfDeleteHistory($send_id)
+    public function lfDeleteHistory($send_id)
     {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $objQuery->update('dtb_send_history',

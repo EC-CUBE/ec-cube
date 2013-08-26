@@ -37,7 +37,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'products/maker.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objMaker = new SC_Helper_Maker_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -88,6 +88,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
                 $this->arrErr = $this->lfCheckError($objFormParam, $objMaker);
                 if (!SC_Utils_Ex::isBlank($this->arrErr['maker_id'])) {
                     trigger_error('', E_USER_ERROR);
+
                     return;
                 }
 
@@ -151,10 +152,10 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('メーカーID', 'maker_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メーカー名', 'name', SMTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
@@ -163,12 +164,12 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
     /**
      * 登録処理を実行.
      *
-     * @param integer $maker_id
-     * @param array $sqlval
-     * @param object $objMaker
+     * @param  integer  $maker_id
+     * @param  array    $sqlval
+     * @param  object   $objMaker
      * @return multiple
      */
-    function doRegist($maker_id, $sqlval, SC_Helper_Maker_Ex $objMaker)
+    public function doRegist($maker_id, $sqlval, SC_Helper_Maker_Ex $objMaker)
     {
         $sqlval['maker_id'] = $maker_id;
         $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -181,7 +182,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
      *
      * @return array $objErr->arrErr エラー内容
      */
-    function lfCheckError(&$objFormParam, SC_Helper_Maker_Ex &$objMaker)
+    public function lfCheckError(&$objFormParam, SC_Helper_Maker_Ex &$objMaker)
     {
         $arrErr = $objFormParam->checkError();
         $arrForm = $objFormParam->getHashArray();

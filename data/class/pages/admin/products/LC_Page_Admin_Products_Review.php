@@ -37,7 +37,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'products/review.tpl';
@@ -72,7 +72,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -83,7 +83,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -130,10 +130,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * 入力内容のチェックを行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
@@ -162,10 +162,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * 商品レビューの削除
      *
-     * @param integer $review_id 商品レビューのID
+     * @param  integer $review_id 商品レビューのID
      * @return void
      */
-    function lfDeleteReview($review_id)
+    public function lfDeleteReview($review_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval['del_flg'] = 1;
@@ -175,10 +175,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * hidden情報の作成
      *
-     * @param array $arrForm フォームデータ
+     * @param  array $arrForm フォームデータ
      * @return array hidden情報
      */
-    function lfSetHidden($arrForm)
+    public function lfSetHidden($arrForm)
     {
         $arrHidden = array();
         foreach ($arrForm AS $key=>$val) {
@@ -203,10 +203,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('投稿者名', 'search_reviewer_name', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
         $objFormParam->addParam('投稿者URL', 'search_reviewer_url', STEXT_LEN, 'KVas', array('MAX_LENGTH_CHECK'),'',false);
@@ -228,11 +228,11 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * CSV ファイル出力実行
      *
-     * @param string $where WHERE文
-     * @param array $arrWhereVal WHERE文の判定値
+     * @param  string $where       WHERE文
+     * @param  array  $arrWhereVal WHERE文の判定値
      * @return void
      */
-    function lfDoOutputCsv($where, $arrWhereVal)
+    public function lfDoOutputCsv($where, $arrWhereVal)
     {
         $objCSV = new SC_Helper_CSV_Ex();
         $objCSV->sfDownloadCsv('4', $where, $arrWhereVal, '', true);
@@ -241,10 +241,10 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * WHERE文の作成
      *
-     * @param array $arrForm フォームデータ
+     * @param  array $arrForm フォームデータ
      * @return array WHERE文、判定値
      */
-    function lfGetWhere($arrForm)
+    public function lfGetWhere($arrForm)
     {
         //削除されていない商品を検索
         $where = 'A.del_flg = 0 AND B.del_flg = 0';
@@ -333,12 +333,12 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * レビュー検索結果の取得
      *
-     * @param array $arrForm フォームデータ
-     * @param string $where WHERE文
-     * @param array $arrWhereVal WHERE文の判定値
-     * @return array レビュー一覧
+     * @param  array  $arrForm     フォームデータ
+     * @param  string $where       WHERE文
+     * @param  array  $arrWhereVal WHERE文の判定値
+     * @return array  レビュー一覧
      */
-    function lfGetReview($arrForm, $where, $arrWhereVal)
+    public function lfGetReview($arrForm, $where, $arrWhereVal)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

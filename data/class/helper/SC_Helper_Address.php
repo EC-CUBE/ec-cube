@@ -33,10 +33,10 @@ class SC_Helper_Address
     /**
      * お届け先を登録
      *
-     * @param array $sqlval
+     * @param  array   $sqlval
      * @return array()
      */
-    function registAddress($sqlval)
+    public function registAddress($sqlval)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $customer_id = $sqlval['customer_id'];
@@ -74,10 +74,10 @@ class SC_Helper_Address
     /**
      * お届け先を取得
      *
-     * @param integer $other_deliv_id
+     * @param  integer $other_deliv_id
      * @return array()
      */
-    function getAddress($other_deliv_id)
+    public function getAddress($other_deliv_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $address = $objQuery->select('*', 'dtb_other_deliv', 'other_deliv_id = ?', array($other_deliv_id));
@@ -88,11 +88,11 @@ class SC_Helper_Address
     /**
      * お届け先の一覧を取得
      *
-     * @param integer $customerId
-     * @param integer $startno
+     * @param  integer $customerId
+     * @param  integer $startno
      * @return array
      */
-    function getList($customer_id, $startno = '')
+    public function getList($customer_id, $startno = '')
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('other_deliv_id DESC');
@@ -107,10 +107,10 @@ class SC_Helper_Address
     /**
      * お届け先の削除
      *
-     * @param integer $delivId
+     * @param  integer $delivId
      * @return void
      */
-    function deleteAddress($other_deliv_id)
+    public function deleteAddress($other_deliv_id)
     {
         $where      = 'other_deliv_id = ?';
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
@@ -120,10 +120,10 @@ class SC_Helper_Address
     /**
      * お届け先フォーム初期化
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function setFormParam(&$objFormParam)
+    public function setFormParam(&$objFormParam)
     {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         $objFormParam->addParam('', 'other_deliv_id');
@@ -132,10 +132,10 @@ class SC_Helper_Address
     /**
      * お届け先フォームエラーチェック
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function errorCheck(&$objFormParam)
+    public function errorCheck(&$objFormParam)
     {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
 

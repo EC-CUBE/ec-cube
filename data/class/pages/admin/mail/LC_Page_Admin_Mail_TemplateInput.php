@@ -37,7 +37,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'mail/template_input.tpl';
@@ -55,7 +55,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objMailHelper = new SC_Helper_Mail_Ex();
 
@@ -114,7 +114,7 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
      * @param integer template_id 更新時は指定
      * @return void
      */
-    function lfRegistData(&$objFormParam, $template_id = null)
+    public function lfRegistData(&$objFormParam, $template_id = null)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sqlval = $objFormParam->getDbArray();
@@ -139,10 +139,10 @@ class LC_Page_Admin_Mail_TemplateInput extends LC_Page_Admin_Ex
     /**
      * お問い合わせ入力時のパラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('メール形式', 'mail_method', INT_LEN, 'n', array('EXIST_CHECK','ALNUM_CHECK'));
         $objFormParam->addParam('Subject', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));

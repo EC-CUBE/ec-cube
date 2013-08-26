@@ -29,16 +29,16 @@
  */
 class SC_Display
 {
-    var $response;
+    public $response;
 
     /** 端末種別を保持する */
     // XXX プロパティとして保持する必要があるのか疑問。
-    static $device;
+    public static $device;
 
     /** SC_View インスタンス */
-    var $view;
+    public $view;
 
-    var $deviceSeted = false;
+    public $deviceSeted = false;
 
     /*
      * TODO php4を捨てたときに ここのコメントアウトを外してね。
@@ -48,7 +48,7 @@ class SC_Display
      * const('ADMIN',99);
      */
 
-    function __construct($hasPrevURL = true)
+    public function __construct($hasPrevURL = true)
     {
         $this->response = new SC_Response_Ex();
         if ($hasPrevURL) {
@@ -56,7 +56,7 @@ class SC_Display
         }
     }
 
-    function setPrevURL()
+    public function setPrevURL()
     {
         // TODO SC_SiteSession で実装した方が良さげ
         $objCartSess = new SC_CartSession_Ex();
@@ -69,7 +69,7 @@ class SC_Display
      * @param LC_Page $page LC_Page インスタンス
      * @param $is_admin boolean 管理画面を扱う場合 true
      */
-    function prepare($page, $is_admin = false)
+    public function prepare($page, $is_admin = false)
     {
         if (!$this->deviceSeted || !is_null($this->view)) {
             $device = ($is_admin) ? DEVICE_TYPE_ADMIN : $this->detectDevice();
@@ -85,12 +85,12 @@ class SC_Display
      *
      * SC_Response::reload() のラッパーです.
      */
-    function reload($queryString = array(), $removeQueryString = false)
+    public function reload($queryString = array(), $removeQueryString = false)
     {
         $this->response->reload($queryString, $removeQueryString);
     }
 
-    function noAction()
+    public function noAction()
     {
         return;
     }
@@ -98,7 +98,7 @@ class SC_Display
     /**
      * ヘッダを追加する.
      */
-    function addHeader($name, $value)
+    public function addHeader($name, $value)
     {
         $this->response->addHeader($name, $value);
     }
@@ -107,7 +107,7 @@ class SC_Display
      * デバイス毎の出力方法を自動で変更する、ファサード
      * Enter description here ...
      */
-    function setDevice($device = DEVICE_TYPE_PC)
+    public function setDevice($device = DEVICE_TYPE_PC)
     {
         switch ($device) {
             case DEVICE_TYPE_MOBILE:
@@ -132,7 +132,7 @@ class SC_Display
     /**
      * SC_View インスタンスを設定する.
      */
-    function setView($view)
+    public function setView($view)
     {
         $this->view = $view;
     }
@@ -145,7 +145,7 @@ class SC_Display
      * SC_Display::PC = PC = 10
      *
      * @static
-     * @param   $reset  boolean
+     * @param          $reset boolean
      * @return integer 端末種別ID
      */
     public static function detectDevice($reset = FALSE)
@@ -165,17 +165,17 @@ class SC_Display
         return SC_Display_Ex::$device;
     }
 
-    function assign($val1,$val2)
+    public function assign($val1,$val2)
     {
         $this->view->assign($val1, $val2);
     }
 
-    function assignobj($obj)
+    public function assignobj($obj)
     {
         $this->view->assignobj($obj);
     }
 
-    function assignarray($array)
+    public function assignarray($array)
     {
         $this->view->assignarray($array);
     }

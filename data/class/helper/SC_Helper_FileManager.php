@@ -33,10 +33,10 @@ class SC_Helper_FileManager
     /**
      * 指定パス配下のディレクトリ取得する.
      *
-     * @param string $dir 取得するディレクトリパス
+     * @param  string $dir 取得するディレクトリパス
      * @return void
      */
-    function sfGetFileList($dir)
+    public function sfGetFileList($dir)
     {
         $arrFileList = array();
         $arrDirList = array();
@@ -87,10 +87,10 @@ class SC_Helper_FileManager
     /**
      * 指定したディレクトリのバイト数を取得する.
      *
-     * @param string $dir ディレクトリ
+     * @param  string $dir ディレクトリ
      * @return void
      */
-    function sfGetDirSize($dir)
+    public function sfGetDirSize($dir)
     {
         $bytes = 0;
         if (file_exists($dir)) {
@@ -103,7 +103,7 @@ class SC_Helper_FileManager
                     $path = $dir.'/'.$file;
                     if ($file != '..' && $file != '.' && !is_dir($path)) {
                         $bytes += filesize($path);
-                    } else if (is_dir($path) && $file != '..' && $file != '.') {
+                    } elseif (is_dir($path) && $file != '..' && $file != '.') {
                         // 下層ファイルのバイト数を取得する為、再帰的に呼び出す。
                         $bytes += SC_Helper_FileManager::sfGetDirSize($path);
                     }
@@ -124,12 +124,12 @@ class SC_Helper_FileManager
     /**
      * ツリー生成用配列取得(javascriptに渡す用).
      *
-     * @param string $dir ディレクトリ
+     * @param string $dir         ディレクトリ
      * @param string $tree_status 現在のツリーの状態開いているフォルダのパスを
      *                            | 区切りで格納
      * @return array ツリー生成用の配列
      */
-    function sfGetFileTree($dir, $tree_status)
+    public function sfGetFileTree($dir, $tree_status)
     {
         $cnt = 0;
         $arrTree = array();
@@ -162,15 +162,15 @@ class SC_Helper_FileManager
     /**
      * ツリー生成用配列取得(javascriptに渡す用).
      *
-     * @param string $dir ディレクトリ
+     * @param string $dir          ディレクトリ
      * @param string $default_rank デフォルトの階層
      *                             (/区切りで　0,1,2・・・とカウント)
-     * @param integer $cnt 連番
-     * @param string $tree_status 現在のツリーの状態開いているフォルダのパスが
+     * @param integer $cnt         連番
+     * @param string  $tree_status 現在のツリーの状態開いているフォルダのパスが
      *                            | 区切りで格納
      * @return array ツリー生成用の配列
      */
-    function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status)
+    public function sfGetFileTreeSub($dir, $default_rank, &$cnt, &$arrTree, $tree_status)
     {
         if (file_exists($dir)) {
             $handle = opendir($dir);
@@ -217,7 +217,7 @@ class SC_Helper_FileManager
      * @param string ディレクトリ
      * @return bool ファイルが存在する場合 true
      */
-    function sfDirChildExists($dir)
+    public function sfDirChildExists($dir)
     {
         if (file_exists($dir)) {
             if (is_dir($dir)) {
@@ -239,12 +239,12 @@ class SC_Helper_FileManager
     /**
      * 指定したファイルが前回開かれた状態にあったかチェックする.
      *
-     * @param string $dir ディレクトリ
+     * @param string $dir         ディレクトリ
      * @param string $tree_status 現在のツリーの状態開いているフォルダのパスが
      *                            | 区切りで格納
      * @return bool 前回開かれた状態の場合 true
      */
-    function lfIsFileOpen($dir, $tree_status)
+    public function lfIsFileOpen($dir, $tree_status)
     {
         $arrTreeStatus = explode('|', $tree_status);
         if (in_array($dir, $arrTreeStatus)) {
@@ -257,10 +257,10 @@ class SC_Helper_FileManager
     /**
      * ファイルのダウンロードを行う.
      *
-     * @param string $file ファイルパス
+     * @param  string $file ファイルパス
      * @return void
      */
-    function sfDownloadFile($file)
+    public function sfDownloadFile($file)
     {
         // ファイルの場合はダウンロードさせる
         Header('Content-disposition: attachment; filename='.basename($file));
@@ -273,11 +273,11 @@ class SC_Helper_FileManager
     /**
      * ファイル作成を行う.
      *
-     * @param string $file ファイルパス
-     * @param integer $mode パーミッション
-     * @return bool ファイル作成に成功した場合 true
+     * @param  string  $file ファイルパス
+     * @param  integer $mode パーミッション
+     * @return bool    ファイル作成に成功した場合 true
      */
-    function sfCreateFile($file, $mode = '')
+    public function sfCreateFile($file, $mode = '')
     {
         // 行末の/を取り除く
         if ($mode != '') {
@@ -295,7 +295,7 @@ class SC_Helper_FileManager
      * @param string ファイルパス
      * @return string ファイルの内容
      */
-    function sfReadFile($filename)
+    public function sfReadFile($filename)
     {
         $str = '';
         // バイナリモードでオープン
@@ -312,11 +312,11 @@ class SC_Helper_FileManager
     /**
      * ファイル書込を行う.
      *
-     * @param string $filename ファイルパス
-     * @param string $value 書き込み内容
+     * @param  string  $filename ファイルパス
+     * @param  string  $value    書き込み内容
      * @return boolean ファイルの書き込みに成功した場合 true
      */
-    function sfWriteFile($filename, $value)
+    public function sfWriteFile($filename, $value)
     {
         if (!is_dir(dirname($filename))) {
             SC_Utils_Ex::recursiveMkdir(dirname($filename), 0777);
@@ -335,11 +335,11 @@ class SC_Helper_FileManager
     /**
      * ユーザが作成したファイルをアーカイブしダウンロードさせる
      * TODO 要リファクタリング
-     * @param string $dir アーカイブを行なうディレクトリ
-     * @param string $template_code テンプレートコード
+     * @param  string  $dir           アーカイブを行なうディレクトリ
+     * @param  string  $template_code テンプレートコード
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
-    function downloadArchiveFiles($dir, $template_code)
+    public function downloadArchiveFiles($dir, $template_code)
     {
         // ダウンロードされるファイル名
         $dlFileName = 'tpl_package_' . $template_code . '_' . date('YmdHis') . '.tar.gz';
@@ -366,6 +366,7 @@ class SC_Helper_FileManager
             header('Pragma: ');
             readfile($dlFileName);
             unlink($dir . '/' . $dlFileName);
+
             return true;
         } else {
             return false;
@@ -375,10 +376,10 @@ class SC_Helper_FileManager
     /**
      * tarアーカイブを解凍する.
      *
-     * @param string $path アーカイブパス
+     * @param  string  $path アーカイブパス
      * @return boolean Archive_Tar::extractModify()のエラー
      */
-    function unpackFile($path)
+    public function unpackFile($path)
     {
         // 圧縮フラグTRUEはgzip解凍をおこなう
         $tar = new Archive_Tar($path, true);
@@ -404,11 +405,11 @@ class SC_Helper_FileManager
     /**
      * 指定されたパスの配下を再帰的に削除.
      *
-     * @param string  $path       削除対象のディレクトリまたはファイルのパス
-     * @param boolean $del_myself $pathそのものを削除するか. true なら削除する.
+     * @param  string  $path       削除対象のディレクトリまたはファイルのパス
+     * @param  boolean $del_myself $pathそのものを削除するか. true なら削除する.
      * @return void
      */
-    function deleteFile($path, $del_myself = true)
+    public function deleteFile($path, $del_myself = true)
     {
         $flg = false;
         // 対象が存在するかを検証.

@@ -37,7 +37,7 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
 
@@ -53,7 +53,7 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -64,7 +64,7 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         switch ($this->getMode()) {
             case 'detail':
@@ -84,7 +84,7 @@ class LC_Page_Admin_OwnersStore_Log extends LC_Page_Admin_Ex
         $this->arrInstallLogs = $this->getLogs();
     }
 
-    function getLogs()
+    public function getLogs()
     {
         $sql =<<<END
 SELECT
@@ -105,7 +105,7 @@ END;
         return isset($arrRet) ? $arrRet : array();
     }
 
-    function initParam()
+    public function initParam()
     {
         $objForm = new SC_FormParam_Ex();
         $objForm->addParam('log_id', 'log_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -114,7 +114,7 @@ END;
         return $objForm;
     }
 
-    function getLogDetail($log_id)
+    public function getLogDetail($log_id)
     {
             $sql =<<<END
 SELECT

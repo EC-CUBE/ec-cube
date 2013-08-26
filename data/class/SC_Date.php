@@ -24,47 +24,47 @@
 /* 日時表示用クラス */
 class SC_Date
 {
-    var $start_year;
-    var $month;
-    var $day;
-    var $end_year;
+    public $start_year;
+    public $month;
+    public $day;
+    public $end_year;
 
     public static $arrHoliday = NULL;
     public static $arrRegularHoliday = NULL;
 
     // コンストラクタ
-    function __construct($start_year='', $end_year='')
+    public function __construct($start_year='', $end_year='')
     {
         if ($start_year)  $this->setStartYear($start_year);
         if ($end_year)    $this->setEndYear($end_year);
     }
 
-    function setStartYear($year)
+    public function setStartYear($year)
     {
         $this->start_year = $year;
     }
 
-    function getStartYear()
+    public function getStartYear()
     {
         return $this->start_year;
     }
 
-    function setEndYear($endYear)
+    public function setEndYear($endYear)
     {
         $this->end_year = $endYear;
     }
 
-    function getEndYear()
+    public function getEndYear()
     {
         return $this->end_year;
     }
 
-    function setMonth($month)
+    public function setMonth($month)
     {
         $this->month = $month;
     }
 
-    function setDay($day)
+    public function setDay($day)
     {
         $this->day = $day;
     }
@@ -72,14 +72,14 @@ class SC_Date
     /**
      * 年プルダウン用の配列を返す
      * FIXME $default_year に一致いる行が無かった場合、先頭か末尾に付加すべきと思われる。
-     * @param string $year    XMLファイル名
+     * @param string      $year         XMLファイル名
      * @param bool|string $default_year
      *     false  「選択なし」は含めない。
      *     true   「選択なし」は含める。
      *     string 「選択なし」は指定された値の下に付加する。
      * @param string $default_key
      */
-    function getYear($year = '', $default_year = false, $default_key = '----')
+    public function getYear($year = '', $default_year = false, $default_key = '----')
     {
         if ($year) $this->setStartYear($year);
 
@@ -105,7 +105,7 @@ class SC_Date
         return $year_array;
     }
 
-    function getZeroYear($year = '')
+    public function getZeroYear($year = '')
     {
         if ($year) $this->setStartYear($year);
 
@@ -125,7 +125,7 @@ class SC_Date
         return $year_array;
     }
 
-    function getZeroMonth()
+    public function getZeroMonth()
     {
         $month_array = array();
         for ($i=1; $i <= 12; $i++) {
@@ -136,7 +136,7 @@ class SC_Date
         return $month_array;
     }
 
-    function getMonth($default = false)
+    public function getMonth($default = false)
     {
         $month_array = array();
 
@@ -149,7 +149,7 @@ class SC_Date
         return $month_array;
     }
 
-    function getDay($default = false)
+    public function getDay($default = false)
     {
         $day_array = array();
 
@@ -162,7 +162,7 @@ class SC_Date
         return $day_array;
     }
 
-    function getHour()
+    public function getHour()
     {
         $hour_array = array();
         for ($i=0; $i<=23; $i++) {
@@ -172,7 +172,7 @@ class SC_Date
         return $hour_array;
     }
 
-    function getMinutes()
+    public function getMinutes()
     {
         $minutes_array = array();
         for ($i=0; $i<=59; $i++) {
@@ -182,7 +182,7 @@ class SC_Date
         return $minutes_array;
     }
 
-    function getMinutesInterval()
+    public function getMinutesInterval()
     {
         $minutes_array = array('00'=>'00', '30'=>'30');
 
@@ -192,9 +192,9 @@ class SC_Date
     /**
      * 休日の判定.
      *
-     * @param integer $year
-     * @param integer $month
-     * @param integer $day
+     * @param  integer $year
+     * @param  integer $month
+     * @param  integer $day
      * @return boolean 休日の場合はtrue
      */
     public function isHoliday($year, $month, $day)

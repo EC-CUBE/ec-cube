@@ -37,7 +37,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->skip_load_page_layout = true;
         parent::init();
@@ -49,7 +49,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         // 入力エラーチェック
         $arrErr = $this->fnErrorCheck($_GET);
@@ -84,10 +84,10 @@ class LC_Page_InputZip extends LC_Page_Ex
     /**
      * 入力エラーのチェック.
      *
-     * @param array $arrRequest リクエスト値($_GET)
+     * @param  array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function fnErrorCheck($arrRequest)
+    public function fnErrorCheck($arrRequest)
     {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
@@ -112,10 +112,10 @@ class LC_Page_InputZip extends LC_Page_Ex
     /**
      * エラーチェック.
      *
-     * @param string $value
+     * @param  string                 $value
      * @return エラーなし：true エラー：false
      */
-    function lfInputNameCheck($value)
+    public function lfInputNameCheck($value)
     {
         // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
         if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {

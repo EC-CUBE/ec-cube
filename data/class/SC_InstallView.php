@@ -23,7 +23,7 @@
 
 class SC_InstallView extends SC_View_Ex
 {
-    function __construct($template_dir, $compile_dir = COMPILE_REALDIR)
+    public function __construct($template_dir, $compile_dir = COMPILE_REALDIR)
     {
         parent::__construct();
 

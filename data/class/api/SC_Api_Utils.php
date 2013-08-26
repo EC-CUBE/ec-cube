@@ -49,7 +49,7 @@ class SC_Api_Utils
     /**
      * オペレーション名に対応した追加の設定情報を取得する
      *
-     * @param string $access_key
+     * @param  string $access_key
      * @return string 秘密鍵文字列
      */
     public function getOperationSubConfig($operation_name, $key_name = '', $arrApiConfig = '')
@@ -77,8 +77,8 @@ class SC_Api_Utils
      * オペレーション名に対応した認証の設定情報を取得する
      * Configが無い場合は、APIデフォルトを取得する
      *
-     * @param string $operation_name
-     * @return array 設定配列
+     * @param  string $operation_name
+     * @return array  設定配列
      */
     public function getApiConfig($operation_name)
     {
@@ -111,7 +111,7 @@ class SC_Api_Utils
     /**
      * APIログ
      *
-     * @param text $msg 出力文字列
+     * @param text $msg            出力文字列
      * @param text $operation_name
      @ @rturn void
      */
@@ -129,8 +129,8 @@ class SC_Api_Utils
     /**
      * APIオペレーションに対応したAPIクラスをインスタンス化
      *
-     * @param string $operation_name オペレーション名
-     * @param array $arrParam リクエストパラメーター
+     * @param  string $operation_name オペレーション名
+     * @param  array  $arrParam       リクエストパラメーター
      * @return object APIオペレーションクラスオブジェクト
      */
     public function loadApiOperation($operation_name, $arrParam = array())

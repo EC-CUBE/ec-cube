@@ -32,14 +32,14 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  */
 class LC_Page_Admin_OwnersStore_Module extends LC_Page_Admin_Ex
 {
-    var $tpl_subno = 'index';
+    public $tpl_subno = 'index';
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
 
@@ -55,7 +55,7 @@ class LC_Page_Admin_OwnersStore_Module extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -66,7 +66,7 @@ class LC_Page_Admin_OwnersStore_Module extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         // nothing.
     }

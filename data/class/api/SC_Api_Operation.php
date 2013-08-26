@@ -52,8 +52,8 @@ class SC_Api_Operation
     /**
      * 有効な管理者ID/PASSかどうかチェックする
      *
-     * @param string $member_id ログインID文字列
-     * @param string $member_password ログインパスワード文字列
+     * @param  string  $member_id       ログインID文字列
+     * @param  string  $member_password ログインパスワード文字列
      * @return boolean ログイン情報が有効な場合 true
      */
     protected function checkMemberAccount($member_id, $member_password)
@@ -78,8 +78,8 @@ class SC_Api_Operation
     /**
      * 会員ログインチェックを実行する.
      *
-     * @param string $login_email ログインメールアドレス
-     * @param string $password ログインパスワード
+     * @param  string  $login_email ログインメールアドレス
+     * @param  string  $password    ログインパスワード
      * @return boolean ログインに成功した場合 true; 失敗した場合 false
      */
     protected function checkCustomerAccount($login_email, $login_password)
@@ -192,7 +192,7 @@ class SC_Api_Operation
     /**
      * ApiAccessKeyに対応した秘密鍵を取得する。
      *
-     * @param string $access_key
+     * @param  string $access_key
      * @return string 秘密鍵文字列
      */
     protected function getApiSecretKey($access_key)
@@ -287,7 +287,7 @@ class SC_Api_Operation
     /**
      * API実行
      *
-     * @param array $arrPost リクエストパラメーター
+     * @param  array        $arrPost リクエストパラメーター
      * @return array(string レスポンス名, array レスポンス配列)
      */
     public function doApiAction($arrPost)
@@ -373,7 +373,7 @@ class SC_Api_Operation
         $arrResponse[$response_group_name] = array(); // Items
         $arrResponse[$response_group_name] = $arrResponseValidSection;
         if (is_array($arrResponseBody)) {
-            $arrResponse[$response_group_name] = array_merge((array)$arrResponse[$response_group_name], (array)$arrResponseBody);
+            $arrResponse[$response_group_name] = array_merge((array) $arrResponse[$response_group_name], (array) $arrResponseBody);
         }
 
         return array($response_outer, $arrResponse);
@@ -382,8 +382,8 @@ class SC_Api_Operation
     /**
      * APIのリクエストのエコー情報の作成
      *
-     * @param array $arrParam リクエストパラメーター
-     * @param float $start_time 実行時間計測用開始時間
+     * @param  array $arrParam   リクエストパラメーター
+     * @param  float $start_time 実行時間計測用開始時間
      * @return array エコー情報配列 (XML用の _attributes 指定入り）
      */
     protected function getOperationRequestEcho($arrParam, $start_time)

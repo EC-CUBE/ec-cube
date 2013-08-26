@@ -37,7 +37,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
@@ -61,7 +61,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -73,7 +73,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex();
 
@@ -132,10 +132,10 @@ class LC_Page_Contact extends LC_Page_Ex
     /**
      * お問い合わせ入力時のパラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('お名前(姓)', 'name01', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(名)', 'name02', STEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
@@ -157,10 +157,10 @@ class LC_Page_Contact extends LC_Page_Ex
     /**
      * 入力内容のチェックを行なう.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array 入力チェック結果の配列
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        入力チェック結果の配列
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
@@ -176,7 +176,7 @@ class LC_Page_Contact extends LC_Page_Ex
      *
      * @return void
      */
-    function lfSendMail(&$objPage)
+    public function lfSendMail(&$objPage)
     {
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();
         $objPage->tpl_shopname = $CONF['shop_name'];

@@ -37,7 +37,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
@@ -49,7 +49,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -60,7 +60,7 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objCart = new SC_CartSession_Ex();
         $this->isMultiple = $objCart->isMultiple();
@@ -72,10 +72,10 @@ class LC_Page_FrontParts_Bloc_Cart extends LC_Page_FrontParts_Bloc_Ex
     /**
      * カートの情報を取得する
      *
-     * @param SC_CartSession $objCart カートセッション管理クラス
-     * @return array カートデータ配列
+     * @param  SC_CartSession $objCart カートセッション管理クラス
+     * @return array          カートデータ配列
      */
-    function lfGetCartData(&$objCart)
+    public function lfGetCartData(&$objCart)
     {
         $arrCartKeys = $objCart->getKeys();
         foreach ($arrCartKeys as $cart_key) {

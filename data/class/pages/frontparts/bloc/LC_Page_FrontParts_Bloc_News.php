@@ -37,7 +37,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -58,7 +58,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objNews = new SC_Helper_News_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -104,10 +104,10 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
     /**
      * 新着情報パラメーター初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  array $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitNewsParam(&$objFormParam)
+    public function lfInitNewsParam(&$objFormParam)
     {
         $objFormParam->addParam('現在ページ', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
         $objFormParam->addParam('表示件数', 'disp_number', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
@@ -119,7 +119,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      *
      * @return array $arrNewsList 新着情報の配列を返す
      */
-    function lfGetNews($dispNumber, $pageNo, SC_Helper_News_Ex $objNews)
+    public function lfGetNews($dispNumber, $pageNo, SC_Helper_News_Ex $objNews)
     {
         $arrNewsList = $objNews->getList($dispNumber, $pageNo);
 
@@ -142,11 +142,11 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      * 新着情報をJSON形式で取得する
      * (ページと表示件数を指定)
      *
-     * @param array $arrData フォーム入力値
-     * @param object $objNews
+     * @param  array  $arrData フォーム入力値
+     * @param  object $objNews
      * @return String $json 新着情報のJSONを返す
      */
-    function lfGetNewsForJson($arrData, SC_Helper_News_Ex $objNews)
+    public function lfGetNewsForJson($arrData, SC_Helper_News_Ex $objNews)
     {
         $dispNumber = $arrData['disp_number'];
         $pageNo = $arrData['pageno'];
@@ -165,11 +165,11 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      * 新着情報1件分をJSON形式で取得する
      * (news_idを指定)
      *
-     * @param array $arrData フォーム入力値
-     * @param object $objNews
+     * @param  array  $arrData フォーム入力値
+     * @param  object $objNews
      * @return String $json 新着情報1件分のJSONを返す
      */
-    function lfGetNewsDetailForJson($arrData)
+    public function lfGetNewsDetailForJson($arrData)
     {
         $arrNewsList = SC_Helper_News_Ex::getNews($arrData['news_id']);
         $json =  SC_Utils_Ex::jsonEncode($arrNewsList);    //JSON形式
@@ -180,10 +180,10 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
     /**
      * エラーメッセージを整形し, JSON 形式で返す.
      *
-     * @param array $arrErr エラーメッセージの配列
+     * @param  array  $arrErr エラーメッセージの配列
      * @return string JSON 形式のエラーメッセージ
      */
-    function lfGetErrors($arrErr)
+    public function lfGetErrors($arrErr)
     {
         $messages = '';
         foreach ($arrErr as $val) {

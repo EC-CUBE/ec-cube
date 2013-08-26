@@ -37,7 +37,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mypageno     = 'index';
@@ -58,7 +58,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
     }
@@ -68,14 +68,14 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
         SC_Helper_Purchase_Ex::checkSessionPendingOrder();
         SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
         SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
-		
+
         $objCustomer    = new SC_Customer_Ex();
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objProduct  = new SC_Product();
@@ -116,7 +116,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
                     $arrTempProductDetail['product_id'],
                     $arrTempProductDetail['product_class_id']
                     );
-            if($this->tpl_arrOrderDetail[$product_index]['price_inctax'] != $arrTempProductDetail['price02_inctax']) {
+            if ($this->tpl_arrOrderDetail[$product_index]['price_inctax'] != $arrTempProductDetail['price02_inctax']) {
                 $this->is_price_change = true;
             }
             $this->tpl_arrOrderDetail[$product_index]['product_price_inctax'] = ($arrTempProductDetail['price02_inctax']) ? $arrTempProductDetail['price02_inctax'] : 0 ;
@@ -133,10 +133,10 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
     /**
      * 受注メール送信履歴の取得
      *
-     * @param integer $order_id 注文番号
-     * @return array 受注メール送信履歴の内容
+     * @param  integer $order_id 注文番号
+     * @return array   受注メール送信履歴の内容
      */
-    function lfGetMailHistory($order_id)
+    public function lfGetMailHistory($order_id)
     {
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
         $col        = 'send_date, subject, template_id, send_id';
@@ -154,7 +154,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      * @param $arrWDAY array 曜日データの配列
      * @return array お届け先情報
      */
-    function lfGetShippingDate(&$objPurchase, $order_id, $arrWDAY)
+    public function lfGetShippingDate(&$objPurchase, $order_id, $arrWDAY)
     {
         $arrShipping = $objPurchase->getShippings($order_id);
 
@@ -177,7 +177,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      * @param $arrOrderDetail 購入履歴の配列
      * @return array 画像をセットした購入履歴の配列
      */
-    function setMainListImage($arrOrderDetails)
+    public function setMainListImage($arrOrderDetails)
     {
         $i = 0;
         foreach ($arrOrderDetails as $arrOrderDetail) {
@@ -196,7 +196,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      * @param $arrOrderDetail 購入履歴の配列
      * @return array MIMETYPE、ファイル名をセットした購入履歴の配列
      */
-    function lfSetMimetype($arrOrderDetails)
+    public function lfSetMimetype($arrOrderDetails)
     {
         $objHelperMobile = new SC_Helper_Mobile_Ex();
         $i = 0;
@@ -219,7 +219,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      * @param integer $order_id 注文番号
      * @param $arrOrderDetail 購入履歴の配列
      */
-    function lfSetAU($arrOrderDetails)
+    public function lfSetAU($arrOrderDetails)
     {
         $this->isAU = false;
         // モバイル端末かつ、キャリアがAUの場合に処理を行う

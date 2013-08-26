@@ -24,16 +24,16 @@
 //---- アップロードファイル加工クラス(thumb.phpとセットで使用する)
 class SC_Image
 {
-    var $tmp_dir;
+    public $tmp_dir;
 
-    function __construct($tmp_dir)
+    public function __construct($tmp_dir)
     {
         // ヘッダファイル読込
         $this->tmp_dir = rtrim($tmp_dir, '/') . '/';
     }
 
     //--- 一時ファイル生成(サムネイル画像生成用)
-    function makeTempImage($keyname, $max_width, $max_height)
+    public function makeTempImage($keyname, $max_width, $max_height)
     {
         // 一意なIDを取得する。
         $mainname = uniqid('').'.';
@@ -46,7 +46,7 @@ class SC_Image
     }
 
     //--- ファイルを指定保存DIRへ移動
-    function moveTempImage($filename, $save_dir)
+    public function moveTempImage($filename, $save_dir)
     {
         // コピー元ファイル、コピー先ディレクトリが存在する場合にのみ実行する
         $from_path = $this->tmp_dir.$filename;
@@ -61,7 +61,7 @@ class SC_Image
     }
 
     //---- 指定ファイルを削除
-    function deleteImage($filename, $dir)
+    public function deleteImage($filename, $dir)
     {
         if (file_exists($dir.'/'.$filename)) {
             unlink($dir.'/'.$filename);
@@ -71,14 +71,14 @@ class SC_Image
     /**
      * 指定サイズで画像を出力する.
      *
-     * @param string $FromImgPath ファイル名までのパス
-     * @param string $ToImgPath 出力先パス
-     * @param integer $tmpMW 最大横幅
-     * @param integer $tmpMH 最大縦幅
+     * @param string  $FromImgPath ファイル名までのパス
+     * @param string  $ToImgPath   出力先パス
+     * @param integer $tmpMW       最大横幅
+     * @param integer $tmpMH       最大縦幅
      * @param integer $newFileName 新ファイル名
      * @param array 新ファイル名を格納した配列
      */
-    function MakeThumb($FromImgPath , $ToImgPath , $tmpMW , $tmpMH, $newFileName = '')
+    public function MakeThumb($FromImgPath , $ToImgPath , $tmpMW , $tmpMH, $newFileName = '')
     {
         // 画像の最大横幅（単位：ピクセル）
         $ThmMaxWidth = LARGE_IMAGE_WIDTH;
@@ -154,9 +154,11 @@ class SC_Image
                         $ToFile .= '.gif';
                     }
                     if (!@copy($FromImgPath , $ToImgPath.$ToFile)) { // エラー処理
+
                         return array(0,'ファイルのコピーに失敗しました。');
                     }
                     ImageDestroy($ImgNew);
+
                     return array(1,$ToFile);
                 }
 
@@ -180,6 +182,7 @@ class SC_Image
                     return array(0,'画像の出力に失敗しました。');
                 }
                 ImageDestroy($ImgNew);
+
                 return array(1,$ToFile);
 
             case '2': //jpg形式

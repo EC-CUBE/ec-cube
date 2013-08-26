@@ -559,13 +559,6 @@ class HTTP_Request
             $this->_postData[$name] = $this->_arrayMapRecursive('urlencode', $value);
         }
     }
-	
-    function addPostDataArray($array, $preencoded = false)
-    {
-		foreach($array as $key => $val){
-			$this->addPostData($key, $val, $preencoded);
-		}
-    }	
 
    /**
     * Recursively applies the callback function to the value

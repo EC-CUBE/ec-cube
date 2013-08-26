@@ -37,7 +37,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         parent::process();
         $this->action();
@@ -59,7 +59,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $this->lfGetKiyaku(intval($_GET['page']), $this);
     }
@@ -71,7 +71,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      * @param object &$objPage ページオブジェクト
      * @return void
      */
-    function lfGetKiyaku($index, &$objPage)
+    public function lfGetKiyaku($index, &$objPage)
     {
         $objKiyaku = new SC_Helper_Kiyaku_Ex();
         $arrKiyaku = $objKiyaku->getList();

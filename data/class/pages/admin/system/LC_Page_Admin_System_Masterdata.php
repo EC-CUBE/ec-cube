@@ -37,7 +37,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainpage = 'system/masterdata.tpl';
@@ -52,7 +52,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -63,7 +63,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $this->arrMasterDataName = $this->getMasterDataNames(array('mtb_pref', 'mtb_zip', 'mtb_constants'));
         $masterData = new SC_DB_MasterData_Ex();
@@ -100,14 +100,15 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      * マスターデータ名チェックを行う
      *
      * @access private
-     * @param array $_POST値
-     * @param array $arrMasterDataName  マスターデータテーブル名のリスト
+     * @param  array  $_POST値
+     * @param  array  $arrMasterDataName マスターデータテーブル名のリスト
      * @return string $master_data_name 選択しているマスターデータのテーブル名
      */
-    function checkMasterDataName(&$arrParams, &$arrMasterDataName)
+    public function checkMasterDataName(&$arrParams, &$arrMasterDataName)
     {
         if (in_array($arrParams['master_data_name'], $arrMasterDataName)) {
             $master_data_name = $arrParams['master_data_name'];
+
             return $master_data_name;
         } else {
             SC_Utils_Ex::sfDispError('');
@@ -119,10 +120,10 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      * マスターデータ名を配列で取得する.
      *
      * @access private
-     * @param array $ignores 取得しないマスターデータ名の配列
+     * @param  array $ignores 取得しないマスターデータ名の配列
      * @return array マスターデータ名の配列
      */
-    function getMasterDataNames($ignores = array())
+    public function getMasterDataNames($ignores = array())
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $arrMasterDataName = $dbFactory->findTableNames('mtb_');
@@ -148,7 +149,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      * @access private
      * @return void|string エラーが発生した場合はエラーメッセージを返す.
      */
-    function checkUniqueID(&$arrParams)
+    public function checkUniqueID(&$arrParams)
     {
         $arrId = $arrParams['id'];
         for ($i = 0; $i < count($arrId); $i++) {
@@ -168,12 +169,12 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      * マスターデータの登録.
      *
      * @access private{
-     * @param array  $arrParams $_POST値
-     * @param object $masterData SC_DB_MasterData_Ex()
-     * @param string $master_data_name 登録対象のマスターデータのテーブル名
+     * @param  array  $arrParams        $_POST値
+     * @param  object $masterData       SC_DB_MasterData_Ex()
+     * @param  string $master_data_name 登録対象のマスターデータのテーブル名
      * @return void
      */
-    function registMasterData($arrParams, &$masterData, $master_data_name)
+    public function registMasterData($arrParams, &$masterData, $master_data_name)
     {
         $arrTmp = array();
         foreach ($arrParams['id'] as $key => $val) {

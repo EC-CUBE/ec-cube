@@ -39,7 +39,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         $this->template = LOGIN_FRAME;
         $this->tpl_mainpage = 'login_error.tpl';
@@ -60,7 +60,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -71,7 +71,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         SC_Response_Ex::sendHttpStatus(500);
 
@@ -99,7 +99,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
     /**
      * エラーページではトランザクショントークンの自動検証は行わない
      */
-    function doValidToken()
+    public function doValidToken()
     {
         // queit.
     }

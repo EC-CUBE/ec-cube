@@ -37,7 +37,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
         $this->tpl_mainno = 'contents';
@@ -51,7 +51,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -62,7 +62,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
@@ -111,7 +111,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      * パラメーターの初期化を行う
      * @param Object $objFormParam
      */
-    function lfInitParam(&$objFormParam)
+    public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('商品ID', 'search_name', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ID', 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
@@ -122,10 +122,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
 
     /**
      * 入力されたパラメーターのエラーチェックを行う。
-     * @param Object $objFormParam
-     * @return Array エラー内容
+     * @param  Object $objFormParam
+     * @return Array  エラー内容
      */
-    function lfCheckError(&$objFormParam)
+    public function lfCheckError(&$objFormParam)
     {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
@@ -136,10 +136,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
     /**
      *
      * POSTされた値からSQLのWHEREとBINDを配列で返す。
-     * @return array ('where' => where string, 'bind' => databind array)
-     * @param SC_FormParam $objFormParam
+     * @return array        ('where' => where string, 'bind' => databind array)
+     * @param  SC_FormParam $objFormParam
      */
-    function createWhere(&$objFormParam,&$objDb)
+    public function createWhere(&$objFormParam,&$objDb)
     {
         $arrForm = $objFormParam->getHashArray();
         $where = 'alldtl.del_flg = 0';
@@ -158,7 +158,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
                     list($tmp_where, $tmp_bind) = $objDb->sfGetCatWhere($val);
                     if ($tmp_where != '') {
                         $where.= ' AND alldtl.product_id IN (SELECT product_id FROM dtb_product_categories WHERE ' . $tmp_where . ')';
-                        $bind = array_merge((array)$bind, (array)$tmp_bind);
+                        $bind = array_merge((array) $bind, (array) $tmp_bind);
                     }
                     break;
                 case 'search_product_code':
@@ -183,10 +183,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
     /**
      *
      * 検索結果対象となる商品の数を返す。
-     * @param array $whereAndBind
+     * @param array      $whereAndBind
      * @param SC_Product $objProduct
      */
-    function getLineCount($whereAndBind,&$objProduct)
+    public function getLineCount($whereAndBind,&$objProduct)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
@@ -200,10 +200,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
 
     /**
      * 検索結果の取得
-     * @param array $whereAndBind string whereと array bindの連想配列
+     * @param array      $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
      */
-    function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
+    public function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
@@ -218,10 +218,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
     /**
      * 商品取得
      *
-     * @param array $arrProductId
+     * @param array      $arrProductId
      * @param SC_Product $objProduct
      */
-    function getProductList($arrProductId, &$objProduct)
+    public function getProductList($arrProductId, &$objProduct)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 

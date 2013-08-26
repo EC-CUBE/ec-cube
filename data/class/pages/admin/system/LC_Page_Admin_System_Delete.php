@@ -37,7 +37,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function init()
+    public function init()
     {
         parent::init();
     }
@@ -47,7 +47,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function process()
+    public function process()
     {
         $this->action();
         $this->sendResponse();
@@ -58,7 +58,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
      *
      * @return void
      */
-    function action()
+    public function action()
     {
         $objFormParam = new SC_FormParam_Ex;
 
@@ -87,11 +87,11 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
     /**
      * パラメーター初期化.
      *
-     * @param object $objFormParam
-     * @param array  $arrParams  $_GET値
+     * @param  object $objFormParam
+     * @param  array  $arrParams    $_GET値
      * @return void
      */
-    function initParam(&$objFormParam, &$arrParams)
+    public function initParam(&$objFormParam, &$arrParams)
     {
         $objFormParam->addParam('pageno', 'pageno', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
         $objFormParam->addParam('id', 'id', INT_LEN, '', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -101,10 +101,10 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
     /**
      * メンバー情報削除の為の制御.
      *
-     * @param integer $id 削除対象のmember_id
+     * @param  integer $id 削除対象のmember_id
      * @return void
      */
-    function deleteMember($id)
+    public function deleteMember($id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->begin();
@@ -118,11 +118,11 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
     /**
      * ランキングの振り直し.
      *
-     * @param object $objQuery
-     * @param integer $id 削除対象のmember_id
+     * @param  object      $objQuery
+     * @param  integer     $id       削除対象のmember_id
      * @return void|UPDATE の結果フラグ
      */
-    function renumberRank(&$objQuery, $id)
+    public function renumberRank(&$objQuery, $id)
     {
         // ランクの取得
         $where1 = 'member_id = ?';
@@ -138,11 +138,11 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
     /**
      * レコードの削除(削除フラグをONにする).
      *
-     * @param object $objQuery
-     * @param integer $id 削除対象のmember_id
+     * @param  object      $objQuery
+     * @param  integer     $id       削除対象のmember_id
      * @return void|UPDATE の結果フラグ
      */
-    function deleteRecode(&$objQuery, $id)
+    public function deleteRecode(&$objQuery, $id)
     {
         // Updateする値を作成する.
         $sqlVal = array();
