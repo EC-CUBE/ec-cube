@@ -40,7 +40,7 @@
  * @author      Alexey Borzov <avb@php.net>
  * @copyright   2002-2007 Richard Heyes
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
- * @version     CVS: $Id$
+ * @version     CVS: $Id: Request.php,v 1.63 2008/10/11 11:07:10 avb Exp $
  * @link        http://pear.php.net/package/HTTP_Request/
  */
 
@@ -559,13 +559,6 @@ class HTTP_Request
             $this->_postData[$name] = $this->_arrayMapRecursive('urlencode', $value);
         }
     }
-	
-    function addPostDataArray($array, $preencoded = false)
-    {
-		foreach($array as $key => $val){
-			$this->addPostData($key, $val, $preencoded);
-		}
-    }	
 
    /**
     * Recursively applies the callback function to the value

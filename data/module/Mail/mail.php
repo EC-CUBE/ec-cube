@@ -39,14 +39,14 @@
  * @author      Chuck Hagenbuch <chuck@horde.org> 
  * @copyright   2010 Chuck Hagenbuch
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
- * @version     CVS: $Id$
+ * @version     CVS: $Id: mail.php 294747 2010-02-08 08:18:33Z clockwerx $
  * @link        http://pear.php.net/package/Mail/
  */
 
 /**
  * internal PHP-mail() implementation of the PEAR Mail:: interface.
  * @package Mail
- * @version $Revision$
+ * @version $Revision: 294747 $
  */
 class Mail_mail extends Mail {
 

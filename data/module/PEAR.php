@@ -14,7 +14,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2010 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: commit 01071ee7b71e4d38c4e96fdf0ae5e411841eaec7
+ * @version    CVS: $Id: PEAR.php 313023 2011-07-06 19:17:11Z dufuz $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 0.1
  */
@@ -78,7 +78,7 @@ $GLOBALS['_PEAR_error_handler_stack']    = array();
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: @package_version@
+ * @version    Release: 1.9.4
  * @link       http://pear.php.net/package/PEAR
  * @see        PEAR_Error
  * @since      Class available since PHP 4.0.2
@@ -249,9 +249,6 @@ class PEAR
      */
     function isError($data, $code = null)
     {
-        if (!is_object($data)) {
-             return false;
-        }
         if (!is_a($data, 'PEAR_Error')) {
             return false;
         }
@@ -487,12 +484,6 @@ class PEAR
             $error_class = $message->getType();
             $message->error_message_prefix = '';
             $message     = $message->getMessage();
-
-            // Make sure right data gets passed.
-            $r = new ReflectionClass($error_class);
-            $c = $r->getConstructor();
-            $p = array_shift($c->getParameters());
-            $skipmsg = ($p->getName() != 'message');
         }
 
         if (
@@ -797,7 +788,7 @@ function _PEAR_call_destructors()
  * @author     Gregory Beaver <cellog@php.net>
  * @copyright  1997-2006 The PHP Group
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    Release: @package_version@
+ * @version    Release: 1.9.4
  * @link       http://pear.php.net/manual/en/core.pear.pear-error.php
  * @see        PEAR::raiseError(), PEAR::throwError()
  * @since      Class available since PHP 4.0.2
