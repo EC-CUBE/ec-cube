@@ -563,5 +563,8 @@
                 }
             );
         });
+
+        // モーダルウィンドウ
+        $("a.expansion").colorbox();
     });
 })(window);

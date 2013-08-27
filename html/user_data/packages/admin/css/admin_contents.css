@@ -1078,6 +1078,18 @@ body > #container {
 
 /* 基本情報管理
 ----------------------------------------------- */
+/* SHOPマスター */
+#maparea {
+    padding: 30px;
+    background: #FFFFFF;
+}
+#maparea .btn-area {
+    text-align: center;
+}
+#maps {
+    margin: 0 auto 1em;
+}
+
 /* 郵便番号DB登録 */
 .basis-zip-item {
     margin-bottom: 30px;

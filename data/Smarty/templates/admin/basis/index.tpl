@@ -22,9 +22,6 @@
  */
 *}-->
 
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 <script type="text/javascript">//<![CDATA[
 var map;
 var marker;
@@ -50,62 +47,60 @@ $(function() {
         }
     });
 
-    $("a#mapAddress").fancybox({onStart: function() {
-        var lat = $("#latitude").val();
-        var lng = $("#longitude").val();
+    $("a#mapAddress").colorbox({
+        inline: true,
+        width: 360,
+        onComplete: function() {
+            var lat = $("#latitude").val();
+            var lng = $("#longitude").val();
 
-        var latlng;
-        if (lat && lng) {
-            latlng = new google.maps.LatLng(lat, lng);
-        } else {
-            var address = $("#addr01").val() + $("#addr02").val();
-            if (geocoder) {
-                geocoder.geocode({'address': address}, function(results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        latlng = results[0].geometry.location;
-                    }
-                });
+            var latlng;
+            if (lat && lng) {
+                latlng = new google.maps.LatLng(lat, lng);
+            } else {
+                var address = $("#addr01").val() + $("#addr02").val();
+                if (geocoder) {
+                    geocoder.geocode({address: address}, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            latlng = results[0].geometry.location;
+                        }
+                    });
+                }
             }
-        }
 
-        if (!latlng) {
-            // 座標が取得できない場合は北緯35度東経135度から取得
-            latlng = new google.maps.LatLng(35, 135);
-        }
+            if (!latlng) {
+                // 座標が取得できない場合は北緯35度東経135度から取得
+                latlng = new google.maps.LatLng(35, 135);
+            }
 
-        var mapOptions = {
-            zoom: 15,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
+            var mapOptions = {
+                zoom: 15,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
 
-        if (!map)
-        {
-            map = new google.maps.Map($("#maps").get(0), mapOptions);
-        }
-        else
-        {
-            map.panTo(latlng);
-        }
+            if (!map) {
+                map = new google.maps.Map(document.getElementById("maps"), mapOptions);
+            } else {
+                map.panTo(latlng);
+            }
 
-        if (!marker)
-        {
-            marker = new google.maps.Marker({map: map, position: latlng});
-            marker.setDraggable(true);
-        }
-        else
-        {
-            marker.setPosition(latlng);
-        }
+            if (!marker) {
+                marker = new google.maps.Marker({map: map, position: latlng});
+                marker.setDraggable(true);
+            } else {
+                marker.setPosition(latlng);
+            }
 
-        // TODO Maker のダブルクリックにも対応したい
-        $("#inputPoint").click(function() {
-            latlng = marker.getPosition();
-            $("#latitude").val(latlng.lat());
-            $("#longitude").val(latlng.lng());
-            $.fancybox.close();
-        });
-    }});
+            // TODO Maker のダブルクリックにも対応したい
+            $("#inputPoint").click(function() {
+                latlng = marker.getPosition();
+                $("#latitude").val(latlng.lat());
+                $("#longitude").val(latlng.lng());
+                $.colorbox.close();
+            });
+        },
+    });
 });
 //]]></script>
 <form name="form1" id="form1" method="post" action="?">
@@ -314,8 +309,12 @@ $(function() {
     </div>
     <div style="display: none">
         <div id="maparea">
-            <div id="maps" style="width: 300px; height: 300px"></div>
-            <a class="btn-normal" href="javascript:;" id="inputPoint">この位置を入力</a>
+            <div id="maps" style="width: 300px;height: 300px;"></div>
+            <div class="btn-area">
+                <ul>
+                    <li><a class="btn-normal" href="javascript:;" id="inputPoint">この位置を入力</a></li>
+                </ul>
+            </div>
         </div>
     </div>
     <!--{* ▲登録テーブルここまで *}-->

@@ -20,7 +20,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<script src="<!--{$TPL_URLPATH}-->js/jquery.facebox/facebox.js"></script>
 <script>//<![CDATA[
     // 規格2に選択肢を割り当てる。
     function fnSetClassCategories(form, classcat_id2_selected) {
@@ -36,11 +35,6 @@
 
         //お勧め商品のリンクを張り直し(フリックスライドによるエレメント生成後)
         $('#whobought_area li').biggerlink();
-        //商品画像の拡大
-        $('a.expansion').facebox({
-            loadingImage : '<!--{$TPL_URLPATH}-->js/jquery.facebox/loading.gif',
-            closeImage   : '<!--{$TPL_URLPATH}-->js/jquery.facebox/closelabel.png'
-        });
     });
     //サブエリアの表示/非表示
     var speed = 500;
