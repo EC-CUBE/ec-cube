@@ -215,13 +215,13 @@
 
     // ページナビで使用する。
     eccube.movePage = function(pageno, mode, form) {
-        if (typeof form === 'undefined') {
+        if (form === undefined) {
             form = eccube.defaults.formId;
         }
         var formElement = $("form#" + form);
         formElement.find("input[name=pageno]").val(pageno);
-        if (typeof mode !== 'undefined') {
-            formElement.find("input[name='mode']").val('search');
+        if (mode !== undefined) {
+            formElement.find("input[name='mode']").val(mode);
         }
         formElement.submit();
     };
