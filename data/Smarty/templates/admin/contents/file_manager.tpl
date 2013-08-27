@@ -44,7 +44,7 @@
     eccube.fileManager.IMG_MINUS          = "<!--{$TPL_URLPATH}-->img/contents/minus.gif";         // マイナスライン
     eccube.fileManager.IMG_NORMAL         = "<!--{$TPL_URLPATH}-->img/contents/space.gif";         // スペース
 //]]></script>
-<form name="form1" method="post" action="?"  enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="?"  enctype="multipart/form-data">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
     <input type="hidden" name="now_file" value="<!--{$tpl_now_dir|h}-->" />

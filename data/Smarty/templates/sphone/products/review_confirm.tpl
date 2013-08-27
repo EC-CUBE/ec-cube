@@ -23,7 +23,7 @@
 
 <div id="windowarea">
     <h2 class="title">お客様の声書き込み</h2>
-    <form name="form1" method="post" action="?">
+    <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="complete" />
         <!--{foreach from=$arrForm key=key item=item}-->
