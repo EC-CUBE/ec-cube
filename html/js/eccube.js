@@ -159,7 +159,6 @@
     };
 
     eccube.fnFormModeSubmit = function(form, mode, keyname, keyid) {
-        var formElement = $("form#" + form);
         switch(mode) {
             case 'delete':
                 if(!window.confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')){
@@ -179,11 +178,11 @@
             default:
                 break;
         }
-        formElement.find("input[name='mode']").val(mode);
+        var values = {mode:mode};
         if(keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
-            formElement.find("*[name=" + keyname + "]").val(keyid);
+            values[keyname] = keyid;
         }
-        formElement.submit();
+        eccube.submitForm(values, form);
     };
 
     eccube.setValueAndSubmit = function(form, key, val, msg) {
@@ -226,11 +225,21 @@
         formElement.submit();
     };
 
-    eccube.submitForm = function(form){
-        if (typeof form === 'undefined') {
-            form = eccube.defaults.formId;
+    eccube.submitForm = function(values, form){
+        var formElement;
+        if (form !== undefined && typeof form === "string" && form !== "") {
+            formElement = $("form#" + form);
+        } else if (form !== undefined && typeof form === "object") {
+            formElement = form;
+        } else {
+            formElement = $("form#" + eccube.defaults.formId);
         }
-        $("form#" + form).submit();
+        if (values !== undefined && typeof values === "object") {
+            $.each(values, function(index, value) {
+                formElement.find("input,select").filter("[name='" + index + "']").val(value);
+            });
+        }
+        formElement.submit();
     };
 
     // ポイント入力制限。
