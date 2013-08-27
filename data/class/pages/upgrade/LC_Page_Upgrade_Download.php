@@ -129,6 +129,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
         }
 
         $objReq = $this->request($mode, $arrPostData);
+        $response = $objReq->send();
 
         // リクエストチェック
         $objLog->log('* http request check start');
@@ -142,7 +143,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
 
         // レスポンスチェック
         $objLog->log('* http response check start');
-        if ($objReq->getResponseCode() !== 200) {
+        if ($response->getStatus() !== 200) {
             $objJson->setError(OSTORE_E_C_HTTP_RESP);
             $objJson->display();
             $objLog->error(OSTORE_E_C_HTTP_RESP, $objReq);
@@ -150,7 +151,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             return;
         }
 
-        $body = $objReq->getResponseBody();
+        $body = $response->getBody();
         $objRet = $objJson->decode($body);
 
         // JSONデータのチェック
@@ -229,7 +230,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
 
             // 配信サーバーへ通知
             $objLog->log('* notify to lockon server start');
-            $objReq = $this->notifyDownload($mode, $objReq->getResponseCookies());
+            $objReq = $this->notifyDownload($mode, $response->getCookies());
 
             $objLog->log('* dl commit result:' . serialize($objReq));
 
