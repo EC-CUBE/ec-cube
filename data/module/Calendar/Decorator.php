@@ -1,41 +1,28 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
-
+//
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2002 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.02 of the PHP license,      |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/3_0.txt.                                  |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
+// +----------------------------------------------------------------------+
+//
+// $Id: Decorator.php,v 1.3 2005/10/22 10:29:46 quipo Exp $
+//
 /**
- * Contains the Calendar_Decorator class
- *
- * PHP versions 4 and 5
- *
- * LICENSE: Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE FREEBSD PROJECT OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * @category  Date and Time
- * @package   Calendar
- * @author    Harry Fuecks <hfuecks@phppatterns.com>
- * @copyright 2003-2007 Harry Fuecks
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   CVS: $Id: Decorator.php 300729 2010-06-24 12:05:53Z quipo $
- * @link      http://pear.php.net/package/Calendar
+ * @package Calendar
+ * @version $Id: Decorator.php,v 1.3 2005/10/22 10:29:46 quipo Exp $
  */
-
 /**
  * Decorates any calendar class.
  * Create a subclass of this class for your own "decoration".
@@ -49,18 +36,12 @@
 .*         return date('D', $day);
  *     }
  * }
- * $Day = new Calendar_Day(2003, 10, 25);
- * $DayDecorator = new DayDecorator($Day);
+ * $Day = & new Calendar_Day(2003, 10, 25);
+ * $DayDecorator = & new DayDecorator($Day);
  * echo $DayDecorator->thisDay(); // Outputs "Sat"
  * </code>
- *
- * @category  Date and Time
- * @package   Calendar
- * @author    Harry Fuecks <hfuecks@phppatterns.com>
- * @copyright 2003-2007 Harry Fuecks
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://pear.php.net/package/Calendar
  * @abstract
+ * @package Calendar
  */
 class Calendar_Decorator
 {
@@ -73,10 +54,9 @@ class Calendar_Decorator
 
     /**
      * Constructs the Calendar_Decorator
-     *
-     * @param object &$calendar subclass to Calendar to decorate
+     * @param object subclass to Calendar to decorate
      */
-    function Calendar_Decorator(&$calendar)
+    function Calendar_Decorator(& $calendar)
     {
         $this->calendar = & $calendar;
     }
@@ -84,9 +64,7 @@ class Calendar_Decorator
     /**
      * Defines the calendar by a Unix timestamp, replacing values
      * passed to the constructor
-     *
-     * @param int $ts Unix timestamp
-     *
+     * @param int Unix timestamp
      * @return void
      * @access public
      */
@@ -98,8 +76,7 @@ class Calendar_Decorator
     /**
      * Returns a timestamp from the current date / time values. Format of
      * timestamp depends on Calendar_Engine implementation being used
-     *
-     * @return int $ts timestamp
+     * @return int timestamp
      * @access public
      */
     function getTimestamp()
@@ -109,9 +86,7 @@ class Calendar_Decorator
 
     /**
      * Defines calendar object as selected (e.g. for today)
-     *
-     * @param boolean $state whether Calendar subclass must be selected
-     *
+     * @param boolean state whether Calendar subclass
      * @return void
      * @access public
      */
@@ -122,7 +97,6 @@ class Calendar_Decorator
 
     /**
      * True if the calendar subclass object is selected (e.g. today)
-     *
      * @return boolean
      * @access public
      */
@@ -133,7 +107,6 @@ class Calendar_Decorator
 
     /**
      * Adjusts the date (helper method)
-     *
      * @return void
      * @access public
      */
@@ -144,25 +117,21 @@ class Calendar_Decorator
 
     /**
      * Returns the date as an associative array (helper method)
-     *
-     * @param mixed $stamp timestamp (leave empty for current timestamp)
-     *
+     * @param mixed timestamp (leave empty for current timestamp)
      * @return array
      * @access public
      */
-    function toArray($stamp = null)
+    function toArray($stamp=null)
     {
         return $this->calendar->toArray($stamp);
     }
 
     /**
      * Returns the value as an associative array (helper method)
-     *
-     * @param string  $returnType type of date object that return value represents
-     * @param string  $format     ['int'|'timestamp'|'object'|'array']
-     * @param mixed   $stamp      timestamp (depending on Calendar engine being used)
-     * @param integer $default    default value (i.e. give me the answer quick)
-     *
+     * @param string type of date object that return value represents
+     * @param string $format ['int' | 'array' | 'timestamp' | 'object']
+     * @param mixed timestamp (depending on Calendar engine being used)
+     * @param int integer default value (i.e. give me the answer quick)
      * @return mixed
      * @access private
      */
@@ -174,15 +143,13 @@ class Calendar_Decorator
     /**
      * Defines Day object as first in a week
      * Only used by Calendar_Month_Weekdays::build()
-     *
-     * @param boolean $state whether it's first or not
-     *
+     * @param boolean state
      * @return void
      * @access private
      */
-    function setFirst($state = true)
+    function setFirst ($state = true)
     {
-        if (method_exists($this->calendar, 'setFirst')) {
+        if ( method_exists($this->calendar,'setFirst') ) {
             $this->calendar->setFirst($state);
         }
     }
@@ -190,15 +157,13 @@ class Calendar_Decorator
     /**
      * Defines Day object as last in a week
      * Used only following Calendar_Month_Weekdays::build()
-     *
-     * @param boolean $state whether it's last or not
-     *
+     * @param boolean state
      * @return void
      * @access private
      */
     function setLast($state = true)
     {
-        if (method_exists($this->calendar, 'setLast')) {
+        if ( method_exists($this->calendar,'setLast') ) {
             $this->calendar->setLast($state);
         }
     }
@@ -206,13 +171,11 @@ class Calendar_Decorator
     /**
      * Returns true if Day object is first in a Week
      * Only relevant when Day is created by Calendar_Month_Weekdays::build()
-     *
      * @return boolean
      * @access public
      */
-    function isFirst()
-    {
-        if (method_exists($this->calendar, 'isFirst')) {
+    function isFirst() {
+        if ( method_exists($this->calendar,'isFirst') ) {
             return $this->calendar->isFirst();
         }
     }
@@ -220,13 +183,12 @@ class Calendar_Decorator
     /**
      * Returns true if Day object is last in a Week
      * Only relevant when Day is created by Calendar_Month_Weekdays::build()
-     *
      * @return boolean
      * @access public
      */
     function isLast()
     {
-        if (method_exists($this->calendar, 'isLast')) {
+        if ( method_exists($this->calendar,'isLast') ) {
             return $this->calendar->isLast();
         }
     }
@@ -234,37 +196,31 @@ class Calendar_Decorator
     /**
      * Defines Day object as empty
      * Only used by Calendar_Month_Weekdays::build()
-     *
-     * @param boolean $state whether it's empty or not
-     *
+     * @param boolean state
      * @return void
      * @access private
      */
     function setEmpty ($state = true)
     {
-        if (method_exists($this->calendar, 'setEmpty')) {
+        if ( method_exists($this->calendar,'setEmpty') ) {
             $this->calendar->setEmpty($state);
         }
     }
 
     /**
-     * Check if the current object is empty
-     *
      * @return boolean
      * @access public
      */
     function isEmpty()
     {
-        if (method_exists($this->calendar, 'isEmpty')) {
+        if ( method_exists($this->calendar,'isEmpty') ) {
             return $this->calendar->isEmpty();
         }
     }
 
     /**
      * Build the children
-     *
-     * @param array $sDates array containing Calendar objects to select (optional)
-     *
+     * @param array containing Calendar objects to select (optional)
      * @return boolean
      * @access public
      * @abstract
@@ -279,7 +235,6 @@ class Calendar_Decorator
      * (e.g. a minute from an hour object). On reaching the end of
      * the collection, returns false and resets the collection for
      * further iteratations.
-     *
      * @return mixed either an object subclass of Calendar or false
      * @access public
      */
@@ -290,7 +245,6 @@ class Calendar_Decorator
 
     /**
      * Fetches all child from the current collection of children
-     *
      * @return array
      * @access public
      */
@@ -300,8 +254,8 @@ class Calendar_Decorator
     }
 
     /**
-     * Get the number Calendar subclass objects stored in the internal collection
-     *
+     * Get the number Calendar subclass objects stored in the internal
+     * collection.
      * @return int
      * @access public
      */
@@ -312,8 +266,8 @@ class Calendar_Decorator
 
     /**
      * Determine whether this date is valid, with the bounds determined by
-     * the Calendar_Engine. The call is passed on to Calendar_Validator::isValid
-     *
+     * the Calendar_Engine. The call is passed on to
+     * Calendar_Validator::isValid
      * @return boolean
      * @access public
      */
@@ -324,7 +278,6 @@ class Calendar_Decorator
 
     /**
      * Returns an instance of Calendar_Validator
-     *
      * @return Calendar_Validator
      * @access public
      */
@@ -337,21 +290,17 @@ class Calendar_Decorator
     /**
      * Returns a reference to the current Calendar_Engine being used. Useful
      * for Calendar_Table_Helper and Calendar_Validator
-     *
      * @return object implementing Calendar_Engine_Inteface
      * @access private
      */
     function & getEngine()
     {
-        $engine = $this->calendar->getEngine();
-        return $engine;
+        return $this->calendar->getEngine();
     }
 
     /**
      * Returns the value for the previous year
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 2002 or timestamp
      * @access public
      */
@@ -362,9 +311,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for this year
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 2003 or timestamp
      * @access public
      */
@@ -375,9 +322,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for next year
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 2004 or timestamp
      * @access public
      */
@@ -388,9 +333,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the previous month
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 4 or Unix timestamp
      * @access public
       */
@@ -401,9 +344,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for this month
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 5 or timestamp
      * @access public
      */
@@ -414,9 +355,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for next month
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 6 or timestamp
      * @access public
      */
@@ -427,18 +366,16 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the previous week
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 4 or Unix timestamp
      * @access public
       */
     function prevWeek($format = 'n_in_month')
     {
-        if ( method_exists($this->calendar, 'prevWeek')) {
+        if ( method_exists($this->calendar,'prevWeek') ) {
             return $this->calendar->prevWeek($format);
         } else {
-            include_once 'PEAR.php';
+            require_once 'PEAR.php';
             PEAR::raiseError(
                 'Cannot call prevWeek on Calendar object of type: '.
                 get_class($this->calendar), 133, PEAR_ERROR_TRIGGER,
@@ -449,18 +386,16 @@ class Calendar_Decorator
 
     /**
      * Returns the value for this week
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 5 or timestamp
      * @access public
      */
     function thisWeek($format = 'n_in_month')
     {
-        if ( method_exists($this->calendar, 'thisWeek')) {
+        if ( method_exists($this->calendar,'thisWeek') ) {
             return $this->calendar->thisWeek($format);
         } else {
-            include_once 'PEAR.php';
+            require_once 'PEAR.php';
             PEAR::raiseError(
                 'Cannot call thisWeek on Calendar object of type: '.
                 get_class($this->calendar), 133, PEAR_ERROR_TRIGGER,
@@ -471,18 +406,16 @@ class Calendar_Decorator
 
     /**
      * Returns the value for next week
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 6 or timestamp
      * @access public
      */
     function nextWeek($format = 'n_in_month')
     {
-        if ( method_exists($this->calendar, 'nextWeek')) {
+        if ( method_exists($this->calendar,'nextWeek') ) {
             return $this->calendar->nextWeek($format);
         } else {
-            include_once 'PEAR.php';
+            require_once 'PEAR.php';
             PEAR::raiseError(
                 'Cannot call thisWeek on Calendar object of type: '.
                 get_class($this->calendar), 133, PEAR_ERROR_TRIGGER,
@@ -493,22 +426,17 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the previous day
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 10 or timestamp
      * @access public
      */
-    function prevDay($format = 'int')
-    {
+    function prevDay($format = 'int') {
         return $this->calendar->prevDay($format);
     }
 
     /**
      * Returns the value for this day
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 11 or timestamp
      * @access public
      */
@@ -519,9 +447,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the next day
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 12 or timestamp
      * @access public
      */
@@ -532,9 +458,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the previous hour
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 13 or timestamp
      * @access public
      */
@@ -545,9 +469,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for this hour
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 14 or timestamp
      * @access public
      */
@@ -558,9 +480,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the next hour
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 14 or timestamp
      * @access public
      */
@@ -571,9 +491,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the previous minute
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 23 or timestamp
      * @access public
      */
@@ -584,9 +502,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for this minute
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 24 or timestamp
      * @access public
      */
@@ -597,22 +513,18 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the next minute
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 25 or timestamp
      * @access public
      */
-    function nextMinute($format = 'int')
+   function nextMinute($format = 'int')
     {
         return $this->calendar->nextMinute($format);
     }
 
     /**
      * Returns the value for the previous second
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 43 or timestamp
      * @access public
      */
@@ -623,9 +535,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for this second
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 44 or timestamp
      * @access public
      */
@@ -636,9 +546,7 @@ class Calendar_Decorator
 
     /**
      * Returns the value for the next second
-     *
-     * @param string $format return value format ['int'|'timestamp'|'object'|'array']
-     *
+     * @param string return value format ['int' | 'timestamp' | 'object' | 'array']
      * @return int e.g. 45 or timestamp
      * @access public
      */

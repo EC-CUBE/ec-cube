@@ -1,47 +1,35 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
-
+//
+// +----------------------------------------------------------------------+
+// | PHP                                                                  |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2002 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.02 of the PHP license,      |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/3_0.txt.                                  |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
+// |          Lorenzo Alberton <l dot alberton at quipo dot it>           |
+// +----------------------------------------------------------------------+
+//
+// $Id: Uri.php,v 1.1 2004/08/16 09:03:55 hfuecks Exp $
+//
 /**
- * Contains the Calendar_Util_Uri class
- *
- * PHP versions 4 and 5
- *
- * LICENSE: Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE FREEBSD PROJECT OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * @category  Date and Time
- * @package   Calendar
- * @author    Harry Fuecks <hfuecks@phppatterns.com>
- * @author    Lorenzo Alberton <l.alberton@quipo.it>
- * @copyright 2003-2007 Harry Fuecks, Lorenzo Alberton
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   CVS: $Id: Uri.php 300729 2010-06-24 12:05:53Z quipo $
- * @link      http://pear.php.net/package/Calendar
+ * @package Calendar
+ * @version $Id: Uri.php,v 1.1 2004/08/16 09:03:55 hfuecks Exp $
  */
 
 /**
  * Utility to help building HTML links for navigating the calendar<br />
  * <code>
  * $Day = new Calendar_Day(2003, 10, 23);
- * $Uri = new Calendar_Util_Uri('year', 'month', 'day');
+ * $Uri = & new Calendar_Util_Uri('year', 'month', 'day');
  * echo $Uri->prev($Day,'month'); // Displays year=2003&amp;month=10
  * echo $Uri->prev($Day,'day'); // Displays year=2003&amp;month=10&amp;day=22
  * $Uri->seperator = '/';
@@ -49,15 +37,8 @@
  * echo $Uri->prev($Day,'month'); // Displays 2003/10
  * echo $Uri->prev($Day,'day'); // Displays 2003/10/22
  * </code>
- *
- * @category  Date and Time
- * @package   Calendar
- * @author    Harry Fuecks <hfuecks@phppatterns.com>
- * @author    Lorenzo Alberton <l.alberton@quipo.it>
- * @copyright 2003-2007 Harry Fuecks, Lorenzo Alberton
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://pear.php.net/package/Calendar
- * @access    public
+ * @package Calendar
+ * @access public
  */
 class Calendar_Util_Uri
 {
@@ -88,14 +69,12 @@ class Calendar_Util_Uri
     /**
      * Constructs Calendar_Decorator_Uri
      * The term "fragment" means <i>name</i> of a calendar GET variables in the URL
-     *
-     * @param string $y URI fragment for year
-     * @param string $m (optional) URI fragment for month
-     * @param string $d (optional) URI fragment for day
-     * @param string $h (optional) URI fragment for hour
-     * @param string $i (optional) URI fragment for minute
-     * @param string $s (optional) URI fragment for second
-     *
+     * @param string URI fragment for year
+     * @param string (optional) URI fragment for month
+     * @param string (optional) URI fragment for day
+     * @param string (optional) URI fragment for hour
+     * @param string (optional) URI fragment for minute
+     * @param string (optional) URI fragment for second
      * @access public
      */
     function Calendar_Util_Uri($y, $m=null, $d=null, $h=null, $i=null, $s=null)
@@ -105,19 +84,16 @@ class Calendar_Util_Uri
 
     /**
      * Sets the URI fragment names
-     *
-     * @param string $y URI fragment for year
-     * @param string $m (optional) URI fragment for month
-     * @param string $d (optional) URI fragment for day
-     * @param string $h (optional) URI fragment for hour
-     * @param string $i (optional) URI fragment for minute
-     * @param string $s (optional) URI fragment for second
-     *
+     * @param string URI fragment for year
+     * @param string (optional) URI fragment for month
+     * @param string (optional) URI fragment for day
+     * @param string (optional) URI fragment for hour
+     * @param string (optional) URI fragment for minute
+     * @param string (optional) URI fragment for second
      * @return void
      * @access public
      */
-    function setFragments($y, $m=null, $d=null, $h=null, $i=null, $s=null) 
-    {
+    function setFragments($y, $m=null, $d=null, $h=null, $i=null, $s=null) {
         if (!is_null($y)) $this->uris['Year']   = $y;
         if (!is_null($m)) $this->uris['Month']  = $m;
         if (!is_null($d)) $this->uris['Day']    = $d;
@@ -128,10 +104,8 @@ class Calendar_Util_Uri
 
     /**
      * Gets the URI string for the previous calendar unit
-     *
-     * @param object $Calendar subclassed from Calendar e.g. Calendar_Month
-     * @param string $unit     calendar  unit (year|month|week|day|hour|minute|second)
-     *
+     * @param object subclassed from Calendar e.g. Calendar_Month
+     * @param string calendar unit ( must be year, month, week, day, hour, minute or second)
      * @return string
      * @access public
      */
@@ -144,26 +118,22 @@ class Calendar_Util_Uri
 
     /**
      * Gets the URI string for the current calendar unit
-     *
-     * @param object $Calendar subclassed from Calendar e.g. Calendar_Month
-     * @param string $unit     calendar  unit (year|month|week|day|hour|minute|second)
-     *
+     * @param object subclassed from Calendar e.g. Calendar_Month
+     * @param string calendar unit ( must be year, month, week, day, hour, minute or second)
      * @return string
      * @access public
      */
     function this($Calendar, $unit)
     {
-        $method = 'this'.$unit;
+       $method = 'this'.$unit;
         $stamp  = $Calendar->{$method}('timestamp');
         return $this->buildUriString($Calendar, $method, $stamp);
     }
 
     /**
      * Gets the URI string for the next calendar unit
-     *
-     * @param object $Calendar subclassed from Calendar e.g. Calendar_Month
-     * @param string $unit     calendar unit (year|month|week|day|hour|minute|second)
-     *
+     * @param object subclassed from Calendar e.g. Calendar_Month
+     * @param string calendar unit ( must be year, month, week, day, hour, minute or second)
      * @return string
      * @access public
      */
@@ -176,11 +146,8 @@ class Calendar_Util_Uri
 
     /**
      * Build the URI string
-     *
-     * @param object $Calendar subclassed from Calendar e.g. Calendar_Month
-     * @param string $method   method substring
-     * @param int    $stamp    timestamp
-     *
+     * @param string method substring
+     * @param int timestamp
      * @return string build uri string
      * @access private
      */
@@ -192,9 +159,7 @@ class Calendar_Util_Uri
         foreach ($this->uris as $unit => $uri) {
             $call = 'stampTo'.$unit;
             $uriString .= $separator;
-            if (!$this->scalar) {
-                $uriString .= $uri.'=';
-            }
+            if (!$this->scalar) $uriString .= $uri.'=';
             $uriString .= $cE->{$call}($stamp);
             $separator = $this->separator;
         }

@@ -70,19 +70,19 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
      */
     public function request($mode, $arrParams = array(), $arrCookies = array())
     {
-        $objReq = new HTTP_Request2();
+        $objReq = new HTTP_Request();
         $objReq->setUrl(OSTORE_URL . 'upgrade/index.php');
         $objReq->setMethod('POST');
-        $objReq->addPostParameter('mode', $mode);
+        $objReq->addPostData('mode', $mode);
         foreach ($arrParams as $key => $val) {
-            $objReq->addPostParameter($key, $val);
+            $objReq->addPostData($key, $val);
         }
 
         foreach ($arrCookies as $cookie) {
             $objReq->addCookie($cookie['name'], $cookie['value']);
         }
 
-        $e = $objReq->send();
+        $e = $objReq->sendRequest();
         if (PEAR::isError($e)) {
             return $e;
         } else {

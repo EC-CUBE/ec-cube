@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+require DATA_REALDIR . 'module/Cache/Lite.php';
+
 /**
  * Cache controll using PEAR::Cache_Lite.
  */
