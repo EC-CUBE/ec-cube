@@ -158,7 +158,7 @@ class LC_Page_Admin_Order extends LC_Page_Admin_Ex
                             // ページ送りの取得
                             $objNavi = new SC_PageNavi_Ex($this->arrHidden['search_pageno'],
                                                           $this->tpl_linemax, $page_max,
-                                                          'fnNaviSearchPage', NAVI_PMAX);
+                                                          'eccube.moveNaviPage', NAVI_PMAX);
                             $this->arrPagenavi = $objNavi->arrPagenavi;
 
                             // 検索結果の取得

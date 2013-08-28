@@ -151,7 +151,7 @@ function lfnSortItem(mode,data){
                 </td>
                 <td>
                     <!--{if $arrItems[$smarty.section.cnt.iteration].product_id}-->
-                            <a href="javascript:;" onclick="return fnInsertValAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '削除します。宜しいですか' )">削除</a>
+                            <a href="javascript:;" onclick="return eccube.insertValueAndSubmit( document.form<!--{$smarty.section.cnt.iteration}-->, 'mode', 'delete', '削除します。宜しいですか' )">削除</a>
                     <!--{else}-->
                         - -
                     <!--{/if}-->

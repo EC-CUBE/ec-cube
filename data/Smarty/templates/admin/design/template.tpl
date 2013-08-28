@@ -35,7 +35,7 @@ function submitRegister() {
 // -->
 </script>
 
-<form name="form1" method="post" action="?">
+<form name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
     <input type="hidden" name="template_code" value="" />
@@ -83,7 +83,7 @@ function submitRegister() {
         </div>
     </div>
 </form>
-<form name="form2" method="post" action="?">
+<form name="form2" id="form2" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
     <input type="hidden" name="template_code" value="" />

@@ -152,7 +152,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
                     case 'edit':
                         $this->tpl_mode      = $clean_mode_flg;
                         $this->tpl_member_id = $clean_id;
-                        $this->tpl_onfocus   = 'fnClearText(this.name);';
+                        $this->tpl_onfocus   = 'eccube.clearValue(this.name);';
                         $this->arrForm       = $this->getMemberData($clean_id);
                         $this->arrForm['password'] = DEFAULT_PASSWORD;
                         $this->arrForm['password02'] = DEFAULT_PASSWORD;

@@ -371,9 +371,9 @@
                             <th>購入金額(円)</th>
                             <th>全商品発送日</th>
                             <th>対応状況</th>
-                            <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="fnAllCheck(this, 'input[name=pdf_order_id[]]')" /></th>
+                            <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="eccube.checkAllBox(this, 'input[name=pdf_order_id[]]')" /></th>
                             <th>編集</th>
-                            <th>メール <input type="checkbox" name="mail_check" id="mail_check" onclick="fnAllCheck(this, 'input[name=mail_order_id[]]')" /></th>
+                            <th>メール <input type="checkbox" name="mail_check" id="mail_check" onclick="eccube.checkAllBox(this, 'input[name=mail_order_id[]]')" /></th>
                             <th>削除</th>
                         </tr>
 

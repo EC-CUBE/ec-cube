@@ -47,7 +47,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
         $this->tpl_mainpage = 'system/index.tpl';
         $this->tpl_mainno   = 'system';
         $this->tpl_subno    = 'index';
-        $this->tpl_onload   = 'fnGetRadioChecked();';
+        $this->tpl_onload   = 'eccube.getRadioChecked();';
         $this->tpl_maintitle = 'システム設定';
         $this->tpl_subtitle = 'メンバー管理';
 
@@ -84,7 +84,7 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
         // ページ送りの処理 $_GET['pageno']が信頼しうる値かどうかチェックする。
         $pageno = $this->lfCheckPageNo($_GET['pageno']);
 
-        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, MEMBER_PMAX, 'fnMemberPage', NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, MEMBER_PMAX, 'eccube.moveMemberPage', NAVI_PMAX);
         $this->tpl_strnavi  = $objNavi->strnavi;
         $this->tpl_disppage = $objNavi->now_page;
         $this->tpl_pagemax  = $objNavi->max_page;

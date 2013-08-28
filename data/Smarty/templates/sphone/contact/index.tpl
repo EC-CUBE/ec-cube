@@ -37,7 +37,7 @@
             休業日は翌営業日以降のご返信となりますのでご了承ください。</p>
     </div>
 
-    <form name="form1" method="post" action="?">
+    <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="confirm" />
 

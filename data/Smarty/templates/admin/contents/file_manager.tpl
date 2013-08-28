@@ -31,20 +31,20 @@
         var total = bread_crumbs.length;
         for (var i in bread_crumbs) {
             file_path += bread_crumbs[i] + '/';
-            $('<a href="javascript:;" onclick="fnFolderOpen(\'' + file_path + '\'); return false;" />')
+            $('<a href="javascript:;" onclick="eccube.fileManager.openFolder(\'' + file_path + '\'); return false;" />')
                 .text(bread_crumbs[i])
                 .appendTo($node);
             if (i < total - 1) $node.append($delimiter);
         }
     });
 
-    var IMG_FOLDER_CLOSE   = "<!--{$TPL_URLPATH}-->img/contents/folder_close.gif";  // フォルダクローズ時画像
-    var IMG_FOLDER_OPEN    = "<!--{$TPL_URLPATH}-->img/contents/folder_open.gif";   // フォルダオープン時画像
-    var IMG_PLUS           = "<!--{$TPL_URLPATH}-->img/contents/plus.gif";          // プラスライン
-    var IMG_MINUS          = "<!--{$TPL_URLPATH}-->img/contents/minus.gif";         // マイナスライン
-    var IMG_NORMAL         = "<!--{$TPL_URLPATH}-->img/contents/space.gif";         // スペース
+    eccube.fileManager.IMG_FOLDER_CLOSE   = "<!--{$TPL_URLPATH}-->img/contents/folder_close.gif";  // フォルダクローズ時画像
+    eccube.fileManager.IMG_FOLDER_OPEN    = "<!--{$TPL_URLPATH}-->img/contents/folder_open.gif";   // フォルダオープン時画像
+    eccube.fileManager.IMG_PLUS           = "<!--{$TPL_URLPATH}-->img/contents/plus.gif";          // プラスライン
+    eccube.fileManager.IMG_MINUS          = "<!--{$TPL_URLPATH}-->img/contents/minus.gif";         // マイナスライン
+    eccube.fileManager.IMG_NORMAL         = "<!--{$TPL_URLPATH}-->img/contents/space.gif";         // スペース
 //]]></script>
-<form name="form1" method="post" action="?"  enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="?"  enctype="multipart/form-data">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
     <input type="hidden" name="now_file" value="<!--{$tpl_now_dir|h}-->" />
@@ -62,14 +62,14 @@
                     <th>ファイルのアップロード</th>
                     <td>
                         <!--{if $arrErr.upload_file}--><span class="attention"><!--{$arrErr.upload_file}--></span><!--{/if}-->
-                        <input type="file" name="upload_file" size="40" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> /><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">アップロード</a>
+                        <input type="file" name="upload_file" size="40" <!--{if $arrErr.upload_file}-->style="background-color:<!--{$smarty.const.ERR_COLOR|h}-->"<!--{/if}--> /><a class="btn-normal" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">アップロード</a>
                     </td>
                 </tr>
                 <tr>
                     <th>フォルダ作成</th>
                     <td>
                         <!--{if $arrErr.create_file}--><span class="attention"><!--{$arrErr.create_file}--></span><!--{/if}-->
-                        <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->" /><a class="btn-normal" href="javascript:;" onclick="setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">作成</a>
+                        <input type="text" name="create_file" value="" style="width:336px;<!--{if $arrErr.create_file}--> background-color:<!--{$smarty.const.ERR_COLOR|h}--><!--{/if}-->" /><a class="btn-normal" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">作成</a>
                     </td>
                 </tr>
             </table>
@@ -84,7 +84,7 @@
                     <th class="delete">削除</th>
                 </tr>
                 <!--{if !$tpl_is_top_dir}-->
-                    <tr id="parent_dir" onclick="eccube.setValue('select_file', '<!--{$tpl_parent_dir|h}-->', 'form1');fnSelectFile('parent_dir', '#808080');" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="">
+                    <tr id="parent_dir" onclick="eccube.setValue('select_file', '<!--{$tpl_parent_dir|h}-->', 'form1'); eccube.fileManager.selectFile('parent_dir', '#808080');" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.toggleTreeMenu('tree'+cnt, 'rank_img'+cnt, arrTree[cnt][2]);eccube.fileManager.doubleClick(arrTree, '<!--{$tpl_parent_dir|h}-->', true, '<!--{$tpl_now_dir|h}-->', true)" style="">
                         <td>
                             <img src="<!--{$TPL_URLPATH}-->img/contents/folder_parent.gif" alt="フォルダ">&nbsp;..
                         </td>
@@ -98,7 +98,7 @@
                 <!--{section name=cnt loop=$arrFileList}-->
                     <!--{assign var="id" value="select_file`$smarty.section.cnt.index`"}-->
                     <tr id="<!--{$id}-->" style="">
-                        <td class="file-name" onDblClick="setTreeStatus('tree_status');fnDbClick(arrTree, '<!--{$arrFileList[cnt].file_path|h}-->', <!--{if $arrFileList[cnt].is_dir|h}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|h}-->', false)">
+                        <td class="file-name" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '<!--{$arrFileList[cnt].file_path|h}-->', <!--{if $arrFileList[cnt].is_dir|h}-->true<!--{else}-->false<!--{/if}-->, '<!--{$tpl_now_dir|h}-->', false)">
                             <!--{if $arrFileList[cnt].is_dir}-->
                                 <img src="<!--{$TPL_URLPATH}-->img/contents/folder_close.gif" alt="フォルダ" />
                             <!--{else}-->
@@ -114,11 +114,11 @@
                         </td>
                         <!--{if $arrFileList[cnt].is_dir}-->
                             <td class="center">
-                                <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '<!--{$arrFileList[cnt].file_path}-->', 'form1');fnSelectFile('<!--{$id}-->', '#808080');eccube.setModeAndSubmit('move','',''); return false;">表示</a>
+                                <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '<!--{$arrFileList[cnt].file_path}-->', 'form1'); eccube.fileManager.selectFile('<!--{$id}-->', '#808080');eccube.setModeAndSubmit('move','',''); return false;">表示</a>
                             </td>
                         <!--{else}-->
                             <td class="center">
-                                <a href="javascript:;" onclick="eccube.setValue('select_file', '<!--{$arrFileList[cnt].file_path|h}-->', 'form1');fnSelectFile('<!--{$id}-->', '#808080');eccube.setModeAndSubmit('view','',''); return false;">表示</a>
+                                <a href="javascript:;" onclick="eccube.setValue('select_file', '<!--{$arrFileList[cnt].file_path|h}-->', 'form1');eccube.fileManager.selectFile('<!--{$id}-->', '#808080');eccube.setModeAndSubmit('view','',''); return false;">表示</a>
                             </td>
                         <!--{/if}-->
                         <!--{if $arrFileList[cnt].is_dir}-->
@@ -126,11 +126,11 @@
                             <td class="center">-</td>
                         <!--{else}-->
                             <td class="center">
-                                <a href="javascript:;" onclick="eccube.setValue('select_file', '<!--{$arrFileList[cnt].file_path|h}-->', 'form1');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');eccube.setModeAndSubmit('download','',''); return false;">ダウンロード</a>
+                                <a href="javascript:;" onclick="eccube.setValue('select_file', '<!--{$arrFileList[cnt].file_path|h}-->', 'form1');eccube.fileManager.selectFile('<!--{$id}-->', '#808080');eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('download','',''); return false;">ダウンロード</a>
                             </td>
                         <!--{/if}-->
                         <td class="center">
-                            <a href="javascript:;" onclick="eccube.setValue('select_file', '<!--{$arrFileList[cnt].file_path|h}-->', 'form1');fnSelectFile('<!--{$id}-->', '#808080');setTreeStatus('tree_status');eccube.setModeAndSubmit('delete','',''); return false;">削除</a>
+                            <a href="javascript:;" onclick="eccube.setValue('select_file', '<!--{$arrFileList[cnt].file_path|h}-->', 'form1');eccube.fileManager.selectFile('<!--{$id}-->', '#808080');eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('delete','',''); return false;">削除</a>
                         </td>
                     </tr>
                 <!--{/section}-->

@@ -84,7 +84,7 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
         $objFormParam->convParam();
         $this->arrForm = $objFormParam->getHashArray();
 
-        $this->tpl_onload = "fnCheckLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
+        $this->tpl_onload = "eccube.checkLimit('downloadable_days', 'downloadable_days_unlimited', '" . DISABLED_RGB . "');";
 
         switch ($this->getMode()) {
             case 'confirm':

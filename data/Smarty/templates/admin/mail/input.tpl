@@ -42,7 +42,7 @@
             <td>
                 <!--{assign var=key value="template_id"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
-                <select name="<!--{$key}-->" onchange="return fnInsertValAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                <select name="<!--{$key}-->" onchange="return eccube.insertValueAndSubmit( document.form1, 'mode', 'template', '' ) " style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                 <option value="" selected="selected">選択してください</option>
                 <!--{html_options options=$arrTemplate selected=$arrForm[$key].value}-->
                 </select>
@@ -73,8 +73,8 @@
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'back', '' ); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
-            <li><a class="btn-action" href="javascript:;" onclick="return fnInsertValAndSubmit( document.form1, 'mode', 'regist_confirm', '' ); return false;" ><span class="btn-next">確認ページへ</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return eccube.insertValueAndSubmit( document.form1, 'mode', 'back', '' ); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="return eccube.insertValueAndSubmit( document.form1, 'mode', 'regist_confirm', '' ); return false;" ><span class="btn-next">確認ページへ</span></a></li>
         </ul>
     </div>
 </div>

@@ -29,7 +29,7 @@
     <p class="windowtext">以下の商品について、お客様のご意見、ご感想をどしどしお寄せください。<br />
         「<span class="attention">※</span>」印は入力必須項目です。<br />
         ご入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
-    <form name="form1" method="post" action="?">
+    <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="confirm" />
         <input type="hidden" name="product_id" value="<!--{$arrForm.product_id|h}-->" />
