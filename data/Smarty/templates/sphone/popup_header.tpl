@@ -30,6 +30,7 @@
     <meta name="format-detection" content="telephone=no">
     <!--{* 共通CSS *}-->
     <link rel="stylesheet" media="only screen" href="<!--{$TPL_URLPATH}-->css/import.css" />
+    <link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.colorbox/colorbox.css" type="text/css" media="all" />
 
     <script src="<!--{$TPL_URLPATH}-->js/jquery-1.9.1.min.js"></script>
     <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
@@ -39,6 +40,7 @@
         <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.legacy.js"></script>
         <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/eccube.sphone.legacy.js"></script>
     <!--{/if}-->
+    <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.colorbox/jquery.colorbox-min.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
     <script type="text/javascript">
         $(function(){
