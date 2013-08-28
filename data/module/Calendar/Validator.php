@@ -1,39 +1,27 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
-
+//
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2002 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.02 of the PHP license,      |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/3_0.txt.                                  |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Authors: Harry Fuecks <hfuecks@phppatterns.com>                      |
+// +----------------------------------------------------------------------+
+//
+// $Id: Validator.php,v 1.1 2004/05/24 22:25:42 quipo Exp $
+//
 /**
- * Contains the Calendar_Validator class
- *
- * PHP versions 4 and 5
- *
- * LICENSE: Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE FREEBSD PROJECT OR CONTRIBUTORS BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * @category  Date and Time
- * @package   Calendar
- * @author    Harry Fuecks <hfuecks@phppatterns.com>
- * @copyright 2003-2007 Harry Fuecks
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   CVS: $Id: Validator.php 247251 2007-11-28 19:42:33Z quipo $
- * @link      http://pear.php.net/package/Calendar
+ * @package Calendar
+ * @version $Id: Validator.php,v 1.1 2004/05/24 22:25:42 quipo Exp $
  */
 
 /**
@@ -49,15 +37,9 @@ if (!defined('CALENDAR_VALUE_TOOLARGE')) {
 /**
  * Used to validate any given Calendar date object. Instances of this class
  * can be obtained from any data object using the getValidator method
- *
- * @category  Date and Time
- * @package   Calendar
- * @author    Harry Fuecks <hfuecks@phppatterns.com>
- * @copyright 2003-2007 Harry Fuecks
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://pear.php.net/package/Calendar
- * @see       Calendar::getValidator()
- * @access    public
+ * @see Calendar::getValidator()
+ * @package Calendar
+ * @access public
  */
 class Calendar_Validator
 {
@@ -84,20 +66,17 @@ class Calendar_Validator
 
     /**
      * Constructs Calendar_Validator
-     *
-     * @param object &$calendar subclass of Calendar
-     *
+     * @param object subclass of Calendar
      * @access public
      */
-    function Calendar_Validator(&$calendar)
+    function Calendar_Validator(& $calendar)
     {
         $this->calendar = & $calendar;
-        $this->cE       = & $calendar->getEngine();
+        $this->cE = & $calendar->getEngine();
     }
 
     /**
      * Calls all the other isValidXXX() methods in the validator
-     *
      * @return boolean
      * @access public
      */
@@ -105,7 +84,7 @@ class Calendar_Validator
     {
         $checks = array('isValidYear', 'isValidMonth', 'isValidDay',
             'isValidHour', 'isValidMinute', 'isValidSecond');
-        $valid  = true;
+        $valid = true;
         foreach ($checks as $check) {
             if (!$this->{$check}()) {
                 $valid = false;
@@ -116,16 +95,15 @@ class Calendar_Validator
 
     /**
      * Check whether this is a valid year
-     *
      * @return boolean
      * @access public
      */
     function isValidYear()
     {
-        $y   = $this->calendar->thisYear();
+        $y = $this->calendar->thisYear();
         $min = $this->cE->getMinYears();
         if ($min > $y) {
-            $this->errors[] = new Calendar_Validation_Error(
+           $this->errors[] = new Calendar_Validation_Error(
                 'Year', $y, CALENDAR_VALUE_TOOSMALL.$min);
             return false;
         }
@@ -140,13 +118,12 @@ class Calendar_Validator
 
     /**
      * Check whether this is a valid month
-     *
      * @return boolean
      * @access public
      */
     function isValidMonth()
     {
-        $m   = $this->calendar->thisMonth();
+        $m = $this->calendar->thisMonth();
         $min = 1;
         if ($min > $m) {
             $this->errors[] = new Calendar_Validation_Error(
@@ -164,13 +141,12 @@ class Calendar_Validator
 
     /**
      * Check whether this is a valid day
-     *
      * @return boolean
      * @access public
      */
     function isValidDay()
     {
-        $d   = $this->calendar->thisDay();
+        $d = $this->calendar->thisDay();
         $min = 1;
         if ($min > $d) {
             $this->errors[] = new Calendar_Validation_Error(
@@ -178,9 +154,7 @@ class Calendar_Validator
             return false;
         }
         $max = $this->cE->getDaysInMonth(
-            $this->calendar->thisYear(), 
-            $this->calendar->thisMonth()
-        );
+            $this->calendar->thisYear(), $this->calendar->thisMonth());
         if ($d > $max) {
             $this->errors[] = new Calendar_Validation_Error(
                 'Day', $d, CALENDAR_VALUE_TOOLARGE.$max);
@@ -191,13 +165,12 @@ class Calendar_Validator
 
     /**
      * Check whether this is a valid hour
-     *
      * @return boolean
      * @access public
      */
     function isValidHour()
     {
-        $h   = $this->calendar->thisHour();
+        $h = $this->calendar->thisHour();
         $min = 0;
         if ($min > $h) {
             $this->errors[] = new Calendar_Validation_Error(
@@ -215,13 +188,12 @@ class Calendar_Validator
 
     /**
      * Check whether this is a valid minute
-     *
      * @return boolean
      * @access public
      */
     function isValidMinute()
     {
-        $i   = $this->calendar->thisMinute();
+        $i = $this->calendar->thisMinute();
         $min = 0;
         if ($min > $i) {
             $this->errors[] = new Calendar_Validation_Error(
@@ -239,13 +211,12 @@ class Calendar_Validator
 
     /**
      * Check whether this is a valid second
-     *
      * @return boolean
      * @access public
      */
     function isValidSecond()
     {
-        $s   = $this->calendar->thisSecond();
+        $s = $this->calendar->thisSecond();
         $min = 0;
         if ($min > $s) {
             $this->errors[] = new Calendar_Validation_Error(
@@ -263,13 +234,12 @@ class Calendar_Validator
 
     /**
      * Iterates over any validation errors
-     *
      * @return mixed either Calendar_Validation_Error or false
      * @access public
      */
     function fetch()
     {
-        $error = each($this->errors);
+        $error = each ($this->errors);
         if ($error) {
             return $error['value'];
         } else {
@@ -281,15 +251,9 @@ class Calendar_Validator
 
 /**
  * For Validation Error messages
- *
- * @category  Date and Time
- * @package   Calendar
- * @author    Harry Fuecks <hfuecks@phppatterns.com>
- * @copyright 2003-2007 Harry Fuecks
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://pear.php.net/package/Calendar
- * @see       Calendar::fetch()
- * @access    public
+ * @see Calendar::fetch()
+ * @package Calendar
+ * @access public
  */
 class Calendar_Validation_Error
 {
@@ -316,14 +280,12 @@ class Calendar_Validation_Error
 
     /**
      * Constructs Calendar_Validation_Error
-     *
-     * @param string $unit    Date unit (e.g. month,hour,second)
-     * @param int    $value   Value of unit which failed test
-     * @param string $message Validation error message
-     *
+     * @param string Date unit (e.g. month,hour,second)
+     * @param int Value of unit which failed test
+     * @param string Validation error message
      * @access protected
      */
-    function Calendar_Validation_Error($unit, $value, $message)
+    function Calendar_Validation_Error($unit,$value,$message)
     {
         $this->unit    = $unit;
         $this->value   = $value;
@@ -332,7 +294,6 @@ class Calendar_Validation_Error
 
     /**
      * Returns the Date unit
-     *
      * @return string
      * @access public
      */
@@ -343,7 +304,6 @@ class Calendar_Validation_Error
 
     /**
      * Returns the value of the unit
-     *
      * @return int
      * @access public
      */
@@ -354,7 +314,6 @@ class Calendar_Validation_Error
 
     /**
      * Returns the validation error message
-     *
      * @return string
      * @access public
      */
@@ -365,7 +324,6 @@ class Calendar_Validation_Error
 
     /**
      * Returns a string containing the unit, value and error message
-     *
      * @return string
      * @access public
      */

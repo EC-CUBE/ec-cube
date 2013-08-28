@@ -86,7 +86,6 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base
             'ver'        => ECCUBE_VERSION
         );
         $objReq = $this->request('products_list', $arrPostData);
-        $response = $objReq->send();
 
         // リクエストチェック
         $objLog->log('* http request check start');
@@ -100,8 +99,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base
 
         // レスポンスチェック
         $objLog->log('* http response check start');
-
-        if ( $response->getStatus() !== 200) {
+        if ($objReq->getResponseCode() !== 200) {
             $objJson->setError(OSTORE_E_C_HTTP_RESP);
             $objJson->display();
             $objLog->error(OSTORE_E_C_HTTP_RESP, $objReq);
@@ -109,7 +107,7 @@ class LC_Page_Upgrade_ProductsList extends LC_Page_Upgrade_Base
             return;
         }
 
-        $body = $response->getBody();
+        $body = $objReq->getResponseBody();
         $objRet = $objJson->decode($body);
 
         // JSONデータのチェック
