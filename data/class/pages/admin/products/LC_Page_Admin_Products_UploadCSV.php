@@ -706,8 +706,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         }
         // 既存の商品クラスを更新する場合、入力が必須となる項目が存在する（既存項目のデフォルト値による更新は望ましくない）
         if ($item['product_class_id'] != '') {
-            if ($sqlval['point_rate'] == '') {
-                $sqlval['point_rate'] = '※ 既存の商品規格が存在する場合、ポイント付与率を未指定にする事はできません。';
+            if ($item['point_rate'] == '') {
+                $arrErr['point_rate'] = '※ 既存の商品規格が存在する場合、ポイント付与率を未指定にする事はできません。';
             }
             if ($item['product_type_id'] == '') {
                 $arrErr['product_type_id'] = '※ 既存の商品規格が存在する場合、商品種別を未指定にする事はできません。';
