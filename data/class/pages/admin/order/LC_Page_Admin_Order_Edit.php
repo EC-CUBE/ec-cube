@@ -366,8 +366,8 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('商品名', 'product_name');
         $objFormParam->addParam('規格名1', 'classcategory_name1');
         $objFormParam->addParam('規格名2', 'classcategory_name2');
-        $objFormParam->addParam('税率', 'tax_rate');
-        $objFormParam->addParam('課税規則', 'tax_rule');
+        $objFormParam->addParam('税率', 'tax_rate', INT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam('課税規則', 'tax_rule', INT_LEN, 'n', array('NUM_CHECK'));
         $objFormParam->addParam('メモ', 'note', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('削除用項番', 'delete_no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 

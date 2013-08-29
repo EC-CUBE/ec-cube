@@ -56,7 +56,7 @@
                     <!--{* 規格名1 *}--><!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--><br><!--{/if}-->
                     <!--{* 規格名2 *}--><!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--><br><!--{/if}-->
                     <!--{* 販売価格 *}-->
-                    <!--{$item.price|sfCalcIncTax|number_format}-->円
+                    <!--{$item.price_inctax|number_format}-->円
                     × <!--{$item.quantity}--><br>
                     <br>
                     <!--{* 数量 *}-->

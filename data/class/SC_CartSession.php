@@ -170,7 +170,7 @@ class SC_CartSession
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
             $incTax = SC_Helper_TaxRule_Ex::sfCalcIncTax($price,
                 $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                $this->cartSession[$productTypeId][$i]['id'][0],
+                $this->cartSession[$productTypeId][$i]['productsClass']['product_class_id'],
                 $pref_id, $country_id);
 
             $total+= ($incTax * $quantity);
@@ -190,7 +190,7 @@ class SC_CartSession
             $quantity = $this->cartSession[$productTypeId][$i]['quantity'];
             $tax = SC_Helper_TaxRule_Ex::sfTax($price,
                 $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                $this->cartSession[$productTypeId][$i]['id'][0],
+                $this->cartSession[$productTypeId][$i]['productsClass']['product_class_id'],
                 $pref_id, $country_id);
 
             $total+= ($tax * $quantity);
@@ -415,7 +415,7 @@ class SC_CartSession
 
                 $arrTaxRule = SC_Helper_TaxRule_Ex::getTaxRule(
                                     $this->cartSession[$productTypeId][$i]['productsClass']['product_id'],
-                                    $this->cartSession[$productTypeId][$i]['id'][0],
+                                    $this->cartSession[$productTypeId][$i]['productsClass']['product_class_id'],
                                     $pref_id,
                                     $country_id);
                 $incTax = $price + SC_Helper_TaxRule_Ex::calcTax($price, $arrTaxRule['tax_rate'], $arrTaxRule['tax_rule'], $arrTaxRule['tax_adjust']);

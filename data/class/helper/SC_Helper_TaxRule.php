@@ -167,14 +167,26 @@ class SC_Helper_TaxRule
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $table = 'dtb_tax_rule';
             $cols = '*';
-            $where = '((product_id = 0 OR product_id = ?)'
-                        . ' OR (product_class_id = 0 OR product_class_id = ?))'
-                        . ' AND (pref_id = 0 OR pref_id = ?)'
-                        . ' AND (country_id = 0 OR country_id = ?)'
-                        . ' AND apply_date < CURRENT_TIMESTAMP'
-                        . ' AND del_flg = 0';
+            
+            // 商品税率有無設定により分岐
+            if(OPTION_PRODUCT_TAX_RULE == 1) {
+                $where = '((product_id = 0 OR product_id = ?)'
+                            . ' OR (product_class_id = 0 OR product_class_id = ?))'
+                            . ' AND (pref_id = 0 OR pref_id = ?)'
+                            . ' AND (country_id = 0 OR country_id = ?)'
+                            . ' AND apply_date < CURRENT_TIMESTAMP'
+                            . ' AND del_flg = 0';
+                $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
+            } else {
+                $where = '     product_id = 0 '
+                       . ' AND product_class_id = 0 '
+                       . ' AND (pref_id = 0 OR pref_id = ?)'
+                       . ' AND (country_id = 0 OR country_id = ?)'
+                       . ' AND apply_date < CURRENT_TIMESTAMP'
+                       . ' AND del_flg = 0';
+                $arrVal = array($pref_id, $country_id);
+            }
 
-            $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
             $order = 'apply_date DESC';
             $objQuery->setOrder($order);
             $arrData = $objQuery->select($cols, $table, $where, $arrVal);

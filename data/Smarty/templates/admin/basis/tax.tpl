@@ -29,6 +29,7 @@
 
 
 <h2>税率設定</h2>
+    <span class="attention"><!--{$arrErr.tax_rule_id}--></span>
 
     <table id="basis-tax-func">
         <tr>
