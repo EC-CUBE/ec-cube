@@ -40,7 +40,8 @@
 
         ●性別<br>
         <!--{assign var=key1 value="sex"}-->
-        <!--{$arrSex[$arrForm[$key1].value]|h}--><br>
+        <!--{assign var="sex_id" value=$arrForm[$key1].value}-->
+        <!--{$arrSex[$sex_id]|h}--><br>
 
         ●職業<br>
         <!--{if $arrForm.job}--><!--{$arrJob[$arrForm.job.value]|h}--><!--{else}-->未登録<!--{/if}--><br>
@@ -66,7 +67,8 @@
 
         ●ﾒｰﾙﾏｶﾞｼﾞﾝ<br>
         <!--{assign var=key1 value="mailmaga_flg"}-->
-        <!--{$arrMAILMAGATYPE[$arrForm[$key1].value]|h}--><br>
+        <!--{assign var="mailmaga_flg_id" value=$arrForm[$key1].value}-->
+        <!--{$arrMAILMAGATYPE[$mailmaga_flg_id]|h}--><br>
         <br>
 
         <center>

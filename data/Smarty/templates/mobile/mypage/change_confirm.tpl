@@ -36,7 +36,8 @@
         <!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--><br>
         <!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--><br>
         <!--{assign var=key1 value="sex"}-->
-        <!--{$arrSex[$arrForm[$key1].value]|h}--><br>
+        <!--{assign var="sex_id" value=$arrForm[$key1].value}-->
+        <!--{$arrSex[$sex_id]|h}--><br>
         <!--{$arrJob[$arrForm.job.value]|h}--><br>
         <!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}--><!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日生まれ<!--{else}-->生年月日 未登録<!--{/if}--><br>
         〒<!--{$arrForm.zip01.value|h}--> - <!--{$arrForm.zip02.value|h}--><br>
@@ -61,7 +62,8 @@
 
         【ﾒｰﾙﾏｶﾞｼﾞﾝﾞ】<br>
         <!--{assign var=key1 value="mailmaga_flg"}-->
-        <!--{$arrMAILMAGATYPE[$arrForm[$key1].value]|h}--><br>
+        <!--{assign var="mailmaga_flg_id" value=$arrForm[$key1].value}-->
+        <!--{$arrMAILMAGATYPE[$mailmaga_flg_id]|h}--><br>
         <br>
 
         <center>
