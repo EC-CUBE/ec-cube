@@ -39,7 +39,8 @@
         <!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--><br>
 
         ●性別<br>
-        <!--{if $arrForm.sex.value eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
+        <!--{assign var=key1 value="sex"}-->
+        <!--{$arrSex[$arrForm[$key1].value]|h}--><br>
 
         ●職業<br>
         <!--{if $arrForm.job}--><!--{$arrJob[$arrForm.job.value]|h}--><!--{else}-->未登録<!--{/if}--><br>
@@ -64,7 +65,8 @@
         <!--{$arrForm.reminder_answer.value|h}--><br>
 
         ●ﾒｰﾙﾏｶﾞｼﾞﾝ<br>
-        <!--{if $arrForm.mailmaga_flg.value eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
+        <!--{assign var=key1 value="mailmaga_flg"}-->
+        <!--{$arrMAILMAGATYPE[$arrForm[$key1].value]|h}--><br>
         <br>
 
         <center>

@@ -59,7 +59,7 @@
                 <tr>
                     <th>国</th>
                     <td>
-                        <!--{$arrCountry[$arrForm.country_id].value|h}-->
+                        <!--{$arrCountry[$arrForm.country_id.value]|h}-->
                     </td>
                 </tr>
                 <tr>

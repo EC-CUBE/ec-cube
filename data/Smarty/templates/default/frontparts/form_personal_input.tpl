@@ -185,8 +185,7 @@
                     <div class="attention"><!--{$arrErr[$key1]}--></div>
                 <!--{/if}-->
                 <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
-                    <input type="radio" id="man" name="<!--{$key1}-->" value="1" <!--{if $arrForm[$key1].value eq 1}--> checked="checked" <!--{/if}--> /><label for="man">男性</label>
-                    <input type="radio" id="woman" name="<!--{$key1}-->" value="2" <!--{if $arrForm[$key1].value eq 2}--> checked="checked" <!--{/if}--> /><label for="woman">女性</label>
+                    <!--{html_radios name=$key1 options=$arrSex selected=$arrForm[$key1].value separator='<br />'}-->
                 </span>
             </td>
         </tr>
@@ -206,18 +205,21 @@
         <tr>
             <th>生年月日</th>
             <td>
-                <!--{assign var=errBirth value="`$arrErr.year``$arrErr.month``$arrErr.day`"}-->
+                <!--{assign var=key1 value="`$prefix`year"}-->
+                <!--{assign var=key2 value="`$prefix`month"}-->
+                <!--{assign var=key3 value="`$prefix`day"}-->
+                <!--{assign var=errBirth value="`$arrErr.$key1``$arrErr.$key2``$arrErr.$key3`"}-->
                 <!--{if $errBirth}-->
                     <div class="attention"><!--{$errBirth}--></div>
                 <!--{/if}-->
-                <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrYear selected=$arrForm.year.value|default:''}-->
+                <select name="<!--{$key1}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
+                    <!--{html_options options=$arrYear selected=$arrForm[$key1].value|default:''}-->
                 </select>年&nbsp;
-                <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrMonth selected=$arrForm.month.value|default:''}-->
+                <select name="<!--{$key2}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
+                    <!--{html_options options=$arrMonth selected=$arrForm[$key2].value|default:''}-->
                 </select>月&nbsp;
-                <select name="day" style="<!--{$errBirth|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrDay selected=$arrForm.day.value|default:''}-->
+                <select name="<!--{$key3}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
+                    <!--{html_options options=$arrDay selected=$arrForm[$key3].value|default:''}-->
                 </select>日
             </td>
         </tr>
@@ -226,40 +228,43 @@
                 <th>希望するパスワード<span class="attention">※</span><br />
                 </th>
                 <td>
-                    <!--{if $arrErr.password || $arrErr.password02}-->
-                        <div class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></div>
+                    <!--{assign var=key1 value="`$prefix`password"}-->
+                    <!--{assign var=key2 value="`$prefix`password02"}-->
+                    <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
+                        <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
                     <!--{/if}-->
-                    <input type="password" name="password" value="<!--{$arrForm.password.value|h}-->" maxlength="<!--{$arrForm.password.length}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" class="box120" />
+                    <input type="password" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="box120" />
                     <p><span class="attention mini">半角英数字<!--{$smarty.const.PASSWORD_MIN_LEN}-->～<!--{$smarty.const.PASSWORD_MAX_LEN}-->文字でお願いします。（記号可）</span></p>
-                    <input type="password" name="password02" value="<!--{$arrForm.password02.value|h}-->" maxlength="<!--{$arrForm.password02.length}-->" style="<!--{$arrErr.password|cat:$arrErr.password02|sfGetErrorColor}-->" class="box120" />
+                    <input type="password" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key1]|cat:$arrErr[$key2]|sfGetErrorColor}-->" class="box120" />
                     <p><span class="attention mini">確認のために2度入力してください。</span></p>
                 </td>
             </tr>
             <tr>
                 <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
                 <td>
-                    <!--{if $arrErr.reminder || $arrErr.reminder_answer}-->
-                        <div class="attention"><!--{$arrErr.reminder}--><!--{$arrErr.reminder_answer}--></div>
+                    <!--{assign var=key1 value="`$prefix`reminder"}-->
+                    <!--{assign var=key2 value="`$prefix`reminder_answer"}-->
+                    <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
+                        <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
                     <!--{/if}-->
                     質問：
-                    <select name="reminder" style="<!--{$arrErr.reminder|sfGetErrorColor}-->">
+                    <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
                         <option value="" selected="selected">選択してください</option>
-                        <!--{html_options options=$arrReminder selected=$arrForm.reminder.value}-->
+                        <!--{html_options options=$arrReminder selected=$arrForm[$key1].value}-->
                     </select>
                     <br />
-                    答え：<input type="text" name="reminder_answer" value="<!--{$arrForm.reminder_answer.value|h}-->" style="<!--{$arrErr.reminder_answer|sfGetErrorColor}-->; ime-mode: active;" class="box260" />
+                    答え：<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->; ime-mode: active;" class="box260" />
                 </td>
             </tr>
             <tr>
                 <th>メールマガジン送付について<span class="attention">※</span></th>
                 <td>
-                    <!--{if $arrErr.mailmaga_flg}-->
-                        <div class="attention"><!--{$arrErr.mailmaga_flg}--></div>
+                    <!--{assign var=key1 value="`$prefix`mailmaga_flg"}-->
+                    <!--{if $arrErr[$key1]}-->
+                        <div class="attention"><!--{$arrErr[$key1]}--></div>
                     <!--{/if}-->
-                    <span style="<!--{$arrErr.mailmaga_flg|sfGetErrorColor}-->">
-                        <input type="radio" name="mailmaga_flg" value="1" id="html" <!--{if $arrForm.mailmaga_flg.value eq 1}--> checked="checked" <!--{/if}--> /><label for="html">HTMLメール＋テキストメールを受け取る</label><br />
-                        <input type="radio" name="mailmaga_flg" value="2" id="text" <!--{if $arrForm.mailmaga_flg.value eq 2}--> checked="checked" <!--{/if}--> /><label for="text">テキストメールを受け取る</label><br />
-                        <input type="radio" name="mailmaga_flg" value="3" id="no" <!--{if $arrForm.mailmaga_flg.value eq 3}--> checked="checked" <!--{/if}--> /><label for="no">受け取らない</label>
+                    <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                        <!--{html_radios name=$key1 options=$arrMAILMAGATYPE selected=$arrForm[$key1].value separator='<br />'}-->
                     </span>
                 </td>
             </tr>
