@@ -115,7 +115,11 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
                         // 完了メッセージ
                         $this->tpl_onload = "alert('登録が完了しました。');";
                     }
+                } else {
+                    // エラーが存在する場合、メッセージを表示する為に代入
+                    $this->arrErr['product_tax_flg'] = $arrErr['product_tax_flg'];
                 }
+                
                 break;
 
             // 編集処理
@@ -131,9 +135,13 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
                     if ($res_tax_rule_id !== FALSE) {
                         // 完了メッセージ
                         $this->tpl_onload = "alert('登録が完了しました。');";
+
                         // リロード
                         SC_Response_Ex::reload();
                     }
+                } else if(SC_Utils_Ex::isBlank($this->arrErr['tax_rule_id'])) {
+                    // 税率ID以外のエラーの場合、ID情報を引き継ぐ
+                    $this->tpl_tax_rule_id = $tax_rule_id;
                 }
 
                 break;
@@ -187,6 +195,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
         $objFormParam->addParam('税規約ID', 'tax_rule_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('消費税率', 'tax_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('課税規則', 'calc_rule', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+
         // 適用日時
         $objFormParam->addParam('適用年', 'apply_date_year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('適用月', 'apply_date_month', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
