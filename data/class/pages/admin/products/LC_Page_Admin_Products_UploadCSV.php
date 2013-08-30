@@ -207,6 +207,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             // 入力値の変換
             $objFormParam->convParam();
 
+            // 商品IDが設定されており、規格IDが設定されていなければ、既存の規格ID取得を試みる(product_class_idは必須入力項目ではない)
+            $product_id = $objFormParam->getValue('product_id');
+            $product_class_id = $objFormParam->getValue('product_class_id');
+            if ($product_class_id == '' && $product_id != '') {
+                $product_class_id = SC_Utils_Ex::sfGetProductClassId($product_id, $objFormParam->getValue('classcategory_id1'), $objFormParam->getValue('classcategory_id2'));
+                $objFormParam->setValue('product_class_id', $product_class_id);
+            }
+
             // <br>なしでエラー取得する。
             $arrCSVErr = $this->lfCheckError($objFormParam);
             if (count($arrCSVErr) > 0) {
@@ -481,12 +489,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         // 商品規格テーブルのカラムに存在しているもののうち、Form投入設定されていないデータは上書きしない。
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $this->arrProductClassColumn);
 
-        // 商品IDが設定されており、規格IDが設定されていなければ、既存の規格ID取得を試みる(product_class_idは必須入力項目ではない)
-        if ($product_class_id == '' && $product_id != '') {
-            $product_class_id = SC_Utils_Ex::sfGetProductClassId($product_id, $sqlval['classcategory_id1'], $sqlval['classcategory_id2']);
-            $sqlval['product_class_id'] = $product_class_id;
-        }
-
         if ($product_class_id == '') {
             // 新規登録
             // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
@@ -698,9 +700,18 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         if (!$this->lfIsArrayRecord($this->arrDELIVERYDATE, 'deliv_date_id', $item)) {
             $arrErr['deliv_date_id'] = '※ 指定の発送日目安IDは、登録されていません。';
         }
-        // 発送日目安IDの存在チェック
+        // 商品種別IDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrProductType, 'product_type_id', $item)) {
             $arrErr['product_type_id'] = '※ 指定の商品種別IDは、登録されていません。';
+        }
+        // 既存の商品クラスを更新する場合、入力が必須となる項目が存在する（既存項目のデフォルト値による更新は望ましくない）
+        if ($item['product_class_id'] != '') {
+            if ($item['point_rate'] == '') {
+                $arrErr['point_rate'] = '※ 既存の商品規格が存在する場合、ポイント付与率を未指定にする事はできません。';
+            }
+            if ($item['product_type_id'] == '') {
+                $arrErr['product_type_id'] = '※ 既存の商品規格が存在する場合、商品種別を未指定にする事はできません。';
+            }
         }
         // 関連商品IDのチェック
         $arrRecommendProductUnique = array();

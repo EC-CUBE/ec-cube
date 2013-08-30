@@ -107,7 +107,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
                     if ($this->tryView($objFormParam)) {
                         $pattern = '/' . preg_quote($objFormParam->getValue('top_dir'), '/') . '/';
                         $file_url = htmlspecialchars(preg_replace($pattern, '', $objFormParam->getValue('select_file')));
-                        $tpl_onload = "win02('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
+                        $tpl_onload = "eccube.openWindow('./file_view.php?file=". $file_url ."', 'user_data', '600', '400');";
                         $this->setTplOnLoad($tpl_onload);
                     }
                 }

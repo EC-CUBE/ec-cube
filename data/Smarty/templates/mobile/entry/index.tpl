@@ -46,8 +46,11 @@
         <input type="text" name="kana02" value="<!--{$arrForm.kana02.value|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
         ●性別<font color="#FF0000"> *</font><br>
-        <font color="#FF0000"><!--{$arrErr.sex}--></font>
-        <input type="radio" name="sex" value="1" <!--{if $arrForm.sex.value eq 1}-->checked<!--{/if}-->>男性&nbsp;<input type="radio" name="sex" value="2" <!--{if $arrForm.sex.value eq 2}-->checked<!--{/if}-->>女性<br>
+        <!--{assign var=key1 value="sex"}-->
+        <!--{if $arrErr[$key1]}-->
+            <font color="#FF0000"><!--{$arrErr[$key1]}--></font>
+        <!--{/if}-->
+        <!--{html_radios name=$key1 options=$arrSex selected=$arrForm[$key1].value separator='&nbsp;'}--><br>
 
         ●職業<br>
         <font color="#FF0000"><!--{$arrErr.job}--></font>

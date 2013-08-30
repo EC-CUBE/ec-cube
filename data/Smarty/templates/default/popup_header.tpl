@@ -29,9 +29,10 @@
 <link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" media="all" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
-<!--{* 従来のJavaScript関数が必要な場合は、コメントアウトを外してスクリプトファイルを読み込んでください。
+<!--{if $load_legacy_js}-->
+    <!--{* 従来のJavaScript関数が必要な場合 LC_Page::init() で $load_legacy_js を true に設定する *}-->
     <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.legacy.js"></script>
-*}-->
+<!--{/if}-->
 <title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|h}--></title>
 <link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />

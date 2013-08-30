@@ -36,74 +36,7 @@
         <!--{/foreach}-->
 
         <dl class="form_entry">
-
-            <dt>お名前</dt>
-            <dd><!--{$arrForm.name01.value|h}-->&nbsp;<!--{$arrForm.name02.value|h}--></dd>
-
-            <dt>お名前(フリガナ)</dt>
-            <dd><!--{$arrForm.kana01.value|h}-->&nbsp;<!--{$arrForm.kana02.value|h}--></dd>
-
-            <dt>住所</dt>
-            <dd>
-                〒<!--{$arrForm.zip01.value|h}--> - <!--{$arrForm.zip02.value|h}--><br />
-                <!--{$arrPref[$arrForm.pref.value]|h}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}-->
-            </dd>
-
-            <dt>電話番号</dt>
-            <dd><!--{$arrForm.tel01.value|h}--> - <!--{$arrForm.tel02.value|h}--> - <!--{$arrForm.tel03.value|h}--></dd>
-
-            <dt>FAX</dt>
-            <dd>
-                <!--{if strlen($arrForm.fax01.value) > 0 && strlen($arrForm.fax02.value) > 0 && strlen($arrForm.fax03.value) > 0}-->
-                    <!--{$arrForm.fax01.value|h}--> - <!--{$arrForm.fax02.value|h}--> - <!--{$arrForm.fax03.value|h}-->
-                <!--{else}-->
-                    未登録
-                <!--{/if}-->
-            </dd>
-
-            <dt>メールアドレス</dt>
-            <dd><a href="mailto:<!--{$arrForm.email.value|escape:'hex'}-->" rel="external"><!--{$arrForm.email.value|escape:'hexentity'}--></a></dd>
-
-            <dt>性別</dt>
-            <dd>
-                <!--{if $arrForm.sex.value eq 1}-->
-                    男性
-                <!--{else}-->
-                    女性
-                <!--{/if}-->
-            </dd>
-
-            <dt>職業</dt>
-            <dd><!--{$arrJob[$arrForm.job.value]|default:"未登録"|h}--></dd>
-
-            <dt>生年月日</dt>
-            <dd>
-                <!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}-->
-                    <!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日
-                <!--{else}-->
-                    未登録
-                <!--{/if}-->
-            </dd>
-
-            <dt>希望するパスワード</dt>
-            <dd><!--{$passlen}--></dd>
-
-            <dt>パスワードを忘れた時のヒント</dt>
-            <dd>
-                質問：<!--{$arrReminder[$arrForm.reminder.value]|h}--><br />
-                答え：<!--{$arrForm.reminder_answer.value|h}-->
-            </dd>
-
-            <dt>メールマガジン送付について</dt>
-            <dd>
-                <!--{if $arrForm.mailmaga_flg.value eq 1}-->
-                    HTMLメール＋テキストメールを受け取る
-                <!--{elseif $arrForm.mailmaga_flg.value eq 2}-->
-                    テキストメールを受け取る
-                <!--{else}-->
-                    受け取らない
-                <!--{/if}-->
-            </dd>
+            <!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/form_personal_confirm.tpl" flgFields=3 emailMobile=false prefix=""}-->
         </dl>
 
         <!--★ボタン★-->

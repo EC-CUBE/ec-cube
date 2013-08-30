@@ -45,9 +45,10 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" />
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
-<!--{* 従来のJavaScript関数が必要な場合は、コメントアウトを外してスクリプトファイルを読み込んでください。
+<!--{if $load_legacy_js}-->
+    <!--{* 従来のJavaScript関数が必要な場合 LC_Page::init() で $load_legacy_js を true に設定する *}-->
     <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.legacy.js"></script>
-*}-->
+<!--{/if}-->
 <!--{if $tpl_page_class_name === "LC_Page_Abouts"}-->
     <!--{if ($smarty.server.HTTPS != "") && ($smarty.server.HTTPS != "off")}-->
         <script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>

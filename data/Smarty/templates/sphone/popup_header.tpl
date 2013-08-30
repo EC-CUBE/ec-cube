@@ -34,10 +34,11 @@
     <script src="<!--{$TPL_URLPATH}-->js/jquery-1.9.1.min.js"></script>
     <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.js"></script>
     <script src="<!--{$TPL_URLPATH}-->js/eccube.sphone.js"></script>
-    <!--{* 従来のJavaScript関数が必要な場合は、コメントアウトを外してスクリプトファイルを読み込んでください。
+    <!--{if $load_legacy_js}-->
+        <!--{* 従来のJavaScript関数が必要な場合 LC_Page::init() で $load_legacy_js を true に設定する *}-->
         <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.legacy.js"></script>
         <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/eccube.sphone.legacy.js"></script>
-    *}-->
+    <!--{/if}-->
     <script src="<!--{$TPL_URLPATH}-->js/jquery.biggerlink.js"></script>
     <script type="text/javascript">
         $(function(){

@@ -76,6 +76,9 @@ class LC_Page
     /** ページレイアウトを読み込むか */
     public $skip_load_page_layout = false;
 
+    /** 2.12.x 以前のJavaScript関数を読み込むかどうか */
+    public $load_legacy_js = false;
+
     /**
      * Page を初期化する.
      *
