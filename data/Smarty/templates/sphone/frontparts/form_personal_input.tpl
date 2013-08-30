@@ -29,8 +29,8 @@
     <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
         <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
     <!--{/if}-->
-    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxHarf text data-role-none" placeholder="姓" />&nbsp;&nbsp;
-    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" class="boxHarf text data-role-none" placeholder="名" />
+    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="姓" />&nbsp;&nbsp;
+    <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="名" />
 </dd>
 
 <dt>お名前(フリガナ)&nbsp;<span class="attention">※</span></dt>
@@ -40,7 +40,7 @@
     <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
         <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
     <!--{/if}-->
-    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" class="boxHarf text data-role-none" placeholder="メイ"/>
+    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="メイ"/>
 </dd>
 
 <dt>郵便番号&nbsp;<span class="attention">※</span></dt>
@@ -53,7 +53,7 @@
     <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
         <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
     <!--{/if}-->
-    <p><input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a></p>
+    <p><input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a></p>
 
     <a href="javascript:eccube.getAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip">郵便番号から住所自動入力</a>
 </dd>
@@ -68,8 +68,8 @@
         <!--{html_options options=$arrPref selected=$arrForm[$key3].value}-->
     </select>
 
-    <input type="text" name="<!--{$key4}-->" value="<!--{$arrForm[$key4].value|h}-->" class="boxLong text top data-role-none" placeholder="市区町村名" />
-    <input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5].value|h}-->" class="boxLong text data-role-none" placeholder="番地・ビル名" />
+    <input type="text" name="<!--{$key4}-->" value="<!--{$arrForm[$key4].value|h}-->" style="<!--{$arrErr[$key4]|sfGetErrorColor}-->" class="boxLong text top data-role-none" placeholder="市区町村名" />
+    <input type="text" name="<!--{$key5}-->" value="<!--{$arrForm[$key5].value|h}-->" style="<!--{$arrErr[$key5]|sfGetErrorColor}-->" class="boxLong text data-role-none" placeholder="番地・ビル名" />
 </dd>
 
 <dt>電話番号&nbsp;<span class="attention">※</span></dt>
@@ -80,7 +80,7 @@
     <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
         <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--><!--{$arrErr[$key3]}--></div>
     <!--{/if}-->
-    <input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key3}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" class="boxShort text data-role-none" />
+    <input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key3}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" class="boxShort text data-role-none" />
 </dd>
 
 <dt>FAX</dt>
@@ -91,7 +91,7 @@
     <!--{if $arrErr[$key1] || $arrErr[$key2] || $arrErr[$key3]}-->
         <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--><!--{$arrErr[$key3]}--></div>
     <!--{/if}-->
-    <input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key3}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" class="boxShort text data-role-none" />
+    <input type="tel" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="<!--{$key3}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" class="boxShort text data-role-none" />
 </dd>
 
 <!--{if $flgFields > 1}-->
@@ -103,8 +103,8 @@
         <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
             <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
         <!--{/if}-->
-        <input type="email" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" class="boxLong text top data-role-none" />
-        <input type="email" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" class="boxLong text data-role-none" placeholder="確認のため2回入力してください" />
+        <input type="email" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxLong text top data-role-none" />
+        <input type="email" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxLong text data-role-none" placeholder="確認のため2回入力してください" />
     </dd>
 
     <!--{if $emailMobile}-->
@@ -115,8 +115,8 @@
             <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
                 <div class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></div>
             <!--{/if}-->
-            <input type="email" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" class="boxLong text top data-role-none" />
-            <input type="email" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" class="boxLong text data-role-none" placeholder="確認のため2回入力してください" />
+            <input type="email" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxLong text top data-role-none" />
+            <input type="email" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxLong text data-role-none" placeholder="確認のため2回入力してください" />
         </dd>
     <!--{/if}-->
 
@@ -126,9 +126,9 @@
         <!--{if $arrErr[$key1]}-->
             <div class="attention"><!--{$arrErr[$key1]}--></div>
         <!--{/if}-->
-        <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+        <p style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
             <!--{html_radios name=$key1 options=$arrSex selected=$arrForm[$key1].value separator='&nbsp;&nbsp;'}-->
-        </span>
+        </p>
     </dd>
 
     <dt>職業</dt>
@@ -137,7 +137,7 @@
         <!--{if $arrErr[$key1]}-->
             <div class="attention"><!--{$arrErr[$key1]}--></div>
         <!--{/if}-->
-        <select name="<!--{$key1}-->" class="boxLong data-role-none">
+        <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxLong data-role-none">
             <option value="">選択してください</option>
             <!--{html_options options=$arrJob selected=$arrForm[$key1].value}-->
         </select>
@@ -188,7 +188,7 @@
                 <!--{html_options options=$arrReminder selected=$arrForm[$key1].value}-->
             </select>
 
-            <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" class="boxLong text data-role-none" placeholder="質問の答えを入力してください" />
+            <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxLong text data-role-none" placeholder="質問の答えを入力してください" />
         </dd>
 
         <dt>メールマガジン&nbsp;<span class="attention">※</span></dt>
