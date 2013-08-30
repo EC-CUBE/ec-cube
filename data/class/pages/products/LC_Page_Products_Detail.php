@@ -540,10 +540,11 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
             $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
             if (count($this->arrErr) == 0) {
-                if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
-                    $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-                    $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite', array($this));
+                if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
+                    SC_Response_Ex::actionExit(); 
                 }
+                $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
+                $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite', array($this));
             }
         }
     }

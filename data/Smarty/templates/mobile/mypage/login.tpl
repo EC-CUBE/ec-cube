@@ -31,14 +31,14 @@
             ●メールアドレス<br>
             <!--{assign var=key value="login_email"}-->
             <font color="#FF0000"><!--{$arrErr[$key]}--></font>
-            <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
+            <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" size="40" istyle="3"><br>
         <!--{else}-->
             <input type="hidden" name="login_email" value="dummy">
         <!--{/if}-->
         ●パスワード<br>
         <!--{assign var=key value="login_pass"}-->
         <font color="#FF0000"><!--{$arrErr[$key]}--></font>
-        <input type="password" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" size="40" istyle="3"><br>
+        <input type="password" name="<!--{$key}-->" size="40" istyle="3"><br>
         <center><input type="submit" value="送信" name="log"></center><br>
         <a href="<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->">パスワードをお忘れの方はこちら</a><br>
     </form>

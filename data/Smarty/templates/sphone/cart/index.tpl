@@ -116,7 +116,7 @@
                                                 <!--{if $arrItem.productsClass.classcategory_name2 != ""}-->
                                                     <span class="mini"><!--{$arrItem.productsClass.class_name2}-->：<!--{$arrItem.productsClass.classcategory_name2}--></span><br />
                                                 <!--{/if}-->
-                                                <span class="mini">価格:</span><!--{$arrItem.price|sfCalcIncTax|number_format}-->円
+                                                <span class="mini">価格:</span><!--{$arrItem.price_inctax|number_format}-->円
                                             </p>
                                             <p class="btn_delete">
                                                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="eccube.fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$arrItem.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
