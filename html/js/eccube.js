@@ -193,39 +193,55 @@
             ret = true;
         }
         if (ret) {
-            var formElement = $("form#" + form);
-            formElement.find("*[name=" + key + "]").val(val);
-            formElement.submit();
+            var values = {};
+            values[key] = val;
+            eccube.submitForm(values, form);
         }
         return false;
     };
 
     eccube.setValue = function(key, val, form) {
-        if (typeof form === 'undefined') {
-            form = eccube.defaults.formId;
-        }
-        var formElement = $("form#" + form);
+        var formElement = eccube.getFormElement(form);
         formElement.find("*[name=" + key + "]").val(val);
     };
 
-    eccube.changeAction = function(url) {
-        document['form1'].action = url;
+    eccube.changeAction = function(url, form) {
+        var formElement = eccube.getFormElement(form);
+        formElement.attr("action", url);
     };
 
     // ページナビで使用する。
     eccube.movePage = function(pageno, mode, form) {
-        if (form === undefined) {
-            form = eccube.defaults.formId;
-        }
-        var formElement = $("form#" + form);
-        formElement.find("input[name=pageno]").val(pageno);
+        var values = {pageno: pageno};
         if (mode !== undefined) {
-            formElement.find("input[name='mode']").val(mode);
+            values.mode = mode;
+        }
+        eccube.submitForm(values, form);
+    };
+
+    /**
+     * フォームを送信する.
+     *
+     * @param values
+     * @param form
+     */
+    eccube.submitForm = function(values, form){
+        var formElement = eccube.getFormElement(form);
+        if (values !== undefined && typeof values === "object") {
+            $.each(values, function(index, value) {
+                eccube.setValue(index, value, formElement);
+            });
         }
         formElement.submit();
     };
 
-    eccube.submitForm = function(values, form){
+    /**
+     * フォームを特定してエレメントを返す.
+     *
+     * @param form
+     * @returns {*}
+     */
+    eccube.getFormElement = function(form){
         var formElement;
         if (form !== undefined && typeof form === "string" && form !== "") {
             formElement = $("form#" + form);
@@ -234,12 +250,7 @@
         } else {
             formElement = $("form#" + eccube.defaults.formId);
         }
-        if (values !== undefined && typeof values === "object") {
-            $.each(values, function(index, value) {
-                formElement.find("input,select").filter("[name='" + index + "']").val(value);
-            });
-        }
-        formElement.submit();
+        return formElement;
     };
 
     // ポイント入力制限。
