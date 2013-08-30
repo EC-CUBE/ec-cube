@@ -61,9 +61,10 @@
         <!--{assign var=key2 value="`$prefix`zip02"}-->
         〒 <!--{$arrForm[$key1].value|h}--> - <!--{$arrForm[$key2].value|h}--><br />
         <!--{assign var=key1 value="`$prefix`pref"}-->
+        <!--{assign var=key_pref value="`$arrForm[$key1].value`"}-->
         <!--{assign var=key2 value="`$prefix`addr01"}-->
         <!--{assign var=key3 value="`$prefix`addr02"}-->
-        <!--{$arrPref[$arrForm[$key1].value]|h}--><!--{$arrForm[$key2].value|h}--><!--{$arrForm[$key3].value|h}-->
+        <!--{$arrPref[$key_pref]|h}--><!--{$arrForm[$key2].value|h}--><!--{$arrForm[$key3].value|h}-->
     </dd>
     <dt>電話番号</dt>
     <dd>
