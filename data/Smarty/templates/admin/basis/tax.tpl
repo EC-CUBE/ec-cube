@@ -10,11 +10,11 @@
 <div id="basis" class="contents-main">
 
 <!--{* 軽減税率対応 軽減税率が無いとなれば、税率設定より下に移動しても良いかと思います。 *}-->
-<h2>税金共通設定</h2>
+<h2>個別税率設定</h2>
 
     <table id="basis-tax-func">
         <tr>
-            <th>商品個別 税率設定機能(軽減税率機能)<span class="attention"> *</span></th>
+            <th>商品別税率機能<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.product_tax_flg}--></span>
                 <!--{html_radios name="product_tax_flg" options=$arrEnable selected=$arrForm.product_tax_flg.value}-->
@@ -28,7 +28,7 @@
     </div>
 
 
-<h2>税率設定</h2>
+<h2>共通税率設定</h2>
     <span class="attention"><!--{$arrErr.tax_rule_id}--></span>
 
     <table id="basis-tax-func">

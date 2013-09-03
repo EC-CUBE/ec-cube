@@ -32,5 +32,5 @@
 <li<!--{if $tpl_subno == 'kiyaku'}--> class="on"<!--{/if}--> id="navi-basis-kiyaku"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/kiyaku.php"><span>会員規約設定</span></a></li>
 <li<!--{if $tpl_subno == 'zip_install'}--> class="on"<!--{/if}--> id="navi-basis-zip"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/zip_install.php"><span>郵便番号DB登録</span></a></li>
 <li<!--{if $tpl_subno == 'holiday'}--> class="on"<!--{/if}--> id="navi-basis-holiday"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/holiday.php"><span>定休日管理</span></a></li>
-<li<!--{if $tpl_subno == 'tax'}--> class="on"<!--{/if}--> id="navi-basis-tax"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/tax.php"><span>税金設定</span></a></li>
+<li<!--{if $tpl_subno == 'tax'}--> class="on"<!--{/if}--> id="navi-basis-tax"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->basis/tax.php"><span>税率設定</span></a></li>
 </ul>
