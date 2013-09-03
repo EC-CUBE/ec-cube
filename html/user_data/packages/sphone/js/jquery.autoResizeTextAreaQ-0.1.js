@@ -36,11 +36,14 @@ $.fn.autoResizeTextAreaQ = function(options) {
     }, options);
 
     // extra padding based on browser
+    /* Removed jQuery 1.9.x
     if ($.browser.msie) {
         opts.extra_rows += 1;
     } else if ($.browser.webkit) {
         opts.extra_rows += 1;
     } // else $.browser.mozilla
+     */
+    opts.extra_rows += 1;       // use webkit only.
 
     // iterate over passed in selector, only process actual textareas
     return $(this).filter('textarea').each(function(index) {
