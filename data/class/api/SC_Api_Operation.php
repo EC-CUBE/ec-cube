@@ -300,7 +300,7 @@ class SC_Api_Operation
         $objFormParam->setParam($arrPost);
         $objFormParam->convParam();
 
-        $arrErr = $objFormParam->checkError();
+        $arrErr = SC_Api_Operation_Ex::checkParam($objFormParam); 
         if (SC_Utils_Ex::isBlank($arrErr)) {
             $arrParam = $objFormParam->getHashArray();
             $operation_name = $arrParam['Operation'];
@@ -417,5 +417,32 @@ class SC_Api_Operation
                 SC_Api_Utils_Ex::sendResponseJson($response_outer_name, $arrResponse);
                 break;
         }
+    }
+    
+    /**
+     * APIのリクエスト基本パラメーターのチェック
+     *
+     * @param object $objFormParam
+     * @return array $arrErr
+     */
+    protected function checkParam($objFormParam)
+    {
+        $arrErr = $objFormParam->checkError();
+        if (!preg_match("/^[a-zA-Z0-9\-\_]+$/", $objFormParam->getValue('Operation')) && !SC_Utils::isBlank($objFormParam->getValue('Operation'))) {
+            $arrErr['ECCUBE.Operation.ParamError'] = 'Operationの値が不正です。';
+        }
+        if (!preg_match("/^[a-zA-Z0-9\-\_]+$/", $objFormParam->getValue('Service')) && !SC_Utils::isBlank($objFormParam->getValue('Service'))) {
+            $arrErr['ECCUBE.Service.ParamError'] = 'Serviceの値が不正です。';
+        }
+        if (!preg_match("/^[a-zA-Z0-9\-\_]+$/", $objFormParam->getValue('Style')) && !SC_Utils::isBlank($objFormParam->getValue('Style'))) {
+            $arrErr['ECCUBE.Style.ParamError'] = 'Styleの値が不正です。';
+        }
+        if (!preg_match("/^[a-zA-Z0-9\-\_]+$/", $objFormParam->getValue('Validate')) && !SC_Utils::isBlank($objFormParam->getValue('Validate'))) {
+            $arrErr['ECCUBE.Validate.ParamError'] = 'Validateの値が不正です。';
+        }
+        if (!preg_match("/^[a-zA-Z0-9\-\_\.]+$/", $objFormParam->getValue('Version')) && !SC_Utils::isBlank($objFormParam->getValue('Version'))) {
+            $arrErr['ECCUBE.Version.ParamError'] = 'Versionの値が不正です。';
+        }
+        return $arrErr;
     }
 }
