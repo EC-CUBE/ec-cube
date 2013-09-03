@@ -68,14 +68,11 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objPurchase->checkSessionPendingOrder();
-        $objPurchase->checkDbMyPendignOrder();
-        $objPurchase->checkDbAllPendingOrder();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
         $objCustomer = new SC_Customer_Ex();
-        $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $objAddress = new SC_Helper_Address_Ex();
 

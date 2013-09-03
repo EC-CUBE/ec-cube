@@ -1343,6 +1343,19 @@ __EOS__;
     }
     
     /**
+     * 決済処理中スタータスの受注データのキャンセル処理
+     * @param $cancel_flg 決済処理中ステータスのロールバックをするか(true:する false:しない)  
+     */
+    public function cancelPendingOrder($cancel_flg)
+    {
+        if($cancel_flg == true){
+            $this->checkDbAllPendingOrder();
+            $this->checkDbMyPendignOrder();
+            $this->checkSessionPendingOrder();
+        }
+    }
+    
+    /**
      * 決済処理中スタータスの全受注検索
      */
     public function checkDbAllPendingOrder()

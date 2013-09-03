@@ -64,9 +64,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
-        SC_Helper_Purchase_Ex::checkSessionPendingOrder();
-        SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
-        SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $arrKiyaku = $this->lfGetKiyakuData();
         $this->max = count($arrKiyaku);
