@@ -389,6 +389,8 @@ class LC_Page_Shopping extends LC_Page_Ex
      */
     public function lfCheckError(&$objFormParam)
     {
+        $arrParams = $objFormParam->getHashArray();
+
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam, 'order_');
 
         // 別のお届け先チェック

@@ -181,7 +181,66 @@
                 <col width="30%" />
                 <col width="70%" />
                 <tbody>
-                <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_confirm.tpl" flgFields=2 emailMobile=false prefix="order_"}-->
+                    <tr>
+                        <th scope="row">お名前</th>
+                        <td><!--{$arrForm.order_name01|h}--> <!--{$arrForm.order_name02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">お名前(フリガナ)</th>
+                        <td><!--{$arrForm.order_kana01|h}--> <!--{$arrForm.order_kana02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">会社名</th>
+                        <td><!--{$arrForm.order_company_name|h}--></td>
+                    </tr>
+                    <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                    <tr>
+                        <th scope="row">国</th>
+                        <td><!--{$arrCountry[$arrForm.order_country_id]|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ZIPCODE</th>
+                        <td><!--{$arrForm.order_zipcode|h}--></td>
+                    </tr>
+                    <!--{/if}-->
+                    <tr>
+                        <th scope="row">郵便番号</th>
+                        <td>〒<!--{$arrForm.order_zip01|h}-->-<!--{$arrForm.order_zip02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">住所</th>
+                        <td><!--{$arrPref[$arrForm.order_pref]}--><!--{$arrForm.order_addr01|h}--><!--{$arrForm.order_addr02|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">電話番号</th>
+                        <td><!--{$arrForm.order_tel01}-->-<!--{$arrForm.order_tel02}-->-<!--{$arrForm.order_tel03}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">FAX番号</th>
+                        <td>
+                            <!--{if $arrForm.order_fax01 > 0}-->
+                                <!--{$arrForm.order_fax01}-->-<!--{$arrForm.order_fax02}-->-<!--{$arrForm.order_fax03}-->
+                            <!--{/if}-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">メールアドレス</th>
+                        <td><!--{$arrForm.order_email|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">性別</th>
+                        <td><!--{$arrSex[$arrForm.order_sex]|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">職業</th>
+                        <td><!--{$arrJob[$arrForm.order_job]|default:'(未登録)'|h}--></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">生年月日</th>
+                        <td>
+                            <!--{$arrForm.order_birth|regex_replace:"/ .+/":""|regex_replace:"/-/":"/"|default:'(未登録)'|h}-->
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 

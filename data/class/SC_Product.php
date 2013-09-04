@@ -77,7 +77,6 @@ class SC_Product
     {
         $table = 'dtb_products AS alldtl';
 
-        $objQuery->setGroupBy('alldtl.product_id');
         if (is_array($this->arrOrderData) and $objQuery->order == '') {
             $o_col = $this->arrOrderData['col'];
             $o_table = $this->arrOrderData['table'];
