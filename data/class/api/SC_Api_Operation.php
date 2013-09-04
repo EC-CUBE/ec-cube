@@ -301,6 +301,11 @@ class SC_Api_Operation
         $objFormParam->convParam();
 
         $arrErr = SC_Api_Operation_Ex::checkParam($objFormParam); 
+        
+        // API機能が有効であるかをチェック.
+        if (API_ENABLE_FLAG == false){
+            $arrErr['ECCUBE.Function.Disable'] = 'API機能が無効です。';
+        }
         if (SC_Utils_Ex::isBlank($arrErr)) {
             $arrParam = $objFormParam->getHashArray();
             $operation_name = $arrParam['Operation'];

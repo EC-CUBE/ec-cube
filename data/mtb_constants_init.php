@@ -484,3 +484,5 @@ define('TAX_RULE_PRIORITY', "product_id,product_class_id,pref_id,country_id");
 define('PENDING_ORDER_CANCEL_TIME', 900);
 /** 決済処理中ステータスのロールバックをするか(true:する false:しない) */
 define('PENDING_ORDER_CANCEL_FLAG', true);
+/** API機能を有効にする(true:する false:しない) */
+define('API_ENABLE_FLAG', false);

@@ -1263,6 +1263,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('OPTION_PRODUCT_TAX_
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TAX_RULE_PRIORITY', '"product_id,product_class_id,pref_id,country_id"', 1416, '複数箇所の税率設定時における優先度設定。カンマ区切りスペース不可で記述。後に書いてあるキーに一致するほど優先される。デフォルト：''product_id,product_class_id,pref_id,country_id''（国＞地域（県）＞規格単位＞商品単位）');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PENDING_ORDER_CANCEL_TIME', '900', 1417, '決済処理中ステータスのロールバックを行う時間の設定(秒) ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PENDING_ORDER_CANCEL_FLAG', 'true', 1418, '決済処理中ステータスのロールバックをするか(true:する false:しない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('API_ENABLE_FLAG', 'false', 1419, 'API機能を有効にする(true:する false:しない)');
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
