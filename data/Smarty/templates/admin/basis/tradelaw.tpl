@@ -128,7 +128,7 @@
                 <td>
                     <!--{assign var=key value="law_email"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
-                    <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
+                    <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" />
                 </td>
             </tr>
             <tr>
