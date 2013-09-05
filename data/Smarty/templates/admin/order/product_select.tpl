@@ -58,12 +58,15 @@
             err_text = err_text + class_name2 + "を選択してください。\n";
         }
 
-        if(!class1_id){
+        if (!class1_id) {
+            // 規格が存在しない商品の場合
             err_text = eccube.productsClassCategories[product_id]['__unselected2']['#0']['stock_find'] ? '' : '只今品切れ中です';
-        }else if(class1_id && !class2_id){
-            err_text = eccube.productsClassCategories[product_id][class1_id]['#0']['stock_find'] ? '' : '只今品切れ中です';
-        }else{
+        } else if (class1_id && (class1_id != '__unselected') && class2_id && (class2_id != 'undefined')) {
+            // 規格1&規格2の商品の場合
             err_text = eccube.productsClassCategories[product_id][class1_id]['#' + class2_id]['stock_find'] ? '' : '只今品切れ中です';
+        } else if (class1_id && (class1_id != '__unselected') && (typeof eccube.productsClassCategories[product_id][class1_id]['#0'] != 'undefined')) {
+            // 規格1のみの商品の場合
+            err_text = eccube.productsClassCategories[product_id][class1_id]['#0']['stock_find'] ? '' : '只今品切れ中です';
         }
 
         if (err_text != '') {
