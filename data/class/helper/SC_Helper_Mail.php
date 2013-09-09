@@ -317,7 +317,9 @@ class SC_Helper_Mail
      * @param  string  $secret_key  会員固有キー
      * @param  integer $customer_id 会員ID
      * @param  boolean $is_mobile   false(default):PCアドレスにメールを送る true:携帯アドレスにメールを送る
+     * @param $resend_flg true  仮登録メール再送
      * @return boolean true:成功 false:失敗
+     *  
      */
     public function sfSendRegistMail($secret_key, $customer_id = '', $is_mobile = false, $resend_flg = false)
     {
@@ -343,9 +345,8 @@ class SC_Helper_Mail
         $objMailText->assignobj($this);
 
         $objHelperMail  = new SC_Helper_Mail_Ex();
-
         // 仮会員が有効の場合    
-        if (CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1 or $arrCustomerData['status'] == 1 and $resend_flg = true) {
+        if (CUSTOMER_CONFIRM_MAIL == true and $arrCustomerData['status'] == 1 or $arrCustomerData['status'] == 1 and $resend_flg == true) {
             $subject        = $objHelperMail->sfMakeSubject('会員登録のご確認', $objMailText);
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_mail.tpl');
         } else {
