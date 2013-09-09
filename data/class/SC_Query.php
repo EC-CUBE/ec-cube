@@ -200,11 +200,7 @@ class SC_Query
      */
     public function commit()
     {
-        if ($this->inTransaction()) {
-            return $this->conn->commit();
-        } else {
-            return false;
-        }
+        return $this->conn->commit();
     }
 
     /**
@@ -215,11 +211,7 @@ class SC_Query
      */
     public function begin()
     {
-        if (!$this->inTransaction()) {
-            return $this->conn->beginTransaction();
-        } else {
-            return false;
-        }
+        return $this->conn->beginTransaction();
     }
 
     /**
@@ -230,11 +222,7 @@ class SC_Query
      */
     public function rollback()
     {
-        if ($this->inTransaction()) {
-            return $this->conn->rollback();
-        } else {
-            return false;
-        }
+        return $this->conn->rollback();
     }
 
     /**
