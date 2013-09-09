@@ -138,11 +138,9 @@
                         //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
 
                         //コメントをセット(iphone4の場合、innerHTMLの再描画が行われない為、タイマーで無理やり再描画させる)
-                        if($("#newsComment").val() != ''){
-                            setTimeout( function() {
-                                $("#newsComment").html(news.news_comment.replace(/\n/g,"<br />"));
-                            }, 10);
-                        }
+                        setTimeout( function() {
+                            news.news_comment == null ? $("#newsComment").html("") : $("#newsComment").html(news.news_comment.replace(/\n/g,"<br />"));
+                        }, 10);
                         $.mobile.changePage('#windowcolumn', {transition: "slideup"});
                         //ダイアログが開き終わるまで待機
                         setTimeout( function() {
