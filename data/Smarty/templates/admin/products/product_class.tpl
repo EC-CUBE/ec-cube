@@ -85,6 +85,9 @@
             var price02 = $('#price02_0').val();
             $('input[id^=price02_]').val(price02);
 
+            var tax_rate = $('#tax_rate_0').val();
+            $('input[id^=tax_rate_]').val(tax_rate);
+
             var product_type_id_value = '';
             $('input[id^=product_type_id_0_]').each(function() {
                 if ($(this).attr('checked')) {
