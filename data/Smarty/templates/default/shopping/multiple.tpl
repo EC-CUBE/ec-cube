@@ -82,7 +82,7 @@
                             <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
                                 <!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--><br />
                             <!--{/if}-->
-                            <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->円
+                            <!--{$arrForm.price_inctax.value[$index]|number_format}-->円
                         </td>
                         <td>
                             <!--{assign var=key value="quantity"}-->
@@ -110,6 +110,8 @@
                             <!--{assign var=key value="main_list_image"}-->
                             <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                             <!--{assign var=key value="price"}-->
+                            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
+                            <!--{assign var=key value="price_inctax"}-->
                             <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                             <!--{assign var=key value="shipping"}-->
                             <!--{if strlen($arrErr[$key][$index]) >= 1}-->
