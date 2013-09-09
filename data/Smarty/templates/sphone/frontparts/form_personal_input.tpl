@@ -108,7 +108,7 @@
     </dd>
 
     <!--{if $emailMobile}-->
-        <dt>携帯メールアドレス&nbsp;<span class="attention">※</span></dt>
+        <dt>携帯メールアドレス</dt>
         <dd>
             <!--{assign var=key1 value="`$prefix`email_mobile"}-->
             <!--{assign var=key2 value="`$prefix`email_mobile02"}-->
