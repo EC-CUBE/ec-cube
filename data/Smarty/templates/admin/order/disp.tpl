@@ -83,6 +83,20 @@ self.moveTo(20,20);self.focus();
             <th>TEL</th>
             <td><!--{$arrForm.order_tel01.value|h}--> - <!--{$arrForm.order_tel02.value|h}--> - <!--{$arrForm.order_tel03.value|h}--></td>
         </tr>
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+        <tr>
+            <th>国</th>
+            <td>
+                <!--{$arrCountry[$arrForm.order_country_id.value]|h}-->
+            </td>
+        </tr>
+        <tr>
+            <th>ZIP CODE</th>
+            <td>
+                <!--{$arrForm.order_zipcode.value|h}-->
+            </td>
+        </tr>
+        <!--{/if}-->
         <tr>
             <th>住所</th>
             <td>
@@ -260,6 +274,23 @@ self.moveTo(20,20);self.focus();
                     <!--{$arrShipping[$key3]|h}-->
                 </td>
             </tr>
+            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            <tr>
+                <th>国</th>
+                <td>
+                    <!--{assign var=key1 value="shipping_country_id"}-->
+                    <!--{assign var=key2 value=$arrShipping[$key1]}-->
+                    <!--{$arrCountry[$key2]|h}-->
+                </td>
+            </tr>
+            <tr>
+                <th>ZIP CODE</th>
+                <td>
+                    <!--{assign var=key1 value="shipping_zipcode"}-->
+                    <!--{$arrShipping[$key1]|h}-->
+                </td>
+            </tr>            
+            <!--{/if}-->
             <tr>
                 <th>住所</th>
                 <td>

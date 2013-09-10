@@ -37,11 +37,11 @@
         名（例：花子）<br>
         <input type="text" name="name02" value="<!--{$arrForm.name02.value|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="1"><br>
 
-        フリガナ/姓（例：シブヤ）<font color="#FF0000">※</font><br>
+        フリガナ/姓（例：シブヤ）<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><font color="#FF0000">※</font><!--{/if}--><br>
         <font color="#FF0000"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></font>
         <input type="text" name="kana01" value="<!--{$arrForm.kana01.value|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
-        フリガナ/名（例：ハナコ）<font color="#FF0000">※</font><br>
+        フリガナ/名（例：ハナコ）<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><font color="#FF0000">※</font><!--{/if}--><br>
         <input type="text" name="kana02" value="<!--{$arrForm.kana02.value|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
         【性別】<font color="#FF0000">※</font><br>
@@ -67,10 +67,23 @@
         <select name="day">
             <!--{html_options options=$arrDay selected=$arrForm.day.value}-->
         </select>日<br>
+        
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+        【国】<font color="#FF0000">※</font><br>
+        <font color="#FF0000"><!--{$arrErr.country_id}--></font>
+        <select name="job">
+            <option value="">選択してください</option>
+            <!--{html_options options=$arrCountry selected=$arrForm.country_id.value|h}-->
+        </select><br>
+        
+        【ZIP CODE】<br>
+        <font color="#FF0000"><!--{$arrErr.zipcode}--></font>
+        <input type="text" name="zipcode" value="<!--{$arrForm.zipcode.value|h}-->"><br>
+        <!--{/if}-->
 
         <!--{assign var=key1 value="zip01"}-->
         <!--{assign var=key2 value="zip02"}-->
-        【郵便番号】<font color="#FF0000">※</font><br>
+        【郵便番号】<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><font color="#FF0000">※</font><!--{/if}--><br>
         <font color="#FF0000"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></font>
         <!--{assign var="size1" value="`$smarty.const.ZIP01_LEN+2`"}-->
         <!--{assign var="size2" value="`$smarty.const.ZIP02_LEN+2`"}-->
