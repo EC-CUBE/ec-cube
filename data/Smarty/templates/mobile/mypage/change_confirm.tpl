@@ -35,11 +35,17 @@
         【個人情報】<br>
         <!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--><br>
         <!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--><br>
+        <!--{$arrForm.company_name.value|h}--><br>
         <!--{assign var=key1 value="sex"}-->
         <!--{assign var="sex_id" value=$arrForm[$key1].value}-->
         <!--{$arrSex[$sex_id]|h}--><br>
         <!--{$arrJob[$arrForm.job.value]|h}--><br>
         <!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}--><!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日生まれ<!--{else}-->生年月日 未登録<!--{/if}--><br>
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+        <!--{assign var="country_id" value=$arrForm.country_id.value}-->
+        <!--{$arrCountry[$country_id]|h}--><br>
+        <!--{$arrForm.zipcode.value|h}--><br>
+        <!--{/if}-->
         〒<!--{$arrForm.zip01.value|h}--> - <!--{$arrForm.zip02.value|h}--><br>
         <!--{$arrPref[$arrForm.pref.value]|h}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--><br>
         <!--{$arrForm.tel01.value|h}-->-<!--{$arrForm.tel02.value|h}-->-<!--{$arrForm.tel03.value|h}--><br>

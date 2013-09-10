@@ -45,6 +45,10 @@
         フリガナ/名（例：ハナコ）<br>
         <input type="text" name="kana02" value="<!--{$arrForm.kana02.value|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" istyle="2"><br>
 
+        ●会社名<br>
+        <font color="#FF0000"><!--{$arrErr.company_name}--></font>
+        <input type="text" name="company_name" value="<!--{$arrForm.company_name.value|h}-->" istyle="1"><br>
+
         ●性別<font color="#FF0000"> *</font><br>
         <!--{assign var=key1 value="sex"}-->
         <!--{if $arrErr[$key1]}-->
@@ -72,7 +76,7 @@
         <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
         ●国<font color="#FF0000">※</font><br>
         <font color="#FF0000"><!--{$arrErr.country_id}--></font>
-        <select name="job">
+        <select name="country_id">
             <option value="">選択してください</option>
             <!--{html_options options=$arrCountry selected=$arrForm.country_id.value|h|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
         </select><br>

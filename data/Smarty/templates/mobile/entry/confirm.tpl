@@ -38,6 +38,9 @@
         ●お名前(フリガナ)<br>
         <!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--><br>
 
+        ●会社名<br>
+        <!--{$arrForm.company_name.value|h}--><br>
+
         ●性別<br>
         <!--{assign var=key1 value="sex"}-->
         <!--{assign var="sex_id" value=$arrForm[$key1].value}-->
@@ -48,6 +51,15 @@
 
         ●生年月日<br>
         <!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}--><!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
+
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+        ●国<br>
+        <!--{assign var="country_id" value=$arrForm.country_id.value}-->
+        <!--{$arrCountry[$country_id]|h}--><br>
+
+        ●ZIP CODE<br>
+        <!--{$arrForm.zipcode.value|h}--><br>
+        <!--{/if}-->
 
         ●住所<br>
         〒<!--{$arrForm.zip01.value|h}--> - <!--{$arrForm.zip02.value|h}--><br>

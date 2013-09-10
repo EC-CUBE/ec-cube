@@ -85,7 +85,14 @@
                     style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                     class="boxHarf text data-role-none" placeholder="メイ"/>
             </dd>
-            
+
+            <dt>会社名</dt>
+            <dd>
+                <!--{assign var=key value="order_company_name"}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+            </dd>
+
             <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
             <dt>国&nbsp;<span class="attention">※</span></dt>
             <dd>
@@ -290,7 +297,14 @@
                         style="<!--{$arrErr[$key2]|sfGetErrorColor}-->"
                         class="boxHarf text data-role-none" placeholder="メイ"/>
                 </dd>
-            
+
+                <dt>会社名</dt>
+                <dd>
+                    <!--{assign var=key value="shipping_company_name"}-->
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+                </dd>
+
                 <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
                 <dt>国&nbsp;<span class="attention">※</span></dt>
                 <dd>

@@ -43,6 +43,15 @@
     <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="メイ"/>
 </dd>
 
+<dt>会社名</dt>
+<dd>
+    <!--{assign var=key1 value="`$prefix`company_name"}-->
+    <!--{if $arrErr[$key1]}-->
+        <div class="attention"><!--{$arrErr[$key1]}--></div>
+    <!--{/if}-->
+    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxLong text data-role-none" />
+</dd>
+
 <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
 <dt>国&nbsp;<span class="attention">※</span></dt>
 <dd>
