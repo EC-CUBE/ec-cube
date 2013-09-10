@@ -158,7 +158,7 @@
     // フォームに代入してからサブミットする。
     eccube.insertValueAndSubmit = function(fm, ele, val, msg){
         var ret;
-        if (msg !== undefined){
+        if (msg){
             ret = window.confirm(msg);
         } else {
             ret = true;
