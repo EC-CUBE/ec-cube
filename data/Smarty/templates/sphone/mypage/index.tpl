@@ -74,7 +74,7 @@
                 </div><!-- /.form_area-->
                 <div class="btn_area">
                     <!--{if $objNavi->all_row > $dispNumber}-->
-                        <p><a href="javascript: void(0);" class="btn_more" id="btn_more_history" onClick="getHistory(5); return false;" rel="external">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
+                        <p><a href="javascript: void(0);" class="btn_more" id="btn_more_history" onClick="getHistory(<!--{$dispNumber}-->); return false;" rel="external">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
                     <!--{/if}-->
                 </div>
             <!--{else}-->
