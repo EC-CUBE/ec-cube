@@ -27,15 +27,16 @@
 <!--
 function lfnCheckSubmit( fm ){
     var err = '';
-    /*
-    if ( ! fm["title"].value ){
-        err += '見出しコメントを入力して下さい。';
+
+    if ( ! fm["product_id"].value ){
+        err += '商品を選択して下さい。';
     }
-    */
-    if ( ! fm["comment"].value ){
+
+    if ( fm["comment"] && !fm["comment"].value ){
         if ( err ) err += '';
         err += 'コメントを入力して下さい。';
     }
+
     if ( err ){
         alert(err);
         return false;
