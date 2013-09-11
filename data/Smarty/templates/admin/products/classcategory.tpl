@@ -34,7 +34,7 @@
         <table>
             <tr>
                 <th>規格名</th>
-                <td><!--{$tpl_class_name}--></td>
+                <td><!--{$tpl_class_name|h}--></td>
             </tr>
             <tr>
                 <th>分類名<span class="attention"> *</span></th>
