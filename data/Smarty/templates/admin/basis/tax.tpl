@@ -17,7 +17,9 @@
             <th>商品別税率機能<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.product_tax_flg}--></span>
+                <span style="<!--{$arrErr.product_tax_flg|sfGetErrorColor}-->">
                 <!--{html_radios name="product_tax_flg" options=$arrEnable selected=$arrForm.product_tax_flg.value}-->
+                </span>
             </td>
         </tr>
     </table>
@@ -36,49 +38,53 @@
             <th>消費税率<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.tax_rate}--></span>
-                <input type="text" name="tax_rate" value="<!--{$arrForm.tax_rate.value|h}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{if $arrErr.tax_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> ％
+                <input type="text" name="tax_rate" value="<!--{$arrForm.tax_rate.value|h}-->" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" size="6" class="box6" style="<!--{$arrErr.tax_rate|sfGetErrorColor}-->" /> ％
             </td>
         </tr>
         <tr>
             <th>課税規則<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.calc_rule}--></span>
+                <span style="<!--{$arrErr.calc_rule|sfGetErrorColor}-->">
                 <!--{html_radios name="calc_rule" options=$arrTAXCALCRULE selected=$arrForm.calc_rule.value}-->
+                </span>
             </td>
         </tr>
         <!--{if $tpl_tax_rule_id != "0"}-->
         <tr>
             <th>適用日時<span class="attention"> *</span></th>
             <td><span class="attention"><!--{$arrErr.apply_date}--></span>
-                <!--{assign var=key value="apply_date_year"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+                <!--{assign var=key1 value="apply_date_year"}-->
+                <!--{assign var=key2 value="apply_date_month"}-->
+                <!--{assign var=key3 value="apply_date_day"}-->
+                <!--{assign var=key4 value="apply_date_hour"}-->
+                <!--{assign var=key5 value="apply_date_minutes"}-->
+                
+                <span class="attention"><!--{$arrErr[$key1]}--></span>
+                <span class="attention"><!--{$arrErr[$key2]}--></span>
+                <span class="attention"><!--{$arrErr[$key3]}--></span>
+                <span class="attention"><!--{$arrErr[$key4]}--></span>
+                <span class="attention"><!--{$arrErr[$key5]}--></span>
+
+                <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
                 <option value="" selected="selected">------</option>
-                <!--{html_options options=$arrYear selected=$arrForm[$key].value|h}-->
+                <!--{html_options options=$arrYear selected=$arrForm[$key1].value|h}-->
                 </select>年
-                <!--{assign var=key value="apply_date_month"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+                <select name="<!--{$key2}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->">
                 <option value="" selected="selected">----</option>
-                <!--{html_options options=$objDate->getMonth() selected=$arrForm[$key].value|h}-->
+                <!--{html_options options=$objDate->getMonth() selected=$arrForm[$key2].value|h}-->
                 </select>月
-                <!--{assign var=key value="apply_date_day"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+                <select name="<!--{$key3}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->">
                 <option value="" selected="selected">----</option>
-                <!--{html_options options=$objDate->getDay() selected=$arrForm[$key].value|h}-->
+                <!--{html_options options=$objDate->getDay() selected=$arrForm[$key3].value|h}-->
                 </select>日
-                <!--{assign var=key value="apply_date_hour"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+                <select name="<!--{$key4}-->" style="<!--{$arrErr[$key4]|sfGetErrorColor}-->">
                 <option value="" selected="selected">----</option>
-                <!--{html_options options=$objDate->getHour() selected=$arrForm[$key].value|h}-->
+                <!--{html_options options=$objDate->getHour() selected=$arrForm[$key4].value|h}-->
                 </select>時
-                <!--{assign var=key value="apply_date_minutes"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" <!--{if $arrErr[$key] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> >
+                <select name="<!--{$key5}-->" style="<!--{$arrErr[$key5]|sfGetErrorColor}-->">
                 <option value="" selected="selected">----</option>
-                <!--{html_options options=$arrMinutes selected=$arrForm[$key].value|h}-->
+                <!--{html_options options=$arrMinutes selected=$arrForm[$key5].value|h}-->
                 </select>分
             </td>
         </tr>
