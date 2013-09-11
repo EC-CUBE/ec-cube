@@ -63,7 +63,9 @@
                     <th>在庫数</th>
                     <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
                     <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)</th>
+                    <!--{if $smarty.const.OPTION_PRODUCT_TAX_RULE}-->
                     <th>消費税率(%)</th>
+                    <!--{/if}-->
                     <th>商品種別</th>
                     <th>ダウンロードファイル名</th>
                     <th>ダウンロード商品用ファイルアップロード</th>
@@ -92,8 +94,10 @@
                             <td class="right"><!--{$arrForm[$key].value[$index]|h}--></td>
                             <!--{assign var=key value="price02"}-->
                             <td class="right"><!--{$arrForm[$key].value[$index]|h}--></td>
+                            <!--{if $smarty.const.OPTION_PRODUCT_TAX_RULE}-->
                             <!--{assign var=key value="tax_rate"}-->
                             <td class="right"><!--{$arrForm[$key].value[$index]|h}--></td>
+                            <!--{/if}-->
                             <!--{assign var=key value="product_type_id"}-->
                             <td class="right">
                                 <!--{foreach from=$arrForm[$key].value[$index] item=product_type_id}-->
