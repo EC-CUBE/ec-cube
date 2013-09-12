@@ -1088,18 +1088,22 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     public function setProductsQuantity(&$objFormParam)
     {
         $arrShipmentsItems = $objFormParam->getSwapArray(array('shipment_product_class_id','shipment_quantity'));
-        foreach ($arrShipmentsItems as $arritems) {
-            foreach ($arritems['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {
-                $arrUpdateQuantity[$shipment_product_class_id] += $arritems['shipment_quantity'][$relation_index];
+        
+        // 配送先が存在する時のみ、商品個数の再設定を行います
+        if(!SC_Utils_Ex::isBlank($arrShipmentsItems)) {
+            foreach ($arrShipmentsItems as $arritems) {
+                foreach ($arritems['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {
+                    $arrUpdateQuantity[$shipment_product_class_id] += $arritems['shipment_quantity'][$relation_index];
+                }
             }
-        }
 
-        $arrProductsClass = $objFormParam->getValue('product_class_id');
-        $arrProductsQuantity = $objFormParam->getValue('quantity');
-        foreach ($arrProductsClass as $relation_key => $product_class_id) {
-            $arrQuantity['quantity'][$relation_key] = $arrUpdateQuantity[$product_class_id];
+            $arrProductsClass = $objFormParam->getValue('product_class_id');
+            $arrProductsQuantity = $objFormParam->getValue('quantity');
+            foreach ($arrProductsClass as $relation_key => $product_class_id) {
+                $arrQuantity['quantity'][$relation_key] = $arrUpdateQuantity[$product_class_id];
+            }
+            $objFormParam->setParam($arrQuantity);
         }
-        $objFormParam->setParam($arrQuantity);
     }
 
     /**
