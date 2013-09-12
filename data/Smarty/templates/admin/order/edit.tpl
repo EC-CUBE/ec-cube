@@ -298,7 +298,7 @@
             <tr>
                 <th>現在ポイント</th>
                 <td>
-                    <!--{if $arrForm.customer_id > 0}-->
+                    <!--{if $arrForm.customer_id.value > 0}-->
                         <!--{$arrForm.customer_point.value|number_format}-->
                         pt
                     <!--{else}-->
