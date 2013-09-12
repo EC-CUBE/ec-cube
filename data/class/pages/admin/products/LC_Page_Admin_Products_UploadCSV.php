@@ -492,7 +492,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         if ($product_class_id == '') {
             // 新規登録
             // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
-            $sqlval = $this->lfSetProductClassDefaultData($sqlval);
+            $sqlval = $this->lfSetProductClassDefaultData($sqlval, false);
             $sqlval['product_id'] = $product_id;
             $sqlval['product_class_id'] = $objQuery->nextVal('dtb_products_class_product_class_id');
             $sqlval['create_date'] = $arrList['update_date'];
