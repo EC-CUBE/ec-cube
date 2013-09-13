@@ -37,7 +37,7 @@
             ◎<!--{$item.productsClass.name|h}--><br>
             <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--><br><!--{/if}-->
             <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--><br><!--{/if}-->
-            &nbsp;単価：<!--{$item.price|sfCalcIncTax|number_format}-->円<br>
+            &nbsp;単価：<!--{$item.price_inctax|number_format}-->円<br>
             &nbsp;数量：<!--{$item.quantity|number_format}--><br>
             &nbsp;小計：<!--{$item.total_inctax|number_format}-->円<br>
             <br>

@@ -51,12 +51,14 @@
             <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
             <!--{assign var=key value="price"}-->
             <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
+            <!--{assign var=key value="price_inctax"}-->
+            <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->">
 
             <!--{* 商品名 *}-->◎<!--{$arrForm.name.value[$index]|h}--><br>
             <!--{* 規格名1 *}--><!--{if $arrForm.classcategory_name1.value[$index] != ""}--><!--{$arrForm.class_name1.value[$index]|h}-->：<!--{$arrForm.classcategory_name1.value[$index]|h}--><br><!--{/if}-->
             <!--{* 規格名2 *}--><!--{if $arrForm.classcategory_name2.value[$index] != ""}--><!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--><br><!--{/if}-->
             <!--{* 販売価格 *}-->
-            <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->円<br>
+            <!--{$arrForm.price_inctax.value[$index]|number_format}-->円<br>
 
             <!--{assign var=key value="quantity"}-->
             <!--{if $arrErr[$key][$index] != ''}-->
