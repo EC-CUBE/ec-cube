@@ -83,7 +83,8 @@
     }
 
     $(document).ready(function() {
-        if(<!--{$arrForm.shipping_quantity.value}--> > 1){
+        var shipping_quantity = escape('<!--{$arrForm.shipping_quantity.value|h}-->');
+        if(shipping_quantity > 1){
             $("input[name^='quantity[']").attr("disabled","disabled");
         }
     });
