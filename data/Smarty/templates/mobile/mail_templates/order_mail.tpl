@@ -84,8 +84,9 @@
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
 商品コード：<!--{$item.product_code}-->
 商品名：<!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
-単価：￥<!--{$item.price|sfCalcIncTax:$arrOrder.order_tax_rate:$arrOrder.order_tax_rule|number_format}-->
-数量：<!--{$item.quantity}-->
+<!--{assign var=shipping_product value=$item.productsClass}-->
+単価：￥<!--{$shipping_product.price02_inctax|number_format}-->
+数量：<!--{$item.quantity|number_format}-->
 
 <!--{/foreach}-->
 <!--{/foreach}-->
