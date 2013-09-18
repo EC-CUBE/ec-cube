@@ -21,16 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<script type="text/javascript">
-<!--
-self.moveTo(20,20);self.focus();
-//-->
-</script>
-
 <!--{include file="`$smarty.const.TEMPLATE_ADMIN_REALDIR`admin_popup_header.tpl"}-->
 
-    <!--▼お客様情報ここから-->
+<script type="text/javascript">
+    <!--
+    self.moveTo(20,20);self.focus();
+    //-->
+</script>
+
+<!--▼お客様情報ここから-->
     <table class="form">
         <tr>
             <th>注文番号</th>
