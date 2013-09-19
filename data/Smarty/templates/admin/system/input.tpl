@@ -45,7 +45,7 @@ self.moveTo(20,20);self.focus();
             <th>名前</th>
             <td>
                 <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
-                <input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+                <input type="text" name="name" size="30" class="box30" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name|sfGetErrorColor}-->" />
                 <span class="attention">※必須入力</span>
             </td>
         </tr>
@@ -53,14 +53,14 @@ self.moveTo(20,20);self.focus();
             <th>所属</th>
             <td>
                 <!--{if $arrErr.department}--><span class="attention"><!--{$arrErr.department}--></span><!--{/if}-->
-                <input type="text" name="department" size="30" class="box30" value="<!--{$arrForm.department|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+                <input type="text" name="department" size="30" class="box30" value="<!--{$arrForm.department|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.department|sfGetErrorColor}-->" />
             </td>
         </tr>
         <tr>
             <th>ログインＩＤ</th>
             <td>
                 <!--{if $arrErr.login_id}--><span class="attention"><!--{$arrErr.login_id}--></span><!--{/if}-->
-                <input type="text" name="login_id" size="20" class="box20"    value="<!--{$arrForm.login_id|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
+                <input type="text" name="login_id" size="20" class="box20" value="<!--{$arrForm.login_id|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.login_id|sfGetErrorColor}-->" />
                 <span class="attention">※必須入力</span><br />
                 ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
             </td>
@@ -69,11 +69,11 @@ self.moveTo(20,20);self.focus();
             <th>パスワード</th>
             <td>
                 <!--{if $arrErr.password}--><span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><!--{/if}-->
-                <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
+                <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" />
                 <span class="attention">※必須入力</span><br />
                 ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
                 <br />
-                <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/>
+                <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.password02|sfGetErrorColor}-->" />
                 <p><span class="attention mini">確認のために2度入力してください。</span></p>
             </td>
         </tr>
@@ -81,7 +81,7 @@ self.moveTo(20,20);self.focus();
             <th>権限</th>
             <td>
                 <!--{if $arrErr.authority}--><span class="attention"><!--{$arrErr.authority}--></span><!--{/if}-->
-                <select name="authority">
+                <select name="authority" style="<!--{$arrErr.authority|sfGetErrorColor}-->">
                     <option value="">選択してください</option>
                     <!--{html_options options=$arrAUTHORITY selected=$arrForm.authority}-->
                 </select>
@@ -93,8 +93,10 @@ self.moveTo(20,20);self.focus();
             <td>
                 <!--{if $arrErr.work}--><span class="attention"><!--{$arrErr.work}--></span><!--{/if}-->
                 <!--{assign var=key value="work"}-->
-                <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1"><!--{$arrWORK.1}--></label>
-                <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" style="<!--{$arrErr.work|sfGetErrorColor}-->" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0"><!--{$arrWORK.0}--></label>
+                <span style="<!--{$arrErr.work|sfGetErrorColor}-->">
+                <input type="radio" id="<!--{$key}-->_1" name="<!--{$key}-->" value="1" <!--{$arrForm.work|sfGetChecked:1}--> /><label for="<!--{$key}-->_1"><!--{$arrWORK.1}--></label>
+                <input type="radio" id="<!--{$key}-->_0" name="<!--{$key}-->" value="0" <!--{$arrForm.work|sfGetChecked:0}--> /><label for="<!--{$key}-->_0"><!--{$arrWORK.0}--></label>
+                </span>
                 <span class="attention">※必須入力</span>
             </td>
         </tr>

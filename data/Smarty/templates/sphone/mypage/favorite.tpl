@@ -78,7 +78,7 @@
 
         <div class="btn_area">
             <!--{if $tpl_linemax > $dispNumber}-->
-                <p><a rel="external" href="javascript: void(0);" class="btn_more" id="btn_more_product" onclick="getProducts(5); return false;">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
+                <p><a rel="external" href="javascript: void(0);" class="btn_more" id="btn_more_product" onclick="getProducts(<!--{$dispNumber}-->); return false;">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
             <!--{/if}-->
         </div>
 

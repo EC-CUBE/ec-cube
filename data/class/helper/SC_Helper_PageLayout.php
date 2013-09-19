@@ -56,14 +56,14 @@ class SC_Helper_PageLayout
         }
 
         if (empty($arrPageData[0])) {
-            trigger_error('ページ情報を取得できませんでした。', E_USER_ERROR);
+            trigger_error('ページ情報を取得できませんでした。', E_USER_WARNING);
         }
 
         $objPage->tpl_mainpage = $this->getTemplatePath($device_type_id) . $arrPageData[0]['filename'] . '.tpl';
 
         if (!file_exists($objPage->tpl_mainpage)) {
             $msg = 'メイン部のテンプレートが存在しません。[' . $objPage->tpl_mainpage . ']';
-            trigger_error($msg, E_USER_ERROR);
+            trigger_error($msg, E_USER_WARNING);
         }
 
         $objPage->arrPageLayout =& $arrPageData[0];
@@ -263,7 +263,7 @@ __EOF__;
      * @access public
      * @param  integer                   $device_type_id 端末種別ID
      * @param  integer                   $page_id        ページID
-     * @return 編集可能ページの� �合 true
+     * @return 編集可能ページの� �合 true
      */
     public function isEditablePage($device_type_id, $page_id)
     {

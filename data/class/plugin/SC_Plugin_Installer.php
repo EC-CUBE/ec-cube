@@ -74,54 +74,64 @@ class SC_Plugin_Installer
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // SQLの実行
-        foreach ($arrSql as $sql) {
-            $this->log("exec sql: " . $sql['sql']);
-            $objQuery->query($sql['sql'], $sql['params']);
+        if(!SC_Utils_Ex::isBlank($arrSql)) {
+            foreach ($arrSql as $sql) {
+                $this->log("exec sql: " . $sql['sql']);
+                $objQuery->query($sql['sql'], $sql['params']);
+            }
         }
 
         $arrInsertQuery = $this->arrInstallData['insert'];
-        foreach ($arrInsertQuery as $query) {
-            $objQuery->insert(
-                    $query['table'],
-                    $query['arrVal'],
-                    $query['arrSql'],
-                    $query['arrSqlVal'],
-                    $query['form'],
-                    $query['arrFromVal']
-            );
+        if(!SC_Utils_Ex::isBlank($arrInsertQuery)) {
+            foreach ($arrInsertQuery as $query) {
+                $objQuery->insert(
+                        $query['table'],
+                        $query['arrVal'],
+                        $query['arrSql'],
+                        $query['arrSqlVal'],
+                        $query['form'],
+                        $query['arrFromVal']
+                );
+            }
         }
 
         $arrUpdateQuery = $this->arrInstallData['update'];
-        foreach ($arrUpdateQuery as $query) {
-            $objQuery->update(
-                    $query['table'],
-                    $query['arrVal'],
-                    $query['where'],
-                    $query['arrWhereVal'],
-                    $query['arrRawSql'],
-                    $query['arrRawSqlVal']
-            );
+        if(!SC_Utils_Ex::isBlank($arrUpdateQuery)) {
+            foreach ($arrUpdateQuery as $query) {
+                $objQuery->update(
+                        $query['table'],
+                        $query['arrVal'],
+                        $query['where'],
+                        $query['arrWhereVal'],
+                        $query['arrRawSql'],
+                        $query['arrRawSqlVal']
+                );
+            }
         }
 
         // プラグインのディレクトリコピー
         $arrCopyDirectories = $this->arrInstallData['copy_directory'];
 
-        foreach ($arrCopyDirectories as $directory) {
-            $this->log("exec dir copy: " . $directory['src'] . ' -> ' . $directory['dist']);
-            // ディレクトリコピー -> HTML配下とDATA配下を別関数にする
-            SC_Utils::copyDirectory(
-                    PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $directory['src'],
-                    PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $directory['dist']);
+        if(!SC_Utils_Ex::isBlank($arrCopyDirectories)) {
+            foreach ($arrCopyDirectories as $directory) {
+                $this->log("exec dir copy: " . $directory['src'] . ' -> ' . $directory['dist']);
+                // ディレクトリコピー -> HTML配下とDATA配下を別関数にする
+                SC_Utils::copyDirectory(
+                        PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $directory['src'],
+                        PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $directory['dist']);
+            }
         }
 
         // プラグインのファイルコピー
         $arrCopyFiles = $this->arrInstallData['copy_file'];
 
-        foreach ($arrCopyFiles as $file) {
-            $this->log("exec file copy: " . $file['src'] . ' -> ' . $file['dist']);
-            // ファイルコピー
-            copy(PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $file['src'],
-                 PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $file['dist']);
+        if(!SC_Utils_Ex::isBlank($arrCopyFiles)) {
+            foreach ($arrCopyFiles as $file) {
+                $this->log("exec file copy: " . $file['src'] . ' -> ' . $file['dist']);
+                // ファイルコピー
+                copy(PLUGIN_UPLOAD_REALDIR . $plugin_code . DIRECTORY_SEPARATOR . $file['src'],
+                     PLUGIN_HTML_REALDIR   . $plugin_code . DIRECTORY_SEPARATOR . $file['dist']);
+            }
         }
 
         $this->log("end");

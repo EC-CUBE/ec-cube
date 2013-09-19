@@ -66,7 +66,7 @@
                                 <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
                                     <span class="mini"><!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--></span><br />
                                 <!--{/if}-->
-                                <!--{$arrForm.price.value[$index]|sfCalcIncTax|number_format}-->円
+                                <!--{$arrForm.price_inctax.value[$index]|number_format}-->円
                             </p>
                             <ul>
                                 <li class="result"><span class="mini">数量</span></li>
@@ -97,6 +97,8 @@
                         <!--{assign var=key value="main_list_image"}-->
                         <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                         <!--{assign var=key value="price"}-->
+                        <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
+                        <!--{assign var=key value="price_inctax"}-->
                         <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
                         <!--{assign var=key value="shipping"}-->
                         <select name="<!--{$key}-->[<!--{$index}-->]" class="boxLong data-role-none"><!--{html_options options=$addrs selected=$arrForm[$key].value[$index]}--></select>

@@ -152,7 +152,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
             // query:配信履歴から「確認」
             case 'query':
                 if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
-                    $this->arrSearchData = $this->lfGetMailQuery();
+                    $this->arrSearchData = $this->lfGetMailQuery($_GET['send_id']);
                 }
                 $this->setTemplate('mail/query.tpl');
                 break;
@@ -280,7 +280,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * 配信履歴から条件を取得する
      *
-     * @param  integer $send_id　� �信履歴番号
+     * @param  integer $send_id　配信履歴番号
      * @return array
      */
     public function lfGetMailQuery($send_id)

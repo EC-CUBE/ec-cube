@@ -72,12 +72,9 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
-        SC_Helper_Purchase_Ex::checkSessionPendingOrder();
-        SC_Helper_Purchase_Ex::checkDbMyPendignOrder();
-        SC_Helper_Purchase_Ex::checkDbAllPendingOrder();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $objCustomer    = new SC_Customer_Ex();
-        $objPurchase = new SC_Helper_Purchase_Ex();
         $objProduct  = new SC_Product();
 
         if (!SC_Utils_Ex::sfIsInt($_GET['order_id'])) {

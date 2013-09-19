@@ -1215,7 +1215,7 @@ __EOS__;
         $arrRawSql = array();
         $where = 'rank BETWEEN ? AND ?';
         if ($addWhere != '') {
-            $where .= " AND $Where";
+            $where .= " AND $addWhere";
         }
         if ($newRank > $oldRank) {
             //位置を上げる場合、他の商品の位置を1つ下げる（ランクを1下げる）

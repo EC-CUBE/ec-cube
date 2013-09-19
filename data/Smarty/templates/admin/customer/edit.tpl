@@ -92,7 +92,7 @@
                 </td>
             </tr>
             <tr>
-                <th>お名前(フリガナ)<span class="attention"> *</span></th>
+                <th>お名前(フリガナ)<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><span class="attention"> *</span><!--{/if}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.kana01}--><!--{$arrErr.kana02}--></span>
                     <input type="text" name="kana01" value="<!--{$arrForm.kana01|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />&nbsp;&nbsp;<input type="text" name="kana02" value="<!--{$arrForm.kana02|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.kana02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
@@ -126,7 +126,7 @@
             </tr>
             <!--{/if}-->
             <tr>
-                <th>郵便番号<span class="attention"> *</span></th>
+                <th>郵便番号<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><span class="attention"> *</span><!--{/if}--></th>
                 <td>
                     <span class="attention"><!--{$arrErr.zip01}--><!--{$arrErr.zip02}--></span>
                     〒 <input type="text" name="zip01" value="<!--{$arrForm.zip01|h}-->" maxlength="<!--{$smarty.const.ZIP01_LEN}-->" size="6" class="box6" <!--{if $arrErr.zip01 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> /> - <input type="text" name="zip02" value="<!--{$arrForm.zip02|h}-->" maxlength="<!--{$smarty.const.ZIP02_LEN}-->" size="6" class="box6" <!--{if $arrErr.zip02 != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />

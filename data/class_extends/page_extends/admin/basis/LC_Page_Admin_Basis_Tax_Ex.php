@@ -24,7 +24,7 @@
 require_once CLASS_REALDIR . 'pages/admin/basis/LC_Page_Admin_Basis_Tax.php';
 
 /**
- * 税金管理 のページクラス(拡張).
+ * 税率管理 のページクラス(拡張).
  *
  * LC_Page_Admin_Basis_Tax をカスタマイズする場合はこのクラスを編集する.
  *

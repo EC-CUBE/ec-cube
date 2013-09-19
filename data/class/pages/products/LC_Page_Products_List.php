@@ -93,9 +93,7 @@ class LC_Page_Products_List extends LC_Page_Ex
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objPurchase->checkSessionPendingOrder();
-        $objPurchase->checkDbMyPendignOrder();
-        $objPurchase->checkDbAllPendingOrder();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $objProduct = new SC_Product_Ex();
         // パラメーター管理クラス

@@ -93,7 +93,12 @@
         <table>
             <tr>
                 <th>商品種別</th>
-                <td><span class="attention"><!--{$arrErr[$key]}--></span><!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key].value separator='&nbsp;&nbsp;'}--></td>
+                <td>
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                    <span style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                    <!--{html_radios name=$key options=$arrProductType selected=$arrForm[$key].value separator='&nbsp;&nbsp;'}-->
+                    </span>
+                </td>
             </tr>
         </table>
 
@@ -104,7 +109,9 @@
                 <th>支払方法</th>
                 <td>
                     <span class="attention"><!--{$arrErr[$key]}--></span>
+                    <span style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
                     <!--{html_checkboxes name=$key options=$arrPayments selected=$arrForm[$key].value separator='&nbsp;&nbsp;'}-->
+                    </span>
                 </td>
             </tr>
         </table>

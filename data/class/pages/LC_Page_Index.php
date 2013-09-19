@@ -63,9 +63,7 @@ class LC_Page_Index extends LC_Page_Ex
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objPurchase->checkSessionPendingOrder();
-        $objPurchase->checkDbMyPendignOrder();
-        $objPurchase->checkDbAllPendingOrder();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $this->tpl_title = '';
         $objCustomer = new SC_Customer_Ex();

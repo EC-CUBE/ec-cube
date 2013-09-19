@@ -24,7 +24,7 @@
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
- * 税金設定 のページクラス.
+ * 税率設定 のページクラス.
  *
  * @package Page
  * @author LOCKON CO.,LTD.
@@ -47,7 +47,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
         $this->tpl_subno = 'tax';
         $this->tpl_mainno = 'basis';
         $this->tpl_maintitle = '基本情報管理';
-        $this->tpl_subtitle = '税金設定';
+        $this->tpl_subtitle = '税率設定';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXCALCRULE = $masterData->getMasterData('mtb_taxrule');

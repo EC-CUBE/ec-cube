@@ -69,7 +69,7 @@
                     class="boxHarf text data-role-none" placeholder="名"/>
             </dd>
 
-            <dt>お名前(フリガナ)&nbsp;<span class="attention">※</span></dt>
+            <dt>お名前(フリガナ)<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->&nbsp;<span class="attention">※</span><!--{/if}--></dt>
             <dd>
                 <!--{assign var=key1 value="order_kana01"}-->
                 <!--{assign var=key2 value="order_kana02"}-->
@@ -86,7 +86,33 @@
                     class="boxHarf text data-role-none" placeholder="メイ"/>
             </dd>
 
-            <dt>郵便番号&nbsp;<span class="attention">※</span></dt>
+            <dt>会社名</dt>
+            <dd>
+                <!--{assign var=key value="order_company_name"}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+            </dd>
+
+            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            <dt>国&nbsp;<span class="attention">※</span></dt>
+            <dd>
+                <!--{assign var=key1 value="order_country_id"}-->
+                <div class="attention"><!--{$arrErr[$key1]}--></div>
+                <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                    <option value="" selected="selected">国を選択</option>
+                    <!--{html_options options=$arrCountry selected=$arrForm[$key1].value|h|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
+                </select>
+            </dd>
+
+            <dt>ZIP CODE</dt>
+            <dd>
+                <!--{assign var=key1 value="order_zipcode"}-->
+                <div class="attention"><!--{$arrErr[$key1]}--></div>
+                <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" />
+            </dd>
+            <!--{/if}-->
+
+            <dt>郵便番号<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->&nbsp;<span class="attention">※</span><!--{/if}--></dt>
             <dd>
                 <!--{assign var=key1 value="order_zip01"}-->
                 <!--{assign var=key2 value="order_zip02"}-->
@@ -255,7 +281,7 @@
                         class="boxHarf text data-role-none" placeholder="名"/>
                 </dd>
 
-                <dt>フリガナ&nbsp;<span class="attention">※</span></dt>
+                <dt>フリガナ<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->&nbsp;<span class="attention">※</span><!--{/if}--></dt>
                 <dd>
                     <!--{assign var=key1 value="shipping_kana01"}-->
                     <!--{assign var=key2 value="shipping_kana02"}-->
@@ -272,7 +298,33 @@
                         class="boxHarf text data-role-none" placeholder="メイ"/>
                 </dd>
 
-                <dt>郵便番号&nbsp;<span class="attention">※</span></dt>
+                <dt>会社名</dt>
+                <dd>
+                    <!--{assign var=key value="shipping_company_name"}-->
+                    <span class="attention"><!--{$arrErr[$key]}--></span>
+                    <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+                </dd>
+
+                <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                <dt>国&nbsp;<span class="attention">※</span></dt>
+                <dd>
+                    <!--{assign var=key1 value="shipping_country_id"}-->
+                    <div class="attention"><!--{$arrErr[$key1]}--></div>
+                    <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                        <option value="" selected="selected">国を選択</option>
+                        <!--{html_options options=$arrCountry selected=$arrForm[$key1].value|h|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
+                    </select>
+                </dd>
+
+                <dt>ZIP CODE</dt>
+                <dd>
+                    <!--{assign var=key1 value="shipping_zipcode"}-->
+                    <div class="attention"><!--{$arrErr[$key1]}--></div>
+                    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" />
+                </dd>
+                <!--{/if}-->
+
+                <dt>郵便番号<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->&nbsp;<span class="attention">※</span><!--{/if}--></dt>
                 <dd>
                     <!--{assign var=key1 value="shipping_zip01"}-->
                     <!--{assign var=key2 value="shipping_zip02"}-->

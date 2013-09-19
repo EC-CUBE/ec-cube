@@ -33,7 +33,7 @@
     <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="名" />
 </dd>
 
-<dt>お名前(フリガナ)&nbsp;<span class="attention">※</span></dt>
+<dt>お名前(フリガナ)<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->&nbsp;<span class="attention">※</span><!--{/if}--></dt>
 <dd>
     <!--{assign var=key1 value="`$prefix`kana01"}-->
     <!--{assign var=key2 value="`$prefix`kana02"}-->
@@ -43,7 +43,43 @@
     <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;<input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="メイ"/>
 </dd>
 
-<dt>郵便番号&nbsp;<span class="attention">※</span></dt>
+<dt>会社名</dt>
+<dd>
+    <!--{assign var=key1 value="`$prefix`company_name"}-->
+    <!--{if $arrErr[$key1]}-->
+        <div class="attention"><!--{$arrErr[$key1]}--></div>
+    <!--{/if}-->
+    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" class="boxLong text data-role-none" />
+</dd>
+
+<!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+<dt>国&nbsp;<span class="attention">※</span></dt>
+<dd>
+    <!--{assign var=key1 value="`$prefix`country_id"}-->
+    <!--{if $arrErr[$key1]}-->
+        <div class="attention"><!--{$arrErr[$key1]}--></div>
+    <!--{/if}-->
+    <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+        <option value="" selected="selected">国を選択</option>
+        <!--{html_options options=$arrCountry selected=$arrForm[$key1].value|h|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
+    </select>
+</dd>
+
+<dt>ZIP CODE</dt>
+<dd>
+    <!--{assign var=key1 value="`$prefix`zipcode"}-->
+    <!--{if $arrErr[$key1]}-->
+        <div class="attention"><!--{$arrErr[$key1]}--></div>
+    <!--{/if}-->
+    <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->; ime-mode: disabled;" />
+</dd>
+
+<!--{else}-->
+<!--{assign var=key1 value="`$prefix`country_id"}-->
+<input type="hidden" name="<!--{$key1}-->" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+<!--{/if}-->
+
+<dt>郵便番号<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->&nbsp;<span class="attention">※</span><!--{/if}--></dt>
 <dd>
     <!--{assign var=key1 value="`$prefix`zip01"}-->
     <!--{assign var=key2 value="`$prefix`zip02"}-->
@@ -108,7 +144,7 @@
     </dd>
 
     <!--{if $emailMobile}-->
-        <dt>携帯メールアドレス&nbsp;<span class="attention">※</span></dt>
+        <dt>携帯メールアドレス</dt>
         <dd>
             <!--{assign var=key1 value="`$prefix`email_mobile"}-->
             <!--{assign var=key2 value="`$prefix`email_mobile02"}-->

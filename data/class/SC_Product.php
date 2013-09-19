@@ -404,7 +404,17 @@ __EOS__;
         $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
         $arrRes = $this->getProductsClassByQuery($objQuery, $productClassId);
 
-        return (array) $arrRes[0];
+        $arrProduct = (array) $arrRes[0];
+
+        // 税込計算
+        if(!SC_Utils_Ex::isBlank($arrProduct['price01'])) {
+            $arrProduct['price01_inctax'] = SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price01'], $arrProduct['product_id'], $productClassId);        
+        }
+        if(!SC_Utils_Ex::isBlank($arrProduct['price02'])) {
+            $arrProduct['price02_inctax'] = SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price02'], $arrProduct['product_id'], $productClassId);        
+        }
+
+        return $arrProduct;
     }
 
     /**

@@ -83,7 +83,8 @@
     }
 
     $(document).ready(function() {
-        if(<!--{$arrForm.shipping_quantity.value}--> > 1){
+        var shipping_quantity = escape('<!--{$arrForm.shipping_quantity.value|h}-->');
+        if(shipping_quantity > 1){
             $("input[name^='quantity[']").attr("disabled","disabled");
         }
     });
@@ -523,7 +524,7 @@
                                 </td>
                                 <td class="right">
                                     <!--{assign var=key value="shipment_price"}-->
-                                    <!--{$arrShipping[$key][$item_index]|sfCalcIncTax:$arrForm.order_tax_rate.value:$arrForm.order_tax_rule.value|number_format}-->円
+                                    <!--{$arrShipping[$key][$item_index]|number_format}-->円
                                     <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                                 </td>
                                 <td class="right">

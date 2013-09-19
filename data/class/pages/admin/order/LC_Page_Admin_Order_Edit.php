@@ -324,7 +324,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('注文者 お名前(名)', 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
         $objFormParam->addParam('注文者 お名前(フリガナ・姓)', 'order_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
         $objFormParam->addParam('注文者 お名前(フリガナ・名)', 'order_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('注文者 会社名', 'order_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
+        $objFormParam->addParam('注文者 会社名', 'order_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メールアドレス', 'order_email', null, 'KVCa', array('NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam('国', 'order_country_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ZIPCODE', 'order_zipcode', STEXT_LEN, 'n', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
@@ -399,7 +399,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('お名前(名)', 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
         $objFormParam->addParam('お名前(フリガナ・姓)', 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
         $objFormParam->addParam('お名前(フリガナ・名)', 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
-        $objFormParam->addParam('会社名', 'shipping_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
+        $objFormParam->addParam('会社名', 'shipping_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('国', 'shipping_country_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('ZIPCODE', 'shipping_zipcode', STEXT_LEN, 'n', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('郵便番号1', 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
@@ -1088,18 +1088,22 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     public function setProductsQuantity(&$objFormParam)
     {
         $arrShipmentsItems = $objFormParam->getSwapArray(array('shipment_product_class_id','shipment_quantity'));
-        foreach ($arrShipmentsItems as $arritems) {
-            foreach ($arritems['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {
-                $arrUpdateQuantity[$shipment_product_class_id] += $arritems['shipment_quantity'][$relation_index];
+        
+        // 配送先が存在する時のみ、商品個数の再設定を行います
+        if(!SC_Utils_Ex::isBlank($arrShipmentsItems)) {
+            foreach ($arrShipmentsItems as $arritems) {
+                foreach ($arritems['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {
+                    $arrUpdateQuantity[$shipment_product_class_id] += $arritems['shipment_quantity'][$relation_index];
+                }
             }
-        }
 
-        $arrProductsClass = $objFormParam->getValue('product_class_id');
-        $arrProductsQuantity = $objFormParam->getValue('quantity');
-        foreach ($arrProductsClass as $relation_key => $product_class_id) {
-            $arrQuantity['quantity'][$relation_key] = $arrUpdateQuantity[$product_class_id];
+            $arrProductsClass = $objFormParam->getValue('product_class_id');
+            $arrProductsQuantity = $objFormParam->getValue('quantity');
+            foreach ($arrProductsClass as $relation_key => $product_class_id) {
+                $arrQuantity['quantity'][$relation_key] = $arrUpdateQuantity[$product_class_id];
+            }
+            $objFormParam->setParam($arrQuantity);
         }
-        $objFormParam->setParam($arrQuantity);
     }
 
     /**

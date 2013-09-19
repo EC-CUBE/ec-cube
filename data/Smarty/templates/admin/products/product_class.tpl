@@ -85,6 +85,9 @@
             var price02 = $('#price02_0').val();
             $('input[id^=price02_]').val(price02);
 
+            var tax_rate = $('#tax_rate_0').val();
+            $('input[id^=tax_rate_]').val(tax_rate);
+
             var product_type_id_value = '';
             $('input[id^=product_type_id_0_]').each(function() {
                 if ($(this).attr('checked')) {
@@ -200,7 +203,9 @@
                 <th>在庫数<span class="attention">*</span></th>
                 <th><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(円)</th>
                 <th><!--{$smarty.const.SALE_PRICE_TITLE}-->(円)<span class="attention">*</span></th>
+                <!--{if $smarty.const.OPTION_PRODUCT_TAX_RULE}-->
                 <th>消費税率(%)<span class="attention">*</span></th>
+                <!--{/if}-->
                 <th>商品種別<span class="attention">*</span></th>
                 <th>ダウンロード<br />ファイル名<span class="red"><br />上限<!--{$smarty.const.STEXT_LEN}-->文字</span></th>
                 <th>ダウンロード商品用<br />ファイル</th>
@@ -271,6 +276,7 @@
                         <!--{/if}-->
                         <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
                     </td>
+                    <!--{if $smarty.const.OPTION_PRODUCT_TAX_RULE}-->
                     <td class="center">
                         <!--{assign var=key value="tax_rate"}-->
                         <!--{if $arrErr[$key][$index]}-->
@@ -278,6 +284,7 @@
                         <!--{/if}-->
                         <input type="text" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" <!--{if $arrErr[$key][$index] != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
                     </td>
+                    <!--{/if}-->
                     <td class="class-product-type">
                         <!--{assign var=key value="product_type_id"}-->
                         <!--{if $arrErr[$key][$index]}-->

@@ -150,7 +150,18 @@ class SC_DB_DBFactory_MYSQL extends SC_DB_DBFactory
      */
     public function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order')
     {
-        return '(SELECT IF((SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1)=1, 1, DATE(CURRENT_TIMESTAMP) <= DATE(DATE_ADD(' . $dtb_order_alias . '.payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY))))';
+        $sql = <<< __EOS__
+        (
+            SELECT
+                IF (
+                    (SELECT d1.downloadable_days_unlimited FROM dtb_baseinfo d1) = 1 AND $dtb_order_alias.payment_date IS NOT NULL,
+                    1,
+                    IF( DATE(CURRENT_TIMESTAMP) <= DATE(DATE_ADD($dtb_order_alias.payment_date, INTERVAL (SELECT downloadable_days FROM dtb_baseinfo) DAY)), 1, 0)
+                )
+        )
+__EOS__;
+        
+        return $sql;
     }
 
     /**

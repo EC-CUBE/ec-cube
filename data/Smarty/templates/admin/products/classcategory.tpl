@@ -34,7 +34,7 @@
         <table>
             <tr>
                 <th>規格名</th>
-                <td><!--{$tpl_class_name}--></td>
+                <td><!--{$tpl_class_name|h}--></td>
             </tr>
             <tr>
                 <th>分類名<span class="attention"> *</span></th>
@@ -42,7 +42,7 @@
                     <!--{if $arrErr.name}-->
                         <span class="attention"><!--{$arrErr.name}--></span>
                     <!--{/if}-->
-                    <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="" size="30" class="box30" />
+                    <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.name|sfGetErrorColor}-->" size="30" class="box30" />
                     <span class="attention"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
                 </td>
             </tr>

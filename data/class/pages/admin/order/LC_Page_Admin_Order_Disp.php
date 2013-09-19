@@ -38,12 +38,15 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         'shipping_name02',
         'shipping_kana01',
         'shipping_kana02',
+        'shipping_company_name',
         'shipping_tel01',
         'shipping_tel02',
         'shipping_tel03',
         'shipping_fax01',
         'shipping_fax02',
         'shipping_fax03',
+        'shipping_country_id',
+        'shipping_zipcode',
         'shipping_pref',
         'shipping_zip01',
         'shipping_zip02',
@@ -83,6 +86,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
+        $this->arrCountry = $masterData->getMasterData('mtb_country');
 
         // 支払い方法の取得
         $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
@@ -145,7 +149,12 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('注文者 お名前(名)', 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('注文者 お名前(フリガナ・姓)', 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('注文者 お名前(フリガナ・名)', 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文者 会社名', 'order_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メールアドレス', 'order_email', null, 'KVCa', array('NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        if (FORM_COUNTRY_ENABLE) {
+            $objFormParam->addParam('国', 'order_country_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('ZIPCODE', 'order_zipcode', STEXT_LEN, 'n', array('NO_SPTAB', 'SPTAB_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        }
         $objFormParam->addParam('郵便番号1', 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('郵便番号2', 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('都道府県', 'order_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -212,6 +221,11 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('お名前2', 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(フリガナ・姓)', 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(フリガナ・名)', 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('会社名', 'shipping_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        if (FORM_COUNTRY_ENABLE) {
+            $objFormParam->addParam('国', 'shipping_country_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('ZIPCODE', 'shipping_zipcode', STEXT_LEN, 'n', array('NO_SPTAB', 'SPTAB_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        }
         $objFormParam->addParam('郵便番号1', 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('郵便番号2', 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('都道府県', 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));

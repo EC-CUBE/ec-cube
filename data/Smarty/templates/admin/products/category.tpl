@@ -60,7 +60,7 @@
                     <!--{if $arrErr.category_name}-->
                     <span class="attention"><!--{$arrErr.category_name}--></span>
                     <!--{/if}-->
-                    <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" />
+                    <input type="text" name="category_name" value="<!--{$arrForm.category_name|h}-->" size="30" class="box30" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.category_name|sfGetErrorColor}-->" />
                     <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('edit','',''); return false;"><span class="btn-next">登録</span></a><span class="attention">&nbsp;（上限<!--{$smarty.const.STEXT_LEN}-->文字）</span>
             </div>
 

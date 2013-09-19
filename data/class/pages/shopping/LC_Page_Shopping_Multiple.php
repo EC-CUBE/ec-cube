@@ -65,13 +65,10 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
     {
         //決済処理中ステータスのロールバック
         $objPurchase = new SC_Helper_Purchase_Ex();
-        $objPurchase->checkSessionPendingOrder();
-        $objPurchase->checkDbMyPendignOrder();
-        $objPurchase->checkDbAllPendingOrder();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $objSiteSess = new SC_SiteSession_Ex();
         $objCartSess = new SC_CartSession_Ex();
-        $objPurchase = new SC_Helper_Purchase_Ex();
         $objCustomer = new SC_Customer_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $objAddress = new SC_Helper_Address_Ex();
@@ -135,6 +132,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
         $objFormParam->addParam('メイン画像', 'main_image');
         $objFormParam->addParam('メイン一覧画像', 'main_list_image');
         $objFormParam->addParam(SALE_PRICE_TITLE, 'price');
+        $objFormParam->addParam(SALE_PRICE_TITLE . '(税込)', 'price_inctax');
         $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam('お届け先', 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('カート番号', 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -162,6 +160,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
                 }
                 $arrItems['quantity'][$index] = 1;
                 $arrItems['price'][$index] = $cartLists[$key]['price'];
+                $arrItems['price_inctax'][$index] = $cartLists[$key]['price_inctax'];
                 $index++;
             }
         }

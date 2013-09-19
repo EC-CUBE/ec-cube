@@ -33,7 +33,7 @@
                 <th>タイトル<span class="attention"> *</span></th>
                 <td>
                     <!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
-                    <input type="text" name="title" value="<!--{$arrForm.title.value|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
+                    <input type="text" name="title" value="<!--{$arrForm.title.value|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{$arrErr.title|sfGetErrorColor}-->" size="60" class="box60"/>
                     <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
                 </td>
             </tr>
