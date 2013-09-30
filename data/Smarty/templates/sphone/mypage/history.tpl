@@ -69,6 +69,11 @@
 
             <em>お名前</em>：&nbsp;<!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--><br />
             <em>お名前(フリガナ)</em>：&nbsp;<!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--><br />
+            <em>会社名</em>：&nbsp;<!--{$shippingItem.shipping_company_name|h}--><br />
+            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                <em>国</em>：&nbsp;<!--{$arrCountry[$shippingItem.shipping_country_id]|h}--><br />
+                <em>ZIPCODE</em>：&nbsp;<!--{$shippingItem.shipping_zipcode|h}--><br />
+            <!--{/if}-->
             <em>郵便番号</em>：&nbsp;〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--><br />
             <em>住所</em>：&nbsp;<!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br />
             <em>電話番号</em>：&nbsp;<!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}--><br />

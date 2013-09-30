@@ -113,6 +113,14 @@
         <!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--><br>
         ●お名前(フリガナ)<br>
         <!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--><br>
+        ●会社名<br>
+        <!--{$shippingItem.shipping_company_name|h}--><br>
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            ●国<br>
+            <!--{$arrCountry[$shippingItem.shipping_country_id]|h}--><br>
+            ●ZIPCODE<br>
+            <!--{$shippingItem.shipping_zipcode|h}--><br>
+        <!--{/if}-->
         ●住所<br>
         〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--><br>
         <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
