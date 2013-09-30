@@ -92,7 +92,7 @@
         <!--{assign var=key value="product_type_id"}-->
         <table>
             <tr>
-                <th>商品種別</th>
+                <th>商品種別 <span class="attention">*</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <span style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -106,7 +106,7 @@
         <!--{assign var=key value="payment_ids"}-->
         <table>
             <tr>
-                <th>支払方法</th>
+                <th>支払方法 <span class="attention">*</span></th>
                 <td>
                     <span class="attention"><!--{$arrErr[$key]}--></span>
                     <span style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
@@ -133,7 +133,7 @@
                 </tr>
                 <!--{/if}-->
                 <tr>
-                <th><!--{$arrPref[$keyno]}--></th>
+                <th><!--{$arrPref[$keyno]}--> <span class="attention">*</span></th>
                 <!--{if $smarty.section.cnt.last}-->
                 <!--{assign var=colspan value="3"}-->
                 <!--{else}-->
@@ -142,7 +142,7 @@
                 <td width="247" colspan="<!--{$colspan}-->">
                 <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
             <!--{else}-->
-                <th><!--{$arrPref[$keyno]}--></th>
+                <th><!--{$arrPref[$keyno]}--> <span class="attention">*</span></th>
                 <td width="248"><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
                 </tr>
             <!--{/if}-->
