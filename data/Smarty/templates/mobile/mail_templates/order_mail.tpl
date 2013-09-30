@@ -51,7 +51,9 @@
 
 小　計 ￥<!--{$arrOrder.subtotal|number_format|default:0}--> <!--{if 0 < $arrOrder.tax}-->(うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->)<!--{/if}-->
 
+<!--{if $arrOrder.use_point > 0}-->
 値引き ￥<!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|number_format|default:0}-->
+<!--{/if}-->
 送　料 ￥<!--{$arrOrder.deliv_fee|number_format|default:0}-->
 手数料 ￥<!--{$arrOrder.charge|number_format|default:0}-->
 ===============================================================
@@ -59,6 +61,13 @@
 
 ■ご注文者情報
 　お名前　：<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}-->　様
+<!--{if $arrOrder.order_company_name != ""}-->
+　会社名　：<!--{$arrOrder.order_company_name}-->
+<!--{/if}-->
+<!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+　国　　　：<!--{$arrCountry[$arrOrder.order_country_id]}-->
+　ZIPCODE ：<!--{$arrOrder.order_zipcode}-->
+<!--{/if}-->
 　郵便番号：〒<!--{$arrOrder.order_zip01}-->-<!--{$arrOrder.order_zip02}-->
 　住所　　：<!--{$arrPref[$arrOrder.order_pref]}--><!--{$arrOrder.order_addr01}--><!--{$arrOrder.order_addr02}-->
 　電話番号：<!--{$arrOrder.order_tel01}-->-<!--{$arrOrder.order_tel02}-->-<!--{$arrOrder.order_tel03}-->
@@ -73,6 +82,13 @@
 ◎お届け先<!--{if count($arrShipping) > 1}--><!--{$smarty.foreach.shipping.iteration}--><!--{/if}-->
 
 　お名前　：<!--{$shipping.shipping_name01}--> <!--{$shipping.shipping_name02}-->　様
+<!--{if $shipping.shipping_company_name != ""}-->
+　会社名　：<!--{$shipping.shipping_company_name}-->
+<!--{/if}-->
+<!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+　国　　　：<!--{$arrCountry[$shipping.shipping_country_id]}-->
+　ZIPCODE ：<!--{$shipping.shipping_zipcode}-->
+<!--{/if}-->
 　郵便番号：〒<!--{$shipping.shipping_zip01}-->-<!--{$shipping.shipping_zip02}-->
 　住所　　：<!--{$arrPref[$shipping.shipping_pref]}--><!--{$shipping.shipping_addr01}--><!--{$shipping.shipping_addr02}-->
 　電話番号：<!--{$shipping.shipping_tel01}-->-<!--{$shipping.shipping_tel02}-->-<!--{$shipping.shipping_tel03}-->
