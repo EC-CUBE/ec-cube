@@ -174,7 +174,9 @@ class SC_Helper_Delivery
             $objQuery->insert('dtb_deliv', $sqlval);
 
             // お届け時間の設定
-            foreach ($sqlval_deliv_time as $cnt => $deliv_time) {
+            foreach ($sqlval_deliv_time as $cnt => $deliv_time_name) {
+                $deliv_time = array();
+                $deliv_time['deliv_time'] = $deliv_time_name;
                 $deliv_time['deliv_id'] = $deliv_id;
                 $deliv_time['time_id'] = $cnt;
                 // INSERTの実行
