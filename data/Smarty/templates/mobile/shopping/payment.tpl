@@ -60,7 +60,8 @@
                 <!--{else}-->
                     <select name="<!--{$key}-->">
                         <option value="" selected="">指定なし</option>
-                        <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
+                        <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
+                        <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
                     </select>
                 <!--{/if}-->
                 <br>
@@ -70,7 +71,8 @@
                 お届け時間：<br>
                 <select name="<!--{$key}-->" id="<!--{$key}-->">
                     <option value="" selected="">指定なし</option>
-                    <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
+                    <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
+                    <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
                 </select>
                 <br>
                 <br>
