@@ -138,7 +138,7 @@ function func_return(){
             </tr>
             <tr>
                 <th>メールマガジン</th>
-                <td><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->テキスト<!--{else}-->希望しない<!--{/if}--></td>
+                <td><!--{$arrMailMagazineType[$arrForm.mailmaga_flg]|h}--></td>
             </tr>
             <tr>
                 <th>SHOP用メモ</th>
