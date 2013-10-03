@@ -48,6 +48,7 @@
         df['shipping_name02'+shipping_key].value = df.order_name02.value;
         df['shipping_kana01'+shipping_key].value = df.order_kana01.value;
         df['shipping_kana02'+shipping_key].value = df.order_kana02.value;
+        df['shipping_company_name'+shipping_key].value = df.order_company_name.value;
         df['shipping_zip01'+shipping_key].value = df.order_zip01.value;
         df['shipping_zip02'+shipping_key].value = df.order_zip02.value;
         df['shipping_tel01'+shipping_key].value = df.order_tel01.value;
@@ -56,6 +57,10 @@
         df['shipping_fax01'+shipping_key].value = df.order_fax01.value;
         df['shipping_fax02'+shipping_key].value = df.order_fax02.value;
         df['shipping_fax03'+shipping_key].value = df.order_fax03.value;
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            df['shipping_country_id'+shipping_key].value = df.order_country_id.value;
+            df['shipping_zipcode'+shipping_key].value = df.order_zipcode.value;
+        <!--{/if}-->
         df['shipping_addr01'+shipping_key].value = df.order_addr01.value;
         df['shipping_addr02'+shipping_key].value = df.order_addr02.value;
         df['shipping_pref'+shipping_key].value = df.order_pref.value;
