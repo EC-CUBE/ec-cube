@@ -84,7 +84,7 @@
         if (form === undefined) {
             form = eccube.defaults.formId;
         }
-        var formElement = $("form#" + form);
+        var formElement = eccube.getFormElement(form);
         formElement.find("input[name='search_pageno']").val(pageno);
         if (mode !== undefined) {
             formElement.find("input[name='mode']").val(mode);

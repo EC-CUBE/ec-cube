@@ -32,10 +32,7 @@ function fnSubmitParent() {
 
 //指定されたidの削除を行うページを実行する。
 function fnDeleteMember(id, pageno) {
-    url = "./delete.php?id=" + id + "&pageno=" + pageno;
-    if(window.confirm('登録内容を削除しても宜しいでしょうか')){
-        location.href = url;
-    }
+    eccube.deleteMember(id, pageno);
 }
 
 // ラジオボタンチェック状態を保存
@@ -43,90 +40,57 @@ var lstsave = "";
 
 // ラジオボタンのチェック状態を取得する。
 function fnGetRadioChecked() {
-    var max;
-    var cnt;
-    var names = "";
-    var startname = "";
-    var ret;
-    max = document.form1.elements.length;
-    lstsave = Array(max);
-    for(cnt = 0; cnt < max; cnt++) {
-        if(document.form1.elements[cnt].type == 'radio') {
-            name = document.form1.elements[cnt].name;
-            /* radioボタンは同じ名前が２回続けて検出されるので、
-               最初の名前の検出であるかどうかの判定 */
-            // 1回目の検出
-            if(startname != name) {
-                startname = name;
-                ret = document.form1.elements[cnt].checked;
-                if(ret == true){
-                    // 稼働がチェックされている。
-                    lstsave[name] = 1;
-                }
-            // 2回目の検出
-            } else {
-                ret = document.form1.elements[cnt].checked;
-                if(ret == true){
-                    // 非稼働がチェックされている。
-                    lstsave[name] = 0;
-                }
-            }
-        }
-    }
+    eccube.getRadioChecked();
 }
 
 // 管理者メンバーページの切替
 function fnMemberPage(pageno) {
-    location.href = "?pageno=" + pageno;
+    eccube.moveMemberPage(pageno);
 }
 
 // ページナビで使用する
 function fnNaviSearchPage(pageno, mode) {
-    document.form1['search_pageno'].value = pageno;
-    document.form1['mode'].value = mode;
-    document.form1.submit();
+    eccube.moveNaviPage(pageno, mode);
 }
 
 // ページナビで使用する(mode = search専用)
 function fnNaviSearchOnlyPage(pageno) {
-    document.form1['search_pageno'].value = pageno;
-    document.form1['mode'].value = 'search';
-    document.form1.submit();
+    eccube.moveSearchPage(pageno);
 }
 
 // ページナビで使用する(form2)
 function fnNaviSearchPage2(pageno) {
-    document.form2['search_pageno'].value = pageno;
-    document.form2['mode'].value = 'search';
-    document.form2.submit();
+    eccube.moveSecondSearchPage(pageno);
 }
 
 // 値を代入して指定ページにsubmit
 function fnSetvalAndSubmit( fname, key, val ) {
-    fm = document[fname];
-    fm[key].value = val;
-    fm.submit();
+    var values = {};
+    values[key] = val;
+    eccube.submitForm(values, fname);
 }
 
 // 項目に入った値をクリアする。
 function fnClearText(name) {
-    document.form1[name].value = "";
+    eccube.clearValue(name);
 }
 
 // カテゴリの追加
 function fnAddCat(cat_id) {
     if(window.confirm('カテゴリを登録しても宜しいでしょうか')){
-        document.form1['mode'].value = 'edit';
-        document.form1['cat_id'].value = cat_id;
+        eccube.setValue("mode", "edit");
+        eccube.setValue("cat_id", cat_id);
     }
 }
 
 // カテゴリの編集
 function fnEditCat(parent_id, cat_id) {
-    document.form1['mode'].value = 'pre_edit';
-    document.form1['parent_id'].value = parent_id;
-    document.form1['edit_cat_id'].value = cat_id;
-    document.form1.submit();
+    var values = {
+        mode: "pre_edit",
+        parent_id: parent_id,
+        edit_cat_id: cat_id
+    };
+    eccube.submitForm(values);
 }
 
 // 選択カテゴリのチェック
@@ -140,13 +104,12 @@ function fnCheckCat(obj) {
 
 // 確認ページから登録ページへ戻る
 function fnReturnPage() {
-    document.form1['mode'].value = 'return';
-    document.form1.submit();
+    eccube.setModeAndSubmit("return");
 }
 
 // 規格分類登録へ移動
 function fnClassCatPage(class_id) {
-    location.href =  "./classcategory.php?class_id=" + class_id;
+    eccube.moveClassCatPage(class_id);
 }
 
 function fnListCheck(list) {
@@ -157,55 +120,32 @@ function fnListCheck(list) {
 }
 
 function fnAllCheck(input, selector) {
-    if ($(input).attr('checked')) {
-        $(selector).attr('checked', true);
-    } else {
-        $(selector).attr('checked', false);
-    }
+    eccube.checkAllBox(input, selector);
 }
 
 //指定されたidの削除を行うページを実行する。
 function fnDelete(url) {
-    if(window.confirm('登録内容を削除しても宜しいでしょうか')){
-        location.href = url;
-        return false;
-    }
+    eccube.moveDeleteUrl(url);
 }
 
 //配送料金を自動入力
 function fnSetDelivFee(max) {
-    for(cnt = 1; cnt <= max; cnt++) {
-        name = "fee" + cnt;
-        document.form1[name].value = document.form1['fee_all'].value;
-    }
+    eccube.setDelivFee(max);
 }
 
 // 在庫数制限判定
 function fnCheckStockLimit(icolor) {
-    if(document.form1['stock_unlimited']) {
-        list = new Array(
-            'stock'
-            );
-        if(document.form1['stock_unlimited'].checked) {
-            eccube.changeDisabled(list, icolor);
-            document.form1['stock'].value = "";
-        } else {
-            eccube.changeDisabled(list, '');
-        }
-    }
+    eccube.checkStockLimit(icolor);
 }
 
 // Form指定のSubmit
 function fnFormSubmit(form) {
-    document.forms[form].submit();
+    eccube.submitForm({}, form);
 }
 
 // 確認メッセージ
 function fnConfirm() {
-    if(window.confirm('この内容で登録しても宜しいでしょうか')){
-        return true;
-    }
-    return false;
+    return eccube.doConfirm();
 }
 
 //削除確認メッセージ
@@ -226,17 +166,7 @@ function fnmerumagaupdateConfirm() {
 
 // フォームに代入してからサブミットする。
 function fnInsertValAndSubmit( fm, ele, val, msg ){
-    if ( msg ){
-        ret = window.confirm(msg);
-    } else {
-        ret = true;
-    }
-    if( ret ){
-        fm[ele].value = val;
-        fm.submit();
-        return false;
-    }
-    return false;
+    eccube.insertValueAndSubmit(fm, ele, val, msg);
 }
 
 // 自分以外の要素を有効・無効にする
@@ -302,17 +232,7 @@ function fnDispChange(disp_id, inner_id, disp_flg){
 
 //制限数判定
 function fnCheckLimit(elem1, elem2, icolor) {
-    if(document.form1[elem2]) {
-        list = new Array(
-                elem1
-            );
-        if(document.form1[elem2].checked) {
-            eccube.changeDisabled(list, icolor);
-            document.form1[elem1].value = "";
-        } else {
-            eccube.changeDisabled(list, '');
-        }
-    }
+    eccube.checkLimit(elem1, elem2, icolor);
 }
 
 /**
@@ -328,98 +248,17 @@ var modeHidden = "";                // modeセットhidden名
 
 // ツリー表示
 function fnTreeView(view_id, arrTree, openFolder, selectHidden, treeHidden, mode) {
-    selectFileHidden = selectHidden;
-    treeStatusHidden = treeHidden;
-    modeHidden = mode;
-
-    for(i = 0; i < arrTree.length; i++) {
-        id = arrTree[i][0];
-        level = arrTree[i][3];
-
-        if(i == 0) {
-            old_id = "0";
-            old_level = 0;
-        } else {
-            old_id = arrTree[i-1][0];
-            old_level = arrTree[i-1][3];
-        }
-
-        // 階層上へ戻る
-        if(level <= (old_level - 1)) {
-            tmp_level = old_level - level;
-            for(up_roop = 0; up_roop <= tmp_level; up_roop++) {
-                tree += '</div>';
-            }
-        }
-
-        // 同一階層で次のフォルダへ
-        if(id != old_id && level == old_level) tree += '</div>';
-
-        // 階層の分だけスペースを入れる
-        for(space_cnt = 0; space_cnt < arrTree[i][3]; space_cnt++) {
-            tree += "&nbsp;&nbsp;&nbsp;";
-        }
-
-        // 階層画像の表示・非表示処理
-        if(arrTree[i][4]) {
-            if(arrTree[i][1] == '_parent') {
-                rank_img = IMG_MINUS;
-            } else {
-                rank_img = IMG_NORMAL;
-            }
-            // 開き状態を保持
-            arrTreeStatus.push(arrTree[i][2]);
-            display = 'block';
-        } else {
-            if(arrTree[i][1] == '_parent') {
-                rank_img = IMG_PLUS;
-            } else {
-                rank_img = IMG_NORMAL;
-            }
-            display = 'none';
-        }
-
-        arrFileSplit = arrTree[i][2].split("/");
-        file_name = arrFileSplit[arrFileSplit.length-1];
-
-        // フォルダの画像を選択
-        if(arrTree[i][2] == openFolder) {
-            folder_img = IMG_FOLDER_OPEN;
-            file_name = "<b>" + file_name + "</b>";
-        } else {
-            folder_img = IMG_FOLDER_CLOSE;
-        }
-
-        // 階層画像に子供がいたらオンクリック処理をつける
-        if(rank_img != IMG_NORMAL) {
-            tree += '<a href="javascript:fnTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
-        } else {
-            tree += '<img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
-        }
-        tree += '<a href="javascript:fnFolderOpen(\''+ arrTree[i][2] +'\')"><img src="'+ folder_img +'" border="0" name="tree_img'+ i +'" id="tree_img'+ i +'">&nbsp;'+ file_name +'</a><br/>';
-        tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
-    }
-    fnDrow(view_id, tree);
-    //document.tree_form.tree_test2.focus();
+    eccube.fileManager.viewFileTree(view_id, arrTree, openFolder, selectHidden, treeHidden, mode);
 }
 
 // Tree状態をhiddenにセット
 function setTreeStatus(name) {
-    var tree_status = "";
-    for(i=0; i < arrTreeStatus.length ;i++) {
-        if(i != 0) tree_status += '|';
-        tree_status += arrTreeStatus[i];
-    }
-    document.form1[name].value = tree_status;
+    eccube.fileManager.setTreeStatus(name);
 }
 
 // Tree状態を削除する(閉じる状態へ)
 function fnDelTreeStatus(path) {
-    for(i=0; i < arrTreeStatus.length ;i++) {
-        if(arrTreeStatus[i] == path) {
-            arrTreeStatus[i] = "";
-        }
-    }
+    eccube.fileManager.deleteTreeStatus(path);
 }
 // ツリー描画
 function fnDrow(id, tree) {
@@ -447,50 +286,17 @@ function fnDrow(id, tree) {
 
 // 階層ツリーメニュー表示・非表示処理
 function fnTreeMenu(tName, imgName, path) {
-    tMenu = $("#" + tName);
-
-    if(tMenu.css("display") == 'none') {
-        fnChgImg(IMG_MINUS, imgName);
-        tMenu.show();
-        // 階層の開いた状態を保持
-        arrTreeStatus.push(path);
-    } else {
-        fnChgImg(IMG_PLUS, imgName);
-        tMenu.hide();
-        // 閉じ状態を保持
-        fnDelTreeStatus(path);
-    }
+    eccube.fileManager.toggleTreeMenu(tName, imgName, path);
 }
 
 // ファイルリストダブルクリック処理
 function fnDbClick(arrTree, path, is_dir, now_dir, is_parent) {
-    if(is_dir) {
-        if(!is_parent) {
-            for(cnt = 0; cnt < arrTree.length; cnt++) {
-                if(now_dir == arrTree[cnt][2]) {
-                    open_flag = false;
-                    for(status_cnt = 0; status_cnt < arrTreeStatus.length; status_cnt++) {
-                        if(arrTreeStatus[status_cnt] == arrTree[cnt][2]) open_flag = true;
-                    }
-                    if(!open_flag) fnTreeMenu('tree'+cnt, 'rank_img'+cnt, arrTree[cnt][2]);
-                }
-            }
-        }
-        fnFolderOpen(path);
-    } else {
-        // Download
-        eccube.setModeAndSubmit('download','','');
-    }
+    eccube.fileManager.doubleClick(arrTree, path, is_dir, now_dir, is_parent);
 }
 
 // フォルダオープン処理
 function fnFolderOpen(path) {
-    // クリックしたフォルダ情報を保持
-    document.form1[selectFileHidden].value = path;
-    // treeの状態をセット
-    setTreeStatus(treeStatusHidden);
-    // submit
-    eccube.setModeAndSubmit(modeHidden,'','');
+    eccube.fileManager.openFolder(path);
 }
 
 // 閲覧ブラウザ取得
@@ -515,5 +321,5 @@ function fnChgImg(fileName,imgName){
 
 // ファイル選択
 function fnSelectFile(id, val) {
-    old_select_id = id;
+    eccube.fileManager.selectFile(id);
 }
