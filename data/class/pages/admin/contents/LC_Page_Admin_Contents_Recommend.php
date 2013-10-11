@@ -190,15 +190,14 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      */
     public function insertRecommendProduct($arrPost,$member_id, SC_Helper_BestProducts_Ex &$objRecommend)
     {
-        // 古いおすすめ商品のデータを削除する。
-        $this->deleteProduct($arrPost, $objRecommend);
-
         $sqlval = array();
+        $sqlval['best_id'] = $arrPost['best_id'];
         $sqlval['product_id'] = $arrPost['product_id'];
         $sqlval['category_id'] = $arrPost['category_id'];
         $sqlval['rank'] = $arrPost['rank'];
         $sqlval['comment'] = $arrPost['comment'];
         $sqlval['creator_id'] = $member_id;
+
         $objRecommend->saveBestProducts($sqlval);
     }
 
