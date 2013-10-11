@@ -49,10 +49,11 @@ class SC_Helper_Delivery
         }
         $table = 'dtb_deliv';
         $arrRet = $objQuery->select($col, $table, $where, array($deliv_id));
-        $arrDeliv = $arrRet[0];
-        if (!$arrDeliv) {
-            return $arrDeliv;
+
+        if (empty($arrRet)) {
+            return array();
         }
+        $arrDeliv = $arrRet[0];
 
         // お届け時間の取得
         $arrDeliv['deliv_time'] = $this->getDelivTime($deliv_id);
