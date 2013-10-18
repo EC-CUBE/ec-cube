@@ -26,7 +26,7 @@ class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase
         $this->setUpProductClass();
         $this->setUpProducts();
         $this->setUpClassCategory();
-        
+
         //更新日を取得
         $arrRet = $this->objQuery->getCol('update_date','dtb_products', 'product_id = 1001');
 
@@ -114,11 +114,13 @@ class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase
                 ,'rank2' => null
                 ,'class_name2' => '味'
                 ,'class_id2' => '1'
+                ,'price01_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+                ,'price02_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
         );
 
         $this->actual = $this->objProducts->getDetailAndProductsClass('1001');
 
         $this->verify('商品詳細＋規格');
     }
-    
+
 }
