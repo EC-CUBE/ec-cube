@@ -192,9 +192,17 @@ class SC_Api_Utils
 
     public function sendResponseJson($response_outer_name, &$arrResponse)
     {
-        header('Content-Type: application/json; charset=UTF-8');
-        $arrResponse['response_name'] = $response_outer_name;
-        echo SC_Utils_Ex::jsonEncode($arrResponse);
+        if (isset($arrResponse["callback"])) {
+            $callback = $arrResponse["callback"];
+            unset($arrResponse["callback"]);
+            header('Content-Type: application/javascript; charset=UTF-8');
+            $arrResponse['response_name'] = $response_outer_name;
+            echo $callback . "(" . SC_Utils_Ex::jsonEncode($arrResponse) . ")";
+        } else {
+            header('Content-Type: application/json; charset=UTF-8');
+            $arrResponse['response_name'] = $response_outer_name;
+            echo SC_Utils_Ex::jsonEncode($arrResponse);
+        }
     }
 
     public function sendResponsePhp($response_outer_name, &$arrResponse)

@@ -64,6 +64,11 @@ class LC_Page_Api_Json extends LC_Page_Ex
         $arrParam = $_REQUEST;
 
         list($response_outer, $arrResponse) = SC_Api_Operation::doApiAction($arrParam);
+
+        if (isset($arrParam["callback"])) {
+            $arrResponse["callback"] = $arrParam["callback"];
+        }
+
         SC_Api_Operation_Ex::sendApiResponse('json', $response_outer, $arrResponse);
         SC_Response_Ex::actionExit();
     }
