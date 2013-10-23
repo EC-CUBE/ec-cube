@@ -126,7 +126,9 @@
                                     <td class="alignC"><!--{$item.quantity|h}-->
                                         <ul id="quantity_level">
                                             <li><a href="?" onclick="eccube.fnFormModeSubmit('form<!--{$key|h}-->','up','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a></li>
-                                            <li><a href="?" onclick="eccube.fnFormModeSubmit('form<!--{$key|h}-->','down','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a></li>
+                                            <!--{if $item.quantity > 1}-->
+                                                <li><a href="?" onclick="eccube.fnFormModeSubmit('form<!--{$key|h}-->','down','cart_no','<!--{$item.cart_no|h}-->'); return false"><img src="<!--{$TPL_URLPATH|h}-->img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a></li>
+                                            <!--{/if}-->
                                         </ul>
                                     </td>
                                     <td class="alignR"><!--{$item.total_inctax|number_format|h}-->円</td>
