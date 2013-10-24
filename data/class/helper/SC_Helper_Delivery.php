@@ -261,7 +261,7 @@ class SC_Helper_Delivery
             $ret = $objDb->sfIsRecord('dtb_deliv', 'service_name', array($arrDeliv['service_name']));
         } else {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? ', array($arrDeliv['deliv_id'], $arrDeliv['service_name'])) > 0) ? true : false);
+            $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? AND del_flg = 0', array($arrDeliv['deliv_id'], $arrDeliv['service_name'])) > 0) ? true : false);
         }
 
         return $ret;
