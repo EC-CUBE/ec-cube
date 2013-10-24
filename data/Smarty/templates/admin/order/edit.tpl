@@ -346,11 +346,11 @@
             <!--{section name=cnt loop=$arrForm.quantity.value}-->
             <!--{assign var=product_index value="`$smarty.section.cnt.index`"}-->
             <tr>
-                <td>
+                <td class="center">
                     <!--{$arrForm.product_code.value[$product_index]|h}-->
                     <input type="hidden" name="product_code[<!--{$product_index}-->]" value="<!--{$arrForm.product_code.value[$product_index]|h}-->" id="product_code_<!--{$product_index}-->" />
                 </td>
-                <td>
+                <td class="center">
                     <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default:"(なし)"|h}-->
                     <input type="hidden" name="product_name[<!--{$product_index}-->]" value="<!--{$arrForm.product_name.value[$product_index]|h}-->" id="product_name_<!--{$product_index}-->" />
                     <input type="hidden" name="classcategory_name1[<!--{$product_index}-->]" value="<!--{$arrForm.classcategory_name1.value[$product_index]|h}-->" id="classcategory_name1_<!--{$product_index}-->" />
@@ -367,12 +367,12 @@
                 <input type="hidden" name="product_class_id[<!--{$product_index}-->]" value="<!--{$arrForm.product_class_id.value[$product_index]|h}-->" id="product_class_id_<!--{$product_index}-->" />
                 <input type="hidden" name="point_rate[<!--{$product_index}-->]" value="<!--{$arrForm.point_rate.value[$product_index]|h}-->" id="point_rate_<!--{$product_index}-->" />
                 </td>
-                <td align="center">
+                <td class="center">
                     <!--{assign var=key value="price"}-->
                     <span class="attention"><!--{$arrErr[$key][$product_index]}--></span>
                     <input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="6" class="box6" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->" /> 円
                 </td>
-                <td align="center">
+                <td class="center">
                     <!--{assign var=key value="quantity"}-->
                     <span class="attention"><!--{$arrErr[$key][$product_index]}--></span>
                     <input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->"  onChange="quantityCopyForSingleShipping('<!--{$product_index}-->')" />
@@ -383,13 +383,13 @@
                 <!--{assign var=tax_rule value=`$arrForm.tax_rule.value[$product_index]`}-->
                 <input type="hidden" name="tax_rule[<!--{$product_index}-->]" value="<!--{$arrForm.tax_rule.value[$product_index]|h}-->" id="tax_rule_<!--{$product_index}-->" />
 
-                <td class="right">
+                <td class="center">
                     <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format}--> 円<br />
                     <!--{assign var=key value="tax_rate"}-->
                     <span class="attention"><!--{$arrErr[$key][$product_index]}--></span>
                     税率<input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->" />%
                 </td>
-                <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+                <td class="center"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円</td>
             </tr>
             <!--{/section}-->
             <tr>
@@ -504,14 +504,14 @@
                             <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
 
                             <tr>
-                                <td>
+                                <td class="center">
                                     <!--{assign var=key value="shipment_product_class_id"}-->
                                     <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                                     <!--{assign var=key value="shipment_product_code"}-->
                                     <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                                     <!--{$arrShipping[$key][$item_index]|h}-->
                                 </td>
-                                <td>
+                                <td class="center">
                                     <!--{assign var=key1 value="shipment_product_name"}-->
                                     <!--{assign var=key2 value="shipment_classcategory_name1"}-->
                                     <!--{assign var=key3 value="shipment_classcategory_name2"}-->
@@ -525,12 +525,12 @@
                                     <a class="btn-normal" href="javascript:;" name="delete" onclick="eccube.setValue('delete_no', <!--{$item_index}-->, 'form1'); eccube.setValue('select_shipping_id', <!--{$shipping_index}-->, 'form1'); eccube.setModeAndSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
                                     <!--{/if}-->
                                 </td>
-                                <td class="right">
+                                <td class="center">
                                     <!--{assign var=key value="shipment_price"}-->
                                     <!--{$arrShipping[$key][$item_index]|number_format}-->円
                                     <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                                 </td>
-                                <td class="right">
+                                <td class="center">
                                     <!--{assign var=key value="shipment_quantity"}-->
                                     <span class="attention"><!--{$arrErr[$key][$shipping_index][$item_index]}--></span>
                                     <input type="text" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" />
