@@ -491,8 +491,6 @@
             <!--{if $arrForm.shipping_quantity.value > 1}-->
                 <h2>届け先商品情報&nbsp;<a class="btn-normal" href="javascript:;" name="add_product" onclick="eccube.openWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->order/product_select.php?order_id=<!--{$arrForm.order_id.value|h}-->&shipping_id=<!--{$shipping_index}-->', 'search', '615', '500', {menubar:'no'}); return false;">商品の追加</a>
                 </h2>
-                <!--{assign var=product_quantity value="shipping_product_quantity"}-->
-                <input type="hidden" name="<!--{$product_quantity}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$product_quantity]|h}-->" />
 
                 <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
                     <table class="list order-edit-products">
@@ -543,8 +541,7 @@
                 <!--{/if}-->
             <!--{else}-->
                 <!-- 配送先が１つでも、shipment_itemを更新するために必要 -->
-                <!--{assign var=product_quantity value="shipping_product_quantity"}-->
-                <input type="hidden" name="<!--{$product_quantity}-->[<!--{$shipping_index}-->]" value="<!--{$arrShipping[$product_quantity]|h}-->" />
+
                 <!--{section name=item loop=$arrShipping.shipment_product_class_id|@count}-->
                     <!--{assign var=item_index value="`$smarty.section.item.index`"}-->
                             <!--{assign var=key value="shipment_product_class_id"}-->

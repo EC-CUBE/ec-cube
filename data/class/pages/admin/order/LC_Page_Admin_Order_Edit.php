@@ -418,7 +418,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('お届け日(月)', 'shipping_date_month', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('お届け日(日)', 'shipping_date_day', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('お届け日', 'shipping_date', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('配送商品数量', 'shipping_product_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         $objFormParam->addParam('商品規格ID', 'shipment_product_class_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品コード', 'shipment_product_code');
@@ -496,7 +495,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
          * $arrProductQuantity[$shipping_id] = お届け先ごとの配送商品数量
          */
         $arrShipmentForm = array();
-        $arrProductQuantity = array();
         $arrShippingIds = $objFormParam->getValue('shipping_id');
         foreach ($arrShippingIds as $shipping_id) {
             $item_index = 0;
@@ -509,11 +507,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                 $item_index++;
             }
             // お届け先ごとの配送商品数量を設定
-            $arrProductQuantity[$shipping_id] = count($arrShipmentItem[$shipping_id]);
         }
 
         $objFormParam->setParam($arrShipmentForm);
-        $objFormParam->setValue('shipping_product_quantity', $arrProductQuantity);
 
         // 受注商品の数量を変更
         $arrDest = array();
@@ -566,17 +562,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
          * $arrShipmentItem['shipment_(key)'][$shipping_id][$item_index] = 値
          * $arrProductQuantity[$shipping_id] = お届け先ごとの配送商品数量
          */
-        $arrProductQuantity = array();
         $arrShipmentItem = array();
         foreach ($arrShippings as $shipping_id => $arrShipping) {
-            $arrProductQuantity[$shipping_id] = count($arrShipping['shipment_item']);
             foreach ($arrShipping['shipment_item'] as $item_index => $arrItem) {
                 foreach ($arrItem as $item_key => $item_val) {
                     $arrShipmentItem['shipment_' . $item_key][$shipping_id][$item_index] = $item_val;
                 }
             }
         }
-        $objFormParam->setValue('shipping_product_quantity', $arrProductQuantity);
         $objFormParam->setParam($arrShipmentItem);
 
         /*
@@ -1088,7 +1081,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     public function setProductsQuantity(&$objFormParam)
     {
         $arrShipmentsItems = $objFormParam->getSwapArray(array('shipment_product_class_id','shipment_quantity'));
-        
+
         // 配送先が存在する時のみ、商品個数の再設定を行います
         if(!SC_Utils_Ex::isBlank($arrShipmentsItems)) {
             foreach ($arrShipmentsItems as $arritems) {
