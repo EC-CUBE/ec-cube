@@ -80,7 +80,7 @@
                     <!--{/if}-->
                 <!--{/if}-->
 
-                <form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="<!--{$smarty.const.CART_URLPATH|h}-->">
+                <form name="form<!--{$key}-->" id="form<!--{$key}-->" method="post" action="<!--{$smarty.const.CART_URL|h}-->">
                     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                     <!--{if 'sfGMOCartDisplay'|function_exists}-->
                         <!--{'sfGMOCartDisplay'|call_user_func}-->
@@ -155,7 +155,7 @@
             <p class="empty"><em>※ 現在カート内に商品はございません。</em></p>
         <!--{/if}-->
 
-        <p><a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->" class="btn_sub">お買い物を続ける</a></p>
+        <p><a rel="external" href="<!--{$smarty.const.TOP_URL}-->" class="btn_sub">お買い物を続ける</a></p>
 
     </div><!-- /.form_area -->
 

@@ -521,7 +521,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
                 'product_id' => $this->objFormParam->getValue('product_id'),
             );
 
-            SC_Response_Ex::sendRedirect(CART_URLPATH, $arrQueryString);
+            SC_Response_Ex::sendRedirect(CART_URL, $arrQueryString);
             SC_Response_Ex::actionExit();
         }
     }

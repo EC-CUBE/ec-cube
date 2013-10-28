@@ -218,13 +218,25 @@ class SC_Initial
      * パラメーターの補完
      *
      * ソースのみ差し替えたバージョンアップを考慮したもの。
-     * $this->defineIfNotDefined() で定義することを想定
+     * SC_Initial_Ex::defineIfNotDefined() で定義することを想定
      *
      * @access protected
      * @return void
      */
     public function complementParameter()
     {
+        // 2.13.0 のデータとの互換用
+        /** サイトトップ */
+        SC_Initial_Ex::defineIfNotDefined('TOP_URL', HTTP_URL . DIR_INDEX_PATH);
+        /** カートトップ */
+        SC_Initial_Ex::defineIfNotDefined('CART_URL', HTTP_URL . 'cart/' . DIR_INDEX_PATH);
+
+        // 2.13.0 のテンプレートとの互換用
+        // @deprecated 2.13.1
+        /** サイトトップ */
+        SC_Initial_Ex::defineIfNotDefined('TOP_URLPATH', ROOT_URLPATH . DIR_INDEX_PATH);
+        /** カートトップ */
+        SC_Initial_Ex::defineIfNotDefined('CART_URLPATH', ROOT_URLPATH . 'cart/' . DIR_INDEX_PATH);
     }
 
     /**

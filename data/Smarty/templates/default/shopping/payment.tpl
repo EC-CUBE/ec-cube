@@ -100,7 +100,7 @@
          */
         function remoteException(XMLHttpRequest, textStatus, errorThrown) {
             alert('通信中にエラーが発生しました。カート画面に移動します。');
-            location.href = '<!--{$smarty.const.CART_URLPATH}-->';
+            location.href = '<!--{$smarty.const.CART_URL}-->';
         }
 
         /**

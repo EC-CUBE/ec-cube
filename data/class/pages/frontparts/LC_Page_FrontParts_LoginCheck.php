@@ -191,7 +191,7 @@ class LC_Page_FrontParts_LoginCheck extends LC_Page_Ex
                     SC_Response_Ex::sendRedirectFromUrlPath('mypage/login.php');
                 } else {
                     // 上記以外の場合、トップへ遷移
-                    SC_Response_Ex::sendRedirect(HTTP_URL);
+                    SC_Response_Ex::sendRedirect(TOP_URL);
                 }
                 SC_Response_Ex::actionExit();
 

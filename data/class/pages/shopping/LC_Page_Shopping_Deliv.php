@@ -135,7 +135,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
             case 'return':
 
                 // 確認ページへ移動
-                SC_Response_Ex::sendRedirect(CART_URLPATH);
+                SC_Response_Ex::sendRedirect(CART_URL);
                 SC_Response_Ex::actionExit();
                 break;
 

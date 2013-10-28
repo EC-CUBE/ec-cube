@@ -31,7 +31,7 @@
     <div class="btn_area">
         <ul>
             <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">同意して会員登録へ</a></li>
-            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">同意しない</a></li>
+            <li><a href="<!--{$smarty.const.TOP_URL}-->" class="btn_back" rel="external">同意しない</a></li>
         </ul>
     </div>
 
@@ -40,7 +40,7 @@
     <div class="btn_area">
         <ul class="btn_btm">
             <li><a href="<!--{$smarty.const.ENTRY_URL}-->" class="btn" rel="external">同意して会員登録へ</a></li>
-            <li><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_back" rel="external">同意しない</a></li>
+            <li><a href="<!--{$smarty.const.TOP_URL}-->" class="btn_back" rel="external">同意しない</a></li>
         </ul>
     </div>
 </section>

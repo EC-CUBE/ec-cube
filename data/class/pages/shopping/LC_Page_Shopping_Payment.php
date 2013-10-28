@@ -110,14 +110,14 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
         $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);
         // 正常に受注情報が格納されていない場合はカート画面へ戻す
         if (SC_Utils_Ex::isBlank($arrOrderTemp)) {
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            SC_Response_Ex::sendRedirect(CART_URL);
             SC_Response_Ex::actionExit();
         }
 
         // カート内商品の妥当性チェック
         $this->tpl_message = $objCartSess->checkProducts($cart_key);
         if (strlen($this->tpl_message) >= 1) {
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            SC_Response_Ex::sendRedirect(CART_URL);
             SC_Response_Ex::actionExit();
         }
 
@@ -195,7 +195,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                     $url = MULTIPLE_URLPATH . '?from=multiple';
                 } elseif ($objCustomer->isLoginSuccess(true)) {
                     if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
-                        $url = CART_URLPATH;
+                        $url = CART_URL;
                     } else {
                         $url = DELIV_URLPATH;
                     }

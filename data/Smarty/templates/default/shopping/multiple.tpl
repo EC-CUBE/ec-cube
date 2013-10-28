@@ -117,7 +117,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="<!--{$smarty.const.CART_URLPATH}-->">
+                        <a href="<!--{$smarty.const.CART_URL}-->">
                             <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back03" id="back03" />
                         </a>
                     </li>

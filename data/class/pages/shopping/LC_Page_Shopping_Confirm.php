@@ -95,7 +95,7 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
         // カート内商品のチェック
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
         if (!SC_Utils_Ex::isBlank($this->tpl_message)) {
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            SC_Response_Ex::sendRedirect(CART_URL);
             SC_Response_Ex::actionExit();
         }
 

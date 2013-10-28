@@ -50,7 +50,7 @@ class LC_Page_Test extends PHPUnit_Framework_TestCase
     function testSendRedirect()
     {
         $objPage = new LC_Page();
-        $result = $objPage->sendRedirect(HTTP_URL);
+        $result = $objPage->sendRedirect(TOP_URL);
 
         $this->assertEquals(true, empty($result));
     }

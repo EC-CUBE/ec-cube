@@ -200,7 +200,7 @@ class LC_Page_Shopping extends LC_Page_Ex
 
             // 前のページに戻る
             case 'return':
-                SC_Response_Ex::sendRedirect(CART_URLPATH);
+                SC_Response_Ex::sendRedirect(CART_URL);
                 SC_Response_Ex::actionExit();
                 break;
 

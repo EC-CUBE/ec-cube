@@ -1161,8 +1161,8 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('COOKIE_EXPIRE', '36
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SEPA_CATNAVI', '" > "', 235, 'カテゴリ区切り文字');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_URL', 'HTTPS_URL . "shopping/" . DIR_INDEX_PATH', 237, '会員情報入力');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENTRY_URL', 'HTTPS_URL . "entry/" . DIR_INDEX_PATH', 238, '会員登録ページTOP');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TOP_URLPATH', 'ROOT_URLPATH . DIR_INDEX_PATH', 239, 'サイトトップ');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CART_URLPATH', 'ROOT_URLPATH . "cart/" . DIR_INDEX_PATH', 240, 'カートトップ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TOP_URL', 'HTTP_URL . DIR_INDEX_PATH', 239, 'サイトトップ');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CART_URL', 'HTTP_URL . "cart/" . DIR_INDEX_PATH', 240, 'カートトップ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DELIV_URLPATH', 'ROOT_URLPATH . "shopping/deliv.php"', 241, 'お届け先設定');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('MULTIPLE_URLPATH', 'ROOT_URLPATH . "shopping/multiple.php"', 242, '複数お届け先設定');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SHOPPING_CONFIRM_URLPATH', 'ROOT_URLPATH . "shopping/confirm.php"', 244, '購入確認ページ');

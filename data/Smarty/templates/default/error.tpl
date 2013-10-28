@@ -32,7 +32,7 @@
                 <ul>
                     <li>
                         <!--{if $return_top}-->
-                            <a href="<!--{$smarty.const.TOP_URLPATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" /></a>
+                            <a href="<!--{$smarty.const.TOP_URL}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" /></a>
                         <!--{else}-->
                             <a href="javascript:history.back()"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" /></a>
                         <!--{/if}-->

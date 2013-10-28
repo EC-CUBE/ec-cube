@@ -23,7 +23,7 @@
 <!--{strip}-->
     <header class="global_header clearfix">
         <div id="logo_area">
-            <a rel="external" href="<!--{$smarty.const.ROOT_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.png" width="150" height="25" alt="<!--{$arrSiteInfo.shop_name|h}-->" /></a>
+            <a rel="external" href="<!--{$smarty.const.TOP_URL}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.png" width="150" height="25" alt="<!--{$arrSiteInfo.shop_name|h}-->" /></a>
         </div>
         <div class="header_utility">
             <!--{* ▼HeaderInternal COLUMN *}-->

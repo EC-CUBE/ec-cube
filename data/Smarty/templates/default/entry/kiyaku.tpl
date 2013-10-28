@@ -35,7 +35,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="<!--{$smarty.const.TOP_URLPATH}-->">
+                        <a href="<!--{$smarty.const.TOP_URL}-->">
                             <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg" alt="同意しない" />
                         </a>
                     </li>

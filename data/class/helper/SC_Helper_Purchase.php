@@ -209,7 +209,7 @@ class SC_Helper_Purchase
 
         // カート内が空でないか
         if (SC_Utils_Ex::isBlank($cartKey)) {
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            SC_Response_Ex::sendRedirect(CART_URL);
             exit;
         }
 
@@ -228,7 +228,7 @@ class SC_Helper_Purchase
         // 購入ボタンを押してから変化がないか
         $quantity = $objCartSession->getTotalQuantity($cartKey);
         if ($objCartSession->checkChangeCart($cartKey) || !($quantity > 0)) {
-            SC_Response_Ex::sendRedirect(CART_URLPATH);
+            SC_Response_Ex::sendRedirect(CART_URL);
             exit;
         }
     }

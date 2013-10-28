@@ -48,7 +48,7 @@
         <p> 万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。</p>
         <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
         <div class="btn_area">
-            <a href="<!--{$smarty.const.TOP_URLPATH}-->" class="btn_toppage btn_sub" rel="external">トップページへ</a>
+            <a href="<!--{$smarty.const.TOP_URL}-->" class="btn_toppage btn_sub" rel="external">トップページへ</a>
         </div>
     </div>
     <hr>

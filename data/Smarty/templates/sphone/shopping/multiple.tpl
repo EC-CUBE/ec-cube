@@ -109,7 +109,7 @@
 
             <ul class="btn_btm">
                 <li><a rel="external" href="javascript:void(document.form1.submit());" class="btn">選択したお届け先に送る</a></li>
-                <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH}-->" class="btn_back">戻る</a></li>
+                <li><a rel="external" href="<!--{$smarty.const.CART_URL}-->" class="btn_back">戻る</a></li>
             </ul>
         </form>
     </div><!-- /.form_area -->

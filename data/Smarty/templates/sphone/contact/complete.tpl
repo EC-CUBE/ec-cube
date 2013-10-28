@@ -32,7 +32,7 @@
     </div>
 
     <div class="btn_area">
-        <a class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
+        <a class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URL}-->">トップページへ</a>
     </div>
     <hr>
     <div class="shopInformation">

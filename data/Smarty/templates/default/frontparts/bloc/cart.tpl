@@ -43,7 +43,7 @@
                     <!--{/if}-->
                 </div>
                 <div class="btn">
-                    <a href="<!--{$smarty.const.CART_URLPATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg" alt="カゴの中を見る" /></a>
+                    <a href="<!--{$smarty.const.CART_URL}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_cart.jpg" alt="カゴの中を見る" /></a>
                 </div>
             </div>
         </div>

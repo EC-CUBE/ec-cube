@@ -59,7 +59,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="<!--{$smarty.const.TOP_URLPATH}-->">
+                    <a href="<!--{$smarty.const.TOP_URL}-->">
                         <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" />
                     </a>
                 </li>

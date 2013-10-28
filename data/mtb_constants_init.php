@@ -275,9 +275,9 @@ define('SHOPPING_URL', HTTPS_URL . "shopping/" . DIR_INDEX_PATH);
 /** 会員登録ページTOP */
 define('ENTRY_URL', HTTPS_URL . "entry/" . DIR_INDEX_PATH);
 /** サイトトップ */
-define('TOP_URLPATH', ROOT_URLPATH . DIR_INDEX_PATH);
+define('TOP_URL', HTTP_URL . DIR_INDEX_PATH);
 /** カートトップ */
-define('CART_URLPATH', ROOT_URLPATH . "cart/" . DIR_INDEX_PATH);
+define('CART_URL', HTTP_URL . "cart/" . DIR_INDEX_PATH);
 /** お届け先設定 */
 define('DELIV_URLPATH', ROOT_URLPATH . "shopping/deliv.php");
 /** 複数お届け先設定 */

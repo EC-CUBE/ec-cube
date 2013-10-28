@@ -566,7 +566,7 @@ __EOS__;
                     'category_id' => $this->arrForm['category_id'],
                 );
 
-                SC_Response_Ex::sendRedirect(CART_URLPATH, $arrQueryString);
+                SC_Response_Ex::sendRedirect(CART_URL, $arrQueryString);
                 SC_Response_Ex::actionExit();
             }
             $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
