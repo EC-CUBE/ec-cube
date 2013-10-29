@@ -124,7 +124,9 @@
                                         <ul>
                                             <li class="quantity"><span class="mini">数量:</span><!--{$arrItem.quantity|number_format}--></li>
                                             <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.png" width="22" height="21" alt="＋" onclick="eccube.fnFormModeSubmit('form<!--{$key}-->', 'up','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></li>
-                                            <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" width="22" height="21" alt="-" onclick="eccube.fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></li>
+                                            <!--{if $arrItem.quantity > 1}-->
+                                                <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" width="22" height="21" alt="-" onclick="eccube.fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></li>
+                                            <!--{/if}-->
                                             <li class="result"><span class="mini">小計：</span><!--{$arrItem.total_inctax|number_format}-->円</li>
                                         </ul>
                                     </div>

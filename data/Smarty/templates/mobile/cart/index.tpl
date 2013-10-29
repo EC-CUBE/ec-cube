@@ -62,7 +62,9 @@
                     <!--{* 数量 *}-->
                     数量:<!--{$item.quantity}-->
                     <a href="?mode=up&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">＋</a>
-                    <a href="?mode=down&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">－</a>
+                    <!--{if $item.quantity > 1}-->
+                        <a href="?mode=down&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">－</a>
+                    <!--{/if}-->
                     <a href="?mode=delete&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">削除</a><br>
                     <!--{* 合計 *}-->
                     小計:<!--{$item.total_inctax|number_format}-->円<br>
