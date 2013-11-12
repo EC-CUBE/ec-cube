@@ -525,7 +525,7 @@
                                     <a class="btn-normal" href="javascript:;" name="delete" onclick="eccube.setValue('delete_no', <!--{$item_index}-->, 'form1'); eccube.setValue('select_shipping_id', <!--{$shipping_index}-->, 'form1'); eccube.setModeAndSubmit('delete_product','anchor_key','order_products'); return false;">削除</a>
                                     <!--{/if}-->
                                 </td>
-                                <td class="center">
+                                <td class="right">
                                     <!--{assign var=key value="shipment_price"}-->
                                     <!--{$arrShipping[$key][$item_index]|number_format}-->円
                                     <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
