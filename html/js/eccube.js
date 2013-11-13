@@ -582,6 +582,8 @@
         });
 
         // モーダルウィンドウ
-        $("a.expansion").colorbox();
+        if ($('a.expansion').length) { 
+            $('a.expansion').colorbox(); 
+        }
     });
 })(window);
