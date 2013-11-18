@@ -65,11 +65,21 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
 
         switch ($this->getMode()) {
             case 'confirm':
+                // トークンを設定
+                $this->refusal_transactionid = $this->getRefusalToken();
+
                 $this->tpl_mainpage     = 'mypage/refusal_confirm.tpl';
                 $this->tpl_subtitle     = t('c_Confirm account cancellation_01');
                 break;
 
             case 'complete':
+                // トークン入力チェック
+                if(!$this->isValidRefusalToken()) {
+                    // エラー画面へ遷移する
+                    SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+                    SC_Response_Ex::actionExit();
+                }
+
                 $objCustomer = new SC_Customer_Ex();
                 $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
                 $objCustomer->EndSession();
@@ -78,6 +88,9 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
                 SC_Response_Ex::sendRedirect('refusal_complete.php');
 
             default:
+                if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+                    $this->refusal_transactionid = $this->getRefusalToken();
+                }
                 break;
         }
 
@@ -90,6 +103,38 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex {
      */
     function destroy() {
         parent::destroy();
+    }
+
+    /**
+     * トランザクショントークンを取得する
+     *
+     * @return string
+     */
+    function getRefusalToken() {
+        if (empty($_SESSION['refusal_transactionid'])) {
+            $_SESSION['refusal_transactionid'] = SC_Helper_Session_Ex::createToken();
+        }
+        return $_SESSION['refusal_transactionid'];
+    }
+
+    /**
+     * トランザクショントークンのチェックを行う
+     */
+    function isValidRefusalToken() {
+        if(empty($_POST['refusal_transactionid'])) {
+            $ret = false;
+        } else {
+            $ret = $_POST['refusal_transactionid'] === $_SESSION['refusal_transactionid'];
+        }
+
+        return $ret;
+    }
+
+    /**
+     * トランザクショントークを破棄する
+     */
+    function destroyRefusalToken() {
+        unset($_SESSION['refusal_transactionid']);
     }
 
     /**

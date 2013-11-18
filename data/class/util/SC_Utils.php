@@ -1798,4 +1798,21 @@ class SC_Utils {
             return '[' . preg_quote($charlist, '/') . ']+';
         }
     }
-}
+
+    /**
+     * Obtain the parts of path that are not the same and confirm if file exists
+     * by reconstructing path with base path.
+     *
+     * @param  string  $file
+     * @param  string  $base_path
+     * @return bool true = exists / false does not exist
+     */
+    public  function checkFileExistsWithInBasePath($file,$base_path) 
+    {  
+        $arrPath = explode('/', str_replace('\\', '/',$file));
+        $arrBasePath = explode('/', str_replace('\\', '/',$base_path));
+        $path_diff = implode("/",array_diff_assoc($arrPath, $arrBasePath));
+        return file_exists(realpath(str_replace('..','',$base_path . $path_diff))) ? true : false;
+    }
+    
+ }

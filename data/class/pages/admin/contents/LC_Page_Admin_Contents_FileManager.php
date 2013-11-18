@@ -129,11 +129,13 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                         $disp_error = t('c_* It is not possible to download the directory.<br/>_01');
                         $this->setDispError('select_file', $disp_error);
                     } else {
-
-                        // ファイルダウンロード
-                        $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
-                        SC_Response_Ex::actionExit();
-                    }
+                       $path_exists = SC_Utils::checkFileExistsWithInBasePath($objFormParam->getValue('select_file'),USER_REALDIR);
+                       if ($path_exists) {
+                         // ファイルダウンロード
+                         $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
+                         SC_Response_Ex::actionExit();
+                     }
+                  }
                 }
                 break;
             // ファイル削除
@@ -144,7 +146,8 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex {
                 $objFormParam->convParam();
 
                 $this->arrErr = $objFormParam->checkError();
-                if (SC_Utils_Ex::isBlank($this->arrErr)) {
+                $path_exists = SC_Utils::checkFileExistsWithInBasePath($objFormParam->getValue('select_file'),USER_REALDIR);
+                if (SC_Utils_Ex::isBlank($this->arrErr) && ($path_exists)) {
                     $objFileManager->deleteFile($objFormParam->getValue('select_file'));
                 }
                 break;

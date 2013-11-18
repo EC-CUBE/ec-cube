@@ -131,7 +131,7 @@
 
         <!--{assign var=key value="deliv_id"}-->
         <!--{if $is_single_deliv}-->
-            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" id="deliv_id" />
         <!--{else}-->
         <div class="pay_area">
             <h3>配送方法の指定</h3>

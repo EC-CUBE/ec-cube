@@ -560,7 +560,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
      */
     function lfGetFormParam_Complete(&$objFormParam) {
         $arrForm = $objFormParam->getHashArray();
-        $arrForm['category_id'] = unserialize($arrForm['category_id']);
+        $arrForm['category_id'] = SC_Utils_Ex::jsonDecode($arrForm['category_id']);
         $objFormParam->setValue('category_id', $arrForm['category_id']);
 
         return $arrForm;
@@ -581,7 +581,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         list($this->arrCatVal, $this->arrCatOut) = $objDb->sfGetLevelCatList(false);
 
         if (isset($arrForm['category_id']) && !is_array($arrForm['category_id'])) {
-            $arrForm['category_id'] = unserialize($arrForm['category_id']);
+            $arrForm['category_id'] = SC_Utils_Ex::jsonDecode($arrForm['category_id']);
         }
         if ($arrForm['status'] == '') {
             $arrForm['status'] = DEFAULT_PRODUCT_DISP;
@@ -621,7 +621,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex {
         // カテゴリ表示用
         $arrForm['arrCategoryId'] = $arrForm['category_id'];
         // hidden に渡す値は serialize する
-        $arrForm['category_id'] = serialize($arrForm['category_id']);
+        $arrForm['category_id'] = SC_Utils_Ex::jsonEncode($arrForm['category_id']);
         // 画像ファイル用データ取得
         $arrForm['arrFile'] = $objUpFile->getFormFileList(IMAGE_TEMP_URLPATH, IMAGE_SAVE_URLPATH);
         // ダウンロード商品実ファイル名取得

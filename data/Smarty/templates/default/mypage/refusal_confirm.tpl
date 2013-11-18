@@ -27,6 +27,7 @@
     <!--{include file=$tpl_navi}-->
     <form name="form1" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="refusal_transactionid" value="<!--{$refusal_transactionid}-->" />
     <input type="hidden" name="mode" value="complete" />
 
     <div id="mycontents_area">
