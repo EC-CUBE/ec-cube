@@ -27,10 +27,10 @@
   <target name="checkstyle" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
       <exec executable="phpcs" output="/dev/null">
           <arg value="--report=checkstyle" />
-          <arg value="--standard=PSR-2" />
+          <arg value="--standard=tests/ruleset.xml" />
           <arg value="--extensions=php" />
           <arg value="-pv" />
-          <arg value="--ignore=data/module,data/Smarty,data/smarty_extends" />
+          <arg value="'--ignore=*/module/*,*/Smarty/*,*/smarty_extends/*,*/cache/*'" />
           <arg value="--report-file=reports/checkstyle.xml" />
           <arg path="data/" />
       </exec>
