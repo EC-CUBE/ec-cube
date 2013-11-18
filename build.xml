@@ -30,7 +30,7 @@
           <arg value="--standard=tests/ruleset.xml" />
           <arg value="--extensions=php" />
           <arg value="-pv" />
-          <arg value="--ignore=data/module,data/Smarty,data/smarty_extends" />
+          <arg value="--ignore=data/module/*,data/Smarty,data/smarty_extends" />
           <arg value="--report-file=reports/checkstyle.xml" />
           <arg path="data/" />
       </exec>
