@@ -2093,8 +2093,7 @@ class SC_Utils
     }
     
     /**
-     * Obtain the parts of path that are not the same and confirm if file exists
-     * by reconstructing path with base path.
+     * ベースとなるパスと相対パスを比較してファイルが存在する事をチェックする
      *
      * @param  string  $file
      * @param  string  $base_path
