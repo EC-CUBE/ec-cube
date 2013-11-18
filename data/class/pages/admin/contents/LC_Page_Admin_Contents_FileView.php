@@ -101,14 +101,12 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
     public function checkErrorDispFile($objFormParam)
     {
         $file_check_flg = false;
-
         // FIXME パスのチェック関数が必要
         $file = $objFormParam->getValue('file');
-
-        if (!preg_match('|\./|', $file)) {
+        $path_exists = SC_Utils::checkFileExistsWithInBasePath($file,USER_REALDIR);
+        if ($path_exists){
             $file_check_flg = true;
         }
-
         return $file_check_flg;
     }
 
