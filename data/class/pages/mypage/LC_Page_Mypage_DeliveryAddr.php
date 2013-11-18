@@ -80,6 +80,14 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
         } elseif (isset($_POST['ParentPage'])) {
             $ParentPage = htmlspecialchars($_POST['ParentPage'], ENT_QUOTES);
         }
+
+        // 正しい遷移かをチェック
+        $arrParentPageList = array(DELIV_URLPATH, MYPAGE_DELIVADDR_URLPATH, MULTIPLE_URLPATH);
+        if(!SC_Utils_Ex::isBlank($ParentPage) && !in_array($ParentPage, $arrParentPageList)) {
+            // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
+            $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
+        }
+
         $this->ParentPage = $ParentPage;
 
         /*
@@ -89,7 +97,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
          * TODO 購入遷移とMyPageで別クラスにすべき
          */
         if (!$objCustomer->isLoginSuccess(true) && $ParentPage != MULTIPLE_URLPATH) {
-            $this->tpl_onload = "eccube.changeParentUrl('". $this->getLocation($_POST['ParentPage']) ."'); window.close();";
+            $this->tpl_onload = "eccube.changeParentUrl('". $ParentPage ."'); window.close();";
         }
 
         // other_deliv_id のあるなしで追加か編集か判定しているらしい
