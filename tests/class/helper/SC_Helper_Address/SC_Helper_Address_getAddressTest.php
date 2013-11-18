@@ -12,6 +12,7 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
     {
         parent::setUp();
         $this->objAddress = new SC_Helper_Address_Ex();
+        $_SESSION['customer']['customer_id'] = 1; // 会員じゃないとテストが落ちる
     }
 
     protected function tearUp()
@@ -28,7 +29,7 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
         $other_deliv_id = '999';
         $this->expected = FALSE;
         $this->actual = $this->objAddress->getAddress($other_deliv_id);
-        
+
         $this->verify('登録配送先取得');
     }
 
@@ -59,7 +60,7 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
                 'zipcode' => null
             );
         $this->actual = $this->objAddress->getAddress($other_deliv_id);
-        
+
         $this->verify('登録配送先取得');
     }
 }

@@ -12,6 +12,7 @@ class SC_Helper_Address_deleteAddressTest extends SC_Helper_Address_TestBase
     {
         parent::setUp();
         $this->objAddress = new SC_Helper_Address_Ex();
+        $_SESSION['customer']['customer_id'] = 1; // 会員じゃないとテストが落ちる
     }
 
     protected function tearUp()
@@ -33,7 +34,7 @@ class SC_Helper_Address_deleteAddressTest extends SC_Helper_Address_TestBase
         $where = 'other_deliv_id = ?';
         $whereVal = array($other_deliv_id);
         $this->actual = $objQuery->getRow($select, $from, $where, $whereVal);
-        
+
         $this->verify('登録配送先削除');
     }
 }
