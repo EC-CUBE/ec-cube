@@ -224,24 +224,24 @@ ul.status_icon li {
 }
 
 /*商品情報（規格部分）*/
-.cart_area {
+.classlist {
     padding: 12px;
 }
-.cart_area dl {
+.classlist dl {
     margin: 0;
     padding: 0;
 }
-.cart_area dt {
+.classlist dt {
     margin: 0;
     font-weight: bold;
     line-height: 1.3;
 }
-.cart_area dd {
+.classlist dd {
     padding: 0;
     clear: both;
     padding-bottom: 5px;
 }
-.cart_area dd:last-child {
+.classlist dd:last-child {
     padding-bottom: 0;
 }
 

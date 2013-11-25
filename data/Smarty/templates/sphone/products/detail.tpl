@@ -188,7 +188,7 @@
 
                     <!--★ポイント★-->
                     <!--{if $smarty.const.USE_POINT !== false}-->
-                        <p class="sale_price"><span class="mini">ポイント：</span><span id="point_default">
+                        <p class="point"><span class="mini">ポイント：</span><span id="point_default">
                             <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
                                 <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate:$smarty.const.POINT_RULE:$arrProduct.product_id|number_format}-->
                             <!--{else}-->
@@ -234,7 +234,7 @@
                 <!--{if $tpl_stock_find}-->
 
                     <!--{if $tpl_classcat_find1}-->
-                        <div class="cart_area">
+                        <div class="classlist">
                             <dl>
                                 <!--▼規格1-->
                                 <dt><!--{$tpl_class_name1|h}--></dt>
