@@ -658,7 +658,7 @@ __EOS__;
             case 'month':
                 $xtitle = '(月別)';
                 $ytitle = '(売上合計)';
-                $format = '%m';
+                $format = '%Y-%m';
                 break;
             case 'year':
                 $xtitle = '(年別)';
@@ -731,7 +731,7 @@ __EOS__;
     {
         switch ($type) {
             case 'month':
-                $format        = 'm';
+                $format        = 'Y-m';
                 break;
             case 'year':
                 $format        = 'Y';

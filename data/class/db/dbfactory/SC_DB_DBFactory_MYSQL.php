@@ -174,7 +174,7 @@ __EOS__;
     {
         switch ($type) {
             case 'month':
-                $format = '%m';
+                $format = '%Y-%m';
                 break;
             case 'year':
                 $format = '%Y';
