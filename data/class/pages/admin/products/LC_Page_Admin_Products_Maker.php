@@ -99,12 +99,10 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
                     $res_maker_id = $this->doRegist($maker_id, $arrParam, $objMaker);
                     if ($res_maker_id !== FALSE) {
                         // 完了メッセージ
-                        $maker_id = $res_maker_id;
                         $this->tpl_onload = "alert('登録が完了しました。');";
                     }
                 }
-                // POSTデータを引き継ぐ
-                $this->tpl_maker_id = $maker_id;
+                SC_Response_Ex::reload();
                 break;
 
             // 編集前処理
