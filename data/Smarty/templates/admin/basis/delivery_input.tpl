@@ -127,11 +127,6 @@
             <!--{assign var=key_next value="fee`$smarty.section.cnt.iteration+1`"}-->
 
             <!--{if $type == 0}-->
-                <!--{if $arrErr[$key] != "" || $arrErr[$key_next] != ""}-->
-                <tr>
-                    <td colspan="4"><span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr[$key_next]}--></span></td>
-                </tr>
-                <!--{/if}-->
                 <tr>
                 <th><!--{$arrPref[$keyno]}--> <span class="attention">*</span></th>
                 <!--{if $smarty.section.cnt.last}-->
@@ -140,10 +135,17 @@
                 <!--{assign var=colspan value="1"}-->
                 <!--{/if}-->
                 <td width="247" colspan="<!--{$colspan}-->">
+                <!--{if $arrErr[$key] != ""}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <!--{/if}-->
                 <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
             <!--{else}-->
                 <th><!--{$arrPref[$keyno]}--> <span class="attention">*</span></th>
-                <td width="248"><input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
+                <td width="248">
+                <!--{if $arrErr[$key] != ""}-->
+                <span class="attention"><!--{$arrErr[$key]}--></span>
+                <!--{/if}-->
+                <input type="text" name="<!--{$arrForm[$key].keyname}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length}-->" size="20" class="box20" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /> 円</td>
                 </tr>
             <!--{/if}-->
             <!--{/section}-->

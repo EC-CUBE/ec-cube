@@ -119,7 +119,7 @@ class LC_Page_Admin_Basis_DeliveryInput extends LC_Page_Admin_Ex
 
                 if (INPUT_DELIV_FEE) {
                     for ($cnt = 1; $cnt <= DELIVFEE_MAX; $cnt++) {
-                        $objFormParam->addParam("配送料金$cnt", "fee$cnt", PRICE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+                        $objFormParam->addParam("配送料", "fee$cnt", PRICE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
                     }
                 }
                 break;
