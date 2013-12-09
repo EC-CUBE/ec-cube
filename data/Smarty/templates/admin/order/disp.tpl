@@ -86,6 +86,30 @@
             <th>TEL</th>
             <td><!--{$arrForm.order_tel01.value|h}--> - <!--{$arrForm.order_tel02.value|h}--> - <!--{$arrForm.order_tel03.value|h}--></td>
         </tr>
+        <tr>
+            <th>性別</th>
+            <td><!--{$arrSex[$arrForm.order_sex.value]|h}--></td>
+        </tr>
+        <tr>
+            <th>職業</th>
+            <td><!--{$arrJob[$arrForm.order_job.value]|h}--></td>
+        </tr>
+        <tr>
+            <th>生年月日</th>
+            <td>
+                <!--{assign var=key1 value="order_birth_year"}-->
+                <!--{assign var=key2 value="order_birth_month"}-->
+                <!--{assign var=key3 value="order_birth_day"}-->
+                <!--{if $arrForm[$key1].value == "" && $arrForm[$key2].value == "" && $arrForm[$key3].value == ""}-->
+                    指定無し
+                <!--{else}-->
+                <!--{$arrForm[$key1].value}-->年
+                <!--{$arrForm[$key2].value}-->月
+                <!--{$arrForm[$key3].value}-->日
+                <!--{/if}-->
+            </td>
+        </tr>
+
         <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
         <tr>
             <th>国</th>
@@ -297,7 +321,7 @@
                     <!--{assign var=key1 value="shipping_zipcode"}-->
                     <!--{$arrShipping[$key1]|h}-->
                 </td>
-            </tr>            
+            </tr>
             <!--{/if}-->
             <tr>
                 <th>住所</th>

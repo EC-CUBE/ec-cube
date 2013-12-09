@@ -101,11 +101,18 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
+        $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrJob = $masterData->getMasterData('mtb_job');
 
-        $objDate = new SC_Date_Ex(RELEASE_YEAR);
-        $this->arrYearShippingDate = $objDate->getYear('', date('Y'), '');
-        $this->arrMonthShippingDate = $objDate->getMonth(true);
-        $this->arrDayShippingDate = $objDate->getDay(true);
+        $objShippingDate = new SC_Date_Ex(RELEASE_YEAR);
+        $this->arrYearShippingDate = $objShippingDate->getYear('', date('Y'), '');
+        $this->arrMonthShippingDate = $objShippingDate->getMonth(true);
+        $this->arrDayShippingDate = $objShippingDate->getDay(true);
+
+        $objBirthDate = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
+        $this->arrBirthYear = $objBirthDate->getYear('', START_BIRTH_YEAR, '');
+        $this->arrBirthMonth = $objBirthDate->getMonth(true);
+        $this->arrBirthDay = $objBirthDate->getDay(true);
 
         // 支払い方法の取得
         $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
@@ -339,6 +346,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('FAX番号1', 'order_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam('FAX番号2', 'order_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam('FAX番号3', 'order_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('性別', 'order_sex', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('職業', 'order_job', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('生年月日(年)', 'order_birth_year', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('生年月日(月)', 'order_birth_month', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('生年月日(日)', 'order_birth_day', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('生年月日', 'order_birth', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
 
         // 受注商品情報
         $objFormParam->addParam('値引き', 'discount', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
@@ -578,6 +591,17 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
          * が渡ってくるため, $arrOrder で上書きする.
          */
         $arrOrder = $objPurchase->getOrder($order_id);
+
+        // 生年月日の処理
+        if (!SC_Utils_Ex::isBlank($arrOrder['order_birth'])) {
+            $order_birth = substr($arrOrder['order_birth'], 0, 10);
+            $arrOrderBirth = explode("-", $order_birth);
+
+            $arrOrder['order_birth_year'] = intval($arrOrderBirth[0]);
+            $arrOrder['order_birth_month'] = intval($arrOrderBirth[1]);
+            $arrOrder['order_birth_day'] = intval($arrOrderBirth[2]);
+        }
+
         $objFormParam->setParam($arrOrder);
 
         // ポイントを設定
@@ -709,6 +733,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             $arrValues['payment_method'] = $this->arrPayment[$arrValues['payment_id']];
             $arrValuesBefore['payment_id'] = NULL;
         }
+
+        // 生年月日の調整
+        $arrValues['order_birth'] = SC_Utils_Ex::sfGetTimestamp($arrValues['order_birth_year'], $arrValues['order_birth_month'], $arrValues['order_birth_day']);
 
         // 受注テーブルの更新
         $order_id = $objPurchase->registerOrder($order_id, $arrValues);

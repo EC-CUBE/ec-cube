@@ -248,6 +248,50 @@
                     <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
                 </td>
             </tr>
+            <tr>
+                <th>性別</th>
+                <td>
+                    <!--{assign var=key1 value="order_sex"}-->
+                    <span class="attention"><!--{$arrErr[$key1]}--></span>
+                    <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                    <!--{html_radios name=$key1 options=$arrSex selected=$arrForm[$key1].value}-->
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>職業</th>
+                <td>
+                    <!--{assign var=key1 value="order_job"}-->
+                    <span class="attention"><!--{$arrErr[$key1]}--></span>
+                    <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                    <select name="<!--{$key1}-->">
+	                    <option value="" selected="selected">選択してください</option>
+	                    <!--{html_options options=$arrJob selected=$arrForm[$key1].value}-->
+                    </select>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>生年月日</th>
+                <td>
+                    <!--{assign var=key1 value="order_birth_year"}-->
+                    <!--{assign var=key2 value="order_birth_month"}-->
+                    <!--{assign var=key3 value="order_birth_day"}-->
+                    <span class="attention"><!--{$arrErr[$key1]}--></span>
+                    <span class="attention"><!--{$arrErr[$key2]}--></span>
+                    <span class="attention"><!--{$arrErr[$key3]}--></span>
+                    <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                        <!--{html_options options=$arrBirthYear selected=$arrForm[$key1].value|default:""}-->
+                    </select>年
+                    <select name="<!--{$key2}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->">
+                        <!--{html_options options=$arrBirthMonth selected=$arrForm[$key2].value|default:""}-->
+                    </select>月
+                    <select name="<!--{$key3}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->">
+                        <!--{html_options options=$arrBirthDay selected=$arrForm[$key3].value|default:""}-->
+                    </select>日
+                </td>
+            </tr>
+
             <!--{assign var=key1 value="order_country_id"}-->
             <!--{assign var=key2 value="order_zipcode"}-->
             <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
