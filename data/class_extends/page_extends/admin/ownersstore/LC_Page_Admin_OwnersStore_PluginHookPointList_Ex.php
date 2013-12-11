@@ -31,7 +31,7 @@ require_once CLASS_REALDIR . 'pages/admin/ownersstore/LC_Page_Admin_OwnersStore_
  *
  * @package Page
  * @author LOCKON CO.,LTD.
- * @version $Id: LC_Page_Admin_OwnersStore_PluginHookPointList_Ex.php 22567 2013-02-18 10:09:54Z shutta $
+ * @version $Id: $
  */
 class LC_Page_Admin_OwnersStore_PluginHookPointList_Ex extends LC_Page_Admin_OwnersStore_PluginHookPointList
 {
@@ -59,13 +59,4 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList_Ex extends LC_Page_Admin_Own
         parent::process();
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy()
-    {
-        parent::destroy();
-    }
 }

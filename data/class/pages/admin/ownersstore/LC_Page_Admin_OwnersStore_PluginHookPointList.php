@@ -109,16 +109,6 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    public function destroy()
-    {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター初期化.
      *
      * @param  SC_FormParam_Ex $objFormParam
