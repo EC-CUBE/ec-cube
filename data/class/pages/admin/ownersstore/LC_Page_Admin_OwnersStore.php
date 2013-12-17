@@ -555,7 +555,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         $objErr->doFunc(array('PLUGIN_NAME', 'PLUGIN_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('CLASS_NAME', 'CLASS_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         $objErr->doFunc(array('PLUGIN_VERSION', 'PLUGIN_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
-        $objErr->doFunc(array('COMPLIANT_VERSION', 'COMPLIANT_VERSION', STEXT_LEN), array('MAX_LENGTH_CHECK'));
+        $objErr->doFunc(array('COMPLIANT_VERSION', 'COMPLIANT_VERSION', LTEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('AUTHOR', 'AUTHOR', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('DESCRIPTION', 'DESCRIPTION', MTEXT_LEN), array('MAX_LENGTH_CHECK'));
         if (isset($arrPluginInfo['PLUGIN_SITE_URL'])) {
