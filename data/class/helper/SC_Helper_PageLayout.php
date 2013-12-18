@@ -55,7 +55,7 @@ class SC_Helper_PageLayout
             $arrPageData = $this->getPageProperties($device_type_id, 0);
         }
 
-        if (empty($arrPageData[0])) {
+        if (empty($arrPageData)) {
             trigger_error('ページ情報を取得できませんでした。', E_USER_WARNING);
         }
 
