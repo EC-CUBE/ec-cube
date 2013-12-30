@@ -85,7 +85,8 @@
     <div id="header-contents">
         <div id="logo"><a href="<!--{$smarty.const.ADMIN_HOME_URLPATH}-->"><img src="<!--{$TPL_URLPATH}-->img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
         <div id="site-check">
-            <p class="info"><span>ログイン&nbsp;:&nbsp;<!--{* ログイン名 *}--><!--{$smarty.session.login_name|h}--></span>&nbsp;様&nbsp;</p>
+            <p class="info"><span><strong>ログイン&nbsp;:&nbsp;</strong><!--{* ログイン名 *}--><!--{$smarty.session.login_name|h}--></span>&nbsp;様,&nbsp;&nbsp;
+            <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong><!--{* 最終ログイン日時 *}--><!--{$smarty.session.last_login|sfDispDBDate:true|h}--></span></p>
             <ul>
                 <li><a href="<!--{$smarty.const.HTTP_URL}--><!--{$smarty.const.DIR_INDEX_PATH}-->" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>
                 <li><a href="<!--{$smarty.const.ADMIN_LOGOUT_URLPATH}-->" class="btn-tool-format">LOGOUT</a></li>
