@@ -2,12 +2,12 @@
     <th>会員ID</th>
     <td>
     <!--{assign var=key value="search_customer_id"}-->
-    <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+    <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
     <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> /></td>
     <th>都道府県</th>
     <td>
         <!--{assign var=key value="search_pref"}-->
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
         <select class="top" name="<!--{$key}-->">
             <option value="" selected="selected" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}-->>都道府県を選択</option>
             <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
@@ -18,13 +18,13 @@
     <th>お名前</th>
     <td>
             <!--{assign var=key value="search_name"}-->
-            <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+            <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
             <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
     </td>
     <th>お名前(フリガナ)</th>
     <td>
         <!--{assign var=key value="search_kana"}-->
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="30" class="box30" <!--{if $arrErr[$key]}--><!--{sfSetErrorStyle}--><!--{/if}--> />
     </td>
 </tr>
@@ -37,7 +37,7 @@
     <th>誕生月</th>
     <td>
         <!--{assign var=key value="search_birth_month"}-->
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
         <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" >
             <option value="" selected="selected">--</option>
             <!--{html_options options=$arrMonth selected=$arrForm[$key].value}-->
@@ -49,7 +49,7 @@
     <td colspan="3">
     <!--{assign var=errkey1 value="search_b_start_year"}-->
     <!--{assign var=errkey2 value="search_b_end_year"}-->
-        <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><span class="attention"><!--{$arrErr[$errkey1]}--><!--{$arrErr[$errkey2]}--></span><br /><!--{/if}-->
+        <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><span class="attention"><!--{$arrErr[$errkey1]}--><!--{$arrErr[$errkey2]}--></span><!--{/if}-->
         <!--{assign var=key value="search_b_start_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
@@ -101,7 +101,7 @@
     <th>電話番号</th>
     <td colspan="3">
         <!--{assign var=key value="search_tel"}-->
-        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
+        <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
         <input type="text" name="<!--{$key}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" /></td>
 </tr>
 <tr>
@@ -116,7 +116,7 @@
         <!--{assign var=key1 value="search_buy_total_from"}-->
         <!--{assign var=key2 value="search_buy_total_to"}-->
         <!--{if $arrErr[$key1] || $arrErr[$key2]}--><span class="attention">
-            <!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span><br />
+            <!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
         <!--{/if}-->
         <input type="text" name="<!--{$key1}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key1].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円 ～
         <input type="text" name="<!--{$key2}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key2].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 円
@@ -126,7 +126,7 @@
         <!--{assign var=key1 value="search_buy_times_from"}-->
         <!--{assign var=key2 value="search_buy_times_to"}-->
     <!--{if $arrErr[$key1] || $arrErr[$key2]}-->
-        <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span><br />
+        <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
     <!--{/if}-->
     <input type="text" name="<!--{$key1}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key1].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回 ～
     <input type="text" name="<!--{$key2}-->" maxlength="<!--{$arrForm[$key].length}-->" value="<!--{$arrForm[$key2].value|h}-->" size="6" class="box6" <!--{if $arrErr[$key1] || $arrErr[$key2]}--><!--{sfSetErrorStyle}--><!--{/if}--> /> 回</td>
@@ -136,7 +136,7 @@
     <td colspan="3">
     <!--{assign var=errkey1 value="search_start_year"}-->
     <!--{assign var=errkey2 value="search_end_year"}-->
-        <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><span class="attention"><!--{$arrErr[$errkey1]}--><!--{$arrErr[$errkey2]}--></span><br /><!--{/if}-->
+        <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><span class="attention"><!--{$arrErr[$errkey1]}--><!--{$arrErr[$errkey2]}--></span><!--{/if}-->
         <!--{assign var=key value="search_start_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
@@ -174,7 +174,7 @@
     <td colspan="3">
     <!--{assign var=errkey1 value="search_buy_start_year"}-->
     <!--{assign var=errkey2 value="search_buy_end_year"}-->
-        <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><span class="attention"><!--{$arrErr[$errkey1]}--><!--{$arrErr[$errkey2]}--></span><br /><!--{/if}-->
+        <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><span class="attention"><!--{$arrErr[$errkey1]}--><!--{$arrErr[$errkey2]}--></span><!--{/if}-->
         <!--{assign var=key value="search_buy_start_year"}-->
         <select name="<!--{$key}-->" <!--{if $arrErr[$errkey1] || $arrErr[$errkey2]}--><!--{sfSetErrorStyle}--><!--{/if}-->>
             <option value="" selected="selected">----</option>
