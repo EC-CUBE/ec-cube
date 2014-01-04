@@ -74,7 +74,7 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
         $this->lfInitParam($mode, $objFormParam);
 
         // ファイル管理クラス
-        $this->objUpFile = new SC_UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
+        $this->objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // ファイル情報の初期化
         $this->objUpFile = $this->lfInitFile();
         // Hiddenからのデータを引き継ぐ
