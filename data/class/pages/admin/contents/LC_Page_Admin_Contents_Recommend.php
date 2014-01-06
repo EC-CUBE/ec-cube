@@ -105,9 +105,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
                     $this->deleteProduct($arrPost, $objRecommend);
                     $arrItems = $this->getRecommendProducts($objRecommend);
                 }
-                $this->tpl_onload = "window.alert('削除しました');";
-                // 再表示
-                $this->objDisplay->reload();
+                $this->tpl_onload = "window.alert('削除しました');location.reload();";
                 break;
             case 'set_item': // 商品を選択する。
                 $this->arrErr = $this->lfCheckError($objFormParam);
