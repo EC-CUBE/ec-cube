@@ -30,7 +30,7 @@
           <arg value="--standard=tests/ruleset.xml" />
           <arg value="--extensions=php" />
           <arg value="-pv" />
-          <arg value="--exclude=data/Smarty,data/smarty_extends,data/cache,data/module,data/mtb_constants_init.php" />
+          <arg value="--ignore=${basedir}/data/Smarty,${basedir}/data/smarty_extends,${basedir}/data/cache,${basedir}/data/module,${basedir}/data/mtb_constants_init.php" />
           <arg value="--report-file=reports/checkstyle.xml" />
           <arg path="data/" />
       </exec>
