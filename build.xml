@@ -24,7 +24,7 @@
                        --configuration tests/phpunit.xml
                        tests/" />
   </target>
-  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+  <target name="checkstyle" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
       <exec executable="phpcs" failonerror="off">
           <arg line="-v 
               --report-checkstyle=${basedir}/reports/checkstyle.xml
