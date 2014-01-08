@@ -407,7 +407,7 @@ class LC_Page_Shopping extends LC_Page_Ex
         }
 
         // 複数項目チェック
-        $objErr->doFunc(array('生年月日', 'year', 'month', 'day'), array('CHECK_BIRTHDAY'));
+        $objErr->doFunc(array('生年月日', 'order_year', 'order_month', 'order_day'), array('CHECK_BIRTHDAY'));
         $objErr->doFunc(array('メールアドレス', 'メールアドレス（確認）', 'order_email', 'order_email02'), array('EQUAL_CHECK'));
 
         return $objErr->arrErr;
@@ -450,7 +450,7 @@ class LC_Page_Shopping extends LC_Page_Ex
             }
         }
         $objFormParam->setValue('order_email02', $arrOrderTemp['order_email']);
-        $objFormParam->setDBDate($arrOrderTemp['order_birth']);
+        $objFormParam->setDBDate($arrOrderTemp['order_birth'], 'order_year', 'order_month', 'order_day');
     }
 
     /**
