@@ -24,15 +24,14 @@
                        --configuration tests/phpunit.xml
                        tests/" />
   </target>
-  <target name="checkstyle" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-      <exec executable="phpcs" output="/dev/null">
-          <arg value="--report=checkstyle" />
-          <arg value="--standard=tests/ruleset.xml" />
-          <arg value="--extensions=php" />
-          <arg value="-pv" />
-          <arg value="--ignore=${basedir}/data/Smarty,${basedir}/data/smarty_extends,${basedir}/data/cache,${basedir}/data/module,${basedir}/data/mtb_constants_init.php" />
-          <arg value="--report-file=reports/checkstyle.xml" />
-          <arg path="data/" />
+  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+      <exec executable="phpcs" failonerror="off">
+          <arg line="-v 
+              --report-checkstyle=${basedir}/reports/checkstyle.xml
+              --standard=${basedir}/tests/ruleset.xml
+              --extensions=php
+              --ignore=${basedir}/data/Smarty,${basedir}/data/smarty_extends,${basedir}/data/cache,${basedir}/data/module,${basedir}/data/mtb_constants_init.php
+              ./data/" />
       </exec>
   </target>
 </project>
