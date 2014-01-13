@@ -642,6 +642,17 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         }
         $arrErrTemp = array_merge($arrErrTemp, $arrErrDate);
 
+        // 複数項目チェック
+        $year = $arrValues['order_birth_year'];
+        $month = $arrValues['order_birth_month'];
+        $day = $arrValues['order_birth_day'];
+        $objError = new SC_CheckError_Ex(array('order_birth_year' => $year,
+                                               'order_birth_month' => $month,
+                                               'order_birth_day' => $day));
+        $objError->doFunc(array('生年月日', 'order_birth_year', 'order_birth_month', 'order_birth_day'),
+                          array('CHECK_BIRTHDAY'));
+        $arrErrTemp['order_birth_year'] = $objError->arrErr['order_birth_year'];
+
         // 商品の種類数
         $max = count($arrValues['quantity']);
         $subtotal = 0;

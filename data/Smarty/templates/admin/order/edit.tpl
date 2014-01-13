@@ -277,16 +277,17 @@
                     <!--{assign var=key1 value="order_birth_year"}-->
                     <!--{assign var=key2 value="order_birth_month"}-->
                     <!--{assign var=key3 value="order_birth_day"}-->
-                    <span class="attention"><!--{$arrErr[$key1]}--></span>
-                    <span class="attention"><!--{$arrErr[$key2]}--></span>
-                    <span class="attention"><!--{$arrErr[$key3]}--></span>
-                    <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
+                    <!--{assign var=errBirth value="`$arrErr.$key1``$arrErr.$key2``$arrErr.$key3`"}-->
+	                <!--{if $errBirth}-->
+	                    <div class="attention"><!--{$errBirth}--></div>
+	                <!--{/if}-->
+                    <select name="<!--{$key1}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
                         <!--{html_options options=$arrBirthYear selected=$arrForm[$key1].value|default:""}-->
                     </select>年
-                    <select name="<!--{$key2}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->">
+                    <select name="<!--{$key2}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
                         <!--{html_options options=$arrBirthMonth selected=$arrForm[$key2].value|default:""}-->
                     </select>月
-                    <select name="<!--{$key3}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->">
+                    <select name="<!--{$key3}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
                         <!--{html_options options=$arrBirthDay selected=$arrForm[$key3].value|default:""}-->
                     </select>日
                 </td>
