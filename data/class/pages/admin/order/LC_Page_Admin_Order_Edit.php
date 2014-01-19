@@ -261,8 +261,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             case 'search_customer':
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
-                $customer_birth = $this->setCustomerTo($objFormParam->getValue('edit_customer_id'),
+                $this->setCustomerTo($objFormParam->getValue('edit_customer_id'),
                                      $objFormParam);
+                $customer_birth = $objFormParam->getValue('order_birth');
                 // 加算ポイントの計算
                 if (USE_POINT === true && $this->tpl_mode == 'add') {
                     $birth_point = 0;
@@ -945,10 +946,19 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         foreach ($arrCustomer as $key => $val) {
             $objFormParam->setValue('order_' . $key, $val);
         }
+
+        // 誕生日の処理
+        if (!SC_Utils_Ex::isBlank($objFormParam->getValue('order_birth'))) {
+            $order_birth = substr($objFormParam->getValue('order_birth'), 0, 10);
+            $arrOrderBirth = explode("-", $order_birth);
+
+            $objFormParam->setValue('order_birth_year', intval($arrOrderBirth[0]));
+            $objFormParam->setValue('order_birth_month', intval($arrOrderBirth[1]));
+            $objFormParam->setValue('order_birth_day', intval($arrOrderBirth[2]));
+        }
+
         $objFormParam->setValue('customer_id', $customer_id);
         $objFormParam->setValue('customer_point', $arrCustomer['point']);
-
-        return $arrCustomer['birth'];
     }
 
     /**
