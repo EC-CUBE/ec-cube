@@ -29,7 +29,7 @@
         <h3><!--{$tpl_subtitle|h}--></h3>
         <div id="complete_area">
             <div class="message">退会手続きが完了いたしました。<br />
-                MYページをご利用いただき誠にありがとうございました。<br />
+                <!--{$arrSiteInfo.shop_name}-->をご利用いただき誠にありがとうございました。<br />
                 またのご利用を心よりお待ち申し上げます。
             </div>
 
