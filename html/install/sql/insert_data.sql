@@ -498,7 +498,7 @@ INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 47, 0, 47);
 INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 1, '午前');
 INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 2, '午後');
 
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '元旦(1月1日)', 1, 1, 100, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '元日(1月1日)', 1, 1, 100, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '成人の日(1月第2月曜日)', 1, 14, 99, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '建国記念の日(2月11日)', 2, 11, 98, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '春分の日(3月21日)', 3, 21, 97, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
