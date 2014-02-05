@@ -56,4 +56,56 @@ class SC_Helper_TaxRule_getTaxRuleTest extends SC_Helper_TaxRule_TestBase
 
         $this->verify();
     }
+
+    /**
+     * @test
+     */
+    public function 商品idを指定した場合税率設定で設定かつ適用日時内の最新の値が返される()
+    {
+        $this->setUpTax();
+        $this->expected = array(
+            'apply_date' => '2014-01-01 00:00:00',
+            'tax_rate' => '5',
+            'product_id' => '0',
+            'product_class_id' => '0',
+            'del_flg' => '0'
+        );
+
+        $return = $this->objTaxRule->getTaxRule(1000);
+        $this->actual = array(
+            'apply_date' => $return['apply_date'],
+            'tax_rate' => $return['tax_rate'],
+            'product_id' => $return['product_id'],
+            'product_class_id' => $return['product_class_id'],
+            'del_flg' => $return['del_flg']
+        );
+
+        $this->verify();
+    }
+
+    /**
+     * @test
+     */
+    public function 商品規格idを指定した場合税率設定で設定かつ適用日時内の最新の値が返される()
+    {
+        $this->setUpTax();
+        $this->expected = array(
+            'apply_date' => '2014-02-03 00:00:00',
+            'tax_rate' => '5',
+            'product_id' => '0',
+            'product_class_id' => '0',
+            'del_flg' => '0'
+        );
+
+        $return = $this->objTaxRule->getTaxRule(1000, 2000);
+        $this->actual = array(
+            'apply_date' => $return['apply_date'],
+            'tax_rate' => $return['tax_rate'],
+            'product_id' => $return['product_id'],
+            'product_class_id' => $return['product_class_id'],
+            'del_flg' => $return['del_flg']
+        );
+
+        $this->verify();
+    }
 }
