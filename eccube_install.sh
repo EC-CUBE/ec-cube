@@ -129,6 +129,7 @@ dtb_plugin_plugin_id_seq
 dtb_plugin_hookpoint_plugin_hookpoint_id_seq
 dtb_api_config_api_config_id_seq
 dtb_api_account_api_account_id_seq
+dtb_tax_rule_tax_rule_id_seq
 "
 
 echo "create optional SQL..."
