@@ -24,6 +24,8 @@ class SC_Helper_TaxRule_setTaxRuleTest extends SC_Helper_TaxRule_TestBase
      */
     public function 新規登録が出来る()
     {
+        // postgresとmysqlでmember_idのカラムに差がある
+        $_SESSION['member_id'] = 1;
         $this->expected = array(
             'apply_date' => '2000-10-10 10:10:10',
             'calc_rule' => '1',
