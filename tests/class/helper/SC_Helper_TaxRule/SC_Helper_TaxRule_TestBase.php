@@ -53,7 +53,10 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'tax_rate' => '5',
                 'product_id' => '0',
                 'product_class_id' => '0',
-                'del_flg' => '0'
+                'del_flg' => '0',
+                'member_id' => 1,
+                'create_date' => 'CURRENT_TIMESTAMP',
+                'update_date' => 'CURRENT_TIMESTAMP',
             ),
             array(
                 'tax_rule_id' => 1001,
@@ -61,7 +64,10 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'tax_rate' => '6',
                 'product_id' => '0',
                 'product_class_id' => '0',
-                'del_flg' => '0'
+                'del_flg' => '0',
+                'member_id' => 1,
+                'create_date' => 'CURRENT_TIMESTAMP',
+                'update_date' => 'CURRENT_TIMESTAMP',
             ),
             array(
                 'tax_rule_id' => 1002,
@@ -69,7 +75,10 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'tax_rate' => '7',
                 'product_id' => '0',
                 'product_class_id' => '0',
-                'del_flg' => '0'
+                'del_flg' => '0',
+                'member_id' => 1,
+                'create_date' => 'CURRENT_TIMESTAMP',
+                'update_date' => 'CURRENT_TIMESTAMP',
             ),
             array(
                 'tax_rule_id' => 1003,
@@ -77,7 +86,10 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'tax_rate' => '8',
                 'product_id' => '1',
                 'product_class_id' => '0',
-                'del_flg' => '0'
+                'del_flg' => '0',
+                'member_id' => 1,
+                'create_date' => 'CURRENT_TIMESTAMP',
+                'update_date' => 'CURRENT_TIMESTAMP',
             ),
             array(
                 'tax_rule_id' => 1004,
@@ -85,7 +97,10 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'tax_rate' => '9',
                 'product_id' => '1',
                 'product_class_id' => '1',
-                'del_flg' => '0'
+                'del_flg' => '0',
+                'member_id' => 1,
+                'create_date' => 'CURRENT_TIMESTAMP',
+                'update_date' => 'CURRENT_TIMESTAMP',
             ),
         );
 
