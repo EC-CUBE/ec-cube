@@ -46,7 +46,6 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
      */
     protected function setUpTax()
     {
-        $_SESSION['member_id'] = 1;
         $taxs = array(
             array(
                 'tax_rule_id' => 1000,
@@ -56,8 +55,8 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'product_class_id' => '0',
                 'del_flg' => '0',
                 'member_id' => 1,
-                'create_date' => 'CURRENT_TIMESTAMP',
-                'update_date' => 'CURRENT_TIMESTAMP',
+                'create_date' => '2000-01-01 00:00:00',
+                'update_date' => '2000-01-01 00:00:00',
             ),
             array(
                 'tax_rule_id' => 1001,
@@ -67,8 +66,8 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'product_class_id' => '0',
                 'del_flg' => '0',
                 'member_id' => 1,
-                'create_date' => 'CURRENT_TIMESTAMP',
-                'update_date' => 'CURRENT_TIMESTAMP',
+                'create_date' => '2000-01-01 00:00:00',
+                'update_date' => '2000-01-01 00:00:00',
             ),
             array(
                 'tax_rule_id' => 1002,
@@ -78,8 +77,8 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'product_class_id' => '0',
                 'del_flg' => '0',
                 'member_id' => 1,
-                'create_date' => 'CURRENT_TIMESTAMP',
-                'update_date' => 'CURRENT_TIMESTAMP',
+                'create_date' => '2000-01-01 00:00:00',
+                'update_date' => '2000-01-01 00:00:00',
             ),
             array(
                 'tax_rule_id' => 1003,
@@ -89,8 +88,8 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'product_class_id' => '0',
                 'del_flg' => '0',
                 'member_id' => 1,
-                'create_date' => 'CURRENT_TIMESTAMP',
-                'update_date' => 'CURRENT_TIMESTAMP',
+                'create_date' => '2000-01-01 00:00:00',
+                'update_date' => '2000-01-01 00:00:00',
             ),
             array(
                 'tax_rule_id' => 1004,
@@ -100,23 +99,14 @@ class SC_Helper_TaxRule_TestBase extends Common_TestCase
                 'product_class_id' => '2000',
                 'del_flg' => '0',
                 'member_id' => 1,
-                'create_date' => 'CURRENT_TIMESTAMP',
-                'update_date' => 'CURRENT_TIMESTAMP',
+                'create_date' => '2000-01-01 00:00:00',
+                'update_date' => '2000-01-01 00:00:00',
             ),
         );
 
         $this->objQuery->delete('dtb_tax_rule');
         foreach ($taxs as $key => $item) {
-            //$this->objQuery->insert('dtb_tax_rule', $item);
-            $this->objTaxRule->setTaxRule(
-                1,
-                $item['tax_rate'],
-                $item['apply_date'],
-                NULL,
-                0,
-                $item['product_id'],
-                $item['product_class_id']
-            );
+            $this->objQuery->insert('dtb_tax_rule', $item);
         }
     }
 }

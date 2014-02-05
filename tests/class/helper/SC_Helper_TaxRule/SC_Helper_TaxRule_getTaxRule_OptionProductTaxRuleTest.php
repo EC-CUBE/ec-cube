@@ -12,6 +12,7 @@ class SC_Helper_TaxRule_getTaxRule_OptionProductTaxRuleTest extends SC_Helper_Ta
     {
         parent::setUp();
         $this->objTaxRule = new SC_Helper_TaxRule_Ex();
+        $this->setUpTax();
     }
 
     protected function tearDown()
@@ -36,7 +37,6 @@ class SC_Helper_TaxRule_getTaxRule_OptionProductTaxRuleTest extends SC_Helper_Ta
      */
     public function 引数がからの場合税率設定で設定かつ適用日時内の最新の値が返される()
     {
-        $this->setUpTax();
         $this->expected = array(
             'apply_date' => '2014-01-01 00:00:00',
             'tax_rate' => '5',
@@ -62,7 +62,6 @@ class SC_Helper_TaxRule_getTaxRule_OptionProductTaxRuleTest extends SC_Helper_Ta
      */
     public function 商品idを指定した場合商品に設定かつ適用日時内の最新の値が返される()
     {
-        $this->setUpTax();
         $this->expected = array(
             'apply_date' => '2014-02-02 00:00:00',
             'tax_rate' => '8',
@@ -88,7 +87,6 @@ class SC_Helper_TaxRule_getTaxRule_OptionProductTaxRuleTest extends SC_Helper_Ta
      */
     public function 商品規格idを指定した場合商品に登録かつ適用日時内の最新の値が返される()
     {
-        $this->setUpTax();
         $this->expected = array(
             'apply_date' => '2014-02-03 00:00:00',
             'tax_rate' => '9',
@@ -114,7 +112,6 @@ class SC_Helper_TaxRule_getTaxRule_OptionProductTaxRuleTest extends SC_Helper_Ta
      */
     public function 商品規格idのみを指定した場合税率設定に登録かつ適用日時内の最新の値が返される()
     {
-        $this->setUpTax();
         $this->expected = array(
             'apply_date' => '2014-01-01 00:00:00',
             'tax_rate' => '5',
