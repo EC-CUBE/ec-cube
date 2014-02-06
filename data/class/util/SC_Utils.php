@@ -2030,7 +2030,7 @@ class SC_Utils
             $target['children'] = $children[$target[$primary_key]];
             if ($level + 1 < $max_depth) {
                 foreach ($target['children'] as &$child) {
-                    SC_Utils_Ex::addChild($child, $primary_key, $level++, $max_depth, $children);
+                    SC_Utils_Ex::addChild($child, $primary_key, $level+1, $max_depth, $children);
                 }
             }
         }
@@ -2091,7 +2091,7 @@ class SC_Utils
 
         return array_reverse($arrTrail);
     }
-    
+
     /**
      * ベースとなるパスと相対パスを比較してファイルが存在する事をチェックする
      *
@@ -2099,8 +2099,8 @@ class SC_Utils
      * @param  string  $base_path
      * @return bool true = exists / false does not exist
      */
-    public  function checkFileExistsWithInBasePath($file,$base_path) 
-    {  
+    public  function checkFileExistsWithInBasePath($file,$base_path)
+    {
         $arrPath = explode('/', str_replace('\\', '/',$file));
         $arrBasePath = explode('/', str_replace('\\', '/',$base_path));
         $path_diff = implode("/",array_diff_assoc($arrPath, $arrBasePath));
