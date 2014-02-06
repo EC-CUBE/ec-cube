@@ -1123,7 +1123,7 @@ __EOF__;
                 $this->lfUpdateProductClass($arrList);
             } else {
                 // 規格なし商品（商品規格テーブルの更新）
-                $this->lfInsertDummyProductClass($arrList);
+                $arrList['product_class_id'] = $this->lfInsertDummyProductClass($arrList);
             }
         }
 
@@ -1174,6 +1174,7 @@ __EOF__;
             // UPDATEの実行
             $objQuery->update('dtb_products_class', $sqlval, 'product_class_id = ?', array($sqlval['product_class_id']));
         }
+        return $sqlval['product_class_id'];
     }
 
     /**
