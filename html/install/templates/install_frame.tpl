@@ -57,15 +57,17 @@
   margin-left: -24px;
 }
 </style>
+<!--{if $tpl_mainpage != 'complete.tpl'}-->
 <script type="text/javascript">//<![CDATA[
 $(function(){
     $('.btn-next').click(function(e) {
       e.preventDefault();
       $('form').submit();
       $('#loading').show();
-      });
     });
+});
 //]]></script>
+<!--{/if}-->
 <title>EC-CUBEインストール</title>
 </head>
 <body>
