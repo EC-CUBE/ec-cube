@@ -88,7 +88,7 @@ class SC_Helper_TaxRule_getTaxRuleTest extends SC_Helper_TaxRule_TestBase
     public function 商品規格idを指定した場合税率設定で設定かつ適用日時内の最新の値が返される()
     {
         $this->expected = array(
-            'apply_date' => '2014-02-03 00:00:00',
+            'apply_date' => '2014-01-01 00:00:00',
             'tax_rate' => '5',
             'product_id' => '0',
             'product_class_id' => '0',
