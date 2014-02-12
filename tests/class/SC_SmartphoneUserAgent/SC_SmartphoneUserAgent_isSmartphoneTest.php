@@ -23,7 +23,6 @@
 
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
-require_once("Mobile_Detect.php");
 
 /**
  * SC_SmartphoneUserAgent_isSmartphoneTest
