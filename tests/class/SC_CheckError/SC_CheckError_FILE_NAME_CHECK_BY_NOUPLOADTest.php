@@ -27,9 +27,40 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 class SC_CheckError_FILE_NAME_CHECK_BY_NOUPLOADTest extends Common_TestCase
 {
 
-    /**
-     * @expectedException PHPUnit_Framework_Error_Warning
-    */
+    public function setUp() {
+        set_error_handler(function($errno, $errstr, $errfile, $errline) {
+            throw new RuntimeException($errstr . " on line " . $errline . " in file " . $errfile);
+        });
+    }
+
+    public function tearDown() {
+        restore_error_handler();
+    }
+
+    public function validValueProvider()
+    {
+        return array(
+            array('a'),
+            array('012'),
+            array('abc012'),
+            array('a.txt'),
+            array('a-b.zip'),
+            array('a-b_c.tar.gz'),
+        );
+    }
+
+    public function invalidValueProvider()
+    {
+        return array(
+            array("line1\nline2"),
+            array("a\x00b"),
+            array('a/b'),
+            array('a b'),
+            array('日本語'),
+            array('日 本 語'),
+        );
+    }
+
     public function testFILE_NAME_CHECK_BY_NOUPLOAD_空文字列の場合_エラーをセットしない()
     {
         $arrForm = array('file' => '');
@@ -42,11 +73,11 @@ class SC_CheckError_FILE_NAME_CHECK_BY_NOUPLOADTest extends Common_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Warning
-    */
-    public function testFILE_NAME_CHECK_BY_NOUPLOAD_使用できない文字が含まれていない場合_エラーをセットしない()
+     * @dataProvider validValueProvider
+     */
+    public function testFILE_NAME_CHECK_BY_NOUPLOAD_使用できない文字が含まれていない場合_エラーをセットしない($value)
     {
-        $arrForm = array('file' => 'a_b-c.Z');
+        $arrForm = array('file' => $value);
         $objErr = new SC_CheckError_Ex($arrForm);
         $objErr->doFunc(array('label', 'file') ,array('FILE_NAME_CHECK_BY_NOUPLOAD'));
 
@@ -56,21 +87,20 @@ class SC_CheckError_FILE_NAME_CHECK_BY_NOUPLOADTest extends Common_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Warning
-    */
-    public function testFILE_NAME_CHECK_BY_NOUPLOAD_使用できない文字が含まれている場合_エラーをセットする()
+     * @dataProvider invalidValueProvider
+     */
+    public function testFILE_NAME_CHECK_BY_NOUPLOAD_使用できない文字が含まれている場合_エラーをセットする($value)
     {
-        $arrForm = array('file' => 'a/b');
+        $arrForm = array('file' => $value);
         $objErr = new SC_CheckError_Ex($arrForm);
         $objErr->doFunc(array('label', 'file') ,array('FILE_NAME_CHECK_BY_NOUPLOAD'));
 
-        $this->expected = '※ labelのファイル名に日本語やスペースは使用しないで下さい。<br />';
-        $this->actual = $objErr->arrErr['file'];
+        $this->expected = true;
+        $this->actual = isset($objErr->arrErr['file']);
         $this->verify();
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error_Warning
      * @depends testFILE_NAME_CHECK_BY_NOUPLOAD_使用できない文字が含まれている場合_エラーをセットする
      */
     public function testFILE_NAME_CHECK_BY_NOUPLOAD_他のエラーが既にセットされている場合_エラーを上書きしない()

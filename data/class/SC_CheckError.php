@@ -851,7 +851,7 @@ class SC_CheckError
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $this->arrParam[$value[1]]) || preg_match('/[\\]/' ,$this->arrParam[$value[1]])) {
+        if (strlen($this->arrParam[$value[1]]) > 0 && preg_match("/[^[:alnum:]_.\\-]/", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = '※ ' . $value[0] . 'のファイル名に日本語やスペースは使用しないで下さい。<br />';
         }
     }
