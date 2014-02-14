@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $HOME = realpath(dirname(__FILE__)) . "/../..";
 require_once($HOME . "/tests/class/replace/SC_Display_Ex.php");
 require_once($HOME . "/tests/class/replace/SC_Response_Ex.php");
