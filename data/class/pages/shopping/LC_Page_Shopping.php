@@ -125,6 +125,13 @@ class LC_Page_Shopping extends LC_Page_Ex
                 if (SC_Utils_Ex::isBlank($this->arrErr)
                     && $objCustomer->doLogin($objFormParam->getValue('login_email'),
                                              $objFormParam->getValue('login_pass'))) {
+                    // クッキー保存判定
+                    if ($objFormParam->getValue('login_memory') == '1' && strlen($objFormParam->getValue('login_email')) >= 1) {
+                        $objCookie->setCookie('login_email', $objFormParam->getValue('login_email'));
+                    } else {
+                        $objCookie->setCookie('login_email', '');
+                    }
+
                     // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
                     if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
                         if (!$objCustomer->hasValue('email_mobile')) {
@@ -139,13 +146,6 @@ class LC_Page_Shopping extends LC_Page_Ex
                                                                             $objCustomer, $objPurchase,
                                                                             $objSiteSess)));
                         SC_Response_Ex::actionExit();
-                    }
-
-                    // クッキー保存判定
-                    if ($objFormParam->getValue('login_memory') == '1' && $objFormParam->getValue('login_email') != '') {
-                        $objCookie->setCookie('login_email', $objFormParam->getValue('login_email'));
-                    } else {
-                        $objCookie->setCookie('login_email', '');
                     }
 
                     SC_Response_Ex::sendRedirect(
