@@ -315,6 +315,9 @@ class SC_Customer
                 ) {
                     return false;
                 } else {
+                    // Session Fixation対策
+                    SC_Session_Ex::regenerateSID();
+
                     $this->updateMobilePhoneId();
 
                     return true;
@@ -327,6 +330,9 @@ class SC_Customer
                 if (!$this->getCustomerDataFromEmailPass($login_pass, $login_email)) {
                     return false;
                 } else {
+                    // Session Fixation対策
+                    SC_Session_Ex::regenerateSID();
+
                     return true;
                 }
                 break;

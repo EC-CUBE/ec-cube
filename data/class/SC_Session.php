@@ -133,4 +133,14 @@ class SC_Session
         // ログに記録する
         GC_Utils_Ex::gfPrintLog('logout : user='.$this->login_id.' auth='.$this->authority.' sid='.$this->sid);
     }
+
+    /**
+     * セッションIDを新しいIDに書き換える
+     *
+     * @return bool
+     */
+    public function regenerateSID()
+    {
+        return session_regenerate_id(true);
+    }
 }
