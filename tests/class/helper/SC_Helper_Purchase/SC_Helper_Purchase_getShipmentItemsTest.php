@@ -38,6 +38,7 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
   {
     parent::setUp();
     $this->setUpShipmentItem();
+    $this->setUpOrderDetail();
   }
 
   protected function tearDown()
@@ -70,20 +71,20 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
 
   public function testGetShipmentItems_存在する受注IDと配送先IDを指定した場合_結果が取得できる()
   {
-    $order_id = '1';
+    $order_id = '1001';
     $shipping_id = '1';
-    
+
     $this->expected['count'] = 2;
-    $this->expected['first'] = array(
-      'order_id' => '1',
+    $this->expected['second'] = array(
+      'order_id' => '1001',
       'shipping_id' => '1',
       'product_class_id' => '1001',
       'product_name' => '商品名01',
       'price' => '1500',
       'productsClass' => array('product_class_id' => '1001', 'product_id' => '1001')
     );
-    $this->expected['second'] = array(
-      'order_id' => '1',
+    $this->expected['first'] = array(
+      'order_id' => '1001',
       'shipping_id' => '1',
       'product_class_id' => '1002',
       'product_name' => '商品名02',
@@ -93,6 +94,7 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
 
     $result = SC_Helper_Purchase::getShipmentItems($order_id, $shipping_id);
     $this->actual['count'] = count($result);
+
     $this->actual['first'] = Test_Utils::mapArray($result[0], array(
       'order_id', 'shipping_id', 'product_class_id', 'product_name', 'price', 'productsClass'));
     $this->actual['first']['productsClass'] = Test_Utils::mapArray($this->actual['first']['productsClass'], array('product_class_id', 'product_id'));
@@ -104,20 +106,20 @@ class SC_Helper_Purchase_getShipmentItemsTest extends SC_Helper_Purchase_TestBas
 
   public function testGetShipmentItems_詳細フラグをOFFにした場合_結果に詳細情報が含まれない()
   {
-    $order_id = '1';
+    $order_id = '1001';
     $shipping_id = '1';
-    
+
     $this->expected['count'] = 2;
-    $this->expected['first'] = array(
-      'order_id' => '1',
+    $this->expected['second'] = array(
+      'order_id' => '1001',
       'shipping_id' => '1',
       'product_class_id' => '1001',
       'product_name' => '商品名01',
       'price' => '1500',
       'productsClass' => null
     );
-    $this->expected['second'] = array(
-      'order_id' => '1',
+    $this->expected['first'] = array(
+      'order_id' => '1001',
       'shipping_id' => '1',
       'product_class_id' => '1002',
       'product_name' => '商品名02',

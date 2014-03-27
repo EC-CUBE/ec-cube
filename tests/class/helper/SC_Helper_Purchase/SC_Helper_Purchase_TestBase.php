@@ -50,7 +50,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
   protected function setUpShipping($shipping)
   {
     if (!$shipping) {
-      $shipping = $this->getSingleShipping(); 
+      $shipping = $this->getSingleShipping();
     }
 
     $_SESSION['shipping'] = $shipping;
@@ -93,7 +93,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
       array(
         'update_date' => '2000-01-01 00:00:00',
         'shipping_id' => '1',
-        'order_id' => '1',
+        'order_id' => '1001',
         'shipping_name01' => '配送情報01',
         'shipping_date' => '2012-01-12'
       ),
@@ -128,14 +128,14 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
         array(
           'shipping_id' => '1',
           'product_class_id' => '1001',
-          'order_id' => '1',
+          'order_id' => '1001',
           'product_name' => '商品名01',
           'price' => '1500'
         ),
         array(
           'shipping_id' => '1',
           'product_class_id' => '1002',
-          'order_id' => '1',
+          'order_id' => '1001',
           'product_name' => '商品名02',
           'price' => '2400'
         )
@@ -217,7 +217,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
     }
   }
 
-  /** 
+  /**
    * DBに製品情報を登録します.
    */
  protected function setUpProducts()
@@ -300,7 +300,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
      $this->objQuery->insert('dtb_payment_options', $item);
    }
  }
- 
+
  /**
   * DBに配送業者の情報を登録します.
   */
