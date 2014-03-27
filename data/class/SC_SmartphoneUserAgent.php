@@ -36,9 +36,10 @@ class SC_SmartphoneUserAgent
      */
     public function isSmartphone()
     {
-        $nu = new Net_UserAgent_Mobile();
+        $detect = new Mobile_Detect;
         // SPでかつPC表示OFFの場合
-        return $nu->isSmartphone() && !SC_SmartphoneUserAgent_Ex::getSmartphonePcFlag();
+        // TabletはPC扱い
+        return ($detect->isMobile() && !$detect->isTablet()) && !SC_SmartphoneUserAgent_Ex::getSmartphonePcFlag();
     }
 
     /**
