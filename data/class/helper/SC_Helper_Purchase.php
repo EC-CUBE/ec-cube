@@ -1035,7 +1035,8 @@ __EOS__;
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objProduct = new SC_Product_Ex();
         $arrResults = array();
-        $arrItems = $objQuery->select('*', 'dtb_shipment_item',
+        $objQuery->setOrder('order_detail_id');
+        $arrItems = $objQuery->select('dtb_shipment_item.*', 'dtb_shipment_item join dtb_order_detail USING (product_class_id, order_id)',
                                       'order_id = ? AND shipping_id = ?',
                                       array($order_id, $shipping_id));
 
@@ -1341,10 +1342,10 @@ __EOS__;
 
         return $objQuery->nextVal('dtb_order_order_id');
     }
-    
+
     /**
      * 決済処理中スタータスの受注データのキャンセル処理
-     * @param $cancel_flg 決済処理中ステータスのロールバックをするか(true:する false:しない)  
+     * @param $cancel_flg 決済処理中ステータスのロールバックをするか(true:する false:しない)
      */
     public function cancelPendingOrder($cancel_flg)
     {
@@ -1354,7 +1355,7 @@ __EOS__;
             $this->checkSessionPendingOrder();
         }
     }
-    
+
     /**
      * 決済処理中スタータスの全受注検索
      */
