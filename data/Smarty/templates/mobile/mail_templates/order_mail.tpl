@@ -27,8 +27,8 @@
 
 ■ご請求金額
 ご注文番号：<!--{$arrOrder.order_id}-->
-お支払合計：￥<!--{$arrOrder.payment_total|number_format|default:0}-->
-ご決済方法：<!--{$arrOrder.payment_method}-->
+お支払い合計：￥<!--{$arrOrder.payment_total|number_format|default:0}-->
+お支払い方法：<!--{$arrOrder.payment_method}-->
 メッセージ：<!--{$Message_tmp}-->
 
 <!--{if $arrOther.title.value}-->
