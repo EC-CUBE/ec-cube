@@ -97,7 +97,7 @@
     function quantityCopyForSingleShipping(product_index){
         var product_index = parseInt(product_index);
         var input_quantity = $('input[name^="quantity[' + product_index + ']"]').val();
-        $('input[name^="shipment_quantity[0][' + product_index + ']"]').val(input_quantity);
+        $('input[name^="shipment_quantity[<!--{$top_shipping_id}-->][' + product_index + ']"]').val(input_quantity);
     }
 
 //-->
