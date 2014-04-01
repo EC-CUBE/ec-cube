@@ -136,22 +136,8 @@ class SC_Helper_Mail
         $objQuery->setOrder('order_detail_id');
         $arrTplVar->arrOrderDetail = $objQuery->select('*', 'dtb_order_detail', $where, array($order_id));
 
-        $objProduct = new SC_Product_Ex();
-        $objQuery->setOrder('shipping_id');
-        $arrRet = $objQuery->select('*', 'dtb_shipping', 'order_id = ?', array($order_id));
-        foreach ($arrRet as $key => $value) {
-            $objQuery->setOrder('shipping_id');
-            $arrItems = $objQuery->select('*', 'dtb_shipment_item', 'order_id = ? AND shipping_id = ?',
-                                          array($order_id, $arrRet[$key]['shipping_id']));
-            foreach ($arrItems as $arrDetail) {
-                foreach ($arrDetail as $detailKey => $detailVal) {
-                    $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']][$detailKey] = $detailVal;
-                }
-
-                $arrRet[$key]['shipment_item'][$arrDetail['product_class_id']]['productsClass'] =& $objProduct->getDetailAndProductsClass($arrDetail['product_class_id']);
-            }
-        }
-        $arrTplVar->arrShipping = $arrRet;
+        // 配送情報の取得
+        $arrTplVar->arrShipping = $this->sfGetShippingData($order_id);
 
         $arrTplVar->Message_tmp = $arrOrder['message'];
 
@@ -214,6 +200,31 @@ class SC_Helper_Mail
         }
 
         return $objSendMail;
+    }
+
+    /**
+     * 配送情報の取得
+     *
+     * @param integer $order_id 受注ID
+     * @return array 配送情報を格納した配列
+     */
+    function sfGetShippingData($order_id)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $objQuery->setOrder('shipping_id');
+        $arrRet = $objQuery->select('*', 'dtb_shipping', 'order_id = ?', array($order_id));
+        foreach ($arrRet as $key => $value) {
+            $col = 's_i.*, tax_rate, tax_rule';
+            $from = 'dtb_shipment_item AS s_i JOIN dtb_order_detail AS o_d
+                USING(order_id, product_class_id)';
+            $where = 'order_id = ? AND shipping_id = ?';
+            $arrWhereVal = array($order_id, $arrRet[$key]['shipping_id']);
+            $arrItems = $objQuery->select($col, $from, $where, $arrWhereVal);
+            $arrRet[$key]['shipment_item'] = $arrItems;
+        }
+
+        return $arrRet;
     }
 
     // テンプレートを使用したメールの送信

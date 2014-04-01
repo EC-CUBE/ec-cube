@@ -100,8 +100,7 @@
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
 商品コード：<!--{$item.product_code}-->
 商品名：<!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
-<!--{assign var=shipping_product value=$item.productsClass}-->
-単価：￥<!--{$shipping_product.price02_inctax|number_format}-->
+単価：￥<!--{$item.price|sfCalcIncTax:$item.tax_rate:$item.tax_rule|number_format}-->
 数量：<!--{$item.quantity|number_format}-->
 
 <!--{/foreach}-->
