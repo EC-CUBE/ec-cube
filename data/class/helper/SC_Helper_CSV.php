@@ -207,7 +207,7 @@ class SC_Helper_CSV
      */
     public function cbOutputCSV($data)
     {
-        $line = $this->sfArrayToCSV($data);
+        $line = $this->sfArrayToCsv($data);
         $line = mb_convert_encoding($line, 'SJIS-Win');
         $line .= "\r\n";
         fwrite($this->fpOutput, $line);
@@ -232,7 +232,7 @@ class SC_Helper_CSV
 
         // ヘッダ構築
         if (is_array($arrHeader)) {
-            $header = $this->sfArrayToCSV($arrHeader);
+            $header = $this->sfArrayToCsv($arrHeader);
             $header = mb_convert_encoding($header, 'SJIS-Win');
             $header .= "\r\n";
         }
