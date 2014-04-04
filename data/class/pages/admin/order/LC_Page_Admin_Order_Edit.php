@@ -557,15 +557,28 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
         $arrShippingsTmp = $objPurchase->getShippings($order_id);
         $arrShippings = array();
-        foreach ($arrShippingsTmp as $row) {
-            // お届け日の処理
-            if (!SC_Utils_Ex::isBlank($row['shipping_date'])) {
-                $ts = strtotime($row['shipping_date']);
-                $row['shipping_date_year'] = date('Y', $ts);
-                $row['shipping_date_month'] = date('n', $ts);
-                $row['shipping_date_day'] = date('j', $ts);
+
+        if ($arrShippingsTmp) {
+            foreach ($arrShippingsTmp as $row) {
+                // お届け日の処理
+                if (!SC_Utils_Ex::isBlank($row['shipping_date'])) {
+                    $ts = strtotime($row['shipping_date']);
+                    $row['shipping_date_year'] = date('Y', $ts);
+                    $row['shipping_date_month'] = date('n', $ts);
+                    $row['shipping_date_day'] = date('j', $ts);
+                }
+                $arrShippings[$row['shipping_id']] = $row;
             }
-            $arrShippings[$row['shipping_id']] = $row;
+        } else {
+            // ダウンロード商品の場合はお届け先情報がないので受注詳細から必要なデータを挿入する
+            foreach($this->arrShippingKeys as $keys) {
+                $arrShippings[0][$keys] = '';
+            }
+            foreach($arrOrderDetail as $key => $value) {
+                $arrShippings[0]['shipment_item'][$key]['shipping_id'] = $key;
+                $arrShippings[0]['shipment_item'][$key]['product_class_id'] = $value['product_class_id'];
+                $arrShippings[0]['shipment_item'][$key]['quantity'] = $value['quantity'];
+            }
         }
         $objFormParam->setValue('shipping_quantity', count($arrShippings));
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrShippings));
