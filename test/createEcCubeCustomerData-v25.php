@@ -130,7 +130,7 @@ class CreateEcCubeCustomerData
             $sqlval['password'] = 'test';
             $sqlval['reminder'] = '1';    // 1:「母親の旧姓は？」
             $sqlval['reminder_answer'] = "てすと";
-            $sqlval['mailmaga_flg'] = (string) '1';    // 1:HTMLメールを受け取る 2:テキストメールを受け取る 3:受け取らない
+            $sqlval['mailmaga_flg'] = (string) '1';    // 1:HTMLメール 2:テキストメール 3:希望しない
 
             // 生年月日の作成
             $sqlval['birth']    = SC_Utils_Ex::sfGetTimestamp(2006, 9, 1);
