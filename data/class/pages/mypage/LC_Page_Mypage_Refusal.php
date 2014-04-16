@@ -83,6 +83,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
                 $objCustomer->EndSession();
 
                 SC_Response_Ex::sendRedirect('refusal_complete.php');
+                break;
 
             default:
                 if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {

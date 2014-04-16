@@ -353,7 +353,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
                     , $item['mb_convert_kana_option']
                     , $arrErrorCheckTypes
                     , $item['default']
-                    , ($item['rw_flg'] != CSV_COLUMN_RW_FLG_READ_ONLY) ? true : false
+                    , $item['rw_flg'] != CSV_COLUMN_RW_FLG_READ_ONLY
                     );
         }
     }
@@ -406,7 +406,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
     {
         $objProduct = new SC_Product_Ex();
         // 登録データ対象取得
-        $arrList = $objFormParam->getHashArray();
+        $arrList = $objFormParam->getDbArray();
 
         // 登録時間を生成(DBのCURRENT_TIMESTAMPだとcommitした際、全て同一の時間になってしまう)
         $arrList['update_date'] = $this->lfGetDbFormatTimeWithLine($line);
