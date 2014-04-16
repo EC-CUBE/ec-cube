@@ -188,11 +188,17 @@ class LC_Page_Products_Review extends LC_Page_Ex
     public function lfRegistRecommendData(&$objFormParam)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objCustomer = new SC_Customer_Ex();
+
         $arrRegist = $objFormParam->getDbArray();
 
         $arrRegist['create_date'] = 'CURRENT_TIMESTAMP';
         $arrRegist['update_date'] = 'CURRENT_TIMESTAMP';
         $arrRegist['creator_id'] = '0';
+
+        if ($objCustomer->isLoginSuccess(true)) {
+            $arrRegist['customer_id'] = $objCustomer->getValue('customer_id');
+        }
 
         //-- 登録実行
         $objQuery->begin();
