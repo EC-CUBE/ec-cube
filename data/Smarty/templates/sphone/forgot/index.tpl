@@ -48,7 +48,7 @@
                 メールアドレス<br />
                 <span class="attention"><!--{$arrErr.email}--></span>
                 <input type="email" name="email"
-                value="<!--{$tpl_login_email|h}-->"
+                value="<!--{$arrForm.email|default:$tpl_login_email|h}-->"
                 style="<!--{$arrErr.email|sfGetErrorColor}-->;"
                 maxlength="200" class="text boxLong data-role-none" />
             </p>
