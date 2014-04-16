@@ -376,7 +376,7 @@ class SC_Helper_Customer
     }
 
     /**
-     * 会員/顧客共通
+     * 会員・顧客・お届け先共通
      *
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param string       $prefix       キー名にprefixを付ける場合に指定
