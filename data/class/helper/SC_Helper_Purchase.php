@@ -1057,27 +1057,32 @@ __EOS__;
     }
 
     /**
-     * 受注完了メールを送信する.
+     * 注文受付メールを送信する.
      *
-     * HTTP_USER_AGENT の種別により, 携帯電話の場合は携帯用の文面,
-     * PC の場合は PC 用の文面でメールを送信する.
+     * 端末種別IDにより, 携帯電話の場合は携帯用の文面,
+     * それ以外の場合は PC 用の文面でメールを送信する.
      *
-     * @param  integer $orderId 受注ID
+     * @param integer $order_id 受注ID
      * @param  object  $objPage LC_Page インスタンス
-     * @return void
+     * @return boolean 送信に成功したか。現状では、正確には取得できない。
      */
-    public function sendOrderMail($orderId, &$objPage = NULL)
+    public static function sendOrderMail($order_id, &$objPage = NULL)
     {
-        $mailHelper = new SC_Helper_Mail_Ex();
+        $objMail = new SC_Helper_Mail_Ex();
 
         // setPageは、プラグインの処理に必要(see #1798)
         if (is_object($objPage)) {
-            $mailHelper->setPage($objPage);
+            $objMail->setPage($objPage);
         }
 
-        $template_id =
-            SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE ? 2 : 1;
-        $mailHelper->sfSendOrderMail($orderId, $template_id);
+        $arrOrder = SC_Helper_Purchase::getOrder($order_id);
+        if (empty($arrOrder)) {
+            return false; // 失敗
+        }
+        $template_id = $arrOrder['device_type_id'] == DEVICE_TYPE_MOBILE ? 2 : 1;
+        $objMail->sfSendOrderMail($order_id, $template_id);
+
+        return true; // 成功
     }
 
     /**
