@@ -36,8 +36,8 @@ class SC_SiteView extends SC_View_Ex
     {
         parent::init();
 
-        $this->_smarty->template_dir = TEMPLATE_REALDIR;
-        $this->_smarty->compile_dir = COMPILE_REALDIR;
+        $this->_smarty->template_dir = realpath(TEMPLATE_REALDIR);
+        $this->_smarty->compile_dir = realpath(COMPILE_REALDIR);
 
         $this->assignTemplatePath(DEVICE_TYPE_PC);
     }

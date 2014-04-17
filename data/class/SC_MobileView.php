@@ -32,8 +32,8 @@ class SC_MobileView extends SC_SiteView_Ex
     {
         parent::init();
 
-        $this->_smarty->template_dir = MOBILE_TEMPLATE_REALDIR;
-        $this->_smarty->compile_dir = MOBILE_COMPILE_REALDIR;
+        $this->_smarty->template_dir = realpath(MOBILE_TEMPLATE_REALDIR);
+        $this->_smarty->compile_dir = realpath(MOBILE_COMPILE_REALDIR);
         $this->assignTemplatePath(DEVICE_TYPE_MOBILE);
     }
 }
