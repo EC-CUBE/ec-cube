@@ -167,7 +167,7 @@
                                 <!--{if $plugin.plugin_site_url != '' }-->
                                     <a href="?" onclick="eccube.openWindow('<!--{$plugin.plugin_site_url|h}-->','plugin_site_url','620','760',{menubar:'no'}); return false;"><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}--></a>&nbsp;
                                 <!--{else}-->
-                                    <sapn><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}-->&nbsp;</sapn>
+                                    <span><!--{$plugin.plugin_name|default:$plugin.plugin_code|h}-->&nbsp;</span>
                                 <!--{/if}-->
                                 </span>
                             <!-- プラグインバージョン -->
