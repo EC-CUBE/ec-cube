@@ -309,6 +309,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
         $this->arrForm        = $objFormParam->getFormParamList();
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
+        $this->tpl_shipping_quantity = count($this->arrAllShipping);
         $this->top_shipping_id      = array_shift((array_keys($this->arrAllShipping)));
         $this->arrDelivTime   = SC_Helper_Delivery_Ex::getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
@@ -407,7 +408,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('課税規則', 'order_tax_rule');
 
         // 複数情報
-        $objFormParam->addParam('配送数', 'shipping_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam('配送ID', 'shipping_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 0);
         $objFormParam->addParam('お名前(姓)', 'shipping_name01', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
         $objFormParam->addParam('お名前(名)', 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'NO_SPTAB'));
@@ -580,7 +580,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                 $arrShippings[0]['shipment_item'][$key]['quantity'] = $value['quantity'];
             }
         }
-        $objFormParam->setValue('shipping_quantity', count($arrShippings));
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrShippings));
 
         /*
@@ -939,8 +938,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     public function addShipping(&$objFormParam)
     {
-        $objFormParam->setValue('shipping_quantity',
-                                $objFormParam->getValue('shipping_quantity') + 1);
         $arrShippingIds = $objFormParam->getValue('shipping_id');
         $arrShippingIds[] = max($arrShippingIds) + 1;
         $objFormParam->setValue('shipping_id', $arrShippingIds);

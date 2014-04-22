@@ -232,11 +232,11 @@
     <h2>お届け先情報</h2>
     <!--{if $arrForm.product_type_id.value[0] != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
     <!--{foreach name=shipping from=$arrAllShipping item=arrShipping key=shipping_index}-->
-        <!--{if $arrForm.shipping_quantity.value > 1}-->
+        <!--{if $tpl_shipping_quantity > 1}-->
             <h3>お届け先<!--{$smarty.foreach.shipping.iteration}--></h3>
         <!--{/if}-->
         <!--{assign var=key value="shipping_id"}-->
-        <!--{if $arrForm.shipping_quantity.value > 1}-->
+        <!--{if $tpl_shipping_quantity > 1}-->
 
             <!--{if count($arrShipping.shipment_product_class_id) > 0}-->
                 <table class="list" id="order-edit-products">
