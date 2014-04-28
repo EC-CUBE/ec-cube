@@ -51,14 +51,15 @@ class SC_Query
     public function __construct($dsn = '', $force_run = false, $new = false)
     {
         if ($dsn == '') {
-            $dsn = array('phptype'  => DB_TYPE,
-                         'username' => DB_USER,
-                         'password' => DB_PASSWORD,
-                         'protocol' => 'tcp',
-                         'hostspec' => DB_SERVER,
-                         'port'     => DB_PORT,
-                         'database' => DB_NAME
-                         );
+            $dsn = array(
+                'phptype'  => DB_TYPE,
+                'username' => DB_USER,
+                'password' => DB_PASSWORD,
+                'protocol' => 'tcp',
+                'hostspec' => DB_SERVER,
+                'port'     => DB_PORT,
+                'database' => DB_NAME,
+            );
         }
 
         // オプション
@@ -67,11 +68,10 @@ class SC_Query
             'persistent' => PEAR_DB_PERSISTENT,
             // Debugモード
             'debug' => PEAR_DB_DEBUG,
+            // バッファリング true にするとメモリが解放されない。
+            // 連続クエリ実行時に問題が生じる。
+            'result_buffering' => false,
         );
-
-        // バッファリング trueにするとメモリが解放されない。
-        // 連続クエリ実行時に問題が生じる。
-        $options['result_buffering'] = false;
 
         if ($new) {
             $this->conn = MDB2::connect($dsn, $options);
