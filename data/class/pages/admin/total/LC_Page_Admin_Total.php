@@ -554,14 +554,8 @@ __EOS__;
 
         $from = 'dtb_order_detail JOIN dtb_order ON dtb_order_detail.order_id = dtb_order.order_id';
 
-        /*
-        if ($mode != 'csv') {
-            $sql.= 'LIMIT ' . PRODUCTS_TOTAL_MAX;
-        }*/
-
-        // 要index
+        // FIXME グループを副問い合わせにして無駄な処理を減らす
         $objQuery->setGroupBy('product_id, product_name, product_code, price');
-        //$objQuery->setGroupBy('product_id');
         $objQuery->setOrder('total DESC');
         $arrTotalResults = $objQuery->select($col, $from, $where, $arrWhereVal);
 
