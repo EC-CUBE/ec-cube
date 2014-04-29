@@ -20,10 +20,13 @@ before_script:
   - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql; fi"
   - cp tests/require.php.jenkins tests/require.php
   - cat ./data/config/config.php
+  - npm install -g grunt-cli 
+  - npm install 
 
 script:
   - mkdir -p reports/coverage
   - phpunit --log-tap reports/tap.log --log-junit reports/unitreport.xml --coverage-html reports/coverage --coverage-clover reports/coverage/coverage.xml --bootstrap ./data/config/config.php --configuration tests/phpunit.xml.jenkins tests
+  - grunt
 
 after_script:
   - php vendor/bin/coveralls -v
