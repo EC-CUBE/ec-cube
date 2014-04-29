@@ -81,17 +81,11 @@ class SC_Product
             $o_col = $this->arrOrderData['col'];
             $o_table = $this->arrOrderData['table'];
             $o_order = $this->arrOrderData['order'];
-            $order = <<< __EOS__
-                    (
-                        SELECT $o_col
-                        FROM
-                            $o_table as T2
-                        WHERE T2.product_id = alldtl.product_id
-                        ORDER BY T2.$o_col $o_order
-                        LIMIT 1
-                    ) $o_order, product_id
-__EOS__;
-            $objQuery->setOrder($order);
+            $objQuery->setOrder("T2.$o_col $o_order");
+            $objQuery->setLimit(1);
+            $sub_sql = $objQuery->getSqlWithLimitOffset($o_col, "$o_table AS T2", 'T2.product_id = alldtl.product_id');
+
+            $objQuery->setOrder("($sub_sql) $o_order, product_id");
         }
         $arrReturn = $objQuery->getCol('alldtl.product_id', $table, '', $arrVal);
 

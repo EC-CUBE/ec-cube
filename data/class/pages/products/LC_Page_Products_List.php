@@ -212,9 +212,10 @@ class LC_Page_Products_List extends LC_Page_Ex
     /* 商品一覧の表示 */
     public function lfGetProductsList($searchCondition, $disp_number, $startno, &$objProduct)
     {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
         $arrOrderVal = array();
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 表示順序
         switch ($this->orderby) {
             // 販売価格が安い順
@@ -234,21 +235,14 @@ class LC_Page_Products_List extends LC_Page_Ex
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
                 }
-                $order = <<< __EOS__
-                    (
-                        SELECT
-                            T3.rank * 2147483648 + T2.rank
-                        FROM
-                            $dtb_product_categories T2
-                            JOIN dtb_category T3
-                              ON T2.category_id = T3.category_id
-                        WHERE T2.product_id = alldtl.product_id
-                        ORDER BY T3.rank DESC, T2.rank DESC
-                        LIMIT 1
-                    ) DESC
-                    ,product_id DESC
-__EOS__;
-                $objQuery->setOrder($order);
+                $col = 'T3.rank * 2147483648 + T2.rank';
+                $from = "$dtb_product_categories T2 JOIN dtb_category T3 ON T2.category_id = T3.category_id";
+                $where = 'T2.product_id = alldtl.product_id';
+                $objQuery->setOrder('T3.rank DESC, T2.rank DESC');
+                $objQuery->setLimit(1);
+                $sub_sql = $objQuery->getSqlWithLimitOffset($col, $from, $where);
+
+                $objQuery->setOrder("($sub_sql) DESC ,product_id DESC");
                 break;
         }
         // 取得範囲の指定(開始行番号、行数のセット)

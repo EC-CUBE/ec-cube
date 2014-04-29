@@ -250,48 +250,32 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        $sql = <<< __EOS__
-            SELECT
-                ord.order_id,
-                ord.customer_id,
-                ord.order_name01 AS name01,
-                ord.order_name02 AS name02,
-                ord.total,
-                ord.create_date,
-                (SELECT
-                    det.product_name
-                FROM
-                    dtb_order_detail AS det
-                WHERE
-                    ord.order_id = det.order_id
-                ORDER BY det.order_detail_id
-                LIMIT 1
-                ) AS product_name,
-                (SELECT
-                    pay.payment_method
-                FROM
-                    dtb_payment AS pay
-                WHERE
-                    ord.payment_id = pay.payment_id
-                ) AS payment_method
-            FROM (
-                SELECT
-                    order_id,
-                    customer_id,
-                    order_name01,
-                    order_name02,
-                    total,
-                    create_date,
-                    payment_id
-                FROM
-                    dtb_order AS ord
-                WHERE
-                    del_flg = 0 AND status <> ?
-                ORDER BY
-                    create_date DESC LIMIT 10 OFFSET 0
-            ) AS ord
+        $objQuery->setOrder('order_detail_id');
+        $objQuery->setLimit(1);
+        $sql_product_name = $objQuery->getSqlWithLimitOffset('product_name', 'dtb_order_detail', 'order_id = dtb_order.order_id');
+
+        $cols = <<< __EOS__
+            dtb_order.order_id,
+            dtb_order.customer_id,
+            dtb_order.order_name01 AS name01,
+            dtb_order.order_name02 AS name02,
+            dtb_order.total,
+            dtb_order.create_date,
+            ($sql_product_name) AS product_name,
+            (SELECT
+                pay.payment_method
+            FROM
+                dtb_payment AS pay
+            WHERE
+                dtb_order.payment_id = pay.payment_id
+            ) AS payment_method
 __EOS__;
-        $arrNewOrder = $objQuery->getAll($sql, ORDER_CANCEL);
+        $from = 'dtb_order';
+        $where = 'del_flg = 0 AND status <> ?';
+        $objQuery->setOrder('create_date DESC');
+        $objQuery->setLimit(10);
+        $arrNewOrder = $objQuery->select($cols, $from, $where, ORDER_CANCEL);
+
         foreach ($arrNewOrder as $key => $val) {
             $arrNewOrder[$key]['create_date'] = str_replace('-', '/', substr($val['create_date'], 0,19));
         }
