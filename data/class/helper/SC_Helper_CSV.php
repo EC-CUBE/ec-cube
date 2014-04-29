@@ -20,6 +20,9 @@ class SC_Helper_CSV
     /** 項目名 */
     public $arrSubnaviName;
 
+    /** ヘッダーを出力するか (cbOutputCSV 用) */
+    private $output_header = false;
+
     /**
      * デフォルトコンストラクタ.
      */
@@ -207,6 +210,14 @@ class SC_Helper_CSV
      */
     public function cbOutputCSV($data)
     {
+        // 1行目のみヘッダーを出力する
+        if ($this->output_header) {
+            $line = $this->sfArrayToCsv(array_keys($data));
+            $line = mb_convert_encoding($line, 'SJIS-Win');
+            $line .= "\r\n";
+            fwrite($this->fpOutput, $line);
+            $this->output_header = false;
+        }
         $line = $this->sfArrayToCsv($data);
         $line = mb_convert_encoding($line, 'SJIS-Win');
         $line .= "\r\n";
@@ -221,30 +232,42 @@ class SC_Helper_CSV
      *
      * @param  integer $sql         SQL文
      * @param  array   $arrVal      プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。
-     * @param  string  $file_head   ファイル名の頭に付ける文字列
-     * @param  array   $arrHeader   ヘッダ出力列配列
-     * @param  boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
+     * @param  string       ファイル名の頭に付ける文字列
+     * @param  array|null   ヘッダ出力列配列。null の場合、SQL 文の列名を出力する。
+     * @param  boolean      true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
      * @return mixed   $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
      */
-    public function sfDownloadCsvFromSql($sql, $arrVal = array(), $file_head = 'csv', $arrHeader = array(), $is_download = false)
+    public function sfDownloadCsvFromSql($sql, $arrVal = array(), $file_head = 'csv', $arrHeader = null, $is_download = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        // ヘッダ構築
-        if (is_array($arrHeader)) {
-            $header = $this->sfArrayToCsv($arrHeader);
-            $header = mb_convert_encoding($header, 'SJIS-Win');
-            $header .= "\r\n";
-        }
-
-        //テンポラリファイル作成
+        // テンポラリファイル作成
         // TODO: パフォーマンス向上には、ストリームを使うようにすると良い
         //  環境要件がPHPバージョン5.1以上になったら使うように変えても良いかと
         //  fopen('php://temp/maxmemory:'. (5*1024*1024), 'r+');
         $tmp_filename = tempnam(CSV_TEMP_REALDIR, $file_head . '_csv');
         $this->fpOutput = fopen($tmp_filename, 'w+');
-        fwrite($this->fpOutput, $header);
+        $this->output_header = false;
+
+        // ヘッダー構築
+        if (is_array($arrHeader)) {
+            $header = $this->sfArrayToCsv($arrHeader);
+            $header = mb_convert_encoding($header, 'SJIS-Win');
+            $header .= "\r\n";
+            fwrite($this->fpOutput, $header);
+        } elseif (is_null($arrHeader)) {
+            // ループバック内でヘッダーを出力する
+            $this->output_header = true;
+        }
+
         $objQuery->doCallbackAll(array(&$this, 'cbOutputCSV'), $sql, $arrVal);
+
+        // コールバック内でヘッダー出力する場合、0行時にヘッダーを生成できない。
+        // コールバックが呼ばれていない場合、念のため CRLF を出力しておく。
+        // XXX WEB画面前提で、アラート表示する流れのほうが親切かもしれない。
+        if ($this->output_header) {
+            fwrite($this->fpOutput, "\r\n");
+        }
 
         fclose($this->fpOutput);
 
@@ -256,7 +279,7 @@ class SC_Helper_CSV
             $res = SC_Helper_FileManager_Ex::sfReadFile($tmp_filename);
         }
 
-        //テンポラリファイル削除
+        // テンポラリファイル削除
         unlink($tmp_filename);
 
         return $res;

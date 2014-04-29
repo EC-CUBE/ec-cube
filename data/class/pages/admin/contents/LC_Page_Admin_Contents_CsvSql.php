@@ -351,26 +351,12 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
      */
     public function lfDoCsvOutput($sql_id)
     {
-        $arrData = $this->lfGetSqlList('sql_id = ?', array($sql_id));
-        $sql = 'SELECT ' . $arrData[0]['csv_sql'] . ' ';
-
-        // TODO: ヘッダ取得 SQL内にLIMIT文がある場合はLIMIT句は追加しないので重いかも
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $arrHeader = array();
-        if (!preg_match('/ LIMIT /', $sql)) {
-            $head_sql = $sql . ' LIMIT 0';
-        } else {
-            $head_sql = $sql;
-        }
-        $arrData = $objQuery->getQueryDefsFields($head_sql, array(), true);
-        if (!SC_Utils_Ex::isBlank($arrData)) {
-            foreach ($arrData as $key => $val) {
-                $arrHeader[] = $key;
-            }
-        }
         $objCSV = new SC_Helper_CSV_Ex();
-        $objCSV->sfDownloadCsvFromSql($sql, array(), 'contents', $arrHeader, true);
+
+        $arrData = $this->lfGetSqlList('sql_id = ?', array($sql_id));
+        $sql = 'SELECT ' . $arrData[0]['csv_sql'];
+
+        $objCSV->sfDownloadCsvFromSql($sql, array(), 'contents', null, true);
         SC_Response_Ex::actionExit();
     }
 
