@@ -153,9 +153,7 @@ class SC_Initial
     public function defineDirectoryIndex()
     {
         // DirectoryIndex の実ファイル名
-        if (!defined('DIR_INDEX_FILE')) {
-            define('DIR_INDEX_FILE', 'index.php');
-        }
+        SC_Initial_Ex::defineIfNotDefined('DIR_INDEX_FILE', 'index.php');
 
         $useFilenameDirIndex = is_bool(USE_FILENAME_DIR_INDEX)
             ? USE_FILENAME_DIR_INDEX
