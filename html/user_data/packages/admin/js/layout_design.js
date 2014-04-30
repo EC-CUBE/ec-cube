@@ -53,7 +53,7 @@
             //opacity: 0.8,
             //helper: 'clone',
             appendTo: 'body',
-            placeholder: 'clone',
+            //placeholder: 'clone',
             placeholder: 'placeholder',
             connectWith: els,
             start: function(e,ui) {
