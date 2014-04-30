@@ -932,12 +932,9 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         $dir = dirname($path);
         $file_name = basename($path);
 
-        // 拡張子を切り取る
-        $unpacking_name = preg_replace("/(\.tar|\.tar\.gz)$/", '', $file_name);
-
         // 指定されたフォルダ内に解凍する
-        $result = $tar->extractModify($dir. '/', $unpacking_name);
-        GC_Utils_Ex::gfPrintLog('解凍：' . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
+        $result = $tar->extractModify($dir. '/');
+        GC_Utils_Ex::gfPrintLog("解凍: $path -> $dir");
         // 解凍元のファイルを削除する.
         unlink($path);
 
