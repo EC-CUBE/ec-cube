@@ -65,8 +65,8 @@
         form.find(':input').each(function(){
             postData[$(this).attr('name')] = $(this).val();
         });
-        postData["mode"] = "add_favorite_sphone";
-        postData["favorite_product_id"] = favoriteProductId;
+        postData.mode = "add_favorite_sphone";
+        postData.favorite_product_id = favoriteProductId;
 
         $.ajax({
             type: "POST",
