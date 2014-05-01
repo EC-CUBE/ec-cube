@@ -41,6 +41,9 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         'snapshot_num',         // Postgres Plus Advanced Server 9.1
     );
 
+    /** ヘッダーを出力するか (cbOutputCSV 用) */
+    private $output_header = false;
+
     /**
      * Page を初期化する.
      *
@@ -184,11 +187,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
                     $dl_file = $this->bkup_dir.$arrData['list_name'] . $this->bkup_ext;
 
                     // ダウンロード開始
-                    Header("Content-disposition: attachment; filename=${filename}");
-                    Header("Content-type: application/octet-stream; name=${filename}");
-                    header('Content-Length: ' .filesize($dl_file));
-                    readfile ($dl_file);
-                    exit();
+                    SC_Response_Ex::headerForDownload($filename);
+                    header('Content-Length: ' . filesize($dl_file));
+                    readfile($dl_file);
+                    SC_Response_Ex::actionExit();
                     break;
                 }
 
@@ -288,24 +290,22 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 
             // dataをCSV出力
             $csv_file = $work_dir . $table . '.csv';
-            $fp = fopen($csv_file, 'w');
-            if (!$fp) {
+            $this->fpOutput = fopen($csv_file, 'w');;
+            if (!$this->fpOutput) {
                 return __LINE__;
             }
 
             // 全データを取得
             $sql = 'SELECT * FROM ' . $objQuery->conn->quoteIdentifier($table);
 
-            $this->fpOutput =& $fp;
-            $this->first_line = true;
+            $this->output_header = true;
             $success = $objQuery->doCallbackAll(array(&$this, 'cbOutputCSV'), $sql);
-            unset($this->fpOutput);
+
+            fclose($this->fpOutput);
 
             if ($success === false) {
                 return __LINE__;
             }
-
-            fclose($fp);
 
             // タイムアウトを防ぐ
             SC_Utils_Ex::sfFlush();
@@ -350,17 +350,15 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      */
     public function cbOutputCSV($data)
     {
-        $line = '';
-        if ($this->first_line) {
-            // カラム名
-            $line .= SC_Helper_CSV_Ex::sfArrayToCsv(array_keys($data)) . "\n";
-            $this->first_line = false;
+        // 1行目のみヘッダーを出力する
+        if ($this->output_header) {
+            fputcsv($this->fpOutput, array_keys($data));
+            $this->output_header = false;
         }
-        $line .= SC_Helper_CSV_Ex::sfArrayToCsv($data);
-        $line .= "\n";
+        fputcsv($this->fpOutput, $data);
         SC_Utils_Ex::extendTimeOut();
 
-        return fwrite($this->fpOutput, $line);
+        return true;
     }
 
     /**
