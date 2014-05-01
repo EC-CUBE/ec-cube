@@ -263,10 +263,10 @@ class SC_Helper_FileManager
     public function sfDownloadFile($file)
     {
         // ファイルの場合はダウンロードさせる
-        Header('Content-disposition: attachment; filename='.basename($file));
-        Header('Content-type: application/octet-stream; name='.basename($file));
-        Header('Cache-Control: ');
-        Header('Pragma: ');
+        header('Content-disposition: attachment; filename='.basename($file));
+        header('Content-type: application/octet-stream; name='.basename($file));
+        header('Cache-Control: ');
+        header('Pragma: ');
         echo ($this->sfReadFile($file));
     }
 
