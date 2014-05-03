@@ -439,7 +439,7 @@
             <!--{/section}-->
             <tr>
                 <th colspan="5" class="column right">小計</th>
-                <td class="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
+                <td class="right"><!--{$arrForm.subtotal.value|default:0|number_format}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="column right">値引き</th>
@@ -472,14 +472,14 @@
                 <th colspan="5" class="column right">合計</th>
                 <td class="right">
                     <span class="attention"><!--{$arrErr.total}--></span>
-                    <!--{$arrForm.total.value|number_format}--> 円
+                    <!--{$arrForm.total.value|default:0|number_format}--> 円
                 </td>
             </tr>
             <tr>
                 <th colspan="5" class="column right">お支払い合計</th>
                 <td class="right">
                     <span class="attention"><!--{$arrErr.payment_total}--></span>
-                    <!--{$arrForm.payment_total.value|number_format}-->
+                    <!--{$arrForm.payment_total.value|default:0|number_format}-->
                     円
                 </td>
             </tr>
@@ -507,7 +507,7 @@
                 <tr>
                     <th colspan="5" class="column right">加算ポイント</th>
                     <td class="right">
-                        <!--{$arrForm.add_point.value|number_format|default:0}-->
+                        <!--{$arrForm.add_point.value|default:0|number_format}-->
                         pt
                     </td>
                 </tr>
