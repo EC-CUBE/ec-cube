@@ -311,8 +311,8 @@ class SC_Helper_Purchase
      */
     public function getShippingTemp($has_shipment_item = false)
     {
-        // ダウンロード商品の場合setされていない
-        if (!isset($_SESSION['shipping'])) return;
+        // ダウンロード商品の場合setされていないので空の配列を返す.
+        if (!isset($_SESSION['shipping'])) return array();
         if ($has_shipment_item) {
             $arrReturn = array();
             foreach ($_SESSION['shipping'] as $key => $arrVal) {
