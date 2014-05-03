@@ -1225,18 +1225,26 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     public function checkInsertOrderProducts(&$objFormParam, $arrProductClassIds, $insert_product_class_id, $arrAddProductInfo)
     {
-        if(!$arrProductClassIds || !in_array($insert_product_class_id, $arrProductClassIds)){
+        if (!$arrProductClassIds || !in_array($insert_product_class_id, $arrProductClassIds)) {
             $arrAddProducts = array();
 
-            $arrAddProductInfo['product_name'] = ($arrAddProductInfo['product_name'])?
-                                                 $arrAddProductInfo['product_name']:$arrAddProductInfo['name'];
-            $arrAddProductInfo['price']        = ($arrAddProductInfo['price'])?
-                                                 $arrAddProductInfo['price']:$arrAddProductInfo['price02'];
-            $arrAddProductInfo['quantity']     = 1;
-            $arrAddProductInfo['tax_rate']     = ($objFormParam->getValue('order_tax_rate') == '')?
-                                                 $this->arrInfo['tax']     :$objFormParam->getValue('order_tax_rate');
-            $arrAddProductInfo['tax_rule']     = ($objFormParam->getValue('order_tax_rule') == '')?
-                                                 $this->arrInfo['tax_rule']:$objFormParam->getValue('order_tax_rule');
+            $arrAddProductInfo['product_name'] = ($arrAddProductInfo['product_name'])
+                ? $arrAddProductInfo['product_name']
+                : $arrAddProductInfo['name'];
+
+            $arrAddProductInfo['price'] = ($arrAddProductInfo['price'])
+                ? $arrAddProductInfo['price']
+                : $arrAddProductInfo['price02'];
+
+            $arrAddProductInfo['quantity'] = 1;
+            $arrAddProductInfo['tax_rate'] = ($objFormParam->getValue('order_tax_rate') == '')
+                ? $this->arrInfo['tax']
+                : $objFormParam->getValue('order_tax_rate');
+
+            $arrAddProductInfo['tax_rule'] = ($objFormParam->getValue('order_tax_rule') == '')
+                ? $this->arrInfo['tax_rule']
+                : $objFormParam->getValue('order_tax_rule');
+
             foreach ($this->arrProductKeys as $insert_key) {
                 $value = $objFormParam->getValue($insert_key);
                 $arrAddProducts[$insert_key]   = (is_array($value))? $value: array();
