@@ -1199,6 +1199,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             foreach ($arrShipmentDeletKeys as $delete_key) {
                 $arrShipments = $objFormParam->getValue($delete_key);
                 foreach ($arrShipments as $shipp_id => $arrKeyData) {
+                    if (empty($arrKeyData)) continue;
                     foreach ($arrKeyData as $relation_index => $shipment_info) {
                         if ($relation_index != $delete_no || $shipp_id != $delete_shipping_id) {
                             $arrUpdateParams[$delete_key][$shipp_id][] = $shipment_info;
