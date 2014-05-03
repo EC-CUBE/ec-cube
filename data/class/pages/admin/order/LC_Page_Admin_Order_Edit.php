@@ -120,8 +120,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         // 配送業者の取得
         $this->arrDeliv = SC_Helper_Delivery_Ex::getIDValueList();
 
-        $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-
         $this->httpCacheControl('nocache');
     }
 
@@ -1227,6 +1225,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     {
         if (!$arrProductClassIds || !in_array($insert_product_class_id, $arrProductClassIds)) {
             $arrAddProducts = array();
+            $arrTax = SC_Helper_TaxRule_Ex::getTaxRule(0, $insert_product_class_id);
 
             $arrAddProductInfo['product_name'] = ($arrAddProductInfo['product_name'])
                 ? $arrAddProductInfo['product_name']
@@ -1238,11 +1237,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
             $arrAddProductInfo['quantity'] = 1;
             $arrAddProductInfo['tax_rate'] = ($objFormParam->getValue('order_tax_rate') == '')
-                ? $this->arrInfo['tax']
+                ? $arrTax['tax_rate']
                 : $objFormParam->getValue('order_tax_rate');
 
             $arrAddProductInfo['tax_rule'] = ($objFormParam->getValue('order_tax_rule') == '')
-                ? $this->arrInfo['tax_rule']
+                ? $arrTax['tax_rule']
                 : $objFormParam->getValue('order_tax_rule');
 
             foreach ($this->arrProductKeys as $insert_key) {
