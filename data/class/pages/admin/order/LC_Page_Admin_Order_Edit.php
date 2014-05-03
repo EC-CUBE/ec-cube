@@ -261,6 +261,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             case 'search_customer':
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
+                $this->setProductsQuantity($objFormParam);
                 $this->setCustomerTo($objFormParam->getValue('edit_customer_id'),
                                      $objFormParam);
                 $customer_birth = $objFormParam->getValue('order_birth');
@@ -285,6 +286,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             case 'multiple':
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
+                $this->setProductsQuantity($objFormParam);
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 break;
 
@@ -293,6 +295,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                 $this->lfInitMultipleParam($objFormParam);
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
+                $this->setProductsQuantity($objFormParam);
                 $this->setMultipleItemTo($objFormParam);
                 break;
 
@@ -300,6 +303,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             case 'append_shipping':
                 $objFormParam->setParam($_POST);
                 $objFormParam->convParam();
+                $this->setProductsQuantity($objFormParam);
                 $this->addShipping($objFormParam);
                 break;
 
@@ -640,7 +644,6 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     {
         $objProduct = new SC_Product_Ex();
         $arrValues = $objFormParam->getHashArray();
-
         $arrErr = array();
         $arrErrTemp = $objFormParam->checkError();
         $arrErrDate = array();
