@@ -66,25 +66,6 @@ class SC_CartSession_TestBase extends Common_TestCase
             $this->objQuery->insert('dtb_products_class', $item);
         }
 
-        // 1000商品一気に投入
-        for ($i = 3000; $i < 3100; $i++) {
-            $item = array(
-                'update_date' => 'CURRENT_TIMESTAMP',
-                'product_class_id' => $i,
-                'product_id' => $i,
-                'product_type_id' => '1',
-                'product_code' => 'code'.$i,
-                'classcategory_id1' => '1001',
-                'classcategory_id2' => '1002',
-                'price01' => $i,
-                'price02' => $i,
-                'stock' => '99',
-                'creator_id' => '1',
-                'del_flg' => '0'
-            );
-            $this->objQuery->insert('dtb_products_class', $item);
-        }
-
         $this->setUpClassCategory();
         $this->setUpProducts();
     }
@@ -174,27 +155,6 @@ class SC_CartSession_TestBase extends Common_TestCase
 
         $this->objQuery->delete('dtb_products');
         foreach ($products as $key => $item) {
-            $this->objQuery->insert('dtb_products', $item);
-        }
-
-        // 100商品一気に投入
-        for ($i = 3000; $i < 4000; $i++) {
-            $item = array(
-                'update_date' => 'CURRENT_TIMESTAMP',
-                'product_id' => $i,
-                'name' => '製品名'.$i,
-                'comment1' => 'コメント'.$i,
-                'comment2' => 'コメント'.$i,
-                'comment3' => 'コメント'.$i,
-                'main_list_comment' => 'リストコメント'.$i,
-                'main_comment' => 'メインコメント'.$i,
-                'main_image' => $i.'.jpg',
-                'main_list_image' => $i.'-main.jpg',
-                'deliv_date_id' => '1',
-                'del_flg' => '0',
-                'creator_id' => '1',
-                'status' => '1'
-            );
             $this->objQuery->insert('dtb_products', $item);
         }
     }
