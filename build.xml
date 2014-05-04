@@ -32,7 +32,7 @@
           <arg value="--extensions=php" />
           <arg value="--ignore=data/Smarty,data/smarty_extends,data/cache,data/module,data/mtb_constants_init.php" />
           <arg value="--report-file=reports/checkstyle.xml" />
-          <arg path="data/" />
+          <arg path="data/class/" />
       </exec>
   </target>
 </project>
