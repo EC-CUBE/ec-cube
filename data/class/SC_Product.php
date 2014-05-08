@@ -653,6 +653,7 @@ __EOS__;
                 FROM dtb_products
                     LEFT JOIN dtb_maker
                         ON dtb_products.maker_id = dtb_maker.maker_id
+                WHERE EXISTS(SELECT * $sub_base)
             ) AS alldtl
 __EOS__;
 
