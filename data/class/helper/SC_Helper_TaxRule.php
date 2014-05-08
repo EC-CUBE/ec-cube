@@ -121,25 +121,16 @@ class SC_Helper_TaxRule
      * @param  integer $price 計算対象の金額
      * @return array   税設定情報
      */
-    public function getTaxRule ($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
+    public function getTaxRule($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
+        // 複数回呼出があるのでキャッシュ化
+        static $data_c = array();
+
         // 初期化
         $product_id = $product_id > 0 ? $product_id : 0;
         $product_class_id = $product_class_id > 0 ? $product_class_id : 0;
         $pref_id = $pref_id > 0 ? $pref_id : 0;
         $country_id = $country_id > 0 ? $country_id : 0;
-        // ログイン済み会員で国と地域指定が無い場合は、会員情報をデフォルトで利用。管理画面では利用しない
-        if (!(defined('ADMIN_FUNCTION') && ADMIN_FUNCTION == true)) {
-            $objCustomer = new SC_Customer_Ex();
-            if ($objCustomer->isLoginSuccess(true)) {
-                if ($country_id == 0) {
-                    $country_id = $objCustomer->getValue('country_id');
-                }
-                if ($pref_id == 0) {
-                    $pref_id = $objCustomer->getValue('pref');
-                }
-            }
-        }
 
         // 一覧画面の速度向上のため商品単位税率設定がOFFの時はキャッシュキーを丸めてしまう
         if (OPTION_PRODUCT_TAX_RULE == 1) {
@@ -148,10 +139,20 @@ class SC_Helper_TaxRule
             $cache_key = "$pref_id,$country_id";
         }
 
-        // 複数回呼出があるのでキャッシュ化
-        static $data_c = array();
-
         if (empty($data_c[$cache_key])) {
+            // ログイン済み会員で国と地域指定が無い場合は、会員情報をデフォルトで利用。管理画面では利用しない
+            if (!(defined('ADMIN_FUNCTION') && ADMIN_FUNCTION == true)) {
+                $objCustomer = new SC_Customer_Ex();
+                if ($objCustomer->isLoginSuccess(true)) {
+                    if ($country_id == 0) {
+                        $country_id = $objCustomer->getValue('country_id');
+                    }
+                    if ($pref_id == 0) {
+                        $pref_id = $objCustomer->getValue('pref');
+                    }
+                }
+            }
+
             $arrRet = array();
             // リクエストの配列化
             $arrRequest = array('product_id' => $product_id,
