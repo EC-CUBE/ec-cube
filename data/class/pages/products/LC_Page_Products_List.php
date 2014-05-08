@@ -235,12 +235,10 @@ class LC_Page_Products_List extends LC_Page_Ex
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
                 }
-                $col = 'T3.rank * 2147483648 + T2.rank';
+                $col = 'MAX(T3.rank * 2147483648 + T2.rank)';
                 $from = "$dtb_product_categories T2 JOIN dtb_category T3 ON T2.category_id = T3.category_id";
                 $where = 'T2.product_id = alldtl.product_id';
-                $objQuery->setOrder('T3.rank DESC, T2.rank DESC');
-                $objQuery->setLimit(1);
-                $sub_sql = $objQuery->getSqlWithLimitOffset($col, $from, $where);
+                $sub_sql = $objQuery->getSql($col, $from, $where);
 
                 $objQuery->setOrder("($sub_sql) DESC ,product_id DESC");
                 break;
