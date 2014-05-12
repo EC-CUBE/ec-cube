@@ -173,7 +173,7 @@ class SC_Helper_Mail
 
         $objMailView = null;
         if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
-            $objMailView = new SC_MobileView_Ex();
+            $objMailView = new SC_SiteView_Ex(true, DEVICE_TYPE_MOBILE);
         } else {
             $objMailView = new SC_SiteView_Ex();
         }

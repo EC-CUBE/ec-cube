@@ -115,13 +115,13 @@ class SC_Display
                     exit;
                 }
                 $this->response->setContentType('text/html');
-                $this->setView(new SC_MobileView_Ex());
+                $this->setView(new SC_SiteView_Ex(true, DEVICE_TYPE_MOBILE));
                 break;
             case DEVICE_TYPE_SMARTPHONE:
-                $this->setView(new SC_SmartphoneView_Ex());
+                $this->setView(new SC_SiteView_Ex(true, DEVICE_TYPE_SMARTPHONE));
                 break;
             case DEVICE_TYPE_PC:
-                $this->setView(new SC_SiteView_Ex());
+                $this->setView(new SC_SiteView_Ex(true, DEVICE_TYPE_PC));
                 break;
             case DEVICE_TYPE_ADMIN:
                 $this->setView(new SC_AdminView_Ex());
