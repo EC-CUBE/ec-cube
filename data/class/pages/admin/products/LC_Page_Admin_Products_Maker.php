@@ -100,9 +100,11 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
                     if ($res_maker_id !== FALSE) {
                         // 完了メッセージ
                         $this->tpl_onload = "alert('登録が完了しました。');";
+                        SC_Response_Ex::reload();
+                    } else {
+                        $this->arrErr['maker_id'] = '登録に失敗しました。';
                     }
                 }
-                SC_Response_Ex::reload();
                 break;
 
             // 編集前処理
