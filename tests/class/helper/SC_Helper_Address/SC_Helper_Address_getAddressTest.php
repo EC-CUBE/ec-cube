@@ -12,7 +12,6 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
     {
         parent::setUp();
         $this->objAddress = new SC_Helper_Address_Ex();
-        $_SESSION['customer']['customer_id'] = 1; // 会員じゃないとテストが落ちる
     }
 
     protected function tearUp()
@@ -27,6 +26,17 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
     {
         $this->setUpAddress();
         $other_deliv_id = '999';
+        $customer_id = 1;
+        $this->expected = FALSE;
+        $this->actual = $this->objAddress->getAddress($other_deliv_id, $customer_id);
+
+        $this->verify('登録配送先取得');
+    }
+    
+    public function testgetAddressTest_会員IDを設定しない場合_FALSEを返す()
+    {
+        $this->setUpAddress();
+        $other_deliv_id = '1001';
         $this->expected = FALSE;
         $this->actual = $this->objAddress->getAddress($other_deliv_id);
 
@@ -37,6 +47,7 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
     {
         $this->setUpAddress();
         $other_deliv_id = '1001';
+        $customer_id = 1;
         $this->expected = array(
                 'other_deliv_id' => '1001',
                 'customer_id' => '1',
@@ -59,7 +70,7 @@ class SC_Helper_Address_getAddressTest extends SC_Helper_Address_TestBase
                 'company_name' => null,
                 'zipcode' => null
             );
-        $this->actual = $this->objAddress->getAddress($other_deliv_id);
+        $this->actual = $this->objAddress->getAddress($other_deliv_id, $customer_id);
 
         $this->verify('登録配送先取得');
     }

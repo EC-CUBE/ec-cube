@@ -301,7 +301,13 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
 
             if ($objCustomer->isLoginSuccess(true)) {
                 if ($other_deliv_id != 0) {
-                    $otherDeliv = $objAddress->getAddress($other_deliv_id);
+                    $otherDeliv = $objAddress->getAddress($other_deliv_id, $objCustomer->getValue('customer_id'));
+
+                    if (!$otherDeliv) {
+                        SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, "入力値が不正です。<br />正しい値を入力してください。");
+                        SC_Response_Ex::actionExit();
+                    }
+
                     foreach ($otherDeliv as $key => $val) {
                         $arrValues[$other_deliv_id]['shipping_' . $key] = $val;
                     }
