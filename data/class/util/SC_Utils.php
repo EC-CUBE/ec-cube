@@ -1601,7 +1601,7 @@ class SC_Utils
      * @param  boolean $greedy '貧欲'にチェックを行う場合 true
      * @return boolean $val が空白と判断された場合 true
      */
-    public function isBlank($val, $greedy = true)
+    public static function isBlank($val, $greedy = true)
     {
         if (is_array($val)) {
             if ($greedy) {
@@ -1666,7 +1666,6 @@ class SC_Utils
      */
     public function sfGetHashString($str, $salt)
     {
-        $res = '';
         if ($salt == '') {
             $salt = AUTH_MAGIC;
         }
@@ -1867,8 +1866,8 @@ class SC_Utils
 
     /**
      * 指定されたパスの配下を再帰的にコピーします.
-     * @param  string $imageDir コピー元ディレクトリのパス
-     * @param  string $destDir  コピー先ディレクトリのパス
+     * @param string $source_path コピー元ディレクトリのパス
+     * @param string $dest_path コピー先ディレクトリのパス
      * @return void
      */
     public function copyDirectory($source_path, $dest_path)
@@ -1897,7 +1896,7 @@ class SC_Utils
      * @param  string $separator  区切り文字
      * @return string
      */
-    public function repeatStrWithSeparator($input, $multiplier, $separator = ',')
+    public static function repeatStrWithSeparator($input, $multiplier, $separator = ',')
     {
         return implode($separator, array_fill(0, $multiplier, $input));
     }

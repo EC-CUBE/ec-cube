@@ -179,7 +179,7 @@ class GC_Utils
      * @param string $path
      * @param bool   $verbose 冗長な出力を行うか
      */
-    public function gfPrintLog($msg, $path = '', $verbose = USE_VERBOSE_LOG)
+    public static function gfPrintLog($msg, $path = '', $verbose = USE_VERBOSE_LOG)
     {
         // 日付の取得
         $today = date('Y/m/d H:i:s');
@@ -362,8 +362,6 @@ class GC_Utils
      */
     public function getUrl()
     {
-        $url = '';
-
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
             $url = 'https://';
         } else {
