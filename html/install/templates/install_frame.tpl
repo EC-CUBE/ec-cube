@@ -27,12 +27,7 @@
 <meta http-equiv="content-style-type" content="text/css" />
 <link rel="stylesheet" href="css/admin_contents.css" type="text/css" media="all" />
 <link rel="stylesheet" href="../js/jquery.colorbox/colorbox.css" type="text/css" media="all" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script> 
-<![endif]-->
-<!--[if gte IE 9]><!-->
-<script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script> 
-<!--<![endif]-->
+<script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="../js/eccube.js"></script>
 <script type="text/javascript" src="../js/jquery.colorbox/jquery.colorbox-min.js"></script>
 
