@@ -255,16 +255,19 @@
                             <!--{if !$is_favorite}-->
                                 <a href="javascript:eccube.changeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); eccube.setModeAndSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" /></a>
                             <!--{else}-->
-                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" alt="お気に入り登録済" name="add_favorite_product" id="add_favorite_product" />
-                                <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.tipsy.js"></script>
+                                <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" title="お気に入りに登録済み" alt="お気に入りに登録済み" id="add_favorite_product" />
+                                <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.core.min.js"></script>
+                                <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.widget.min.js"></script>
+                                <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.position.min.js"></script>
+                                <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.tooltip.min.js"></script>
                                 <script type="text/javascript">
                                     var favoriteButton = $("#add_favorite_product");
-                                    favoriteButton.tipsy({gravity: $.fn.tipsy.autoNS, fallback: "お気に入りに登録済み", fade: true });
+                                    favoriteButton.tooltip();
 
                                     <!--{if $just_added_favorite == true}-->
-                                    favoriteButton.load(function(){$(this).tipsy("show")});
+                                    favoriteButton.load(function(){ $(this).tooltip("open") });
                                     $(function(){
-                                        var tid = setTimeout('favoriteButton.tipsy("hide")',5000);
+                                        var tid = setTimeout('favoriteButton.tooltip("close")',5000);
                                     });
                                     <!--{/if}-->
                                 </script>
