@@ -556,7 +556,7 @@ div#customervoice_area .review_bloc p {
     float: left;
 }
 
-div#customervoice_area review_bloc .review_btn {
+div#customervoice_area .review_bloc .review_btn {
     float: right;
     width: 160px;
 }
