@@ -21,8 +21,10 @@ function fnTargetSelf(){
 
 </script>
 
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/ui.core.js"></script>
-<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/ui.sortable.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.mouse.min.js"></script>
+<script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.sortable.min.js"></script>
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/layout_design.js"></script>
 
 
