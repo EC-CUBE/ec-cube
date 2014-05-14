@@ -675,3 +675,29 @@ footer.global_footer p.copyright {
 .ui-input-text {
     width: 100% !important;
 }
+/*-------------------------------------------------
+ローディング画像
+----------------------------------------------- */
+div.loading-overlay {
+    display: block;
+    opacity: .3;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    margin-left: -16px;
+    margin-top: -16px;
+    z-index: 9999999;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border: 0;
+}
+div.loading-overlay span.loading-image {
+    display: block;
+    background: url(../img/common/ajax-loader.gif) 0 0 no-repeat;
+    background-size: 32px 32px;
+    margin: 0;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+}

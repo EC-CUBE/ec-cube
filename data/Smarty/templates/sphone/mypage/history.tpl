@@ -179,7 +179,7 @@
 
 <script>
     function getMailDetail(send_id) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         $.ajax({
             type: "GET",
             url: "<!--{$smarty.const.ROOT_URLPATH}-->mypage/mail_view.php",
@@ -188,7 +188,7 @@
             dataType: "json",
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 var maxCnt = 0;
@@ -201,7 +201,7 @@
                 //ダイアログが開き終わるまで待機
                 setTimeout( function() {
                                 loadingState = 0;
-                                $.mobile.hidePageLoadingMsg();
+                                eccube.hideLoading();
                 }, 1000);
             }
         });

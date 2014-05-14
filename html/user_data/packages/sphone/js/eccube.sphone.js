@@ -58,7 +58,7 @@
      お気に入りを登録する
      ------------------------------------------*/
     eccube.addFavoriteSphone = function(favoriteProductId) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         //送信データを準備
         var postData = {};
         var form = $("#form1");
@@ -76,7 +76,7 @@
             dataType: "text",
             error: function(XMLHttpRequest, textStatus){
                 window.alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 if (result === "true") {
@@ -85,9 +85,24 @@
                 } else {
                     window.alert("お気に入りの登録に失敗しました");
                 }
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             }
         });
+    };
+
+    /**
+     * ローディング画像を表示する
+     */
+    eccube.showLoading = function() {
+        var over = '<div class="loading-overlay"><span class="loading-image"></span></div>';
+        $(over).appendTo('body');
+    };
+
+    /**
+     * ローディング画像を削除する
+     */
+    eccube.hideLoading = function() {
+        $('.loading-overlay').remove();
     };
 
     // グローバルに使用できるようにする

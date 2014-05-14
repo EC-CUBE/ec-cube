@@ -89,7 +89,7 @@
     var pageNo = 2;
 
     function getDelivery(limit) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         var i = limit;
         //送信データを準備
         var postData = {};
@@ -108,7 +108,7 @@
             dataType: "json",
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 var count = ((pageNo - 1) * i + 1); //お届け先住所の番号
@@ -146,7 +146,7 @@
                 if (parseInt(result.delivCount) <= $(".delivBox").length) {
                     $("#btn_more_delivery").hide();
                 }
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             }
         });
     }

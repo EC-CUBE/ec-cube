@@ -101,7 +101,7 @@
     var statusImagePath = "<!--{$TPL_URLPATH}-->";
 
     function getProducts(limit) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         var i = limit;
         //送信データを準備
         var postData = {};
@@ -120,7 +120,7 @@
             dataType: "json",
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 var productStatus = result.productStatus;
@@ -167,7 +167,7 @@
                 if (parseInt($("#productscount").text()) <= $(".favoriteBox").length) {
                     $("#btn_more_product").hide();
                 }
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             }
         });
     }

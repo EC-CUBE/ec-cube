@@ -97,7 +97,7 @@
     var arrCustomerOrderStatus = <!--{$json_customer_order_status}-->
 
     function getHistory(limit) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         var i = limit;
         //送信データを準備
         var postData = {};
@@ -116,7 +116,7 @@
             dataType: "json",
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 for (var j = 0; j < i; j++) {
@@ -157,7 +157,7 @@
                 if (parseInt($("#historycount").text()) <= $(".arrowBox").length) {
                     $("#btn_more_history").hide();
                 }
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             }
         });
     }

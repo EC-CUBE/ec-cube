@@ -46,7 +46,7 @@
     var newsPageNo = 2;
 
     function getNews(limit) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         var i = limit;
 
         $.ajax({
@@ -57,7 +57,7 @@
             dataType: "json",
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 if (result.error) {
@@ -92,7 +92,7 @@
 
                     newsPageNo++;
                 }
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             }
         });
     }
@@ -101,7 +101,7 @@
     function getNewsDetail(newsId) {
         if (loadingState == 0) {
             loadingState = 1;
-            $.mobile.showPageLoadingMsg();
+            eccube.showLoading();
             $.ajax({
                 url: "<!--{$smarty.const.ROOT_URLPATH}-->frontparts/bloc/news.php",
                 type: "GET",
@@ -111,13 +111,13 @@
                 dataType: "json",
                 error: function(XMLHttpRequest, textStatus, errorThrown){
                     alert(textStatus);
-                    $.mobile.hidePageLoadingMsg();
+                    eccube.hideLoading();
                     loadingState = 0;
                 },
                 success: function(result){
                     if (result.error) {
                         alert(result.error);
-                        $.mobile.hidePageLoadingMsg();
+                        eccube.hideLoading();
                         loadingState = 0;
                     }
                     else if (result != null) {
@@ -144,12 +144,12 @@
                         $.mobile.changePage('#windowcolumn', {transition: "slideup"});
                         //ダイアログが開き終わるまで待機
                         setTimeout( function() {
-                            $.mobile.hidePageLoadingMsg();
+                            eccube.hideLoading();
                             loadingState = 0;
                         }, 1000);
                     }
                     else {
-                        $.mobile.hidePageLoadingMsg();
+                        eccube.hideLoading();
                         loadingState = 0;
                         alert('取得できませんでした。');
                     }
