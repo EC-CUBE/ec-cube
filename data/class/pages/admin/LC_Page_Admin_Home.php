@@ -251,8 +251,8 @@ class LC_Page_Admin_Home extends LC_Page_Admin_Ex
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $objQuery->setOrder('order_detail_id');
-        $objQuery->setLimit(1);
-        $sql_product_name = $objQuery->getSqlWithLimitOffset('product_name', 'dtb_order_detail', 'order_id = dtb_order.order_id');
+        $sql_product_name = $objQuery->getSql('product_name', 'dtb_order_detail', 'order_id = dtb_order.order_id');
+        $sql_product_name = $objQuery->dbFactory->addLimitOffset($sql_product_name, 1);
 
         $cols = <<< __EOS__
             dtb_order.order_id,

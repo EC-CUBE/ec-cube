@@ -1215,22 +1215,4 @@ class SC_Query
             return SC_Query_Ex::$arrPoolInstance[$key_str];
         }
     }
-
-    /**
-     * 構築した SELECT 文を LIMIT OFFSET も含め取得する.
-     *
-     * @param  string SELECT 文に含めるカラム名
-     * @param  string SELECT 文に含めるテーブル名
-     * @param  string SELECT 文に含める WHERE 句
-     * @return string 構築済みの SELECT 文
-     */
-    function getSqlWithLimitOffset($cols, $from = '', $where = '')
-    {
-        $sql = $this->getSql($cols, $from, $where);
-        $offset = $this->conn->offset;
-        $limit = $this->conn->limit;
-        $this->setLimitOffset(0, 0);
-
-        return $this->dbFactory->addLimitOffset($sql, $limit, $offset);
-    }
 }
