@@ -701,3 +701,13 @@ div.loading-overlay span.loading-image {
     width: 32px;
     height: 32px;
 }
+/*-------------------------------------------------
+ダイアログ
+----------------------------------------------- */
+.dialog-modal {
+    display: none;
+    background: #FFFFFF;
+}
+.dialog-inner {
+    padding: 1.5em;
+}

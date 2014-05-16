@@ -146,21 +146,4 @@
         <!--{* ▲FooterBottom COLUMN*}-->
 
     </div>
-
-    <!-- ▼明細情報 -->
-    <div id="windowcolumn" data-role="dialog">
-        <div data-role="header" data-backbtn="true" data-theme="f">
-            <h2>新着情報</h2>
-        </div>
-
-        <div data-role="content" data-theme="d">
-            <dl class="view_detail">
-                <dt><a href="javascript:;" rel="external" target="_blank"></a></dt>
-                <dd id="newsComment"></dd>
-            </dl>
-            <p><a href="<!--{$smarty.const.HTTP_URL}-->" class="btn_more" data-rel="back">新着一覧にもどる</a></p>
-        </div>
-    </div>
-    <!-- ▲明細情報 -->
-
 </body>

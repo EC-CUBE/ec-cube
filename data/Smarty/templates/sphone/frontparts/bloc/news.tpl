@@ -121,32 +121,43 @@
                         loadingState = 0;
                     }
                     else if (result != null) {
-                        var news = result;
-                        var maxCnt = 0;
+                        var dialog = $("#news-dialog");
 
                         //件名をセット
-                        $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).text(news.news_title);
-                        if (news.news_url != null) {
-                            $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", news.news_url);
+                        $("#news-dialog-title").remove();
+                        if (result.news_url != null) {
+                            dialog.find(".dialog-content").append(
+                                $('<h3 id="news-dialog-title">').append(
+                                    $('<a>')
+                                        .attr('href', result.news_url)
+                                        .attr('rel', "external")
+                                        .attr('target', "_blank")
+                                        .text(result.news_title)
+                                )
+                            );
                         } else {
-                            $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", "#");
+                            dialog.find(".dialog-content").append(
+                                $('<h3 id="news-dialog-title">').text(result.news_title)
+                            );
                         }
 
-                        //年月をセット
-                        //var newsDateDispArray = news.cast_news_date.split("-"); //ハイフンで年月日を分解
-                        //var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
-                        //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
+                        //本文をセット
+                        $("#news-dialog-body").remove();
+                        if (result.news_comment != null) {
+                            dialog.find(".dialog-content").append(
+                                $('<div id="news-dialog-body">').html(result.news_comment.replace(/\n/g,"<br />"))
+                            );
+                        }
 
-                        //コメントをセット(iphone4の場合、innerHTMLの再描画が行われない為、タイマーで無理やり再描画させる)
-                        setTimeout( function() {
-                            news.news_comment == null ? $("#newsComment").html("") : $("#newsComment").html(news.news_comment.replace(/\n/g,"<br />"));
-                        }, 10);
-                        $.mobile.changePage('#windowcolumn', {transition: "slideup"});
-                        //ダイアログが開き終わるまで待機
-                        setTimeout( function() {
+                        //ダイアログをモーダルウィンドウで表示
+                        $.colorbox({inline: true, href: dialog, onOpen: function(){
+                            dialog.show().css('width', String($('body').width() * 0.9) + 'px');
+                        }, onComplete: function(){
                             eccube.hideLoading();
                             loadingState = 0;
-                        }, 1000);
+                        }, onClosed: function(){
+                            dialog.hide();
+                        }});
                     }
                     else {
                         eccube.hideLoading();
@@ -158,3 +169,5 @@
         }
     }
 </script>
+
+<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/dialog_modal.tpl" dialog_id="news-dialog" dialog_title="新着情報"}-->

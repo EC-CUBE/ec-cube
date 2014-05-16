@@ -191,19 +191,33 @@
                 eccube.hideLoading();
             },
             success: function(result){
-                var maxCnt = 0;
-                $("#windowcolumn h2").text('メール詳細');
-                $("#windowcolumn a[data-rel=back]").text('購入履歴詳細にもどる');
-                $($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(result[0].subject);
-                $($("#windowcolumn dl.view_detail dd").get(maxCnt)).html(result[0].mail_body.replace(/\n/g,"<br />"));
-                $("#windowcolumn dl.view_detail dd").css('font-family', 'monospace');
-                $.mobile.changePage('#windowcolumn', {transition: "slideup"});
-                //ダイアログが開き終わるまで待機
-                setTimeout( function() {
-                                loadingState = 0;
-                                eccube.hideLoading();
-                }, 1000);
+                var dialog = $("#mail-dialog");
+
+                //件名をセット
+                $("#mail-dialog-title").remove();
+                dialog.find(".dialog-content").append(
+                    $('<h3 id="mail-dialog-title">').text(result[0].subject)
+                );
+
+                //本文をセット
+                $("#mail-dialog-body").remove();
+                dialog.find(".dialog-content").append(
+                    $('<div id="mail-dialog-body">')
+                        .html(result[0].mail_body.replace(/\n/g,"<br />"))
+                        .css('font-family', 'monospace')
+                );
+
+                //ダイアログをモーダルウィンドウで表示
+                $.colorbox({inline: true, href: dialog, onOpen: function(){
+                    dialog.show().css('width', String($('body').width() * 0.9) + 'px');
+                }, onComplete: function(){
+                    eccube.hideLoading();
+                }, onClosed: function(){
+                    dialog.hide();
+                }});
             }
         });
     }
 </script>
+
+<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/dialog_modal.tpl" dialog_id="mail-dialog" dialog_title="メール詳細"}-->
