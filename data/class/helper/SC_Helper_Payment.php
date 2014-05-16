@@ -193,10 +193,11 @@ class SC_Helper_Payment
     /**
      * 支払方法IDをキー, 名前を値とする配列を取得.
      *
+     * @param  string $type 値のタイプ
      * @return array
      */
-    public static function getIDValueList()
+    public static function getIDValueList($type = 'payment_method')
     {
-        return SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        return SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', $type);
     }
 }
