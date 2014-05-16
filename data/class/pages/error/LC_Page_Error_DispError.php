@@ -41,6 +41,8 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
      */
     public function init()
     {
+        SC_Helper_HandleError_Ex::$under_error_handling = true;
+
         $this->template = LOGIN_FRAME;
         $this->tpl_mainpage = 'login_error.tpl';
         $this->tpl_title = 'ログインエラー';

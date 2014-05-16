@@ -310,7 +310,21 @@ class SC_Helper_Plugin
      */
     public static function hook($hook_point, $arrArgs = array(), $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG)
     {
+        // エラー処理中は実行しない
+        if (SC_Helper_HandleError_Ex::$under_error_handling) {
+            return;
+        }
+
         $objPlugin = SC_Helper_Plugin::getSingletonInstance($plugin_activate_flg);
+
+        // 以前、エラー処理中に (オブジェクトではない) false に対し、doAction をコールする不具合があった。(#1971, #2551)
+        // 現在、そういった状況は回避している認識だが、念のため同様の状況が発生した場合、ログを残し、実行しない。
+        if (!is_object($objPlugin)) {
+            // XXX 致命的エラーの処理中だと、この方法ではログが残らない模様。実質的に問題無いと考えている。
+            trigger_error('プラグインの処理で意図しない状況が発生しました。', E_USER_WARNING);
+            return;
+        }
+
         $objPlugin->doAction($hook_point, $arrArgs);
     }
 }

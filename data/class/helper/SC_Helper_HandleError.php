@@ -31,6 +31,9 @@
  */
 class SC_Helper_HandleError
 {
+    /** エラー処理中か */
+    static $under_error_handling = false;
+
     /**
      * 処理の読み込みを行う
      *
@@ -193,6 +196,8 @@ class SC_Helper_HandleError
      */
     public static function displaySystemError($errstr = null)
     {
+        SC_Helper_HandleError_Ex::$under_error_handling = true;
+
         ob_clean();
 
         // 絵文字変換・除去フィルターが有効か評価する。

@@ -56,6 +56,8 @@ class LC_Page_Error extends LC_Page_Ex
      */
     public function init()
     {
+        SC_Helper_HandleError_Ex::$under_error_handling = true;
+
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_title = 'エラー';
         // ディスプレイクラス生成
