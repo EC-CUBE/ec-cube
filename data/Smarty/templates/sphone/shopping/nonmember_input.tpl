@@ -239,18 +239,23 @@
 
             <dt>生年月日</dt>
             <dd>
-                <!--{assign var=errBirth value="`$arrErr.year``$arrErr.month``$arrErr.day`"}-->
+                <!--{assign var=key1 value="order_year"}-->
+                <!--{assign var=key2 value="order_month"}-->
+                <!--{assign var=key3 value="order_day"}-->
+                <!--{assign var=errBirth value="`$arrErr.$key1``$arrErr.$key2``$arrErr.$key3`"}-->
+                <!--{if $errBirth}-->
                 <div class="attention"><!--{$errBirth}--></div>
-                <select name="year" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
-                    <!--{html_options options=$arrYear selected=$arrForm.year.value|default:''}-->
+                <!--{/if}-->
+                <select name="<!--{$key1}-->" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
+                    <!--{html_options options=$arrYear selected=$arrForm[$key1].value|default:''}-->
                 </select><span class="selectdate">年</span>
 
-                <select name="month" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
-                    <!--{html_options options=$arrMonth selected=$arrForm.month.value|default:''}-->
+                <select name="<!--{$key2}-->" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
+                    <!--{html_options options=$arrMonth selected=$arrForm[$key2].value|default:''}-->
                 </select><span class="selectdate">月</span>
 
-                <select name="day" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
-                    <!--{html_options options=$arrDay selected=$arrForm.day.value|default:''}-->
+                <select name="<!--{$key3}-->" style="<!--{$errBirth|sfGetErrorColor}-->" class="boxShort data-role-none">
+                    <!--{html_options options=$arrDay selected=$arrForm[$key3].value|default:''}-->
                 </select><span class="selectdate">日</span>
             </dd>
 
