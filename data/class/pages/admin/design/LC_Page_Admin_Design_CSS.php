@@ -75,11 +75,11 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();
         $this->arrErr = $objFormParam->checkError();
-        $is_error = (!SC_Utils_Ex::isBlank($this->arrErr));
+        $is_error = !SC_Utils_Ex::isBlank($this->arrErr);
 
         // CSSファイル名を取得
         $this->css_name = $objFormParam->getValue('css_name');
-        $this->old_css_name = $objFormParam->getValue('old_css_name', $this->css_name);
+        $this->old_css_name = $objFormParam->getValue('old_css_name');
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
         $css_dir = $objLayout->getTemplatePath($this->device_type_id, true) . 'css/';
@@ -89,7 +89,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
             // データ更新処理
             case 'confirm':
                 if (!$is_error) {
-                    $this->arrErr = $this->lfCheckError($objFormParam, $this->arrErr);
+                    $this->arrErr = array_merge($this->arrErr, $this->lfCheckError($objFormParam, $this->arrErr));
                     if (SC_Utils_Ex::isBlank($this->arrErr)) {
                         if ($this->doRegister($css_dir, $this->css_name, $this->old_css_name, $css_path,
                                               $objFormParam->getValue('css_data'))) {
@@ -118,7 +118,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
                 break;
         }
 
-        if (!$is_error && $this->checkPath($this->css_name)) {
+        if (SC_Utils_Ex::isBlank($this->arrErr) && $this->checkPath($this->css_name)) {
             // CSSファイルの読み込み
             if (!SC_Utils_Ex::isBlank($this->css_name)) {
                 $objFormParam->setValue('css_data', file_get_contents($css_path));
@@ -233,12 +233,13 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
         $objErr->doFunc(array('CSSファイル名', 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
 
         $css_name = $objFormParam->getValue('css_name');
-        $old_css_name = $objFormParam->getValue('old_css_name', $css_name);
+        $old_css_name = $objFormParam->getValue('old_css_name');
+        $device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
         $is_error = false;
         // 重複チェック
-        if (!SC_Utils_Ex::isBlank(($objErr->arrErr['css_name']))) {
-            $arrCSSList = $this->getCSSList($this->getCSSDir());
+        if (SC_Utils_Ex::isBlank($objErr->arrErr['css_name'])) {
+            $arrCSSList = $this->getCSSList($this->getCSSDir($device_type_id));
             foreach ($arrCSSList as $val) {
                 if ($val['css_name'] == $css_name) {
                     if (SC_Utils_Ex::isBlank($old_css_name)
