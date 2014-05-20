@@ -188,14 +188,11 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
         $arrForm = $objFormParam->getHashArray();
 
         // 日付の妥当性チェック
-        $year = date('Y');
-        $valid_date = false;
-        // 閏年への対応
-        for ($i = 0; $i < 4; $i++) {
-            if (checkdate($arrForm['month'], $arrForm['day'], $year + $i)) {
-                $valid_date = true;
-                continue;
-            }
+        // 閏年への対応.
+        if ($arrForm['month'] == 2 && $arrForm['day'] == 29) {
+            $valid_date = true;
+        } else {
+            $valid_date = checkdate($arrForm['month'], $arrForm['day'], date('Y'));
         }
         if (!$valid_date) {
             $arrErr['date'] = '※ 妥当な日付ではありません。<br />';
