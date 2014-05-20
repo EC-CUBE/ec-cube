@@ -66,7 +66,6 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      */
     public function action()
     {
-        $objDb      = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $objCategory = new SC_Helper_Category_Ex();
 
@@ -86,7 +85,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
                 break;
             // カテゴリ削除
             case 'delete':
-                $this->doDelete($objFormParam, $objDb);
+                $this->doDelete($objFormParam);
                 break;
             // 表示順を上へ
             case 'up':
@@ -193,34 +192,28 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * カテゴリの削除は、物理削除で行う.
      *
      * @param  SC_FormParam $objFormParam
-     * @param  SC_Helper_Db $objDb
      * @return void
      */
-    public function doDelete(&$objFormParam, &$objDb)
+    public function doDelete(&$objFormParam)
     {
+        $objCategory = new SC_Helper_Category_Ex(false);
         $category_id = $objFormParam->getValue('category_id');
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 子カテゴリのチェック
-        $where = 'parent_category_id = ? AND del_flg = 0';
-        $exists = $objQuery->exists('dtb_category', $where, array($category_id));
-        if ($exists) {
+        $arrBranch = $objCategory->getTreeBranch($category_id);
+        if (count($arrBranch) > 0) {
             $this->arrErr['category_name'] = '※ 子カテゴリが存在するため削除できません。<br/>';
-
             return;
         }
         // 登録商品のチェック
-        $table = 'dtb_product_categories AS T1 LEFT JOIN dtb_products AS T2 ON T1.product_id = T2.product_id';
-        $where = 'T1.category_id = ? AND T2.del_flg = 0';
-        $exists = $objQuery->exists($table, $where, array($category_id));
-        if ($exists) {
+        $arrCategory = $objCategory->get($category_id);
+        if ($arrCategory['product_count'] > 0) {
             $this->arrErr['category_name'] = '※ カテゴリ内に商品が存在するため削除できません。<br/>';
-
             return;
         }
 
         // ランク付きレコードの削除(※処理負荷を考慮してレコードごと削除する。)
-        $objDb->sfDeleteRankRecord('dtb_category', 'category_id', $category_id, '', true);
+        $objCategory->delete($category_id);
     }
 
     /**

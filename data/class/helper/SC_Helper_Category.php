@@ -131,4 +131,40 @@ class SC_Helper_Category
 
         return $arrTrailID;
     }
+
+    /**
+     * 指定カテゴリーの子孫カテゴリーを取得
+     *
+     * @param int $category_id カテゴリーID
+     * @return array
+     */
+    public function getTreeBranch($category_id) {
+        $arrTree = $this->getTree();
+        $arrTrail = $this->getTreeTrail($category_id, true);
+
+        // ルートから指定カテゴリーまでたどる.
+        foreach ($arrTrail as $parent_id) {
+            $nextTree = array();
+            foreach ($arrTree as $branch) {
+                if ($branch['category_id'] == $parent_id && isset($branch['children'])) {
+                    $nextTree = $branch['children'];
+                }
+            }
+            $arrTree = $nextTree;
+        }
+
+        return $arrTree;
+    }
+
+    /**
+     * カテゴリーの削除
+     *
+     * @param int $category_id カテゴリーID
+     * @return void
+     */
+    public function delete($category_id) {
+        $objDb = new SC_Helper_DB_Ex();
+        // ランク付きレコードの削除(※処理負荷を考慮してレコードごと削除する。)
+        $objDb->sfDeleteRankRecord('dtb_category', 'category_id', $category_id, '', true);
+    }
 }
