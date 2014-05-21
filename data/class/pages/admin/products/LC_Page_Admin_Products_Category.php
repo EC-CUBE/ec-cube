@@ -171,11 +171,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         }
         // 親カテゴリIDの保持
         $this->arrForm['parent_category_id'] = $parent_category_id;
-        // カテゴリ一覧を取得
-        $this->arrList = $this->findCategoiesByParentCategoryId($parent_category_id);
         // カテゴリツリーを取得
-        $this->arrTree = $objCategory->getTree();
+        $this->arrTree = $objCategory->getTree(true);
         $this->arrParentID = $objCategory->getTreeTrail($parent_category_id);
+        // カテゴリ一覧を取得
+        $this->arrList = $objCategory->getTreeBranch($parent_category_id);
         // ぱんくずの生成
         $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
@@ -373,29 +373,6 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $objFormParam->addParam('親カテゴリID', 'parent_category_id', null, null, array());
         $objFormParam->addParam('カテゴリID', 'category_id', null, null, array());
         $objFormParam->addParam('カテゴリ名', 'category_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-    }
-
-    /**
-     * 親カテゴリIDでカテゴリを検索する.
-     *
-     * - 表示順の降順でソートする
-     * - 有効なカテゴリを返す(del_flag = 0)
-     *
-     * @param  SC_Query $objQuery
-     * @param  int      $parent_category_id 親カテゴリID
-     * @return array    カテゴリの配列
-     */
-    public function findCategoiesByParentCategoryId($parent_category_id)
-    {
-        if (!$parent_category_id) {
-            $parent_category_id = 0;
-        }
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col   = 'category_id, category_name, level, rank';
-        $where = 'del_flg = 0 AND parent_category_id = ?';
-        $objQuery->setOption('ORDER BY rank DESC');
-
-        return $objQuery->select($col, 'dtb_category', $where, array($parent_category_id));
     }
 
     /**

@@ -66,12 +66,18 @@ class SC_Helper_Category
     /**
      * カテゴリー一覧の取得.
      *
-     * @param  boolean $cid_to_key 配列のキーをカテゴリーIDにする場合はtrue
+     * @param bool $cid_to_key 配列のキーをカテゴリーIDにする場合はtrue
+     * @param bool $reset スタティック変数をリセットする場合はtrue
      * @return array   カテゴリー一覧の配列
      */
-    public function getList($cid_to_key = FALSE)
+    public function getList($cid_to_key = FALSE, $reset = FALSE)
     {
         static $arrCategory = array(), $cidIsKey = array();
+
+        if ($reset) {
+            $arrCategory = array();
+            $cidIsKey = array();
+        }
 
         if (!isset($arrCategory[$this->count_check])) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -104,13 +110,19 @@ class SC_Helper_Category
     /**
      * カテゴリーツリーの取得.
      *
+     * @param bool $reset スタティック変数をリセットする場合はtrue
      * @return array
      */
-    public function getTree()
+    public function getTree($reset = false)
     {
         static $arrTree = array();
+
+        if ($reset) {
+            $arrTree = array();
+        }
+
         if (!isset($arrTree[$this->count_check])) {
-            $arrList = $this->getList();
+            $arrList = $this->getList(false, $reset);
             $arrTree[$this->count_check] = SC_Utils_Ex::buildTree('category_id', 'parent_category_id', LEVEL_MAX, $arrList);
         }
 
