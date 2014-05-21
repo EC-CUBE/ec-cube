@@ -104,7 +104,7 @@ class SC_Helper_Category
     /**
      * カテゴリーツリーの取得.
      *
-     * @return type
+     * @return array
      */
     public function getTree()
     {
@@ -138,7 +138,8 @@ class SC_Helper_Category
      * @param int $category_id カテゴリーID
      * @return array
      */
-    public function getTreeBranch($category_id) {
+    public function getTreeBranch($category_id)
+    {
         $arrTree = $this->getTree();
         $arrTrail = $this->getTreeTrail($category_id, true);
 
@@ -162,9 +163,159 @@ class SC_Helper_Category
      * @param int $category_id カテゴリーID
      * @return void
      */
-    public function delete($category_id) {
+    public function delete($category_id)
+    {
         $objDb = new SC_Helper_DB_Ex();
         // ランク付きレコードの削除(※処理負荷を考慮してレコードごと削除する。)
         $objDb->sfDeleteRankRecord('dtb_category', 'category_id', $category_id, '', true);
+    }
+
+    /**
+     * カテゴリーの表示順をひとつ上げる.
+     *
+     * @param int $category_id カテゴリーID
+     * @return void
+     */
+    public function rankUp($category_id)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+        $up_id = $this->getNeighborRankId('upper', $category_id);
+        if ($up_id != '') {
+            // 上のグループのrankから減算する数
+            $my_count = $this->countAllBranches($category_id);
+            // 自分のグループのrankに加算する数
+            $up_count = $this->countAllBranches($up_id);
+            if ($my_count > 0 && $up_count > 0) {
+                // 自分のグループに加算
+                $this->raiseBranchRank($objQuery, $category_id, $up_count);
+                // 上のグループから減算
+                $this->reduceBranchRank($objQuery, $up_id, $my_count);
+            }
+        }
+        $objQuery->commit();
+    }
+
+    /**
+     * カテゴリーの表示順をひとつ下げる.
+     *
+     * @param int $category_id カテゴリーID
+     * @return void
+     */
+    public function rankDown($category_id)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+        $down_id = $this->getNeighborRankId('lower', $category_id);
+        if ($down_id != '') {
+            // 下のグループのrankに加算する数
+            $my_count = $this->countAllBranches($category_id);
+            // 自分のグループのrankから減算する数
+            $down_count = $this->countAllBranches($down_id);
+            if ($my_count > 0 && $down_count > 0) {
+                // 自分のグループから減算
+                $this->raiseBranchRank($objQuery, $down_id, $my_count);
+                // 下のグループに加算
+                $this->reduceBranchRank($objQuery, $category_id, $down_count);
+            }
+        }
+        $objQuery->commit();
+    }
+
+    /**
+     * 並びがとなりのIDを取得する。
+     *
+     * @param string $side 上 upper か下 down か
+     * @param int $category_id カテゴリーID
+     * @return int
+     */
+    private function getNeighborRankId($side, $category_id)
+    {
+        $arrCategory = $this->get($category_id);
+        $parent_id = $arrCategory['parent_category_id'];
+
+        if ($parent_id == 0) {
+            $arrBrother = $this->getTree();
+        } else {
+            $arrBrother = $this->getTreeBranch($parent_id);
+        }
+
+        // 全ての子を取得する。
+        $max = count($arrBrother);
+        $upper_id = '';
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($arrBrother[$cnt]['category_id'] == $category_id) {
+                if ($side == 'upper') {
+                    $index = $cnt - 1;
+                } else {
+                    $index = $cnt + 1;
+                }
+                $upper_id = $arrBrother[$index]['category_id'];
+                break;
+            }
+        }
+
+        return $upper_id;
+    }
+
+    /**
+     * 指定カテゴリーを含めた子孫カテゴリーの数を取得する.
+     *
+     * @param int $category_id カテゴリーID
+     * @return int
+     */
+    private function countAllBranches($category_id)
+    {
+        $objDb = new SC_Helper_DB_Ex();
+        // 子ID一覧を取得
+        $arrRet = $objDb->sfGetChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
+
+        return count($arrRet);
+    }
+
+    /**
+     * 子孫カテゴリーの表示順を一括して上げる.
+     *
+     * @param SC_Query $objQuery
+     * @param int $category_id
+     * @param int $count
+     * @return array|bool
+     */
+    private function raiseBranchRank(SC_Query $objQuery, $category_id, $count)
+    {
+        $table = 'dtb_category';
+        $objDb = new SC_Helper_DB_Ex();
+        // 子ID一覧を取得
+        $arrRet = $objDb->sfGetChildrenArray($table, 'parent_category_id', 'category_id', $category_id);
+        $line = SC_Utils_Ex::sfGetCommaList($arrRet);
+        $where = "category_id IN ($line) AND del_flg = 0";
+        $arrRawVal = array(
+            'rank' => "(rank + $count)",
+        );
+
+        return $objQuery->update($table, array(), $where, array(), $arrRawVal);
+    }
+
+    /**
+     * 子孫カテゴリーの表示順を一括して下げる.
+     *
+     * @param SC_Query $objQuery
+     * @param int $category_id
+     * @param int $count
+     * @return array|bool
+     */
+    private function reduceBranchRank(SC_Query $objQuery, $category_id, $count)
+    {
+        $table = 'dtb_category';
+        $objDb = new SC_Helper_DB_Ex();
+        // 子ID一覧を取得
+        $arrRet = $objDb->sfGetChildrenArray($table, 'parent_category_id', 'category_id', $category_id);
+        $line = SC_Utils_Ex::sfGetCommaList($arrRet);
+        $where = "category_id IN ($line) AND del_flg = 0";
+        $arrRawVal = array(
+            'rank' => "(rank - $count)",
+        );
+
+        return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
 }

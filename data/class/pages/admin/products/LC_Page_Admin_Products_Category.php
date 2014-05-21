@@ -344,24 +344,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      */
     public function doUp(&$objFormParam)
     {
+        $objCategory = new SC_Helper_Category_Ex(false);
         $category_id = $objFormParam->getValue('category_id');
-
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
-        $up_id = $this->lfGetUpRankID($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
-        if ($up_id != '') {
-            // 上のグループのrankから減算する数
-            $my_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
-                // 自分のグループのrankに加算する数
-                $up_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $up_id);
-                if ($my_count > 0 && $up_count > 0) {
-                    // 自分のグループに加算
-                    $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id, $up_count);
-                    // 上のグループから減算
-                    $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $up_id, $my_count);
-                }
-        }
-        $objQuery->commit();
+        $objCategory->rankUp($category_id);
     }
 
     /**
@@ -372,24 +357,9 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      */
     public function doDown(&$objFormParam)
     {
+        $objCategory = new SC_Helper_Category_Ex(false);
         $category_id = $objFormParam->getValue('category_id');
-
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->begin();
-        $down_id = $this->lfGetDownRankID($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
-        if ($down_id != '') {
-            // 下のグループのrankに加算する数
-            $my_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
-            // 自分のグループのrankから減算する数
-            $down_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $down_id);
-            if ($my_count > 0 && $down_count > 0) {
-                // 自分のグループから減算
-                $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $down_id, $my_count);
-                // 下のグループに加算
-                $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id, $down_count);
-            }
-        }
-        $objQuery->commit();
+        $objCategory->rankDown($category_id);
     }
 
     /**
@@ -496,61 +466,15 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
     /**
      * カテゴリの階層が上限を超えているかを判定する
      *
-     * @param integer 親カテゴリID
-     * @param 超えている場合 true
+     * @param int $parent_category_id 親カテゴリID
+     * @return bool 超えている場合 true
      */
     public function isOverLevel($parent_category_id)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $level = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($parent_category_id));
+        $objCategory = new SC_Helper_Category_Ex();
+        $arrCategory = $objCategory->get($parent_category_id);
 
-        return $level >= LEVEL_MAX;
-    }
-
-    // 並びが1つ下のIDを取得する。
-    public function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id)
-    {
-        // 親IDを取得する。
-        $col = "$pid_name";
-        $where = "$id_name = ?";
-        $pid = $objQuery->get($col, $table, $where, $id);
-        // 全ての子を取得する。
-        $col = "$id_name";
-        $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
-        $arrRet = $objQuery->select($col, $table, $where, array($pid));
-        $max = count($arrRet);
-        $down_id = '';
-        for ($cnt = 0; $cnt < $max; $cnt++) {
-            if ($arrRet[$cnt][$id_name] == $id) {
-                $down_id = $arrRet[($cnt + 1)][$id_name];
-                break;
-            }
-        }
-
-        return $down_id;
-    }
-
-    // 並びが1つ上のIDを取得する。
-    public function lfGetUpRankID($objQuery, $table, $pid_name, $id_name, $id)
-    {
-        // 親IDを取得する。
-        $col = "$pid_name";
-        $where = "$id_name = ?";
-        $pid = $objQuery->get($col, $table, $where, $id);
-        // 全ての子を取得する。
-        $col = "$id_name";
-        $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
-        $arrRet = $objQuery->select($col, $table, $where, array($pid));
-        $max = count($arrRet);
-        $up_id = '';
-        for ($cnt = 0; $cnt < $max; $cnt++) {
-            if ($arrRet[$cnt][$id_name] == $id) {
-                $up_id = $arrRet[($cnt - 1)][$id_name];
-                break;
-            }
-        }
-
-        return $up_id;
+        return $arrCategory['level'] >= LEVEL_MAX;
     }
 
     public function lfCountChilds($objQuery, $table, $pid_name, $id_name, $id)

@@ -548,7 +548,7 @@ class SC_Utils
     }
 
     // 配列の値をカンマ区切りで返す。
-    public function sfGetCommaList($array, $space=true, $arrPop = array())
+    public static function sfGetCommaList($array, $space=true, $arrPop = array())
     {
         if (count($array) > 0) {
             $line = '';
