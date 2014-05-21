@@ -155,18 +155,80 @@ class SC_Helper_Category
         $arrTree = $this->getTree();
         $arrTrail = $this->getTreeTrail($category_id, true);
 
-        // ルートから指定カテゴリーまでたどる.
-        foreach ($arrTrail as $parent_id) {
-            $nextTree = array();
-            foreach ($arrTree as $branch) {
-                if ($branch['category_id'] == $parent_id && isset($branch['children'])) {
-                    $nextTree = $branch['children'];
+        // 指定カテゴリーがルートの場合は、ツリーをそのまま返す.
+        if ($category_id == 0) {
+            return $arrTree;
+        } else {
+            // ルートから指定カテゴリーまでたどる.
+            foreach ($arrTrail as $parent_id) {
+                $nextTree = array();
+                foreach ($arrTree as $branch) {
+                    if ($branch['category_id'] == $parent_id && isset($branch['children'])) {
+                        $nextTree = $branch['children'];
+                    }
                 }
+                $arrTree = $nextTree;
             }
-            $arrTree = $nextTree;
+            return $arrTree;
+        }
+    }
+
+    /**
+     * カテゴリーの登録.
+     *
+     * @param array $data
+     * @return void
+     */
+    public function save($data)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $category_id = $data['category_id'];
+        $query = array('update_date' => 'CURRENT_TIMESTAMP');
+        $objQuery->begin();
+
+        if ($category_id == '') {
+            // 新規登録
+            $parent_category_id = $data['parent_category_id'];
+            $rank = null;
+            if ($parent_category_id == 0) {
+                // ROOT階層で最大のランクを取得する。
+                $where = 'parent_category_id = ?';
+                $rank = $objQuery->max('rank', 'dtb_category', $where, array($parent_category_id)) + 1;
+            } else {
+                // 親のランクを自分のランクとする。
+                $where = 'category_id = ?';
+                $rank = $objQuery->get('rank', 'dtb_category', $where, array($parent_category_id));
+                // 追加レコードのランク以上のレコードを一つあげる。
+                $where = 'rank >= ?';
+                $arrRawSql = array(
+                    'rank' => '(rank + 1)',
+                );
+                $objQuery->update('dtb_category', array(), $where, array($rank), $arrRawSql);
+            }
+
+            $where = 'category_id = ?';
+            // 自分のレベルを取得する(親のレベル + 1)
+            $level = $objQuery->get('level', 'dtb_category', $where, array($parent_category_id)) + 1;
+
+            $query['category_id'] = $objQuery->nextVal('dtb_category_category_id');
+            $query['category_name'] = $data['category_name'];
+            $query['parent_category_id'] = $data['parent_category_id'];
+            $query['create_date'] = 'CURRENT_TIMESTAMP';
+            $query['creator_id']  = $_SESSION['member_id'];
+            $query['rank']        = $rank;
+            $query['level']       = $level;
+
+            $objQuery->insert('dtb_category', $query);
+        } else {
+            // 既存編集
+            $query['parent_category_id'] = $data['parent_category_id'];
+            $query['category_name'] = $data['category_name'];
+            $where = 'category_id = ?';
+            $objQuery->update('dtb_category', $query, $where, array($category_id));
         }
 
-        return $arrTree;
+        $objQuery->commit();
     }
 
     /**
