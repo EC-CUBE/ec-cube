@@ -962,7 +962,7 @@ class SC_Utils
      * @param  string $out_dir  変換後のファイルを出力するディレクトリを表す文字列
      * @return string 変換後のテキストファイルのパス
      */
-    public function sfEncodeFile($filepath, $enc_type, $out_dir)
+    public static function sfEncodeFile($filepath, $enc_type, $out_dir)
     {
         $ifp = fopen($filepath, 'r');
 
@@ -1348,7 +1348,7 @@ class SC_Utils
      * @param  array $arrKey
      * @return array
      */
-    public function sfArrayIntersectKeys($arrSrc, $arrKey)
+    public static function sfArrayIntersectKeys($arrSrc, $arrKey)
     {
         $arrRet = array();
         foreach ($arrKey as $key) {
@@ -1851,7 +1851,7 @@ class SC_Utils
         return true;
     }
 
-   /**
+    /**
      * コンパイルファイルを削除します.
      * @return void
      */
@@ -1976,7 +1976,7 @@ class SC_Utils
      * @param  int    $data
      * @return string
      */
-    public function getUnitDataSize($data)
+    public static function getUnitDataSize($data)
     {
         if ($data < 1000) {
             $return = $data . "KB";
@@ -2104,5 +2104,17 @@ class SC_Utils
         $arrBasePath = explode('/', str_replace('\\', '/',$base_path));
         $path_diff = implode("/",array_diff_assoc($arrPath, $arrBasePath));
         return file_exists(realpath(str_replace('..','',$base_path . $path_diff))) ? true : false;
+    }
+
+    /**
+     * マイクロ秒付きの時間文字列を取得する.
+     *
+     * @return bool|string
+     */
+    public static function getFormattedDateWithMicroSecond()
+    {
+        $micro = explode(" ", microtime());
+        $micro_string = explode('.',$micro[0]);
+        return date('Y-m-d H:i:s') . "." . substr($micro_string[1],0,5);
     }
 }

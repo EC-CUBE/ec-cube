@@ -177,14 +177,16 @@ class SC_Helper_Category
      * カテゴリーの登録.
      *
      * @param array $data
-     * @return void
+     * @return int|bool
      */
     public function save($data)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $category_id = $data['category_id'];
-        $query = array('update_date' => 'CURRENT_TIMESTAMP');
+        // ミリ秒付きの時間文字列を取得. CSVへの対応.
+        // トランザクション内のCURRENT_TIMESTAMPは全てcommit()時の時間に統一されてしまう為.
+        $query = array('update_date' => SC_Utils_Ex::getFormattedDateWithMicroSecond());
         $objQuery->begin();
 
         if ($category_id == '') {
@@ -214,21 +216,23 @@ class SC_Helper_Category
             $query['category_id'] = $objQuery->nextVal('dtb_category_category_id');
             $query['category_name'] = $data['category_name'];
             $query['parent_category_id'] = $data['parent_category_id'];
-            $query['create_date'] = 'CURRENT_TIMESTAMP';
+            $query['create_date'] = $query['update_date'];
             $query['creator_id']  = $_SESSION['member_id'];
             $query['rank']        = $rank;
             $query['level']       = $level;
 
-            $objQuery->insert('dtb_category', $query);
+            $result = $objQuery->insert('dtb_category', $query);
         } else {
             // 既存編集
+            $query['category_id'] = $category_id;
             $query['parent_category_id'] = $data['parent_category_id'];
             $query['category_name'] = $data['category_name'];
             $where = 'category_id = ?';
-            $objQuery->update('dtb_category', $query, $where, array($category_id));
+            $result = $objQuery->update('dtb_category', $query, $where, array($category_id));
         }
 
         $objQuery->commit();
+        return ($result) ? $query['category_id'] : FALSE;
     }
 
     /**
