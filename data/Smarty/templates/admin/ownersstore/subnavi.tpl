@@ -23,7 +23,8 @@
 *}-->
 
 <ul class="level1">
-    <li class="on_level2"><a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span>プラグイン管理</span></a>
+    <li class="on_level2">
+        <div><span>プラグイン管理</span></div>
         <ul class="level2">
             <li id="navi-ownersstore-index" class="<!--{if $tpl_subno == 'index'}-->on<!--{/if}-->">
                 <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/<!--{$smarty.const.DIR_INDEX_PATH}-->"><span>プラグイン管理</span></a></li>

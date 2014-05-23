@@ -363,14 +363,20 @@
      */
     $(function() {
         // ヘッダナビゲーション
-        $("#navi").find("li").hover(
-            function(){
-                $(this).addClass("sfhover");
-            },
-            function(){
-                $(this).removeClass("sfhover");
+        $("#navi").find("div").click(function(){
+            var parent = $(this).parent('li');
+            if (parent.hasClass('sfhover')) {
+                parent
+                    .removeClass('sfhover')
+                    .find('li').removeClass('sfhover');
+            } else {
+                parent
+                    .addClass('sfhover')
+                    .siblings('li')
+                        .removeClass('sfhover')
+                        .find('li').removeClass('sfhover');
             }
-        );
+        });
     });
 })(window);
 

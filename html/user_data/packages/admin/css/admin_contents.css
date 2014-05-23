@@ -518,48 +518,48 @@ a[href]:hover {
     position: relative;
 }
 
-#navi li a,
-#navi li a span {
+#navi li div,
+#navi li div span {
     display: block;
     _float: left;/*IE6対策*/
     cursor: pointer;
 }
 
-#navi li a {
+#navi li div {
     color: #2d2f39;
     height: 28px;
     font-weight: bold;
     text-decoration: none;
 }
 
-#navi li a span {
+#navi li div span {
     padding: 7px 10px;
     _padding: 9px 10px 5px;/*IE6対策*/
     height: 15px;
     _height: 13px;/*IE6対策*/
 }
 
-#navi li a:hover {
+#navi li div:hover {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li a:hover span {
+#navi li div:hover span {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.on a {
+#navi li.on div {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.on a span {
+#navi li.on div span {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.sfhover a {
+#navi li.sfhover div {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.sfhover a span {
+#navi li.sfhover div span {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
@@ -585,7 +585,8 @@ a[href]:hover {
     font-weight: normal;
 }
 
-#navi li li a {
+#navi li li a,
+#navi li li div {
     display: block;
     top: 2px;
     width: 180px;
@@ -596,7 +597,8 @@ a[href]:hover {
     font-weight: normal;
 }
 
-#navi li li a span {
+#navi li li a span,
+#navi li li div span {
     display: block;
     top: 2px;
     width: 180px;
@@ -612,38 +614,51 @@ a[href]:hover {
     border-width: 0 0 1px 0;
 }
 
-#navi li li a span {
+#navi li li a span,
+#navi li li div span {
     padding: 2px 0 0 8px;
     text-indent: 8px;
 }
 
-#navi li li a:hover {
+#navi li li a:hover,
+#navi li li div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
-#navi li li a:hover span {
+#navi li li a:hover span,
+#navi li li div:hover span {
     background: #666;
 }
 
 #navi li.on li a,
 #navi li.on li a span,
 #navi li li.on a,
-#navi li li.on a span {
+#navi li li.on a span,
+#navi li.on li div,
+#navi li.on li div span,
+#navi li li.on div,
+#navi li li.on div span {
     background: transparent;
 }
 
 #navi li.sfhover li a,
 #navi li.sfhover li a span,
 #navi li li.sfhover a,
-#navi li li.sfhover a span {
+#navi li li.sfhover a span,
+#navi li.sfhover li div,
+#navi li.sfhover li div span,
+#navi li li.sfhover div,
+#navi li li.sfhover div span {
     background: transparent;
 }
 
-#navi li.sfhover li a:hover {
+#navi li.sfhover li a:hover,
+#navi li.sfhover li div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
-#navi li li.sfhover a:hover {
+#navi li li.sfhover a:hover,
+#navi li li.sfhover div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
@@ -659,7 +674,9 @@ a[href]:hover {
 
 #navi li li li,
 #navi li li a,
-#navi li li li a span {
+#navi li li li a span,
+#navi li li div,
+#navi li li li div span {
     margin-left: 0;
     display: block;
     width: 180px;
@@ -672,6 +689,7 @@ a[href]:hover {
     background: url('../img/header/subnavi_bak.gif') top left no-repeat #787878;
 }
 
+#navi li li li.sfhover div:hover,
 #navi li li li.sfhover a:hover {
     width: 180px;
     top: 1px;
@@ -685,16 +703,11 @@ a[href]:hover {
     _margin: -28px 0 0 187px;/*IE6応急 */
 }
 
-#navi li:hover ul ul,
-#navi li:hover ul ul ul,
 #navi li.sfhover ul ul,
 #navi li.sfhover ul ul ul {
     left: -9999px;
 }
 
-#navi li:hover ul,
-#navi li li:hover ul,
-#navi li li li:hover ul,
 #navi li.sfhover ul,
 #navi li li.sfhover ul,
 #navi li li li.sfhover ul {
@@ -705,11 +718,13 @@ a[href]:hover {
     background: url('../img/header/subnavi_bak_l2.gif') top left no-repeat #787878;
 }
 
-#navi ul.level1 li.on_level2 a:hover {
+#navi ul.level1 li.on_level2 a:hover,
+#navi ul.level1 li.on_level2 div:hover {
     background: url('../img/header/subnavi_bak_l2_on.gif') top left no-repeat #787878;
 }
 
-#navi ul.level1 li.on_level2 ul.level2 li a:hover {
+#navi ul.level1 li.on_level2 ul.level2 li a:hover,
+#navi ul.level1 li.on_level2 ul.level2 li div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
