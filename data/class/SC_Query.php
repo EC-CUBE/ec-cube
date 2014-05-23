@@ -200,7 +200,11 @@ class SC_Query
      */
     public function commit()
     {
-        return $this->conn->commit();
+        if ($this->inTransaction()) {
+            return $this->conn->commit();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -222,7 +226,11 @@ class SC_Query
      */
     public function rollback()
     {
-        return $this->conn->rollback();
+        if ($this->inTransaction()) {
+            return $this->conn->rollback();
+        } else {
+            return false;
+        }
     }
 
     /**
