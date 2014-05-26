@@ -366,6 +366,23 @@
         // ヘッダナビゲーション
         $("#navi").find("div").click(function(){
             naviClicked = true;
+
+            // ナビゲーションがアクティブであれば、マウスオーバーを有効に.
+            $("#navi")
+                .on("mouseleave", function(){
+                    $(this).find('li')
+                        .off('mouseenter')
+                        .off('mouseleave');
+                })
+                .find('li').hover(
+                    function(){
+                        $(this).addClass('sfhover');
+                    },
+                    function(){
+                        $(this).removeClass('sfhover');
+                    }
+                );
+
             var parent = $(this).parent('li');
             if (parent.hasClass('sfhover')) {
                 parent
@@ -382,7 +399,10 @@
         // ナビゲーション以外をクリックしたらナビを閉じる.
         $(document).click(function(){
             if (!naviClicked) {
-                $("#navi").find('li').removeClass('sfhover');
+                $("#navi").find('li')
+                    .off('mouseenter')
+                    .off('mouseleave')
+                    .removeClass('sfhover');
             } else {
                 naviClicked = false;
             }
