@@ -362,8 +362,10 @@
      * Initialize.
      */
     $(function() {
+        var naviClicked = false;
         // ヘッダナビゲーション
         $("#navi").find("div").click(function(){
+            naviClicked = true;
             var parent = $(this).parent('li');
             if (parent.hasClass('sfhover')) {
                 parent
@@ -375,6 +377,14 @@
                     .siblings('li')
                         .removeClass('sfhover')
                         .find('li').removeClass('sfhover');
+            }
+        });
+        // ナビゲーション以外をクリックしたらナビを閉じる.
+        $(document).click(function(){
+            if (!naviClicked) {
+                $("#navi").find('li').removeClass('sfhover');
+            } else {
+                naviClicked = false;
             }
         });
     });
