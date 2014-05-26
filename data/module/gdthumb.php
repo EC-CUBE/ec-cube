@@ -230,22 +230,27 @@ class gdthumb {
 			case "3": 
 
 				$src_im = imageCreateFromPNG($path);
-				
-				$colortransparent = imagecolortransparent($src_im);
-				if ($colortransparent > -1) {
-					$dst_im = $imagecreate($re_size[0], $re_size[1]);
-					imagepalettecopy($dst_im, $src_im);
-					imagefill($dst_im, 0, 0, $colortransparent);
-					imagecolortransparent($dst_im, $colortransparent);
-					imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
-				} else {				
-					$dst_im = $imagecreate($re_size[0], $re_size[1]);
-					imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
-					
-					(imagecolorstotal($src_im) == 0) ? $colortotal = 65536 : $colortotal = imagecolorstotal($src_im);
-					
-					imagetruecolortopalette($dst_im, true, $colortotal);
-				}
+                $colortransparent = imagecolortransparent($src_im);
+                $has_alpha = ord(file_get_contents($path, false, null, 25, 1)) & 0x04;
+                if ($colortransparent > -1 || $has_alpha) {
+                    $dst_im = $imagecreate($re_size[0], $re_size[1]);
+                    // アルファチャンネルが存在する場合はそちらを使用する
+                    if ($has_alpha) {
+                        imagealphablending($dst_im, false);
+                        imagesavealpha($dst_im, true);
+                    }
+                    imagepalettecopy($dst_im, $src_im);
+                    imagefill($dst_im, 0, 0, $colortransparent);
+                    imagecolortransparent($dst_im, $colortransparent);
+                    imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
+                } else {
+                    $dst_im = $imagecreate($re_size[0], $re_size[1]);
+                    imagecopyresized($dst_im,$src_im, 0, 0, 0, 0, $re_size[0], $re_size[1], $size[0], $size[1]);
+
+                    (imagecolorstotal($src_im) == 0) ? $colortotal = 65536 : $colortotal = imagecolorstotal($src_im);
+
+                    imagetruecolortopalette($dst_im, true, $colortotal);
+                }
 				
 				// 画像出力
 				if($header){
