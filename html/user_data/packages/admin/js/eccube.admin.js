@@ -357,6 +357,9 @@
 
     eccube.navi = {};
 
+    // メニューを閉じないフラグ
+    eccube.navi.not_close = false;
+
     eccube.navi.openMenu = function($target) {
         $target
             // 対象を開く
@@ -366,6 +369,12 @@
                 .removeClass('sfhover')
                 .find('li').removeClass('sfhover');
     };
+
+    eccube.navi.setNotClose = function(milliseconds) {
+        if (milliseconds = null) milliseconds = 100;
+        eccube.navi.not_close = true;
+        setTimeout(function(){eccube.navi.not_close = false;}, milliseconds);
+    }
 
     // グローバルに使用できるようにする
     window.eccube = eccube;
@@ -377,6 +386,9 @@
         var naviClicked = false;
         // ヘッダナビゲーション
         $("#navi").find("div").click(function(){
+            // タブレットでの二重イベント発生を回避
+            if (eccube.navi.not_close) return false;
+
             naviClicked = true;
             $("#navi").addClass('active');
 
@@ -393,6 +405,7 @@
         $("#navi").find('li').hover(function(){
             if ($("#navi").hasClass('active')) {
                 eccube.navi.openMenu($(this));
+                eccube.navi.setNotClose();
             }
         });
         // ナビゲーション以外をクリックしたらナビを閉じる.
