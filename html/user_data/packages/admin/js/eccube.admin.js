@@ -372,7 +372,11 @@
 
             if (parent.hasClass('on_level1')) {
                 // クリックしたメニューが第1階層なら開閉を切り替え.
-                parent.toggleClass('clicked');
+                if (!parent.hasClass('sfhover')) {
+                    parent.addClass('clicked');
+                } else if (parent.hasClass('clicked')) {
+                    parent.removeClass('clicked');
+                }
             } else {
                 // 第2階層以下なら第1階層を開いた状態にする.
                 level1.addClass('clicked');
@@ -385,14 +389,21 @@
 
             // ナビゲーションがアクティブであれば、マウスオーバーを有効に.
             $("#navi")
-                .find('li.on_level1')
-                    .off('mouseenter')
-                    .off('mouseleave')
-                    .end()
+                .on('mouseleave', function(){
+                    $(this).not(':has(li.on_level1.clicked)').find('li')
+                        .off('mouseenter')
+                        .off('mouseleave');
+                })
                 .has('li.on_level1.clicked').find('li.on_level1').hover(
                     function(){
-                        $('#navi li').removeClass('sfhover');
-                        $(this).addClass('sfhover');
+                        $(this)
+                            .addClass('sfhover')
+                            .siblings('li')
+                                .removeClass('sfhover')
+                                .removeClass('clicked');
+                    },
+                    function(){
+                        $(this).not('.clicked').removeClass('sfhover');
                     }
                 );
 
