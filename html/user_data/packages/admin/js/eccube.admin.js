@@ -357,9 +357,12 @@
 
     eccube.navi = {};
 
-    // メニューを閉じないフラグ
-    eccube.navi.not_close = false;
+    // クリックを無視するフラグ
+    eccube.navi.ignore_click = false;
 
+    /**
+     * 対象を指定してメニューを開く
+     */
     eccube.navi.openMenu = function($target) {
         $target
             // 対象を開く
@@ -370,10 +373,23 @@
                 .find('li').removeClass('sfhover');
     };
 
-    eccube.navi.setNotClose = function(milliseconds) {
+    /**
+     * 全てのメニューを閉じる
+     */
+    eccube.navi.closeAllMenu = function() {
+        $("#navi")
+            .removeClass('active')
+            .find('li')
+                .removeClass('sfhover')
+    }
+
+    /**
+     * 一時的にクリックイベントを無視する
+     */
+    eccube.navi.setIgnoreClick = function(milliseconds) { // FIXME: 関数名
         if (milliseconds = null) milliseconds = 100;
-        eccube.navi.not_close = true;
-        setTimeout(function(){eccube.navi.not_close = false;}, milliseconds);
+        eccube.navi.ignore_click = true;
+        setTimeout(function(){eccube.navi.ignore_click = false;}, milliseconds);
     }
 
     // グローバルに使用できるようにする
@@ -387,7 +403,7 @@
         // ヘッダナビゲーション
         $("#navi").find("div").click(function(){
             // タブレットでの二重イベント発生を回避
-            if (eccube.navi.not_close) return false;
+            if (eccube.navi.ignore_click) return false;
 
             naviClicked = true;
             $("#navi").addClass('active');
@@ -398,23 +414,24 @@
             if (!parent.hasClass('sfhover')) {
                 eccube.navi.openMenu(parent);
             } else {
-                parent.removeClass('sfhover');
+                if (parent.hasClass('on_level1')) {
+                    eccube.navi.closeAllMenu();
+                } else {
+                    parent.removeClass('sfhover');
+                }
             }
         });
         // ナビゲーションがアクティブであれば、マウスオーバーを有効に.
         $("#navi").find('li').hover(function(){
             if ($("#navi").hasClass('active')) {
                 eccube.navi.openMenu($(this));
-                eccube.navi.setNotClose();
+                eccube.navi.setIgnoreClick();
             }
         });
         // ナビゲーション以外をクリックしたらナビを閉じる.
         $(document).click(function(){
             if (!naviClicked) {
-                $("#navi")
-                    .removeClass('active')
-                    .find('li')
-                        .removeClass('sfhover')
+                eccube.navi.closeAllMenu();
             } else {
                 naviClicked = false;
             }
