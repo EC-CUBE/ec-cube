@@ -389,12 +389,10 @@
                     .off('mouseenter')
                     .off('mouseleave')
                     .end()
-                .has('li.on_level1.clicked').find('li.on_level1').filter(':not(.clicked)').hover(
+                .has('li.on_level1.clicked').find('li.on_level1').hover(
                     function(){
+                        $('#navi li').removeClass('sfhover');
                         $(this).addClass('sfhover');
-                    },
-                    function(){
-                        $(this).removeClass('sfhover');
                     }
                 );
 
