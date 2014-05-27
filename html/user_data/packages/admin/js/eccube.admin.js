@@ -367,14 +367,29 @@
         $("#navi").find("div").click(function(){
             naviClicked = true;
 
+            var parent = $(this).parent('li');
+            var level1 = $(this).parents('li.on_level1');
+
+            if (parent.hasClass('on_level1')) {
+                // クリックしたメニューが第1階層なら開閉を切り替え.
+                parent.toggleClass('clicked');
+            } else {
+                // 第2階層以下なら第1階層を開いた状態にする.
+                level1.addClass('clicked');
+            }
+            // クリックしたメニュー以外のメニューを閉じる.
+            level1.siblings('li')
+                .removeClass('clicked')
+                .removeClass('sfhover')
+                .find('li').removeClass('sfhover');
+
             // ナビゲーションがアクティブであれば、マウスオーバーを有効に.
             $("#navi")
-                .on("mouseleave", function(){
-                    $(this).find('li')
-                        .off('mouseenter')
-                        .off('mouseleave');
-                })
-                .find('li').hover(
+                .find('li.on_level1')
+                    .off('mouseenter')
+                    .off('mouseleave')
+                    .end()
+                .has('li.on_level1.clicked').find('li.on_level1').filter(':not(.clicked)').hover(
                     function(){
                         $(this).addClass('sfhover');
                     },
@@ -383,8 +398,9 @@
                     }
                 );
 
-            var parent = $(this).parent('li');
-            if (parent.hasClass('sfhover')) {
+            if (parent.hasClass('clicked')) {
+                parent.addClass('sfhover');
+            } else if (parent.hasClass('sfhover')) {
                 parent
                     .removeClass('sfhover')
                     .find('li').removeClass('sfhover');
@@ -402,7 +418,8 @@
                 $("#navi").find('li')
                     .off('mouseenter')
                     .off('mouseleave')
-                    .removeClass('sfhover');
+                    .removeClass('sfhover')
+                    .removeClass('clicked');
             } else {
                 naviClicked = false;
             }
