@@ -174,8 +174,14 @@ class SC_Utils
         trigger_error($debugMsg, E_USER_ERROR);
     }
 
-    /* 認証の可否判定 */
-    public function sfIsSuccess($objSess, $disp_error = true)
+    /**
+     * 認証の可否判定
+     *
+     * @param SC_Session $objSess
+     * @param bool $disp_error
+     * @return bool
+     */
+    public static function sfIsSuccess(SC_Session $objSess, $disp_error = true)
     {
         $ret = $objSess->IsSuccess();
         if ($ret != SUCCESS) {

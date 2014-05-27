@@ -246,12 +246,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     public function lfCheckProductId($admin_mode, $product_id)
     {
         // 管理機能からの確認の場合は、非公開の商品も表示する。
-        if (isset($admin_mode) && $admin_mode == 'on') {
-            SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex());
-            $status = true;
+        if (isset($admin_mode) && $admin_mode == 'on' && SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex(), false)) {
             $where = 'del_flg = 0';
         } else {
-            $status = false;
             $where = 'del_flg = 0 AND status = 1';
         }
 
