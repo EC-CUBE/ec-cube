@@ -91,7 +91,7 @@
         product_id = form.product_id.value;
 
         if (sele1) {
-            if (sele2) {
+            if (sele2 && sele2.type == 'select-one') {
                 // 規格2の選択肢をクリア
                 count = sele2.options.length;
                 for(i = count; i >= 0; i--) {
@@ -110,27 +110,6 @@
                     i++;
                 }
             }
-            fnCheckStock(form);
-        }
-    }
-
-    function fnCheckStock(form) {
-        product_id = form.product_id.value;
-        classcat_id1 = form.classcategory_id1.value;
-        classcat_id2 = form.classcategory_id2 ? form.classcategory_id2.value : '';
-        classcat2 = eccube.productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
-        // 商品規格
-        eleDynamic = document.getElementById('product_class_id' + product_id);
-        if (
-            classcat2
-            && typeof classcat2.product_class_id != 'undefined'
-            && String(classcat2.product_class_id).length >= 1
-        ) {
-            eleDynamic.value = classcat2.product_class_id;
-        } else {
-            // 規格が1つのみの場合
-            classcat1 = eccube.productsClassCategories[product_id][classcat_id1]['#0'];
-            eleDynamic.value = classcat1.product_class_id;
         }
     }
 //]]></script>
@@ -211,8 +190,8 @@
                         <form name="product_form<!--{$id|h}-->" action="?" onsubmit="return false;">
                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                             <!--{$arrProducts[cnt].name|h}-->
-                            <!--{assign var=class1 value=classcategory_id`$id`_1}-->
-                            <!--{assign var=class2 value=classcategory_id`$id`_2}-->
+                            <!--{assign var=class1 value="classcategory_id`$id`_1"}-->
+                            <!--{assign var=class2 value="classcategory_id`$id`_2"}-->
                             <!--{if $tpl_classcat_find1[$id]}-->
                             <dl>
                                 <dt><!--{$tpl_class_name1[$id]|h}-->：</dt>
@@ -226,7 +205,7 @@
                                 </dd>
                             </dl>
                             <!--{else}-->
-                            <input type="hidden" name="<!--{$class1}-->" id="<!--{$class1}-->" value="" />
+                            <input type="hidden" name="classcategory_id1" id="<!--{$class1}-->" value="" />
                             <!--{/if}-->
 
                             <!--{if $tpl_classcat_find2[$id]}-->
@@ -240,7 +219,7 @@
                                 </dd>
                             </dl>
                             <!--{else}-->
-                            <input type="hidden" name="<!--{$class2}-->" id="<!--{$class2}-->" value="" />
+                            <input type="hidden" name="classcategory_id2" id="<!--{$class2}-->" value="" />
                             <!--{/if}-->
 
                             <!--{if !$tpl_stock_find[$id]}-->
