@@ -400,7 +400,8 @@
                             .addClass('sfhover')
                             .siblings('li')
                                 .removeClass('sfhover')
-                                .removeClass('clicked');
+                                .removeClass('clicked')
+                                .find('li').removeClass('sfhover');
                     },
                     function(){
                         $(this).not('.clicked').removeClass('sfhover');
