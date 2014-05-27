@@ -355,6 +355,18 @@
         eccube.fileManager.old_select_id = id;
     };
 
+    eccube.navi = {};
+
+    eccube.navi.openMenu = function($target) {
+        $target
+            // 対象を開く
+            .addClass('sfhover')
+            // 対象以外を閉じる
+            .siblings('li')
+                .removeClass('sfhover')
+                .find('li').removeClass('sfhover');
+    };
+
     // グローバルに使用できるようにする
     window.eccube = eccube;
 
@@ -366,70 +378,30 @@
         // ヘッダナビゲーション
         $("#navi").find("div").click(function(){
             naviClicked = true;
+            $("#navi").addClass('active');
 
             var parent = $(this).parent('li');
-            var level1 = $(this).parents('li.on_level1');
 
-            if (parent.hasClass('on_level1')) {
-                // クリックしたメニューが第1階層なら開閉を切り替え.
-                if (!parent.hasClass('sfhover')) {
-                    parent.addClass('clicked');
-                } else if (parent.hasClass('clicked')) {
-                    parent.removeClass('clicked');
-                }
+            // 開閉を切り替え.
+            if (!parent.hasClass('sfhover')) {
+                eccube.navi.openMenu(parent);
             } else {
-                // 第2階層以下なら第1階層を開いた状態にする.
-                level1.addClass('clicked');
+                parent.removeClass('sfhover');
             }
-            // クリックしたメニュー以外のメニューを閉じる.
-            level1.siblings('li')
-                .removeClass('clicked')
-                .removeClass('sfhover')
-                .find('li').removeClass('sfhover');
-
-            // ナビゲーションがアクティブであれば、マウスオーバーを有効に.
-            $("#navi")
-                .on('mouseleave', function(){
-                    $(this).not(':has(li.on_level1.clicked)').find('li')
-                        .off('mouseenter')
-                        .off('mouseleave');
-                })
-                .has('li.on_level1.clicked').find('li.on_level1').hover(
-                    function(){
-                        $(this)
-                            .addClass('sfhover')
-                            .siblings('li')
-                                .removeClass('sfhover')
-                                .removeClass('clicked')
-                                .find('li').removeClass('sfhover');
-                    },
-                    function(){
-                        $(this).not('.clicked').removeClass('sfhover');
-                    }
-                );
-
-            if (parent.hasClass('clicked')) {
-                parent.addClass('sfhover');
-            } else if (parent.hasClass('sfhover')) {
-                parent
-                    .removeClass('sfhover')
-                    .find('li').removeClass('sfhover');
-            } else {
-                parent
-                    .addClass('sfhover')
-                    .siblings('li')
-                        .removeClass('sfhover')
-                        .find('li').removeClass('sfhover');
+        });
+        // ナビゲーションがアクティブであれば、マウスオーバーを有効に.
+        $("#navi").find('li').hover(function(){
+            if ($("#navi").hasClass('active')) {
+                eccube.navi.openMenu($(this));
             }
         });
         // ナビゲーション以外をクリックしたらナビを閉じる.
         $(document).click(function(){
             if (!naviClicked) {
-                $("#navi").find('li')
-                    .off('mouseenter')
-                    .off('mouseleave')
-                    .removeClass('sfhover')
-                    .removeClass('clicked');
+                $("#navi")
+                    .removeClass('active')
+                    .find('li')
+                        .removeClass('sfhover')
             } else {
                 naviClicked = false;
             }
