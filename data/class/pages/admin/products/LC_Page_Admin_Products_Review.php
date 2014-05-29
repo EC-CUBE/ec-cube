@@ -85,6 +85,7 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
      */
     public function action()
     {
+        $objReview = new SC_Helper_Review_Ex();
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -104,17 +105,19 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
 
         switch ($this->getMode()) {
             case 'delete':
-                $this->lfDeleteReview($this->arrForm['review_id']);
+                $objReview->delete($this->arrForm['review_id']);
             case 'search':
             case 'csv':
 
                 // 検索条件を取得
                 list($where, $arrWhereVal) = $this->lfGetWhere($this->arrForm);
                 // 検索結果を取得
-                $this->arrReview = $this->lfGetReview($this->arrForm, $where, $arrWhereVal);
+                $this->arrReview = $this->lfGetReview($objReview);
 
                 //CSVダウンロード
                 if ($this->getMode() == 'csv') {
+                    // 検索条件を取得
+                    list($where, $arrWhereVal) = $this->lfGetWhere($this->arrForm);
                     $this->lfDoOutputCsv($where, $arrWhereVal);
 
                     SC_Response_Ex::actionExit();
@@ -157,19 +160,6 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
         }
 
         return $objErr->arrErr;
-    }
-
-    /**
-     * 商品レビューの削除
-     *
-     * @param  integer $review_id 商品レビューのID
-     * @return void
-     */
-    public function lfDeleteReview($review_id)
-    {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sqlval['del_flg'] = 1;
-        $objQuery->update('dtb_review', $sqlval, 'review_id = ?', array($review_id));
     }
 
     /**
@@ -333,45 +323,95 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
     /**
      * レビュー検索結果の取得
      *
-     * @param  array  $arrForm     フォームデータ
-     * @param  string $where       WHERE文
-     * @param  array  $arrWhereVal WHERE文の判定値
+     * @param  SC_Helper_Review $objReview
      * @return array  レビュー一覧
      */
-    public function lfGetReview($arrForm, $where, $arrWhereVal)
+    public function lfGetReview(SC_Helper_Review $objReview)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $arrForm = $this->arrForm;
 
-        // ページ送りの処理
-        $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrForm['search_page_max']);
+        $query = $this->makeQuery($arrForm);
+        $linemax = $objReview->count($query);
 
-        if (!isset($arrWhereVal)) $arrWhereVal = array();
-
-        $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
-        $linemax = $objQuery->count($from, $where, $arrWhereVal);
         $this->tpl_linemax = $linemax;
-
         $this->tpl_pageno = isset($arrForm['search_pageno']) ? $arrForm['search_pageno'] : '';
 
         // ページ送りの取得
+        $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrForm['search_page_max']);
         $objNavi = new SC_PageNavi_Ex($this->tpl_pageno, $linemax, $page_max,
                                       'eccube.moveNaviPage', NAVI_PMAX);
         $this->arrPagenavi = $objNavi->arrPagenavi;
         $startno = $objNavi->start_row;
 
         // 取得範囲の指定(開始行番号、行数のセット)
-        $objQuery->setLimitOffset($page_max, $startno);
-
-        // 表示順序
-        $order = 'A.create_date DESC';
-        $objQuery->setOrder($order);
-        //検索結果の取得
-        //レビュー情報のカラムの取得
-        $col = 'review_id, A.product_id, reviewer_name, sex, recommend_level, ';
-        $col .= 'reviewer_url, title, comment, A.status, A.create_date, A.update_date, name';
-        $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
-        $arrReview = $objQuery->select($col, $from, $where, $arrWhereVal);
+        $params = array(
+            'query' => $query,
+            'limit' => $page_max,
+            'offset' => $startno
+        );
+        $arrReview = $objReview->find($params);
 
         return $arrReview;
+    }
+
+    /**
+     * SC_Helper_Reviewインスタンスへ渡す検索条件の配列を作成.
+     *
+     * @param array $data
+     * @return array
+     */
+    private function makeQuery($data = array()) {
+        $query = array();
+
+        foreach ($data AS $key => $val) {
+            if (empty($val)) continue;
+
+            switch ($key) {
+                case 'search_reviewer_name':
+                    $query['reviewer_name'] = $val;
+                    break;
+
+                case 'search_reviewer_url':
+                    $query['reviewer_url'] = $val;
+                    break;
+
+                case 'search_name':
+                    $query['product_name'] = $val;
+                    break;
+
+                case 'search_product_code':
+                    $query['product_code'] = $val;
+                    break;
+
+                case 'search_sex':
+                    $query['reviewer_sex'] = $val;
+                    break;
+
+                case 'search_recommend_level':
+                    $query['recommend_level'] = $val;
+                    break;
+
+                case 'search_startyear':
+                    if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
+                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_startyear'], $_POST['search_startmonth'], $_POST['search_startday']);
+                        $query['date_from'] = $date;
+                    }
+                    break;
+
+                case 'search_endyear':
+                    if (isset($_POST['search_startyear']) && isset($_POST['search_startmonth']) && isset($_POST['search_startday'])) {
+                        $date = SC_Utils_Ex::sfGetTimestamp($_POST['search_endyear'], $_POST['search_endmonth'], $_POST['search_endday']);
+                        $end_date = date('Y/m/d',strtotime('1 day' ,strtotime($date)));
+                        $query['date_to'] = $end_date;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        return $query;
     }
 }

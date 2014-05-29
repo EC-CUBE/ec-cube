@@ -185,25 +185,17 @@ class LC_Page_Products_Review extends LC_Page_Ex
     }
 
     //登録実行
-    public function lfRegistRecommendData(&$objFormParam)
+    public function lfRegistRecommendData(SC_FormParam &$objFormParam)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objCustomer = new SC_Customer_Ex();
-
         $arrRegist = $objFormParam->getDbArray();
 
-        $arrRegist['create_date'] = 'CURRENT_TIMESTAMP';
-        $arrRegist['update_date'] = 'CURRENT_TIMESTAMP';
-        $arrRegist['creator_id'] = '0';
-
+        $objCustomer = new SC_Customer_Ex();
         if ($objCustomer->isLoginSuccess(true)) {
             $arrRegist['customer_id'] = $objCustomer->getValue('customer_id');
         }
 
         //-- 登録実行
-        $objQuery->begin();
-        $arrRegist['review_id'] = $objQuery->nextVal('dtb_review_review_id');
-        $objQuery->insert('dtb_review', $arrRegist);
-        $objQuery->commit();
+        $objReview = new SC_Helper_Review_Ex();
+        $objReview->save($arrRegist);
     }
 }

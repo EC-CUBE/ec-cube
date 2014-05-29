@@ -264,7 +264,7 @@ class SC_Utils
     }
 
     /* DB用日付文字列取得 */
-    public function sfGetTimestamp($year, $month, $day, $last = false)
+    public static function sfGetTimestamp($year, $month, $day, $last = false)
     {
         if ($year != '' && $month != '' && $day != '') {
             if ($last) {
@@ -1724,7 +1724,7 @@ class SC_Utils
      * @param  string  $search_page_max 表示件数の選択値
      * @return integer 1ページあたりの最大表示件数
      */
-    public function sfGetSearchPageMax($search_page_max)
+    public static function sfGetSearchPageMax($search_page_max)
     {
         if (SC_Utils_Ex::sfIsInt($search_page_max) && $search_page_max > 0) {
             $page_max = intval($search_page_max);
