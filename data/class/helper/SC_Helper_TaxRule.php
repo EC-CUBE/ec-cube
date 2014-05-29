@@ -104,24 +104,7 @@ class SC_Helper_TaxRule
     {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
-        switch ($calc_rule) {
-            // 四捨五入
-            case 1:
-                $ret = round($ret);
-                break;
-            // 切り捨て
-            case 2:
-                $ret = floor($ret);
-                break;
-            // 切り上げ
-            case 3:
-                $ret = ceil($ret);
-                break;
-            // デフォルト:切り上げ
-            default:
-                $ret = ceil($ret);
-                break;
-        }
+        $ret = SC_Helper_TaxRule_Ex::roundByCalcRule($ret, $calc_rule);
 
         return $ret + $tax_adjust;
     }
@@ -386,5 +369,36 @@ class SC_Helper_TaxRule
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $where = 'tax_rule_id = ?';
         $objQuery->update('dtb_tax_rule', $sqlval, $where, array($tax_rule_id));
+    }
+
+    /**
+     * 課税規則に応じて端数処理を行う
+     *
+     * @param float|integer $value 端数処理を行う数値
+     * @param integer $calc_rule 課税規則
+     * @return integer 端数処理後の数値
+     */
+    public static function roundByCalcRule($value, $calc_rule)
+    {
+        switch ($calc_rule) {
+            // 四捨五入
+            case 1:
+                $ret = round($value);
+                break;
+            // 切り捨て
+            case 2:
+                $ret = floor($value);
+                break;
+            // 切り上げ
+            case 3:
+                $ret = ceil($value);
+                break;
+            // デフォルト:切り上げ
+            default:
+                $ret = ceil($value);
+                break;
+        }
+
+        return $ret;
     }
 }
