@@ -396,4 +396,27 @@ class SC_Helper_Category
 
         return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
+
+    /**
+     * 有効なカテゴリーIDかチェックする.
+     *
+     * @param int $category_id
+     * @param bool $include_deleted
+     * @return bool
+     */
+    public function isValidCategoryId($category_id, $include_deleted = false) {
+        if ($include_deleted) {
+            $where = '';
+        } else {
+            $where = 'del_flg = 0';
+        }
+        if (
+            SC_Utils_Ex::sfIsInt($category_id)
+            && !SC_Utils_Ex::sfIsZeroFilling($category_id)
+            && SC_Helper_DB_Ex::sfIsRecord('dtb_category','category_id', array($category_id), $where)
+        ) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -695,13 +695,7 @@ __EOS__;
      * @return array
      */
     public function getCategoryIds($product_id, $include_hidden = false) {
-        if ($include_hidden) {
-            $where = '';
-        } else {
-            $where = 'status = 1';
-        }
-
-        if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_products','product_id', array($product_id), $where)) {
+        if ($this->isValidProductId($product_id, $include_hidden)) {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', 'product_id = ?', array($product_id));
         } else {
@@ -710,5 +704,31 @@ __EOS__;
         }
 
         return $category_id;
+    }
+
+    /**
+     * 有効な商品IDかチェックする.
+     *
+     * @param int $product_id
+     * @param bool $include_hidden
+     * @param bool $include_deleted
+     * @return bool
+     */
+    public function isValidProductId($product_id, $include_hidden = false, $include_deleted = false) {
+        $where = '';
+        if (!$include_hidden) {
+            $where .= ' status = 1';
+        }
+        if (!$include_deleted) {
+            $where .= ' del_flg = 0';
+        }
+        if (
+            SC_Utils_Ex::sfIsInt($product_id)
+            && !SC_Utils_Ex::sfIsZeroFilling($product_id)
+            && SC_Helper_DB_Ex::sfIsRecord('dtb_products','product_id', array($product_id), $where)
+        ) {
+            return true;
+        }
+        return false;
     }
 }

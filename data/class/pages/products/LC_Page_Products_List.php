@@ -184,7 +184,8 @@ class LC_Page_Products_List extends LC_Page_Ex
     /**
      * カテゴリIDの取得
      *
-     * @return integer カテゴリID
+     * @param int $category_id
+     * @return integer|void カテゴリID
      */
     public function lfGetCategoryId($category_id)
     {
@@ -192,21 +193,12 @@ class LC_Page_Products_List extends LC_Page_Ex
         if (empty($category_id)) return 0;
 
         // 正当性チェック
-        if (!SC_Utils_Ex::sfIsInt($category_id)
-            || SC_Utils_Ex::sfIsZeroFilling($category_id)
-            || !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')
-            ) {
+        $objCategory = new SC_Helper_Category_Ex();
+        if ($objCategory->isValidCategoryId($category_id)) {
+            return $category_id;
+        } else {
             SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
         }
-
-        // 指定されたカテゴリIDを元に正しいカテゴリIDを取得する。
-        $arrCategory_id = SC_Helper_DB_Ex::sfGetCategoryId('', $category_id);
-
-        if (empty($arrCategory_id)) {
-            SC_Utils_Ex::sfDispSiteError(CATEGORY_NOT_FOUND);
-        }
-
-        return $arrCategory_id[0];
     }
 
     /* 商品一覧の表示 */

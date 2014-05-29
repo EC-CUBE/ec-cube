@@ -523,7 +523,8 @@ class SC_Helper_DB
     {
         $category_id = (int) $category_id;
         $product_id = (int) $product_id;
-        if (SC_Utils_Ex::sfIsInt($category_id) && $category_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_category','category_id', array($category_id))) {
+        $objCategory = new SC_Helper_Category_Ex();
+        if ($objCategory->isValidCategoryId($category_id, $closed)) {
             $category_id = array($category_id);
         } else {
             $objProduct = new SC_Product_Ex();
