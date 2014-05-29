@@ -686,4 +686,29 @@ __EOS__;
 
         return $tablename . 'del_flg = 0 AND ' . $tablename . 'status = 1 ';
     }
+
+    /**
+     * 商品が属しているカテゴリーIDを取得する.
+     *
+     * @param int $product_id
+     * @param bool $include_hidden
+     * @return array
+     */
+    public function getCategoryIds($product_id, $include_hidden = false) {
+        if ($include_hidden) {
+            $where = '';
+        } else {
+            $where = 'status = 1';
+        }
+
+        if (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_products','product_id', array($product_id), $where)) {
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', 'product_id = ?', array($product_id));
+        } else {
+            // 不正な場合は、空の配列を返す。
+            $category_id = array();
+        }
+
+        return $category_id;
+    }
 }

@@ -287,7 +287,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         $this->tpl_subtitle = $this->arrProduct['name'];
 
         // 関連カテゴリを取得
-        $this->arrRelativeCat = SC_Helper_DB_Ex::sfGetMultiCatTree($product_id);
+        $arrCategory_id = $objProduct->getCategoryIds($product_id);
+        $objCategory = new SC_Helper_Category_Ex();
+        $this->arrRelativeCat = array();
+        foreach ($arrCategory_id as $category_id) {
+            $this->arrRelativeCat[] = $objCategory->getTreeTrail($category_id, false);
+        }
 
         // 商品ステータスを取得
         $this->productStatus = $objProduct->getProductStatus($product_id);
