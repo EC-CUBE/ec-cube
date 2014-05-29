@@ -305,8 +305,7 @@ class SC_Utils
      *  @param mixed $value
      *  @return bool
      */
-    //
-    public function sfIsInt($value)
+    public static function sfIsInt($value)
     {
         if (strlen($value) >= 1 && strlen($value) <= INT_LEN && is_numeric($value)) {
             return true;
@@ -315,13 +314,13 @@ class SC_Utils
         return false;
     }
 
-    /*
+    /**
      * 桁が0で埋められているかを判定する
      *
      * @param  string  $value 検査対象
      * @return boolean 0で埋められている
      */
-    public function sfIsZeroFilling($value)
+    public static function sfIsZeroFilling($value)
     {
         if (strlen($value) > 1 && $value{0} === '0')
 
@@ -1441,7 +1440,7 @@ class SC_Utils
      * @param string &$filename ファイル名
      * @return string
      */
-    public function sfNoImageMain($filename = '')
+    public static function sfNoImageMain($filename = '')
     {
         if (strlen($filename) == 0 || substr($filename, -1, 1) == '/') {
             $filename .= 'noimage_main.png';
@@ -1748,7 +1747,7 @@ class SC_Utils
      * @see json_encode()
      * @see Services_JSON::encode()
      */
-    public function jsonEncode($value)
+    public static function jsonEncode($value)
     {
         if (function_exists('json_encode')) {
             return json_encode($value);

@@ -102,7 +102,7 @@ class SC_Helper_DB
      * @return bool   データが存在する場合 true, データの追加に成功した場合 true,
      *               $add == false で, データが存在しない場合 false
      */
-    public function sfDataExists($tableName, $where, $arrWhereVal)
+    public static function sfDataExists($tableName, $where, $arrWhereVal)
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
@@ -376,7 +376,7 @@ class SC_Helper_DB
      * @param  bool    $count_check 登録商品数のチェックを行う場合 true
      * @return array   カテゴリツリーの配列
      */
-    public function sfGetMultiCatTree($product_id, $count_check = false)
+    public static function sfGetMultiCatTree($product_id, $count_check = false)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = '';
@@ -1006,10 +1006,10 @@ __EOS__;
      * @param  string $keyname     プライマリーキーのカラム名
      * @param  string $valname     データ内容のカラム名
      * @param  string $where       WHERE句
-     * @param  array  $arrWhereVal プレースホルダ
+     * @param  array  $arrVal プレースホルダ
      * @return array  SELECT ボックス用リストの配列
      */
-    public function sfGetIDValueList($table, $keyname, $valname, $where = '', $arrVal = array())
+    public static function sfGetIDValueList($table, $keyname, $valname, $where = '', $arrVal = array())
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = "$keyname, $valname";
@@ -1366,10 +1366,10 @@ __EOS__;
      * @param  string $table    テーブル名
      * @param  string $col      カラム名
      * @param  array  $arrVal   要素の配列
-     * @param  array  $addwhere SQL の AND 条件である WHERE 句
+     * @param  string  $addwhere SQL の AND 条件である WHERE 句
      * @return bool   レコードが存在する場合 true
      */
-    public function sfIsRecord($table, $col, $arrVal, $addwhere = '')
+    public static function sfIsRecord($table, $col, $arrVal, $addwhere = '')
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrCol = preg_split('/[, ]/', $col);

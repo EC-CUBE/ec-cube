@@ -1352,7 +1352,8 @@ __EOS__;
 
     /**
      * 決済処理中スタータスの受注データのキャンセル処理
-     * @param $cancel_flg 決済処理中ステータスのロールバックをするか(true:する false:しない)
+     * @param bool $cancel_flg 決済処理中ステータスのロールバックをするか(true:する false:しない)
+     * @return void
      */
     public function cancelPendingOrder($cancel_flg)
     {
