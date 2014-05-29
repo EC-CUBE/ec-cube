@@ -295,8 +295,11 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
             return $objErr->arrErr;
         }
 
-        if ($arrForm['point_check'] == '1') {
-            $objErr->doFunc(array('ポイントを使用する', 'point_check'), array('EXIST_CHECK'));
+        $objErr->doFunc(array('ポイントを使用する', 'point_check'), array('EXIST_CHECK'));
+
+        if ($arrForm['point_check'] == '1'
+            && SC_Utils_Ex::isBlank($objErr->arrErr['use_point'])) {
+
             $objErr->doFunc(array('ポイント', 'use_point'), array('EXIST_CHECK'));
             if ($max_point == '') {
                 $max_point = 0;
