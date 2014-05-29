@@ -87,7 +87,6 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
                 break;
 
             case 'regist': // 商品を登録する。
-                $this->arrErr = $this->lfCheckError($objFormParam);
                 $this->arrErr[$arrPost['rank']] = $this->lfCheckError($objFormParam);
                 // 登録処理にエラーがあった場合は商品選択の時と同じ処理を行う。
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
