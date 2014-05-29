@@ -182,12 +182,13 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         $this->objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
         // ファイル情報の初期化
         $this->objUpFile = $this->lfInitFile($this->objUpFile);
-
-        // プロダクトIDの正当性チェック
-        $product_id = $this->lfCheckProductId($this->objFormParam->getValue('admin'), $this->objFormParam->getValue('product_id'));
         $this->mode = $this->getMode();
 
         $objProduct = new SC_Product_Ex();
+
+        // プロダクトIDの正当性チェック
+        $product_id = $this->lfCheckProductId($this->objFormParam->getValue('admin'), $this->objFormParam->getValue('product_id'), $objProduct);
+
         $objProduct->setProductsClassByProductIds(array($product_id));
 
         // 規格1クラス名
@@ -321,21 +322,19 @@ class LC_Page_Products_Detail extends LC_Page_Ex
      *
      * @param string $admin_mode
      * @param int $product_id
+     * @param SC_Product $objProduct
      * @return int|void
      */
-    public function lfCheckProductId($admin_mode, $product_id)
+    public function lfCheckProductId($admin_mode, $product_id, SC_Product $objProduct)
     {
         // 管理機能からの確認の場合は、非公開の商品も表示する。
         if (isset($admin_mode) && $admin_mode == 'on' && SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex(), false)) {
-            $where = 'del_flg = 0';
+            $include_hidden = true;
         } else {
-            $where = 'del_flg = 0 AND status = 1';
+            $include_hidden = false;
         }
 
-        if (!SC_Utils_Ex::sfIsInt($product_id)
-            || SC_Utils_Ex::sfIsZeroFilling($product_id)
-            || !SC_Helper_DB_Ex::sfIsRecord('dtb_products', 'product_id', (array) $product_id, $where)
-        ) {
+        if (!$objProduct->isValidProductId($product_id, $include_hidden)) {
                 SC_Utils_Ex::sfDispSiteError(PRODUCT_NOT_FOUND);
         }
 

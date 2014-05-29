@@ -717,10 +717,13 @@ __EOS__;
     public function isValidProductId($product_id, $include_hidden = false, $include_deleted = false) {
         $where = '';
         if (!$include_hidden) {
-            $where .= ' status = 1';
+            $where .= 'status = 1';
         }
         if (!$include_deleted) {
-            $where .= ' del_flg = 0';
+            if ($where != '') {
+                $where .= ' AND ';
+            }
+            $where .= 'del_flg = 0';
         }
         if (
             SC_Utils_Ex::sfIsInt($product_id)
