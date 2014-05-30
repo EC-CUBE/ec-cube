@@ -53,14 +53,6 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
 
         $objLog->start($mode);
 
-        if ($this->isValidIP() !== true) {
-            $objJson->setError(OSTORE_E_C_INVALID_ACCESS);
-            $objJson->display();
-            $objLog->error(OSTORE_E_C_INVALID_ACCESS);
-
-            return;
-        }
-
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $arrSystemInfo = array(
             'eccube_version' => ECCUBE_VERSION,

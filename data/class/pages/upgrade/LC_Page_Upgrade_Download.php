@@ -353,8 +353,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
             $public_key_sha1 = $objForm->getValue('public_key');
 
             $objLog->log('* ip check start');
-            if ($this->isValidIP()
-            && $public_key_sha1 === sha1($public_key . $sha1_key)) {
+            if ($public_key_sha1 === sha1($public_key . $sha1_key)) {
                 $objLog->log('* auto update login ok');
 
                 return true;

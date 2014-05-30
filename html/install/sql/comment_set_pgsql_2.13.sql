@@ -64,11 +64,6 @@ COMMENT ON COLUMN dtb_other_deliv.fax01 IS 'FAX（市外局番）';
 COMMENT ON COLUMN dtb_other_deliv.fax02 IS 'FAX（市内局番）';
 COMMENT ON COLUMN dtb_other_deliv.fax03 IS 'FAX（局番）';
 
-COMMENT ON TABLE mtb_ownersstore_ips IS 'オーナーズストアIPアドレス';
-COMMENT ON COLUMN mtb_ownersstore_ips.id IS 'ID';
-COMMENT ON COLUMN mtb_ownersstore_ips.name IS '名称';
-COMMENT ON COLUMN mtb_ownersstore_ips.rank IS '表示順';
-
 COMMENT ON TABLE mtb_ownersstore_err IS 'オーナーズストアエラー種別';
 COMMENT ON COLUMN mtb_ownersstore_err.id IS 'ID';
 COMMENT ON COLUMN mtb_ownersstore_err.name IS '名称';

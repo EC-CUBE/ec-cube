@@ -23,24 +23,6 @@ class LC_Page_Upgrade_Base extends LC_Page_Ex
         parent::init();
     }
 
-    public function isValidIP()
-    {
-        $objLog  = new LC_Upgrade_Helper_Log;
-        $masterData = new SC_DB_MasterData_Ex();
-        $arrOstoreIPs = $masterData->getMasterData('mtb_ownersstore_ips');
-
-        if (isset($_SERVER['REMOTE_ADDR'])
-            && in_array($_SERVER['REMOTE_ADDR'], $arrOstoreIPs))
-        {
-            $objLog->log('* ip ok ' . $_SERVER['REMOTE_ADDR']);
-
-            return true;
-        }
-        $objLog->log('* refused ip ' . $_SERVER['REMOTE_ADDR']);
-
-        return false;
-    }
-
     /**
      * 自動アップデートが有効かどうかを判定する.
      *
