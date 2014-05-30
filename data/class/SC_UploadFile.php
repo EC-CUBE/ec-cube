@@ -99,11 +99,7 @@ class SC_UploadFile
         $cnt = 0;
         $arrKeyname = array_flip($this->keyname);
 
-        if ($_FILES[$keyname]['error'] != 0) {
-            $objErr->arrErr[$keyname] .= '※ ' . $this->disp_name[$arrKeyname[$keyname]] . 'のアップロードに失敗しました。';
-            $objErr->arrErr[$keyname] .= 'エラーコードは[' . $_FILES[$keyname]['error'] . ']です。';
-            $objErr->arrErr[$keyname] .= '<br />';
-        } else {
+        if ($_FILES[$keyname]['error'] === UPLOAD_ERR_OK) {
             foreach ($this->keyname as $val) {
                 // 一致したキーのファイルに情報を保存する。
                 if ($val == $keyname) {
@@ -138,6 +134,17 @@ class SC_UploadFile
                 }
                 $cnt++;
             }
+        } elseif ($_FILES[$keyname]['error'] === UPLOAD_ERR_NO_FILE) {
+            $objErr->arrErr[$keyname] .= '※ '
+                . $this->disp_name[$arrKeyname[$keyname]]
+                . 'が選択されていません。'
+                . '<br />';
+        } else {
+            $objErr->arrErr[$keyname] .= '※ '
+                . $this->disp_name[$arrKeyname[$keyname]]
+                . 'のアップロードに失敗しました。'
+                . 'エラーコードは[' . $_FILES[$keyname]['error'] . ']です。'
+                . '<br />';
         }
 
         return $objErr->arrErr[$keyname];
