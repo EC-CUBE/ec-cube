@@ -86,7 +86,6 @@ function lfPopwinSubmit(formName) {
             <th>帳票タイトル</th>
             <td><!--{if $arrErr.title}--><span class="attention"><!--{$arrErr.title}--></span><!--{/if}-->
                 <input type="text" name="title" size="40" value="<!--{$arrForm.title}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->"/><br />
-                <span style="font-size: 80%;">※未入力時はデフォルトのタイトルが表示されます。</span><br />
             </td>
         </tr>
         <tr>
