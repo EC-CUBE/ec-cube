@@ -114,7 +114,6 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
                 break;
             case 'set_item': // 商品を選択する。
                 $this->arrErr = $this->lfCheckError($objFormParam);
-                $arrPost = $objFormParam->getHashArray();
                 if (SC_Utils_Ex::isBlank($this->arrErr['rank']) && SC_Utils_Ex::isBlank($this->arrErr['product_id'])) {
                     $arrItems = $this->setProducts($arrPost, $this->getRecommendProducts($objRecommend));
                     $this->checkRank = $arrPost['rank'];
