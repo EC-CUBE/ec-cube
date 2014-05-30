@@ -83,8 +83,8 @@
                 </tr>
                 <!--{section name=cnt loop=$arrBkupList}-->
                     <tr>
-                        <td ><!--{$arrBkupList[cnt].bkup_name}--></td>
-                        <td ><!--{$arrBkupList[cnt].bkup_memo}--></td>
+                        <td ><!--{$arrBkupList[cnt].bkup_name|h}--></td>
+                        <td ><!--{$arrBkupList[cnt].bkup_memo|h}--></td>
                         <td align="center"><!--{$arrBkupList[cnt].create_date|sfCutString:19:true:false}--></td>
                         <td align="center"><a href="javascript:;" onclick="fnRestore('<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">リストア</a></td>
                         <td align="center"><a href="javascript:;" onclick="eccube.setModeAndSubmit('download','list_name','<!--{$arrBkupList[cnt].bkup_name}-->'); return false;">ダウンロード</a></td>
