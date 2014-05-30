@@ -976,7 +976,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      * アンカーキーを取得する.
      *
      * @param  SC_FormParam                   $objFormParam SC_FormParam インスタンス
-     * @return アンカーキーの文字列
+     * @return string アンカーキーの文字列
      */
     public function getAnchorKey(&$objFormParam)
     {
@@ -1033,7 +1033,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      * 商品を変更
      *
      * @param  SC_FormParam $objFormParam         SC_FormParam インスタンス
-     * @param  integer      $add_product_class_id 変更商品規格ID
+     * @param  integer      $edit_product_class_id 変更商品規格ID
      * @param  integer      $change_no            変更対象
      * @return void
      */
@@ -1114,10 +1114,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
     /**
      * 変更対象のデータを上書きする
      *
-     * @param  array   $arrShipmentProducts 変更対象配列
-     * @param  array   $arrProductInfo      上書きデータ
-     * @param  integer $shipping_id         配送先ID
-     * @param  array   $no                  変更対象
+     * @param  array    $arrShipmentProducts 変更対象配列
+     * @param  array    $arrProductInfo      上書きデータ
+     * @param  int      $shipping_id         配送先ID
+     * @param  int      $no                  変更対象
      * @return void
      */
     public function changeShipmentProducts(&$arrShipmentProducts, $arrProductInfo, $shipping_id, $no)
@@ -1143,6 +1143,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
         // 配送先が存在する時のみ、商品個数の再設定を行います
         if(!SC_Utils_Ex::isBlank($arrShipmentsItems)) {
+            $arrUpdateQuantity = array();
             foreach ($arrShipmentsItems as $arritems) {
                 foreach ($arritems['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {
                     $arrUpdateQuantity[$shipment_product_class_id] += $arritems['shipment_quantity'][$relation_index];
@@ -1150,11 +1151,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             }
 
             $arrProductsClass = $objFormParam->getValue('product_class_id');
-            $arrProductsQuantity = $objFormParam->getValue('quantity');
+            $arrQuantity = array();
             foreach ($arrProductsClass as $relation_key => $product_class_id) {
-                $arrQuantity['quantity'][$relation_key] = $arrUpdateQuantity[$product_class_id];
+                $arrQuantity[$relation_key] = isset($arrUpdateQuantity[$product_class_id]) ? $arrUpdateQuantity[$product_class_id] : 0;
             }
-            $objFormParam->setParam($arrQuantity);
+            $objFormParam->setParam(array('quantity' => $arrQuantity));
         }
     }
 
@@ -1174,6 +1175,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             if ($product_class_id == $delete_product_class_id) {
                 foreach ($arrDeleteKeys as $delete_key) {
                     $arrProducts = $objFormParam->getValue($delete_key);
+                    $arrUpdateParams = array();
                     foreach ($arrProducts as $index => $product_info) {
                         if ($index != $relation_index) {
                             $arrUpdateParams[$delete_key][] = $product_info;
@@ -1191,35 +1193,36 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      *
      * @param  SC_FormParam $objFormParam          SC_FormParam インスタンス
      * @param  array        $arrShipmentDeleteKeys 削除項目
-     * @param  integer      $delete_shipping_id　 削除配送ID
-     * @param  array        $delete_no             削除対象
-     * @return void
+     * @param  int          $delete_shipping_id　  削除配送ID
+     * @param  int          $delete_no             削除対象
+     * @return array
      */
-    public function deleteShipment(&$objFormParam, $arrShipmentDeletKeys, $delete_shipping_id, $delete_no)
+    public function deleteShipment(&$objFormParam, $arrShipmentDeleteKeys, $delete_shipping_id, $delete_no)
     {
-            foreach ($arrShipmentDeletKeys as $delete_key) {
-                $arrShipments = $objFormParam->getValue($delete_key);
-                foreach ($arrShipments as $shipp_id => $arrKeyData) {
-                    if (empty($arrKeyData)) continue;
-                    foreach ($arrKeyData as $relation_index => $shipment_info) {
-                        if ($relation_index != $delete_no || $shipp_id != $delete_shipping_id) {
-                            $arrUpdateParams[$delete_key][$shipp_id][] = $shipment_info;
-                        }
+        $arrUpdateParams = array();
+        foreach ($arrShipmentDeleteKeys as $delete_key) {
+            $arrShipments = $objFormParam->getValue($delete_key);
+            foreach ($arrShipments as $shipp_id => $arrKeyData) {
+                if (empty($arrKeyData)) continue;
+                foreach ($arrKeyData as $relation_index => $shipment_info) {
+                    if ($relation_index != $delete_no || $shipp_id != $delete_shipping_id) {
+                        $arrUpdateParams[$delete_key][$shipp_id][] = $shipment_info;
                     }
                 }
             }
-            //$objFormParam->setParam($arrUpdateParams);
-            return $arrUpdateParams;
         }
+        //$objFormParam->setParam($arrUpdateParams);
+        return $arrUpdateParams;
+    }
 
     /**
      * 受注商品一覧側に商品を追加
      *
-     * @param  SC_FormParam $objFormParam                    SC_FormParam インスタンス
-     * @param  array        $arrProductClassIds　           対象配列の商品規格ID
-     * @param  integer      $indert_product_class_id　追?? 商品規格ID
-     * @param  array        $arrAddProductInfo               追加データ
-     * @return array        $arrAddProducts           更新データ
+     * @param SC_FormParam  $objFormParam               SC_FormParam インスタンス
+     * @param array         $arrProductClassIds 　      対象配列の商品規格ID
+     * @param int           $insert_product_class_id    追加商品規格ID
+     * @param array         $arrAddProductInfo          追加データ
+     * @return array|null   $arrAddProducts             更新データ
      */
     public function checkInsertOrderProducts(&$objFormParam, $arrProductClassIds, $insert_product_class_id, $arrAddProductInfo)
     {

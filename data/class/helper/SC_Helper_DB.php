@@ -1460,10 +1460,12 @@ __EOS__;
      * 店舗基本情報に基づいて税金付与した金額を返す
      * SC_Utils_Ex::sfCalcIncTax とどちらか統一したほうが良い
      *
-     * @param  integer $price 計算対象の金額
-     * @return integer 税金付与した金額
+     * @param  int $price 計算対象の金額
+     * @param  int $tax
+     * @param  int $tax_rule
+     * @return int 税金付与した金額
      */
-    public function sfCalcIncTax($price, $tax = null, $tax_rule = null)
+    public static function sfCalcIncTax($price, $tax = null, $tax_rule = null)
     {
         // 店舗基本情報を取得
         $CONF = SC_Helper_DB_Ex::sfGetBasisData();

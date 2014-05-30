@@ -253,7 +253,7 @@ class GC_Utils
      * [依存] なし
      * [注釈] -
      *----------------------------------------------------------------------*/
-    public function gfMakePassword($pwLength)
+    public static function gfMakePassword($pwLength)
     {
         // 乱数表のシードを決定
         srand((double) microtime() * 54234853);

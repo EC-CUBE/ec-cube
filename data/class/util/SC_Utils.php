@@ -692,7 +692,7 @@ class SC_Utils
      * @param  integer $tax_rule 端数処理
      * @return integer 税金額
      */
-    public function sfTax($price, $tax, $tax_rule)
+    public static function sfTax($price, $tax, $tax_rule)
     {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
@@ -712,7 +712,7 @@ class SC_Utils
      * @param  integer $tax_rule 端数処理
      * @return integer 税金付与した金額
      */
-    public function sfCalcIncTax($price, $tax, $tax_rule)
+    public static function sfCalcIncTax($price, $tax, $tax_rule)
     {
         return $price + SC_Utils_Ex::sfTax($price, $tax, $tax_rule);
     }
@@ -722,7 +722,7 @@ class SC_Utils
     {
         $adjust = pow(10 ,$pow-1);
 
-        // 整数且つ0出なければ桁数指定を行う
+        // 整数且つ0でなければ桁数指定を行う
         if (SC_Utils_Ex::sfIsInt($adjust) and $pow > 1) {
             $ret = (round($value * $adjust)/$adjust);
         }
@@ -740,7 +740,7 @@ class SC_Utils
      * @param  int   $rule
      * @return int
      */
-    public function sfPrePoint($price, $point_rate, $rule = POINT_RULE)
+    public static function sfPrePoint($price, $point_rate, $rule = POINT_RULE)
     {
         $real_point = $point_rate / 100;
         $ret = $price * $real_point;
@@ -812,8 +812,14 @@ class SC_Utils
         return $str;
     }
 
-    /* 配列をキー名ごとの配列に変更する */
-    public function sfSwapArray($array, $isColumnName = true)
+    /**
+     * 配列をキー名ごとの配列に変更する
+     *
+     * @param array $array
+     * @param bool $isColumnName
+     * @return array
+     */
+    public static function sfSwapArray($array, $isColumnName = true)
     {
         $arrRet = array();
         foreach ($array as $key1 => $arr1) {
@@ -836,8 +842,8 @@ class SC_Utils
      *
      * $requires が指定された場合, $requires に含まれるキーの値のみを返す.
      *
-     * @param array 連想配列
-     * @param array 必須キーの配列
+     * @param array $hash 連想配列
+     * @param array $requires 必須キーの配列
      * @return array 連想配列の値のみの配列
      */
     public function getHash2Array($hash, $requires = array())
@@ -898,7 +904,12 @@ class SC_Utils
         return $id . $random;
     }
 
-    // 二回以上繰り返されているスラッシュ[/]を一つに変換する。
+    /**
+     * 二回以上繰り返されているスラッシュ[/]を一つに変換する。
+     *
+     * @param string $istr
+     * @return string
+     */
     public function sfRmDupSlash($istr)
     {
         if (preg_match('|^http://|', $istr)) {
@@ -909,6 +920,7 @@ class SC_Utils
             $head = 'https://';
         } else {
             $str = $istr;
+            $head = '';
         }
         $str = preg_replace('|[/]+|', '/', $str);
         $ret = $head . $str;
