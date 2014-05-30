@@ -144,7 +144,7 @@
                     </tr>
                     <tr>
                         <td><!--{assign var=pref value=$row.pref}--><!--{$arrPref[$pref]}--></td>
-                        <td><!--{mailto address=$row.email encode="javascript"}--><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|h}-->');">仮登録メール再送</a><!--{/if}--></td>
+                        <td><!--{mailto address=$row.email encode="javascript" text=$row.email|truncate:60}--><!--{if $row.status eq 1}--><br /><a href="#" onclick="return fnReSendMail('<!--{$row.customer_id|h}-->');">仮登録メール再送</a><!--{/if}--></td>
                     </tr>
                 <!--{/foreach}-->
             </table>
