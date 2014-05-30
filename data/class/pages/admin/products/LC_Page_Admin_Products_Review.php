@@ -109,8 +109,6 @@ class LC_Page_Admin_Products_Review extends LC_Page_Admin_Ex
             case 'search':
             case 'csv':
 
-                // 検索条件を取得
-                list($where, $arrWhereVal) = $this->lfGetWhere($this->arrForm);
                 // 検索結果を取得
                 $this->arrReview = $this->lfGetReview($objReview);
 

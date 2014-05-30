@@ -38,12 +38,10 @@ class SC_Helper_Review
      */
     public function get($review_id)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $select='review_id, A.product_id, reviewer_name, sex, recommend_level, ';
-        $select.='reviewer_url, title, comment, A.status, A.create_date, A.update_date, name';
-        $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
-        $where = 'A.del_flg = 0 AND B.del_flg = 0 AND review_id = ? ';
-        $arrReview = $objQuery->select($select, $from, $where, array($review_id));
+        $query = array(
+            'review_id' => $review_id
+        );
+        $arrReview = $this->find(array('query' => $query));
 
         return $arrReview[0];
     }
@@ -181,6 +179,15 @@ class SC_Helper_Review
                         $where.= ' AND A.product_id IN (' . SC_Utils_Ex::sfGetCommaList($val) . ')';
                     } else {
                         $where.= ' AND A.product_id = ?';
+                        $values[] = $val;
+                    }
+                    break;
+
+                case 'review_id':
+                    if (is_array($val)) {
+                        $where.= ' AND review_id IN (' . SC_Utils_Ex::sfGetCommaList($val) . ')';
+                    } else {
+                        $where.= ' AND review_id = ?';
                         $values[] = $val;
                     }
                     break;
