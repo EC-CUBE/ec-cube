@@ -829,7 +829,7 @@ class SC_CheckError
     }
 
     /*　ファイル名の判定　*/
-    // 入力文字が英数字,'_','-'以外ならエラーを返す
+    // 入力文字が英数字,'_','-','.'以外ならエラーを返す
     // value[0] = 項目名 value[1] = 判定対象文字列
     public function FILE_NAME_CHECK($value)
     {
@@ -838,7 +838,7 @@ class SC_CheckError
         }
         $this->createParam($value);
         if (strlen($_FILES[$value[1]]['name']) > 0 && !preg_match("/^[[:alnum:]_\.-]+$/i", $_FILES[$value[1]]['name'])) {
-            $this->arrErr[$value[1]] = '※ ' . $value[0] . 'のファイル名に日本語やスペースは使用しないで下さい。<br />';
+            $this->arrErr[$value[1]] = '※ ' . $value[0] . "のファイル名には、英数字、記号（_ - .）のみを入力して下さい。<br />";
         }
     }
 
