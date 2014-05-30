@@ -152,15 +152,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
     {
         $arrErr = $objFormParam->checkError();
 
-        $arrForm = $objFormParam->getHashArray();
-
-        // 重複メッセージの判定
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists('dtb_review','product_id = ? AND title = ? ', array($arrForm['product_id'], $arrForm['title']));
-        if ($exists) {
-            $arrErr['title'] .= '重複したタイトルは登録できません。';
-        }
-
         if (REVIEW_ALLOW_URL == false) {
             $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
             // コメント欄へのURLの入力を禁止
