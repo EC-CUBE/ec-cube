@@ -135,12 +135,18 @@ class SC_UploadFile
                 $cnt++;
             }
         } elseif ($_FILES[$keyname]['error'] === UPLOAD_ERR_NO_FILE) {
-            $objErr->arrErr[$keyname] .= '※ '
+            $objErr->arrErr[$keyname] = '※ '
                 . $this->disp_name[$arrKeyname[$keyname]]
                 . 'が選択されていません。'
                 . '<br />';
+        } elseif ($_FILES[$keyname]['error'] === UPLOAD_ERR_INI_SIZE) {
+            $objErr->arrErr[$keyname] = '※ '
+                . $this->disp_name[$arrKeyname[$keyname]]
+                . 'のアップロードに失敗しました。'
+                . '(.htaccessファイルのphp_value upload_max_filesizeを調整してください)'
+                . '<br />';
         } else {
-            $objErr->arrErr[$keyname] .= '※ '
+            $objErr->arrErr[$keyname] = '※ '
                 . $this->disp_name[$arrKeyname[$keyname]]
                 . 'のアップロードに失敗しました。'
                 . 'エラーコードは[' . $_FILES[$keyname]['error'] . ']です。'
