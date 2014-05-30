@@ -289,7 +289,7 @@
                     <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
                     円
                 </td>
-                <th>購入商品</th>
+                <th>購入商品名</th>
                 <td>
                     <!--{assign var=key value="search_product_name"}-->
                     <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><!--{/if}-->
