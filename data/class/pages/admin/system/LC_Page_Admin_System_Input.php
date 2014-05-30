@@ -189,8 +189,8 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
             $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK'));
             $objFormParam->addParam('パスワード(確認)', 'password02', '' , '', array('EXIST_CHECK'));
         } else {
-            $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
-            $objFormParam->addParam('パスワード(確認)', 'password02', '' , '', array('EXIST_CHECK', 'ALNUM_CHECK'));
+            $objFormParam->addParam('パスワード', 'password', '' , '', array('EXIST_CHECK', 'GRAPH_CHECK'));
+            $objFormParam->addParam('パスワード(確認)', 'password02', '' , '', array('EXIST_CHECK', 'GRAPH_CHECK'));
         }
         $objFormParam->addParam('権限', 'authority', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('稼働/非稼働', 'work', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));

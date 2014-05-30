@@ -62,7 +62,7 @@ self.moveTo(20,20);self.focus();
                 <!--{if $arrErr.login_id}--><span class="attention"><!--{$arrErr.login_id}--></span><!--{/if}-->
                 <input type="text" name="login_id" size="20" class="box20" value="<!--{$arrForm.login_id|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.login_id|sfGetErrorColor}-->" />
                 <span class="attention">※必須入力</span><br />
-                ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
+                ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字（記号可）
             </td>
         </tr>
         <tr>
@@ -71,7 +71,7 @@ self.moveTo(20,20);self.focus();
                 <!--{if $arrErr.password}--><span class="attention"><!--{$arrErr.password}--><!--{$arrErr.password02}--></span><!--{/if}-->
                 <input type="password" name="password" size="20" class="box20" value="<!--{$arrForm.password}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.password|sfGetErrorColor}-->" />
                 <span class="attention">※必須入力</span><br />
-                ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字
+                ※半角英数字<!--{$smarty.const.ID_MIN_LEN}-->～<!--{$smarty.const.ID_MAX_LEN}-->文字（記号可）
                 <br />
                 <input type="password" name="password02" size="20" class="box20" value="<!--{$arrForm.password02}-->" onfocus="<!--{$tpl_onfocus}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" style="<!--{$arrErr.password02|sfGetErrorColor}-->" />
                 <p><span class="attention mini">確認のために2度入力してください。</span></p>
