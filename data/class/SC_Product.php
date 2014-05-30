@@ -286,7 +286,7 @@ __EOS__;
                     $this->stock_find[$productId] = true;
                 }
 
-                if (!in_array($classcat_id1, $classCats1)) {
+                if (!in_array($classcategory_id1, $classCats1)) {
                     $classCats1[$classcategory_id1] = $arrProductsClass['classcategory_name1']
                         . ($classcategory_id2 == 0 && !$stock_find_class ? ' (品切れ中)' : '');
                 }
