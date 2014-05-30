@@ -54,7 +54,8 @@ function fnMoveSelect(select, target) {
         }
     });
     // IE7再描画不具合対策
-    if ($.browser.msie && $.browser.version >= 7) {
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf("msie") != -1 && ua.indexOf('msie 6') == -1) {
         $('#' + select).hide();
         $('#' + select).show();
         $('#' + target).hide();
