@@ -591,4 +591,50 @@ class SC_FormParam
             $this->{$target}[$index] = $value;
         }
     }
+
+    /**
+     * パラメーターの設定情報を取得
+     *
+     * @param   string  $keyname    取得するキー名
+     * @param   string  $target     項目名(disp_name,length,convert等)
+     * @return  mixed   パラメーターの設定情報
+     */
+    public function getParamSetting($keyname = null, $target = null)
+    {
+        $arrSetting = array(
+            'disp_name',
+            'keyname',
+            'length',
+            'convert',
+            'arrCheck',
+            'arrDefault',
+            'input_db',
+        );
+
+        if (is_null($keyname)) {
+            // 全ての設定情報を取得
+            $ret = array();
+            foreach ($this->keyname as $index=>$key) {
+                foreach ($arrSetting as $item) {
+                    $ret[$key][$item] = $this->{$item}[$index];
+                }
+            }
+            return $ret;
+        }
+
+        $index = array_search($keyname, $this->keyname);
+
+        if ($index !== false) {
+            if (is_null($target)) {
+                // 指定のkeynameの全ての設定情報を取得
+                $ret = array();
+                foreach ($arrSetting as $item) {
+                    $ret[$item] = $this->{$item}[$index];
+                }
+                return $ret;
+            }
+
+            return $this->{$target}[$index];
+        }
+    }
 }
