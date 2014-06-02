@@ -214,7 +214,7 @@
                     <!--優先順位-->
                     <td class="center">
                         <span class="attention"><!--{$arrErr.priority[$plugin.plugin_id]}--></span>
-                        <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}--> priority" value="<!--{$plugin.priority|h}-->" size="1" />
+                        <input type="text" class="center" name="priority_<!--{$plugin.plugin_code}-->" value="<!--{$plugin.priority|h}-->" size="1" />
                         <a class="btn-action" href="javascript:;" onclick="update_priority(<!--{$plugin.plugin_id}-->, '<!--{$plugin.plugin_code}-->'); return false;"><span class="btn-next">変更</span></a><br/>
                         <span><!--{$plugin.priority_message}--></span>
                     </td>
