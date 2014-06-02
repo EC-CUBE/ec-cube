@@ -155,11 +155,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         if (!SC_Utils_Ex::isBlank($order_id)) {
             $this->setOrderToFormParam($objFormParam, $order_id);
             $this->tpl_subno = 'index';
+            $arrValuesBefore['deliv_id'] = $objFormParam->getValue('deliv_id');
             $arrValuesBefore['payment_id'] = $objFormParam->getValue('payment_id');
             $arrValuesBefore['payment_method'] = $objFormParam->getValue('payment_method');
         } else {
             $this->tpl_subno = 'add';
             $this->tpl_mode = 'add';
+            $arrValuesBefore['deliv_id'] = NULL;
             $arrValuesBefore['payment_id'] = NULL;
             $arrValuesBefore['payment_method'] = NULL;
             // お届け先情報を空情報で表示
@@ -315,6 +317,13 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $this->top_shipping_id      = array_shift((array_keys($this->arrAllShipping)));
         $this->arrDelivTime   = SC_Helper_Delivery_Ex::getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
+        if ($arrValuesBefore['deliv_id']) {
+            // 受注当時の配送業者名はdtb_orderにないので、
+            // 削除済みの配送業者も含めて情報を取得。
+            $objDelivery = new SC_Helper_Delivery_Ex();
+            $arrDelivery = $objDelivery->get($arrValuesBefore['deliv_id'], true);
+            $this->arrDeliv[$arrValuesBefore['deliv_id']] = $arrDelivery['name'];
+        }
         if ($arrValuesBefore['payment_id'])
             $this->arrPayment[$arrValuesBefore['payment_id']] = $arrValuesBefore['payment_method'];
     }
