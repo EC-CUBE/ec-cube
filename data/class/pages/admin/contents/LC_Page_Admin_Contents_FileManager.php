@@ -144,7 +144,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
                 $this->arrErr = $objFormParam->checkError();
                 $path_exists = SC_Utils::checkFileExistsWithInBasePath($objFormParam->getValue('select_file'),USER_REALDIR);
                 if (SC_Utils_Ex::isBlank($this->arrErr) && ($path_exists)) {
-                    $objFileManager->deleteFile($objFormParam->getValue('select_file'));
+                    SC_Helper_FileManager_Ex::deleteFile($objFormParam->getValue('select_file'));
                 }
                 break;
             // ファイル作成

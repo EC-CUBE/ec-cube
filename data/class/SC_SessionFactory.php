@@ -48,7 +48,7 @@ class SC_SessionFactory
      *
      * @return SC_SessionFactory
      */
-    public function getInstance()
+    public static function getInstance()
     {
         $type = defined('SESSION_KEEP_METHOD')
             ? SESSION_KEEP_METHOD

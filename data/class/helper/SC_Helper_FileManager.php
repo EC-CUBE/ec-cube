@@ -410,7 +410,7 @@ class SC_Helper_FileManager
      * @param  boolean $del_myself $pathそのものを削除するか. true なら削除する.
      * @return void
      */
-    public function deleteFile($path, $del_myself = true)
+    public static function deleteFile($path, $del_myself = true)
     {
         $flg = false;
         // 対象が存在するかを検証.

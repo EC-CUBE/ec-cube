@@ -391,7 +391,7 @@ class GC_Utils
      *
      * @return bool フロント機能か
      */
-    public function isFrontFunction()
+    public static function isFrontFunction()
     {
         return defined('FRONT_FUNCTION') && FRONT_FUNCTION === true;
     }
@@ -401,7 +401,7 @@ class GC_Utils
      *
      * @return bool インストール機能か
      */
-    public function isInstallFunction()
+    public static function isInstallFunction()
     {
         return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION === true;
     }

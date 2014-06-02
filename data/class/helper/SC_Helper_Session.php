@@ -213,7 +213,7 @@ class SC_Helper_Session
      *
      * @return void
      */
-    public function destroyToken()
+    public static function destroyToken()
     {
         unset($_SESSION[TRANSACTION_ID_NAME]);
     }
