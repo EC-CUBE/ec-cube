@@ -22,52 +22,68 @@
  */
 *}-->
 <script type="text/javascript">
-// 表示非表示切り替え
-function lfDispSwitch(id){
-    var obj = document.getElementById(id);
-    if (obj.style.display == 'none') {
-        obj.style.display = '';
-    } else {
-        obj.style.display = 'none';
-    }
-}
-
-// セレクトボックスのリストを初期化
-// ※キャッシュ対策
-// (移動元セレクトボックス)
-function fnInitSelect(select) {
-    var selectedOptions = <!--{$tpl_json_category_id}-->;
-    $('#' + select + ' option').attr('selected', false);
-    for(var i=0; i<selectedOptions.length; i++){
-        $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
-            .attr('selected', 'selected');
-    }
-}
-
-// セレクトボックスのリストを移動
-// (移動元セレクトボックスID, 移動先セレクトボックスID)
-function fnMoveSelect(select, target) {
-    $('#' + select).children().each(function() {
-        if (this.selected) {
-            $('#' + target).append(this);
-            $(this).attr({selected: false});
+    // 表示非表示切り替え
+    function lfDispSwitch(id){
+        var obj = document.getElementById(id);
+        if (obj.style.display == 'none') {
+            obj.style.display = '';
+        } else {
+            obj.style.display = 'none';
         }
-    });
-    // IE7再描画不具合対策
-    var ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf("msie") != -1 && ua.indexOf('msie 6') == -1) {
-        $('#' + select).hide();
-        $('#' + select).show();
-        $('#' + target).hide();
-        $('#' + target).show();
     }
-}
 
-// target の子要素を選択状態にする
-function selectAll(target) {
-    $('#' + target).children().attr({selected: true});
-}
+    // セレクトボックスのリストを初期化
+    // ※キャッシュ対策
+    // (移動元セレクトボックス)
+    function fnInitSelect(select) {
+        var selectedOptions = <!--{$tpl_json_category_id}-->;
+        $('#' + select + ' option').attr('selected', false);
+        for(var i=0; i<selectedOptions.length; i++){
+            $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
+                .attr('selected', 'selected');
+        }
+    }
 
+    // セレクトボックスのリストを移動
+    // (移動元セレクトボックスID, 移動先セレクトボックスID)
+    function fnMoveSelect(select, target) {
+        $('#' + select).children().each(function() {
+            if (this.selected) {
+                $('#' + target).append(this);
+                $(this).attr({selected: false});
+            }
+        });
+        // IE7再描画不具合対策
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf("msie") != -1 && ua.indexOf('msie 6') == -1) {
+            $('#' + select).hide();
+            $('#' + select).show();
+            $('#' + target).hide();
+            $('#' + target).show();
+        }
+    }
+
+    // target の子要素を選択状態にする
+    function selectAll(target) {
+        $('#' + target).children().attr({selected: true});
+    }
+
+    // 商品種別によってダウンロード商品のフォームの表示非表示を切り替える
+    function toggleDownloadFileForms(value) {
+        if (value == '2') {
+            $('.type-download').show('fast');
+        } else {
+            $('.type-download').hide('fast');
+        }
+    }
+
+    $(function(){
+        var form_product_type = $('input[name=product_type_id]');
+        form_product_type.click(function(){
+            toggleDownloadFileForms(form_product_type.filter(':checked').val());
+        });
+        toggleDownloadFileForms(form_product_type.filter(':checked').val());
+    })
 </script>
 
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
@@ -151,7 +167,7 @@ function selectAll(target) {
                 <!--{html_radios name="product_type_id" options=$arrProductType selected=$arrForm.product_type_id separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
-        <tr>
+        <tr class="type-download">
             <th>ダウンロード商品ファイル名<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
@@ -159,7 +175,7 @@ function selectAll(target) {
                 <span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
             </td>
         </tr>
-        <tr>
+        <tr class="type-download">
             <!--{assign var=key value="down_file"}-->
             <th>ダウンロード商品用<br />ファイルアップロード<span class="attention"> *</span></th>
             <td>
