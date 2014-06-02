@@ -32,12 +32,12 @@
 require_once 'require.php';
 
 // 認証可否の判定
-SC_Utils::sfIsSuccess(new SC_Session());
+SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex());
 
 $plugin_id = isset($_GET['plugin_id']) ? $_GET['plugin_id'] : null;
 
 if (!empty($plugin_id) && is_numeric($plugin_id)) {
-    GC_Utils::gfPrintLog('loading plugin ====> plugin_id = ' . $plugin_id);
+    GC_Utils_Ex::gfPrintLog('loading plugin ====> plugin_id = ' . $plugin_id);
     $plugin = SC_Plugin_Util_Ex::getPluginByPluginId($plugin_id);
 
     if (isset($plugin['plugin_code'])) {

@@ -32,12 +32,12 @@
 require_once 'require.php';
 
 // 認証可否の判定
-SC_Utils::sfIsSuccess(new SC_Session());
+SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex());
 
 $module_id = isset($_GET['module_id']) ? $_GET['module_id'] : null;
 
 if (!empty($module_id) && is_numeric($module_id)) {
-    GC_Utils::gfPrintLog('loading module ====> module_id = ' . $module_id);
+    GC_Utils_Ex::gfPrintLog('loading module ====> module_id = ' . $module_id);
 
     $objQuery =& SC_Query_Ex::getSingletonInstance();
     $arrRet = $objQuery->select('module_code', 'dtb_module', 'module_id = ?', array($module_id));
