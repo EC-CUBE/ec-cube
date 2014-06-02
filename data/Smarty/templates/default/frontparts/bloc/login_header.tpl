@@ -50,7 +50,7 @@
                         <p class="btn">
                             ようこそ <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--> 様</span>
                             <!--{if $smarty.const.USE_POINT !== false}-->
-                                / 所持ポイント: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>&nbsp;&nbsp;
+                                / 所持ポイント: <span class="point"> <!--{$tpl_user_point|n2s|default:0}--> pt</span>&nbsp;&nbsp;
                             <!--{/if}-->
                             <!--{if !$tpl_disable_logout}-->
                                 <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/common/btn_header_logout.jpg" onclick="eccube.fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;" alt="ログアウト" />

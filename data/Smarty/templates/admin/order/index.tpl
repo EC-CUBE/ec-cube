@@ -385,7 +385,7 @@
                                 <td class="center"><!--{$arrResults[cnt].order_name01|h}--> <!--{$arrResults[cnt].order_name02|h}--></td>
                                 <!--{assign var=payment_id value="`$arrResults[cnt].payment_id`"}-->
                                 <td class="center"><!--{$arrPayments[$payment_id]}--></td>
-                                <td class="right"><!--{$arrResults[cnt].total|number_format}--></td>
+                                <td class="right"><!--{$arrResults[cnt].total|n2s}--></td>
                                 <td class="center"><!--{$arrResults[cnt].commit_date|sfDispDBDate|default:"未発送"}--></td>
                                 <td class="center"><!--{$arrORDERSTATUS[$status]}--></td>
                                 <td class="center">

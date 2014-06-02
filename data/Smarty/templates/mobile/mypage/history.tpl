@@ -63,31 +63,31 @@
         <!--{assign var=quantity value=`$orderDetail.quantity`}-->
         <!--{assign var=tax_rate value=`$orderDetail.tax_rate`}-->
         <!--{assign var=tax_rule value=`$orderDetail.tax_rule`}-->
-        <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format|h}-->円<br>
+        <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|n2s|h}-->円<br>
         数量：<!--{$quantity|h}--><br>
-        小計：<!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円<br>
+        小計：<!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|n2s}-->円<br>
     <!--{/foreach}-->
     <hr>
-    小計：<!--{$tpl_arrOrderData.subtotal|number_format}-->円<br>
+    小計：<!--{$tpl_arrOrderData.subtotal|n2s}-->円<br>
     <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
     <!--{if $point_discount > 0}-->
-        ポイント値引き：<!--{$point_discount|number_format}-->円<br>
+        ポイント値引き：<!--{$point_discount|n2s}-->円<br>
     <!--{/if}-->
     <!--{assign var=key value="discount"}-->
     <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
-        値引き：<!--{$tpl_arrOrderData[$key]|number_format}-->円<br>
+        値引き：<!--{$tpl_arrOrderData[$key]|n2s}-->円<br>
     <!--{/if}-->
-    送料：<!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円<br>
+    送料：<!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|n2s|h}-->円<br>
     手数料：
     <!--{assign var=key value="charge"}-->
-    <!--{$tpl_arrOrderData[$key]|number_format|h}-->円<br>
-    合計：<!--{$tpl_arrOrderData.payment_total|number_format}-->円<br>
+    <!--{$tpl_arrOrderData[$key]|n2s|h}-->円<br>
+    合計：<!--{$tpl_arrOrderData.payment_total|n2s}-->円<br>
     <hr>
     <!-- 使用ポイントここから -->
     <!--{if $smarty.const.USE_POINT !== false}-->
         ■使用ポイント<br>
-        ご使用ポイント：<!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt<br>
-        今回加算されるポイント：<!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt<br>
+        ご使用ポイント：<!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|n2s|default:0}--> pt<br>
+        今回加算されるポイント：<!--{$tpl_arrOrderData.add_point|n2s|default:0}--> pt<br>
         <hr>
     <!--{/if}-->
     <!-- 使用ポイントここまで -->
@@ -104,7 +104,7 @@
                 <!--{if $item.productsClass.classcategory_name2 != ""}-->
                     <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br>
                 <!--{/if}-->
-                単価：<!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|number_format}-->円<br>
+                単価：<!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|n2s}-->円<br>
                 数量：<!--{$item.quantity}--><br>
                 <br>
             <!--{/foreach}-->

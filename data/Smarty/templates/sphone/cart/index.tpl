@@ -28,10 +28,10 @@
     <!--{if $smarty.const.USE_POINT !== false}-->
         <!--★ポイント案内★-->
         <div class="information">
-            <p class="fb">商品の合計金額は「<span class="price"><!--{$tpl_all_total_inctax|number_format}-->円</span>」です。</p>
+            <p class="fb">商品の合計金額は「<span class="price"><!--{$tpl_all_total_inctax|n2s}-->円</span>」です。</p>
 
             <!--{if $tpl_login}-->
-                <p class="point_announce"><span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pt</span>」です。<br />
+                <p class="point_announce"><span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|n2s|default:0}--> pt</span>」です。<br />
                     ポイントは商品購入時に<span class="price">1pt＝<!--{$smarty.const.POINT_VALUE}-->円</span>として使用することができます。</p>
             <!--{else}-->
                 <p class="point_announce">ポイント制度をご利用になられる場合は、ログインが必要です。</p>
@@ -67,7 +67,7 @@
                             <div class="bubble_announce clearfix">
                                 <p><a rel="external" href="<!--{$tpl_prev_url|h}-->">
                                     <!--{if !$arrData[$key].is_deliv_free}-->
-                                        あと「<span class="price"><!--{$tpl_deliv_free[$key]|number_format}-->円</span>」で<span class="price">送料無料！！</span>
+                                        あと「<span class="price"><!--{$tpl_deliv_free[$key]|n2s}-->円</span>」で<span class="price">送料無料！！</span>
                                     <!--{else}-->
                                         現在、「<span class="price">送料無料</span>」です！！
                                     <!--{/if}-->
@@ -97,7 +97,7 @@
                                 <h3><!--{$arrProductType[$key]}--></h3>
                             </div>
                             <div class="totalmoney_area">
-                                <!--{$arrProductType[$key]}-->の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|number_format}-->円</span>」です。
+                                <!--{$arrProductType[$key]}-->の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|n2s}-->円</span>」です。
                             </div>
                         <!--{/if}-->
 
@@ -116,18 +116,18 @@
                                                 <!--{if $arrItem.productsClass.classcategory_name2 != ""}-->
                                                     <span class="mini"><!--{$arrItem.productsClass.class_name2}-->：<!--{$arrItem.productsClass.classcategory_name2}--></span><br />
                                                 <!--{/if}-->
-                                                <span class="mini">価格:</span><!--{$arrItem.price_inctax|number_format}-->円
+                                                <span class="mini">価格:</span><!--{$arrItem.price_inctax|n2s}-->円
                                             </p>
                                             <p class="btn_delete">
                                                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" onClick="eccube.fnFormModeSubmit('form<!--{$key}-->', 'delete', 'cart_no', '<!--{$arrItem.cart_no}-->');" class="pointer" width="21" height="20" alt="削除" /></p>
                                         </div>
                                         <ul>
-                                            <li class="quantity"><span class="mini">数量:</span><!--{$arrItem.quantity|number_format}--></li>
+                                            <li class="quantity"><span class="mini">数量:</span><!--{$arrItem.quantity|n2s}--></li>
                                             <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_plus.png" width="22" height="21" alt="＋" onclick="eccube.fnFormModeSubmit('form<!--{$key}-->', 'up','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></li>
                                             <!--{if $arrItem.quantity > 1}-->
                                                 <li class="quantity_btn"><img src="<!--{$TPL_URLPATH}-->img/button/btn_minus.png" width="22" height="21" alt="-" onclick="eccube.fnFormModeSubmit('form<!--{$key}-->', 'down','cart_no','<!--{$arrItem.cart_no}-->'); return false" /></li>
                                             <!--{/if}-->
-                                            <li class="result"><span class="mini">小計：</span><!--{$arrItem.total_inctax|number_format}-->円</li>
+                                            <li class="result"><span class="mini">小計：</span><!--{$arrItem.total_inctax|n2s}-->円</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -137,12 +137,12 @@
                         <!--▲カートの中の商品一覧ここまで -->
 
                         <div class="total_area">
-                            <div><span class="mini">合計：</span><span class="price fb"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}--> 円</span></div>
+                            <div><span class="mini">合計：</span><span class="price fb"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|n2s}--> 円</span></div>
                             <!--{if $smarty.const.USE_POINT !== false}-->
                                 <!--{if $arrData[$key].birth_point > 0}-->
-                                    <div><span class="mini">お誕生月ポイント：</span> <!--{$arrData[$key].birth_point|number_format}--> Pt</div>
+                                    <div><span class="mini">お誕生月ポイント：</span> <!--{$arrData[$key].birth_point|n2s}--> Pt</div>
                                 <!--{/if}-->
-                                <div><span class="mini">今回加算ポイント：</span> <!--{$arrData[$key].add_point|number_format}--> Pt</div>
+                                <div><span class="mini">今回加算ポイント：</span> <!--{$arrData[$key].add_point|n2s}--> Pt</div>
                             <!--{/if}-->
                         </div>
                         <!--{if strlen($tpl_error) == 0}-->

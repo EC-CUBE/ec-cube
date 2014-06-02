@@ -27,7 +27,7 @@
 
 ■ご請求金額
 ご注文番号：<!--{$arrOrder.order_id}-->
-お支払い合計：￥<!--{$arrOrder.payment_total|number_format|default:0}-->
+お支払い合計：￥<!--{$arrOrder.payment_total|n2s|default:0}-->
 お支払い方法：<!--{$arrOrder.payment_method}-->
 メッセージ：<!--{$Message_tmp}-->
 
@@ -44,20 +44,20 @@
 <!--{section name=cnt loop=$arrOrderDetail}-->
 商品コード：<!--{$arrOrderDetail[cnt].product_code}-->
 商品名：<!--{$arrOrderDetail[cnt].product_name}--> <!--{$arrOrderDetail[cnt].classcategory_name1}--> <!--{$arrOrderDetail[cnt].classcategory_name2}-->
-単価：￥<!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrOrderDetail[cnt].tax_rate:$arrOrderDetail[cnt].tax_rule|number_format}-->
+単価：￥<!--{$arrOrderDetail[cnt].price|sfCalcIncTax:$arrOrderDetail[cnt].tax_rate:$arrOrderDetail[cnt].tax_rule|n2s}-->
 数量：<!--{$arrOrderDetail[cnt].quantity}-->
 
 <!--{/section}-->
 
-小　計 ￥<!--{$arrOrder.subtotal|number_format|default:0}--> <!--{if 0 < $arrOrder.tax}-->(うち消費税 ￥<!--{$arrOrder.tax|number_format|default:0}-->)<!--{/if}-->
+小　計 ￥<!--{$arrOrder.subtotal|n2s|default:0}--> <!--{if 0 < $arrOrder.tax}-->(うち消費税 ￥<!--{$arrOrder.tax|n2s|default:0}-->)<!--{/if}-->
 
 <!--{if $arrOrder.use_point > 0}-->
-値引き ￥<!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|number_format|default:0}-->
+値引き ￥<!--{$arrOrder.use_point*$smarty.const.POINT_VALUE+$arrOrder.discount|n2s|default:0}-->
 <!--{/if}-->
-送　料 ￥<!--{$arrOrder.deliv_fee|number_format|default:0}-->
-手数料 ￥<!--{$arrOrder.charge|number_format|default:0}-->
+送　料 ￥<!--{$arrOrder.deliv_fee|n2s|default:0}-->
+手数料 ￥<!--{$arrOrder.charge|n2s|default:0}-->
 ===============================================================
-合　計 ￥<!--{$arrOrder.payment_total|number_format|default:0}-->
+合　計 ￥<!--{$arrOrder.payment_total|n2s|default:0}-->
 
 ■ご注文者情報
 　お名前　：<!--{$arrOrder.order_name01}--> <!--{$arrOrder.order_name02}-->　様
@@ -100,8 +100,8 @@
 <!--{foreach item=item name=item from=$shipping.shipment_item}-->
 商品コード：<!--{$item.product_code}-->
 商品名：<!--{$item.product_name}--> <!--{$item.classcategory_name1}--> <!--{$item.classcategory_name2}-->
-単価：￥<!--{$item.price|sfCalcIncTax:$item.tax_rate:$item.tax_rule|number_format}-->
-数量：<!--{$item.quantity|number_format}-->
+単価：￥<!--{$item.price|sfCalcIncTax:$item.tax_rate:$item.tax_rule|n2s}-->
+数量：<!--{$item.quantity|n2s}-->
 
 <!--{/foreach}-->
 <!--{/foreach}-->
@@ -109,8 +109,8 @@
 <!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
 ■ポイント情報
 <!--{* ご注文前のポイント {$tpl_user_point} pt *}-->
-ご使用ポイント：<!--{$arrOrder.use_point|number_format|default:0}--> pt
-加算予定ポイント：<!--{$arrOrder.add_point|number_format|default:0}--> pt
-現在の所持ポイント：<!--{$arrCustomer.point|number_format|default:0}--> pt
+ご使用ポイント：<!--{$arrOrder.use_point|n2s|default:0}--> pt
+加算予定ポイント：<!--{$arrOrder.add_point|n2s|default:0}--> pt
+現在の所持ポイント：<!--{$arrCustomer.point|n2s|default:0}--> pt
 <!--{/if}-->
 <!--{$tpl_footer}-->

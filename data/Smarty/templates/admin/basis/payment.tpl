@@ -57,11 +57,11 @@
                 <!--{if $arrPaymentListFree[cnt].charge_flg == 2}-->
                     <td class="center">-</td>
                 <!--{else}-->
-                    <td class="right"><!--{$arrPaymentListFree[cnt].charge|number_format|h}--></td>
+                    <td class="right"><!--{$arrPaymentListFree[cnt].charge|n2s|h}--></td>
                 <!--{/if}-->
                 <td class="center">
-                    <!--{if $arrPaymentListFree[cnt].rule_max > 0}--><!--{$arrPaymentListFree[cnt].rule_max|number_format|h}--><!--{else}-->0<!--{/if}-->円
-                    <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|number_format|h}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
+                    <!--{if $arrPaymentListFree[cnt].rule_max > 0}--><!--{$arrPaymentListFree[cnt].rule_max|n2s|h}--><!--{else}-->0<!--{/if}-->円
+                    <!--{if $arrPaymentListFree[cnt].upper_rule > 0}-->～<!--{$arrPaymentListFree[cnt].upper_rule|n2s|h}-->円<!--{elseif $arrPaymentListFree[cnt].upper_rule == "0"}--><!--{else}-->～無制限<!--{/if}--></td>
                 <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="eccube.changeAction('./payment_input.php'); eccube.setModeAndSubmit('pre_edit', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">編集</a><!--{else}-->-<!--{/if}--></td>
                 <td class="center"><!--{if $arrPaymentListFree[cnt].fix != 1}--><a href="?" onclick="eccube.setModeAndSubmit('delete', 'payment_id', <!--{$arrPaymentListFree[cnt].payment_id}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
                 <td class="center">

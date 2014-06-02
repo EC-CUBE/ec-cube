@@ -102,9 +102,9 @@
                         <dd class="price">
                             <span id="price01_default"><!--{strip}-->
                                 <!--{if $arrProduct.price01_min_inctax == $arrProduct.price01_max_inctax}-->
-                                    <!--{$arrProduct.price01_min_inctax|number_format}-->
+                                    <!--{$arrProduct.price01_min_inctax|n2s}-->
                                 <!--{else}-->
-                                    <!--{$arrProduct.price01_min_inctax|number_format}-->～<!--{$arrProduct.price01_max_inctax|number_format}-->
+                                    <!--{$arrProduct.price01_min_inctax|n2s}-->～<!--{$arrProduct.price01_max_inctax|n2s}-->
                                 <!--{/if}-->
                             <!--{/strip}--></span><span id="price01_dynamic"></span>
                             円
@@ -118,9 +118,9 @@
                     <dd class="price">
                         <span id="price02_default"><!--{strip}-->
                             <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
-                                <!--{$arrProduct.price02_min_inctax|number_format}-->
+                                <!--{$arrProduct.price02_min_inctax|n2s}-->
                             <!--{else}-->
-                                <!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
+                                <!--{$arrProduct.price02_min_inctax|n2s}-->～<!--{$arrProduct.price02_max_inctax|n2s}-->
                             <!--{/if}-->
                         <!--{/strip}--></span><span id="price02_dynamic"></span>
                         円
@@ -132,12 +132,12 @@
                     <div class="point">ポイント：
                         <span id="point_default"><!--{strip}-->
                             <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-                                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->
+                                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|n2s}-->
                             <!--{else}-->
                                 <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate}-->
-                                    <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->
+                                    <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|n2s}-->
                                 <!--{else}-->
-                                    <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate|number_format}-->
+                                    <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|n2s}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate|n2s}-->
                                 <!--{/if}-->
                             <!--{/if}-->
                         <!--{/strip}--></span><span id="point_dynamic"></span>
@@ -363,9 +363,9 @@
                         <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->"><!--{$arrItem.name|h}--></a></h3>
                         <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：<span class="price">
                             <!--{if $price02_min == $price02_max}-->
-                                <!--{$price02_min|number_format}-->
+                                <!--{$price02_min|n2s}-->
                             <!--{else}-->
-                                <!--{$price02_min|number_format}-->～<!--{$price02_max|number_format}-->
+                                <!--{$price02_min|n2s}-->～<!--{$price02_max|n2s}-->
                             <!--{/if}-->円</span></p>
                         <p class="mini"><!--{$arrItem.comment|h|nl2br}--></p>
                     </div>

@@ -33,7 +33,7 @@
                         <p>ようこそ<br />
                             <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--> 様</span><br />
                             <!--{if $smarty.const.USE_POINT !== false}-->
-                                所持ポイント：<span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pt</span>
+                                所持ポイント：<span class="point"> <!--{$tpl_user_point|n2s|default:0}--> pt</span>
                             <!--{/if}-->
                         </p>
                         <!--{if !$tpl_disable_logout}-->

@@ -94,45 +94,45 @@
                         <!--{$arrProductType[$orderDetail.product_type_id]}-->
                     <!--{/if}-->
                     </td>
-                    <td class="alignR"><!--{$orderDetail.price_inctax|number_format|h}-->円
+                    <td class="alignR"><!--{$orderDetail.price_inctax|n2s|h}-->円
                     <!--{if $orderDetail.price_inctax != $orderDetail.product_price_inctax}-->
-                        <div class="attention">【現在価格】</div><span class="attention"><!--{$orderDetail.product_price_inctax|number_format|h}-->円</span>
+                        <div class="attention">【現在価格】</div><span class="attention"><!--{$orderDetail.product_price_inctax|n2s|h}-->円</span>
                     <!--{/if}-->
                     </td>
                     <td class="alignR"><!--{$orderDetail.quantity|h}--></td>
-                    <td class="alignR"><!--{$orderDetail.price_inctax|sfMultiply:$orderDetail.quantity|number_format}-->円</td>
+                    <td class="alignR"><!--{$orderDetail.price_inctax|sfMultiply:$orderDetail.quantity|n2s}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>
                 <th colspan="5" class="alignR">小計</th>
-                <td class="alignR"><!--{$tpl_arrOrderData.subtotal|number_format}-->円</td>
+                <td class="alignR"><!--{$tpl_arrOrderData.subtotal|n2s}-->円</td>
             </tr>
             <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
             <!--{if $point_discount > 0}-->
             <tr>
                 <th colspan="5" class="alignR">ポイント値引き</th>
-                <td class="alignR">&minus;<!--{$point_discount|number_format}-->円</td>
+                <td class="alignR">&minus;<!--{$point_discount|n2s}-->円</td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
             <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
             <tr>
                 <th colspan="5" class="alignR">値引き</th>
-                <td class="alignR">&minus;<!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
+                <td class="alignR">&minus;<!--{$tpl_arrOrderData[$key]|n2s}-->円</td>
             </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="alignR">送料</th>
-                <td class="alignR"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
+                <td class="alignR"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|n2s|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="alignR">手数料</th>
                 <!--{assign var=key value="charge"}-->
-                <td class="alignR"><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
+                <td class="alignR"><!--{$tpl_arrOrderData[$key]|n2s|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="alignR">合計</th>
-                <td class="alignR"><span class="price"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</span></td>
+                <td class="alignR"><span class="price"><!--{$tpl_arrOrderData.payment_total|n2s}-->円</span></td>
             </tr>
         </table>
 
@@ -143,11 +143,11 @@
                 <col width="70%" />
                 <tr>
                     <th class="alignL">ご使用ポイント</th>
-                    <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
+                    <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|n2s|default:0}--> pt</td>
                 </tr>
                 <tr>
                     <th class="alignL">今回加算されるポイント</th>
-                    <td><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt</td>
+                    <td><!--{$tpl_arrOrderData.add_point|n2s|default:0}--> pt</td>
                 </tr>
             </table>
         <!--{/if}-->
@@ -182,11 +182,11 @@
                                 <!--{/if}-->
                             </td>
                             <td class="alignR">
-                                <!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|number_format}-->円
+                                <!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|n2s}-->円
                             </td>
                             <td class="alignC"><!--{$item.quantity}--></td>
                             <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                            <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
+                            <td class="alignR"><!--{$item.total_inctax|n2s}-->円</td>
                             *}-->
                         </tr>
                     <!--{/foreach}-->

@@ -58,9 +58,9 @@
                             <div class="favoriteContents clearfix">
                                 <h4><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->" class="productName"><!--{$arrFavorite[cnt].name}--></a></h4>
                                 <p><span class="mini productPrice"><!--{$smarty.const.SALE_PRICE_TITLE}-->：<!--{if $arrFavorite[cnt].price02_min_inctax == $arrFavorite[cnt].price02_max_inctax}-->
-                                    <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->
+                                    <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->
                                     <!--{else}-->
-                                    <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->～<!--{$arrFavorite[cnt].price02_max_inctax|number_format}-->
+                                    <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->～<!--{$arrFavorite[cnt].price02_max_inctax|n2s}-->
                                     <!--{/if}-->円</span></p>
                                 <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="javascript:eccube.setModeAndSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
                             </div>

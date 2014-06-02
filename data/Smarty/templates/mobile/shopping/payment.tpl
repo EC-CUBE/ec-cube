@@ -92,9 +92,9 @@
             ■ポイント使用の指定<br>
             1ポイントを<!--{$smarty.const.POINT_VALUE}-->円として使用する事ができます。<br>
             <br>
-            <!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<font color="#FF0000"><!--{$tpl_user_point|number_format|default:0}-->Pt</font>」です。<br>
+            <!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<font color="#FF0000"><!--{$tpl_user_point|n2s|default:0}-->Pt</font>」です。<br>
             <br>
-            今回ご購入合計金額：<font color="#FF0000"><!--{$arrPrices.subtotal|number_format}-->円</font><br>
+            今回ご購入合計金額：<font color="#FF0000"><!--{$arrPrices.subtotal|n2s}-->円</font><br>
             (送料、手数料を含みません。)<br>
             <br>
             <input type="radio" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}-->>ポイントを使用する<br>

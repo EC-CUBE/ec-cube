@@ -176,9 +176,9 @@
                         <span class="price">
                             <span id="price02_default_<!--{$id}-->"><!--{strip}-->
                                 <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
-                                    <!--{$arrProduct.price02_min_inctax|number_format}-->
+                                    <!--{$arrProduct.price02_min_inctax|n2s}-->
                                 <!--{else}-->
-                                    <!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
+                                    <!--{$arrProduct.price02_min_inctax|n2s}-->～<!--{$arrProduct.price02_max_inctax|n2s}-->
                                 <!--{/if}-->
                             </span><span id="price02_dynamic_<!--{$id}-->"></span><!--{/strip}-->
                             円</span>

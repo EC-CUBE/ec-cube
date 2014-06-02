@@ -100,15 +100,15 @@
                             </ul>
                         </td>
                         <td class="alignR">
-                            <!--{$item.price_inctax|number_format}-->円
+                            <!--{$item.price_inctax|n2s}-->円
                         </td>
-                        <td class="alignR"><!--{$item.quantity|number_format}--></td>
-                        <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
+                        <td class="alignR"><!--{$item.quantity|n2s}--></td>
+                        <td class="alignR"><!--{$item.total_inctax|n2s}-->円</td>
                     </tr>
                 <!--{/foreach}-->
                 <tr>
                     <th colspan="4" class="alignR" scope="row">小計</th>
-                    <td class="alignR"><!--{$tpl_total_inctax[$cartKey]|number_format}-->円</td>
+                    <td class="alignR"><!--{$tpl_total_inctax[$cartKey]|n2s}-->円</td>
                 </tr>
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <!--{if $arrForm.use_point > 0}-->
@@ -116,21 +116,21 @@
                         <th colspan="4" class="alignR" scope="row">値引き（ポイントご使用時）</th>
                         <td class="alignR">
                             <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
-                            -<!--{$discount|number_format|default:0}-->円</td>
+                            -<!--{$discount|n2s|default:0}-->円</td>
                     </tr>
                     <!--{/if}-->
                 <!--{/if}-->
                 <tr>
                     <th colspan="4" class="alignR" scope="row">送料</th>
-                    <td class="alignR"><!--{$arrForm.deliv_fee|number_format}-->円</td>
+                    <td class="alignR"><!--{$arrForm.deliv_fee|n2s}-->円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="alignR" scope="row">手数料</th>
-                    <td class="alignR"><!--{$arrForm.charge|number_format}-->円</td>
+                    <td class="alignR"><!--{$arrForm.charge|n2s}-->円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="alignR" scope="row">合計</th>
-                    <td class="alignR"><span class="price"><!--{$arrForm.payment_total|number_format}-->円</span></td>
+                    <td class="alignR"><span class="price"><!--{$arrForm.payment_total|n2s}-->円</span></td>
                 </tr>
             </table>
 
@@ -141,26 +141,26 @@
                 <col width="70%" />
                     <tr>
                         <th scope="row">ご注文前のポイント</th>
-                        <td><!--{$tpl_user_point|number_format|default:0}-->Pt</td>
+                        <td><!--{$tpl_user_point|n2s|default:0}-->Pt</td>
                     </tr>
                     <tr>
                         <th scope="row">ご使用ポイント</th>
-                        <td>-<!--{$arrForm.use_point|number_format|default:0}-->Pt</td>
+                        <td>-<!--{$arrForm.use_point|n2s|default:0}-->Pt</td>
                     </tr>
                     <!--{if $arrForm.birth_point > 0}-->
                     <tr>
                         <th scope="row">お誕生月ポイント</th>
-                        <td>+<!--{$arrForm.birth_point|number_format|default:0}-->Pt</td>
+                        <td>+<!--{$arrForm.birth_point|n2s|default:0}-->Pt</td>
                     </tr>
                     <!--{/if}-->
                     <tr>
                         <th scope="row">今回加算予定のポイント</th>
-                        <td>+<!--{$arrForm.add_point|number_format|default:0}-->Pt</td>
+                        <td>+<!--{$arrForm.add_point|n2s|default:0}-->Pt</td>
                     </tr>
                     <tr>
                     <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
                         <th scope="row">加算後のポイント</th>
-                        <td><!--{$total_point|number_format}-->Pt</td>
+                        <td><!--{$total_point|n2s}-->Pt</td>
                     </tr>
                 </table>
             <!--{/if}-->
@@ -269,7 +269,7 @@
                                 </td>
                                 <td class="alignC"><!--{$item.quantity}--></td>
                                 <td class="alignR">
-                                    <!--{$item.total_inctax|number_format}-->円
+                                    <!--{$item.total_inctax|n2s}-->円
                                 </td>
                             </tr>
                         <!--{/foreach}-->

@@ -56,7 +56,7 @@
                     <!--{* 規格名1 *}--><!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--><br><!--{/if}-->
                     <!--{* 規格名2 *}--><!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--><br><!--{/if}-->
                     <!--{* 販売価格 *}-->
-                    <!--{$item.price_inctax|number_format}-->円
+                    <!--{$item.price_inctax|n2s}-->円
                     × <!--{$item.quantity}--><br>
                     <br>
                     <!--{* 数量 *}-->
@@ -67,19 +67,19 @@
                     <!--{/if}-->
                     <a href="?mode=delete&amp;cart_no=<!--{$item.cart_no}-->&amp;cartKey=<!--{$key}-->">削除</a><br>
                     <!--{* 合計 *}-->
-                    小計:<!--{$item.total_inctax|number_format}-->円<br>
+                    小計:<!--{$item.total_inctax|n2s}-->円<br>
                     <div align="right"><a href="<!--{$smarty.const.MOBILE_P_DETAIL_URLPATH}--><!--{$item.productsClass.product_id|u}-->">→商品詳細へ</a></div>
                     <HR>
                 <!--{/foreach}-->
                 <font color="#FF0000">
-                商品合計:<!--{$tpl_total_inctax[$key]|number_format}-->円<br>
-                合計:<!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format}-->円<br>
+                商品合計:<!--{$tpl_total_inctax[$key]|n2s}-->円<br>
+                合計:<!--{$arrData[$key].total-$arrData[$key].deliv_fee|n2s}-->円<br>
                 </font>
                 <br>
                 <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <!--{if $arrInfo.free_rule > 0}-->
                         <!--{if !$arrData[$key].is_deliv_free}-->
-                            あと「<font color="#FF0000"><!--{$tpl_deliv_free[$key]|number_format}-->円</font>」で<font color="#FF0000">送料無料</font>です！！<br>
+                            あと「<font color="#FF0000"><!--{$tpl_deliv_free[$key]|n2s}-->円</font>」で<font color="#FF0000">送料無料</font>です！！<br>
                         <!--{else}-->
                             現在、「<font color="#FF0000">送料無料</font>」です！！<br>
                         <!--{/if}-->
@@ -90,10 +90,10 @@
                 <!--{if $smarty.const.USE_POINT !== false}-->
                     <!--{if $arrData[$key].birth_point > 0}-->
                         お誕生月ﾎﾟｲﾝﾄ<br>
-                        <!--{$arrData[$key].birth_point|number_format}-->pt<br>
+                        <!--{$arrData[$key].birth_point|n2s}-->pt<br>
                     <!--{/if}-->
                     今回加算ﾎﾟｲﾝﾄ<br>
-                    <!--{$arrData[$key].add_point|number_format}-->pt<br>
+                    <!--{$arrData[$key].add_point|n2s}-->pt<br>
                     <br>
                 <!--{/if}-->
 
@@ -114,7 +114,7 @@
     <!--{if $smarty.const.USE_POINT !== false}-->
         <hr>
         <!--{if $tpl_login}-->
-            <!--{$tpl_name|h}--> 様の、現在の所持ポイントは「<font color="#FF0000"><!--{$tpl_user_point|number_format|default:0}--> pt</font>」です。<br>
+            <!--{$tpl_name|h}--> 様の、現在の所持ポイントは「<font color="#FF0000"><!--{$tpl_user_point|n2s|default:0}--> pt</font>」です。<br>
         <!--{else}-->
             ポイント制度をご利用になられる場合は、会員登録後ログインしてくださいますようお願い致します。
         <!--{/if}-->

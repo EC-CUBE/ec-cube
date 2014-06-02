@@ -76,9 +76,9 @@
                             <td class="alignR sale_price">
                                 <span class="price">
                                     <!--{if $arrFavorite[cnt].price02_min_inctax == $arrFavorite[cnt].price02_max_inctax}-->
-                                        <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->
+                                        <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->
                                     <!--{else}-->
-                                        <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->～<!--{$arrFavorite[cnt].price02_max_inctax|number_format}-->
+                                        <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->～<!--{$arrFavorite[cnt].price02_max_inctax|n2s}-->
                                     <!--{/if}-->円</span>
                             </td>
                         </tr>

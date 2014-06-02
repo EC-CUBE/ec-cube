@@ -50,8 +50,8 @@
             <td class="left"><!--{*商品名*}--><!--{$arrResults[cnt].product_name|sfCutString:40:false|h}--></td>
             <td class="right"><!--{*購入件数*}--><!--{$arrResults[cnt].order_count}-->件</td>
             <td class="right"><!--{*数量*}--><!--{$arrResults[cnt].products_count}--></td>
-            <td class="right"><!--{*単価*}--><!--{$arrResults[cnt].price|number_format}-->円</td>
-            <td class="right"><!--{*金額*}--><!--{$arrResults[cnt].total|number_format}-->円</td>
+            <td class="right"><!--{*単価*}--><!--{$arrResults[cnt].price|n2s}-->円</td>
+            <td class="right"><!--{*金額*}--><!--{$arrResults[cnt].total|n2s}-->円</td>
         </tr>
     <!--{/section}-->
 

@@ -350,7 +350,7 @@
                 <th>現在ポイント</th>
                 <td>
                     <!--{if $arrForm.customer_id.value > 0}-->
-                        <!--{$arrForm.customer_point.value|floatval|number_format}-->
+                        <!--{$arrForm.customer_point.value|n2s}-->
                         pt
                     <!--{else}-->
                         (非会員)
@@ -429,17 +429,17 @@
                     <input type="hidden" name="tax_rule[<!--{$product_index}-->]" value="<!--{$arrForm.tax_rule.value[$product_index]|h}-->" id="tax_rule_<!--{$product_index}-->" />
     
                     <td class="right">
-                        <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|floatval|number_format}--> 円<br />
+                        <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|n2s}--> 円<br />
                         <!--{assign var=key value="tax_rate"}-->
                         <span class="attention"><!--{$arrErr[$key][$product_index]}--></span>
                         税率<input type="text" name="<!--{$key}-->[<!--{$product_index}-->]" value="<!--{$arrForm[$key].value[$product_index]|h}-->" size="3" class="box3" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key][$product_index]|sfGetErrorColor}-->" id="<!--{$key}-->_<!--{$product_index}-->" />%
                     </td>
-                    <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|floatval|number_format}-->円</td>
+                    <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|n2s}-->円</td>
                 </tr>
             <!--{/section}-->
             <tr>
                 <th colspan="5" class="column right">小計</th>
-                <td class="right"><!--{$arrForm.subtotal.value|default:0|floatval|number_format}-->円</td>
+                <td class="right"><!--{$arrForm.subtotal.value|default:0|n2s}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="column right">値引き</th>
@@ -472,14 +472,14 @@
                 <th colspan="5" class="column right">合計</th>
                 <td class="right">
                     <span class="attention"><!--{$arrErr.total}--></span>
-                    <!--{$arrForm.total.value|default:0|floatval|number_format}--> 円
+                    <!--{$arrForm.total.value|default:0|n2s}--> 円
                 </td>
             </tr>
             <tr>
                 <th colspan="5" class="column right">お支払い合計</th>
                 <td class="right">
                     <span class="attention"><!--{$arrErr.payment_total}--></span>
-                    <!--{$arrForm.payment_total.value|default:0|floatval|number_format}-->
+                    <!--{$arrForm.payment_total.value|default:0|n2s}-->
                     円
                 </td>
             </tr>
@@ -499,7 +499,7 @@
                         <td class="right">
                             <!--{assign var=key value="birth_point"}-->
                             <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->"/>
-                            <!--{$arrForm.birth_point.value|floatval|number_format}-->
+                            <!--{$arrForm.birth_point.value|n2s}-->
                             pt
                         </td>
                     </tr>
@@ -507,7 +507,7 @@
                 <tr>
                     <th colspan="5" class="column right">加算ポイント</th>
                     <td class="right">
-                        <!--{$arrForm.add_point.value|default:0|floatval|number_format}-->
+                        <!--{$arrForm.add_point.value|default:0|n2s}-->
                         pt
                     </td>
                 </tr>
@@ -570,7 +570,7 @@
                                 </td>
                                 <td class="right">
                                     <!--{assign var=key value="shipment_price"}-->
-                                    <!--{$arrShipping[$key][$item_index]|floatval|number_format}-->円
+                                    <!--{$arrShipping[$key][$item_index]|n2s}-->円
                                     <input type="hidden" name="<!--{$key}-->[<!--{$shipping_index}-->][<!--{$item_index}-->]" value="<!--{$arrShipping[$key][$item_index]|h}-->" />
                                 </td>
                                 <td class="center">

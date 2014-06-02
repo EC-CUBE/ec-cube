@@ -61,15 +61,15 @@
                 <td class="center"><!--{*期間*}-->合計</td>
             <!--{/if}-->
 
-            <td class="right"><!--{*購入件数*}--><!--{$arrResults[cnt].total_order|number_format}-->件</td>
-            <td class="right"><!--{*男性*}--><!--{$arrResults[cnt].men|number_format}--></td>
-            <td class="right"><!--{*女性*}--><!--{$arrResults[cnt].women|number_format}--></td>
-            <td class="right"><!--{*男性(会員)*}--><!--{$arrResults[cnt].men_member|number_format}--></td>
-            <td class="right"><!--{*男性(非会員)*}--><!--{$arrResults[cnt].men_nonmember|number_format}--></td>
-            <td class="right"><!--{*女性(会員)*}--><!--{$arrResults[cnt].women_member|number_format}--></td>
-            <td class="right"><!--{*女性(非会員)*}--><!--{$arrResults[cnt].women_nonmember|number_format}--></td>
-            <td class="right"><!--{*購入合計*}--><!--{$arrResults[cnt].total|number_format}-->円</td>
-            <td class="right"><!--{*購入平均*}--><!--{$arrResults[cnt].total_average|number_format}-->円</td>
+            <td class="right"><!--{*購入件数*}--><!--{$arrResults[cnt].total_order|n2s}-->件</td>
+            <td class="right"><!--{*男性*}--><!--{$arrResults[cnt].men|n2s}--></td>
+            <td class="right"><!--{*女性*}--><!--{$arrResults[cnt].women|n2s}--></td>
+            <td class="right"><!--{*男性(会員)*}--><!--{$arrResults[cnt].men_member|n2s}--></td>
+            <td class="right"><!--{*男性(非会員)*}--><!--{$arrResults[cnt].men_nonmember|n2s}--></td>
+            <td class="right"><!--{*女性(会員)*}--><!--{$arrResults[cnt].women_member|n2s}--></td>
+            <td class="right"><!--{*女性(非会員)*}--><!--{$arrResults[cnt].women_nonmember|n2s}--></td>
+            <td class="right"><!--{*購入合計*}--><!--{$arrResults[cnt].total|n2s}-->円</td>
+            <td class="right"><!--{*購入平均*}--><!--{$arrResults[cnt].total_average|n2s}-->円</td>
         </tr>
     <!--{/section}-->
 

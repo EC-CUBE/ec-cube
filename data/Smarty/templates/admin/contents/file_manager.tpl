@@ -107,7 +107,7 @@
                             <!--{$arrFileList[cnt].file_name|h}-->
                         </td>
                         <td class="right">
-                            <!--{$arrFileList[cnt].file_size|number_format}-->
+                            <!--{$arrFileList[cnt].file_size|n2s}-->
                         </td>
                         <td class="center">
                             <!--{$arrFileList[cnt].file_time|h}-->

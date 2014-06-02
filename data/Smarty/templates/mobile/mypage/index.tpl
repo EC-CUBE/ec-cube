@@ -28,7 +28,7 @@
     <br>
     <!--★現在のポイント★-->
     <!--{if $smarty.const.USE_POINT !== false}-->
-        現在の所持ポイントは「<font color="#ff0000"><!--{$CustomerPoint|number_format|default:"0"|h}-->Pt</font>」です。<br>
+        現在の所持ポイントは「<font color="#ff0000"><!--{$CustomerPoint|n2s|default:"0"|h}-->Pt</font>」です。<br>
         <br>
     <!--{/if}-->
 
@@ -52,7 +52,7 @@
             ▽お支払い方法<br>
             <!--{$arrPayment[$payment_id]|h}--><br>
             ▽合計金額<br>
-            <font color="#ff0000"><!--{$arrOrder[cnt].payment_total|number_format}-->円</font><br>
+            <font color="#ff0000"><!--{$arrOrder[cnt].payment_total|n2s}-->円</font><br>
             <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
             ▽ご注文状況<br>
                 <!--{assign var=order_status_id value="`$arrOrder[cnt].status`"}-->

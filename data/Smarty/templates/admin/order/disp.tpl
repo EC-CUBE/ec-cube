@@ -139,7 +139,7 @@
             <th>現在ポイント</th>
             <td>
                 <!--{if $arrForm.customer_id.value > 0}-->
-                    <!--{$arrForm.customer_point.value|number_format}-->
+                    <!--{$arrForm.customer_point.value|n2s}-->
                     pt
                 <!--{else}-->
                     (非会員)
@@ -174,7 +174,7 @@
                 <!--{$arrForm.product_name.value[$product_index]|h}-->/<!--{$arrForm.classcategory_name1.value[$product_index]|default:"(なし)"|h}-->/<!--{$arrForm.classcategory_name2.value[$product_index]|default:"(なし)"|h}-->
             </td>
             <td class="right">
-                    <!--{$arrForm.price.value[$product_index]|number_format|h}-->円
+                    <!--{$arrForm.price.value[$product_index]|n2s|h}-->円
                 </td>
             <td class="right">
                 <!--{$arrForm.quantity.value[$product_index]|h}-->
@@ -183,48 +183,48 @@
                 <!--{assign var=quantity value=`$arrForm.quantity.value[$product_index]`}-->
                 <!--{assign var=tax_rate value=`$arrForm.tax_rate.value[$product_index]`}-->
                 <!--{assign var=tax_rule value=`$arrForm.tax_rule.value[$product_index]`}-->
-            <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|number_format}--> 円<br />(税率<!--{$tax_rate|number_format}-->%)</td>
-            <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|number_format}-->円</td>
+            <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|n2s}--> 円<br />(税率<!--{$tax_rate|n2s}-->%)</td>
+            <td class="right"><!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|n2s}-->円</td>
         </tr>
         <!--{/section}-->
         <tr>
             <th colspan="5" class="column right">小計</th>
-            <td class="right"><!--{$arrForm.subtotal.value|number_format}-->円</td>
+            <td class="right"><!--{$arrForm.subtotal.value|n2s}-->円</td>
         </tr>
         <tr>
             <th colspan="5" class="column right">値引き</th>
-            <td class="right"><!--{$arrForm.discount.value|number_format|h}-->円</td>
+            <td class="right"><!--{$arrForm.discount.value|n2s|h}-->円</td>
         </tr>
         <tr>
             <th colspan="5" class="column right">送料</th>
-            <td class="right"><!--{$arrForm.deliv_fee.value|number_format|h}-->円</td>
+            <td class="right"><!--{$arrForm.deliv_fee.value|n2s|h}-->円</td>
         </tr>
         <tr>
             <th colspan="5" class="column right">手数料</th>
-            <td class="right"><!--{$arrForm.charge.value|number_format|h}-->円</td>
+            <td class="right"><!--{$arrForm.charge.value|n2s|h}-->円</td>
         </tr>
         <tr>
             <th colspan="5" class="column right">合計</th>
-            <td class="right"><!--{$arrForm.total.value|number_format}--> 円</td>
+            <td class="right"><!--{$arrForm.total.value|n2s}--> 円</td>
         </tr>
         <tr>
             <th colspan="5" class="column right">お支払い合計</th>
-            <td class="right"><!--{$arrForm.payment_total.value|number_format}--> 円</td>
+            <td class="right"><!--{$arrForm.payment_total.value|n2s}--> 円</td>
         </tr>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <tr>
                 <th colspan="5" class="column right">使用ポイント</th>
-                <td class="right"><!--{$arrForm.use_point.value|number_format|default:0|h}-->pt</td>
+                <td class="right"><!--{$arrForm.use_point.value|n2s|default:0|h}-->pt</td>
             </tr>
             <!--{if $arrForm.birth_point.value > 0}-->
                 <tr>
                     <th colspan="5" class="column right">お誕生日ポイント</th>
-                    <td class="right"><!--{$arrForm.birth_point.value|number_format}-->pt</td>
+                    <td class="right"><!--{$arrForm.birth_point.value|n2s}-->pt</td>
                 </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="column right">加算ポイント</th>
-                <td class="right"><!--{$arrForm.add_point.value|number_format|default:0}-->pt</td>
+                <td class="right"><!--{$arrForm.add_point.value|n2s|default:0}-->pt</td>
             </tr>
         <!--{/if}-->
     </table>
@@ -261,7 +261,7 @@
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_price"}-->
-                                <!--{$arrShipping[$key][$item_index]|sfCalcIncTax:$arrForm.order_tax_rate.value:$arrForm.order_tax_rule.value|number_format}-->円
+                                <!--{$arrShipping[$key][$item_index]|sfCalcIncTax:$arrForm.order_tax_rate.value:$arrForm.order_tax_rule.value|n2s}-->円
                             </td>
                             <td class="right">
                                 <!--{assign var=key value="shipment_quantity"}-->

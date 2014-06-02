@@ -68,23 +68,23 @@
             <table summary="ショップの状況" class="shop-info">
                 <tr>
                     <th>現在の会員数</th>
-                    <td><!--{$customer_cnt|default:"0"|number_format}-->名</td>
+                    <td><!--{$customer_cnt|default:"0"|n2s}-->名</td>
                 </tr>
                 <tr>
                     <th>昨日の売上高</th>
-                    <td><!--{$order_yesterday_amount|default:"0"|number_format}-->円</td>
+                    <td><!--{$order_yesterday_amount|default:"0"|n2s}-->円</td>
                 </tr>
                 <tr>
                     <th>昨日の売上件数</th>
-                    <td><!--{$order_yesterday_cnt|default:"0"|number_format}-->件</td>
+                    <td><!--{$order_yesterday_cnt|default:"0"|n2s}-->件</td>
                 </tr>
                 <tr>
                     <th><span>今月の売上高</span><span>(昨日まで) </span></th>
-                    <td><!--{$order_month_amount|default:"0"|number_format}-->円</td>
+                    <td><!--{$order_month_amount|default:"0"|n2s}-->円</td>
                 </tr>
                 <tr>
                     <th><span>今月の売上件数 </span><span>(昨日まで) </span></th>
-                    <td><!--{$order_month_cnt|default:"0"|number_format}-->件</td>
+                    <td><!--{$order_month_cnt|default:"0"|n2s}-->件</td>
                 </tr>
                 <tr>
                     <th>昨日のレビュー書き込み数</th>
@@ -125,7 +125,7 @@
                     <td><!--{$arrNewOrder[i].name01|h}--> <!--{$arrNewOrder[i].name02|h}--></td>
                     <td><!--{$arrNewOrder[i].product_name|h}--></td>
                     <td><!--{$arrNewOrder[i].payment_method|h}--></td>
-                    <td class="right"><!--{$arrNewOrder[i].total|number_format}-->円</td>
+                    <td class="right"><!--{$arrNewOrder[i].total|n2s}-->円</td>
                 </tr>
                 <!--{/section}-->
             </table>

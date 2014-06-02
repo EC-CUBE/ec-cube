@@ -41,9 +41,9 @@
                 <div><!--{$smarty.const.SALE_PRICE_TITLE}-->：
                     <span class="price">
                         <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
-                            <!--{$arrProduct.price02_min_inctax|number_format}-->
+                            <!--{$arrProduct.price02_min_inctax|n2s}-->
                         <!--{else}-->
-                            <!--{$arrProduct.price02_min_inctax|number_format}-->〜<!--{$arrProduct.price02_max_inctax|number_format}-->
+                            <!--{$arrProduct.price02_min_inctax|n2s}-->〜<!--{$arrProduct.price02_max_inctax|n2s}-->
                         <!--{/if}-->円</span>
                 </div>
                 <div class="description">

@@ -252,17 +252,17 @@ function lfnDispChange(){
                             </td>
                             <!--{* 価格 *}-->
                             <td rowspan="2" class="right">
-                                <!--{$arrProducts[cnt].price02_min|number_format}-->
+                                <!--{$arrProducts[cnt].price02_min|n2s}-->
                                 <!--{if $arrProducts[cnt].price02_min != $arrProducts[cnt].price02_max}-->
-                                    <br />～ <!--{$arrProducts[cnt].price02_max|number_format}-->
+                                    <br />～ <!--{$arrProducts[cnt].price02_max|n2s}-->
                                 <!--{/if}-->            </td>
                             <td><!--{$arrProducts[cnt].name|h}--></td>
                             <!--{* 在庫 *}-->
                             <!--{* XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 *}-->
                             <td class="menu" rowspan="2">
-                                <!--{if $arrProducts[cnt].stock_unlimited_min}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_min|number_format}--><!--{/if}-->
+                                <!--{if $arrProducts[cnt].stock_unlimited_min}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_min|n2s}--><!--{/if}-->
                                 <!--{if $arrProducts[cnt].stock_unlimited_min != $arrProducts[cnt].stock_unlimited_max || $arrProducts[cnt].stock_min != $arrProducts[cnt].stock_max}-->
-                                    <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_max|number_format}--><!--{/if}-->
+                                    <br />～ <!--{if $arrProducts[cnt].stock_unlimited_max}-->無制限<!--{else}--><!--{$arrProducts[cnt].stock_max|n2s}--><!--{/if}-->
                                 <!--{/if}-->            </td>
                             <!--{* 表示 *}-->
                             <!--{assign var=key value=$arrProducts[cnt].status}-->

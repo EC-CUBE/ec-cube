@@ -95,7 +95,7 @@
                     <td><!--{$arrStatus[cnt].order_name01|h}--> <!--{$arrStatus[cnt].order_name02|h}--></td>
                     <!--{assign var=payment_id value=`$arrStatus[cnt].payment_id`}-->
                     <td class="center"><!--{$arrPayment[$payment_id]|h}--></td>
-                    <td class="right"><!--{$arrStatus[cnt].total|number_format}--></td>
+                    <td class="right"><!--{$arrStatus[cnt].total|n2s}--></td>
                     <td class="center"><!--{if $arrStatus[cnt].payment_date != ""}--><!--{$arrStatus[cnt].payment_date|sfDispDBDate:false}--><!--{else}-->未入金<!--{/if}--></td>
                     <td class="center"><!--{if $arrStatus[cnt].status eq 5}--><!--{$arrStatus[cnt].commit_date|sfDispDBDate:false}--><!--{else}-->未発送<!--{/if}--></td>
                 </tr>

@@ -110,8 +110,8 @@
                                         </p>
                                     </div>
                                     <ul>
-                                        <li><span class="mini">数量：</span><!--{$item.quantity|number_format}--></li>
-                                        <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>
+                                        <li><span class="mini">数量：</span><!--{$item.quantity|n2s}--></li>
+                                        <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|n2s}-->円</li>
                                     </ul>
                                 </div>
                             </div>
@@ -123,19 +123,19 @@
                     <!--★合計内訳★-->
                     <div class="result_area">
                         <ul>
-                            <li><span class="mini">小計 ：</span><!--{$tpl_total_inctax[$cartKey]|number_format}--> 円</li>
+                            <li><span class="mini">小計 ：</span><!--{$tpl_total_inctax[$cartKey]|n2s}--> 円</li>
                             <!--{if $smarty.const.USE_POINT !== false}-->
                                 <li><span class="mini">値引き（ポイントご使用時）： </span><!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
-                                -<!--{$discount|number_format|default:0}--> 円</li>
+                                -<!--{$discount|n2s|default:0}--> 円</li>
                             <!--{/if}-->
-                            <li><span class="mini">送料 ：</span><!--{$arrForm.deliv_fee|number_format}--> 円</li>
-                            <li><span class="mini">手数料 ：</span><!--{$arrForm.charge|number_format}--> 円</li>
+                            <li><span class="mini">送料 ：</span><!--{$arrForm.deliv_fee|n2s}--> 円</li>
+                            <li><span class="mini">手数料 ：</span><!--{$arrForm.charge|n2s}--> 円</li>
                         </ul>
                     </div>
 
                     <!--★合計★-->
                     <div class="total_area">
-                        <span class="mini">合計：</span><span class="price fb"><!--{$arrForm.payment_total|number_format}--> 円</span>
+                        <span class="mini">合計：</span><span class="price fb"><!--{$arrForm.payment_total|n2s}--> 円</span>
                     </div>
                 </div><!-- /.formBox -->
 
@@ -144,22 +144,22 @@
                     <!--★ポイント情報★-->
                     <div class="formBox point_confifrm">
                         <dl>
-                            <dt>ご注文前のポイント</dt><dd><!--{$tpl_user_point|number_format|default:0}-->Pt</dd>
+                            <dt>ご注文前のポイント</dt><dd><!--{$tpl_user_point|n2s|default:0}-->Pt</dd>
                         </dl>
                         <dl>
-                            <dt>ご使用ポイント</dt><dd>-<!--{$arrForm.use_point|number_format|default:0}-->Pt</dd>
+                            <dt>ご使用ポイント</dt><dd>-<!--{$arrForm.use_point|n2s|default:0}-->Pt</dd>
                         </dl>
                         <!--{if $arrForm.birth_point > 0}-->
                         <dl>
-                            <dt>お誕生月ポイント</dt><dd>+<!--{$arrForm.birth_point|number_format|default:0}-->Pt</dd>
+                            <dt>お誕生月ポイント</dt><dd>+<!--{$arrForm.birth_point|n2s|default:0}-->Pt</dd>
                         </dl>
                         <!--{/if}-->
                         <dl>
-                            <dt>今回加算予定のポイント</dt><dd>+<!--{$arrForm.add_point|number_format|default:0}-->Pt</dd>
+                            <dt>今回加算予定のポイント</dt><dd>+<!--{$arrForm.add_point|n2s|default:0}-->Pt</dd>
                         </dl>
                         <dl>
                             <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
-                            <dt>加算後のポイント</dt><dd><!--{$total_point|number_format}-->Pt</dd>
+                            <dt>加算後のポイント</dt><dd><!--{$total_point|n2s}-->Pt</dd>
                         </dl>
                     </div><!-- /.formBox -->
                 <!--{/if}-->
@@ -246,7 +246,7 @@
                                                 <ul>
                                                     <li><span class="mini">数量：</span><!--{$item.quantity}--></li>
                                                     <!--{* XXX デフォルトでは購入小計と誤差が出るためコメントアウト*}-->
-                                                    <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|number_format}-->円</li>
+                                                    <li class="result"><span class="mini">小計：</span><!--{$item.total_inctax|n2s}-->円</li>
                                                 </ul>
                                             </div>
                                         </div>

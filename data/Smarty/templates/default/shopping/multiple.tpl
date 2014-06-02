@@ -72,7 +72,7 @@
                             <!--{if $arrForm.classcategory_name2.value[$index] != ""}-->
                                 <!--{$arrForm.class_name2.value[$index]|h}-->：<!--{$arrForm.classcategory_name2.value[$index]|h}--><br />
                             <!--{/if}-->
-                            <!--{$arrForm.price_inctax.value[$index]|number_format}-->円
+                            <!--{$arrForm.price_inctax.value[$index]|n2s}-->円
                         </td>
                         <td>
                             <!--{assign var=key value="quantity"}-->

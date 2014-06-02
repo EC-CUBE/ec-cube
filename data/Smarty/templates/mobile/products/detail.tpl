@@ -84,9 +84,9 @@
     <!--★販売価格★-->
     <font color="#FF0000"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：
         <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
-            <!--{$arrProduct.price02_min_inctax|number_format}-->
+            <!--{$arrProduct.price02_min_inctax|n2s}-->
         <!--{else}-->
-            <!--{$arrProduct.price02_min_inctax|number_format}-->～<!--{$arrProduct.price02_max_inctax|number_format}-->
+            <!--{$arrProduct.price02_min_inctax|n2s}-->～<!--{$arrProduct.price02_max_inctax|n2s}-->
         <!--{/if}-->
         円</font>
     <br>
@@ -95,9 +95,9 @@
         <!--★通常価格★-->
         <font color="#FF0000"><!--{$smarty.const.NORMAL_PRICE_TITLE}-->(税込)：
             <!--{if $arrProduct.price01_min_inctax == $arrProduct.price01_max_inctax}-->
-                <!--{$arrProduct.price01_min_inctax|number_format}-->
+                <!--{$arrProduct.price01_min_inctax|n2s}-->
             <!--{else}-->
-                <!--{$arrProduct.price01_min_inctax|number_format}-->～<!--{$arrProduct.price01_max_inctax|number_format}-->
+                <!--{$arrProduct.price01_min_inctax|n2s}-->～<!--{$arrProduct.price01_max_inctax|n2s}-->
             <!--{/if}-->
             円</font>
         <br>
@@ -107,12 +107,12 @@
     <!--{if $smarty.const.USE_POINT !== false}-->
         ポイント：
         <!--{if $arrProduct.price02_min == $arrProduct.price02_max}-->
-            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->
+            <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|n2s}-->
         <!--{else}-->
             <!--{if $arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate == $arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate}-->
-                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->
+                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|n2s}-->
             <!--{else}-->
-                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|number_format}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate|number_format}-->
+                <!--{$arrProduct.price02_min|sfPrePoint:$arrProduct.point_rate|n2s}-->～<!--{$arrProduct.price02_max|sfPrePoint:$arrProduct.point_rate|n2s}-->
             <!--{/if}-->
         <!--{/if}-->
         Pt<br>

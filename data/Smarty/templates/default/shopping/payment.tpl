@@ -241,12 +241,12 @@
             <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
                 <div class="point_area">
                     <h3>ポイント使用の指定</h3>
-                        <p><span class="attention">1ポイントを<!--{$smarty.const.POINT_VALUE|number_format}-->円</span>として使用する事ができます。<br />
+                        <p><span class="attention">1ポイントを<!--{$smarty.const.POINT_VALUE|n2s}-->円</span>として使用する事ができます。<br />
                             使用する場合は、「ポイントを使用する」にチェックを入れた後、使用するポイントをご記入ください。
                         </p>
                         <div class="point_announce">
-                            <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}-->様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>」です。<br />
-                                今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|number_format}-->円</span> <span class="attention">(送料、手数料を含みません。)</span>
+                            <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}-->様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|default:0|n2s}-->Pt</span>」です。<br />
+                                今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|n2s}-->円</span> <span class="attention">(送料、手数料を含みません。)</span>
                             </p>
                             <ul>
                                 <li>

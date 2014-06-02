@@ -233,8 +233,8 @@
                     <div class="form_area">
                         <p class="fb"><span class="point">1ポイントを1円</span>として使用する事ができます。</p>
                         <div class="point_announce">
-                            <p>現在の所持ポイントは「<span class="price"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>」です。<br />
-                            今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|number_format}-->円</span> (送料、手数料を含みません。)</p>
+                            <p>現在の所持ポイントは「<span class="price"><!--{$tpl_user_point|default:0|n2s}-->Pt</span>」です。<br />
+                            今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|n2s}-->円</span> (送料、手数料を含みません。)</p>
                         </div>
 
                         <!--▼ポイントフォームボックスここから -->

@@ -29,7 +29,7 @@
             <!--{if $smarty.const.USE_POINT !== false}-->
                 <div class="point_announce">
                     <!--{if $tpl_login}-->
-                        <span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|number_format|default:0|h}--> pt</span>」です。<br />
+                        <span class="user_name"><!--{$tpl_name|h}--> 様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|n2s|default:0|h}--> pt</span>」です。<br />
                     <!--{else}-->
                         ポイント制度をご利用になられる場合は、会員登録後ログインしてくださいますようお願い致します。<br />
                     <!--{/if}-->
@@ -72,11 +72,11 @@
                             <!--{assign var=purchasing_goods_name value="カゴの中の商品"}-->
                         <!--{/if}-->
                         <p>
-                            <!--{$purchasing_goods_name|h}-->の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|number_format|h}-->円</span>」です。
+                            <!--{$purchasing_goods_name|h}-->の合計金額は「<span class="price"><!--{$tpl_total_inctax[$key]|n2s|h}-->円</span>」です。
                             <!--{if $key != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                                 <!--{if $arrInfo.free_rule > 0}-->
                                     <!--{if !$arrData[$key].is_deliv_free}-->
-                                        あと「<span class="price"><!--{$tpl_deliv_free[$key]|number_format|h}-->円</span>」で送料無料です！！
+                                        あと「<span class="price"><!--{$tpl_deliv_free[$key]|n2s|h}-->円</span>」で送料無料です！！
                                     <!--{else}-->
                                         現在、「<span class="attention">送料無料</span>」です！！
                                     <!--{/if}-->
@@ -121,7 +121,7 @@
                                         <!--{/if}-->
                                     </td>
                                     <td class="alignR">
-                                        <!--{$item.price_inctax|number_format|h}-->円
+                                        <!--{$item.price_inctax|n2s|h}-->円
                                     </td>
                                     <td class="alignC"><!--{$item.quantity|h}-->
                                         <ul id="quantity_level">
@@ -131,27 +131,27 @@
                                             <!--{/if}-->
                                         </ul>
                                     </td>
-                                    <td class="alignR"><!--{$item.total_inctax|number_format|h}-->円</td>
+                                    <td class="alignR"><!--{$item.total_inctax|n2s|h}-->円</td>
                                 </tr>
                             <!--{/foreach}-->
                             <tr>
                                 <th colspan="5" class="alignR">小計</th>
-                                <td class="alignR"><!--{$tpl_total_inctax[$key]|number_format|h}-->円</td>
+                                <td class="alignR"><!--{$tpl_total_inctax[$key]|n2s|h}-->円</td>
                             </tr>
                             <tr>
                                 <th colspan="5" class="alignR">合計</th>
-                                <td class="alignR"><span class="price"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|number_format|h}-->円</span></td>
+                                <td class="alignR"><span class="price"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|n2s|h}-->円</span></td>
                             </tr>
                             <!--{if $smarty.const.USE_POINT !== false}-->
                                 <!--{if $arrData[$key].birth_point > 0}-->
                                     <tr>
                                         <th colspan="5" class="alignR">お誕生月ポイント</th>
-                                        <td class="alignR"><!--{$arrData[$key].birth_point|number_format|h}-->pt</td>
+                                        <td class="alignR"><!--{$arrData[$key].birth_point|n2s|h}-->pt</td>
                                     </tr>
                                 <!--{/if}-->
                                 <tr>
                                     <th colspan="5" class="alignR">今回加算ポイント</th>
-                                    <td class="alignR"><!--{$arrData[$key].add_point|number_format|h}-->pt</td>
+                                    <td class="alignR"><!--{$arrData[$key].add_point|n2s|h}-->pt</td>
                                 </tr>
                             <!--{/if}-->
                         </table>
