@@ -247,4 +247,14 @@ class SC_Helper_Session
         }
         SC_Utils_Ex::sfIsSuccess(new SC_Session_Ex());
     }
+
+    /**
+     * セッションIDを新しいIDに書き換える
+     *
+     * @return bool
+     */
+    public static function regenerateSID()
+    {
+        return session_regenerate_id(true);
+    }
 }

@@ -316,7 +316,7 @@ class SC_Customer
                     return false;
                 } else {
                     // Session Fixation対策
-                    SC_Session_Ex::regenerateSID();
+                    SC_Helper_Session_Ex::regenerateSID();
 
                     $this->updateMobilePhoneId();
 
@@ -331,7 +331,7 @@ class SC_Customer
                     return false;
                 } else {
                     // Session Fixation対策
-                    SC_Session_Ex::regenerateSID();
+                    SC_Helper_Session_Ex::regenerateSID();
 
                     return true;
                 }
