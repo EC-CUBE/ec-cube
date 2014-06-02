@@ -104,7 +104,7 @@ class SC_Helper_TaxRule
     {
         $real_tax = $tax / 100;
         $ret = $price * $real_tax;
-        $ret = SC_Helper_TaxRule_Ex::roundByCalcRule($ret, $calc_rule);
+        $ret = self::roundByCalcRule($ret, $calc_rule);
 
         return $ret + $tax_adjust;
     }
