@@ -111,6 +111,11 @@ class LC_Page_Shopping extends LC_Page_Ex
             }
         }
 
+        // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
+        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
+            $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
+        }
+
         switch ($this->getMode()) {
             // ログイン実行
             case 'login':
@@ -258,12 +263,6 @@ class LC_Page_Shopping extends LC_Page_Ex
         if (!SC_Utils_Ex::isBlank($this->tpl_login_email)) {
             $this->tpl_login_memory = '1';
         }
-
-        // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-        if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
-            $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
-        }
-
     }
 
     /**
@@ -301,6 +300,14 @@ class LC_Page_Shopping extends LC_Page_Ex
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('メールアドレス', 'login_email', '' , 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+
+        if ($this->tpl_valid_phone_id) {
+            // 携帯端末IDが登録されている場合、メールアドレス入力欄が省略される
+            $arrCheck4login_email = $objFormParam->getParamSetting('login_email', 'arrCheck');
+            $key = array_search('EXIST_CHECK', $arrCheck4login_email);
+            unset($arrCheck4login_email[$key]);
+            $objFormParam->overwriteParam('login_email', 'arrCheck', $arrCheck4login_email);
+        }
     }
 
     /**
