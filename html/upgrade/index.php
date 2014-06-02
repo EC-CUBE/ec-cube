@@ -59,7 +59,7 @@ function lfPageFactory($mode)
             break;
         default:
             header('HTTP/1.1 400 Bad Request');
-            GC_Util::gfPrintLog('modeの値が正しくありません。:'.$mode);
+            GC_Util_Ex::gfPrintLog('modeの値が正しくありません。:'.$mode);
             exit();
             break;
     }

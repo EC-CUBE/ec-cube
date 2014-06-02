@@ -127,7 +127,7 @@ class GC_Utils
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
-        $mess = GC_Utils::gfGetCallerInfo(true) . $mess;
+        $mess = GC_Utils_Ex::gfGetCallerInfo(true) . $mess;
 
         // ログレベル=Debugの場合は、[Debug]を先頭に付与する
         if ($log_level === 'Debug') {
