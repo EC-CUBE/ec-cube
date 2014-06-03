@@ -173,7 +173,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
         );
         imagefilledpolygon($this->image, $array, 4, $this->arrColor[$line_no]);
         imagepolygon($this->image, $array, 4, $this->flame_color);
-        imagesetpixel ($this->image, $left, $top + ($size / 2), $this->flame_color);
+        imagesetpixel($this->image, $left, $top + ($size / 2), $this->flame_color);
     }
 
     // Y軸目盛りに値を入れる

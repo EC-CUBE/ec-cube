@@ -103,7 +103,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
             $arrTempProductDetail = $objProduct->getProductsClass($arrOrderProductDetail['product_class_id']);
             // 税計算
             $this->tpl_arrOrderDetail[$product_index]['price_inctax'] = $this->tpl_arrOrderDetail[$product_index]['price']  +
-                SC_Helper_TaxRule_Ex::calcTax (
+                SC_Helper_TaxRule_Ex::calcTax(
                     $this->tpl_arrOrderDetail[$product_index]['price'],
                     $this->tpl_arrOrderDetail[$product_index]['tax_rate'],
                     $this->tpl_arrOrderDetail[$product_index]['tax_rule']
