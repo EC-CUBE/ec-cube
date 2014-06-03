@@ -23,7 +23,7 @@
  * 端末の画面解像度にあわせて画像を変換する
  */
 
-define('MOBILE_IMAGE_INC_REALDIR', realpath(dirname( __FILE__)) . '/../include/');
+define('MOBILE_IMAGE_INC_REALDIR', realpath(dirname(__FILE__)) . '/../include/');
 require_once MOBILE_IMAGE_INC_REALDIR . 'image_converter.inc';
 
 /**
