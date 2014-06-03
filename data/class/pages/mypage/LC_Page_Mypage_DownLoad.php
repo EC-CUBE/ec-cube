@@ -257,7 +257,7 @@ __EOS__;
             $content_length = $file_size;
             header('Content-Length: ' . $content_length);
         }
-        echo fread($fp, $content_length) ;
+        echo fread($fp, $content_length);
         SC_Utils_Ex::sfFlush();
     }
 

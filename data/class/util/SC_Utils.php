@@ -1852,8 +1852,7 @@ class SC_Utils
             $seconds
                 = is_numeric(ini_get('max_execution_time'))
                 ? intval(ini_get('max_execution_time'))
-                : intval(get_cfg_var('max_execution_time'))
-            ;
+                : intval(get_cfg_var('max_execution_time'));
         }
 
         // タイムアウトをリセット
