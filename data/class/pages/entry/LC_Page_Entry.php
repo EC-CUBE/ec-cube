@@ -246,15 +246,15 @@ class LC_Page_Entry extends LC_Page_Ex
 
         $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
-            ''                    // 宛先
-            , $subject              // サブジェクト
-            , $toCustomerMail       // 本文
-            , $CONF['email03']      // 配送元アドレス
-            , $CONF['shop_name']    // 配送元 名前
-            , $CONF['email03']      // reply_to
-            , $CONF['email04']      // return_path
-            , $CONF['email04']      // Errors_to
-            , $CONF['email01']      // Bcc
+            '',                     // 宛先
+            $subject,               // サブジェクト
+            $toCustomerMail,        // 本文
+            $CONF['email03'],       // 配送元アドレス
+            $CONF['shop_name'],     // 配送元 名前
+            $CONF['email03'],       // reply_to
+            $CONF['email04'],       // return_path
+            $CONF['email04'],       // Errors_to
+            $CONF['email01']        // Bcc
         );
         // 宛先の設定
         $objMail->setTo($arrForm['email'],

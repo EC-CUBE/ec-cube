@@ -151,7 +151,7 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
             }
         }
         // 底面の描画
-        imagearc($this->image, $x, $y + $z, $w, $h, 0, 180 , $this->flame_color);
+        imagearc($this->image, $x, $y + $z, $w, $h, 0, 180, $this->flame_color);
 
         // 上面の描画
         $start = 0;

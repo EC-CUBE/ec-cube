@@ -175,12 +175,12 @@ class LC_Page_Forgot extends LC_Page_Ex
      */
     public function lfInitMailCheckParam(&$objFormParam, $device_type)
     {
-        $objFormParam->addParam('お名前(姓)', 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' ,'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('お名前(名)', 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK' , 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('お名前(姓)', 'name01', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('お名前(名)', 'name02', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'NO_SPTAB', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         if ($device_type === DEVICE_TYPE_MOBILE) {
-            $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'NO_SPTAB' ,'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
+            $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'NO_SPTAB', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
         } else {
-            $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
+            $objFormParam->addParam('メールアドレス', 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK'));
         }
 
         return;
@@ -290,14 +290,14 @@ class LC_Page_Forgot extends LC_Page_Ex
         // メール送信オブジェクトによる送信処理
         $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
-            '' //宛先
-            , $objHelperMail->sfMakeSubject('パスワードを変更いたしました。')
-            , $toCustomerMail //本文
-            , $CONF['email03'] //配送元アドレス
-            , $CONF['shop_name'] // 配送元名
-            , $CONF['email03'] // reply to
-            , $CONF['email04'] //return_path
-            , $CONF['email04'] // errors_to
+            '', //宛先
+            $objHelperMail->sfMakeSubject('パスワードを変更いたしました。'),
+            $toCustomerMail, //本文
+            $CONF['email03'], //配送元アドレス
+            $CONF['shop_name'], // 配送元名
+            $CONF['email03'], // reply to
+            $CONF['email04'], //return_path
+            $CONF['email04'] // errors_to
             );
         $objMail->setTo($email, $customer_name . ' 様');
         $objMail->sendMail();

@@ -347,13 +347,13 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             }
             // パラメーター登録
             $objFormParam->addParam(
-                    $item['disp_name']
-                    , $col
-                    , constant($item['size_const_type'])
-                    , $item['mb_convert_kana_option']
-                    , $arrErrorCheckTypes
-                    , $item['default']
-                    , $item['rw_flg'] != CSV_COLUMN_RW_FLG_READ_ONLY
+                    $item['disp_name'],
+                    $col,
+                    constant($item['size_const_type']),
+                    $item['mb_convert_kana_option'],
+                    $arrErrorCheckTypes,
+                    $item['default'],
+                    $item['rw_flg'] != CSV_COLUMN_RW_FLG_READ_ONLY
                     );
         }
     }
@@ -673,8 +673,8 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             if ($item['product_id'] == '') {
                 $arrErr['product_class_id'] = '※ 商品規格ID指定時には商品IDの指定が必須です。';
             } else {
-                if (!$this->objDb->sfIsRecord('dtb_products_class', 'product_id, product_class_id'
-                        , array($item['product_id'], $item['product_class_id']))
+                if (!$this->objDb->sfIsRecord('dtb_products_class', 'product_id, product_class_id',
+                        array($item['product_id'], $item['product_class_id']))
                 ) {
                     $arrErr['product_class_id'] = '※ 指定の商品IDと商品規格IDの組合せは正しくありません。';
                 }

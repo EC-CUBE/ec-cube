@@ -60,11 +60,11 @@ class SC_Helper_HandleError
                 // E_USER_ERROR 以外のエラーを捕捉した場合の処理用
                 register_shutdown_function(array(__CLASS__, 'handle_error'));
                 // 以降の処理では画面へのエラー表示は行なわない
-                ini_set('display_errors' , 0);
+                ini_set('display_errors', 0);
             } else {
                 // エラー捕捉用の出力バッファリング
                 ob_start(array(__CLASS__, '_fatal_error_handler'));
-                ini_set('display_errors' , 1);
+                ini_set('display_errors', 1);
             }
         }
     }

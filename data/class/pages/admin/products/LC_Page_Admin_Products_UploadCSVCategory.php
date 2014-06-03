@@ -322,13 +322,13 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
             }
             // パラメーター登録
             $objFormParam->addParam(
-                    $item['disp_name']
-                    , $col
-                    , constant($item['size_const_type'])
-                    , $item['mb_convert_kana_option']
-                    , $arrErrorCheckTypes
-                    , $item['default']
-                    , $item['rw_flg'] != CSV_COLUMN_RW_FLG_READ_ONLY
+                    $item['disp_name'],
+                    $col,
+                    constant($item['size_const_type']),
+                    $item['mb_convert_kana_option'],
+                    $arrErrorCheckTypes,
+                    $item['default'],
+                    $item['rw_flg'] != CSV_COLUMN_RW_FLG_READ_ONLY
                     );
         }
     }

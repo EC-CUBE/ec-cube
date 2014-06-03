@@ -159,7 +159,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
             foreach ($shippingData as $key => $val) {
                 if ($key == 'shipping_date' && SC_Utils_Ex::isBlank($val) == false) {
                     // お届け日を整形
-                    list($y, $m, $d, $w) = explode(' ', date('Y m d w' , strtotime($val)));
+                    list($y, $m, $d, $w) = explode(' ', date('Y m d w', strtotime($val)));
                     $arrShipping[$shipping_index]['shipping_date'] = sprintf('%04d/%02d/%02d(%s)', $y, $m, $d, $arrWDAY[$w]);
                 }
             }
