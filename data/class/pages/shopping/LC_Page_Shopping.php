@@ -48,7 +48,7 @@ class LC_Page_Shopping extends LC_Page_Ex
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->tpl_onload = 'eccube.toggleDeliveryForm();';
 
-        $objDate = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
+        $objDate = new SC_Date_Ex(BIRTH_YEAR, date('Y', strtotime('now')));
         $this->arrYear = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);
@@ -298,7 +298,7 @@ class LC_Page_Shopping extends LC_Page_Ex
     public function lfInitLoginFormParam(&$objFormParam)
     {
         $objFormParam->addParam('記憶する', 'login_memory', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('メールアドレス', 'login_email', '' , 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK' ,'EMAIL_CHAR_CHECK'));
+        $objFormParam->addParam('メールアドレス', 'login_email', '', 'a', array('EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK'));
         $objFormParam->addParam('パスワード', 'login_pass', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
 
         if ($this->tpl_valid_phone_id) {

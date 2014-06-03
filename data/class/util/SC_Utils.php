@@ -342,7 +342,7 @@ class SC_Utils
         }
 
         if (mb_internal_encoding() == CHAR_CODE) {
-            $data = mb_convert_encoding($data,'SJIS-Win',CHAR_CODE);
+            $data = mb_convert_encoding($data, 'SJIS-Win', CHAR_CODE);
         }
 
         /* データを出力 */
@@ -618,16 +618,16 @@ class SC_Utils
         // 期間指定
         $error = 0;
         if ($start_month || $start_day || $start_year) {
-            if (! checkdate($start_month, $start_day , $start_year)) $error = 1;
+            if (! checkdate($start_month, $start_day, $start_year)) $error = 1;
         } else {
             $error = 1;
         }
         if ($end_month || $end_day || $end_year) {
-            if (! checkdate($end_month ,$end_day ,$end_year)) $error = 2;
+            if (! checkdate($end_month, $end_day, $end_year)) $error = 2;
         }
         if (! $error) {
-            $date1 = $start_year .'/'.sprintf('%02d',$start_month) .'/'.sprintf('%02d',$start_day) .' 000000';
-            $date2 = $end_year   .'/'.sprintf('%02d',$end_month)   .'/'.sprintf('%02d',$end_day)   .' 235959';
+            $date1 = $start_year .'/'.sprintf('%02d', $start_month) .'/'.sprintf('%02d', $start_day) .' 000000';
+            $date2 = $end_year   .'/'.sprintf('%02d', $end_month)   .'/'.sprintf('%02d', $end_day)   .' 235959';
             if ($date1 > $date2) $error = 3;
         } else {
             $error = 1;
@@ -732,7 +732,7 @@ class SC_Utils
      */
     public function sfRound($value, $pow = 0)
     {
-        $adjust = pow(10 ,$pow-1);
+        $adjust = pow(10, $pow-1);
 
         // 整数且つ0でなければ桁数指定を行う
         if (SC_Utils_Ex::sfIsInt($adjust) and $pow > 1) {
@@ -1102,7 +1102,7 @@ class SC_Utils
     // DB取得日時をタイムに変換
     public static function sfDBDatetoTime($db_date)
     {
-        $date = preg_replace("|\..*$|",'',$db_date);
+        $date = preg_replace("|\..*$|", '', $db_date);
         $time = strtotime($date);
 
         return $time;
@@ -1229,7 +1229,7 @@ class SC_Utils
                 }
 
                 $matches = array();
-                mb_ereg("^(.*[\/])(.*)",$data_, $matches);
+                mb_ereg("^(.*[\/])(.*)", $data_, $matches);
                 $data=$matches[2];
                 if (is_dir($data_)) {
                     $mess = SC_Utils_Ex::sfCopyDir($data_.'/', $des.$data.'/', $mess);
@@ -1319,7 +1319,7 @@ class SC_Utils
     {
         foreach ($arrConvList as $key => $val) {
             if (isset($array[$key])) {
-                $array[$key] = mb_convert_kana($array[$key] ,$val);
+                $array[$key] = mb_convert_kana($array[$key], $val);
             }
         }
 
@@ -1548,7 +1548,7 @@ class SC_Utils
         $arrREV_PREF = array_flip($arrPref);
 
         // 郵便番号検索文作成
-        $zipcode = mb_convert_kana($zipcode ,'n');
+        $zipcode = mb_convert_kana($zipcode, 'n');
         $sqlse = 'SELECT state, city, town FROM mtb_zip WHERE zipcode = ?';
 
         $data_list = $objQuery->getAll($sqlse, array($zipcode));
@@ -1570,9 +1570,9 @@ class SC_Utils
          * ・●●の次に番地が来る場合
          */
         $town =  $data_list[0]['town'];
-        $town = preg_replace("/（.*）$/",'',$town);
-        $town = preg_replace('/以下に掲載がない場合/','',$town);
-        $town = preg_replace('/(.*?)の次に番地がくる場合/','',$town);
+        $town = preg_replace("/（.*）$/", '', $town);
+        $town = preg_replace('/以下に掲載がない場合/', '', $town);
+        $town = preg_replace('/(.*?)の次に番地がくる場合/', '', $town);
         $data_list[0]['town'] = $town;
         $data_list[0]['state'] = $arrREV_PREF[$data_list[0]['state']];
 
@@ -2109,12 +2109,12 @@ class SC_Utils
      * @param  string  $base_path
      * @return bool true = exists / false does not exist
      */
-    public static function checkFileExistsWithInBasePath($file,$base_path)
+    public static function checkFileExistsWithInBasePath($file, $base_path)
     {
-        $arrPath = explode('/', str_replace('\\', '/',$file));
-        $arrBasePath = explode('/', str_replace('\\', '/',$base_path));
-        $path_diff = implode("/",array_diff_assoc($arrPath, $arrBasePath));
-        return file_exists(realpath(str_replace('..','',$base_path . $path_diff))) ? true : false;
+        $arrPath = explode('/', str_replace('\\', '/', $file));
+        $arrBasePath = explode('/', str_replace('\\', '/', $base_path));
+        $path_diff = implode("/", array_diff_assoc($arrPath, $arrBasePath));
+        return file_exists(realpath(str_replace('..', '', $base_path . $path_diff))) ? true : false;
     }
 
     /**
@@ -2125,7 +2125,7 @@ class SC_Utils
     public static function getFormattedDateWithMicroSecond()
     {
         $micro = explode(" ", microtime());
-        $micro_string = explode('.',$micro[0]);
-        return date('Y-m-d H:i:s') . "." . substr($micro_string[1],0,5);
+        $micro_string = explode('.', $micro[0]);
+        return date('Y-m-d H:i:s') . "." . substr($micro_string[1], 0, 5);
     }
 }
