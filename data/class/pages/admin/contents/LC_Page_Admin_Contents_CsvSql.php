@@ -447,7 +447,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
             ,'REST\s'
             ,'REVOKE\s'
             ,'SAVEPOINT\s'
-            ,'SET\s'
+            ,'\sSET\s' // OFFSETを誤検知しないように先頭・末尾に\sを指定
             ,'SHOW\s'
             ,'START\sTRANSACTION'
             ,'TRUNCATE\s'
