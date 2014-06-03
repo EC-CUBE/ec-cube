@@ -438,9 +438,9 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     public function lfGetGraphPng($keyname)
     {
         if ($_POST['search_startyear_m'] != '') {
-            $pngname = sprintf('%s_%02d%02d.png', $keyname, substr($_POST['search_startyear_m'],2), $_POST['search_startmonth_m']);
+            $pngname = sprintf('%s_%02d%02d.png', $keyname, substr($_POST['search_startyear_m'], 2), $_POST['search_startmonth_m']);
         } else {
-            $pngname = sprintf('%s_%02d%02d%02d_%02d%02d%02d.png', $keyname, substr($_POST['search_startyear'], 2), $_POST['search_startmonth'], $_POST['search_startday'], substr($_POST['search_endyear'],2), $_POST['search_endmonth'], $_POST['search_endday']);
+            $pngname = sprintf('%s_%02d%02d%02d_%02d%02d%02d.png', $keyname, substr($_POST['search_startyear'], 2), $_POST['search_startmonth'], $_POST['search_startday'], substr($_POST['search_endyear'], 2), $_POST['search_endmonth'], $_POST['search_endday']);
         }
 
         return $pngname;
@@ -462,7 +462,7 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
             if ($where != '') {
                 $where.= ' AND ';
             }
-            $edate = date('Y/m/d',strtotime('1 day', strtotime($edate)));
+            $edate = date('Y/m/d', strtotime('1 day', strtotime($edate)));
             $where.= " $col_date < date('" . $edate ."')";
         }
 

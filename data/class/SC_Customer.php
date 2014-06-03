@@ -290,7 +290,7 @@ class SC_Customer
     public function updateOrderSummary($customer_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order','customer_id = ? AND del_flg = 0 AND status <> ?',array($customer_id, ORDER_CANCEL));
+        $arrOrderSummary =  $objQuery->getRow('SUM( payment_total) as buy_total, COUNT(order_id) as buy_times,MAX( create_date) as last_buy_date, MIN(create_date) as first_buy_date','dtb_order','customer_id = ? AND del_flg = 0 AND status <> ?', array($customer_id, ORDER_CANCEL));
         $objQuery->update('dtb_customer', $arrOrderSummary, 'customer_id = ?', array($customer_id));
     }
 
