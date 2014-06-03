@@ -67,7 +67,7 @@ class SC_Session
     /* 認証成功の判定 */
     public function IsSuccess()
     {
-       if ($this->cert == CERT_STRING) {
+        if ($this->cert == CERT_STRING) {
             $masterData = new SC_DB_MasterData_Ex();
             $admin_path = strtolower(preg_replace('/\/+/', '/', $_SERVER['SCRIPT_NAME']));            
             $arrPERMISSION = array_change_key_case($masterData->getMasterData('mtb_permission'));

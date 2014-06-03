@@ -262,7 +262,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
             if ($arrData['email_mobile'] == $objFormParam->getValue('email_mobile')) {
                 $arrErr['email_mobile'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
             } elseif ($arrData['email_mobile'] == $objFormParam->getValue('email')) {
-    if ($arrErr['email'] == '') {
+                if ($arrErr['email'] == '') {
                     $arrErr['email'] = '※ すでに他の会員(ID:' . $arrData['customer_id'] . ')が使用している携帯アドレスです。';
                 }
             }

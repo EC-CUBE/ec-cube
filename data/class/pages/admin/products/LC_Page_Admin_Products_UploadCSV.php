@@ -684,7 +684,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
                 if ($product_class_id && $product_class_id != $item['product_class_id']) {
                     $arrErr['product_class_id'] = '※ 指定の商品ID/規格分類と、商品規格IDの組合せは正しくありません。';
                 }
-             }
+            }
         }
         // 表示ステータスの存在チェック
         if (!$this->lfIsArrayRecord($this->arrDISP, 'status', $item)) {

@@ -139,7 +139,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
 
         // 規約一覧を取得
         $this->arrKiyaku = $objKiyaku->getList();
-}
+    }
 
     /**
      * 登録処理を実行.
