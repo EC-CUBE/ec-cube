@@ -6,11 +6,11 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class/util/SC_Utils.p
  */
 class SC_Utils_Ex extends SC_Utils
 {
-    public function sfDispError($type) {
+    public static function sfDispError($type) {
         return false;
     }
 
-    public function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '') {
+    public static function sfDispSiteError($type, $objSiteSess = '', $return_top = false, $err_msg = '') {
         return false;
     }
 }
