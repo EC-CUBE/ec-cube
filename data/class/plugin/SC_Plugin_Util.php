@@ -155,15 +155,15 @@ class SC_Plugin_Util
         switch ($use_type) {
             case 1:
                 $where .= ' AND use_flg = 1';
-            break;
+                break;
 
             case 2:
                 $where .= ' AND use_flg = 0';
-            break;
+                break;
 
             case 3:
             default:
-            break;
+                break;
         }
 
         return $objQuery->select($cols, $from, $where, array($plugin_id));
@@ -184,16 +184,16 @@ class SC_Plugin_Util
         switch ($use_type) {
             case 1:
                 $where = 'enable = 1 AND use_flg = 1';
-            break;
+                break;
 
             case 2:
                 $where = 'enable = 1 AND use_flg = 0';
-            break;
+                break;
 
             case 3:
             default:
                 $where = '';
-            break;
+                break;
         }
 
         return $objQuery->select($cols, $from, $where);

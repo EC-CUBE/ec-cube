@@ -87,17 +87,17 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
 
             // スマートフォン版のもっと見るボタン用
             case 'getList':
-                    $arrData = $objFormParam->getHashArray();
-                    //別のお届け先情報
-                    $arrOtherDeliv = $objAddress->getList($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
-                    //県名をセット
-                    $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
-                    $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
-                    $this->arrOtherDeliv = $arrOtherDeliv;
+                $arrData = $objFormParam->getHashArray();
+                //別のお届け先情報
+                $arrOtherDeliv = $objAddress->getList($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
+                //県名をセット
+                $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
+                $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
+                $this->arrOtherDeliv = $arrOtherDeliv;
 
-                    echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
-                    SC_Response_Ex::actionExit();
-                    break;
+                echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
+                SC_Response_Ex::actionExit();
+                break;
 
             // お届け先の表示
             default:
