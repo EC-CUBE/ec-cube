@@ -88,11 +88,11 @@ class LC_Page_ResizeImage extends LC_Page_Ex
 
     public function lfInitParam(&$objFormParam)
     {
-        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n',  array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('商品イメージキー', 'image_key', STEXT_LEN, '',  array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('画像ファイル名', 'image', STEXT_LEN, 'a',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('画像の幅', 'width', STEXT_LEN, 'n',  array('NUM_CHECK'));
-        $objFormParam->addParam('画像の高さ', 'height', STEXT_LEN, 'n',  array('NUM_CHECK'));
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品イメージキー', 'image_key', STEXT_LEN, '', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('画像ファイル名', 'image', STEXT_LEN, 'a', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('画像の幅', 'width', STEXT_LEN, 'n', array('NUM_CHECK'));
+        $objFormParam->addParam('画像の高さ', 'height', STEXT_LEN, 'n', array('NUM_CHECK'));
     }
 
     /**

@@ -140,11 +140,11 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
 
     public function lfInitParam(&$objFormParam, $post)
     {
-        $objFormParam->addParam('会社名', 'company_name', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('会社名(フリガナ)', 'company_kana', STEXT_LEN, 'KVC',  array('KANA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('会社名', 'company_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('会社名(フリガナ)', 'company_kana', STEXT_LEN, 'KVC', array('KANA_CHECK', 'MAX_LENGTH_CHECK'));
 
         $objFormParam->addParam('店名', 'shop_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('店名(フリガナ)', 'shop_kana',  STEXT_LEN, 'KVC', array('KANA_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('店名(フリガナ)', 'shop_kana', STEXT_LEN, 'KVC', array('KANA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('店名(英語表記)', 'shop_name_eng', MTEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
         // 郵便番号チェック
         $objFormParam->addParam('郵便番号1', 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'NUM_COUNT_CHECK'));
@@ -181,8 +181,8 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
         } else {
             $objFormParam->addParam('ダウンロード無制限', 'downloadable_days_unlimited', array('EXIST_CHECK'));
         }
-        $objFormParam->addParam('緯度', 'latitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK', 'NUM_POINT_CHECK'));
-        $objFormParam->addParam('軽度', 'longitude', STEXT_LEN, '',  array('MAX_LENGTH_CHECK', 'NUM_POINT_CHECK'));
+        $objFormParam->addParam('緯度', 'latitude', STEXT_LEN, '', array('MAX_LENGTH_CHECK', 'NUM_POINT_CHECK'));
+        $objFormParam->addParam('軽度', 'longitude', STEXT_LEN, '', array('MAX_LENGTH_CHECK', 'NUM_POINT_CHECK'));
 
         $objFormParam->addParam('定休日', 'regular_holiday_ids', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
     }

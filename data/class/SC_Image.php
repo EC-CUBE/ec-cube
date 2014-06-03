@@ -166,7 +166,7 @@ class SC_Image
                 $black = ImageColorAllocate($ImgNew, 0, 0, 0);
                 $red = ImageColorAllocate($ImgNew, 255, 0, 0);
                 Imagestring($ImgNew, 4, 5, 5, "GIF $size[0]x$size[1]", $red);
-                ImageRectangle ($ImgNew, 0, 0, ($re_size[0]-1), ($re_size[1]-1),    $black);
+                ImageRectangle ($ImgNew, 0, 0, ($re_size[0]-1), ($re_size[1]-1), $black);
 
                 if ($newFileName) {
                     $ToFile = $newFileName;

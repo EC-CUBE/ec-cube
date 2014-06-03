@@ -130,7 +130,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
             // X軸に目盛りを入れる
             $x = $arrPointList[$i][0];
             $pos = $this->top + $this->area_height;
-            imageline($this->image, $x - $half_scale, $pos, $x - $half_scale, $pos - LINE_SCALE_SIZE,  $this->flame_color);
+            imageline($this->image, $x - $half_scale, $pos, $x - $half_scale, $pos - LINE_SCALE_SIZE, $this->flame_color);
             // ラベルを入れる
             if (($i % $interval) == 0) {
                 $text_width = $this->getTextWidth($this->arrXLabel[$i], FONT_SIZE);
@@ -148,7 +148,7 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
 
         // 棒グラフの場合は最後の目盛りを一つ追加する
         if ($bar) {
-            imageline($this->image, $x + $half_scale, $pos, $x + $half_scale, $pos - LINE_SCALE_SIZE,  $this->flame_color);
+            imageline($this->image, $x + $half_scale, $pos, $x + $half_scale, $pos - LINE_SCALE_SIZE, $this->flame_color);
         }
 
         $this->drawXTitle();

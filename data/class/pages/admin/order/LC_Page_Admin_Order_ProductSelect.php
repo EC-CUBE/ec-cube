@@ -302,7 +302,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
     {
         $objFormParam->addParam('オーダーID', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品名', 'search_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('カテゴリID', 'search_category_id', STEXT_LEN, 'KVa',  array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam('カテゴリID', 'search_category_id', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam('商品コード', 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam('届け先ID', 'shipping_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));

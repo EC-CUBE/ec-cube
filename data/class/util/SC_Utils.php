@@ -971,7 +971,7 @@ class SC_Utils
             while (!feof($ifp)) {
                 $line = fgets($ifp);
                 $line = mb_convert_encoding($line, $enc_type, 'auto');
-                fwrite($ofp,  $line);
+                fwrite($ofp, $line);
             }
 
             fclose($ofp);
