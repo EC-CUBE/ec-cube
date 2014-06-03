@@ -256,7 +256,9 @@ class LC_UseRequest_State
      * @return string
      */
     public function getNameSpace()
-    { return $this->namespace; }
+    {
+        return $this->namespace;
+    }
 
     /**
      * 有効期間を取得する
@@ -264,7 +266,9 @@ class LC_UseRequest_State
      * @return integer
      */
     public function getLifeTime()
-    { return $this->lifetime; }
+    {
+        return $this->lifetime;
+    }
 
     /**
      * セッションデータが設定されているかを判定する.

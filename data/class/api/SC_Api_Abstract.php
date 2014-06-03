@@ -56,10 +56,12 @@ abstract class SC_Api_Abstract
     protected $arrErr = array();
 
     final public function __construct()
-    {}
+    {
+    }
 
     final public function __destruct()
-    {}
+    {
+    }
 
     abstract public function doAction($arrParam);
 

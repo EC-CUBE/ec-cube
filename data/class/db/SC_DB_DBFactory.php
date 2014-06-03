@@ -87,7 +87,9 @@ class SC_DB_DBFactory
      * @return string データベースのバージョン
      */
     public function sfGetDBVersion($dsn = '')
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * MySQL 用の SQL 文に変更する.
@@ -96,7 +98,9 @@ class SC_DB_DBFactory
      * @return string MySQL 用に置換した SQL 文
      */
     public function sfChangeMySQL($sql)
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * 昨日の売上高・売上件数を算出する SQL を返す.
@@ -105,7 +109,9 @@ class SC_DB_DBFactory
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
     public function getOrderYesterdaySql($method)
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * 当月の売上高・売上件数を算出する SQL を返す.
@@ -114,7 +120,9 @@ class SC_DB_DBFactory
      * @return string 当月の売上高・売上件数を算出する SQL
      */
     public function getOrderMonthSql($method)
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * 昨日のレビュー書き込み件数を算出する SQL を返す.
@@ -122,7 +130,9 @@ class SC_DB_DBFactory
      * @return string 昨日のレビュー書き込み件数を算出する SQL
      */
     public function getReviewYesterdaySql()
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * メール送信履歴の start_date の検索条件の SQL を返す.
@@ -130,7 +140,9 @@ class SC_DB_DBFactory
      * @return string 検索条件の SQL
      */
     public function getSendHistoryWhereStartdateSql()
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * ダウンロード販売の検索条件の SQL を返す.
@@ -138,7 +150,9 @@ class SC_DB_DBFactory
      * @return string 検索条件の SQL
      */
     public function getDownloadableDaysWhereSql()
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * 文字列連結を行う.
@@ -147,7 +161,9 @@ class SC_DB_DBFactory
      * @return string 連結後の SQL 文
      */
     public function concatColumn($columns)
-    { return null; }
+    {
+        return null;
+    }
 
     /**
      * テーブルを検索する.
@@ -159,7 +175,9 @@ class SC_DB_DBFactory
      * @return array  テーブル名の配列
      */
     public function findTableNames($expression = '')
-    { return array(); }
+    {
+        return array();
+    }
 
     /**
      * インデックス作成の追加定義を取得する
@@ -171,7 +189,9 @@ class SC_DB_DBFactory
      * @return array  インデックス設定情報配列
      */
     public function sfGetCreateIndexDefinition($table, $name, $definition)
-    { return $definition; }
+    {
+        return $definition;
+    }
 
     /**
      * 各 DB に応じた SC_Query での初期化を行う
