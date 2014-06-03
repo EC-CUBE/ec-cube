@@ -976,9 +976,8 @@ class SC_Utils
 
             fclose($ofp);
             fclose($ifp);
-        }
         // ファイルが開けなかった場合はエラーページを表示
-        else {
+        } else {
             SC_Utils_Ex::sfDispError('');
             exit;
         }

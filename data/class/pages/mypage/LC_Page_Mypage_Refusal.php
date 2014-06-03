@@ -72,7 +72,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
 
             case 'complete':
                 // トークン入力チェック
-                if(!$this->isValidRefusalToken()) {
+                if (!$this->isValidRefusalToken()) {
                     // エラー画面へ遷移する
                     SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
                     SC_Response_Ex::actionExit();
@@ -110,7 +110,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      * トランザクショントークンのチェックを行う
      */
     function isValidRefusalToken() {
-        if(empty($_POST['refusal_transactionid'])) {
+        if (empty($_POST['refusal_transactionid'])) {
             $ret = false;
         } else {
             $ret = $_POST['refusal_transactionid'] === $_SESSION['refusal_transactionid'];

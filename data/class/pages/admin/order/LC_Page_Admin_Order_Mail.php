@@ -230,14 +230,12 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
         // 未選択時
         if (strlen($template_id) === 0) {
             $mailTemplates = null;
-        }
         // 有効選択時
-        elseif (SC_Utils_Ex::sfIsInt($template_id)) {
+        } elseif (SC_Utils_Ex::sfIsInt($template_id)) {
             $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
             $mailTemplates = $objMailtemplate->get($template_id);
-        }
         // 不正選択時
-        else {
+        } else {
             trigger_error('テンプレートの指定が不正。', E_USER_ERROR);
         }
 

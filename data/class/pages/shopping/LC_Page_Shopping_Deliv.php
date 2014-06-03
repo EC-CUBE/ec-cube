@@ -221,9 +221,8 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
         // 会員登録住所がチェックされている場合
         if ($other_deliv_id == 0) {
             $objPurchase->copyFromCustomer($arrValues, $objCustomer, 'shipping');
-        }
         // 別のお届け先がチェックされている場合
-        else {
+        } else {
             $arrOtherDeliv = $objAddress->getAddress($other_deliv_id);
             if (!$arrOtherDeliv) {
                 return false;

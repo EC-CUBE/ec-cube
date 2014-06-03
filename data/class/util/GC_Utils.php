@@ -336,13 +336,11 @@ class GC_Utils
         // PHP >= 5.3.1, PHP == 5.3.0 (not Windows)
         if (isset($arrDefinedConstants['Core'])) {
             $arrDefinedCoreConstants = $arrDefinedConstants['Core'];
-        }
         // PHP < 5.3.0
-        elseif (isset($arrDefinedConstants['internal'])) {
+        } elseif (isset($arrDefinedConstants['internal'])) {
             $arrDefinedCoreConstants = $arrDefinedConstants['internal'];
-        }
         // PHP == 5.3.0 (Windows)
-        elseif (isset($arrDefinedConstants['mhash'])) {
+        } elseif (isset($arrDefinedConstants['mhash'])) {
             $arrDefinedCoreConstants = $arrDefinedConstants['mhash'];
         }
 

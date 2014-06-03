@@ -83,7 +83,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
 
         // 正しい遷移かをチェック
         $arrParentPageList = array(DELIV_URLPATH, MYPAGE_DELIVADDR_URLPATH, MULTIPLE_URLPATH);
-        if(!SC_Utils_Ex::isBlank($ParentPage) && !in_array($ParentPage, $arrParentPageList)) {
+        if (!SC_Utils_Ex::isBlank($ParentPage) && !in_array($ParentPage, $arrParentPageList)) {
             // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
             $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
         }

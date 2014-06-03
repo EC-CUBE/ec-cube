@@ -82,21 +82,17 @@ class SC_Helper_CSV
             // この WHERE 句を足さないと無効な規格も出力される。現行仕様と合わせる為追加。
             $inner_where = 'dtb_products_class.del_flg = 0';
             $from = SC_Product_Ex::prdclsSQL($inner_where);
-        }
         // 会員の場合
-        else if ($csv_id == 2) {
+        } elseif ($csv_id == 2) {
             $from = 'dtb_customer';
-        }
         // 注文の場合
-        else if ($csv_id == 3) {
+        } elseif ($csv_id == 3) {
             $from = 'dtb_order';
-        }
         // レビューの場合
-        else if ($csv_id == 4) {
+        } elseif ($csv_id == 4) {
             $from = 'dtb_review AS A INNER JOIN dtb_products AS B on A.product_id = B.product_id';
-        }
         // カテゴリの場合
-        else if ($csv_id == 5) {
+        } elseif ($csv_id == 5) {
             $from = 'dtb_category';
         }
 

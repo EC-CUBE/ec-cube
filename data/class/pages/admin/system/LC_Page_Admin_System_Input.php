@@ -298,10 +298,8 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
         // $pagenoが0以上の整数かチェック
         if (SC_Utils_Ex::sfIsInt($pageno) && $pageno > 0) {
             $clean_pageno = $pageno;
-        }
-
         // 例外は全て1とする
-        else {
+        } else {
             $clean_pageno = 1;
         }
 

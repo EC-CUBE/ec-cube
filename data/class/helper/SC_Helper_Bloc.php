@@ -132,9 +132,8 @@ class SC_Helper_Bloc
                                                        array($arrValues['device_type_id']));
             $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrValues);
-        }
         // 更新
-        else {
+        } else {
             $objQuery->update($table, $arrValues, 'bloc_id = ? AND device_type_id = ?',
                               array($arrValues['bloc_id'], $arrValues['device_type_id']));
         }

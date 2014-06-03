@@ -90,10 +90,8 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
                 default:
                     break;
             }
-        }
-
         // エラー処理
-        else {
+        } else {
             GC_Utils_Ex::gfPrintLog('error id='.$_GET['id']);
         }
 

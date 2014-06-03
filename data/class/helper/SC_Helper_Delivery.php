@@ -145,16 +145,14 @@ class SC_Helper_Delivery
                     // 入力が空ではなく、DBに情報があれば更新
                     if (count($curData)) {
                         $objQuery->update($table, $deliv_time, $where, $arrWhereVal);
-                    }
                     // DBに情報がなければ登録
-                    else {
+                    } else {
                         $deliv_time['deliv_id'] = $deliv_id;
                         $deliv_time['time_id'] = $cnt;
                         $objQuery->insert($table, $deliv_time);
                     }
-                }
                 // 入力が空で、DBに情報がある場合は削除
-                elseif (count($curData)) {
+                } elseif (count($curData)) {
                     $objQuery->delete($table, $where, $arrWhereVal);
                 }
             }

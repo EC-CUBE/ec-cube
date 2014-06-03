@@ -87,21 +87,18 @@ class SC_Helper_Payment
                 if ($data['rule_max'] <= $total && $data['upper_rule'] >= $total) {
                     $arrPayment[] = $data;
                 }
-            }
             // 下限のみ設定されている
-            elseif (strlen($data['rule_max']) != 0) {
+            } elseif (strlen($data['rule_max']) != 0) {
                 if ($data['rule_max'] <= $total) {
                     $arrPayment[] = $data;
                 }
-            }
             // 上限のみ設定されている
-            elseif (strlen($data['upper_rule']) != 0) {
+            } elseif (strlen($data['upper_rule']) != 0) {
                 if ($data['upper_rule'] >= $total) {
                     $arrPayment[] = $data;
                 }
-            }
             // いずれも設定なし
-            else {
+            } else {
                 $arrPayment[] = $data;
             }
         }

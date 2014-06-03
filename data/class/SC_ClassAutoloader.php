@@ -54,10 +54,9 @@ class SC_ClassAutoloader
             $classpath .= strtolower(implode('/', array_slice($arrClassNamePart, 1, -1))) . '/';
         } elseif ($arrClassNamePart[0] === 'SC') {
             // 処理なし
-        }
-        // PEAR用
-        // FIXME トリッキー
-        else {
+        } else {
+            // PEAR用
+            // FIXME トリッキー
             $classpath = '';
             $class = str_replace('_', '/', $class);
         }

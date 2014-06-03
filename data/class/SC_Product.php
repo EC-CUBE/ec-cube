@@ -402,10 +402,10 @@ __EOS__;
         $arrProduct = (array) $arrRes[0];
 
         // 税込計算
-        if(!SC_Utils_Ex::isBlank($arrProduct['price01'])) {
+        if (!SC_Utils_Ex::isBlank($arrProduct['price01'])) {
             $arrProduct['price01_inctax'] = SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price01'], $arrProduct['product_id'], $productClassId);        
         }
-        if(!SC_Utils_Ex::isBlank($arrProduct['price02'])) {
+        if (!SC_Utils_Ex::isBlank($arrProduct['price02'])) {
             $arrProduct['price02_inctax'] = SC_Helper_TaxRule_Ex::sfCalcIncTax($arrProduct['price02'], $arrProduct['product_id'], $productClassId);        
         }
 

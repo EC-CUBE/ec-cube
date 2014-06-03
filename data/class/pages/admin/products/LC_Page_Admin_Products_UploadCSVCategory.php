@@ -480,7 +480,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
         ) {
             $exists = false;
             $arrBrother = $objCategory->getTreeBranch($item['parent_category_id']);
-            foreach($arrBrother as $brother) {
+            foreach ($arrBrother as $brother) {
                 if ($brother['category_name'] == $item['category_name'] && $brother['category_id'] != $item['category_id']) {
                     $exists = true;
                 }

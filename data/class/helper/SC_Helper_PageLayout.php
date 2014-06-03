@@ -49,9 +49,8 @@ class SC_Helper_PageLayout
         if ($preview === false) {
             $url = preg_replace('|^' . preg_quote(ROOT_URLPATH) . '|', '', $url);
             $arrPageData = $this->getPageProperties($device_type_id, null, 'url = ?', array($url));
-        }
         // プレビューの場合は, プレビュー用のデータを取得
-        else {
+        } else {
             $arrPageData = $this->getPageProperties($device_type_id, 0);
         }
 

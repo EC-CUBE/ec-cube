@@ -638,13 +638,11 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
                 if (!$upload_flg or ($upload_flg and array_key_exists('stock', $sqlval))) {
                     $sqlval['stock_unlimited'] = UNLIMITED_FLG_UNLIMITED;
                 }
-            }
             // 在庫数を入力している場合、在庫無制限フラグ = 制限有り
-            elseif (strlen($sqlval['stock']) >= 1) {
+            } elseif (strlen($sqlval['stock']) >= 1) {
                 $sqlval['stock_unlimited'] = UNLIMITED_FLG_LIMITED;
-            }
             // いずれにも該当しない場合、例外エラー
-            else {
+            } else {
                 trigger_error('', E_USER_ERROR);
             }
         }

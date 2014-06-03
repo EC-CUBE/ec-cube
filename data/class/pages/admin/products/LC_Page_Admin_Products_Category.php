@@ -256,9 +256,8 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
             $arrCategory = $objFormParam->getDbArray();
             $objCategory = new SC_Helper_Category_Ex();
             $objCategory->save($arrCategory);
-        }
         // エラーがある場合、入力値の再表示
-        else {
+        } else {
             $this->arrForm = $objFormParam->getHashArray();
         }
     }
@@ -305,7 +304,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         // 重複チェック
         $exists = false;
         $arrBrother = $objCategory->getTreeBranch($parent_category_id);
-        foreach($arrBrother as $brother) {
+        foreach ($arrBrother as $brother) {
             if ($brother['category_name'] == $category_name && $brother['category_id'] != $category_id) {
                 $exists = true;
             }

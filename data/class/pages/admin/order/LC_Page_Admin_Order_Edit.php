@@ -582,10 +582,10 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             }
         } else {
             // ダウンロード商品の場合はお届け先情報がないので受注詳細から必要なデータを挿入する
-            foreach($this->arrShippingKeys as $keys) {
+            foreach ($this->arrShippingKeys as $keys) {
                 $arrShippings[0][$keys] = '';
             }
-            foreach($arrOrderDetail as $key => $value) {
+            foreach ($arrOrderDetail as $key => $value) {
                 $arrShippings[0]['shipment_item'][$key]['shipping_id'] = $key;
                 $arrShippings[0]['shipment_item'][$key]['product_class_id'] = $value['product_class_id'];
                 $arrShippings[0]['shipment_item'][$key]['quantity'] = $value['quantity'];
@@ -1012,7 +1012,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         //届け先に選択済みの商品がある場合
         $arrShipmentProducts = $this->getShipmentProducts($objFormParam);
 
-        if($arrShipmentProducts['shipment_product_class_id'] && in_array($add_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])){
+        if ($arrShipmentProducts['shipment_product_class_id'] && in_array($add_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])) {
             foreach ($arrShipmentProducts['shipment_product_class_id'][$select_shipping_id] as $relation_index => $shipment_product_class_id) {
                 if ($shipment_product_class_id == $add_product_class_id) {
                     $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$relation_index]++;
@@ -1151,7 +1151,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $arrShipmentsItems = $objFormParam->getSwapArray(array('shipment_product_class_id', 'shipment_quantity'));
 
         // 配送先が存在する時のみ、商品個数の再設定を行います
-        if(!SC_Utils_Ex::isBlank($arrShipmentsItems)) {
+        if (!SC_Utils_Ex::isBlank($arrShipmentsItems)) {
             $arrUpdateQuantity = array();
             foreach ($arrShipmentsItems as $arritems) {
                 foreach ($arritems['shipment_product_class_id'] as $relation_index => $shipment_product_class_id) {

@@ -210,9 +210,8 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
                 $arrResults[$other_deliv_id] = $val['name01'] . $val['name02']
                     . ' ' . $arrPref[$val['pref']] . $val['addr01'] . $val['addr02'];
             }
-        }
         // 非会員
-        else {
+        } else {
             $arrShippings = $objPurchase->getShippingTemp();
             foreach ($arrShippings as $shipping_id => $val) {
                 $arrResults[$shipping_id] = $val['shipping_name01'] . $val['shipping_name02']

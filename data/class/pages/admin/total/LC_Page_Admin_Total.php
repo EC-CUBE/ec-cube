@@ -273,9 +273,8 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
             list($sdate, $edate) = SC_Utils_Ex::sfTermMonth($arrRet['search_startyear_m'],
                                                             $arrRet['search_startmonth_m'],
                                                             CLOSE_DAY);
-        }
         // 期間集計
-        elseif ($arrRet['search_form'] == 2) {
+        } elseif ($arrRet['search_form'] == 2) {
             $sdate = $arrRet['search_startyear'] . '/' . $arrRet['search_startmonth'] . '/' . $arrRet['search_startday'];
             $edate = $arrRet['search_endyear'] . '/' . $arrRet['search_endmonth'] . '/' . $arrRet['search_endday'];
         }

@@ -278,9 +278,8 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
                                                        array($arrValues['device_type_id']));
             $arrValues['create_date'] = 'CURRENT_TIMESTAMP';
             $objQuery->insert($table, $arrValues);
-        }
         // 更新
-        else {
+        } else {
             // 編集不可ページは更新しない
             if (!$objLayout->isEditablePage($arrValues['device_type_id'], $arrValues['page_id'])) {
                 unset($arrValues['page_name']);

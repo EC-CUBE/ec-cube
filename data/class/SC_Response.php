@@ -175,9 +175,8 @@ class SC_Response
                     $url = preg_replace($pattern, $replacement, $url);
                 }
             }
-        }
         // 現在のURLからのパス
-        else {
+        } else {
             if (!is_bool($useSsl)) {
                 $useSsl = SC_Utils_Ex::sfIsHTTPS();
             }

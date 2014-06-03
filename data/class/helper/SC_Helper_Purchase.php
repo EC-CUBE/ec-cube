@@ -982,9 +982,8 @@ __EOS__;
             // 販売価格が 0 円
             if ($arrOrderDetail[$key]['price'] == '0') {
                 $arrOrderDetail[$key]['is_downloadable'] = true;
-            }
             // ダウンロード期限内かつ, 入金日あり
-            elseif ($arrOrderDetail[$key]['effective'] == '1'
+            } elseif ($arrOrderDetail[$key]['effective'] == '1'
                     && !SC_Utils_Ex::isBlank($arrOrderDetail[$key]['payment_date'])) {
                 $arrOrderDetail[$key]['is_downloadable'] = true;
             } else {
@@ -1182,9 +1181,8 @@ __EOS__;
         // 対応状況が発送済みに変更の場合、発送日を更新
         if ($arrOrderOld['status'] != ORDER_DELIV && $newStatus == ORDER_DELIV) {
             $sqlval['commit_date'] = 'CURRENT_TIMESTAMP';
-        }
         // 対応状況が入金済みに変更の場合、入金日を更新
-        elseif ($arrOrderOld['status'] != ORDER_PRE_END && $newStatus == ORDER_PRE_END) {
+        } elseif ($arrOrderOld['status'] != ORDER_PRE_END && $newStatus == ORDER_PRE_END) {
             $sqlval['payment_date'] = 'CURRENT_TIMESTAMP';
         }
 
@@ -1357,7 +1355,7 @@ __EOS__;
      */
     public function cancelPendingOrder($cancel_flg)
     {
-        if($cancel_flg == true){
+        if ($cancel_flg == true) {
             $this->checkDbAllPendingOrder();
             $this->checkDbMyPendignOrder();
             $this->checkSessionPendingOrder();

@@ -167,7 +167,7 @@ class SC_Helper_TaxRule
             $cols = '*';
 
             // 商品税率有無設定により分岐
-            if(OPTION_PRODUCT_TAX_RULE == 1) {
+            if (OPTION_PRODUCT_TAX_RULE == 1) {
                 $where = '
                         (
                             (product_id = 0 OR product_id = ?)

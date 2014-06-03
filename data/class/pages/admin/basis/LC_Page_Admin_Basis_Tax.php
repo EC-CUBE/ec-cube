@@ -139,7 +139,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
                         // リロード
                         SC_Response_Ex::reload();
                     }
-                } else if(SC_Utils_Ex::isBlank($this->arrErr['tax_rule_id'])) {
+                } elseif (SC_Utils_Ex::isBlank($this->arrErr['tax_rule_id'])) {
                     // 税率ID以外のエラーの場合、ID情報を引き継ぐ
                     $this->tpl_tax_rule_id = $tax_rule_id;
                 }

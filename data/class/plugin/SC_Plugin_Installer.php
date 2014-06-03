@@ -74,7 +74,7 @@ class SC_Plugin_Installer
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // SQLの実行
-        if(!SC_Utils_Ex::isBlank($arrSql)) {
+        if (!SC_Utils_Ex::isBlank($arrSql)) {
             foreach ($arrSql as $sql) {
                 $this->log("exec sql: " . $sql['sql']);
                 $objQuery->query($sql['sql'], $sql['params']);
@@ -82,7 +82,7 @@ class SC_Plugin_Installer
         }
 
         $arrInsertQuery = $this->arrInstallData['insert'];
-        if(!SC_Utils_Ex::isBlank($arrInsertQuery)) {
+        if (!SC_Utils_Ex::isBlank($arrInsertQuery)) {
             foreach ($arrInsertQuery as $query) {
                 $objQuery->insert(
                         $query['table'],
@@ -96,7 +96,7 @@ class SC_Plugin_Installer
         }
 
         $arrUpdateQuery = $this->arrInstallData['update'];
-        if(!SC_Utils_Ex::isBlank($arrUpdateQuery)) {
+        if (!SC_Utils_Ex::isBlank($arrUpdateQuery)) {
             foreach ($arrUpdateQuery as $query) {
                 $objQuery->update(
                         $query['table'],
@@ -112,7 +112,7 @@ class SC_Plugin_Installer
         // プラグインのディレクトリコピー
         $arrCopyDirectories = $this->arrInstallData['copy_directory'];
 
-        if(!SC_Utils_Ex::isBlank($arrCopyDirectories)) {
+        if (!SC_Utils_Ex::isBlank($arrCopyDirectories)) {
             foreach ($arrCopyDirectories as $directory) {
                 $this->log("exec dir copy: " . $directory['src'] . ' -> ' . $directory['dist']);
                 // ディレクトリコピー -> HTML配下とDATA配下を別関数にする
@@ -125,7 +125,7 @@ class SC_Plugin_Installer
         // プラグインのファイルコピー
         $arrCopyFiles = $this->arrInstallData['copy_file'];
 
-        if(!SC_Utils_Ex::isBlank($arrCopyFiles)) {
+        if (!SC_Utils_Ex::isBlank($arrCopyFiles)) {
             foreach ($arrCopyFiles as $file) {
                 $this->log("exec file copy: " . $file['src'] . ' -> ' . $file['dist']);
                 // ファイルコピー
