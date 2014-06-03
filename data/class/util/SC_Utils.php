@@ -1450,7 +1450,12 @@ class SC_Utils
         return $filename;
     }
 
-    /* デバッグ用 ------------------------------------------------------------------------------------------------*/
+    /**
+     * デバッグ用
+     *
+     * @param mixed $obj
+     * @return void
+     */
     public static function sfPrintR($obj)
     {
         echo '<div style="font-size: 12px;color: #00FF00;">' . "\n";
