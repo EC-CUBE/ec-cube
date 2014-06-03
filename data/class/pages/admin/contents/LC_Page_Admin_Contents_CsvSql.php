@@ -417,64 +417,65 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
      */
     public function lfGetSqlDenyList()
     {
-        $arrList = array(';'
-            ,'CREATE\s'
-            ,'INSERT\s'
-            ,'UPDATE\s'
-            ,'DELETE\s'
-            ,'ALTER\s'
-            ,'ABORT\s'
-            ,'ANALYZE\s'
-            ,'CLUSTER\s'
-            ,'COMMENT\s'
-            ,'COPY\s'
-            ,'DECLARE\s'
-            ,'DISCARD\s'
-            ,'DO\s'
-            ,'DROP\s'
-            ,'EXECUTE\s'
-            ,'EXPLAIN\s'
-            ,'GRANT\s'
-            ,'LISTEN\s'
-            ,'LOAD\s'
-            ,'LOCK\s'
-            ,'NOTIFY\s'
-            ,'PREPARE\s'
-            ,'REASSIGN\s'
-//            ,'REINDEX\s'      // REINDEXは許可で良いかなと
-            ,'RELEASE\sSAVEPOINT'
-            ,'RENAME\s'
-            ,'REST\s'
-            ,'REVOKE\s'
-            ,'SAVEPOINT\s'
-            ,'\sSET\s' // OFFSETを誤検知しないように先頭・末尾に\sを指定
-            ,'SHOW\s'
-            ,'START\sTRANSACTION'
-            ,'TRUNCATE\s'
-            ,'UNLISTEN\s'
-            ,'VACCUM\s'
-            ,'HANDLER\s'
-            ,'LOAD\sDATA\s'
-            ,'LOAD\sXML\s'
-            ,'REPLACE\s'
-            ,'OPTIMIZE\s'
-            ,'REPAIR\s'
-            ,'INSTALL\sPLUGIN\s'
-            ,'UNINSTALL\sPLUGIN\s'
-            ,'BINLOG\s'
-            ,'KILL\s'
-            ,'RESET\s'
-            ,'PURGE\s'
-            ,'CHANGE\sMASTER'
-            ,'START\sSLAVE'
-            ,'STOP\sSLAVE'
-            ,'MASTER\sPOS\sWAIT'
-            ,'SIGNAL\s'
-            ,'RESIGNAL\s'
-            ,'RETURN\s'
-            ,'USE\s'
-            ,'HELP\s'
-            );
+        $arrList = array(
+            ';',
+            'CREATE\s',
+            'INSERT\s',
+            'UPDATE\s',
+            'DELETE\s',
+            'ALTER\s',
+            'ABORT\s',
+            'ANALYZE\s',
+            'CLUSTER\s',
+            'COMMENT\s',
+            'COPY\s',
+            'DECLARE\s',
+            'DISCARD\s',
+            'DO\s',
+            'DROP\s',
+            'EXECUTE\s',
+            'EXPLAIN\s',
+            'GRANT\s',
+            'LISTEN\s',
+            'LOAD\s',
+            'LOCK\s',
+            'NOTIFY\s',
+            'PREPARE\s',
+            'REASSIGN\s',
+//            'REINDEX\s', // REINDEXは許可で良いかなと
+            'RELEASE\sSAVEPOINT',
+            'RENAME\s',
+            'REST\s',
+            'REVOKE\s',
+            'SAVEPOINT\s',
+            '\sSET\s', // OFFSETを誤検知しないように先頭・末尾に\sを指定
+            'SHOW\s',
+            'START\sTRANSACTION',
+            'TRUNCATE\s',
+            'UNLISTEN\s',
+            'VACCUM\s',
+            'HANDLER\s',
+            'LOAD\sDATA\s',
+            'LOAD\sXML\s',
+            'REPLACE\s',
+            'OPTIMIZE\s',
+            'REPAIR\s',
+            'INSTALL\sPLUGIN\s',
+            'UNINSTALL\sPLUGIN\s',
+            'BINLOG\s',
+            'KILL\s',
+            'RESET\s',
+            'PURGE\s',
+            'CHANGE\sMASTER',
+            'START\sSLAVE',
+            'STOP\sSLAVE',
+            'MASTER\sPOS\sWAIT',
+            'SIGNAL\s',
+            'RESIGNAL\s',
+            'RETURN\s',
+            'USE\s',
+            'HELP\s',
+        );
 
         return $arrList;
     }
