@@ -82,7 +82,7 @@
                     <td class="alignC">
                     <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $orderDetail.is_downloadable}-->
-                            <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
+                            <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
                         <!--{else}-->
                             <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
                                 <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（入金確認中）

@@ -112,11 +112,10 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
         // パラメーター取得
         $customer_id = $_SESSION['customer']['customer_id'];
         $order_id = $_GET['order_id'];
-        $product_id = $_GET['product_id'];
         $product_class_id = $_GET['product_class_id'];
 
         //DBから商品情報の読込
-        $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id);
+        $arrForm = $this->lfGetRealFileName($customer_id, $order_id, $product_class_id);
 
         //ファイル情報が無い場合はNG
         if ($arrForm['down_realfilename'] == '') {
@@ -158,37 +157,29 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
      *
      * @param  integer $customer_id      会員ID
      * @param  integer $order_id         受注ID
-     * @param  integer $product_id       商品ID
      * @param  integer $product_class_id 商品規格ID
      * @return array   商品情報の配列
      */
-    public function lfGetRealFileName($customer_id, $order_id, $product_id, $product_class_id)
+    public function lfGetRealFileName($customer_id, $order_id, $product_class_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = <<< __EOS__
-            pc.product_id AS product_id,
-            pc.product_class_id AS product_class_id,
             pc.down_realfilename AS down_realfilename,
-            pc.down_filename AS down_filename,
-            o.order_id AS order_id,
-            o.customer_id AS customer_id,
-            o.payment_date AS payment_date,
-            o.status AS status
+            pc.down_filename AS down_filename
 __EOS__;
 
         $table = <<< __EOS__
-            dtb_products_class pc,
-            dtb_order_detail od,
-            dtb_order o
+            dtb_order AS o
+            JOIN dtb_order_detail AS od USING(order_id)
+            JOIN dtb_products_class AS pc USING(product_id, product_class_id)
 __EOS__;
 
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $where = 'o.customer_id = ? AND o.order_id = ? AND pc.product_id = ? AND pc.product_class_id = ?';
-        $where .= ' AND od.product_id = ? AND od.product_class_id = ?';
+        $where = 'o.customer_id = ? AND o.order_id = ? AND od.product_class_id = ?';
         $where .= ' AND ' . $dbFactory->getDownloadableDaysWhereSql('o');
         $where .= ' = 1';
-        $arrRet = $objQuery->select($col, $table, $where,
-                                    array($customer_id, $order_id, $product_id, $product_class_id, $product_id, $product_class_id));
+        $arrWhereVal = array($customer_id, $order_id, $product_class_id);
+        $arrRet = $objQuery->select($col, $table, $where, $arrWhereVal);
 
         return $arrRet[0];
     }
@@ -198,7 +189,6 @@ __EOS__;
     {
         $objFormParam->addParam('customer_id', 'customer_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('order_id', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('product_id', 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('product_class_id', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
     }
 
