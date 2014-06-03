@@ -60,7 +60,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (strlen($this->arrSql['search_name']) > 0) {
             $this->setWhere('(' . $dbFactory->concatColumn(array('name01', 'name02')) . ' LIKE ?)');
             $searchName = $this->addSearchStr($this->arrSql['search_name']);
-            $this->arrVal[] = preg_replace('/[ 　]+/u','',$searchName);
+            $this->arrVal[] = preg_replace('/[ 　]+/u', '', $searchName);
         }
 
         // 名前(フリガナ)
@@ -68,7 +68,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (strlen($this->arrSql['search_kana']) > 0) {
             $this->setWhere('(' . $dbFactory->concatColumn(array('kana01', 'kana02')) . ' LIKE ?)');
             $searchKana = $this->addSearchStr($this->arrSql['search_kana']);
-            $this->arrVal[] = preg_replace('/[ 　]+/u','',$searchKana);
+            $this->arrVal[] = preg_replace('/[ 　]+/u', '', $searchKana);
         }
 
         // 都道府県
@@ -89,7 +89,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         // 性別
         if (!isset($this->arrSql['search_sex'])) $this->arrSql['search_sex'] = '';
         if (is_array($this->arrSql['search_sex'])) {
-            $arrSexVal = $this->setItemTerm($this->arrSql['search_sex'] ,'sex');
+            $arrSexVal = $this->setItemTerm($this->arrSql['search_sex'], 'sex');
             foreach ($arrSexVal as $data) {
                 $this->arrVal[] = $data;
             }
@@ -99,9 +99,9 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (!isset($this->arrSql['search_job'])) $this->arrSql['search_job'] = '';
         if (is_array($this->arrSql['search_job'])) {
             if (in_array('不明', $this->arrSql['search_job'])) {
-                $arrJobVal = $this->setItemTermWithNull($this->arrSql['search_job'] ,'job');
+                $arrJobVal = $this->setItemTermWithNull($this->arrSql['search_job'], 'job');
             } else {
-                $arrJobVal = $this->setItemTerm($this->arrSql['search_job'] ,'job');
+                $arrJobVal = $this->setItemTerm($this->arrSql['search_job'], 'job');
             }
             if (is_array($arrJobVal)) {
                 foreach ($arrJobVal as $data) {
@@ -259,8 +259,8 @@ class SC_CustomerList extends SC_SelectSql_Ex
         if (!isset($this->arrSql['search_end_day'])) $this->arrSql['search_end_day'] = '';
         if ( (strlen($this->arrSql['search_start_year']) > 0 && strlen($this->arrSql['search_start_month']) > 0 && strlen($this->arrSql['search_start_day']) > 0) ||
                 (strlen($this->arrSql['search_end_year']) > 0 && strlen($this->arrSql['search_end_month']) >0 && strlen($this->arrSql['search_end_day']) > 0)) {
-            $arrRegistTime = $this->selectTermRange($this->arrSql['search_start_year'], $this->arrSql['search_start_month'], $this->arrSql['search_start_day']
-                            , $this->arrSql['search_end_year'], $this->arrSql['search_end_month'], $this->arrSql['search_end_day'], $regdate_col);
+            $arrRegistTime = $this->selectTermRange($this->arrSql['search_start_year'], $this->arrSql['search_start_month'], $this->arrSql['search_start_day'],
+                            $this->arrSql['search_end_year'], $this->arrSql['search_end_month'], $this->arrSql['search_end_day'], $regdate_col);
             foreach ($arrRegistTime as $data) {
                 $this->arrVal[] = $data;
             }
@@ -276,8 +276,8 @@ class SC_CustomerList extends SC_SelectSql_Ex
 
         if ( (strlen($this->arrSql['search_buy_start_year']) > 0 && strlen($this->arrSql['search_buy_start_month']) > 0 && strlen($this->arrSql['search_buy_start_day']) > 0) ||
                 (strlen($this->arrSql['search_buy_end_year']) > 0 && strlen($this->arrSql['search_buy_end_month']) >0 && strlen($this->arrSql['search_buy_end_day']) > 0)) {
-            $arrRegistTime = $this->selectTermRange($this->arrSql['search_buy_start_year'], $this->arrSql['search_buy_start_month'], $this->arrSql['search_buy_start_day']
-                            , $this->arrSql['search_buy_end_year'], $this->arrSql['search_buy_end_month'], $this->arrSql['search_buy_end_day'], 'last_buy_date');
+            $arrRegistTime = $this->selectTermRange($this->arrSql['search_buy_start_year'], $this->arrSql['search_buy_start_month'], $this->arrSql['search_buy_start_day'],
+                            $this->arrSql['search_buy_end_year'], $this->arrSql['search_buy_end_month'], $this->arrSql['search_buy_end_day'], 'last_buy_date');
             foreach ($arrRegistTime as $data) {
                 $this->arrVal[] = $data;
             }
@@ -315,7 +315,7 @@ class SC_CustomerList extends SC_SelectSql_Ex
         // 会員状態
         if (!isset($this->arrSql['search_status'])) $this->arrSql['search_status'] = '';
         if (is_array($this->arrSql['search_status'])) {
-            $arrStatusVal = $this->setItemTerm($this->arrSql['search_status'] ,'status');
+            $arrStatusVal = $this->setItemTerm($this->arrSql['search_status'], 'status');
             foreach ($arrStatusVal as $data) {
                 $this->arrVal[] = $data;
             }

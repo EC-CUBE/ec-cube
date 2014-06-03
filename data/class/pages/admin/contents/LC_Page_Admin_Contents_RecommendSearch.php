@@ -82,8 +82,8 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
                 if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     $objProduct = new SC_Product_Ex();
 
-                    $wheres = $this->createWhere($objFormParam,$objDb);
-                    $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);
+                    $wheres = $this->createWhere($objFormParam, $objDb);
+                    $this->tpl_linemax = $this->getLineCount($wheres, $objProduct);
 
                     $page_max = SC_Utils_Ex::sfGetSearchPageMax($arrPost['search_page_max']);
 
@@ -93,7 +93,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
                     $startno = $objNavi->start_row;
 
                     $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
-                    $this->arrProducts = $this->getProductList($arrProduct_id,$objProduct);
+                    $this->arrProducts = $this->getProductList($arrProduct_id, $objProduct);
                     $this->arrForm = $arrPost;
                 }
                 break;
@@ -114,10 +114,10 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
     public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('商品ID', 'search_name', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('商品ID', 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
+        $objFormParam->addParam('商品ID', 'search_category_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品コード', 'search_product_code', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ステータス', 'search_status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK','NUM_CHECK'));
+        $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
     }
 
     /**
@@ -139,7 +139,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      * @return array        ('where' => where string, 'bind' => databind array)
      * @param  SC_FormParam $objFormParam
      */
-    public function createWhere(&$objFormParam,&$objDb)
+    public function createWhere(&$objFormParam, &$objDb)
     {
         $arrForm = $objFormParam->getHashArray();
         $where = 'alldtl.del_flg = 0';
@@ -186,7 +186,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      * @param array      $whereAndBind
      * @param SC_Product $objProduct
      */
-    public function getLineCount($whereAndBind,&$objProduct)
+    public function getLineCount($whereAndBind, &$objProduct)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
@@ -203,7 +203,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      * @param array      $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
      */
-    public function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
+    public function getProducts($whereAndBind, &$objProduct, $page_max, $startno)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];

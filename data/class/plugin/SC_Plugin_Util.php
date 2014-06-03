@@ -38,7 +38,7 @@ class SC_Plugin_Util
         if (in_array('priority', $arrCols)) {
             $objQuery->setOrder('priority DESC, plugin_id ASC');
         }
-        $arrRet = $objQuery->select($col,$table,$where);
+        $arrRet = $objQuery->select($col, $table, $where);
 
         // プラグインフックポイントを取得.
         $max = count($arrRet);
@@ -66,7 +66,7 @@ class SC_Plugin_Util
         if (in_array('priority', $arrCols)) {
             $objQuery->setOrder('plugin_id ASC');
         }
-        $arrRet = $objQuery->select($col,$table);
+        $arrRet = $objQuery->select($col, $table);
 
         return $arrRet;
     }

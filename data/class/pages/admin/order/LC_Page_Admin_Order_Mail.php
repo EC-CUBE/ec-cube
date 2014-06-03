@@ -71,14 +71,14 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
     {
         $post = $_POST;
         //一括送信用の処理
-        if (array_key_exists('mail_order_id',$post) and $post['mode'] == 'mail_select') {
-            $post['order_id_array'] = implode(',',$post['mail_order_id']);
-        } elseif (!array_key_exists('order_id_array',$post)) {
+        if (array_key_exists('mail_order_id', $post) and $post['mode'] == 'mail_select') {
+            $post['order_id_array'] = implode(',', $post['mail_order_id']);
+        } elseif (!array_key_exists('order_id_array', $post)) {
             $post['order_id_array'] = $post['order_id'];
         }
 
         //一括送信処理変数チェック(ここですべきかは課題)
-        if (preg_match("/^[0-9|\,]*$/",$post['order_id_array'])) {
+        if (preg_match("/^[0-9|\,]*$/", $post['order_id_array'])) {
             $this->order_id_array = $post['order_id_array'];
         } else {
             //エラーで元に戻す
@@ -88,7 +88,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
 
         //メール本文の確認例は初めの1受注とする
         if (!SC_Utils_Ex::isBlank($this->order_id_array)) {
-            $order_id_array = split(',',$this->order_id_array);
+            $order_id_array = split(',', $this->order_id_array);
             $post['order_id'] = intval($order_id_array[0]);
             $this->order_id_count = count($order_id_array);
         }
@@ -173,7 +173,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
         // メールの送信
         if (count($arrErr) == 0) {
             // 注文受付メール(複数受注ID対応)
-            $order_id_array = explode(',',$this->order_id_array);
+            $order_id_array = explode(',', $this->order_id_array);
             foreach ($order_id_array as $order_id) {
                 $objMail = new SC_Helper_Mail_Ex();
                 $objSendMail = $objMail->sfSendOrderMail($order_id,
@@ -242,7 +242,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
         }
 
         if (empty($mailTemplates)) {
-            foreach (array('subject','header','footer') as $key) {
+            foreach (array('subject', 'header', 'footer') as $key) {
                 $objFormParam->setValue($key, '');
             }
         } else {

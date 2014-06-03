@@ -66,7 +66,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
      */
     public function action()
     {
-        if (strpos(HTTPS_URL,'https://') !== FALSE) {
+        if (strpos(HTTPS_URL, 'https://') !== FALSE) {
             $this->tpl_enable_ssl = TRUE;
         }
 
@@ -97,11 +97,11 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
             }
 
         } else {
-            $admin_dir = str_replace('/','',ADMIN_DIR);
-            $this->arrForm = array('admin_dir'=>$admin_dir,'admin_force_ssl'=>ADMIN_FORCE_SSL,'admin_allow_hosts'=>'');
+            $admin_dir = str_replace('/', '', ADMIN_DIR);
+            $this->arrForm = array('admin_dir'=>$admin_dir, 'admin_force_ssl'=>ADMIN_FORCE_SSL, 'admin_allow_hosts'=>'');
             if (defined('ADMIN_ALLOW_HOSTS')) {
                 $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
-                $this->arrForm['admin_allow_hosts'] = implode("\n",$allow_hosts);
+                $this->arrForm['admin_allow_hosts'] = implode("\n", $allow_hosts);
             }
         }
 
@@ -136,7 +136,7 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
 
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
         foreach ($installData as $key=>$line) {
-            if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
+            if (strpos($line, 'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 //既存ディレクトリのチェック
                 if (file_exists(HTML_REALDIR . $admin_dir) and $admin_dir != 'admin/') {
                     $arrErr['admin_dir'] .= ROOT_URLPATH . $admin_dir . 'は既に存在しています。別のディレクトリ名を指定してください。';
@@ -172,10 +172,10 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
         $diff = 0;
         foreach ($installData as $key=>$line) {
-            if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
+            if (strpos($line, 'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 $installData[$key] = 'define("ADMIN_DIR", "' . $admin_dir . '");';
                 //管理機能ディレクトリのリネーム
-                if (!rename(HTML_REALDIR . ADMIN_DIR,HTML_REALDIR . $admin_dir)) {
+                if (!rename(HTML_REALDIR . ADMIN_DIR, HTML_REALDIR . $admin_dir)) {
                     $this->arrErr['admin_dir'] .= ROOT_URLPATH . ADMIN_DIR . 'のディレクトリ名を変更できませんでした。';
 
                     return false;
@@ -183,19 +183,19 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
                 $diff ++;
             }
 
-            if (strpos($line,'ADMIN_FORCE_SSL') !== false) {
+            if (strpos($line, 'ADMIN_FORCE_SSL') !== false) {
                 $installData[$key] = 'define("ADMIN_FORCE_SSL", ' . $admin_force_ssl.');';
                 $diff ++;
             }
-            if (strpos($line,'ADMIN_ALLOW_HOSTS') !== false and ADMIN_ALLOW_HOSTS != $admin_allow_hosts) {
+            if (strpos($line, 'ADMIN_ALLOW_HOSTS') !== false and ADMIN_ALLOW_HOSTS != $admin_allow_hosts) {
                 $installData[$key] = "define('ADMIN_ALLOW_HOSTS', '" . $admin_allow_hosts."');";
                 $diff ++;
             }
         }
 
         if ($diff > 0) {
-            $fp = fopen(CONFIG_REALFILE,'wb');
-            $installData = implode("\n",$installData);
+            $fp = fopen(CONFIG_REALFILE, 'wb');
+            $installData = implode("\n", $installData);
             echo $installData;
             fwrite($fp, $installData);
             fclose($fp);

@@ -130,7 +130,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
                     $this->tpl_onload = "alert('バックアップ完了しました');";
                 } else {
                     $arrForm = $objFormParam->getHashArray();
-                    $arrErr = array_merge((array) $arrErrTmp[1],(array) $arrErrTmp[2]);
+                    $arrErr = array_merge((array) $arrErrTmp[1], (array) $arrErrTmp[2]);
                 }
                 break;
 
@@ -319,7 +319,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
         // CSV出力
 
         // 自動採番をCSV出力
-        $fp = fopen($csv_autoinc_file,'w');
+        $fp = fopen($csv_autoinc_file, 'w');
         if ($fp) {
             if ($csv_autoinc != '') {
                 $success = fwrite($fp, $csv_autoinc);

@@ -204,7 +204,7 @@ class SC_SessionFactory
     {
         // MAX_LIFETIME以上更新されていないセッションを削除する。
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $limit = date("Y-m-d H:i:s",time() - MAX_LIFETIME);
+        $limit = date("Y-m-d H:i:s", time() - MAX_LIFETIME);
         $where = "update_date < '". $limit . "' ";
         $objQuery->delete('dtb_session', $where);
 

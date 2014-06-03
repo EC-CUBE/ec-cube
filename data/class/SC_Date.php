@@ -208,7 +208,7 @@ class SC_Date
             }
         }
         if (!empty(SC_Date_Ex::$arrRegularHoliday)) {
-            $day = date('w', mktime(0,0,0 ,$month, $day, $year));
+            $day = date('w', mktime(0, 0, 0, $month, $day, $year));
             if (in_array($day, SC_Date_Ex::$arrRegularHoliday)) {
                 return true;
             }

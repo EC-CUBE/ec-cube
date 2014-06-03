@@ -276,7 +276,7 @@ class LC_Page_Upgrade_Download extends LC_Page_Upgrade_Base
                 'module_name' => $objRet->product_name,
                 'update_date' => 'CURRENT_TIMESTAMP'
             );
-            $objQuery->update($table, $arrUpdate ,$where, array($objRet->product_id));
+            $objQuery->update($table, $arrUpdate, $where, array($objRet->product_id));
         } else {
             $arrInsert = array(
                 'module_id'   => $objRet->product_id,

@@ -703,7 +703,7 @@ class SC_CheckError
             return;
         }
         $this->createParam($value);
-        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i",$this->arrParam[$value[1]])) {
+        if (strlen($this->arrParam[$value[1]]) > 0 && !preg_match("/^[a-zA-Z0-9_\.@\+\?-]+$/i", $this->arrParam[$value[1]])) {
             $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に使用する文字を正しく入力してください。<br />';
         }
     }
@@ -729,12 +729,12 @@ class SC_CheckError
             return;
         }
         //改行コードが含まれている場合には配列に変換
-        $params = str_replace("\r",'',$this->arrParam[$value[1]]);
+        $params = str_replace("\r", '', $this->arrParam[$value[1]]);
         if (!empty($params)) {
-            if (strpos($params,"\n") === false) {
+            if (strpos($params, "\n") === false) {
                 $params .= "\n";
             }
-            $params = explode("\n",$params);
+            $params = explode("\n", $params);
             foreach ($params as $param) {
                 $param = trim($param);
                 if (long2ip(ip2long($param)) != trim($param) && !empty($param)) {
@@ -945,7 +945,7 @@ class SC_CheckError
             }
 
             // 年の最大数値制限チェック
-            $this->doFunc(array($value[0].'(年)', $value[1], date('Y',strtotime('now'))), array('MAX_CHECK'));
+            $this->doFunc(array($value[0].'(年)', $value[1], date('Y', strtotime('now'))), array('MAX_CHECK'));
             // 上のチェックでエラーある場合、中断する。
             if (isset($this->arrErr[$value[1]])) {
                 return;
@@ -987,8 +987,8 @@ class SC_CheckError
             $this->arrErr[$value[5]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0) &&  (strlen($this->arrParam[$value[5]]) > 0 || strlen($this->arrParam[$value[6]]) > 0 || strlen($this->arrParam[$value[7]]) > 0)) {
-            $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d',$this->arrParam[$value[4]]) .'000000';
-            $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d',$this->arrParam[$value[7]]) .'235959';
+            $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d', $this->arrParam[$value[4]]) .'000000';
+            $date2 = $this->arrParam[$value[5]] .sprintf('%02d', $this->arrParam[$value[6]]) .sprintf('%02d', $this->arrParam[$value[7]]) .'235959';
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[5]] == '') && $date1 > $date2) {
                 $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
@@ -1036,8 +1036,8 @@ class SC_CheckError
             $this->arrErr[$value[8]] = '※ ' . $value[1] . 'を正しく指定してください。<br />';
         }
         if ((strlen($this->arrParam[$value[2]]) > 0 && strlen($this->arrParam[$value[3]]) > 0 && strlen($this->arrParam[$value[4]]) > 0 && strlen($this->arrParam[$value[5]]) > 0) &&  (strlen($this->arrParam[$value[8]]) > 0 || strlen($this->arrParam[$value[9]]) > 0 || strlen($this->arrParam[$value[10]]) > 0 || strlen($this->arrParam[$value[11]]) > 0)) {
-            $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d',$this->arrParam[$value[4]]) .sprintf('%02d',$this->arrParam[$value[5]]).sprintf('%02d',$this->arrParam[$value[6]]).sprintf('%02d',$this->arrParam[$value[7]]);
-            $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d',$this->arrParam[$value[10]]) .sprintf('%02d',$this->arrParam[$value[11]]).sprintf('%02d',$this->arrParam[$value[12]]).sprintf('%02d',$this->arrParam[$value[13]]);
+            $date1 = $this->arrParam[$value[2]] .sprintf('%02d', $this->arrParam[$value[3]]) .sprintf('%02d', $this->arrParam[$value[4]]) .sprintf('%02d', $this->arrParam[$value[5]]).sprintf('%02d', $this->arrParam[$value[6]]).sprintf('%02d', $this->arrParam[$value[7]]);
+            $date2 = $this->arrParam[$value[8]] .sprintf('%02d', $this->arrParam[$value[9]]) .sprintf('%02d', $this->arrParam[$value[10]]) .sprintf('%02d', $this->arrParam[$value[11]]).sprintf('%02d', $this->arrParam[$value[12]]).sprintf('%02d', $this->arrParam[$value[13]]);
 
             if (($this->arrErr[$value[2]] == '' && $this->arrErr[$value[8]] == '') && $date1 > $date2) {
                 $this->arrErr[$value[2]] = '※ ' .$value[0]. 'と' .$value[1]. 'の期間指定が不正です。<br />';
@@ -1223,7 +1223,7 @@ class SC_CheckError
                 if (!is_numeric($key) && preg_match('/^[a-z0-9_]+$/i', $key)) {
                     if (!isset($this->arrParam[$key])) $this->arrParam[$key] = '';
                     if (strlen($this->arrParam[$key]) > 0
-                          && (preg_match('/^[[:alnum:]\-\_]*[\.\/\\\\]*\.\.(\/|\\\\)/',$this->arrParam[$key]) || !preg_match('/\A[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f]+\z/u', $this->arrParam[$key]))) {
+                          && (preg_match('/^[[:alnum:]\-\_]*[\.\/\\\\]*\.\.(\/|\\\\)/', $this->arrParam[$key]) || !preg_match('/\A[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f]+\z/u', $this->arrParam[$key]))) {
                         $this->arrErr[$value[1]] = '※ ' . $value[0] . 'に禁止された記号の並びまたは制御文字が入っています。<br />';
                     }
                 } elseif (preg_match('/[^a-z0-9_]/i', $key)) {

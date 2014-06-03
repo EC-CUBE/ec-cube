@@ -322,7 +322,7 @@ class SC_Helper_FileManager
         if (!is_dir(dirname($filename))) {
             SC_Utils_Ex::recursiveMkdir(dirname($filename), 0777);
         }
-        $fp = fopen($filename,'w');
+        $fp = fopen($filename, 'w');
         if ($fp === false) {
             return false;
         }

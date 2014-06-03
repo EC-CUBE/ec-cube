@@ -442,7 +442,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         $objFormParam->addParam('規格1', 'classcategory_id1', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('規格2', 'classcategory_id2', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('管理者ログイン', 'admin', INT_LEN, 'a', array('ALNUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('管理者ログイン', 'admin', INT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お気に入り商品ID', 'favorite_product_id', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -487,7 +487,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /* 入力内容のチェック */
-    public function lfCheckError($mode, SC_FormParam &$objFormParam, $tpl_classcat_find1 = null , $tpl_classcat_find2 = null)
+    public function lfCheckError($mode, SC_FormParam &$objFormParam, $tpl_classcat_find1 = null, $tpl_classcat_find2 = null)
     {
         switch ($mode) {
         case 'add_favorite_sphone':
@@ -584,7 +584,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
      */
     public function doCart()
     {
-        $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam,
+        $this->arrErr = $this->lfCheckError($this->mode, $this->objFormParam,
                                             $this->tpl_classcat_find1,
                                             $this->tpl_classcat_find2);
         if (count($this->arrErr) == 0) {
@@ -613,9 +613,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     {
         // ログイン中のユーザが商品をお気に入りにいれる処理
         if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
-            $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
+            $this->arrErr = $this->lfCheckError($this->mode, $this->objFormParam);
             if (count($this->arrErr) == 0) {
-                if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
+                if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'), $objCustomer->getValue('customer_id'))) {
                     SC_Response_Ex::actionExit(); 
                 }
                 $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
@@ -634,9 +634,9 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     {
         // ログイン中のユーザが商品をお気に入りにいれる処理(スマートフォン用)
         if ($objCustomer->isLoginSuccess() === true && $this->objFormParam->getValue('favorite_product_id') > 0) {
-            $this->arrErr = $this->lfCheckError($this->mode,$this->objFormParam);
+            $this->arrErr = $this->lfCheckError($this->mode, $this->objFormParam);
             if (count($this->arrErr) == 0) {
-                if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'),$objCustomer->getValue('customer_id'))) {
+                if ($this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'), $objCustomer->getValue('customer_id'))) {
                     $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite_sphone', array($this));
                     print 'true';

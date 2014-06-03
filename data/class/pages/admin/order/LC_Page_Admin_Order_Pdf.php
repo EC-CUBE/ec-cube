@@ -102,7 +102,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
                 }
                 break;
             default:
-                $this->arrForm = $this->createFromValues($_GET['order_id'],$_POST['pdf_order_id']);
+                $this->arrForm = $this->createFromValues($_GET['order_id'], $_POST['pdf_order_id']);
                 break;
         }
         $this->setTemplate($this->tpl_mainpage);
@@ -112,7 +112,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
      *
      * PDF作成フォームのデフォルト値の生成
      */
-    public function createFromValues($order_id,$pdf_order_id)
+    public function createFromValues($order_id, $pdf_order_id)
     {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();

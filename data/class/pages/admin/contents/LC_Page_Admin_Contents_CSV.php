@@ -134,7 +134,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
         $objCSV = new SC_Helper_CSV_Ex();
         if (SC_Utils_Ex::sfIsInt($csv_id)) {
             if ($csv_status_flg !='') {
-                $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?' , array($csv_status_flg), $order);
+                $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?', array($csv_status_flg), $order);
             } else {
                 $arrData = $objCSV->sfGetCsvOutput($csv_id, '', array(), $order);
             }
@@ -189,7 +189,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
     public function lfGetCsvId($subno_csv)
     {
         $objCSV = new SC_Helper_CSV_Ex();
-        $arrKey = array_keys($objCSV->arrSubnavi,$subno_csv);
+        $arrKey = array_keys($objCSV->arrSubnavi, $subno_csv);
         $csv_id = $arrKey[0];
         if (!SC_Utils_Ex::sfIsInt($csv_id)) {
             //初期値取りだし

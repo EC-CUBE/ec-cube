@@ -397,11 +397,11 @@ class SC_Helper_Mobile
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrRow = $objQuery->getRow(
-             'session_id, next_url, email'
-            ,'dtb_mobile_kara_mail'
-            ,'token = ? AND email IS NOT NULL AND receive_date >= ?'
-            ,array($token, date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME))
-            ,DB_FETCHMODE_ORDERED
+            'session_id, next_url, email',
+            'dtb_mobile_kara_mail',
+            'token = ? AND email IS NOT NULL AND receive_date >= ?',
+            array($token, date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME)),
+            DB_FETCHMODE_ORDERED
         );
 
         if (!isset($arrRow)) {
@@ -479,7 +479,7 @@ class SC_Helper_Mobile
     public function getMimeType($filename)
     {
         //ファイルの拡張子からコンテンツタイプを決定する
-        $file_extension = strtolower(substr(strrchr($filename,'.'),1));
+        $file_extension = strtolower(substr(strrchr($filename, '.'), 1));
         $mime_type = $this->defaultMimeType;
         if (array_key_exists($file_extension, $this->arrMimetypes)) {
             $mime_type = $this->arrMimetypes[$file_extension];

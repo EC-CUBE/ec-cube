@@ -45,7 +45,7 @@ class SC_View
         $this->_smarty->register_modifier('sfTrim', array('SC_Utils_Ex', 'sfTrim'));
         $this->_smarty->register_modifier('sfCalcIncTax', array('SC_Helper_DB_Ex', 'sfCalcIncTax'));
         $this->_smarty->register_modifier('sfPrePoint', array('SC_Utils_Ex', 'sfPrePoint'));
-        $this->_smarty->register_modifier('sfGetChecked',array('SC_Utils_Ex', 'sfGetChecked'));
+        $this->_smarty->register_modifier('sfGetChecked', array('SC_Utils_Ex', 'sfGetChecked'));
         $this->_smarty->register_modifier('sfTrimURL', array('SC_Utils_Ex', 'sfTrimURL'));
         $this->_smarty->register_modifier('sfMultiply', array('SC_Utils_Ex', 'sfMultiply'));
         $this->_smarty->register_modifier('sfRmDupSlash', array('SC_Utils_Ex', 'sfRmDupSlash'));
@@ -95,7 +95,7 @@ class SC_View
             if (!defined('OUTPUT_ERR')) {
                 // GLOBAL_ERR を割り当て
                 $this->assign('GLOBAL_ERR', $GLOBAL_ERR);
-                define('OUTPUT_ERR','ON');
+                define('OUTPUT_ERR', 'ON');
             }
         }
         $res =  $this->_smarty->fetch($template);
@@ -174,7 +174,7 @@ class SC_View
             if (!defined('OUTPUT_ERR')) {
                 // GLOBAL_ERR を割り当て
                 $this->assign('GLOBAL_ERR', $GLOBAL_ERR);
-                define('OUTPUT_ERR','ON');
+                define('OUTPUT_ERR', 'ON');
             }
         }
 

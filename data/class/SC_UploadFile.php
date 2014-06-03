@@ -523,7 +523,7 @@ class SC_UploadFile
         } else {
             // アップロードした画像名で保存
             $uploadfile = strlen($uploadfile) > 0 ? $uploadfile : $_FILES[$keyname]['name'];
-            $uniqname =  preg_replace('/(.+)\.(.+?)$/','$1', $uploadfile);
+            $uniqname =  preg_replace('/(.+)\.(.+?)$/', '$1', $uploadfile);
         }
         $dst_file = $this->temp_dir . $uniqname;
 

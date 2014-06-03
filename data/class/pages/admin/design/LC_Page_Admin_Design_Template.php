@@ -132,7 +132,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
     public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('template_code', 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
+        $objFormParam->addParam('template_code', 'template_code', STEXT_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'ALNUM_CHECK'));
     }
 
     /**
@@ -185,7 +185,7 @@ class LC_Page_Admin_Design_Template extends LC_Page_Admin_Ex
         $sql = file_get_contents($filepath);
         if ($sql !== false) {
             // 改行、タブを1スペースに変換
-            $sql = preg_replace("/[\r\n\t]/", ' ' ,$sql);
+            $sql = preg_replace("/[\r\n\t]/", ' ', $sql);
             $sql_split = explode(';', $sql);
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             foreach ($sql_split as $val) {

@@ -74,15 +74,15 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
 
-        $this->tpl_no = $this->getNo(array($_GET,$_POST));
-        $this->shipping_id = $this->getShippingId(array($_GET,$_POST));
+        $this->tpl_no = $this->getNo(array($_GET, $_POST));
+        $this->shipping_id = $this->getShippingId(array($_GET, $_POST));
 
         switch ($this->getMode()) {
             case 'search':
                 $objProduct = new SC_Product_Ex();
                 $this->arrForm = $objFormParam->getHashArray();
-                $wheres = $this->createWhere($objFormParam,$objDb);
-                $this->tpl_linemax = $this->getLineCount($wheres,$objProduct);
+                $wheres = $this->createWhere($objFormParam, $objDb);
+                $this->tpl_linemax = $this->getLineCount($wheres, $objProduct);
 
                 //ぶった斬りポイント==================================================================
                 // ページ送りの処理
@@ -93,9 +93,9 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
                 $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
                 $startno = $objNavi->start_row;
                 $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);
-                $productList = $this->getProductList($arrProduct_id,$objProduct);
+                $productList = $this->getProductList($arrProduct_id, $objProduct);
                 //取得している並び順で並び替え
-                $this->arrProducts = $this->sortProducts($arrProduct_id,$productList);
+                $this->arrProducts = $this->sortProducts($arrProduct_id, $productList);
                 $objProduct->setProductsClassByProductIds($arrProduct_id);
                 $this->tpl_javascript .= $this->getTplJavascript($objProduct);
                 $js_fnOnLoad = $this->getFnOnload($this->arrProducts);
@@ -168,7 +168,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @param array      $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
      */
-    public function getProducts($whereAndBind,&$objProduct, $page_max, $startno)
+    public function getProducts($whereAndBind, &$objProduct, $page_max, $startno)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
@@ -189,7 +189,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @param array      $whereAndBind
      * @param SC_Product $objProduct
      */
-    public function getLineCount($whereAndBind,&$objProduct)
+    public function getLineCount($whereAndBind, &$objProduct)
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
@@ -207,7 +207,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @return array        ('where' => where string, 'bind' => databind array)
      * @param  SC_FormParam $objFormParam
      */
-    public function createWhere(&$objFormParam,&$objDb)
+    public function createWhere(&$objFormParam, &$objDb)
     {
         $arrForm = $objFormParam->getHashArray();
         $where = 'alldtl.del_flg = 0';
@@ -280,7 +280,7 @@ class LC_Page_Admin_Order_ProductSelect extends LC_Page_Admin_Ex
      * @param $arrProduct_id
      * @param $productList
      */
-    public function sortProducts($arrProduct_id,$productList)
+    public function sortProducts($arrProduct_id, $productList)
     {
         $products  = array();
         foreach ($productList as $item) {

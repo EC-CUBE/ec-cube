@@ -277,7 +277,7 @@ __EOS__;
         $arrNewOrder = $objQuery->select($cols, $from, $where, ORDER_CANCEL);
 
         foreach ($arrNewOrder as $key => $val) {
-            $arrNewOrder[$key]['create_date'] = str_replace('-', '/', substr($val['create_date'], 0,19));
+            $arrNewOrder[$key]['create_date'] = str_replace('-', '/', substr($val['create_date'], 0, 19));
         }
 
         return $arrNewOrder;

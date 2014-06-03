@@ -322,7 +322,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
             $objFormParam->addParam('ダウンロード商品実ファイル名', 'down_realfilename', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam('temp_down_file', 'temp_down_file', '', '', array());
             $objFormParam->addParam('save_down_file', 'save_down_file', '', '', array());
-            $objFormParam->addParam('商品コード', 'product_code', STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK','MAX_LENGTH_CHECK'));
+            $objFormParam->addParam('商品コード', 'product_code', STEXT_LEN, 'KVna', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(NORMAL_PRICE_TITLE, 'price01', PRICE_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->addParam(SALE_PRICE_TITLE, 'price02', PRICE_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             if (OPTION_PRODUCT_TAX_RULE) {
@@ -418,7 +418,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      */
     public function lfInitFile(&$objUpFile)
     {
-        $objUpFile->addFile('一覧-メイン画像', 'main_list_image', array('jpg', 'gif', 'png'),IMAGE_SIZE, false, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
+        $objUpFile->addFile('一覧-メイン画像', 'main_list_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);
         $objUpFile->addFile('詳細-メイン画像', 'main_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, NORMAL_IMAGE_WIDTH, NORMAL_IMAGE_HEIGHT);
         $objUpFile->addFile('詳細-メイン拡大画像', 'main_large_image', array('jpg', 'gif', 'png'), IMAGE_SIZE, false, LARGE_IMAGE_WIDTH, LARGE_IMAGE_HEIGHT);
         for ($cnt = 1; $cnt <= PRODUCTSUB_MAX; $cnt++) {
@@ -436,7 +436,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      */
     public function lfInitDownFile(&$objDownFile)
     {
-        $objDownFile->addFile('ダウンロード販売用ファイル', 'down_file', explode(',', DOWNLOAD_EXTENSION),DOWN_SIZE, true, 0, 0);
+        $objDownFile->addFile('ダウンロード販売用ファイル', 'down_file', explode(',', DOWNLOAD_EXTENSION), DOWN_SIZE, true, 0, 0);
     }
 
     /**
@@ -502,7 +502,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
                 if ($select_recommend_no == preg_replace('/^recommend_id/', '', $key)) {
                     continue;
                 }
-                $delete_key = 'recommend_delete'.intval(str_replace('recommend_id','',$key));
+                $delete_key = 'recommend_delete'.intval(str_replace('recommend_id', '', $key));
                 if ($select_recommend_id == $arrForm[$key] && $arrForm[$delete_key] != 1) {
                     // 重複した場合、選択されたデータをリセットする
                     $arrForm['recommend_id' . $select_recommend_no] = '';
@@ -884,7 +884,7 @@ __EOF__;
 
         // 規格が登録されていなければ規格ID取得
         if ($arrProduct[0]['has_product_class'] == false) {
-            $arrProduct[0]['product_class_id'] = SC_Utils_Ex::sfGetProductClassId($product_id,'0','0');
+            $arrProduct[0]['product_class_id'] = SC_Utils_Ex::sfGetProductClassId($product_id, '0', '0');
         }
 
         // 商品ステータス取得
@@ -1156,7 +1156,7 @@ __EOF__;
         $objDb = new SC_Helper_DB_Ex();
 
         // 配列の添字を定義
-        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate' ,'product_type_id', 'down_filename', 'down_realfilename');
+        $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate', 'product_type_id', 'down_filename', 'down_realfilename');
         $sqlval = SC_Utils_Ex::sfArrayIntersectKeys($arrList, $checkArray);
         $sqlval = SC_Utils_Ex::arrayDefineIndexes($sqlval, $checkArray);
 

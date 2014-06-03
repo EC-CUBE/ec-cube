@@ -413,7 +413,7 @@ class SC_Helper_Category
         if (
             SC_Utils_Ex::sfIsInt($category_id)
             && !SC_Utils_Ex::sfIsZeroFilling($category_id)
-            && SC_Helper_DB_Ex::sfIsRecord('dtb_category','category_id', array($category_id), $where)
+            && SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', array($category_id), $where)
         ) {
             return true;
         }

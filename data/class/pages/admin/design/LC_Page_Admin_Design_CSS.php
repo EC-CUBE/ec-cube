@@ -211,7 +211,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
             if (!$val['is_dir']) {
                 $arrCSSList[] = array(
                     'file_name' => $val['file_name'],
-                    'css_name'  => preg_replace('/(.+)\.(.+?)$/','$1',$val['file_name']),
+                    'css_name'  => preg_replace('/(.+)\.(.+?)$/', '$1', $val['file_name']),
                 );
             }
         }
@@ -230,7 +230,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
         $arrParams = $objFormParam->getHashArray();
         $objErr = new SC_CheckError_Ex($arrParams);
         $objErr->arrErr =& $arrErr;
-        $objErr->doFunc(array('CSSファイル名', 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK','FILE_NAME_CHECK_BY_NOUPLOAD'));
+        $objErr->doFunc(array('CSSファイル名', 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
 
         $css_name = $objFormParam->getValue('css_name');
         $old_css_name = $objFormParam->getValue('old_css_name');

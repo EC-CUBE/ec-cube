@@ -1373,7 +1373,7 @@ __EOS__;
         if (!SC_Utils_Ex::isBlank($term) && preg_match("/^[0-9]+$/", $term)) {
             $target_time = strtotime('-' . $term . ' sec');
             $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $arrVal = array(date('Y/m/d H:i:s',$target_time), ORDER_PENDING);
+            $arrVal = array(date('Y/m/d H:i:s', $target_time), ORDER_PENDING);
             $objQuery->begin();
             $arrOrders = $objQuery->select('order_id', 'dtb_order', 'create_date <= ? and status = ? and del_flg = 0', $arrVal);
             if (!SC_Utils_Ex::isBlank($arrOrders)) {

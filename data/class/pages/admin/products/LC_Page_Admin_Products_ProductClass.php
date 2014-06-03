@@ -166,7 +166,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
         // 商品マスター検索パラメーター引き継ぎ
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カテゴリID', 'category_id', STEXT_LEN, 'n', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('ページ送り番号','search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ページ送り番号', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('表示件数', 'search_page_max', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品ID', 'search_product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品コード', 'search_product_code', STEXT_LEN, 'KVna', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -474,7 +474,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
          * 登録済みデータと, フォームの値は, 配列の形式が違うため,
          * 同じ形式の配列を生成し, マージしてフォームの値を上書きする
          */
-        $arrKeys = array('classcategory_id1', 'classcategory_id2','product_code',
+        $arrKeys = array('classcategory_id1', 'classcategory_id2', 'product_code',
             'classcategory_name1', 'classcategory_name2', 'stock',
             'stock_unlimited', 'price01', 'price02',
             'product_type_id', 'down_filename', 'down_realfilename', 'upload_index', 'tax_rate'

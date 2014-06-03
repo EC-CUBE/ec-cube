@@ -109,7 +109,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $this->arrMonthShippingDate = $objShippingDate->getMonth(true);
         $this->arrDayShippingDate = $objShippingDate->getDay(true);
 
-        $objBirthDate = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
+        $objBirthDate = new SC_Date_Ex(BIRTH_YEAR, date('Y', strtotime('now')));
         $this->arrBirthYear = $objBirthDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrBirthMonth = $objBirthDate->getMonth(true);
         $this->arrBirthDay = $objBirthDate->getDay(true);
@@ -277,7 +277,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                             $birth_point = BIRTH_MONTH_POINT;
                         }
                     }
-                    $objFormParam->setValue("birth_point",$birth_point);
+                    $objFormParam->setValue("birth_point", $birth_point);
                 }
                 $this->arrErr = $this->lfCheckError($objFormParam);
                 break;
@@ -353,14 +353,14 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('都道府県', 'order_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('住所1', 'order_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('住所2', 'order_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('電話番号1', 'order_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号2', 'order_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号3', 'order_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号1', 'order_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号2', 'order_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号3', 'order_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('性別', 'order_sex', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('職業', 'order_job', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('電話番号1', 'order_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('電話番号2', 'order_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('電話番号3', 'order_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('FAX番号1', 'order_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('FAX番号2', 'order_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('FAX番号3', 'order_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('性別', 'order_sex', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('職業', 'order_job', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('生年月日(年)', 'order_birth_year', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('生年月日(月)', 'order_birth_month', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('生年月日(日)', 'order_birth_day', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -432,12 +432,12 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->addParam('都道府県', 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('住所1', 'shipping_addr01', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('住所2', 'shipping_addr02', MTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('電話番号1', 'shipping_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号2', 'shipping_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('電話番号3', 'shipping_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号1', 'shipping_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号2', 'shipping_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
-        $objFormParam->addParam('FAX番号3', 'shipping_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('電話番号1', 'shipping_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('電話番号2', 'shipping_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('電話番号3', 'shipping_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('FAX番号1', 'shipping_fax01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('FAX番号2', 'shipping_fax02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('FAX番号3', 'shipping_fax03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('お届け時間ID', 'time_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('お届け日(年)', 'shipping_date_year', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('お届け日(月)', 'shipping_date_month', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -921,7 +921,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $delete_product_class_id       = $arrPreShipmentProductClassIds[$select_shipping_id][$delete_no];
 
         //配送先データ削除
-        $arrNewShipments = $this->deleteShipment($objFormParam, $this->arrShipmentItemKeys , $select_shipping_id, $delete_no);
+        $arrNewShipments = $this->deleteShipment($objFormParam, $this->arrShipmentItemKeys, $select_shipping_id, $delete_no);
         $objFormParam->setParam($arrNewShipments);
 
         $is_product_delete = true;
@@ -1059,7 +1059,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
             $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$change_no] ++;
         } elseif (in_array($edit_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])) {
             //配送先データ削除
-            $arrShipmentProducts = $this->deleteShipment($objFormParam, $this->arrShipmentItemKeys , $select_shipping_id, $change_no);
+            $arrShipmentProducts = $this->deleteShipment($objFormParam, $this->arrShipmentItemKeys, $select_shipping_id, $change_no);
             foreach ($arrShipmentProducts['shipment_product_class_id'][$select_shipping_id] as $relation_index => $shipment_product_class_id) {
                 if ($shipment_product_class_id == $edit_product_class_id) {
                     $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$relation_index] ++;
@@ -1148,7 +1148,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
      */
     public function setProductsQuantity(&$objFormParam)
     {
-        $arrShipmentsItems = $objFormParam->getSwapArray(array('shipment_product_class_id','shipment_quantity'));
+        $arrShipmentsItems = $objFormParam->getSwapArray(array('shipment_product_class_id', 'shipment_quantity'));
 
         // 配送先が存在する時のみ、商品個数の再設定を行います
         if(!SC_Utils_Ex::isBlank($arrShipmentsItems)) {

@@ -204,7 +204,7 @@ class LC_Page_Cart extends LC_Page_Ex
 
         // 前頁のURLを取得
         // TODO: SC_CartSession::setPrevURL()利用不可。
-        $this->lfGetCartPrevUrl($_SESSION,$_SERVER['HTTP_REFERER']);
+        $this->lfGetCartPrevUrl($_SESSION, $_SERVER['HTTP_REFERER']);
         $this->tpl_prev_url = (isset($_SESSION['cart_prev_url'])) ? $_SESSION['cart_prev_url'] : '';
 
         // 全てのカートの内容を取得する
@@ -219,7 +219,7 @@ class LC_Page_Cart extends LC_Page_Ex
     public function lfInitParam($arrRequest)
     {
         $objFormParam = new SC_FormParam_Ex();
-        $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カートナンバー', 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用
         $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -258,7 +258,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return
      */
-    public function lfUpdateOrderTempid($pre_uniqid,$uniqid)
+    public function lfUpdateOrderTempid($pre_uniqid, $uniqid)
     {
         $sqlval['order_temp_id'] = $uniqid;
         $where = 'order_temp_id = ?';
@@ -276,7 +276,7 @@ class LC_Page_Cart extends LC_Page_Ex
      *
      * @return void
      */
-    public function lfGetCartPrevUrl(&$session,$referer)
+    public function lfGetCartPrevUrl(&$session, $referer)
     {
         if (!preg_match('/cart/', $referer)) {
             if (!empty($session['cart_referer_url'])) {
@@ -311,7 +311,7 @@ class LC_Page_Cart extends LC_Page_Ex
         $uniqid = $objSiteSess->getUniqId();
         // エラーリトライなどで既にuniqidが存在する場合は、設定を引き継ぐ
         if ($pre_uniqid != '') {
-            $this->lfUpdateOrderTempid($pre_uniqid,$uniqid);
+            $this->lfUpdateOrderTempid($pre_uniqid, $uniqid);
         }
         // カートを購入モードに設定
         $objCartSess->registerKey($cartKey);

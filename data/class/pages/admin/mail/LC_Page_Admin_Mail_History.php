@@ -99,7 +99,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
         $objQuery =& SC_Query_Ex::getSingletonInstance();    // 件数取得用
 
         // 該当全体件数の取得
-        $linemax = $objQuery->count('dtb_send_history','del_flg = 0');
+        $linemax = $objQuery->count('dtb_send_history', 'del_flg = 0');
 
         // 一覧データの取得
         $objSelect->setOrder('start_date DESC, send_id DESC');

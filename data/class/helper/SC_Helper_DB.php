@@ -386,7 +386,7 @@ class SC_Helper_DB
         foreach ($arrCatID as $val) {
             $sql = 'SELECT category_name FROM dtb_category WHERE category_id = ?';
             $arrVal = array($val);
-            $CatName = $objQuery->getOne($sql,$arrVal);
+            $CatName = $objQuery->getOne($sql, $arrVal);
             $ConbName .= $CatName . ' | ';
         }
         // 最後の ｜ をカットする
@@ -412,7 +412,7 @@ class SC_Helper_DB
         // カテゴリ名称を取得する
         $sql = 'SELECT category_name FROM dtb_category WHERE category_id = ?';
         $arrVal = array($arrRet['id']);
-        $arrRet['name'] = $objQuery->getOne($sql,$arrVal);
+        $arrRet['name'] = $objQuery->getOne($sql, $arrVal);
 
         return $arrRet;
     }
@@ -672,7 +672,7 @@ class SC_Helper_DB
 
         //まずテーブル内容の元を取得
         if (!$is_force_all_count) {
-            $arrCategoryCountOld = $objQuery->select('category_id,product_count','dtb_category_count');
+            $arrCategoryCountOld = $objQuery->select('category_id,product_count', 'dtb_category_count');
         } else {
             $arrCategoryCountOld = array();
         }
@@ -1385,9 +1385,9 @@ __EOS__;
             $this->g_maker_on = true;
             $maker_id = (int) $maker_id;
             $product_id = (int) $product_id;
-            if (SC_Utils_Ex::sfIsInt($maker_id) && $maker_id != 0 && $this->sfIsRecord('dtb_maker','maker_id', $maker_id)) {
+            if (SC_Utils_Ex::sfIsInt($maker_id) && $maker_id != 0 && $this->sfIsRecord('dtb_maker', 'maker_id', $maker_id)) {
                 $this->g_maker_id = array($maker_id);
-            } elseif (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord('dtb_products','product_id', $product_id, $status)) {
+            } elseif (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && $this->sfIsRecord('dtb_products', 'product_id', $product_id, $status)) {
                 $objQuery =& SC_Query_Ex::getSingletonInstance();
                 $maker_id = $objQuery->getCol('maker_id', 'dtb_products', 'product_id = ?', array($product_id));
                 $this->g_maker_id = $maker_id;
