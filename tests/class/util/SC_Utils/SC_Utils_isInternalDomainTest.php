@@ -26,7 +26,6 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 
 /**
  * SC_Utils::sfIsInternalDomain()のテストクラス.
- * HTTP_URL='http://test.local' という前提でテスト.
  *
  * @author Hiroko Tamagawa
  * @version $Id$
@@ -48,8 +47,8 @@ class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
   /////////////////////////////////////////
   public function testsfIsInternalDomain_ドメインが一致する場合_trueが返る()
   {
-    $url = 'http://test.local/html/index.php';
-    $this->expected = TRUE;
+    $url = HTTP_URL . 'index.php';
+    $this->expected = true;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
 
     $this->verify($url);
@@ -57,8 +56,8 @@ class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
 
   public function testsfIsInternalDomain_アンカーを含むURLの場合_trueが返る()
   {
-    $url = 'http://test.local/html/index.php#hoge';
-    $this->expected = TRUE;
+    $url = HTTP_URL . 'index.php#hoge';
+    $this->expected = true;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
 
     $this->verify($url);
@@ -66,8 +65,10 @@ class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
 
   public function testsfIsInternalDomain_ドメインが一致しない場合_falseが返る()
   {
-    $url = 'http://test.local.jp/html/index.php';
-    $this->expected = TRUE;
+    // 一致しないようなURLにする
+    $url = 'http://unmatched.example.jp/html/index.php';
+
+    $this->expected = false;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
 
     $this->verify($url);
