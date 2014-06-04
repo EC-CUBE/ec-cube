@@ -27,7 +27,11 @@ class SC_Product_listsTest extends SC_Product_TestBase
         $this->setUpProducts();
         $this->setUpClassCategory();
         //更新日を取得
-        $arrRet = $this->objQuery->getCol('update_date','dtb_products', 'product_id = 1001');
+        $col = 'update_date';
+        $table = 'dtb_products';
+        $where = 'product_id IN (1001, 1002)';
+        $this->objQuery->setOrder('product_id');
+        $arrRet = $this->objQuery->getCol($col, $table, $where);
 
         $this->expected = array(
             0 => array(
@@ -76,7 +80,7 @@ class SC_Product_listsTest extends SC_Product_TestBase
                 ,'deliv_date_id' => '2'
                 ,'status' => '2'
                 ,'del_flg' => '0'
-                ,'update_date' => $arrRet[0]
+                ,'update_date' => $arrRet[1]
 
             )
         );
