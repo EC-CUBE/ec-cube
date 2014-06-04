@@ -192,11 +192,13 @@ ul.status_icon li {
 #detailrightblock div#cartbtn_default {
     border-bottom: none;
 }
-#detailrightblock div:last-child {
-    border-bottom: none;
+#detailrightblock>div:last-child {
     border-radius: 0 0 7px 7px;
     -moz-border-radius: 0 0 7px 7px;
     -webkit-border-radius: 0 0 7px 7px;
+}
+#detailrightblock div:not(.ui-body-f):last-child {
+    border-bottom: none;
 }
 /* 商品ステータスアイコン */
 #detailrightblock .status_icon {
