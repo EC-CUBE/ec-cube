@@ -867,8 +867,9 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
                 $arrShipmentValues = array();
 
                 foreach ($arrAllShipmentItem[$shipping_index] as $key => $arrItem) {
-                    $i = 0;
+                    // TODO $arrItemが配列でない場合があるのを見直した方が良いかもしれない
                     if (is_array($arrItem)) {
+                        $i = 0;
                         foreach ($arrItem as $item) {
                             $arrShipmentValues[$shipping_index][$i][str_replace('shipment_', '', $key)] = $item;
                             $i++;
