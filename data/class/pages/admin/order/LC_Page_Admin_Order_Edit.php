@@ -868,9 +868,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
                 foreach ($arrAllShipmentItem[$shipping_index] as $key => $arrItem) {
                     $i = 0;
-                    foreach ($arrItem as $item) {
-                        $arrShipmentValues[$shipping_index][$i][str_replace('shipment_', '', $key)] = $item;
-                        $i++;
+                    if (is_array($arrItem)) {
+                        foreach ($arrItem as $item) {
+                            $arrShipmentValues[$shipping_index][$i][str_replace('shipment_', '', $key)] = $item;
+                            $i++;
+                        }
                     }
                 }
                 $objPurchase->registerShipmentItem($order_id, $shipping_id,
