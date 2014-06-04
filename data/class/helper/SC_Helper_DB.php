@@ -88,7 +88,7 @@ class SC_Helper_DB
 
     public function sfColumnAdd($tableName, $colName, $colType)
     {
-        $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         return $objQuery->query("ALTER TABLE $tableName ADD $colName $colType ");
     }
@@ -105,7 +105,6 @@ class SC_Helper_DB
     public static function sfDataExists($tableName, $where, $arrWhereVal)
     {
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-        $dsn = $dbFactory->getDSN($dsn);
 
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists($tableName, $where, $arrWhereVal);
