@@ -103,10 +103,10 @@ class SC_CartSession_getCartListTest extends SC_CartSession_TestBase
             ,'deliv_date_id' => '1'
             ,'status' => '1'
             ,'del_flg' => '0'
-            ,'price01_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-            ,'price01_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-            ,'price02_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-            ,'price02_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+            ,'price01_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+            ,'price01_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+            ,'price02_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+            ,'price02_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
             ,'maker_id' => null
             ,'comment4' => null
             ,'comment5' => null
@@ -163,8 +163,8 @@ class SC_CartSession_getCartListTest extends SC_CartSession_TestBase
             ,'rank2' => null
             ,'class_name2' => '味'
             ,'class_id2' => '1'
-            ,'price01_inctax' => 1575.0
-            ,'price02_inctax' => 1575.0
+            ,'price01_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+            ,'price02_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
             //,'create_date' => '2014-05-04 12:20:29'
             //,'update_date' => '2014-05-04 12:20:29'
         );

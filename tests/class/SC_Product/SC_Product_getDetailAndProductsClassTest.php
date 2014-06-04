@@ -53,10 +53,10 @@ class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase
                 ,'status' => '1'
                 ,'del_flg' => '0'
                 ,'update_date' => $arrRet[0]
-                ,'price01_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-                ,'price01_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-                ,'price02_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-                ,'price02_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+                ,'price01_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price01_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
                 ,'maker_id' => null
                 ,'comment4' => null
                 ,'comment5' => null
@@ -114,8 +114,8 @@ class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase
                 ,'rank2' => null
                 ,'class_name2' => '味'
                 ,'class_id2' => '1'
-                ,'price01_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-                ,'price02_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+                ,'price01_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
         );
 
         $this->actual = $this->objProducts->getDetailAndProductsClass('1001');

@@ -62,7 +62,7 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
       'product_class_id' => '1001',
       'quantity' => 10,
       'price' => 9000,
-      'total_inctax' => 94500.0,
+      'total_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(90000),
       'productsClass' => array('price02' => 9000)
     );
     $this->actual = $_SESSION['shipping']['1001']['shipment_item']['1001'];
@@ -79,7 +79,7 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
       'product_class_id' => '1002',
       'quantity' => 10,
       'price' => '2500',
-      'total_inctax' => 26250.0
+      'total_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(25000),
     );
     $result = $_SESSION['shipping']['1001']['shipment_item']['1002'];
     unset($result['productsClass']);

@@ -51,8 +51,8 @@ class SC_Product_getProductsClassTest extends SC_Product_TestBase
                 ,'rank2' => null
                 ,'class_name2' => '味'
                 ,'class_id2' => '1'
-                ,'price01_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
-                ,'price02_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax('1500')
+                ,'price01_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
         );
 
         $this->actual = $this->objProducts->getProductsClass('1001');
