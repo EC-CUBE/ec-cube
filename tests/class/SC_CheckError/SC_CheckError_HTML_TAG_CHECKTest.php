@@ -32,6 +32,7 @@ class SC_CheckError_HTML_TAG_CHECKTest extends Common_TestCase
         parent::setUp();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
+        $this->target_func = 'HTML_TAG_CHECK';
     }
 
     protected function tearDown()
@@ -41,22 +42,46 @@ class SC_CheckError_HTML_TAG_CHECKTest extends Common_TestCase
 
     /////////////////////////////////////////
 
-    public function testHTML_TAG_CHECK_scriptタグが含まれる()
+    public function testHTML_TAG_CHECK_許可されていないhtmlタグが含まれる()
     {
-        $arrForm = array('form' => '<script></script>');
-        $objErr = new SC_CheckError_Ex($arrForm);
-        $objErr->doFunc(array('HTML_TAG_CHECK', 'form', $this->arrAllowedTag) ,array('HTML_TAG_CHECK'));
+        $not_allowed_tag = 'script';
 
-        $this->expected = '※ HTML_TAG_CHECKに許可されていないタグ [script], [script] が含まれています。<br />';
+        // 許可するタグリストに含まれていれば削除しておく
+        if ($key = array_search($not_allowed_tag, $this->arrAllowedTag)) {
+            unset($this->arrAllowedTag[$key]);
+        }
+
+        $disp_name = $this->target_func;
+        $arrForm = array(
+            'form' => "<{$not_allowed_tag}>not allowed</{$not_allowed_tag}>",
+        );
+        $objErr = new SC_CheckError_Ex($arrForm);
+        $objErr->doFunc(array($disp_name, 'form', $this->arrAllowedTag),
+            array($this->target_func));
+
+        $this->expected = sprintf(
+            '※ %sに許可されていないタグ [%s], [%s] が含まれています。<br />',
+            $disp_name, $not_allowed_tag, $not_allowed_tag);
         $this->actual = $objErr->arrErr['form'];
         $this->verify('');
     }
 
-    public function testHTML_TAG_CHECK_pタグが含まれる()
+    public function testHTML_TAG_CHECK_許可されているhtmlタグが含まれる()
     {
-        $arrForm = array('form' => '<p><p><p>');
+        $allowed_tag = 'p';
+
+        // 許可するタグリストに含まれていなければ追加しておく
+        if (!in_array($allowed_tag, $this->arrAllowedTag)) {
+            $this->arrAllowedTag[] = $allowed_tag;
+        }
+
+        $disp_name = $this->target_func;
+        $arrForm = array(
+            'form' => "<{$allowed_tag}>allowed</{$allowed_tag}>",
+        );
         $objErr = new SC_CheckError_Ex($arrForm);
-        $objErr->doFunc(array('HTML_TAG_CHECK', 'form', $this->arrAllowedTag) ,array('HTML_TAG_CHECK'));
+        $objErr->doFunc(array($disp_name, 'form', $this->arrAllowedTag),
+            array($this->target_func));
 
         $this->expected = '';
         $this->actual = $objErr->arrErr['form'];
@@ -65,13 +90,11 @@ class SC_CheckError_HTML_TAG_CHECKTest extends Common_TestCase
 
     public function testHTML_TAG_CHECK_htmlタグが含まれない()
     {
-        $arrForm = array('form' => '
-            htmlを含まないテスト文章。
-            htmlを含まないテスト文章。
-            htmlを含まないテスト文章。
-            ');
+        $disp_name = $this->target_func;
+        $arrForm = array('form' => 'htmlタグを含まないテスト文章。');
         $objErr = new SC_CheckError_Ex($arrForm);
-        $objErr->doFunc(array('HTML_TAG_CHECK', 'form', $this->arrAllowedTag) ,array('HTML_TAG_CHECK'));
+        $objErr->doFunc(array($disp_name, 'form', $this->arrAllowedTag),
+            array($this->target_func));
 
         $this->expected = '';
         $this->actual = $objErr->arrErr['form'];
