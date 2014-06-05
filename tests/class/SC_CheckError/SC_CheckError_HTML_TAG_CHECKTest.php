@@ -42,7 +42,7 @@ class SC_CheckError_HTML_TAG_CHECKTest extends Common_TestCase
 
     /////////////////////////////////////////
 
-    public function testHTML_TAG_CHECK_許可されていないhtmlタグが含まれる()
+    public function testHTML_TAG_CHECK_許可されていないhtmlタグが含まれる場合_エラー()
     {
         $not_allowed_tag = 'script';
 
@@ -66,7 +66,7 @@ class SC_CheckError_HTML_TAG_CHECKTest extends Common_TestCase
         $this->verify('');
     }
 
-    public function testHTML_TAG_CHECK_許可されているhtmlタグが含まれる()
+    public function testHTML_TAG_CHECK_許可されているhtmlタグが含まれる場合_エラーではない()
     {
         $allowed_tag = 'p';
 
@@ -88,7 +88,7 @@ class SC_CheckError_HTML_TAG_CHECKTest extends Common_TestCase
         $this->verify('');
     }
 
-    public function testHTML_TAG_CHECK_htmlタグが含まれない()
+    public function testHTML_TAG_CHECK_htmlタグが含まれない場合_エラーではない()
     {
         $disp_name = $this->target_func;
         $arrForm = array('form' => 'htmlタグを含まないテスト文章。');
