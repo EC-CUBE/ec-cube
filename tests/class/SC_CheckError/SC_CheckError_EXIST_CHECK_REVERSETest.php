@@ -45,7 +45,7 @@ class SC_CheckError_EXIST_CHECK_REVERSETest extends Common_TestCase
         $objErr = new SC_CheckError_Ex($arrForm);
         $objErr->doFunc(array('form', 'EXIST_CHECK_REVERSE') ,array('EXIST_CHECK_REVERSE'));
 
-        $this->expected = '※ formが入力されていません。<br />';
+        $this->expected = '※ EXIST_CHECK_REVERSEが入力されていません。<br />';
         $this->actual = $objErr->arrErr['form'];
         $this->verify('');
     }
@@ -56,7 +56,7 @@ class SC_CheckError_EXIST_CHECK_REVERSETest extends Common_TestCase
         $objErr = new SC_CheckError_Ex($arrForm);
         $objErr->doFunc(array('form', 'EXIST_CHECK_REVERSE') ,array('EXIST_CHECK_REVERSE'));
 
-        $this->expected = '※ formが入力されていません。<br />';
+        $this->expected = '※ EXIST_CHECK_REVERSEが入力されていません。<br />';
         $this->actual = $objErr->arrErr['form'];
         $this->verify('');
     }

@@ -115,7 +115,7 @@ class SC_CheckError
         }
         // $this->createParam($value);
         if (strlen($this->arrParam[$value[0]]) == 0) {
-            $this->arrErr[$value[0]] = '※ ' . $value[0] . 'が入力されていません。<br />';
+            $this->arrErr[$value[0]] = '※ ' . $value[1] . 'が入力されていません。<br />';
         }
     }
 
