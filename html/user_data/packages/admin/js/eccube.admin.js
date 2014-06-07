@@ -380,17 +380,17 @@
         $("#navi")
             .removeClass('active')
             .find('li')
-                .removeClass('sfhover')
-    }
+                .removeClass('sfhover');
+    };
 
     /**
      * 一時的にクリックイベントを無視する
      */
     eccube.navi.setIgnoreClick = function(milliseconds) { // FIXME: 関数名
-        if (milliseconds = null) milliseconds = 100;
+        if (milliseconds === null) milliseconds = 100;
         eccube.navi.ignore_click = true;
         setTimeout(function(){eccube.navi.ignore_click = false;}, milliseconds);
-    }
+    };
 
     // グローバルに使用できるようにする
     window.eccube = eccube;
