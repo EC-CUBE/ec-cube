@@ -629,11 +629,17 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $objFormParam->setParam($arrOrder);
 
         // ポイントを設定
-        list($db_point, $rollback_point) = SC_Helper_DB_Ex::sfGetRollbackPoint(
-                $order_id, $arrOrder['use_point'], $arrOrder['add_point'], $arrOrder['status']
-                );
-        $objFormParam->setValue('total_point', $db_point);
-        $objFormParam->setValue('point', $rollback_point);
+        if (USE_POINT !== false) {
+            list($db_point, $rollback_point) = SC_Helper_DB_Ex::sfGetRollbackPoint(
+                $order_id, $arrOrder['use_point'],
+                $arrOrder['add_point'], $arrOrder['status']
+            );
+            $objFormParam->setValue('total_point', $db_point);
+            $objFormParam->setValue('point', $rollback_point);
+        } else {
+            $objFormParam->setValue('total_point', 0);
+            $objFormParam->setValue('point', 0);
+        }
 
         if (!SC_Utils_Ex::isBlank($objFormParam->getValue('customer_id'))) {
             $arrCustomer = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
