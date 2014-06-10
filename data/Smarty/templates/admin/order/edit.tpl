@@ -144,7 +144,7 @@
                 <td><!--{$arrForm.create_date.value|sfDispDBDate|h}--><input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value|h}-->" /></td>
             </tr>
             <tr>
-                <th>対応状況</th>
+                <th>対応状況<span class="attention"> *</span></th>
                 <td>
                     <!--{assign var=key value="status"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -185,7 +185,7 @@
                 </td>
             </tr>
             <tr>
-                <th>お名前</th>
+                <th>お名前<span class="attention"> *</span></th>
                 <td>
                     <!--{assign var=key1 value="order_name01"}-->
                     <!--{assign var=key2 value="order_name02"}-->
@@ -747,7 +747,7 @@
         <a name="deliv"></a>
         <table class="form">
             <tr>
-                <th>配送業者<br /><span class="attention">(配送業者の変更に伴う送料の変更は手動にてお願いします。)</span></th>
+                <th>配送業者<span class="attention"> *</span><br /><span class="attention">(配送業者の変更に伴う送料の変更は手動にてお願いします。)</span></th>
                 <td>
                     <!--{assign var=key value="deliv_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
@@ -758,7 +758,7 @@
                 </td>
             </tr>
             <tr>
-                <th>お支払方法<br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
+                <th>お支払方法<span class="attention"> *</span><br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
                 <td>
                     <!--{assign var=key value="payment_id"}-->
                     <span class="attention"><!--{$arrErr[$key]}--></span>
