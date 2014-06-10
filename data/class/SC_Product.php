@@ -379,6 +379,7 @@ __EOS__;
                 ON dtb_classcategory2.class_id = dtb_class2.class_id
 __EOS__;
 
+        $objQuery->andWhere(' T3.classcategory_id is not null AND dtb_classcategory2.classcategory_id is not null ');
         $objQuery->setOrder('T3.rank DESC, dtb_classcategory2.rank DESC'); // XXX
         $arrRet = $objQuery->select($col, $table, '', $params);
 
