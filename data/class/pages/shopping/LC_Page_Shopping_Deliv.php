@@ -111,7 +111,10 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
         switch ($this->getMode()) {
             // 削除
             case 'delete':
-                $objAddress->deleteAddress($arrForm['other_deliv_id']);
+                if (!$objAddress->deleteAddress($arrForm['other_deliv_id'], $objCustomer->getValue('customer_id'))) {
+                    SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先を削除できませんでした。');
+                    SC_Response_Ex::actionExit();
+                }
                 break;
 
             // 会員登録住所に送る
@@ -223,7 +226,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
             $objPurchase->copyFromCustomer($arrValues, $objCustomer, 'shipping');
         // 別のお届け先がチェックされている場合
         } else {
-            $arrOtherDeliv = $objAddress->getAddress($other_deliv_id);
+            $arrOtherDeliv = $objAddress->getAddress($other_deliv_id, $objCustomer->getValue('customer_id'));
             if (!$arrOtherDeliv) {
                 return false;
             }

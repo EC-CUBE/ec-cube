@@ -151,8 +151,8 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
                 $from = "$dtb_product_categories T2 JOIN dtb_category T3 ON T2.category_id = T3.category_id";
                 $where = 'T2.product_id = alldtl.product_id';
                 $objQuery->setOrder('T3.rank DESC, T2.rank DESC');
-                $objQuery->setLimit(1);
-                $sub_sql = $objQuery->getSqlWithLimitOffset($col, $from, $where);
+                $sub_sql = $objQuery->getSql($col, $from, $where);
+                $sub_sql = $objQuery->dbFactory->addLimitOffset($sub_sql, 1);
 
                 $objQuery->setOrder("($sub_sql) DESC ,product_id DESC");
                 break;

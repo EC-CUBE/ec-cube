@@ -39,8 +39,7 @@ class SC_Helper_Address
     public function registAddress($sqlval)
     {
         if (self::delivErrorCheck($sqlval)) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, "入力値が不正です。<br />正しい値を入力してください。");
-            SC_Response_Ex::actionExit();
+            return false;
         }
         
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -55,13 +54,12 @@ class SC_Helper_Address
             $arrVal = array($customer_id);
             $deliv_count = $objQuery->count($from, $where, $arrVal);
             if ($deliv_count >= DELIV_ADDR_MAX) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先最大登録数に達しています。');
-                SC_Response_Ex::actionExit();
+                return false;
             }
 
             // 別のお届け先を追加
             $sqlval['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
-            $objQuery->insert($from, $sqlval);
+            $ret = $objQuery->insert($from, $sqlval);
 
         // 変更
         } else {
@@ -70,13 +68,14 @@ class SC_Helper_Address
             $arrVal = array($customer_id, $other_deliv_id);
             $deliv_count = $objQuery->count($from, $where, $arrVal);
             if ($deliv_count != 1) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '一致する別のお届け先がありません。');
-                SC_Response_Ex::actionExit();
+                return false;
             }
 
             // 別のお届け先を変更
-            $objQuery->update($from, $sqlval, $where, $arrVal);
+            $ret = $objQuery->update($from, $sqlval, $where, $arrVal);
         }
+        
+        return $ret;
     }
 
     /**
@@ -85,14 +84,10 @@ class SC_Helper_Address
      * @param integer $other_deliv_id
      * @return array()
      */
-    public function getAddress($other_deliv_id)
+    public function getAddress($other_deliv_id, $customer_id = '')
     {
-        $objCustomer = new SC_Customer_Ex();
-        $customer_id = $objCustomer->getValue('customer_id');
-        
         if (self::delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, "入力値が不正です。<br />正しい値を入力してください。");
-            SC_Response_Ex::actionExit();
+            return false;
         }
         
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -116,8 +111,7 @@ class SC_Helper_Address
     public function getList($customer_id, $startno = '')
     {
         if (self::delivErrorCheck(array('customer_id' => $customer_id))) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, "入力値が不正です。<br />正しい値を入力してください。");
-            SC_Response_Ex::actionExit();
+            return false;
         }
         
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -140,14 +134,10 @@ class SC_Helper_Address
      * @param  integer $delivId
      * @return void
      */
-    public function deleteAddress($other_deliv_id)
+    public function deleteAddress($other_deliv_id, $customer_id = '')
     {
-        $objCustomer = new SC_Customer_Ex();
-        $customer_id = $objCustomer->getValue('customer_id');
-
         if (self::delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, "入力値が不正です。<br />正しい値を入力してください。");
-            SC_Response_Ex::actionExit();
+            return false;
         }
         
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
@@ -155,7 +145,7 @@ class SC_Helper_Address
         $from   = 'dtb_other_deliv';
         $where  = 'customer_id = ? AND other_deliv_id = ?';
         $arrVal = array($customer_id, $other_deliv_id);
-        $objQuery->delete($from, $where, $arrVal);
+        return $objQuery->delete($from, $where, $arrVal);
     }
 
     /**

@@ -140,7 +140,7 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
             default :
 
                 if ($_GET['other_deliv_id'] != '') {
-                    $arrOtherDeliv = $objAddress->getAddress($_SESSION['other_deliv_id']);
+                    $arrOtherDeliv = $objAddress->getAddress($_SESSION['other_deliv_id'], $objCustomer->getValue('customer_id'));
 
                     //不正アクセス判定
                     if (!$objCustomer->isLoginSuccess(true) || !$arrOtherDeliv) {
@@ -171,7 +171,10 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
         $sqlval['other_deliv_id'] = $arrRet['other_deliv_id'];
         $sqlval['customer_id'] = $customer_id;
 
-        $objAddress->registAddress($sqlval);
+        if (!$objAddress->registAddress($sqlval)) {
+            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先を登録できませんでした。');
+            SC_Response_Ex::actionExit();
+        }
     }
 
     public function lfRegistDataNonMember($objFormParam)
