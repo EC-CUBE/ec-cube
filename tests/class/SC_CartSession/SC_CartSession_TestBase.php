@@ -92,7 +92,8 @@ class SC_CartSession_TestBase extends Common_TestCase
             )
         );
 
-        $this->objQuery->delete('dtb_classcategory');
+        // classcategory_id=0のものは削除しない
+        $this->objQuery->delete('dtb_classcategory', 'classcategory_id <> 0');
         foreach ($class_category as $key => $item) {
             $this->objQuery->insert('dtb_classcategory', $item);
         }

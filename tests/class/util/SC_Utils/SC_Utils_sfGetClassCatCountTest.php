@@ -127,7 +127,8 @@ class SC_Utils_sfGetClassCatCountTest extends Common_TestCase
         'update_date' => 'CURRENT_TIMESTAMP'
       )
     );
-    $this->objQuery->delete('dtb_classcategory');
+    // classcategory_id=0のものは削除しない
+    $this->objQuery->delete('dtb_classcategory', 'classcategory_id <> 0');
     foreach ($class_categories as $item) {
       $this->objQuery->insert('dtb_classcategory', $item);
     }

@@ -124,13 +124,13 @@ class SC_Product_getProductsClassByProductIdsTest extends SC_Product_TestBase
                 ,'down_filename' => null
                 ,'down_realfilename' => null
                 ,'classcategory_name1' => null
-                ,'rank1' => null
+                ,'rank1' => 0
                 ,'class_name1' => null
                 ,'class_id1' => null
                 ,'classcategory_id1' => '0'
                 ,'classcategory_id2' => '0'
                 ,'classcategory_name2' => null
-                ,'rank2' => null
+                ,'rank2' => 0
                 ,'class_name2' => null
                 ,'class_id2' => null
             )
