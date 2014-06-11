@@ -81,14 +81,16 @@ class SC_Product_TestBase extends Common_TestCase
                 'classcategory_id' => '1001',
                 'class_id' => '1',
                 'creator_id' => '1',
-                'name' => 'cat1001'
+                'name' => 'cat1001',
+                'rank' => 1,
                   ),
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
                 'classcategory_id' => '1002',
                 'class_id' => '1',
                 'creator_id' => '1',
-                'name' => 'cat1002'
+                'name' => 'cat1002',
+                'rank' => 2,
                   )
                                 );
 

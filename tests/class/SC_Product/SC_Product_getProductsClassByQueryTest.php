@@ -43,13 +43,13 @@ class SC_Product_getProductsClassByQueryTest extends SC_Product_TestBase
                 ,'down_filename' => null
                 ,'down_realfilename' => null
                 ,'classcategory_name1' => 'cat1001'
-                ,'rank1' => null
+                ,'rank1' => '1'
                 ,'class_name1' => '味'
                 ,'class_id1' => '1'
                 ,'classcategory_id1' => '1001'
                 ,'classcategory_id2' => '1002'
                 ,'classcategory_name2' => 'cat1002'
-                ,'rank2' => null
+                ,'rank2' => '2'
                 ,'class_name2' => '味'
                 ,'class_id2' => '1'
             )
