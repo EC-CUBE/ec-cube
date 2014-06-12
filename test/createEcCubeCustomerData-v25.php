@@ -3,7 +3,7 @@
 /*
  * EC-CUBE 動作検証用会員データ生成スクリプト
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *

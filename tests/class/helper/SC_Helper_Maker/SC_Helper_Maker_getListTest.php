@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Maker/SC_Helper_Maker_TestBa
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
