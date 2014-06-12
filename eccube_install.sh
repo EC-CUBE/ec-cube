@@ -162,11 +162,11 @@ case "${DBTYPE}" in
     fi
     # MySQL
     echo "dropdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database ${DBNAME}"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database \`${DBNAME}\`"
     echo "createdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database ${DBNAME}"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\`"
     #echo "grant user..."
-    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON ${DBNAME}.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
+    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
     echo "create table..."
     ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/create_table_mysql.sql
     echo "insert data..."
