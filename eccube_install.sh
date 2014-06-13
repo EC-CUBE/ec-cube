@@ -197,7 +197,7 @@ define('ROOT_URLPATH', '/');
 define('DOMAIN_NAME', '${DOMAIN_NAME}');
 define('DB_TYPE', '${DBTYPE}');
 define('DB_USER', '${DBUSER}');
-define('DB_PASSWORD', '${CONFIGPASS}');
+define('DB_PASSWORD', '${CONFIGPASS:-$DBPASS}');
 define('DB_SERVER', '${DBSERVER}');
 define('DB_NAME', '${DBNAME}');
 define('DB_PORT', '${DBPORT}');
