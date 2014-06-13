@@ -72,6 +72,72 @@ esac
 #######################################################################
 # Functions
 
+create_sequence_tables()
+{
+    SEQUENCES="
+dtb_best_products_best_id_seq
+dtb_bloc_bloc_id_seq
+dtb_category_category_id_seq
+dtb_class_class_id_seq
+dtb_classcategory_classcategory_id_seq
+dtb_csv_no_seq
+dtb_csv_sql_sql_id_seq
+dtb_customer_customer_id_seq
+dtb_deliv_deliv_id_seq
+dtb_holiday_holiday_id_seq
+dtb_kiyaku_kiyaku_id_seq
+dtb_mail_history_send_id_seq
+dtb_maker_maker_id_seq
+dtb_member_member_id_seq
+dtb_module_update_logs_log_id_seq
+dtb_news_news_id_seq
+dtb_order_order_id_seq
+dtb_order_detail_order_detail_id_seq
+dtb_other_deliv_other_deliv_id_seq
+dtb_pagelayout_page_id_seq
+dtb_payment_payment_id_seq
+dtb_products_class_product_class_id_seq
+dtb_products_product_id_seq
+dtb_review_review_id_seq
+dtb_send_history_send_id_seq
+dtb_mailmaga_template_template_id_seq
+dtb_plugin_plugin_id_seq
+dtb_plugin_hookpoint_plugin_hookpoint_id_seq
+dtb_api_config_api_config_id_seq
+dtb_api_account_api_account_id_seq
+dtb_tax_rule_tax_rule_id_seq
+"
+
+    comb_sql="";
+    for S in $SEQUENCES; do
+        case ${DBTYPE} in
+            pgsql)
+                sql=$(echo "CREATE SEQUENCE ${S} START 10000;")
+            ;;
+            mysql)
+                sql=$(echo "CREATE TABLE ${S} (
+                        sequence int(11) NOT NULL AUTO_INCREMENT,
+                        PRIMARY KEY (sequence)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                    LOCK TABLES ${S} WRITE;
+                    INSERT INTO ${S} VALUES (10000);
+                    UNLOCK TABLES;")
+            ;;
+        esac
+
+        comb_sql=${comb_sql}${sql}
+    done;
+
+    case ${DBTYPE} in
+        pgsql)
+            echo ${comb_sql} | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
+        ;;
+        mysql)
+            echo ${comb_sql} | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+        ;;
+    esac
+}
+
 create_config_php()
 {
     cat > "./${CONFIG_PHP}" <<__EOF__
@@ -133,40 +199,6 @@ then
     rm ${OPTIONAL_SQL_FILE}
 fi
 
-SEQUENCES="
-dtb_best_products_best_id_seq
-dtb_bloc_bloc_id_seq
-dtb_category_category_id_seq
-dtb_class_class_id_seq
-dtb_classcategory_classcategory_id_seq
-dtb_csv_no_seq
-dtb_csv_sql_sql_id_seq
-dtb_customer_customer_id_seq
-dtb_deliv_deliv_id_seq
-dtb_holiday_holiday_id_seq
-dtb_kiyaku_kiyaku_id_seq
-dtb_mail_history_send_id_seq
-dtb_maker_maker_id_seq
-dtb_member_member_id_seq
-dtb_module_update_logs_log_id_seq
-dtb_news_news_id_seq
-dtb_order_order_id_seq
-dtb_order_detail_order_detail_id_seq
-dtb_other_deliv_other_deliv_id_seq
-dtb_pagelayout_page_id_seq
-dtb_payment_payment_id_seq
-dtb_products_class_product_class_id_seq
-dtb_products_product_id_seq
-dtb_review_review_id_seq
-dtb_send_history_send_id_seq
-dtb_mailmaga_template_template_id_seq
-dtb_plugin_plugin_id_seq
-dtb_plugin_hookpoint_plugin_hookpoint_id_seq
-dtb_api_config_api_config_id_seq
-dtb_api_account_api_account_id_seq
-dtb_tax_rule_tax_rule_id_seq
-"
-
 echo "create optional SQL..."
 echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', '1', '0', '0', '0', '1', current_timestamp);" >> ${OPTIONAL_SQL_FILE}
 echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1', current_timestamp);" >> ${OPTIONAL_SQL_FILE}
@@ -182,10 +214,8 @@ case "${DBTYPE}" in
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
     echo "insert data..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}
-    for S in $SEQUENCES
-    do
-	echo "CREATE SEQUENCE $S START 10000;" >> ${OPTIONAL_SQL_FILE}
-    done
+    echo "create sequence table..."
+    create_sequence_tables
     echo "execute optional SQL..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${OPTIONAL_SQL_FILE} ${DBNAME}
 ;;
@@ -208,10 +238,8 @@ case "${DBTYPE}" in
         ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
     echo "insert data..."
     ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/insert_data.sql
-    for S in $SEQUENCES
-    do
-	echo "CREATE TABLE $S ( sequence int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (sequence)) ENGINE=InnoDB DEFAULT CHARSET=utf8; LOCK TABLES $S WRITE; INSERT INTO $S VALUES (10000); UNLOCK TABLES;" >> ${OPTIONAL_SQL_FILE}
-    done
+    echo "create sequence table..."
+    create_sequence_tables
     echo "execute optional SQL..."
     ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${OPTIONAL_SQL_FILE}
 ;;
