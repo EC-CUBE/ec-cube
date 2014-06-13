@@ -168,7 +168,9 @@ case "${DBTYPE}" in
     #echo "grant user..."
     #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
     echo "create table..."
-    ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/create_table_mysql.sql
+    echo "SET SESSION storage_engine = InnoDB;" |
+        cat - ${SQL_DIR}/create_table_mysql.sql |
+        ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
     echo "insert data..."
     ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/insert_data.sql
     for S in $SEQUENCES
