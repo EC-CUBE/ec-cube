@@ -32,7 +32,9 @@ ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 HTTP_URL=${HTTP_URL:-"http://test.local"}
 HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
+ROOT_URLPATH=${ROOT_URLPATH:-"/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
+ADMIN_DIR=${ADMIN_DIR:-"admin/"}
 
 DBSERVER=${DBSERVER-"127.0.0.1"}
 DBNAME=${DBNAME:-"cube213_dev"}
@@ -65,6 +67,39 @@ case "${DBTYPE}" in
 exit
 ;;
 esac
+
+
+#######################################################################
+# Functions
+
+create_config_php()
+{
+    cat > "./${CONFIG_PHP}" <<__EOF__
+<?php
+define('ECCUBE_INSTALL', 'ON');
+define('HTTP_URL', '${HTTP_URL}');
+define('HTTPS_URL', '${HTTPS_URL}');
+define('ROOT_URLPATH', '${ROOT_URLPATH}');
+define('DOMAIN_NAME', '${DOMAIN_NAME}');
+define('DB_TYPE', '${DBTYPE}');
+define('DB_USER', '${DBUSER}');
+define('DB_PASSWORD', '${CONFIGPASS:-$DBPASS}');
+define('DB_SERVER', '${DBSERVER}');
+define('DB_NAME', '${DBNAME}');
+define('DB_PORT', '${DBPORT}');
+define('ADMIN_DIR', '${ADMIN_DIR}');
+define('ADMIN_FORCE_SSL', FALSE);
+define('ADMIN_ALLOW_HOSTS', 'a:0:{}');
+define('AUTH_MAGIC', '${AUTH_MAGIC}');
+define('PASSWORD_HASH_ALGOS', 'sha256');
+define('MAIL_BACKEND', 'mail');
+define('SMTP_HOST', '');
+define('SMTP_PORT', '');
+define('SMTP_USER', '');
+define('SMTP_PASSWORD', '');
+
+__EOF__
+}
 
 
 #######################################################################
@@ -188,30 +223,6 @@ echo "copy images..."
 cp -rv "./html/install/save_image" "./html/upload/"
 
 echo "creating ${CONFIG_PHP}..."
-cat > "./${CONFIG_PHP}" <<EOF
-<?php
-define('ECCUBE_INSTALL', 'ON');
-define('HTTP_URL', '${HTTP_URL}');
-define('HTTPS_URL', '${HTTPS_URL}');
-define('ROOT_URLPATH', '/');
-define('DOMAIN_NAME', '${DOMAIN_NAME}');
-define('DB_TYPE', '${DBTYPE}');
-define('DB_USER', '${DBUSER}');
-define('DB_PASSWORD', '${CONFIGPASS:-$DBPASS}');
-define('DB_SERVER', '${DBSERVER}');
-define('DB_NAME', '${DBNAME}');
-define('DB_PORT', '${DBPORT}');
-define('ADMIN_DIR', 'admin/');
-define('ADMIN_FORCE_SSL', FALSE);
-define('ADMIN_ALLOW_HOSTS', 'a:0:{}');
-define('AUTH_MAGIC', '${AUTH_MAGIC}');
-define('PASSWORD_HASH_ALGOS', 'sha256');
-define('MAIL_BACKEND', 'mail');
-define('SMTP_HOST', '');
-define('SMTP_PORT', '');
-define('SMTP_USER', '');
-define('SMTP_PASSWORD', '');
-
-EOF
+create_config_php
 
 echo "Finished Successful!"
