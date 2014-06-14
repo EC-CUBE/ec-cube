@@ -72,6 +72,26 @@ esac
 #######################################################################
 # Functions
 
+adjust_directory_permissions()
+{
+    chmod -R go+w "./html"
+    chmod go+w "./data"
+    chmod -R go+w "./data/Smarty"
+    chmod -R go+w "./data/cache"
+    chmod -R go+w "./data/class"
+    chmod -R go+w "./data/class_extends"
+    chmod go+w "./data/config"
+    chmod -R go+w "./data/download"
+    chmod -R go+w "./data/downloads"
+    chmod go+w "./data/fonts"
+    chmod go+w "./data/include"
+    chmod go+w "./data/logs"
+    chmod -R go+w "./data/module"
+    chmod go+w "./data/smarty_extends"
+    chmod go+w "./data/upload"
+    chmod go+w "./data/upload/csv"
+}
+
 create_sequence_tables()
 {
     SEQUENCES="
@@ -179,22 +199,7 @@ __EOF__
 
 #-- Update Permissions
 echo "update permissions..."
-chmod -R go+w "./html"
-chmod go+w "./data"
-chmod -R go+w "./data/Smarty"
-chmod -R go+w "./data/cache"
-chmod -R go+w "./data/class"
-chmod -R go+w "./data/class_extends"
-chmod go+w "./data/config"
-chmod -R go+w "./data/download"
-chmod -R go+w "./data/downloads"
-chmod go+w "./data/fonts"
-chmod go+w "./data/include"
-chmod go+w "./data/logs"
-chmod -R go+w "./data/module"
-chmod go+w "./data/smarty_extends"
-chmod go+w "./data/upload"
-chmod go+w "./data/upload/csv"
+adjust_directory_permissions
 
 #-- Setup Database
 SQL_DIR="./html/install/sql"
