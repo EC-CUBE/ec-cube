@@ -11,6 +11,8 @@ class SC_Product_getProductStatusTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
+        $this->setUpProductStatus();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,11 +25,6 @@ class SC_Product_getProductStatusTest extends SC_Product_TestBase
 
     public function testGetProductStatus_商品IDなしは空の配列を返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        $this->setUpProductStatus();
-
         $this->expected = array();
         $productIds = null;
 
@@ -38,11 +35,6 @@ class SC_Product_getProductStatusTest extends SC_Product_TestBase
     
     public function testGetProductStatus_指定した商品IDの商品ステータスを返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        $this->setUpProductStatus();
-
         $this->expected = array('1001' => array('1'));
         $productIds = array('1001');
 

@@ -11,6 +11,8 @@ class SC_Product_setProductStatusTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
+        $this->setUpProductStatus();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,10 +25,6 @@ class SC_Product_setProductStatusTest extends SC_Product_TestBase
 
     public function testSetProductStatus_登録した商品ステータスを返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        $this->setUpProductStatus();
         $_SESSION['member_id'] = 1;
          
         $this->objProducts->setProductStatus('1001', array('2','3','4'));

@@ -11,6 +11,7 @@ class SC_Product_getProductsClassByQueryTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,10 +24,6 @@ class SC_Product_getProductsClassByQueryTest extends SC_Product_TestBase
 
     public function testGetProductsClassByQuery_クエリに該当する商品情報を返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-
         $this->expected = array(
             0=> array(
                 'product_id' => '1001'

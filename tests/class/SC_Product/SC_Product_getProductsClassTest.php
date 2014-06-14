@@ -11,6 +11,7 @@ class SC_Product_getProductsClassTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,10 +24,6 @@ class SC_Product_getProductsClassTest extends SC_Product_TestBase
 
     public function testGetProductsClass_商品規格IDから規格情報を返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-
         $this->expected = array(
                 'product_id' => '1001'
                 ,'del_flg' => '0'

@@ -11,6 +11,7 @@ class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,10 +24,6 @@ class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase
 
     public function testGetListByProductIds_商品ID指定がない場合は空配列()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-
         $this->expected = array();
 
         $this->actual = $this->objProducts->getListByProductIds($this->objQuery);
@@ -36,10 +33,6 @@ class SC_Product_getListsByProductIdsTest extends SC_Product_TestBase
     
     public function testGetListByProductIds_指定の商品IDで情報を取得する()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        
         $arrProductId = array('1001');
         //更新日を取得
         $arrRet = $this->objQuery->getCol('update_date','dtb_products', 'product_id = 1001');

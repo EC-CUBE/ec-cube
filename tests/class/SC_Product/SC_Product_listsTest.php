@@ -11,6 +11,7 @@ class SC_Product_listsTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,9 +24,6 @@ class SC_Product_listsTest extends SC_Product_TestBase
 
     public function testlists_商品一覧取得()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
         //更新日を取得
         $col = 'update_date';
         $table = 'dtb_products';

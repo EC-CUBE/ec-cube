@@ -11,6 +11,7 @@ class SC_Product_findProductCountTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,10 +24,6 @@ class SC_Product_findProductCountTest extends SC_Product_TestBase
 
     public function testFindProductCount_全ての商品数を返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-
         $this->expected = 3;
 
         $this->actual = $this->objProducts->findProductCount($this->objQuery);
@@ -36,10 +33,6 @@ class SC_Product_findProductCountTest extends SC_Product_TestBase
     
     public function testFindProductCount_検索条件に一致する商品数を返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        
         $this->objQuery->setWhere('product_id = ?');
         $arrVal = array(1001);
 

@@ -66,8 +66,33 @@ class SC_Product_TestBase extends Common_TestCase
 {
             $this->objQuery->insert('dtb_products_class', $item);
         }
+
+        $this->setUpClass();
         $this->setUpClassCategory();
         $this->setUpProducts();
+    }
+
+    /**
+     * DBに規格分類情報を登録します.
+     */
+    protected function setUpClass()
+    {
+        $table = 'dtb_class';
+
+        $data = array(
+            array(
+                'class_id' => 1,
+                'name' => '味',
+                'rank' => 1,
+                'creator_id' => 1,
+                'update_date' => 'CURRENT_TIMESTAMP',
+            ),
+        );
+
+        $this->objQuery->delete($table);
+        foreach ($data as $item) {
+            $this->objQuery->insert($table, $item);
+        }
     }
 
     /**

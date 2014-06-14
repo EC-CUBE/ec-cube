@@ -11,6 +11,7 @@ class SC_Product_getDetailTest extends SC_Product_TestBase
     protected function setUp()
     {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
@@ -23,10 +24,6 @@ class SC_Product_getDetailTest extends SC_Product_TestBase
 
     public function testGetDetail_商品IDの詳細情報を返す()
     {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        
         //更新日を取得
         $arrRet = $this->objQuery->getCol('update_date','dtb_products', 'product_id = 1001');
 
