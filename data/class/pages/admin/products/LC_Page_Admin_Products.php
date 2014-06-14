@@ -258,8 +258,8 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
         $objQuery->update('dtb_products_class', $sqlval, "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
         $objQuery->delete('dtb_customer_favorite_products', "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
 
-        $objRecomment = new SC_Helper_BestProducts_Ex();
-        $objRecomment->deleteByProductIDs($product_ids);
+        $objRecommend = new SC_Helper_BestProducts_Ex();
+        $objRecommend->deleteByProductIDs($product_ids);
 
         $objQuery->update('dtb_products', $sqlval, $where, $arrParam);
         $objQuery->commit();
