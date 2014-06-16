@@ -76,9 +76,10 @@ class SC_Utils_sfIsMatchHashPassword_authTypeHmacTest extends Common_TestCase
   {
     $pass = 'ec-cube';
     $hashpass = sha1($pass . ':' . AUTH_MAGIC);
+    $salt = '';
 
     $this->expected = TRUE;
-    $this->actual = SC_Utils::sfIsMatchHashPassword($pass, $hashpass);
+    $this->actual = SC_Utils::sfIsMatchHashPassword($pass, $hashpass, $salt);
 
     $this->verify('パスワード文字列比較結果');
   }
