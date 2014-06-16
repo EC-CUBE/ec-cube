@@ -46,10 +46,10 @@ class SC_Utils_sfMbConvertEncodingTest extends Common_TestCase
   }
 
   /////////////////////////////////////////
-  public function testSfMbConvertEncoding_MS932の場合_エラーが起きない()
+  public function testSfMbConvertEncoding_CP932の場合_エラーが起きない()
   {
     $input = 'あいうえお、今日は良い天気です。';
-    $encode = 'MS932';
+    $encode = 'CP932';
 
     $this->assertNotNull(SC_Utils::sfMbConvertEncoding($input, $encode), '変換結果');
   }
