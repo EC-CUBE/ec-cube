@@ -64,7 +64,7 @@ function lfnCheckSetItem( rank ){
     }
 }
 
-function lfnSortItem(mode,data){
+function lfnSortItem(mode,data,form){
     var flag = true;
     var checkRank = '<!--{$checkRank|h}-->';
     if ( checkRank ){
@@ -74,9 +74,9 @@ function lfnSortItem(mode,data){
     }
 
     if ( flag ){
-        document.form1["mode"].value = mode;
-        document.form1["best_id"].value = data;
-        document.form1.submit();
+        document[form]["mode"].value = mode;
+        document[form]["best_id"].value = data;
+        document[form].submit();
     }
 }
 
@@ -85,6 +85,7 @@ function lfnSortItem(mode,data){
 
 <div id="admin-contents" class="contents-main">
     <!--{section name=cnt loop=$tpl_disp_max}-->
+    <a name="recommend_<!--{$smarty.section.cnt.iteration}-->" id="recommend_<!--{$smarty.section.cnt.iteration}-->"></a>
     <div class="recommend-product <!--{if $arrItems[$smarty.section.cnt.iteration].status == "2"}-->hidden<!--{/if}-->">
         <table class="list center recommend-table">
             <col width="13%" />
@@ -114,7 +115,7 @@ function lfnSortItem(mode,data){
                                         商品名： <!--{$arrItems[$smarty.section.cnt.iteration].name|h}-->
                                     </div>
                                     <div class="detail-form">
-                                        <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
+                                        <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?#recommend_<!--{$smarty.section.cnt.iteration}-->">
                                             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                                             <input type="hidden" name="mode" value="regist" />
                                             <input type="hidden" name="best_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].best_id|h}-->" />
@@ -131,7 +132,7 @@ function lfnSortItem(mode,data){
                     <!--{else}-->
                         <td class="AlignLeft">
                             <a class="btn-action-m" href="javascript:;" onclick="lfnCheckSetItem('<!--{$smarty.section.cnt.iteration}-->'); return false;" target="_blank"><span class="btn-next">商品を選択する</span></a>
-                            <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?">
+                            <form name="form<!--{$smarty.section.cnt.iteration}-->" id="form<!--{$smarty.section.cnt.iteration}-->" method="post" action="?#recommend_<!--{$smarty.section.cnt.iteration}-->">
                                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                                 <input type="hidden" name="mode" value="regist" />
                                 <input type="hidden" name="best_id" value="<!--{$arrItems[$smarty.section.cnt.iteration].best_id|h}-->" />
@@ -160,10 +161,10 @@ function lfnSortItem(mode,data){
                 <td>
                     <!--{* 移動 *}-->
                     <!--{if $smarty.section.cnt.iteration != 1 && $arrItems[$smarty.section.cnt.iteration].best_id}-->
-                        <a href="?" onclick="lfnSortItem('up',<!--{$arrItems[$smarty.section.cnt.iteration].best_id}-->); return false;">上へ</a><br />&nbsp;
+                        <a href="?" onclick="lfnSortItem('up',<!--{$arrItems[$smarty.section.cnt.iteration].best_id}-->,'form<!--{$smarty.section.cnt.iteration-1}-->'); return false;">上へ</a><br />&nbsp;
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $tpl_disp_max && $arrItems[$smarty.section.cnt.iteration].best_id}-->
-                        <a href="?" onclick="lfnSortItem('down',<!--{$arrItems[$smarty.section.cnt.iteration].best_id}-->); return false;">下へ</a>
+                        <a href="?" onclick="lfnSortItem('down',<!--{$arrItems[$smarty.section.cnt.iteration].best_id}-->,'form<!--{$smarty.section.cnt.iteration+1}-->'); return false;">下へ</a>
                     <!--{/if}-->
                 </td>
             </tr>
