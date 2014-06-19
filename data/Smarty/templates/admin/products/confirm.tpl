@@ -89,6 +89,7 @@
                     <!--{$arrProductType[$arrForm.product_type_id]}-->
                 </td>
             </tr>
+            <!--{if $arrForm.product_type_id == PRODUCT_TYPE_DOWNLOAD}-->
             <tr>
                 <th>ダウンロード商品ファイル名</th>
                 <td>
@@ -103,6 +104,7 @@
                     <!--{/if}-->
                 </td>
             </tr>
+            <!--{/if}-->
             <tr>
                 <th>商品コード</th>
                 <td>
