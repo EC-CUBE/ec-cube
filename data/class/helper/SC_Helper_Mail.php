@@ -102,7 +102,7 @@ class SC_Helper_Mail
         $objSendMail->sendMail();    // メール送信
     }
 
-    /* 受注完了メール送信 */
+    /* 注文受付メール送信 */
     public function sfSendOrderMail($order_id, $template_id, $subject = '', $header = '', $footer = '', $send = true)
     {
         $arrTplVar = new stdClass();
@@ -172,7 +172,8 @@ class SC_Helper_Mail
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
         $objMailView = null;
-        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+        // 注文受付メール(携帯)
+        if ($template_id == 2) {
             $objMailView = new SC_SiteView_Ex(true, DEVICE_TYPE_MOBILE);
         } else {
             $objMailView = new SC_SiteView_Ex();
