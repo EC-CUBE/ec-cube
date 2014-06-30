@@ -293,7 +293,7 @@ class SC_Helper_Purchase
         $exists = $this->getOrderTemp($uniqId);
 
         //国ID追加
-        $sqlval['order_country_id'] = DEFAULT_COUNTRY_ID;
+        $sqlval['order_country_id'] = ($sqlval['order_country_id']) ? $sqlval['order_country_id'] :  DEFAULT_COUNTRY_ID;
 
         if (SC_Utils_Ex::isBlank($exists)) {
             $sqlval['order_temp_id'] = $uniqId;
