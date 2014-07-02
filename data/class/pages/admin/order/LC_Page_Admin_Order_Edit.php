@@ -1062,12 +1062,11 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
 
         $arrShipmentProducts = $this->getShipmentProducts($objFormParam);
 
-        //既にあるデータは１つだけ数量を１増やす
         $pre_shipment_product_class_id = $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id][$change_no];
         if ($pre_shipment_product_class_id == $edit_product_class_id) {
-            $arrShipmentProducts['shipment_quantity'][$select_shipping_id][$change_no] ++;
+            // 商品規格に変更がない場合は何もしない
         } elseif (in_array($edit_product_class_id, $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id])) {
-            //配送先データ削除
+            // 商品規格の変更によって商品の重複が発生する場合は一つにまとめる
             $arrShipmentProducts = $this->deleteShipment($objFormParam, $this->arrShipmentItemKeys, $select_shipping_id, $change_no);
             foreach ($arrShipmentProducts['shipment_product_class_id'][$select_shipping_id] as $relation_index => $shipment_product_class_id) {
                 if ($shipment_product_class_id == $edit_product_class_id) {
