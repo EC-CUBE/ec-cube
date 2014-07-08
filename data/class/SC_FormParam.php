@@ -431,17 +431,14 @@ class SC_FormParam
     public function getValue($keyname, $default = '')
     {
         $ret = null;
-        foreach ($this->keyname as $key) {
-            if ($key == $keyname) {
-                $ret = isset($this->arrValue[$key]) ? $this->arrValue[$key] : $this->arrDefault[$key];
-                break;
-            }
+        if (in_array($keyname, $this->keyname)) {
+            $ret = isset($this->arrValue[$keyname]) ? $this->arrValue[$keyname] : $this->arrDefault[$keyname];
         }
 
         if (is_array($ret)) {
-            foreach ($ret as $key => $value) {
-                if (SC_Utils_Ex::isBlank($ret[$key])) {
-                    $ret[$key] = $default;
+            foreach ($ret as &$value) {
+                if (SC_Utils_Ex::isBlank($value)) {
+                    $value = $default;
                 }
             }
         } else {
