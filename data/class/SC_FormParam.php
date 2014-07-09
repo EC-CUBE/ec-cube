@@ -230,7 +230,10 @@ class SC_FormParam
                     case 'FILE_NAME_CHECK_BY_NOUPLOAD':
                     case 'NUM_POINT_CHECK':
                         $this->recursionCheck($this->disp_name[$index], $func,
-                            $value, $arrErr, $key, $this->length[$index]);
+                            $value, $arrErr[$key], $this->length[$index]);
+                        if (SC_Utils_Ex::isBlank($arrErr[$key])) {
+                            unset($arrErr[$key]);
+                        }
                         break;
                     // 小文字に変換
                     case 'CHANGE_LOWER':
@@ -267,43 +270,34 @@ class SC_FormParam
      *
      * 再帰実行した場合は, エラーメッセージを多次元配列で格納する
      *
-     * TODO 二次元以上のエラーメッセージへの対応
-     *
-     * @param  string  $disp_name      表示名
-     * @param  string  $func           チェック種別
-     * @param  mixed   $value          チェック対象の値. 配列の場合は再帰的にチェックする.
-     * @param  array   $arrErr         エラーメッセージを格納する配列
-     * @param  string  $error_key      エラーメッセージを格納する配列のキー
-     * @param  integer $length         チェック対象の値の長さ
-     * @param  integer $depth          再帰実行した場合の深度
-     * @param  integer $error_last_key エラーメッセージを格納する配列の末端のキー
+     * @param  string  $disp_name 表示名
+     * @param  string  $func      チェック種別
+     * @param  mixed   $value     チェック対象の値
+     *                            配列の場合は再帰的にチェックする
+     * @param  array   $arrErr    エラーメッセージを格納する配列(の一部)
+     * @param  integer $length    チェック対象の値の長さ
      * @return void
      */
-    public function recursionCheck($disp_name, $func, $value, &$arrErr, $error_key,
-        $length = 0, $depth = 0, $error_last_key = null
+    public function recursionCheck($disp_name, $func, $value, &$arrErr,
+        $length = 0
     ) {
+        // 配列の場合は、再帰実行
         if (is_array($value)) {
-            $depth++;
             foreach ($value as $key => $in) {
-                $this->recursionCheck($disp_name, $func, $in, $arrErr, $error_key,
-                                      $length, $depth, $key);
-            }
-        } else {
-            $objErr = new SC_CheckError_Ex(array(($error_last_key ? $error_last_key : $error_key) => $value));
-            $objErr->doFunc(array($disp_name, ($error_last_key ? $error_last_key : $error_key), $length), array($func));
-            if (!SC_Utils_Ex::isBlank($objErr->arrErr)) {
-                foreach ($objErr->arrErr as $message) {
-                    if (!SC_Utils_Ex::isBlank($message)) {
-                        // 再帰した場合は多次元配列のエラーメッセージを生成
-                        $error_var = '$arrErr[$error_key]';
-                        for ($i = 0; $i < $depth; $i++) {
-                            // FIXME 二次元以上の対応
-                            $error_var .= '[' . $error_last_key . ']';
-                        }
-                        eval($error_var . ' = $message;');
-                    }
+                $this->recursionCheck($disp_name, $func, $in, $arrErr[$key],
+                                      $length);
+                if (SC_Utils_Ex::isBlank($arrErr[$key])) {
+                    unset($arrErr[$key]);
                 }
             }
+            return;
+        }
+
+        $dummy_key = 'dummy'; // 仮のキーを指定。どんな値でも良い。
+        $objErr = new SC_CheckError_Ex(array($dummy_key => $value));
+        $objErr->doFunc(array($disp_name, $dummy_key, $length), array($func));
+        if (!SC_Utils_Ex::isBlank($objErr->arrErr[$dummy_key])) {
+            $arrErr = $objErr->arrErr[$dummy_key];
         }
     }
 
