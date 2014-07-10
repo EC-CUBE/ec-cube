@@ -140,9 +140,13 @@ class SC_Helper_BestProducts
      */
     public function deleteBestProducts($best_id)
     {
-        $objDb = new SC_Helper_DB_Ex();
-        // ランク付きレコードの削除
-        $objDb->sfDeleteRankRecord('dtb_best_products', 'best_id', $best_id, '', TRUE);
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $table = 'dtb_best_products';
+        $arrVal = array('del_flg' => 1);
+        $where = 'best_id = ?';
+        $arrWhereVal = array($best_id);
+        $objQuery->update($table, $arrVal, $where, $arrWhereVal);
     }
 
     /**
@@ -157,7 +161,7 @@ class SC_Helper_BestProducts
         $arrList = $this->getList();
         foreach ($arrList as $recommend) {
             if (in_array($recommend['product_id'], $productIDs)) {
-                $objDb->sfDeleteRankRecord('dtb_best_products', 'best_id', $recommend['best_id'], '', TRUE);
+                $this->deleteBestProducts($recommend['best_id']);
             }
         }
     }
