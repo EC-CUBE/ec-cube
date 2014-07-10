@@ -170,9 +170,24 @@ class SC_Helper_BestProducts
      */
     public function rankUp($best_id)
     {
-        $objDb = new SC_Helper_DB_Ex();
-        //おすすめはデータベースの登録が昇順なので、Modeを逆にする。
-        $objDb->sfRankDown('dtb_best_products', 'best_id', $best_id);
+        $arrBestProducts = $this->getBestProducts($best_id);
+        $rank = $arrBestProducts['rank'];
+
+        if ($rank > 1) {
+            // 表示順が一つ上のIDを取得する
+            $arrAboveBestProducts = $this->getByRank($rank - 1);
+            $above_best_id = $arrAboveBestProducts['best_id'];
+
+            if ($above_best_id) {
+                // 一つ上のものを一つ下に下げる
+                $this->changeRank($above_best_id, $rank);
+            } else {
+                // 無ければ何もしない。(歯抜けの場合)
+            }
+
+            // 一つ上に上げる
+            $this->changeRank($best_id, $rank - 1);
+        }
     }
 
     /**
@@ -183,8 +198,41 @@ class SC_Helper_BestProducts
      */
     public function rankDown($best_id)
     {
-        $objDb = new SC_Helper_DB_Ex();
-        //おすすめはデータベースの登録が昇順なので、Modeを逆にする。
-        $objDb->sfRankUp('dtb_best_products', 'best_id', $best_id);
+        $arrBestProducts = $this->getBestProducts($best_id);
+        $rank = $arrBestProducts['rank'];
+
+        if ($rank < RECOMMEND_NUM) {
+            // 表示順が一つ下のIDを取得する
+            $arrBelowBestProducts = $this->getByRank($rank + 1);
+            $below_best_id = $arrBelowBestProducts['best_id'];
+
+            if ($below_best_id) {
+                // 一つ下のものを一つ上に上げる
+                $this->changeRank($below_best_id, $rank);
+            } else {
+                // 無ければ何もしない。(歯抜けの場合)
+            }
+
+            // 一つ下に下げる
+            $this->changeRank($best_id, $rank + 1);
+        }
+    }
+
+    /**
+     * 対象IDのrankを指定値に変更する
+     *
+     * @param integer $best_id 対象ID
+     * @param integer $rank 変更したいrank値
+     * @return void
+     */
+    public function changeRank($best_id, $rank)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $table = 'dtb_best_products';
+        $sqlval = array('rank' => $rank);
+        $where = 'best_id = ?';
+        $arrWhereVal = array($best_id);
+        $objQuery->update($table, $sqlval, $where, $arrWhereVal);
     }
 }

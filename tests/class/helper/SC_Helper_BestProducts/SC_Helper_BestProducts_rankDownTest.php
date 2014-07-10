@@ -41,13 +41,14 @@ class SC_Helper_BestProducts_rankDownTest extends SC_Helper_BestProducts_TestBas
         parent::tearDown();
     }
 
-    public function testRankDown_指定されたデータがランクダウンされる(){
-
-        SC_Helper_BestProducts_Ex::rankDown("1001");
+    public function testRankDown_指定されたデータがランクダウンされる()
+    {
+        $objRecommend = new SC_Helper_BestProducts_Ex();
+        $objRecommend->rankDown("1001");
 
         $this->expected = "2";
 
-        $arrRet = SC_Helper_BestProducts_Ex::getBestProducts('1001');
+        $arrRet = $objRecommend->getBestProducts('1001');
 
         $this->actual = $arrRet['rank'];
 
