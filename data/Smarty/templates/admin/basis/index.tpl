@@ -186,6 +186,8 @@ $(function() {
                 <th>TEL</th>
                 <td>
                     <span class="attention"><!--{$arrErr.tel01}--></span>
+                    <span class="attention"><!--{$arrErr.tel02}--></span>
+                    <span class="attention"><!--{$arrErr.tel03}--></span>
                     <input type="text" name="tel01" value="<!--{$arrForm.tel01|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -
                     <input type="text" name="tel02" value="<!--{$arrForm.tel02|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -
                     <input type="text" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
@@ -195,6 +197,8 @@ $(function() {
                 <th>FAX</th>
                 <td>
                     <span class="attention"><!--{$arrErr.fax01}--></span>
+                    <span class="attention"><!--{$arrErr.fax02}--></span>
+                    <span class="attention"><!--{$arrErr.fax03}--></span>
                     <input type="text" name="fax01" value="<!--{$arrForm.fax01|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -
                     <input type="text" name="fax02" value="<!--{$arrForm.fax02|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -
                     <input type="text" name="fax03" value="<!--{$arrForm.fax03|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.fax03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />

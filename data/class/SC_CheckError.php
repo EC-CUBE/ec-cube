@@ -403,7 +403,7 @@ class SC_CheckError
         for ($i = 1; $i <= 3; $i++) {
             if (strlen($this->arrParam[$value[$i]]) > 0 && strlen($this->arrParam[$value[$i]]) > $telItemLen) {
                 $this->arrErr[$value[$i]] .= '※ ' . $value[0] . $i . 'は' . $telItemLen . '字以内で入力してください。<br />';
-            } elseif ($this->numelicCheck($this->arrParam[$value[1]])) {
+            } elseif ($this->numelicCheck($this->arrParam[$value[$i]])) {
                 $this->arrErr[$value[$i]] .= '※ ' . $value[0] . $i . 'は数字で入力してください。<br />';
             }
             $total_count += strlen($this->arrParam[$value[$i]]);
