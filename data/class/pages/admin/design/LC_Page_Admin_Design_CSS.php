@@ -123,12 +123,14 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
             if (!SC_Utils_Ex::isBlank($this->css_name)) {
                 $objFormParam->setValue('css_data', file_get_contents($css_path));
             }
-            // ファイルリストを取得
-            $this->arrCSSList = $this->getCSSList($css_dir);
         } else {
             // 画面にエラー表示しないため, ログ出力
             GC_Utils_Ex::gfPrintLog('Error: ' . print_r($this->arrErr, true));
         }
+
+        // ファイルリストを取得
+        $this->arrCSSList = $this->getCSSList($css_dir);
+
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
         $this->arrForm = $objFormParam->getFormParamList();
     }
