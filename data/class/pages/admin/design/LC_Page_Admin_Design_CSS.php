@@ -79,7 +79,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
 
         // CSSファイル名を取得
         $this->css_name = $objFormParam->getValue('css_name');
-        $this->old_css_name = $objFormParam->getValue('old_css_name');
+        $this->old_css_name = $objFormParam->getValue('old_css_name', $this->css_name);
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
         $css_dir = $objLayout->getTemplatePath($this->device_type_id, true) . 'css/';
