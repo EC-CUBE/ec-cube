@@ -901,9 +901,17 @@ __EOS__;
         $arrParents = array();
         $ret = $id;
 
+        $loop_cnt = 1;
         while ($ret != '0' && !SC_Utils_Ex::isBlank($ret)) {
+            // 無限ループの予防
+            if ($loop_cnt > LEVEL_MAX) {
+                trigger_error('最大階層制限到達', E_USER_ERROR);
+            }
+
             $arrParents[] = $ret;
             $ret = SC_Helper_DB_Ex::sfGetParentsArraySub($table, $pid_name, $id_name, $ret);
+
+            ++$loop_cnt;
         }
 
         $arrParents = array_reverse($arrParents);
