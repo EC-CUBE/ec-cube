@@ -221,6 +221,7 @@ class SC_Helper_Mail
                 USING(order_id, product_class_id)';
             $where = 'order_id = ? AND shipping_id = ?';
             $arrWhereVal = array($order_id, $arrRet[$key]['shipping_id']);
+            $objQuery->setOrder('order_detail_id');
             $arrItems = $objQuery->select($col, $from, $where, $arrWhereVal);
             $arrRet[$key]['shipment_item'] = $arrItems;
         }
