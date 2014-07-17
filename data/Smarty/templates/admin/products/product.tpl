@@ -38,9 +38,9 @@
     function fnInitSelect(select) {
         var selectedOptions = <!--{$tpl_json_category_id}-->;
         $('#' + select + ' option').attr('selected', false);
-        for(var i=0; i<selectedOptions.length; i++){
+        for(var i=0; i < selectedOptions.length; i++){
             $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
-                .attr('selected', 'selected');
+                .prop('selected', 'selected');
         }
     }
 
@@ -65,7 +65,7 @@
 
     // target の子要素を選択状態にする
     function selectAll(target) {
-        $('#' + target).children().attr({selected: true});
+        $('#' + target).children().prop('selected', 'selected');
     }
 
     // 商品種別によってダウンロード商品のフォームの表示非表示を切り替える
