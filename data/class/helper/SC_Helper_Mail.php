@@ -218,8 +218,8 @@ class SC_Helper_Mail
         foreach ($arrRet as $key => $value) {
             $col = 's_i.*, tax_rate, tax_rule';
             $from = 'dtb_shipment_item AS s_i JOIN dtb_order_detail AS o_d
-                USING(order_id, product_class_id)';
-            $where = 'order_id = ? AND shipping_id = ?';
+                ON s_i.order_id = o_d.order_id AND s_i.product_class_id = o_d.product_class_id';
+            $where = 'o_d.order_id = ? AND shipping_id = ?';
             $arrWhereVal = array($order_id, $arrRet[$key]['shipping_id']);
             $objQuery->setOrder('order_detail_id');
             $arrItems = $objQuery->select($col, $from, $where, $arrWhereVal);
