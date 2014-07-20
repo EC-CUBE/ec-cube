@@ -93,7 +93,10 @@
                 <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
             </dd>
 
-            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
+                <!--{assign var=key1 value="order_country_id"}-->
+            <input type="hidden" name="<!--{$key1}-->" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+            <!--{else}-->
             <dt>国&nbsp;<span class="attention">※</span></dt>
             <dd>
                 <!--{assign var=key1 value="order_country_id"}-->
@@ -310,7 +313,10 @@
                     <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" class="boxLong text data-role-none" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
                 </dd>
 
-                <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
+                    <!--{assign var=key1 value="shipping_country_id"}-->
+                <input type="hidden" name="<!--{$key1}-->" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+                <!--{else}-->
                 <dt>国&nbsp;<span class="attention">※</span></dt>
                 <dd>
                     <!--{assign var=key1 value="shipping_country_id"}-->
