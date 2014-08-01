@@ -49,7 +49,7 @@ class LC_Page_Error_DispError extends LC_Page_Admin_Ex
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
-        // transformでフックしているばあいに, 再度エラーが発生するため, コールバックを無効化.
+        // transformでフックしている場合に, 再度エラーが発生するため, コールバックを無効化.
         $objHelperPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
         $objHelperPlugin->arrRegistedPluginActions = array();
 
