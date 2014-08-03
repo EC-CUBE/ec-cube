@@ -46,7 +46,7 @@
             <!--{assign var=key2 value=$arrAddr[cnt].country_id}-->
             ■お届け先<!--{$smarty.section.cnt.iteration}--><br>
             <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
-            国:<!--{$arrCountry[$key2]|h}--><br>
+            国：<!--{$arrCountry[$key2]|h}--><br>
             <!--{/if}-->
             〒<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
             <!--{$arrPref[$key1]}--><!--{$arrAddr[cnt].addr01|h}--><br>
