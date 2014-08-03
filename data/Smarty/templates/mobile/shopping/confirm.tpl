@@ -69,6 +69,10 @@
         <!--{/if}-->
 
         【ご注文者】<br>
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+        国:<!--{$arrCountry[$arrForm.order_country_id]|h}--><br>
+        ZIPCODE:<!--{$arrForm.order_zipcode|h}--><br>
+        <!--{/if}-->
         〒<!--{$arrForm.order_zip01|h}-->-<!--{$arrForm.order_zip02|h}--><br>
         <!--{$arrPref[$arrForm.order_pref]}--><!--{$arrForm.order_addr01|h}--><!--{$arrForm.order_addr02|h}--><br>
         <!--{$arrForm.order_name01|h}--> <!--{$arrForm.order_name02|h}--><br>
@@ -97,6 +101,10 @@
                     <!--{/foreach}-->
                 <!--{/if}-->
 
+                <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                国:<!--{$arrCountry[$arrForm.order_country_id]|h}--><br>
+                ZIPCODE:<!--{$arrForm.order_zipcode|h}--><br>
+                <!--{/if}-->
                 〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--><br>
                 <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
                 <!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--><br>
