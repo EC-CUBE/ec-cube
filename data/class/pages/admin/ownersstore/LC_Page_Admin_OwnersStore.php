@@ -933,7 +933,7 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
         $file_name = basename($path);
 
         // 指定されたフォルダ内に解凍する
-        $result = $tar->extractModify($dir. '/');
+        $result = $tar->extractModify($dir . '/', '');
         GC_Utils_Ex::gfPrintLog("解凍: $path -> $dir");
         // 解凍元のファイルを削除する.
         unlink($path);
