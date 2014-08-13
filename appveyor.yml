@@ -1,0 +1,66 @@
+# appveyor file
+# http://www.appveyor.com/docs/appveyor-yml
+
+# Set build version format here instead of in the admin panel.
+version: "1.0.{build}"
+
+# Fix line endings in Windows. (runs before repo cloning)
+init:
+  - git config --global core.autocrlf input
+
+environment:
+  global:
+    USER: "root" 
+    DBNAME: "myapp_test"
+    DBPASS: " "
+    DBUSER: "root"
+  matrix:
+  - db: mysql
+    provider: mysql
+
+services:
+  - iis  
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Set MySQL.
+  - cp tests/my.cnf c:\
+  - cinst mysql
+  - SET PATH=C:\tools\mysql\current\bin\;%PATH%
+  # Set bash.
+  - cinst mingw-get
+  - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin
+  - mingw-get install mingw-developer-toolkit
+  ## Set PHP.
+  - cinst php
+  - SET PATH=C:\php\;%PATH%
+  - cd c:\php
+  - copy php.ini-production php.ini
+  - echo date.timezone="Asia/Tokyo" >> php.ini
+  - echo extension_dir=ext >> php.ini
+  - echo extension=php_openssl.dll >> php.ini
+  - echo extension=php_gd2.dll >> php.ini
+  - echo extension=php_mbstring.dll >> php.ini
+  - echo extension=php_mysql.dll >> php.ini
+  - echo extension=php_curl.dll >> php.ini
+  - echo output_buffering = Off >> php.ini
+  - echo default_charset = UTF-8 >> php.ini
+  - echo mbstring.language = Japanese >> php.ini
+  - echo mbstring.encoding_translation = On >> php.ini
+  - echo mbstring.http_input = UTF-8 >> php.ini
+  - echo mbstring.http_output = pass >> php.ini
+  - echo mbstring.internal_encoding = UTF-8 >> php.ini
+  - cd C:\projects\ec-cube
+  - php -r "readfile('https://getcomposer.org/installer');" | php
+  - php composer.phar install
+
+# Don't actually build.
+build: off
+
+before_test:
+  - bash eccube_install.sh mysql
+  - cp tests/require.php.jenkins tests/require.php
+    
+test_script:
+  - php -i
+  - vendor\bin\phpunit.bat --bootstrap data\config\config.php --configuration tests\phpunit.xml.jenkins tests
