@@ -30,11 +30,7 @@ define('HTML_REALDIR', $GLOBALS['_realdir']);
 require_once HTML_REALDIR . 'define.php';
 define('INSTALL_FUNCTION', true);
 define('INSTALL_INFO_URL', 'http://www.ec-cube.net/install_info/index.php');
-if (ob_get_level() > 0 && ob_get_length() > 0) {
-    while (ob_end_clean());
-}
-
-define("DEFAULT_COUNTRY_ID",392);
+define("DEFAULT_COUNTRY_ID", 392);
 
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 ob_start();

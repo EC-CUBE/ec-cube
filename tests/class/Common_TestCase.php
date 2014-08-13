@@ -28,8 +28,8 @@ class Common_TestCase extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-      $this->objQuery = SC_Query_Ex::getSingletonInstance('', true);
-      $this->objQuery->begin();
+        $this->objQuery = SC_Query_Ex::getSingletonInstance('', true);
+        $this->objQuery->begin();
     }
 
     protected function tearDown()
@@ -64,7 +64,7 @@ class Common_TestCase extends PHPUnit_Framework_TestCase
         $this->actual = $resp->isExited();
         $this->verify('exitしたかどうか');
     }
-    */
+     */
 
     /**
      * 端末種別をテストケースから自由に設定する例です。
@@ -83,7 +83,7 @@ class Common_TestCase extends PHPUnit_Framework_TestCase
 
         $this->verify('端末種別');
     }
-    */
+     */
 
     /**
      * ログイン状態をテストケースから自由に切り替える例です。
@@ -102,6 +102,6 @@ class Common_TestCase extends PHPUnit_Framework_TestCase
 
         $this->verify('ログイン状態');
     }
-    */
+     */
 }
 
