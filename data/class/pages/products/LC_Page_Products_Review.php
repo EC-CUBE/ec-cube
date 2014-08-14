@@ -86,7 +86,6 @@ class LC_Page_Products_Review extends LC_Page_Ex
 
                 //エラーチェック
                 if (empty($this->arrErr)) {
-                    //重複タイトルでない
                     $this->tpl_mainpage = 'products/review_confirm.tpl';
                 }
                 break;
