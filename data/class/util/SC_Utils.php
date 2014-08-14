@@ -1794,37 +1794,35 @@ class SC_Utils
      * 引数のパスが絶対パスの場合は true を返す.
      * この関数は, パスの存在チェックを行なわないため注意すること.
      *
-     * @param string $realpath チェック対象のパス
+     * use File_Util::isAbsolute
+     * http://pear.php.net/package/File_Util/
+     *
+     * @param string $path チェック対象のパス
      * @return boolean 絶対パスの場合 true
      */
-    public static function isAbsoluteRealPath($realpath)
+    public static function isAbsoluteRealPath($path)
     {
-        if (strpos(PHP_OS, 'WIN') === false) {
-            return substr($realpath, 0, 1) == '/';
-        } else {
-            return preg_match('/^[a-zA-Z]:(\\\|\/)/', $realpath) ? true : false;
+        if (preg_match('/(?:\/|\\\)\.\.(?=\/|$)/', $path)) {
+            return false;
         }
+        if (!strncasecmp(PHP_OS, 'win', 3)) {
+            return (($path{0} == '/') ||  preg_match('/^[a-zA-Z]:(\\\|\/)/', $path));
+        }
+        return ($path{0} == '/') || ($path{0} == '~');
     }
 
     /**
      * ディレクトリを再帰的に作成する.
-     *
-     * mkdir 関数の $recursive パラメーターを PHP4 でサポートする.
      *
      * @param  string  $pathname ディレクトリのパス
      * @param  integer $mode     作成するディレクトリのパーミッション
      * @return boolean 作成に成功した場合 true; 失敗した場合 false
      * @see http://jp.php.net/mkdir
      */
-    public static function recursiveMkdir($pathname, $mode = 0777)
+    public static function recursiveMkdir($path, $mode = 0777)
     {
-        /*
-         * SC_Utils_Ex への再帰は無限ループやメモリリークの懸念
-         * 自クラスへ再帰する.
-         */
-        is_dir(dirname($pathname)) || SC_Utils::recursiveMkdir(dirname($pathname), $mode);
-
-        return is_dir($pathname) || @mkdir($pathname, $mode);
+        // Windows環境ではmodeは効かない
+        return mkdir($path, $mode, true);
     }
 
     public static function isAppInnerUrl($url)

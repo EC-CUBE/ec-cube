@@ -34,45 +34,59 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 class SC_Utils_recursiveMkdirTest extends Common_TestCase
 {
 
-  static $TMP_DIR;
+    static $TMP_DIR;
 
-  protected function setUp()
-  {
-    self::$TMP_DIR = realpath(dirname(__FILE__)) . "/../../../tmp";
-    SC_Helper_FileManager::deleteFile(self::$TMP_DIR);
-    mkdir(self::$TMP_DIR, 0777, true);
-// parent::setUp();
-  }
+    protected function setUp()
+    {
+        self::$TMP_DIR = realpath(dirname(__FILE__)) . "/../../../tmp";
+        SC_Helper_FileManager::deleteFile(self::$TMP_DIR);
+        mkdir(self::$TMP_DIR, 0777, true);
+        // parent::setUp();
+    }
 
-  protected function tearDown()
-  {
-    // parent::tearDown();
-  }
+    protected function tearDown()
+    {
+        // parent::tearDown();
+    }
 
-  /////////////////////////////////////////
-  public function testRecursiveMkdir_パーミッションを指定した場合_指定のパーミッションでディレクトリが作られる()
-  {
-    $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
-    $mode = 0755;
+    /////////////////////////////////////////
+    public function testRecursiveMkdir_パーミッションを指定した場合_指定のパーミッションでディレクトリが作られる()
+    {
+        $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
+        $mode = 0755;
 
-    $result = SC_Utils::recursiveMkdir($path, $mode);
-    $this->expected = '0755';
-    $this->actual = substr(sprintf('%o', fileperms($path)), -4);
+        $result = SC_Utils::recursiveMkdir($path, $mode);
+        if (DIRECTORY_SEPARATOR == '\\') {
+            // Windows環境ではパーミッションを指定したディレクトリ作成が出来ない
+            $this->expected = true;
+            $this->actual = file_exists($path);
+            $this->verify('作成したディレクトリがあるかどうか');
+        } else {
+            $this->expected = '0755';
+            $this->actual = substr(sprintf('%o', fileperms($path)), -4);
+            $this->verify('作成したディレクトリのパーミッション');
+        }
 
-    $this->verify('作成したディレクトリのパーミッション');
-  }
+    }
 
-  public function testRecursiveMkdir_パーミッションを指定しない場合_0777でディレクトリが作られる()
-  {
-    $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
+    public function testRecursiveMkdir_パーミッションを指定しない場合_0777でディレクトリが作られる()
+    {
+        $path = realpath(dirname(__FILE__)) . "/../../../tmp/dir1/dir2/dir3/";
 
-    $result = SC_Utils::recursiveMkdir($path);
-    $this->expected = '0777';
-    $this->actual = substr(sprintf('%o', fileperms($path)), -4);
+        $result = SC_Utils::recursiveMkdir($path);
+        if (DIRECTORY_SEPARATOR == '\\') {
+            // Windows環境ではパーミッションを指定したディレクトリ作成が出来ない
+            $this->expected = true;
+            $this->actual = file_exists($path);
+            $this->verify('作成したディレクトリがあるかどうか');
+        } else {
+            $this->expected = '0777';
+            $this->actual = substr(sprintf('%o', fileperms($path)), -4);
+            $this->verify('作成したディレクトリのパーミッション');
+        }
 
-    $this->verify('作成したディレクトリのパーミッション');
-  }
+    }
 
-  //////////////////////////////////////////
+    //////////////////////////////////////////
 }
 
