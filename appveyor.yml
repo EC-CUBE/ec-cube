@@ -63,4 +63,4 @@ before_test:
     
 test_script:
   - php -i
-  - vendor\bin\phpunit.bat --bootstrap data\config\config.php --configuration tests\phpunit.xml.jenkins tests
+  - vendor\bin\phpunit.bat --bootstrap data\config\config.php tests

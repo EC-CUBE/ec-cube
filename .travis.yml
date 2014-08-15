@@ -23,7 +23,7 @@ before_script:
 
 script:
   - mkdir -p reports/coverage
-  - phpunit --log-tap reports/tap.log --log-junit reports/unitreport.xml --coverage-html reports/coverage --coverage-clover reports/coverage/coverage.xml --bootstrap ./data/config/config.php --configuration tests/phpunit.xml.jenkins tests
+  - phpunit -c phpunit.xml.dist
   - grunt
 
 after_script:
