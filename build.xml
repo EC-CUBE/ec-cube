@@ -5,7 +5,7 @@
     <copy overwrite="true" file="data/config/config.php.jenkins" tofile="data/config/config.php"/>
   </target>
 
-  <target name="test">
+  <target name="test" description="Run unit tests with PHPUnit">
     <delete>
       <fileset dir="data/cache">
         <include name="*"/>
@@ -13,10 +13,7 @@
     </delete>
     <delete dir="reports" includeemptydirs="true" />
     <mkdir dir="reports/coverage" />
-    <exec dir="."
-      output="reports/stdout.log"
-      error="reports/stderr.log"
-      command="phpunit -c phpunit.xml.dist" />
+    <exec executable="phpunit" failonerror="true"/>
   </target>
   <target name="checkstyle" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
       <exec executable="phpcs" output="/dev/null">
