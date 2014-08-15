@@ -13,7 +13,7 @@
     </delete>
     <delete dir="reports" includeemptydirs="true" />
     <mkdir dir="reports/coverage" />
-    <exec dir="${basedir}" executable="phpunit" />
+    <exec dir="." executable="phpunit" />
   </target>
   <target name="checkstyle" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
       <exec executable="phpcs" output="/dev/null">
