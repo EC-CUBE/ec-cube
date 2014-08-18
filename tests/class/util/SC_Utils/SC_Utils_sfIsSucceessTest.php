@@ -73,7 +73,7 @@ class SC_Utils_sfIsSuccessTest extends Common_TestCase
   {
     $objSess = new SC_Session_Mock();
     $objSess->is_success = SUCCESS;
-    $_SERVER['HTTP_REFERER'] = 'http://test.local/hoge/fuga';
+    $_SERVER['HTTP_REFERER'] = HTTP_URL . 'hoge/fuga';
 
     $this->expected = TRUE;
     $this->actual = SC_Utils::sfIsSuccess($objSess, FALSE);
