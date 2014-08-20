@@ -156,13 +156,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
             case 'confirm':
                 // パラメーター情報の初期化
                 $this->setFormParams($objFormParam, $_POST, $this->is_download, $this->arrShipping);
-
-                $deliv_id = $objFormParam->getValue('deliv_id');
-                $arrSelectedDeliv = $this->getSelectedDeliv($objCartSess, $deliv_id);
-                $this->arrPayment = $arrSelectedDeliv['arrPayment'];
-                $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
-                $this->img_show = $arrSelectedDeliv['img_show'];
-
                 $this->arrErr = $this->lfCheckError($objFormParam, $this->arrPrices['subtotal'], $this->tpl_user_point);
 
                 if (empty($this->arrErr)) {
@@ -175,6 +168,19 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                     // 確認ページへ移動
                     SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                     SC_Response_Ex::actionExit();
+                } else {
+                    $deliv_id = $objFormParam->getValue('deliv_id');
+
+                    if(strval($deliv_id) !== strval(intval($deliv_id))){
+                        $deliv_id = $this->arrDeliv[0]['deliv_id'];
+                        $objFormParam->setValue('deliv_id', $deliv_id);
+                    }
+
+                    $arrSelectedDeliv = $this->getSelectedDeliv($objCartSess, $deliv_id);
+                    $this->arrPayment = $arrSelectedDeliv['arrPayment'];
+                    $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
+                    $this->img_show = $arrSelectedDeliv['img_show'];
+
                 }
 
                 break;
@@ -391,20 +397,21 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
     public function getSelectedDeliv(&$objCartSess, $deliv_id)
     {
         $arrResults = array();
-        $arrResults['arrDelivTime'] = SC_Helper_Delivery_Ex::getDelivTime($deliv_id);
-        $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
-        $payments_deliv = SC_Helper_Delivery_Ex::getPayments($deliv_id);
-        $objPayment = new SC_Helper_Payment_Ex();
-        $payments_total = $objPayment->getByPrice($total);
-        $arrPayment = array();
-        foreach ($payments_total as $payment) {
-            if (in_array($payment['payment_id'], $payments_deliv)) {
-                $arrPayment[] = $payment;
+        if (strval($deliv_id) === strval(intval($deliv_id))) {
+            $arrResults['arrDelivTime'] = SC_Helper_Delivery_Ex::getDelivTime($deliv_id);
+            $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
+            $payments_deliv = SC_Helper_Delivery_Ex::getPayments($deliv_id);
+            $objPayment = new SC_Helper_Payment_Ex();
+            $payments_total = $objPayment->getByPrice($total);
+            $arrPayment = array();
+            foreach ($payments_total as $payment) {
+                if (in_array($payment['payment_id'], $payments_deliv)) {
+                    $arrPayment[] = $payment;
+                }
             }
+            $arrResults['arrPayment'] = $arrPayment;
+            $arrResults['img_show'] = $this->hasPaymentImage($arrResults['arrPayment']);
         }
-        $arrResults['arrPayment'] = $arrPayment;
-        $arrResults['img_show'] = $this->hasPaymentImage($arrResults['arrPayment']);
-
         return $arrResults;
     }
 
