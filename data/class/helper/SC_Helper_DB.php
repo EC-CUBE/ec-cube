@@ -798,7 +798,7 @@ __EOS__;
             if ($sqlval['product_count'] =='') {
                 $sqlval['product_count'] = (string) '0';
             }
-            $objQuery->update('dtb_category_total_count', $sqlval, 'category_id = ?', array($cid));
+            $ret = $objQuery->update('dtb_category_total_count', $sqlval, 'category_id = ?', array($cid));
             if (!$ret) {
                 $sqlval['category_id'] = $cid;
                 $objQuery->insert('dtb_category_total_count', $sqlval);
