@@ -171,7 +171,7 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 } else {
                     $deliv_id = $objFormParam->getValue('deliv_id');
 
-                    if(strval($deliv_id) !== strval(intval($deliv_id))){
+                    if (strval($deliv_id) !== strval(intval($deliv_id))) {
                         $deliv_id = $this->arrDeliv[0]['deliv_id'];
                         $objFormParam->setValue('deliv_id', $deliv_id);
                     }
