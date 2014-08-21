@@ -104,8 +104,6 @@ class SC_Helper_DB
      */
     public static function sfDataExists($tableName, $where, $arrWhereVal)
     {
-        $dbFactory = SC_DB_DBFactory_Ex::getInstance();
-
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists($tableName, $where, $arrWhereVal);
 
@@ -800,10 +798,10 @@ __EOS__;
             if ($sqlval['product_count'] =='') {
                 $sqlval['product_count'] = (string) '0';
             }
-            $ret = $objQuery->update('dtb_category_total_count', $sqlval, 'category_id = ?', array($cid));
+            $objQuery->update('dtb_category_total_count', $sqlval, 'category_id = ?', array($cid));
             if (!$ret) {
                 $sqlval['category_id'] = $cid;
-                $ret = $objQuery->insert('dtb_category_total_count', $sqlval);
+                $objQuery->insert('dtb_category_total_count', $sqlval);
             }
         }
         // トランザクション終了処理
@@ -1357,8 +1355,6 @@ __EOS__;
      */
     public function sfCountMaker($objQuery)
     {
-        $sql = '';
-
         //テーブル内容の削除
         $objQuery->query('DELETE FROM dtb_maker_count');
 
@@ -1564,7 +1560,7 @@ __EOS__;
         // UPDATE できなかった場合、INSERT
         if ($ret == 0) {
             $arrData['id'] = 1;
-            $ret = $objQuery->insert('dtb_baseinfo', $arrData);
+            $objQuery->insert('dtb_baseinfo', $arrData);
             GC_Utils_Ex::gfPrintLog('dtb_baseinfo に INSERT を実行しました。');
         }
     }
