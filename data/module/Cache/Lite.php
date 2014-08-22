@@ -247,6 +247,12 @@ class Cache_Lite
      * @var boolean
      */
     var $_errorHandlingAPIBreak = false;
+	
+	var $_hashedDirectoryGroup = NULL;
+	
+	var $_cacheFileMode = NULL;
+	
+	var $_cacheFileGroup = NULL;
     
     // --- Public methods ---
 
@@ -272,6 +278,9 @@ class Cache_Lite
     *     'hashedDirectoryLevel' => level of the hashed directory system (int),
     *     'hashedDirectoryUmask' => umask for hashed directory structure (int),
     *     'errorHandlingAPIBreak' => API break for better error handling ? (boolean)
+	*     'hashedDirectoryGroup' => group of hashed directory structure (int | string) (see function chgrp)
+	*     'cacheFileMode' => filesystem mode of newly created cache files (int)
+	*     'cacheFileGroup' => group of newly created cache files (int | string) (see function chgrp)
     * );
     * 
     * If sys_get_temp_dir() is available and the 
@@ -306,7 +315,7 @@ class Cache_Lite
     */
     function setOption($name, $value) 
     {
-        $availableOptions = array('errorHandlingAPIBreak', 'hashedDirectoryUmask', 'hashedDirectoryLevel', 'automaticCleaningFactor', 'automaticSerialization', 'fileNameProtection', 'memoryCaching', 'onlyMemoryCaching', 'memoryCachingLimit', 'cacheDir', 'caching', 'lifeTime', 'fileLocking', 'writeControl', 'readControl', 'readControlType', 'pearErrorMode');
+        $availableOptions = array('errorHandlingAPIBreak', 'hashedDirectoryUmask', 'hashedDirectoryLevel', 'automaticCleaningFactor', 'automaticSerialization', 'fileNameProtection', 'memoryCaching', 'onlyMemoryCaching', 'memoryCachingLimit', 'cacheDir', 'caching', 'lifeTime', 'fileLocking', 'writeControl', 'readControl', 'readControlType', 'pearErrorMode', 'hashedDirectoryGroup', 'cacheFileMode', 'cacheFileGroup');
         if (in_array($name, $availableOptions)) {
             $property = '_'.$name;
             $this->$property = $value;
@@ -665,7 +674,19 @@ class Cache_Lite
         }
         return $result;
     }
-      
+
+    /**
+    * Touch the cache file while are recreating it to avoid
+    * launch this task more then once when necessary
+    * When the cache recreated and Added in Cache Memory
+    * @return void
+    * @access private
+    */
+    function _touchCacheFile(){
+        if (file_exists($this->_file)) {
+            @touch($this->_file);
+        }
+    }
     /**
     * Add some date in the memory caching array
     *
@@ -674,6 +695,7 @@ class Cache_Lite
     */
     function _memoryCacheAdd($data)
     {
+        $this->_touchCacheFile();
         $this->_memoryCachingArray[$this->_file] = $data;
         if ($this->_memoryCachingCounter >= $this->_memoryCachingLimit) {
             list($key, ) = each($this->_memoryCachingArray);
@@ -775,13 +797,29 @@ class Cache_Lite
             for ($i=0 ; $i<$this->_hashedDirectoryLevel ; $i++) {
                 $root = $root . 'cache_' . substr($hash, 0, $i + 1) . '/';
                 if (!(@is_dir($root))) {
-                    @mkdir($root, $this->_hashedDirectoryUmask);
+					if (@mkdir($root))
+					{
+						@chmod($root, $this->_hashedDirectoryUmask);
+						if (! is_null($this->_hashedDirectoryGroup))
+							@chgrp($root, $this->_hashedDirectoryGroup);
+					}
                 }
             }
         }
+		// if both _cacheFileMode and _cacheFileGroup is null, then we don't need to call
+		// file_exists (see below: if ($is_newfile) ...)
+		$is_newfile = (! is_null($this->_cacheFileMode) || !is_null($this->_cacheFileGroup)) 
+			&& ! @file_exists($this->_file);
         $fp = @fopen($this->_file, "wb");
         if ($fp) {
             if ($this->_fileLocking) @flock($fp, LOCK_EX);
+			if ($is_newfile)
+			{
+				if (! is_null($this->_cacheFileMode))
+					@chmod($this->_file, $this->_cacheFileMode);
+				if (! is_null($this->_cacheFileGroup))
+					@chgrp($this->_file, $this->_cacheFileGroup);
+			}
             if ($this->_readControl) {
                 @fwrite($fp, $this->_hash($data, $this->_readControlType), 32);
             }
