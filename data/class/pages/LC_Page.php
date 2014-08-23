@@ -79,6 +79,9 @@ class LC_Page
     /** 2.12.x 以前のJavaScript関数を読み込むかどうか */
     public $load_legacy_js = false;
 
+    public $arrForm;
+    public $arrErr;
+
     /**
      * Page を初期化する.
      *

@@ -32,6 +32,10 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  */
 class LC_Page_Admin extends LC_Page_Ex
 {
+    public $tpl_subno;
+    public $tpl_maintitle;
+    public $tpl_subtitle;
+
     /**
      * Page を初期化する.
      *
