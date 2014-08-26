@@ -73,18 +73,16 @@ class LC_Page_Admin_Customer_SearchCustomer extends LC_Page_Admin_Ex
         $this->arrForm = $objFormParam->getFormParamList();
         // 入力パラメーターチェック
         $this->arrErr = $this->lfCheckError($objFormParam);
-        if (!SC_Utils_Ex::isBlank($this->arrErr)) {
-            return;
-        }
-
-        // POSTのモードがsearchなら会員検索開始
-        switch ($this->getMode()) {
-            case 'search':
-                list($this->tpl_linemax, $this->arrCustomer, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
-                $this->tpl_strnavi = $this->objNavi->strnavi;
-                break;
-            default:
-                break;
+        if (SC_Utils_Ex::isBlank($this->arrErr)) {
+            // POSTのモードがsearchなら会員検索開始
+            switch ($this->getMode()) {
+                case 'search':
+                    list($this->tpl_linemax, $this->arrCustomer, $this->objNavi) = $this->lfDoSearch($objFormParam->getHashArray());
+                    $this->tpl_strnavi = $this->objNavi->strnavi;
+                    break;
+                default:
+                    break;
+            }
         }
         $this->setTemplate($this->tpl_mainpage);
     }
