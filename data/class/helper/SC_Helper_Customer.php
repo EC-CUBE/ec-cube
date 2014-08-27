@@ -229,7 +229,7 @@ class SC_Helper_Customer
      * customer_idから会員情報を取得する
      *
      * @param mixed $customer_id
-     * @param mixed $mask_flg
+     * @param boolean $mask_flg
      * @access public
      * @return array 会員情報の配列を返す
      */
@@ -267,7 +267,7 @@ class SC_Helper_Customer
      *
      * @param integer $customer_id 会員ID (指定無しでも構わないが、Where条件を入れる事)
      * @param string  $add_where   追加WHERE条件
-     * @param array   $arrAddVal   追加WHEREパラメーター
+     * @param string[]   $arrAddVal   追加WHEREパラメーター
      * @access public
      * @return array 対象会員データ
      */
@@ -512,7 +512,7 @@ class SC_Helper_Customer
      * @param SC_FormParam $objFormParam SC_FormParam インスタンス
      * @param string       $prefix       キー名にprefixを付ける場合に指定
      * @access public
-     * @return array エラー情報の配列
+     * @return SC_CheckError_Ex エラー情報の配列
      */
     public function sfCustomerCommonErrorCheck(&$objFormParam, $prefix = '')
     {

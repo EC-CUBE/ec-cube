@@ -130,7 +130,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
      * 会員情報を削除する
      *
      * @access private
-     * @return void
+     * @return boolean
      */
     public function lfDeleteCustomer($customer_id)
     {

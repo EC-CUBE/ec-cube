@@ -108,6 +108,9 @@ class API_ItemSearch extends SC_Api_Abstract_Ex
     /**
      * 商品一覧の取得
      *
+     * @param integer $disp_number
+     * @param integer $linemax
+     * @param SC_Product_Ex $objProduct
      * @return array
      * TODO: LC_Page_Products_List::lfGetProductsList() と共通化
      */

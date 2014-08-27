@@ -175,7 +175,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 
     /**
      * パラメーターの初期化を行う
-     * @param Object $objFormParam
+     * @param SC_FormParam_Ex $objFormParam
      */
     public function lfInitParam(&$objFormParam)
     {
@@ -194,7 +194,7 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
      *
      * @param  integer  $news_id
      * @param  array    $sqlval
-     * @param  object   $objNews
+     * @param  SC_Helper_News_Ex   $objNews
      * @return multiple
      */
     public function doRegist($news_id, $sqlval, SC_Helper_News_Ex $objNews)
@@ -245,7 +245,6 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
 
     /**
      * POSTされたランクの値を取得する
-     * @param Object  $objFormParam
      * @param Integer $news_id
      */
     public function getPostRank($news_id)

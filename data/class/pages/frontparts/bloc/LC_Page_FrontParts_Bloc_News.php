@@ -104,7 +104,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
     /**
      * 新着情報パラメーター初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitNewsParam(&$objFormParam)
@@ -143,7 +143,7 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      * (ページと表示件数を指定)
      *
      * @param  array  $arrData フォーム入力値
-     * @param  object $objNews
+     * @param  SC_Helper_News_Ex $objNews
      * @return String $json 新着情報のJSONを返す
      */
     public function lfGetNewsForJson($arrData, SC_Helper_News_Ex $objNews)
@@ -166,7 +166,6 @@ class LC_Page_FrontParts_Bloc_News extends LC_Page_FrontParts_Bloc_Ex
      * (news_idを指定)
      *
      * @param  array  $arrData フォーム入力値
-     * @param  object $objNews
      * @return String $json 新着情報1件分のJSONを返す
      */
     public function lfGetNewsDetailForJson($arrData)

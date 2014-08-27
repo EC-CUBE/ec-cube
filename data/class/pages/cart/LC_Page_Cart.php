@@ -214,7 +214,7 @@ class LC_Page_Cart extends LC_Page_Ex
     /**
      * ユーザ入力値の処理
      *
-     * @return object
+     * @return SC_FormParam_Ex
      */
     public function lfInitParam($arrRequest)
     {
@@ -234,7 +234,7 @@ class LC_Page_Cart extends LC_Page_Ex
     /**
      * PC版での開いているカテゴリーツリーの維持用の入力値
      *
-     * @return object
+     * @return SC_FormParam_Ex
      */
     public function lfInitParam4OpenCategoryTree($arrRequest)
     {
@@ -299,6 +299,8 @@ class LC_Page_Cart extends LC_Page_Ex
     /**
      * カートを購入モードに設定
      *
+     * @param SC_SiteSession_Ex $objSiteSess
+     * @param SC_CartSession_Ex $objCartSess
      * @return void
      */
     public function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey)

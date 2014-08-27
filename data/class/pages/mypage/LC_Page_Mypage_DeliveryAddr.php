@@ -163,6 +163,11 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
     }
 
     /* 登録実行 */
+
+    /**
+     * @param SC_Helper_Address_Ex $objAddress
+     * @param SC_FormParam $objFormParam
+     */
     public function lfRegistData($objAddress, $objFormParam, $customer_id)
     {
         $arrRet     = $objFormParam->getHashArray();
@@ -177,6 +182,9 @@ class LC_Page_Mypage_DeliveryAddr extends LC_Page_Ex
         }
     }
 
+    /**
+     * @param SC_FormParam $objFormParam
+     */
     public function lfRegistDataNonMember($objFormParam)
     {
         $arrRegistColumn = $objFormParam->getDbArray();

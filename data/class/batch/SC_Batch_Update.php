@@ -193,6 +193,7 @@ class SC_Batch_Update extends SC_Batch
      * $dir を再帰的に辿ってパス名を配列で返す.
      *
      * @param string 任意のパス名
+     * @param string $dir
      * @return array $dir より下層に存在するパス名の配列
      * @see http://www.php.net/glob
      */
@@ -252,6 +253,9 @@ class SC_Batch_Update extends SC_Batch
         return $src;
     }
 
+    /**
+     * @param string $msg
+     */
     public function printLog($msg)
     {
         GC_Utils_Ex::gfPrintLog($msg, DATA_REALDIR . 'logs/ownersstore_batch_update.log');

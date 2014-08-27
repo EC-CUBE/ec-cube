@@ -146,7 +146,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
      *
      * @param  integer  $kiyaku_id
      * @param  array    $sqlval
-     * @param  object   $objKiyaku
+     * @param  SC_Helper_Kiyaku_Ex   $objKiyaku
      * @return multiple
      */
     public function doRegist($kiyaku_id, $sqlval, SC_Helper_Kiyaku_Ex &$objKiyaku)
@@ -157,6 +157,10 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
         return $objKiyaku->saveKiyaku($sqlval);
     }
 
+    /**
+     * @param string|null $mode
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {
@@ -178,8 +182,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック
      *
-     * @param  string $mode
-     * @param  object $objKiyaku
+     * @param  SC_Helper_Kiyaku_Ex $objKiyaku
      * @return array
      */
     public function lfCheckError($objFormParam, SC_Helper_Kiyaku_Ex &$objKiyaku)

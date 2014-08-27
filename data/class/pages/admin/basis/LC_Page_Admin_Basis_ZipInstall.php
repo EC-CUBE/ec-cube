@@ -186,6 +186,7 @@ class LC_Page_Admin_Basis_ZipInstall extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
+     * @param SC_FormParam_Ex $objFormParam
      * @return void
      */
     public function lfInitParam($tpl_mode, &$objFormParam)

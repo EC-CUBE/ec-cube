@@ -373,7 +373,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
      *
      * FIXME: 登録の実処理自体は、LC_Page_Admin_Products_Categoryと共通化して欲しい。
      *
-     * @param  string|integer $line 処理中の行数
+     * @param  integer $line 処理中の行数
      * @param SC_FormParam $objFormParam
      * @return integer        カテゴリID
      */

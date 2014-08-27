@@ -4,7 +4,6 @@
  *
  * DoCoMoの携帯端末の場合はmarqueeを使用しない。
  *
- * @param string $value 入力
  * @return string 出力
  */
 function smarty_block_marquee($params, $content, &$smarty, &$repeat)

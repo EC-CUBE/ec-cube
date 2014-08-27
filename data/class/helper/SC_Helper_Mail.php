@@ -72,6 +72,11 @@ class SC_Helper_Mail
     }
 
     /* DBに登録されたテンプレートメールの送信 */
+
+    /**
+     * @param string $to_name
+     * @param integer $template_id
+     */
     public function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '')
     {
         // メールテンプレート情報の取得
@@ -267,6 +272,10 @@ class SC_Helper_Mail
     }
 
     //件名にテンプレートを用いる
+
+    /**
+     * @param SC_SiteView_Ex $objMailView
+     */
     public function sfMakeSubject($subject, &$objMailView = NULL)
     {
         if (empty($objMailView)) {
@@ -288,6 +297,10 @@ class SC_Helper_Mail
     }
 
     // メール配信履歴への登録
+
+    /**
+     * @param string $subject
+     */
     public function sfSaveMailHistory($order_id, $template_id, $subject, $body)
     {
         $sqlval = array();

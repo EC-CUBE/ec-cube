@@ -139,7 +139,7 @@ class LC_Page_Admin_Design_MainEdit extends LC_Page_Admin_Ex
      *
      * XXX URL のフィールドは, 実際は filename なので注意
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @return void
      */
     public function lfInitParam(&$objFormParam)

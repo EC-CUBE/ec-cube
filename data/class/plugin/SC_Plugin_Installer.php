@@ -30,6 +30,9 @@ class SC_Plugin_Installer
 
     protected $arrInstallData;
 
+    /**
+     * @param string $exec_func
+     */
     public function __construct($exec_func, $arrPlugin)
     {
         $this->exec_func   = $exec_func;
@@ -184,9 +187,6 @@ class SC_Plugin_Installer
     /**
      * カラム追加クエリの追加
      *
-     * @param type $table
-     * @param type $col
-     * @param type $type
      */
     public function addColumn($table_name, $col_name, $col_type)
     {
@@ -197,9 +197,6 @@ class SC_Plugin_Installer
     /**
      * カラム削除クエリの追加
      *
-     * @param type $table
-     * @param type $col
-     * @param type $type
      */
     public function dropColumn($table_name, $col_name)
     {

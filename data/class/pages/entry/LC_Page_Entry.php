@@ -179,7 +179,7 @@ class LC_Page_Entry extends LC_Page_Ex
      * モバイル端末の場合は, email を email_mobile にコピーし,
      * mobile_phone_id に携帯端末IDを格納する.
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam
      * @access private
      * @return $arrResults
      */

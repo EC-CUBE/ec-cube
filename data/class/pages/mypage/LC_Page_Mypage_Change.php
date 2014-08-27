@@ -156,7 +156,7 @@ class LC_Page_Mypage_Change extends LC_Page_AbstractMypage_Ex
     /**
      *  会員情報を登録する
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam
      * @param mixed $customer_id
      * @access private
      * @return void

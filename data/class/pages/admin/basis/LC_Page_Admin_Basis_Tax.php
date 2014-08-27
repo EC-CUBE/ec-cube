@@ -208,8 +208,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
      * 登録処理を実行.
      *
      * @param  integer  $tax_rule_id
-     * @param  array    $sqlval
-     * @param  object   $objTaxRule
+     * @param  SC_Helper_TaxRule_Ex   $objTaxRule
      * @return multiple
      */
     public function doRegist($tax_rule_id, $arrParam, SC_Helper_TaxRule_Ex $objTaxRule)
@@ -232,7 +231,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
      * 共通設定の登録処理を実行.
      *
      * @param  array   $arrParam
-     * @return boolean
+     * @return integer
      */
     public function doParamRegist($arrParam)
     {
@@ -257,6 +256,7 @@ class LC_Page_Admin_Basis_Tax extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック.
      *
+     * @param SC_FormParam $objFormParam
      * @return array $objErr->arrErr エラー内容
      */
     public function lfCheckError(&$objFormParam, SC_Helper_TaxRule_Ex &$objTaxRule)

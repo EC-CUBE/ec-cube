@@ -55,6 +55,10 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // X軸ラベルの角度セット
+
+    /**
+     * @param integer $Angle
+     */
     public function setXLabelAngle($Angle)
     {
         $this->XLabelAngle = $Angle;
@@ -237,6 +241,10 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // ラインを描画する
+
+    /**
+     * @param integer $line_no
+     */
     public function drawLine($line_no)
     {
         $arrPointList = $this->arrPointList[$line_no];
@@ -254,6 +262,10 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // マークを描画する
+
+    /**
+     * @param integer $line_no
+     */
     public function drawMark($line_no)
     {
         $arrPointList = $this->arrPointList[$line_no];
@@ -266,6 +278,10 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // ラベルを描画する
+
+    /**
+     * @param integer $line_no
+     */
     public function drawLabel($line_no)
     {
         $arrData = $this->arrDataList[$line_no];

@@ -88,7 +88,7 @@ class SC_Helper_FileManager
      * 指定したディレクトリのバイト数を取得する.
      *
      * @param  string $dir ディレクトリ
-     * @return void
+     * @return integer
      */
     public function sfGetDirSize($dir)
     {
@@ -215,6 +215,7 @@ class SC_Helper_FileManager
      * 指定したディレクトリ配下にファイルがあるかチェックする.
      *
      * @param string ディレクトリ
+     * @param string $dir
      * @return bool ファイルが存在する場合 true
      */
     public function sfDirChildExists($dir)
@@ -294,6 +295,7 @@ class SC_Helper_FileManager
      * ファイル読込を行う.
      *
      * @param string ファイルパス
+     * @param string $filename
      * @return string ファイルの内容
      */
     public function sfReadFile($filename)

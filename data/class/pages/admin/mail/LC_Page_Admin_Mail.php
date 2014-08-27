@@ -175,7 +175,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化（初期会員検索時）
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitParamSearchCustomer(&$objFormParam)
@@ -188,7 +188,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の追加（テンプレート選択）
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfAddParamSelectTemplate(&$objFormParam)
@@ -280,7 +280,6 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * 配信履歴から条件を取得する
      *
-     * @param  integer $send_id　配信履歴番号
      * @return array
      */
     public function lfGetMailQuery($send_id)

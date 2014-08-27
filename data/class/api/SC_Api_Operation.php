@@ -79,7 +79,7 @@ class SC_Api_Operation
      * 会員ログインチェックを実行する.
      *
      * @param  string  $login_email ログインメールアドレス
-     * @param  string  $password    ログインパスワード
+     * @param  string  $login_password    ログインパスワード
      * @return boolean ログインに成功した場合 true; 失敗した場合 false
      */
     protected function checkCustomerAccount($login_email, $login_password)
@@ -273,6 +273,7 @@ class SC_Api_Operation
      * APIのリクエスト基本パラメーターの設定
      *
      * @param object SC_FormParam
+     * @param SC_FormParam_Ex $objFormParam
      * @return void
      */
     protected function setApiBaseParam(&$objFormParam)
@@ -408,6 +409,11 @@ class SC_Api_Operation
     }
 
     // TODO: ここらへんは SC_Displayに持って行きたい所だが・・
+
+    /**
+     * @param string $type
+     * @param string $response_outer_name
+     */
     public function sendApiResponse($type, $response_outer_name, &$arrResponse)
     {
         switch ($type) {

@@ -77,7 +77,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
      * 受注IDが無効な場合, 取得したパスにファイルが存在しない場合は false
      *
      * @param  integer        $order_id 受注ID
-     * @return string|boolean 成功した場合は決済モジュールのパス;
+     * @return string|false 成功した場合は決済モジュールのパス;
      *                        失敗した場合 false
      */
     public function getModulePath($order_id)
@@ -123,7 +123,7 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
      * 受注IDが取得できない場合は false を返す.
      *
      * @access private
-     * @return integer|boolean 受注IDの取得に成功した場合は受注IDを返す;
+     * @return integer 受注IDの取得に成功した場合は受注IDを返す;
      *                         失敗した場合は, false を返す.
      */
     public function getOrderId()

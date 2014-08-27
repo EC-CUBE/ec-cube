@@ -38,7 +38,7 @@ class SC_Helper_TaxRule
      * @param int $product_class_id 商品規格ID
      * @param int $pref_id 都道府県ID
      * @param int $country_id 国ID
-     * @return int 税金付与した金額
+     * @return double 税金付与した金額
      */
     public static function sfCalcIncTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
@@ -53,7 +53,7 @@ class SC_Helper_TaxRule
      * @param int $product_class_id 商品規格ID
      * @param int $pref_id 都道府県ID
      * @param int $country_id 国ID
-     * @return int 税金付与した金額
+     * @return double 税金付与した金額
      */
     public static function sfTax($price, $product_id = 0, $product_class_id = 0, $pref_id =0, $country_id = 0)
     {
@@ -68,7 +68,7 @@ class SC_Helper_TaxRule
      *
      * @param int $price 計算対象の金額
      * @param int $tax_rule_id 税規約ID
-     * @return int 税金付与した金額
+     * @return double 税金付与した金額
      */
     public static function calcIncTaxFromRuleId($price, $tax_rule_id = 0)
     {
@@ -81,7 +81,7 @@ class SC_Helper_TaxRule
      *
      * @param int $price 計算対象の金額
      * @param int $tax_rule_id 税規約ID
-     * @return int 税金付与した金額
+     * @return double 税金付与した金額
      */
     public static function calcTaxFromRuleId($price, $tax_rule_id = 0)
     {
@@ -98,7 +98,7 @@ class SC_Helper_TaxRule
      *     XXX int のみか不明
      * @param int $calc_rule 端数処理
      * @param int $tax_adjust 調整額
-     * @return int 税金額
+     * @return double 税金額
      */
     public static function calcTax ($price, $tax, $calc_rule, $tax_adjust = 0)
     {
@@ -116,7 +116,7 @@ class SC_Helper_TaxRule
      * @param int $product_class_id 商品規格ID
      * @param int $pref_id 都道府県ID
      * @param int $country_id 国ID
-     * @return array 税設定情報
+     * @return integer 税設定情報
      */
     public static function getTaxRule($product_id = 0, $product_class_id = 0, $pref_id = 0, $country_id = 0)
     {
@@ -228,7 +228,7 @@ class SC_Helper_TaxRule
      * @param float $tax_rate 消費税率
      * @param int $product_id 商品ID
      * @param int $product_class_id 商品規格ID
-     * @param float|int $tax_adjust 消費税加算額
+     * @param integer $tax_adjust 消費税加算額
      * @param int $pref_id 県ID
      * @param int $country_id 国ID
      * @return void
@@ -254,8 +254,8 @@ class SC_Helper_TaxRule
      *
      * @param int $calc_rule 端数処理
      * @param int $tax_rate 税率
-     * @param int|string $apply_date 適用日時
-     * @param null $tax_rule_id 税規約ID
+     * @param string $apply_date 適用日時
+     * @param null|integer $tax_rule_id 税規約ID
      * @param int $tax_adjust 調整額
      * @param int $product_id 商品ID
      * @param int $product_class_id 商品規格ID
@@ -338,7 +338,7 @@ class SC_Helper_TaxRule
     }
 
     /**
-     * @param int|string $apply_date
+     * @param string $apply_date
      * @param bool $has_deleted
      * @return mixed
      */
@@ -376,7 +376,7 @@ class SC_Helper_TaxRule
      *
      * @param float|integer $value 端数処理を行う数値
      * @param integer $calc_rule 課税規則
-     * @return integer 端数処理後の数値
+     * @return double 端数処理後の数値
      */
     public static function roundByCalcRule($value, $calc_rule)
     {

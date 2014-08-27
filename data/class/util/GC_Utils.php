@@ -253,6 +253,9 @@ class GC_Utils
      * [依存] なし
      * [注釈] -
      *----------------------------------------------------------------------*/
+    /**
+     * @param integer $pwLength
+     */
     public static function gfMakePassword($pwLength)
     {
         // 乱数表のシードを決定

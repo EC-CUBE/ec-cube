@@ -142,7 +142,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitParam(&$objFormParam)
@@ -210,7 +210,7 @@ class LC_Page_Admin_Customer extends LC_Page_Admin_Ex
      * 会員一覧CSVを検索してダウンロードする処理
      *
      * @param  array   $arrParam 検索パラメーター連想配列
-     * @return boolean true:成功 false:失敗
+     * @return boolean|string true:成功 false:失敗
      */
     public function lfDoCSV($arrParam)
     {

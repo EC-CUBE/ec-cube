@@ -49,6 +49,9 @@ class SC_Date
         return $this->start_year;
     }
 
+    /**
+     * @param string $endYear
+     */
     public function setEndYear($endYear)
     {
         $this->end_year = $endYear;

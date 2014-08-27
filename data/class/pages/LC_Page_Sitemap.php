@@ -294,7 +294,7 @@ class LC_Page_Sitemap extends LC_Page_Ex
      * date形式の文字列を W3C Datetime 形式に変換して出力する.
      *
      * @param  date $date 変換する日付
-     * @return void
+     * @return string
      */
     public function date2W3CDatetime($date)
     {

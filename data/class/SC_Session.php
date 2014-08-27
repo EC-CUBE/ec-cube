@@ -85,12 +85,20 @@ class SC_Session
     }
 
     /* セッションの書き込み */
+
+    /**
+     * @param string $key
+     */
     public function SetSession($key, $val)
     {
         $_SESSION[$key] = $val;
     }
 
     /* セッションの読み込み */
+
+    /**
+     * @param string $key
+     */
     public function GetSession($key)
     {
         return $_SESSION[$key];

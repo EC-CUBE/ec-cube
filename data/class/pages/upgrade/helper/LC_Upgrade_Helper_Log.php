@@ -40,7 +40,6 @@ class LC_Upgrade_Helper_Log
     /**
      * 終了メッセージを出力
      *
-     * @param string $mode
      */
     public function end()
     {

@@ -62,6 +62,10 @@ class SC_SendMail
     }
 
     // 送信先の設定
+
+    /**
+     * @param string $key
+     */
     public function setRecip($key, $recipient)
     {
         $this->arrRecip[$key] = $recipient;
@@ -83,6 +87,10 @@ class SC_SendMail
     }
 
     // CCの設定
+
+    /**
+     * @param string $cc
+     */
     public function setCc($cc, $cc_name = '')
     {
         if ($cc != '') {
@@ -92,6 +100,10 @@ class SC_SendMail
     }
 
     // BCCの設定
+
+    /**
+     * @param string $bcc
+     */
     public function setBCc($bcc)
     {
         if ($bcc != '') {
@@ -101,6 +113,10 @@ class SC_SendMail
     }
 
     // Reply-Toの設定
+
+    /**
+     * @param string $reply_to
+     */
     public function setReplyTo($reply_to)
     {
         if ($reply_to != '') {
@@ -164,6 +180,10 @@ class SC_SendMail
     }
 
     // 名前<メールアドレス>の形式を生成
+
+    /**
+     * @param string $name
+     */
     public function getNameAddress($name, $mail_address)
     {
             if ($name != '') {
@@ -295,7 +315,7 @@ class SC_SendMail
      *
      * 設定された情報を利用して, メールを送信する.
      *
-     * @return void
+     * @return boolean
      */
     public function sendMail($isHtml = false)
     {
@@ -319,7 +339,7 @@ class SC_SendMail
     /**
      * HTMLメール送信を実行する.
      *
-     * @return void
+     * @return boolean
      */
     public function sendHtmlMail()
     {

@@ -449,9 +449,7 @@ class LC_Page_Admin_Products_ProductClass extends LC_Page_Admin_Ex
     /**
      * 規格編集画面を表示する
      *
-     * @param integer $product_id   商品ID
-     * @param bool    $existsValue
-     * @param bool    $usepostValue
+     * @param SC_FormParam $objFormParam
      */
     public function doPreEdit(&$objFormParam)
     {

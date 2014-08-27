@@ -115,7 +115,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @return void
      */
     public function lfInitParam(&$objFormParam)
@@ -148,7 +148,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      * ファイルの作成に失敗した場合は, エラーメッセージを出力する.
      *
      * @param  SC_FormParam    $objFormParam SC_FormParam インスタンス
-     * @return integer|boolean 登録が成功した場合 true; 失敗した場合 false
+     * @return boolean 登録が成功した場合 true; 失敗した場合 false
      */
     public function doRegister(&$objFormParam)
     {
@@ -170,7 +170,7 @@ class LC_Page_Admin_Design_Header extends LC_Page_Admin_Ex
      *
      * @param  integer        $device_type_id 端末種別ID
      * @param  string         $division       'header' or 'footer'
-     * @return string|boolean 成功した場合, テンプレートのパス; 失敗した場合 false
+     * @return string|false 成功した場合, テンプレートのパス; 失敗した場合 false
      */
     public function getTemplatePath($device_type_id, $division)
     {

@@ -76,6 +76,11 @@ class SC_Graph_Pie extends SC_Graph_Base_Ex
     }
 
     // 円の位置設定を行う
+
+    /**
+     * @param double $cx
+     * @param double $cy
+     */
     public function setPosition($cx, $cy)
     {
         $this->cx = $cx;

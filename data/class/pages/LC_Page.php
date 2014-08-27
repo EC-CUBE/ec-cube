@@ -160,6 +160,7 @@ class LC_Page
     /**
      * Page のレスポンス送信(ダウンロード).
      *
+     * @param string $file_name
      * @return void
      */
     public function sendResponseCSV($file_name, $data)

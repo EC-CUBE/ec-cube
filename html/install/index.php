@@ -1058,6 +1058,9 @@ function lfMakeConfigFile()
  * @see http://www.php.net/glob
  */
 $alldirs = array();
+/**
+ * @param string $dir
+ */
 function listdirs($dir)
 {
     global $alldirs;

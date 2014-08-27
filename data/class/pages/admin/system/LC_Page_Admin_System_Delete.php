@@ -87,7 +87,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
     /**
      * パラメーター初期化.
      *
-     * @param  object $objFormParam
+     * @param  SC_FormParam_Ex $objFormParam
      * @param  array  $arrParams    $_GET値
      * @return void
      */
@@ -118,7 +118,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
     /**
      * ランキングの振り直し.
      *
-     * @param  object      $objQuery
+     * @param  SC_Query      $objQuery
      * @param  integer     $id       削除対象のmember_id
      * @return void|UPDATE の結果フラグ
      */

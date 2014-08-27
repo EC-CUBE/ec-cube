@@ -222,7 +222,7 @@ class SC_DB_MasterData
      * マスターデータのキャッシュを消去する.
      *
      * @param  string $name マスターデータ名
-     * @return bool   消去した場合 true
+     * @return boolean|null   消去した場合 true
      */
     public function clearCache($name)
     {
@@ -246,9 +246,8 @@ class SC_DB_MasterData
      * 定数コメントを生成する場合は, $commentColumn を指定する.
      *
      * @param string $name          マスターデータ名
-     * @param array  $masterData    マスターデータ
      * @param bool   $isDefine      定数を生成する場合 true
-     * @param array  $commentColumn [0] => キー, [1] => コメント文字列,
+     * @param string[]  $commentColumn [0] => キー, [1] => コメント文字列,
      *                             [2] => 表示順 を表すカラム名を格納した配列
      * @return bool キャッシュの生成に成功した場合 true
      */

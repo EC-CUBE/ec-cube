@@ -86,6 +86,9 @@ class LC_Page_ResizeImage extends LC_Page_Ex
         }
     }
 
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));

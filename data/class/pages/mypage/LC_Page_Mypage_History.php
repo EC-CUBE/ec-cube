@@ -146,7 +146,7 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
     /**
      * 受注お届け先情報の取得
      *
-     * @param $objPurchase object SC_Helper_Purchaseクラス
+     * @param SC_Helper_Purchase_Ex $objPurchase object SC_Helper_Purchaseクラス
      * @param $order_id integer 注文番号
      * @param $arrWDAY array 曜日データの配列
      * @return array お届け先情報
@@ -213,7 +213,6 @@ class LC_Page_Mypage_History extends LC_Page_AbstractMypage_Ex
      * キャリアがAUのモバイル端末からダウンロードする場合は単純に
      * Aタグでダウンロードできないケースがある為、対応する。
      *
-     * @param integer $order_id 注文番号
      * @param $arrOrderDetail 購入履歴の配列
      */
     public function lfSetAU($arrOrderDetails)

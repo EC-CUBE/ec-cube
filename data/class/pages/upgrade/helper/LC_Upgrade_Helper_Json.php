@@ -45,7 +45,6 @@ class LC_Upgrade_Helper_Json extends Services_JSON
      * Enter description here...
      *
      * @param unknown_type $errCode
-     * @param unknown_type $errMessage
      */
     public function setError($errCode)
     {

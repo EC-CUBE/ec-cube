@@ -129,7 +129,7 @@ class LC_Page_Regist extends LC_Page_Ex
     /**
      * 正会員登録完了メール送信
      *
-     * @param mixed $registSecretKey
+     * @param string $registSecretKey
      * @access private
      * @return void
      */

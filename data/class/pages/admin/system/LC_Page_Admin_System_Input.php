@@ -173,7 +173,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
     /**
      * フォームパラメーター初期化
      *
-     * @param  object $objFormParam
+     * @param  SC_FormParam_Ex $objFormParam
      * @param  array  $arrParams    $_POST値
      * @param  string $mode         editの時は指定
      * @return void
@@ -204,6 +204,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      * パラメーターの妥当性検証を行う.
      *
      * @param void
+     * @param string|null $mode
      * @return array エラー情報の連想配列
      */
     public function validateData(&$objFormParam, &$arrParams, $mode)

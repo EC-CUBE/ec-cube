@@ -70,6 +70,10 @@ class SC_View
     }
 
     // テンプレートに値を割り当てる
+
+    /**
+     * @param string $val1
+     */
     public function assign($val1, $val2)
     {
         $this->_smarty->assign($val1, $val2);

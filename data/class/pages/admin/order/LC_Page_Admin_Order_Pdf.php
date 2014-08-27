@@ -175,6 +175,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
     /**
      *  パラメーター情報の初期化
      *  @param SC_FormParam
+     * @param SC_FormParam_Ex $objFormParam
      */
     public function lfInitParam(&$objFormParam)
     {
@@ -198,6 +199,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
     /**
      *  入力内容のチェック
      *  @var SC_FormParam
+     * @param SC_FormParam $objFormParam
      */
 
     public function lfCheckError(&$objFormParam)

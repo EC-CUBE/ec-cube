@@ -64,7 +64,7 @@ class SC_Helper_CSV
      * @param  array   $arrVal      プリペアドステートメントの実行時に使用される配列。配列の要素数は、クエリ内のプレースホルダの数と同じでなければなりません。
      * @param  string  $order       ORDER文
      * @param  boolean $is_download true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
-     * @return mixed   $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
+     * @return boolean|string   $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
      */
     public function sfDownloadCsv($csv_id, $where = '', $arrVal = array(), $order = '', $is_download = false)
     {
@@ -225,7 +225,7 @@ class SC_Helper_CSV
      * @param  string       ファイル名の頭に付ける文字列
      * @param  array|null   ヘッダ出力列配列。null の場合、SQL 文の列名を出力する。
      * @param  boolean      true:ダウンロード用出力までさせる false:CSVの内容を返す(旧方式、メモリを食います。）
-     * @return mixed   $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
+     * @return boolean|string   $is_download = true時 成功失敗フラグ(boolean) 、$is_downalod = false時 string
      */
     public function sfDownloadCsvFromSql($sql, $arrVal = array(), $file_head = 'csv', $arrHeader = null, $is_download = false)
     {

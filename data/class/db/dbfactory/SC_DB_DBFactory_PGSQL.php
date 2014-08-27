@@ -198,7 +198,7 @@ __EOS__;
     /**
      * 文字列連結を行う.
      *
-     * @param  array  $columns 連結を行うカラム名
+     * @param  string[]  $columns 連結を行うカラム名
      * @return string 連結後の SQL 文
      */
     public function concatColumn($columns)

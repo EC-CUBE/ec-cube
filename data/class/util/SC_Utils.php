@@ -124,6 +124,10 @@ class SC_Utils
     }
 
     // 装飾付きエラーメッセージの表示
+
+    /**
+     * @param string $mess
+     */
     public static function sfErrorHeader($mess, $print = false)
     {
         global $GLOBAL_ERR;
@@ -284,6 +288,13 @@ class SC_Utils
     }
 
     /* DB用日付日時文字列取得 */
+
+    /**
+     * @param string $month
+     * @param string $day
+     * @param string $hour
+     * @param string $minutes
+     */
     public static function sfGetTimestampistime($year, $month, $day, $hour, $minutes, $last = false)
     {
         if ($year != '' && $month != '' && $day != '' && $hour != '' && $minutes != '') {
@@ -332,6 +343,9 @@ class SC_Utils
         return false;
     }
 
+    /**
+     * @param string $data
+     */
     public static function sfGetCSVData($data, $prefix = '')
     {
         if ($prefix == '') {
@@ -501,6 +515,10 @@ class SC_Utils
     }
 
     // キーと値をセットした配列を取得
+
+    /**
+     * @param string $valname
+     */
     public static function sfArrKeyValue($arrList, $keyname, $valname, $len_max = '', $keysize = '')
     {
         $arrRet = array();
@@ -698,7 +716,7 @@ class SC_Utils
      * @param integer $tax   税率(%単位)
      *     XXX integer のみか不明
      * @param  integer $tax_rule 端数処理
-     * @return integer 税金額
+     * @return double 税金額
      */
     public static function sfTax($price, $tax, $tax_rule)
     {
@@ -718,7 +736,7 @@ class SC_Utils
      * @param integer $tax   税率(%単位)
      *     XXX integer のみか不明
      * @param  integer $tax_rule 端数処理
-     * @return integer 税金付与した金額
+     * @return double 税金付与した金額
      */
     public static function sfCalcIncTax($price, $tax, $tax_rule)
     {
@@ -750,7 +768,7 @@ class SC_Utils
      * @param  int   $price
      * @param  float $point_rate
      * @param  int   $rule
-     * @return int
+     * @return double
      */
     public static function sfPrePoint($price, $point_rate, $rule = POINT_RULE)
     {
@@ -1135,6 +1153,11 @@ class SC_Utils
     }
 
     /* 階層構造のテーブルから与えられたIDの直属の子を取得する */
+
+    /**
+     * @param string $pid_name
+     * @param string $id_name
+     */
     public static function sfGetUnderChildrenArray($arrData, $pid_name, $id_name, $parent)
     {
         $max = count($arrData);
@@ -1197,6 +1220,11 @@ class SC_Utils
     }
 
     // ディレクトリ以下のファイルを再帰的にコピー
+
+    /**
+     * @param string $src
+     * @param string $des
+     */
     public static function sfCopyDir($src, $des, $mess = '', $override = false)
     {
         if (!is_dir($src)) {
@@ -1329,7 +1357,7 @@ class SC_Utils
      * 配列の添字が未定義の場合は空文字を代入して定義する.
      *
      * @param  array $array         添字をチェックする配列
-     * @param  array $defineIndexes チェックする添字
+     * @param  string[] $defineIndexes チェックする添字
      * @return array 添字を定義した配列
      */
     public static function arrayDefineIndexes($array, $defineIndexes)
@@ -1537,6 +1565,10 @@ class SC_Utils
     }
 
     // 郵便番号から住所の取得
+
+    /**
+     * @param string $zipcode
+     */
     public static function sfGetAddress($zipcode)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -1814,8 +1846,8 @@ class SC_Utils
     /**
      * ディレクトリを再帰的に作成する.
      *
-     * @param  string  $pathname ディレクトリのパス
      * @param  integer $mode     作成するディレクトリのパーミッション
+     * @param string $path
      * @return boolean 作成に成功した場合 true; 失敗した場合 false
      * @see http://jp.php.net/mkdir
      */
@@ -2116,7 +2148,7 @@ class SC_Utils
     /**
      * マイクロ秒付きの時間文字列を取得する.
      *
-     * @return bool|string
+     * @return string
      */
     public static function getFormattedDateWithMicroSecond()
     {

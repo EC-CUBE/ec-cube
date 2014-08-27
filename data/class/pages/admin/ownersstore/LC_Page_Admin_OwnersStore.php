@@ -238,7 +238,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     /**
      * ファイルが指定されている事をチェックします.
      *
-     * @param  string $file     ファイル
      * @param  string $file_key ファイルキー
      * @return array  エラー情報を格納した連想配列.
      */
@@ -1082,7 +1081,6 @@ class LC_Page_Admin_OwnersStore extends LC_Page_Admin_Ex
     /**
      * エラー情報が格納されているか判定します.
      *
-     * @param  array    $arrErr エラー情報を格納した連想配列.
      * @return boolean.
      */
     public function isError($error)

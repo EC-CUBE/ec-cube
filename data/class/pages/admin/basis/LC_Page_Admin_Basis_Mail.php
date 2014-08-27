@@ -118,6 +118,10 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
         $objMailtemplate->save($post);
     }
 
+    /**
+     * @param string|null $mode
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {

@@ -138,7 +138,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @return void
      */
     public function lfInitParam(&$objFormParam)
@@ -201,7 +201,7 @@ class LC_Page_Admin_Design_CSS extends LC_Page_Admin_Ex
     /**
      * CSSファイルのリストを取得.
      *
-     * @param  array $css_dir CSSディレクトリ
+     * @param  string $css_dir CSSディレクトリ
      * @return array ファイルリスト
      */
     public function getCSSList($css_dir)

@@ -309,7 +309,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
     /**
      * ディレクトリを作成
      *
-     * @param  object       $objFileManager SC_Helper_FileManager_Exインスタンス
+     * @param  SC_Helper_FileManager_Ex       $objFileManager SC_Helper_FileManager_Exインスタンス
      * @param  SC_FormParam $objFormParam   SC_FormParamインスタンス
      * @return boolean      ディレクトリ作成できたかどうか
      */
@@ -447,7 +447,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
     /**
      * ディレクトリツリー生成
      *
-     * @param  object       $objFileManager SC_Helper_FileManager_Exインスタンス
+     * @param  SC_Helper_FileManager_Ex       $objFileManager SC_Helper_FileManager_Exインスタンス
      * @param  SC_FormParam $objFormParam   SC_FormParamインスタンス
      * @return void
      */
@@ -481,7 +481,7 @@ class LC_Page_Admin_Contents_FileManager extends LC_Page_Admin_Ex
     /**
      * 現在の階層がルートディレクトリかどうかテンプレートに渡す
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParamインスタンス
      * @return void
      */
     public function setIsTopDir($objFormParam)

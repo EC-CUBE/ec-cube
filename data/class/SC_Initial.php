@@ -481,7 +481,7 @@ class SC_Initial
      * 指定された名前の定数が存在しない場合、指定された値で定義
      *
      * @param  string $name  定数の名前。
-     * @param  mixed  $value 定数の値。
+     * @param  string  $value 定数の値。
      * @return void
      */
     public function defineIfNotDefined($name, $value = null)

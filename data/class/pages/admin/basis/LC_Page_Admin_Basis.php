@@ -138,6 +138,9 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
         SC_Helper_DB_Ex::registerBasisData($arrData);
     }
 
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfInitParam(&$objFormParam, $post)
     {
         $objFormParam->addParam('会社名', 'company_name', STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));

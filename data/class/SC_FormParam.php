@@ -542,6 +542,7 @@ class SC_FormParam
      * パラメーターの削除
      *
      * addParamの逆の関数
+     * @param string $keyname
      */
     public function removeParam($keyname)
     {

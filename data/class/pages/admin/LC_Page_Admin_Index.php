@@ -94,7 +94,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitParam(&$objFormParam)
@@ -208,7 +208,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     /**
      * ログイン情報の記録
      *
-     * @param  mixed   $sid        セッションID
+     * @param  string   $sid        セッションID
      * @param  integer $member_id  メンバーID
      * @param  string  $login_id   ログインID文字列
      * @param  integer $authority  権限ID
@@ -236,7 +236,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      *
      * TODO: ブルートフォースアタック対策の実装
      *
-     * @param  string $login_id ログイン失敗時に投入されたlogin_id文字列
+     * @param  string $error_login_id ログイン失敗時に投入されたlogin_id文字列
      * @return void
      */
     public function lfSetIncorrectData($error_login_id)

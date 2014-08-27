@@ -263,7 +263,6 @@ class SC_Fpdf extends SC_Helper_FPDI
     /**
      * 備考の出力を行う
      *
-     * @param  string $str 入力文字列
      * @return string 変更後の文字列
      */
     private function setEtcData()
@@ -296,6 +295,11 @@ class SC_Fpdf extends SC_Helper_FPDI
     }
 
     // PDF_Japanese::Text へのパーサー
+
+    /**
+     * @param integer $x
+     * @param integer $y
+     */
     private function lfText($x, $y, $text, $size = 0, $style = '')
     {
         // 退避

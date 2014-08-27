@@ -104,7 +104,7 @@ class SC_Helper_Address
     /**
      * お届け先の一覧を取得
      *
-     * @param  integer $customerId
+     * @param  integer $customer_id
      * @param  integer $startno
      * @return array
      */
@@ -131,7 +131,6 @@ class SC_Helper_Address
     /**
      * お届け先の削除
      *
-     * @param  integer $delivId
      * @return void
      */
     public function deleteAddress($other_deliv_id, $customer_id = '')
@@ -177,7 +176,7 @@ class SC_Helper_Address
      * お届け先エラーチェック
      * 
      * @param array $arrParam
-     * @return true / false
+     * @return boolean / false
      */
     public function delivErrorCheck($arrParam)
     {

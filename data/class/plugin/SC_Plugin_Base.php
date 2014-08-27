@@ -95,7 +95,6 @@ abstract class SC_Plugin_Base
     /**
      * プラグインヘルパーへ, コールバックメソッドを登録します.
      *
-     * @param object  $objPluginHelper
      * @param integer $priority
      */
     public function register(SC_Helper_Plugin $objHelperPlugin, $priority)

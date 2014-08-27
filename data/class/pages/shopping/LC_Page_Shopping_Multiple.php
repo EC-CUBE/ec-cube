@@ -176,6 +176,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      *
      * @param  SC_Customer        $objCustomer SC_Customer インスタンス
      * @param  SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
+     * @param SC_Helper_Address_Ex $objAddress
      * @return array              配送住所のプルダウン用連想配列
      */
     public function getDelivAddrs(&$objCustomer, &$objPurchase, &$objAddress)

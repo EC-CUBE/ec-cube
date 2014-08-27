@@ -37,6 +37,10 @@ class SC_Cookie
     }
 
     // クッキー書き込み
+
+    /**
+     * @param string $key
+     */
     public function setCookie($key, $val)
     {
         setcookie($key, $val, $this->expire, ROOT_URLPATH, DOMAIN_NAME);
@@ -46,6 +50,7 @@ class SC_Cookie
      * クッキー取得
      *
      * EC-CUBE をURLパスルート以外にインストールしている場合、上位ディレクトリの値も(劣後ではあるが)取得する点に留意。
+     * @param string $key
      */
     public function getCookie($key)
     {

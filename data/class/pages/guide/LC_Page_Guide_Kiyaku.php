@@ -69,6 +69,7 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex
      *
      * @param integer $index 規約のインデックス
      * @param object &$objPage ページオブジェクト
+     * @param LC_Page_Guide_Kiyaku $objPage
      * @return void
      */
     public function lfGetKiyaku($index, &$objPage)

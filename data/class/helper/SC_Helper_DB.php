@@ -49,9 +49,8 @@ class SC_Helper_DB
      * 引数 $add が true の場合, 該当のカラムが存在しない場合は, カラムの生成を行う.
      * カラムの生成も行う場合は, $col_type も必須となる.
      *
-     * @param  string $$tableName  テーブル名
-     * @param  string $column_name カラム名
-     * @param  string $col_type    カラムのデータ型
+     * @param  string $tableName  テーブル名
+     * @param  string $colType    カラムのデータ型
      * @param  string $dsn         データソース名
      * @param  bool   $add         カラムの作成も行う場合 true
      * @return bool   カラムが存在する場合とカラムの生成に成功した場合 true,
@@ -86,6 +85,9 @@ class SC_Helper_DB
         return false;
     }
 
+    /**
+     * @param string $colType
+     */
     public function sfColumnAdd($tableName, $colName, $colType)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -851,10 +853,10 @@ __EOS__;
     /**
      * 親ID直下の子IDを全て取得する.
      *
-     * @param  array  $arrData  親カテゴリの配列
      * @param  string $pid_name 親ID名
      * @param  string $id_name  ID名
      * @param  array  $arrPID   親IDの配列
+     * @param string $table
      * @return array  子IDの配列
      */
     public function sfGetChildrenArraySub($table, $pid_name, $id_name, $arrPID)
@@ -871,7 +873,6 @@ __EOS__;
     /**
      * 所属する全ての階層の親IDを配列で返す.
      *
-     * @param  SC_Query $objQuery SC_Query インスタンス
      * @param  string   $table    テーブル名
      * @param  string   $pid_name 親ID名
      * @param  string   $id_name  ID名
@@ -918,6 +919,12 @@ __EOS__;
     }
 
     /* 子ID所属する親IDを取得する */
+
+    /**
+     * @param string $table
+     * @param string $pid_name
+     * @param string $id_name
+     */
     public function sfGetParentsArraySub($table, $pid_name, $id_name, $child)
     {
         if (SC_Utils_Ex::isBlank($child)) {
@@ -981,7 +988,7 @@ __EOS__;
      *
      * @param  string         $table    テーブル名
      * @param  string         $colname  カラム名
-     * @param  string|integer $id       テーブルのキー
+     * @param  integer $id       テーブルのキー
      * @param  string         $andwhere SQL の AND 条件である WHERE 句
      * @return void
      */
@@ -1033,7 +1040,7 @@ __EOS__;
      *
      * @param  string         $table    テーブル名
      * @param  string         $colname  カラム名
-     * @param  string|integer $id       テーブルのキー
+     * @param  integer $id       テーブルのキー
      * @param  string         $andwhere SQL の AND 条件である WHERE 句
      * @return void
      */
@@ -1084,7 +1091,7 @@ __EOS__;
      *
      * @param  string         $tableName   テーブル名
      * @param  string         $keyIdColumn キーを保持するカラム名
-     * @param  string|integer $keyId       キーの値
+     * @param  integer $keyId       キーの値
      * @param  integer        $pos         指定順位
      * @param  string         $where       SQL の AND 条件である WHERE 句
      * @return void
@@ -1154,8 +1161,9 @@ __EOS__;
      *
      * @param  int     $newRank
      * @param  int     $oldRank
-     * @param  object  $objQuery
-     * @param  string  $where
+     * @param  SC_Query  $objQuery
+     * @param string $tableName
+     * @param string $addWhere
      * @return boolean
      */
     public function moveOtherItemRank($newRank, $oldRank, &$objQuery, $tableName, $addWhere)
@@ -1189,7 +1197,7 @@ __EOS__;
      *
      * @param string         $table    テーブル名
      * @param string         $colname  カラム名
-     * @param string|integer $id       テーブルのキー
+     * @param integer $id       テーブルのキー
      * @param string         $andwhere SQL の AND 条件である WHERE 句
      * @param bool           $delete   レコードごと削除する場合 true,
      *                     レコードごと削除しない場合 false
@@ -1449,7 +1457,7 @@ __EOS__;
      * 店舗基本情報に基づいて税金額を返す
      *
      * @param  integer $price 計算対象の金額
-     * @return integer 税金額
+     * @return double 税金額
      */
     public function sfTax($price)
     {
@@ -1466,7 +1474,7 @@ __EOS__;
      * @param  int $price 計算対象の金額
      * @param  int $tax
      * @param  int $tax_rule
-     * @return int 税金付与した金額
+     * @return double 税金付与した金額
      */
     public static function sfCalcIncTax($price, $tax = null, $tax_rule = null)
     {

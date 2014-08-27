@@ -104,8 +104,8 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
     /**
      * SC_UploadFileクラスの初期化.
      *
-     * @param  object $objForm SC_FormParamのインスタンス
-     * @return object SC_UploadFileのインスタンス
+     * @param  SC_FormParam $objForm SC_FormParamのインスタンス
+     * @return SC_UploadFile_Ex SC_UploadFileのインスタンス
      */
     public function lfInitUploadFile($objForm)
     {
@@ -132,8 +132,8 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
     /**
      * uploadモードのパラメーター検証を行う.
      *
-     * @param  object $objFormParam SC_FormParamのインスタンス
-     * @param  object $objUpFile    SC_UploadFileのインスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParamのインスタンス
+     * @param  SC_UploadFile_Ex $objUpFile    SC_UploadFileのインスタンス
      * @return array  エラー情報を格納した連想配列, エラーが無ければ(多分)nullを返す
      */
     public function lfCheckError(&$objFormParam, &$objUpFile)

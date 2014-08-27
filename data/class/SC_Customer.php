@@ -29,6 +29,9 @@ class SC_Customer
     /** 会員情報 */
     public $customer_data;
 
+    /**
+     * @param string $email
+     */
     public function getCustomerDataFromEmailPass($pass, $email, $mobile = false)
     {
         // 小文字に変換
@@ -236,12 +239,20 @@ class SC_Customer
     }
 
     // パラメーターのセット
+
+    /**
+     * @param string $keyname
+     */
     public function setValue($keyname, $val)
     {
         $_SESSION['customer'][$keyname] = $val;
     }
 
     // パラメーターがNULLかどうかの判定
+
+    /**
+     * @param string $keyname
+     */
     public function hasValue($keyname)
     {
         if (isset($_SESSION['customer'][$keyname])) {
@@ -315,7 +326,7 @@ __EOS__;
      *
      * @param  string  $login_email ログインメールアドレス
      * @param  string  $login_pass  ログインパスワード
-     * @return boolean ログインに成功した場合 true; 失敗した場合 false
+     * @return boolean|null ログインに成功した場合 true; 失敗した場合 false
      */
     public function doLogin($login_email, $login_pass)
     {

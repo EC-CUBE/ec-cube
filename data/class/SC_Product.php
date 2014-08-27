@@ -99,7 +99,7 @@ class SC_Product
      *
      * @param  SC_Query $objQuery SC_Query インスタンス
      * @param  array    $arrVal   検索パラメーターの配列
-     * @return array    対象商品ID数
+     * @return integer    対象商品ID数
      */
     public function findProductCount(&$objQuery, $arrVal = array())
     {
@@ -606,7 +606,7 @@ __EOS__;
     /**
      * 商品情報の配列に税込金額を設定する
      *
-     * @param  array $arrProducts 商品情報の配列
+     * @param  array $arrProduct 商品情報の配列
      * @return void
      */
     public static function setIncTaxToProduct(&$arrProduct)
@@ -681,6 +681,9 @@ __EOS__;
         return $sql;
     }
 
+    /**
+     * @param string $tablename
+     */
     public function getProductDispConditions($tablename = null)
     {
         $tablename = ($tablename) ? $tablename . '.' : null;

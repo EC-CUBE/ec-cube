@@ -112,7 +112,6 @@ class LC_Page_Admin_OwnersStore_PluginHookPointList extends LC_Page_Admin_Ex
      * パラメーター初期化.
      *
      * @param  SC_FormParam_Ex $objFormParam
-     * @param  string          $mode         モード
      * @return void
      */
     public function initParam(&$objFormParam)

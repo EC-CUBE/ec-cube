@@ -81,7 +81,7 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex
      * 規約文の作成
      *
      * @param mixed $arrKiyaku
-     * @param mixed $max
+     * @param integer $max
      * @param mixed $offset
      * @access public
      * @return string 規約の内容をテキストエリアで表示するように整形したデータ

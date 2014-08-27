@@ -109,7 +109,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
 
     /**
      * パラメーターの初期化を行う
-     * @param Object $objFormParam
+     * @param SC_FormParam_Ex $objFormParam
      */
     public function lfInitParam(&$objFormParam)
     {
@@ -138,6 +138,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      * POSTされた値からSQLのWHEREとBINDを配列で返す。
      * @return array        ('where' => where string, 'bind' => databind array)
      * @param  SC_FormParam $objFormParam
+     * @param SC_Helper_DB_Ex $objDb
      */
     public function createWhere(&$objFormParam, &$objDb)
     {
@@ -202,6 +203,7 @@ class LC_Page_Admin_Contents_RecommendSearch extends LC_Page_Admin_Ex
      * 検索結果の取得
      * @param array      $whereAndBind string whereと array bindの連想配列
      * @param SC_Product $objProduct
+     * @param integer $page_max
      */
     public function getProducts($whereAndBind, &$objProduct, $page_max, $startno)
     {

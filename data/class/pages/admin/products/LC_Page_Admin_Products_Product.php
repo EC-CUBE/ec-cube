@@ -289,7 +289,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * パラメーター情報の初期化
      * - 編集/複製モード
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @param  array  $arrPost      $_POSTデータ
      * @return void
      */
@@ -376,7 +376,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * パラメーター情報の初期化
      * - 画像ファイルアップロードモード
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @return void
      */
     public function lfInitFormParam_UploadImage(&$objFormParam)
@@ -388,7 +388,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * パラメーター情報の初期化
      * - ダウンロード商品ファイルアップロードモード
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @return void
      */
     public function lfInitFormParam_UploadDown(&$objFormParam)
@@ -400,7 +400,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * パラメーター情報の初期化
      * - 関連商品追加モード
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @return void
      */
     public function lfInitFormParam_RecommendSelect(&$objFormParam)
@@ -413,7 +413,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * アップロードファイルパラメーター情報の初期化
      * - 画像ファイル用
      *
-     * @param  object $objUpFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objUpFile SC_UploadFileインスタンス
      * @return void
      */
     public function lfInitFile(&$objUpFile)
@@ -431,7 +431,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * アップロードファイルパラメーター情報の初期化
      * - ダウンロード商品ファイル用
      *
-     * @param  object $objDownFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objDownFile SC_UploadFileインスタンス
      * @return void
      */
     public function lfInitDownFile(&$objDownFile)
@@ -839,7 +839,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * DBから商品データを取得する
      *
      * @param  integer $product_id 商品ID
-     * @return array   商品データ配列
+     * @return string   商品データ配列
      */
     public function lfGetProductData_FromDB($product_id)
     {
@@ -1234,7 +1234,7 @@ __EOF__;
      * 規格データをコピーする
      *
      * @param  array   $arrList  フォーム入力パラメーター配列
-     * @param  object  $objQuery SC_Queryインスタンス
+     * @param  SC_Query  $objQuery SC_Queryインスタンス
      * @return boolean エラーフラグ
      */
     public function lfCopyProductClass($arrList, &$objQuery)

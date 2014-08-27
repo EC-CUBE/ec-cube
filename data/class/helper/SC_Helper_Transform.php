@@ -129,7 +129,7 @@ class SC_Helper_Transform
      * @param  integer                               $index    インデックス（指定がある場合）
      * @param  boolean                               $require  エレメントが見つからなかった場合、エラーとするか
      * @param  string                                $err_msg  エラーメッセージ
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function select($selector, $index = NULL, $require = true, $err_msg = NULL)
     {
@@ -169,7 +169,7 @@ class SC_Helper_Transform
      * @param  integer                               $index    インデックス（指定がある場合）
      * @param  boolean                               $require  エレメントが見つからなかった場合、エラーとするか
      * @param  string                                $err_msg  エラーメッセージ
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function find($selector, $index = NULL, $require = true, $err_msg = NULL)
     {
@@ -209,7 +209,7 @@ class SC_Helper_Transform
      * 選択状態を指定数戻す
      *
      * @param  int                                   $back_num 選択状態を戻す数
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function end($back_num = 1)
     {
@@ -226,7 +226,7 @@ class SC_Helper_Transform
      * 要素の前にHTMLを挿入
      *
      * @param  string                                $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function insertBefore($html_snip)
     {
@@ -243,7 +243,7 @@ class SC_Helper_Transform
      * 要素の後にHTMLを挿入
      *
      * @param  string                                $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function insertAfter($html_snip)
     {
@@ -260,7 +260,7 @@ class SC_Helper_Transform
      * 要素の先頭にHTMLを挿入
      *
      * @param  string                                $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function appendFirst($html_snip)
     {
@@ -277,7 +277,7 @@ class SC_Helper_Transform
      * 要素の末尾にHTMLを挿入
      *
      * @param  string                                $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function appendChild($html_snip)
     {
@@ -294,7 +294,7 @@ class SC_Helper_Transform
      * 要素を指定したHTMLに置換
      *
      * @param  string                                $html_snip 置換後のHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function replaceElement($html_snip)
     {
@@ -310,7 +310,7 @@ class SC_Helper_Transform
     /**
      * 要素を削除する
      *
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
     public function removeElement()
     {

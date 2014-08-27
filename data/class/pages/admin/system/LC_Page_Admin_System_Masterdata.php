@@ -100,7 +100,6 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      * マスターデータ名チェックを行う
      *
      * @access private
-     * @param  array  $_POST値
      * @param  array  $arrMasterDataName マスターデータテーブル名のリスト
      * @return string $master_data_name 選択しているマスターデータのテーブル名
      */
@@ -120,7 +119,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      * マスターデータ名を配列で取得する.
      *
      * @access private
-     * @param  array $ignores 取得しないマスターデータ名の配列
+     * @param  string[] $ignores 取得しないマスターデータ名の配列
      * @return array マスターデータ名の配列
      */
     public function getMasterDataNames($ignores = array())
@@ -170,7 +169,7 @@ class LC_Page_Admin_System_Masterdata extends LC_Page_Admin_Ex
      *
      * @access private{
      * @param  array  $arrParams        $_POST値
-     * @param  object $masterData       SC_DB_MasterData_Ex()
+     * @param  SC_DB_MasterData_Ex $masterData       SC_DB_MasterData_Ex()
      * @param  string $master_data_name 登録対象のマスターデータのテーブル名
      * @return void
      */

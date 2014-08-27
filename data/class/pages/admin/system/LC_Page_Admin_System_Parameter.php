@@ -154,6 +154,7 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
      * パラメーターのキーを配列で返す.
      *
      * @access private
+     * @param SC_DB_MasterData_Ex $masterData
      * @return array パラメーターのキーの配列
      */
     public function getParamKeys(&$masterData)

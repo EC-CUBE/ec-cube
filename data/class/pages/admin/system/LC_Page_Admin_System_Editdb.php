@@ -88,7 +88,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
     /**
      * フォームパラメーター初期化
      *
-     * @param  object $objFormParam
+     * @param  SC_FormParam_Ex $objFormParam
      * @param  array  $arrParams    $_POST値
      * @return void
      */

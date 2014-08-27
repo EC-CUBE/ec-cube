@@ -103,6 +103,10 @@ class LC_Page_Admin_Products_ProductSelect extends LC_Page_Admin_Ex
     }
 
     /* 商品検索結果取得 */
+
+    /**
+     * @param SC_Helper_DB_Ex $objDb
+     */
     public function lfGetProducts(&$objDb)
     {
         $where = 'del_flg = 0';

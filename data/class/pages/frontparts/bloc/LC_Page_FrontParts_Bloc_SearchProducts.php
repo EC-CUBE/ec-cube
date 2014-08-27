@@ -124,6 +124,8 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc_Ex
     /**
      * 選択中のカテゴリIDを取得する
      *
+     * @param string $product_id
+     * @param string $category_id
      * @return array $arrCategoryId 選択中のカテゴリID
      */
     public function lfGetSelectedCategoryId($product_id, $category_id)
@@ -138,6 +140,8 @@ class LC_Page_FrontParts_Bloc_SearchProducts extends LC_Page_FrontParts_Bloc_Ex
     /**
      * 選択中のメーカーIDを取得する
      *
+     * @param string $product_id
+     * @param string $maker_id
      * @return array $arrMakerId 選択中のメーカーID
      */
     public function lfGetSelectedMakerId($product_id, $maker_id)

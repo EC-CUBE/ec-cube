@@ -124,6 +124,13 @@ function smarty_function_html_checkboxes_ex($params, &$smarty)
     }
 }
 
+/**
+ * @param string $name
+ * @param string $extra
+ * @param string $separator
+ * @param boolean $labels
+ * @param boolean $label_ids
+ */
 function smarty_function_html_checkboxes_output_ex($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids, $tags)
 {
     $_output = '';

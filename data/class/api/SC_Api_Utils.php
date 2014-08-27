@@ -49,7 +49,6 @@ class SC_Api_Utils
     /**
      * オペレーション名に対応した追加の設定情報を取得する
      *
-     * @param  string $access_key
      * @return string 秘密鍵文字列
      */
     public function getOperationSubConfig($operation_name, $key_name = '', $arrApiConfig = '')
@@ -111,7 +110,7 @@ class SC_Api_Utils
     /**
      * APIログ
      *
-     * @param text $msg            出力文字列
+     * @param string $msg            出力文字列
      * @param text $operation_name
      @ @rturn void
      */

@@ -324,7 +324,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
      * @param string $admin_mode
      * @param int $product_id
      * @param SC_Product $objProduct
-     * @return int|void
+     * @return integer
      */
     public function lfCheckProductId($admin_mode, $product_id, SC_Product $objProduct)
     {
@@ -368,6 +368,11 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /* 規格選択セレクトボックスの作成(モバイル) */
+
+    /**
+     * @param LC_Page_Products_Detail $objPage
+     * @param integer $product_id
+     */
     public function lfMakeSelectMobile(&$objPage, $product_id, $request_classcategory_id1)
     {
         $classcat_find1 = false;
@@ -463,6 +468,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /* 登録済み関連商品の読み込み */
+
+    /**
+     * @param integer $product_id
+     */
     public function lfPreGetRecommendProducts($product_id)
     {
         $objProduct = new SC_Product_Ex();
@@ -487,6 +496,12 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /* 入力内容のチェック */
+
+    /**
+     * @param string $mode
+     * @param boolean $tpl_classcat_find1
+     * @param boolean $tpl_classcat_find2
+     */
     public function lfCheckError($mode, SC_FormParam &$objFormParam, $tpl_classcat_find1 = null, $tpl_classcat_find2 = null)
     {
         switch ($mode) {

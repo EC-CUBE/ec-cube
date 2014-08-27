@@ -212,7 +212,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * パラメーター初期化.
      *
-     * @param  object $objFormParam
+     * @param  SC_FormParam_Ex $objFormParam
      * @param  array  $arrParams    $_POST値
      * @return void
      */
@@ -266,6 +266,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      * バックアップファイル作成.
      *
      * @param  string      $bkup_name
+     * @param string $work_dir
      * @return boolean|int 結果。true:成功 int:失敗 FIXME 本来は int ではなく、エラーメッセージを戻すべき
      */
     public function lfCreateBkupData($bkup_name, $work_dir)
@@ -458,7 +459,8 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
      * @param  string $bkup_name
      * @param  string $bkup_dir
      * @param  string $bkup_ext
-     * @return void
+     * @param string $mode
+     * @return boolean
      */
     public function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode)
     {
@@ -508,10 +510,10 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * CSVファイルからインサート実行.
      *
-     * @param  object $objQuery
+     * @param  SC_Query $objQuery
      * @param  string $dir
      * @param  string $mode
-     * @return void
+     * @return boolean
      */
     public function lfExeInsertSQL(&$objQuery, $dir, $mode)
     {
@@ -582,6 +584,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
 
     /**
      * シーケンス生成器を復元する
+     * @param string $csv
      */
     public function restoreSequence(&$objQuery, $csv)
     {

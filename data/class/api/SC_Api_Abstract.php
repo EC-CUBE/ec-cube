@@ -68,6 +68,9 @@ abstract class SC_Api_Abstract
 
     abstract public function getResponseGroupName();
 
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     abstract protected function lfInitParam(&$objFormParam);
 
     public function getResponseArray()
@@ -93,6 +96,9 @@ abstract class SC_Api_Abstract
         return $arrApiConfig;
     }
 
+    /**
+     * @param string $key
+     */
     protected function setResponse($key, $data)
     {
         $this->arrResponse[$key] = $data;

@@ -134,7 +134,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * パラメーターの初期化を行う
-     * @param Object $objFormParam
+     * @param SC_FormParam_Ex $objFormParam
      */
     public function lfInitParam(&$objFormParam)
     {
@@ -160,7 +160,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * 既に登録されている内容を取得する
-     * @param  Object $objRecommend
+     * @param  SC_Helper_BestProducts_Ex $objRecommend
      * @return Array  $arrReturnProducts データベースに登録されているおすすめ商品の配列
      */
     public function getRecommendProducts(SC_Helper_BestProducts_Ex &$objRecommend)
@@ -190,7 +190,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
      * おすすめ商品の新規登録を行う。
      * @param Array   $arrPost      POSTの値を格納した配列
      * @param Integer $member_id    登録した管理者を示すID
-     * @param Object  $objRecommend
+     * @param SC_Helper_BestProducts_Ex  $objRecommend
      */
     public function insertRecommendProduct($arrPost, $member_id, SC_Helper_BestProducts_Ex &$objRecommend)
     {
@@ -208,7 +208,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
     /**
      * データを削除する
      * @param  Array  $arrPost      POSTの値を格納した配列
-     * @param  Object $objRecommend
+     * @param  SC_Helper_BestProducts_Ex $objRecommend
      * @return void
      */
     public function deleteProduct($arrPost, SC_Helper_BestProducts_Ex &$objRecommend)

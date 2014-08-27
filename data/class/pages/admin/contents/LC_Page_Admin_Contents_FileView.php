@@ -96,7 +96,7 @@ class LC_Page_Admin_Contents_FileView extends LC_Page_Admin_Ex
      * 表示するファイルにエラーチェックを行う
      *
      * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return boolen       $file_check_flg エラーチェックの結果
+     * @return boolean       $file_check_flg エラーチェックの結果
      */
     public function checkErrorDispFile($objFormParam)
     {

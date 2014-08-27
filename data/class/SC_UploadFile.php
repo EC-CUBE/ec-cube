@@ -78,6 +78,10 @@ class SC_UploadFile
         $this->image[] = $image;
     }
     // サムネイル画像の作成
+
+    /**
+     * @param string $dst_file
+     */
     public function makeThumb($src_file, $width, $height, $dst_file)
     {
         $objThumb = new gdthumb();
@@ -93,6 +97,10 @@ class SC_UploadFile
     }
 
     // アップロードされたファイルを保存する。
+
+    /**
+     * @param boolean $rename
+     */
     public function makeTempFile($keyname, $rename = IMAGE_RENAME)
     {
         $objErr = new SC_CheckError_Ex();
@@ -206,6 +214,10 @@ class SC_UploadFile
     }
 
     // 一時ファイルパスを取得する。
+
+    /**
+     * @param string $keyname
+     */
     public function getTempFilePath($keyname)
     {
         $cnt = 0;
@@ -534,7 +546,7 @@ class SC_UploadFile
      * ファイルのアップロードのエラーを確認
      *
      * @param string $keyname ファイルinputタグのname
-     * @param object $objErr SC_CheckErrorインスタンス
+     * @param SC_CheckError $objErr SC_CheckErrorインスタンス
      * @return boolean
      */
     public function checkUploadError($keyname, SC_CheckError &$objErr)

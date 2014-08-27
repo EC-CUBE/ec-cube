@@ -45,6 +45,11 @@ class SC_CartSession
     }
 
     // 商品購入処理中のロック
+
+    /**
+     * @param string $key_tmp
+     * @param integer $productTypeId
+     */
     public function saveCurrentCart($key_tmp, $productTypeId)
     {
         $this->key_tmp = 'savecart_' . $key_tmp;
@@ -71,6 +76,10 @@ class SC_CartSession
     }
 
     // 購入処理中に商品に変更がなかったかを判定
+
+    /**
+     * @param integer $productTypeId
+     */
     public function checkChangeCart($productTypeId)
     {
         $change = false;
@@ -110,6 +119,11 @@ class SC_CartSession
     }
 
     // 値のセット
+
+    /**
+     * @param string $key
+     * @param string $productTypeId
+     */
     public function setProductValue($id, $key, $val, $productTypeId)
     {
         $max = $this->getMax($productTypeId);
@@ -200,6 +214,10 @@ class SC_CartSession
     }
 
     // 全商品の合計ポイント
+
+    /**
+     * @param integer $productTypeId
+     */
     public function getAllProductsPoint($productTypeId)
     {
         // ポイント合計
@@ -334,7 +352,7 @@ class SC_CartSession
     /**
      * getCartList用にcartSession情報をセットする
      *
-     * @param  integer $product_type_id 商品種別ID
+     * @param  integer $productTypeId 商品種別ID
      * @param  integer $key
      * @return void
      *

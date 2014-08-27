@@ -216,6 +216,7 @@ class LC_Page_Shopping_Deliv extends LC_Page_Ex
      * @param  string             $uniqid         受注一時テーブルのユニークID
      * @param  SC_Helper_Purchase $objPurchase    SC_Helper_Purchase インスタンス
      * @param  SC_Customer        $objCustomer    SC_Customer インスタンス
+     * @param SC_Helper_Address_Ex $objAddress
      * @return boolean            お届け先チェックの値が妥当な場合 true
      */
     public function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, &$objCustomer, $objAddress)

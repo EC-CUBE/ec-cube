@@ -158,7 +158,7 @@ class LC_Page_Mypage_DownLoad extends LC_Page_Ex
      * @param  integer $customer_id      会員ID
      * @param  integer $order_id         受注ID
      * @param  integer $product_class_id 商品規格ID
-     * @return array   商品情報の配列
+     * @return string   商品情報の配列
      */
     public function lfGetRealFileName($customer_id, $order_id, $product_class_id)
     {
@@ -185,6 +185,10 @@ __EOS__;
     }
 
     /* パラメーター情報の初期化 */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfInitParam(&$objFormParam)
     {
         $objFormParam->addParam('customer_id', 'customer_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));

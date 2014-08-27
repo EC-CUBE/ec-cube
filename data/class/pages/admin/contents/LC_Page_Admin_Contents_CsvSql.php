@@ -137,7 +137,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitParam(&$objFormParam)
@@ -267,7 +267,6 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     /**
      * テーブルのカラム一覧を取得する.
      *
-     * @param  string $selectTable テーブル名
      * @return array  カラム一覧の配列
      */
     public function lfGetColList($table)
@@ -413,7 +412,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
      *
      * FIXME: キーワードの精査。危険な部分なのでプログラム埋め込みで実装しました。mtb化の有無判断必要。
      *
-     * @return array 不許可ワード配列
+     * @return string[] 不許可ワード配列
      */
     public function lfGetSqlDenyList()
     {

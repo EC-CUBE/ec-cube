@@ -209,7 +209,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
     /**
      * 検索パラメーター引き継ぎ用情報の初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitSearchParam(&$objFormParam)
@@ -275,7 +275,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
      * 登録処理
      *
      * @param  array $objFormParam フォームパラメータークラス
-     * @return array エラー配列
+     * @return integer エラー配列
      */
     public function lfRegistData(&$objFormParam)
     {
@@ -304,7 +304,6 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
     /**
      * 購入履歴情報の取得
      *
-     * @param  array  $arrParam 検索パラメーター連想配列
      * @return array( integer 全体件数, mixed 会員データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
     public function lfPurchaseHistory($customer_id, $pageno = 0)

@@ -111,7 +111,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitParam(&$objFormParam)
@@ -127,7 +127,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
      *
      * @param  integer $csv_id         CSV ID
      * @param  integer $csv_status_flg 読み込む対象のフラグ CSV_COLUMN_STATUS_FLG_ENABLE or ''
-     * @return array   SwapArrayしたカラム設定
+     * @return integer   SwapArrayしたカラム設定
      */
     public function lfGetCSVColumn($csv_id, $csv_status_flg = '', $order ='rank, no')
     {

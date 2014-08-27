@@ -246,7 +246,7 @@ class LC_Page_Admin_Products_ClassCategory extends LC_Page_Admin_Ex
     /**
      * エラーチェック
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
     public function lfCheckError(&$objFormParam)

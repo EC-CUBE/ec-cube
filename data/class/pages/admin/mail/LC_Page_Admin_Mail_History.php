@@ -124,7 +124,6 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
 
     /**
      * 送信履歴の削除
-     * @param  integer $send_id　削除したい送信履歴のID
      * @return void
      */
     public function lfDeleteHistory($send_id)

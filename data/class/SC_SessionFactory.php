@@ -100,7 +100,7 @@ class SC_SessionFactory
     /**
      * Cookieを使用するかどうかを返す.
      *
-     * @return boolean
+     * @return boolean|null
      */
     public function useCookie()
     {

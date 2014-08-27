@@ -113,7 +113,7 @@ class LC_Page_InputZip extends LC_Page_Ex
      * エラーチェック.
      *
      * @param  string                 $value
-     * @return エラーなし：true エラー：false
+     * @return boolean エラー：false
      */
     public function lfInputNameCheck($value)
     {

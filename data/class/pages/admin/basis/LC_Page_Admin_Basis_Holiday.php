@@ -145,7 +145,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
      *
      * @param  integer  $holiday_id
      * @param  array    $sqlval
-     * @param  object   $objHoliday
+     * @param  SC_Helper_Holiday_Ex   $objHoliday
      * @return multiple
      */
     public function doRegist($holiday_id, $sqlval, SC_Helper_Holiday_Ex $objHoliday)
@@ -156,6 +156,10 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
         return $objHoliday->save($sqlval);
     }
 
+    /**
+     * @param string|null $mode
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfInitParam($mode, &$objFormParam)
     {
         switch ($mode) {
@@ -179,7 +183,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
      * 入力エラーチェック
      *
      * @param  object $objFormParam
-     * @param  object $objHoliday
+     * @param  SC_Helper_Holiday_Ex $objHoliday
      * @return array
      */
     public function lfCheckError(&$objFormParam, SC_Helper_Holiday_Ex &$objHoliday)

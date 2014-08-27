@@ -42,6 +42,9 @@ class SC_CheckError
 
     }
 
+    /**
+     * @param string[] $arrFunc
+     */
     public function doFunc($value, $arrFunc)
     {
         foreach ($arrFunc as $key) {
@@ -370,7 +373,7 @@ class SC_CheckError
      * 最大文字数制限の判定
      *
      * 入力が指定文字数以上ならエラーを返す
-     * @param  array $value value[0] = 項目名
+     * @param  integer[] $value value[0] = 項目名
      *                      value[1] = 判定対象文字列
      *                      value[2] = 最大文字数(半角も全角も1文字として数える)
      * @return void

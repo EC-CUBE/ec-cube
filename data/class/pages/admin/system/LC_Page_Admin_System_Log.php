@@ -92,6 +92,7 @@ class LC_Page_Admin_System_Log extends LC_Page_Admin_Ex
     /**
      * パラメーターの初期化.
      *
+     * @param SC_FormParam_Ex $objFormParam
      * @return void
      */
     public function lfInitParam(&$objFormParam)

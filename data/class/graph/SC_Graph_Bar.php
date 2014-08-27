@@ -52,6 +52,10 @@ class SC_Graph_Bar extends SC_Graph_Line_Ex
     }
 
     // 棒グラフの描画
+
+    /**
+     * @param integer $line_no
+     */
     public function drawBar($line_no)
     {
         $arrPointList = $this->arrPointList[$line_no];
@@ -82,6 +86,10 @@ class SC_Graph_Bar extends SC_Graph_Line_Ex
     }
 
     // ラベルを描画する
+
+    /**
+     * @param integer $line_no
+     */
     public function drawLabel($line_no)
     {
         $arrData = $this->arrDataList[$line_no];

@@ -110,6 +110,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
      * 入力エラーチェック
      *
      * @param  string $mode
+     * @param SC_FormParam_Ex $objFormParam
      * @return array
      */
     public function lfCheckError($mode, &$objFormParam)

@@ -167,18 +167,27 @@ __EOS__;
         return $arrRet;
     }
 
+    /**
+     * @param SC_Helper_DB_Ex $objDb
+     */
     public function lfRankUp(&$objDb, $parent_category_id, $product_id)
     {
         $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankUp('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
+    /**
+     * @param SC_Helper_DB_Ex $objDb
+     */
     public function lfRankDown(&$objDb, $parent_category_id, $product_id)
     {
         $where = 'category_id = ' . SC_Utils_Ex::sfQuoteSmart($parent_category_id);
         $objDb->sfRankDown('dtb_product_categories', 'product_id', $product_id, $where);
     }
 
+    /**
+     * @param SC_Helper_DB_Ex $objDb
+     */
     public function lfRankMove(&$objDb, $parent_category_id, $product_id)
     {
         $key = 'pos-'.$product_id;

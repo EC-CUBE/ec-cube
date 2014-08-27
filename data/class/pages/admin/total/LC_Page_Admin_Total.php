@@ -189,6 +189,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     /* パラメーター情報の初期化 */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfInitParam(&$objFormParam)
     {
         // デフォルト値の取得
@@ -283,6 +287,14 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     /* 折れ線グラフの作成 */
+
+    /**
+     * @param string $keyname
+     * @param string $type
+     * @param string $xtitle
+     * @param string $ytitle
+     * @param boolean $xincline
+     */
     public function lfGetGraphLine($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate, $xincline)
     {
         $ret_path = '';
@@ -341,6 +353,11 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     // 円グラフの作成
+
+    /**
+     * @param string $keyname
+     * @param string $type
+     */
     public function lfGetGraphPie($arrResults, $keyname, $type, $title = '', $sdate = '', $edate = '')
     {
         $ret_path = '';
@@ -386,6 +403,13 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     // 棒グラフの作成
+
+    /**
+     * @param string $keyname
+     * @param string $type
+     * @param string $xtitle
+     * @param string $ytitle
+     */
     public function lfGetGraphBar($arrResults, $keyname, $type, $xtitle, $ytitle, $sdate, $edate)
     {
         $ret_path = '';
@@ -446,6 +470,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     // 会員、非会員集計のWHERE分の作成
+
+    /**
+     * @param string $col_date
+     */
     public function lfGetWhereMember($col_date, $sdate, $edate, $type, $col_member = 'customer_id')
     {
         $where = '';
@@ -781,6 +809,10 @@ __EOS__;
     }
 
     // 必要なカラムのみ抽出する(CSVデータで取得する)
+
+    /**
+     * @param string[] $arrDataCol
+     */
     public function lfGetDataColCSV($arrData, $arrDataCol)
     {
         $max = count($arrData);

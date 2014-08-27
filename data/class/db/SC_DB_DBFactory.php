@@ -34,7 +34,7 @@ class SC_DB_DBFactory
      * DB_TYPE に応じた DBFactory インスタンスを生成する.
      *
      * @param  string $db_type 任意のインスタンスを返したい場合は DB_TYPE 文字列を指定
-     * @return mixed  DBFactory インスタンス
+     * @return SC_DB_DBFactory  DBFactory インスタンス
      */
     public function getInstance($db_type = DB_TYPE)
     {
@@ -57,8 +57,8 @@ class SC_DB_DBFactory
      * DEFAULT_DSN が未定義の場合は void となる.
      * $dsn が空ではない場合は, $dsn の値を返す.
      *
-     * @param  mixed $dsn データソース名
-     * @return mixed データソース名またはDB接続パラメータの連想配列
+     * @param  string $dsn データソース名
+     * @return string データソース名またはDB接続パラメータの連想配列
      */
     public function getDSN($dsn = '')
     {
@@ -157,7 +157,7 @@ class SC_DB_DBFactory
     /**
      * 文字列連結を行う.
      *
-     * @param  array  $columns 連結を行うカラム名
+     * @param  string[]  $columns 連結を行うカラム名
      * @return string 連結後の SQL 文
      */
     public function concatColumn($columns)

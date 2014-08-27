@@ -166,7 +166,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
      *
      * @param  integer  $maker_id
      * @param  array    $sqlval
-     * @param  object   $objMaker
+     * @param  SC_Helper_Maker_Ex   $objMaker
      * @return multiple
      */
     public function doRegist($maker_id, $sqlval, SC_Helper_Maker_Ex $objMaker)
@@ -180,6 +180,7 @@ class LC_Page_Admin_Products_Maker extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック.
      *
+     * @param SC_FormParam $objFormParam
      * @return array $objErr->arrErr エラー内容
      */
     public function lfCheckError(&$objFormParam, SC_Helper_Maker_Ex &$objMaker)

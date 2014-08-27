@@ -384,6 +384,7 @@ class SC_Helper_Purchase
 
     /**
      * 配送先都道府県の配列を返す.
+     * @param boolean $is_multiple
      */
     public function getShippingPref($is_multiple)
     {
@@ -429,7 +430,6 @@ class SC_Helper_Purchase
      * セッションの配送情報を破棄する.
      *
      * @deprecated 2.12.0 から EC-CUBE 本体では使用していない。
-     * @param  integer $shipping_id 配送先ID
      * @return void
      */
     public function unsetShippingTemp()
@@ -555,6 +555,8 @@ class SC_Helper_Purchase
 
     /**
      * お届け日一覧を取得する.
+     * @param SC_CartSession $objCartSess
+     * @param integer $productTypeId
      */
     public function getDelivDate(&$objCartSess, $productTypeId)
     {

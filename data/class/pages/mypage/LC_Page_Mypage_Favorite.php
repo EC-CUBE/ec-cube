@@ -110,7 +110,7 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
      * お気に入りを取得する
      *
      * @param mixed $customer_id
-     * @param mixed $objPage
+     * @param LC_Page_Mypage_Favorite $objPage
      * @access private
      * @return array お気に入り商品一覧
      */
@@ -164,6 +164,10 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
     }
 
     /* 仕方がない処理。。 */
+
+    /**
+     * @param string $tablename
+     */
     public function lfMakeWhere($tablename, $arrProductId)
     {
         // 取得した表示すべきIDだけを指定して情報を取得。
@@ -179,6 +183,10 @@ class LC_Page_Mypage_Favorite extends LC_Page_AbstractMypage_Ex
     }
 
     // お気に入り商品削除
+
+    /**
+     * @param integer $product_id
+     */
     public function lfDeleteFavoriteProduct($customer_id, $product_id)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();

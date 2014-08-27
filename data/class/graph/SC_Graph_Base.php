@@ -272,6 +272,10 @@ class SC_Graph_Base
     }
 
     // テキストを出力する
+
+    /**
+     * @param integer $color
+     */
     public function setText($font_size, $left, $top, $text, $color = NULL, $angle = 0, $labelbg = false)
     {
         // 時計回りに角度を変更
@@ -305,6 +309,10 @@ class SC_Graph_Base
     }
 
     // タイトルを出力する
+
+    /**
+     * @param string $text
+     */
     public function drawTitle($text, $font_size = TITLE_FONT_SIZE)
     {
         // 出力位置の算出
@@ -377,6 +385,12 @@ class SC_Graph_Base
     }
 
     // カラーラベル背景の描画
+
+    /**
+     * @param double $left
+     * @param double $right
+     * @param integer $bottom
+     */
     public function drawClabelBG($left, $top, $right, $bottom)
     {
         // 影の描画
@@ -441,9 +455,8 @@ class SC_Graph_Base
      *
      * @param  integer $cx 中心点X座標
      * @param  integer $cy 中心点Y座標
-     * @param  integer $r  半径
      * @param  integer $e  角度
-     * @return array   円の中心点と直径から弧の終端座標の配列
+     * @return double[]   円の中心点と直径から弧の終端座標の配列
      */
     public function lfGetArcPos($cx, $cy, $cw, $ch, $e)
     {

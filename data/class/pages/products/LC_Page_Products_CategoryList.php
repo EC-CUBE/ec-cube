@@ -76,6 +76,10 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
     }
 
     /* カテゴリIDの正当性チェック */
+
+    /**
+     * @return string
+     */
     public function lfCheckCategoryId($category_id)
     {
         if ($category_id && !SC_Helper_DB_Ex::sfIsRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')) {
@@ -140,7 +144,7 @@ class LC_Page_Products_CategoryList extends LC_Page_Ex
     /**
      * ユーザ入力値の処理
      *
-     * @return object
+     * @return SC_FormParam_Ex
      */
     public function lfInitParam($arrRequest)
     {

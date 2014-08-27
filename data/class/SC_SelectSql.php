@@ -62,6 +62,10 @@ class SC_SelectSql
     }
 
     //-- 範囲検索（○　~　○　まで）
+
+    /**
+     * @param string $column
+     */
     public function selectRange($from, $to, $column)
     {
         // ある単位のみ検索($from = $to)
@@ -86,6 +90,10 @@ class SC_SelectSql
     }
 
     //--　期間検索（○年○月○日か~○年○月○日まで）
+
+    /**
+     * @param string $column
+     */
     public function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column)
     {
         $return = array();
@@ -126,6 +134,10 @@ class SC_SelectSql
     }
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx) AND ...
+
+    /**
+     * @param string $ItemStr
+     */
     public function setItemTerm($arr, $ItemStr)
     {
         $return = array();
@@ -152,6 +164,10 @@ class SC_SelectSql
     }
 
     //　NULL値が必要な場合
+
+    /**
+     * @param string $ItemStr
+     */
     public function setItemTermWithNull($arr, $ItemStr)
     {
         $return = array();
@@ -247,6 +263,9 @@ class SC_SelectSql
         }
     }
 
+    /**
+     * @param string $order
+     */
     public function setOrder($order)
     {
             $this->order =  'ORDER BY ' . $order;

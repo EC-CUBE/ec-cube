@@ -173,6 +173,7 @@ class LC_Page_Error_SystemError extends LC_Page_Error
     /**
      * デバッグ用のメッセージを追加
      *
+     * @param string $debugMsg
      * @return void
      */
     public function addDebugMsg($debugMsg)

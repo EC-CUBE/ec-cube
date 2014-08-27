@@ -218,7 +218,6 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
      * 規格情報を削除する.
      *
      * @param  integer      $class_id 規格ID
-     * @param  SC_Helper_DB $objDb    SC_Helper_DBのインスタンス
      * @return integer      削除件数
      */
     public function lfDeleteClass($class_id)
@@ -236,7 +235,7 @@ class LC_Page_Admin_Products_Class extends LC_Page_Admin_Ex
     /**
      * エラーチェック
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
     public function lfCheckError(&$objFormParam)

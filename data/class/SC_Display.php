@@ -170,6 +170,9 @@ class SC_Display
         $this->view->assign($val1, $val2);
     }
 
+    /**
+     * @param LC_Page $obj
+     */
     public function assignobj($obj)
     {
         $this->view->assignobj($obj);

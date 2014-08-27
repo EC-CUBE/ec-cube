@@ -111,7 +111,7 @@ class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex
      * 受注履歴を返す
      *
      * @param mixed $customer_id
-     * @param mixed $startno     0以上の場合は受注履歴を返却する -1の場合は件数を返す
+     * @param integer $startno     0以上の場合は受注履歴を返却する -1の場合は件数を返す
      * @access private
      * @return void
      */

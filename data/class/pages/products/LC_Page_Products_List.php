@@ -160,7 +160,7 @@ class LC_Page_Products_List extends LC_Page_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
     public function lfInitParam(&$objFormParam)
@@ -202,6 +202,10 @@ class LC_Page_Products_List extends LC_Page_Ex
     }
 
     /* 商品一覧の表示 */
+
+    /**
+     * @param SC_Product_Ex $objProduct
+     */
     public function lfGetProductsList($searchCondition, $disp_number, $startno, &$objProduct)
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -287,6 +291,7 @@ class LC_Page_Products_List extends LC_Page_Ex
     /**
      * ページタイトルの設定
      *
+     * @param string|null $mode
      * @return str
      */
     public function lfGetPageTitle($mode, $category_id = 0)
@@ -410,6 +415,7 @@ class LC_Page_Products_List extends LC_Page_Ex
     /**
      * カートに入れる商品情報にエラーがあったら戻す
      *
+     * @param integer $product_id
      * @return str
      */
     public function lfSetSelectedData(&$arrProducts, $arrForm, $arrErr, $product_id)

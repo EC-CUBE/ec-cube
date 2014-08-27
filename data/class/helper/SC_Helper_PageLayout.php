@@ -115,7 +115,7 @@ class SC_Helper_PageLayout
      * @param  integer $device_type_id 端末種別ID
      * @param  integer $page_id        ページID; null の場合は, 0 以外を検索する.
      * @param  string  $where          追加の検索条件
-     * @param  array   $arrParams      追加の検索パラメーター
+     * @param  string[]   $arrParams      追加の検索パラメーター
      * @return array   ページ属性の配列
      */
     public function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array())
@@ -262,7 +262,7 @@ __EOF__;
      * @access public
      * @param  integer                   $device_type_id 端末種別ID
      * @param  integer                   $page_id        ページID
-     * @return 編集可能ページの� �合 true
+     * @return boolean �合 true
      */
     public function isEditablePage($device_type_id, $page_id)
     {

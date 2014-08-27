@@ -49,7 +49,7 @@ class SC_Helper_Review
     /**
      * 商品に紐付いたレビューの一覧を取得
      *
-     * @param $product_id
+     * @param integer $product_id
      * @return array|null
      */
     public function getListByProductId($product_id)

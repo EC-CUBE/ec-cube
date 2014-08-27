@@ -174,6 +174,7 @@ class LC_Page_Contact extends LC_Page_Ex
     /**
      * メールの送信を行う。
      *
+     * @param LC_Page_Contact $objPage
      * @return void
      */
     public function lfSendMail(&$objPage)

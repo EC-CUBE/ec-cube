@@ -357,6 +357,12 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $objFormParam->addParam('カテゴリ名', 'category_name', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
+    /**
+     * @param SC_Query $objQuery
+     * @param string $table
+     * @param string $pid_name
+     * @param string $id_name
+     */
     public function lfCountChilds($objQuery, $table, $pid_name, $id_name, $id)
     {
         $objDb = new SC_Helper_DB_Ex();
@@ -366,6 +372,12 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         return count($arrRet);
     }
 
+    /**
+     * @param SC_Query $objQuery
+     * @param string $table
+     * @param string $pid_name
+     * @param string $id_name
+     */
     public function lfUpRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count)
     {
         $objDb = new SC_Helper_DB_Ex();
@@ -380,6 +392,13 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         return $objQuery->update($table, array(), $where, array(), $arrRawVal);
     }
 
+    /**
+     * @param SC_Query $objQuery
+     * @param string $table
+     * @param string $pid_name
+     * @param string $id_name
+     * @param integer $count
+     */
     public function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count)
     {
         $objDb = new SC_Helper_DB_Ex();

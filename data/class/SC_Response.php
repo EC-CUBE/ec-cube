@@ -65,6 +65,9 @@ class SC_Response
         }
     }
 
+    /**
+     * @param string $contentType
+     */
     public function setContentType($contentType)
     {
         $this->header['Content-Type'] = $contentType;
@@ -338,6 +341,7 @@ class SC_Response
     /**
      * ダウンロード用の HTTP ヘッダを出力する
      *
+     * @param string $file_name
      * @return void
      */
     public static function headerForDownload($file_name) {

@@ -195,7 +195,7 @@ class SC_Helper_Plugin
      *
      * @param  string   $hook_point フックポイント名
      * @param  callback $function   コールバック関数名
-     * @param  string   $priority   同一フックポイント内での実行優先度
+     * @param  integer   $priority   同一フックポイント内での実行優先度
      * @return boolean  成功すればtrue
      */
     public function addAction($hook_point, $function, $priority = 0)
@@ -304,7 +304,7 @@ class SC_Helper_Plugin
      * Utility function to set a hook point.
      *
      * @param  string  $hook_point          hook point
-     * @param  array   $arrArgs             argument passing to callback function
+     * @param  SC_SiteView[]   $arrArgs             argument passing to callback function
      * @param  boolean $plugin_activate_flg
      * @return void
      */
