@@ -257,6 +257,10 @@ class LC_Page_Products_List extends LC_Page_Ex
     }
 
     /* 入力内容のチェック */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfCheckError($objFormParam)
     {
         // 入力データを渡す。

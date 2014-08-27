@@ -272,6 +272,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     /* フォームで入力された日付を適切な形にする */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfSetStartEndDate(&$objFormParam)
     {
         $arrRet = $objFormParam->getHashArray();

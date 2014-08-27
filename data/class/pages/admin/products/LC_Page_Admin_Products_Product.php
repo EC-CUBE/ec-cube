@@ -558,7 +558,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * フォームパラメーター取得
      * - 登録モード
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @return array  フォームパラメーター配列
      */
     public function lfGetFormParam_Complete(&$objFormParam)
@@ -574,8 +574,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * 表示用フォームパラメーター取得
      * - 入力画面
      *
-     * @param  object $objUpFile   SC_UploadFileインスタンス
-     * @param  object $objDownFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objUpFile   SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objDownFile SC_UploadFileインスタンス
      * @param  array  $arrForm     フォーム入力パラメーター配列
      * @return array  表示用フォームパラメーター配列
      */
@@ -627,8 +627,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * 表示用フォームパラメーター取得
      * - 確認画面
      *
-     * @param  object $objUpFile   SC_UploadFileインスタンス
-     * @param  object $objDownFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objUpFile   SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objDownFile SC_UploadFileインスタンス
      * @param  array  $arrForm     フォーム入力パラメーター配列
      * @return array  表示用フォームパラメーター配列
      */
@@ -990,8 +990,8 @@ __EOF__;
     /**
      * DBに商品データを登録する
      *
-     * @param  object  $objUpFile   SC_UploadFileインスタンス
-     * @param  object  $objDownFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex  $objUpFile   SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex  $objDownFile SC_UploadFileインスタンス
      * @param  array   $arrList     フォーム入力パラメーター配列
      * @return integer 登録商品ID
      */
