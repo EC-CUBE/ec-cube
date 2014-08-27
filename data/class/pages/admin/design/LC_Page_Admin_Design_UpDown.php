@@ -185,8 +185,8 @@ class LC_Page_Admin_Design_UpDown extends LC_Page_Admin_Ex
      *
      * エラーが発生した場合は, エラーを出力し, false を返す.
      *
-     * @param  object  $objFormParam SC_FormParamのインスタンス
-     * @param  object  $objUpFile    SC_UploadFileのインスタンス
+     * @param  SC_FormParam  $objFormParam SC_FormParamのインスタンス
+     * @param  SC_UploadFile_Ex  $objUpFile    SC_UploadFileのインスタンス
      * @return boolean 成功した場合 true; 失敗した場合 false
      */
     public function doUpload($objFormParam, $objUpFile)

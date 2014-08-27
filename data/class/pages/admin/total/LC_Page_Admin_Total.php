@@ -217,6 +217,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     /* 入力内容のチェック */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfCheckError(&$objFormParam)
     {
         $objFormParam->convParam();
@@ -458,6 +462,10 @@ class LC_Page_Admin_Total extends LC_Page_Admin_Ex
     }
 
     // グラフ用のPNGファイル名
+
+    /**
+     * @param string $keyname
+     */
     public function lfGetGraphPng($keyname)
     {
         if ($_POST['search_startyear_m'] != '') {

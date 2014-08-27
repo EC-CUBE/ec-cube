@@ -90,7 +90,7 @@ class SC_DB_MasterData
      * $masterData は key => value 形式の配列である必要がある.
      *
      * @param string $name    マスターデータ名
-     * @param array  $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
+     * @param string[]  $columns [0] => キー, [1] => 表示文字列, [2] => 表示順
      *                        を表すカラム名を格納した配列
      * @param  array   $masterData マスターデータ
      * @param  bool    $autoCommit トランザクションを自動的に commit する場合 true

@@ -222,7 +222,7 @@ class LC_Page_Admin_Customer_Edit extends LC_Page_Admin_Ex
     /**
      * 検索パラメーターエラーチェック
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
     public function lfCheckErrorSearchParam(&$objFormParam)

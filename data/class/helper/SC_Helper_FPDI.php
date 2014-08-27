@@ -94,6 +94,10 @@ class SC_Helper_FPDI extends PDF_Japanese
         $this->x = $base_x;
     }
 
+    /**
+     * @param integer $x
+     * @param integer $y
+     */
     public function Text($x, $y, $txt)
     {
         parent::Text($x, $y, $this->lfConvSjis($txt));

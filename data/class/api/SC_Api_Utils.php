@@ -189,6 +189,9 @@ class SC_Api_Utils
         return $arrFiles;
     }
 
+    /**
+     * @param string $response_outer_name
+     */
     public function sendResponseJson($response_outer_name, &$arrResponse)
     {
         if (isset($arrResponse["callback"])) {
@@ -204,6 +207,9 @@ class SC_Api_Utils
         }
     }
 
+    /**
+     * @param string $response_outer_name
+     */
     public function sendResponsePhp($response_outer_name, &$arrResponse)
     {
         header('Content-Type: application/php; charset=UTF-8');
@@ -211,6 +217,9 @@ class SC_Api_Utils
         echo serialize($arrResponse);
     }
 
+    /**
+     * @param string $response_outer_name
+     */
     public function sendResponseXml($response_outer_name, &$arrResponse)
     {
         require_once 'XML/Serializer.php';

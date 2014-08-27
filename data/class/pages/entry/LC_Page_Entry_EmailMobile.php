@@ -100,7 +100,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
     /**
      * エラーチェックする
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam_Ex $objFormParam
      * @access private
      * @return array エラー情報の配列
      */
@@ -124,7 +124,7 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex
      *
      * @access private
      * @param string $email_mobile
-     * @return void
+     * @return string
      */
     public function lfRegistEmailMobile($email_mobile, $customer_id)
     {

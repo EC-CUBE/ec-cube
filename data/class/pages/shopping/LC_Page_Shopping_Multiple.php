@@ -290,6 +290,7 @@ class LC_Page_Shopping_Multiple extends LC_Page_Ex
      * @param  SC_FormParam       $objFormParam SC_FormParam インスタンス
      * @param  SC_Customer        $objCustomer  SC_Customer インスタンス
      * @param  SC_Helper_Purchase $objPurchase  SC_Helper_Purchase インスタンス
+     * @param SC_Helper_Address_Ex $objAddress
      * @return void
      */
     public function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objAddress)

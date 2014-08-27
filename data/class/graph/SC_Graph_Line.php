@@ -165,6 +165,10 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // ポイントの描画
+
+    /**
+     * @param integer $line_no
+     */
     public function setMark($line_no, $left, $top, $size = LINE_MARK_SIZE)
     {
         // 偶数に変換しておく
@@ -326,12 +330,20 @@ class SC_Graph_Line extends SC_Graph_Base_Ex
     }
 
     // X軸タイトルをセットする
+
+    /**
+     * @param string $title
+     */
     public function setXTitle($title)
     {
         $this->XTitle = $title;
     }
 
     // Y軸タイトルをセットする
+
+    /**
+     * @param string $title
+     */
     public function setYTitle($title)
     {
         $this->YTitle = $title;

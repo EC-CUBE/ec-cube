@@ -169,7 +169,7 @@ class LC_Page_Forgot extends LC_Page_Ex
     /**
      * メールアドレス確認におけるパラメーター情報の初期化
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @param  array $device_type  デバイスタイプ
      * @return void
      */

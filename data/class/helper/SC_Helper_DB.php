@@ -87,6 +87,7 @@ class SC_Helper_DB
 
     /**
      * @param string $colType
+     * @param string $tableName
      */
     public function sfColumnAdd($tableName, $colName, $colType)
     {

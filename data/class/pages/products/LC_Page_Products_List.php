@@ -496,7 +496,8 @@ class LC_Page_Products_List extends LC_Page_Ex
 
     /**
      *
-     * @param  type $objProduct
+     * @param  SC_Product_Ex $objProduct
+     * @param SC_FormParam_Ex $objFormParam
      * @return void
      */
     public function doDefault(&$objProduct, &$objFormParam)

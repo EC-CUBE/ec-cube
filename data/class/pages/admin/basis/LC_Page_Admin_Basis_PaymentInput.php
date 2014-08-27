@@ -204,6 +204,10 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     }
 
     /* DBへデータを登録する */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfRegistData(&$objFormParam, SC_Helper_Payment_Ex $objPayment, $member_id, $payment_id = '')
     {
         $sqlval = array_merge($objFormParam->getHashArray(), $this->objUpFile->getDBFileList());
@@ -220,6 +224,10 @@ class LC_Page_Admin_Basis_PaymentInput extends LC_Page_Admin_Ex
     /*　利用条件の数値チェック */
 
     /* 入力内容のチェック */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfCheckError($post, $objFormParam, SC_Helper_Payment_Ex $objPayment)
     {
         // DBのデータを取得

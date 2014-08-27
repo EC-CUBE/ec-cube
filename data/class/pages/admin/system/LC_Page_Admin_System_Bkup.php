@@ -585,6 +585,7 @@ class LC_Page_Admin_System_Bkup extends LC_Page_Admin_Ex
     /**
      * シーケンス生成器を復元する
      * @param string $csv
+     * @param SC_Query $objQuery
      */
     public function restoreSequence(&$objQuery, $csv)
     {

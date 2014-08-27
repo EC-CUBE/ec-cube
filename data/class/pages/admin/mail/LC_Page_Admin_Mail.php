@@ -219,7 +219,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * テンプレートIDから情報の取得して$objFormParamにset_paramする
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam $objFormParam フォームパラメータークラス
      * @param  array $template_id  テンプレートID
      * @return void
      */
@@ -235,6 +235,7 @@ class LC_Page_Admin_Mail extends LC_Page_Admin_Ex
     /**
      * 配信内容と配信リストを書き込む
      *
+     * @param SC_FormParam $objFormParam
      * @return integer 登録した行の dtb_send_history.send_id の値
      */
     public function lfRegisterData(&$objFormParam)

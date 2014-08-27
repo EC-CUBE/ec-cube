@@ -152,7 +152,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     /**
      * SQL登録エラーチェック
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
     public function lfCheckConfirmError(&$objFormParam)
@@ -181,7 +181,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     /**
      * SQL確認エラーチェック
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
     public function lfCheckPreviewError(&$objFormParam)
@@ -202,7 +202,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     /**
      * SQL設定 削除エラーチェック
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
     public function lfCheckDeleteError(&$objFormParam)
@@ -222,7 +222,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     /**
      * SQL設定 CSV出力エラーチェック
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return array エラー配列
      */
     public function lfCheckOutputError(&$objFormParam)
@@ -321,7 +321,7 @@ class LC_Page_Admin_Contents_CsvSql extends LC_Page_Admin_Ex
     /**
      * SQL詳細設定情報呼び出し (編集中データがある場合はそれを保持する）
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return mixed 表示用パラメーター
      */
     public function lfGetSqlData(&$objFormParam)

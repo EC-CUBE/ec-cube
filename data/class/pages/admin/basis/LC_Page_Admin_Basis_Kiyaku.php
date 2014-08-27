@@ -183,6 +183,7 @@ class LC_Page_Admin_Basis_Kiyaku extends LC_Page_Admin_Ex
      * 入力エラーチェック
      *
      * @param  SC_Helper_Kiyaku_Ex $objKiyaku
+     * @param SC_FormParam_Ex $objFormParam
      * @return array
      */
     public function lfCheckError($objFormParam, SC_Helper_Kiyaku_Ex &$objKiyaku)

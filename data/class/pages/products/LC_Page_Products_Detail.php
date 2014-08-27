@@ -460,6 +460,10 @@ class LC_Page_Products_Detail extends LC_Page_Ex
     }
 
     /* 商品規格情報の取得 */
+
+    /**
+     * @param integer $product_id
+     */
     public function lfGetProductsClass($product_id)
     {
         $objProduct = new SC_Product_Ex();

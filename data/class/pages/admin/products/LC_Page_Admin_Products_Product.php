@@ -303,7 +303,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
     /**
      * パラメーター情報の初期化
      *
-     * @param  object $objFormParam SC_FormParamインスタンス
+     * @param  SC_FormParam_Ex $objFormParam SC_FormParamインスタンス
      * @param  array  $arrPost      $_POSTデータ
      * @return void
      */
@@ -443,8 +443,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * フォーム入力パラメーターのエラーチェック
      *
      * @param  object $objFormParam SC_FormParamインスタンス
-     * @param  object $objUpFile    SC_UploadFileインスタンス
-     * @param  object $objDownFile  SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objUpFile    SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objDownFile  SC_UploadFileインスタンス
      * @param  array  $arrForm      フォーム入力パラメーター配列
      * @return array  エラー情報を格納した連想配列
      */
@@ -535,8 +535,8 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * フォームパラメーター取得
      * - 編集/複製モード
      *
-     * @param  object  $objUpFile   SC_UploadFileインスタンス
-     * @param  object  $objDownFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex  $objUpFile   SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex  $objDownFile SC_UploadFileインスタンス
      * @param  integer $product_id  商品ID
      * @return array   フォームパラメーター配列
      */
@@ -649,7 +649,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
     /**
      * 縮小した画像をセットする
      *
-     * @param  object $objUpFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objUpFile SC_UploadFileインスタンス
      * @param  string $image_key 画像ファイルキー
      * @return void
      */
@@ -733,7 +733,7 @@ class LC_Page_Admin_Products_Product extends LC_Page_Admin_Products_Ex
      * アップロードファイルパラメーター情報から削除
      * 一時ディレクトリに保存されている実ファイルも削除する
      *
-     * @param  object $objUpFile SC_UploadFileインスタンス
+     * @param  SC_UploadFile_Ex $objUpFile SC_UploadFileインスタンス
      * @param  string $image_key 画像ファイルキー
      * @return void
      */
@@ -1199,7 +1199,7 @@ __EOF__;
     /**
      * DBに関連商品データを登録する
      *
-     * @param  object  $objQuery   SC_Queryインスタンス
+     * @param  SC_Query  $objQuery   SC_Queryインスタンス
      * @param  string  $arrList    フォーム入力パラメーター配列
      * @param  integer $product_id 登録する商品ID
      * @return void

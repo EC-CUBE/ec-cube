@@ -205,6 +205,7 @@ class LC_Page_Admin_System_Input extends LC_Page_Admin_Ex
      *
      * @param void
      * @param string|null $mode
+     * @param SC_FormParam_Ex $objFormParam
      * @return array エラー情報の連想配列
      */
     public function validateData(&$objFormParam, &$arrParams, $mode)

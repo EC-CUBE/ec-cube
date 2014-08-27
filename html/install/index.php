@@ -468,6 +468,9 @@ function lfDispStep0_1($objPage)
     return $objPage;
 }
 
+/**
+ * @param string $path
+ */
 function lfGetFileMode($path)
 {
     $mode = substr(sprintf('%o', fileperms($path)), -3);

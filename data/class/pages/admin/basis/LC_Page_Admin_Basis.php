@@ -191,6 +191,10 @@ class LC_Page_Admin_Basis extends LC_Page_Admin_Ex
     }
 
     // 入力エラーチェック
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfCheckError(&$objFormParam)
     {
         $arrErr = $objFormParam->checkError();

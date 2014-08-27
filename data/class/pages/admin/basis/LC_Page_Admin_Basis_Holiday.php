@@ -182,7 +182,7 @@ class LC_Page_Admin_Basis_Holiday extends LC_Page_Admin_Ex
     /**
      * 入力エラーチェック
      *
-     * @param  object $objFormParam
+     * @param  SC_FormParam_Ex $objFormParam
      * @param  SC_Helper_Holiday_Ex $objHoliday
      * @return array
      */

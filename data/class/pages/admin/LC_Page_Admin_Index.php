@@ -108,7 +108,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
      *
      * TODO: ブルートフォースアタック対策チェックの実装
      *
-     * @param  array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return array $arrErr エラー配列
      */
     public function lfCheckError(&$objFormParam)

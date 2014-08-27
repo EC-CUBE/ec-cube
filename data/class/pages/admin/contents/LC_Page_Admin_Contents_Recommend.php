@@ -147,7 +147,7 @@ class LC_Page_Admin_Contents_Recommend extends LC_Page_Admin_Ex
 
     /**
      * 入力されたパラメーターのエラーチェックを行う。
-     * @param  Object $objFormParam
+     * @param  SC_FormParam_Ex $objFormParam
      * @return Array  エラー内容
      */
     public function lfCheckError(&$objFormParam)

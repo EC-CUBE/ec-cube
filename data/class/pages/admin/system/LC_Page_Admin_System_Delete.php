@@ -138,7 +138,7 @@ class LC_Page_Admin_System_Delete extends LC_Page_Admin_Ex
     /**
      * レコードの削除(削除フラグをONにする).
      *
-     * @param  object      $objQuery
+     * @param  SC_Query      $objQuery
      * @param  integer     $id       削除対象のmember_id
      * @return void|UPDATE の結果フラグ
      */

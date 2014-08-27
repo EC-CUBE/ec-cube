@@ -76,6 +76,7 @@ class SC_Helper_Mail
     /**
      * @param string $to_name
      * @param integer $template_id
+     * @param LC_Page_Contact $objPage
      */
     public function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '')
     {

@@ -31,6 +31,7 @@ class SC_Customer
 
     /**
      * @param string $email
+     * @param string $pass
      */
     public function getCustomerDataFromEmailPass($pass, $email, $mobile = false)
     {
@@ -242,6 +243,7 @@ class SC_Customer
 
     /**
      * @param string $keyname
+     * @param string $val
      */
     public function setValue($keyname, $val)
     {

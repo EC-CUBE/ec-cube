@@ -153,6 +153,10 @@ class LC_Page_Admin_Basis_Tradelaw extends LC_Page_Admin_Ex
     }
 
     /* 入力内容のチェック */
+
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     public function lfCheckError(&$objFormParam)
     {
         // 入力データを渡す。

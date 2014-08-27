@@ -518,6 +518,7 @@ class SC_Utils
 
     /**
      * @param string $valname
+     * @param string $keyname
      */
     public static function sfArrKeyValue($arrList, $keyname, $valname, $len_max = '', $keysize = '')
     {

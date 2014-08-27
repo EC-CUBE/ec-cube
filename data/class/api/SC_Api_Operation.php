@@ -433,7 +433,7 @@ class SC_Api_Operation
     /**
      * APIのリクエスト基本パラメーターのチェック
      *
-     * @param object $objFormParam
+     * @param SC_FormParam_Ex $objFormParam
      * @return array $arrErr
      */
     protected function checkParam($objFormParam)
