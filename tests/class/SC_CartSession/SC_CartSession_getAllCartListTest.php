@@ -12,7 +12,7 @@ require_once($HOME . "/tests/class/SC_CartSession/SC_CartSession_TestBase.php");
  * @author Nobuhiko Kimoto <info@nob-log.info>
  * @license
  */
-class SC_CartSession_getAllCartList extends SC_CartSession_TestBase
+class SC_CartSession_getAllCartListTest extends SC_CartSession_TestBase
 {
 
     protected function setUp()
