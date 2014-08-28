@@ -1838,7 +1838,7 @@ class SC_Utils
         if (preg_match('/(?:\/|\\\)\.\.(?=\/|$)/', $path)) {
             return false;
         }
-        if (!strncasecmp(PHP_OS, 'win', 3)) {
+        if (DIRECTORY_SEPARATOR == '\\') {
             return (($path{0} == '/') ||  preg_match('/^[a-zA-Z]:(\\\|\/)/', $path));
         }
         return ($path{0} == '/') || ($path{0} == '~');

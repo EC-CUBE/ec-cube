@@ -35,45 +35,58 @@ class SC_Utils_Test extends Common_TestCase
 {
 
 
-  protected function setUp()
-  {
-    // parent::setUp();
-  }
-
-  protected function tearDown()
-  {
-    // parent::tearDown();
-  }
-
-  /////////////////////////////////////////
-  public function testIsAbsoluteRealPath_絶対パスの場合_trueが返る()
-  {
-
-    if (strpos(PHP_OS, 'WIN')) {
-      $input = 'C:/Program Files/username/hoge/hoge.txt';
-    } else {
-      $input = '/etc/php.ini';
+    protected function setUp()
+    {
+        // parent::setUp();
     }
-    $this->expected = true;
-    $this->actual = SC_Utils::isAbsoluteRealPath($input);
 
-    $this->verify();
-  }
-
-  public function testIsAbsoluteRealPath_相対パスの場合_trueが返る()
-  {
-
-    if (strpos(PHP_OS, 'WIN')) {
-      $input = './system32/hoge/hoge.txt';
-    } else {
-      $input = '../etc/php.ini';
+    protected function tearDown()
+    {
+        // parent::tearDown();
     }
-    $this->expected = false;
-    $this->actual = SC_Utils::isAbsoluteRealPath($input);
 
-    $this->verify();
-  }
+    /////////////////////////////////////////
+    public function testIsAbsoluteRealPath_絶対パスの場合_trueが返る()
+    {
 
-  //////////////////////////////////////////
+        if (strpos(PHP_OS, 'WIN')) {
+            $input = 'C:/Program Files/username/hoge/hoge.txt';
+        } else {
+            $input = '/etc/php.ini';
+        }
+        $this->expected = true;
+        $this->actual = SC_Utils::isAbsoluteRealPath($input);
+
+        $this->verify();
+    }
+
+    public function testIsAbsoluteRealPath_相対パスの場合_trueが返る()
+    {
+
+        if (strpos(PHP_OS, 'WIN')) {
+            $input = './system32/hoge/hoge.txt';
+        } else {
+            $input = '../etc/php.ini';
+        }
+        $this->expected = false;
+        $this->actual = SC_Utils::isAbsoluteRealPath($input);
+
+        $this->verify();
+    }
+
+
+    public function testIsAbsoluteRealPath_絶対パスに相対パスが混じっている場合_falseが返る()
+    {
+        if (strpos(PHP_OS, 'WIN')) {
+            $input = 'C:/path/to/eccube/html/../data/hoge.txt';
+        } else {
+            $input = '/path/to/eccube/html/../data/hoge.txt';
+        }
+        $this->expected = false;
+        $this->actual = SC_Utils::isAbsoluteRealPath($input);
+
+        $this->verify();
+    }
+
+    //////////////////////////////////////////
 }
-
