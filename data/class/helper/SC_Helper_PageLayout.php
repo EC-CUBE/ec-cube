@@ -359,7 +359,7 @@ __EOF__;
     {
         foreach ($arrBlocs as $key => $value) {
             $arrBloc =& $arrBlocs[$key];
-
+            $arrBloc['php_path'] = SC_Utils_Ex::isBlank($arrBloc['php_path']) ? '' : HTML_REALDIR . $arrBloc['php_path'];
             // php_pathがある場合は、pathを追加せずにLC_Page_FrontParts_Blocで処理する
             if (! SC_Utils_Ex::isBlank($arrBloc['php_path']) ) continue;
 
