@@ -299,7 +299,7 @@ class SC_CartSession
     // キーが一致した商品の削除
     public function delProductKey($keyname, $val, $productTypeId)
     {
-        $max = count($this->cartSession[$productTypeId]);
+        $max = $this->getMax($productTypeId);
         for ($i = 0; $i < $max; $i++) {
             if ($this->cartSession[$productTypeId][$i][$keyname] == $val) {
                 unset($this->cartSession[$productTypeId][$i]);
