@@ -195,7 +195,7 @@
                         </a>
                     </div>
 
-                    <!--▼買い物かご-->
+                    <!--▼買い物カゴ-->
                     <div class="cart_area clearfix">
                         <!--{if $tpl_stock_find[$id]}-->
                             <!--{if $tpl_classcat_find1[$id]}-->
@@ -248,7 +248,7 @@
                             <div class="cartbtn attention">申し訳ございませんが、只今品切れ中です。</div>
                         <!--{/if}-->
                     </div>
-                    <!--▲買い物かご-->
+                    <!--▲買い物カゴ-->
                 </div>
             </div>
         </form>

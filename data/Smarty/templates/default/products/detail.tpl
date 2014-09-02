@@ -179,7 +179,7 @@
                 <!--★詳細メインコメント★-->
                 <div class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></div>
 
-                <!--▼買い物かご-->
+                <!--▼買い物カゴ-->
                 <div class="cart_area clearfix">
                     <input type="hidden" name="mode" value="cart" />
                     <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
@@ -274,7 +274,7 @@
                         </div>
                     <!--{/if}-->
                 </div>
-                <!--▲買い物かご-->
+                <!--▲買い物カゴ-->
             </div>
         </div>
     </form>

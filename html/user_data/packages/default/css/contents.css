@@ -280,7 +280,7 @@ div.listrightbloc .pricebox {
     margin: 0 0 10px 0;
 }
 
-/* 買い物かご */
+/* 買い物カゴ */
 div.listrightbloc .cart_area {
     padding: 10px;
     border: 1px solid #cef0f4;
@@ -508,7 +508,7 @@ div.listrightbloc .cartin_btn {
     margin-left: 1em;
 }
 
-/* 買い物かご */
+/* 買い物カゴ */
 #detailrightbloc .cart_area {
     padding: 10px;
     background-color: #ecf5ff;

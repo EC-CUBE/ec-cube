@@ -30,7 +30,7 @@
     <hr>
 
     <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php?<!--{$smarty.const.SID}-->" accesskey="8" utn><!--{8|numeric_emoji}-->MYページ</a><br>
-    <a href="<!--{$smarty.const.CART_URL}-->?<!--{$smarty.const.SID|h}-->" accesskey="9"><!--{9|numeric_emoji}-->かごの中を見る</a><br>
+    <a href="<!--{$smarty.const.CART_URL}-->?<!--{$smarty.const.SID|h}-->" accesskey="9"><!--{9|numeric_emoji}-->カゴの中を見る</a><br>
     <a href="<!--{$smarty.const.TOP_URL}-->?<!--{$smarty.const.SID|h}-->" accesskey="0"><!--{0|numeric_emoji}-->TOPページへ</a><br>
     <br>
 

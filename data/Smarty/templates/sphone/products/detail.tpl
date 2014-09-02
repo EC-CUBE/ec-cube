@@ -230,7 +230,7 @@
                 <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
                 <input type="hidden" name="favorite_product_id" value="" />
 
-                <!--▼買い物かご-->
+                <!--▼買い物カゴ-->
                 <!--{if $tpl_stock_find}-->
 
                     <!--{if $tpl_classcat_find1}-->
@@ -290,7 +290,7 @@
                         <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
                     </div>
                 <!--{/if}-->
-                <!--▲買い物かご-->
+                <!--▲買い物カゴ-->
 
                 <!--{if $tpl_login}-->
                     <!--{if !$is_favorite}-->
