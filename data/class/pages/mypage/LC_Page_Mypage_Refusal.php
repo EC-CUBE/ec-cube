@@ -79,6 +79,7 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
                 }
 
                 $objCustomer = new SC_Customer_Ex();
+                $this->lfSendRefusalMail($objCustomer->getValue('customer_id'));
                 $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
                 $objCustomer->EndSession();
 
@@ -136,4 +137,54 @@ class LC_Page_Mypage_Refusal extends LC_Page_AbstractMypage_Ex
     {
         return SC_Helper_Customer_Ex::delete($customer_id);
     }
+
+    /**
+     * 退会手続き完了メール送信する
+     *
+     * @access private
+     * @param integer $customer_id 会員ID
+     * @return void
+     */
+    public function lfSendRefusalMail($customer_id)
+    {
+        // 会員データの取得
+        if (SC_Utils_Ex::sfIsInt($customer_id)) {
+            $arrCustomerData = SC_Helper_Customer_Ex::sfGetCustomerDataFromId($customer_id);
+        }
+        if (SC_Utils_Ex::isBlank($arrCustomerData)) {
+            return false;
+        }
+
+        $CONF = SC_Helper_DB_Ex::sfGetBasisData();
+
+        $objMailText = new SC_SiteView_Ex();
+        $objMailText->setPage($this);
+        $objMailText->assign('CONF', $CONF);
+        $objMailText->assign('name01', $arrCustomerData['name01']);
+        $objMailText->assign('name02', $arrCustomerData['name02']);
+        $objMailText->assignobj($this);
+
+        $objHelperMail  = new SC_Helper_Mail_Ex();
+        $objHelperMail->setPage($this);
+
+        $subject        = $objHelperMail->sfMakeSubject('退会手続きのご完了', $objMailText);
+        $toCustomerMail = $objMailText->fetch('mail_templates/customer_refusal_mail.tpl');
+
+        $objMail = new SC_SendMail_Ex();
+        $objMail->setItem(
+            '',                     // 宛先
+            $subject,               // サブジェクト
+            $toCustomerMail,        // 本文
+            $CONF['email03'],       // 配送元アドレス
+            $CONF['shop_name'],     // 配送元 名前
+            $CONF['email03'],       // reply_to
+            $CONF['email04'],       // return_path
+            $CONF['email04'],       // Errors_to
+            $CONF['email01']        // Bcc
+        );
+        $objMail->setTo($arrCustomerData['email'], $arrCustomerData['name01'] . $arrCustomerData['name02'] .' 様');
+
+        $objMail->sendMail();
+    }
+
 }
