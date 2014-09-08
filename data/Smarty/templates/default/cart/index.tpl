@@ -135,10 +135,6 @@
                                 </tr>
                             <!--{/foreach}-->
                             <tr>
-                                <th colspan="5" class="alignR">小計</th>
-                                <td class="alignR"><!--{$tpl_total_inctax[$key]|n2s|h}-->円</td>
-                            </tr>
-                            <tr>
                                 <th colspan="5" class="alignR">合計</th>
                                 <td class="alignR"><span class="price"><!--{$arrData[$key].total-$arrData[$key].deliv_fee|n2s|h}-->円</span></td>
                             </tr>

@@ -72,7 +72,6 @@
                     <HR>
                 <!--{/foreach}-->
                 <font color="#FF0000">
-                商品合計:<!--{$tpl_total_inctax[$key]|n2s}-->円<br>
                 合計:<!--{$arrData[$key].total-$arrData[$key].deliv_fee|n2s}-->円<br>
                 </font>
                 <br>
