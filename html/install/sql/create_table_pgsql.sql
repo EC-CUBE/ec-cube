@@ -670,7 +670,6 @@ CREATE TABLE dtb_shipping (
     shipping_addr02 text,
     time_id int,
     shipping_time text,
-    shipping_num text,
     shipping_date timestamp,
     shipping_commit_date timestamp,
     rank int,
