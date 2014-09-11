@@ -853,7 +853,6 @@ COMMENT ON COLUMN dtb_shipping.shipping_addr01 IS '配送先住所1';
 COMMENT ON COLUMN dtb_shipping.shipping_addr02 IS '配送先住所2';
 COMMENT ON COLUMN dtb_shipping.time_id IS '配送時間ID';
 COMMENT ON COLUMN dtb_shipping.shipping_time IS '配送時間';
-COMMENT ON COLUMN dtb_shipping.shipping_num IS '配送伝票番号';
 COMMENT ON COLUMN dtb_shipping.shipping_date IS '配達予定日';
 COMMENT ON COLUMN dtb_shipping.shipping_commit_date IS '発送日時';
 COMMENT ON COLUMN dtb_shipping.rank IS '表示順';
