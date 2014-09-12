@@ -189,8 +189,8 @@ $(function() {
                     <span class="attention"><!--{$arrErr.tel02}--></span>
                     <span class="attention"><!--{$arrErr.tel03}--></span>
                     <input type="text" name="tel01" value="<!--{$arrForm.tel01|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -
-                    <input type="text" name="tel02" value="<!--{$arrForm.tel02|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -
-                    <input type="text" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel01 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
+                    <input type="text" name="tel02" value="<!--{$arrForm.tel02|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel02 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" /> -
+                    <input type="text" name="tel03" value="<!--{$arrForm.tel03|h}-->" maxlength="6" size="6" class="box6" style="<!--{if $arrErr.tel03 != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" />
                 </td>
             </tr>
             <tr>
