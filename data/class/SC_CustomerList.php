@@ -173,8 +173,11 @@ class SC_CustomerList extends SC_SelectSql_Ex
             if (isset($this->arrSql['search_htmlmail'])) {
                 $this->setWhere('status = 2');
                 if (SC_Utils_Ex::sfIsInt($this->arrSql['search_htmlmail'])) {
-                    $this->setWhere('mailmaga_flg = ?');
-                    $this->arrVal[] = $this->arrSql['search_htmlmail'];
+                    // メルマガ拒否している会員も含む場合は、条件を付加しない
+                    if ($this->arrSql['search_htmlmail'] != 99) {
+                        $this->setWhere('mailmaga_flg = ?');
+                        $this->arrVal[] = $this->arrSql['search_htmlmail'];
+                    }
                 } else {
                     //　メルマガ購読拒否は省く
                     $this->setWhere('mailmaga_flg <> 3');

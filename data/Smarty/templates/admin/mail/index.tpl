@@ -36,7 +36,8 @@
             <td colspan="3">
                 <!--{assign var=key value="search_htmlmail"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
-                <!--{html_radios name=$key options=$arrHtmlmail separator="&nbsp;" selected=$arrForm[$key].value}-->
+                <!--{html_radios name=$key options=$arrHtmlmail separator="&nbsp;" selected=$arrForm[$key].value}--><br />
+                <span class="attention">「全員（メルマガ拒否している会員も含む） 」を選択される場合は、メンテナンス告知など、運用関連の配信のみとして下さい。</span>
             </td>
         </tr>
         <tr>
@@ -112,7 +113,7 @@
                 <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
                 <td><!--{$arrResults[i].email|h}--></td>
                 <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
-                <td class="center"><!--{$arrHtmlmail[$key]}--></td>
+                <td class="center"><!--{$arrHtmlmail[$key]|default:'なし'}--></td>
                 <td class="center"><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
             </tr>
             <!--{/section}-->
