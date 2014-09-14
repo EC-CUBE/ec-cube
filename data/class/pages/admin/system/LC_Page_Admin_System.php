@@ -91,6 +91,8 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
 
         // 取得範囲を指定(開始行番号、行数のセット)して管理者データを取得
         $this->list_data = $this->getMemberData($objNavi->start_row);
+
+        $this->tpl_last_admin = $this->checkLastAdministrator($this->list_data);
     }
 
     /**
@@ -127,6 +129,28 @@ class LC_Page_Admin_System extends LC_Page_Admin_Ex
 
         return $arrMemberData;
     }
+
+    /**
+     * 登録されている管理者権限が1つであるかチェックする.
+     *
+     * @access private
+     * @param  array   $arrMemberData 管理者データの連想配列
+     * @return boolean 管理者権限が1つであることを示すフラグ
+     */
+    public function checkLastAdministrator($arrMemberData)
+    {
+        $numberOfAdministrator = 0;
+        foreach ($arrMemberData as $member) {
+            if ($member['authority'] == 0) {
+                $numberOfAdministrator++;  
+                if ($numberOfAdministrator > 1) {
+                    break;
+                }
+            }
+        }        
+        return $numberOfAdministrator == 1 ? 1 : 0;
+    }
+
 
     /**
      * ページ番号が信頼しうる値かチェックする.

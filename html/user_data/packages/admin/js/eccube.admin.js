@@ -30,9 +30,12 @@
     var eccube = window.eccube;
 
     //指定されたidの削除を行うページを実行する。
-    eccube.deleteMember = function(id, pageno) {
+    eccube.deleteMember = function(id, pageno, lastAdminFlag) {
         var url = "./delete.php?id=" + id + "&pageno=" + pageno;
-        if(window.confirm('登録内容を削除しても宜しいでしょうか')){
+        var message = lastAdminFlag ? 
+        '警告: 管理者がいなくなってしまいますと、システム設定などの操作が行えなくりますが宜しいでしょうか' 
+        : '登録内容を削除しても宜しいでしょうか';
+        if(window.confirm(message)){
             location.href = url;
         }
     };
