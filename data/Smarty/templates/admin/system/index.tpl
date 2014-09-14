@@ -59,7 +59,9 @@
                 <td><!--{$list_data[data].department|h}--></td>
                 <!--{assign var="work" value=$list_data[data].work}--><td><!--{$arrWORK[$work]|h}--></td>
                 <td align="center"><a href="#" onclick="eccube.openWindow('./input.php?id=<!--{$list_data[data].member_id}-->&amp;pageno=<!--{$tpl_disppage}-->','member_edit','620','450'); return false;">編集</a></td>
-                <td align="center"><!--{if $workmax > 1}--><a href="#" onclick="eccube.deleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->,<!--{if $list_data[data].authority==0}--><!--{$tpl_last_admin}--><!--{else}-->false<!--{/if}-->); return false;">削除</a><!--{else}-->-<!--{/if}--></td>
+                <td align="center"><!--{if $workmax > 1}--><a href="#" onclick="eccube.deleteMember(<!--{$list_data[data].member_id}-->,<!--{$tpl_disppage}-->,<!--{if $list_data[data].authority==0}--><!--{$tpl_last_admin}--><!--{else}-->false<!--{/if}-->); return false;">削除</a>
+                <!--{else}-->-<!--{/if}--></td>
+                <td align="center">
                 <!--{$tpl_nomove}-->
                 <!--{if !($smarty.section.data.first && $tpl_disppage eq 1)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=up&amp;pageno=<!--{$tpl_disppage}-->">上へ</a><!--{/if}-->
                 <!--{if !($smarty.section.data.last && $tpl_disppage eq $tpl_pagemax)}--><a href="./rank.php?id=<!--{$list_data[data].member_id}-->&amp;move=down&amp;pageno=<!--{$tpl_disppage}-->">下へ</a><!--{/if}-->
