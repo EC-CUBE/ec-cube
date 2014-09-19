@@ -135,7 +135,7 @@
                     maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong top text data-role-none" />
 
                 <!--{* ログインしていれば入力済みにする *}-->
-                <!--{if $smarty.server.REQUEST_METHOD != 'POST' && $smarty.session.customer}-->
+                <!--{if $smarty.session.customer}-->
                     <!--{assign var=email02 value=$arrData.email}-->
                 <!--{/if}-->
 
