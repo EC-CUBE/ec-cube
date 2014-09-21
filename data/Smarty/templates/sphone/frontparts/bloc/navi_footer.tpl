@@ -23,7 +23,9 @@
 <ul class="footer_navi">
     <!--{if $tpl_login}-->
         <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_mypage_off.png" alt="MYページ" width="75" height="50" /></a></li>
-        <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL}-->mypage/favorite.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="お気に入り" width="75" height="50" /></a></li>
+        <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
+            <li><a rel="external" href="<!--{$smarty.const.HTTPS_URL}-->mypage/favorite.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="お気に入り" width="75" height="50" /></a></li>
+        <!--{/if}-->
     <!--{else}-->
         <li><a data-transition="slideup" href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_mypage_off.png" alt="MYページ" width="75" height="50" /></a></li>
         <li><a data-transition="slideup" href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php"><img src="<!--{$TPL_URLPATH}-->img/button/btn_footer_favorite_off.png" alt="お気に入り" width="75" height="50" /></a></li>
