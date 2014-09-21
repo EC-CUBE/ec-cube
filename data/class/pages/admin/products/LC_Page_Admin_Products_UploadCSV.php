@@ -503,6 +503,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             // UPDATEの実行
             // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
             $sqlval = $this->lfSetProductClassDefaultData($sqlval, true);
+            var_dump($sqlval);
             $where = 'product_class_id = ?';
             $objQuery->update('dtb_products_class', $sqlval, $where, array($product_class_id));
         }
@@ -616,6 +617,14 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             if ($sqlval['product_type_id'] == '') {
                 $sqlval['product_type_id'] = DEFAULT_PRODUCT_DOWN;
             }
+        } else {
+            // 更新時に値を明示的に指定していない場合にそのままにする
+            if ($sqlval['point_rate'] == '') {
+                unset($sqlval['point_rate']);
+            }
+            if ($sqlval['product_type_id'] == '') {
+                unset($sqlval['product_type_id']);
+            }
         }
         //共通で設定する項目
         if ($sqlval['del_flg'] == '') {
@@ -701,15 +710,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         // 商品種別IDの存在チェック
         if (!$this->lfIsArrayRecord($this->arrProductType, 'product_type_id', $item)) {
             $arrErr['product_type_id'] = '※ 指定の商品種別IDは、登録されていません。';
-        }
-        // 既存の商品クラスを更新する場合、入力が必須となる項目が存在する（既存項目のデフォルト値による更新は望ましくない）
-        if ($item['product_class_id'] != '') {
-            if ($item['point_rate'] == '') {
-                $arrErr['point_rate'] = '※ 既存の商品規格が存在する場合、ポイント付与率を未指定にする事はできません。';
-            }
-            if ($item['product_type_id'] == '') {
-                $arrErr['product_type_id'] = '※ 既存の商品規格が存在する場合、商品種別を未指定にする事はできません。';
-            }
         }
         // 関連商品IDのチェック
         $arrRecommendProductUnique = array();
