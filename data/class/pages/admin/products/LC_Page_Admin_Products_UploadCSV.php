@@ -503,7 +503,6 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
             // UPDATEの実行
             // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
             $sqlval = $this->lfSetProductClassDefaultData($sqlval, true);
-            var_dump($sqlval);
             $where = 'product_class_id = ?';
             $objQuery->update('dtb_products_class', $sqlval, $where, array($product_class_id));
         }
