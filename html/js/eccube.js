@@ -165,6 +165,12 @@
                     return;
                 }
                 break;
+            case 'cartDelete':
+                if(!window.confirm('カゴから商品を削除しても宜しいでしょうか？')){
+                    return;
+                }
+                mode = 'delete';
+                break;
             case 'confirm':
                 if(!window.confirm('登録しても宜しいですか')){
                     return;
