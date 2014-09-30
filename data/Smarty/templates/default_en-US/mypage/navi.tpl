@@ -64,7 +64,7 @@
                 <p>Welcome&nbsp;/&nbsp;
                     <span class="user_name"><!--{$CustomerName1|h}--> <!--{$CustomerName2|h}--></span>
                     <!--{if $smarty.const.USE_POINT !== false}-->&nbsp;
-                        You currently have&nbsp;<span class="point st"><!--{$CustomerPoint|number_format|default:"0"|h}--> pts</span>
+                        You currently have&nbsp;<span class="point st"><!--{$CustomerPoint|number_format|default:"0"|h}--> <!--{if $CustomerPoint == 1}-->pt<!--{else}-->pts<!--{/if}--></span>
                     <!--{/if}-->
                 </p>
             </div>

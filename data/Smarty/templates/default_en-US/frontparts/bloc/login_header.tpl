@@ -48,7 +48,7 @@
                     Welcome
                     <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></span>
                     <!--{if $smarty.const.USE_POINT !== false}-->
-                        / Points: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> pts</span>&nbsp;&nbsp;
+                        / Points: <span class="point"> <!--{$tpl_user_point|number_format|default:0}--> <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></span>&nbsp;&nbsp;
                     <!--{/if}--><!--{if !$tpl_disable_logout}-->
 						<button class="bt02" onclick="fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;">Log out</button><!--{/if}-->
                     </p>

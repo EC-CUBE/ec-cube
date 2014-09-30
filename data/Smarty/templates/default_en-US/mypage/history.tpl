@@ -131,11 +131,11 @@
                 <col width="70%" />
                 <tr>
                     <th class="alignL">Points used</th>
-                    <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pts</td>
+                    <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> <!--{if $tpl_arrOrderData[$key] == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                 </tr>
                 <tr>
                     <th class="alignL">Points added at this time</th>
-                    <td><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pts</td>
+                    <td><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> <!--{if $tpl_arrOrderData.add_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                 </tr>
             </table>
         <!--{/if}-->

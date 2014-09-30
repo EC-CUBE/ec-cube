@@ -130,7 +130,7 @@
         <!--★配送方法の指定★-->
         <!--{assign var=key value="deliv_id"}-->
         <!--{if $is_single_deliv}-->
-            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" id="deliv_id" />
         <!--{else}-->
             <section class="pay_area">
                 <h3 class="subtitle">Delivery method</h3>
@@ -231,7 +231,7 @@
                     <div class="form_area">
                         <p class="fb">It is possible to use <span class="point">1 point as &#036; 1</span></p>
                         <div class="point_announce">
-                            <p>You currently have "<span class="price"><!--{$tpl_user_point|default:0|number_format}--> pts</span>".<br />
+                            <p>You currently have "<span class="price"><!--{$tpl_user_point|default:0|number_format}--> <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></span>".<br />
                             Total amount for this purchase:<span class="price">&#036; <!--{$arrPrices.subtotal|number_format}--></span> (Does not include shipping fees and processing fees.)</p>
                         </div>
 

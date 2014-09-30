@@ -152,26 +152,26 @@
             <col width="70%" />
                 <tr>
                     <th scope="row">Points before placing order</th>
-                    <td><!--{$tpl_user_point|number_format|default:0}-->Pts</td>
+                    <td><!--{$tpl_user_point|number_format|default:0}--> <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                 </tr>
                 <tr>
                     <th scope="row">Points used</th>
-                    <td>-<!--{$arrForm.use_point|number_format|default:0}-->Pts</td>
+                    <td>-<!--{$arrForm.use_point|number_format|default:0}--> <!--{if $arrForm.use_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                 </tr>
                 <!--{if $arrForm.birth_point > 0}-->
                 <tr>
                     <th scope="row">Birthday points</th>
-                    <td>+<!--{$arrForm.birth_point|number_format|default:0}-->Pts</td>
+                    <td>+<!--{$arrForm.birth_point|number_format|default:0}--> <!--{if $arrForm.birth_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                 </tr>
                 <!--{/if}-->
                 <tr>
                     <th scope="row">Points expected to be added at this time</th>
-                    <td>+<!--{$arrForm.add_point|number_format|default:0}-->Pts</td>
+                    <td>+<!--{$arrForm.add_point|number_format|default:0}--> <!--{if $arrForm.add_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                 </tr>
                 <tr>
                 <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
                     <th scope="row">Points added</th>
-                    <td><!--{$total_point|number_format}-->Pts</td>
+                    <td><!--{$total_point|number_format}--> <!--{if $total_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                 </tr>
             </table>
         <!--{/if}-->

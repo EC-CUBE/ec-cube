@@ -30,7 +30,7 @@
         <p>Welcome, <a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" data-transition="slideup"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a></p>
 
         <!--{if $smarty.const.USE_POINT !== false}-->
-            <p>Total points <!--{$tpl_user_point|number_format|default:0}-->pts</p>
+            <p>Total points <!--{$tpl_user_point|number_format|default:0}-->  <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></p>
         <!--{/if}-->
         <p><a rel="external" href="javascript:void(document.login_form_footer.submit())" class="btn_btm">Log out</a></p>
     <!--{else}-->

@@ -145,22 +145,22 @@
                     <!--★ポイント情報★-->
                     <div class="formBox point_confifrm">
                         <dl>
-                            <dt>Points before placing order</dt><dd><!--{$tpl_user_point|number_format|default:0}-->Pts</dd>
+                            <dt>Points before placing order</dt><dd><!--{$tpl_user_point|number_format|default:0}-->  <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></dd>
                         </dl>
                         <dl>
-                            <dt>Points used</dt><dd>-<!--{$arrForm.use_point|number_format|default:0}-->Pts</dd>
+                            <dt>Points used</dt><dd>-<!--{$arrForm.use_point|number_format|default:0}-->  <!--{if $arrForm.use_point == 1}-->pt<!--{else}-->pts<!--{/if}--></dd>
                         </dl>
                         <!--{if $arrForm.birth_point > 0}-->
                         <dl>
-                            <dt>Birthday points</dt><dd>+<!--{$arrForm.birth_point|number_format|default:0}-->Pts</dd>
+                            <dt>Birthday points</dt><dd>+<!--{$arrForm.birth_point|number_format|default:0}--> <!--{if $arrForm.birth_point == 1}-->pt<!--{else}-->pts<!--{/if}--></dd>
                         </dl>
                         <!--{/if}-->
                         <dl>
-                            <dt>Points expected to be added at this time</dt><dd>+<!--{$arrForm.add_point|number_format|default:0}-->Pts</dd>
+                            <dt>Points expected to be added at this time</dt><dd>+<!--{$arrForm.add_point|number_format|default:0}--> <!--{if $arrForm.add_point == 1}-->pt<!--{else}-->pts<!--{/if}--></dd>
                         </dl>
                         <dl>
                             <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
-                            <dt>Points added</dt><dd><!--{$total_point|number_format}-->Pts</dd>
+                            <dt>Points added</dt><dd><!--{$total_point|number_format}--> <!--{if $total_point == 1}-->pt<!--{else}-->pts<!--{/if}--></dd>
                         </dl>
                     </div><!-- /.formBox -->
                 <!--{/if}-->

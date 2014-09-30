@@ -136,7 +136,7 @@
 
         <!--{assign var=key value="deliv_id"}-->
         <!--{if $is_single_deliv}-->
-            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" id="deliv_id" />
         <!--{else}-->
         <div class="pay_area">
             <h3>Delivery method</h3>
@@ -250,7 +250,7 @@
                        If using points, check the box next to "Use points" and enter the number of points you want to use.
                     </p>
                     <div class="point_announce">
-                        <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|default:0|number_format}-->Pts</span>" points.<br />
+                        <p><span class="user_name"><!--{$name01|h}--> <!--{$name02|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|default:0|number_format}--> <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></span>" points.<br />
                             Total amount for this purchase:<span class="price">&#036; <!--{$arrPrices.subtotal|number_format}--></span> <span class="attention">(Does not include shipping fees and processing fees.)</span>
                         </p>
                         <ul>

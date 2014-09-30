@@ -40,11 +40,11 @@
         <!--{if $smarty.const.USE_POINT !== false}-->
             <div class="point_announce">
                 <!--{if $tpl_login}-->
-                     <span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> pts</span>."<br />
+                     <span class="user_name"><!--{$tpl_name|h}--></span>, you currently have "<span class="point"><!--{$tpl_user_point|number_format|default:0}--> <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></span>."<br />
                 <!--{else}-->
                     If using the point system, please complete member registration and log in.<br />
                 <!--{/if}-->
-                It is possible to use points for this purchase.<span class="price">1pts = &#36; <!--{$smarty.const.POINT_VALUE}--></span>.<br />
+                It is possible to use points for this purchase.<span class="price">1pt = &#36; <!--{$smarty.const.POINT_VALUE}--></span>.<br />
             </div>
         <!--{/if}-->
     <!--{/if}-->
@@ -163,12 +163,12 @@
                     <!--{if $arrData[$key].birth_point > 0}-->
                         <tr>
                             <th colspan="5" class="alignR">Birthday points</th>
-                            <td class="alignR"><!--{$arrData[$key].birth_point|number_format}-->pts</td>
+                            <td class="alignR"><!--{$arrData[$key].birth_point|number_format}--> <!--{if $arrData[$key].birth_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                         </tr>
                     <!--{/if}-->
                     <tr>
                         <th colspan="5" class="alignR">Points added at this time</th>
-                        <td class="alignR"><!--{$arrData[$key].add_point|number_format}-->pts</td>
+                        <td class="alignR"><!--{$arrData[$key].add_point|number_format}--> <!--{if $arrData[$key].add_point == 1}-->pt<!--{else}-->pts<!--{/if}--></td>
                     </tr>
                 <!--{/if}-->
             </table>

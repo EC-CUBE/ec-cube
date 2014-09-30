@@ -24,7 +24,7 @@
     <!--{if $tpl_login}-->
         <p class="guest">Welcome, <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--></a></p>
         <!--{if $smarty.const.USE_POINT !== false}-->
-            <p>Total points <!--{$tpl_user_point|number_format|default:0}-->pts</p>
+            <p>Total points <!--{$tpl_user_point|number_format|default:0}-->  <!--{if $tpl_user_point == 1}-->pt<!--{else}-->pts<!--{/if}--></p>
         <!--{/if}-->
     <!--{else}-->
         <p class="guest">Welcome, Guest</p>

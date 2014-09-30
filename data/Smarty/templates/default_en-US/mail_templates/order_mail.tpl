@@ -92,8 +92,8 @@ Quantity:<!--{$item.quantity}-->
 <!--{if $arrOrder.customer_id && $smarty.const.USE_POINT !== false}-->
 ============================================
 <!--{* ご注文前のポイント {$tpl_user_point} pts *}-->
-Points used <!--{$arrOrder.use_point|default:0|number_format}--> pts
-Points expected to be added at this time <!--{$arrOrder.add_point|default:0|number_format}--> pts
-Current amount of points registered <!--{$arrCustomer.point|default:0|number_format}--> pts
+Points used <!--{$arrOrder.use_point|default:0|number_format}--> <!--{if $arrOrder.use_point == 1}-->pt<!--{else}-->pts<!--{/if}-->
+Points expected to be added at this time <!--{$arrOrder.add_point|default:0|number_format}--> <!--{if $arrOrder.use_point == 1}-->pt<!--{else}-->pts<!--{/if}-->
+Current amount of points registered <!--{$arrCustomer.point|default:0|number_format}--> <!--{if $arrOrder.use_point == 1}-->pt<!--{else}-->pts<!--{/if}-->
 <!--{/if}-->
 <!--{$tpl_footer}-->
