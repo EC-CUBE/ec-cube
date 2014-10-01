@@ -580,7 +580,11 @@ class SC_FormParam
         $index = array_search($keyname, $this->keyname);
 
         if ($index !== FALSE) {
-            $this->{$target}[$index] = $value;
+            if ($target == 'default') {
+                $this->arrDefault[$keyname] = $value;
+            } else {
+                $this->{$target}[$index] = $value;
+            }
         }
     }
 
