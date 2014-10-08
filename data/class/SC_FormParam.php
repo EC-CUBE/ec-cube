@@ -612,7 +612,11 @@ class SC_FormParam
             $ret = array();
             foreach ($this->keyname as $index=>$key) {
                 foreach ($arrSetting as $item) {
-                    $ret[$key][$item] = $this->{$item}[$index];
+                    if ($item == 'arrDefault') {
+                        $ret[$key]['default'] = $this->{$item}[$key];
+                    } else {
+                        $ret[$key][$item] = $this->{$item}[$index];
+                    }
                 }
             }
             return $ret;
@@ -625,12 +629,20 @@ class SC_FormParam
                 // 指定のkeynameの全ての設定情報を取得
                 $ret = array();
                 foreach ($arrSetting as $item) {
-                    $ret[$item] = $this->{$item}[$index];
+                    if ($item == 'arrDefault') {
+                        $ret['default'] = $this->{$item}[$keyname];
+                    } else {
+                        $ret[$item] = $this->{$item}[$index];
+                    }
                 }
                 return $ret;
             }
 
-            return $this->{$target}[$index];
+            if ($target == 'default') {
+                return $this->arrDefault[$keyname];
+            } else {
+                return $this->{$target}[$index];
+            }
         }
     }
 }
