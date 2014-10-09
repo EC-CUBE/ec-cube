@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'order/mail_view.tpl';
         $this->tpl_subtitle = '受注管理メール確認';
@@ -53,7 +50,8 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -63,8 +61,8 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $send_id = $_GET['send_id'];
         if (SC_Utils_Ex::sfIsInt($send_id)) {
             $mailHistory = $this->getMailHistory($send_id);
@@ -72,7 +70,6 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
             $this->tpl_body = $mailHistory[0]['mail_body'];
         }
         $this->setTemplate($this->tpl_mainpage);
-
     }
 
     /**
@@ -80,20 +77,13 @@ class LC_Page_Admin_Order_MailView extends LC_Page_Admin_Ex {
      * メールの履歴を取り出す。
      * @param int $send_id
      */
-    function getMailHistory($send_id) {
+    public function getMailHistory($send_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'subject, mail_body';
         $where = 'send_id = ?';
         $mailHistory = $objQuery->select($col, 'dtb_mail_history', $where, array($send_id));
-        return $mailHistory;
-    }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
+        return $mailHistory;
     }
 }

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,8 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_ItemSearch extends SC_Api_Abstract_Ex {
-
+class API_ItemSearch extends SC_Api_Abstract_Ex
+{
     protected $operation_name = 'ItemSearch';
     protected $operation_description = '商品検索・商品一覧情報を取得します。';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;
@@ -39,10 +39,10 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam) {
+    public function doAction($arrParam)
+    {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
-
             $masterData                 = new SC_DB_MasterData_Ex();
             $arrSTATUS            = $masterData->getMasterData('mtb_status');
             $arrSTATUS_IMAGE      = $masterData->getMasterData('mtb_status_image');
@@ -62,12 +62,12 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
             $objQuery->setWhere($arrSearchCondition['where_for_count']);
             $objProduct = new SC_Product_Ex();
             $linemax = $objProduct->findProductCount($objQuery, $arrSearchCondition['arrval']);
-            $objNavi = new SC_PageNavi_Ex($arrRequest['ItemPage'], $tpl_linemax, $disp_number);
+            $objNavi = new SC_PageNavi_Ex($arrRequest['ItemPage'], $linemax, $disp_number);
             $arrProducts = $this->getProductsList($arrSearchCondition, $disp_number, $objNavi->start_row, $linemax, $objProduct);
 
             if (!SC_Utils_Ex::isBlank($arrProducts)) {
                 $arrProducts = $this->setStatusDataTo($arrProducts, $arrSTATUS, $arrSTATUS_IMAGE);
-                $arrProducts = $objProduct->setPriceTaxTo($arrProducts);
+                SC_Product_Ex::setPriceTaxTo($arrProducts);
                 foreach ($arrProducts as $key=>$val) {
                     $arrProducts[$key]['main_list_image'] = SC_Utils_Ex::sfNoImageMainList($val['main_list_image']);
                 }
@@ -91,7 +91,8 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
         return false;
     }
 
-    protected function lfInitParam(&$objFormParam) {
+    protected function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('カテゴリID', 'BrowseNode', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('キーワード', 'Keywords', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メーカー名', 'Manufacturer', STEXT_LEN, 'a', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -99,22 +100,26 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
         $objFormParam->addParam('ソート', 'Sort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    public function getResponseGroupName() {
+    public function getResponseGroupName()
+    {
         return 'Items';
     }
-
 
     /**
      * 商品一覧の取得
      *
+     * @param integer $disp_number
+     * @param integer $linemax
+     * @param SC_Product_Ex $objProduct
      * @return array
      * TODO: LC_Page_Products_List::lfGetProductsList() と共通化
      */
-    protected function getProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct) {
+    protected function getProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $arrOrderVal = array();
 
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
         // 表示順序
         switch ($searchCondition['orderby']) {
             // 販売価格が安い順
@@ -145,21 +150,14 @@ class API_ItemSearch extends SC_Api_Abstract_Ex {
                 } else {
                     $dtb_product_categories = 'dtb_product_categories';
                 }
-                $order = <<< __EOS__
-                    (
-                        SELECT
-                            T3.rank * 2147483648 + T2.rank
-                        FROM
-                            $dtb_product_categories T2
-                            JOIN dtb_category T3
-                              ON T2.category_id = T3.category_id
-                        WHERE T2.product_id = alldtl.product_id
-                        ORDER BY T3.rank DESC, T2.rank DESC
-                        LIMIT 1
-                    ) DESC
-                    ,product_id DESC
-__EOS__;
-                    $objQuery->setOrder($order);
+                $col = 'T3.rank * 2147483648 + T2.rank';
+                $from = "$dtb_product_categories T2 JOIN dtb_category T3 ON T2.category_id = T3.category_id";
+                $where = 'T2.product_id = alldtl.product_id';
+                $objQuery->setOrder('T3.rank DESC, T2.rank DESC');
+                $sub_sql = $objQuery->getSql($col, $from, $where);
+                $sub_sql = $objQuery->dbFactory->addLimitOffset($sub_sql, 1);
+
+                $objQuery->setOrder("($sub_sql) DESC ,product_id DESC");
                 break;
         }
         // 取得範囲の指定(開始行番号、行数のセット)
@@ -174,8 +172,8 @@ __EOS__;
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);
         $arrProducts['productStatus'] = $objProduct->getProductStatus($arrProductId);
-        return $arrProducts;
 
+        return $arrProducts;
     }
 
     /**
@@ -184,7 +182,8 @@ __EOS__;
      * @return array
      * TODO: LC_Page_Products_List:;lfGetSearchCondition() と共通化
      */
-    protected function getSearchCondition($arrSearchData) {
+    protected function getSearchCondition($arrSearchData)
+    {
         $searchCondition = array(
             'where'             => '',
             'arrval'            => array(),
@@ -244,17 +243,16 @@ __EOS__;
         return $searchCondition;
     }
 
-
     /**
      * 商品情報配列に商品ステータス情報を追加する
      *
-     * @param Array $arrProducts 商品一覧情報
-     * @param Array $arrStatus 商品ステータス配列
-     * @param Array $arrStatusImage スタータス画像配列
+     * @param  Array $arrProducts    商品一覧情報
+     * @param  Array $arrStatus      商品ステータス配列
+     * @param  Array $arrStatusImage スタータス画像配列
      * @return Array $arrProducts 商品一覧情報
      */
-    protected function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage) {
-
+    protected function setStatusDataTo($arrProducts, $arrStatus, $arrStatusImage)
+    {
         foreach ($arrProducts['productStatus'] as $product_id => $arrValues) {
             for ($i = 0; $i < count($arrValues); $i++) {
                 $product_status_id = $arrValues[$i];
@@ -268,7 +266,7 @@ __EOS__;
                 }
             }
         }
+
         return $arrProducts;
     }
-
 }

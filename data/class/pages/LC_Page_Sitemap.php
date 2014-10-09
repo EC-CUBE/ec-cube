@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -35,8 +34,8 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * このモジュールにより, 以下のページのサイトマップが生成される.
  * 1. $staticURL で指定したページ
  * 2. 管理画面のデザイン管理から生成したページ
- * 3. 公開されているすべての商品一覧ページ
- * 4. 公開されているすべての商品詳細ページ
+ * 3. 公開されている全ての商品一覧ページ
+ * 4. 公開されている全ての商品詳細ページ
  *
  * このモジュールを設置後, 各検索エンジンにサイトマップを登録することにより, 検索エンジンの
  * インデックス化が促進される.
@@ -50,26 +49,22 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * :TODO: 各ページの changefreq や priority を指定できるようにする
  * :TODO: filemtime 関数を使えば、静的なページの更新時間も取得できそう
  */
-class LC_Page_Sitemap extends LC_Page_Ex {
-
-    // }}}
-    // {{{ properties
-
+class LC_Page_Sitemap extends LC_Page_Ex
+{
     /** 動的に生成しないページの配列 */
-    var $staticURL;
+    public $staticURL;
 
     /** ページリスト */
-    var $arrPageList;
-
-    // }}}
-    // {{{ functions
+    public $arrPageList;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        $this->skip_load_page_layout = true;
         parent::init();
 
         $this->staticURL = array();
@@ -82,7 +77,8 @@ class LC_Page_Sitemap extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         // ページのデータを取得
         // FIXME PCサイトのみに限定している。ある程度妥当だとは思うが、よりベターな方法はないだろうか。
         $this->arrPageList = $this->getPageData('device_type_id = ?', DEVICE_TYPE_PC);
@@ -135,26 +131,18 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * Sitemap の <url /> を生成する.
      *
-     * @param string $loc ページの URL ※必須
-     * @param string $lastmod ファイルの最終更新日 YYYY-MM-DD or W3C Datetime 形式
-     * @param string $changefreq ページの更新頻度
-     * @param double $priority URL の優先度
+     * @param  string  $loc        ページの URL ※必須
+     * @param  string  $lastmod    ファイルの最終更新日 YYYY-MM-DD or W3C Datetime 形式
+     * @param  string  $changefreq ページの更新頻度
+     * @param  double  $priority   URL の優先度
      * @return Sitemap 形式の <url />
      * @see https://www.google.com/webmasters/tools/docs/ja/protocol.html#xmlTagDefinitions
      * TODO Smarty に移行すべき?
      */
-    function createSitemap($loc, $lastmod = '', $changefreq = '', $priority = '') {
+    public function createSitemap($loc, $lastmod = '', $changefreq = '', $priority = '')
+    {
         printf("\t<url>\n");
         printf("\t\t<loc>%s</loc>\n", htmlentities($loc, ENT_QUOTES, 'UTF-8'));
         if (!empty($lastmod)) {
@@ -172,42 +160,46 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     /**
      * TOPページの情報を取得する.
      *
-     * @param array $arrPageList すべてのページ情報の配列
+     * @param  array $arrPageList 全てのページ情報の配列
      * @return array TOPページの情報
      */
-    function getTopPage($arrPageList) {
+    public function getTopPage($arrPageList)
+    {
         $arrRet = array();
         foreach ($arrPageList as $arrPage) {
             if ($arrPage['page_id'] == '1') {
                 $arrRet[0] = $arrPage;
+
                 return $arrRet;
             }
         }
     }
 
     /**
-     * すべての編集可能ページの情報を取得する.
+     * 全ての編集可能ページの情報を取得する.
      *
-     * @param array $arrPageList すべてのページ情報の配列
+     * @param  array $arrPageList 全てのページ情報の配列
      * @return array 編集可能ページ
      */
-    function getEditablePage($arrPageList) {
+    public function getEditablePage($arrPageList)
+    {
         $arrRet = array();
         foreach ($arrPageList as $arrPage) {
             if ($arrPage['page_id'] > 4) {
                 $arrRet[] = $arrPage;
             }
         }
+
         return $arrRet;
     }
 
     /**
-     * すべての商品一覧ページを取得する.
+     * 全ての商品一覧ページを取得する.
      *
      * @return array 検索エンジンからアクセス可能な商品一覧ページの情報
      */
-    function getAllProducts() {
-
+    public function getAllProducts()
+    {
         // XXX: 商品登録の無いカテゴリは除外する方が良い気もする
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $sql = 'SELECT category_id FROM dtb_category WHERE del_flg = 0';
@@ -220,41 +212,44 @@ class LC_Page_Sitemap extends LC_Page_Ex {
             $arrPage['url'] = HTTP_URL . 'products/list.php?category_id=' . $row['category_id'];
             $arrRet[] = $arrPage;
         }
+
         return $arrRet;
     }
 
     /**
-     * すべての商品詳細ページを取得する.
+     * 全ての商品詳細ページを取得する.
      *
      * @return array 検索エンジンからアクセス可能な商品詳細ページの情報
      */
-    function getAllDetail() {
+    public function getAllDetail()
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();
-        $sql = 'SELECT product_id, update_date FROM dtb_products WHERE del_flg = 0 AND status = 1';
+        $sql = 'SELECT product_id, update_date FROM dtb_products WHERE ' . SC_Product_Ex::getProductDispConditions();
         $result = $objQuery->getAll($sql);
 
         $arrRet = array();
         foreach ($result as $row) {
-
             $arrPage['update_date'] = $row['update_date'];
 
             $arrPage['url'] = HTTP_URL . substr(P_DETAIL_URLPATH, strlen(ROOT_URLPATH)) . $row['product_id'];
             $arrRet[] = $arrPage;
         }
+
         return $arrRet;
     }
 
     /**
      * ブロック情報を取得する.
      *
-     * @param string $where WHERE句
-     * @param array  $arrVal WHERE句の値を格納した配列
-     * @return array $arrPageList ブロック情報
+     * @param  string $where  WHERE句
+     * @param  array  $arrVal WHERE句の値を格納した配列
+     * @return array  $arrPageList ブロック情報
      */
-    function getPageData($where = '', $arrVal = '') {
+    public function getPageData($where = '', $arrVal = '')
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();     // DB操作オブジェクト
         $sql = '';                      // データ取得SQL生成用
-        $arrRet = array();              // データ取得用
+        $arrPageList = array();              // データ取得用
 
         // SQL生成(url と update_date 以外は不要？)
         $sql .= ' SELECT';
@@ -298,10 +293,11 @@ class LC_Page_Sitemap extends LC_Page_Ex {
     /**
      * date形式の文字列を W3C Datetime 形式に変換して出力する.
      *
-     * @param date $date 変換する日付
-     * @return void
+     * @param  date $date 変換する日付
+     * @return string
      */
-    function date2W3CDatetime($date) {
+    public function date2W3CDatetime($date)
+    {
         $arr = array();
         // 正規表現で文字列を抽出
         preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})/', $date, $arr);
@@ -309,5 +305,4 @@ class LC_Page_Sitemap extends LC_Page_Ex {
         return sprintf('%04d-%02d-%02dT%02d:%02d:%02d+09:00',
                        $arr[1], $arr[2], $arr[3], $arr[4], $arr[5], $arr[6]);
     }
-
 }

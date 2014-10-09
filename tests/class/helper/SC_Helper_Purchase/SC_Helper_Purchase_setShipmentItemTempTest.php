@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,10 +31,12 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_TestBase
+{
   private $helper;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpProductClass();
     $this->setUpProducts();
@@ -45,12 +47,14 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
     $this->helper = new SC_Helper_Purchase();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSetShipmentItemTemp_製品情報が既に存在する場合_存在する情報が価格に反映される() {
+  public function testSetShipmentItemTemp_製品情報が既に存在する場合_存在する情報が価格に反映される()
+  {
     $this->helper->setShipmentItemTemp('1001', '1001', 10);
 
     $this->expected = array(
@@ -58,7 +62,7 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
       'product_class_id' => '1001',
       'quantity' => 10,
       'price' => 9000,
-      'total_inctax' => 94500.0,
+      'total_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(90000),
       'productsClass' => array('price02' => 9000)
     );
     $this->actual = $_SESSION['shipping']['1001']['shipment_item']['1001'];
@@ -66,7 +70,8 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
     $this->verify();
   }
 
-  public function testSetShipmentItemTemp_製品情報が存在しない場合_DBから取得した値が反映される() {
+  public function testSetShipmentItemTemp_製品情報が存在しない場合_DBから取得した値が反映される()
+  {
     $this->helper->setShipmentItemTemp('1001', '1002', 10);
 
     $this->expected = array(
@@ -74,7 +79,7 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
       'product_class_id' => '1002',
       'quantity' => 10,
       'price' => '2500',
-      'total_inctax' => 26250.0
+      'total_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(25000),
     );
     $result = $_SESSION['shipping']['1001']['shipment_item']['1002'];
     unset($result['productsClass']);
@@ -84,6 +89,5 @@ class SC_Helper_Purchase_setShipmentItemTempTest extends SC_Helper_Purchase_Test
   }
 
   //////////////////////////////////////////
-
 }
 

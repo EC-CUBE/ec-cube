@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,40 +24,47 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Session_isPrepageTest extends Common_TestCase {
+class SC_Session_isPrepageTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objSiteSession = new SC_SiteSession_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testIsPrepage_sessionが空の場合_false() {
+    public function testIsPrepage_sessionが空の場合_false()
+    {
         $this->expected = false;
         $this->actual = $this->objSiteSession->isPrepage();
         $this->verify("ページ判定");
     }
     
-    public function testIsPrepage_prepageとnowpageが違う場合_false() {
+    public function testIsPrepage_prepageとnowpageが違う場合_false()
+    {
         $this->expected = false;
         $_SESSION['site']['pre_page'] = 'test.php';
         $this->actual = $this->objSiteSession->isPrepage();
         $this->verify("ページ判定");
     }
     
-    public function testIsPrepage_prepageとnowpageが同じの場合_true() {
+    public function testIsPrepage_prepageとnowpageが同じの場合_true()
+    {
         $this->expected = true;
         $_SESSION['site']['pre_page'] = $_SERVER['SCRIPT_NAME'];
         $this->actual = $this->objSiteSession->isPrepage();
         $this->verify("ページ判定");
     }
     
-    public function testIsPrepage_pre_regist_successがtrueの場合_true() {
+    public function testIsPrepage_pre_regist_successがtrueの場合_true()
+    {
         $this->expected = true;
         $_SESSION['site']['pre_page'] = 'test.php';
         $_SESSION['site']['pre_regist_success'] = true;

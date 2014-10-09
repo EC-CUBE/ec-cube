@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,7 +28,7 @@
         <input type="hidden" name="mode" value="confirm">
         <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->">
         <!--{assign var=key value="deliv_id"}-->
-        <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->">
+        <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->">
         ■お支払方法 <font color="#FF0000">*</font><br>
         <!--{assign var=key value="payment_id"}-->
         <!--{if $arrErr[$key] != ""}-->
@@ -60,7 +60,8 @@
                 <!--{else}-->
                     <select name="<!--{$key}-->">
                         <option value="" selected="">指定なし</option>
-                        <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
+                        <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
+                        <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
                     </select>
                 <!--{/if}-->
                 <br>
@@ -70,7 +71,8 @@
                 お届け時間：<br>
                 <select name="<!--{$key}-->" id="<!--{$key}-->">
                     <option value="" selected="">指定なし</option>
-                    <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
+                    <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
+                    <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
                 </select>
                 <br>
                 <br>
@@ -90,9 +92,9 @@
             ■ポイント使用の指定<br>
             1ポイントを<!--{$smarty.const.POINT_VALUE}-->円として使用する事ができます。<br>
             <br>
-            <!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<font color="#FF0000"><!--{$tpl_user_point|number_format|default:0}-->Pt</font>」です。<br>
+            <!--{$name01|h}--> <!--{$name02|h}-->様の、現在の所持ポイントは「<font color="#FF0000"><!--{$tpl_user_point|n2s|default:0}-->Pt</font>」です。<br>
             <br>
-            今回ご購入合計金額：<font color="#FF0000"><!--{$arrPrices.subtotal|number_format}-->円</font><br>
+            今回ご購入合計金額：<font color="#FF0000"><!--{$arrPrices.subtotal|n2s}-->円</font><br>
             (送料、手数料を含みません。)<br>
             <br>
             <input type="radio" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}-->>ポイントを使用する<br>

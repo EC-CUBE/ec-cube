@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'system/editdb.tpl';
         $this->tpl_subno    = 'editdb';
@@ -55,7 +52,8 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,8 +63,8 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objFormParam = new SC_FormParam_Ex();
 
         // パラメーターの初期化
@@ -85,42 +83,36 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
 
         //インデックスの現在値を取得
         $this->arrForm = $this->lfGetIndexList();
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * フォームパラメーター初期化
      *
-     * @param object $objFormParam
-     * @param array $arrParams $_POST値
+     * @param  SC_FormParam_Ex $objFormParam
+     * @param  array  $arrParams    $_POST値
      * @return void
      */
-    function initForm(&$objFormParam, &$arrParams) {
-
+    public function initForm(&$objFormParam, &$arrParams)
+    {
         $objFormParam->addParam('モード', 'mode', INT_LEN, 'n', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('テーブル名', 'table_name');
         $objFormParam->addParam('カラム名', 'column_name');
         $objFormParam->addParam('インデックス', 'indexflag');
         $objFormParam->addParam('インデックス（変更後）', 'indexflag_new');
         $objFormParam->setParam($arrParams);
-
     }
 
-    function lfDoChange(&$objFormParam) {
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
+    public function lfDoChange(&$objFormParam)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrTarget = $this->lfGetTargetData($objFormParam);
         $message = '';
         if (is_array($arrTarget) && count($arrTarget) == 0) {
             $message = "window.alert('変更対象となるデータはありませんでした。');";
+
             return $message;
         } elseif (!is_array($arrTarget) && $arrTarget != '') {
             return $arrTarget; // window.alert が返ってきているはず。
@@ -137,10 +129,15 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             }
         }
         $message = "window.alert('インデックスの変更が完了しました。');";
+
         return $message;
     }
 
-    function lfGetTargetData(&$objFormParam) {
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
+    public function lfGetTargetData(&$objFormParam)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrIndexFlag    = $objFormParam->getValue('indexflag');
         $arrIndexFlagNew = $objFormParam->getValue('indexflag_new');
@@ -166,6 +163,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
             if (count($arrErr) != 0) {
                 // 通常の送信ではエラーにならないはずです。
                 $message = "window.alert('不正なデータがあったため処理を中断しました。');";
+
                 return $message;
             }
             if ($param['indexflag'] != $param['indexflag_new']) {
@@ -175,6 +173,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
                 }
             }
         }
+
         return $arrTarget;
     }
 
@@ -183,7 +182,8 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function lfGetIndexList() {
+    public function lfGetIndexList()
+    {
         // データベースからインデックス設定一覧を取得する
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('table_name, column_name');
@@ -204,7 +204,7 @@ class LC_Page_Admin_System_Editdb extends LC_Page_Admin_Ex {
                 $arrIndexList[$key]['indexflag'] = '1';
             }
         }
+
         return $arrIndexList;
     }
-
 }

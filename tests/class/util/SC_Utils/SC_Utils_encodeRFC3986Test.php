@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_encodeRFC3986Test extends Common_TestCase {
+class SC_Utils_encodeRFC3986Test extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testEncodeRFC3986_チルダが含まれる場合_エンコードされない() {
+  public function testEncodeRFC3986_チルダが含まれる場合_エンコードされない()
+  {
     $input = 'http://www.example.co.jp/~';
     $this->expected = 'http%3A%2F%2Fwww.example.co.jp%2F~';
     $this->actual = SC_Utils::encodeRFC3986($input);
@@ -52,6 +56,5 @@ class SC_Utils_encodeRFC3986Test extends Common_TestCase {
   }
 
   //////////////////////////////////////////
-
 }
 

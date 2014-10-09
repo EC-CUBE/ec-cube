@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,21 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-// {{{ requires
 require_once '../require.php';
 require_once '../' . ADMIN_DIR . 'require.php';
-
-// }}}
-// {{{ generate page
 
 $mode = isset($_POST['mode']) ? $_POST['mode'] : '';
 $objPage = lfPageFactory($mode);
 $objPage->init();
-register_shutdown_function(array($objPage, 'destroy'));
 $objPage->process($mode);
 
-
-function lfPageFactory($mode) {
+function lfPageFactory($mode)
+{
     $prefix = 'LC_Page_Upgrade_';
     $file   = CLASS_REALDIR . "pages/upgrade/${prefix}";
     $class  = $prefix;
@@ -64,7 +59,7 @@ function lfPageFactory($mode) {
             break;
         default:
             header('HTTP/1.1 400 Bad Request');
-            GC_Util::gfPrintLog('modeの値が正しくありません。:'.$mode);
+            GC_Util_Ex::gfPrintLog('modeの値が正しくありません。:'.$mode);
             exit();
             break;
     }

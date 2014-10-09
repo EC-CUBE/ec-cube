@@ -5,24 +5,25 @@ require_once($HOME . "/tests/class/SC_Product/SC_Product_TestBase.php");
 /**
  *
  */
-class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase {
+class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetDetailAndProductsClass_商品規格IDの商品情報と規格情報を返す() {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        
+    public function testGetDetailAndProductsClass_商品規格IDの商品情報と規格情報を返す()
+    {
         //更新日を取得
         $arrRet = $this->objQuery->getCol('update_date','dtb_products', 'product_id = 1001');
 
@@ -49,10 +50,10 @@ class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase {
                 ,'status' => '1'
                 ,'del_flg' => '0'
                 ,'update_date' => $arrRet[0]
-                ,'price01_min_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
-                ,'price01_max_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
-                ,'price02_min_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
-                ,'price02_max_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
+                ,'price01_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price01_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
                 ,'maker_id' => null
                 ,'comment4' => null
                 ,'comment5' => null
@@ -101,20 +102,22 @@ class SC_Product_getDetailAndProductsClassTest extends SC_Product_TestBase {
                 ,'down_filename' => null
                 ,'down_realfilename' => null
                 ,'classcategory_name1' => 'cat1001'
-                ,'rank1' => null
+                ,'rank1' => '1'
                 ,'class_name1' => '味'
                 ,'class_id1' => '1'
                 ,'classcategory_id1' => '1001'
                 ,'classcategory_id2' => '1002'
                 ,'classcategory_name2' => 'cat1002'
-                ,'rank2' => null
+                ,'rank2' => '2'
                 ,'class_name2' => '味'
                 ,'class_id2' => '1'
+                ,'price01_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
         );
 
         $this->actual = $this->objProducts->getDetailAndProductsClass('1001');
 
         $this->verify('商品詳細＋規格');
     }
-    
+
 }

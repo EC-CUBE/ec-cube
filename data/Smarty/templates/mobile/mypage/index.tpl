@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,7 +28,7 @@
     <br>
     <!--★現在のポイント★-->
     <!--{if $smarty.const.USE_POINT !== false}-->
-        現在の所持ポイントは「<font color="#ff0000"><!--{$CustomerPoint|number_format|default:"0"|h}-->Pt</font>」です。<br>
+        現在の所持ポイントは「<font color="#ff0000"><!--{$CustomerPoint|n2s|default:"0"|h}-->Pt</font>」です。<br>
         <br>
     <!--{/if}-->
 
@@ -52,9 +52,9 @@
             ▽お支払い方法<br>
             <!--{$arrPayment[$payment_id]|h}--><br>
             ▽合計金額<br>
-            <font color="#ff0000"><!--{$arrOrder[cnt].payment_total|number_format}-->円</font><br>
-            ▽ご注文状況<br>
+            <font color="#ff0000"><!--{$arrOrder[cnt].payment_total|n2s}-->円</font><br>
             <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG }-->
+            ▽ご注文状況<br>
                 <!--{assign var=order_status_id value="`$arrOrder[cnt].status`"}-->
                 <!--{if $order_status_id != $smarty.const.ORDER_PENDING }-->
                     <!--{$arrCustomerOrderStatus[$order_status_id]|h}--><br>
@@ -62,7 +62,7 @@
                     <font color="#ff0000"><!--{$arrCustomerOrderStatus[$order_status_id]|h}--></font><br>
                 <!--{/if}-->
             <!--{/if}-->
-            
+
             <div align="right"><a href="./history.php?order_id=<!--{$arrOrder[cnt].order_id}-->">→詳細を見る</a></div><br>
         <!--{/section}-->
         <hr>

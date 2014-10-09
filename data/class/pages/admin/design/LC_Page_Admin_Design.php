@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Design extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'design/index.tpl';
         $this->tpl_subno = 'layout';
@@ -58,7 +55,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -68,8 +66,8 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objLayout = new SC_Helper_PageLayout_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam, intval($_REQUEST['bloc_cnt']));
@@ -139,26 +137,17 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
         $this->arrEditPage = $objLayout->getPageProperties($this->device_type_id, null);
         //サブタイトルを取得
         $this->tpl_subtitle = $this->arrDeviceType[$this->device_type_id] . '＞' . $this->tpl_subtitle;
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * フォームパラメーターの初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス.
-     * @param integer $bloc_cnt ブロック数
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス.
+     * @param  integer      $bloc_cnt     ブロック数
      * @return void
      */
-    function lfInitParam(&$objFormParam, $bloc_cnt = 0) {
+    public function lfInitParam(&$objFormParam, $bloc_cnt = 0)
+    {
         $objFormParam->addParam('ページID', 'page_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('端末種別ID', 'device_type_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ブロック数', 'bloc_cnt', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -175,12 +164,13 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
     /**
      * ブロックのレイアウト情報を取得する.
      *
-     * @param integer $device_type_id 端末種別ID
-     * @param integer $page_id ページID
-     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
-     * @return array レイアウト情報の配列
+     * @param  integer              $device_type_id 端末種別ID
+     * @param  integer              $page_id        ページID
+     * @param  SC_Helper_PageLayout $objLayout      SC_Helper_PageLayout インスタンス
+     * @return array                レイアウト情報の配列
      */
-    function getLayout($device_type_id, $page_id, &$objLayout) {
+    public function getLayout($device_type_id, $page_id, &$objLayout)
+    {
         $arrResults = array();
         $i = 0;
 
@@ -200,18 +190,20 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
                 $i++;
             }
         }
+
         return $arrResults;
     }
 
     /**
      * ブロック情報の配列をコピーする.
      *
-     * @param array $arrDest コピー先ブロック情報
-     * @param array $arrFrom コピー元ブロック情報
-     * @param integer $cnt 配列番号
+     * @param  array   $arrDest コピー先ブロック情報
+     * @param  array   $arrFrom コピー元ブロック情報
+     * @param  integer $cnt     配列番号
      * @return void
      */
-    function copyBloc(&$arrDest, $arrFrom, $cnt) {
+    public function copyBloc(&$arrDest, $arrFrom, $cnt)
+    {
         $arrDest[$cnt]['target_id'] = $this->arrTarget[$arrFrom['target_id']];
         $arrDest[$cnt]['bloc_id'] = $arrFrom['bloc_id'];
         $arrDest[$cnt]['bloc_row'] = $arrFrom['bloc_row'];
@@ -222,42 +214,47 @@ class LC_Page_Admin_Design extends LC_Page_Admin_Ex {
     /**
      * ブロックIDがコピー先の配列に追加されているかのチェックを行う.
      *
-     * @param array $arrBloc ブロックの配列
-     * @param array $arrToBlocs チェックを行うデータ配列
-     * @return bool 存在する場合 true
+     * @param  array $arrBloc    ブロックの配列
+     * @param  array $arrToBlocs チェックを行うデータ配列
+     * @return bool  存在する場合 true
      */
-    function existsBloc($arrBloc, $arrToBlocs) {
+    public function existsBloc($arrBloc, $arrToBlocs)
+    {
         foreach ($arrToBlocs as $arrToBloc) {
             if ($arrBloc['bloc_id'] === $arrToBloc['bloc_id']) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * プレビューするデータを DB に保存する.
      *
-     * @param integer $page_id プレビューを行うページID
-     * @param SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
-     * @return string プレビューを行う tpl_mainpage ファイル名
+     * @param  integer              $page_id   プレビューを行うページID
+     * @param  SC_Helper_PageLayout $objLayout SC_Helper_PageLayout インスタンス
+     * @return string               プレビューを行う tpl_mainpage ファイル名
      */
-    function savePreviewData($page_id, &$objLayout) {
+    public function savePreviewData($page_id, &$objLayout)
+    {
         $arrPageData = $objLayout->getPageProperties(DEVICE_TYPE_PC, $page_id);
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $arrPageData[0]['page_id'] = 0;
         $objQuery->update('dtb_pagelayout', $arrPageData[0], 'page_id = 0 AND device_type_id = ?', array(DEVICE_TYPE_PC));
+
         return $arrPageData[0]['filename'];
     }
 
     /**
      * ブロックを配置する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param boolean $is_preview プレビュー時の場合 true
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  boolean      $is_preview   プレビュー時の場合 true
      * @return void
      */
-    function placingBlocs(&$objFormParam, $is_preview = false) {
+    public function placingBlocs(&$objFormParam, $is_preview = false)
+    {
         $page_id = $is_preview ? 0 : $objFormParam->getValue('page_id');
         $device_type_id = $objFormParam->getValue('device_type_id');
         $bloc_cnt = $objFormParam->getValue('bloc_cnt');

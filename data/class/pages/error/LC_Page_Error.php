@@ -1,8 +1,8 @@
-<?php //-*- coding: utf-8 -*-
+<?php
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,27 +30,22 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Error.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Error extends LC_Page_Ex {
-
-    // {{{ properties
-
+class LC_Page_Error extends LC_Page_Ex
+{
     /** エラー種別 */
-    var $type;
+    public $type;
 
     /** SC_SiteSession インスタンス */
-    var $objSiteSess;
+    public $objSiteSess;
 
     /** TOPへ戻るフラグ */
-    var $return_top = false;
+    public $return_top = false;
 
     /** エラーメッセージ */
-    var $err_msg = '';
+    public $err_msg = '';
 
     /** モバイルサイトの場合 true */
-    var $is_mobile = false;
-
-    // }}}
-    // {{{ functions
+    public $is_mobile = false;
 
     /**
      * Page を初期化する.
@@ -60,15 +54,23 @@ class LC_Page_Error extends LC_Page_Ex {
      * ここでは, parent::init() を行わない.
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        SC_Helper_HandleError_Ex::$under_error_handling = true;
+
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_title = 'エラー';
         // ディスプレイクラス生成
         $this->objDisplay = new SC_Display_Ex();
 
-        // transformでフックしているばあいに, 再度エラーが発生するため, コールバックを無効化.
         $objHelperPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->plugin_activate_flg);
-        $objHelperPlugin->arrRegistedPluginActions = array();
+        if (is_object($objHelperPlugin)) {
+            // transformでフックしている場合に, 再度エラーが発生するため, コールバックを無効化.
+            $objHelperPlugin->arrRegistedPluginActions = array();
+        }
+
+        // キャッシュから店舗情報取得（DBへの接続は行わない）
+        $this->arrSiteInfo = SC_Helper_DB_Ex::sfGetBasisDataCache(false);
     }
 
     /**
@@ -76,7 +78,8 @@ class LC_Page_Error extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -87,7 +90,9 @@ class LC_Page_Error extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
+        SC_Response_Ex::sendHttpStatus(500);
 
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
@@ -169,18 +174,10 @@ class LC_Page_Error extends LC_Page_Ex {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * エラーページではトランザクショントークンの自動検証は行わない
      */
-    function doValidToken() {
+    public function doValidToken()
+    {
         // queit.
     }
 }

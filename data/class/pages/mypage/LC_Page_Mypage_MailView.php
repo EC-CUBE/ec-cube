@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,17 +30,16 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->httpCacheControl('nocache');
     }
@@ -51,7 +49,8 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
     }
 
@@ -60,8 +59,8 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objCustomer = new SC_Customer_Ex();
         if (!SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
             SC_Utils_Ex::sfDispSiteError(CUSTOMER_ERROR);
@@ -96,15 +95,6 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * GETで指定された受注idのメール送信内容を返す
      *
      * @param mixed $send_id
@@ -112,11 +102,13 @@ class LC_Page_Mypage_MailView extends LC_Page_AbstractMypage_Ex {
      * @access private
      * @return array
      */
-    function lfGetMailView($send_id, $customer_id) {
+    public function lfGetMailView($send_id, $customer_id)
+    {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
         $col        = 'subject, mail_body';
         $where      = 'send_id = ? AND customer_id = ?';
         $arrWhereVal = array($send_id, $customer_id);
+
         return $objQuery->select($col, 'dtb_mail_history LEFT JOIN dtb_order ON dtb_mail_history.order_id = dtb_order.order_id', $where, $arrWhereVal);
     }
 }

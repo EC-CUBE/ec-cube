@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfEncodeFileTest extends Common_TestCase {
+class SC_Utils_sfEncodeFileTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfEncodeFile_ファイルが正常に開けた場合_ファイルがエンコードされ出力先のパスが取得できる() {
+  public function testSfEncodeFile_ファイルが正常に開けた場合_ファイルがエンコードされ出力先のパスが取得できる()
+  {
     $outdir = realpath(dirname(__FILE__)) . "/../../../tmp/enc_output/";
     SC_Helper_FileManager::deleteFile($outdir);
     mkdir($outdir, 0777, TRUE);
@@ -73,6 +77,5 @@ class SC_Utils_sfEncodeFileTest extends Common_TestCase {
   //TODO ファイルが開けなかった場合はexitするためテスト不可
 
   //////////////////////////////////////////
-
 }
 

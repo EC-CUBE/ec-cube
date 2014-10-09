@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,20 +31,24 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetClassCatCountTest extends Common_TestCase {
+class SC_Utils_sfGetClassCatCountTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpClassCat();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetClassCatCount__規格分類の件数がIDごとに取得できる() {
+  public function testSfGetClassCatCount__規格分類の件数がIDごとに取得できる()
+  {
     
     $this->expected = array(
       '1001' => '2',
@@ -57,7 +61,8 @@ class SC_Utils_sfGetClassCatCountTest extends Common_TestCase {
 
   //////////////////////////////////////////
 
-  protected function setUpClassCat() {
+  protected function setUpClassCat()
+  {
     $classes = array(
       array(
         'class_id' => '1001',
@@ -122,7 +127,8 @@ class SC_Utils_sfGetClassCatCountTest extends Common_TestCase {
         'update_date' => 'CURRENT_TIMESTAMP'
       )
     );
-    $this->objQuery->delete('dtb_classcategory');
+    // classcategory_id=0のものは削除しない
+    $this->objQuery->delete('dtb_classcategory', 'classcategory_id <> 0');
     foreach ($class_categories as $item) {
       $this->objQuery->insert('dtb_classcategory', $item);
     }

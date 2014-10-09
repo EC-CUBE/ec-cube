@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,26 +30,25 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Entry.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Entry extends LC_Page_Ex {
-
-    // {{{ properties
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Entry extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->arrJob       = $masterData->getMasterData('mtb_job');
         $this->arrReminder  = $masterData->getMasterData('mtb_reminder');
+        $this->arrCountry   = $masterData->getMasterData('mtb_country');
+        $this->arrSex       = $masterData->getMasterData('mtb_sex');
+        $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
 
         // 生年月日選択肢の取得
-        $objDate            = new SC_Date_Ex(BIRTH_YEAR, date('Y',strtotime('now')));
+        $objDate            = new SC_Date_Ex(BIRTH_YEAR, date('Y', strtotime('now')));
         $this->arrYear      = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth     = $objDate->getMonth(true);
         $this->arrDay       = $objDate->getDay(true);
@@ -63,7 +61,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -73,22 +72,25 @@ class LC_Page_Entry extends LC_Page_Ex {
      * Page のプロセス
      * @return void
      */
-    function action() {
+    public function action()
+    {
+        //決済処理中ステータスのロールバック
+        $objPurchase = new SC_Helper_Purchase_Ex();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $objFormParam = new SC_FormParam_Ex();
 
-        SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam);
-        $objFormParam->setParam($_POST);
-        $arrForm  = $objFormParam->getHashArray();
-
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
-        if ($this->lfCheckReferer($arrForm, $_SERVER['HTTP_REFERER']) === false) {
+        if ($this->lfCheckReferer() === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
         }
 
+        SC_Helper_Customer_Ex::sfCustomerEntryParam($objFormParam);
+        $objFormParam->setParam($_POST);
+
         // mobile用（戻るボタンでの遷移かどうかを判定）
-        if (!empty($arrForm['return'])) {
-            $_POST['mode'] = 'return';
+        if (!empty($_POST['return'])) {
+            $_REQUEST['mode'] = 'return';
         }
 
         switch ($this->getMode()) {
@@ -115,17 +117,15 @@ class LC_Page_Entry extends LC_Page_Ex {
                             $this->arrErr['zip01'] = '※該当する住所が見つかりませんでした。<br>';
                         }
                     }
-                    $this->arrForm  = $objFormParam->getHashArray();
                     break;
                 }
 
                 //-- 確認
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
-                $this->arrForm  = $objFormParam->getHashArray();
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
                     //パスワード表示
-                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($this->arrForm['password']));
+                    $this->passlen      = SC_Utils_Ex::sfPassLen(strlen($objFormParam->getValue('password')));
 
                     $this->tpl_mainpage = 'entry/confirm.tpl';
                     $this->tpl_title    = '会員登録(確認ページ)';
@@ -134,18 +134,16 @@ class LC_Page_Entry extends LC_Page_Ex {
             case 'complete':
                 //-- 会員登録と完了画面
                 $this->arrErr = SC_Helper_Customer_Ex::sfCustomerEntryErrorCheck($objFormParam);
-                $this->arrForm  = $objFormParam->getHashArray();
                 if (empty($this->arrErr)) {
-
                     $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
 
-                    $this->lfSendMail($uniqid, $this->arrForm);
+                    $this->lfSendMail($uniqid, $objFormParam->getHashArray());
 
                     // 仮会員が無効の場合
                     if (CUSTOMER_CONFIRM_MAIL == false) {
                         // ログイン状態にする
                         $objCustomer = new SC_Customer_Ex();
-                        $objCustomer->setLogin($this->arrForm['email']);
+                        $objCustomer->setLogin($objFormParam->getValue('email'));
                     }
 
                     // 完了ページに移動させる。
@@ -153,33 +151,24 @@ class LC_Page_Entry extends LC_Page_Ex {
                 }
                 break;
             case 'return':
-                $this->arrForm  = $objFormParam->getHashArray();
+                // quiet.
                 break;
             default:
                 break;
         }
-
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    // }}}
-    // {{{ protected functions
     /**
      * 会員情報の登録
      *
      * @access private
      * @return uniqid
      */
-    function lfRegistCustomerData($sqlval) {
+    public function lfRegistCustomerData($sqlval)
+    {
         SC_Helper_Customer_Ex::sfEditCustomerData($sqlval);
+
         return $sqlval['secret_key'];
     }
 
@@ -190,11 +179,12 @@ class LC_Page_Entry extends LC_Page_Ex {
      * モバイル端末の場合は, email を email_mobile にコピーし,
      * mobile_phone_id に携帯端末IDを格納する.
      *
-     * @param mixed $objFormParam
+     * @param SC_FormParam $objFormParam
      * @access private
      * @return $arrResults
      */
-    function lfMakeSqlVal(&$objFormParam) {
+    public function lfMakeSqlVal(&$objFormParam)
+    {
         $arrForm                = $objFormParam->getHashArray();
         $arrResults             = $objFormParam->getDbArray();
 
@@ -220,6 +210,7 @@ class LC_Page_Entry extends LC_Page_Ex {
             // PHONE_IDを取り出す
             $arrResults['mobile_phone_id']  =  SC_MobileUserAgent_Ex::getId();
         }
+
         return $arrResults;
     }
 
@@ -229,7 +220,8 @@ class LC_Page_Entry extends LC_Page_Ex {
      * @access private
      * @return void
      */
-    function lfSendMail($uniqid, $arrForm) {
+    public function lfSendMail($uniqid, $arrForm)
+    {
         $CONF           = SC_Helper_DB_Ex::sfGetBasisData();
 
         $objMailText    = new SC_SiteView_Ex();
@@ -254,15 +246,15 @@ class LC_Page_Entry extends LC_Page_Ex {
 
         $objMail = new SC_SendMail_Ex();
         $objMail->setItem(
-            ''                    // 宛先
-            , $subject              // サブジェクト
-            , $toCustomerMail       // 本文
-            , $CONF['email03']      // 配送元アドレス
-            , $CONF['shop_name']    // 配送元 名前
-            , $CONF['email03']      // reply_to
-            , $CONF['email04']      // return_path
-            , $CONF['email04']      // Errors_to
-            , $CONF['email01']      // Bcc
+            '',                     // 宛先
+            $subject,               // サブジェクト
+            $toCustomerMail,        // 本文
+            $CONF['email03'],       // 配送元アドレス
+            $CONF['shop_name'],     // 配送元 名前
+            $CONF['email03'],       // reply_to
+            $CONF['email04'],       // return_path
+            $CONF['email04'],       // Errors_to
+            $CONF['email01']        // Bcc
         );
         // 宛先の設定
         $objMail->setTo($arrForm['email'],
@@ -277,30 +269,42 @@ class LC_Page_Entry extends LC_Page_Ex {
      * 以下の内容をチェックし, 妥当であれば true を返す.
      * 1. 規約ページからの遷移かどうか
      * 2. PC及びスマートフォンかどうか
-     * 3. $post に何も含まれていないかどうか
+     * 3. 自分自身(会員登録ページ)からの遷移はOKとする
      *
      * @access protected
-     * @param array $post $_POST のデータ
-     * @param string $referer $_SERVER['HTTP_REFERER'] のデータ
      * @return boolean kiyaku.php からの妥当な遷移であれば true
      */
-    function lfCheckReferer(&$post, $referer) {
+    public function lfCheckReferer()
+    {
+        $arrRefererParseUrl = parse_url($_SERVER['HTTP_REFERER']);
+        $referer_urlpath = $arrRefererParseUrl['path'];
+
+        $kiyaku_urlpath = ROOT_URLPATH . 'entry/kiyaku.php';
+
+        $arrEntryParseUrl = parse_url(ENTRY_URL);
+        $entry_urlpath = $arrEntryParseUrl['path'];
+
+        $allowed_urlpath = array(
+            $kiyaku_urlpath,
+            $entry_urlpath,
+        );
 
         if (SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE
-            && empty($post)
-            && (preg_match('/kiyaku.php/', basename($referer)) === 0)) {
+            && !in_array($referer_urlpath, $allowed_urlpath)) {
             return false;
-            }
+        }
+
         return true;
     }
 
     /**
      * 入力エラーのチェック.
      *
-     * @param array $arrRequest リクエスト値($_GET)
+     * @param  array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function lfCheckError($arrRequest) {
+    public function lfCheckError($arrRequest)
+    {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -312,29 +316,7 @@ class LC_Page_Entry extends LC_Page_Ex {
         $objFormParam->setParam($arrData);
         // エラーチェック
         $arrErr = $objFormParam->checkError();
-        // 親ウィンドウの戻り値を格納するinputタグのnameのエラーチェック
-        if (!$this->lfInputNameCheck($addData['zip01'])) {
-            $arrErr['zip01'] = '※ 入力形式が不正です。<br />';
-        }
-        if (!$this->lfInputNameCheck($arrdata['zip02'])) {
-            $arrErr['zip02'] = '※ 入力形式が不正です。<br />';
-        }
 
         return $arrErr;
-    }
-
-    /**
-     * エラーチェック.
-     *
-     * @param string $value
-     * @return エラーなし：true エラー：false
-     */
-    function lfInputNameCheck($value) {
-        // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
-        if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
-            return false;
-        }
-
-        return true;
     }
 }

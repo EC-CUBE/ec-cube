@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -33,7 +33,7 @@
 //-->
 </script>
 
-<form name="search_form" method="post" action="">
+<form name="search_form" id="search_form" method="post" action="">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="search" />
 
@@ -80,7 +80,7 @@
                 <!--{if $arrSearchData}-->
                     <li><a class="btn-action" href="javascript:;" onclick="return fnReturn();"><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <!--{/if}-->
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next">続けて登録を行う</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'complete_return', '', ''); return false;"><span class="btn-next">続けて登録を行う</span></a></li>
             </ul>
         </div>
         <div class="btn-area-bottom"></div>

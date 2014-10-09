@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetUnderChildrenArrayTest extends Common_TestCase {
+class SC_Utils_sfGetUnderChildrenArrayTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetUnderChildrenArray__与えられた親IDを持つ要素だけが抽出される() {
+  public function testSfGetUnderChildrenArray__与えられた親IDを持つ要素だけが抽出される()
+  {
     $input_array = array(
       array('parent_id' => '1001', 'child_id' => '1001001'),
       array('parent_id' => '1002', 'child_id' => '1002001'),
@@ -62,6 +66,5 @@ class SC_Utils_sfGetUnderChildrenArrayTest extends Common_TestCase {
   }
 
   //////////////////////////////////////////
-
 }
 

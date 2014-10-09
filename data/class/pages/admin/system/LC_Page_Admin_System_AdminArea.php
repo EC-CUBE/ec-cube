@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'system/adminarea.tpl';
         $this->tpl_subno = 'adminarea';
@@ -56,7 +53,8 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -66,9 +64,9 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
-        if (strpos(HTTPS_URL,'https://') !== FALSE) {
+    public function action()
+    {
+        if (strpos(HTTPS_URL, 'https://') !== FALSE) {
             $this->tpl_enable_ssl = TRUE;
         }
 
@@ -78,7 +76,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $this->initParam($objFormParam, $_POST);
 
         if (count($_POST) > 0) {
-
             // エラーチェック
             $arrErr = $objFormParam->checkError();
 
@@ -93,7 +90,6 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             $this->lfCheckAdminArea($this->arrForm, $arrErr);
 
             if (SC_Utils_Ex::isBlank($arrErr) && $this->lfUpdateAdminData($this->arrForm)) {
-
                 $this->tpl_onload = "window.alert('管理機能の設定を変更しました。URLを変更した場合は、新しいURLにアクセスしてください。');";
             } else {
                 $this->tpl_onload = "window.alert('設定内容に誤りがあります。設定内容を確認してください。');";
@@ -101,57 +97,46 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
             }
 
         } else {
-
-            $admin_dir = str_replace('/','',ADMIN_DIR);
-            $this->arrForm = array('admin_dir'=>$admin_dir,'admin_force_ssl'=>ADMIN_FORCE_SSL,'admin_allow_hosts'=>'');
+            $admin_dir = str_replace('/', '', ADMIN_DIR);
+            $this->arrForm = array('admin_dir'=>$admin_dir, 'admin_force_ssl'=>ADMIN_FORCE_SSL, 'admin_allow_hosts'=>'');
             if (defined('ADMIN_ALLOW_HOSTS')) {
                 $allow_hosts = unserialize(ADMIN_ALLOW_HOSTS);
-                $this->arrForm['admin_allow_hosts'] = implode("\n",$allow_hosts);
-
+                $this->arrForm['admin_allow_hosts'] = implode("\n", $allow_hosts);
             }
         }
 
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター初期化.
      *
-     * @param object $objFormParam
-     * @param array  $arrParams  $_POST値
+     * @param  SC_FormParam_Ex $objFormParam
+     * @param  array  $arrParams    $_POST値
      * @return void
      */
-    function initParam(&$objFormParam, &$arrParams) {
-
+    public function initParam(&$objFormParam, &$arrParams)
+    {
         $objFormParam->addParam('ディレクトリ名', 'admin_dir', ID_MAX_LEN, 'a', array('EXIST_CHECK', 'SPTAB_CHECK', 'ALNUM_CHECK'));
         $objFormParam->addParam('SSL制限', 'admin_force_ssl', 1, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('IP制限', 'admin_allow_hosts', LTEXT_LEN, 'a', array('IP_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
         $objFormParam->convParam();
-
     }
 
     /**
      * 管理機能ディレクトリのチェック.
      *
-     * @param array  $arrForm  $this->arrForm値
-     * @param array  $arrErr   エラーがあった項目用配列
+     * @param  array $arrForm $this->arrForm値
+     * @param  array $arrErr  エラーがあった項目用配列
      * @return void
      */
-    function lfCheckAdminArea(&$arrForm, &$arrErr) {
+    public function lfCheckAdminArea(&$arrForm, &$arrErr)
+    {
         $admin_dir = trim($arrForm['admin_dir']) . '/';
 
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
         foreach ($installData as $key=>$line) {
-            if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
+            if (strpos($line, 'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 //既存ディレクトリのチェック
                 if (file_exists(HTML_REALDIR . $admin_dir) and $admin_dir != 'admin/') {
                     $arrErr['admin_dir'] .= ROOT_URLPATH . $admin_dir . 'は既に存在しています。別のディレクトリ名を指定してください。';
@@ -165,7 +150,8 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
     }
 
     //管理機能ディレクトリのリネームと CONFIG_REALFILE の変更
-    function lfUpdateAdminData(&$arrForm) {
+    public function lfUpdateAdminData(&$arrForm)
+    {
         $admin_dir = trim($arrForm['admin_dir']) . '/';
         $admin_force_ssl = 'false';
         if ($arrForm['admin_force_ssl'] == 1) {
@@ -186,33 +172,35 @@ class LC_Page_Admin_System_AdminArea extends LC_Page_Admin_Ex {
         $installData = file(CONFIG_REALFILE, FILE_IGNORE_NEW_LINES);
         $diff = 0;
         foreach ($installData as $key=>$line) {
-            if (strpos($line,'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
+            if (strpos($line, 'ADMIN_DIR') !== false and ADMIN_DIR != $admin_dir) {
                 $installData[$key] = 'define("ADMIN_DIR", "' . $admin_dir . '");';
                 //管理機能ディレクトリのリネーム
-                if (!rename(HTML_REALDIR . ADMIN_DIR,HTML_REALDIR . $admin_dir)) {
+                if (!rename(HTML_REALDIR . ADMIN_DIR, HTML_REALDIR . $admin_dir)) {
                     $this->arrErr['admin_dir'] .= ROOT_URLPATH . ADMIN_DIR . 'のディレクトリ名を変更できませんでした。';
+
                     return false;
                 }
                 $diff ++;
             }
 
-            if (strpos($line,'ADMIN_FORCE_SSL') !== false) {
+            if (strpos($line, 'ADMIN_FORCE_SSL') !== false) {
                 $installData[$key] = 'define("ADMIN_FORCE_SSL", ' . $admin_force_ssl.');';
                 $diff ++;
             }
-            if (strpos($line,'ADMIN_ALLOW_HOSTS') !== false and ADMIN_ALLOW_HOSTS != $admin_allow_hosts) {
+            if (strpos($line, 'ADMIN_ALLOW_HOSTS') !== false and ADMIN_ALLOW_HOSTS != $admin_allow_hosts) {
                 $installData[$key] = "define('ADMIN_ALLOW_HOSTS', '" . $admin_allow_hosts."');";
                 $diff ++;
             }
         }
 
         if ($diff > 0) {
-            $fp = fopen(CONFIG_REALFILE,'wb');
-            $installData = implode("\n",$installData);
+            $fp = fopen(CONFIG_REALFILE, 'wb');
+            $installData = implode("\n", $installData);
             echo $installData;
             fwrite($fp, $installData);
             fclose($fp);
         }
+
         return true;
     }
 }

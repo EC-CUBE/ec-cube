@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -27,21 +27,16 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_Initial {
-
-    // {{{ cunstructor
-
+class SC_Initial
+{
     /**
      * コンストラクタ.
      */
-    function __construct() {
-
+    public function __construct()
+    {
         /** EC-CUBEのバージョン */
-        define('ECCUBE_VERSION', '2.12.3-dev');
+        define('ECCUBE_VERSION', '2.13.3-dev');
     }
-
-    // }}}
-    // {{{ functions
 
     /**
      * 初期設定を行う.
@@ -49,7 +44,8 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function init() {
+    public function init()
+    {
         $this->requireInitialConfig();
         $this->defineDSN();                 // requireInitialConfig メソッドより後で実行
         $this->defineDirectoryIndex();
@@ -61,6 +57,7 @@ class SC_Initial {
         $this->stripslashesDeepGpc();
         $this->resetSuperglobalsRequest();  // stripslashesDeepGpc メソッドより後で実行
         $this->setTimezone();               // 本当はエラーハンドラーより先に読みたい気も
+        $this->normalizeHostname();         // defineConstants メソッドより後で実行
     }
 
     /**
@@ -69,8 +66,8 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function requireInitialConfig() {
-
+    public function requireInitialConfig()
+    {
         define('CONFIG_REALFILE', realpath(dirname(__FILE__)) . '/../config/config.php');
         if (file_exists(CONFIG_REALFILE)) {
             require_once CONFIG_REALFILE;
@@ -84,7 +81,8 @@ class SC_Initial {
      * @return void
      * @deprecated 下位互換用
      */
-    function defineDSN() {
+    public function defineDSN()
+    {
         if (defined('DB_TYPE') && defined('DB_USER') && defined('DB_PASSWORD')
             && defined('DB_SERVER') && defined('DB_PORT') && defined('DB_NAME')
         ) {
@@ -98,7 +96,8 @@ class SC_Initial {
     /**
      * @deprecated
      */
-    function setErrorReporting() {
+    public function setErrorReporting()
+    {
         error_reporting(E_ALL & ~E_NOTICE);
         // PHP 5.3.0対応
         if (error_reporting() > 6143) {
@@ -114,7 +113,8 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function phpconfigInit() {
+    public function phpconfigInit()
+    {
         ini_set('html_errors', '1');
         ini_set('mbstring.http_input', CHAR_CODE);
         ini_set('mbstring.http_output', CHAR_CODE);
@@ -122,6 +122,7 @@ class SC_Initial {
         ini_set('default_charset', CHAR_CODE);
         ini_set('mbstring.detect_order', 'auto');
         ini_set('mbstring.substitute_character', 'none');
+        ini_set('pcre.backtrack_limit', 1000000);
 
         mb_language('ja'); // mb_internal_encoding() より前に
         // TODO .htaccess の mbstring.language を削除できないか検討
@@ -149,12 +150,10 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function defineDirectoryIndex() {
-
+    public function defineDirectoryIndex()
+    {
         // DirectoryIndex の実ファイル名
-        if (!defined('DIR_INDEX_FILE')) {
-            define('DIR_INDEX_FILE', 'index.php');
-        }
+        SC_Initial_Ex::defineIfNotDefined('DIR_INDEX_FILE', 'index.php');
 
         $useFilenameDirIndex = is_bool(USE_FILENAME_DIR_INDEX)
             ? USE_FILENAME_DIR_INDEX
@@ -180,8 +179,8 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function defineParameter() {
-
+    public function defineParameter()
+    {
         $errorMessage
             = '<div style="color: #F00; font-weight: bold; background-color: #FEB; text-align: center">'
             . CACHE_REALDIR
@@ -193,7 +192,6 @@ class SC_Initial {
 
             // キャッシュが無ければ, 初期データからコピー
         } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
-
             $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
             if (is_writable(CACHE_REALDIR)) {
                 $handle = fopen(CACHE_REALDIR . 'mtb_constants.php', 'w');
@@ -218,12 +216,25 @@ class SC_Initial {
      * パラメーターの補完
      *
      * ソースのみ差し替えたバージョンアップを考慮したもの。
-     * $this->defineIfNotDefined() で定義することを想定
+     * SC_Initial_Ex::defineIfNotDefined() で定義することを想定
      *
      * @access protected
      * @return void
      */
-    function complementParameter() {
+    public function complementParameter()
+    {
+        // 2.13.0 のデータとの互換用
+        /** サイトトップ */
+        SC_Initial_Ex::defineIfNotDefined('TOP_URL', HTTP_URL . DIR_INDEX_PATH);
+        /** カートトップ */
+        SC_Initial_Ex::defineIfNotDefined('CART_URL', HTTP_URL . 'cart/' . DIR_INDEX_PATH);
+
+        // 2.13.0 のテンプレートとの互換用
+        // @deprecated 2.13.1
+        /** サイトトップ */
+        SC_Initial_Ex::defineIfNotDefined('TOP_URLPATH', ROOT_URLPATH . DIR_INDEX_PATH);
+        /** カートトップ */
+        SC_Initial_Ex::defineIfNotDefined('CART_URLPATH', ROOT_URLPATH . 'cart/' . DIR_INDEX_PATH);
     }
 
     /**
@@ -234,7 +245,8 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function createCacheDir() {
+    public function createCacheDir()
+    {
         if (defined('HTML_REALDIR')) {
             umask(0);
             if (!file_exists(COMPILE_REALDIR)) {
@@ -261,7 +273,8 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function defineConstants() {
+    public function defineConstants()
+    {
         // LC_Page_Error用
         /** 指定商品ページがない */
         define('PRODUCT_NOT_FOUND', 1);
@@ -428,7 +441,8 @@ class SC_Initial {
      *
      * @return void
      */
-    function stripslashesDeepGpc() {
+    public function stripslashesDeepGpc()
+    {
         // Strip magic quotes from request data.
         if (get_magic_quotes_gpc()
             && version_compare(PHP_VERSION, '5.0.0', '>=')) {
@@ -438,7 +452,7 @@ class SC_Initial {
             $stripslashes_deep = create_function('&$value, $fn', '
                 if (is_string($value)) {
                     $value = ' . $unescape_function . ';
-                } else if (is_array($value)) {
+                } elseif (is_array($value)) {
                     foreach ($value as &$v) $fn($v, $fn);
                 }
             ');
@@ -458,18 +472,20 @@ class SC_Initial {
      * @access protected
      * @return void
      */
-    function resetSuperglobalsRequest() {
+    public function resetSuperglobalsRequest()
+    {
         $_REQUEST = array_merge($_GET, $_POST);
     }
 
     /**
      * 指定された名前の定数が存在しない場合、指定された値で定義
      *
-     * @param string $name 定数の名前。
-     * @param mixed $value 定数の値。
+     * @param  string $name  定数の名前。
+     * @param  string  $value 定数の値。
      * @return void
      */
-    function defineIfNotDefined($name, $value = null) {
+    public function defineIfNotDefined($name, $value = null)
+    {
         if (!defined($name)) {
             define($name, $value);
         }
@@ -480,7 +496,53 @@ class SC_Initial {
      *
      * @return void
      */
-    function setTimezone() {
+    public function setTimezone()
+    {
         date_default_timezone_set('Asia/Tokyo');
+    }
+
+    /**
+     * ホスト名を正規化する
+     *
+     * @return void
+     */
+    public function normalizeHostname()
+    {
+        if (
+            // パラメーター
+            !USE_NORMALIZE_HOSTNAME
+            // コマンドライン実行の場合
+            || !isset($_SERVER['REQUEST_URI'])
+            // POSTの場合
+            || $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            // 処理せず戻る
+            return;
+        }
+
+        $netUrlRequest = new Net_URL($_SERVER['REQUEST_URI']);
+        // 要求を受けたホスト名
+        $request_hostname = $netUrlRequest->host;
+
+        $netUrlCorrect = new Net_URL(SC_Utils_Ex::sfIsHTTPS() ? HTTPS_URL : HTTP_URL);
+        // 設定上のホスト名
+        $correct_hostname = $netUrlCorrect->host;
+
+        // ホスト名が不一致の場合
+        if ($request_hostname !== $correct_hostname) {
+            // ホスト名を書き換え
+            $netUrlRequest->host = $correct_hostname;
+            // 正しい URL
+            $correct_url = $netUrlRequest->getUrl();
+            // 警告
+            $msg = 'ホスト名不一致を検出。リダイレクト実行。';
+            $msg .= '要求値=' . var_export($request_hostname, true) . ' ';
+            $msg .= '設定値=' . var_export($correct_hostname, true) . ' ';
+            $msg .= 'リダイレクト先=' . var_export($correct_url, true) . ' ';
+            trigger_error($msg, E_USER_WARNING);
+            // リダイレクト(恒久的)
+            SC_Response_Ex::sendHttpStatus(301);
+            SC_Response_Ex::sendRedirect($correct_url);
+        }
     }
 }

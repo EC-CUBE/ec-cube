@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,41 +23,38 @@
 *}-->
 
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="register" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="register" />
 
-<div id="ownersstore" class="contents-main">
+    <div id="ownersstore" class="contents-main">
 
-    <table class="form">
-        <tr>
-            <th>モジュール名</th>
-            <td><!--{$arrLogDetail.module_name|h}--></td>
-        </tr>
-        <tr>
-            <th>ステータス</th>
-            <td><!--{if $arrLogDetail.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
-        </tr>
-        <tr>
-            <th>日時</th>
-            <td><!--{$arrLogDetail.update_date|sfDispDBDate|h}--></td>
-        </tr>
-        <tr>
-            <th>バックアップパス</th>
-            <td><!--{$arrLogDetail.buckup_path|wordwrap:100:"
-":true|h|nl2br}--></td>
-        </tr>
-        <tr>
-            <th>詳細</th>
-            <td>
-            <!--{$arrLogDetail.error|wordwrap:100:"
-":true|h|nl2br}-->
-            <!--{$arrLogDetail.ok|wordwrap:100:"
-":true|h|nl2br}-->
-            </td>
-        </tr>
-    </table>
-    <div class="btn">
-        <a class="btn-action" href='./log.php'><span class="btn-prev">一覧へ戻る</span></a>
+        <table class="form">
+            <tr>
+                <th>モジュール名</th>
+                <td><!--{$arrLogDetail.module_name|h}--></td>
+            </tr>
+            <tr>
+                <th>ステータス</th>
+                <td><!--{if $arrLogDetail.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
+            </tr>
+            <tr>
+                <th>日時</th>
+                <td><!--{$arrLogDetail.update_date|sfDispDBDate|h}--></td>
+            </tr>
+            <tr>
+                <th>バックアップパス</th>
+                <td><!--{$arrLogDetail.buckup_path|wordwrap:100:"\n":true|h|nl2br}--></td>
+            </tr>
+            <tr>
+                <th>詳細</th>
+                <td>
+                    <!--{$arrLogDetail.error|wordwrap:100:"\n":true|h|nl2br}-->
+                    <!--{$arrLogDetail.ok|wordwrap:100:"\n":true|h|nl2br}-->
+                </td>
+            </tr>
+        </table>
+        <div class="btn">
+            <a class="btn-action" href='./log.php'><span class="btn-prev">一覧へ戻る</span></a>
+        </div>
     </div>
-</div>
 </form>

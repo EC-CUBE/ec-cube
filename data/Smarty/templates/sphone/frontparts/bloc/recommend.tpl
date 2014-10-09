@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,12 +28,12 @@
             <!--{section name=cnt loop=$arrBestProducts}-->
                 <li id="mainImage<!--{$smarty.section.cnt.index}-->">
                     <div class="recommendblock clearfix">
-                        <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="<!--{$arrBestProducts[cnt].name|h}-->" />
+                        <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrBestProducts[cnt].main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80px;" alt="<!--{$arrBestProducts[cnt].name|h}-->" />
                         <div class="productContents">
                             <h3><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrBestProducts[cnt].product_id|u}-->"><!--{$arrBestProducts[cnt].name|h}--></a></h3>
                             <p class="mini comment"><!--{$arrBestProducts[cnt].comment|h|nl2br}--></p>
                             <p class="sale_price">
-                                <span class="mini">販売価格(税込):</span><span class="price"><!--{$arrBestProducts[cnt].price02_min_inctax|number_format}--> 円</span>
+                                <span class="mini"><!--{$smarty.const.SALE_PRICE_TITLE|h}-->(税込):</span><span class="price"><!--{$arrBestProducts[cnt].price02_min_inctax|n2s}--> 円</span>
                             </p>
                         </div>
                     </div>

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Login_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type'); //商品種類を取得
@@ -52,7 +49,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -62,7 +60,8 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
         parent::action();
 
         //ヘッダーナビのカート情報を取得
@@ -74,23 +73,15 @@ class LC_Page_FrontParts_Bloc_NaviHeader extends LC_Page_FrontParts_Bloc_Login_E
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * カートの情報を取得する
      *
-     * @param SC_CartSession $objCart カートセッション管理クラス
-     * @param Array $arrInfo 基本情報配列
-     * @param Array $cartKeys 商品種類配列
-     * @return array $arrCartList カートデータ配列
+     * @param  SC_CartSession $objCart  カートセッション管理クラス
+     * @param  Array          $arrInfo  基本情報配列
+     * @param  Array          $cartKeys 商品種類配列
+     * @return array          $arrCartList カートデータ配列
      */
-    function lfGetCartData($objCart, $arrInfo, $cartKeys) {
+    public function lfGetCartData($objCart, $arrInfo, $cartKeys)
+    {
         $cartList = array();
         foreach ($cartKeys as $key) {
             // カート集計処理

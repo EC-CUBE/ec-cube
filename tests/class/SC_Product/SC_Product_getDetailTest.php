@@ -5,24 +5,25 @@ require_once($HOME . "/tests/class/SC_Product/SC_Product_TestBase.php");
 /**
  *
  */
-class SC_Product_getDetailTest extends SC_Product_TestBase {
+class SC_Product_getDetailTest extends SC_Product_TestBase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetDetail_商品IDの詳細情報を返す() {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-        
+    public function testGetDetail_商品IDの詳細情報を返す()
+    {
         //更新日を取得
         $arrRet = $this->objQuery->getCol('update_date','dtb_products', 'product_id = 1001');
 
@@ -49,10 +50,10 @@ class SC_Product_getDetailTest extends SC_Product_TestBase {
                 ,'status' => '1'
                 ,'del_flg' => '0'
                 ,'update_date' => $arrRet[0]
-                ,'price01_min_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
-                ,'price01_max_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
-                ,'price02_min_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
-                ,'price02_max_inctax' => SC_Helper_DB::sfCalcIncTax('1500')
+                ,'price01_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price01_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_min_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
+                ,'price02_max_inctax' => SC_Helper_TaxRule_Ex::sfCalcIncTax(1500)
                 ,'maker_id' => null
                 ,'comment4' => null
                 ,'comment5' => null

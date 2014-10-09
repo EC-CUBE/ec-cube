@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'mail/history.tpl';
         $this->tpl_mainno = 'mail';
@@ -56,7 +53,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -66,8 +64,8 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         switch ($this->getMode()) {
             case 'delete':
                 if (SC_Utils_Ex::sfIsInt($_GET['send_id'])) {
@@ -82,26 +80,16 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         }
 
         list($this->tpl_linemax, $this->arrDataList, $this->arrPagenavi) = $this->lfDoSearch($_POST['search_pageno']);
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * 実行履歴の取得
      *
-     * @param integer $search_pageno 表示したいページ番号
-     * @return array( integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
+     * @param  integer $search_pageno 表示したいページ番号
+     * @return array(  integer 全体件数, mixed メール配信データ一覧配列, mixed SC_PageNaviオブジェクト)
      */
-    function lfDoSearch($search_pageno = 1) {
-
+    public function lfDoSearch($search_pageno = 1)
+    {
         // 引数の初期化
         if (SC_Utils_Ex::sfIsInt($search_pageno)===false) {
             $search_pageno = 1;
@@ -111,7 +99,7 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
         $objQuery =& SC_Query_Ex::getSingletonInstance();    // 件数取得用
 
         // 該当全体件数の取得
-        $linemax = $objQuery->count('dtb_send_history','del_flg = 0');
+        $linemax = $objQuery->count('dtb_send_history', 'del_flg = 0');
 
         // 一覧データの取得
         $objSelect->setOrder('start_date DESC, send_id DESC');
@@ -136,10 +124,10 @@ class LC_Page_Admin_Mail_History extends LC_Page_Admin_Ex {
 
     /**
      * 送信履歴の削除
-     * @param integer $send_id　削除したい送信履歴のID
      * @return void
      */
-    function lfDeleteHistory($send_id) {
+    public function lfDeleteHistory($send_id)
+    {
             $objQuery =& SC_Query_Ex::getSingletonInstance();
             $objQuery->update('dtb_send_history',
                               array('del_flg' =>1),

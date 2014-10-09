@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 define('CALENDAR_ROOT', DATA_REALDIR.'module/Calendar'.DIRECTORY_SEPARATOR);
 require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Ex.php';
 
@@ -32,17 +31,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts
  * @author LOCKON CO.,LTD.
  * @version $ $
  */
-class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
     }
 
@@ -51,7 +48,8 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -61,34 +59,21 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
      *
      * @return void
      */
-    function action() {
-
-        // 休日取得取得
-        $this->arrHoliday = $this->lfGetHoliday();
-        // 定休日取得取得
-        $this->arrRegularHoliday = $this->lfGetRegularHoliday();
+    public function action()
+    {
         // カレンダーデータ取得
         $this->arrCalendar = $this->lfGetCalendar(2);
-
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * カレンダー情報取得.
      *
-     * @param integer $disp_month 表示する月数
-     * @return array カレンダー情報の配列を返す
+     * @param  integer $disp_month 表示する月数
+     * @return array   カレンダー情報の配列を返す
      */
-    function lfGetCalendar($disp_month = 1) {
+    public function lfGetCalendar($disp_month = 1)
+    {
+        $objDate = new SC_Date_Ex();
         $arrCalendar = array();
         $today = date('Y/m/d');
 
@@ -108,7 +93,7 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
                 $arrCalendar[$j][$i]['year']        = $year;
                 $arrCalendar[$j][$i]['month']       = $month;
                 $arrCalendar[$j][$i]['day']         = $objDay->day;
-                $arrCalendar[$j][$i]['holiday']     = $this->lfCheckHoliday($year, $month, $objDay->day);
+                $arrCalendar[$j][$i]['holiday']     = $objDate->isHoliday($year, $month, $objDay->day);
                 $arrCalendar[$j][$i]['today']       = $today === sprintf('%04d/%02d/%02d', $year, $month, $objDay->day);
 
                 $i++;
@@ -117,56 +102,4 @@ class LC_Page_FrontParts_Bloc_Calendar extends LC_Page_FrontParts_Bloc_Ex {
 
         return $arrCalendar;
     }
-
-    /**
-     * 休日取得.
-     *
-     * @return array $arrHoliday 休日情報の配列を返す
-     */
-    function lfGetHoliday() {
-        $objQuery = SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('rank DESC');
-
-        $where = 'del_flg <> 1';
-        $arrRet = $objQuery->select('month, day', 'dtb_holiday', $where);
-        foreach ($arrRet AS $key=>$val) {
-            $arrHoliday[$val['month']][] = $val['day'];
-        }
-        return $arrHoliday;
-    }
-
-    /**
-     * 定休日取得.
-     *
-     * @return array $arrRegularHoliday 定休日情報の配列を返す
-     */
-    function lfGetRegularHoliday() {
-        $arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
-        $arrRegularHoliday = explode('|', $arrInfo['regular_holiday_ids']);
-        return $arrRegularHoliday;
-    }
-
-    /**
-     * 休日チェック取得.
-     *
-     * @param integer $year 年
-     * @param integer $month 月
-     * @param integer $day 日
-     * @return boolean 休日の場合trueを返す
-     */
-    function lfCheckHoliday($year, $month, $day) {
-        if (!empty($this->arrHoliday[$month])) {
-            if (in_array($day, $this->arrHoliday[$month])) {
-                return true;
-            }
-        }
-        if (!empty($this->arrRegularHoliday)) {
-            $day = date('w', mktime(0,0,0 ,$month, $day, $year));
-            if (in_array($day, $this->arrRegularHoliday)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

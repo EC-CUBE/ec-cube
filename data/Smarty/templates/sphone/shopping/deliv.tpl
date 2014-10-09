@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -45,7 +45,7 @@
                 <!--☆右にスライドボタン -->
                 <div class="bubbleBox">
                     <div class="bubble_announce clearfix">
-                        <p class="fb"><a rel="external" href="javascript:fnModeSubmit('multiple', '', '');">複数のお届け先に送りますか？</a></p>
+                        <p class="fb"><a rel="external" href="javascript:eccube.setModeAndSubmit('multiple', '', '');">複数のお届け先に送りますか？</a></p>
                     </div>
                     <div class="bubble_arrow_line"><!--矢印空タグ --></div>
                     <div class="bubble_arrow"><!--矢印空タグ --></div>
@@ -69,8 +69,8 @@
                                     <label for="chk_id_<!--{$smarty.section.cnt.iteration}-->">追加登録住所</label>
                                 </p>
                                 <ul class="edit">
-                                    <li><a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
-                                    <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="fnModeSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
+                                    <li><a rel="external" href="javascript:void(0);" onclick="eccube.openWindow('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->&amp;other_deliv_id=<!--{$arrAddr[cnt].other_deliv_id}-->','new_deiv','600','640'); return false;" class="b_edit">編集</a></li>
+                                    <li><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="eccube.setModeAndSubmit('delete', 'other_deliv_id', '<!--{$arrAddr[cnt].other_deliv_id}-->');" /></li>
                                 </ul>
                             </dt>
                         <!--{/if}-->
@@ -84,27 +84,20 @@
 
                 <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
                     <div class="inner">
-                        <a rel="external" href="javascript:void(0);" onclick="win02('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
+                        <a rel="external" href="javascript:void(0);" onclick="eccube.openWindow('<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php?page=<!--{$smarty.server.SCRIPT_NAME|h}-->','new_deiv','600','640'); return false;" class="btn_sub addbtn">新しいお届け先を追加</a>
                     </div>
                 <!--{/if}-->
             </div><!-- /.formBox -->
 
             <ul class="btn_btm">
-                <li><a rel="external" href="javascript:fnModeSubmit('customer_addr','','');" class="btn">選択したお届け先に送る</a></li>
-                <li><a rel="external" href="<!--{$smarty.const.CART_URLPATH}-->" class="btn_back">戻る</a></li>
+                <li><a rel="external" href="javascript:eccube.setModeAndSubmit('customer_addr','','');" class="btn">選択したお届け先に送る</a></li>
+                <li><a rel="external" href="<!--{$smarty.const.CART_URL}-->" class="btn_back">戻る</a></li>
             </ul>
 
         </form>
     </div><!-- /.form_area -->
 </section>
 
-<!--▼検索バー -->
-<section id="search_area">
-    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-    </form>
-</section>
-<!--▲検索バー -->
+<!--{include file= 'frontparts/search_area.tpl'}-->
+
 <!--▲コンテンツここまで -->

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'order/mail.tpl';
         $this->tpl_mainno = 'order';
@@ -59,7 +56,8 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -69,17 +67,18 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
         $post = $_POST;
         //一括送信用の処理
-        if (array_key_exists('mail_order_id',$post) and $post['mode'] == 'mail_select'){
-            $post['order_id_array'] = implode(',',$post['mail_order_id']);
-        } else if(!array_key_exists('order_id_array',$post)){
+        if (array_key_exists('mail_order_id', $post) and $post['mode'] == 'mail_select') {
+            $post['order_id_array'] = implode(',', $post['mail_order_id']);
+        } elseif (!array_key_exists('order_id_array', $post)) {
             $post['order_id_array'] = $post['order_id'];
         }
 
         //一括送信処理変数チェック(ここですべきかは課題)
-        if (preg_match("/^[0-9|\,]*$/",$post['order_id_array'])){
+        if (preg_match("/^[0-9|\,]*$/", $post['order_id_array'])) {
             $this->order_id_array = $post['order_id_array'];
         } else {
             //エラーで元に戻す
@@ -88,8 +87,8 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
         }
 
         //メール本文の確認例は初めの1受注とする
-        if (!SC_Utils_Ex::isBlank($this->order_id_array)){
-            $order_id_array = split(',',$this->order_id_array);
+        if (!SC_Utils_Ex::isBlank($this->order_id_array)) {
+            $order_id_array = split(',', $this->order_id_array);
             $post['order_id'] = intval($order_id_array[0]);
             $this->order_id_count = count($order_id_array);
         }
@@ -152,11 +151,13 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * 指定された注文番号のメール履歴を取得する。
      * @var int order_id
      */
-    function getMailHistory($order_id) {
+    public function getMailHistory($order_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $col = 'send_date, subject, template_id, send_id';
         $where = 'order_id = ?';
         $objQuery->setOrder('send_date DESC');
+
         return $objQuery->select($col, 'dtb_mail_history', $where, array($order_id));
     }
 
@@ -165,14 +166,15 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * メールを送る。
      * @param SC_FormParam $objFormParam
      */
-    function doSend(&$objFormParam) {
+    public function doSend(&$objFormParam)
+    {
         $arrErr = $objFormParam->checkerror();
 
         // メールの送信
         if (count($arrErr) == 0) {
             // 注文受付メール(複数受注ID対応)
-            $order_id_array = explode(',',$this->order_id_array);
-            foreach ($order_id_array as $order_id){
+            $order_id_array = explode(',', $this->order_id_array);
+            foreach ($order_id_array as $order_id) {
                 $objMail = new SC_Helper_Mail_Ex();
                 $objSendMail = $objMail->sfSendOrderMail($order_id,
                 $objFormParam->getValue('template_id'),
@@ -183,6 +185,7 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
             // TODO $SC_SendMail から送信がちゃんと出来たか確認できたら素敵。
             return true;
         }
+
         return $arrErr;
     }
 
@@ -190,7 +193,8 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * 確認画面を表示する為の準備
      * @param SC_FormParam $objFormParam
      */
-    function confirm(&$objFormParam) {
+    public function confirm(&$objFormParam)
+    {
         $arrErr = $objFormParam->checkerror();
         // メールの送信
         if (count($arrErr) == 0) {
@@ -207,8 +211,10 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
             $this->tpl_body = mb_convert_encoding($objSendMail->body, CHAR_CODE, 'auto');
             $this->tpl_to = $objSendMail->tpl_to;
             $this->tpl_mainpage = 'order/mail_confirm.tpl';
+
             return true;
         }
+
         return $arrErr;
     }
 
@@ -217,18 +223,24 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
      * テンプレートの文言をフォームに入れる。
      * @param SC_FormParam $objFormParam
      */
-    function changeData(&$objFormParam) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+    public function changeData(&$objFormParam)
+    {
+        $template_id = $objFormParam->getValue('template_id');
 
-        if (!SC_Utils_Ex::sfIsInt($objFormParam->getValue('template_id'))) {
-            trigger_error('テンプレートが指定されていません。', E_USER_ERROR);
+        // 未選択時
+        if (strlen($template_id) === 0) {
+            $mailTemplates = null;
+        // 有効選択時
+        } elseif (SC_Utils_Ex::sfIsInt($template_id)) {
+            $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
+            $mailTemplates = $objMailtemplate->get($template_id);
+        // 不正選択時
+        } else {
+            trigger_error('テンプレートの指定が不正。', E_USER_ERROR);
         }
 
-        $where = 'template_id = ?';
-        $arrWhereVal = array($objFormParam->getValue('template_id'));
-        $mailTemplates = $objQuery->getRow('subject, header, footer', 'dtb_mailtemplate', $where, $arrWhereVal);
         if (empty($mailTemplates)) {
-            foreach (array('subject','header','footer') as $key) {
+            foreach (array('subject', 'header', 'footer') as $key) {
                 $objFormParam->setValue($key, '');
             }
         } else {
@@ -239,23 +251,15 @@ class LC_Page_Admin_Order_Mail extends LC_Page_Admin_Order_Ex {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化
      * @param SC_FormParam $objFormParam
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
         $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('メールタイトル', 'subject', STEXT_LEN, 'KVa',  array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
+        $objFormParam->addParam('メールタイトル', 'subject', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam('ヘッダー', 'header', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
         $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK', 'SPTAB_CHECK'));
     }

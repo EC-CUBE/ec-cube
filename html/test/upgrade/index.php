@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once '../../require.php';
 
 /**
@@ -57,7 +56,6 @@ $GLOBALS['productsList'] = array(
 );
 
 switch (getMode()) {
-
 case 'products_list':
     displayProductsList();
     break;
@@ -72,7 +70,8 @@ default:
  *
  * @return string
  */
-function getMode() {
+function getMode()
+{
     if (isset($_GET['mode'])) {
         return $_GET['mode'];
     } elseif (isset($_POST['mode'])) {
@@ -85,7 +84,8 @@ function getMode() {
  * モジュールリスト一覧をjson出力する
  *
  */
-function displayProductsList() {
+function displayProductsList()
+{
     $arrRet = array(
         'status' => 'SUCCESS',
         'data'   => $GLOBALS['productsList']
@@ -102,7 +102,8 @@ function displayProductsList() {
  *
  * @param array $arrProductsList
  */
-function updateModuleTable($arrProductsList) {
+function updateModuleTable($arrProductsList)
+{
     $table = 'dtb_module';
     $where = 'module_id = ?';
     $objQuery =& SC_Query_Ex::getSingletonInstance();

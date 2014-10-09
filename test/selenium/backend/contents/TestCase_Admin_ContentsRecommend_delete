@@ -17,7 +17,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//a[@onclick=&quot;return fnInsertValAndSubmit( document.form3, 'mode', 'delete', '削除します。宜しいですか' )&quot;]</td>
+	<td>//a[@onclick=&quot;return eccube.insertValueAndSubmit( document.form3, 'mode', 'delete', '削除します。宜しいですか' )&quot;]</td>
 	<td></td>
 </tr>
 <tr>

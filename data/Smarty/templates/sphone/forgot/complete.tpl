@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -39,7 +39,7 @@
         </div>
 
         <div class="btn_area">
-            <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" class="btn_sub btn_close">ログイン画面へ</a></p>
+            <p><a rel="external" href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php" class="btn_sub btn_close">ログイン画面へ</a></p>
         </div>
     </form>
 </section>

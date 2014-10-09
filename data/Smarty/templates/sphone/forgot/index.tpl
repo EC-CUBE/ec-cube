@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -35,21 +35,22 @@
                 <input type="text" name="name01"
                     value="<!--{$arrForm.name01|default:''|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.name01|sfGetErrorColor}-->; ime-mode: active;"
+                    style="<!--{$arrErr.name01|sfGetErrorColor}-->;"
                     class="boxHarf text data-role-none" placeholder="姓"/>&nbsp;&nbsp;
                 <input type="text" name="name02"
                     value="<!--{$arrForm.name02|default:''|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.name02|sfGetErrorColor}-->; ime-mode: active;"
+                    style="<!--{$arrErr.name02|sfGetErrorColor}-->;"
                     class="boxHarf text data-role-none" placeholder="名"/>
             </p>
             <hr />
             <p>
                 メールアドレス<br />
+                <span class="attention"><!--{$arrErr.email}--></span>
                 <input type="email" name="email"
-                value="<!--{$tpl_login_email|h}-->"
-                style="<!--{$errmsg|sfGetErrorColor}-->; ime-mode: disabled;"
-                maxlength="200" class="boxLong data-role-none" />
+                value="<!--{$arrForm.email|default:$tpl_login_email|h}-->"
+                style="<!--{$arrErr.email|sfGetErrorColor}-->;"
+                maxlength="200" class="text boxLong data-role-none" />
             </p>
             <span class="attention"><!--{$errmsg}--></span>
             <hr />

@@ -176,45 +176,46 @@ table tr.last {
 
 /*おすすめ商品管理*/
 
-table#recommend-table {
+table.recommend-table {
     border-collapse: collapse;
     font-size: 100%;
     margin: 0 0 50px;
     width: 100%;
 }
 
-div#table-wrap {
+.recommend-product.hidden td{
+    background: #C9C9C9;
+}
+
+div.table-wrap {
     margin-top: 6px;
 }
 
-div#table-wrap div.table-img {
+div.table-wrap div.table-img {
     float: left;
     padding-left: 6px;
 }
 
-div#table-wrap div.table-detail {
+div.table-wrap div.table-detail {
     float: left;
     text-align: left;
     padding-left: 11px;
 }
 
-div#table-wrap div.table-detail div.detail-name {
+div.table-wrap div.table-detail div.detail-name {
     margin-bottom: 5px;
-}
-
-td.no-border {
-    border: 0;
-    background: #f5f5f5;
-    padding: 20px;
-}
-
-td.no-border-w {
-    border: 0;
 }
 
 td.AlignLeft {
     text-align: left;
     padding-left: 11px;
+}
+
+/*おすすめ商品検索画面*/
+
+#recommend-search-results .hidden td,
+#recommend-search-results .hidden th{
+    background: #C9C9C9;
 }
 
 /*通常ボタン*/
@@ -417,17 +418,14 @@ a.btn-normal:active {
 
 
 /*LINK*/
-a:link {
-    color: #39c;
-    text-decoration: none;
-}
-
+a:link,
 a:visited {
     color: #39c;
     text-decoration: none;
 }
 
-a:hover {
+a:link:hover,
+a[href]:hover {
     color: #74badc;
     text-decoration: none;
 }
@@ -520,48 +518,48 @@ a:hover {
     position: relative;
 }
 
-#navi li a,
-#navi li a span {
+#navi li div,
+#navi li div span {
     display: block;
     _float: left;/*IE6対策*/
     cursor: pointer;
 }
 
-#navi li a {
+#navi li div {
     color: #2d2f39;
     height: 28px;
     font-weight: bold;
     text-decoration: none;
 }
 
-#navi li a span {
+#navi li div span {
     padding: 7px 10px;
     _padding: 9px 10px 5px;/*IE6対策*/
     height: 15px;
     _height: 13px;/*IE6対策*/
 }
 
-#navi li a:hover {
+#navi li div:hover {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li a:hover span {
+#navi li div:hover span {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.on a {
+#navi li.on div {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.on a span {
+#navi li.on div span {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.sfhover a {
+#navi li.sfhover div {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
-#navi li.sfhover a span {
+#navi li.sfhover div span {
     background: url('../img/header/navi_on.jpg') left 0 repeat-x;
 }
 
@@ -587,7 +585,8 @@ a:hover {
     font-weight: normal;
 }
 
-#navi li li a {
+#navi li li a,
+#navi li li div {
     display: block;
     top: 2px;
     width: 180px;
@@ -598,7 +597,8 @@ a:hover {
     font-weight: normal;
 }
 
-#navi li li a span {
+#navi li li a span,
+#navi li li div span {
     display: block;
     top: 2px;
     width: 180px;
@@ -614,16 +614,19 @@ a:hover {
     border-width: 0 0 1px 0;
 }
 
-#navi li li a span {
+#navi li li a span,
+#navi li li div span {
     padding: 2px 0 0 8px;
     text-indent: 8px;
 }
 
-#navi li li a:hover {
+#navi li li a:hover,
+#navi li li div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
-#navi li li a:hover span {
+#navi li li a:hover span,
+#navi li li div:hover span {
     background: #666;
 }
 
@@ -631,22 +634,31 @@ a:hover {
 #navi li.on li a span,
 #navi li li.on a,
 #navi li li.on a span,
- {
+#navi li.on li div,
+#navi li.on li div span,
+#navi li li.on div,
+#navi li li.on div span {
     background: transparent;
 }
 
 #navi li.sfhover li a,
 #navi li.sfhover li a span,
 #navi li li.sfhover a,
-#navi li li.sfhover a span {
+#navi li li.sfhover a span,
+#navi li.sfhover li div,
+#navi li.sfhover li div span,
+#navi li li.sfhover div,
+#navi li li.sfhover div span {
     background: transparent;
 }
 
-#navi li.sfhover li a:hover {
+#navi li.sfhover li a:hover,
+#navi li.sfhover li div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
-#navi li li.sfhover a:hover {
+#navi li li.sfhover a:hover,
+#navi li li.sfhover div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
@@ -662,7 +674,9 @@ a:hover {
 
 #navi li li li,
 #navi li li a,
-#navi li li li a span {
+#navi li li li a span,
+#navi li li div,
+#navi li li li div span {
     margin-left: 0;
     display: block;
     width: 180px;
@@ -675,6 +689,7 @@ a:hover {
     background: url('../img/header/subnavi_bak.gif') top left no-repeat #787878;
 }
 
+#navi li li li.sfhover div:hover,
 #navi li li li.sfhover a:hover {
     width: 180px;
     top: 1px;
@@ -688,16 +703,11 @@ a:hover {
     _margin: -28px 0 0 187px;/*IE6応急 */
 }
 
-#navi li:hover ul ul,
-#navi li:hover ul ul ul,
 #navi li.sfhover ul ul,
 #navi li.sfhover ul ul ul {
     left: -9999px;
 }
 
-#navi li:hover ul,
-#navi li li:hover ul,
-#navi li li li:hover ul,
 #navi li.sfhover ul,
 #navi li li.sfhover ul,
 #navi li li li.sfhover ul {
@@ -708,11 +718,13 @@ a:hover {
     background: url('../img/header/subnavi_bak_l2.gif') top left no-repeat #787878;
 }
 
-#navi ul.level1 li.on_level2 a:hover {
+#navi ul.level1 li.on_level2 a:hover,
+#navi ul.level1 li.on_level2 div:hover {
     background: url('../img/header/subnavi_bak_l2_on.gif') top left no-repeat #787878;
 }
 
-#navi ul.level1 li.on_level2 ul.level2 li a:hover {
+#navi ul.level1 li.on_level2 ul.level2 li a:hover,
+#navi ul.level1 li.on_level2 ul.level2 li div:hover {
     background: url('../img/header/subnavi_bak_on.gif') top left no-repeat #474747;
 }
 
@@ -766,7 +778,7 @@ a:hover {
 
 #agreement {
     margin: 0;
-    border-width: 1px
+    border-width: 1px;
     border-color: #c0c0c0;
     border-style: solid;
     width: 480px;
@@ -1081,6 +1093,18 @@ body > #container {
 
 /* 基本情報管理
 ----------------------------------------------- */
+/* SHOPマスター */
+#maparea {
+    padding: 30px;
+    background: #FFFFFF;
+}
+#maparea .btn-area {
+    text-align: center;
+}
+#maps {
+    margin: 0 auto 1em;
+}
+
 /* 郵便番号DB登録 */
 .basis-zip-item {
     margin-bottom: 30px;
@@ -1129,6 +1153,11 @@ body > #container {
     border: 3px solid #ddd;
     width: 230px;
     background-color: #f3f3f3;
+}
+
+#products-category-left li ul,
+#products-rank-left li ul {
+    margin-left: 20px;
 }
 
 #products-category-right .now_dir {

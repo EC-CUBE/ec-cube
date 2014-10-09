@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,26 +22,28 @@
  */
 
 /* ---- SQL文を作るクラス ---- */
-class SC_SelectSql {
+class SC_SelectSql
+{
+    public $sql;
 
-    var $sql;
-
-    var $select;
-    var $where;
-    var $order;
-    var $group;
-    var $arrSql;
-    var $arrVal;
+    public $select;
+    public $where;
+    public $order;
+    public $group;
+    public $arrSql;
+    public $arrVal;
 
     //--　コンストラクタ。
-    function __construct($array = '') {
+    public function __construct($array = '')
+    {
         if (is_array($array)) {
             $this->arrSql = $array;
         }
     }
 
     //-- SQL分生成
-    function getSql($mode = '') {
+    public function getSql($mode = '')
+    {
         $this->sql = $this->select .' '. $this->where .' '. $this->group .' ';
 
         if ($mode == 2) {
@@ -52,14 +54,20 @@ class SC_SelectSql {
     }
 
         // 検索用
-    function addSearchStr($val) {
+    public function addSearchStr($val)
+    {
         $return = '%' .$val. '%';
+
         return $return;
     }
 
     //-- 範囲検索（○　~　○　まで）
-    function selectRange($from, $to, $column) {
 
+    /**
+     * @param string $column
+     */
+    public function selectRange($from, $to, $column)
+    {
         // ある単位のみ検索($from = $to)
         if ($from == $to) {
             $this->setWhere($column .' = ?');
@@ -77,11 +85,17 @@ class SC_SelectSql {
             $this->setWhere($column .' BETWEEN ? AND ?');
             $return = array($from, $to);
         }
+
         return $return;
     }
 
     //--　期間検索（○年○月○日か~○年○月○日まで）
-    function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column) {
+
+    /**
+     * @param string $column
+     */
+    public function selectTermRange($from_year, $from_month, $from_day, $to_year, $to_month, $to_day, $column)
+    {
         $return = array();
 
         // 開始期間の構築
@@ -90,7 +104,7 @@ class SC_SelectSql {
         // 終了期間の構築
         // @see http://svn.ec-cube.net/open_trac/ticket/328
         // FIXME とりあえずintvalで対策...
-        $date2 = mktime (0, 0, 0, intval($to_month), intval($to_day), intval($to_year));
+        $date2 = mktime(0, 0, 0, intval($to_month), intval($to_day), intval($to_year));
         $date2 = $date2 + 86400;
         // SQL文のdate関数に与えるフォーマットは、yyyy/mm/ddで指定する。
         $date2 = date('Y/m/d', $date2);
@@ -120,10 +134,14 @@ class SC_SelectSql {
     }
 
     // checkboxなどで同一カラム内で単一、もしくは複数選択肢が有る場合　例: AND ( sex = xxx OR sex = xxx OR sex = xxx) AND ...
-    function setItemTerm($arr, $ItemStr) {
+
+    /**
+     * @param string $ItemStr
+     */
+    public function setItemTerm($arr, $ItemStr)
+    {
         $return = array();
         foreach ($arr as $data) {
-
             if (count($arr) > 1) {
                 if (!is_null($data)) {
                     $item .= $ItemStr . ' = ? OR ';
@@ -141,11 +159,17 @@ class SC_SelectSql {
             $item = '(' . rtrim($item, ' OR ') . ')';
         }
         $this->setWhere($item);
+
         return $return;
     }
 
     //　NULL値が必要な場合
-    function setItemTermWithNull($arr, $ItemStr) {
+
+    /**
+     * @param string $ItemStr
+     */
+    public function setItemTermWithNull($arr, $ItemStr)
+    {
         $return = array();
         $item = " {$ItemStr} IS NULL ";
 
@@ -160,10 +184,12 @@ class SC_SelectSql {
 
         $item = "({$item}) ";
         $this->setWhere($item);
+
         return $return;
     }
     // NULLもしくは''で検索する場合
-    function setItemTermWithNullAndSpace($arr, $ItemStr) {
+    public function setItemTermWithNullAndSpace($arr, $ItemStr)
+    {
         $return = array();
         $count = count($arr);
         $item = " {$ItemStr} IS NULL OR {$ItemStr} = '' ";
@@ -178,6 +204,7 @@ class SC_SelectSql {
         }
         $item = "({$item}) ";
         $this->setWhere($item);
+
         return $return;
     }
 
@@ -188,8 +215,8 @@ class SC_SelectSql {
                                                             'value'  => $_POST['show_site1']);
 
     */
-    function setWhereByOR($arrWhere) {
-
+    public function setWhereByOR($arrWhere)
+    {
         $count = count($arrWhere);
 
         for ($i = 0; $i < $count; $i++) {
@@ -201,48 +228,64 @@ class SC_SelectSql {
         $statement = '(' . rtrim($statement, ' OR ') . ')';
 
         if ($this->where) {
-
             $this->where .= ' AND ' . $statement;
-
         } else {
-
             $this->where = 'WHERE ' . $statement;
         }
     }
 
-    function setWhere($where) {
+    /**
+     * WHERE を取得する。
+     *
+     * ヘンテコセッター互換仕様。
+     * @param $with_where boolean 必要に応じて WHERE を前置するか
+     * @return string WHERE
+     */
+    public function getWhere($with_where = false)
+    {
+        $where = $this->where;
+
+        if (!$with_where) {
+            $where = preg_replace('/^\s*WHERE\s+/', '', $where);
+        }
+
+        return $where;
+    }
+
+    public function setWhere($where)
+    {
         if ($where != '') {
             if ($this->where) {
-
                 $this->where .= ' AND ' . $where;
-
             } else {
-
                 $this->where = 'WHERE ' . $where;
             }
         }
     }
 
-    function setOrder($order) {
-
+    /**
+     * @param string $order
+     */
+    public function setOrder($order)
+    {
             $this->order =  'ORDER BY ' . $order;
-
     }
 
-    function setGroup($group) {
-
+    public function setGroup($group)
+    {
         $this->group =  'GROUP BY ' . $group;
-
     }
 
-    function clearSql() {
+    public function clearSql()
+    {
         $this->select = '';
         $this->where = '';
         $this->group = '';
         $this->order = '';
     }
 
-    function setSelect($sql) {
+    public function setSelect($sql)
+    {
         $this->select = $sql;
     }
 }

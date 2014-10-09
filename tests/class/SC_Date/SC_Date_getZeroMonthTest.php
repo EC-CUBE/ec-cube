@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,27 +24,32 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Date_getZeroMonthTest extends Common_TestCase {
+class SC_Date_getZeroMonthTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objDate = new SC_Date_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetZeroMonth_要素の数が12の配列を返す() {
+    public function testGetZeroMonth_要素の数が12の配列を返す()
+    {
         $this->expected = 12;
         $this->actual = count($this->objDate->getZeroMonth());
 
         $this->verify("配列の長さ");
     }
 
-    public function testGetZeroMonth_0をつけた月の配列を返す() {
+    public function testGetZeroMonth_0をつけた月の配列を返す()
+    {
         $this->expected = array('01'=>'01','02'=>'02','03'=>'03'
                                 ,'04'=>'04','05'=>'05','06'=>'06'
                                 ,'07'=>'07','08'=>'08','09'=>'09'
@@ -54,5 +59,4 @@ class SC_Date_getZeroMonthTest extends Common_TestCase {
 
         $this->verify("配列の最低値");
     }
-
 }

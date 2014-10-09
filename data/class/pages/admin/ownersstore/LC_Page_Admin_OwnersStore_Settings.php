@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,26 +30,24 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
-
+class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex
+{
     /** SC_FormParamのインスタンス */
-    var $objForm;
+    public $objForm;
 
     /** リクエストパラメーターを格納する連想配列 */
-    var $arrForm;
+    public $arrForm;
 
     /** バリデーションエラー情報を格納する連想配列 */
-    var $arrErr;
-
-    // }}}
-    // {{{ functions
+    public $arrErr;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
 
         $this->tpl_mainpage = 'ownersstore/settings.tpl';
@@ -66,7 +63,8 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -76,7 +74,8 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
         switch ($this->getMode()) {
             // 入力内容をDBへ登録する
             case 'register':
@@ -89,22 +88,14 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * registerアクションの実行.
      * 入力内容をDBへ登録する.
      *
      * @param void
      * @return void
      */
-    function execRegisterMode() {
+    public function execRegisterMode()
+    {
         // パラメーターオブジェクトの初期化
         $this->initRegisterMode();
         // POSTされたパラメーターの検証
@@ -114,6 +105,7 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
         if (!empty($arrErr)) {
             $this->arrErr  = $arrErr;
             $this->arrForm = $this->objForm->getHashArray();
+
             return;
         }
 
@@ -133,7 +125,8 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      * @param void
      * @return void
      */
-    function initRegisterMode() {
+    public function initRegisterMode()
+    {
         // 前後の空白を削除
         if (isset($_POST['public_key'])) {
             $_POST['public_key'] = trim($_POST['public_key']);
@@ -152,7 +145,8 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      * @param void
      * @return array エラー情報を格納した連想配列
      */
-    function validateRegistermode() {
+    public function validateRegistermode()
+    {
         return $this->objForm->checkError();
     }
 
@@ -163,17 +157,19 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      * @param void
      * @return void
      */
-    function execDefaultMode() {
+    public function execDefaultMode()
+    {
         $this->arrForm = $this->getOwnersStoreSettings();
     }
 
     /**
      * DBへ入力内容を登録する.
      *
-     * @param array $arrSettingsData ｵｰﾅｰｽﾞｽﾄｱ設定の連想配列
+     * @param  array $arrSettingsData ｵｰﾅｰｽﾞｽﾄｱ設定の連想配列
      * @return void
      */
-    function registerOwnersStoreSettings($arrSettingsData) {
+    public function registerOwnersStoreSettings($arrSettingsData)
+    {
         $table = 'dtb_ownersstore_settings';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists($table);
@@ -191,7 +187,8 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
      * @param void
      * @return array
      */
-    function getOwnersStoreSettings() {
+    public function getOwnersStoreSettings()
+    {
         $table   = 'dtb_ownersstore_settings';
         $colmuns = '*';
 
@@ -199,7 +196,6 @@ class LC_Page_Admin_OwnersStore_Settings extends LC_Page_Admin_Ex {
         $arrRet = $objQuery->select($colmuns, $table);
 
         if (isset($arrRet[0])) return $arrRet[0];
-
         return array();
     }
 }

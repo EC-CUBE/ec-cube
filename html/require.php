@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,16 +22,16 @@
  */
 
 // rtrim は PHP バージョン依存対策
-define('HTML_REALDIR', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/');
+$GLOBALS['_realdir'] = rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/';
+$GLOBALS['_realdir'] = str_replace('\\', '/', $GLOBALS['_realdir']);
+$GLOBALS['_realdir'] = str_replace('//', '/', $GLOBALS['_realdir']);
+define('HTML_REALDIR', $GLOBALS['_realdir']);
 
 if (!defined('ADMIN_FUNCTION') || ADMIN_FUNCTION !== true) {
     define('FRONT_FUNCTION', true);
 }
 
 require_once HTML_REALDIR . 'define.php';
-if (ob_get_level() > 0 && ob_get_length() > 0) {
-    while (ob_end_clean());
-}
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 
 // 絵文字変換 (除去) フィルターを組み込む。

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,32 +23,32 @@
 *}-->
 
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="register" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="register" />
 
-<div id="ownersstore" class="contents-main">
+    <div id="ownersstore" class="contents-main">
 
-    <table class="list center">
-        <tr>
-            <th>モジュール名</th>
-            <th>ステータス</th>
-            <th>日時</th>
-            <th>詳細</th>
-            <!--{*<th>復元</th>*}-->
-        </tr>
-        <!--{foreach from=$arrInstallLogs item=log name=log_loop}-->
+        <table class="list center">
             <tr>
-                <td class="left"><!--{$log.module_name|h}--></td>
-                <td><!--{if $log.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
-                <td class="left"><!--{$log.update_date|sfDispDBDate|h}--></td>
-                <td>
-                        <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php?mode=detail&amp;log_id=<!--{$log.log_id}-->">
-                        詳細</a>
-                </td>
-                <!--{*<td><!--{$log.log_id}--></td>*}-->
+                <th>モジュール名</th>
+                <th>ステータス</th>
+                <th>日時</th>
+                <th>詳細</th>
+                <!--{*<th>復元</th>*}-->
             </tr>
-        <!--{/foreach}-->
-    </table>
+            <!--{foreach from=$arrInstallLogs item=log name=log_loop}-->
+                <tr>
+                    <td class="left"><!--{$log.module_name|h}--></td>
+                    <td><!--{if $log.error_flg}-->失敗<!--{else}-->成功<!--{/if}--></td>
+                    <td class="left"><!--{$log.update_date|sfDispDBDate|h}--></td>
+                    <td>
+                            <a href="<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->ownersstore/log.php?mode=detail&amp;log_id=<!--{$log.log_id}-->">
+                            詳細</a>
+                    </td>
+                    <!--{*<td><!--{$log.log_id}--></td>*}-->
+                </tr>
+            <!--{/foreach}-->
+        </table>
 
-</div>
+    </div>
 </form>

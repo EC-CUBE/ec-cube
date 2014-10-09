@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -33,41 +33,49 @@ class SC_Helper_Address
     /**
      * お届け先を登録
      *
-     * @param array $sqlval
+     * @param  array   $sqlval
      * @return array()
      */
-    function save($sqlval) {
+    public function registAddress($sqlval)
+    {
+        if (self::delivErrorCheck($sqlval)) {
+            return false;
+        }
+        
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $customer_id = $sqlval['customer_id'];
         $other_deliv_id = $sqlval['other_deliv_id'];
 
-        // 顧客IDのチェック
-        if (is_null($customer_id) || !is_numeric($customer_id) || !preg_match("/^\d+$/", $customer_id)) {
-            SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '顧客IDを正しく指定して下さい。');
-        }
         // 追加
         if (strlen($other_deliv_id == 0)) {
-            // 別のお届け先登録数の取得
-            $deliv_count = $objQuery->count('dtb_other_deliv', 'customer_id = ?', array($customer_id));
             // 別のお届け先最大登録数に達している場合、エラー
+            $from   = 'dtb_other_deliv';
+            $where  = 'customer_id = ?';
+            $arrVal = array($customer_id);
+            $deliv_count = $objQuery->count($from, $where, $arrVal);
             if ($deliv_count >= DELIV_ADDR_MAX) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先最大登録数に達しています。');
+                return false;
             }
 
-            // 実行
+            // 別のお届け先を追加
             $sqlval['other_deliv_id'] = $objQuery->nextVal('dtb_other_deliv_other_deliv_id');
-            $objQuery->insert('dtb_other_deliv', $sqlval);
+            $ret = $objQuery->insert($from, $sqlval);
 
         // 変更
         } else {
-            $deliv_count = $objQuery->count('dtb_other_deliv','other_deliv_id = ?' ,array($other_deliv_id));
+            $from   = 'dtb_other_deliv';
+            $where  = 'customer_id = ? AND other_deliv_id = ?';
+            $arrVal = array($customer_id, $other_deliv_id);
+            $deliv_count = $objQuery->count($from, $where, $arrVal);
             if ($deliv_count != 1) {
-                SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '一致する別のお届け先がありません。');
+                return false;
             }
 
-            // 実行
-            $objQuery->update('dtb_other_deliv', $sqlval, 'other_deliv_id = ?', array($other_deliv_id));
+            // 別のお届け先を変更
+            $ret = $objQuery->update($from, $sqlval, $where, $arrVal);
         }
+        
+        return $ret;
     }
 
     /**
@@ -76,48 +84,77 @@ class SC_Helper_Address
      * @param integer $other_deliv_id
      * @return array()
      */
-    function get($other_deliv_id) {
+    public function getAddress($other_deliv_id, $customer_id = '')
+    {
+        if (self::delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
+            return false;
+        }
+        
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $address = $objQuery->select('*', 'dtb_other_deliv', 'other_deliv_id = ?', array($other_deliv_id));
-        return $address ? $address[0] : FALSE;
+        
+        $col    = '*';
+        $from   = 'dtb_other_deliv';
+        $where  = 'customer_id = ? AND other_deliv_id = ?';
+        $arrVal = array($customer_id, $other_deliv_id);
+        $address = $objQuery->getRow($col, $from, $where, $arrVal);
+
+        return $address;
     }
 
     /**
      * お届け先の一覧を取得
      *
-     * @param integer $customerId
-     * @param integer $startno
+     * @param  integer $customer_id
+     * @param  integer $startno
      * @return array
      */
-    function getList($customer_id, $startno = '') {
+    public function getList($customer_id, $startno = '')
+    {
+        if (self::delivErrorCheck(array('customer_id' => $customer_id))) {
+            return false;
+        }
+        
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $objQuery->setOrder('other_deliv_id DESC');
         //スマートフォン用の処理
         if ($startno != '') {
             $objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         }
-        return $objQuery->select('*', 'dtb_other_deliv', 'customer_id = ?', array($customer_id));
+
+        $col    = '*';
+        $from   = 'dtb_other_deliv';
+        $where  = 'customer_id = ?';
+        $arrVal = array($customer_id);
+        return $objQuery->select($col, $from, $where, $arrVal);
     }
 
     /**
      * お届け先の削除
      *
-     * @param integer $delivId
      * @return void
      */
-    function delete($other_deliv_id) {
-        $where      = 'other_deliv_id = ?';
+    public function deleteAddress($other_deliv_id, $customer_id = '')
+    {
+        if (self::delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
+            return false;
+        }
+        
         $objQuery   =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->delete('dtb_other_deliv', $where, array($other_deliv_id));
+
+        $from   = 'dtb_other_deliv';
+        $where  = 'customer_id = ? AND other_deliv_id = ?';
+        $arrVal = array($customer_id, $other_deliv_id);
+        return $objQuery->delete($from, $where, $arrVal);
     }
 
     /**
      * お届け先フォーム初期化
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function setFormParam(&$objFormParam) {
+    public function setFormParam(&$objFormParam)
+    {
         SC_Helper_Customer_Ex::sfCustomerCommonParam($objFormParam);
         $objFormParam->addParam('', 'other_deliv_id');
     }
@@ -125,11 +162,34 @@ class SC_Helper_Address
     /**
      * お届け先フォームエラーチェック
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function errorCheck(&$objFormParam) {
+    public function errorCheck(&$objFormParam)
+    {
         $objErr = SC_Helper_Customer_Ex::sfCustomerCommonErrorCheck($objFormParam);
+
         return $objErr->arrErr;
+    }
+    
+    /**
+     * お届け先エラーチェック
+     * 
+     * @param array $arrParam
+     * @return boolean / false
+     */
+    public function delivErrorCheck($arrParam)
+    {
+        $error_flg = false;
+        
+        if (is_null($arrParam['customer_id']) || !is_numeric($arrParam['customer_id']) || !preg_match("/^\d+$/", $arrParam['customer_id'])) {
+            $error_flg = true;
+        }
+
+        if (strlen($arrParam['other_deliv_id']) > 0 && (!is_numeric($arrParam['other_deliv_id']) || !preg_match("/^\d+$/", $arrParam['other_deliv_id']))) {
+            $error_flg = true;
+        }
+        
+        return $error_flg;
     }
 }

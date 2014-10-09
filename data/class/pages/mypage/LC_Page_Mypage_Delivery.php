@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,22 +30,21 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_subtitle = 'お届け先追加･変更';
         $this->tpl_mypageno = 'delivery';
         $masterData         = new SC_DB_MasterData_Ex();
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
+        $this->arrCountry   = $masterData->getMasterData('mtb_country');
         $this->httpCacheControl('nocache');
     }
 
@@ -55,7 +53,8 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
     }
 
@@ -64,8 +63,8 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objCustomer    = new SC_Customer_Ex();
         $customer_id    = $objCustomer->getValue('customer_id');
         $objAddress     = new SC_Helper_Address_Ex();
@@ -76,7 +75,6 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
         $objFormParam->convParam();
 
         switch ($this->getMode()) {
-
             // お届け先の削除
             case 'delete':
                 if ($objFormParam->checkError()) {
@@ -84,23 +82,25 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
                     SC_Response_Ex::actionExit();
                 }
 
-                $objAddress->delete($objFormParam->getValue('other_deliv_id'));
+                if (!$objAddress->deleteAddress($objFormParam->getValue('other_deliv_id'), $customer_id)) {
+                    SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先を削除できませんでした。');
+                    SC_Response_Ex::actionExit();
+                }
                 break;
 
             // スマートフォン版のもっと見るボタン用
             case 'getList':
-                    $arrData = $objFormParam->getHashArray();
-                    //別のお届け先情報
-                    $arrOtherDeliv = $objAddress->getList($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
-                    //県名をセット
-                    $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
-                    $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
-                    $this->arrOtherDeliv = $arrOtherDeliv;
+                $arrData = $objFormParam->getHashArray();
+                //別のお届け先情報
+                $arrOtherDeliv = $objAddress->getList($customer_id, (($arrData['pageno'] - 1) * SEARCH_PMAX));
+                //県名をセット
+                $arrOtherDeliv = $this->setPref($arrOtherDeliv, $this->arrPref);
+                $arrOtherDeliv['delivCount'] = count($arrOtherDeliv);
+                $this->arrOtherDeliv = $arrOtherDeliv;
 
-
-                    echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
-                    SC_Response_Ex::actionExit();
-                    break;
+                echo SC_Utils_Ex::jsonEncode($this->arrOtherDeliv);
+                SC_Response_Ex::actionExit();
+                break;
 
             // お届け先の表示
             default:
@@ -115,25 +115,16 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
 
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * フォームパラメータの初期化
      *
+     * @param SC_FormParam_Ex $objFormParam
      * @return SC_FormParam
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('お届け先ID', 'other_deliv_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('現在ページ', 'pageno', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'), '', false);
     }
@@ -145,12 +136,14 @@ class LC_Page_Mypage_Delivery extends LC_Page_AbstractMypage_Ex {
      * @param array $arrPref
      * return array
      */
-    function setPref($arrOtherDeliv, $arrPref) {
+    public function setPref($arrOtherDeliv, $arrPref)
+    {
         if (is_array($arrOtherDeliv)) {
             foreach ($arrOtherDeliv as $key => $arrDeliv) {
                 $arrOtherDeliv[$key]['prefname'] = $arrPref[$arrDeliv['pref']];
             }
         }
+
         return $arrOtherDeliv;
     }
 }

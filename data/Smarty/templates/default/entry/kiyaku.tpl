@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -29,21 +29,23 @@
         </p>
 
         <form name="form1" id="form1" method="post" action="?">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <textarea name="textfield" class="kiyaku_text" cols="80" rows="30" readonly="readonly"><!--{"\n"}--><!--{$tpl_kiyaku_text|h}--></textarea>
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <textarea name="textfield" class="kiyaku_text" cols="80" rows="30" readonly="readonly"><!--{"\n"}--><!--{$tpl_kiyaku_text|h}--></textarea>
 
-        <div class="btn_area">
-            <ul>
-                <li>
-                    <a href="<!--{$smarty.const.TOP_URLPATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot_on.jpg','b_noagree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg','b_noagree');">
-                        <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg" alt="同意しない" border="0" name="b_noagree" /></a>
-                </li>
-                <li>
-                    <a href="<!--{$smarty.const.ENTRY_URL}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree_on.jpg','b_agree');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg','b_agree');">
-                <img src="<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" border="0" name="b_agree" /></a>
-                </li>
-            </ul>
-        </div>
+            <div class="btn_area">
+                <ul>
+                    <li>
+                        <a href="<!--{$smarty.const.TOP_URL}-->">
+                            <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_entry_cannot.jpg" alt="同意しない" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<!--{$smarty.const.ENTRY_URL}-->">
+                            <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
         </form>
     </div>

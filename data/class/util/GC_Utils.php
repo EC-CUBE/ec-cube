@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,15 +30,16 @@
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class GC_Utils {
-
+class GC_Utils
+{
     /**
      * ログファイルに変数の詳細を出力
      *
-     * @param mixed $obj
+     * @param  mixed $obj
      * @return void
      */
-    function gfDebugLog($obj) {
+    public function gfDebugLog($obj)
+    {
         if (USE_VERBOSE_LOG === true) {
             $msg = "DEBUG\n"
                  . print_r($obj, true);
@@ -49,10 +50,11 @@ class GC_Utils {
     /**
      * 呼び出し元関数名を返します
      *
-     * @param int $forLogInfo ログ出力用に利用するかどうか(1:ログ出力用に利用する)
+     * @param  int    $forLogInfo ログ出力用に利用するかどうか(1:ログ出力用に利用する)
      * @return string 呼び出し元クラス、関数名、行数の文字列表現
      */
-    function gfGetCallerInfo($forLogInfo = true) {
+    public function gfGetCallerInfo($forLogInfo = true)
+    {
         // バックトレースを取得する
         $traces = debug_backtrace(false);
         $bklv = 1;
@@ -65,6 +67,7 @@ class GC_Utils {
             }
         }
         $str = $traces[$bklv]['class'] . '::' . $traces[$bklv]['function'] . '(' . $traces[$bklv - 1]['line'] . ') ';
+
         return $str;
     }
 
@@ -73,7 +76,8 @@ class GC_Utils {
      *
      * エラーハンドリングに関わる情報を切り捨てる。
      */
-    function getDebugBacktrace($arrBacktrace = null) {
+    public function getDebugBacktrace($arrBacktrace = null)
+    {
         if (is_null($arrBacktrace)) {
             $arrBacktrace = debug_backtrace(false);
         }
@@ -110,6 +114,7 @@ class GC_Utils {
                 break 1;
             }
         }
+
         return array_reverse($arrReturn);
     }
 
@@ -118,10 +123,11 @@ class GC_Utils {
      *
      * @deprecated 2.12.0
      */
-    function gfGetLogStr($mess, $log_level = 'Info') {
+    public function gfGetLogStr($mess, $log_level = 'Info')
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // メッセージの前に、ログ出力元関数名とログ出力関数呼び出し部分の行数を付与
-        $mess = GC_Utils::gfGetCallerInfo(true) . $mess;
+        $mess = GC_Utils_Ex::gfGetCallerInfo(true) . $mess;
 
         // ログレベル=Debugの場合は、[Debug]を先頭に付与する
         if ($log_level === 'Debug') {
@@ -136,7 +142,8 @@ class GC_Utils {
      *
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
-    function gfAdminLog($mess, $log_level = 'Info') {
+    public function gfAdminLog($mess, $log_level = 'Info')
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
         if ($log_level === 'Debug' && DEBUG_MODE === false) {
@@ -152,7 +159,8 @@ class GC_Utils {
      *
      * @deprecated 2.12.0 GC_Utils_Ex::gfPrintLog を使用すること
      */
-    function gfFrontLog($mess, $log_level = 'Info') {
+    public function gfFrontLog($mess, $log_level = 'Info')
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         // ログレベル=Debugの場合は、DEBUG_MODEがtrueの場合のみログ出力する
         if ($log_level === 'Debug' && DEBUG_MODE === false) {
@@ -169,9 +177,10 @@ class GC_Utils {
      * エラー・警告は trigger_error() を経由して利用すること。(補足の出力は例外。)
      * @param string $msg
      * @param string $path
-     * @param bool $verbose 冗長な出力を行うか
+     * @param bool   $verbose 冗長な出力を行うか
      */
-    function gfPrintLog($msg, $path = '', $verbose = USE_VERBOSE_LOG) {
+    public static function gfPrintLog($msg, $path = '', $verbose = USE_VERBOSE_LOG)
+    {
         // 日付の取得
         $today = date('Y/m/d H:i:s');
         // 出力パスの作成
@@ -202,13 +211,13 @@ class GC_Utils {
      *
      * XXX この類のローテーションは通常 0 開始だが、本実装は 1 開始である。
      * この中でログ出力は行なわないこと。(無限ループの懸念あり)
-     * @param integer $max_log 最大ファイル数
-     * @param integer $max_size 最大サイズ
-     * @param string  $path ファイルパス
+     * @param  integer $max_log  最大ファイル数
+     * @param  integer $max_size 最大サイズ
+     * @param  string  $path     ファイルパス
      * @return void
      */
-    function gfLogRotation($max_log, $max_size, $path) {
-
+    public function gfLogRotation($max_log, $max_size, $path)
+    {
         // ファイルが存在しない場合、終了
         if (!file_exists($path)) return;
 
@@ -244,10 +253,13 @@ class GC_Utils {
      * [依存] なし
      * [注釈] -
      *----------------------------------------------------------------------*/
-    function gfMakePassword($pwLength) {
-
+    /**
+     * @param integer $pwLength
+     */
+    public static function gfMakePassword($pwLength)
+    {
         // 乱数表のシードを決定
-        srand((double)microtime() * 54234853);
+        srand((double) microtime() * 54234853);
 
         // パスワード文字列の配列を作成
         $character = 'abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ2345679';
@@ -270,7 +282,8 @@ class GC_Utils {
      * [注釈] -
      *----------------------------------------------------------------------------------------------------------------------*/
 
-    function gfMailHeaderAddr($str) {
+    public function gfMailHeaderAddr($str)
+    {
         $addrs = explode(',', $str); //アドレスを配列に入れる
         $mailaddrs = array();
         foreach ($addrs as $addr) {
@@ -282,6 +295,7 @@ class GC_Utils {
                 $mailaddrs[] =  trim($addr);
             }
         }
+
         return implode(', ', $mailaddrs); //複数アドレスはカンマ区切りにする
     }
 
@@ -289,10 +303,11 @@ class GC_Utils {
      * バックトレースをテキスト形式で出力する
      *
      * 現状スタックトレースの形で出力している。
-     * @param array $arrBacktrace バックトレース
+     * @param  array  $arrBacktrace バックトレース
      * @return string テキストで表現したバックトレース
      */
-    function toStringBacktrace($arrBacktrace) {
+    public function toStringBacktrace($arrBacktrace)
+    {
         $string = '';
 
         foreach (array_reverse($arrBacktrace) as $backtrace) {
@@ -312,10 +327,11 @@ class GC_Utils {
      * エラー型から該当する定数名を取得する
      *
      * 該当する定数がない場合、$error_type を返す。
-     * @param integer $error_type エラー型
+     * @param  integer        $error_type エラー型
      * @return string|integer エラー定数名
      */
-    function getErrorTypeName($error_type) {
+    public function getErrorTypeName($error_type)
+    {
         $arrDefinedConstants = get_defined_constants(true);
 
         // PHP の歴史対応
@@ -323,13 +339,11 @@ class GC_Utils {
         // PHP >= 5.3.1, PHP == 5.3.0 (not Windows)
         if (isset($arrDefinedConstants['Core'])) {
             $arrDefinedCoreConstants = $arrDefinedConstants['Core'];
-        }
         // PHP < 5.3.0
-        elseif (isset($arrDefinedConstants['internal'])) {
+        } elseif (isset($arrDefinedConstants['internal'])) {
             $arrDefinedCoreConstants = $arrDefinedConstants['internal'];
-        }
         // PHP == 5.3.0 (Windows)
-        elseif (isset($arrDefinedConstants['mhash'])) {
+        } elseif (isset($arrDefinedConstants['mhash'])) {
             $arrDefinedCoreConstants = $arrDefinedConstants['mhash'];
         }
 
@@ -338,6 +352,7 @@ class GC_Utils {
                 return $constant_name;
             }
         }
+
         return $error_type;
     }
 
@@ -346,9 +361,8 @@ class GC_Utils {
      *
      * @return string 現在のURL
      */
-    function getUrl() {
-        $url = '';
-
+    public function getUrl()
+    {
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
             $url = 'https://';
         } else {
@@ -368,7 +382,8 @@ class GC_Utils {
      *
      * @return bool 管理機能か
      */
-    function isAdminFunction() {
+    public function isAdminFunction()
+    {
         return defined('ADMIN_FUNCTION') && ADMIN_FUNCTION === true;
     }
 
@@ -377,7 +392,8 @@ class GC_Utils {
      *
      * @return bool フロント機能か
      */
-    function isFrontFunction() {
+    public static function isFrontFunction()
+    {
         return defined('FRONT_FUNCTION') && FRONT_FUNCTION === true;
     }
 
@@ -386,7 +402,8 @@ class GC_Utils {
      *
      * @return bool インストール機能か
      */
-    function isInstallFunction() {
+    public static function isInstallFunction()
+    {
         return defined('INSTALL_FUNCTION') && INSTALL_FUNCTION === true;
     }
 
@@ -397,7 +414,8 @@ class GC_Utils {
      *
      * @return string XML宣言の文字列
      */
-    function printXMLDeclaration() {
+    public function printXMLDeclaration()
+    {
         $ua = $_SERVER['HTTP_USER_AGENT'];
         if (!preg_match('/MSIE/', $ua) || preg_match('/MSIE 7/', $ua)) {
             echo '<?xml version="1.0" encoding="' . CHAR_CODE . '"?>' . "\n";

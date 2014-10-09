@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,6 +30,6 @@
  */
 require_once CLASS_REALDIR . 'api/operations/CartAdd.php';
 
-class API_CartAdd_Ex extends API_CartAdd {
-
+class API_CartAdd_Ex extends API_CartAdd
+{
 }

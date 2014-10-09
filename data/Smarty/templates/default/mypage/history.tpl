@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,13 +31,24 @@
             <p>
                 <span class="st">購入日時：&nbsp;</span><!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br />
                 <span class="st">注文番号：&nbsp;</span><!--{$tpl_arrOrderData.order_id}--><br />
-                <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
+                <span class="st">お支払い方法：&nbsp;</span><!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}--><br />
+                <!--{if $smarty.const.MYPAGE_ORDER_STATUS_DISP_FLAG}-->
+                    <span class="st">ご注文状況：&nbsp;</span>
+                    <!--{if $tpl_arrOrderData.status != $smarty.const.ORDER_PENDING}-->
+                        <!--{$arrCustomerOrderStatus[$tpl_arrOrderData.status]|h}-->
+                    <!--{else}-->
+                        <span class="attention"><!--{$arrCustomerOrderStatus[$tpl_arrOrderData.status]|h}--></span>
+                    <!--{/if}-->
+                <!--{/if}-->
+                <!--{if $is_price_change == true}-->
+                    <div class="attention" Align="right">※金額が変更されている商品があるため、再注文時はご注意ください。</div>
+                <!--{/if}-->
             </p>
             <form action="order.php" method="post">
                 <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
                 <p class="btn">
-                    <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id|h}-->">
-                    <input type="image" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re_on.jpg', this);" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg', this);" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />
+                    <input type="hidden" name="order_id" value="<!--{$tpl_arrOrderData.order_id|h}-->" />
+                    <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />
                 </p>
             </form>
         </div>
@@ -71,7 +82,7 @@
                     <td class="alignC">
                     <!--{if $orderDetail.product_type_id == $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                         <!--{if $orderDetail.is_downloadable}-->
-                            <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_id=<!--{$orderDetail.product_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
+                            <a target="_self" href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/download.php?order_id=<!--{$tpl_arrOrderData.order_id}-->&product_class_id=<!--{$orderDetail.product_class_id}-->">ダウンロード</a>
                         <!--{else}-->
                             <!--{if $orderDetail.payment_date == "" && $orderDetail.effective == "0"}-->
                                 <!--{$arrProductType[$orderDetail.product_type_id]}--><BR />（入金確認中）
@@ -83,43 +94,45 @@
                         <!--{$arrProductType[$orderDetail.product_type_id]}-->
                     <!--{/if}-->
                     </td>
-                    <!--{assign var=price value=`$orderDetail.price`}-->
-                    <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-                    <td class="alignR"><!--{$price|sfCalcIncTax|number_format|h}-->円</td>
-                    <td class="alignR"><!--{$quantity|h}--></td>
-                    <td class="alignR"><!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円</td>
+                    <td class="alignR"><!--{$orderDetail.price_inctax|n2s|h}-->円
+                    <!--{if $orderDetail.price_inctax != $orderDetail.product_price_inctax}-->
+                        <div class="attention">【現在価格】</div><span class="attention"><!--{$orderDetail.product_price_inctax|n2s|h}-->円</span>
+                    <!--{/if}-->
+                    </td>
+                    <td class="alignR"><!--{$orderDetail.quantity|h}--></td>
+                    <td class="alignR"><!--{$orderDetail.price_inctax|sfMultiply:$orderDetail.quantity|n2s}-->円</td>
                 </tr>
             <!--{/foreach}-->
             <tr>
                 <th colspan="5" class="alignR">小計</th>
-                <td class="alignR"><!--{$tpl_arrOrderData.subtotal|number_format}-->円</td>
+                <td class="alignR"><!--{$tpl_arrOrderData.subtotal|n2s}-->円</td>
             </tr>
             <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
             <!--{if $point_discount > 0}-->
             <tr>
                 <th colspan="5" class="alignR">ポイント値引き</th>
-                <td class="alignR">&minus;<!--{$point_discount|number_format}-->円</td>
+                <td class="alignR">&minus;<!--{$point_discount|n2s}-->円</td>
             </tr>
             <!--{/if}-->
             <!--{assign var=key value="discount"}-->
             <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
             <tr>
                 <th colspan="5" class="alignR">値引き</th>
-                <td class="alignR">&minus;<!--{$tpl_arrOrderData[$key]|number_format}-->円</td>
+                <td class="alignR">&minus;<!--{$tpl_arrOrderData[$key]|n2s}-->円</td>
             </tr>
             <!--{/if}-->
             <tr>
                 <th colspan="5" class="alignR">送料</th>
-                <td class="alignR"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
+                <td class="alignR"><!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|n2s|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="alignR">手数料</th>
                 <!--{assign var=key value="charge"}-->
-                <td class="alignR"><!--{$tpl_arrOrderData[$key]|number_format|h}-->円</td>
+                <td class="alignR"><!--{$tpl_arrOrderData[$key]|n2s|h}-->円</td>
             </tr>
             <tr>
                 <th colspan="5" class="alignR">合計</th>
-                <td class="alignR"><span class="price"><!--{$tpl_arrOrderData.payment_total|number_format}-->円</span></td>
+                <td class="alignR"><span class="price"><!--{$tpl_arrOrderData.payment_total|n2s}-->円</span></td>
             </tr>
         </table>
 
@@ -130,11 +143,11 @@
                 <col width="70%" />
                 <tr>
                     <th class="alignL">ご使用ポイント</th>
-                    <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt</td>
+                    <td><!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|n2s|default:0}--> pt</td>
                 </tr>
                 <tr>
                     <th class="alignL">今回加算されるポイント</th>
-                    <td><!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt</td>
+                    <td><!--{$tpl_arrOrderData.add_point|n2s|default:0}--> pt</td>
                 </tr>
             </table>
         <!--{/if}-->
@@ -169,19 +182,20 @@
                                 <!--{/if}-->
                             </td>
                             <td class="alignR">
-                                <!--{$item.price|sfCalcIncTax|number_format}-->円
+                                <!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|n2s}-->円
                             </td>
                             <td class="alignC"><!--{$item.quantity}--></td>
                             <!--{* XXX 購入小計と誤差が出るためコメントアウト
-                            <td class="alignR"><!--{$item.total_inctax|number_format}-->円</td>
+                            <td class="alignR"><!--{$item.total_inctax|n2s}-->円</td>
                             *}-->
                         </tr>
                     <!--{/foreach}-->
                 </table>
             <!--{/if}-->
             <table summary="お届け先" class="delivname">
-                    <col width="30%" />
-                    <col width="70%" />
+                <col width="30%" />
+                <col width="70%" />
+                <tbody>
                     <tr>
                         <th class="alignL">お名前</th>
                         <td><!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--></td>
@@ -190,6 +204,20 @@
                         <th class="alignL">お名前(フリガナ)</th>
                         <td><!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--></td>
                     </tr>
+                    <tr>
+                        <th class="alignL">会社名</th>
+                        <td><!--{$shippingItem.shipping_company_name|h}--></td>
+                    </tr>
+                    <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                    <tr>
+                        <th class="alignL">国</th>
+                        <td><!--{$arrCountry[$shippingItem.shipping_country_id]|h}--></td>
+                    </tr>
+                    <tr>
+                        <th class="alignL">ZIPCODE</th>
+                        <td><!--{$shippingItem.shipping_zipcode|h}--></td>
+                    </tr>
+                    <!--{/if}-->
                     <tr>
                         <th class="alignL">郵便番号</th>
                         <td>〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--></td>
@@ -236,7 +264,7 @@
                 <td class="alignC"><!--{$tpl_arrMailHistory[cnt].send_date|sfDispDBDate|h}--></td>
                 <!--{assign var=key value="`$tpl_arrMailHistory[cnt].template_id`"}-->
                 <td class="alignC"><!--{$arrMAILTEMPLATE[$key]|h}--></td>
-                <td><a href="#" onclick="win02('./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></td>
+                <td><a href="#" onclick="eccube.openWindow('./mail_view.php?send_id=<!--{$tpl_arrMailHistory[cnt].send_id}-->','mail_view','650','800'); return false;"><!--{$tpl_arrMailHistory[cnt].subject|h}--></a></td>
             </tr>
             <!--{/section}-->
         </table>
@@ -244,7 +272,7 @@
         <div class="btn_area">
             <ul>
                 <li>
-                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back_on.jpg','change');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/button/btn_back.jpg','change');"><img src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="change" id="change" /></a>
+                    <a href="./<!--{$smarty.const.DIR_INDEX_PATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" /></a>
                 </li>
             </ul>
         </div>

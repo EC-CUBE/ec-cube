@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,8 +20,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<div id="main_image">
-    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1" onmouseover="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main_on.jpg','bnr_top_main');" onmouseout="chgImg('<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg','bnr_top_main');">
-        <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="詳細はこちら" id="bnr_top_main" name="bnr_top_main" />
-    </a>
-</div>
+<!--{strip}-->
+    <div id="main_image">
+        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1">
+            <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="詳細はこちら" />
+        </a>
+    </div>
+<!--{/strip}-->

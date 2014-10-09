@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,25 +31,30 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfErrorHeaderTest extends Common_TestCase {
+class SC_Utils_sfErrorHeaderTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfErrorHeader_printフラグがONの場合_指定したメッセージが出力される() {
+  public function testSfErrorHeader_printフラグがONの場合_指定したメッセージが出力される()
+  {
     global $GLOBAL_ERR; 
     $this->expectOutputString($GLOBAL_ERR . '<div id="errorHeader">ERROR MESSAGE</div>');
     SC_Utils::sfErrorHeader('ERROR MESSAGE', TRUE);
   }
 
-  public function testSfErrorHeader_printフラグがOFFの場合_指定したメッセージがグローバル変数に格納される() {
+  public function testSfErrorHeader_printフラグがOFFの場合_指定したメッセージがグローバル変数に格納される()
+  {
     global $GLOBAL_ERR;
     $this->expectOutputString('');
     $old_err = $GLOBAL_ERR;
@@ -61,6 +66,5 @@ class SC_Utils_sfErrorHeaderTest extends Common_TestCase {
   }
 
   //////////////////////////////////////////
-
 }
 

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,17 +30,16 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_RSS extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_RSS extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_mainpage = 'rss/index.tpl';
         $this->encode = 'UTF-8';
@@ -53,13 +51,12 @@ class LC_Page_RSS extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
-
-        $objQuery = SC_Query_Ex::getSingletonInstance();
+    public function process()
+    {
         $objView = new SC_SiteView_Ex(false);
 
         //新着情報を取得
-        $arrNews = $this->lfGetNews($objQuery);
+        $arrNews = $this->lfGetNews();
 
         //キャッシュしない(念のため)
         header('pragma: no-cache');
@@ -79,47 +76,30 @@ class LC_Page_RSS extends LC_Page_Ex {
         //セットしたデータをテンプレートファイルに出力
         $objView->assignobj($this);
 
-
         //画面表示
         $objView->display($this->tpl_mainpage, true);
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * 新着情報を取得する
      *
-     * @param SC_Query $objQuery DB操作クラス
      * @return array $arrNews 取得結果を配列で返す
      */
-    function lfGetNews(&$objQuery) {
-        $col = '';
-        $col .= 'news_id ';        // 新着情報ID
-        $col .= ',news_title ';    // 新着情報タイトル
-        $col .= ',news_comment ';  // 新着情報本文
-        $col .= ',news_date ';     // 日付
-        $col .= ',news_url ';      // 新着情報URL
-        $col .= ',news_select ';   // 新着情報の区分(1:URL、2:本文)
-        $col .= ',(SELECT shop_name FROM dtb_baseinfo limit 1) AS shop_name  ';    // 店名
-        $col .= ',(SELECT email04 FROM dtb_baseinfo limit 1) AS email ';           // 代表Emailアドレス
-        $from = 'dtb_news';
-        $where = "del_flg = '0'";
-        $order = 'rank DESC';
-        $objQuery->setOrder($order);
-        $arrNews = $objQuery->select($col,$from,$where);
+    public function lfGetNews()
+    {
+        $objNews = new SC_Helper_News_Ex();
+        $arrNews = $objNews->getList();
+
+        $objDb = new SC_Helper_DB_Ex();
+        $arrInfo = $objDb->sfGetBasisData();
 
         // RSS用に変換
-        foreach ($arrNews as $key => $value) {
+        foreach (array_keys($arrNews) as $key) {
             $netUrlHttpUrl = new Net_URL(HTTP_URL);
 
             $row =& $arrNews[$key];
+            $row['shop_name'] = $arrInfo['shop_name'];
+            $row['email'] = $arrInfo['email04'];
             // 日付
             $row['news_date'] = date('r', strtotime($row['news_date']));
             // 新着情報URL

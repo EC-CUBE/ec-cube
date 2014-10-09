@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,7 +24,7 @@
 
 <!--{strip}-->
     お探しの商品名・型番を入力してください。<br>
-    
+
     <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
         <center>
             <input type="hidden" name="mode" value="search">

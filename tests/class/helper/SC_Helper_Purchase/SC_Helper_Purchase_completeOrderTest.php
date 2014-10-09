@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,12 +31,15 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase
+{
 
   private $helper;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
+    $this->setUpOrder();
     $this->setUpOrderTemp(); // order_temp_id = '1001'
     $this->setUpShipping();
     $this->setUpCustomer();
@@ -52,13 +55,15 @@ class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase {
     $this->helper = new SC_Helper_Purchase_completeOrderMock();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
   // 適切なfunctionが呼ばれていることのみ確認
-  public function testCompleteOrder_顧客IDが指定されている場合_購入日が更新される() {
+  public function testCompleteOrder_顧客IDが指定されている場合_購入日が更新される()
+  {
     $_SESSION['customer']['customer_id'] = '1002'; // 顧客ID
     $this->helper->completeOrder(ORDER_DELIV);
 
@@ -95,7 +100,8 @@ class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase {
     $this->assertNotNull($last_buy_date, '最終購入日');
   }
 
-  public function testCompleteOrder_顧客IDが指定されていない場合_特にエラーなく修了できる() {
+  public function testCompleteOrder_顧客IDが指定されていない場合_特にエラーなく修了できる()
+  {
     $this->helper->completeOrder(); // デフォルトのステータス(NEW)
 
     $this->expected = array(
@@ -130,21 +136,24 @@ class SC_Helper_Purchase_completeOrderTest extends SC_Helper_Purchase_TestBase {
   }
 
   //////////////////////////////////////////
-
 }
 
-class SC_Helper_Purchase_completeOrderMock extends SC_Helper_Purchase{
+class SC_Helper_Purchase_completeOrderMock extends SC_Helper_Purchase
+{
 
-  function verifyChangeCart($uniqId, $objCartSession){
+  function verifyChangeCart($uniqId, $objCartSession)
+  {
     $_SESSION['testResult']['verifyChangeCart'] = array('uniqId'=>$uniqId);
   }
 
-  function getOrderTemp($uniqId) {
+  function getOrderTemp($uniqId)
+  {
     $_SESSION['testResult']['getOrderTemp'] = array('uniqId'=>$uniqId);
     return parent::getOrderTemp($uniqId);
   }
 
-  function registerOrderComplete($orderTemp, $objCartSession, $cartKey) {
+  function registerOrderComplete($orderTemp, $objCartSession, $cartKey)
+  {
     $_SESSION['testResult']['registerOrderComplete'] = array(
       'order_temp_id' => $orderTemp['order_temp_id'],
       'status' => $orderTemp['status'],
@@ -153,7 +162,8 @@ class SC_Helper_Purchase_completeOrderMock extends SC_Helper_Purchase{
     return parent::registerOrderComplete($orderTemp, $objCartSession, $cartKey);
   }
 
-  function registerShipmentItem($order_id, $shipping_id, $shipment_item) {
+  function registerShipmentItem($order_id, $shipping_id, $shipment_item)
+  {
     $_SESSION['testResult']['registerShipmentItem'][] = array(
       'order_id' => $order_id,
       'shipping_id' => $shipping_id,
@@ -161,19 +171,20 @@ class SC_Helper_Purchase_completeOrderMock extends SC_Helper_Purchase{
     );
   }
 
-  function registerShipping($order_id, $shipping_temp) {
+  function registerShipping($order_id, $shipping_temp)
+  {
     $_SESSION['testResult']['registerShipping'] = array(
       'order_id' => $order_id
     );
   }
 
-  function cleanupSession($order_id, $objCartSesion, $objCustomer, $cartKey) {
+  function cleanupSession($order_id, $objCartSesion, $objCustomer, $cartKey)
+  {
     $_SESSION['testResult']['cleanupSession'] = array(
       'order_id' => $order_id,
       'cartKey' => $cartKey
     );
   }
-
 }
 
 ?>

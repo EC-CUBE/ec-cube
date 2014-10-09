@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,17 +30,16 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Rss_Products extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Rss_Products extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_mainpage = 'rss/products.tpl';
         $this->encode = 'UTF-8';
@@ -53,7 +51,8 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
     }
 
@@ -62,8 +61,8 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objView = new SC_SiteView_Ex();
 
         //店舗情報をセット
@@ -113,28 +112,19 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
         header('Content-type: application/xml');
         P_DETAIL_URLPATH;
 
-
         //画面表示
         $objView->display($this->tpl_mainpage, true);
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * lfGetProductsDetailData.
      *
-     * @param str $mode モード
-     * @param str $product_id 商品ID
+     * @param  str   $mode       モード
+     * @param  str   $product_id 商品ID
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsDetailData($mode, $product_id) {
+    public function lfGetProductsDetailData($mode, $product_id)
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品詳細を取得
         if ($mode == 'all') {
@@ -143,7 +133,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
             $arrProduct = $this->lfGetProductsDetail($objQuery, $product_id);
         }
         // 値の整形
-        foreach ($arrProduct as $key => $val) {
+        foreach (array_keys($arrProduct) as $key) {
             //販売価格を税込みに編集
             $arrProduct[$key]['price02'] = SC_Helper_DB_Ex::sfCalcIncTax($arrProduct[$key]['price02']);
             // 画像ファイルのURLセット
@@ -177,6 +167,7 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
                 $arrProduct[$key]['stock_unlimited'] = NULL;
             }
         }
+
         return $arrProduct;
     }
 
@@ -185,10 +176,12 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      *
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsListData() {
+    public function lfGetProductsListData()
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品一覧を取得
         $arrProduct = $objQuery->getAll('SELECT product_id, name AS product_name FROM dtb_products');
+
         return $arrProduct;
     }
 
@@ -197,12 +190,13 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
      *
      * @return array $arrProduct 商品情報の配列を返す
      */
-    function lfGetProductsAllData() {
+    public function lfGetProductsAllData()
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         //商品情報を取得
         $arrProduct = $this->lfGetProductsAllclass($objQuery);
         // 値の整形
-        foreach ($arrProduct as $key => $val) {
+        foreach (array_keys($arrProduct) as $key) {
             // 画像ファイルのURLセット
             if (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]['main_list_image'])) {
                 $dir = IMAGE_SAVE_RSS_URL;
@@ -232,17 +226,19 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
                 $arrProduct[$key]['point_rate']
             );
         }
+
         return $arrProduct;
     }
 
     /**
      * 商品情報を取得する
      *
-     * @param SC_Query $objQuery DB操作クラス
-     * @param integer $product_id 商品ID
-     * @return array $arrProduct 取得結果を配列で返す
+     * @param  SC_Query $objQuery   DB操作クラス
+     * @param  integer  $product_id 商品ID
+     * @return array    $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsDetail(&$objQuery, $product_id = 'all') {
+    public function lfGetProductsDetail(&$objQuery, $product_id = 'all')
+    {
         $objProduct = new SC_Product_Ex();
 
         // --- 商品詳細の取得
@@ -274,20 +270,22 @@ class LC_Page_Rss_Products extends LC_Page_Ex {
                 $arrProduct[$key] = array_merge($val, $arrCategory[0]);
             }
         }
+
         return $arrProduct;
     }
 
     /**
      * 商品情報を取得する(vw_products_allclass使用)
      *
-     * @param SC_Query $objQuery DB操作クラス
-     * @return array $arrProduct 取得結果を配列で返す
+     * @param  SC_Query $objQuery DB操作クラス
+     * @return array    $arrProduct 取得結果を配列で返す
      */
-    function lfGetProductsAllclass(&$objQuery) {
+    public function lfGetProductsAllclass(&$objQuery)
+    {
         // --- 商品一覧の取得
-        $objQuery->setWhere('del_flg = 0 AND status = 1');
-        $objQuery->setOrder('product_id');
         $objProduct = new SC_Product_Ex();
+        $objQuery->setWhere($objProduct->getProductDispConditions());
+        $objQuery->setOrder('product_id');
         $arrProductLsit = $objProduct->lists($objQuery);
         // 各商品のカテゴリIDとランクの取得
         $arrProducts = array();

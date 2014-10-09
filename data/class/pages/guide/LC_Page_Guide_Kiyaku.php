@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Guide_Kiyaku extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
     }
 
@@ -50,7 +47,8 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -61,20 +59,9 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $this->lfGetKiyaku(intval($_GET['page']), $this);
-
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
@@ -82,12 +69,13 @@ class LC_Page_Guide_Kiyaku extends LC_Page_Ex {
      *
      * @param integer $index 規約のインデックス
      * @param object &$objPage ページオブジェクト
+     * @param LC_Page_Guide_Kiyaku $objPage
      * @return void
      */
-    function lfGetKiyaku($index, &$objPage) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $objQuery->setOrder('rank DESC');
-        $arrKiyaku = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', 'del_flg <> 1');
+    public function lfGetKiyaku($index, &$objPage)
+    {
+        $objKiyaku = new SC_Helper_Kiyaku_Ex();
+        $arrKiyaku = $objKiyaku->getList();
 
         $number = count($arrKiyaku);
         if ($number > 0) {

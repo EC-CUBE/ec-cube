@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,7 +28,7 @@
     </style>
     <form name="form1" id="form1" method="get" action="?" onsubmit="return false;">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="">
+        <input type="hidden" name="mode" value="" />
         <p>保存されている郵便番号CSVの更新日時: <!--{$tpl_csv_datetime|h}--></p>
         <p>郵便番号CSVには <!--{$tpl_line|h}--> 行のデータがあります。</p>
         <p>郵便番号DBには <!--{$tpl_count_mtb_zip|h}--> 行のデータがあります。</p>
@@ -46,13 +46,13 @@
         <div class="basis-zip-item">
             <h2>自動登録</h2>
             <p>下の [削除] <!--{if !$tpl_skip_update_csv}-->[郵便番号CSV更新] <!--{/if}-->[DB手動登録] を順に実行します。ただし、タイムアウトした場合、DBは元の状態に戻ります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('auto', '', ''); return false;"><span class="btn-next">自動登録</span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('auto', '', ''); return false;"><span class="btn-next">自動登録</span></a></p>
         </div>
 
         <div class="basis-zip-item">
             <h2>DB手動登録</h2>
             <p>指定した行数から郵便番号を登録します。タイムアウトした場合、直前まで登録されます。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('manual', '', ''); return false;"><span class="btn-next">手動登録</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8"><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('manual', '', ''); return false;"><span class="btn-next">手動登録</span></a>　開始行: <input type="text" name="startRowNum" value="<!--{$arrForm.startRowNum|default:$tpl_count_mtb_zip+1|h}-->" size="8" /><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
         </div>
 
         <div class="basis-zip-item">
@@ -67,14 +67,14 @@
                 <!--{/if}-->
             <!--{else}-->
                 <p>日本郵便の WEB サイトから、郵便番号CSVを取得します。</p>
-                <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('update_csv', '', ''); return false;"><span class="btn-next">更新</span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
+                <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('update_csv', '', ''); return false;"><span class="btn-next">更新</span></a><span class="attention"><!--{$arrErr.startRowNum}--></span></p>
             <!--{/if}-->
         </div>
 
         <div class="basis-zip-item end">
             <h2>削除</h2>
             <p>全ての郵便番号を削除します。再登録するまで、住所自動入力は機能しなくなります。</p>
-            <p><a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete', '', ''); return false;"><span class="btn-next">削除</span></a></p>
+            <p><a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('delete', '', ''); return false;"><span class="btn-next">削除</span></a></p>
         </div>
     </form>
 <!--{else}-->

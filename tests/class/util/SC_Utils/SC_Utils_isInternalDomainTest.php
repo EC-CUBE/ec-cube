@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -26,48 +26,54 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 
 /**
  * SC_Utils::sfIsInternalDomain()のテストクラス.
- * HTTP_URL='http://test.local' という前提でテスト.
  *
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfIsInternalDomainTest extends Common_TestCase {
+class SC_Utils_sfIsInternalDomainTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testsfIsInternalDomain_ドメインが一致する場合_trueが返る() {
-    $url = 'http://test.local/html/index.php';
-    $this->expected = TRUE;
+  public function testsfIsInternalDomain_ドメインが一致する場合_trueが返る()
+  {
+    $url = HTTP_URL . 'index.php';
+    $this->expected = true;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
 
     $this->verify($url);
   }
 
-  public function testsfIsInternalDomain_アンカーを含むURLの場合_trueが返る() {
-    $url = 'http://test.local/html/index.php#hoge';
-    $this->expected = TRUE;
+  public function testsfIsInternalDomain_アンカーを含むURLの場合_trueが返る()
+  {
+    $url = HTTP_URL . 'index.php#hoge';
+    $this->expected = true;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
 
     $this->verify($url);
   }
 
-  public function testsfIsInternalDomain_ドメインが一致しない場合_falseが返る() {
-    $url = 'http://test.local.jp/html/index.php';
-    $this->expected = TRUE;
+  public function testsfIsInternalDomain_ドメインが一致しない場合_falseが返る()
+  {
+    // 一致しないようなURLにする
+    $url = 'http://unmatched.example.jp/html/index.php';
+
+    $this->expected = false;
     $this->actual = SC_Utils::sfIsInternalDomain($url);
 
     $this->verify($url);
   }
 
   //////////////////////////////////////////
-
 }
 

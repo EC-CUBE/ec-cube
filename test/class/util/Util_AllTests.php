@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -32,11 +32,14 @@ require_once(realpath(dirname(__FILE__)) . '/SC_Utils_Test.php');
  * @author Kentaro Ohkouchi
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class Util_AllTests extends PHPUnit_Framework_TestCase {
+class Util_AllTests extends PHPUnit_Framework_TestCase 
+{
 
-    public static function suite() {
+    public static function suite()
+    {
         $suite = new PHPUnit_Framework_TestSuite('Util');
         $suite->addTestSuite('SC_Utils_Test');
+
         return $suite;
     }
 }

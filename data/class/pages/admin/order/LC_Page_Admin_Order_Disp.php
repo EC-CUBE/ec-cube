@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex.php';
 
 /**
@@ -31,20 +30,23 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/order/LC_Page_Admin_Order_Ex
  * @author LOCKON CO.,LTD.
  * @version $Id: LC_Page_Admin_Order_Disp.php 20767 2011-03-22 10:07:32Z nanasess $
  */
-class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
-
-    var $arrShippingKeys = array(
+class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex
+{
+    public $arrShippingKeys = array(
         'shipping_id',
         'shipping_name01',
         'shipping_name02',
         'shipping_kana01',
         'shipping_kana02',
+        'shipping_company_name',
         'shipping_tel01',
         'shipping_tel02',
         'shipping_tel03',
         'shipping_fax01',
         'shipping_fax02',
         'shipping_fax03',
+        'shipping_country_id',
+        'shipping_zipcode',
         'shipping_pref',
         'shipping_zip01',
         'shipping_zip02',
@@ -56,7 +58,7 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         'time_id',
     );
 
-    var $arrShipmentItemKeys = array(
+    public $arrShipmentItemKeys = array(
         'shipment_product_class_id',
         'shipment_product_code',
         'shipment_product_name',
@@ -66,15 +68,13 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         'shipment_quantity',
     );
 
-    // }}}
-    // {{{ functions
-
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'order/disp.tpl';
         $this->tpl_mainno = 'order';
@@ -86,12 +86,15 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
+        $this->arrCountry = $masterData->getMasterData('mtb_country');
+        $this->arrSex = $masterData->getMasterData('mtb_sex');
+        $this->arrJob = $masterData->getMasterData('mtb_job');
 
         // 支払い方法の取得
-        $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
 
         // 配送業者の取得
-        $this->arrDeliv = SC_Helper_DB_Ex::sfGetIDValueList('dtb_deliv', 'deliv_id', 'name');
+        $this->arrDeliv = SC_Helper_Delivery_Ex::getIDValueList();
     }
 
     /**
@@ -99,7 +102,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -109,8 +113,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objFormParam = new SC_FormParam_Ex();
 
@@ -125,37 +129,35 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
 
         $this->arrForm = $objFormParam->getFormParamList();
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
-        $this->arrDelivTime = $objPurchase->getDelivTime($objFormParam->getValue('deliv_id'));
+        $this->tpl_shipping_quantity = count($this->arrAllShipping);
+        $this->arrDelivTime = SC_Helper_Delivery_Ex::getDelivTime($objFormParam->getValue('deliv_id'));
         $this->arrInfo = SC_Helper_DB_Ex::sfGetBasisData();
 
         $this->setTemplate($this->tpl_mainpage);
-
-    }
-
-    /**
-     * デストラクタ.
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * パラメータ情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         // 検索条件のパラメータを初期化
         parent::lfInitParam($objFormParam);
 
         // お客様情報
-        $objFormParam->addParam('会員名1', 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('会員名2', 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('会員名カナ1', 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('会員名カナ2', 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文者 お名前(姓)', 'order_name01', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文者 お名前(名)', 'order_name02', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文者 お名前(フリガナ・姓)', 'order_kana01', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文者 お名前(フリガナ・名)', 'order_kana02', STEXT_LEN, 'KVCa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('注文者 会社名', 'order_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('メールアドレス', 'order_email', null, 'KVCa', array('NO_SPTAB', 'EMAIL_CHECK', 'EMAIL_CHAR_CHECK'));
+        if (FORM_COUNTRY_ENABLE) {
+            $objFormParam->addParam('国', 'order_country_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('ZIPCODE', 'order_zipcode', STEXT_LEN, 'n', array('NO_SPTAB', 'SPTAB_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        }
         $objFormParam->addParam('郵便番号1', 'order_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('郵便番号2', 'order_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('都道府県', 'order_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -164,6 +166,11 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam('電話番号1', 'order_tel01', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam('電話番号2', 'order_tel02', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
         $objFormParam->addParam('電話番号3', 'order_tel03', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('性別', 'order_sex', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('職業', 'order_job', TEL_ITEM_LEN, 'n', array('MAX_LENGTH_CHECK' ,'NUM_CHECK'));
+        $objFormParam->addParam('生年月日(年)', 'order_birth_year', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('生年月日(月)', 'order_birth_month', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('生年月日(日)', 'order_birth_day', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
         // 受注商品情報
         $objFormParam->addParam('値引き', 'discount', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), '0');
@@ -193,6 +200,8 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam('規格名2', 'classcategory_name2');
         $objFormParam->addParam('メモ', 'note', MTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('削除用項番', 'delete_no', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('消費税率', 'tax_rate');
+        $objFormParam->addParam('課税規則', 'tax_rule');
 
         // DB読込用
         $objFormParam->addParam('小計', 'subtotal');
@@ -214,12 +223,16 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
         $objFormParam->addParam('端末種別', 'device_type_id');
 
         // 複数情報
-        $objFormParam->addParam('配送数', 'shipping_quantity', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam('配送ID', 'shipping_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), 0);
         $objFormParam->addParam('お名前1', 'shipping_name01', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前2', 'shipping_name02', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(フリガナ・姓)', 'shipping_kana01', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お名前(フリガナ・名)', 'shipping_kana02', STEXT_LEN, 'KVCa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('会社名', 'shipping_company_name', STEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        if (FORM_COUNTRY_ENABLE) {
+            $objFormParam->addParam('国', 'shipping_country_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('ZIPCODE', 'shipping_zipcode', STEXT_LEN, 'n', array('NO_SPTAB', 'SPTAB_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
+        }
         $objFormParam->addParam('郵便番号1', 'shipping_zip01', ZIP01_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('郵便番号2', 'shipping_zip02', ZIP02_LEN, 'n', array('NUM_CHECK', 'NUM_COUNT_CHECK'));
         $objFormParam->addParam('都道府県', 'shipping_pref', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -252,11 +265,12 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
     /**
      * 受注データを取得して, SC_FormParam へ設定する.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @param integer $order_id 取得元の受注ID
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  integer      $order_id     取得元の受注ID
      * @return void
      */
-    function setOrderToFormParam(&$objFormParam, $order_id) {
+    public function setOrderToFormParam(&$objFormParam, $order_id)
+    {
         $objPurchase = new SC_Helper_Purchase_Ex();
 
         // 受注詳細を設定
@@ -275,7 +289,6 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
             }
             $arrShippings[$row['shipping_id']] = $row;
         }
-        $objFormParam->setValue('shipping_quantity', count($arrShippings));
         $objFormParam->setParam(SC_Utils_Ex::sfSwapArray($arrShippings));
 
         /*
@@ -303,6 +316,16 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
          * が渡ってくるため, $arrOrder で上書きする.
          */
         $arrOrder = $objPurchase->getOrder($order_id);
+
+        // 生年月日の処理
+        if (!SC_Utils_Ex::isBlank($arrOrder['order_birth'])) {
+            $order_birth = substr($arrOrder['order_birth'], 0, 10);
+            $arrOrderBirth = explode("-", $order_birth);
+            $arrOrder['order_birth_year'] = intval($arrOrderBirth[0]);
+            $arrOrder['order_birth_month'] = intval($arrOrderBirth[1]);
+            $arrOrder['order_birth_day'] = intval($arrOrderBirth[2]);
+        }
+
         $objFormParam->setParam($arrOrder);
 
         // ポイントを設定
@@ -317,5 +340,4 @@ class LC_Page_Admin_Order_Disp extends LC_Page_Admin_Order_Ex {
             $objFormParam->setValue('customer_point', $arrCustomer['point']);
         }
     }
-
 }

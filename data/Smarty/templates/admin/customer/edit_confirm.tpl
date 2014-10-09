@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -76,6 +76,20 @@ function func_return(){
                 <td><!--{$arrForm.kana01|h}--><!--{$arrForm.kana02|h}-->　様</td>
             </tr>
             <tr>
+                <th>会社名</th>
+                <td><!--{$arrForm.company_name|h}--></td>
+            </tr>
+            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            <tr>
+                <th>国</th>
+                <td><!--{$arrCountry[$arrForm.country_id]|h}--></td>
+            </tr>
+            <tr>
+                <th>ZIPCODE</th>
+                <td><!--{$arrForm.zipcode|h}--></td>
+            </tr>
+            <!--{/if}-->
+            <tr>
                 <th>郵便番号</th>
                 <td>〒 <!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--></td>
             </tr>
@@ -124,7 +138,7 @@ function func_return(){
             </tr>
             <tr>
                 <th>メールマガジン</th>
-                <td><!--{if $arrForm.mailmaga_flg eq 1}-->HTML<!--{elseif $arrForm.mailmaga_flg eq 2}-->テキスト<!--{else}-->希望しない<!--{/if}--></td>
+                <td><!--{$arrMailMagazineType[$arrForm.mailmaga_flg]|h}--></td>
             </tr>
             <tr>
                 <th>SHOP用メモ</th>
@@ -138,7 +152,7 @@ function func_return(){
         <div class="btn-area">
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="func_return(); return false;"><span class="btn-prev">編集画面に戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'complete', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
     </div>

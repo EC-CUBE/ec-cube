@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfUpDirNameTest extends Common_TestCase {
+class SC_Utils_sfUpDirNameTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfUpDirName__1階層上のディレクトリ名が取得できる() {
+  public function testSfUpDirName__1階層上のディレクトリ名が取得できる()
+  {
     $_SERVER['SCRIPT_NAME'] = 'dir1/dir2/updir/current';
 
     $this->expected = 'updir';
@@ -53,6 +57,5 @@ class SC_Utils_sfUpDirNameTest extends Common_TestCase {
   }
 
   //////////////////////////////////////////
-
 }
 

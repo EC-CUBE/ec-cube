@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,17 +30,18 @@
  * @author LOCKON CO.,LTD.
  * @version $Id: $
  */
-abstract class SC_Plugin_Base {
-
+abstract class SC_Plugin_Base
+{
     protected $arrSelfInfo;
 
     /**
      * コンストラクタ
      *
-     * @param array $arrSelfInfo 自身のプラグイン情報
+     * @param  array $arrSelfInfo 自身のプラグイン情報
      * @return void
      */
-    function __construct(array $arrSelfInfo) {
+    public function __construct(array $arrSelfInfo)
+    {
         $this->arrSelfInfo = $arrSelfInfo;
     }
     /**
@@ -48,48 +49,56 @@ abstract class SC_Plugin_Base {
      * installはプラグインのインストール時に実行されます.
      * 引数にはdtb_pluginのプラグイン情報が渡されます.
      *
-     * @param array $arrPlugin plugin_infoを元にDBに登録されたプラグイン情報(dtb_plugin)
+     * @param  array $arrPlugin plugin_infoを元にDBに登録されたプラグイン情報(dtb_plugin)
      * @return void
      */
-    abstract function install($arrPlugin);
+    public function install($arrPlugin, $objPluginInstaller = null)
+    {
+    }
 
     /**
      * アンインストール
      * uninstallはアンインストール時に実行されます.
      * 引数にはdtb_pluginのプラグイン情報が渡されます.
      *
-     * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
+     * @param  array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
      * @return void
      */
-    abstract function uninstall($arrPlugin);
+    public function uninstall($arrPlugin, $objPluginInstaller = null)
+    {
+    }
 
     /**
      * 稼働
      * enableはプラグインを有効にした際に実行されます.
      * 引数にはdtb_pluginのプラグイン情報が渡されます.
      *
-     * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
+     * @param  array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
      * @return void
      */
-    abstract function enable($arrPlugin);
+    public function enable($arrPlugin, $objPluginInstaller = null)
+    {
+    }
 
     /**
      * 停止
      * disableはプラグインを無効にした際に実行されます.
      * 引数にはdtb_pluginのプラグイン情報が渡されます.
      *
-     * @param array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
+     * @param  array $arrPlugin プラグイン情報の連想配列(dtb_plugin)
      * @return void
      */
-    abstract function disable($arrPlugin);
+    public function disable($arrPlugin, $objPluginInstaller = null)
+    {
+    }
 
     /**
      * プラグインヘルパーへ, コールバックメソッドを登録します.
      *
-     * @param object $objPluginHelper
      * @param integer $priority
      */
-    function register(SC_Helper_Plugin $objHelperPlugin, $priority) {
+    public function register(SC_Helper_Plugin $objHelperPlugin, $priority)
+    {
         if (isset($this->arrSelfInfo['plugin_hook_point'])) {
             $arrHookPoints = $this->arrSelfInfo['plugin_hook_point'];
             foreach ($arrHookPoints as $hook_point) {
@@ -107,8 +116,8 @@ abstract class SC_Plugin_Base {
      *
      * @return array $arrSelfInfo 自身のプラグイン情報
      */
-    function getPluginInfo() {
+    public function getPluginInfo()
+    {
         return $this->arrSelfInfo;
     }
-
 }

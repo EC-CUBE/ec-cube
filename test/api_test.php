@@ -2,7 +2,7 @@
 /*
  * APIの動作確認・検証用プログラム
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -81,9 +81,11 @@ $type = $_REQUEST['type'];
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
-function var_dump(obj) {
+function var_dump(obj)
+{
    var str = '';
-   $.each(obj, function (key, value) {
+   $.each(obj, function (key, value)
+   {
             if(typeof value == "object" && value != null) {
                 str += " Key: \"" + key + "\" {\n" + var_dump(value) + "}\n";
             }else{
@@ -93,11 +95,11 @@ function var_dump(obj) {
    return str;
 }
 
-function makeSignature() {
+function makeSignature()
+{
     $('#mode').val("signature");
     $('#form').submit();
 }
-
 
 </script>
 </head>
@@ -179,7 +181,8 @@ JavaScript:<div id="res"></div>
             var str = var_dump(data);
             $('#dump').text(str);
         }
-        var recverror = function (result, textstatus, errorThrown) {
+        var recverror = function (result, textstatus, errorThrown)
+        {
             $('#res').text(textstatus);
         }
         $.ajax({

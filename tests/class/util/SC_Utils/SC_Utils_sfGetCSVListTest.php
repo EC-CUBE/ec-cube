@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfGetCSVListTest extends Common_TestCase {
+class SC_Utils_sfGetCSVListTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfGetCSVList_配列が空の場合_falseが返る() {
+  public function testSfGetCSVList_配列が空の場合_falseが返る()
+  {
     
     $this->expected = FALSE;
     $this->actual = SC_Utils::sfGetCSVList(array());
@@ -51,7 +55,8 @@ class SC_Utils_sfGetCSVListTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfGetCSVList_配列に要素が存在する場合_CSV形式に変換した文字列が返る() {
+  public function testSfGetCSVList_配列に要素が存在する場合_CSV形式に変換した文字列が返る()
+  {
     
     $this->expected = '"1つ目の要素","カンマを,含む要素","3つ目の要素"' . "\r\n";
     $this->actual = SC_Utils::sfGetCSVList(
@@ -62,6 +67,5 @@ class SC_Utils_sfGetCSVListTest extends Common_TestCase {
   }
 
   //////////////////////////////////////////
-
 }
 

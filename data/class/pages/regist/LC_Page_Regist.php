@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,19 +30,16 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Regist extends LC_Page_Ex {
-
-    // {{{ properties
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Regist extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        $this->skip_load_page_layout = true;
         parent::init();
     }
 
@@ -52,7 +48,8 @@ class LC_Page_Regist extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -63,8 +60,8 @@ class LC_Page_Regist extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         switch ($this->getMode()) {
             case 'regist':
             //--　本登録完了のためにメールから接続した場合
@@ -83,16 +80,6 @@ class LC_Page_Regist extends LC_Page_Ex {
                 break;
         }
 
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
@@ -102,7 +89,8 @@ class LC_Page_Regist extends LC_Page_Ex {
      * @access private
      * @return string $arrRegist['secret_key'] 本登録ID
      */
-    function lfRegistData($array) {
+    public function lfRegistData($array)
+    {
         $objQuery                   = SC_Query_Ex::getSingletonInstance();
         $arrRegist['secret_key']    = SC_Helper_Customer_Ex::sfGetUniqSecretKey(); //本登録ID発行
         $arrRegist['status']        = 2;
@@ -122,11 +110,11 @@ class LC_Page_Regist extends LC_Page_Ex {
      * @access private
      * @return array エラーの配列
      */
-    function lfCheckError($array) {
+    public function lfCheckError($array)
+    {
         $objErr     = new SC_CheckError_Ex($array);
 
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
-
             if (!is_numeric(SC_Helper_Customer_Ex::sfGetCustomerId($array['id'], true))) {
                 $objErr->arrErr['id'] = '※ 既に会員登録が完了しているか、無効なURLです。<br>';
             }
@@ -134,17 +122,19 @@ class LC_Page_Regist extends LC_Page_Ex {
         } else {
             $objErr->arrErr['id'] = '無効なURLです。メールに記載されている本会員登録用URLを再度ご確認ください。';
         }
+
         return $objErr->arrErr;
     }
 
     /**
      * 正会員登録完了メール送信
      *
-     * @param mixed $registSecretKey
+     * @param string $registSecretKey
      * @access private
      * @return void
      */
-    function lfSendRegistMail($registSecretKey) {
+    public function lfSendRegistMail($registSecretKey)
+    {
         $objQuery       = SC_Query_Ex::getSingletonInstance();
         $objCustomer    = new SC_Customer_Ex();
         $objHelperMail  = new SC_Helper_Mail_Ex();
@@ -167,14 +157,14 @@ class LC_Page_Regist extends LC_Page_Ex {
         $objMail = new SC_SendMail_Ex();
 
         $objMail->setItem(
-                              ''                                // 宛先
-                            , $subject                  // サブジェクト
-                            , $toCustomerMail           // 本文
-                            , $CONF['email03']          // 配送元アドレス
-                            , $CONF['shop_name']        // 配送元 名前
-                            , $CONF['email03']          // reply_to
-                            , $CONF['email04']          // return_path
-                            , $CONF['email04']          // Errors_to
+                            '',                         // 宛先
+                            $subject,                   // サブジェクト
+                            $toCustomerMail,            // 本文
+                            $CONF['email03'],           // 配送元アドレス
+                            $CONF['shop_name'],         // 配送元 名前
+                            $CONF['email03'],           // reply_to
+                            $CONF['email04'],           // return_path
+                            $CONF['email04']            // Errors_to
         );
         // 宛先の設定
         $name = $data['name01'] . $data['name02'] .' 様';

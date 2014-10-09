@@ -6,7 +6,7 @@
  * XML_Util
  *
  * XML Utilities package
- * 
+ *
  * PHP versions 4 and 5
  *
  * LICENSE:
@@ -43,7 +43,7 @@
  * @author    Stephan Schmidt <schst@php.net>
  * @copyright 2003-2008 Stephan Schmidt <schst@php.net>
  * @license   http://opensource.org/licenses/bsd-license New BSD License
- * @version   CVS: $Id: Util.php,v 1.38 2008/11/13 00:03:38 ashnazg Exp $
+ * @version   CVS: $Id$
  * @link      http://pear.php.net/package/XML_Util
  */
 
@@ -119,7 +119,7 @@ define('XML_UTIL_COLLAPSE_XHTML_ONLY', 2);
  * @author    Stephan Schmidt <schst@php.net>
  * @copyright 2003-2008 Stephan Schmidt <schst@php.net>
  * @license   http://opensource.org/licenses/bsd-license New BSD License
- * @version   Release: 1.2.1
+ * @version   Release: 1.2.3
  * @link      http://pear.php.net/package/XML_Util
  */
 class XML_Util
@@ -161,11 +161,11 @@ class XML_Util
      * );
      * </code>
      *
-     * @param string $string          string where XML special chars 
+     * @param string $string          string where XML special chars
      *                                should be replaced
-     * @param int    $replaceEntities setting for entities in attribute values 
-     *                                (one of XML_UTIL_ENTITIES_XML, 
-     *                                XML_UTIL_ENTITIES_XML_REQUIRED, 
+     * @param int    $replaceEntities setting for entities in attribute values
+     *                                (one of XML_UTIL_ENTITIES_XML,
+     *                                XML_UTIL_ENTITIES_XML_REQUIRED,
      *                                XML_UTIL_ENTITIES_HTML)
      * @param string $encoding        encoding value (if any)...
      *                                must be a valid encoding as determined
@@ -227,11 +227,11 @@ class XML_Util
      * );
      * </code>
      *
-     * @param string $string          string where XML special chars 
+     * @param string $string          string where XML special chars
      *                                should be replaced
-     * @param int    $replaceEntities setting for entities in attribute values 
-     *                                (one of XML_UTIL_ENTITIES_XML, 
-     *                                XML_UTIL_ENTITIES_XML_REQUIRED, 
+     * @param int    $replaceEntities setting for entities in attribute values
+     *                                (one of XML_UTIL_ENTITIES_XML,
+     *                                XML_UTIL_ENTITIES_XML_REQUIRED,
      *                                XML_UTIL_ENTITIES_HTML)
      * @param string $encoding        encoding value (if any)...
      *                                must be a valid encoding as determined
@@ -286,7 +286,7 @@ class XML_Util
      * @static
      * @uses attributesToString() to serialize the attributes of the XML declaration
      */
-    function getXMLDeclaration($version = '1.0', $encoding = null, 
+    function getXMLDeclaration($version = '1.0', $encoding = null,
         $standalone = null)
     {
         $attributes = array(
@@ -301,7 +301,7 @@ class XML_Util
             $attributes['standalone'] = $standalone ? 'yes' : 'no';
         }
 
-        return sprintf('<?xml%s?>', 
+        return sprintf('<?xml%s?>',
             XML_Util::attributesToString($attributes, false));
     }
 
@@ -316,7 +316,7 @@ class XML_Util
      * </code>
      *
      * @param string $root        name of the root tag
-     * @param string $uri         uri of the doctype definition 
+     * @param string $uri         uri of the doctype definition
      *                            (or array with uri and public id)
      * @param string $internalDtd internal dtd entries
      *
@@ -358,20 +358,20 @@ class XML_Util
      * </code>
      *
      * @param array      $attributes attribute array
-     * @param bool|array $sort       sort attribute list alphabetically, 
-     *                               may also be an assoc array containing 
-     *                               the keys 'sort', 'multiline', 'indent', 
+     * @param bool|array $sort       sort attribute list alphabetically,
+     *                               may also be an assoc array containing
+     *                               the keys 'sort', 'multiline', 'indent',
      *                               'linebreak' and 'entities'
-     * @param bool       $multiline  use linebreaks, if more than 
+     * @param bool       $multiline  use linebreaks, if more than
      *                               one attribute is given
-     * @param string     $indent     string used for indentation of 
+     * @param string     $indent     string used for indentation of
      *                               multiline attributes
-     * @param string     $linebreak  string used for linebreaks of 
+     * @param string     $linebreak  string used for linebreaks of
      *                               multiline attributes
-     * @param int        $entities   setting for entities in attribute values 
-     *                               (one of XML_UTIL_ENTITIES_NONE, 
-     *                               XML_UTIL_ENTITIES_XML, 
-     *                               XML_UTIL_ENTITIES_XML_REQUIRED, 
+     * @param int        $entities   setting for entities in attribute values
+     *                               (one of XML_UTIL_ENTITIES_NONE,
+     *                               XML_UTIL_ENTITIES_XML,
+     *                               XML_UTIL_ENTITIES_XML_REQUIRED,
      *                               XML_UTIL_ENTITIES_HTML)
      *
      * @return string string representation of the attributes
@@ -380,7 +380,7 @@ class XML_Util
      * @uses replaceEntities() to replace XML entities in attribute values
      * @todo allow sort also to be an options array
      */
-    function attributesToString($attributes, $sort = true, $multiline = false, 
+    function attributesToString($attributes, $sort = true, $multiline = false,
         $indent = '    ', $linebreak = "\n", $entities = XML_UTIL_ENTITIES_XML)
     {
         /*
@@ -451,7 +451,7 @@ class XML_Util
      * @todo PEAR CS - unable to avoid "space after open parens" error
      *       in the IF branch
      */
-    function collapseEmptyTags($xml, $mode = XML_UTIL_COLLAPSE_ALL) 
+    function collapseEmptyTags($xml, $mode = XML_UTIL_COLLAPSE_ALL)
     {
         if ($mode == XML_UTIL_COLLAPSE_XHTML_ONLY) {
             return preg_replace(
@@ -474,9 +474,9 @@ class XML_Util
      * require_once 'XML/Util.php';
      *
      * // create an XML tag:
-     * $tag = XML_Util::createTag('myNs:myTag', 
-     *     array('foo' => 'bar'), 
-     *     'This is inside the tag', 
+     * $tag = XML_Util::createTag('myNs:myTag',
+     *     array('foo' => 'bar'),
+     *     'This is inside the tag',
      *     'http://www.w3c.org/myNs#');
      * </code>
      *
@@ -484,13 +484,13 @@ class XML_Util
      * @param array  $attributes      array containg attributes
      * @param mixed  $content         the content
      * @param string $namespaceUri    URI of the namespace
-     * @param int    $replaceEntities whether to replace XML special chars in 
-     *                                content, embedd it in a CData section 
+     * @param int    $replaceEntities whether to replace XML special chars in
+     *                                content, embedd it in a CData section
      *                                or none of both
-     * @param bool   $multiline       whether to create a multiline tag where 
+     * @param bool   $multiline       whether to create a multiline tag where
      *                                each attribute gets written to a single line
-     * @param string $indent          string used to indent attributes 
-     *                                (_auto indents attributes so they start 
+     * @param string $indent          string used to indent attributes
+     *                                (_auto indents attributes so they start
      *                                at the same column)
      * @param string $linebreak       string used for linebreaks
      * @param bool   $sortAttributes  Whether to sort the attributes or not
@@ -501,9 +501,9 @@ class XML_Util
      * @see createTagFromArray()
      * @uses createTagFromArray() to create the tag
      */
-    function createTag($qname, $attributes = array(), $content = null, 
-        $namespaceUri = null, $replaceEntities = XML_UTIL_REPLACE_ENTITIES, 
-        $multiline = false, $indent = '_auto', $linebreak = "\n", 
+    function createTag($qname, $attributes = array(), $content = null,
+        $namespaceUri = null, $replaceEntities = XML_UTIL_REPLACE_ENTITIES,
+        $multiline = false, $indent = '_auto', $linebreak = "\n",
         $sortAttributes = true)
     {
         $tag = array(
@@ -521,7 +521,7 @@ class XML_Util
             $tag['namespaceUri'] = $namespaceUri;
         }
 
-        return XML_Util::createTagFromArray($tag, $replaceEntities, $multiline, 
+        return XML_Util::createTagFromArray($tag, $replaceEntities, $multiline,
             $indent, $linebreak, $sortAttributes);
     }
 
@@ -531,22 +531,22 @@ class XML_Util
      * <pre>
      * array(
      *     // qualified name of the tag
-     *     'qname' => $qname        
+     *     'qname' => $qname
      *
      *     // namespace prefix (optional, if qname is specified or no namespace)
-     *     'namespace' => $namespace    
+     *     'namespace' => $namespace
      *
      *     // local part of the tagname (optional, if qname is specified)
-     *     'localpart' => $localpart,   
+     *     'localpart' => $localpart,
      *
      *     // array containing all attributes (optional)
-     *     'attributes' => array(),      
+     *     'attributes' => array(),
      *
      *     // tag content (optional)
-     *     'content' => $content,     
+     *     'content' => $content,
      *
      *     // namespaceUri for the given namespace (optional)
-     *     'namespaceUri' => $namespaceUri 
+     *     'namespaceUri' => $namespaceUri
      * )
      * </pre>
      *
@@ -564,13 +564,13 @@ class XML_Util
      * </code>
      *
      * @param array  $tag             tag definition
-     * @param int    $replaceEntities whether to replace XML special chars in 
-     *                                content, embedd it in a CData section 
+     * @param int    $replaceEntities whether to replace XML special chars in
+     *                                content, embedd it in a CData section
      *                                or none of both
-     * @param bool   $multiline       whether to create a multiline tag where each 
+     * @param bool   $multiline       whether to create a multiline tag where each
      *                                attribute gets written to a single line
-     * @param string $indent          string used to indent attributes 
-     *                                (_auto indents attributes so they start 
+     * @param string $indent          string used to indent attributes
+     *                                (_auto indents attributes so they start
      *                                at the same column)
      * @param string $linebreak       string used for linebreaks
      * @param bool   $sortAttributes  Whether to sort the attributes or not
@@ -585,7 +585,7 @@ class XML_Util
      * @uses raiseError()
      */
     function createTagFromArray($tag, $replaceEntities = XML_UTIL_REPLACE_ENTITIES,
-        $multiline = false, $indent = '_auto', $linebreak = "\n", 
+        $multiline = false, $indent = '_auto', $linebreak = "\n",
         $sortAttributes = true)
     {
         if (isset($tag['content']) && !is_scalar($tag['content'])) {
@@ -595,7 +595,7 @@ class XML_Util
 
         if (!isset($tag['qname']) && !isset($tag['localPart'])) {
             return XML_Util::raiseError('You must either supply a qualified name '
-                . '(qname) or local tag name (localPart).', 
+                . '(qname) or local tag name (localPart).',
                 XML_UTIL_ERROR_NO_TAG_NAME);
         }
 
@@ -649,8 +649,8 @@ class XML_Util
         }
 
         // create attribute list
-        $attList = XML_Util::attributesToString($tag['attributes'], 
-            $sortAttributes, $multiline, $indent, $linebreak, $replaceEntities);
+        $attList = XML_Util::attributesToString($tag['attributes'],
+            $sortAttributes, $multiline, $indent, $linebreak);
         if (!isset($tag['content']) || (string)$tag['content'] == '') {
             $tag = sprintf('<%s%s />', $tag['qname'], $attList);
         } else {
@@ -661,7 +661,7 @@ class XML_Util
                 $tag['content'] = XML_Util::createCDataSection($tag['content']);
                 break;
             default:
-                $tag['content'] = XML_Util::replaceEntities($tag['content'], 
+                $tag['content'] = XML_Util::replaceEntities($tag['content'],
                     $replaceEntities);
                 break;
             }
@@ -678,14 +678,14 @@ class XML_Util
      * require_once 'XML/Util.php';
      *
      * // create an XML start element:
-     * $tag = XML_Util::createStartElement('myNs:myTag', 
+     * $tag = XML_Util::createStartElement('myNs:myTag',
      *     array('foo' => 'bar') ,'http://www.w3c.org/myNs#');
      * </code>
      *
      * @param string $qname          qualified tagname (including namespace)
      * @param array  $attributes     array containg attributes
      * @param string $namespaceUri   URI of the namespace
-     * @param bool   $multiline      whether to create a multiline tag where each 
+     * @param bool   $multiline      whether to create a multiline tag where each
      *                               attribute gets written to a single line
      * @param string $indent         string used to indent attributes (_auto indents
      *                               attributes so they start at the same column)
@@ -698,7 +698,7 @@ class XML_Util
      * @see createEndElement(), createTag()
      */
     function createStartElement($qname, $attributes = array(), $namespaceUri = null,
-        $multiline = false, $indent = '_auto', $linebreak = "\n", 
+        $multiline = false, $indent = '_auto', $linebreak = "\n",
         $sortAttributes = true)
     {
         // if no attributes hav been set, use empty attributes
@@ -728,7 +728,7 @@ class XML_Util
         }
 
         // create attribute list
-        $attList = XML_Util::attributesToString($attributes, $sortAttributes, 
+        $attList = XML_Util::attributesToString($attributes, $sortAttributes,
             $multiline, $indent, $linebreak);
         $element = sprintf('<%s%s>', $qname, $attList);
         return  $element;
@@ -797,7 +797,7 @@ class XML_Util
      */
     function createCDataSection($data)
     {
-        return sprintf('<![CDATA[%s]]>', 
+        return sprintf('<![CDATA[%s]]>',
             preg_replace('/\]\]>/', ']]]]><![CDATA[>', strval($data)));
 
     }
@@ -871,17 +871,17 @@ class XML_Util
     function isValidName($string)
     {
         // check for invalid chars
-        if (!preg_match('/^[[:alpha:]_]$/', $string{0})) {
+        if (!preg_match('/^[[:alpha:]_]\\z/', $string{0})) {
             return XML_Util::raiseError('XML names may only start with letter '
                 . 'or underscore', XML_UTIL_ERROR_INVALID_START);
         }
 
         // check for invalid chars
-        if (!preg_match('/^([[:alpha:]_]([[:alnum:]\-\.]*)?:)?[[:alpha:]_]([[:alnum:]\_\-\.]+)?$/',
+        if (!preg_match('/^([[:alpha:]_]([[:alnum:]\-\.]*)?:)?[[:alpha:]_]([[:alnum:]\_\-\.]+)?\\z/',
             $string)
         ) {
             return XML_Util::raiseError('XML names may only contain alphanumeric '
-                . 'chars, period, hyphen, colon and underscores', 
+                . 'chars, period, hyphen, colon and underscores',
                 XML_UTIL_ERROR_INVALID_CHARS);
         }
         // XML name is valid

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,28 +30,24 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Products_Review.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class LC_Page_Products_Review extends LC_Page_Ex {
-
-    // {{{ properties
-
+class LC_Page_Products_Review extends LC_Page_Ex
+{
     /** おすすめレベル */
-    var $arrRECOMMEND;
+    public $arrRECOMMEND;
 
     /** 性別 */
-    var $arrSex;
+    public $arrSex;
 
     /** 入力禁止URL */
-    var $arrReviewDenyURL;
-
-    // }}}
-    // {{{ functions
+    public $arrReviewDenyURL;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
 
         $masterData = new SC_DB_MasterData_Ex();
@@ -66,7 +61,8 @@ class LC_Page_Products_Review extends LC_Page_Ex {
     /**
      * Page のプロセス.
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -77,8 +73,8 @@ class LC_Page_Products_Review extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -90,7 +86,6 @@ class LC_Page_Products_Review extends LC_Page_Ex {
 
                 //エラーチェック
                 if (empty($this->arrErr)) {
-                    //重複タイトルでない
                     $this->tpl_mainpage = 'products/review_confirm.tpl';
                 }
                 break;
@@ -104,7 +99,6 @@ class LC_Page_Products_Review extends LC_Page_Ex {
                 if (empty($this->arrErr)) {
                     //登録実行
                     $this->lfRegistRecommendData($objFormParam);
-
 
                     //レビュー書き込み完了ページへ
                     SC_Response_Ex::sendRedirect('review_complete.php');
@@ -127,26 +121,16 @@ class LC_Page_Products_Review extends LC_Page_Ex {
         }
 
         $this->setTemplate($this->tpl_mainpage);
-
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'aKV');
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('投稿者名', 'reviewer_name', STEXT_LEN, 'aKV', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
@@ -160,20 +144,12 @@ class LC_Page_Products_Review extends LC_Page_Ex {
     /**
      * 入力内容のチェックを行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return array エラーメッセージの配列
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return array        エラーメッセージの配列
      */
-    function lfCheckError(&$objFormParam) {
+    public function lfCheckError(&$objFormParam)
+    {
         $arrErr = $objFormParam->checkError();
-
-        $arrForm = $objFormParam->getHashArray();
-
-        // 重複メッセージの判定
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $exists = $objQuery->exists('dtb_review','product_id = ? AND title = ? ', array($arrForm['product_id'], $arrForm['title']));
-        if ($exists) {
-            $arrErr['title'] .= '重複したタイトルは登録できません。';
-        }
 
         if (REVIEW_ALLOW_URL == false) {
             $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
@@ -188,28 +164,28 @@ class LC_Page_Products_Review extends LC_Page_Ex {
     /**
      * 商品名を取得
      *
-     * @param integer $product_id 商品ID
-     * @return string $product_name 商品名
+     * @param  integer $product_id 商品ID
+     * @return string  $product_name 商品名
      */
-    function lfGetProductName($product_id) {
+    public function lfGetProductName($product_id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
-        return $objQuery->get('name', 'dtb_products', 'product_id = ? AND del_flg = 0 AND status = 1', array($product_id));
+        return $objQuery->get('name', 'dtb_products', 'product_id = ? AND ' . SC_Product_Ex::getProductDispConditions(), array($product_id));
     }
 
     //登録実行
-    function lfRegistRecommendData(&$objFormParam) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
+    public function lfRegistRecommendData(SC_FormParam &$objFormParam)
+    {
         $arrRegist = $objFormParam->getDbArray();
 
-        $arrRegist['create_date'] = 'CURRENT_TIMESTAMP';
-        $arrRegist['update_date'] = 'CURRENT_TIMESTAMP';
-        $arrRegist['creator_id'] = '0';
+        $objCustomer = new SC_Customer_Ex();
+        if ($objCustomer->isLoginSuccess(true)) {
+            $arrRegist['customer_id'] = $objCustomer->getValue('customer_id');
+        }
 
         //-- 登録実行
-        $objQuery->begin();
-        $arrRegist['review_id'] = $objQuery->nextVal('dtb_review_review_id');
-        $objQuery->insert('dtb_review', $arrRegist);
-        $objQuery->commit();
+        $objReview = new SC_Helper_Review_Ex();
+        $objReview->save($arrRegist);
     }
 }

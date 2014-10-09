@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,20 +31,24 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_getOrderTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_getOrderTest extends SC_Helper_Purchase_TestBase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
     $this->setUpOrder();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testGetOrder_存在しない受注IDを指定した場合_結果が空になる() {
+  public function testGetOrder_存在しない受注IDを指定した場合_結果が空になる()
+  {
     $order_id = '9999';
 
     $this->expected = null;
@@ -53,7 +57,8 @@ class SC_Helper_Purchase_getOrderTest extends SC_Helper_Purchase_TestBase {
     $this->verify();
   }
 
-  public function testGetOrder_存在しない顧客IDを指定した場合_結果が空になる() {
+  public function testGetOrder_存在しない顧客IDを指定した場合_結果が空になる()
+  {
     $order_id = '1002';
     $customer_id = '9999';
 
@@ -63,7 +68,8 @@ class SC_Helper_Purchase_getOrderTest extends SC_Helper_Purchase_TestBase {
     $this->verify();
   }
 
-  public function testGetOrder_顧客IDを指定しなかった場合_受注IDに対応する結果が取得できる() {
+  public function testGetOrder_顧客IDを指定しなかった場合_受注IDに対応する結果が取得できる()
+  {
     $order_id = '1002';
 
     $this->expected = array(
@@ -77,7 +83,8 @@ class SC_Helper_Purchase_getOrderTest extends SC_Helper_Purchase_TestBase {
     $this->verify();
   }
 
-  public function testGetOrder_存在する顧客IDを指定した場合_対応する結果が取得できる() {
+  public function testGetOrder_存在する顧客IDを指定した場合_対応する結果が取得できる()
+  {
     $order_id = '1002';
     $customer_id = '1002';
 
@@ -93,6 +100,5 @@ class SC_Helper_Purchase_getOrderTest extends SC_Helper_Purchase_TestBase {
   }
 
   //////////////////////////////////////////
-
 }
 

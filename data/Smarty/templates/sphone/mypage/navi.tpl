@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -37,13 +37,13 @@
                 <!--{else}-->
 
                 <!--{* 退会状態 *}-->
-                <li class="nav_delivadd"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->" rel="external">お届け先追加・変更</a></li>
-                <li class="nav_change"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->" rel="external">会員内容変更</a></li>
-                <li class="nav_history"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->" rel="external">購入履歴</a></li>
+                <li class="nav_delivadd"><a href="<!--{$smarty.const.TOP_URL}-->" class="<!--{if $tpl_mypageno == 'delivery'}--> selected<!--{/if}-->" rel="external">お届け先追加・変更</a></li>
+                <li class="nav_change"><a href="<!--{$smarty.const.TOP_URL}-->" class="<!--{if $tpl_mypageno == 'change'}--> selected<!--{/if}-->" rel="external">会員内容変更</a></li>
+                <li class="nav_history"><a href="<!--{$smarty.const.TOP_URL}-->" class="<!--{if $tpl_mypageno == 'index'}--> selected<!--{/if}-->" rel="external">購入履歴</a></li>
                 <!--{if $smarty.const.OPTION_FAVORITE_PRODUCT == 1}-->
-                    <li class="nav_favorite"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->" rel="external">お気に入り</a></li>
+                    <li class="nav_favorite"><a href="<!--{$smarty.const.TOP_URL}-->" class="<!--{if $tpl_mypageno == 'favorite'}--> selected<!--{/if}-->" rel="external">お気に入り</a></li>
                 <!--{/if}-->
-                <li class="nav_refusal"><a href="<!--{$smarty.const.TOP_URLPATH}-->" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->" rel="external">退会手続き</a></li>
+                <li class="nav_refusal"><a href="<!--{$smarty.const.TOP_URL}-->" class="<!--{if $tpl_mypageno == 'refusal'}--> selected<!--{/if}-->" rel="external">退会手続き</a></li>
             <!--{/if}-->
         </ul>
     <!--{/strip}-->

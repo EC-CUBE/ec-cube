@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $$Id$$
  */
-class LC_Page_XXX extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_XXX extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -50,24 +47,15 @@ class LC_Page_XXX extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
+    function process()
+    {
     }
 }
-?&gt;
 </template><template autoinsert="true" context="newPhp" deleted="false" description="拡張版ページクラス" enabled="true" name="New PHP extend class file">&lt;?php
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -86,7 +74,6 @@ class LC_Page_XXX extends LC_Page_Ex {
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/XXX/LC_Page_XXX.php';
 
 /**
@@ -98,17 +85,15 @@ require_once CLASS_REALDIR . 'pages/XXX/LC_Page_XXX.php';
  * @author LOCKON CO.,LTD.
  * @version $$Id$$
  */
-class LC_Page_XXX_Ex extends LC_Page_XXX {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_XXX_Ex extends LC_Page_XXX
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -117,25 +102,16 @@ class LC_Page_XXX_Ex extends LC_Page_XXX {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
     }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
 }
-?&gt;
 </template><template autoinsert="true" context="newPhp" deleted="false" description="Web ページのテンプレート" enabled="true" name="New Plain PHP file">&lt;?php
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2007 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -154,15 +130,11 @@ class LC_Page_XXX_Ex extends LC_Page_XXX {
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
- // {{{ requires
 require_once './require.php';
 require_once CLASS_REALDIR . 'page_extends/LC_Page_XXX_Ex.php';
 
-// }}}
-// {{{ generate page
 
 $$objPage = new LC_Page_XXX_Ex();
 $$objPage-&gt;init();
 $$objPage-&gt;process();
-register_shutdown_function(array($$objPage, "destroy"));
-?&gt;</template></templates>
+</template></templates>

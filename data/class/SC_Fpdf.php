@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -29,8 +29,10 @@
 
 define('PDF_TEMPLATE_REALDIR', TEMPLATE_ADMIN_REALDIR . 'pdf/');
 
-class SC_Fpdf extends SC_Helper_FPDI {
-    function __construct($download, $title, $tpl_pdf = 'nouhinsyo1.pdf') {
+class SC_Fpdf extends SC_Helper_FPDI
+{
+    public function __construct($download, $title, $tpl_pdf = 'nouhinsyo1.pdf')
+    {
         $this->FPDF();
         // デフォルトの設定
         $this->tpl_pdf = PDF_TEMPLATE_REALDIR . $tpl_pdf;  // テンプレートファイル
@@ -66,7 +68,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->pageno = $this->setSourceFile($this->tpl_pdf);
     }
 
-    function setData($arrData) {
+    public function setData($arrData)
+    {
         $this->arrData = $arrData;
 
         // ページ番号よりIDを取得
@@ -89,10 +92,10 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->setMessageData();
         $this->setOrderData();
         $this->setEtcData();
-
     }
 
-    function setShopData() {
+    private function setShopData()
+    {
         // ショップ情報
 
         $objDb = new SC_Helper_DB_Ex();
@@ -129,7 +132,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->Image($logo_file, 124, 46, 40);
     }
 
-    function setMessageData() {
+    private function setMessageData()
+    {
         // メッセージ
         $this->lfText(27, 70, $this->arrData['msg1'], 8);  //メッセージ1
         $this->lfText(27, 74, $this->arrData['msg2'], 8);  //メッセージ2
@@ -138,7 +142,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->lfText(158, 288, $text, 8);  //作成日
     }
 
-    function setOrderData() {
+    private function setOrderData()
+    {
         $arrOrder = array();
         // DBから受注情報を読み込む
         $this->lfGetOrderData($this->arrData['order_id']);
@@ -172,12 +177,11 @@ class SC_Fpdf extends SC_Helper_FPDI {
 
         // 購入商品情報
         for ($i = 0; $i < count($this->arrDisp['quantity']); $i++) {
-
             // 購入数量
             $data[0] = $this->arrDisp['quantity'][$i];
 
             // 税込金額（単価）
-            $data[1] = SC_Helper_DB_Ex::sfCalcIncTax($this->arrDisp['price'][$i]);
+            $data[1] = SC_Helper_DB_Ex::sfCalcIncTax($this->arrDisp['price'][$i], $this->arrDisp['tax_rate'][$i], $this->arrDisp['tax_rule'][$i]);
 
             // 小計（商品毎）
             $data[2] = $data[0] * $data[1];
@@ -195,7 +199,6 @@ class SC_Fpdf extends SC_Helper_FPDI {
             $arrOrder[$i][1]  = number_format($data[0]);
             $arrOrder[$i][2]  = number_format($data[1]).$monetary_unit;
             $arrOrder[$i][3]  = number_format($data[2]).$monetary_unit;
-
         }
 
         $arrOrder[$i][0] = '';
@@ -260,10 +263,10 @@ class SC_Fpdf extends SC_Helper_FPDI {
     /**
      * 備考の出力を行う
      *
-     * @param string $str 入力文字列
      * @return string 変更後の文字列
      */
-    function setEtcData() {
+    private function setEtcData()
+    {
         $this->Cell(0, 10, '', 0, 1, 'C', 0, '');
         $this->SetFont('Gothic', 'B', 9);
         $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 2, 'L', 0, '');
@@ -272,7 +275,8 @@ class SC_Fpdf extends SC_Helper_FPDI {
         $this->MultiCell(0, 4, $text, '', 2, 'L', 0, '');
     }
 
-    function createPdf() {
+    public function createPdf()
+    {
         // PDFをブラウザに送信
         ob_clean();
         if ($this->pdf_download == 1) {
@@ -291,7 +295,13 @@ class SC_Fpdf extends SC_Helper_FPDI {
     }
 
     // PDF_Japanese::Text へのパーサー
-    function lfText($x, $y, $text, $size = 0, $style = '') {
+
+    /**
+     * @param integer $x
+     * @param integer $y
+     */
+    private function lfText($x, $y, $text, $size = 0, $style = '')
+    {
         // 退避
         $bak_font_style = $this->FontStyle;
         $bak_font_size = $this->FontSizePt;
@@ -304,18 +314,17 @@ class SC_Fpdf extends SC_Helper_FPDI {
     }
 
     // 受注データの取得
-    function lfGetOrderData($order_id) {
+    private function lfGetOrderData($order_id)
+    {
         if (SC_Utils_Ex::sfIsInt($order_id)) {
             // DBから受注情報を読み込む
-            $objQuery =& SC_Query_Ex::getSingletonInstance();
-            $where = 'order_id = ?';
-            $arrRet = $objQuery->select('*', 'dtb_order', $where, array($order_id));
-            $this->arrDisp = $arrRet[0];
-            list($point) = SC_Helper_Customer_Ex::sfGetCustomerPoint($order_id, $arrRet[0]['use_point'], $arrRet[0]['add_point']);
+            $objPurchase = new SC_Helper_Purchase_Ex();
+            $this->arrDisp = $objPurchase->getOrder($order_id);
+            list($point) = SC_Helper_Customer_Ex::sfGetCustomerPoint($order_id, $this->arrDisp['use_point'], $this->arrDisp['add_point']);
             $this->arrDisp['point'] = $point;
 
             // 受注詳細データの取得
-            $arrRet = $this->lfGetOrderDetail($order_id);
+            $arrRet = $objPurchase->getOrderDetail($order_id);
             $arrRet = SC_Utils_Ex::sfSwapArray($arrRet);
             $this->arrDisp = array_merge($this->arrDisp, $arrRet);
 
@@ -325,15 +334,5 @@ class SC_Fpdf extends SC_Helper_FPDI {
             }
             $this->arrDisp['payment_type'] = 'お支払い';
         }
-    }
-
-    // 受注詳細データの取得
-    function lfGetOrderDetail($order_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'product_id, product_class_id, product_code, product_name, classcategory_name1, classcategory_name2, price, quantity, point_rate';
-        $where = 'order_id = ?';
-        $objQuery->setOrder('order_detail_id');
-        $arrRet = $objQuery->select($col, 'dtb_order_detail', $where, array($order_id));
-        return $arrRet;
     }
 }

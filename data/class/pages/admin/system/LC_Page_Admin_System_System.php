@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_System_System extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'system/system.tpl';
         $this->tpl_subno    = 'system';
@@ -55,7 +52,8 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,13 +63,12 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objFormParam = new SC_FormParam_Ex();
 
         $this->initForm($objFormParam, $_GET);
         switch ($this->getMode()) {
-
             // PHP INFOを表示
             case 'info':
                 phpinfo();
@@ -83,26 +80,17 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
         }
 
         $this->arrSystemInfo = $this->getSystemInfo();
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * フォームパラメーター初期化.
      *
-     * @param object $objFormParam
-     * @param array $arrParams $_GET値
+     * @param  SC_FormParam_Ex $objFormParam
+     * @param  array  $arrParams    $_GET値
      * @return void
      */
-    function initForm(&$objFormParam, &$arrParams) {
+    public function initForm(&$objFormParam, &$arrParams)
+    {
         $objFormParam->addParam('mode', 'mode', INT_LEN, '', array('ALPHA_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->setParam($arrParams);
     }
@@ -112,7 +100,8 @@ class LC_Page_Admin_System_System extends LC_Page_Admin_Ex {
      *
      * @return array システム情報
      */
-    function getSystemInfo() {
+    public function getSystemInfo()
+    {
         $objDB = SC_DB_DBFactory_Ex::getInstance();
 
         $arrSystemInfo = array(

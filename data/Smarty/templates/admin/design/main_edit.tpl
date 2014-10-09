@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -32,10 +32,10 @@ function fnTargetSelf(){
 
 
 <form name="form_edit" id="form_edit" method="post" action="?" >
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="" />
-<input type="hidden" name="page_id" value="<!--{$page_id|h}-->" />
-<input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="" />
+    <input type="hidden" name="page_id" value="<!--{$page_id|h}-->" />
+    <input type="hidden" name="device_type_id" value="<!--{$device_type_id|h}-->" />
 
     <!--{if $arrErr.err != ""}-->
         <div class="message">
@@ -60,14 +60,14 @@ function fnTargetSelf(){
             </td>
         </tr>
         <tr>
-        <th>URL</th>
+            <th>URL</th>
             <td>
                 <!--{assign var=key value="filename"}-->
                 <!--{if $arrForm.edit_flg.value == 2}-->
                     <!--{$smarty.const.HTTP_URL|h}--><!--{$arrForm[$key].value|h}-->.php
                     <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" />
                 <!--{else}-->
-                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled;<!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />.php<span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                    <!--{$smarty.const.USER_URL|h}--><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" size="40" class="box40" />.php<span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
                 <!--{/if}-->
                 <!--{if $arrErr[$key] != ""}-->
                     <div class="attention">
@@ -81,17 +81,57 @@ function fnTargetSelf(){
                 <label for="header-chk"><input type="checkbox" name="header_chk" id="header-chk" value="1" <!--{if $arrForm.header_chk.value == "1"}-->checked="checked"<!--{/if}--> />共通のヘッダーを使用する</label>&nbsp;
                 <label for="footer-chk"><input type="checkbox" name="footer_chk" id="footer-chk" value="1" <!--{if $arrForm.footer_chk.value == "1"}-->checked="checked"<!--{/if}--> />共通のフッターを使用する</label>
                 <div>
-                    <textarea id="tpl_data" class="top" name="tpl_data" rows=<!--{$text_row}--> style="width: 98%;"><!--{"\n"}--><!--{$arrForm.tpl_data.value|h|smarty:nodefaults}--></textarea>
+                    <textarea id="tpl_data" class="top" name="tpl_data" rows="<!--{$text_row}-->" style="width: 98%;"><!--{"\n"}--><!--{$arrForm.tpl_data.value|h|smarty:nodefaults}--></textarea>
                     <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="ChangeSize('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="author"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="description"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="keyword"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
+            </td>
+        </tr>
+        <tr>
+            <!--{assign var=key value="meta_robots"}-->
+            <th><!--{$arrForm[$key].disp_name|h}--></th>
+            <td>
+                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" maxlength="<!--{$arrForm[$key].length|h}-->" style="ime-mode: disabled; <!--{$arrErr[$key]|sfGetErrorColor}-->" size="60" class="box60" /><span class="attention"> (上限<!--{$arrForm[$key].length|h}-->文字)</span>
+                <!--{if $arrErr[$key] != ""}-->
+                    <div class="attention"><!--{$arrErr[$key]}--></div>
+                <!--{/if}-->
             </td>
         </tr>
     </table>
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
+            <li><a class="btn-action" href="javascript:;" name='subm' onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form_edit','confirm','',''); return false;"><span class="btn-next">登録する</span></a></li>
         </ul>
     </div>
 
@@ -125,7 +165,7 @@ function fnTargetSelf(){
                 </td>
                 <td class="center">
                     <!--{if $item.edit_flg == 1}-->
-                        <a href="javascript:;" onclick="fnTargetSelf(); fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;">削除</a>
+                        <a href="javascript:;" onclick="fnTargetSelf(); eccube.fnFormModeSubmit('form_edit','delete','page_id','<!--{$item.page_id|escape:'javascript'|h}-->'); return false;">削除</a>
                     <!--{/if}-->
                 </td>
             </tr>

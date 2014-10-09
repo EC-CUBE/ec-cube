@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,23 +22,22 @@
  */
 // ▼require.php 相当
 // rtrim は PHP バージョン依存対策
-define('HTML_REALDIR', rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/');
+$GLOBALS['_realdir'] = rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/../'), '/\\') . '/';
+$GLOBALS['_realdir'] = str_replace('\\', '/', $GLOBALS['_realdir']);
+$GLOBALS['_realdir'] = str_replace('//', '/', $GLOBALS['_realdir']);
+define('HTML_REALDIR', $GLOBALS['_realdir']);
 
 require_once HTML_REALDIR . 'define.php';
 define('INSTALL_FUNCTION', true);
 define('INSTALL_INFO_URL', 'http://www.ec-cube.net/install_info/index.php');
-if (ob_get_level() > 0 && ob_get_length() > 0) {
-    while (ob_end_clean());
-}
+define("DEFAULT_COUNTRY_ID", 392);
+
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 ob_start();
 // ▲require.php 相当
 
 $ownDir = realpath(dirname(__FILE__)) . '/';
 
-if (!defined('ADMIN_DIR')) {
-    define('ADMIN_DIR', 'admin/');
-}
 
 define('INSTALL_LOG', './temp/install.log');
 ini_set('max_execution_time', 300);
@@ -197,12 +196,14 @@ switch ($mode) {
         }
 
         //マスターデータのキャッシュを削除
-        $cache_dir = '../../data/cache/';
+        $cache_dir = DATA_REALDIR . 'cache/';
         $res_dir = opendir($cache_dir);
         while ($file_name = readdir($res_dir)){
             //dummy以外は削除
             if ($file_name != 'dummy'){
-                unlink($cache_dir . $file_name);
+                if (is_file($cache_dir . $file_name)) {
+                    unlink($cache_dir . $file_name);
+                }
             }
         }
         closedir($res_dir);
@@ -272,7 +273,8 @@ $objView->assignobj($objPage);
 $objView->display('install_frame.tpl');
 //-----------------------------------------------------------------------------------------------------------------------------------
 // ようこそ画面の表示
-function lfDispWelcome($objPage) {
+function lfDispWelcome($objPage)
+{
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -287,7 +289,8 @@ function lfDispWelcome($objPage) {
 }
 
 // 使用許諾契約書の表示
-function lfDispAgreement($objPage) {
+function lfDispAgreement($objPage)
+{
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -302,7 +305,8 @@ function lfDispAgreement($objPage) {
 }
 
 // STEP0画面の表示(チェック)
-function lfDispStep0($objPage) {
+function lfDispStep0($objPage)
+{
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -446,7 +450,8 @@ function lfDispStep0($objPage) {
 }
 
 // STEP0_1画面の表示(ファイルのコピー)
-function lfDispStep0_1($objPage) {
+function lfDispStep0_1($objPage)
+{
     global $objWebParam;
     global $objDBParam;
 
@@ -463,13 +468,18 @@ function lfDispStep0_1($objPage) {
     return $objPage;
 }
 
-function lfGetFileMode($path) {
+/**
+ * @param string $path
+ */
+function lfGetFileMode($path)
+{
     $mode = substr(sprintf('%o', fileperms($path)), -3);
     return $mode;
 }
 
 // STEP1画面の表示
-function lfDispStep1($objPage) {
+function lfDispStep1($objPage)
+{
     global $objDBParam;
     // hiddenに入力値を保持
     $objPage->arrHidden = $objDBParam->getHashArray();
@@ -481,7 +491,8 @@ function lfDispStep1($objPage) {
 }
 
 // STEP2画面の表示
-function lfDispStep2($objPage) {
+function lfDispStep2($objPage)
+{
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -494,7 +505,8 @@ function lfDispStep2($objPage) {
 }
 
 // STEP3画面の表示
-function lfDispStep3($objPage) {
+function lfDispStep3($objPage)
+{
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -509,7 +521,8 @@ function lfDispStep3($objPage) {
 }
 
 // STEP4画面の表示
-function lfDispStep4($objPage) {
+function lfDispStep4($objPage)
+{
     global $objWebParam;
     global $objDBParam;
     global $objDb;
@@ -542,7 +555,8 @@ function lfDispStep4($objPage) {
 }
 
 // 完了画面の表示
-function lfDispComplete($objPage) {
+function lfDispComplete($objPage)
+{
     global $objWebParam;
     global $objDBParam;
     // hiddenに入力値を保持
@@ -558,12 +572,12 @@ function lfDispComplete($objPage) {
     $sqlval['email02'] = $objWebParam->getValue('admin_mail');
     $sqlval['email03'] = $objWebParam->getValue('admin_mail');
     $sqlval['email04'] = $objWebParam->getValue('admin_mail');
-    $sqlval['email05'] = $objWebParam->getValue('admin_mail');
     $sqlval['top_tpl'] = 'default1';
     $sqlval['product_tpl'] = 'default1';
     $sqlval['detail_tpl'] = 'default1';
     $sqlval['mypage_tpl'] = 'default1';
     $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
+    $sqlval['country_id'] = DEFAULT_COUNTRY_ID;
     $objQuery = new SC_Query($arrDsn);
     $cnt = $objQuery->count('dtb_baseinfo');
     if ($cnt > 0) {
@@ -614,7 +628,8 @@ function lfDispComplete($objPage) {
 }
 
 // WEBパラメーター情報の初期化
-function lfInitWebParam($objWebParam) {
+function lfInitWebParam($objWebParam)
+{
     global $objDb;
 
     if (defined('HTTP_URL')) {
@@ -644,7 +659,9 @@ function lfInitWebParam($objWebParam) {
     }
 
     // 管理機能のディレクトリ名を取得（再インストール時）
-    $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    if (defined('ADMIN_DIR')) {
+        $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    }
 
     if (defined('ADMIN_FORCE_SSL')) {
         $admin_force_ssl = ADMIN_FORCE_SSL;
@@ -701,8 +718,8 @@ function lfInitWebParam($objWebParam) {
 }
 
 // DBパラメーター情報の初期化
-function lfInitDBParam($objDBParam) {
-
+function lfInitDBParam($objDBParam)
+{
     if (defined('DB_SERVER')) {
         $db_server = DB_SERVER;
     } else {
@@ -744,7 +761,8 @@ function lfInitDBParam($objDBParam) {
 }
 
 // 入力内容のチェック
-function lfCheckWebError($objWebParam) {
+function lfCheckWebError($objWebParam)
+{
     // 入力データを渡す。
     $arrRet = $objWebParam->getHashArray();
     $objErr = new SC_CheckError($arrRet);
@@ -770,15 +788,18 @@ function lfCheckWebError($objWebParam) {
 
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objWebParam->getValue('admin_dir');
-    if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
-        $objErr->arrErr['admin_dir'] = '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
+    if ($newAdminDir) {
+        if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
+            $objErr->arrErr['admin_dir'] = '※ 指定した管理機能ディレクトリは既に存在しています。別の名前を指定してください。';
+        }
     }
 
     return $objErr->arrErr;
 }
 
 // 入力内容のチェック
-function lfCheckDBError($objDBParam) {
+function lfCheckDBError($objDBParam)
+{
     global $objPage;
 
     // 入力データを渡す。
@@ -809,7 +830,8 @@ function lfCheckDBError($objDBParam) {
 }
 
 // SQL文の実行
-function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
+function lfExecuteSQL($filepath, $arrDsn, $disp_err = true)
+{
     $arrErr = array();
 
     if (!file_exists($filepath)) {
@@ -843,7 +865,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
                         // エラー文を取得する
                         preg_match('/\[(.*)\]/', $ret->userinfo, $arrKey);
                         $arrErr['all'] .= $arrKey[0] . '<br />';
-                        $objPage->update_mess .= '>> テーブル構成の変更に失敗しました。<br />';
+                        $arrErr['all'] .= '>> テーブル構成の変更に失敗しました。<br />';
                         GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
                         break;
                     } else {
@@ -866,7 +888,8 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true) {
  * @param array $arrDsn データソース名の配列
  * @return array エラーが発生した場合はエラーメッセージの配列
  */
-function lfDropSequence($arrSequences, $arrDsn) {
+function lfDropSequence($arrSequences, $arrDsn)
+{
     $arrErr = array();
 
     // Debugモード指定
@@ -876,7 +899,6 @@ function lfDropSequence($arrSequences, $arrDsn) {
 
     // 接続エラー
     if (!PEAR::isError($objDB)) {
-
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
             SC_Utils::sfFlush(true);
@@ -905,7 +927,8 @@ function lfDropSequence($arrSequences, $arrDsn) {
  * @param array $arrDsn データソース名の配列
  * @return array エラーが発生した場合はエラーメッセージの配列
  */
-function lfCreateSequence($arrSequences, $arrDsn) {
+function lfCreateSequence($arrSequences, $arrDsn)
+{
     $arrErr = array();
 
     // Debugモード指定
@@ -915,7 +938,6 @@ function lfCreateSequence($arrSequences, $arrDsn) {
 
     // 接続エラー
     if (!PEAR::isError($objDB)) {
-
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
             SC_Utils::sfFlush(true);
@@ -944,7 +966,8 @@ function lfCreateSequence($arrSequences, $arrDsn) {
 }
 
 // 設定ファイルの作成
-function lfMakeConfigFile() {
+function lfMakeConfigFile()
+{
     global $objWebParam;
     global $objDBParam;
 
@@ -1038,7 +1061,11 @@ function lfMakeConfigFile() {
  * @see http://www.php.net/glob
  */
 $alldirs = array();
-function listdirs($dir) {
+/**
+ * @param string $dir
+ */
+function listdirs($dir)
+{
     global $alldirs;
     $alldirs[] = $dir;
     $dirs = glob($dir . '/*');
@@ -1053,7 +1080,8 @@ function listdirs($dir) {
 /**
  * 保持したスタティック変数をクリアする。
  */
-function initdirs() {
+function initdirs()
+{
     global $alldirs;
     $alldirs = array();
 }
@@ -1063,7 +1091,8 @@ function initdirs() {
  *
  * @return array シーケンスを使用するテーブル名とカラム名の配列
  */
-function getSequences() {
+function getSequences()
+{
     return array(
         array('dtb_best_products', 'best_id'),
         array('dtb_bloc', 'bloc_id'),
@@ -1095,16 +1124,21 @@ function getSequences() {
         array('dtb_plugin_hookpoint', 'plugin_hookpoint_id'),
         array('dtb_api_config', 'api_config_id'),
         array('dtb_api_account', 'api_account_id'),
+        array('dtb_tax_rule', 'tax_rule_id'),
     );
 }
-
 
 /**
  * 管理機能のディレクトリ名の変更
  *
  * @param string 設定する管理機能のディレクトリ名
  */
-function renameAdminDir($adminDir) {
+function renameAdminDir($adminDir)
+{
+    if (!defined('ADMIN_DIR')) {
+       define('ADMIN_DIR', 'admin/');
+    }
+
     $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
     if ($adminDir === $oldAdminDir) {
         return true;
@@ -1118,7 +1152,8 @@ function renameAdminDir($adminDir) {
     return true;
 }
 
-function getArrayDsn(SC_FormParam $objDBParam) {
+function getArrayDsn(SC_FormParam $objDBParam)
+{
     $arrRet = $objDBParam->getHashArray();
 
     if (!defined('DB_TYPE')) {

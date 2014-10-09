@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.php';
 
 /**
@@ -31,22 +30,18 @@ require_once CLASS_EX_REALDIR . 'page_extends/mypage/LC_Page_AbstractMypage_Ex.p
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
-
-    // {{{ properties
-
+class LC_Page_Mypage extends LC_Page_AbstractMypage_Ex
+{
     /** ページナンバー */
-    var $tpl_pageno;
-
-    // }}}
-    // {{{ functions
+    public $tpl_pageno;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mypageno = 'index';
         if (SC_Display_Ex::detectDevice() === DEVICE_TYPE_MOBILE) {
@@ -65,7 +60,8 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
     }
 
@@ -74,16 +70,20 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
+        //決済処理中ステータスのロールバック
+        $objPurchase = new SC_Helper_Purchase_Ex();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $objCustomer = new SC_Customer_Ex();
-        $customer_id = $objCustomer->getvalue('customer_id');
+        $customer_id = $objCustomer->getValue('customer_id');
 
         //ページ送り用
         $this->objNavi = new SC_PageNavi_Ex($_REQUEST['pageno'],
                                             $this->lfGetOrderHistory($customer_id),
                                             SEARCH_PMAX,
-                                            'fnNaviPage',
+                                            'eccube.movePage',
                                             NAVI_PMAX,
                                             'pageno=#page#',
                                             SC_Display_Ex::detectDevice() !== DEVICE_TYPE_MOBILE);
@@ -99,29 +99,24 @@ class LC_Page_MyPage extends LC_Page_AbstractMypage_Ex {
                 break;
         }
         // 支払い方法の取得
-        $this->arrPayment = SC_Helper_DB_Ex::sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
-    }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
+        $this->json_payment = SC_Utils::jsonEncode($this->arrPayment);
+        $this->json_customer_order_status = SC_Utils::jsonEncode($this->arrCustomerOrderStatus);
     }
 
     /**
      * 受注履歴を返す
      *
      * @param mixed $customer_id
-     * @param mixed $startno 0以上の場合は受注履歴を返却する -1の場合は件数を返す
+     * @param integer $startno     0以上の場合は受注履歴を返却する -1の場合は件数を返す
      * @access private
      * @return void
      */
-    function lfGetOrderHistory($customer_id, $startno = -1) {
+    public function lfGetOrderHistory($customer_id, $startno = -1)
+    {
         $objQuery   = SC_Query_Ex::getSingletonInstance();
 
         $col        = 'order_id, create_date, payment_id, payment_total, status';

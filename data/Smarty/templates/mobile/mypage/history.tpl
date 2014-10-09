@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -26,12 +26,6 @@
     購入日時：<!--{$tpl_arrOrderData.create_date|sfDispDBDate}--><br>
     注文番号：<!--{$tpl_arrOrderData.order_id}--><br>
     お支払い方法：<!--{$arrPayment[$tpl_arrOrderData.payment_id]|h}-->
-    <!--{if $tpl_arrOrderData.deliv_time_id != ""}--><br>
-        お届け時間：<!--{$arrDelivTime[$tpl_arrOrderData.deliv_time_id]|h}-->
-    <!--{/if}-->
-    <!--{if $tpl_arrOrderData.deliv_date != ""}--><br>
-        お届け日：<!--{$tpl_arrOrderData.deliv_date|h}-->
-    <!--{/if}-->
 
     <form action="order.php" method="post">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
@@ -67,31 +61,33 @@
         単価：
         <!--{assign var=price value=`$orderDetail.price`}-->
         <!--{assign var=quantity value=`$orderDetail.quantity`}-->
-        <!--{$price|sfCalcIncTax|number_format|h}-->円<br>
+        <!--{assign var=tax_rate value=`$orderDetail.tax_rate`}-->
+        <!--{assign var=tax_rule value=`$orderDetail.tax_rule`}-->
+        <!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|n2s|h}-->円<br>
         数量：<!--{$quantity|h}--><br>
-        小計：<!--{$price|sfCalcIncTax|sfMultiply:$quantity|number_format}-->円<br>
+        小計：<!--{$price|sfCalcIncTax:$tax_rate:$tax_rule|sfMultiply:$quantity|n2s}-->円<br>
     <!--{/foreach}-->
     <hr>
-    小計：<!--{$tpl_arrOrderData.subtotal|number_format}-->円<br>
+    小計：<!--{$tpl_arrOrderData.subtotal|n2s}-->円<br>
     <!--{assign var=point_discount value="`$tpl_arrOrderData.use_point*$smarty.const.POINT_VALUE`"}-->
     <!--{if $point_discount > 0}-->
-        ポイント値引き：<!--{$point_discount|number_format}-->円<br>
+        ポイント値引き：<!--{$point_discount|n2s}-->円<br>
     <!--{/if}-->
     <!--{assign var=key value="discount"}-->
     <!--{if $tpl_arrOrderData[$key] != "" && $tpl_arrOrderData[$key] > 0}-->
-        値引き：<!--{$tpl_arrOrderData[$key]|number_format}-->円<br>
+        値引き：<!--{$tpl_arrOrderData[$key]|n2s}-->円<br>
     <!--{/if}-->
-    送料：<!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|number_format|h}-->円<br>
+    送料：<!--{assign var=key value="deliv_fee"}--><!--{$tpl_arrOrderData[$key]|n2s|h}-->円<br>
     手数料：
     <!--{assign var=key value="charge"}-->
-    <!--{$tpl_arrOrderData[$key]|number_format|h}-->円<br>
-    合計：<!--{$tpl_arrOrderData.payment_total|number_format}-->円<br>
+    <!--{$tpl_arrOrderData[$key]|n2s|h}-->円<br>
+    合計：<!--{$tpl_arrOrderData.payment_total|n2s}-->円<br>
     <hr>
     <!-- 使用ポイントここから -->
     <!--{if $smarty.const.USE_POINT !== false}-->
         ■使用ポイント<br>
-        ご使用ポイント：<!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|number_format|default:0}--> pt<br>
-        今回加算されるポイント：<!--{$tpl_arrOrderData.add_point|number_format|default:0}--> pt<br>
+        ご使用ポイント：<!--{assign var=key value="use_point"}--><!--{$tpl_arrOrderData[$key]|n2s|default:0}--> pt<br>
+        今回加算されるポイント：<!--{$tpl_arrOrderData.add_point|n2s|default:0}--> pt<br>
         <hr>
     <!--{/if}-->
     <!-- 使用ポイントここまで -->
@@ -108,7 +104,7 @@
                 <!--{if $item.productsClass.classcategory_name2 != ""}-->
                     <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br>
                 <!--{/if}-->
-                単価：<!--{$item.price|sfCalcIncTax|number_format}-->円<br>
+                単価：<!--{$item.price|sfCalcIncTax:$tpl_arrOrderData.order_tax_rate:$tpl_arrOrderData.order_tax_rule|n2s}-->円<br>
                 数量：<!--{$item.quantity}--><br>
                 <br>
             <!--{/foreach}-->
@@ -117,6 +113,14 @@
         <!--{$shippingItem.shipping_name01|h}-->&nbsp;<!--{$shippingItem.shipping_name02|h}--><br>
         ●お名前(フリガナ)<br>
         <!--{$shippingItem.shipping_kana01|h}-->&nbsp;<!--{$shippingItem.shipping_kana02|h}--><br>
+        ●会社名<br>
+        <!--{$shippingItem.shipping_company_name|h}--><br>
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            ●国<br>
+            <!--{$arrCountry[$shippingItem.shipping_country_id]|h}--><br>
+            ●ZIPCODE<br>
+            <!--{$shippingItem.shipping_zipcode|h}--><br>
+        <!--{/if}-->
         ●住所<br>
         〒<!--{$shippingItem.shipping_zip01}-->-<!--{$shippingItem.shipping_zip02}--><br>
         <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
@@ -126,6 +130,10 @@
             ●FAX番号<br>
             <!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}--><br>
         <!--{/if}-->
+        ●お届け日<br>
+        <!--{$shippingItem.shipping_date|default:'指定なし'|h}-->&nbsp;<br>
+        ●お届け時間<br>
+        <!--{$shippingItem.shipping_time|default:'指定なし'|h}-->&nbsp;<br>
         <br>
     <!--{/foreach}-->
 

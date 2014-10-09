@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -73,13 +73,13 @@
                     <!--{* インストール済みなら設定ボタン表示 *}-->
                     <!--{if $product.installed_flg}-->
                         <span class="icon_confirm">
-                        <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
+                        <a href="#" onclick="eccube.openWindow('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
                             設定</a>
                         </span>
                     <!--{else}-->
                         <div id='ownersstore_settings<!--{$product.product_id|h}-->' style="display:none">
                         <span class="icon_confirm">
-                        <a href="#" onclick="win02('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
+                        <a href="#" onclick="eccube.openWindow('../load_module_config.php?module_id=<!--{$product.product_id}-->', 'load', 615, 400);return false;">
                             設定</a>
                         </span>
                         </div>

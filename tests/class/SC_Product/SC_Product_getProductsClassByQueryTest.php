@@ -5,24 +5,25 @@ require_once($HOME . "/tests/class/SC_Product/SC_Product_TestBase.php");
 /**
  *
  */
-class SC_Product_getProductsClassByQueryTest extends SC_Product_TestBase {
+class SC_Product_getProductsClassByQueryTest extends SC_Product_TestBase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
+        $this->setUpProductClass();
         $this->objProducts = new SC_Product_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetProductsClassByQuery_クエリに該当する商品情報を返す() {
-        $this->setUpProductClass();
-        $this->setUpProducts();
-        $this->setUpClassCategory();
-
+    public function testGetProductsClassByQuery_クエリに該当する商品情報を返す()
+    {
         $this->expected = array(
             0=> array(
                 'product_id' => '1001'
@@ -39,13 +40,13 @@ class SC_Product_getProductsClassByQueryTest extends SC_Product_TestBase {
                 ,'down_filename' => null
                 ,'down_realfilename' => null
                 ,'classcategory_name1' => 'cat1001'
-                ,'rank1' => null
+                ,'rank1' => '1'
                 ,'class_name1' => '味'
                 ,'class_id1' => '1'
                 ,'classcategory_id1' => '1001'
                 ,'classcategory_id2' => '1002'
                 ,'classcategory_name2' => 'cat1002'
-                ,'rank2' => null
+                ,'rank2' => '2'
                 ,'class_name2' => '味'
                 ,'class_id2' => '1'
             )

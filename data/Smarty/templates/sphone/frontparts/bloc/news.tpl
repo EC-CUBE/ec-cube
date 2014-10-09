@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,7 +28,7 @@
             <li>
                 <a id="windowcolumn<!--{$smarty.section.data.index}-->" href="javascript:getNewsDetail(<!--{$arrNews[data].news_id}-->);">
                 <span class="news_title"><!--{$arrNews[data].news_title|h}--></span></a><br />
-                <span class="news_date"><!--{$arrNews[data].news_date_disp|date_format:"%Y年 %m月 %d日"}--></span>
+                <span class="news_date"><!--{$arrNews[data].cast_news_date|date_format:"%Y年 %m月 %d日"}--></span>
             </li>
         <!--{/section}-->
     </ul>
@@ -46,7 +46,7 @@
     var newsPageNo = 2;
 
     function getNews(limit) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         var i = limit;
 
         $.ajax({
@@ -57,7 +57,7 @@
             dataType: "json",
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 if (result.error) {
@@ -78,13 +78,13 @@
                             $($("#news_area ul.newslist li a").get(maxCnt)).attr("href", "javascript:getNewsDetail(" + news.news_id + ");");
 
                             //年月をセット
-                            var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
+                            var newsDateDispArray = news.cast_news_date.split("-"); //ハイフンで年月日を分解
                             var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
                             $($("#news_area ul.newslist li span.news_date").get(maxCnt)).text(newsDateDisp);
                         }
                     }
 
-                    //すべての新着情報を表示したか判定
+                    //全ての新着情報を表示したか判定
                     var newsPageCount = result.news_page_count;
                     if (parseInt(newsPageCount) <= newsPageNo) {
                         $("#btn_more_news").hide();
@@ -92,7 +92,7 @@
 
                     newsPageNo++;
                 }
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             }
         });
     }
@@ -100,8 +100,8 @@
     var loadingState = 0;
     function getNewsDetail(newsId) {
         if (loadingState == 0) {
-            $.mobile.showPageLoadingMsg();
             loadingState = 1;
+            eccube.showLoading();
             $.ajax({
                 url: "<!--{$smarty.const.ROOT_URLPATH}-->frontparts/bloc/news.php",
                 type: "GET",
@@ -111,46 +111,63 @@
                 dataType: "json",
                 error: function(XMLHttpRequest, textStatus, errorThrown){
                     alert(textStatus);
-                    $.mobile.hidePageLoadingMsg();
+                    eccube.hideLoading();
                     loadingState = 0;
                 },
                 success: function(result){
                     if (result.error) {
                         alert(result.error);
-                        $.mobile.hidePageLoadingMsg();
+                        eccube.hideLoading();
                         loadingState = 0;
                     }
-                    else if (result[0] != null) {
-                        var news = result[0];
-                        var maxCnt = 0;
+                    else if (result != null) {
+                        var dialog = $("#news-dialog");
 
                         //件名をセット
-                        $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).text(news.news_title);
-                        if (news.news_url != null) {
-                            $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", news.news_url);
+                        $("#news-dialog-title").remove();
+                        if (result.news_url != null) {
+                            dialog.find(".dialog-content").append(
+                                $('<h3 id="news-dialog-title">').append(
+                                    $('<a>')
+                                        .attr('href', result.news_url)
+                                        .attr('rel', "external")
+                                        .attr('target', "_blank")
+                                        .text(result.news_title)
+                                )
+                            );
                         } else {
-                            $($("#windowcolumn dl.view_detail dt a").get(maxCnt)).attr("href", "#");
+                            dialog.find(".dialog-content").append(
+                                $('<h3 id="news-dialog-title">').text(result.news_title)
+                            );
                         }
 
-                        //年月をセット
-                        //var newsDateDispArray = news.news_date_disp.split("-"); //ハイフンで年月日を分解
-                        //var newsDateDisp = newsDateDispArray[0] + "年 " + newsDateDispArray[1] + "月 " + newsDateDispArray[2] + "日";
-                        //$($("#windowcolumn dl.view_detail dt").get(maxCnt)).text(newsDateDisp);
+                        //本文をセット
+                        $("#news-dialog-body").remove();
+                        if (result.news_comment != null) {
+                            dialog.find(".dialog-content").append(
+                                $('<div id="news-dialog-body">').html(result.news_comment.replace(/\n/g,"<br />"))
+                            );
+                        }
 
-                        //コメントをセット(iphone4の場合、innerHTMLの再描画が行われない為、タイマーで無理やり再描画させる)
-                        setTimeout( function() {
-                            $("#newsComment").html(news.news_comment.replace(/\n/g,"<br />"));
-                        }, 10);
-
-                        $.mobile.changePage('#windowcolumn', {transition: "slideup"});
-                        //ダイアログが開き終わるまで待機
-                        setTimeout( function() {
+                        //ダイアログをモーダルウィンドウで表示
+                        $.colorbox({inline: true, href: dialog, onOpen: function(){
+                            dialog.show().css('width', String($('body').width() * 0.9) + 'px');
+                        }, onComplete: function(){
+                            eccube.hideLoading();
                             loadingState = 0;
-                            $.mobile.hidePageLoadingMsg();
-                        }, 1000);
+                        }, onClosed: function(){
+                            dialog.hide();
+                        }});
+                    }
+                    else {
+                        eccube.hideLoading();
+                        loadingState = 0;
+                        alert('取得できませんでした。');
                     }
                 }
             });
         }
     }
 </script>
+
+<!--{include file="`$smarty.const.SMARTPHONE_TEMPLATE_REALDIR`frontparts/dialog_modal.tpl" dialog_id="news-dialog" dialog_title="新着情報"}-->

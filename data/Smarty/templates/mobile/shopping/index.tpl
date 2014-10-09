@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -45,8 +45,6 @@
             <!--{assign var=key value="login_email"}-->
             <font color="#FF0000"><!--{$arrErr[$key]}--></font>
             <input type="text" name="<!--{$key}-->" value="<!--{$tpl_login_email|h}-->" size="40" istyle="3"><br>
-        <!--{else}-->
-            <input type="hidden" name="login_email" value="dummy">
         <!--{/if}-->
         ▼パスワード<br>
         <!--{assign var=key value="login_pass"}--><font color="#FF0000"><!--{$arrErr[$key]}--></font>

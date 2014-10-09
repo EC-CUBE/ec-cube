@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_TestBase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSetDownloadableFlgTo_販売価格が0円の場合_フラグがONになる() {
+  public function testSetDownloadableFlgTo_販売価格が0円の場合_フラグがONになる()
+  {
     $input = array(
       '1001' => array('price' => 0)
     );
@@ -55,7 +59,8 @@ class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_Tes
     $this->verify('ダウンロード可能フラグ設定結果');
   }
 
-  public function testSetDownloadableFlgTo_ダウンロード期限内かつ入金日ありの場合_フラグがONになる() {
+  public function testSetDownloadableFlgTo_ダウンロード期限内かつ入金日ありの場合_フラグがONになる()
+  {
     $input = array(
       '1001' => array('price' => 1000, 'effective' => '1', 'payment_date' => '2012-12-12')
     );
@@ -67,7 +72,8 @@ class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_Tes
     $this->verify('ダウンロード可能フラグ設定結果');
   }
 
-  public function testSetDownloadableFlgTo_ダウンロード期限内かつ入金日なしの場合_フラグがOFFになる() {
+  public function testSetDownloadableFlgTo_ダウンロード期限内かつ入金日なしの場合_フラグがOFFになる()
+  {
     $input = array(
       '1001' => array('price' => 1000, 'effective' => '1', 'payment_date' => null)
     );
@@ -79,7 +85,8 @@ class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_Tes
     $this->verify('ダウンロード可能フラグ設定結果');
   }
 
-  public function testSetDownloadableFlgTo_ダウンロード期限外かつ入金日ありの場合_フラグがOFFになる() {
+  public function testSetDownloadableFlgTo_ダウンロード期限外かつ入金日ありの場合_フラグがOFFになる()
+  {
     $input = array(
       '1001' => array('price' => 1000, 'effective' => '0', 'payment_date' => '2012-12-12')
     );
@@ -91,7 +98,8 @@ class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_Tes
     $this->verify('ダウンロード可能フラグ設定結果');
   }
 
-  public function testSetDownloadableFlgTo_ダウンロード期限外かつ入金日なしの場合_フラグがOFFになる() {
+  public function testSetDownloadableFlgTo_ダウンロード期限外かつ入金日なしの場合_フラグがOFFになる()
+  {
     $input = array(
       '1001' => array('price' => 1000, 'effective' => '0', 'payment_date' => null)
     );
@@ -103,8 +111,6 @@ class SC_Helper_Purchase_setDownloadableFlgToTest extends SC_Helper_Purchase_Tes
     $this->verify('ダウンロード可能フラグ設定結果');
   }
 
-
   //////////////////////////////////////////
-
 }
 

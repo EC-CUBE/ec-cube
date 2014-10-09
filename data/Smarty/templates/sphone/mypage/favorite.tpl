@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -54,15 +54,15 @@
 
                         <!--▼商品 -->
                         <div class="favoriteBox">
-                            <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->&amp;width=80&amp;height=80" alt="" width="80" height="80" class="photoL productImg" /></a>
+                            <a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->"><img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->" style="max-width: 80px;max-height: 80px;" class="photoL productImg"  /></a>
                             <div class="favoriteContents clearfix">
                                 <h4><a rel="external" href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->" class="productName"><!--{$arrFavorite[cnt].name}--></a></h4>
                                 <p><span class="mini productPrice"><!--{$smarty.const.SALE_PRICE_TITLE}-->：<!--{if $arrFavorite[cnt].price02_min_inctax == $arrFavorite[cnt].price02_max_inctax}-->
-                                    <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->
+                                    <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->
                                     <!--{else}-->
-                                    <!--{$arrFavorite[cnt].price02_min_inctax|number_format}-->～<!--{$arrFavorite[cnt].price02_max_inctax|number_format}-->
+                                    <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->～<!--{$arrFavorite[cnt].price02_max_inctax|n2s}-->
                                     <!--{/if}-->円</span></p>
-                                <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="javascript:fnModeSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
+                                <p class="btn_delete"><img src="<!--{$TPL_URLPATH}-->img/button/btn_delete.png" width="21" height="20" alt="削除" onclick="javascript:eccube.setModeAndSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');" class="pointer" /></p>
                             </div>
                         </div><!--▲商品 -->
                     <!--{/section}-->
@@ -78,7 +78,7 @@
 
         <div class="btn_area">
             <!--{if $tpl_linemax > $dispNumber}-->
-                <p><a rel="external" href="javascript: void(0);" class="btn_more" id="btn_more_product" onclick="getProducts(5); return false;">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
+                <p><a rel="external" href="javascript: void(0);" class="btn_more" id="btn_more_product" onclick="getProducts(<!--{$dispNumber}-->); return false;">もっとみる(＋<!--{$dispNumber}-->件)</a></p>
             <!--{/if}-->
         </div>
 
@@ -92,24 +92,16 @@
 
 </section>
 
-<!--▼検索バー -->
-<section id="search_area">
-    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-    </form>
-</section>
-<!--▲検索バー -->
+<!--{include file= 'frontparts/search_area.tpl'}-->
 
 <script>
     var pageNo = 2;
     var url = "<!--{$smarty.const.P_DETAIL_URLPATH}-->";
-    var imagePath = "<!--{$smarty.const.IMAGE_SAVE_URLPATH|sfTrimURL}-->/";
+    var imagePath = "<!--{$smarty.const.IMAGE_SAVE_URLPATH}-->";
     var statusImagePath = "<!--{$TPL_URLPATH}-->";
 
     function getProducts(limit) {
-        $.mobile.showPageLoadingMsg();
+        eccube.showLoading();
         var i = limit;
         //送信データを準備
         var postData = {};
@@ -128,7 +120,7 @@
             dataType: "json",
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 alert(textStatus);
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             },
             success: function(result){
                 var productStatus = result.productStatus;
@@ -158,24 +150,24 @@
                         var priceVale = "";
                         //販売価格が範囲か判定
                         if (product.price02_min == product.price02_max) {
-                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->：" + product.price02_min_tax_format + '円';
+                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->：" + product.price02_min_inctax_format + '円';
                         } else {
-                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->：" + product.price02_min_tax_format + '～' + product.price02_max_tax_format + '円';
+                            priceVale = "<!--{$smarty.const.SALE_PRICE_TITLE}-->：" + product.price02_min_inctax_format + '～' + product.price02_max_inctax_format + '円';
                         }
                         price.append(priceVale);
 
                         //削除ボタンをセット
-                        $($(".favoriteBox p.btn_delete a").get(maxCnt)).attr("href", "javascript:fnModeSubmit('delete_favorite','product_id','" + product.product_id + "');");
+                        $($(".favoriteBox p.btn_delete img").get(maxCnt)).attr("onclick", "javascript:eccube.setModeAndSubmit('delete_favorite','product_id','" + product.product_id + "');");
 
                     }
                 }
                 pageNo++;
 
-                //すべての商品を表示したか判定
+                //全ての商品を表示したか判定
                 if (parseInt($("#productscount").text()) <= $(".favoriteBox").length) {
                     $("#btn_more_product").hide();
                 }
-                $.mobile.hidePageLoadingMsg();
+                eccube.hideLoading();
             }
         });
     }

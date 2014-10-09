@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,17 +31,7 @@
         <font color="#ff0000"><!--{$errmsg}--></font><br>
     <!--{/if}-->
 
-    <!--{if @$tpl_kara_mail_to != ''}-->
-        ■ご登録時のメールアドレスからメールを送れる方は、次のリンクをクリックして空メールを送信してください。<br>
-        <br>
-        <center><a href="mailto:<!--{$tpl_kara_mail_to|u}-->">メール送信</a></center>
-
-        <br>
-
-        ■メールを送れない方は、ご登録時のメールアドレスとお名前を入力して「次へ」ボタンをクリックしてください。<br>
-    <!--{else}-->
-        ご登録時のメールアドレスとお名前を入力して「次へ」ボタンをクリックしてください。<br>
-    <!--{/if}-->
+    ご登録時のメールアドレスとお名前を入力して「次へ」ボタンをクリックしてください。<br>
     <br>
 
     <form action="?" method="post">

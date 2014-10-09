@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,21 +31,25 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfPrintRTest extends Common_TestCase {
+class SC_Utils_sfPrintRTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
   // TODO 環境により出力形式が異なるため、テスト不可(デバッグ用なので、テストしなくてもよさそう)
   /**
-  public function testSfPrintR__指定したオブジェクトの情報が出力される() {
+  public function testSfPrintR__指定したオブジェクトの情報が出力される()
+  {
     $output = '<div style="font-size: 12px;color: #00FF00;">' . "\n"
       . '<strong>**デバッグ中**</strong><br />' . "\n"
       . '<pre>' . "\n"
@@ -61,6 +65,9 @@ class SC_Utils_sfPrintRTest extends Common_TestCase {
   }
   */
   //////////////////////////////////////////
-
+    public function testDummyTest() {
+        // Warning が出るため空のテストを作成
+        $this->assertTrue(true);
+    }
 }
 

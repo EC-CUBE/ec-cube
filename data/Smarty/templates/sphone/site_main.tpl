@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *}-->
 
-<body>
+<body class="<!--{$tpl_page_class_name|h}-->">
     <div data-role="page" data-keep-native=".data-role-none" data-theme="f">
 
         <!--{* ▼HeaderHeaderTop COLUMN*}-->
@@ -146,21 +146,4 @@
         <!--{* ▲FooterBottom COLUMN*}-->
 
     </div>
-
-    <!-- ▼明細情報 -->
-    <div id="windowcolumn" data-role="dialog">
-        <div data-role="header" data-backbtn="true" data-theme="f">
-            <h2>新着情報</h2>
-        </div>
-
-        <div data-role="content" data-theme="d">
-            <dl class="view_detail">
-                <dt><a href="javascript:;" rel="external" target="_blank"></a></dt>
-                <dd id="newsComment"></dd>
-            </dl>
-            <p><a href="<!--{$smarty.const.HTTP_URL}-->" class="btn_more" data-rel="back">新着一覧にもどる</a></p>
-        </div>
-    </div>
-    <!-- ▲明細情報 -->
-
 </body>

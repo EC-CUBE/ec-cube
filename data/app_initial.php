@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -40,7 +40,7 @@ if (!defined('CACHE_REALDIR')) {
 require_once(CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Plugin_Ex.php');
 
 // クラスのオートローディングを定義する
-require_once(CLASS_EX_REALDIR . '/SC_ClassAutoloader_Ex.php');
+require_once(CLASS_EX_REALDIR . 'SC_ClassAutoloader_Ex.php');
 spl_autoload_register(array('SC_ClassAutoloader_Ex', 'autoload'));
 
 SC_Helper_HandleError_Ex::load();

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -29,8 +29,8 @@
  * @version $Id$
  */
 
-abstract class SC_Api_Abstract {
-
+abstract class SC_Api_Abstract
+{
     /** 認証タイプ */
     const API_AUTH_TYPE_REFERER = '1';          // リファラー
     const API_AUTH_TYPE_SESSION_TOKEN = '2';    // CSRF TOKEN
@@ -54,26 +54,37 @@ abstract class SC_Api_Abstract {
 
     protected $status = true;
     protected $arrErr = array();
+    protected $arrResponse = array();
 
-    final public function __construct() {}
+    final public function __construct()
+    {
+    }
 
-    final public function __destruct() {}
+    final public function __destruct()
+    {
+    }
 
     abstract public function doAction($arrParam);
 
     abstract public function getResponseGroupName();
 
+    /**
+     * @param SC_FormParam_Ex $objFormParam
+     */
     abstract protected function lfInitParam(&$objFormParam);
 
-    public function getResponseArray() {
+    public function getResponseArray()
+    {
         return $this->arrResponse;
     }
 
-    public function getErrorArray() {
+    public function getErrorArray()
+    {
         return $this->arrErr;
     }
 
-    public function getDefaultConfig() {
+    public function getDefaultConfig()
+    {
         $arrApiConfig = array();
         $arrApiConfig['operation_name'] = $this->operation_name;
         $arrApiConfig['operation_description'] = $this->operation_description;
@@ -81,40 +92,51 @@ abstract class SC_Api_Abstract {
         $arrApiConfig['enable'] = $this->default_enable;
         $arrApiConfig['is_log'] = $this->default_is_log;
         $arrApiConfig['sub_data'] = $this->default_sub_data;
+
         return $arrApiConfig;
     }
 
-    protected function setResponse($key, $data) {
+    /**
+     * @param string $key
+     */
+    protected function setResponse($key, $data)
+    {
         $this->arrResponse[$key] = $data;
     }
 
-    protected function addError($arrErr) {
-        $this->arrErr = array_merge((array)$this->arrErr, (array)$arrErr);
+    protected function addError($arrErr)
+    {
+        $this->arrErr = array_merge((array) $this->arrErr, (array) $arrErr);
     }
 
-    protected function isParamError() {
+    protected function isParamError()
+    {
         return !SC_Utils_Ex::isBlank($this->arrErr);
     }
 
-    protected function checkErrorExtended($arrParam) {
+    protected function checkErrorExtended($arrParam)
+    {
     }
 
-    protected function doInitParam($arrParam = array()) {
+    protected function doInitParam($arrParam = array())
+    {
         $this->objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($this->objFormParam);
         $this->objFormParam->setParam($arrParam);
         $this->objFormParam->convParam();
         $this->arrErr = $this->objFormParam->checkError(false);
-        $this->arrErr = array_merge((array)$this->arrErr, (array)$this->checkErrorExtended($arrParam));
+        $this->arrErr = array_merge((array) $this->arrErr, (array) $this->checkErrorExtended($arrParam));
+
         return $this->objFormParam->getHashArray();
     }
 
-    public function getRequestValidate() {
+    public function getRequestValidate()
+    {
         $arrParam = $this->objFormParam->getHashArray();
         if (!SC_Utils_Ex::isBlank($arrParam)) {
             return $arrParam;
         }
+
         return;
     }
-
 }

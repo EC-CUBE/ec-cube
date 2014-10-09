@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,37 +31,42 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfIsZeroFillingTest extends Common_TestCase {
+class SC_Utils_sfIsZeroFillingTest extends Common_TestCase
+{
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfIsZeroFilling_桁数が1の場合_FALSEを返す() {
+  public function testSfIsZeroFilling_桁数が1の場合_FALSEを返す()
+  {
     $this->expected = FALSE;
     $this->actual = SC_Utils::sfIsZeroFilling('0');
 
     $this->verify('ゼロ詰めされているかどうか');
   }
 
-  public function testSfIsZeroFilling_桁数が2以上で0埋めされていない場合_FALSEを返す() {
+  public function testSfIsZeroFilling_桁数が2以上で0埋めされていない場合_FALSEを返す()
+  {
     $this->expected = FALSE;
     $this->actual = SC_Utils::sfIsZeroFilling('12');
 
     $this->verify('ゼロ詰めされているかどうか');
   }
 
-  public function testSfIsZeroFilling_桁数が2以上で0埋めされている場合_TRUEを返す() {
+  public function testSfIsZeroFilling_桁数が2以上で0埋めされている場合_TRUEを返す()
+  {
     $this->expected = TRUE;
     $this->actual = SC_Utils::sfIsZeroFilling('01');
 
     $this->verify('ゼロ詰めされているかどうか');
   }
-
 }
 

@@ -1,7 +1,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -53,7 +53,7 @@
             //opacity: 0.8,
             //helper: 'clone',
             appendTo: 'body',
-            placeholder: 'clone',
+            //placeholder: 'clone',
             placeholder: 'placeholder',
             connectWith: els,
             start: function(e,ui) {

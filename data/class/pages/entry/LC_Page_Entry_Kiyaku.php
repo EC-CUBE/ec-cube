@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Entry_Kiyaku extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_title = 'ご利用規約';
     }
@@ -51,7 +48,8 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -62,7 +60,11 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
+        //決済処理中ステータスのロールバック
+        $objPurchase = new SC_Helper_Purchase_Ex();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $arrKiyaku = $this->lfGetKiyakuData();
         $this->max = count($arrKiyaku);
@@ -73,35 +75,26 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
         }
 
         $this->tpl_kiyaku_text = $this->lfMakeKiyakuText($arrKiyaku, $this->max, $this->offset);
-
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * 規約文の作成
      *
      * @param mixed $arrKiyaku
-     * @param mixed $max
+     * @param integer $max
      * @param mixed $offset
      * @access public
      * @return string 規約の内容をテキストエリアで表示するように整形したデータ
      */
-    function lfMakeKiyakuText($arrKiyaku, $max, $offset) {
+    public function lfMakeKiyakuText($arrKiyaku, $max, $offset)
+    {
         $this->tpl_kiyaku_text = '';
         for ($i = 0; $i < $max; $i++) {
             if ($offset !== null && ($offset - 1) <> $i) continue;
             $tpl_kiyaku_text.=$arrKiyaku[$i]['kiyaku_title'] . "\n\n";
             $tpl_kiyaku_text.=$arrKiyaku[$i]['kiyaku_text'] . "\n\n";
         }
+
         return $tpl_kiyaku_text;
     }
 
@@ -111,12 +104,10 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      * @access private
      * @return array $arrKiyaku 規約の配列
      */
-    function lfGetKiyakuData() {
-
-        $objQuery   = SC_Query_Ex::getSingletonInstance();
-
-        $objQuery->setOrder('rank DESC');
-        $arrKiyaku  = $objQuery->select('kiyaku_title, kiyaku_text', 'dtb_kiyaku', 'del_flg <> 1');
+    public function lfGetKiyakuData()
+    {
+        $objKiyaku = new SC_Helper_Kiyaku_Ex();
+        $arrKiyaku = $objKiyaku->getList();
 
         return $arrKiyaku;
     }
@@ -129,8 +120,8 @@ class LC_Page_Entry_Kiyaku extends LC_Page_Ex {
      * @access private
      * @return int
      */
-    function lfSetOffset($offset) {
+    public function lfSetOffset($offset)
+    {
         return is_numeric($offset) === true ? intval($offset) : 1;
     }
-
 }

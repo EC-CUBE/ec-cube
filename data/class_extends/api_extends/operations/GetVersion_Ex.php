@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,6 +30,6 @@
  */
 require_once CLASS_REALDIR . 'api/operations/GetVersion.php';
 
-class API_GetVersion_Ex extends API_GetVersion {
-
+class API_GetVersion_Ex extends API_GetVersion
+{
 }

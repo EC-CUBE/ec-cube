@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,13 +23,14 @@
  * 端末の画面解像度にあわせて画像を変換する
  */
 
-define('MOBILE_IMAGE_INC_REALDIR', realpath(dirname( __FILE__)) . '/../include/');
+define('MOBILE_IMAGE_INC_REALDIR', realpath(dirname(__FILE__)) . '/../include/');
 require_once MOBILE_IMAGE_INC_REALDIR . 'image_converter.inc';
 
 /**
  * 画像変換クラス
  */
-class SC_MobileImage {
+class SC_MobileImage
+{
     /**
      * 画像を端末の解像度に合わせて変換する
      * output buffering 用コールバック関数
@@ -37,15 +38,14 @@ class SC_MobileImage {
      * @param string 入力
      * @return string 出力
      */
-    static function handler($buffer) {
-
+    public static function handler($buffer)
+    {
         // 端末情報を取得する
         $carrier = SC_MobileUserAgent_Ex::getCarrier();
         $model   = SC_MobileUserAgent_Ex::getModel();
 
         // 携帯電話の場合のみ処理を行う
         if ($carrier !== FALSE) {
-
             // HTML中のIMGタグを取得する
             $images = array();
             $pattern = '/<img\s+[^<>]*src=[\'"]?([^>"\'\s]+)[\'"]?[^>]*>/i';
@@ -97,11 +97,11 @@ class SC_MobileImage {
             foreach ($images[1] as $key => $path) {
                 // resize_image.phpは除外
                 if (stripos($path, ROOT_URLPATH . 'resize_image.php') !== FALSE) {
-                    break;
+                    continue;
                 }
 
                 $realpath = html_entity_decode($path, ENT_QUOTES);
-                $realpath = preg_replace('|^' . ROOT_URLPATH . '|', HTML_REALDIR, $realpath);
+                $realpath = substr_replace($realpath, HTML_REALDIR, 0, strlen(ROOT_URLPATH));
                 $converted = $imageConverter->execute($realpath);
                 if (isset($converted['outputImageName'])) {
                     $buffer = str_replace($path, MOBILE_IMAGE_URLPATH . $converted['outputImageName'], $buffer);
@@ -110,6 +110,7 @@ class SC_MobileImage {
                 }
             }
         }
+
         return $buffer;
     }
 }

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -36,19 +36,19 @@ OwnersStore.download();やOwnersStore.products_list();を呼び出すことで
 <script type="text/javascript" src="<!--{$TPL_URLPATH}-->js/ownersstore.js.php"></script>
 
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<div id="ownersstore" class="contents-main">
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <div id="ownersstore" class="contents-main">
 
-    <!--購入商品一覧ここから-->
-    <div id="ownersstore_products_list"></div>
-    <!--購入商品一覧ここまで-->
+        <!--購入商品一覧ここから-->
+        <div id="ownersstore_products_list"></div>
+        <!--購入商品一覧ここまで-->
 
-    <div class="btn">
-        <a class="btn-normal" href="javascript:;" onclick="OwnersStore.products_list();return false;"><span>モジュール一覧を取得する</span></a>
+        <div class="btn">
+            <a class="btn-normal" href="javascript:;" onclick="OwnersStore.products_list();return false;"><span>モジュール一覧を取得する</span></a>
+        </div>
+
+        <div id="ownersstore_index">
+            <iframe src="<!--{$smarty.const.OSTORE_SSLURL}-->store_info/" style="width:950px;height:600px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+        </div>
     </div>
-
-    <div id="ownersstore_index">
-        <iframe src="<!--{$smarty.const.OSTORE_SSLURL}-->store_info/" style="width:950px;height:600px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
-    </div>
-</div>
 </form>

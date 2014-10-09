@@ -5,19 +5,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /**
  *
  */
-class SC_Product_TestBase extends Common_TestCase {
-    protected function setUp() {
+class SC_Product_TestBase extends Common_TestCase
+{
+    protected function setUp()
+    {
         parent::setUp();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /**
      * DBに商品クラス情報を設定します.
      */
-    protected function setUpProductClass() {
+    protected function setUpProductClass()
+    {
         $product_class = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
@@ -58,35 +62,65 @@ class SC_Product_TestBase extends Common_TestCase {
                                );
 
         $this->objQuery->delete('dtb_products_class');
-        foreach ($product_class as $key => $item) {
+        foreach ($product_class as $key => $item)
+{
             $this->objQuery->insert('dtb_products_class', $item);
         }
+
+        $this->setUpClass();
         $this->setUpClassCategory();
         $this->setUpProducts();
     }
 
     /**
+     * DBに規格分類情報を登録します.
+     */
+    protected function setUpClass()
+    {
+        $table = 'dtb_class';
+
+        $data = array(
+            array(
+                'class_id' => 1,
+                'name' => '味',
+                'rank' => 1,
+                'creator_id' => 1,
+                'update_date' => 'CURRENT_TIMESTAMP',
+            ),
+        );
+
+        $this->objQuery->delete($table);
+        foreach ($data as $item) {
+            $this->objQuery->insert($table, $item);
+        }
+    }
+
+    /**
      * DBに製品カテゴリ情報を登録します.
      */
-    protected function setUpClassCategory() {
+    protected function setUpClassCategory()
+    {
         $class_category = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
                 'classcategory_id' => '1001',
                 'class_id' => '1',
                 'creator_id' => '1',
-                'name' => 'cat1001'
+                'name' => 'cat1001',
+                'rank' => 1,
                   ),
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
                 'classcategory_id' => '1002',
                 'class_id' => '1',
                 'creator_id' => '1',
-                'name' => 'cat1002'
+                'name' => 'cat1002',
+                'rank' => 2,
                   )
                                 );
 
-        $this->objQuery->delete('dtb_classcategory');
+        // classcategory_id=0のものは削除しない
+        $this->objQuery->delete('dtb_classcategory', 'classcategory_id <> 0');
         foreach ($class_category as $key => $item) {
             $this->objQuery->insert('dtb_classcategory', $item);
         }
@@ -95,7 +129,8 @@ class SC_Product_TestBase extends Common_TestCase {
     /** 
      * DBに製品情報を登録します.
      */
-    protected function setUpProducts() {
+    protected function setUpProducts()
+    {
         $products = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',
@@ -155,7 +190,8 @@ class SC_Product_TestBase extends Common_TestCase {
     /**
      * DBに商品ステータス情報を登録します.
      */
-    protected function setUpProductStatus() {
+    protected function setUpProductStatus()
+    {
         $class_category = array(
             array(
                 'update_date' => 'CURRENT_TIMESTAMP',

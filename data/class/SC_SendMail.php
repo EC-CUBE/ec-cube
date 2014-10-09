@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,23 +22,24 @@
  */
 
 // テキスト/HTML　メール送信
-class SC_SendMail {
-
-    var $to;            // 送信先
-    var $subject;       // 題名
-    var $body;          // 本文
-    var $cc;            // CC
-    var $bcc;           // BCC
-    var $replay_to;     // replay_to
-    var $return_path;   // return_path
-    var $objMail;
+class SC_SendMail
+{
+    public $to;            // 送信先
+    public $subject;       // 題名
+    public $body;          // 本文
+    public $cc;            // CC
+    public $bcc;           // BCC
+    public $replay_to;     // replay_to
+    public $return_path;   // return_path
+    public $objMail;
 
     /**
      * コンストラクタ
      *
      * @return void
      */
-    function __construct() {
+    public function __construct()
+    {
         $this->arrRecip = array();
         $this->to = '';
         $this->subject = '';
@@ -61,12 +62,18 @@ class SC_SendMail {
     }
 
     // 送信先の設定
-    function setRecip($key, $recipient) {
+
+    /**
+     * @param string $key
+     */
+    public function setRecip($key, $recipient)
+    {
         $this->arrRecip[$key] = $recipient;
     }
 
     // 宛先の設定
-    function setTo($to, $to_name = '') {
+    public function setTo($to, $to_name = '')
+    {
         if ($to != '') {
             $this->to = $this->getNameAddress($to_name, $to);
             $this->setRecip('To', $to);
@@ -74,12 +81,18 @@ class SC_SendMail {
     }
 
     // 送信元の設定
-    function setFrom($from, $from_name = '') {
+    public function setFrom($from, $from_name = '')
+    {
         $this->from = $this->getNameAddress($from_name, $from);
     }
 
     // CCの設定
-    function setCc($cc, $cc_name = '') {
+
+    /**
+     * @param string $cc
+     */
+    public function setCc($cc, $cc_name = '')
+    {
         if ($cc != '') {
             $this->cc = $this->getNameAddress($cc_name, $cc);
             $this->setRecip('Cc', $cc);
@@ -87,7 +100,12 @@ class SC_SendMail {
     }
 
     // BCCの設定
-    function setBCc($bcc) {
+
+    /**
+     * @param string $bcc
+     */
+    public function setBCc($bcc)
+    {
         if ($bcc != '') {
             $this->bcc = $bcc;
             $this->setRecip('Bcc', $bcc);
@@ -95,27 +113,36 @@ class SC_SendMail {
     }
 
     // Reply-Toの設定
-    function setReplyTo($reply_to) {
+
+    /**
+     * @param string $reply_to
+     */
+    public function setReplyTo($reply_to)
+    {
         if ($reply_to != '') {
             $this->reply_to = $reply_to;
         }
     }
 
     // Return-Pathの設定
-    function setReturnPath($return_path) {
+    public function setReturnPath($return_path)
+    {
         $this->return_path = $return_path;
     }
 
     // 件名の設定
-    function setSubject($subject) {
+    public function setSubject($subject)
+    {
         $this->subject = mb_encode_mimeheader($subject, 'JIS', 'B', "\n");
         $this->subject = str_replace(array("\r\n", "\r"), "\n", $this->subject);
     }
 
     // 本文の設定
-    function setBody($body) {
+    public function setBody($body)
+    {
         // iso-2022-jpだと特殊文字が？で送信されるのでJISを使用する
         $this->body = mb_convert_encoding($body, 'JIS', CHAR_CODE);
+        $this->body = str_replace(array("\r\n", "\r"), "\n", $this->body);
     }
 
     /**
@@ -123,7 +150,8 @@ class SC_SendMail {
      *
      * @deprecated 2.12.2 (#1912)
      */
-    function setHost($host) {
+    public function setHost($host)
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         $this->host = $host;
         $arrHost = array(
@@ -132,7 +160,6 @@ class SC_SendMail {
         );
         // PEAR::Mailを使ってメール送信オブジェクト作成
         $this->objMail =& Mail::factory('smtp', $arrHost);
-
     }
 
     /**
@@ -140,7 +167,8 @@ class SC_SendMail {
      *
      * @deprecated 2.12.2 (#1912)
      */
-    function setPort($port) {
+    public function setPort($port)
+    {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         $this->port = $port;
         $arrHost = array(
@@ -152,7 +180,12 @@ class SC_SendMail {
     }
 
     // 名前<メールアドレス>の形式を生成
-    function getNameAddress($name, $mail_address) {
+
+    /**
+     * @param string $name
+     */
+    public function getNameAddress($name, $mail_address)
+    {
             if ($name != '') {
                 // 制御文字を変換する。
                 $_name = $name;
@@ -162,14 +195,17 @@ class SC_SendMail {
             } else {
                 $name_address = $mail_address;
             }
+
             return $name_address;
     }
 
-    function setItem($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='') {
+    public function setItem($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='')
+    {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
-    function setItemHtml($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='') {
+    public function setItemHtml($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='')
+    {
         $this->setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to, $return_path, $errors_to, $bcc, $cc);
     }
 
@@ -185,7 +221,8 @@ class SC_SendMail {
          $cc            -> カーボンコピー
          $bcc           -> ブラインドカーボンコピー
     */
-    function setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='') {
+    public function setBase($to, $subject, $body, $fromaddress, $from_name, $reply_to='', $return_path='', $errors_to='', $bcc='', $cc ='')
+    {
         // 宛先設定
         $this->setTo($to);
         // 件名設定
@@ -204,7 +241,7 @@ class SC_SendMail {
         // Errors-Toは、ほとんどのSMTPで無視され、Return-Pathが優先されるためReturn_Pathに設定する。
         if ($errors_to != '') {
             $this->return_path = $errors_to;
-        } else if ($return_path != '') {
+        } elseif ($return_path != '') {
             $this->return_path = $return_path;
         } else {
             $this->return_path = $fromaddress;
@@ -212,7 +249,8 @@ class SC_SendMail {
     }
 
     // ヘッダーを返す
-    function getBaseHeader() {
+    public function getBaseHeader()
+    {
         // 送信するメールの内容と送信先
         $arrHeader = array();
         $arrHeader['MIME-Version'] = '1.0';
@@ -231,20 +269,25 @@ class SC_SendMail {
         }
         $arrHeader['Date'] = date('D, j M Y H:i:s O');
         $arrHeader['Content-Transfer-Encoding'] = '7bit';
+
         return $arrHeader;
     }
 
     // ヘッダーを返す
-    function getTEXTHeader() {
+    public function getTEXTHeader()
+    {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = 'text/plain; charset="ISO-2022-JP"';
+
         return $arrHeader;
     }
 
     // ヘッダーを返す
-    function getHTMLHeader() {
+    public function getHTMLHeader()
+    {
         $arrHeader = $this->getBaseHeader();
         $arrHeader['Content-Type'] = 'text/html; charset="ISO-2022-JP"';
+
         return $arrHeader;
     }
 
@@ -253,7 +296,8 @@ class SC_SendMail {
      *
      * @return array|string メーラーバックエンドに応じた送信先
      */
-    function getRecip() {
+    public function getRecip()
+    {
         switch ($this->backend) {
             // PEAR::Mail_mail#send は、(他のメーラーバックエンドと異なり) 第1引数を To: として扱う。Cc: や Bcc: は、ヘッダー情報から処理する。
             case 'mail':
@@ -271,9 +315,10 @@ class SC_SendMail {
      *
      * 設定された情報を利用して, メールを送信する.
      *
-     * @return void
+     * @return boolean
      */
-    function sendMail($isHtml = false) {
+    public function sendMail($isHtml = false)
+    {
         $header = $isHtml ? $this->getHTMLHeader() : $this->getTEXTHeader();
         $recip = $this->getRecip();
         // メール送信
@@ -284,27 +329,31 @@ class SC_SendMail {
             $msg = 'メール送信に失敗しました。[' . $msg . ']';
             trigger_error($msg, E_USER_WARNING);
             GC_Utils_Ex::gfDebugLog($header);
+
             return false;
         }
+
         return true;
     }
 
     /**
      * HTMLメール送信を実行する.
      *
-     * @return void
+     * @return boolean
      */
-    function sendHtmlMail() {
+    public function sendHtmlMail()
+    {
         return $this->sendMail(true);
     }
 
     /**
      * メーラーバックエンドに応じたパラメーターを返す.
      *
-     * @param string $backend Pear::Mail のバックエンド
-     * @return array メーラーバックエンドに応じたパラメーターの配列
+     * @param  string $backend Pear::Mail のバックエンド
+     * @return array  メーラーバックエンドに応じたパラメーターの配列
      */
-    function getBackendParams($backend) {
+    public function getBackendParams($backend)
+    {
         switch ($backend) {
             case 'mail':
                 $arrParams = array();
@@ -336,6 +385,7 @@ class SC_SendMail {
                 trigger_error('不明なバックエンド。[$backend = ' . var_export($backend, true) . ']', E_USER_ERROR);
                 exit;
         }
+
         return $arrParams;
     }
 }

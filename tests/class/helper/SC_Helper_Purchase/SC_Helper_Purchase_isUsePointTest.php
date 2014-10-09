@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,38 +31,43 @@ require_once($HOME . "/tests/class/helper/SC_Helper_Purchase/SC_Helper_Purchase_
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Helper_Purchase_isUsePointTest extends SC_Helper_Purchase_TestBase {
+class SC_Helper_Purchase_isUsePointTest extends SC_Helper_Purchase_TestBase
+{
 
-  protected function setUp() {
+  protected function setUp()
+  {
     parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testIsUsePoint_ステータスがnullの場合_FALSEが返る() {
+  public function testIsUsePoint_ステータスがnullの場合_FALSEが返る()
+  {
     $this->expected = FALSE;
     $this->actual = SC_Helper_Purchase::isUsePoint(null);
 
     $this->verify('ポイントを使用するかどうか');
   }
 
-  public function testIsUsePoint_ステータスがキャンセルの場合_FALSEが返る() {
+  public function testIsUsePoint_ステータスがキャンセルの場合_FALSEが返る()
+  {
     $this->expected = FALSE;
     $this->actual = SC_Helper_Purchase::isUsePoint(ORDER_CANCEL);
 
     $this->verify('ポイントを使用するかどうか');
   }
 
-  // TODO 要確認：本当にキャンセルのとき以外はすべてTRUEで良いのか、現在の使われ方の都合か
-  public function testIsUsePoint_ステータスがキャンセル以外の場合_TRUEが返る() {
+  // TODO 要確認：本当にキャンセルのとき以外は全てTRUEで良いのか、現在の使われ方の都合か
+  public function testIsUsePoint_ステータスがキャンセル以外の場合_TRUEが返る()
+  {
     $this->expected = TRUE;
     $this->actual = SC_Helper_Purchase::isUsePoint(ORDER_NEW);
 
     $this->verify('ポイント加算するかどうか');
   }
-
 }
 

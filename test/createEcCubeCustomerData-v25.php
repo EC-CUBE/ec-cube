@@ -3,7 +3,7 @@
 /*
  * EC-CUBE 動作検証用会員データ生成スクリプト
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -87,7 +87,8 @@ exit;
 /**
  * EC-CUBE のテスト用会員データを生成する
  */
-class CreateEcCubeCustomerData {
+class CreateEcCubeCustomerData 
+{
 
     /** SC_Query インスタンス */
     var $objQuery;
@@ -95,7 +96,8 @@ class CreateEcCubeCustomerData {
     /**
      * コンストラクタ.
      */
-    function CreateEcCubeCustomerData() {
+    function CreateEcCubeCustomerData()
+    {
         $this->objQuery = new SC_Query();
     }
 
@@ -104,7 +106,8 @@ class CreateEcCubeCustomerData {
      *
      * @return void
      */
-    function createCustomers() {
+    function createCustomers()
+    {
         lfPrintLog("createCustomers START.(" . CUSTOMERS_VOLUME . " data)");
         for ($i = 0; $i < CUSTOMERS_VOLUME; $i++) {
             lfPrintLog("----------");
@@ -127,7 +130,7 @@ class CreateEcCubeCustomerData {
             $sqlval['password'] = 'test';
             $sqlval['reminder'] = '1';    // 1:「母親の旧姓は？」
             $sqlval['reminder_answer'] = "てすと";
-            $sqlval['mailmaga_flg'] = (string) '1';    // 1:HTMLメール＋テキストメールを受け取る 2:テキストメールを受け取る 3:受け取らない
+            $sqlval['mailmaga_flg'] = (string) '1';    // 1:HTMLメール 2:テキストメール 3:希望しない
 
             // 生年月日の作成
             $sqlval['birth']    = SC_Utils_Ex::sfGetTimestamp(2006, 9, 1);
@@ -154,11 +157,11 @@ class CreateEcCubeCustomerData {
         print("\n");
         lfPrintLog("createCustomers DONE.(" . CUSTOMERS_VOLUME . " data created)");
     }
-
 }
 
 /** テスト用スクリプトのログ出力関数 */
-function lfPrintLog($mess) {
+function lfPrintLog($mess)
+{
     $path = DATA_REALDIR . "logs/" .  basename(__FILE__, '.php') . ".log";
     GC_Utils::gfPrintLog($mess, $path);
 }

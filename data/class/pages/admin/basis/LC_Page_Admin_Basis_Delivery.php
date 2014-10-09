@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/delivery.tpl';
         $this->tpl_subno = 'delivery';
@@ -58,7 +55,8 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -68,9 +66,9 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
-        $objDb = new SC_Helper_DB_Ex();
+    public function action()
+    {
+        $objDeliv = new SC_Helper_Delivery_Ex();
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
@@ -80,6 +78,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);
             if (!empty($this->arrErr['deliv_id'])) {
                 trigger_error('', E_USER_ERROR);
+
                 return;
             }
         }
@@ -87,50 +86,35 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
         switch ($mode) {
             case 'delete':
                 // ランク付きレコードの削除
-                $objDb->sfDeleteRankRecord('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $objDeliv->delete($_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'up':
-                $objDb->sfRankUp('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $objDeliv->rankUp($_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             case 'down':
-                $objDb->sfRankDown('dtb_deliv', 'deliv_id', $_POST['deliv_id']);
+                $objDeliv->rankDown($_POST['deliv_id']);
 
                 $this->objDisplay->reload(); // PRG pattern
                 break;
             default:
                 break;
         }
-        $this->arrDelivList = $this->lfGetDelivList();
-
-    }
-
-    /**
-     * 配送業者一覧の取得
-     *
-     * @return array
-     */
-    function lfGetDelivList() {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $col = 'deliv_id, name, service_name';
-        $where = 'del_flg = 0';
-        $table = 'dtb_deliv';
-        $objQuery->setOrder('rank DESC');
-
-        return $objQuery->select($col, $table, $where);
+        $this->arrDelivList = $objDeliv->getList();
     }
 
     /**
      * 入力エラーチェック
      *
-     * @param string $mode
+     * @param  string $mode
+     * @param SC_FormParam_Ex $objFormParam
      * @return array
      */
-    function lfCheckError($mode, &$objFormParam) {
+    public function lfCheckError($mode, &$objFormParam)
+    {
         $arrErr = array();
         switch ($mode) {
             case 'delete':
@@ -145,15 +129,7 @@ class LC_Page_Admin_Basis_Delivery extends LC_Page_Admin_Ex {
             default:
                 break;
         }
-        return $arrErr;
-    }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
+        return $arrErr;
     }
 }

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -27,21 +27,33 @@
     ・ソースの最初に以下を記述する。
         $objPage->tpl_pageno = $_POST['pageno'];
     ・$func_nameに指定するJavaScriptの例
-        // ページナビで使用する
-        function fnNaviPage(pageno) {
-            document.form1['pageno'].value = pageno;
-            document.form1.submit();
-        }
+        // ページナビで使用する。
+        eccube.movePage = function(pageno, mode, form) {
+            if (typeof form !== 'undefined') {
+                form = 'form1';
+            }
+            document.forms[form]['pageno'].value = pageno;
+            if (typeof mode !== 'undefined') {
+                document.forms[form]['mode'].value = 'search';
+            }
+            document.forms[form].submit();
+        };
 */
-class SC_PageNavi {
-    var $now_page;      // 現在のページ番号
-    var $max_page;      // 最終のページ番号
-    var $start_row;     // 開始レコード
-    var $strnavi;       // ページ送り文字列
-    var $arrPagenavi = array(); // ページ
+class SC_PageNavi
+{
+    public $now_page;      // 現在のページ番号
+    public $max_page;      // 最終のページ番号
+    public $start_row;     // 開始レコード
+    public $strnavi;       // ページ送り文字列
+    public $arrPagenavi = array(); // ページ
 
     // コンストラクタ
-    function __construct($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true) {
+
+    /**
+     * @param string $func_name
+     */
+    public function __construct($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true)
+    {
         $this->arrPagenavi['mode'] = 'search';
 
         //現在ページ($now_page)が正しい数値でない場合
@@ -69,7 +81,6 @@ class SC_PageNavi {
         }
 
         if ($all_row > 1) {
-
             //「前へ」「次へ」の設定
             $before = '';
             $next = '';
@@ -116,7 +127,6 @@ class SC_PageNavi {
             $this->arrPagenavi['arrPageno'] = array();
             $page_number = '';
             for ($i = $disp_min; $i <= $disp_max; $i++) {
-
                 if ($i == $this->now_page) {
                     $page_number .= "<strong>$i</strong>";
                 } else {
@@ -132,7 +142,7 @@ class SC_PageNavi {
 
             if ($before && $next) {
                 $this->strnavi = $before .(($display_number) ? $page_number : ' | ') .$next;
-            } else if ($before || $next) {
+            } elseif ($before || $next) {
                 $this->strnavi = $before .(($display_number) ? $page_number : '') .$next;
             }
         } else {

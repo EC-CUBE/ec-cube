@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,8 +24,8 @@
 
 <div id="mail" class="contents-main">
 <form name="search_form" id="search_form" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="search" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="search" />
     <h2>配信先検索条件設定</h2>
 
     <!--{* 検索条件設定テーブルここから *}-->
@@ -36,7 +36,8 @@
             <td colspan="3">
                 <!--{assign var=key value="search_htmlmail"}-->
                 <!--{if $arrErr[$key]}--><span class="attention"><!--{$arrErr[$key]}--></span><br /><!--{/if}-->
-                <!--{html_radios name=$key options=$arrHtmlmail separator="&nbsp;" selected=$arrForm[$key].value}-->
+                <!--{html_radios name=$key options=$arrHtmlmail separator="&nbsp;" selected=$arrForm[$key].value}--><br />
+                <span class="attention">「全員（メルマガ拒否している会員も含む） 」を選択される場合は、メンテナンス告知など、運用関連の配信のみとして下さい。</span>
             </td>
         </tr>
         <tr>
@@ -57,70 +58,68 @@
         </select> 件</p>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
             </ul>
         </div>
     </div>
 </form>
 
-
 <!--{if count($arrErr) == 0 and ($smarty.post.mode == 'search' or $smarty.post.mode == 'delete' or $smarty.post.mode == 'back')}-->
 
 <form name="form1" id="form1" method="post" action="?">
-<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-<input type="hidden" name="mode" value="" />
-<!--{foreach key=key item=item from=$arrHidden}-->
-<!--{if is_array($item)}-->
-    <!--{foreach item=c_item from=$item}-->
-        <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+    <input type="hidden" name="mode" value="" />
+    <!--{foreach key=key item=item from=$arrHidden}-->
+    <!--{if is_array($item)}-->
+        <!--{foreach item=c_item from=$item}-->
+            <input type="hidden" name="<!--{$key}-->[]" value="<!--{$c_item|h}-->" />
+        <!--{/foreach}-->
+    <!--{else}-->
+    <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
+    <!--{/if}-->
     <!--{/foreach}-->
-<!--{else}-->
-<input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
-<!--{/if}-->
-<!--{/foreach}-->
 
     <h2>検索結果一覧</h2>
     <div class="btn">
         <span class="attention"><!--検索結果数--><!--{$tpl_linemax}-->件</span>&nbsp;が該当しました。
         <!--{if $smarty.const.ADMIN_MODE == '1'}-->
-            <a class="btn-normal" href="javascript:;" onclick="fnModeSubmit('delete_all','',''); return false;"><span>検索結果をすべて削除</span></a>
+            <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('delete_all','',''); return false;"><span>検索結果を全て削除</span></a>
         <!--{/if}-->
         <!--{if $tpl_linemax > 0}-->
             <a class="btn-normal" href="javascript:;" onclick="document.form1['mode'].value='input'; document.form1.submit(); return false;"><span>配信内容を設定する</span></a>
         <!--{/if}-->
     </div>
+
     <!--{if count($arrResults) > 0}-->
+        <!--{include file=$tpl_pager}-->
 
-    <!--{include file=$tpl_pager}-->
-
-    <!--検索結果表示テーブル-->
-    <table class="list">
-    <col width="10%" />
-    <col width="25%" />
-    <col width="35%" />
-    <col width="15%" />
-    <col width="15%" />
-        <tr>
-            <th>会員ID</th>
-            <th>名前</th>
-            <th>メールアドレス</th>
-            <th>希望配信</th>
-            <th>登録・更新日</th>
-        </tr>
-        <!--{section name=i loop=$arrResults}-->
-        <tr>
-            <td class="center"><!--{$arrResults[i].customer_id}--></td>
-            <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
-            <td><!--{$arrResults[i].email|h}--></td>
-            <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
-            <td class="center"><!--{$arrHtmlmail[$key]}--></td>
-            <td class="center"><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
-        </tr>
-        <!--{/section}-->
-    </table>
-    <!--検索結果表示テーブル-->
+        <!--検索結果表示テーブル-->
+        <table class="list">
+        <col width="10%" />
+        <col width="25%" />
+        <col width="35%" />
+        <col width="15%" />
+        <col width="15%" />
+            <tr>
+                <th>会員ID</th>
+                <th>名前</th>
+                <th>メールアドレス</th>
+                <th>希望配信</th>
+                <th>登録・更新日</th>
+            </tr>
+            <!--{section name=i loop=$arrResults}-->
+            <tr>
+                <td class="center"><!--{$arrResults[i].customer_id}--></td>
+                <td><!--{$arrResults[i].name01|h}--> <!--{$arrResults[i].name02|h}--></td>
+                <td><!--{$arrResults[i].email|h}--></td>
+                <!--{assign var="key" value="`$arrResults[i].mailmaga_flg`"}-->
+                <td class="center"><!--{$arrHtmlmail[$key]|default:'なし'}--></td>
+                <td class="center"><!--{$arrResults[i].update_date|sfDispDBDate}--></td>
+            </tr>
+            <!--{/section}-->
+        </table>
+        <!--検索結果表示テーブル-->
     <!--{/if}-->
-
 </form>
 
 <!--{/if}-->

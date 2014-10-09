@@ -1,0 +1,31 @@
+# for travis-ci
+# see also. https://travis-ci.org
+language: php
+
+php:
+  - 5.6
+  - 5.5
+  - 5.4
+  - 5.3
+
+env:
+  - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
+  - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+
+before_script:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev --no-interaction
+  - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql; fi"
+  - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql; fi"
+  - cp tests/require.php.jenkins tests/require.php
+  - cat ./data/config/config.php
+  - npm install -g grunt-cli 
+  - npm install 
+
+script:
+  - mkdir -p reports/coverage
+  - phpunit -c phpunit.xml.dist
+  - grunt
+
+after_script:
+  - php vendor/bin/coveralls -v

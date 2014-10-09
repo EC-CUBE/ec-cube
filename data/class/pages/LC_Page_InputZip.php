@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,17 +30,16 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_InputZip extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_InputZip extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_message = '住所を検索しています。';
     }
@@ -51,15 +49,14 @@ class LC_Page_InputZip extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
-        $objView = new SC_SiteView_Ex(false);
-
+    public function process()
+    {
         // 入力エラーチェック
         $arrErr = $this->fnErrorCheck($_GET);
         // 入力エラーの場合は終了
         if (count($arrErr) > 0) {
             $tpl_message = '';
-            foreach ($arrErr as $key => $val) {
+            foreach ($arrErr as $val) {
                 $tpl_message .= preg_replace("/<br \/>/", "\n", $val);
             }
             echo $tpl_message;
@@ -85,21 +82,13 @@ class LC_Page_InputZip extends LC_Page_Ex {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * 入力エラーのチェック.
      *
-     * @param array $arrRequest リクエスト値($_GET)
+     * @param  array $arrRequest リクエスト値($_GET)
      * @return array $arrErr エラーメッセージ配列
      */
-    function fnErrorCheck($arrRequest) {
+    public function fnErrorCheck($arrRequest)
+    {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター情報の初期化
@@ -123,10 +112,11 @@ class LC_Page_InputZip extends LC_Page_Ex {
     /**
      * エラーチェック.
      *
-     * @param string $value
-     * @return エラーなし：true エラー：false
+     * @param  string                 $value
+     * @return boolean エラー：false
      */
-    function lfInputNameCheck($value) {
+    public function lfInputNameCheck($value)
+    {
         // 半角英数字と_（アンダーバー）, []以外の文字を使用していたらエラー
         if (strlen($value) > 0 && !preg_match("/^[a-zA-Z0-9_\[\]]+$/", $value)) {
             return false;

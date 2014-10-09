@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,31 +30,31 @@
 <div class="popup_mypage">
     <!--{if $tpl_login}-->
         <p><span class="mini">ようこそ</span><br />
-        <a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}-->さん</a></p>
+        <a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php" rel="external"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}-->さん</a></p>
         <!--{if $smarty.const.USE_POINT !== false}-->
-            <p>所持ポイント<!--{$tpl_user_point|number_format|default:0}-->pt</p>
+            <p>所持ポイント<!--{$tpl_user_point|n2s|default:0}-->pt</p>
         <!--{/if}-->
     <!--{else}-->
         <p>ようこそ<br />
             ゲストさん</p>
-        <p><a href="<!--{$smarty.const.HTTPS_URL|sfTrimURL}-->/mypage/login.php" rel="external">ログイン</a></p>
+        <p><a href="<!--{$smarty.const.HTTPS_URL}-->mypage/login.php" rel="external">ログイン</a></p>
     <!--{/if}-->
 </div>
 
 <div class="popup_cart">
     <!--{if count($arrCartList) > 0}-->
-        <h2><a rel="external" href="<!--{$smarty.const.CART_URLPATH|h}-->">カートの中</a></h2>
+        <h2><a rel="external" href="<!--{$smarty.const.CART_URL|h}-->">カートの中</a></h2>
         <!--{foreach from=$arrCartList item=key}-->
             <div class="product_type">
                 <!--{if count($arrCartList) > 1}-->
                     <p><span class="product_type">[<!--{$key.productTypeName|h}-->]</span></p>
                 <!--{/if}-->
-                <p><span class="mini">商品数:</span><span class="quantity"><!--{$key.quantity|number_format}--></span>点<br />
-                    <span class="mini">合計:</span><span class="money"><!--{$key.totalInctax|number_format}--></span>円(税込)</p>
+                <p><span class="mini">商品数:</span><span class="quantity"><!--{$key.quantity|n2s}--></span>点<br />
+                    <span class="mini">合計:</span><span class="money"><!--{$key.totalInctax|n2s}--></span>円(税込)</p>
                 <hr class="dashed" />
                 <!--{if $freeRule > 0 && $key.productTypeId|h != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <!--{if $key.delivFree > 0}-->
-                        <p class="attention free_money_area">あと<span class="free_money"><!--{$key.delivFree|number_format}--></span>円で送料無料</p>
+                        <p class="attention free_money_area">あと<span class="free_money"><!--{$key.delivFree|n2s}--></span>円で送料無料</p>
                     <!--{else}-->
                         <p class="attention free_money_area">現在、送料無料です</p>
                     <!--{/if}-->

@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -87,7 +87,7 @@
          */
         function remoteException(XMLHttpRequest, textStatus, errorThrown) {
             alert('通信中にエラーが発生しました。カート画面に移動します。');
-            location.href = '<!--{$smarty.const.CART_URLPATH}-->';
+            location.href = '<!--{$smarty.const.CART_URL}-->';
         }
 
         /**
@@ -130,7 +130,7 @@
         <!--★配送方法の指定★-->
         <!--{assign var=key value="deliv_id"}-->
         <!--{if $is_single_deliv}-->
-            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value}-->" id="deliv_id" />
+            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" id="deliv_id" />
         <!--{else}-->
             <section class="pay_area">
                 <h3 class="subtitle">配送方法の指定</h3>
@@ -204,7 +204,8 @@
                                 <!--{else}-->
                                     <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxLong top data-role-none">
                                         <option value="" selected="">お届け日：指定なし</option>
-                                        <!--{html_options options=$arrDelivDate selected=$arrForm[$key].value}-->
+                                        <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
+                                        <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
                                     </select>
                                 <!--{/if}-->
 
@@ -213,7 +214,8 @@
                                 <span class="attention"><!--{$arrErr[$key]}--></span>
                                 <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="boxLong data-role-none">
                                     <option value="" selected="">お届け時間：指定なし</option>
-                                    <!--{html_options options=$arrDelivTime selected=$arrForm[$key].value}-->
+                                    <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
+                                    <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
                                 </select>
                             </div>
                         </div><!-- /.formBox --><!-- /.time_select --><!--{* FIXME *}-->
@@ -231,22 +233,22 @@
                     <div class="form_area">
                         <p class="fb"><span class="point">1ポイントを1円</span>として使用する事ができます。</p>
                         <div class="point_announce">
-                            <p>現在の所持ポイントは「<span class="price"><!--{$tpl_user_point|default:0|number_format}-->Pt</span>」です。<br />
-                            今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|number_format}-->円</span> (送料、手数料を含みません。)</p>
+                            <p>現在の所持ポイントは「<span class="price"><!--{$tpl_user_point|default:0|n2s}-->Pt</span>」です。<br />
+                            今回ご購入合計金額：<span class="price"><!--{$arrPrices.subtotal|n2s}-->円</span> (送料、手数料を含みません。)</p>
                         </div>
 
                         <!--▼ポイントフォームボックスここから -->
                         <div class="formBox">
                             <div class="innerBox fb">
                                 <p>
-                                    <input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onchange="fnCheckInputPoint();" class="data-role-none" />
+                                    <input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onchange="eccube.togglePointForm();" class="data-role-none" />
                                     <label for="point_on">ポイントを使用する</label>
                                 </p>
                                 <!--{assign var=key value="use_point"}-->
                                 <p class="check_point"><input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box_point data-role-none" />ポイントを使用する。<span class="attention"><!--{$arrErr[$key]}--></span></p>
                             </div>
                         <div class="innerBox fb">
-                            <input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onchange="fnCheckInputPoint();" class="data-role-none" />
+                            <input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onchange="eccube.togglePointForm();" class="data-role-none" />
                             <label for="point_off">ポイントを使用しない</label>
                         </div>
                     </div><!-- /.formBox -->
@@ -277,13 +279,6 @@
     </form>
 </section>
 
-<!--▼検索バー -->
-<section id="search_area">
-    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-    </form>
-</section>
-<!--▲検索バー -->
+<!--{include file= 'frontparts/search_area.tpl'}-->
+
 <!--▲コンテンツここまで -->

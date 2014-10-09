@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_PGSQL.php';
 
 /**
@@ -33,5 +32,6 @@ require_once CLASS_REALDIR . 'db/dbfactory/SC_DB_DBFactory_PGSQL.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class SC_DB_DBFactory_PGSQL_Ex extends SC_DB_DBFactory_PGSQL {
+class SC_DB_DBFactory_PGSQL_Ex extends SC_DB_DBFactory_PGSQL
+{
 }

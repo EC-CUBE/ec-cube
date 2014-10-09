@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'basis/mail.tpl';
         $this->tpl_mainno = 'basis';
@@ -55,7 +52,8 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -65,9 +63,10 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $masterData = new SC_DB_MasterData_Ex();
+        $objMailtemplate = new SC_Helper_Mailtemplate_Ex();
 
         $mode = $this->getMode();
 
@@ -85,9 +84,9 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
 
         switch ($mode) {
             case 'id_set':
-                    $result = $this->lfGetMailTemplateByTemplateID($post['template_id']);
-                    if ($result) {
-                        $this->arrForm = $result[0];
+                    $mailtemplate = $objMailtemplate->get($post['template_id']);
+                    if ($mailtemplate) {
+                        $this->arrForm = $mailtemplate;
                     } else {
                         $this->arrForm['template_id'] = $post['template_id'];
                     }
@@ -98,10 +97,9 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
                     if ($this->arrErr) {
                         // エラーメッセージ
                         $this->tpl_msg = 'エラーが発生しました';
-
                     } else {
                         // 正常
-                        $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id']);
+                        $this->lfRegistMailTemplate($this->arrForm, $_SESSION['member_id'], $objMailtemplate);
 
                         // 完了メッセージ
                         $this->tpl_onload = "window.alert('メール設定が完了しました。テンプレートを選択して内容をご確認ください。');";
@@ -114,45 +112,23 @@ class LC_Page_Admin_Basis_Mail extends LC_Page_Admin_Ex {
 
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    function lfGetMailTemplateByTemplateID($template_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
-        return $objQuery->getAll($sql, array($template_id));
-    }
-
-    function lfRegistMailTemplate($post, $member_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-
+    public function lfRegistMailTemplate($post, $member_id, SC_Helper_Mailtemplate_Ex $objMailtemplate)
+    {
         $post['creator_id'] = $member_id;
-        $post['update_date'] = 'CURRENT_TIMESTAMP';
-
-        $sql = 'SELECT * FROM dtb_mailtemplate WHERE template_id = ?';
-        $template_data = $objQuery->getAll($sql, array($post['template_id']));
-        if ($template_data) {
-            $sql_where = 'template_id = ?';
-            $objQuery->update('dtb_mailtemplate', $post, $sql_where, array(addslashes($post['template_id'])));
-        } else {
-            $objQuery->insert('dtb_mailtemplate', $post);
-        }
-
+        $objMailtemplate->save($post);
     }
 
-    function lfInitParam($mode, &$objFormParam) {
+    /**
+     * @param string|null $mode
+     * @param SC_FormParam_Ex $objFormParam
+     */
+    public function lfInitParam($mode, &$objFormParam)
+    {
         switch ($mode) {
             case 'regist':
                 $objFormParam->addParam('メールタイトル', 'subject', MTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('ヘッダー', 'header', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
-                $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('EXIST_CHECK','SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('ヘッダー', 'header', LTEXT_LEN, 'KVa', array('SPTAB_CHECK','MAX_LENGTH_CHECK'));
+                $objFormParam->addParam('フッター', 'footer', LTEXT_LEN, 'KVa', array('SPTAB_CHECK','MAX_LENGTH_CHECK'));
                 $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
             case 'id_set':
                 $objFormParam->addParam('テンプレート', 'template_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));

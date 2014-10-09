@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,33 +30,28 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Cart extends LC_Page_Ex {
-
-    // {{{ properties
-
+class LC_Page_Cart extends LC_Page_Ex
+{
     /** 商品規格情報の配列 */
-    var $arrData;
+    public $arrData;
 
     /** 動作モード */
-    var $mode;
+    public $mode;
 
     /** メッセージ */
     public $tpl_message = '';
-
-    // }}}
-    // {{{ functions
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_title = '現在のカゴの中';
         $masterData = new SC_DB_MasterData_Ex();
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
-
     }
 
     /**
@@ -65,7 +59,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -76,14 +71,28 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
+        //決済処理中ステータスのロールバック
+        $objPurchase = new SC_Helper_Purchase_Ex();
+        $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $objCartSess = new SC_CartSession_Ex();
         $objSiteSess = new SC_SiteSession_Ex();
         $objCustomer = new SC_Customer_Ex();
 
-        $objFormParam = $this->lfInitParam($_REQUEST);
+        $objFormParam = $this->lfInitParam($_POST);
         $this->mode = $this->getMode();
+
+        // モバイル対応
+        if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+            if (isset($_GET['cart_no'])) {
+                $objFormParam->setValue('cart_no', $_GET['cart_no']);
+            }
+            if (isset($_GET['cartKey'])) {
+                $objFormParam->setValue('cartKey', $_GET['cartKey']);
+            }
+        }
 
         $this->cartKeys = $objCartSess->getKeys();
         foreach ($this->cartKeys as $key) {
@@ -96,6 +105,27 @@ class LC_Page_Cart extends LC_Page_Ex {
         $cart_no = $objFormParam->getValue('cart_no');
         $cartKey = $objFormParam->getValue('cartKey');
 
+        // エラーチェック
+        $arrError = $objFormParam->checkError();
+        if (isset($arrError) && !empty($arrError)) {
+            SC_Utils_Ex::sfDispSiteError(CART_NOT_FOUND);
+            SC_Response_Ex::actionExit();
+        }
+
+        $objFormParam4OpenCategoryTree =
+            $this->lfInitParam4OpenCategoryTree($_REQUEST);
+        if ($objFormParam4OpenCategoryTree->getValue('product_id')) {
+            $arrQueryString = array(
+                'product_id' => $objFormParam4OpenCategoryTree->getValue(
+                    'product_id'),
+            );
+        } else {
+            $arrQueryString = array(
+                'category_id' => $objFormParam4OpenCategoryTree->getValue(
+                    'category_id'),
+            );
+        }
+
         switch ($this->mode) {
             case 'confirm':
                 // カート内情報の取得
@@ -105,7 +135,6 @@ class LC_Page_Cart extends LC_Page_Ex {
                     // カートを購入モードに設定
                     $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
 
-
                     // 購入ページへ
                     SC_Response_Ex::sendRedirect(SHOPPING_URL);
                     SC_Response_Ex::actionExit();
@@ -114,29 +143,25 @@ class LC_Page_Cart extends LC_Page_Ex {
             case 'up'://1個追加
                 $objCartSess->upQuantity($cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             case 'down'://1個減らす
                 $objCartSess->downQuantity($cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             case 'setQuantity'://数量変更
                 $objCartSess->setQuantity($objFormParam->getValue('quantity'), $cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             case 'delete'://カートから削除
                 $objCartSess->delProduct($cart_no, $cartKey);
 
-
-                SC_Response_Ex::reload(array('category_id' => $objFormParam->getValue('category_id')), true);
+                SC_Response_Ex::reload($arrQueryString, true);
                 SC_Response_Ex::actionExit();
                 break;
             default:
@@ -165,7 +190,10 @@ class LC_Page_Cart extends LC_Page_Ex {
         //商品の合計金額をセット
         $this->tpl_all_total_inctax = $totalIncTax;
 
-        $this->tpl_category_id = $objFormParam->getValue('category_id');
+        $this->tpl_category_id =
+            $objFormParam4OpenCategoryTree->getValue('category_id');
+        $this->tpl_product_id =
+            $objFormParam4OpenCategoryTree->getValue('product_id');
 
         // ログイン判定
         if ($objCustomer->isLoginSuccess(true)) {
@@ -176,41 +204,52 @@ class LC_Page_Cart extends LC_Page_Ex {
 
         // 前頁のURLを取得
         // TODO: SC_CartSession::setPrevURL()利用不可。
-        $this->lfGetCartPrevUrl($_SESSION,$_SERVER['HTTP_REFERER']);
+        $this->lfGetCartPrevUrl($_SESSION, $_SERVER['HTTP_REFERER']);
         $this->tpl_prev_url = (isset($_SESSION['cart_prev_url'])) ? $_SESSION['cart_prev_url'] : '';
 
-        // すべてのカートの内容を取得する
+        // 全てのカートの内容を取得する
         $this->cartItems = $objCartSess->getAllCartList();
-
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * ユーザ入力値の処理
      *
-     * @return object
+     * @return SC_FormParam_Ex
      */
-    function lfInitParam($arrRequest) {
+    public function lfInitParam($arrRequest)
+    {
         $objFormParam = new SC_FormParam_Ex();
-        $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カートナンバー', 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        // PC版での値引き継ぎ用
-        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用
-        $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('ZERO_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($arrRequest);
         // 入力値の変換
         $objFormParam->convParam();
+
+        return $objFormParam;
+    }
+
+    /**
+     * PC版での開いているカテゴリーツリーの維持用の入力値
+     *
+     * @return SC_FormParam_Ex
+     */
+    public function lfInitParam4OpenCategoryTree($arrRequest)
+    {
+        $objFormParam = new SC_FormParam_Ex();
+
+        $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n',
+            array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n',
+            array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
+
+        // 値の取得
+        $objFormParam->setParam($arrRequest);
+        // 入力値の変換
+        $objFormParam->convParam();
+
         return $objFormParam;
     }
 
@@ -219,7 +258,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return
      */
-    function lfUpdateOrderTempid($pre_uniqid,$uniqid) {
+    public function lfUpdateOrderTempid($pre_uniqid, $uniqid)
+    {
         $sqlval['order_temp_id'] = $uniqid;
         $where = 'order_temp_id = ?';
         $objQuery =& SC_Query_Ex::getSingletonInstance();
@@ -227,6 +267,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         if ($res != 1) {
             return false;
         }
+
         return true;
     }
 
@@ -235,7 +276,8 @@ class LC_Page_Cart extends LC_Page_Ex {
      *
      * @return void
      */
-    function lfGetCartPrevUrl(&$session,$referer) {
+    public function lfGetCartPrevUrl(&$session, $referer)
+    {
         if (!preg_match('/cart/', $referer)) {
             if (!empty($session['cart_referer_url'])) {
                 $session['cart_prev_url'] = $session['cart_referer_url'];
@@ -257,9 +299,12 @@ class LC_Page_Cart extends LC_Page_Ex {
     /**
      * カートを購入モードに設定
      *
+     * @param SC_SiteSession_Ex $objSiteSess
+     * @param SC_CartSession_Ex $objCartSess
      * @return void
      */
-    function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey) {
+    public function lfSetCurrentCart(&$objSiteSess, &$objCartSess, $cartKey)
+    {
         // 正常に登録されたことを記録しておく
         $objSiteSess->setRegistFlag();
         $pre_uniqid = $objSiteSess->getUniqId();
@@ -268,7 +313,7 @@ class LC_Page_Cart extends LC_Page_Ex {
         $uniqid = $objSiteSess->getUniqId();
         // エラーリトライなどで既にuniqidが存在する場合は、設定を引き継ぐ
         if ($pre_uniqid != '') {
-            $this->lfUpdateOrderTempid($pre_uniqid,$uniqid);
+            $this->lfUpdateOrderTempid($pre_uniqid, $uniqid);
         }
         // カートを購入モードに設定
         $objCartSess->registerKey($cartKey);

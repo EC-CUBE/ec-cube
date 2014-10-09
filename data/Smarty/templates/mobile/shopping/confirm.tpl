@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -35,41 +35,59 @@
         【ご注文内容】<br>
         <!--{foreach from=$arrCartItems item=item}-->
             ◎<!--{$item.productsClass.name|h}--><br>
-            <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br><!--{/if}-->
-            <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}--><br><!--{/if}-->
-            &nbsp;単価：<!--{$item.price|sfCalcIncTax|number_format}-->円<br>
-            &nbsp;数量：<!--{$item.quantity|number_format}--><br>
-            &nbsp;小計：<!--{$item.total_inctax|number_format}-->円<br>
+            <!--{if $item.productsClass.classcategory_name1 != ""}--><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--><br><!--{/if}-->
+            <!--{if $item.productsClass.classcategory_name2 != ""}--><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--><br><!--{/if}-->
+            &nbsp;単価：<!--{$item.price_inctax|n2s}-->円<br>
+            &nbsp;数量：<!--{$item.quantity|n2s}--><br>
+            &nbsp;小計：<!--{$item.total_inctax|n2s}-->円<br>
             <br>
         <!--{/foreach}-->
 
         【購入金額】<br>
-        商品合計：<!--{$tpl_total_inctax[$cartKey]|number_format}-->円<br>
+        商品合計：<!--{$tpl_total_inctax[$cartKey]|n2s}-->円<br>
         <!--{if $smarty.const.USE_POINT !== false}-->
             <!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
-            ポイント値引き：-<!--{$discount|number_format|default:0}-->円<br>
+            ポイント値引き：-<!--{$discount|n2s|default:0}-->円<br>
         <!--{/if}-->
-        送料：<!--{$arrForm.deliv_fee|number_format}-->円<br>
-        <!--{if $arrForm.charge > 0}-->手数料：<!--{$arrForm.charge|number_format}-->円<br><!--{/if}-->
-        <font color="#FF0000">合計：<!--{$arrForm.payment_total|number_format}-->円</font><br>
-        (内消費税：<!--{$arrForm.tax|number_format}-->円)<br>
+        送料：<!--{$arrForm.deliv_fee|n2s}-->円<br>
+        <!--{if $arrForm.charge > 0}-->手数料：<!--{$arrForm.charge|n2s}-->円<br><!--{/if}-->
+        <font color="#FF0000">合計：<!--{$arrForm.payment_total|n2s}-->円</font><br>
+        (内消費税：<!--{$arrForm.tax|n2s}-->円)<br>
 
         <!--{* ログイン済みの会員のみ *}-->
         <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
             <br>
             【ポイント確認】<br>
-            ご注文前のポイント：<!--{$tpl_user_point|number_format|default:0}-->Pt<br>
-            ご使用ポイント：-<!--{$arrForm.use_point|number_format|default:0}-->Pt<br>
-            <!--{if $arrForm.birth_point > 0}-->お誕生月ポイント：+<!--{$arrForm.birth_point|number_format|default:0}-->Pt<br><!--{/if}-->
-            今回加算予定のポイント：+<!--{$arrForm.add_point|number_format|default:0}-->Pt<br>
+            ご注文前のポイント：<!--{$tpl_user_point|n2s|default:0}-->Pt<br>
+            ご使用ポイント：-<!--{$arrForm.use_point|n2s|default:0}-->Pt<br>
+            <!--{if $arrForm.birth_point > 0}-->お誕生月ポイント：+<!--{$arrForm.birth_point|n2s|default:0}-->Pt<br><!--{/if}-->
+            今回加算予定のポイント：+<!--{$arrForm.add_point|n2s|default:0}-->Pt<br>
             <!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
-            加算後のポイント：<!--{$total_point|number_format}-->Pt<br>
+            加算後のポイント：<!--{$total_point|n2s}-->Pt<br>
 
             <br>
         <!--{/if}-->
 
-        <!--{* 販売方法判定（ダウンロード販売のみの場合はお届け先を表示しない） *}-->
-        <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+        【ご注文者】<br>
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+        国：<!--{$arrCountry[$arrForm.order_country_id]|h}--><br>
+        ZIPCODE：<!--{$arrForm.order_zipcode|h}--><br>
+        <!--{/if}-->
+        〒<!--{$arrForm.order_zip01|h}-->-<!--{$arrForm.order_zip02|h}--><br>
+        <!--{$arrPref[$arrForm.order_pref]}--><!--{$arrForm.order_addr01|h}--><!--{$arrForm.order_addr02|h}--><br>
+        <!--{$arrForm.order_name01|h}--> <!--{$arrForm.order_name02|h}--><br>
+        会社名：<!--{$arrForm.order_company_name|h}--><br>
+        <!--{$arrForm.order_tel01}-->-<!--{$arrForm.order_tel02}-->-<!--{$arrForm.order_tel03}--><br>
+        <!--{if $arrForm.order_fax01 > 0}-->
+            <!--{$arrForm.order_fax01}-->-<!--{$arrForm.order_fax02}-->-<!--{$arrForm.order_fax03}--><br>
+        <!--{/if}-->
+        <!--{$arrForm.order_email|h}--><br>
+        性別：<!--{$arrSex[$arrForm.order_sex]|h}--><br>
+        職業：<!--{$arrJob[$arrForm.order_job]|default:'(未登録)'|h}--><br>
+        生年月日：<!--{$arrForm.order_birth|regex_replace:"/ .+/":""|regex_replace:"/-/":"/"|default:'(未登録)'|h}--><br>
+        <br>
+
+        <!--{if $arrShipping}-->
             【お届け先】<br>
             <!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->
                 <!--{if $is_multiple}-->
@@ -84,6 +102,10 @@
                     <!--{/foreach}-->
                 <!--{/if}-->
 
+                <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+                国：<!--{$arrCountry[$arrForm.order_country_id]|h}--><br>
+                ZIPCODE：<!--{$arrForm.order_zipcode|h}--><br>
+                <!--{/if}-->
                 〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--><br>
                 <!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}--><br>
                 <!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}--><br>

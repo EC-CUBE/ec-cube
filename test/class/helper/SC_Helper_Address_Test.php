@@ -56,13 +56,14 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
         $this->objQuery->rollback();
     }
 
-    function testSave() {
+    function testRegistAddress()
+    {
         // ダミーの住所を登録
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;
         // 検証用の住所02
         $sqlval['addr02'] = $create_test = 'create test ' . time();
-        $this->objAddress->save($sqlval);
+        $this->objAddress->registAddress($sqlval);
 
         // 住所02が検証用のものと同じか確認
         $this->objQuery->setOrder('other_deliv_id DESC');
@@ -72,7 +73,7 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
         $sqlval['other_deliv_id'] = $created_address['other_deliv_id'];
         // 更新の検証のために住所02を変更
         $sqlval['addr02'] = $update_test = 'update test ' . time();
-        $this->objAddress->save($sqlval);
+        $this->objAddress->registAddress($sqlval);
 
         // 住所02が検証用のものと同じか検証
         $this->objQuery->setOrder('other_deliv_id DESC');
@@ -83,16 +84,17 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
     /**
      * @depends testSave
      */
-    function testGet() {
+    function testGetAddress()
+    {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;
         $sqlval['addr02'] = 'get test';
-        $this->objAddress->save($sqlval);
+        $this->objAddress->registAddress($sqlval);
         $this->objQuery->setOrder('other_deliv_id DESC');
         $other_deliv_id = $this->objQuery->getOne('SELECT other_deliv_id FROM dtb_other_deliv WHERE customer_id = ?', array($this->customer_id));
         // DBに正しく記録され、取得できているか確認
-        $address = $this->objAddress->get($other_deliv_id);
+        $address = $this->objAddress->getAddress($other_deliv_id);
         $result = TRUE;
         foreach ($sqlval as $key => $value) {
             if ($value != $address[$key]) {
@@ -105,12 +107,13 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
     /**
      * @depends testSave
      */
-    function testGetList() {
+    function testGetList()
+    {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;
         $sqlval['addr02'] = 'getList test';
-        $this->objAddress->save($sqlval);
+        $this->objAddress->registAddress($sqlval);
         $list = $this->objAddress->getList($this->customer_id);
         $found = FALSE;
         foreach ($list as $address) {
@@ -131,15 +134,16 @@ class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
     /**
      * @depends testSave
      */
-    function testDelete() {
+    function testDeleteAddress()
+    {
         // testSave のテストが通っていること前提
         $sqlval = $this->dummy;
         $sqlval['customer_id'] = $this->customer_id;
         $sqlval['addr02'] = 'delete test';
-        $this->objAddress->save($sqlval);
+        $this->objAddress->registAddress($sqlval);
         $this->objQuery->setOrder('other_deliv_id DESC');
         $other_deliv_id = $this->objQuery->getOne('SELECT other_deliv_id FROM dtb_other_deliv WHERE customer_id = ?', array($this->customer_id));
-        $this->objAddress->delete($other_deliv_id);
+        $this->objAddress->deleteAddress($other_deliv_id);
         $result = $this->objQuery->getRow('*', 'dtb_other_deliv', 'customer_id = ? and other_deliv_id = ?', array($this->customer_id, $other_deliv_id));
         $this->assertNull($result);
     }

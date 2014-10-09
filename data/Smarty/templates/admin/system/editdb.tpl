@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,11 +22,11 @@
  */
 *}-->
 
-<form name="index_form" method="post" action="?">
+<form name="index_form" id="index_form" method="post" action="?">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="confirm" />
     <div class="btn">
-        <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next">変更する</span></a>
+        <a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('index_form', 'confirm', '', '');"><span class="btn-next">変更する</span></a>
     </div>
     <table class="list">
         <col width="5%" />
@@ -47,17 +47,19 @@
 
         <!--{section name=cnt loop=$arrForm}-->
             <tr>
-                <td class="center"><input type="radio" name="indexflag_new[<!--{$smarty.section.cnt.iteration}-->]" value="1" <!--{if $arrForm[cnt].indexflag == "1"}-->checked<!--{/if}--> /></td>
-                <td class="center"><input type="radio" name="indexflag_new[<!--{$smarty.section.cnt.iteration}-->]" value="" <!--{if $arrForm[cnt].indexflag != "1"}-->checked<!--{/if}--> /></td>
+                <td class="center">
+                    <input type="hidden" name="table_name[<!--{$smarty.section.cnt.iteration}-->]" value="<!--{$arrForm[cnt].table_name}-->" />
+                    <input type="hidden" name="column_name[<!--{$smarty.section.cnt.iteration}-->]" value="<!--{$arrForm[cnt].column_name}-->" />
+                    <input type="hidden" name="indexflag[<!--{$smarty.section.cnt.iteration}-->]" value="<!--{$arrForm[cnt].indexflag}-->" />
+                    <input type="radio" name="indexflag_new[<!--{$smarty.section.cnt.iteration}-->]" value="1" <!--{if $arrForm[cnt].indexflag == "1"}-->checked="checked"<!--{/if}--> />
+                </td>
+                <td class="center"><input type="radio" name="indexflag_new[<!--{$smarty.section.cnt.iteration}-->]" value="" <!--{if $arrForm[cnt].indexflag != "1"}-->checked="checked"<!--{/if}--> /></td>
                 <th class="column"><!--{$arrForm[cnt].table_name}--></th>
                 <th class="column"><!--{$arrForm[cnt].column_name}--></th>
                 <td><!--{$arrForm[cnt].recommend_comment}--></td>
             </tr>
-            <input type="hidden" name="table_name[<!--{$smarty.section.cnt.iteration}-->]" value="<!--{$arrForm[cnt].table_name}-->" />
-            <input type="hidden" name="column_name[<!--{$smarty.section.cnt.iteration}-->]" value="<!--{$arrForm[cnt].column_name}-->" />
-            <input type="hidden" name="indexflag[<!--{$smarty.section.cnt.iteration}-->]" value="<!--{$arrForm[cnt].indexflag}-->" />
         <!--{/section}-->
     </table>
 
-    <a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('index_form', 'confirm', '', ''); return false;"><span class="btn-next">変更する</span></a>
+    <a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('index_form', 'confirm', '', ''); return false;"><span class="btn-next">変更する</span></a>
 </form>

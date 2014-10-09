@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -28,7 +28,7 @@
         <tr>
             <th>
             <!--{$info.title|h}-->
-            </td>
+            </th>
             <td>
             <!--{$info.value|h|nl2br}-->
             </td>

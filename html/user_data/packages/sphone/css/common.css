@@ -369,7 +369,7 @@ header {
     clear: both;
     min-height: 40px;
 }
-header h1 {
+header #logo_area {
     width: 47%;
     height: 25px;
     float: left;
@@ -379,14 +379,14 @@ header h1 {
     max-width: 150px;
     position: relative;
 }
-header h1 a {
+header #logo_area a {
     display: block;
     margin: 0;
     padding: 0;
     cursor: pointer;
     vertical-align: middle;
 }
-header h1 img {
+header #logo_area img {
     width: 150px;
     height: 25px;
     margin: -5px 0 0 0;
@@ -528,13 +528,14 @@ hr.dashed {
     clear: both;
 }
 .top_menu ul li {
-    width: 33%;
+    width: 33.33%;
     float: left;
     text-align: center;
     border-left: #747B83 solid 1px;
     border-right: #3D3D3D solid 1px;
     border-bottom: #141517 solid 1px;
     border-top: #A1A7AF solid 2px;
+    box-sizing: border-box;
 }
 .top_menu ul li img {
     margin: 0 auto;
@@ -673,4 +674,40 @@ footer.global_footer p.copyright {
 }
 .ui-input-text {
     width: 100% !important;
+}
+/*-------------------------------------------------
+ローディング画像
+----------------------------------------------- */
+div.loading-overlay {
+    display: block;
+    opacity: .3;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    margin-left: -16px;
+    margin-top: -16px;
+    z-index: 9999999;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border: 0;
+}
+div.loading-overlay span.loading-image {
+    display: block;
+    background: url(../img/common/ajax-loader.gif) 0 0 no-repeat;
+    background-size: 32px 32px;
+    margin: 0;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+}
+/*-------------------------------------------------
+ダイアログ
+----------------------------------------------- */
+.dialog-modal {
+    display: none;
+    background: #FFFFFF;
+}
+.dialog-inner {
+    padding: 1.5em;
 }

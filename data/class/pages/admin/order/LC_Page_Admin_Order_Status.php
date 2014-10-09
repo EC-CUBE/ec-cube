@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'order/status.tpl';
         $this->tpl_mainno = 'order';
@@ -59,7 +56,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -69,8 +67,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objDb = new SC_Helper_DB_Ex();
 
         // パラメーター管理クラス
@@ -84,7 +82,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->arrForm = $objFormParam->getHashArray();
 
         //支払方法の取得
-        $this->arrPayment = $objDb->sfGetIDValueList('dtb_payment', 'payment_id', 'payment_method');
+        $this->arrPayment = SC_Helper_Payment_Ex::getIDValueList();
 
         switch ($this->getMode()) {
             case 'update':
@@ -114,14 +112,15 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $this->SelectedStatus = $status;
         //検索結果の表示
         $this->lfStatusDisp($status, $objFormParam->getValue('search_pageno'));
-
     }
 
     /**
      *  パラメーター情報の初期化
      *  @param SC_FormParam
+     * @param SC_FormParam_Ex $objFormParam
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('変更前対応状況', 'status', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ページ番号', 'search_pageno', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -135,7 +134,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
      *  入力内容のチェック
      *  @param SC_FormParam
      */
-    function lfCheckError(&$objFormParam) {
+    public function lfCheckError(&$objFormParam)
+    {
         // 入力データを渡す。
         $arrRet = $objFormParam->getHashArray();
         $arrErr = $objFormParam->checkError();
@@ -144,17 +144,9 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         }
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
     // 対応状況一覧の表示
-    function lfStatusDisp($status,$pageno) {
+    public function lfStatusDisp($status,$pageno)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         $select ='*';
@@ -170,7 +162,7 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $page_max = ORDER_STATUS_MAX;
 
         // ページ送りの取得
-        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, 'fnNaviSearchOnlyPage', NAVI_PMAX);
+        $objNavi = new SC_PageNavi_Ex($pageno, $linemax, $page_max, 'eccube.moveSearchPage', NAVI_PMAX);
         $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
         $startno = $objNavi->start_row;
 
@@ -189,7 +181,8 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
     /**
      * 対応状況の更新
      */
-    function lfStatusMove($statusId, $arrOrderId) {
+    public function lfStatusMove($statusId, $arrOrderId)
+    {
         $objPurchase = new SC_Helper_Purchase_Ex();
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
@@ -208,33 +201,28 @@ class LC_Page_Admin_Order_Status extends LC_Page_Admin_Ex {
         $objQuery->commit();
 
         $this->tpl_onload = "window.alert('選択項目を" . $arrORDERSTATUS[$statusId] . "へ移動しました。');";
+
         return true;
     }
 
     /**
      * 受注テーブルの論理削除
      */
-    function lfDelete($arrOrderId) {
+    public function lfDelete($arrOrderId)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;
         }
 
-        $arrUpdate = array(
-            'del_flg'      => 1,
-            'update_date'  => 'CURRENT_TIMESTAMP',
-        );
-
-        $objQuery->begin();
-
+        $objPurchase = new SC_Helper_Purchase_Ex();
         foreach ($arrOrderId as $orderId) {
-            $objQuery->update('dtb_order', $arrUpdate, 'order_id = ?', array($orderId));
+            $objPurchase->cancelOrder($orderId, ORDER_CANCEL, true);
         }
 
-        $objQuery->commit();
-
         $this->tpl_onload = "window.alert('選択項目を削除しました。');";
+
         return true;
     }
 }

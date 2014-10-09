@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,56 +24,54 @@
 
 <div id="basis" class="contents-main">
     <form name="form1" id="form1" method="post" action="?">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="mode" value="show" />
-    <div id="basis-masterdata-select" class="btn">
-        <select name="master_data_name" id="master_data_name">
-        <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
-        </select>
-        <a class="btn-normal" href="javascript:;" onclick="fnFormModeSubmit('form1', 'show', '', ''); return false;"><span>選択</span></a>
-    </div>
+        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <input type="hidden" name="mode" value="show" />
+        <div id="basis-masterdata-select" class="btn">
+            <select name="master_data_name" id="master_data_name">
+            <!--{html_options output=$arrMasterDataName values=$arrMasterDataName selected=$masterDataName}-->
+            </select>
+            <a class="btn-normal" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'show', '', ''); return false;"><span>選択</span></a>
+        </div>
     </form>
 
     <!--{if $smarty.post.mode == 'show'}-->
-
         <form name="form2" id="form2" method="post" action="?">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="edit" />
-        <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
-        <p class="remark attention">
-            マスターデータの値を設定できます。<br />
-            重複したIDを登録することはできません。<br />
-            空のIDを登録すると、値は削除されます。<br />
-            設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
-        </p>
-        <!--{if $errorMessage != ""}-->
-            <div class="message">
-                <span class="attention"><!--{$errorMessage}--></span>
-            </div>
-        <!--{/if}-->
+            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+            <input type="hidden" name="mode" value="edit" />
+            <input type="hidden" name="master_data_name" value="<!--{$masterDataName}-->" />
+            <p class="remark attention">
+                マスターデータの値を設定できます。<br />
+                重複したIDを登録することはできません。<br />
+                空のIDを登録すると、値は削除されます。<br />
+                設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+            </p>
+            <!--{if $errorMessage != ""}-->
+                <div class="message">
+                    <span class="attention"><!--{$errorMessage}--></span>
+                </div>
+            <!--{/if}-->
 
-        <table class="form">
-            <!--{foreach from=$arrMasterData item=val key=key}-->
+            <table class="form">
+                <!--{foreach from=$arrMasterData item=val key=key}-->
+                    <tr>
+                        <th>ID：<input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
+                        <td>値：<input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
+                    </tr>
+                <!--{/foreach}-->
+            </table>
+
+            <h2>追加のデータ</h2>
+            <table class="form">
                 <tr>
-                    <th>ID：<input type="text" name="id[]" value="<!--{$key|h}-->" size="6" /></th>
-                    <td>値：<input type="text" name="name[]" value="<!--{$val|h}-->" style="" size="60" class="box60" /></td>
+                    <th>ID：<input type="text" name="id[]" size="6" /></th>
+                    <td>値：<input type="text" name="name[]" style="" size="60" class="box60" /></td>
                 </tr>
-            <!--{/foreach}-->
-        </table>
-
-        <h2>追加のデータ</h2>
-        <table class="form">
-            <tr>
-                <th>ID：<input type="text" name="id[]" size="6" /></th>
-                <td>値：<input type="text" name="name[]" style="" size="60" class="box60" /></td>
-            </tr>
-        </table>
-        <div class="btn-area">
-            <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="document.form2.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-            </ul>
-        </div>
-
+            </table>
+            <div class="btn-area">
+                <ul>
+                    <li><a class="btn-action" href="javascript:;" onclick="document.form2.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                </ul>
+            </div>
         </form>
     <!--{/if}-->
 

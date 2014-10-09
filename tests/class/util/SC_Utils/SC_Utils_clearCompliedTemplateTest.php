@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,19 +31,23 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_clearCompliedTemplateTest extends Common_TestCase {
+class SC_Utils_clearCompliedTemplateTest extends Common_TestCase
+{
 
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function test__コンパイル済みのファイルを配置するディレクトリが空になる() {
+  public function test__コンパイル済みのファイルを配置するディレクトリが空になる()
+  {
     SC_Utils::clearCompliedTemplate();
 
     $this->expected = array();
@@ -57,6 +61,5 @@ class SC_Utils_clearCompliedTemplateTest extends Common_TestCase {
   }
 
   //////////////////////////////////////////
-
 }
 

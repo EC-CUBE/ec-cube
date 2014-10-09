@@ -1,0 +1,5 @@
+# for php-coveralls
+# see also. https://coveralls.io
+src_dir: data
+coverage_clover: reports/coverage/coverage.xml
+json_path: reports/coverage/coveralls-upload.json

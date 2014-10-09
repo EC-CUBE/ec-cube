@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -37,7 +37,7 @@
             休業日は翌営業日以降のご返信となりますのでご了承ください。</p>
     </div>
 
-    <form name="form1" method="post" action="?">
+    <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="confirm" />
 
@@ -61,7 +61,7 @@
                 <input type="text" name="kana01"
                     value="<!--{$arrForm.kana01.value|default:$arrData.kana01|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
-                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->"class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
+                    style="<!--{$arrErr.kana01|sfGetErrorColor}-->" class="boxHarf text data-role-none" placeholder="セイ"/>&nbsp;&nbsp;
                 <input type="text" name="kana02"
                     value="<!--{$arrForm.kana02.value|default:$arrData.kana02|h}-->"
                     maxlength="<!--{$smarty.const.STEXT_LEN}-->"
@@ -78,14 +78,14 @@
                 <p>
                     <input type="tel" name="zip01"
                         value="<!--{$arrForm.zip01.value|default:$arrData.zip01|h}-->"
-                        max="<!--{$smarty.const.ZIP01_LEN}-->"
-                        style="<!--{$arrErr.zip01|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02"
+                        maxlength="<!--{$smarty.const.ZIP01_LEN}-->"
+                        style="<!--{$arrErr.zip01|sfGetErrorColor}-->;" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="zip02"
                         value="<!--{$arrForm.zip02.value|default:$arrData.zip02|h}-->"
-                        max="<!--{$smarty.const.ZIP02_LEN}-->"
-                        style="<!--{$arrErr.zip02|sfGetErrorColor}-->; ime-mode: disabled;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
+                        maxlength="<!--{$smarty.const.ZIP02_LEN}-->"
+                        style="<!--{$arrErr.zip02|sfGetErrorColor}-->;" class="boxShort text data-role-none" />&nbsp;&nbsp;<a href="http://search.post.japanpost.jp/zipcode/" target="_blank" rel="external"><span class="fn">郵便番号検索</span></a>
                 </p>
 
-                <a href="javascript:fnCallAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">郵便番号から住所自動入力</a>
+                <a href="javascript:eccube.getAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', '<!--{$key1}-->', '<!--{$key2}-->', '<!--{$key3}-->', '<!--{$key4}-->');" class="btn_sub btn_inputzip" rel="external">郵便番号から住所自動入力</a>
             </dd>
 
             <dt>住所</dt>
@@ -110,10 +110,20 @@
             <dd>
                 <span class="attention"><!--{$arrErr.tel01}--><!--{$arrErr.tel02}--><!--{$arrErr.tel03}--></span>
                 <input type="tel" name="tel01"
-                    value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
-                    maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
-                    style="<!--{$arrErr.tel01|sfGetErrorColor}-->"
-                    class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="tel" name="tel02" value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel02|sfGetErrorColor}-->" class="boxShort text data-role-none" />&nbsp;－&nbsp;<input type="text" name="tel03" value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->" maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->" style="<!--{$arrErr.tel03|sfGetErrorColor}-->" class="boxShort text data-role-none" />
+                       value="<!--{$arrForm.tel01.value|default:$arrData.tel01|h}-->"
+                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                       style="<!--{$arrErr.tel01|sfGetErrorColor}-->"
+                       class="boxShort text data-role-none" />&nbsp;－&nbsp;
+                <input type="tel" name="tel02"
+                       value="<!--{$arrForm.tel02.value|default:$arrData.tel02|h}-->"
+                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                       style="<!--{$arrErr.tel02|sfGetErrorColor}-->"
+                       class="boxShort text data-role-none" />&nbsp;－&nbsp;
+                <input type="tel" name="tel03"
+                       value="<!--{$arrForm.tel03.value|default:$arrData.tel03|h}-->"
+                       maxlength="<!--{$smarty.const.TEL_ITEM_LEN}-->"
+                       style="<!--{$arrErr.tel03|sfGetErrorColor}-->"
+                       class="boxShort text data-role-none" />
             </dd>
 
             <dt>メールアドレス&nbsp;<span class="attention">※</span></dt>
@@ -125,7 +135,7 @@
                     maxlength="<!--{$smarty.const.MTEXT_LEN}-->" class="boxLong top text data-role-none" />
 
                 <!--{* ログインしていれば入力済みにする *}-->
-                <!--{if $smarty.server.REQUEST_METHOD != 'POST' && $smarty.session.customer}-->
+                <!--{if $smarty.session.customer}-->
                     <!--{assign var=email02 value=$arrData.email}-->
                 <!--{/if}-->
 
@@ -149,12 +159,5 @@
     </form>
 </section>
 
-<!--▼検索バー -->
-<section id="search_area">
-    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-    </form>
-</section>
-<!--▲検索バー -->
+<!--{include file= 'frontparts/search_area.tpl'}-->
+

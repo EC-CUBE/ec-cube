@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,19 +30,16 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Entry_EmailMobile extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
-
     }
 
     /**
@@ -51,7 +47,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         parent::process();
         $this->action();
         $this->sendResponse();
@@ -62,8 +59,8 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objCustomer    = new SC_Customer_Ex();
         $objFormParam   = new SC_FormParam_Ex();
 
@@ -85,26 +82,17 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
 
         $this->tpl_name = $objCustomer->getValue('name01');
         $this->arrForm  = $objFormParam->getFormParamList();
-
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
      * lfInitParam
      *
      * @access public
+     * @param SC_FormParam_Ex $objFormParam
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('メールアドレス', 'email_mobile', null, 'a',
                                 array('NO_SPTAB', 'EXIST_CHECK', 'CHANGE_LOWER', 'EMAIL_CHAR_CHECK', 'EMAIL_CHECK', 'MOBILE_EMAIL_CHECK'));
     }
@@ -112,12 +100,12 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
     /**
      * エラーチェックする
      *
-     * @param mixed $objFormParam
-     * @param mixed $objCustomer
+     * @param SC_FormParam_Ex $objFormParam
      * @access private
      * @return array エラー情報の配列
      */
-    function lfCheckError(&$objFormParam) {
+    public function lfCheckError(&$objFormParam)
+    {
         $objFormParam->convParam();
         $objErr         = new SC_CheckError_Ex();
         $objErr->arrErr = $objFormParam->checkError();
@@ -134,12 +122,12 @@ class LC_Page_Entry_EmailMobile extends LC_Page_Ex {
      *
      * 登録完了後にsessionのemail_mobileを更新する
      *
-     * @param mixed $objFormParam
-     * @param mixed $objCustomer
      * @access private
-     * @return void
+     * @param string $email_mobile
+     * @return string
      */
-    function lfRegistEmailMobile($email_mobile, $customer_id) {
+    public function lfRegistEmailMobile($email_mobile, $customer_id)
+    {
         $objQuery = SC_Query_Ex::getSingletonInstance();
         $objQuery->update('dtb_customer',
                           array('email_mobile' => $email_mobile),

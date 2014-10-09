@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -32,8 +32,8 @@ define('API_UPLOAD_REALDIR', DATA_REALDIR . 'downloads/api/');
 define('API_CLASS_EX_REALDIR', CLASS_EX_REALDIR . 'api_extends/operations/');
 define('API_CLASS_REALDIR', CLASS_REALDIR . 'api/operations/');
 
-class SC_Api_Utils {
-
+class SC_Api_Utils
+{
     /** API XML Namspase Header */
     const API_XMLNS = 'http://www.ec-cube.net/ECCUBEApi/';
 
@@ -49,10 +49,10 @@ class SC_Api_Utils {
     /**
      * オペレーション名に対応した追加の設定情報を取得する
      *
-     * @param string $access_key
      * @return string 秘密鍵文字列
      */
-    public function getOperationSubConfig($operation_name, $key_name = '', $arrApiConfig = '') {
+    public function getOperationSubConfig($operation_name, $key_name = '', $arrApiConfig = '')
+    {
         if (SC_Utils_Ex::isBlank($arrApiConfig)) {
             $arrApiConfig = SC_Api_Utils_Ex::getAuthConfig($operation_name);
         }
@@ -68,6 +68,7 @@ class SC_Api_Utils {
                 }
             }
         }
+
         return false;
     }
 
@@ -75,10 +76,11 @@ class SC_Api_Utils {
      * オペレーション名に対応した認証の設定情報を取得する
      * Configが無い場合は、APIデフォルトを取得する
      *
-     * @param string $operation_name
-     * @return array 設定配列
+     * @param  string $operation_name
+     * @return array  設定配列
      */
-    public function getApiConfig($operation_name) {
+    public function getApiConfig($operation_name)
+    {
         // 設定優先度 DB > plugin default > base
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $where = 'operation_name Like ? AND del_flg = 0 AND enable = 1';
@@ -101,17 +103,19 @@ class SC_Api_Utils {
                 $arrApiConfig = $objApi->getDefaultConfig();
             }
         }
+
         return $arrApiConfig;
     }
 
     /**
      * APIログ
      *
-     * @param text $msg 出力文字列
+     * @param string $msg            出力文字列
      * @param text $operation_name
      @ @rturn void
      */
-    public function printApiLog($msg, $start_time = '' , $operation_name = '') {
+    public function printApiLog($msg, $start_time = '' , $operation_name = '')
+    {
         if (!SC_Utils_Ex::isBlank($operation_name)) {
             $msg = 'API_' . $operation_name . ':' . $msg;
         }
@@ -124,11 +128,12 @@ class SC_Api_Utils {
     /**
      * APIオペレーションに対応したAPIクラスをインスタンス化
      *
-     * @param string $operation_name オペレーション名
-     * @param array $arrParam リクエストパラメーター
+     * @param  string $operation_name オペレーション名
+     * @param  array  $arrParam       リクエストパラメーター
      * @return object APIオペレーションクラスオブジェクト
      */
-    public function loadApiOperation($operation_name, $arrParam = array()) {
+    public function loadApiOperation($operation_name, $arrParam = array())
+    {
         // API_UPLOADのほうが優先
         // API_UPLOAD > API_CLASS_EX > API_CLASS
         if (file_exists(API_UPLOAD_REALDIR . $operation_name . '.php')) {
@@ -154,7 +159,8 @@ class SC_Api_Utils {
      *
      * @return array $arrFiles
      */
-    public function getApiDirFiles() {
+    public function getApiDirFiles()
+    {
         $arrFiles = array();
         // Core API ディレクトリ
         if (is_dir(API_CLASS_EX_REALDIR)) {
@@ -179,22 +185,43 @@ class SC_Api_Utils {
                 closedir($dh);
             }
         }
+
         return $arrFiles;
     }
 
-    public function sendResponseJson($response_outer_name, &$arrResponse) {
-        header('Content-Type: application/json; charset=UTF-8');
-        $arrResponse['response_name'] = $response_outer_name;
-        echo SC_Utils_Ex::jsonEncode($arrResponse);
+    /**
+     * @param string $response_outer_name
+     */
+    public function sendResponseJson($response_outer_name, &$arrResponse)
+    {
+        if (isset($arrResponse["callback"])) {
+            $callback = $arrResponse["callback"];
+            unset($arrResponse["callback"]);
+            header('Content-Type: application/javascript; charset=UTF-8');
+            $arrResponse['response_name'] = $response_outer_name;
+            echo $callback . "(" . SC_Utils_Ex::jsonEncode($arrResponse) . ")";
+        } else {
+            header('Content-Type: application/json; charset=UTF-8');
+            $arrResponse['response_name'] = $response_outer_name;
+            echo SC_Utils_Ex::jsonEncode($arrResponse);
+        }
     }
 
-    public function sendResponsePhp($response_outer_name, &$arrResponse) {
+    /**
+     * @param string $response_outer_name
+     */
+    public function sendResponsePhp($response_outer_name, &$arrResponse)
+    {
         header('Content-Type: application/php; charset=UTF-8');
         $arrResponse['response_name'] = $response_outer_name;
         echo serialize($arrResponse);
     }
 
-    public function sendResponseXml($response_outer_name, &$arrResponse) {
+    /**
+     * @param string $response_outer_name
+     */
+    public function sendResponseXml($response_outer_name, &$arrResponse)
+    {
         require_once 'XML/Serializer.php';
 
         $options = array(
@@ -217,5 +244,4 @@ class SC_Api_Utils {
         header('Content-Type: text/xml; charset=UTF-8');
         echo $xml;
     }
-
 }

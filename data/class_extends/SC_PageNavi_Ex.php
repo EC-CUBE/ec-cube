@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -23,5 +23,6 @@
 
 require_once CLASS_REALDIR . 'SC_PageNavi.php';
 
-class SC_PageNavi_Ex extends SC_PageNavi {
+class SC_PageNavi_Ex extends SC_PageNavi
+{
 }

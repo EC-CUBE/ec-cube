@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -31,14 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
-
+class LC_Page_FrontParts_Bloc extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         // 開始時刻を設定する。
         $this->timeStart = microtime(true);
 
@@ -60,10 +60,11 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
     /**
      * ブロックファイルに応じて tpl_mainpage を設定する
      *
-     * @param string $bloc_file ブロックファイル名
+     * @param  string $bloc_file ブロックファイル名
      * @return void
      */
-    function setTplMainpage($bloc_file) {
+    public function setTplMainpage($bloc_file)
+    {
         if (SC_Utils_Ex::isAbsoluteRealPath($bloc_file)) {
             $this->tpl_mainpage = $bloc_file;
         } else {
@@ -71,7 +72,15 @@ class LC_Page_FrontParts_Bloc extends LC_Page_Ex {
         }
 
         $this->setTemplate($this->tpl_mainpage);
-        // $debug_message = 'block：' . $this->tpl_mainpage . "\n";
-        // GC_Utils_Ex::gfDebugLog($debug_message);
+    }
+
+    /**
+     * デストラクタ
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        // 親がリクエスト単位を意図した処理なので、断絶する。
     }
 }

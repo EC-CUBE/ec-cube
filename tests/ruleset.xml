@@ -16,8 +16,8 @@
  <!-- Change the settings of the Line Length sniff -->
  <rule ref="Generic.Files.LineLength">
   <properties>
-   <property name="lineLimit" value="80"/>
-   <property name="absoluteLineLimit" value="200"/>
+   <property name="lineLimit" value="120"/>
+   <property name="absoluteLineLimit" value="0"/>
   </properties>
  </rule>
 
@@ -34,4 +34,3 @@
   <severity>0</severity>
  </rule>
 </ruleset> 
-

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
 
 /**
@@ -34,17 +33,16 @@ require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Ex.php';
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
+        $this->skip_load_page_layout = true;
         parent::init();
     }
 
@@ -53,11 +51,12 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      *
      * @return void
      */
-    function process() {
-
+    public function process()
+    {
         $order_id = $this->getOrderId();
         if ($order_id === false) {
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, '', true);
+
             return;
         }
 
@@ -65,18 +64,10 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
         if ($module_path === false) {
             $msg = 'モジュールファイルの取得に失敗しました。<br />この手続きは無効となりました。';
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, $msg);
+
             return;
         }
         require_once $module_path;
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
@@ -85,23 +76,38 @@ class LC_Page_Shopping_LoadPaymentModule extends LC_Page_Ex {
      * 決済モジュールが取得できた場合は, require 可能な決済モジュールのパスを返す.
      * 受注IDが無効な場合, 取得したパスにファイルが存在しない場合は false
      *
-     * @param integer $order_id 受注ID
-     * @return string|boolean 成功した場合は決済モジュールのパス;
+     * @param  integer        $order_id 受注ID
+     * @return string|false 成功した場合は決済モジュールのパス;
      *                        失敗した場合 false
      */
-    function getModulePath($order_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $sql = <<< __EOS__
-            SELECT module_path
-            FROM dtb_payment T1
-                JOIN dtb_order T2
-                    ON T1.payment_id = T2.payment_id
-            WHERE order_id = ?
-__EOS__;
-        $module_path = $objQuery->getOne($sql, array($order_id));
+    public function getModulePath($order_id)
+    {
+        $objPurchase = new SC_Helper_Purchase_Ex();
+        $objPayment = new SC_Helper_Payment_Ex();
+
+        $order = $objPurchase->getOrder($order_id);
+        $payment = $objPayment->get($order['payment_id']);
+        $module_path = $payment['module_path'];
+
+        /*
+         * 2.12.x までは dtb_payment.module_path がフルパスとなっていた.
+         * 2.13.x より, MODULE_REALDIR からのパスでも対応できるよう修正
+         * http://svn.ec-cube.net/open_trac/ticket/2292
+         */
+        if (realpath($module_path) !== false) {
+            $module_path = str_replace('\\', '/', realpath($module_path));
+        } else {
+            $module_path = str_replace('\\', '/', $module_path);
+        }
+        $module_realdir = str_replace('\\', '/', realpath(MODULE_REALDIR) . '/');
+        if (strpos($module_path, $module_realdir) !== false) {
+            $module_path = str_replace($module_realdir, '', $module_path);
+        }
+        $module_path = $module_realdir . $module_path;
         if (file_exists($module_path)) {
             return $module_path;
         }
+
         return false;
     }
 
@@ -117,10 +123,11 @@ __EOS__;
      * 受注IDが取得できない場合は false を返す.
      *
      * @access private
-     * @return integer|boolean 受注IDの取得に成功した場合は受注IDを返す;
+     * @return integer 受注IDの取得に成功した場合は受注IDを返す;
      *                         失敗した場合は, false を返す.
      */
-    function getOrderId() {
+    public function getOrderId()
+    {
         if (isset($_SESSION['order_id'])
             && !SC_Utils_Ex::isBlank($_SESSION['order_id'])
             && SC_Utils_Ex::sfIsInt($_SESSION['order_id'])) {
@@ -138,13 +145,15 @@ __EOS__;
             && SC_Utils_Ex::sfIsInt($_GET['order_id'])) {
             return $_GET['order_id'];
         }
+
         return false;
     }
 
     /**
      * 決済モジュールから遷移する場合があるため, トークンチェックしない.
      */
-    function doValidToken() {
+    public function doValidToken()
+    {
         // nothing.
     }
 }

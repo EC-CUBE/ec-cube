@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,41 +21,69 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
 <script type="text/javascript">
-// 表示非表示切り替え
-function lfDispSwitch(id){
-    var obj = document.getElementById(id);
-    if (obj.style.display == 'none') {
-        obj.style.display = '';
-    } else {
-        obj.style.display = 'none';
-    }
-}
-
-// セレクトボックスのリストを移動
-// (移動元セレクトボックスID, 移動先セレクトボックスID)
-function fnMoveSelect(select, target) {
-    $('#' + select).children().each(function() {
-        if (this.selected) {
-            $('#' + target).append(this);
-            $(this).attr({selected: false});
+    // 表示非表示切り替え
+    function lfDispSwitch(id){
+        var obj = document.getElementById(id);
+        if (obj.style.display == 'none') {
+            obj.style.display = '';
+        } else {
+            obj.style.display = 'none';
         }
-    });
-    // IE7再描画不具合対策
-    if ($.browser.msie && $.browser.version >= 7) {
-        $('#' + select).hide();
-        $('#' + select).show();
-        $('#' + target).hide();
-        $('#' + target).show();
     }
-}
 
-// target の子要素を選択状態にする
-function selectAll(target) {
-    $('#' + target).children().attr({selected: true});
-}
+    // セレクトボックスのリストを初期化
+    // ※キャッシュ対策
+    // (移動元セレクトボックス)
+    function fnInitSelect(select) {
+        var selectedOptions = <!--{$tpl_json_category_id}-->;
+        $('#' + select + ' option').attr('selected', false);
+        for(var i=0; i < selectedOptions.length; i++){
+            $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
+                .prop('selected', 'selected');
+        }
+    }
 
+    // セレクトボックスのリストを移動
+    // (移動元セレクトボックスID, 移動先セレクトボックスID)
+    function fnMoveSelect(select, target) {
+        $('#' + select).children().each(function() {
+            if (this.selected) {
+                $('#' + target).append(this);
+                $(this).attr({selected: false});
+            }
+        });
+        // IE7再描画不具合対策
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf("msie") != -1 && ua.indexOf('msie 6') == -1) {
+            $('#' + select).hide();
+            $('#' + select).show();
+            $('#' + target).hide();
+            $('#' + target).show();
+        }
+    }
+
+    // target の子要素を選択状態にする
+    function selectAll(target) {
+        $('#' + target).children().prop('selected', 'selected');
+    }
+
+    // 商品種別によってダウンロード商品のフォームの表示非表示を切り替える
+    function toggleDownloadFileForms(value) {
+        if (value == '2') {
+            $('.type-download').show('fast');
+        } else {
+            $('.type-download').hide('fast');
+        }
+    }
+
+    $(function(){
+        var form_product_type = $('input[name=product_type_id]');
+        form_product_type.click(function(){
+            toggleDownloadFileForms(form_product_type.filter(':checked').val());
+        });
+        toggleDownloadFileForms(form_product_type.filter(':checked').val());
+    })
 </script>
 
 <form name="form1" id="form1" method="post" action="?" enctype="multipart/form-data">
@@ -71,7 +99,7 @@ function selectAll(target) {
 <!--{/foreach}-->
 <input type="hidden" name="mode" value="edit" />
 <input type="hidden" name="image_key" value="" />
-<input type="hidden" name="down_key" value="">
+<input type="hidden" name="down_key" value="" />
 <input type="hidden" name="product_id" value="<!--{$arrForm.product_id|h}-->" />
 <input type="hidden" name="product_class_id" value="<!--{$arrForm.product_class_id|h}-->" />
 <input type="hidden" name="copy_product_id" value="<!--{$arrForm.copy_product_id|h}-->" />
@@ -104,7 +132,7 @@ function selectAll(target) {
                 <table class="layout">
                     <tr>
                         <td>
-                            <select name="category_id[]" id="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> height: 120px; min-width: 200px;" onchange="" size="10" multiple>
+                            <select name="category_id[]" id="category_id" style="<!--{if $arrErr.category_id != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}--> height: 120px; min-width: 200px;" onchange="" size="10" multiple="multiple">
                             </select>
                         </td>
                         <td style="padding: 15px;">
@@ -112,7 +140,7 @@ function selectAll(target) {
                             <a class="btn-normal" href="javascript:;" name="un_select" onclick="fnMoveSelect('category_id','category_id_unselect'); return false;">&nbsp;&nbsp;削除&nbsp;-&gt;&nbsp;&nbsp;</a>
                         </td>
                         <td>
-                            <select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height: 120px; min-width: 200px;" multiple>
+                            <select name="category_id_unselect[]" id="category_id_unselect" onchange="" size="10" style="height: 120px; min-width: 200px;" multiple="multiple">
                                 <!--{html_options values=$arrCatVal output=$arrCatOut selected=$arrForm.category_id}-->
                             </select>
                         </td>
@@ -139,7 +167,7 @@ function selectAll(target) {
                 <!--{html_radios name="product_type_id" options=$arrProductType selected=$arrForm.product_type_id separator='&nbsp;&nbsp;'}-->
             </td>
         </tr>
-        <tr>
+        <tr class="type-download">
             <th>ダウンロード商品ファイル名<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.down_filename}--></span>
@@ -147,7 +175,7 @@ function selectAll(target) {
                 <span class="red"> (上限<!--{$smarty.const.STEXT_LEN}-->文字)</span>
             </td>
         </tr>
-        <tr>
+        <tr class="type-download">
             <!--{assign var=key value="down_file"}-->
             <th>ダウンロード商品用<br />ファイルアップロード<span class="attention"> *</span></th>
             <td>
@@ -155,10 +183,10 @@ function selectAll(target) {
                 <span class="attention"><!--{$arrErr[$key]}--><!--{$arrErr.down_realfilename}--></span>
                     <!--{if $arrForm.down_realfilename != ""}-->
                         <!--{$arrForm.down_realfilename|h}--><input type="hidden" name="down_realfilename" value="<!--{$arrForm.down_realfilename|h}-->">
-                        <a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br>
+                        <a href="" onclick="selectAll('category_id'); eccube.setModeAndSubmit('delete_down', 'down_key', '<!--{$key}-->'); return false;">[ファイルの取り消し]</a><br />
                     <!--{/if}-->
                     <input type="file" name="down_file" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                    <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;">アップロード</a><br />登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメーター DOWNLOAD_EXTENSION)
+                    <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); eccube.setModeAndSubmit('upload_down', 'down_key', '<!--{$key}-->'); return false;">アップロード</a><br />登録可能拡張子：<!--{$smarty.const.DOWNLOAD_EXTENSION}-->　(パラメーター DOWNLOAD_EXTENSION)
             </td>
         </tr>
         <tr>
@@ -185,12 +213,22 @@ function selectAll(target) {
                 <span class="attention"> (半角数字で入力)</span>
             </td>
         </tr>
+        <!--{if $smarty.const.OPTION_PRODUCT_TAX_RULE ==1}-->
+        <tr>
+            <th>消費税率<span class="attention"> *</span></th>
+            <td>
+                <span class="attention"><!--{$arrErr.tax_rate}--></span>
+                <input type="text" name="tax_rate" value="<!--{$arrForm.tax_rate|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.PERCENTAGE_LEN}-->" style="<!--{if $arrErr.tax_rate != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>%
+                <span class="attention">(半角数字で入力)</span>
+            </td>
+        </tr>
+        <!--{/if}-->
         <tr>
             <th>在庫数<span class="attention"> *</span></th>
             <td>
                 <span class="attention"><!--{$arrErr.stock}--></span>
                 <input type="text" name="stock" value="<!--{$arrForm.stock|h}-->" size="6" class="box6" maxlength="<!--{$smarty.const.AMOUNT_LEN}-->" style="<!--{if $arrErr.stock != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->"/>
-                <input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="fnCheckStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
+                <input type="checkbox" name="stock_unlimited" value="1" <!--{if $arrForm.stock_unlimited == "1"}-->checked<!--{/if}--> onclick="eccube.checkStockLimit('<!--{$smarty.const.DISABLED_RGB}-->');"/>無制限
             </td>
         </tr>
         <!--{/if}-->
@@ -289,10 +327,10 @@ function selectAll(target) {
                 <a name="main_large_image"></a>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); eccube.setModeAndSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                 <!--{/if}-->
                 <input type="file" name="main_list_image" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
             </td>
         </tr>
         <tr>
@@ -301,10 +339,10 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); eccube.setModeAndSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                 <!--{/if}-->
                 <input type="file" name="main_image" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
             </td>
         </tr>
         <tr>
@@ -313,10 +351,10 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); eccube.setModeAndSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                 <!--{/if}-->
                 <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
             </td>
         </tr>
     </table>
@@ -366,10 +404,10 @@ function selectAll(target) {
                 <a name="<!--{$largekey}-->"></a>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); eccube.setModeAndSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                 <!--{/if}-->
                 <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
             </td>
         </tr>
         <tr>
@@ -378,10 +416,10 @@ function selectAll(target) {
             <td>
                 <span class="attention"><!--{$arrErr[$key]}--></span>
                 <!--{if $arrForm.arrFile[$key].filepath != ""}-->
-                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); fnModeSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
+                <img src="<!--{$arrForm.arrFile[$key].filepath}-->" alt="<!--{$arrForm.name|h}-->" />　<a href="" onclick="selectAll('category_id'); eccube.setModeAndSubmit('delete_image', 'image_key', '<!--{$key}-->'); return false;">[画像の取り消し]</a><br />
                 <!--{/if}-->
                 <input type="file" name="<!--{$key}-->" size="40" style="<!--{$arrErr[$key]|sfGetErrorColor}-->"/>
-                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); fnModeSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
+                <a class="btn-normal" href="javascript:;" name="btn" onclick="selectAll('category_id'); eccube.setModeAndSubmit('upload_image', 'image_key', '<!--{$key}-->'); return false;">アップロード</a>
             </td>
         </tr>
         <!--▲商品<!--{$smarty.section.cnt.iteration}-->-->
@@ -409,18 +447,22 @@ function selectAll(target) {
             <!--{assign var=anckey value="recommend_no`$smarty.section.cnt.iteration`"}-->
             <th>関連商品(<!--{$smarty.section.cnt.iteration}-->)<br />
                 <!--{if $arrRecommend[$recommend_no].product_id}-->
-                    <img src="<!--{$smarty.const.ROOT_URLPATH}-->resize_image.php?image=<!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->&width=65&height=65" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
+                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrRecommend[$recommend_no].main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65;" alt="<!--{$arrRecommend[$recommend_no].name|h}-->" />
                 <!--{/if}-->
             </th>
             <td>
                 <a name="<!--{$anckey}-->"></a>
                 <input type="hidden" name="<!--{$key}-->" value="<!--{$arrRecommend[$recommend_no].product_id|h}-->" />
-                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); win03('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500'); return false;">変更</a>
+                <a class="btn-normal" href="javascript:;" name="change" onclick="selectAll('category_id'); eccube.openWindow('./product_select.php?no=<!--{$smarty.section.cnt.iteration}-->', 'search', '615', '500', {menubar:'no'}); return false;">変更</a>
                 <!--{assign var=key value="recommend_delete`$smarty.section.cnt.iteration`"}-->
                 <input type="checkbox" name="<!--{$key}-->" value="1" />削除<br />
                 <!--{assign var=key value="recommend_comment`$smarty.section.cnt.iteration`"}-->
                 <span class="attention"><!--{$arrErr[$key]}--></span>
-                商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--><br />
+                商品コード:<!--{$arrRecommend[$recommend_no].product_code_min}--> 
+                <!--{if $arrRecommend[$recommend_no].product_code_min != $arrRecommend[$recommend_no].product_code_max}--> 
+                    ～ <!--{$arrRecommend[$recommend_no].product_code_max}--> 
+                <!--{/if}--> 
+                <br /> 
                 商品名:<!--{$arrRecommend[$recommend_no].name|h}--><br />
                 <textarea name="<!--{$key}-->" cols="60" rows="8" class="area60" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" ><!--{"\n"}--><!--{$arrRecommend[$recommend_no].comment|h}--></textarea><br />
                 <span class="attention"> (上限<!--{$smarty.const.LTEXT_LEN}-->文字)</span>
@@ -436,7 +478,7 @@ function selectAll(target) {
         <!--{if count($arrSearchHidden) > 0}-->
         <!--▼検索結果へ戻る-->
         <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="fnChangeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); fnModeSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索画面に戻る</span></a></li>
         <!--▲検索結果へ戻る-->
         <!--{/if}-->
             <li><a class="btn-action" href="javascript:;" onclick="selectAll('category_id'); document.form1.submit(); return false;"><span class="btn-next">確認ページへ</span></a></li>

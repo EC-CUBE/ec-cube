@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -27,44 +27,60 @@
         <input type="hidden" name="mode" value="complete">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
         <!--{foreach from=$arrForm key=key item=item}-->
-            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->">
+            <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item.value|h}-->">
         <!--{/foreach}-->
         下記の内容でご登録してもよろしいですか？<br>
         <br>
 
         ●お名前<br>
-        <!--{$arrForm.name01|h}-->　<!--{$arrForm.name02|h}--><br>
+        <!--{$arrForm.name01.value|h}-->　<!--{$arrForm.name02.value|h}--><br>
 
         ●お名前(フリガナ)<br>
-        <!--{$arrForm.kana01|h}-->　<!--{$arrForm.kana02|h}--><br>
+        <!--{$arrForm.kana01.value|h}-->　<!--{$arrForm.kana02.value|h}--><br>
+
+        ●会社名<br>
+        <!--{$arrForm.company_name.value|h}--><br>
 
         ●性別<br>
-        <!--{if $arrForm.sex eq 1}-->男性<!--{else}-->女性<!--{/if}--><br>
+        <!--{assign var=key1 value="sex"}-->
+        <!--{assign var="sex_id" value=$arrForm[$key1].value}-->
+        <!--{$arrSex[$sex_id]|h}--><br>
 
         ●職業<br>
-        <!--{if $arrForm.job}--><!--{$arrJob[$arrForm.job]|h}--><!--{else}-->未登録<!--{/if}--><br>
+        <!--{if $arrForm.job}--><!--{$arrJob[$arrForm.job.value]|h}--><!--{else}-->未登録<!--{/if}--><br>
 
         ●生年月日<br>
-        <!--{if strlen($arrForm.year) > 0 && strlen($arrForm.month) > 0 && strlen($arrForm.day) > 0}--><!--{$arrForm.year|h}-->年<!--{$arrForm.month|h}-->月<!--{$arrForm.day|h}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
+        <!--{if strlen($arrForm.year.value) > 0 && strlen($arrForm.month.value) > 0 && strlen($arrForm.day.value) > 0}--><!--{$arrForm.year.value|h}-->年<!--{$arrForm.month.value|h}-->月<!--{$arrForm.day.value|h}-->日生まれ<!--{else}-->未登録<!--{/if}--><br>
+
+        <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+        ●国<br>
+        <!--{assign var="country_id" value=$arrForm.country_id.value}-->
+        <!--{$arrCountry[$country_id]|h}--><br>
+
+        ●ZIP CODE<br>
+        <!--{$arrForm.zipcode.value|h}--><br>
+        <!--{/if}-->
 
         ●住所<br>
-        〒<!--{$arrForm.zip01|h}--> - <!--{$arrForm.zip02|h}--><br>
-        <!--{$arrPref[$arrForm.pref]|h}--><!--{$arrForm.addr01|h}--><!--{$arrForm.addr02|h}--><br>
+        〒<!--{$arrForm.zip01.value|h}--> - <!--{$arrForm.zip02.value|h}--><br>
+        <!--{$arrPref[$arrForm.pref.value]|h}--><!--{$arrForm.addr01.value|h}--><!--{$arrForm.addr02.value|h}--><br>
 
         ●電話番号<br>
-        <!--{$arrForm.tel01|h}-->-<!--{$arrForm.tel02|h}-->-<!--{$arrForm.tel03|h}--><br>
-        
+        <!--{$arrForm.tel01.value|h}-->-<!--{$arrForm.tel02.value|h}-->-<!--{$arrForm.tel03.value|h}--><br>
+
         ●ﾒｰﾙｱﾄﾞﾚｽ<br>
-        <!--{$arrForm.email|h}--><br>
+        <!--{$arrForm.email.value|h}--><br>
 
         ●ﾊﾟｽﾜｰﾄﾞ確認用質問<br>
-        <!--{$arrReminder[$arrForm.reminder]|h}--><br>
+        <!--{$arrReminder[$arrForm.reminder.value]|h}--><br>
 
         ●質問の答え<br>
-        <!--{$arrForm.reminder_answer|h}--><br>
+        <!--{$arrForm.reminder_answer.value|h}--><br>
 
         ●ﾒｰﾙﾏｶﾞｼﾞﾝ<br>
-        <!--{if $arrForm.mailmaga_flg eq 2}-->希望する<!--{else}-->希望しない<!--{/if}--><br>
+        <!--{assign var=key1 value="mailmaga_flg"}-->
+        <!--{assign var="mailmaga_flg_id" value=$arrForm[$key1].value}-->
+        <!--{$arrMAILMAGATYPE[$mailmaga_flg_id]|h}--><br>
         <br>
 
         <center>

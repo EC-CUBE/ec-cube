@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,22 +25,24 @@
  * オーナーズストア管理用ログクラス
  *
  */
-class LC_Upgrade_Helper_Log {
+class LC_Upgrade_Helper_Log
+{
     /**
      * 開始メッセージを出力
      *
      * @param string $mode
      */
-    function start($mode) {
+    public function start($mode)
+    {
         $message = "##### $mode start #####";
         $this->log($message);
     }
     /**
      * 終了メッセージを出力
      *
-     * @param string $mode
      */
-    function end() {
+    public function end()
+    {
         $message = '##### end #####';
         $this->log($message);
     }
@@ -49,16 +51,18 @@ class LC_Upgrade_Helper_Log {
      *
      * @param string $message
      */
-    function log($message) {
+    public function log($message)
+    {
         GC_Utils_Ex::gfPrintLog($message, OSTORE_LOG_REALFILE);
     }
     /**
      * エラーメッセージを出力
      *
      * @param string $code
-     * @param mixed $val
+     * @param mixed  $val
      */
-    function error($code, $val = null) {
+    public function error($code, $val = null)
+    {
         $format = '* error! code:%s / debug:%s';
         $message = sprintf($format, $code, serialize($val));
         $this->log($message);

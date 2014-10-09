@@ -13,6 +13,11 @@ set_include_path(realpath(dirname(__FILE__) . '/' . HTML2DATA_DIR . 'module') . 
  */
 define('USE_FILENAME_DIR_INDEX', null);
 
+// bufferを初期化する
+while (ob_get_level() > 0 && ob_get_level() > 0) {
+    ob_end_clean();
+}
+
 /*
  * Local variables:
  * coding: utf-8

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -41,9 +41,15 @@
                 <input type="hidden" name="deliv_check" value="<!--{$arrAddr[cnt].other_deliv_id}-->">
                 <br>
             <!--{/if}-->
+
+            <!--{assign var=key1 value=$arrAddr[cnt].pref}-->
+            <!--{assign var=key2 value=$arrAddr[cnt].country_id}-->
             ■お届け先<!--{$smarty.section.cnt.iteration}--><br>
+            <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+            国：<!--{$arrCountry[$key2]|h}--><br>
+            <!--{/if}-->
             〒<!--{$arrAddr[cnt].zip01}-->-<!--{$arrAddr[cnt].zip02}--><br>
-            <!--{assign var=key value=$arrAddr[cnt].pref}--><!--{$arrPref[$key]}--><!--{$arrAddr[cnt].addr01|h}--><br>
+            <!--{$arrPref[$key1]}--><!--{$arrAddr[cnt].addr01|h}--><br>
             <!--{if $arrAddr[cnt].addr02 != ""}-->
                 <!--{$arrAddr[cnt].addr02|h}--><br>
             <!--{/if}-->

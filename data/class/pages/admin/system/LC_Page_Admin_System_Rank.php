@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,16 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
     }
 
@@ -49,7 +47,8 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -59,8 +58,8 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         // チェック後のデータを格納
         $arrClean = array();
 
@@ -91,10 +90,8 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
                 default:
                     break;
             }
-        }
-
         // エラー処理
-        else {
+        } else {
             GC_Utils_Ex::gfPrintLog('error id='.$_GET['id']);
         }
 
@@ -102,17 +99,9 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
         SC_Response_Ex::sendRedirect(ADMIN_SYSTEM_URLPATH);
     }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
     // ランキングを上げる。
-    function lfRunkUp($id) {
+    public function lfRunkUp($id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 自身のランクを取得する。
@@ -142,7 +131,8 @@ class LC_Page_Admin_System_Rank extends LC_Page_Admin_Ex {
     }
 
     // ランキングを下げる。
-    function lfRunkDown($id) {
+    public function lfRunkDown($id)
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 自身のランクを取得する。

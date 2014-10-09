@@ -42,7 +42,7 @@
 // | Author: Paul Cooper <pgc@ucecom.com>                                 |
 // +----------------------------------------------------------------------+
 //
-// $Id: pgsql.php,v 1.87 2008/11/29 14:09:59 afz Exp $
+// $Id: pgsql.php 327310 2012-08-27 15:16:18Z danielc $
 
 require_once 'MDB2/Driver/Manager/Common.php';
 
@@ -68,8 +68,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function createDatabase($name, $options = array())
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -95,18 +95,24 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function alterDatabase($name, $options = array())
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
-        $query = 'ALTER DATABASE '. $db->quoteIdentifier($name, true);
+        $query = '';
         if (!empty($options['name'])) {
             $query .= ' RENAME TO ' . $options['name'];
         }
         if (!empty($options['owner'])) {
             $query .= ' OWNER TO ' . $options['owner'];
         }
+
+        if (empty($query)) {
+            return MDB2_OK;
+        }
+
+        $query = 'ALTER DATABASE '. $db->quoteIdentifier($name, true) . $query;
         return $db->standaloneQuery($query, null, true);
     }
 
@@ -122,8 +128,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function dropDatabase($name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -181,13 +187,17 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function truncateTable($name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $name = $db->quoteIdentifier($name, true);
-        return $db->exec("TRUNCATE TABLE $name");
+        $result = $db->exec("TRUNCATE TABLE $name");
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -209,8 +219,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function vacuum($table = null, $options = array())
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
         $query = 'VACUUM';
@@ -228,7 +238,11 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
         if (!empty($table)) {
             $query .= ' '.$db->quoteIdentifier($table, true);
         }
-        return $db->exec($query);
+        $result = $db->exec($query);
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -326,8 +340,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function alterTable($name, $changes, $check)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -356,7 +370,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                 $field_name = $db->quoteIdentifier($field_name, true);
                 $query = 'DROP ' . $field_name;
                 $result = $db->exec("ALTER TABLE $name $query");
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -366,7 +380,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
             foreach ($changes['rename'] as $field_name => $field) {
                 $field_name = $db->quoteIdentifier($field_name, true);
                 $result = $db->exec("ALTER TABLE $name RENAME COLUMN $field_name TO ".$db->quoteIdentifier($field['name'], true));
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -376,7 +390,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
             foreach ($changes['add'] as $field_name => $field) {
                 $query = 'ADD ' . $db->getDeclaration($field['type'], $field_name, $field);
                 $result = $db->exec("ALTER TABLE $name $query");
-                if (PEAR::isError($result)) {
+                if (MDB2::isError($result)) {
                     return $result;
                 }
             }
@@ -387,7 +401,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                 $field_name = $db->quoteIdentifier($field_name, true);
                 if (!empty($field['definition']['type'])) {
                     $server_info = $db->getServerVersion();
-                    if (PEAR::isError($server_info)) {
+                    if (MDB2::isError($server_info)) {
                         return $server_info;
                     }
                     if (is_array($server_info) && $server_info['major'] < 8) {
@@ -398,21 +412,21 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                     $type = $db->datatype->getTypeDeclaration($field['definition']);
                     $query = "ALTER $field_name TYPE $type USING CAST($field_name AS $type)";
                     $result = $db->exec("ALTER TABLE $name $query");
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                 }
                 if (array_key_exists('default', $field['definition'])) {
                     $query = "ALTER $field_name SET DEFAULT ".$db->quote($field['definition']['default'], $field['definition']['type']);
                     $result = $db->exec("ALTER TABLE $name $query");
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                 }
-                if (!empty($field['definition']['notnull'])) {
+                if (array_key_exists('notnull', $field['definition'])) {
                     $query = "ALTER $field_name ".($field['definition']['notnull'] ? 'SET' : 'DROP').' NOT NULL';
                     $result = $db->exec("ALTER TABLE $name $query");
-                    if (PEAR::isError($result)) {
+                    if (MDB2::isError($result)) {
                         return $result;
                     }
                 }
@@ -422,7 +436,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
         if (!empty($changes['name'])) {
             $change_name = $db->quoteIdentifier($changes['name'], true);
             $result = $db->exec("ALTER TABLE $name RENAME TO ".$change_name);
-            if (PEAR::isError($result)) {
+            if (MDB2::isError($result)) {
                 return $result;
             }
         }
@@ -441,8 +455,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listDatabases()
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -454,7 +468,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
 
         $result = $result2->fetchCol();
         $result2->free();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
@@ -474,8 +488,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listUsers()
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -501,8 +515,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listViews()
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -511,7 +525,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                    WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
                      AND viewname !~ '^pg_'";
         $result = $db->queryCol($query);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
@@ -532,15 +546,15 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listTableViews($table)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $query = 'SELECT viewname FROM pg_views NATURAL JOIN pg_tables';
         $query.= ' WHERE tablename ='.$db->quote($table, 'text');
         $result = $db->queryCol($query);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
@@ -560,8 +574,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listFunctions()
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -578,7 +592,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                 AND pr.pronamespace IN
                     (SELECT oid FROM pg_namespace WHERE nspname NOT LIKE 'pg_%' AND nspname != 'information_schema')";
         $result = $db->queryCol($query);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
@@ -599,8 +613,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listTableTriggers($table = null)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -608,12 +622,12 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                     FROM pg_trigger trg,
                          pg_class tbl
                    WHERE trg.tgrelid = tbl.oid';
-        if (!is_null($table)) {
+        if (null !== $table) {
             $table = $db->quote(strtoupper($table), 'text');
-            $query .= " AND tbl.relname = $table";
+            $query .= " AND UPPER(tbl.relname) = $table";
         }
         $result = $db->queryCol($query);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
@@ -633,8 +647,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listTables()
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -659,7 +673,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
             . '  WHERE usesysid = c.relowner)'
             . " AND c.relname !~ '^pg_'";
         $result = $db->queryCol($query);
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
@@ -680,8 +694,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listTableFields($table)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -693,12 +707,12 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
         }
         $db->setLimit(1);
         $result2 = $db->query("SELECT * FROM $table");
-        if (PEAR::isError($result2)) {
+        if (MDB2::isError($result2)) {
             return $result2;
         }
         $result = $result2->getColumnNames();
         $result2->free();
-        if (PEAR::isError($result)) {
+        if (MDB2::isError($result)) {
             return $result;
         }
         return array_flip($result);
@@ -716,8 +730,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listTableIndexes($table)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -736,7 +750,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
         }
         $query = "SELECT relname FROM pg_class WHERE oid IN ($subquery)";
         $indexes = $db->queryCol($query, 'text');
-        if (PEAR::isError($indexes)) {
+        if (MDB2::isError($indexes)) {
             return $indexes;
         }
 
@@ -769,8 +783,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function dropConstraint($table, $name, $primary = false)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -789,17 +803,25 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
                   WHERE pg_constraint.conrelid = pg_class.oid
                     AND relname = '. $db->quote($table, 'text');
         $unique = $db->queryCol($query, 'text');
-        if (PEAR::isError($unique) || empty($unique)) {
+        if (MDB2::isError($unique) || empty($unique)) {
             // not an UNIQUE index, maybe a CONSTRAINT
             return parent::dropConstraint($table, $name, $primary);
         }
 
         if (in_array($name, $unique)) {
-            return $db->exec('DROP INDEX '.$db->quoteIdentifier($name, true));
+            $result = $db->exec('DROP INDEX '.$db->quoteIdentifier($name, true));
+            if (MDB2::isError($result)) {
+                return $result;
+            }
+            return MDB2_OK;
         }
         $idxname = $db->getIndexName($name);
         if (in_array($idxname, $unique)) {
-            return $db->exec('DROP INDEX '.$db->quoteIdentifier($idxname, true));
+            $result = $db->exec('DROP INDEX '.$db->quoteIdentifier($idxname, true));
+            if (MDB2::isError($result)) {
+                return $result;
+            }
+            return MDB2_OK;
         }
         return $db->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
             $name . ' is not an existing constraint for table ' . $table, __FUNCTION__);
@@ -817,8 +839,8 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listTableConstraints($table)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
@@ -849,7 +871,7 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
         }
         $query .= ')';
         $constraints = $db->queryCol($query);
-        if (PEAR::isError($constraints)) {
+        if (MDB2::isError($constraints)) {
             return $constraints;
         }
 
@@ -882,14 +904,18 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function createSequence($seq_name, $start = 1)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $sequence_name = $db->quoteIdentifier($db->getSequenceName($seq_name), true);
-        return $db->exec("CREATE SEQUENCE $sequence_name INCREMENT 1".
+        $result = $db->exec("CREATE SEQUENCE $sequence_name INCREMENT 1".
             ($start < 1 ? " MINVALUE $start" : '')." START $start");
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -904,13 +930,17 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function dropSequence($seq_name)
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $sequence_name = $db->quoteIdentifier($db->getSequenceName($seq_name), true);
-        return $db->exec("DROP SEQUENCE $sequence_name");
+        $result = $db->exec("DROP SEQUENCE $sequence_name");
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -924,15 +954,15 @@ class MDB2_Driver_Manager_pgsql extends MDB2_Driver_Manager_Common
      */
     function listSequences()
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
             return $db;
         }
 
         $query = "SELECT relname FROM pg_class WHERE relkind = 'S' AND relnamespace IN";
         $query.= "(SELECT oid FROM pg_namespace WHERE nspname NOT LIKE 'pg_%' AND nspname != 'information_schema')";
         $table_names = $db->queryCol($query);
-        if (PEAR::isError($table_names)) {
+        if (MDB2::isError($table_names)) {
             return $table_names;
         }
         $result = array();

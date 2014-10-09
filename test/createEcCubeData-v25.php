@@ -3,7 +3,7 @@
 /*
  * EC-CUBE データ生成スクリプト
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -79,14 +79,14 @@ $end = microtime(true);
 print("データの生成が完了しました!\n");
 printf("所要時間 %f 秒\n", $end - $start);
 
-
 // }}}
 // {{{ classes
 
 /**
  * EC-CUBE のデータを生成する
  */
-class CreateEcCubeData {
+class CreateEcCubeData 
+{
 
     /** SC_Query インスタンス */
     var $objQuery;
@@ -112,7 +112,8 @@ class CreateEcCubeData {
     /**
      * コンストラクタ.
      */
-    function CreateEcCubeData() {
+    function CreateEcCubeData()
+    {
         $this->objQuery = new SC_Query();
 
         // コマンドライン引数 --delete
@@ -136,7 +137,8 @@ class CreateEcCubeData {
      *                            |- 小カテゴリ
      * @return void
      */
-    function createCategories() {
+    function createCategories()
+    {
 
         print("カテゴリを生成しています...\n");
 
@@ -210,7 +212,8 @@ class CreateEcCubeData {
      *
      * @return void
      */
-    function createClassData() {
+    function createClassData()
+    {
         // 規格データ生成
         print("規格データを生成しています...\n");
 
@@ -249,7 +252,8 @@ class CreateEcCubeData {
      *
      * @return void
      */
-    function relateClass() {
+    function relateClass()
+    {
 
         print("商品と規格の関連づけを行います...\n");
 
@@ -268,7 +272,8 @@ class CreateEcCubeData {
      *
      * @return void
      */
-    function createProducts() {
+    function createProducts()
+    {
 
         print("商品を生成しています...\n");
 
@@ -307,7 +312,8 @@ class CreateEcCubeData {
      * @param $class_name string 規格名
      * @return void
      */
-    function createClass($class_name) {
+    function createClass($class_name)
+    {
         $sqlval = array();
         $arrRaw = array();
         // class_idを取得
@@ -335,7 +341,8 @@ class CreateEcCubeData {
      * @param $classcategory_name string 規格名
      * @return void
      */
-    function createClassCategory($classcategory_name, $class_id, $class_name) {
+    function createClassCategory($classcategory_name, $class_id, $class_name)
+    {
         $sqlval = array();
         $arrRaw = array();
         $sqlval['classcategory_id'] = $this->objQuery->nextVal('dtb_classcategory_classcategory_id');
@@ -374,7 +381,8 @@ class CreateEcCubeData {
      * @param integer $product_id 商品ID
      * @return void
      */
-    function createProductsClass($product_id) {
+    function createProductsClass($product_id)
+    {
 
         printf("商品ID %d の商品規格を生成しています...\n", $product_id);
 
@@ -418,7 +426,8 @@ class CreateEcCubeData {
      *
      * @return void
      */
-    function relateProductsCategories() {
+    function relateProductsCategories()
+    {
 
         print("商品とカテゴリの関連づけを行います...\n");
 
@@ -437,7 +446,8 @@ class CreateEcCubeData {
      * @param array $arrCategory_id カテゴリID の配列
      * @return void
      */
-    function createProductsCategories($arrCategory_id, $category_name) {
+    function createProductsCategories($arrCategory_id, $category_name)
+    {
 
         $count = 0;
         printf("%s の商品カテゴリを生成しています...\n", $category_name);
@@ -667,9 +677,10 @@ class CreateEcCubeData {
     /**
     * 総カテゴリ数を計算し、dtb_categoryに代入するrankに使う
     */
-    function lfGetTotalCategoryrank($existingMaxRank = 0){
+    function lfGetTotalCategoryrank($existingMaxRank = 0)
+    {
         $TotalCategoryrank = (TOP_CATEGORIES_VOLUME * MIDDLE_CATEGORIES_VOLUME * SMALL_CATEGORIES_VOLUME) + (MIDDLE_CATEGORIES_VOLUME * TOP_CATEGORIES_VOLUME) + TOP_CATEGORIES_VOLUME + $existingMaxRank;
+
         return $TotalCategoryrank;
     }
-
 }

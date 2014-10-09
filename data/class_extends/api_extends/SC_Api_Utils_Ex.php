@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,6 +30,6 @@
  */
 require_once CLASS_REALDIR . 'api/SC_Api_Utils.php';
 
-class SC_Api_Utils_Ex extends SC_Api_Utils {
-
+class SC_Api_Utils_Ex extends SC_Api_Utils
+{
 }

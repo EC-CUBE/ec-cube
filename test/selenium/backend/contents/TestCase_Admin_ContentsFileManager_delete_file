@@ -17,7 +17,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//a[@onclick=&quot;fnSetFormVal('form1', 'select_file', 'C:/workspace/eccube/html/user_data/test.txt');fnSelectFile('select_file8', '#808080');setTreeStatus('tree_status');fnModeSubmit('delete','',''); return false;&quot;]</td>
+	<td>//a[@onclick=&quot;eccube.setValue('select_file', 'C:/workspace/eccube/html/user_data/test.txt', 'form1');eccube.fileManager.selectFile('select_file8', '#808080');setTreeStatus('tree_status');eccube.setModeAndSubmit('delete','',''); return false;&quot;]</td>
 	<td></td>
 </tr>
 <tr>

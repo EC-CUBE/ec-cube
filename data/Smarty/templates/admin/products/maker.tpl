@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -34,7 +34,7 @@
                 <td>
                     <!--{if $arrErr.maker_id}--><span class="attention"><!--{$arrErr.maker_id}--></span><br /><!--{/if}-->
                     <!--{if $arrErr.name}--><span class="attention"><!--{$arrErr.name}--></span><!--{/if}-->
-                    <input type="text" name="name" value="<!--{$arrForm.name|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="" size="60" class="box60"/>
+                    <input type="text" name="name" value="<!--{$arrForm.name.value|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" size="60" class="box60"<!--{if $arrErr.maker_id || $arrErr.name}--> <!--{sfSetErrorStyle}--><!--{/if}--> />
                     <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
                 </td>
             </tr>
@@ -42,7 +42,7 @@
 
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
             </ul>
         </div>
         <!--{if count($arrMaker) > 0}-->
@@ -66,7 +66,7 @@
                 <td><!--{$arrMaker[cnt].name|h}--></td>
                 <td class="center">
                     <!--{if $tpl_maker_id != $arrMaker[cnt].maker_id}-->
-                    <a href="?" onclick="fnModeSubmit('pre_edit', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">編集</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('pre_edit', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">編集</a>
                     <!--{else}-->
                     編集中
                     <!--{/if}-->
@@ -75,15 +75,15 @@
                     <!--{if $arrClassCatCount[$class_id] > 0}-->
                     -
                     <!--{else}-->
-                    <a href="?" onclick="fnModeSubmit('delete', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">削除</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('delete', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">削除</a>
                     <!--{/if}-->
                 </td>
                 <td class="center">
                     <!--{if $smarty.section.cnt.iteration != 1}-->
-                    <a href="?" onclick="fnModeSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" />上へ</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('up', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">上へ</a>
                     <!--{/if}-->
                     <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
-                    <a href="?" onclick="fnModeSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;" />下へ</a>
+                    <a href="?" onclick="eccube.setModeAndSubmit('down', 'maker_id', <!--{$arrMaker[cnt].maker_id}-->); return false;">下へ</a>
                     <!--{/if}-->
                 </td>
             </tr>

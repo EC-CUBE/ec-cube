@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -20,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-// {{{ requires
 define('SAFE', true);
 if (isset($_GET['admin'])) {
     define('ADMIN_FUNCTION', true);
@@ -28,9 +27,6 @@ if (isset($_GET['admin'])) {
 require_once './require.php';
 require_once CLASS_EX_REALDIR . 'page_extends/error/LC_Page_Error_SystemError_Ex.php';
 
-// }}}
-// {{{ generate page
 $objPage = new LC_Page_Error_SystemError_Ex();
-register_shutdown_function(array($objPage, 'destroy'));
 $objPage->init();
 $objPage->process();

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Contents extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'contents/index.tpl';
         $this->tpl_subno = 'index';
@@ -65,7 +62,8 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -75,113 +73,112 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
+        $objNews = new SC_Helper_News_Ex();
 
-        $objDb = new SC_Helper_DB_Ex();
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
+
         $news_id = $objFormParam->getValue('news_id');
 
         //---- 新規登録/編集登録
         switch ($this->getMode()) {
-            case 'regist':
-                $arrPost = $objFormParam->getHashArray();
+            case 'edit':
                 $this->arrErr = $this->lfCheckError($objFormParam);
-                if (SC_Utils_Ex::isBlank($this->arrErr)) {
-                    // ニュースIDの値がPOSTされて来た場合は既存データの編集とみなし、
-                    // 更新メソッドを呼び出す。
-                    // ニュースIDが存在しない場合は新規登録を行う。
-                    $arrPost['link_method'] = $this->checkLinkMethod($arrPost['link_method']);
-                    $arrPost['news_date'] = $this->getRegistDate($arrPost);
-                    $member_id = $_SESSION['member_id'];
-                    if (strlen($news_id) > 0 && is_numeric($news_id)) {
-                        $this->lfNewsUpdate($arrPost,$member_id);
-                    } else {
-                        $this->lfNewsInsert($arrPost,$member_id);
+                if (!SC_Utils_Ex::isBlank($this->arrErr['news_id'])) {
+                    trigger_error('', E_USER_ERROR);
+
+                    return;
+                }
+
+                if (count($this->arrErr) <= 0) {
+                    // POST値の引き継ぎ
+                    $arrParam = $objFormParam->getHashArray();
+                    // 登録実行
+                    $res_news_id = $this->doRegist($news_id, $arrParam, $objNews);
+                    if ($res_news_id !== FALSE) {
+                        // 完了メッセージ
+                        $news_id = $res_news_id;
+                        $this->tpl_onload = "alert('登録が完了しました。');";
                     }
-                    $news_id = '';
-                    $this->tpl_onload = "window.alert('編集が完了しました');";
-                } else {
-                    $this->arrForm = $arrPost;
                 }
+                // POSTデータを引き継ぐ
+                $this->tpl_news_id = $news_id;
                 break;
-            case 'search':
-                if (is_numeric($news_id)) {
-                    list($this->arrForm) = $this->getNews($news_id);
-                    list($this->arrForm['year'],$this->arrForm['month'],$this->arrForm['day']) = $this->splitNewsDate($this->arrForm['cast_news_date']);
-                    $this->edit_mode = 'on';
-                }
+
+            case 'pre_edit':
+                $news = $objNews->getNews($news_id);
+                list($news['year'],$news['month'],$news['day']) = $this->splitNewsDate($news['cast_news_date']);
+                $objFormParam->setParam($news);
+
+                // POSTデータを引き継ぐ
+                $this->tpl_news_id = $news_id;
                 break;
+
             case 'delete':
             //----　データ削除
-                if (is_numeric($news_id)) {
-                    $pre_rank = $this->getRankByNewsId($news_id);
-                    $this->computeRankForDelete($news_id,$pre_rank);
-
-                    SC_Response_Ex::reload();             //自分にリダイレクト（再読込による誤動作防止）
-                }
+                $objNews->deleteNews($news_id);
+                //自分にリダイレクト（再読込による誤動作防止）
+                SC_Response_Ex::reload();
                 break;
-            case 'move':
+
             //----　表示順位移動
-                if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
-                    $term = $objFormParam->getValue('term');
-                    if ($term == 'up') {
-                        $objDb->sfRankUp('dtb_news', 'news_id', $news_id);
-                    } else if ($term == 'down') {
-                        $objDb->sfRankDown('dtb_news', 'news_id', $news_id);
-                    }
+            case 'up':
+                $objNews->rankUp($news_id);
 
-                    $this->objDisplay->reload();
-                }
+                // リロード
+                SC_Response_Ex::reload();
                 break;
+
+            case 'down':
+                $objNews->rankDown($news_id);
+
+                // リロード
+                SC_Response_Ex::reload();
+                break;
+
             case 'moveRankSet':
             //----　指定表示順位移動
                 $input_pos = $this->getPostRank($news_id);
                 if (SC_Utils_Ex::sfIsInt($input_pos)) {
-                    $objDb->sfMoveRank('dtb_news', 'news_id', $news_id, $input_pos);
-
-                    $this->objDisplay->reload();
+                    $objNews->moveRank($news_id, $input_pos);
                 }
+                SC_Response_Ex::reload();
                 break;
+
             default:
                 break;
         }
 
-        $this->arrNews = $this->getNews();
-        $this->tpl_news_id = $news_id;
+        $this->arrNews = $objNews->getList();
         $this->line_max = count($this->arrNews);
-        $this->max_rank = $this->getRankMax();
 
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
+        $this->arrForm = $objFormParam->getFormParamList();
     }
 
     /**
      * 入力されたパラメーターのエラーチェックを行う。
-     * @param Object $objFormParam
-     * @return Array エラー内容
+     * @param  SC_FormParam_Ex $objFormParam
+     * @return Array  エラー内容
      */
-    function lfCheckError(&$objFormParam) {
+    public function lfCheckError(&$objFormParam)
+    {
         $objErr = new SC_CheckError_Ex($objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         $objErr->doFunc(array('日付', 'year', 'month', 'day'), array('CHECK_DATE'));
+
         return $objErr->arrErr;
     }
 
     /**
      * パラメーターの初期化を行う
-     * @param Object $objFormParam
+     * @param SC_FormParam_Ex $objFormParam
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('news_id', 'news_id');
         $objFormParam->addParam('日付(年)', 'year', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('日付(月)', 'month', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
@@ -190,151 +187,73 @@ class LC_Page_Admin_Contents extends LC_Page_Admin_Ex {
         $objFormParam->addParam('URL', 'news_url', URL_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('本文', 'news_comment', LTEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('別ウィンドウで開く', 'link_method', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
-        $objFormParam->addParam('ランク移動', 'term', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
     /**
-     * 新着記事のデータの登録を行う
-     * @param Array $arrPost POSTデータの配列
-     * @param Integer $member_id 登録した管理者のID
+     * 登録処理を実行.
+     *
+     * @param  integer  $news_id
+     * @param  array    $sqlval
+     * @param  SC_Helper_News_Ex   $objNews
+     * @return multiple
      */
-    function lfNewsInsert($arrPost,$member_id) {
-        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        // rankの最大+1を取得する
-        $rank_max = $this->getRankMax();
-        $rank_max = $rank_max + 1;
-
-        $table = 'dtb_news';
-        $sqlval = array();
-        $news_id = $objQuery->nextVal('dtb_news_news_id');
+    public function doRegist($news_id, $sqlval, SC_Helper_News_Ex $objNews)
+    {
         $sqlval['news_id'] = $news_id;
-        $sqlval['news_date'] = $arrPost['news_date'];
-        $sqlval['news_title'] = $arrPost['news_title'];
-        $sqlval['creator_id'] = $member_id;
-        $sqlval['news_url'] = $arrPost['news_url'];
-        $sqlval['link_method'] = $arrPost['link_method'];
-        $sqlval['news_comment'] = $arrPost['news_comment'];
-        $sqlval['rank'] = $rank_max;
-        $sqlval['create_date'] = 'CURRENT_TIMESTAMP';
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery->insert($table, $sqlval);
-    }
+        $sqlval['creator_id'] = $_SESSION['member_id'];
+        $sqlval['link_method'] = $this->checkLinkMethod($sqlval['link_method']);
+        $sqlval['news_date'] = $this->getRegistDate($sqlval);
+        unset($sqlval['year'], $sqlval['month'], $sqlval['day']);
 
-    function lfNewsUpdate($arrPost,$member_id) {
-        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
-
-        $table = 'dtb_news';
-        $sqlval = array();
-        $sqlval['news_date'] = $arrPost['news_date'];
-        $sqlval['news_title'] = $arrPost['news_title'];
-        $sqlval['creator_id'] = $member_id;
-        $sqlval['news_url'] = $arrPost['news_url'];
-        $sqlval['news_comment'] = $arrPost['news_comment'];
-        $sqlval['link_method'] = $arrPost['link_method'];
-        $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $where = 'news_id = ?';
-        $arrValIn = array($arrPost['news_id']);
-        $objQuery->update($table, $sqlval, $where, $arrValIn);
+        return $objNews->saveNews($sqlval);
     }
 
     /**
      * データの登録日を返す。
-     * @param Array $arrPost POSTのグローバル変数
+     * @param  Array  $arrPost POSTのグローバル変数
      * @return string 登録日を示す文字列
      */
-    function getRegistDate($arrPost) {
+    public function getRegistDate($arrPost)
+    {
         $registDate = $arrPost['year'] .'/'. $arrPost['month'] .'/'. $arrPost['day'];
+
         return $registDate;
     }
 
     /**
      * チェックボックスの値が空の時は無効な値として1を格納する
-     * @param int $link_method
+     * @param  int $link_method
      * @return int
      */
-    function checkLinkMethod($link_method) {
+    public function checkLinkMethod($link_method)
+    {
         if (strlen($link_method) == 0) {
             $link_method = 1;
         }
+
         return $link_method;
-    }
-
-    /**
-     * ニュース記事を取得する。
-     * @param Integer news_id ニュースID
-     */
-    function getNews($news_id = '') {
-        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = '*, cast(news_date as date) as cast_news_date';
-        $table = 'dtb_news';
-        $order = 'rank DESC';
-        if (strlen($news_id) == 0) {
-            $where = 'del_flg = 0';
-            $arrWhereVal = array();
-        } else {
-            $where = 'del_flg = 0 AND news_id = ?';
-            $arrWhereVal = array($news_id);
-        }
-        $objQuery->setOrder($order);
-        return $objQuery->select($col, $table, $where, $arrWhereVal);
-    }
-
-    /**
-     * 指定されたニュースのランクの値を取得する。
-     * @param Integer $news_id
-     */
-    function getRankByNewsId($news_id) {
-        $objQuery = $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'rank';
-        $table = 'dtb_news';
-        $where = 'del_flg = 0 AND news_id = ?';
-        $arrWhereVal = array($news_id);
-        list($rank) = $objQuery->select($col, $table, $where, $arrWhereVal);
-        return $rank['rank'];
-    }
-
-    /**
-     * 削除する新着情報以降のrankを1つ繰り上げる。
-     * @param Integer $news_id
-     * @param Integer $rank
-     */
-    function computeRankForDelete($news_id,$rank) {
-        SC_Helper_DB_Ex::sfDeleteRankRecord('dtb_news', 'news_id', $news_id);
     }
 
     /**
      * ニュースの日付の値をフロントでの表示形式に合わせるために分割
      * @param String $news_date
      */
-    function splitNewsDate($news_date) {
+    public function splitNewsDate($news_date)
+    {
         return explode('-', $news_date);
     }
 
     /**
-     * ランクの最大値の値を返す。
-     * @return Intger $max ランクの最大値の値
-     */
-    function getRankMax() {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $col = 'MAX(rank) as max';
-        $table = 'dtb_news';
-        $where = 'del_flg = 0';
-        list($result) = $objQuery->select($col, $table, $where);
-        return $result['max'];
-    }
-
-    /**
      * POSTされたランクの値を取得する
-     * @param Object $objFormParam
      * @param Integer $news_id
      */
-    function getPostRank($news_id) {
+    public function getPostRank($news_id)
+    {
         if (strlen($news_id) > 0 && is_numeric($news_id) == true) {
             $key = 'pos-' . $news_id;
             $input_pos = $_POST[$key];
+
             return $input_pos;
         }
     }
-
 }

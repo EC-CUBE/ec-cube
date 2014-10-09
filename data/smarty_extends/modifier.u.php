@@ -18,6 +18,7 @@
  * @param string $string
  * @return string
  */
-function smarty_modifier_u($string) {
+function smarty_modifier_u($string)
+{
     return htmlspecialchars(rawurlencode($string), ENT_QUOTES);
 }

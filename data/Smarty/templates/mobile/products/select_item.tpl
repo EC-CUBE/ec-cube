@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -26,6 +26,12 @@
     <div align="center">数量指定</div>
     <hr>
 
+    <!--{if $tpl_classcat_find1}-->
+        <p><!--{$tpl_class_name1}-->は「<!--{$arrClassCat1[$arrForm.classcategory_id1.value]|h}-->」を選択しています。</p>
+        <!--{if $tpl_classcat_find2}-->
+            <p><!--{$tpl_class_name2}-->は「<!--{$arrClassCat2[$arrForm.classcategory_id2.value]|h}-->」を選択しています。</p>
+        <!--{/if}-->
+    <!--{/if}-->
     <!--{if $arrErr.quantity != ""}-->
         <font color="#FF0000">※数量を入力して下さい｡</font><br>
     <!--{/if}-->
@@ -33,11 +39,11 @@
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->">
         <input type="text" name="quantity" size="3" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength=<!--{$smarty.const.INT_LEN}--> istyle="4"><br>
         <input type="hidden" name="mode" value="cart">
-        <input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value}-->">
-        <input type="hidden" name="classcategory_id2" value="<!--{$arrForm.classcategory_id2.value}-->">
+        <input type="hidden" name="classcategory_id1" value="<!--{$arrForm.classcategory_id1.value|h}-->">
+        <input type="hidden" name="classcategory_id2" value="<!--{$arrForm.classcategory_id2.value|h}-->">
         <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->">
         <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->">
         <input type="hidden" name="product_type" value="<!--{$tpl_product_type}-->">
-        <center><input type="submit" name="submit" value="かごに入れる"></center>
+        <center><input type="submit" name="submit" value="カゴに入れる"></center>
     </form>
 <!--{/strip}-->

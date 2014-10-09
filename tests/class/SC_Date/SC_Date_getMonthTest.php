@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -24,48 +24,56 @@
 $HOME = realpath(dirname(__FILE__)) . "/../../..";
 require_once($HOME . "/tests/class/Common_TestCase.php");
 
-class SC_Date_getMonthTest extends Common_TestCase {
+class SC_Date_getMonthTest extends Common_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $this->objDate = new SC_Date_Ex();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
     /////////////////////////////////////////
 
-    public function testGetMonth_要素の数が12の配列を返す() {
+    public function testGetMonth_要素の数が12の配列を返す()
+    {
         $this->expected = 12;
         $this->actual = count($this->objDate->getMonth());
 
         $this->verify("配列の長さ");
     }
 
-    public function testGetMonth_要素の最低値が1の配列を返す() {
+    public function testGetMonth_要素の最低値が1の配列を返す()
+    {
         $this->expected = 1;
         $this->actual = min($this->objDate->getMonth());
 
         $this->verify("配列の最低値");
     }
 
-    public function testGetMonth_要素の最大値が12の配列を返す() {
+    public function testGetMonth_要素の最大値が12の配列を返す()
+    {
         $this->expected = 12;
         $this->actual = max($this->objDate->getMonth());
 
         $this->verify("配列の最大値");
     }
 
-    public function testGetMonth_TRUEを与えた場合要素の数が13の配列を返す() {
+    public function testGetMonth_TRUEを与えた場合要素の数が13の配列を返す()
+    {
         $this->expected = 13;
         $this->actual = count($this->objDate->getMonth(true));
 
         $this->verify("デフォルトを設定した配列の長さ");
     }
 
-    public function testGetMonth_TRUEを与えた場合ーー含まれるの配列を返す() {
+    public function testGetMonth_TRUEを与えた場合ーー含まれるの配列を返す()
+    {
         $result = in_array('--', $this->objDate->getMonth(true));
 
         $this->assertTrue($result, "デフォルトの値");

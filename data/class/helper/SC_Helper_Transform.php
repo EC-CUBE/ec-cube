@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -27,7 +27,8 @@
  * @package Helper
  * @version $Id$
  */
-class SC_Helper_Transform {
+class SC_Helper_Transform
+{
     protected $objDOM;
     protected $arrSmartyTagsOrg;
     protected $arrSmartyTagsSub;
@@ -45,10 +46,11 @@ class SC_Helper_Transform {
     /**
      * SmartyのHTMLソースをDOMに変換しておく
      *
-     * @param string $source 変形対象のテンプレート
+     * @param  string $source 変形対象のテンプレート
      * @return void
      */
-    public function __construct($source) {
+    public function __construct($source)
+    {
         $this->objDOM = new DOMDocument();
         $this->objDOM->strictErrorChecking = false;
         $this->snip_count      = 0;
@@ -112,8 +114,7 @@ class SC_Helper_Transform {
             $this->footer_source = $arrMatches[3];
         } elseif (preg_match('/^.*?<body[^>]*>.+<\/body>.*$/is', $source)) {
             $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></html>';
-        }
-        else {
+        } else {
             $source = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><html><body><!--TemplateTransformer start-->'.$source.'<!--TemplateTransformer end--></body></html>';
         }
 
@@ -121,17 +122,17 @@ class SC_Helper_Transform {
         $this->lfScanChild($this->objDOM);
     }
 
-
     /**
      * jQueryライクなセレクタを用いてエレメントを選択する
      *
-     * @param string  $selector      セレクタ
-     * @param integer $index         インデックス（指定がある場合）
-     * @param boolean $require       エレメントが見つからなかった場合、エラーとするか
-     * @param string  $err_msg       エラーメッセージ
-     * @return SC_Helper_Transformオブジェクト
+     * @param  string                                $selector セレクタ
+     * @param  integer                               $index    インデックス（指定がある場合）
+     * @param  boolean                               $require  エレメントが見つからなかった場合、エラーとするか
+     * @param  string                                $err_msg  エラーメッセージ
+     * @return SC_Helper_Transform
      */
-    public function select($selector, $index = NULL, $require = true, $err_msg = NULL) {
+    public function select($selector, $index = NULL, $require = true, $err_msg = NULL)
+    {
         $this->arrSelectElements = array();
         $this->search_depth = 0;
 
@@ -161,17 +162,17 @@ class SC_Helper_Transform {
         return $this;
     }
 
-
     /**
      * jQueryライクなセレクタを用いて、選択したエレメント内をさらに絞り込む
      *
-     * @param string  $selector      セレクタ
-     * @param integer $index         インデックス（指定がある場合）
-     * @param boolean $require       エレメントが見つからなかった場合、エラーとするか
-     * @param string  $err_msg       エラーメッセージ
-     * @return SC_Helper_Transformオブジェクト
+     * @param  string                                $selector セレクタ
+     * @param  integer                               $index    インデックス（指定がある場合）
+     * @param  boolean                               $require  エレメントが見つからなかった場合、エラーとするか
+     * @param  string                                $err_msg  エラーメッセージ
+     * @return SC_Helper_Transform
      */
-    public function find($selector, $index = NULL, $require = true, $err_msg = NULL) {
+    public function find($selector, $index = NULL, $require = true, $err_msg = NULL)
+    {
         $arrParentElements = $this->arrSelectElements[$this->search_depth];
         $this->search_depth++;
         $this->arrSelectElements[$this->search_depth] = array();
@@ -204,14 +205,14 @@ class SC_Helper_Transform {
         return $this;
     }
 
-
     /**
      * 選択状態を指定数戻す
      *
-     * @param int $back_num 選択状態を戻す数
-     * @return SC_Helper_Transformオブジェクト
+     * @param  int                                   $back_num 選択状態を戻す数
+     * @return SC_Helper_Transform
      */
-    public function end($back_num = 1) {
+    public function end($back_num = 1)
+    {
         if ($this->search_depth >= $back_num) {
             $this->search_depth -= $back_num;
         } else {
@@ -221,96 +222,114 @@ class SC_Helper_Transform {
         return $this;
     }
 
-
     /**
      * 要素の前にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @param  string                                $html_snip 挿入するHTMLの断片
+     * @return SC_Helper_Transform
      */
-    public function insertBefore($html_snip) {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('insertBefore', $objElement[0], $html_snip);
+    public function insertBefore($html_snip)
+    {
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('insertBefore', $objElement[0], $html_snip);
+            }
         }
+
         return $this;
     }
-
 
     /**
      * 要素の後にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @param  string                                $html_snip 挿入するHTMLの断片
+     * @return SC_Helper_Transform
      */
-    public function insertAfter($html_snip) {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('insertAfter', $objElement[0], $html_snip);
+    public function insertAfter($html_snip)
+    {
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('insertAfter', $objElement[0], $html_snip);
+            }
         }
+
         return $this;
     }
-
 
     /**
      * 要素の先頭にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @param  string                                $html_snip 挿入するHTMLの断片
+     * @return SC_Helper_Transform
      */
-    public function appendFirst($html_snip) {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('appendFirst', $objElement[0], $html_snip);
+    public function appendFirst($html_snip)
+    {
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('appendFirst', $objElement[0], $html_snip);
+            }
         }
+
         return $this;
     }
-
 
     /**
      * 要素の末尾にHTMLを挿入
      *
-     * @param string $html_snip 挿入するHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @param  string                                $html_snip 挿入するHTMLの断片
+     * @return SC_Helper_Transform
      */
-    public function appendChild($html_snip) {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
-            $this->lfSetTransform('appendChild', $objElement[0], $html_snip);
+    public function appendChild($html_snip)
+    {
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => $objElement) {
+                $this->lfSetTransform('appendChild', $objElement[0], $html_snip);
+            }
         }
+
         return $this;
     }
-
 
     /**
      * 要素を指定したHTMLに置換
      *
-     * @param string $html_snip 置換後のHTMLの断片
-     * @return SC_Helper_Transformオブジェクト
+     * @param  string                                $html_snip 置換後のHTMLの断片
+     * @return SC_Helper_Transform
      */
-    public function replaceElement($html_snip) {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
-            $this->lfSetTransform('replaceElement', $objElement[0], $html_snip);
+    public function replaceElement($html_snip)
+    {
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
+                $this->lfSetTransform('replaceElement', $objElement[0], $html_snip);
+            }
         }
+
         return $this;
     }
-
 
     /**
      * 要素を削除する
      *
-     * @return SC_Helper_Transformオブジェクト
+     * @return SC_Helper_Transform
      */
-    public function removeElement() {
-        foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
-            $this->lfSetTransform('replaceElement', $objElement[0], '');
+    public function removeElement()
+    {
+        if (isset($this->arrSelectElements[$this->search_depth])) {
+            foreach ($this->arrSelectElements[$this->search_depth] as $key => &$objElement) {
+                $this->lfSetTransform('replaceElement', $objElement[0], '');
+            }
         }
+
         return $this;
     }
-
 
     /**
      * HTMLに戻して、Transform用に付けたマーカーを削除し、Smartyのタグを復元する
      *
      * @return string トランスフォーム済みHTML。まったくトランスフォームが行われなかった場合は元のHTMLを返す。。
      */
-    public function getHTML() {
+    public function getHTML()
+    {
         if (count($this->arrErr)) {
             // エラーメッセージ組み立て
             $err_msg = '';
@@ -340,41 +359,41 @@ class SC_Helper_Transform {
             );
             $html = $this->header_source.$html.$this->footer_source;
             $html = str_replace($this->arrSmartyTagsSub, $this->arrSmartyTagsOrg, $html);
+
             return $html;
         } else {
             return $this->html_source;
         }
     }
 
-
-
-
     /**
      * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
      *
      * コメント形式への置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
-    protected function lfCaptureSmartyTags2Comment(array $arrMatches) {
+    protected function lfCaptureSmartyTags2Comment(array $arrMatches)
+    {
         $substitute_tag = sprintf('<!--###%08d###-->', $this->smarty_tags_idx);
         $this->arrSmartyTagsOrg[$this->smarty_tags_idx] = $arrMatches[0];
         $this->arrSmartyTagsSub[$this->smarty_tags_idx] = $substitute_tag;
         $this->smarty_tags_idx++;
+
         return $substitute_tag;
     }
-
 
     /**
      * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
      *
      * コメント形式への置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
-    protected function lfCaptureHeadTags2Comment(array $arrMatches) {
+    protected function lfCaptureHeadTags2Comment(array $arrMatches)
+    {
         $substitute_tag = sprintf('<!--###%08d###-->', $this->smarty_tags_idx);
         $this->arrSmartyTagsOrg[$this->smarty_tags_idx] = $arrMatches[2];
         $this->arrSmartyTagsSub[$this->smarty_tags_idx] = $substitute_tag;
@@ -382,96 +401,100 @@ class SC_Helper_Transform {
 
         // 文字化け防止用のMETAを入れておく
         $content_type_tag = '<!--TemplateTransformerSnip start-->';
-        $content_type_tag .= '<meta http-equiv="content-type" content="text/html; charset=UTF-8" />'; 
+        $content_type_tag .= '<meta http-equiv="content-type" content="text/html; charset=UTF-8" />';
         $content_type_tag .= '<!--TemplateTransformerSnip end-->';
 
         return $arrMatches[1].$content_type_tag.$substitute_tag.$arrMatches[3];
     }
-
 
     /**
      * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
      *
      * HTMLエレメント内部の処理
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
-    protected function lfCaptureSmartyTagsInTag(array $arrMatches) {
+    protected function lfCaptureSmartyTagsInTag(array $arrMatches)
+    {
         // Smartyタグ内のクォートを処理しやすいよう、いったんダミーのタグに
         $html = preg_replace_callback('/<\!--{.+?\}-->/s', array($this, 'lfCaptureSmartyTags2Temptag'), $arrMatches[0]);
         $html = preg_replace_callback('/\"[^"]*?\"/s', array($this, 'lfCaptureSmartyTagsInQuote'), $html);
         $html = preg_replace_callback('/###TEMP(\d{8})###/s', array($this, 'lfCaptureSmartyTags2Attr'), $html);
+
         return $html;
     }
-
 
     /**
      * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
      *
      * ダミーへの置換実行
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
-    protected function lfCaptureSmartyTags2Temptag(array $arrMatches) {
+    protected function lfCaptureSmartyTags2Temptag(array $arrMatches)
+    {
         $substitute_tag = sprintf('###TEMP%08d###', $this->smarty_tags_idx);
         $this->arrSmartyTagsOrg[$this->smarty_tags_idx] = $arrMatches[0];
         $this->arrSmartyTagsSub[$this->smarty_tags_idx] = $substitute_tag;
         $this->smarty_tags_idx++;
+
         return $substitute_tag;
     }
-
 
     /**
      * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
      *
      * クォート内（＝属性値）内にあるSmartyタグ（ダミーに置換済み）を、テキストに置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
-    protected function lfCaptureSmartyTagsInQuote(array $arrMatches) {
+    protected function lfCaptureSmartyTagsInQuote(array $arrMatches)
+    {
         $html = preg_replace_callback(
             '/###TEMP(\d{8})###/s',
             array($this, 'lfCaptureSmartyTags2Value'),
             $arrMatches[0]
         );
+
         return $html;
     }
-
 
     /**
      * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
      *
      * テキストへの置換実行
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
-    protected function lfCaptureSmartyTags2Value(array $arrMatches) {
-        $tag_idx = (int)$arrMatches[1];
+    protected function lfCaptureSmartyTags2Value(array $arrMatches)
+    {
+        $tag_idx = (int) $arrMatches[1];
         $substitute_tag = sprintf('###%08d###', $tag_idx);
         $this->arrSmartyTagsSub[$tag_idx] = $substitute_tag;
+
         return $substitute_tag;
     }
-
 
     /**
      * DOMの処理の邪魔になるSmartyのタグを代理文字に置換する preg_replace_callback のコールバック関数
      *
      * エレメント内部にあって、属性値ではないものを、ダミーの属性として置換
      *
-     * @param array $arrMatches マッチしたタグの情報
+     * @param  array  $arrMatches マッチしたタグの情報
      * @return string 代わりの文字列
      */
-    protected function lfCaptureSmartyTags2Attr(array $arrMatches) {
-        $tag_idx = (int)$arrMatches[1];
+    protected function lfCaptureSmartyTags2Attr(array $arrMatches)
+    {
+        $tag_idx = (int) $arrMatches[1];
         $substitute_tag = sprintf('rel%08d="######"', $tag_idx);
         $this->arrSmartyTagsSub[$tag_idx] = $substitute_tag;
+
         return ' '.$substitute_tag.' '; // 属性はパース時にスペースが詰まるので、こちらにはスペースを入れておく
     }
-
 
     /**
      * DOM Element / Document を走査し、name、class別に分類する
@@ -479,7 +502,8 @@ class SC_Helper_Transform {
      * @param  DOMNode $objDOMElement DOMNodeオブジェクト
      * @return void
      */
-    protected function lfScanChild(DOMNode $objDOMElement, $parent_selector = '') {
+    protected function lfScanChild(DOMNode $objDOMElement, $parent_selector = '')
+    {
         $objNodeList = $objDOMElement->childNodes;
         if (is_null($objNodeList)) return;
 
@@ -507,15 +531,15 @@ class SC_Helper_Transform {
         }
     }
 
-
     /**
      * セレクタ文字列をツリー検索用の正規表現に変換する
      *
-     * @param string $selector      セレクタ
-     * @param string $parent_index  セレクタ検索時の親要素の位置（子孫要素検索のため）
+     * @param  string $selector     セレクタ
+     * @param  string $parent_index セレクタ検索時の親要素の位置（子孫要素検索のため）
      * @return string 正規表現文字列
      */
-    protected function lfSelector2Regex($selector, $parent_index = NULL){
+    protected function lfSelector2Regex($selector, $parent_index = NULL)
+    {
         // jQueryライクなセレクタを正規表現に
         $selector = preg_replace('/ *> */', ' >', $selector);   // 子セレクタをツリー検索用に 「A >B」の記法にする
         $regex = '/';
@@ -542,34 +566,32 @@ class SC_Helper_Transform {
         return $regex;
     }
 
-
     /**
      * 見つかった要素をプロパティに登録
      *
-     * @param integer $elementNo  エレメントのインデックス
-     * @param array   $arrElement インデックスとDOMオブジェクトをペアとした配列
+     * @param  integer $elementNo  エレメントのインデックス
+     * @param  array   $arrElement インデックスとDOMオブジェクトをペアとした配列
      * @return void
      */
-    protected function lfAddElement($elementNo, array &$arrElement) {
+    protected function lfAddElement($elementNo, array &$arrElement)
+    {
         if (is_array($this->arrSelectElements[$this->search_depth]) && array_key_exists($arrElement[0], $this->arrSelectElements[$this->search_depth])) {
             //nop
         } else {
             $this->arrSelectElements[$this->search_depth][$arrElement[0]] = array($elementNo, &$arrElement[1]);
         }
-
     }
-
 
     /**
      * DOMを用いた変形を実行する
      *
-     * @param string $mode       実行するメソッドの種類
-     * @param string $target_key 対象のエレメントの完全なセレクタ
-     * @param string $html_snip  HTMLコード
+     * @param  string  $mode       実行するメソッドの種類
+     * @param  string  $target_key 対象のエレメントの完全なセレクタ
+     * @param  string  $html_snip  HTMLコード
      * @return boolean
      */
-    protected function lfSetTransform($mode, $target_key, $html_snip) {
-
+    protected function lfSetTransform($mode, $target_key, $html_snip)
+    {
         $substitute_tag = sprintf('<!--###%08d###-->', $this->smarty_tags_idx);
         $this->arrSmartyTagsOrg[$this->smarty_tags_idx] = $html_snip;
         $this->arrSmartyTagsSub[$this->smarty_tags_idx] = $substitute_tag;
@@ -617,24 +639,23 @@ class SC_Helper_Transform {
                     break;
             }
             $this->snip_count++;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             SC_Utils_Ex::sfDispSiteError(FREE_ERROR_MSG, '', true, 'テンプレートの操作に失敗しました。');
         }
 
         return true;
     }
 
-
     /**
      * セレクタエラーを記録する
      *
-     * @param string  $selector    セレクタ
-     * @param integer $type        エラーの種類
-     * @param string  $err_msg     エラーメッセージ
+     * @param  string  $selector セレクタ
+     * @param  integer $type     エラーの種類
+     * @param  string  $err_msg  エラーメッセージ
      * @return void
      */
-    protected function lfSetError($selector, $type, $err_msg = NULL) {
+    protected function lfSetError($selector, $type, $err_msg = NULL)
+    {
         $this->arrErr[] = array(
             'selector'    => $selector,
             'type'        => $type,

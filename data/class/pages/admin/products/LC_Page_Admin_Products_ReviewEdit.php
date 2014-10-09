@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_Review.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_REALDIR . 'pages/admin/products/LC_Page_Admin_Products_Review
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'products/review_edit.tpl';
         $this->tpl_mainno = 'products';
@@ -61,7 +58,8 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -71,8 +69,9 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
+        $objReview = new SC_Helper_Review_Ex();
         // パラメーター情報の初期化
         $objFormParam = new SC_FormParam_Ex();
         $this->lfInitParam($objFormParam);
@@ -87,38 +86,31 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
             case 'complete':
                 $this->arrErr = $objFormParam->checkError();
                 // エラー無し
-                if (!SC_Utils_Ex::isBlank($this->arrErr)) {
+                if (SC_Utils_Ex::isBlank($this->arrErr)) {
                     // レビュー情報の更新
-                    $this->lfRegistReviewData($this->arrForm['review_id'], $objFormParam);
+                    $arrValues = $objFormParam->getDbArray();
+                    $objReview->save($arrValues);
                     // レビュー情報のDB取得
-                    $this->arrForm = $this->lfGetReviewData($this->arrForm['review_id']);
+                    $this->arrForm = $objReview->get($this->arrForm['review_id']);
                     $this->tpl_onload = "alert('登録が完了しました。');";
                 }
                 break;
             default:
                 // レビュー情報のDB取得
-                $this->arrForm = $this->lfGetReviewData($this->arrForm['review_id']);
+                $this->arrForm = $objReview->get($this->arrForm['review_id']);
                 break;
         }
 
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      * パラメーター情報の初期化を行う.
      *
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         // 検索条件のパラメーターを初期化
         parent::lfInitParam($objFormParam);
         $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -133,38 +125,5 @@ class LC_Page_Admin_Products_ReviewEdit extends LC_Page_Admin_Products_Review {
         $objFormParam->addParam('おすすめレベル', 'recommend_level', INT_LEN, 'n', array('SELECT_CHECK'));
         $objFormParam->addParam('タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('コメント', 'comment', LTEXT_LEN, 'KVa', array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
-    }
-
-    /**
-     * レビュー情報のDB取得
-     *
-     * @param integer $review_id レビューID
-     * @return array レビュー情報
-     */
-    function lfGetReviewData($review_id) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $select='review_id, A.product_id, reviewer_name, sex, recommend_level, ';
-        $select.='reviewer_url, title, comment, A.status, A.create_date, A.update_date, name';
-        $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';
-        $where = 'A.del_flg = 0 AND B.del_flg = 0 AND review_id = ? ';
-        $arrReview = $objQuery->select($select, $from, $where, array($review_id));
-        if (empty($arrReview)) {
-            SC_Utils_Ex::sfDispError('');
-        }
-        return $arrReview[0];
-    }
-
-    /**
-     * レビュー情報の更新
-     *
-     * @param integer $review_id レビューID
-     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
-     * @return void
-     */
-    function lfRegistReviewData($review_id, &$objFormParam) {
-        $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrValues = $objFormParam->getDbArray();
-        $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery->update('dtb_review', $arrValues, 'review_id = ?', array($review_id));
     }
 }

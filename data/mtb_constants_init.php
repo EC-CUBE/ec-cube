@@ -18,7 +18,7 @@ define('USER_TEMPLATE_REALDIR', USER_REALDIR . USER_PACKAGE_DIR);
 /** テンプレートファイル一時保存先 */
 define('TEMPLATE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_template/");
 /** ユーザー作成画面のデフォルトPHPファイル */
-define('USER_DEF_PHP_REALFILE', USER_REALDIR . "__default.php");
+define('USER_DEF_PHP_REALFILE', DATA_REALDIR . "__default.php");
 /** ダウンロードモジュール保存ディレクトリ */
 define('MODULE_DIR', "downloads/module/");
 /** ダウンロードモジュール保存ディレクトリ */
@@ -175,6 +175,8 @@ define('DEBUG_LOG_REALFILE', "");
 define('ERROR_LOG_REALFILE', DATA_REALDIR . "logs/error.log");
 /** DBログファイル */
 define('DB_LOG_REALFILE', DATA_REALDIR . "logs/db.log");
+/** プラグインログファイル */
+define('PLUGIN_LOG_REALFILE', DATA_REALDIR . "logs/plugin.log");
 /** 画像一時保存 */
 define('IMAGE_TEMP_REALDIR', HTML_REALDIR . "upload/temp_image/");
 /** 画像保存先 */
@@ -273,9 +275,9 @@ define('SHOPPING_URL', HTTPS_URL . "shopping/" . DIR_INDEX_PATH);
 /** 会員登録ページTOP */
 define('ENTRY_URL', HTTPS_URL . "entry/" . DIR_INDEX_PATH);
 /** サイトトップ */
-define('TOP_URLPATH', ROOT_URLPATH . DIR_INDEX_PATH);
+define('TOP_URL', HTTP_URL . DIR_INDEX_PATH);
 /** カートトップ */
-define('CART_URLPATH', ROOT_URLPATH . "cart/" . DIR_INDEX_PATH);
+define('CART_URL', HTTP_URL . "cart/" . DIR_INDEX_PATH);
 /** お届け先設定 */
 define('DELIV_URLPATH', ROOT_URLPATH . "shopping/deliv.php");
 /** 複数お届け先設定 */
@@ -404,7 +406,7 @@ define('DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR', DATA_REALDIR . "downloads/tmp/plugin
 define('PLUGIN_HTML_URLPATH', ROOT_URLPATH . "plugin/");
 /** 日数桁数 */
 define('DOWNLOAD_DAYS_LEN', 3);
-/** ダウンロードファイル登録可能拡張子(カンマ区切り)" */
+/** ダウンロードファイル登録可能拡張子(カンマ区切り) */
 define('DOWNLOAD_EXTENSION', "zip,lzh,jpg,jpeg,gif,png,mp3,pdf,csv");
 /** ダウンロード販売ファイル用サイズ制限(KB) */
 define('DOWN_SIZE', 50000);
@@ -468,3 +470,19 @@ define('SMARTY_FORCE_COMPILE_MODE', false);
 define('LOGIN_RETRY_INTERVAL', 0);
 /** MYページ：ご注文状況表示フラグ */
 define('MYPAGE_ORDER_STATUS_DISP_FLAG', true);
+/** デフォルト国コード ISO_3166-1に準拠 */
+define('DEFAULT_COUNTRY_ID', 392);
+/** ホスト名を正規化するか (true:する false:しない) */
+define('USE_NORMALIZE_HOSTNAME', true);
+/** 各種フォームで国の指定を有効にする(true:有効 false:無効) */
+define('FORM_COUNTRY_ENABLE', false);
+/** 商品ごとの税率設定(軽減税率対応 有効:1 無効:0) */
+define('OPTION_PRODUCT_TAX_RULE', 0);
+/** 複数箇所の税率設定時における優先度設定。カンマ区切りスペース不可で記述。後に書いてあるキーに一致するほど優先される。デフォルト：'product_id,product_class_id,pref_id,country_id'（国＞地域（県）＞規格単位＞商品単位） */
+define('TAX_RULE_PRIORITY', "product_id,product_class_id,pref_id,country_id");
+/** 決済処理中ステータスのロールバックを行う時間の設定(秒) */
+define('PENDING_ORDER_CANCEL_TIME', 900);
+/** 決済処理中ステータスのロールバックをするか(true:する false:しない) */
+define('PENDING_ORDER_CANCEL_FLAG', true);
+/** API機能を有効にする(true:する false:しない) */
+define('API_ENABLE_FLAG', false);

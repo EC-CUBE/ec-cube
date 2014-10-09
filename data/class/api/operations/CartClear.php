@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,8 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_CartClear extends SC_Api_Abstract_Ex {
-
+class API_CartClear extends SC_Api_Abstract_Ex
+{
     protected $operation_name = 'CartClear';
     protected $operation_description = 'カートのクリア';
     protected $default_auth_types = self::API_AUTH_TYPE_SESSION_TOKEN;
@@ -39,20 +39,25 @@ class API_CartClear extends SC_Api_Abstract_Ex {
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam) {
+    public function doAction($arrParam)
+    {
         $this->arrResponse = array(
             'Version' => ECCUBE_VERSION);
+
         return true;
     }
 
-    public function getRequestValidate() {
+    public function getRequestValidate()
+    {
         return;
     }
 
-    protected function lfInitParam(&$objFormParam) {
+    protected function lfInitParam(&$objFormParam)
+    {
     }
 
-    public function getResponseGroupName() {
+    public function getResponseGroupName()
+    {
         return 'VersionResponse';
     }
 }

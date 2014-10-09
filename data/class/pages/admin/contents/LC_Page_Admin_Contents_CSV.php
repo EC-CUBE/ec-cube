@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'contents/csv.tpl';
         $this->tpl_subno = 'csv';
@@ -60,7 +57,8 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -70,8 +68,8 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         // パラメーター管理クラス
         $objFormParam = new SC_FormParam_Ex();
         // パラメーター設定
@@ -113,10 +111,11 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
     /**
      * パラメーター情報の初期化
      *
-     * @param array $objFormParam フォームパラメータークラス
+     * @param  SC_FormParam_Ex $objFormParam フォームパラメータークラス
      * @return void
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('編集種別', 'tpl_subno_csv', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'), 'product');
         $objFormParam->addParam('出力設定リスト', 'output_list', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK', 'EXIST_CHECK'));
         //デフォルト値で上書き
@@ -126,15 +125,16 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
     /**
      * CSVカラム設定の読み込み
      *
-     * @param integer $csv_id CSV ID
-     * @param integer $csv_status_flg 読み込む対象のフラグ CSV_COLUMN_STATUS_FLG_ENABLE or ''
-     * @return array SwapArrayしたカラム設定
+     * @param  integer $csv_id         CSV ID
+     * @param  integer $csv_status_flg 読み込む対象のフラグ CSV_COLUMN_STATUS_FLG_ENABLE or ''
+     * @return integer   SwapArrayしたカラム設定
      */
-    function lfGetCSVColumn($csv_id, $csv_status_flg = '', $order ='rank, no') {
+    public function lfGetCSVColumn($csv_id, $csv_status_flg = '', $order ='rank, no')
+    {
         $objCSV = new SC_Helper_CSV_Ex();
         if (SC_Utils_Ex::sfIsInt($csv_id)) {
             if ($csv_status_flg !='') {
-                $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?' , array($csv_status_flg), $order);
+                $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?', array($csv_status_flg), $order);
             } else {
                 $arrData = $objCSV->sfGetCsvOutput($csv_id, '', array(), $order);
             }
@@ -142,88 +142,89 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
         } else {
             $arrData = array();
         }
+
         return $arrData;
     }
 
     /**
      * 選択済みカラム列情報を取得
      *
-     * @param integer $csv_id CSV ID
-     * @return array 選択済みカラム列情報
+     * @param  integer $csv_id CSV ID
+     * @return array   選択済みカラム列情報
      */
-    function lfGetSelected($csv_id) {
+    public function lfGetSelected($csv_id)
+    {
         $arrData = $this->lfGetCSVColumn($csv_id, CSV_COLUMN_STATUS_FLG_ENABLE);
         if (!isset($arrData['no'])) {
             $arrData['no'] = array();
         }
+
         return $arrData['no'];
     }
 
     /**
      * カラム列情報と表示名情報を取得
      *
-     * @param integer $csv_id CSV ID
-     * @return array 選択済みカラム列情報
+     * @param  integer $csv_id CSV ID
+     * @return array   選択済みカラム列情報
      */
-    function lfGetOptions($csv_id) {
+    public function lfGetOptions($csv_id)
+    {
         $arrData = $this->lfGetCSVColumn($csv_id);
         if (!isset($arrData['no'])) {
             $arrData['no'] = array();
             $arrData['disp_name'] = array();
         }
         $arrData = SC_Utils_Ex::sfArrCombine($arrData['no'], $arrData['disp_name']);
-        return $arrData;
-    }
 
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
+        return $arrData;
     }
 
     /**
      * CSV名からCSV_IDを取得する。
      *
-     * @param string $subno_csv CSV名
+     * @param  string  $subno_csv CSV名
      * @return integer CSV_ID
      */
-    function lfGetCsvId($subno_csv) {
+    public function lfGetCsvId($subno_csv)
+    {
         $objCSV = new SC_Helper_CSV_Ex();
-        $arrKey = array_keys($objCSV->arrSubnavi,$subno_csv);
+        $arrKey = array_keys($objCSV->arrSubnavi, $subno_csv);
         $csv_id = $arrKey[0];
         if (!SC_Utils_Ex::sfIsInt($csv_id)) {
             //初期値取りだし
             $arrKey = array_keys($objCSV->arrSubnavi);
             $csv_id = $arrKey[0];
         }
+
         return $csv_id;
     }
 
     /**
      * CSV出力項目設定を初期化する
      *
-     * @param integer $csv_id CSV_ID
+     * @param  integer $csv_id CSV_ID
      * @return boolean 成功:true
      */
-    function lfSetDefaultCsvOutput($csv_id) {
-        $arrData = $this->lfGetCSVColumn($csv_id, '', $order = 'no');
+    public function lfSetDefaultCsvOutput($csv_id)
+    {
+        $arrData = $this->lfGetCSVColumn($csv_id, '', 'no');
         if (!isset($arrData['no'])) {
             $arrData['no'] = array();
         }
+
         return $this->lfUpdCsvOutput($csv_id, $arrData['no']);
     }
 
     /**
      * CSV出力項目設定を更新する処理
      *
-     * @param integer $csv_id CSV_ID
-     * @param array $arrData 有効にするCSV列データ配列
+     * @param  integer $csv_id  CSV_ID
+     * @param  array   $arrData 有効にするCSV列データ配列
      * @return boolean 成功:true
      */
-    function lfUpdCsvOutput($csv_id, $arrData = array()) {
+    public function lfUpdCsvOutput($csv_id, $arrData = array())
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         // ひとまず、全部使用しないで更新する
         $table = 'dtb_csv';
@@ -244,6 +245,7 @@ class LC_Page_Admin_Contents_CSV extends LC_Page_Admin_Ex {
             }
         }
         $objQuery->commit();
+
         return true;
     }
 }

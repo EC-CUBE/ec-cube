@@ -38,7 +38,8 @@
  * @return string
  * @uses smarty_function_escape_special_chars()
  */
-function smarty_function_html_radios_ex($params, &$smarty) {
+function smarty_function_html_radios_ex($params, &$smarty)
+{
     require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
 
     $name = 'radio';
@@ -107,12 +108,9 @@ function smarty_function_html_radios_ex($params, &$smarty) {
     $_html_result = array();
 
     if (isset($options)) {
-
         foreach ($options as $_key=>$_val)
             $_html_result[] = smarty_function_html_radios_output_ex($name, $_key, $_val, $selected, $extra, $separator, $labels, $label_ids, $tags);
-
     } else {
-
         foreach ($values as $_i=>$_key) {
             $_val = isset($output[$_i]) ? $output[$_i] : '';
             $_html_result[] = smarty_function_html_radios_output_ex($name, $_key, $_val, $selected, $extra, $separator, $labels, $label_ids, $tags);
@@ -125,10 +123,18 @@ function smarty_function_html_radios_ex($params, &$smarty) {
     } else {
         return implode("\n",$_html_result);
     }
-
 }
 
-function smarty_function_html_radios_output_ex($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids, $tags) {
+/**
+ * @param string $name
+ * @param null|string $selected
+ * @param string $extra
+ * @param string $separator
+ * @param boolean $labels
+ * @param boolean $label_ids
+ */
+function smarty_function_html_radios_output_ex($name, $value, $output, $selected, $extra, $separator, $labels, $label_ids, $tags)
+{
     $_output = '';
 
     $_output .= '<input type="radio" name="'

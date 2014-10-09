@@ -5,7 +5,7 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -31,23 +31,27 @@ require_once($HOME . "/tests/class/Common_TestCase.php");
  * @author Hiroko Tamagawa
  * @version $Id$
  */
-class SC_Utils_sfCopyDirTest extends Common_TestCase {
+class SC_Utils_sfCopyDirTest extends Common_TestCase
+{
 
   static $TMP_DIR;
 
-  protected function setUp() {
+  protected function setUp()
+  {
     // parent::setUp();
     self::$TMP_DIR = realpath(dirname(__FILE__)) . "/../../../tmp";
     SC_Helper_FileManager::deleteFile(self::$TMP_DIR);
     mkdir(self::$TMP_DIR, 0777, true);
   }
 
-  protected function tearDown() {
+  protected function tearDown()
+  {
     // parent::tearDown();
   }
 
   /////////////////////////////////////////
-  public function testSfCopyDir_ディレクトリでない場合_falseを返し何もしない() {
+  public function testSfCopyDir_ディレクトリでない場合_falseを返し何もしない()
+  {
     mkdir(self::$TMP_DIR . "/src", 0777, true);
     $fp = fopen(self::$TMP_DIR . "/src/test.txt", "w");
     fwrite($fp, "hello");
@@ -66,7 +70,8 @@ class SC_Utils_sfCopyDirTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCopyDir_コピー先のディレクトリが存在しない場合_新たに作成する() {
+  public function testSfCopyDir_コピー先のディレクトリが存在しない場合_新たに作成する()
+  {
     mkdir(self::$TMP_DIR . "/src", 0777, true);
     $fp = fopen(self::$TMP_DIR . "/src/test.txt", "w");
     fwrite($fp, "hello");
@@ -88,7 +93,8 @@ class SC_Utils_sfCopyDirTest extends Common_TestCase {
 
   // TODO CVS以下のEntriesなどはコピーされないが、CVSという親ディレクトリはコピーされてしまう。
   // そもそも、CVSだけ特別扱いする意味がないような…
-  public function testSfCopyDir_コピー先のディレクトリが存在する場合_そのままコピーする() {
+  public function testSfCopyDir_コピー先のディレクトリが存在する場合_そのままコピーする()
+  {
     mkdir(self::$TMP_DIR . "/src", 0777, true);
     mkdir(self::$TMP_DIR . "/dst", 0777, true); // コピー先も作成しておく
     $fp = fopen(self::$TMP_DIR . "/src/test.txt", "w");
@@ -129,7 +135,8 @@ class SC_Utils_sfCopyDirTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCopyDir_上書きフラグがONの場合_同名ファイルが上書きされる() {
+  public function testSfCopyDir_上書きフラグがONの場合_同名ファイルが上書きされる()
+  {
     mkdir(self::$TMP_DIR . "/src", 0777, true);
     mkdir(self::$TMP_DIR . "/dst", 0777, true); // コピー先も作成しておく
     $fp = fopen(self::$TMP_DIR . "/src/test.txt", "w");
@@ -158,7 +165,8 @@ class SC_Utils_sfCopyDirTest extends Common_TestCase {
     $this->verify();
   }
 
-  public function testSfCopyDir_上書きフラグがONかつ書き込み権限がない場合_同名ファイルが上書きされない() {
+  public function testSfCopyDir_上書きフラグがONかつ書き込み権限がない場合_同名ファイルが上書きされない()
+  {
     mkdir(self::$TMP_DIR . "/src", 0777, true);
     mkdir(self::$TMP_DIR . "/dst", 0777, true); // コピー先も作成しておく
     $fp = fopen(self::$TMP_DIR . "/src/test.txt", "w");
@@ -191,6 +199,5 @@ class SC_Utils_sfCopyDirTest extends Common_TestCase {
   }
 
   //////////////////////////////////////////
-
 }
 

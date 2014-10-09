@@ -1,7 +1,7 @@
 <!--{*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -32,16 +32,9 @@
     <hr>
     <div id="completetext">
         <p>今後ともご愛顧賜りますよう、よろしくお願い申し上げます。</p>
-        <a rel="external" class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URLPATH}-->">トップページへ</a>
+        <a rel="external" class="btn_s btn_sub" href="<!--{$smarty.const.TOP_URL}-->">トップページへ</a>
     </div>
 </section>
 
-<!--▼検索バー -->
-<section id="search_area">
-    <form method="get" action="<!--{$smarty.const.ROOT_URLPATH}-->products/list.php">
-        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-        <input type="hidden" name="mode" value="search" />
-        <input type="search" name="name" id="search" value="" placeholder="キーワードを入力" class="searchbox" >
-    </form>
-</section>
-<!--▲検索バー -->
+<!--{include file= 'frontparts/search_area.tpl'}-->
+

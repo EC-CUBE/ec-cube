@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,8 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_AddrFromZip extends SC_Api_Abstract_Ex {
-
+class API_AddrFromZip extends SC_Api_Abstract_Ex
+{
     protected $operation_name = 'AddrFromZip';
     protected $operation_description = '郵便番号から住所を検索します。';
     protected $default_auth_types = self::API_AUTH_TYPE_REFERER;
@@ -39,7 +39,8 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex {
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam) {
+    public function doAction($arrParam)
+    {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
             $zipcode = $arrRequest['zip1'] . $arrRequest['zip2'];
@@ -51,18 +52,22 @@ class API_AddrFromZip extends SC_Api_Abstract_Ex {
                             'Town' => $arrAddrList[0]['town'],
                         )
                     );
+
                 return true;
             }
         }
+
         return false;
     }
 
-    protected function lfInitParam(&$objFormParam) {
+    protected function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('郵便番号1', 'zip1', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('郵便番号2', 'zip2', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    public function getResponseGroupName() {
+    public function getResponseGroupName()
+    {
         return 'AddressResponse';
     }
 }

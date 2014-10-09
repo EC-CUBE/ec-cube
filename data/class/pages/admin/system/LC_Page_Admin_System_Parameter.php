@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,28 +30,24 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
-
-    // {{{ properties
-
+class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex
+{
     /** 定数キーとなる配列 */
-    var $arrKeys;
+    public $arrKeys;
 
     /** 定数コメントとなる配列 */
-    var $arrComments;
+    public $arrComments;
 
     /** 定数値となる配列 */
-    var $arrValues;
-
-    // }}}
-    // {{{ functions
+    public $arrValues;
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'system/parameter.tpl';
         $this->tpl_subno = 'parameter';
@@ -66,7 +61,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -76,8 +72,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $masterData = new SC_DB_MasterData_Ex();
 
         // キーの配列を生成
@@ -110,16 +106,6 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
         // コメント, 値の配列を生成
         $this->arrComments = SC_Utils_Ex::getHash2Array($masterData->getDBMasterData('mtb_constants',
                                                         array('id', 'remarks', 'rank')));
-
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 
     /**
@@ -130,7 +116,8 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * @access private
      * @return void
      */
-    function update(&$arrKeys, &$arrForm) {
+    public function update(&$arrKeys, &$arrForm)
+    {
         $data = array();
         $masterData = new SC_DB_MasterData_Ex();
         foreach ($arrKeys as $key) {
@@ -148,16 +135,18 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * エラーチェックを行う.
      *
      * @access private
-     * @param array $arrForm $_POST 値
+     * @param  array $arrForm $_POST 値
      * @return void
      */
-    function errorCheck(&$arrKeys, &$arrForm) {
+    public function errorCheck(&$arrKeys, &$arrForm)
+    {
         $objErr = new SC_CheckError_Ex($arrForm);
         for ($i = 0; $i < count($arrKeys); $i++) {
             $objErr->doFunc(array($arrKeys[$i],
                                   $arrForm[$arrKeys[$i]]),
                             array('EXIST_CHECK_REVERSE', 'EVAL_CHECK'));
         }
+
         return $objErr->arrErr;
     }
 
@@ -165,15 +154,18 @@ class LC_Page_Admin_System_Parameter extends LC_Page_Admin_Ex {
      * パラメーターのキーを配列で返す.
      *
      * @access private
+     * @param SC_DB_MasterData_Ex $masterData
      * @return array パラメーターのキーの配列
      */
-    function getParamKeys(&$masterData) {
+    public function getParamKeys(&$masterData)
+    {
         $keys = array();
         $i = 0;
         foreach ($masterData->getDBMasterData('mtb_constants') as $key => $val) {
             $keys[$i] = $key;
             $i++;
         }
+
         return $keys;
     }
 }

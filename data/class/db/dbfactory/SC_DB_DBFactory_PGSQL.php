@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -32,18 +32,20 @@
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_DBFactory_PGSQL.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
-
+class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory
+{
     /**
      * DBのバージョンを取得する.
      *
-     * @param string $dsn データソース名
+     * @param  string $dsn データソース名
      * @return string データベースのバージョン
      */
-    function sfGetDBVersion($dsn = '') {
+    public function sfGetDBVersion($dsn = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance($dsn);
         $val = $objQuery->getOne('select version()');
-        $arrLine = explode(' ' , $val);
+        $arrLine = explode(' ', $val);
+
         return $arrLine[0] . ' ' . str_replace(',', '', $arrLine[1]);
     }
 
@@ -53,20 +55,22 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      * DB_TYPE が PostgreSQL の場合は何もしない
      *
      * @access private
-     * @param string $sql SQL 文
+     * @param  string $sql SQL 文
      * @return string MySQL 用に置換した SQL 文
      */
-    function sfChangeMySQL($sql) {
+    public function sfChangeMySQL($sql)
+    {
         return $sql;
     }
 
     /**
      * 昨日の売上高・売上件数を算出する SQL を返す.
      *
-     * @param string $method SUM または COUNT
+     * @param  string $method SUM または COUNT
      * @return string 昨日の売上高・売上件数を算出する SQL
      */
-    function getOrderYesterdaySql($method) {
+    public function getOrderYesterdaySql($method)
+    {
         return 'SELECT '.$method.'(total) FROM dtb_order '
                . 'WHERE del_flg = 0 '
                . "AND to_char(create_date,'YYYY/MM/DD') = to_char(CURRENT_TIMESTAMP - interval '1 days','YYYY/MM/DD') "
@@ -76,10 +80,11 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
     /**
      * 当月の売上高・売上件数を算出する SQL を返す.
      *
-     * @param string $method SUM または COUNT
+     * @param  string $method SUM または COUNT
      * @return string 当月の売上高・売上件数を算出する SQL
      */
-    function getOrderMonthSql($method) {
+    public function getOrderMonthSql($method)
+    {
         return 'SELECT '.$method.'(total) FROM dtb_order '
                . 'WHERE del_flg = 0 '
                . "AND to_char(create_date,'YYYY/MM') = ? "
@@ -92,7 +97,8 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      *
      * @return string 昨日のレビュー書き込み件数を算出する SQL
      */
-    function getReviewYesterdaySql() {
+    public function getReviewYesterdaySql()
+    {
         return 'SELECT COUNT(*) FROM dtb_review AS A '
                . 'LEFT JOIN dtb_products AS B '
                . 'ON A.product_id = B.product_id '
@@ -107,17 +113,19 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
      *
      * @return string 検索条件の SQL
      */
-    function getSendHistoryWhereStartdateSql() {
+    public function getSendHistoryWhereStartdateSql()
+    {
         return "start_date BETWEEN current_timestamp + '- 5 minutes' AND current_timestamp + '5 minutes'";
     }
 
     /**
      * ダウンロード販売の検索条件の SQL を返す.
      *
-     * @param string $dtb_order_alias
+     * @param  string $dtb_order_alias
      * @return string 検索条件の SQL
      */
-    function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order') {
+    public function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order')
+    {
         $baseinfo = SC_Helper_DB_Ex::sfGetBasisData();
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
@@ -135,19 +143,21 @@ class SC_DB_DBFactory_PGSQL extends SC_DB_DBFactory {
                     END
             )
 __EOS__;
+
         return $sql;
     }
 
     /**
      * 売上集計の期間別集計のSQLを返す
      *
-     * @param mixed $type
+     * @param  mixed  $type
      * @return string 検索条件のSQL
      */
-    function getOrderTotalDaysWhereSql($type) {
+    public function getOrderTotalDaysWhereSql($type)
+    {
         switch ($type) {
             case 'month':
-                $format = 'MM';
+                $format = 'YYYY-MM';
                 break;
             case 'year':
                 $format = 'YYYY';
@@ -180,17 +190,19 @@ __EOS__;
      *
      * @return string 年代抽出部分の SQL
      */
-    function getOrderTotalAgeColSql() {
+    public function getOrderTotalAgeColSql()
+    {
         return 'TRUNC(CAST(EXTRACT(YEAR FROM AGE(create_date, order_birth)) AS INT), -1)';
     }
 
     /**
      * 文字列連結を行う.
      *
-     * @param array $columns 連結を行うカラム名
+     * @param  string[]  $columns 連結を行うカラム名
      * @return string 連結後の SQL 文
      */
-    function concatColumn($columns) {
+    public function concatColumn($columns)
+    {
         $sql = '';
         $i = 0;
         $total = count($columns);
@@ -201,6 +213,7 @@ __EOS__;
             }
             $i++;
         }
+
         return $sql;
     }
 
@@ -210,10 +223,11 @@ __EOS__;
      * 引数に部分一致するテーブル名を配列で返す.
      *
      * @deprecated SC_Query::listTables() を使用してください
-     * @param string $expression 検索文字列
-     * @return array テーブル名の配列
+     * @param  string $expression 検索文字列
+     * @return array  テーブル名の配列
      */
-    function findTableNames($expression = '') {
+    public function findTableNames($expression = '')
+    {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $sql = '   SELECT c.relname AS name, '
             .  '     CASE c.relkind '
@@ -229,6 +243,7 @@ __EOS__;
             .  ' ORDER BY 1,2;';
         $arrColList = $objQuery->getAll($sql, array('%' . $expression . '%'));
         $arrColList = SC_Utils_Ex::sfSwapArray($arrColList, false);
+
         return $arrColList[0];
     }
 
@@ -237,7 +252,8 @@ __EOS__;
      *
      * @return array 文字コード情報
      */
-    function getCharSet() {
+    public function getCharSet()
+    {
         // 未実装
         return array();
     }
@@ -247,7 +263,8 @@ __EOS__;
      *
      * @return string
      */
-    function getDummyFromClauseSql() {
+    public function getDummyFromClauseSql()
+    {
         return '';
     }
 
@@ -257,10 +274,57 @@ __EOS__;
      * MDB2_Driver_Manager_pgsql#listTables の不具合回避を目的として独自実装している。
      * @return array テーブル名の配列
      */
-    function listTables(SC_Query &$objQuery) {
+    public function listTables(SC_Query &$objQuery)
+    {
         $col = 'tablename';
         $from = 'pg_tables';
         $where = "schemaname NOT IN ('pg_catalog', 'information_schema', 'sys')";
+
         return $objQuery->getCol($col, $from, $where);
+    }
+
+    /**
+     * 商品詳細の SQL を取得する.
+     *
+     * PostgreSQL 用にチューニング。
+     * @param  string $where_products_class 商品規格情報の WHERE 句
+     * @return string 商品詳細の SQL
+     */
+    public function alldtlSQL($where_products_class = '')
+    {
+        if (!SC_Utils_Ex::isBlank($where_products_class)) {
+            $where_products_class = 'AND (' . $where_products_class . ')';
+        }
+        /*
+         * point_rate, deliv_fee は商品規格(dtb_products_class)ごとに保持しているが,
+         * 商品(dtb_products)ごとの設定なので MAX のみを取得する.
+         */
+        $sub_base = "FROM dtb_products_class WHERE del_flg = 0 AND product_id = dtb_products.product_id $where_products_class";
+        $sql = <<< __EOS__
+            (
+                SELECT
+                     dtb_products.*
+                    ,dtb_maker.name AS maker_name
+                    ,(SELECT MIN(product_code) $sub_base) AS product_code_min
+                    ,(SELECT MAX(product_code) $sub_base) AS product_code_max
+                    ,(SELECT MIN(price01) $sub_base) AS price01_min
+                    ,(SELECT MAX(price01) $sub_base) AS price01_max
+                    ,(SELECT MIN(price02) $sub_base) AS price02_min
+                    ,(SELECT MAX(price02) $sub_base) AS price02_max
+                    ,(SELECT MIN(stock) $sub_base) AS stock_min
+                    ,(SELECT MAX(stock) $sub_base) AS stock_max
+                    ,(SELECT MIN(stock_unlimited) $sub_base) AS stock_unlimited_min
+                    ,(SELECT MAX(stock_unlimited) $sub_base) AS stock_unlimited_max
+                    ,(SELECT MAX(point_rate) $sub_base) AS point_rate
+                    ,(SELECT MAX(deliv_fee) $sub_base) AS deliv_fee
+                    ,(SELECT COUNT(*) $sub_base) AS class_count
+                FROM dtb_products
+                    LEFT JOIN dtb_maker
+                        ON dtb_products.maker_id = dtb_maker.maker_id
+                WHERE EXISTS(SELECT * $sub_base)
+            ) AS alldtl
+__EOS__;
+
+        return $sql;
     }
 }

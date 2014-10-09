@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,7 +22,7 @@
  */
 *}-->
 
-<!--{if $objSiteInfo->data.latitude && $objSiteInfo->data.longitude}-->
+<!--{if $arrSiteInfo.latitude && $arrSiteInfo.longitude}-->
     <script type="text/javascript">//<![CDATA[
         $(function() {
             $("#maps").css({
@@ -32,8 +32,8 @@
                 'width': '98%',
                 'height': '300px'
             });
-            var lat = <!--{$objSiteInfo->data.latitude}-->
-            var lng = <!--{$objSiteInfo->data.longitude}-->
+            var lat = <!--{$arrSiteInfo.latitude}-->
+            var lng = <!--{$arrSiteInfo.longitude}-->
             if (lat && lng) {
                 var latlng = new google.maps.LatLng(lat, lng);
                 var mapOptions = {
@@ -57,66 +57,66 @@
         <table summary="当サイトについて">
             <col width="20%" />
             <col width="80%" />
-            <!--{if strlen($objSiteInfo->data.shop_name)}-->
+            <!--{if strlen($arrSiteInfo.shop_name)}-->
                 <tr>
                     <th>店名</th>
-                    <td><!--{$objSiteInfo->data.shop_name|h}--></td>
+                    <td><!--{$arrSiteInfo.shop_name|h}--></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.company_name)}-->
+            <!--{if strlen($arrSiteInfo.company_name)}-->
                 <tr>
                     <th>会社名</th>
-                    <td><!--{$objSiteInfo->data.company_name|h}--></td>
+                    <td><!--{$arrSiteInfo.company_name|h}--></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.zip01)}-->
+            <!--{if strlen($arrSiteInfo.zip01)}-->
                 <tr>
                     <th>所在地</th>
-                    <td>〒<!--{$objSiteInfo->data.zip01|h}-->-<!--{$objSiteInfo->data.zip02|h}--><br /><!--{$objSiteInfo->data.pref|h}--><!--{$objSiteInfo->data.addr01|h}--><!--{$objSiteInfo->data.addr02|h}--></td>
+                    <td>〒<!--{$arrSiteInfo.zip01|h}-->-<!--{$arrSiteInfo.zip02|h}--><br /><!--{$arrPref[$arrSiteInfo.pref]|h}--><!--{$arrSiteInfo.addr01|h}--><!--{$arrSiteInfo.addr02|h}--></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.tel01)}-->
+            <!--{if strlen($arrSiteInfo.tel01)}-->
                 <tr>
                     <th>電話番号</th>
-                    <td><!--{$objSiteInfo->data.tel01|h}-->-<!--{$objSiteInfo->data.tel02|h}-->-<!--{$objSiteInfo->data.tel03|h}--></td>
+                    <td><!--{$arrSiteInfo.tel01|h}-->-<!--{$arrSiteInfo.tel02|h}-->-<!--{$arrSiteInfo.tel03|h}--></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.fax01)}-->
+            <!--{if strlen($arrSiteInfo.fax01)}-->
                 <tr>
                     <th>FAX番号</th>
-                    <td><!--{$objSiteInfo->data.fax01|h}-->-<!--{$objSiteInfo->data.fax02|h}-->-<!--{$objSiteInfo->data.fax03|h}--></td>
+                    <td><!--{$arrSiteInfo.fax01|h}-->-<!--{$arrSiteInfo.fax02|h}-->-<!--{$arrSiteInfo.fax03|h}--></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.email02)}-->
+            <!--{if strlen($arrSiteInfo.email02)}-->
                 <tr>
                     <th>メールアドレス</th>
-                    <td><a href="mailto:<!--{$objSiteInfo->data.email02|escape:'hex'}-->"><!--{$objSiteInfo->data.email02|escape:'hexentity'}--></a></td>
+                    <td><a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.business_hour)}-->
+            <!--{if strlen($arrSiteInfo.business_hour)}-->
                 <tr>
                     <th>営業時間</th>
-                    <td><!--{$objSiteInfo->data.business_hour|h}--></td>
+                    <td><!--{$arrSiteInfo.business_hour|h}--></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.good_traded)}-->
+            <!--{if strlen($arrSiteInfo.good_traded)}-->
                 <tr>
                     <th>取扱商品</th>
-                    <td><!--{$objSiteInfo->data.good_traded|h|nl2br}--></td>
+                    <td><!--{$arrSiteInfo.good_traded|h|nl2br}--></td>
                 </tr>
             <!--{/if}-->
 
-            <!--{if strlen($objSiteInfo->data.message)}-->
+            <!--{if strlen($arrSiteInfo.message)}-->
                 <tr>
                     <th>メッセージ</th>
-                    <td><!--{$objSiteInfo->data.message|h|nl2br}--></td>
+                    <td><!--{$arrSiteInfo.message|h|nl2br}--></td>
                 </tr>
             <!--{/if}-->
 

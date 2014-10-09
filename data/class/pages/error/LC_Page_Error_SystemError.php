@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
 
 /**
@@ -32,26 +31,24 @@ require_once CLASS_REALDIR . 'pages/error/LC_Page_Error.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Error_SystemError extends LC_Page_Error {
-
+class LC_Page_Error_SystemError extends LC_Page_Error
+{
     /** PEAR_Error */
-    var $pearResult;
+    public $pearResult;
 
     /** PEAR_Error がセットされていない場合用のバックトレーススタック */
-    var $backtrace;
+    public $backtrace;
 
     /** デバッグ用のメッセージ配列 */
-    var $arrDebugMsg = array();
-
-    // }}}
-    // {{{ functions
+    public $arrDebugMsg = array();
 
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_title = 'システムエラー';
     }
@@ -61,7 +58,8 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -71,7 +69,9 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      *
      * @return void
      */
-    function action() {
+    public function action()
+    {
+        SC_Response_Ex::sendHttpStatus(500);
 
         $this->tpl_error = 'システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。';
 
@@ -85,7 +85,6 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
             echo '</div>';
         }
 
-
     }
 
     /**
@@ -93,7 +92,8 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      *
      * @return void
      */
-    function sendResponse() {
+    public function sendResponse()
+    {
         $this->adminPage = GC_Utils_Ex::isAdminFunction();
 
         if ($this->adminPage) {
@@ -108,24 +108,17 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
+     * トランザクショントークンに関して処理しないようにオーバーライド
      */
-    function destroy() {
-        parent::destroy();
+    public function doValidToken()
+    {
     }
 
     /**
      * トランザクショントークンに関して処理しないようにオーバーライド
      */
-    function doValidToken() {
-    }
-
-    /**
-     * トランザクショントークンに関して処理しないようにオーバーライド
-     */
-    function setTokenTo() {
+    public function setTokenTo()
+    {
     }
 
     /**
@@ -133,7 +126,8 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      *
      * @return string
      */
-    function sfGetErrMsg() {
+    public function sfGetErrMsg()
+    {
         $errmsg = '';
         $errmsg .= $this->lfGetErrMsgHead();
         $errmsg .= "\n";
@@ -148,9 +142,8 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
             $errmsg .= $this->pearResult->message . "\n\n";
             $errmsg .= $this->pearResult->userinfo . "\n\n";
             $errmsg .= GC_Utils_Ex::toStringBacktrace($this->pearResult->backtrace);
-        }
         // (上に該当せず)バックトレーススタックが指定されている場合
-        else if (is_array($this->backtrace)) {
+        } else if (is_array($this->backtrace)) {
             $errmsg .= GC_Utils_Ex::toStringBacktrace($this->backtrace);
         } else {
             $arrBacktrace = GC_Utils_Ex::getDebugBacktrace();
@@ -165,7 +158,8 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
      *
      * @return string
      */
-    function lfGetErrMsgHead() {
+    public function lfGetErrMsgHead()
+    {
         $errmsg = '';
         $errmsg .= GC_Utils_Ex::getUrl() . "\n";
         $errmsg .= "\n";
@@ -179,9 +173,11 @@ class LC_Page_Error_SystemError extends LC_Page_Error {
     /**
      * デバッグ用のメッセージを追加
      *
+     * @param string $debugMsg
      * @return void
      */
-    function addDebugMsg($debugMsg) {
+    public function addDebugMsg($debugMsg)
+    {
         $this->arrDebugMsg[] = rtrim($debugMsg, "\n");
     }
 }

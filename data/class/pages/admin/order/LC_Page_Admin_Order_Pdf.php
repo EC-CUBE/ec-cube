@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
 
 /**
@@ -31,17 +30,15 @@ require_once CLASS_EX_REALDIR . 'page_extends/admin/LC_Page_Admin_Ex.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    public function init()
+    {
         parent::init();
         $this->tpl_mainpage = 'order/pdf_input.tpl';
         $this->tpl_mainno = 'order';
@@ -64,7 +61,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function process() {
+    public function process()
+    {
         $this->action();
         $this->sendResponse();
     }
@@ -74,8 +72,8 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      *
      * @return void
      */
-    function action() {
-
+    public function action()
+    {
         $objDb = new SC_Helper_DB_Ex();
         $objDate = new SC_Date_Ex(1901);
         $objDate->setStartYear(RELEASE_YEAR);
@@ -104,18 +102,18 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
                 }
                 break;
             default:
-                $this->arrForm = $this->createFromValues($_GET['order_id'],$_POST['pdf_order_id']);
+                $this->arrForm = $this->createFromValues($_GET['order_id'], $_POST['pdf_order_id']);
                 break;
         }
         $this->setTemplate($this->tpl_mainpage);
-
     }
 
     /**
      *
      * PDF作成フォームのデフォルト値の生成
      */
-    function createFromValues($order_id,$pdf_order_id) {
+    public function createFromValues($order_id, $pdf_order_id)
+    {
         // ここが$arrFormの初登場ということを明示するため宣言する。
         $arrForm = array();
         // タイトルをセット
@@ -149,10 +147,13 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
      * PDFの作成
      * @param SC_FormParam $objFormParam
      */
-    function createPdf(&$objFormParam) {
-
+    public function createPdf(&$objFormParam)
+    {
         $arrErr = $this->lfCheckError($objFormParam);
         $arrRet = $objFormParam->getHashArray();
+
+    //タイトルが入力されていなければ、デフォルトのタイトルを表示
+    if($arrRet['title'] == '') $arrRet['title'] = 'お買上げ明細書(納品書)';
 
         $this->arrForm = $arrRet;
         // エラー入力なし
@@ -164,6 +165,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
                 $objFpdf->setData($arrPdfData);
             }
             $objFpdf->createPdf();
+
             return true;
         } else {
             return $arrErr;
@@ -171,19 +173,12 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
     }
 
     /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
-    }
-
-    /**
      *  パラメーター情報の初期化
      *  @param SC_FormParam
+     * @param SC_FormParam_Ex $objFormParam
      */
-    function lfInitParam(&$objFormParam) {
+    public function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('注文番号', 'order_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('注文番号', 'pdf_order_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('発行日', 'year', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
@@ -191,7 +186,7 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $objFormParam->addParam('発行日', 'day', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('帳票の種類', 'type', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('ダウンロード方法', 'download', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('帳票タイトル', 'title', STEXT_LEN, 'KVa', array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('帳票タイトル', 'title', STEXT_LEN, 'KVa', array ('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('帳票メッセージ1行目', 'msg1', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('帳票メッセージ2行目', 'msg2', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
         $objFormParam->addParam('帳票メッセージ3行目', 'msg3', STEXT_LEN*3/5, 'KVa', array('MAX_LENGTH_CHECK'));
@@ -204,12 +199,15 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
     /**
      *  入力内容のチェック
      *  @var SC_FormParam
+     * @param SC_FormParam $objFormParam
      */
 
-    function lfCheckError(&$objFormParam) {
+    public function lfCheckError(&$objFormParam)
+    {
         // 入力データを渡す。
-        $arrRet = $objFormParam->getHashArray();
+        $arrParams = $objFormParam->getHashArray();
         $arrErr = $objFormParam->checkError();
+        $objError = new SC_CheckError_Ex($arrParams);
 
         $year = $objFormParam->getValue('year');
         if (!is_numeric($year)) {
@@ -219,20 +217,20 @@ class LC_Page_Admin_Order_Pdf extends LC_Page_Admin_Ex {
         $month = $objFormParam->getValue('month');
         if (!is_numeric($month)) {
             $arrErr['month'] = '発行月は数値で入力してください。';
-        } else if (0 >= $month && 12 < $month) {
-
+        } elseif (0 >= $month && 12 < $month) {
             $arrErr['month'] = '発行月は1〜12の間で入力してください。';
         }
 
         $day = $objFormParam->getValue('day');
         if (!is_numeric($day)) {
             $arrErr['day'] = '発行日は数値で入力してください。';
-        } else if (0 >= $day && 31 < $day) {
-
+        } elseif (0 >= $day && 31 < $day) {
             $arrErr['day'] = '発行日は1〜31の間で入力してください。';
         }
 
+        $objError->doFunc(array('発行日', 'year', 'month', 'day'), array('CHECK_DATE'));
+        $arrErr = array_merge($arrErr, $objError->arrErr);
+
         return $arrErr;
     }
-
 }

@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once CLASS_REALDIR . 'pages/api/LC_Page_Api_Xml.php';
 
 /**
@@ -33,17 +32,15 @@ require_once CLASS_REALDIR . 'pages/api/LC_Page_Api_Xml.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Api_Xml_Ex extends LC_Page_Api_Xml {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Api_Xml_Ex extends LC_Page_Api_Xml
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {
+    function init()
+    {
         parent::init();
     }
 
@@ -52,16 +49,8 @@ class LC_Page_Api_Xml_Ex extends LC_Page_Api_Xml {
      *
      * @return void
      */
-    function process() {
+    function process()
+    {
         parent::process();
-    }
-
-    /**
-     * デストラクタ.
-     *
-     * @return void
-     */
-    function destroy() {
-        parent::destroy();
     }
 }

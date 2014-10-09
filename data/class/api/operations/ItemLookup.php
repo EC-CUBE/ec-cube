@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -30,8 +30,8 @@
  */
 require_once CLASS_EX_REALDIR . 'api_extends/SC_Api_Abstract_Ex.php';
 
-class API_ItemLookup extends SC_Api_Abstract_Ex {
-
+class API_ItemLookup extends SC_Api_Abstract_Ex
+{
     protected $operation_name = 'ItemLookup';
     protected $operation_description = '商品詳細情報を取得します。';
     protected $default_auth_types = self::API_AUTH_TYPE_OPEN;
@@ -39,7 +39,8 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
     protected $default_is_log = '0';
     protected $default_sub_data = '';
 
-    public function doAction($arrParam) {
+    public function doAction($arrParam)
+    {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
             $objProduct = new SC_Product_Ex();
@@ -65,6 +66,7 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
                 $this->setResponse('DetailPageURL', HTTP_URL . 'products/detail.php?product_id=' . $arrProduct['product_id']);
                 $this->setResponse('Title', $arrProduct['name']);
                 $this->setResponse('ItemAttributes', $arrProduct);
+
                 return true;
             } else {
                 $this->addError('ItemLookup.Error', '※ 要求された情報は見つかりませんでした。');
@@ -74,7 +76,8 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
         return false;
     }
 
-    protected function checkErrorExtended($arrParam) {
+    protected function checkErrorExtended($arrParam)
+    {
         switch ($arrParam['IdType']) {
         case 'product_code':
             break;
@@ -88,7 +91,8 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
         }
     }
 
-    protected function lfInitParam(&$objFormParam) {
+    protected function lfInitParam(&$objFormParam)
+    {
         $objFormParam->addParam('商品コンディション', 'Condition', STEXT_LEN, 'a', array('ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('商品ID種別', 'IdType', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('指定ID', 'ItemId', STEXT_LEN, 'a', array('EXIST_CHECK', 'GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
@@ -101,7 +105,8 @@ class API_ItemLookup extends SC_Api_Abstract_Ex {
         $objFormParam->addParam('関連タグソート', 'TagSort', STEXT_LEN, 'a', array('GRAPH_CHECK', 'MAX_LENGTH_CHECK'));
     }
 
-    public function getResponseGroupName() {
+    public function getResponseGroupName()
+    {
         return 'Item';
     }
 }

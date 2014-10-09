@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -22,16 +22,18 @@
  */
 
 // 棒グラフ生成クラス
-class SC_Graph_Bar extends SC_Graph_Line_Ex{
+class SC_Graph_Bar extends SC_Graph_Line_Ex
+{
     // コンストラクタ
-    function __construct(
+    public function __construct(
         $bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP,
         $area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
         parent::__construct($bgw, $bgh, $left, $top, $area_width, $area_height);
     }
 
     // グラフの描画
-    function drawGraph() {
+    public function drawGraph()
+    {
         $this->drawYLine();
         $this->drawXLine(true);
 
@@ -50,7 +52,12 @@ class SC_Graph_Bar extends SC_Graph_Line_Ex{
     }
 
     // 棒グラフの描画
-    function drawBar($line_no) {
+
+    /**
+     * @param integer $line_no
+     */
+    public function drawBar($line_no)
+    {
         $arrPointList = $this->arrPointList[$line_no];
         // データ数を数える
         $count = count($arrPointList);
@@ -79,7 +86,12 @@ class SC_Graph_Bar extends SC_Graph_Line_Ex{
     }
 
     // ラベルを描画する
-    function drawLabel($line_no) {
+
+    /**
+     * @param integer $line_no
+     */
+    public function drawLabel($line_no)
+    {
         $arrData = $this->arrDataList[$line_no];
         $arrPointList = $this->arrPointList[$line_no];
         $count = count($arrPointList);
@@ -92,5 +104,4 @@ class SC_Graph_Bar extends SC_Graph_Line_Ex{
             $this->setText(FONT_SIZE, $x_pos, $y_pos, number_format($arrData[$i]));
         }
     }
-
 }

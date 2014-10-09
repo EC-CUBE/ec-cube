@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2013 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-// {{{ requires
 require_once 'LC_Page_Upgrade_Base.php';
 
 /**
@@ -31,35 +30,28 @@ require_once 'LC_Page_Upgrade_Base.php';
  * @author LOCKON CO.,LTD.
  * @version $Id$
  */
-class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base {
-
-    // }}}
-    // {{{ functions
-
+class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base
+{
     /**
      * Page を初期化する.
      *
      * @return void
      */
-    function init() {}
+    public function init()
+    {
+    }
 
     /**
      * Page のプロセス.
      *
      * @return void
      */
-    function process($mode) {
+    public function process($mode)
+    {
         $objLog  = new LC_Upgrade_Helper_LOG;
         $objJson = new LC_Upgrade_Helper_Json;
 
         $objLog->start($mode);
-
-        if ($this->isValidIP() !== true) {
-            $objJson->setError(OSTORE_E_C_INVALID_ACCESS);
-            $objJson->display();
-            $objLog->error(OSTORE_E_C_INVALID_ACCESS);
-            return;
-        }
 
         $dbFactory = SC_DB_DBFactory_Ex::getInstance();
         $arrSystemInfo = array(
@@ -73,9 +65,12 @@ class LC_Page_Upgrade_SiteCheck extends LC_Page_Upgrade_Base {
     }
 
     /**
-     * デストラクタ.
+     * デストラクタ
      *
+     * XXX 旧実装が親クラスのデストラクタを呼んでいなかったので、その仕様を維持している。
      * @return void
      */
-    function destroy() {}
+    public function __destruct()
+    {
+    }
 }

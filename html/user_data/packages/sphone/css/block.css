@@ -249,7 +249,11 @@ style info :ブロック用
     line-height: 1.3em;
     vertical-align: middle;
 }
-
+#categorytree li ul {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
 #categorytree li:first-child {
     border-top: none;
 }
@@ -260,14 +264,13 @@ style info :ブロック用
 #categorytree li li:last-child {
     border-bottom: none;
 }
-#categorytree ul li a,
-.categorytree > ul > li > ul > li a {
+#categorytree ul li a {
     padding: 0.6em 0;
 }
-.category_body {
+#categorytree .category_body {
     display: inline-block;
 }
-.category_body a {
+#categorytree .category_body a {
     width: 100%;
     display: inline-block;
     white-space: nowrap;
@@ -275,24 +278,20 @@ style info :ブロック用
     text-overflow: ellipsis;
     cursor: pointer;
 }
-#categorytree ul li li {
-    padding-bottom: 0.6em;
-}
-.category_header {
+#categorytree .category_header {
     width: 1.5em;
     margin: 0 6px 0 8px;
     display: inline-block;
     background: transparent;
     text-align: right;
 }
-.category_header.plus,
-.category_header.minus {
+#categorytree .category_header.plus,
+#categorytree .category_header.minus {
     color: #FFF;
     margin: 0 6px 0 8px;
-    padding-bottom: 4px;
+    padding: 2px 0;
     display: inline-block;
     text-align: center;
-    line-height: 0.4;
     width: 1.5em;
     height: 1.3em;
     -webkit-border-radius: 8px;
@@ -302,9 +301,8 @@ style info :ブロック用
     -webkit-box-shadow: 0px 1px 0px rgba(0,0,0,0.7);
     -webkit-border-radius: 3px;
 }
-
-.category_header.plus > a,
-.category_header.minus > a {
+#categorytree .category_header.plus > a,
+#categorytree .category_header.minus > a {
     width: 1.5em;
     color: #FFF;
     display: inline-block;
@@ -341,7 +339,6 @@ style info :ブロック用
 #categorytree .level4 .category_body {
     width: 64%;
 }
-
 #categorytree .level5 .category_header {
     margin-left: 6.2em;
 }
@@ -349,16 +346,15 @@ style info :ブロック用
     width: 56%;
 }
 
-
 /*リンクカラー*/
-.category_body a:link,
-.category_body a:visited {
+#categorytree .category_body a:link,
+#categorytree .category_body a:visited {
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
-.category_header.plus a,
-.category_header.minus a {
+#categorytree .category_header.plus a,
+#categorytree .category_header.minus a {
     color: #FFF;
 }
 
