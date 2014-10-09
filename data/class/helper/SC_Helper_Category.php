@@ -30,7 +30,7 @@
  */
 class SC_Helper_Category
 {
-    private $count_check;
+    protected $count_check;
 
     /**
      * コンストラクター
