@@ -41,7 +41,7 @@
             <ul>
                 <li>
                     <a class="btn-action" href="javascript:" onclick="eccube.setValueAndSubmit('form1', 'mode', 'edit'); return false;">
-                        <img class="hover_change_submit" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="登録する" />
+                        <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address_complete.jpg" alt="登録する" />
                     </a>
                 </li>
             </ul>
