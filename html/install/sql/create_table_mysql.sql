@@ -328,7 +328,7 @@ CREATE TABLE dtb_products_class (
     down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (product_class_id),
-    CONSTRAINT dtb_products_class_unique_key UNIQUE (product_id, classcategory_id1, classcategory_id2)
+    UNIQUE (product_id, classcategory_id1, classcategory_id2)
 );
 
 CREATE TABLE dtb_class (
