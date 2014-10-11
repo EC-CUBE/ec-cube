@@ -111,7 +111,7 @@ class LC_Page_Admin_Products_UploadCSV extends LC_Page_Admin_Ex
         // CSV構造は更新可能なフォーマットかのフラグ取得
         $this->tpl_is_update = $objCSV->sfIsUpdateCSVFrame($arrCSVFrame);
 
-		// CSVファイルアップロード情報の初期化
+        // CSVファイルアップロード情報の初期化
         $objUpFile = new SC_UploadFile_Ex(CSV_TEMP_REALDIR, CSV_TEMP_REALDIR);
         $this->lfInitFile($objUpFile);
 
