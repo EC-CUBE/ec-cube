@@ -52,7 +52,7 @@
                 <p><span class="mini">商品数:</span><span class="quantity"><!--{$key.quantity|n2s}--></span>点<br />
                     <span class="mini">合計:</span><span class="money"><!--{$key.totalInctax|n2s}--></span>円(税込)</p>
                 <hr class="dashed" />
-                <!--{if $freeRule > 0 && $key.productTypeId|h != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+                <!--{if $freeRule > 0 && $key.productTypeId != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
                     <!--{if $key.delivFree > 0}-->
                         <p class="attention free_money_area">あと<span class="free_money"><!--{$key.delivFree|n2s}--></span>円で送料無料</p>
                     <!--{else}-->
