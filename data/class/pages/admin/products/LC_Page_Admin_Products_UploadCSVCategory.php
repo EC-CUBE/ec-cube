@@ -125,7 +125,7 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
         $this->tpl_is_update = $objCSV->sfIsUpdateCSVFrame($arrCSVFrame);
 
         // CSVファイルアップロード情報の初期化
-        $objUpFile = new SC_UploadFile_Ex(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
+        $objUpFile = new SC_UploadFile_Ex(CSV_TEMP_REALDIR, CSV_TEMP_REALDIR);
         $this->lfInitFile($objUpFile);
 
         // パラメーター情報の初期化
