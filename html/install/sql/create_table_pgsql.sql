@@ -328,7 +328,7 @@ CREATE TABLE dtb_products_class (
     down_realfilename text,
     del_flg smallint NOT NULL DEFAULT 0,
     PRIMARY KEY (product_class_id),
-    UNIQUE (product_id, classcategory_id1, classcategory_id2)
+    CONSTRAINT dtb_products_class_unique_key UNIQUE (product_id, classcategory_id1, classcategory_id2) /* キー名競合回避 */
 );
 
 CREATE TABLE dtb_class (
@@ -1240,4 +1240,4 @@ CREATE INDEX dtb_mobile_ext_session_id_param_key_key ON dtb_mobile_ext_session_i
 CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session_id (param_value);
 CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url);
 CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
-CREATE INDEX dtb_products_class_product_id ON dtb_products_class (product_id) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class (product_id) WHERE del_flg = 0;
