@@ -109,7 +109,7 @@ class LC_Page_Admin_Order_Edit extends LC_Page_Admin_Order_Ex
         $this->arrMonthShippingDate = $objShippingDate->getMonth(true);
         $this->arrDayShippingDate = $objShippingDate->getDay(true);
 
-        $objBirthDate = new SC_Date_Ex(BIRTH_YEAR, date('Y', strtotime('now')));
+        $objBirthDate = new SC_Date_Ex(BIRTH_YEAR, date('Y'));
         $this->arrBirthYear = $objBirthDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrBirthMonth = $objBirthDate->getMonth(true);
         $this->arrBirthDay = $objBirthDate->getDay(true);

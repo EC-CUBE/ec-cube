@@ -48,7 +48,7 @@ class LC_Page_Shopping extends LC_Page_Ex
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->tpl_onload = 'eccube.toggleDeliveryForm();';
 
-        $objDate = new SC_Date_Ex(BIRTH_YEAR, date('Y', strtotime('now')));
+        $objDate = new SC_Date_Ex(BIRTH_YEAR, date('Y'));
         $this->arrYear = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);

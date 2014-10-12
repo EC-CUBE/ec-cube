@@ -1341,7 +1341,7 @@ class SC_CheckError
             }
 
             // 年の最大数値制限チェック
-            $current_year = date('Y', strtotime('now'));
+            $current_year = date('Y');
             $this->doFunc(array("{$disp_name}(年)", $keyname, $current_year),
                 array('MAX_CHECK'));
             // 上のチェックでエラーある場合、中断する。
