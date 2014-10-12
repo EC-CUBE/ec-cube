@@ -171,11 +171,11 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         }
         // 親カテゴリIDの保持
         $this->arrForm['parent_category_id'] = $parent_category_id;
-        // カテゴリツリーを取得
-        $this->arrTree = $objCategory->getTree(true);
-        $this->arrParentID = $objCategory->getTreeTrail($parent_category_id);
         // カテゴリ一覧を取得
-        $this->arrList = $objCategory->getTreeBranch($parent_category_id);
+        $this->arrList = $this->findCategoiesByParentCategoryId($parent_category_id);
+        // カテゴリツリーを取得
+        $this->arrTree = $objCategory->getTree();
+        $this->arrParentID = $objCategory->getTreeTrail($parent_category_id);
         // ぱんくずの生成
         $arrBread = $objCategory->getTreeTrail($this->arrForm['parent_category_id'], FALSE);
         $this->tpl_bread_crumbs = SC_Utils_Ex::jsonEncode(array_reverse($arrBread));
@@ -248,14 +248,27 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      */
     public function doEdit(&$objFormParam)
     {
+        $category_id = $objFormParam->getValue('category_id');
+
+        // 追加か
+        $add = strlen($category_id) === 0;
+
         // エラーチェック
-        $this->arrErr = $this->checkError($objFormParam);
+        $this->arrErr = $this->checkError($objFormParam, $add);
 
         // エラーがない場合、追加・更新処理
         if (empty($this->arrErr)) {
             $arrCategory = $objFormParam->getDbArray();
-            $objCategory = new SC_Helper_Category_Ex();
-            $objCategory->save($arrCategory);
+
+            // 追加
+            if ($add) {
+                $this->registerCategory($arrCategory);
+            }
+            // 更新
+            else {
+                unset($arrCategory['category_id']);
+                $this->updateCategory($category_id, $arrCategory);
+            }
         // エラーがある場合、入力値の再表示
         } else {
             $this->arrForm = $objFormParam->getHashArray();
@@ -266,11 +279,12 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      * エラーチェック
      *
      * @param  SC_FormParam $objFormParam
-     * @return array
+     * @param  boolean      $add          追加か
+     * @return void
      */
-    public function checkError(&$objFormParam)
+    public function checkError(&$objFormParam, $add)
     {
-        $objCategory = new SC_Helper_Category_Ex();
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
 
         // 入力項目チェック
         $arrErr = $objFormParam->checkError();
@@ -283,9 +297,10 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         $category_name = $objFormParam->getValue('category_name');
 
         // 追加の場合に固有のチェック
-        if (!$category_id) {
+        if ($add) {
             // 登録数上限チェック
-            $count = count($objCategory->getList());
+            $where = 'del_flg = 0';
+            $count = $objQuery->count('dtb_category', $where);
             if ($count >= CATEGORY_MAX) {
                 $arrErr['category_name'] = '※ カテゴリの登録最大数を超えました。<br/>';
 
@@ -293,8 +308,7 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
             }
 
             // 階層上限チェック
-            $arrParent = $objCategory->get($parent_category_id);
-            if ($arrParent['level'] >= LEVEL_MAX) {
+            if ($this->isOverLevel($parent_category_id)) {
                 $arrErr['category_name'] = '※ ' . LEVEL_MAX . '階層以上の登録はできません。<br/>';
 
                 return $arrErr;
@@ -302,13 +316,16 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
         }
 
         // 重複チェック
-        $exists = false;
-        $arrBrother = $objCategory->getTreeBranch($parent_category_id);
-        foreach ($arrBrother as $brother) {
-            if ($brother['category_name'] == $category_name && $brother['category_id'] != $category_id) {
-                $exists = true;
-            }
+        $arrWhereVal = array();
+        $where = 'del_flg = 0 AND parent_category_id = ? AND category_name = ?';
+        $arrWhereVal[] = $parent_category_id;
+        $arrWhereVal[] = $category_name;
+        // 更新の場合、抽出対象から自己を除外する
+        if (!$add) {
+            $where .= ' AND category_id <> ?';
+            $arrWhereVal[] = $category_id;
         }
+        $exists = $objQuery->exists('dtb_category', $where, $arrWhereVal);
         if ($exists) {
             $arrErr['category_name'] = '※ 既に同じ内容の登録が存在します。<br/>';
 
@@ -326,9 +343,24 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      */
     public function doUp(&$objFormParam)
     {
-        $objCategory = new SC_Helper_Category_Ex(false);
         $category_id = $objFormParam->getValue('category_id');
-        $objCategory->rankUp($category_id);
+
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+        $up_id = $this->lfGetUpRankID($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+        if ($up_id != '') {
+            // 上のグループのrankから減算する数
+            $my_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+                // 自分のグループのrankに加算する数
+                $up_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $up_id);
+                if ($my_count > 0 && $up_count > 0) {
+                    // 自分のグループに加算
+                    $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id, $up_count);
+                    // 上のグループから減算
+                    $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $up_id, $my_count);
+                }
+        }
+        $objQuery->commit();
     }
 
     /**
@@ -339,9 +371,24 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
      */
     public function doDown(&$objFormParam)
     {
-        $objCategory = new SC_Helper_Category_Ex(false);
         $category_id = $objFormParam->getValue('category_id');
-        $objCategory->rankDown($category_id);
+
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $objQuery->begin();
+        $down_id = $this->lfGetDownRankID($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+        if ($down_id != '') {
+            // 下のグループのrankに加算する数
+            $my_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id);
+            // 自分のグループのrankから減算する数
+            $down_count = $this->lfCountChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $down_id);
+            if ($my_count > 0 && $down_count > 0) {
+                // 自分のグループから減算
+                $this->lfUpRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $down_id, $my_count);
+                // 下のグループに加算
+                $this->lfDownRankChilds($objQuery, 'dtb_category', 'parent_category_id', 'category_id', $category_id, $down_count);
+            }
+        }
+        $objQuery->commit();
     }
 
     /**
@@ -358,11 +405,153 @@ class LC_Page_Admin_Products_Category extends LC_Page_Admin_Ex
     }
 
     /**
-     * @param SC_Query $objQuery
-     * @param string $table
-     * @param string $pid_name
-     * @param string $id_name
+     * 親カテゴリIDでカテゴリを検索する.
+     *
+     * - 表示順の降順でソートする
+     * - 有効なカテゴリを返す(del_flag = 0)
+     *
+     * @param  SC_Query $objQuery
+     * @param  int      $parent_category_id 親カテゴリID
+     * @return array    カテゴリの配列
      */
+    public function findCategoiesByParentCategoryId($parent_category_id)
+    {
+        if (!$parent_category_id) {
+            $parent_category_id = 0;
+        }
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $col   = 'category_id, category_name, level, rank';
+        $where = 'del_flg = 0 AND parent_category_id = ?';
+        $objQuery->setOption('ORDER BY rank DESC');
+
+        return $objQuery->select($col, 'dtb_category', $where, array($parent_category_id));
+    }
+
+    /**
+     * カテゴリを更新する
+     *
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    public function updateCategory($category_id, $arrCategory)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $arrCategory['update_date']   = 'CURRENT_TIMESTAMP';
+
+        $objQuery->begin();
+        $where = 'category_id = ?';
+        $objQuery->update('dtb_category', $arrCategory, $where, array($category_id));
+        $objQuery->commit();
+    }
+
+    /**
+     * カテゴリを登録する
+     *
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @return void
+     */
+    public function registerCategory($arrCategory)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+
+        $parent_category_id = $arrCategory['parent_category_id'];
+
+        $objQuery->begin();
+
+        $rank = null;
+        if ($parent_category_id == 0) {
+            // ROOT階層で最大のランクを取得する。
+            $where = 'parent_category_id = ?';
+            $rank = $objQuery->max('rank', 'dtb_category', $where, array($parent_category_id)) + 1;
+        } else {
+            // 親のランクを自分のランクとする。
+            $where = 'category_id = ?';
+            $rank = $objQuery->get('rank', 'dtb_category', $where, array($parent_category_id));
+            // 追加レコードのランク以上のレコードを一つあげる。
+            $where = 'rank >= ?';
+            $arrRawSql = array(
+                'rank' => '(rank + 1)',
+            );
+            $objQuery->update('dtb_category', array(), $where, array($rank), $arrRawSql);
+        }
+
+        $where = 'category_id = ?';
+        // 自分のレベルを取得する(親のレベル + 1)
+        $level = $objQuery->get('level', 'dtb_category', $where, array($parent_category_id)) + 1;
+
+        $arrCategory['create_date'] = 'CURRENT_TIMESTAMP';
+        $arrCategory['update_date'] = 'CURRENT_TIMESTAMP';
+        $arrCategory['creator_id']  = $_SESSION['member_id'];
+        $arrCategory['rank']        = $rank;
+        $arrCategory['level']       = $level;
+        $arrCategory['category_id'] = $objQuery->nextVal('dtb_category_category_id');
+
+        $objQuery->insert('dtb_category', $arrCategory);
+
+        $objQuery->commit();    // トランザクションの終了
+    }
+
+    /**
+     * カテゴリの階層が上限を超えているかを判定する
+     *
+     * @param integer 親カテゴリID
+     * @param 超えている場合 true
+     */
+    public function isOverLevel($parent_category_id)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $level = $objQuery->get('level', 'dtb_category', 'category_id = ?', array($parent_category_id));
+
+        return $level >= LEVEL_MAX;
+    }
+
+    // 並びが1つ下のIDを取得する。
+    public function lfGetDownRankID($objQuery, $table, $pid_name, $id_name, $id)
+    {
+        // 親IDを取得する。
+        $col = "$pid_name";
+        $where = "$id_name = ?";
+        $pid = $objQuery->get($col, $table, $where, $id);
+        // 全ての子を取得する。
+        $col = "$id_name";
+        $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
+        $arrRet = $objQuery->select($col, $table, $where, array($pid));
+        $max = count($arrRet);
+        $down_id = '';
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($arrRet[$cnt][$id_name] == $id) {
+                $down_id = $arrRet[($cnt + 1)][$id_name];
+                break;
+            }
+        }
+
+        return $down_id;
+    }
+
+    // 並びが1つ上のIDを取得する。
+    public function lfGetUpRankID($objQuery, $table, $pid_name, $id_name, $id)
+    {
+        // 親IDを取得する。
+        $col = "$pid_name";
+        $where = "$id_name = ?";
+        $pid = $objQuery->get($col, $table, $where, $id);
+        // 全ての子を取得する。
+        $col = "$id_name";
+        $where = "del_flg = 0 AND $pid_name = ? ORDER BY rank DESC";
+        $arrRet = $objQuery->select($col, $table, $where, array($pid));
+        $max = count($arrRet);
+        $up_id = '';
+        for ($cnt = 0; $cnt < $max; $cnt++) {
+            if ($arrRet[$cnt][$id_name] == $id) {
+                $up_id = $arrRet[($cnt - 1)][$id_name];
+                break;
+            }
+        }
+
+        return $up_id;
+    }
+
     public function lfCountChilds($objQuery, $table, $pid_name, $id_name, $id)
     {
         $objDb = new SC_Helper_DB_Ex();
