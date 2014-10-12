@@ -180,7 +180,7 @@ class SC_Helper_Mail
         $objMailView = null;
         // 注文受付メール(携帯)
         if ($template_id == 2) {
-            $objMailView = new SC_SiteView_Ex(true, DEVICE_TYPE_MOBILE);
+            $objMailView = new SC_MobileView_Ex();
         } else {
             $objMailView = new SC_SiteView_Ex();
         }
