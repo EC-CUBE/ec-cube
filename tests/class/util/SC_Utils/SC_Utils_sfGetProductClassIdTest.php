@@ -98,6 +98,7 @@ class SC_Utils_sfGetProductClassIdTest extends Common_TestCase
       array(
         'product_class_id' => '2001',
         'product_id' => '2001',
+        'product_code' => 'code2001',
         'price02' => '1000',
         'creator_id' => '1',
         'update_date' => 'CURRENT_TIMESTAMP'
@@ -105,6 +106,7 @@ class SC_Utils_sfGetProductClassIdTest extends Common_TestCase
       array(
         'product_class_id' => '1001',
         'product_id' => '1001',
+        'product_code' => 'code1001',
         'price02' => '1000',
         'classcategory_id1' => '1',
         'creator_id' => '1',
@@ -113,6 +115,7 @@ class SC_Utils_sfGetProductClassIdTest extends Common_TestCase
       array(
         'product_class_id' => '1002',
         'product_id' => '1001',
+        'product_code' => 'code1002',
         'price02' => '1000',
         'classcategory_id1' => '2',
         'creator_id' => '1',

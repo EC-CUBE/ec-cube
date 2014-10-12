@@ -173,6 +173,7 @@ class SC_Helper_Purchase_TestBase extends Common_TestCase
           'product_class_id' => '1002',
           'product_id' => '1002',
           'product_type_id' => '2',
+          'product_code' => 'code1002',
           'price02' => '2500',
           'creator_id' => '1',
           'stock' => '50',
