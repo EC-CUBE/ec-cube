@@ -34,7 +34,6 @@
  */
 class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
 {
-    /** @var LC_UseRequest_State_Mobile|LC_UseRequest_State_PC  */
     public $state = null;
 
     /**
@@ -176,7 +175,8 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
         }
 
         // セッションIDの存在をチェックする。
-        if ($this->sfSessRead($sessionId) === null) {
+        $objSession = new SC_Helper_Session_Ex();
+        if ($objSession->sfSessRead($sessionId) === null) {
             GC_Utils_Ex::gfPrintLog("Non-existent session id : sid=$sessionId");
 
             return false;
@@ -192,8 +192,6 @@ class SC_SessionFactory_UseRequest extends SC_SessionFactory_Ex
      */
     public function initSession()
     {
-        parent::initSession();
-
         // セッションIDの受け渡しにクッキーを使用しない。
         ini_set('session.use_cookies', '0');
         ini_set('session.use_trans_sid', '1');

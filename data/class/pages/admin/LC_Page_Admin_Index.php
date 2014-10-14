@@ -186,7 +186,7 @@ class LC_Page_Admin_Index extends LC_Page_Admin_Ex
     public function lfSetLoginSession($member_id, $login_id, $authority, $login_name, $last_login)
     {
         // Session Fixation対策
-        SC_Helper_Session_Ex::regenerateSID();
+        SC_Session_Ex::regenerateSID();
 
         $objSess = new SC_Session_Ex();
         // 認証済みの設定

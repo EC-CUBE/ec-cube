@@ -37,6 +37,9 @@ if (!defined('SAFE') || !SAFE) {
         // インストールチェック
         SC_Utils_Ex::sfInitInstall();
 
+        // セッションハンドラ開始
+        $objSession = new SC_Helper_Session_Ex();
+
         // セッション初期化・開始
         $sessionFactory = SC_SessionFactory_Ex::getInstance();
         $sessionFactory->initSession();
@@ -45,6 +48,6 @@ if (!defined('SAFE') || !SAFE) {
          * 管理画面の場合は認証行う.
          * 認証処理忘れ防止のため, LC_Page_Admin::init() 等ではなく, ここでチェックする.
          */
-        SC_Helper_Session_Ex::adminAuthorization();
+        $objSession->adminAuthorization();
     }
 }

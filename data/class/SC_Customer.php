@@ -340,7 +340,7 @@ __EOS__;
                     return false;
                 } else {
                     // Session Fixation対策
-                    SC_Helper_Session_Ex::regenerateSID();
+                    SC_Session_Ex::regenerateSID();
 
                     $this->updateMobilePhoneId();
 
@@ -355,7 +355,7 @@ __EOS__;
                     return false;
                 } else {
                     // Session Fixation対策
-                    SC_Helper_Session_Ex::regenerateSID();
+                    SC_Session_Ex::regenerateSID();
 
                     return true;
                 }

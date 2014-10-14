@@ -170,8 +170,8 @@ class SC_Helper_Mobile
         }
 
         // セッションIDの存在をチェックする。
-        $sessionFactory = SC_SessionFactory_Ex::getInstance();
-        if ($sessionFactory->sfSessRead($sessionId) === null) {
+        $objSession = new SC_Helper_Session_Ex();
+        if ($objSession->sfSessRead($sessionId) === null) {
             GC_Utils_Ex::gfPrintLog("Non-existent session id : sid=$sessionId");
 
             return false;
