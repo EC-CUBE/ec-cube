@@ -370,6 +370,56 @@ class SC_Helper_DB
     }
 
     /**
+     * カテゴリツリーの取得を複数カテゴリで行う.
+     *
+     * @param  integer $product_id  商品ID
+     * @param  bool    $count_check 登録商品数のチェックを行う場合 true
+     * @return array   カテゴリツリーの配列
+     */
+    public static function sfGetMultiCatTree($product_id, $count_check = false)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        $col = '';
+        $col .= ' cat.category_id,';
+        $col .= ' cat.category_name,';
+        $col .= ' cat.parent_category_id,';
+        $col .= ' cat.level,';
+        $col .= ' cat.rank,';
+        $col .= ' cat.creator_id,';
+        $col .= ' cat.create_date,';
+        $col .= ' cat.update_date,';
+        $col .= ' cat.del_flg, ';
+        $col .= ' ttl.product_count';
+        $from = 'dtb_category as cat left join dtb_category_total_count as ttl on ttl.category_id = cat.category_id';
+        // 登録商品数のチェック
+        if ($count_check) {
+            $where = 'del_flg = 0 AND product_count > 0';
+        } else {
+            $where = 'del_flg = 0';
+        }
+        $objQuery->setOption('ORDER BY rank DESC');
+        $arrRet = $objQuery->select($col, $from, $where);
+
+        $arrCategory_id = SC_Helper_DB_Ex::sfGetCategoryId($product_id);
+
+        $arrCatTree = array();
+        foreach ($arrCategory_id as $pkey => $parent_category_id) {
+            $arrParentID = SC_Helper_DB_Ex::sfGetParents('dtb_category', 'parent_category_id', 'category_id', $parent_category_id);
+
+            foreach ($arrParentID as $pid) {
+                foreach ($arrRet as $key => $array) {
+                    if ($array['category_id'] == $pid) {
+                        $arrCatTree[$pkey][] = $arrRet[$key];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $arrCatTree;
+    }
+
+    /**
      * 親カテゴリを連結した文字列を取得する.
      *
      * @param  integer $category_id カテゴリID
@@ -513,22 +563,30 @@ class SC_Helper_DB
     /**
      * 選択中の商品のカテゴリを取得する.
      *
-     * @param   int $product_id     プロダクトID
-     * @param   int $category_id    カテゴリID
+     * @param  integer $product_id  プロダクトID
+     * @param  integer $category_id カテゴリID
      * @param   bool $closed        非表示の商品を含む場合はtrue
-     * @return  array   選択中の商品のカテゴリIDの配列
+     * @return array   選択中の商品のカテゴリIDの配列
      *
      */
     public function sfGetCategoryId($product_id, $category_id = 0, $closed = false)
     {
+        if ($closed) {
+            $status = '';
+        } else {
+            $status = 'status = 1';
+        }
         $category_id = (int) $category_id;
         $product_id = (int) $product_id;
         $objCategory = new SC_Helper_Category_Ex();
         if ($objCategory->isValidCategoryId($category_id, $closed)) {
             $category_id = array($category_id);
+        } elseif (SC_Utils_Ex::sfIsInt($product_id) && $product_id != 0 && SC_Helper_DB_Ex::sfIsRecord('dtb_products','product_id', $product_id, $status)) {
+            $objQuery =& SC_Query_Ex::getSingletonInstance();
+            $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', 'product_id = ?', array($product_id));
         } else {
-            $objProduct = new SC_Product_Ex();
-            $category_id = $objProduct->getCategoryIds($product_id, $closed);
+            // 不正な場合は、空の配列を返す。
+            $category_id = array();
         }
 
         return $category_id;
