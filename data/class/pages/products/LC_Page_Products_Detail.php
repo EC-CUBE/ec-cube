@@ -299,8 +299,7 @@ class LC_Page_Products_Detail extends LC_Page_Ex
 
         $this->subImageFlag = $this->lfSetFile($this->objUpFile, $this->arrProduct, $this->arrFile);
         //レビュー情報の取得
-        $objReview = new SC_Helper_Review_Ex();
-        $this->arrReview = $objReview->getListByProductId($product_id);
+        $this->arrReview = $this->lfGetReviewData($product_id);
 
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);
@@ -531,6 +530,27 @@ class LC_Page_Products_Detail extends LC_Page_Ex
         }
 
         return $objErr->arrErr;
+    }
+
+    /**
+     * 商品ごとのレビュー情報を取得する
+     *
+     * @param int $product_id
+     * @return array
+     */
+    public function lfGetReviewData($product_id)
+    {
+        $objQuery =& SC_Query_Ex::getSingletonInstance();
+        //商品ごとのレビュー情報を取得する
+        $col = 'create_date, reviewer_url, reviewer_name, recommend_level, title, comment';
+        $from = 'dtb_review';
+        $where = 'del_flg = 0 AND status = 1 AND product_id = ?';
+        $objQuery->setOrder('create_date DESC');
+        $objQuery->setLimit(REVIEW_REGIST_MAX);
+        $arrWhereVal = array($product_id);
+        $arrReview = $objQuery->select($col, $from, $where, $arrWhereVal);
+
+        return $arrReview;
     }
 
     /**
