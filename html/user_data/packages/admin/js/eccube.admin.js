@@ -116,10 +116,10 @@
     };
 
     eccube.checkAllBox = function(input, selector) {
-        if ($(input).attr('checked')) {
-            $(selector).attr('checked', true);
+        if ($(input).prop('checked')) {
+            $(selector).prop('checked', true);
         } else {
-            $(selector).attr('checked', false);
+            $(selector).prop('checked', false);
         }
     };
 
