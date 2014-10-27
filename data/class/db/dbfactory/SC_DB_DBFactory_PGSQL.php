@@ -317,7 +317,6 @@ __EOS__;
                     ,(SELECT MAX(stock_unlimited) $sub_base) AS stock_unlimited_max
                     ,(SELECT MAX(point_rate) $sub_base) AS point_rate
                     ,(SELECT MAX(deliv_fee) $sub_base) AS deliv_fee
-                    ,(SELECT COUNT(*) $sub_base) AS class_count
                 FROM dtb_products
                     LEFT JOIN dtb_maker
                         ON dtb_products.maker_id = dtb_maker.maker_id

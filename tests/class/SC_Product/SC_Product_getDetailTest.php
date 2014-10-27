@@ -89,7 +89,6 @@ class SC_Product_getDetailTest extends SC_Product_TestBase
                 ,'create_date' => $arrRet[0]
                 ,'point_rate' => '0'
                 ,'deliv_fee' => null
-                ,'class_count' => '1'
                 ,'maker_name' => null
         );
 

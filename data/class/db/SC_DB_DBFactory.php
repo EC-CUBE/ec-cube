@@ -267,24 +267,22 @@ class SC_DB_DBFactory
                     ,T4.stock_unlimited_max
                     ,T4.point_rate
                     ,T4.deliv_fee
-                    ,T4.class_count
                     ,dtb_maker.name AS maker_name
                 FROM dtb_products
                     INNER JOIN (
-                        SELECT product_id,
-                            MIN(product_code) AS product_code_min,
-                            MAX(product_code) AS product_code_max,
-                            MIN(price01) AS price01_min,
-                            MAX(price01) AS price01_max,
-                            MIN(price02) AS price02_min,
-                            MAX(price02) AS price02_max,
-                            MIN(stock) AS stock_min,
-                            MAX(stock) AS stock_max,
-                            MIN(stock_unlimited) AS stock_unlimited_min,
-                            MAX(stock_unlimited) AS stock_unlimited_max,
-                            MAX(point_rate) AS point_rate,
-                            MAX(deliv_fee) AS deliv_fee,
-                            COUNT(*) as class_count
+                        SELECT product_id
+                            ,MIN(product_code) AS product_code_min
+                            ,MAX(product_code) AS product_code_max
+                            ,MIN(price01) AS price01_min
+                            ,MAX(price01) AS price01_max
+                            ,MIN(price02) AS price02_min
+                            ,MAX(price02) AS price02_max
+                            ,MIN(stock) AS stock_min
+                            ,MAX(stock) AS stock_max
+                            ,MIN(stock_unlimited) AS stock_unlimited_min
+                            ,MAX(stock_unlimited) AS stock_unlimited_max
+                            ,MAX(point_rate) AS point_rate
+                            ,MAX(deliv_fee) AS deliv_fee
                         FROM dtb_products_class
                         WHERE del_flg = 0 $where_products_class
                         GROUP BY product_id

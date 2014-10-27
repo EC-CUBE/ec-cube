@@ -141,7 +141,6 @@ class SC_CartSession_getCartListTest extends SC_CartSession_TestBase
             ,'creator_id' => '1'
             ,'point_rate' => '0'
             ,'deliv_fee' => null
-            ,'class_count' => '1'
             ,'maker_name' => null
             ,'stock' => '99'
             ,'stock_unlimited' => '0'
