@@ -25,13 +25,13 @@
 <form name="form1" id="form1" method="post" action="./payment_input.php" enctype="multipart/form-data">
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="edit" />
-    <input type="hidden" name="payment_id" value="<!--{$tpl_payment_id}-->" />
+    <input type="hidden" name="payment_id" value="<!--{$tpl_payment_id|h}-->" />
     <input type="hidden" name="image_key" value="" />
-    <input type="hidden" name="fix" value="<!--{$arrForm.fix.value}-->" />
+    <input type="hidden" name="fix" value="<!--{$arrForm.fix.value|h}-->" />
     <!--{foreach key=key item=item from=$arrHidden}-->
     <input type="hidden" name="<!--{$key}-->" value="<!--{$item|h}-->" />
     <!--{/foreach}-->
-    <input type="hidden" name="charge_flg" value="<!--{$charge_flg}-->" />
+    <input type="hidden" name="charge_flg" value="<!--{$charge_flg|h}-->" />
     <div id="basis" class="contents-main">
         <h2>支払方法登録・編集</h2>
 

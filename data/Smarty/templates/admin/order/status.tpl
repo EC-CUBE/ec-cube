@@ -25,8 +25,8 @@
 <form name="form1" id="form1" method="post" action="?" >
     <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
     <input type="hidden" name="mode" value="" />
-    <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status}--><!--{/if}-->" />
-    <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno}-->" />
+    <input type="hidden" name="status" value="<!--{if $arrForm.status == ""}-->1<!--{else}--><!--{$arrForm.status|h}--><!--{/if}-->" />
+    <input type="hidden" name="search_pageno" value="<!--{$tpl_pageno|h}-->" />
     <input type="hidden" name="order_id" value="" />
     <div id="order" class="contents-main">
         <h2>抽出条件</h2>
