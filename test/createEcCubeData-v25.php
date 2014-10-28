@@ -41,10 +41,10 @@ define('MIDDLE_CATEGORIES_VOLUME', 2);
 /** 小カテゴリの生成数 */
 define('SMALL_CATEGORIES_VOLUME', 3);
 
-/** 規格1の生成数 */
+/** 規格分類1の生成数 */
 define('CLASSCATEGORY1_VOLUME', 10);
 
-/** 規格2の生成数 */
+/** 規格分類2の生成数 */
 define('CLASSCATEGORY2_VOLUME', 10);
 
 /** 商品の生成数 */
