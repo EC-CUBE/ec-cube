@@ -510,16 +510,6 @@ class LC_Page_Admin_Products_UploadCSVCategory extends LC_Page_Admin_Ex
             if ($level >= LEVEL_MAX) {
                 $arrErr['parent_category_id'] = '※ ' . LEVEL_MAX . '階層以上の登録はできません。';
             }
-            // 親カテゴリー論理チェック
-            if (array_search('category_id', $this->arrFormKeyList) !== FALSE
-                and $item['category_id'] != '') {
-                $arrTrail = $objCategory->getTreeTrail($item['parent_category_id'], true);
-                foreach ($arrTrail as $trailId) {
-                    if ($trailId == $item['category_id']) {
-                        $arrErr['parent_category_id'] = '※ 再帰的な親カテゴリーの指定はできません。';
-                    }
-                }
-            }
         }
 
 
