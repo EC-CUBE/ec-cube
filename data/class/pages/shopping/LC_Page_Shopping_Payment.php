@@ -158,6 +158,17 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                 $this->setFormParams($objFormParam, $_POST, $this->is_download, $this->arrShipping);
                 $this->arrErr = $this->lfCheckError($objFormParam, $this->arrPrices['subtotal'], $this->tpl_user_point);
 
+                $deliv_id = $objFormParam->getValue('deliv_id');
+                if (strval($deliv_id) !== strval(intval($deliv_id))) {
+                    $deliv_id = $this->arrDeliv[0]['deliv_id'];
+                    $objFormParam->setValue('deliv_id', $deliv_id);
+                }
+                
+                $arrSelectedDeliv = $this->getSelectedDeliv($objCartSess, $deliv_id);
+                $this->arrPayment = $arrSelectedDeliv['arrPayment'];
+                $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
+                $this->img_show = $arrSelectedDeliv['img_show'];
+
                 if (empty($this->arrErr)) {
                     $this->saveShippings($objFormParam, $this->arrDelivTime);
                     $this->lfRegistData($this->tpl_uniqid, $objFormParam->getDbArray(), $objPurchase, $this->arrPayment);
@@ -168,19 +179,6 @@ class LC_Page_Shopping_Payment extends LC_Page_Ex
                     // 確認ページへ移動
                     SC_Response_Ex::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                     SC_Response_Ex::actionExit();
-                } else {
-                    $deliv_id = $objFormParam->getValue('deliv_id');
-
-                    if (strval($deliv_id) !== strval(intval($deliv_id))) {
-                        $deliv_id = $this->arrDeliv[0]['deliv_id'];
-                        $objFormParam->setValue('deliv_id', $deliv_id);
-                    }
-
-                    $arrSelectedDeliv = $this->getSelectedDeliv($objCartSess, $deliv_id);
-                    $this->arrPayment = $arrSelectedDeliv['arrPayment'];
-                    $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
-                    $this->img_show = $arrSelectedDeliv['img_show'];
-
                 }
 
                 break;
