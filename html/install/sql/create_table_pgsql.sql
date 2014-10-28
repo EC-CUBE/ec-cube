@@ -1241,3 +1241,10 @@ CREATE INDEX dtb_mobile_ext_session_id_param_value_key ON dtb_mobile_ext_session
 CREATE INDEX dtb_mobile_ext_session_id_url_key ON dtb_mobile_ext_session_id (url);
 CREATE INDEX dtb_mobile_ext_session_id_create_date_key ON dtb_mobile_ext_session_id (create_date);
 CREATE INDEX dtb_products_class_product_id_key ON dtb_products_class (product_id) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_product_code_key ON dtb_products_class (product_id,product_code) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_price01_key ON dtb_products_class (product_id,price01) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_price02_key ON dtb_products_class (product_id,price02) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_stock_key ON dtb_products_class (product_id,stock) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_stock_unlimited_key ON dtb_products_class (product_id,stock_unlimited) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_point_rate_key ON dtb_products_class (product_id,point_rate) WHERE del_flg = 0;
+CREATE INDEX dtb_products_class_deliv_fee_key ON dtb_products_class (product_id,deliv_fee) WHERE del_flg = 0;
