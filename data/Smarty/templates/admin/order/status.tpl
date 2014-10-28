@@ -75,7 +75,7 @@
                 <col width="12%" />
                 <col width="12%" />
                 <tr>
-                    <th><label for="move_check">選択<br /></label> <input type="checkbox" name="move_check" id="move_check" onclick="eccube.checkAllBox(this, 'input[name=move[]]')" /></th>
+                    <th><label for="move_check">選択<br /></label> <input type="checkbox" name="move_check" id="move_check" onclick="eccube.checkAllBox(this, 'input[name=\'move[]\']')" /></th>
                     <th>対応状況</th>
                     <th>注文番号</th>
                     <th>受注日</th>
