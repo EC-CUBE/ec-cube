@@ -37,15 +37,13 @@ class SC_Utils
     // インストール初期処理
     public static function sfInitInstall()
     {
-        // インストール済みが定義されていない。
-        if (!defined('ECCUBE_INSTALL')) {
-            $phpself = $_SERVER['SCRIPT_NAME'];
-            if (strpos('/install/', $phpself) === false) {
-                $path = substr($phpself, 0, strpos($phpself, basename($phpself)));
-                $install_url = SC_Utils_Ex::searchInstallerPath($path);
-                header('Location: ' . $install_url);
-                exit;
-            }
+        if (
+            !defined('ECCUBE_INSTALL')              // インストール済みが定義されていない。
+            && !GC_Utils_Ex::isInstallFunction()    // インストール中でない。
+        ) {
+            $install_url = SC_Utils_Ex::getInstallerPath();
+            header('Location: ' . $install_url);
+            exit;
         }
         $path = HTML_REALDIR . 'install/' . DIR_INDEX_FILE;
         if (file_exists($path)) {
@@ -54,37 +52,24 @@ class SC_Utils
     }
 
     /**
-     * インストーラのパスを検索し, URL を返す.
+     * インストーラーの URL を返す
      *
-     * $path と同階層に install/index.php があるか検索する.
-     * 存在しない場合は上位階層を再帰的に検索する.
-     * インストーラのパスが見つかった場合は, その URL を返す.
-     * DocumentRoot まで検索しても見つからない場合は /install/index.php を返す.
-     *
-     * @param  string $path 検索対象のパス
-     * @return string インストーラの URL
+     * @return string インストーラーの URL
      */
-    public static function searchInstallerPath($path)
+    public static function getInstallerPath()
     {
-        $installer = 'install/' . DIR_INDEX_PATH;
+        $netUrl = new Net_URL();
 
-        if (SC_Utils_Ex::sfIsHTTPS()) {
-            $proto = 'https://';
-        } else {
-            $proto = 'http://';
-        }
-        $host = $proto . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'];
-        if ($path == '/') {
-            return $host . $path . $installer;
-        }
-        if (substr($path, -1, 1) != '/') {
-            $path .= $path . '/';
-        }
-        $installer_url = $host . $path . $installer;
-        $resources = fopen(SC_Utils_Ex::getRealURL($installer_url), 'r');
-        if ($resources === false) {
-            $installer_url = SC_Utils_Ex::searchInstallerPath($path . '../');
-        }
+        $installer = 'install/' . DIR_INDEX_PATH;
+        // XXX メソッド名は add で始まるが、実際には置換を行う
+        $netUrl->addRawQueryString('');
+        $current_url = $netUrl->getURL();
+        $current_url = dirname($current_url) . '/';
+        // XXX 先頭の / を含まない。
+        $urlpath = substr($_SERVER['SCRIPT_FILENAME'], strlen(HTML_REALDIR));
+        // / を 0、/foo/ を 1 としたディレクトリー階層数
+        $dir_level = substr_count($urlpath, '/');
+        $installer_url .= str_repeat('../', $dir_level) . $installer;
 
         return $installer_url;
     }
