@@ -83,6 +83,9 @@ class LC_Page_Shopping_Confirm extends LC_Page_Ex
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
         if (!$objSiteSess->isPrePage()) {
+            // エラー時は、正当なページ遷移とは認めない
+            $objSiteSess->setNowPage('');
+
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSess);
         }
 
