@@ -70,6 +70,9 @@ class SC_Helper_Purchase
 
         $objQuery->begin();
         if (!$objSiteSession->isPrePage()) {
+            // エラー時は、正当なページ遷移とは認めない
+            $objSiteSess->setNowPage('');
+
             SC_Utils_Ex::sfDispSiteError(PAGE_ERROR, $objSiteSession);
         }
 
