@@ -247,11 +247,8 @@ class LC_Page_Admin_Products extends LC_Page_Admin_Ex
     public function doDelete($where, $arrParam = array())
     {
         $objQuery =& SC_Query_Ex::getSingletonInstance();
-        $arrRet = $objQuery->getCol('product_id', "dtb_products", $where, $arrParam);
-        $product_ids = array();
-        foreach ($arrRet as $value) {
-            $product_ids[] = $value['product_id'];
-        }
+        $product_ids = $objQuery->getCol('product_id', "dtb_products", $where, $arrParam);
+
         $sqlval['del_flg']     = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->begin();
