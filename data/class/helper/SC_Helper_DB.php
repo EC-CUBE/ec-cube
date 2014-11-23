@@ -110,12 +110,7 @@ class SC_Helper_DB
         $objQuery =& SC_Query_Ex::getSingletonInstance();
         $exists = $objQuery->exists($tableName, $where, $arrWhereVal);
 
-        // データが存在する場合 TRUE
-        if ($exists) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return $exists;
     }
 
     /**
