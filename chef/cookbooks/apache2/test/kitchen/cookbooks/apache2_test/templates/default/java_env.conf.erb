@@ -1,0 +1,6 @@
+<IfModule mod_proxy_ajp.c>
+  ProxyPass /env/java ajp://<%= @params[:ajp_host] %>:<%= @params[:ajp_port] %>/examples/servlets/servlet/RequestInfoExample
+  <Proxy *>
+    Allow from all
+  </Proxy>
+</IfModule>

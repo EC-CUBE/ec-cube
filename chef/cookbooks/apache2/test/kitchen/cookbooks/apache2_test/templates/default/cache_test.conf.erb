@@ -1,0 +1,4 @@
+<Location /cachetest>
+  ExpiresActive On
+  ExpiresDefault A<%= @params[:cache_expiry_seconds] %>
+</Location>

@@ -1,0 +1,293 @@
+<IfModule pagespeed_module>
+    # Turn on mod_pagespeed. To completely disable mod_pagespeed, you
+    # can set this to "off".
+    ModPagespeed on
+
+    # We want VHosts to inherit global configuration.
+    # If this is not included, they'll be independent (except for inherently
+    # global options), at least for backwards compatibility.
+    ModPagespeedInheritVHostConfig on
+
+    # Direct Apache to send all HTML output to the mod_pagespeed
+    # output handler.
+    AddOutputFilterByType MOD_PAGESPEED_OUTPUT_FILTER text/html
+
+    # If you want mod_pagespeed process XHTML as well, please uncomment this
+    # line.
+    # AddOutputFilterByType MOD_PAGESPEED_OUTPUT_FILTER application/xhtml+xml
+
+    # The ModPagespeedFileCachePath directory must exist and be writable
+    # by the apache user (as specified by the User directive).
+    ModPagespeedFileCachePath            "/var/cache/mod_pagespeed/"
+
+    # Override the mod_pagespeed 'rewrite level'. The default level
+    # "CoreFilters" uses a set of rewrite filters that are generally
+    # safe for most web pages. Most sites should not need to change
+    # this value and can instead fine-tune the configuration using the
+    # ModPagespeedDisableFilters and ModPagespeedEnableFilters
+    # directives, below. Valid values for ModPagespeedRewriteLevel are
+    # PassThrough, CoreFilters and TestingCoreFilters.
+    #
+    # ModPagespeedRewriteLevel PassThrough
+
+    # Explicitly disables specific filters. This is useful in
+    # conjuction with ModPagespeedRewriteLevel. For instance, if one
+    # of the filters in the CoreFilters needs to be disabled for a
+    # site, that filter can be added to
+    # ModPagespeedDisableFilters. This directive contains a
+    # comma-separated list of filter names, and can be repeated.
+    #
+    # ModPagespeedDisableFilters rewrite_images
+
+    # Explicitly enables specific filters. This is useful in
+    # conjuction with ModPagespeedRewriteLevel. For instance, filters
+    # not included in the CoreFilters may be enabled using this
+    # directive. This directive contains a comma-separated list of
+    # filter names, and can be repeated.
+    #
+    # ModPagespeedEnableFilters rewrite_javascript,rewrite_css
+    # ModPagespeedEnableFilters collapse_whitespace,elide_attributes
+
+    # ModPagespeedDomain
+    # authorizes rewriting of JS, CSS, and Image files found in this
+    # domain. By default only resources with the same origin as the
+    # HTML file are rewritten. For example:
+    #
+    #   ModPagespeedDomain cdn.myhost.com
+    #
+    # This will allow resources found on http://cdn.myhost.com to be
+    # rewritten in addition to those in the same domain as the HTML.
+    #
+    # Wildcards (* and ?) are allowed in the domain specification. Be
+    # careful when using them as if you rewrite domains that do not
+    # send you traffic, then the site receiving the traffic will not
+    # know how to serve the rewritten content.
+
+    # Other defaults (cache sizes and thresholds):
+    #
+    # ModPagespeedFileCacheSizeKb          102400
+    # ModPagespeedFileCacheCleanIntervalMs 3600000
+    # ModPagespeedLRUCacheKbPerProcess     1024
+    # ModPagespeedLRUCacheByteLimit        16384
+    # ModPagespeedCssFlattenMaxBytes       2048
+    # ModPagespeedCssInlineMaxBytes        2048
+    # ModPagespeedCssImageInlineMaxBytes   2048
+    # ModPagespeedImageInlineMaxBytes      2048
+    # ModPagespeedJsInlineMaxBytes         2048
+    # ModPagespeedCssOutlineMinBytes       3000
+    # ModPagespeedJsOutlineMinBytes        3000
+
+    # Limit the number of inodes in the file cache. Set to 0 for no limit.
+    # The default value if this paramater is not specified is 0 (no limit).
+    ModPagespeedFileCacheInodeLimit        500000
+
+    # Bound the number of images that can be rewritten at any one time; this
+    # avoids overloading the CPU.  Set this to 0 to remove the bound.
+    #
+    # ModPagespeedImageMaxRewritesAtOnce      8
+
+    # You can also customize the number of threads per Apache process
+    # mod_pagespeed will use to do resource optimization. Plain
+    # "rewrite threads" are used to do short, latency-sensitive work,
+    # while "expensive rewrite threads" are used for actual optimization
+    # work that's more computationally expensive. If you live these unset,
+    # or use values <= 0 the defaults will be used, which is 1 for both
+    # values when using non-threaded MPMs (e.g. prefork) and 4 for both
+    # on threaded MPMs (e.g. worker and event). These settings can only
+    # be changed globally, and not per virtual host.
+    #
+    # ModPagespeedNumRewriteThreads 4
+    # ModPagespeedNumExpensiveRewriteThreads 4
+
+
+    # Settings for image optimization:
+    #
+    # Jpeg recompression quality (0 to 100, -1 strips metadata):
+    # ModPagespeedJpegRecompressionQuality -1
+    #
+    # Percent of original image size below which optimized images are retained:
+    # ModPagespeedImageLimitOptimizedPercent 100
+    #
+    # Percent of original image area below which image resizing will be
+    # attempted:
+    # ModPagespeedImageLimitResizeAreaPercent 100
+
+    # When Apache is set up as a browser proxy, mod_pagespeed can record
+    # web-sites as they are requested, so that an image of the web is built up
+    # in the directory of the proxy administrator's choosing.  When ReadOnly is
+    # on, only files already present in the SlurpDirectory are served by the
+    # proxy.
+    #
+    # ModPagespeedSlurpDirectory ...
+    # ModPagespeedSlurpReadOnly on
+
+    # The maximum URL size is generally limited to about 2k characters
+    # due to IE: See http://support.microsoft.com/kb/208427/EN-US.
+    # Apache servers by default impose a further limitation of about
+    # 250 characters per URL segment (text between slashes).
+    # mod_pagespeed circumvents this limitation, but if you employ
+    # proxy servers in your path you may need to re-impose it by
+    # overriding the setting here.  The default setting is 1024
+    # characters.
+    #
+    # ModPagespeedMaxSegmentLength 250
+
+    # Uncomment this if you want to prevent mod_pagespeed from combining files
+    # (e.g. CSS files) across paths
+    #
+    # ModPagespeedCombineAcrossPaths off
+
+    # Renaming JavaScript URLs can sometimes break them.  With this
+    # option enabled, mod_pagespeed uses a simple heuristic to decide
+    # not to rename JavaScript that it thinks is introspective.
+    #
+    # You can turn this off to let mod_pagespeed rename all JS files.
+    ModPagespeedAvoidRenamingIntrospectiveJavascript on
+
+    # Certain common JavaScript libraries are available from Google, which acts
+    # as a CDN and allows you to benefit from browser caching if a new visitor
+    # to your site previously visited another site that makes use of the same
+    # libraries as you do.  Enable the following filter to turn on this feature.
+    #
+    # ModPagespeedEnableFilters canonicalize_javascript_libraries
+
+    # The following lines configure libraries that are recognized by
+    # canonicalize_javascript_libraries.  These will have no effect unless you
+    # enable this filter (generally by uncommenting the last line in the
+    # previous stanza).  It simply provides a sensible default configuration
+    # when the filter is switched on.
+    # The format is:
+    #    ModPagespeedLibrary bytes md5 canonical_url
+    # Where bytes and md5 are with respect to the *minified* JS; use
+    # js_minify --print_size_and_hash to obtain this data.
+    # Note that we can register multiple hashes for the same canonical url;
+    # we do this if there are versions available that have already been minified
+    # with more sophisticated tools.
+    ModPagespeedLibrary 105527 ltVVzzYxo0 //ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js
+    ModPagespeedLibrary 92501 J8KF47pYOq //ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js
+    ModPagespeedLibrary 141547 GKjMUuF4PK //ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js
+    ModPagespeedLibrary 43 1o978_K0_L http://www.modpagespeed.com/rewrite_javascript.js
+
+    # Explicitly tell mod_pagespeed to load some resources from disk.
+    # This will speed up load time and update frequency.
+    #
+    # This should only be used for static resources which do not need
+    # specific headers set or other processing by Apache.
+    #
+    # Both URL and filesystem path should specify directories and
+    # filesystem path must be absolute (for now).
+    #
+    # ModPagespeedLoadFromFile "http://example.com/static/" "/var/www/static/"
+
+
+    # Enables server-side instrumentation and statistics.  If this rewriter is
+    # enabled, then each rewritten HTML page will have instrumentation javacript
+    # added that sends latency beacons to /mod_pagespeed_beacon.  These
+    # statistics can be accessed at /mod_pagespeed_statistics.  You must also
+    # enable the mod_pagespeed_statistics and mod_pagespeed_beacon handlers
+    # below.
+    #
+    # ModPagespeedEnableFilters add_instrumentation
+
+    # The add_instrumentation filter sends a beacon after the page onload
+    # handler is called. The user might navigate to a new URL before this. If
+    # you enable the following directive, the beacon is sent as part of an
+    # onbeforeunload handler, for pages where navigation happens before the
+    # onload event.
+    #
+    # ModPagespeedReportUnloadTime on
+
+    # Uncomment the following line so that ModPagespeed will not cache or
+    # rewrite resources with Vary: in the header, e.g. Vary: User-Agent.
+    # ModPagespeedRespectVary on
+
+    # This handles the client-side instrumentation callbacks which are injected
+    # by the add_instrumentation filter.
+    # You can use a different location by adding the ModPagespeedBeaconUrl
+    # directive; see the documentation on add_instrumentation.
+    <Location /mod_pagespeed_beacon>
+          SetHandler mod_pagespeed_beacon
+    </Location>
+
+    # Uncomment the following line if you want to disable statistics entirely.
+    #
+    # ModPagespeedStatistics off
+
+    # This page lets you view statistics about the mod_pagespeed module.
+    <Location /mod_pagespeed_statistics>
+        Order allow,deny
+        # You may insert other "Allow from" lines to add hosts you want to
+        # allow to look at generated statistics.  Another possibility is
+        # to comment out the "Order" and "Allow" options from the config
+        # file, to allow any client that can reach your server to examine
+        # statistics.  This might be appropriate in an experimental setup or
+        # if the Apache server is protected by a reverse proxy that will
+        # filter URLs in some fashion.
+        Allow from localhost
+        Allow from 127.0.0.1
+        SetHandler mod_pagespeed_statistics
+    </Location>
+
+    # Uncomment the following line if you want to enable statistics logging.
+    # ModPagespeedStatistics is required to be enabled.
+    #
+    # ModPagespeedStatisticsLogging on
+    #
+    # The base filename to use to store logged statistics.
+    # Required if logging is enabled.
+    #
+    # ModPagespeedStatisticsLoggingFile "@@MOD_PAGESPEED_STATS_LOG@@"
+    #
+    # The interval at which statistics will be logged, in milliseconds.
+    # Optional; default is 3000.
+    #
+    # ModPagespeedStatisticsLoggingIntervalMs 3000
+
+    # If both of the below are set, the console will use offline copies of the
+    # files needed for the Google Chart Tools API rather than connecting to the
+    # Internet to obtain them. This is experimental, as the only supported
+    # loading mechanism for the Chart Tools API requires an Internet connexion.
+    #
+    # Where to find an offline copy of the CSS file required for the Google
+    # Chart Tools API. At the time of writing, the Google Chart Tools API CSS
+    # file can be found at:
+    # https://ajax.googleapis.com/ajax/static/modules/gviz/1.0/core/tooltip.css
+    #
+    # ModPagespeedStatisticsLoggingChartsCSS http://example.com/charts.css
+    #
+    # Where to find an offline copy of the JS file required for the Google
+    # Chart Tools API. At the time of writing, the Google Chart Tools API JS
+    # file can be found at:
+    # https://www.google.com/uds/api/visualization/1.0/d7d36793f7a886b687850d2813583db9/format+en,default,corechart.I.js
+    #
+    # ModPagespeedStatisticsLoggingChartsJS http://example.com/charts.js
+
+    # This page lets you view a graphical console displaying statistics about
+    # the mod_pagespeed module.
+    <Location /mod_pagespeed_console>
+        Order allow,deny
+        # This can be configured similarly to mod_pagespeed_statistics above.
+        Allow from localhost
+        Allow from 127.0.0.1
+        SetHandler mod_pagespeed_console
+    </Location>
+
+    # Page /mod_pagespeed_message lets you view the latest messages from
+    # mod_pagespeed, regardless of log-level in your httpd.conf
+    # ModPagespeedMessageBufferSize is the maximum number of bytes you would
+    # like to dump to your /mod_pagespeed_message page at one time,
+    # its default value is 100k bytes.
+    # Set it to 0 if you want to disable this feature.
+    ModPagespeedMessageBufferSize 100000
+
+    <Location /mod_pagespeed_message>
+        Allow from localhost
+        Allow from 127.0.0.1
+        SetHandler mod_pagespeed_message
+    </Location>
+    <Location /mod_pagespeed_referer_statistics>
+        Allow from localhost
+        Allow from 127.0.0.1
+        SetHandler mod_pagespeed_referer_statistics
+    </Location>
+</IfModule>

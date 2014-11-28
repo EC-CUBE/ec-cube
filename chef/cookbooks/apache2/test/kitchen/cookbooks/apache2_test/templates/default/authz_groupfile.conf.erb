@@ -1,0 +1,7 @@
+<Location /secure>
+  AuthUserFile "<%= @params[:secure_dir] %>/.htpasswd"
+  AuthGroupFile "<%= @params[:secure_dir] %>/.htgroups"
+  AuthType basic
+  AuthName "private area"
+  Require group <%= @params[:group_name] %>
+</Location>

@@ -1,0 +1,13 @@
+<VirtualHost *:443>
+  ServerName <%= @params[:server_name] %>
+  DocumentRoot <%= @params[:document_root] %>
+  <LocationMatch "^/+$">
+    Options -Indexes
+    ErrorDocument 403 /error/noindex.html
+  </LocationMatch>
+  <IfModule mod_ssl.c>
+    SSLEngine on
+    SSLCertificateFile <%= @params[:ssl_cert_file] %>
+    SSLCertificateKeyFile <%= @params[:ssl_cert_key_file] %>
+  </IfModule>
+</VirtualHost>

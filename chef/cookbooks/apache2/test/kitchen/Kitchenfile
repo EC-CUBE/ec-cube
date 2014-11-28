@@ -1,0 +1,50 @@
+#
+# Author:: Andrew Crump  <andrew@kotirisoftware.com>
+# Copyright:: Copyright (c) 2012, Opscode, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+cookbook "apache2" do
+  configuration "default"
+  # basic_web_app tests are in apache2_test cookbook
+  configuration "basic_web_app"
+  # module_recipes tests are in apache2_test cookbook
+  configuration "modules"
+  configuration "mod_auth_basic"
+  configuration "mod_auth_digest"
+  configuration "mod_auth_openid"
+  configuration "mod_auth_cas"
+  configuration "mod_authnz_ldap"
+  configuration "mod_authz_groupfile"
+  configuration "mod_authz_listed_host"
+  configuration "mod_authz_unlisted_host"
+  configuration "mod_authz_user"
+  configuration "mod_cgi"
+  configuration "mod_dav_svn"
+  configuration "mod_expires"
+  configuration "mod_fastcgi"
+  configuration "mod_include"
+  configuration "mod_perl"
+  configuration "mod_apreq2"
+  configuration "mod_php5"
+  configuration "mod_proxy_ajp"
+  configuration "mod_python"
+  configuration "mod_ssl"
+  configuration "mod_status_remote"
+  # placeholder until COOK-744 is fixed
+  #configuration "god_monitor"
+  exclude :platform => 'centos', :configuration => 'mod_authnz_ldap'
+  exclude :platform => 'centos', :configuration => 'mod_auth_cas'
+  run_list_extras ['apache2_test::setup']
+end

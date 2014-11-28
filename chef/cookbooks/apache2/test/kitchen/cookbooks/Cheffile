@@ -1,0 +1,4 @@
+cookbook 'openldap',
+  :git => 'https://github.com/opscode-cookbooks/openldap',:ref => 'foodcritic'
+
+cookbook 'god'

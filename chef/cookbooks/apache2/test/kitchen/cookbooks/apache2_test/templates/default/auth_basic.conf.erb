@@ -1,0 +1,6 @@
+<Location /secure>
+  AuthUserFile "<%= @params[:auth_user_file] %>"
+  AuthType basic
+  AuthName "private area"
+  Require valid-user
+</Location>

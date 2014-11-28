@@ -1,0 +1,5 @@
+<IfModule mod_fastcgi.c>
+  AddHandler fastcgi-script .fcgi
+  #FastCgiWrapper /usr/lib/apache2/suexec
+  FastCgiIpcDir <%= "#{node['apache']['lib_dir']}/fastcgi" %>
+</IfModule>
