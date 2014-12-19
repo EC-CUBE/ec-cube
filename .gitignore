@@ -1,0 +1,8 @@
+data/Smarty/templates_c/**/*.tpl.php
+data/cache/*.php
+data/cache/*.serial
+html/install/temp/*.tpl.php
+data/config/config.php
+data/logs/*.log*
+html/upload/mobile_image/*
+data/upload/csv/*
