@@ -33,8 +33,8 @@ install:
   - mingw-get install mingw-developer-toolkit
   ## Set PHP.
   - cinst php
-  - SET PATH=C:\php\;%PATH%
-  - cd c:\php
+  - SET PATH=C:\tools\php\;%PATH%
+  - cd C:\tools\php
   - copy php.ini-production php.ini
   - echo date.timezone="Asia/Tokyo" >> php.ini
   - echo extension_dir=ext >> php.ini
