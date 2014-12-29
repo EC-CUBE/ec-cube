@@ -1,4 +1,6 @@
-# ec-cube
+# EC-CUBE
+[![Build Status](https://travis-ci.org/EC-CUBE/ec-cube.svg)](https://travis-ci.org/EC-CUBE/ec-cube)
+[![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
 * * * * * * * * * * * * * * * * * * * *
 ### 開発協力
 
