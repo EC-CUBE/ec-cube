@@ -11,13 +11,14 @@
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
     "repositories": [
-            {
-                    "type": "pear",
-                    "url": "http://pear.php.net/"
-            }
+        {
+            "type": "pear",
+            "url": "http://pear.php.net/"
+        }
     ],
     "require": {
         "php": ">=5.3.3",
+        "silex/silex": "~1.2",
         "smarty/smarty": "~2.6",
         "mobiledetect/mobiledetectlib": "~2.8",
         "pear-pear.php.net/PEAR" : "*",
@@ -39,11 +40,22 @@
         "pear-pear.php.net/Text_Password" : "*",
         "pear-pear.php.net/XML_Parser" : "*",
         "pear-pear.php.net/XML_Serializer" : "*",
-        "pear-pear.php.net/XML_Util" : "*"
+        "pear-pear.php.net/XML_Util" : "*",
+        "silex/web-profiler": "~1.0"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
         "phpunit/phpunit": "3.7.*",
         "phing/phing": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Eccube": "src/"
+        },
+        "classmap": [
+            "src/fpdf/fpdf.php",
+            "src/fpdi",
+            "src/gdthumb"
+        ]
     }
 }

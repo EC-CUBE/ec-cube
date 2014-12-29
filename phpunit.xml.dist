@@ -25,12 +25,9 @@
     <!-- カバーレージのターゲット -->
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./data/class/</directory>
+            <directory suffix=".php">./src/Eccube/</directory>
             <exclude>
-                <directory>./data/class/pages/</directory>
-                <directory>./data/class/graph/</directory>
-                <directory>./data/class/batch/</directory>
-                <directory>./data/class/db/dbfactory/</directory>
+                <directory>./src/Eccube/Page/</directory>
             </exclude>
         </whitelist>
     </filter>

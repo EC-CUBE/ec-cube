@@ -1,11 +1,11 @@
-composer.phar
 !dummy
+!.gitmodule
+composer.phar
 /vendor/
-/data/Smarty/templates_c/*
-/data/cache/*
-/data/config/config.php
-/data/logs/*
-/data/upload/csv/*
+/app/cache/*/*
+/app/config/eccube/config.php
+/app/logs/*
+/app/upload/csv/*
 /html/install/temp/*
 /html/upload/graph_image/*
 /html/upload/mobile_image/*
