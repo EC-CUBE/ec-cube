@@ -59,8 +59,7 @@ build: off
 
 before_test:
   - bash eccube_install.sh mysql
-  - cp tests/require.php.jenkins tests/require.php
-    
+
 test_script:
   - php -i
   - vendor\bin\phpunit.bat --bootstrap data\config\config.php tests

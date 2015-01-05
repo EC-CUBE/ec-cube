@@ -40,6 +40,7 @@ if (!defined('CACHE_REALDIR')) {
 require_once(CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Plugin_Ex.php');
 
 // クラスのオートローディングを定義する
+require_once __DIR__.'/../vendor/autoload.php';
 require_once(CLASS_EX_REALDIR . 'SC_ClassAutoloader_Ex.php');
 spl_autoload_register(array('SC_ClassAutoloader_Ex', 'autoload'));
 
