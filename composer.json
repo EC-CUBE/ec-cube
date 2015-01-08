@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "smarty/smarty": "~2.6",
+        "smarty/smarty": "*",
         "mobiledetect/mobiledetectlib": "~2.8",
         "pear-pear.php.net/PEAR" : "*",
         "pear-pear.php.net/Archive_Tar" : "*",
