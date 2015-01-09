@@ -36,9 +36,9 @@
                     <!--{foreach key=HeaderInternalNaviKey item=HeaderInternalNaviItem from=$arrPageLayout.HeaderInternalNavi}-->
                         <!-- ▼<!--{$HeaderInternalNaviItem.bloc_name}--> -->
                         <!--{if $HeaderInternalNaviItem.php_path != ""}-->
-                            <!--{include_php file=$HeaderInternalNaviItem.php_path items=$HeaderInternalNaviItem}-->
+                            <!--{include_php_ex items=$HeaderInternalNaviItem}-->
                         <!--{else}-->
-                            <!--{include file=$HeaderInternalNaviItem.tpl_path items=$HeaderInternalNaviItem}-->
+                            <!--{include file=$HeaderInternalNaviItem.tpl_path assign=$HeaderInternalNaviItem}-->
                         <!--{/if}-->
                         <!-- ▲<!--{$HeaderInternalNaviItem.bloc_name}--> -->
                     <!--{/foreach}-->

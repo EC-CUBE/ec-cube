@@ -58,17 +58,20 @@ class SC_View
         $this->_smarty->security_policy = null;
 
         $this->_smarty->register_function('include_php_ex', array($this, 'include_php_ex'));
+        //$this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . '/../smarty_extends');
         $this->_smarty->plugins_dir = array(
             'plugins',
             DATA_REALDIR . '../vendor/smarty/smarty/libs/plugins/', // defaultのplugnのpath
             DATA_REALDIR . 'smarty_extends/',
         );
 
+
         if (ADMIN_MODE == '1') {
             $this->time_start = microtime(true);
         }
 
-        $this->_smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
+        //$this->_smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
+        $this->_smarty->force_compile = true;
         // 各filterをセットします.
         $this->registFilter();
     }
@@ -238,12 +241,12 @@ class SC_View
         $this->_smarty->debugging = $var;
     }
 
+    public function include_php_ex($params, $smarty) {
 
-    function include_php_ex($params, $smarty) {
-
-        if ($params['file'] == false) {
+        // todo 要pathチェック
+        if ($params['items']['php_path'] == false) {
             $smarty->trigger_error("{include_php} file '". $params['file'] ."' is not readable", E_USER_NOTICE);
         }
-        include_once $params['file'];
+        include_once $params['items']['php_path'];
     }
 }
