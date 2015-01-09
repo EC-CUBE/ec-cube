@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Page\Products;
+namespace Eccube\Plugin\ProductReview\Page\Products;
 
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CheckError;

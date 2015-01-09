@@ -98,8 +98,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/products/product_class.php', '\\Eccube\\Page\\Admin\\Products\\ProductClass')->bind('admin_products_product_class');
         $controllers->match('/products/product_rank.php', '\\Eccube\\Page\\Admin\\Products\\ProductRank')->bind('admin_products_product_rank');
         $controllers->match('/products/product_select.php', '\\Eccube\\Page\\Admin\\Products\\ProductSelect')->bind('admin_products_product_select');
-        $controllers->match('/products/review.php', '\\Eccube\\Page\\Admin\\Products\\Review')->bind('admin_products_review');
-        $controllers->match('/products/review_edit.php', '\\Eccube\\Page\\Admin\\Products\\ReviewEdit')->bind('admin_products_review_edit');
         $controllers->match('/products/upload_csv.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSV')->bind('admin_products_upload_csv');
         $controllers->match('/products/upload_csv_category.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSVCategory')->bind('admin_products_upload_csv_category');
 

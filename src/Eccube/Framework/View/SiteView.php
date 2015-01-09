@@ -46,7 +46,7 @@ class SiteView extends View
             $this->setPrevURL();
         }
 
-        PluginHelper::hook("SiteView_Construct_After", array($this));
+        PluginHelper::hook("SiteView.Construct.After", array($this));
     }
 
     public function setPrevURL()

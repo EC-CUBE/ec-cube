@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Page\Admin\Products;
+namespace Eccube\Plugin\ProductReview\Page\Admin\Products;
 
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\FormParam;

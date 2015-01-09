@@ -28,7 +28,6 @@ use Eccube\Framework\Helper\CategoryHelper;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Helper\PurchaseHelper;
 use Eccube\Framework\Helper\PluginHelper;
-use Eccube\Framework\Helper\ReviewHelper;
 use Eccube\Framework\Util\Utils;
 
 /**
@@ -107,9 +106,6 @@ class Detail extends AbstractPage
 
     /** @var bool サブ画像が存在するか */
     public $subImageFlag;
-
-    /** @var array レビュー情報 */
-    public $arrReview;
 
     /** @var array 関連商品情報 */
     public $arrRecommend;
@@ -307,9 +303,6 @@ class Detail extends AbstractPage
             = Utils::sfNoImageMain($this->arrProduct['main_image']);
 
         $this->subImageFlag = $this->lfSetFile($this->objUpFile, $this->arrProduct, $this->arrFile);
-        //レビュー情報の取得
-        $objReview = new ReviewHelper();
-        $this->arrReview = $objReview->getListByProductId($product_id);
 
         //関連商品情報表示
         $this->arrRecommend = $this->lfPreGetRecommendProducts($product_id);

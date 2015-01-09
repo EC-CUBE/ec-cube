@@ -90,8 +90,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/products/seaech.php', '\\Eccube\\Page\\Products\\Search')->bind('products_seaech');
         $controllers->match('/products/category_list.php', '\\Eccube\\Page\\Products\\CategoryList')->bind('products_category_list');
         $controllers->match('/products/detail.php', '\\Eccube\\Page\\Products\\Detail')->bind('products_detail');
-        $controllers->match('/products/review.php', '\\Eccube\\Page\\Products\\Review')->bind('products_review');
-        $controllers->match('/products/review_complete.php', '\\Eccube\\Page\\Products\\ReviewComplete')->bind('products_review_complete');
 
         // regist
         $controllers->match('/regist/', '\\Eccube\\Page\\Regist\\Index')->bind('regist');

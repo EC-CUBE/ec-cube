@@ -110,8 +110,8 @@ abstract class AbstractPage
         }
 
         // スーパーフックポイントを実行.
-        $objPlugin = new PluginHelper($this->plugin_activate_flg);
-        $objPlugin->doAction('LC_Page_preProcess', array($this));
+        $objPlugin = PluginHelper::getSingletonInstance($this->plugin_activate_flg);
+        $objPlugin->doAction('Eccube.Page.preProcess', array($this));
 
         // 店舗基本情報取得
         $this->arrSiteInfo = DbHelper::getBasisData();
@@ -142,7 +142,7 @@ abstract class AbstractPage
      */
     public function sendResponse()
     {
-        $objPlugin = new PluginHelper($this->plugin_activate_flg);
+        $objPlugin = PluginHelper::getSingletonInstance($this->plugin_activate_flg);
         // ローカルフックポイントを実行.
         $this->doLocalHookpointAfter($objPlugin);
 
@@ -150,12 +150,12 @@ abstract class AbstractPage
         $objPlugin->setHeadNaviBlocs($this->arrPageLayout['HeadNavi']);
 
         // スーパーフックポイントを実行.
-        $objPlugin->doAction('LC_Page_process', array($this));
+        $objPlugin->doAction('Eccube.Page.process', array($this));
 
         // ページクラス名をテンプレートに渡す
         $arrBacktrace = debug_backtrace();
         if (strlen($this->tpl_page_class_name) === 0) {
-            $this->tpl_page_class_name = preg_replace('/Eccube\\\\Page\\\\/', '', $arrBacktrace[1]['class']);
+            $this->tpl_page_class_name = preg_replace('/Eccube(\\\\Plugin\\\\\w+)?\\\\Page\\\\/', '', $arrBacktrace[1]['class']);
         }
 
         $this->objDisplay->prepare($this);
@@ -186,7 +186,7 @@ abstract class AbstractPage
     /**
      * デストラクタ
      *
-     * ・ブロックの基底クラス (LC_Page_FrontParts_Bloc) では、継承していない。
+     * ・ブロックの基底クラス (Ecube\\Page\\Bloc) では、継承していない。
      * @return void
      */
     public function __destruct()
@@ -213,12 +213,14 @@ abstract class AbstractPage
     {
         // ローカルフックポイントを実行
         $parent_class_name = get_parent_class($this);
-        if ($parent_class_name != 'LC_Page') {
-            $objPlugin->doAction($parent_class_name . '_action_before', array($this));
+        if ($parent_class_name != 'Eccube\\Page\\AbstractPage') {
+            $hook_point = str_replace('\\', '.', $parent_class_name) . '.action_before';
+            $objPlugin->doAction($hook_point, array($this));
         }
         $class_name = get_class($this);
-        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
-            $objPlugin->doAction($class_name . '_action_before', array($this));
+        if ($class_name != $parent_class_name) {
+            $hook_point = str_replace('\\', '.', $class_name) . '.action_before';
+            $objPlugin->doAction($hook_point, array($this));
         }
     }
 
@@ -232,12 +234,14 @@ abstract class AbstractPage
     {
         // ローカルフックポイントを実行
         $parent_class_name = get_parent_class($this);
-        if ($parent_class_name != 'LC_Page') {
-            $objPlugin->doAction($parent_class_name . '_action_after', array($this));
+        if ($parent_class_name != 'Eccube\\Page\\AbstractPage') {
+            $hook_point = str_replace('\\', '.', $parent_class_name) . '.action_after';
+            $objPlugin->doAction($hook_point, array($this));
         }
         $class_name = get_class($this);
-        if ($parent_class_name != 'LC_Page' && $class_name != $parent_class_name) {
-            $objPlugin->doAction($class_name . '_action_after', array($this));
+        if ($class_name != $parent_class_name) {
+            $hook_point = str_replace('\\', '.', $class_name) . '.action_after';
+            $objPlugin->doAction($hook_point, array($this));
         }
     }
 

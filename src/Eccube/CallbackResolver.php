@@ -20,7 +20,7 @@ use Eccube\Framework\Util\Utils;
 
 class CallbackResolver extends \Silex\CallbackResolver
 {
-    const PAGE_PATTERN = '/\A\\\\Eccube\\\\Page\\\\/';
+    const PAGE_PATTERN = '/\A\\\\Eccube(\\\\Plugin\\\\\w+)?\\\\Page\\\\/';
 
     /**
      * Returns true if the string is a valid service method representation.
@@ -61,12 +61,6 @@ class CallbackResolver extends \Silex\CallbackResolver
                 $GLOBALS['_realdir'] = str_replace('//', '/', $GLOBALS['_realdir']);
                 define('HTML_REALDIR', $GLOBALS['_realdir']);
 
-                if (preg_match('/\A\\\\Eccube\\\\Page\\\\Admin\\\\/', $name)) {
-                    define('ADMIN_FUNCTION', true);
-                } else {
-                    define('FRONT_FUNCTION', true);
-                }
-
                 /** HTMLディレクトリからのDATAディレクトリの相対パス */
                 define('HTML2DATA_DIR', '../app/');
                 define('USE_FILENAME_DIR_INDEX', null);
@@ -87,6 +81,14 @@ class CallbackResolver extends \Silex\CallbackResolver
                 $objInit = new \Eccube\Framework\Initial();
                 $objInit->init();
 
+                // Page instance
+                $objPage = new $name($app);
+                if ($objPage instanceof \Eccube\Page\Admin\AbstractAdminPage) {
+                    define('ADMIN_FUNCTION', true);
+                } else {
+                    define('FRONT_FUNCTION', true);
+                }
+
                 // 定数 SAFE が設定されている場合、DBアクセスを回避する。主に、エラー画面を意図する。
                 if (!defined('SAFE') || !SAFE) {
                     // インストール中で無い場合、
@@ -106,7 +108,8 @@ class CallbackResolver extends \Silex\CallbackResolver
                     }
                 }
 
-                $objPage = new $name($app);
+                // FIXME: プラグイン実行
+                $app['ecube.helper.plugin'];
 
                 // bufferを初期化する
                 if ($objPage instanceof \Eccube\Page\Admin\AbstractAdminPage) {

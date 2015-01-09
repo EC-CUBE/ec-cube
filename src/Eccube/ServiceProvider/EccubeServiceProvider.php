@@ -63,9 +63,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['ecube.helper.purchase'] = function () use ($app) {
             return new \Eccube\Framework\Helper\PurchaseHelper();
         };
-        $app['ecube.helper.plugin'] = $app->protect(function ($plugin_activate_flg) use ($app) {
+        $app['ecube.helper.plugin'] = function () use ($app) {
+            $plugin_activate_flg = true;
             return \Eccube\Framework\Helper\PluginHelper::getSingletonInstance($plugin_activate_flg);
-        });
+        };
     }
 
     /**

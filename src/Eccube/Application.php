@@ -14,10 +14,10 @@ class Application extends \Silex\Application
 
         parent::__construct($values);
 
-        $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $app->register(new \Silex\Provider\TwigServiceProvider());
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $this->register(new \Silex\Provider\TwigServiceProvider());
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-        $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
+        $this->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
             'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
             'profiler.mount_prefix' => '/_profiler', // this is the default
         ));
@@ -29,6 +29,9 @@ class Application extends \Silex\Application
         $this['callback_resolver'] = $this->share(function () use ($app) {
             return new CallbackResolver($app);
         });
+
+        // テスト用
+        $this->register(new Plugin\ProductReview\ProductReview());
     }
 
     /**
