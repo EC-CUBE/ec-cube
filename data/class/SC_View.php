@@ -54,24 +54,21 @@ class SC_View
         $this->_smarty->register_function('sfIsHTTPS', array('SC_Utils_Ex', 'sfIsHTTPS'));
         $this->_smarty->register_function('sfSetErrorStyle', array('SC_Utils_Ex', 'sfSetErrorStyle'));
         $this->_smarty->register_function('printXMLDeclaration', array('GC_Utils_Ex', 'printXMLDeclaration'));
-        $this->_smarty->default_modifiers = array('script_escape');
-        $this->_smarty->security_policy = null;
 
+        // default escape
+        $this->_smarty->default_modifiers = array('escape', 'nl2br');
         $this->_smarty->register_function('include_php_ex', array($this, 'include_php_ex'));
-        //$this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . '/../smarty_extends');
         $this->_smarty->plugins_dir = array(
             'plugins',
             DATA_REALDIR . '../vendor/smarty/smarty/libs/plugins/', // defaultのplugnのpath
             DATA_REALDIR . 'smarty_extends/',
         );
 
-
         if (ADMIN_MODE == '1') {
             $this->time_start = microtime(true);
         }
 
-        //$this->_smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
-        $this->_smarty->force_compile = true;
+        $this->_smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
         // 各filterをセットします.
         $this->registFilter();
     }

@@ -22,7 +22,7 @@
 
 <!--{strip}-->
     <body class="<!--{$tpl_page_class_name|h}-->">
-        <!--{$GLOBAL_ERR}-->
+        <!--{$GLOBAL_ERR nofilter}-->
         <noscript>
             <p>JavaScript を有効にしてご利用下さい.</p>
         </noscript>
