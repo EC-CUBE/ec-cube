@@ -32,7 +32,7 @@ require_once(realpath(dirname(__FILE__)) . "/../../../data/class_extends/db_exte
  * @author LOCKON CO.,LTD.
  * @version $Id:SC_DB_MasterData_Test.php 15532 2007-08-31 14:39:46Z nanasess $
  */
-class SC_DB_MasterData_Test extends PHPUnit_Framework_TestCase 
+class SC_DB_MasterData_Test extends PHPUnit_Common_TestCase 
 {
 
     // }}}

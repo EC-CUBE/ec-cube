@@ -1,4 +1,4 @@
-<?php
+4<?php
 /*
  * This file is part of EC-CUBE
  *
@@ -33,6 +33,7 @@ define('INSTALL_INFO_URL', 'http://www.ec-cube.net/install_info/index.php');
 define("DEFAULT_COUNTRY_ID", 392);
 
 require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
+require_once HTML_REALDIR . '../vendor/autoload.php';
 ob_start();
 // ▲require.php 相当
 
@@ -55,21 +56,21 @@ $objPage->arrMailBackend = array('mail' => 'mail',
                                  'smtp' => 'SMTP',
                                  'sendmail' => 'sendmail');
 
-$objDb = new SC_Helper_DB_Ex();
+$objDb = new Eccube\Common\Helper\DbHelper();
 
 // テンプレートコンパイルディレクトリの書込み権限チェック
 $temp_dir = $ownDir . 'temp';
 
 if (!is_writable($temp_dir)) {
-    SC_Utils_Ex::sfErrorHeader($temp_dir . 'にユーザ書込み権限(777, 707等)を付与して下さい。', true);
+    Eccube\Common\Util\Utils::sfErrorHeader($temp_dir . 'にユーザ書込み権限(777, 707等)を付与して下さい。', true);
     exit;
 }
 
-$objView = new SC_InstallView_Ex($ownDir . 'templates', $ownDir . 'temp');
+$objView = new Eccube\Common\View\InstallView($ownDir . 'templates', $ownDir . 'temp');
 
 // パラメーター管理クラス
-$objWebParam = new SC_FormParam();
-$objDBParam = new SC_FormParam();
+$objWebParam = new Eccube\Common\FormParam();
+$objDBParam = new Eccube\Common\FormParam();
 // パラメーター情報の初期化
 $objWebParam = lfInitWebParam($objWebParam);
 $objDBParam = lfInitDBParam($objDBParam);
@@ -353,14 +354,14 @@ function lfDispStep0($objPage)
                         $mess .= ">> ×：$real_path($filemode) \nユーザ書込み権限(777, 707等)を付与して下さい。\n";
                         $hasErr = true;
                     } else {
-                        GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
+                        Eccube\Common\Util\GcUtils::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 } else {
                     if (!is_writable($path)) {
                         $mess .= ">> ×：$real_path($filemode) \nユーザ書込み権限(666, 606等)を付与して下さい。\n";
                         $hasErr = true;
                     } else {
-                        GC_Utils_Ex::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
+                        Eccube\Common\Util\GcUtils::gfPrintLog('WRITABLE：' . $path, INSTALL_LOG);
                     }
                 }
             } else {
@@ -464,7 +465,7 @@ function lfDispStep0_1($objPage)
     $objPage->tpl_mainpage = 'step0_1.tpl';
     $objPage->tpl_mode = 'step0_1';
     // ファイルコピー
-    $objPage->copy_mess = SC_Utils_Ex::sfCopyDir('./save_image/', HTML_REALDIR . 'upload/save_image/', $objPage->copy_mess);
+    $objPage->copy_mess = Eccube\Common\Util\Utils::sfCopyDir('./save_image/', HTML_REALDIR . 'upload/save_image/', $objPage->copy_mess);
     return $objPage;
 }
 
@@ -546,7 +547,7 @@ function lfDispStep4($objPage)
     $objPage->tpl_shop_name = $objWebParam->getValue('shop_name');
     $objPage->tpl_cube_ver = ECCUBE_VERSION;
     $objPage->tpl_php_ver = phpversion();
-    $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrDsn['phptype']);
+    $dbFactory = Eccube\Common\Db\DbFactory::getInstance($arrDsn['phptype']);
     $objPage->tpl_db_ver = $dbFactory->sfGetDBVersion($arrDsn);
     $objPage->tpl_db_skip = $_POST['db_skip'];
     $objPage->tpl_mainpage = 'step4.tpl';
@@ -578,7 +579,7 @@ function lfDispComplete($objPage)
     $sqlval['mypage_tpl'] = 'default1';
     $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
     $sqlval['country_id'] = DEFAULT_COUNTRY_ID;
-    $objQuery = new SC_Query($arrDsn);
+    $objQuery = new Eccube\Common\Query($arrDsn);
     $cnt = $objQuery->count('dtb_baseinfo');
     if ($cnt > 0) {
         $objQuery->update('dtb_baseinfo', $sqlval);
@@ -588,8 +589,8 @@ function lfDispComplete($objPage)
 
     // 管理者登録
     $login_id = $objWebParam->getValue('login_id');
-    $salt = SC_Utils_Ex::sfGetRandomString(10);
-    $login_pass = SC_Utils_Ex::sfGetHashString($objWebParam->getValue('login_pass'), $salt);
+    $salt = Eccube\Common\Util\Utils::sfGetRandomString(10);
+    $login_pass = Eccube\Common\Util\Utils::sfGetHashString($objWebParam->getValue('login_pass'), $salt);
 
     $arrVal = array(
         'login_id' => $login_id,
@@ -648,7 +649,7 @@ function lfInitWebParam($objWebParam)
 
     // 店名、管理者メールアドレスを取得する。(再インストール時)
     if (defined('DEFAULT_DSN')) {
-        $objQuery = new SC_Query();
+        $objQuery = new Eccube\Common\Query();
         $tables = $objQuery->listTables();
 
         if (!PEAR::isError($tables) && in_array('dtb_baseinfo', $tables)) {
@@ -660,7 +661,7 @@ function lfInitWebParam($objWebParam)
 
     // 管理機能のディレクトリ名を取得（再インストール時）
     if (defined('ADMIN_DIR')) {
-        $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+        $oldAdminDir = Eccube\Common\Util\Utils::sfTrimURL(ADMIN_DIR);
     }
 
     if (defined('ADMIN_FORCE_SSL')) {
@@ -765,7 +766,7 @@ function lfCheckWebError($objWebParam)
 {
     // 入力データを渡す。
     $arrRet = $objWebParam->getHashArray();
-    $objErr = new SC_CheckError($arrRet);
+    $objErr = new Eccube\Common\CheckError($arrRet);
     $objErr->arrErr = $objWebParam->checkError();
 
     // ディレクトリ名のみ取得する
@@ -786,7 +787,7 @@ function lfCheckWebError($objWebParam)
     // 管理機能ディレクトリのチェック
     $objErr->doFunc(array('管理機能：ディレクトリ', 'admin_dir', ID_MIN_LEN, ID_MAX_LEN), array('SPTAB_CHECK', 'NUM_RANGE_CHECK'));
 
-    $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    $oldAdminDir = Eccube\Common\Util\Utils::sfTrimURL(ADMIN_DIR);
     $newAdminDir = $objWebParam->getValue('admin_dir');
     if ($newAdminDir) {
         if ($oldAdminDir !== $newAdminDir AND file_exists(HTML_REALDIR . $newAdminDir) and $newAdminDir != 'admin') {
@@ -805,7 +806,7 @@ function lfCheckDBError($objDBParam)
     // 入力データを渡す。
     $arrRet = $objDBParam->getHashArray();
 
-    $objErr = new SC_CheckError($arrRet);
+    $objErr = new Eccube\Common\CheckError($arrRet);
     $objErr->arrErr = $objDBParam->checkError();
 
     if (count($objErr->arrErr) == 0) {
@@ -815,7 +816,7 @@ function lfCheckDBError($objDBParam)
         $objDB = MDB2::connect($arrDsn, $options);
         // 接続成功
         if (!PEAR::isError($objDB)) {
-            $dbFactory = SC_DB_DBFactory_Ex::getInstance($arrDsn['phptype']);
+            $dbFactory = Eccube\Common\Db\DbFactory::getInstance($arrDsn['phptype']);
             // データベースバージョン情報の取得
             $objPage->tpl_db_version = $dbFactory->sfGetDBVersion($arrDsn);
         } else {
@@ -823,7 +824,7 @@ function lfCheckDBError($objDBParam)
             // エラー文を取得する
             preg_match('/\[(.*)\]/', $objDB->userinfo, $arrKey);
             $objErr->arrErr['all'] .= $arrKey[0] . '<br />';
-            GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
+            Eccube\Common\Util\GcUtils::gfPrintLog($objDB->userinfo, INSTALL_LOG);
         }
     }
     return $objErr->arrErr;
@@ -857,7 +858,7 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true)
 
             $sql_split = split(';', $sql);
             foreach ($sql_split as $key => $val) {
-                SC_Utils::sfFlush(true);
+                Eccube\Common\Util\Utils::sfFlush(true);
                 if (trim($val) != '') {
                     $ret = $objDB->query($val);
                     if (PEAR::isError($ret) && $disp_err) {
@@ -866,16 +867,16 @@ function lfExecuteSQL($filepath, $arrDsn, $disp_err = true)
                         preg_match('/\[(.*)\]/', $ret->userinfo, $arrKey);
                         $arrErr['all'] .= $arrKey[0] . '<br />';
                         $arrErr['all'] .= '>> テーブル構成の変更に失敗しました。<br />';
-                        GC_Utils_Ex::gfPrintLog($ret->userinfo, INSTALL_LOG);
+                        Eccube\Common\Util\GcUtils::gfPrintLog($ret->userinfo, INSTALL_LOG);
                         break;
                     } else {
-                        GC_Utils_Ex::gfPrintLog('OK:' . $val, INSTALL_LOG);
+                        Eccube\Common\Util\GcUtils::gfPrintLog('OK:' . $val, INSTALL_LOG);
                     }
                 }
             }
         } else {
             $arrErr['all'] = '>> ' . $objDB->message;
-            GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
+            Eccube\Common\Util\GcUtils::gfPrintLog($objDB->userinfo, INSTALL_LOG);
         }
     }
     return $arrErr;
@@ -901,21 +902,21 @@ function lfDropSequence($arrSequences, $arrDsn)
     if (!PEAR::isError($objDB)) {
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
-            SC_Utils::sfFlush(true);
+            Eccube\Common\Util\Utils::sfFlush(true);
             $seq_name = $seq[0] . '_' . $seq[1];
             if (in_array($seq_name, $exists)) {
                 $result = $objManager->dropSequence($seq_name);
                 if (PEAR::isError($result)) {
                     $arrErr['all'] = '>> ' . $result->message . '<br />';
-                    GC_Utils_Ex::gfPrintLog($result->userinfo, INSTALL_LOG);
+                    Eccube\Common\Util\GcUtils::gfPrintLog($result->userinfo, INSTALL_LOG);
                 } else {
-                    GC_Utils_Ex::gfPrintLog('OK:' . $seq_name, INSTALL_LOG);
+                    Eccube\Common\Util\GcUtils::gfPrintLog('OK:' . $seq_name, INSTALL_LOG);
                 }
             }
         }
     } else {
         $arrErr['all'] = '>> ' . $objDB->message;
-        GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
+        Eccube\Common\Util\GcUtils::gfPrintLog($objDB->userinfo, INSTALL_LOG);
     }
     return $arrErr;
 }
@@ -940,11 +941,11 @@ function lfCreateSequence($arrSequences, $arrDsn)
     if (!PEAR::isError($objDB)) {
         $exists = $objManager->listSequences();
         foreach ($arrSequences as $seq) {
-            SC_Utils::sfFlush(true);
+            Eccube\Common\Util\Utils::sfFlush(true);
             $res = $objDB->query('SELECT max(' . $seq[1] . ') FROM ' . $seq[0]);
             if (PEAR::isError($res)) {
                 $arrErr['all'] = '>> ' . $res->userinfo . '<br />';
-                GC_Utils_Ex::gfPrintLog($res->userinfo, INSTALL_LOG);
+                Eccube\Common\Util\GcUtils::gfPrintLog($res->userinfo, INSTALL_LOG);
                 return $arrErr;
             }
             $max = $res->fetchOne();
@@ -953,14 +954,14 @@ function lfCreateSequence($arrSequences, $arrDsn)
             $result = $objManager->createSequence($seq_name, $max + 1);
             if (PEAR::isError($result)) {
                 $arrErr['all'] = '>> ' . $result->message . '<br />';
-                GC_Utils_Ex::gfPrintLog($result->userinfo, INSTALL_LOG);
+                Eccube\Common\Util\GcUtils::gfPrintLog($result->userinfo, INSTALL_LOG);
             } else {
-                GC_Utils_Ex::gfPrintLog('OK:' . $seq_name, INSTALL_LOG);
+                Eccube\Common\Util\GcUtils::gfPrintLog('OK:' . $seq_name, INSTALL_LOG);
             }
         }
     } else {
         $arrErr['all'] = '>> ' . $objDB->message;
-        GC_Utils_Ex::gfPrintLog($objDB->userinfo, INSTALL_LOG);
+        Eccube\Common\Util\GcUtils::gfPrintLog($objDB->userinfo, INSTALL_LOG);
     }
     return $arrErr;
 }
@@ -1019,7 +1020,7 @@ function lfMakeConfigFile()
     if ($_POST['db_skip'] && defined('AUTH_MAGIC')) {
         $auth_magic = AUTH_MAGIC;
     } else {
-        $auth_magic = SC_Utils_Ex::sfGetRandomString(40);
+        $auth_magic = Eccube\Common\Util\Utils::sfGetRandomString(40);
         define('AUTH_MAGIC', $auth_magic);
     }
 
@@ -1139,7 +1140,7 @@ function renameAdminDir($adminDir)
        define('ADMIN_DIR', 'admin/');
     }
 
-    $oldAdminDir = SC_Utils_Ex::sfTrimURL(ADMIN_DIR);
+    $oldAdminDir = Eccube\Common\Util\Utils::sfTrimURL(ADMIN_DIR);
     if ($adminDir === $oldAdminDir) {
         return true;
     }
@@ -1152,7 +1153,7 @@ function renameAdminDir($adminDir)
     return true;
 }
 
-function getArrayDsn(SC_FormParam $objDBParam)
+function getArrayDsn(Eccube\Common\FormParam $objDBParam)
 {
     $arrRet = $objDBParam->getHashArray();
 

@@ -32,7 +32,7 @@ require_once(realpath(dirname(__FILE__)) . "/../../data/class/SC_Query.php");
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_Query_Test extends PHPUnit_Framework_TestCase 
+class SC_Query_Test extends PHPUnit_Common_TestCase 
 {
 
     /** SC_Query インスタンス */

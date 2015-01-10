@@ -42,6 +42,7 @@ install:
   - echo extension=php_gd2.dll >> C:\tools\php\php.ini
   - echo extension=php_mbstring.dll >> C:\tools\php\php.ini
   - echo extension=php_mysql.dll >> C:\tools\php\php.ini
+  - echo extension=php_pgsql.dll >> C:\tools\php\php.ini
   - echo extension=php_curl.dll >> C:\tools\php\php.ini
   - echo output_buffering = Off >> C:\tools\php\php.ini
   - echo default_charset = UTF-8 >> C:\tools\php\php.ini
@@ -59,8 +60,7 @@ build: off
 
 before_test:
   - bash eccube_install.sh mysql
-  - cp tests/require.php.jenkins tests/require.php
-    
+
 test_script:
   - php -i
   - vendor\bin\phpunit.bat --bootstrap data\config\config.php tests

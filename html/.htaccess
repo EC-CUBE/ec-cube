@@ -13,3 +13,12 @@ php_value mbstring.internal_encoding UTF-8
 php_value upload_max_filesize 5M
 #php_value post_max_size 8M
 php_flag register_globals off
+
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !.*install.*
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L]
+
+
+php_flag display_errors on
+php_value error_reporting 6143

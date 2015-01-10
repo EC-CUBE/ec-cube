@@ -32,7 +32,7 @@ require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/LC_Page.p
  * @author LOCKON CO.,LTD.
  * @version $Id:LC_Page_Test.php 15116 2007-07-23 11:32:53Z nanasess $
  */
-class LC_Page_Test extends PHPUnit_Framework_TestCase 
+class LC_Page_Test extends PHPUnit_Common_TestCase 
 {
 
     // }}}

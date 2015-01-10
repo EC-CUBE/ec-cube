@@ -35,17 +35,18 @@ if (!defined('CACHE_REALDIR')) {
     /** キャッシュ生成ディレクトリ */
     define('CACHE_REALDIR', DATA_REALDIR . "cache/");
 }
-
 // クラスのオートローディングに対応するフックを入れるために、ここに入れる必要あり
-require_once(CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Plugin_Ex.php');
+//require_once(CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Plugin_Ex.php');
 
 // クラスのオートローディングを定義する
-require_once(CLASS_EX_REALDIR . 'SC_ClassAutoloader_Ex.php');
-spl_autoload_register(array('SC_ClassAutoloader_Ex', 'autoload'));
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/Eccube/Common/ClassAutoloader.php';
+$Autoloader = new Eccube\Common\ClassAutoloader();
+spl_autoload_register(array($Autoloader, 'autoload'));
 
-SC_Helper_HandleError_Ex::load();
+Eccube\Common\Helper\HandleErrorHelper::load();
+//SC_Helper_HandleError_Ex::load();
 
 // アプリケーション初期化処理
-$objInit = new SC_Initial_Ex();
+$objInit = new Eccube\Common\Initial();
 $objInit->init();
-

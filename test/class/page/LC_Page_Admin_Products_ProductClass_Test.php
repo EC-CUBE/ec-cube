@@ -32,7 +32,7 @@ require_once(realpath(dirname(__FILE__)) . '/../../../data/class/pages/admin/pro
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Framework_TestCase 
+class LC_Page_Admin_Products_ProductClass_Test extends PHPUnit_Common_TestCase 
 {
 
     function setUp()
