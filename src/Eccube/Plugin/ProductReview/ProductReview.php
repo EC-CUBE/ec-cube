@@ -31,7 +31,7 @@ class ProductReview implements ServiceProviderInterface
             $objHelperPlugin->addAction("Eccube.Page.Products.Detail.action_after", function ($objPage) use ($app) {
                 //レビュー情報の取得
                 $objReview = new ReviewHelper();
-                $objPage->arrReview = $objReview->getListByProductId($objPage->tpl_product_id);var_dump($objPage->tpl_product_id, $objPage->arrReview);
+                $objPage->arrReview = $objReview->getListByProductId($objPage->tpl_product_id);
             });
 
             return $objHelperPlugin;
