@@ -24,15 +24,15 @@ function smarty_function_render($params, &$smarty)
     $filename = $params['items']['filename'];
 
     $classes = array(
-        'calendar'  => 'Eccube\\Page\\Bloc\\Calendar',
-        'cart'      => 'Eccube\\Page\\Bloc\\Cart',
-        'category'  => 'Eccube\\Page\\Bloc\\Category',
-        'login'     => 'Eccube\\Page\\Bloc\\Login',
+        'calendar' => 'Eccube\\Page\\Bloc\\Calendar',
+        'cart' => 'Eccube\\Page\\Bloc\\Cart',
+        'category' => 'Eccube\\Page\\Bloc\\Category',
+        'login' => 'Eccube\\Page\\Bloc\\Login',
         'login_footer' => 'Eccube\\Page\\Bloc\\LoginFooter',
         'login_header' => 'Eccube\\Page\\Bloc\\LoginHeader',
         'navi_footer' => 'Eccube\\Page\\Bloc\\NaviFooter',
         'navi_header' => 'Eccube\\Page\\Bloc\\NaviHeader',
-        'news'      => 'Eccube\\Page\\Bloc\\News',
+        'news' => 'Eccube\\Page\\Bloc\\News',
         'recommend' => 'Eccube\\Page\\Bloc\\Recommend',
         'search_products' => 'Eccube\\Page\\Bloc\\SearchProducts',
     );

@@ -18,7 +18,9 @@
  */
 function smarty_modifier_script_escape($value)
 {
-    if (is_array($value)) return $value;
+    if (is_array($value)) {
+        return $value;
+    }
 
     $pattern = "/<script.*?>|<\/script>|javascript:/i";
     $convert = '#script tag escaped#';

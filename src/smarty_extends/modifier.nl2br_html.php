@@ -28,11 +28,12 @@ function smarty_modifier_nl2br_html($string)
     $keys = array_keys($lines);
     $last_key = end($keys); // 最終行のキー
     foreach ($keys as $key) {
-        if ($key == $last_key) continue; // 最終行はスキップ
-        $line =& $lines[$key];
+        if ($key == $last_key) {
+            continue; // 最終行はスキップ
+        }
+        $line = & $lines[$key];
         if (
-            !preg_match('/<\/(address|blockquote|caption|center|col|colgroup|dd|del|dir|div|dl|dt|fieldset|form|frame|frameset|h[1-6]|hr|ins|isindex|legend|li|menu|noframes|noscript|ol|optgroup|option|p|pre|table|tbody|td|tfoot|th|thead|tr|ul)>$/i', $line)
-            && !preg_match('/<[a-z0-9]+\s*[^<]*\/?>$/i', $line)
+            !preg_match('/<\/(address|blockquote|caption|center|col|colgroup|dd|del|dir|div|dl|dt|fieldset|form|frame|frameset|h[1-6]|hr|ins|isindex|legend|li|menu|noframes|noscript|ol|optgroup|option|p|pre|table|tbody|td|tfoot|th|thead|tr|ul)>$/i', $line) && !preg_match('/<[a-z0-9]+\s*[^<]*\/?>$/i', $line)
         ) {
             $line .= '<br />';
         }

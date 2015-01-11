@@ -27,7 +27,7 @@ use Eccube\Framework\Display;
  * の2種類が選択できますが、どちらの設定であっても下記のように呼び出すことで
  * 適切にセッションを開始することができます.
  *
- * $sessionFactory = \Eccube\SessionFactory::getInstance()
+ * $sessionFactory = \Eccube\Framework\SessionFactory::getInstance()
  * $sessionFactory->initSession();
  *
  * @package Session

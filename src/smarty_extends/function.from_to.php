@@ -60,7 +60,7 @@ function smarty_function_from_to($params, &$smarty)
 
     if ($escape) {
         $from = smarty_function_escape_special_chars($from);
-        $to   = smarty_function_escape_special_chars($to);
+        $to = smarty_function_escape_special_chars($to);
     }
 
     if ($from === $to) {
