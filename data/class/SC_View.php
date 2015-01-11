@@ -56,7 +56,7 @@ class SC_View
         $this->_smarty->register_function('printXMLDeclaration', array('GC_Utils_Ex', 'printXMLDeclaration'));
 
         // default escape
-        $this->_smarty->default_modifiers = array('escape', 'nl2br');
+        $this->_smarty->escape_html = true;
         $this->_smarty->register_function('include_php_ex', array($this, 'include_php_ex'));
         $this->_smarty->plugins_dir = array(
             'plugins',
