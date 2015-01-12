@@ -91,7 +91,7 @@ class Index extends AbstractPage
             Utils::sfDispSiteError(PAGE_ERROR, '', true);
         }
 
-        CustomerHelper::sfCustomerEntryParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfCustomerEntryParam($objFormParam);
         $objFormParam->setParam($_POST);
 
         // mobile用（戻るボタンでの遷移かどうかを判定）
@@ -127,7 +127,7 @@ class Index extends AbstractPage
                 }
 
                 //-- 確認
-                $this->arrErr = CustomerHelper::sfCustomerEntryErrorCheck($objFormParam);
+                $this->arrErr = Application::alias('eccube.helper.customer')->sfCustomerEntryErrorCheck($objFormParam);
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
                     //パスワード表示
@@ -139,7 +139,7 @@ class Index extends AbstractPage
                 break;
             case 'complete':
                 //-- 会員登録と完了画面
-                $this->arrErr = CustomerHelper::sfCustomerEntryErrorCheck($objFormParam);
+                $this->arrErr = Application::alias('eccube.helper.customer')->sfCustomerEntryErrorCheck($objFormParam);
                 if (empty($this->arrErr)) {
                     $uniqid             = $this->lfRegistCustomerData($this->lfMakeSqlVal($objFormParam));
 
@@ -154,7 +154,7 @@ class Index extends AbstractPage
                     }
 
                     // 完了ページに移動させる。
-                    Application::alias('eccube.response')->sendRedirect('complete.php', array('ci' => CustomerHelper::sfGetCustomerId($uniqid)));
+                    Application::alias('eccube.response')->sendRedirect('complete.php', array('ci' => Application::alias('eccube.helper.customer')->sfGetCustomerId($uniqid)));
                 }
                 break;
             case 'return':
@@ -174,7 +174,7 @@ class Index extends AbstractPage
      */
     public function lfRegistCustomerData($sqlval)
     {
-        CustomerHelper::sfEditCustomerData($sqlval);
+        Application::alias('eccube.helper.customer')->sfEditCustomerData($sqlval);
 
         return $sqlval['secret_key'];
     }
@@ -205,7 +205,7 @@ class Index extends AbstractPage
          * secret_keyは、テーブルで重複許可されていない場合があるので、
          * 本会員登録では利用されないがセットしておく。
          */
-        $arrResults['secret_key'] = CustomerHelper::sfGetUniqSecretKey();
+        $arrResults['secret_key'] = Application::alias('eccube.helper.customer')->sfGetUniqSecretKey();
 
         // 入会時ポイント
         $CONF = Application::alias('eccube.helper.db')->getBasisData();

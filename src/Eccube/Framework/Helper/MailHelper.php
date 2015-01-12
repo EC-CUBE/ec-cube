@@ -355,9 +355,9 @@ class MailHelper
     {
         // 会員データの取得
         if (Utils::sfIsInt($customer_id)) {
-            $arrCustomerData = CustomerHelper::sfGetCustomerDataFromId($customer_id);
+            $arrCustomerData = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($customer_id);
         } else {
-            $arrCustomerData = CustomerHelper::sfGetCustomerDataFromId('', 'secret_key = ?', array($secret_key));
+            $arrCustomerData = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId('', 'secret_key = ?', array($secret_key));
         }
         if (Utils::isBlank($arrCustomerData)) {
             return false;

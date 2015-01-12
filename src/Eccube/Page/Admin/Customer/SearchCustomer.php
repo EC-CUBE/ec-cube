@@ -89,7 +89,7 @@ class SearchCustomer extends AbstractAdminPage
      */
     public function lfInitParam(&$objFormParam)
     {
-        CustomerHelper::sfSetSearchParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfSetSearchParam($objFormParam);
     }
 
     /**
@@ -100,7 +100,7 @@ class SearchCustomer extends AbstractAdminPage
      */
     public function lfCheckError(&$objFormParam)
     {
-        return CustomerHelper::sfCheckErrorSearchParam($objFormParam);
+        return Application::alias('eccube.helper.customer')->sfCheckErrorSearchParam($objFormParam);
     }
 
     /**
@@ -111,6 +111,6 @@ class SearchCustomer extends AbstractAdminPage
      */
     public function lfDoSearch($arrParam)
     {
-        return CustomerHelper::sfGetSearchData($arrParam);
+        return Application::alias('eccube.helper.customer')->sfGetSearchData($arrParam);
     }
 }

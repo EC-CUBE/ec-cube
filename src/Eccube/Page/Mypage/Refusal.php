@@ -136,7 +136,7 @@ class Refusal extends AbstractMypage
      */
     public function lfDeleteCustomer($customer_id)
     {
-        return CustomerHelper::delete($customer_id);
+        return Application::alias('eccube.helper.customer')->delete($customer_id);
     }
 
     /**
@@ -150,7 +150,7 @@ class Refusal extends AbstractMypage
     {
         // 会員データの取得
         if (Utils::sfIsInt($customer_id)) {
-            $arrCustomerData = CustomerHelper::sfGetCustomerDataFromId($customer_id);
+            $arrCustomerData = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($customer_id);
         }
         if (Utils::isBlank($arrCustomerData)) {
             return false;

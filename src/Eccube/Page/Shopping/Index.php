@@ -167,7 +167,7 @@ class Index extends AbstractPage
                 // ログインに失敗した場合
                 } else {
                     // 仮登録の場合
-                    if (CustomerHelper::checkTempCustomer($objFormParam->getValue('login_email'))) {
+                    if (Application::alias('eccube.helper.customer')->checkTempCustomer($objFormParam->getValue('login_email'))) {
                         if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                             Application::alias('eccube.response')->actionExit();
@@ -278,8 +278,8 @@ class Index extends AbstractPage
      */
     public function lfInitParam(&$objFormParam)
     {
-        CustomerHelper::sfCustomerCommonParam($objFormParam, 'order_');
-        CustomerHelper::sfCustomerRegisterParam($objFormParam, false, false, 'order_');
+        Application::alias('eccube.helper.customer')->sfCustomerCommonParam($objFormParam, 'order_');
+        Application::alias('eccube.helper.customer')->sfCustomerRegisterParam($objFormParam, false, false, 'order_');
 
         // 不要なパラメーターの削除
         // XXX: 共通化したことをうまく使えば、以前あった購入同時会員登録も復活出来そうですが
@@ -291,7 +291,7 @@ class Index extends AbstractPage
 
         $objFormParam->addParam('別のお届け先', 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
 
-        CustomerHelper::sfCustomerCommonParam($objFormParam, 'shipping_');
+        Application::alias('eccube.helper.customer')->sfCustomerCommonParam($objFormParam, 'shipping_');
     }
 
     /**
@@ -403,11 +403,11 @@ class Index extends AbstractPage
     {
         $arrParams = $objFormParam->getHashArray();
 
-        $objErr = CustomerHelper::sfCustomerCommonErrorCheck($objFormParam, 'order_');
+        $objErr = Application::alias('eccube.helper.customer')->sfCustomerCommonErrorCheck($objFormParam, 'order_');
 
         // 別のお届け先チェック
         if (isset($arrParams['deliv_check']) && $arrParams['deliv_check'] == '1') {
-            $objErr2 = CustomerHelper::sfCustomerCommonErrorCheck($objFormParam, 'shipping_');
+            $objErr2 = Application::alias('eccube.helper.customer')->sfCustomerCommonErrorCheck($objFormParam, 'shipping_');
             $objErr->arrErr = array_merge((array) $objErr->arrErr, (array) $objErr2->arrErr);
         } else {
             // shipping系のエラーは無視

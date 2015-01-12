@@ -149,7 +149,7 @@ class Index extends AbstractAdminPage
      */
     public function lfInitParam(&$objFormParam)
     {
-        CustomerHelper::sfSetSearchParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfSetSearchParam($objFormParam);
         $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
 
@@ -161,7 +161,7 @@ class Index extends AbstractAdminPage
      */
     public function lfCheckError(&$objFormParam)
     {
-        return CustomerHelper::sfCheckErrorSearchParam($objFormParam);
+        return Application::alias('eccube.helper.customer')->sfCheckErrorSearchParam($objFormParam);
     }
 
     /**
@@ -172,7 +172,7 @@ class Index extends AbstractAdminPage
      */
     public function lfDoDeleteCustomer($customer_id)
     {
-        return CustomerHelper::delete($customer_id);
+        return Application::alias('eccube.helper.customer')->delete($customer_id);
     }
 
     /**
@@ -183,7 +183,7 @@ class Index extends AbstractAdminPage
      */
     public function lfDoResendMail($customer_id)
     {
-        $arrData = CustomerHelper::sfGetCustomerDataFromId($customer_id);
+        $arrData = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($customer_id);
         if (Utils::isBlank($arrData) or $arrData['del_flg'] == 1) {
             //対象となるデータが見つからない、または削除済み
             return false;
@@ -205,7 +205,7 @@ class Index extends AbstractAdminPage
      */
     public function lfDoSearch($arrParam)
     {
-        return CustomerHelper::sfGetSearchData($arrParam);
+        return Application::alias('eccube.helper.customer')->sfGetSearchData($arrParam);
     }
 
     /**

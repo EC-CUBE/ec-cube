@@ -235,7 +235,7 @@ class Index extends AbstractPage
                 }
                 $sqlval = array();
                 $sqlval['password'] = $new_password;
-                CustomerHelper::sfEditCustomerData($sqlval, $result[0]['customer_id']);
+                Application::alias('eccube.helper.customer')->sfEditCustomerData($sqlval, $result[0]['customer_id']);
                 $arrForm['new_password'] = $new_password;
             } else {
                 // 秘密の答えが一致しなかった

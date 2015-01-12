@@ -73,7 +73,7 @@ class Index extends AbstractPage
                 $registSecretKey    = $this->lfRegistData($_GET);   //本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);          //本会員登録完了メール送信
 
-                Application::alias('eccube.response')->sendRedirect('complete.php', array('ci' => CustomerHelper::sfGetCustomerId($registSecretKey)));
+                Application::alias('eccube.response')->sendRedirect('complete.php', array('ci' => Application::alias('eccube.helper.customer')->sfGetCustomerId($registSecretKey)));
                 break;
             //--　それ以外のアクセスは無効とする
             default:
@@ -93,7 +93,7 @@ class Index extends AbstractPage
     public function lfRegistData($array)
     {
         $objQuery                   = Application::alias('eccube.query');
-        $arrRegist['secret_key']    = CustomerHelper::sfGetUniqSecretKey(); //本登録ID発行
+        $arrRegist['secret_key']    = Application::alias('eccube.helper.customer')->sfGetUniqSecretKey(); //本登録ID発行
         $arrRegist['status']        = 2;
         $arrRegist['update_date']   = 'CURRENT_TIMESTAMP';
 
@@ -117,7 +117,7 @@ class Index extends AbstractPage
         $objErr = Application::alias('eccube.check_error', $array);
 
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
-            if (!is_numeric(CustomerHelper::sfGetCustomerId($array['id'], true))) {
+            if (!is_numeric(Application::alias('eccube.helper.customer')->sfGetCustomerId($array['id'], true))) {
                 $objErr->arrErr['id'] = '※ 既に会員登録が完了しているか、無効なURLです。<br>';
             }
 

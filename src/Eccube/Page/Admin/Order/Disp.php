@@ -336,7 +336,7 @@ class Disp extends Index
         $objFormParam->setValue('point', $rollback_point);
 
         if (!Utils::isBlank($objFormParam->getValue('customer_id'))) {
-            $arrCustomer = CustomerHelper::sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
+            $arrCustomer = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
             $objFormParam->setValue('customer_point', $arrCustomer['point']);
         }
     }

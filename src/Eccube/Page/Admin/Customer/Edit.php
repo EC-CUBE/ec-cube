@@ -100,7 +100,7 @@ class Edit extends AbstractAdminPage
                     return;
                 }
                 // 指定会員の情報をセット
-                $this->arrForm = CustomerHelper::sfGetCustomerData($objFormSearchParam->getValue('edit_customer_id'), true);
+                $this->arrForm = Application::alias('eccube.helper.customer')->sfGetCustomerData($objFormSearchParam->getValue('edit_customer_id'), true);
                 // 購入履歴情報の取得
                 list($this->tpl_linemax, $this->arrPurchaseHistory, $this->objNavi) = $this->lfPurchaseHistory($objFormSearchParam->getValue('edit_customer_id'));
                 $this->arrPagenavi = $this->objNavi->arrPagenavi;
@@ -198,7 +198,7 @@ class Edit extends AbstractAdminPage
     public function lfInitParam(&$objFormParam)
     {
         // 会員項目のパラメーター取得
-        CustomerHelper::sfCustomerEntryParam($objFormParam, true);
+        Application::alias('eccube.helper.customer')->sfCustomerEntryParam($objFormParam, true);
         // 検索結果一覧画面への戻り用パラメーター
         $objFormParam->addParam('検索用データ', 'search_data', '', '', array(), '', false);
         // 会員購入履歴ページング用
@@ -213,7 +213,7 @@ class Edit extends AbstractAdminPage
      */
     public function lfInitSearchParam(&$objFormParam)
     {
-        CustomerHelper::sfSetSearchParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfSetSearchParam($objFormParam);
         // 初回受け入れ時用
         $objFormParam->addParam('編集対象会員ID', 'edit_customer_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
     }
@@ -226,7 +226,7 @@ class Edit extends AbstractAdminPage
      */
     public function lfCheckErrorSearchParam(&$objFormParam)
     {
-        return CustomerHelper::sfCheckErrorSearchParam($objFormParam);
+        return Application::alias('eccube.helper.customer')->sfCheckErrorSearchParam($objFormParam);
     }
 
     /**
@@ -237,7 +237,7 @@ class Edit extends AbstractAdminPage
      */
     public function lfCheckError(&$objFormParam)
     {
-        $arrErr = CustomerHelper::sfCustomerMypageErrorCheck($objFormParam, true);
+        $arrErr = Application::alias('eccube.helper.customer')->sfCustomerMypageErrorCheck($objFormParam, true);
 
         // メアド重複チェック(共通ルーチンは使えない)
         $objQuery   = Application::alias('eccube.query');
@@ -291,13 +291,13 @@ class Edit extends AbstractAdminPage
         if (!is_numeric($arrData['customer_id'])) {
             $arrData['secret_key'] = Utils::sfGetUniqRandomId('r');
         } else {
-            $arrOldCustomerData = CustomerHelper::sfGetCustomerData($arrData['customer_id']);
+            $arrOldCustomerData = Application::alias('eccube.helper.customer')->sfGetCustomerData($arrData['customer_id']);
             if ($arrOldCustomerData['status'] != $arrData['status']) {
                 $arrData['secret_key'] = Utils::sfGetUniqRandomId('r');
             }
         }
 
-        return CustomerHelper::sfEditCustomerData($arrData, $arrData['customer_id']);
+        return Application::alias('eccube.helper.customer')->sfEditCustomerData($arrData, $arrData['customer_id']);
     }
 
     /**

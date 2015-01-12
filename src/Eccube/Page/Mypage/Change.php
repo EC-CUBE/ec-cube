@@ -83,7 +83,7 @@ class Change extends AbstractMypage
 
         // パラメーター管理クラス,パラメーター情報の初期化
         $objFormParam = Application::alias('eccube.form_param');
-        CustomerHelper::sfCustomerMypageParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfCustomerMypageParam($objFormParam);
         $objFormParam->setParam($_POST);    // POST値の取得
 
         switch ($this->getMode()) {
@@ -112,7 +112,7 @@ class Change extends AbstractMypage
                     }
                     break;
                 }
-                $this->arrErr = CustomerHelper::sfCustomerMypageErrorCheck($objFormParam);
+                $this->arrErr = Application::alias('eccube.helper.customer')->sfCustomerMypageErrorCheck($objFormParam);
 
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
@@ -126,7 +126,7 @@ class Change extends AbstractMypage
                 break;
             // 会員登録と完了画面
             case 'complete':
-                $this->arrErr = CustomerHelper::sfCustomerMypageErrorCheck($objFormParam);
+                $this->arrErr = Application::alias('eccube.helper.customer')->sfCustomerMypageErrorCheck($objFormParam);
 
                 // 入力エラーなし
                 if (empty($this->arrErr)) {
@@ -145,7 +145,7 @@ class Change extends AbstractMypage
                 // quiet.
                 break;
             default:
-                $objFormParam->setParam(CustomerHelper::sfGetCustomerData($customer_id));
+                $objFormParam->setParam(Application::alias('eccube.helper.customer')->sfGetCustomerData($customer_id));
                 break;
         }
         $this->arrForm = $objFormParam->getFormParamList();
@@ -165,7 +165,7 @@ class Change extends AbstractMypage
         $sqlval             = $objFormParam->getDbArray();
         $sqlval['birth']    = Utils::sfGetTimestamp($arrRet['year'], $arrRet['month'], $arrRet['day']);
 
-        CustomerHelper::sfEditCustomerData($sqlval, $customer_id);
+        Application::alias('eccube.helper.customer')->sfEditCustomerData($sqlval, $customer_id);
     }
 
     /**

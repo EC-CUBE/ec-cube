@@ -175,7 +175,7 @@ class Edit extends Index
             // 新規受注登録で入力エラーがあった場合の画面表示用に、会員の現在ポイントを取得
             if (!Utils::isBlank($objFormParam->getValue('customer_id'))) {
                 $customer_id = $objFormParam->getValue('customer_id');
-                $arrCustomer = CustomerHelper::sfGetCustomerDataFromId($customer_id);
+                $arrCustomer = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($customer_id);
                 $objFormParam->setValue('customer_point', $arrCustomer['point']);
 
                 // 新規受注登録で、ポイント利用できるように現在ポイントを設定
@@ -648,7 +648,7 @@ class Edit extends Index
         }
 
         if (!Utils::isBlank($objFormParam->getValue('customer_id'))) {
-            $arrCustomer = CustomerHelper::sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
+            $arrCustomer = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($objFormParam->getValue('customer_id'));
             $objFormParam->setValue('customer_point', $arrCustomer['point']);
         }
     }
@@ -983,7 +983,7 @@ class Edit extends Index
      */
     public function setCustomerTo($customer_id, &$objFormParam)
     {
-        $arrCustomer = CustomerHelper::sfGetCustomerDataFromId($customer_id);
+        $arrCustomer = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($customer_id);
         foreach ($arrCustomer as $key => $val) {
             $objFormParam->setValue('order_' . $key, $val);
         }

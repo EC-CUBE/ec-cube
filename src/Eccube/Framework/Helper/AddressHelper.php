@@ -152,7 +152,7 @@ class AddressHelper
      */
     public function setFormParam(&$objFormParam)
     {
-        CustomerHelper::sfCustomerCommonParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfCustomerCommonParam($objFormParam);
         $objFormParam->addParam('', 'other_deliv_id');
     }
 
@@ -164,7 +164,7 @@ class AddressHelper
      */
     public function errorCheck(&$objFormParam)
     {
-        $objErr = CustomerHelper::sfCustomerCommonErrorCheck($objFormParam);
+        $objErr = Application::alias('eccube.helper.customer')->sfCustomerCommonErrorCheck($objFormParam);
 
         return $objErr->arrErr;
     }

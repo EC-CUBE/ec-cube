@@ -320,7 +320,7 @@ class Fpdf extends Helper\FPDI
             /* @var $objPurchase PurchaseHelper */
             $objPurchase = Application::alias('eccube.helper.purchase');
             $this->arrDisp = $objPurchase->getOrder($order_id);
-            list($point) = CustomerHelper::sfGetCustomerPoint($order_id, $this->arrDisp['use_point'], $this->arrDisp['add_point']);
+            list($point) = Application::alias('eccube.helper.customer')->sfGetCustomerPoint($order_id, $this->arrDisp['use_point'], $this->arrDisp['add_point']);
             $this->arrDisp['point'] = $point;
 
             // 受注詳細データの取得

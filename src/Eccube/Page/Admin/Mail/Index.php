@@ -102,7 +102,7 @@ class Index extends AbstractAdminPage
         $this->arrHidden = $objFormParam->getSearchArray();
 
         // 入力パラメーターチェック
-        $this->arrErr = CustomerHelper::sfCheckErrorSearchParam($objFormParam);
+        $this->arrErr = Application::alias('eccube.helper.customer')->sfCheckErrorSearchParam($objFormParam);
         $this->arrForm = $objFormParam->getFormParamList();
         if (!Utils::isBlank($this->arrErr)) return;
 
@@ -111,7 +111,7 @@ class Index extends AbstractAdminPage
             // 配信先検索
             case 'search':
             case 'back':
-                list($this->tpl_linemax, $this->arrResults, $this->objNavi) = CustomerHelper::sfGetSearchData($objFormParam->getHashArray());
+                list($this->tpl_linemax, $this->arrResults, $this->objNavi) = Application::alias('eccube.helper.customer')->sfGetSearchData($objFormParam->getHashArray());
                 $this->arrPagenavi = $this->objNavi->arrPagenavi;
                 break;
             // input:検索結果画面「配信内容を設定する」押下後
@@ -181,7 +181,7 @@ class Index extends AbstractAdminPage
      */
     public function lfInitParamSearchCustomer(&$objFormParam)
     {
-        CustomerHelper::sfSetSearchParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfSetSearchParam($objFormParam);
         $objFormParam->addParam('配信形式', 'search_htmlmail', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         $objFormParam->addParam('配信メールアドレス種別', 'search_mail_type', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
     }
@@ -243,7 +243,7 @@ class Index extends AbstractAdminPage
     {
         $objQuery = Application::alias('eccube.query');
 
-        list($linemax, $arrSendCustomer, $objNavi) = CustomerHelper::sfGetSearchData($objFormParam->getHashArray(), 'All');
+        list($linemax, $arrSendCustomer, $objNavi) = Application::alias('eccube.helper.customer')->sfGetSearchData($objFormParam->getHashArray(), 'All');
         $send_customer_cnt = count($arrSendCustomer);
 
         $send_id = $objQuery->nextVal('dtb_send_history_send_id');

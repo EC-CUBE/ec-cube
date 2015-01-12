@@ -1628,7 +1628,7 @@ class CheckError
 
         $this->createParam($value);
 
-        $register_user_flg = CustomerHelper::sfCheckRegisterUserFromEmail($this->arrParam[$keyname]);
+        $register_user_flg = Application::alias('eccube.helper.customer')->sfCheckRegisterUserFromEmail($this->arrParam[$keyname]);
         switch ($register_user_flg) {
             case 1:
                 $this->arrErr[$keyname] =

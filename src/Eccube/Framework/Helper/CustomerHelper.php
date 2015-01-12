@@ -172,7 +172,7 @@ class CustomerHelper
 
         // ログインしている場合、すでに登録している自分のemailの場合
         if ($objCustomer->isLoginSuccess(true)
-            && CustomerHelper::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $email)) {
+            && Application::alias('eccube.helper.customer')->sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $email)) {
             // 自分のアドレス
             return 3;
         }
@@ -345,8 +345,8 @@ class CustomerHelper
      */
     public function sfCustomerEntryParam(&$objFormParam, $isAdmin = false)
     {
-        CustomerHelper::sfCustomerCommonParam($objFormParam);
-        CustomerHelper::sfCustomerRegisterParam($objFormParam, $isAdmin);
+        Application::alias('eccube.helper.customer')->sfCustomerCommonParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfCustomerRegisterParam($objFormParam, $isAdmin);
         if ($isAdmin) {
             $objFormParam->addParam('会員ID', 'customer_id', INT_LEN, 'n', array('NUM_CHECK'));
             $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
@@ -370,8 +370,8 @@ class CustomerHelper
      */
     public function sfCustomerMypageParam(&$objFormParam)
     {
-        CustomerHelper::sfCustomerCommonParam($objFormParam);
-        CustomerHelper::sfCustomerRegisterParam($objFormParam, false, true);
+        Application::alias('eccube.helper.customer')->sfCustomerCommonParam($objFormParam);
+        Application::alias('eccube.helper.customer')->sfCustomerRegisterParam($objFormParam, false, true);
         if (Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
             $objFormParam->addParam('携帯メールアドレス(確認)', 'email_mobile02', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'), '', false);
@@ -463,8 +463,8 @@ class CustomerHelper
      */
     public function sfCustomerEntryErrorCheck(&$objFormParam)
     {
-        $objErr = CustomerHelper::sfCustomerCommonErrorCheck($objFormParam);
-        $objErr = CustomerHelper::sfCustomerRegisterErrorCheck($objErr);
+        $objErr = Application::alias('eccube.helper.customer')->sfCustomerCommonErrorCheck($objFormParam);
+        $objErr = Application::alias('eccube.helper.customer')->sfCustomerRegisterErrorCheck($objErr);
 
         /*
          * sfCustomerRegisterErrorCheck() では, ログイン中の場合は重複チェック
@@ -473,11 +473,11 @@ class CustomerHelper
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
         if ($objCustomer->isLoginSuccess(true)
-            && CustomerHelper::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
+            && Application::alias('eccube.helper.customer')->sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
             $objErr->arrErr['email'] .= '※ すでに会員登録で使用されているメールアドレスです。<br />';
         }
         if ($objCustomer->isLoginSuccess(true)
-            && CustomerHelper::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email_mobile'))) {
+            && Application::alias('eccube.helper.customer')->sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email_mobile'))) {
             $objErr->arrErr['email_mobile'] .= '※ すでに会員登録で使用されているメールアドレスです。<br />';
         }
 
@@ -497,8 +497,8 @@ class CustomerHelper
         $objFormParam->toLower('email_mobile');
         $objFormParam->toLower('email_mobile02');
 
-        $objErr = CustomerHelper::sfCustomerCommonErrorCheck($objFormParam);
-        $objErr = CustomerHelper::sfCustomerRegisterErrorCheck($objErr, $isAdmin);
+        $objErr = Application::alias('eccube.helper.customer')->sfCustomerCommonErrorCheck($objFormParam);
+        $objErr = Application::alias('eccube.helper.customer')->sfCustomerRegisterErrorCheck($objErr, $isAdmin);
 
         if (isset($objErr->arrErr['password'])
             && $objFormParam->getValue('password') == DEFAULT_PASSWORD) {
@@ -734,9 +734,9 @@ class CustomerHelper
      * @param  integer $customer_id 会員ID
      * @return boolean true:成功 false:失敗
      */
-    public static function delete($customer_id)
+    public function delete($customer_id)
     {
-        $arrData = CustomerHelper::sfGetCustomerDataFromId($customer_id, 'del_flg = 0');
+        $arrData = Application::alias('eccube.helper.customer')->sfGetCustomerDataFromId($customer_id, 'del_flg = 0');
         if (Utils::isBlank($arrData)) {
             //対象となるデータが見つからない。
             return false;
@@ -745,7 +745,7 @@ class CustomerHelper
         $arrVal = array(
             'del_flg' => '1',
         );
-        CustomerHelper::sfEditCustomerData($arrVal, $customer_id);
+        Application::alias('eccube.helper.customer')->sfEditCustomerData($arrVal, $customer_id);
 
         return true;
     }
