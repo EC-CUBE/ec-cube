@@ -294,7 +294,8 @@ class Index extends AbstractPage
         $objHelperMail->setPage($this);
 
         // メール送信オブジェクトによる送信処理
-        $objMail = new SendMail();
+        /* @var $objMail Sendmail */
+        $objMail = Application::alias('eccube.sendmail');
         $objMail->setItem(
             '', //宛先
             $objHelperMail->sfMakeSubject('パスワードを変更いたしました。'),

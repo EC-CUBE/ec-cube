@@ -158,8 +158,9 @@ class Index extends AbstractPage
         $objMailText->assign('name02', $data['name02']);
         $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         $subject = $objHelperMail->sfMakesubject('会員登録が完了しました。');
-        $objMail = new SendMail();
 
+        /* @var $objMail Sendmail */
+        $objMail = Application::alias('eccube.sendmail');
         $objMail->setItem(
                             '',                         // 宛先
                             $subject,                   // サブジェクト

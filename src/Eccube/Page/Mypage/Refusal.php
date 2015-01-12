@@ -172,7 +172,8 @@ class Refusal extends AbstractMypage
         $subject        = $objHelperMail->sfMakeSubject('退会手続きのご完了', $objMailText);
         $toCustomerMail = $objMailText->fetch('mail_templates/customer_refusal_mail.tpl');
 
-        $objMail = new SendMail();
+        /* @var $objMail Sendmail */
+        $objMail = Application::alias('eccube.sendmail');
         $objMail->setItem(
             '',                     // 宛先
             $subject,               // サブジェクト

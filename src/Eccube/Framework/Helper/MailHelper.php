@@ -98,7 +98,8 @@ class MailHelper
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
         // メール送信処理
-        $objSendMail = new SendMail();
+        /* @var $objSendMail Sendmail */
+        $objSendMail = Application::alias('eccube.sendmail');
         if ($from_address == '') $from_address = $arrInfo['email03'];
         if ($from_name == '') $from_name = $arrInfo['shop_name'];
         if ($reply_to == '') $reply_to = $arrInfo['email03'];
@@ -193,7 +194,8 @@ class MailHelper
         $body = $objMailView->fetch($this->arrMAILTPLPATH[$template_id]);
 
         // メール送信処理
-        $objSendMail = new SendMail();
+        /* @var $objSendMail Sendmail */
+        $objSendMail = Application::alias('eccube.sendmail');
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
@@ -250,7 +252,8 @@ class MailHelper
         $objMailView->assignobj($objPage);
         $body = $objMailView->fetch($tplpath);
         // メール送信処理
-        $objSendMail = new SendMail();
+        /* @var $objSendMail Sendmail */
+        $objSendMail = Application::alias('eccube.sendmail');
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
@@ -265,7 +268,8 @@ class MailHelper
     {
         $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         // メール送信処理
-        $objSendMail = new SendMail();
+        /* @var $objSendMail Sendmail */
+        $objSendMail = Application::alias('eccube.sendmail');
         $bcc = $arrInfo['email01'];
         $from = $arrInfo['email03'];
         $error = $arrInfo['email04'];
@@ -385,7 +389,8 @@ class MailHelper
             
         }
 
-        $objMail = new SendMail();
+        /* @var $objSendMail Sendmail */
+        $objMail = Application::alias('eccube.sendmail');
         $objMail->setItem(
             '',                     // 宛先
             $subject,               // サブジェクト
@@ -480,7 +485,8 @@ class MailHelper
         /* @var $objDb DbHelper */
         $objDb = Application::alias('eccube.helper.db');
         $objSite = $objDb->getBasisData();
-        $objMail = new SendMail();
+        /* @var $objSendMail Sendmail */
+        $objMail = Application::alias('eccube.sendmail');
 
         $where = 'del_flg = 0 AND send_id = ?';
         $arrMail = $objQuery->getRow('*', 'dtb_send_history', $where, array($send_id));

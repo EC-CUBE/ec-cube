@@ -253,7 +253,8 @@ class Index extends AbstractPage
             $toCustomerMail = $objMailText->fetch('mail_templates/customer_regist_mail.tpl');
         }
 
-        $objMail = new SendMail();
+        /* @var $objMail Sendmail */
+        $objMail = Application::alias('eccube.sendmail');
         $objMail->setItem(
             '',                     // 宛先
             $subject,               // サブジェクト
