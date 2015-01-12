@@ -165,7 +165,7 @@ class News extends AbstractBloc
      */
     public function lfGetNewsDetailForJson($arrData)
     {
-        $arrNewsList = NewsHelper::getNews($arrData['news_id']);
+        $arrNewsList = Application::alias('eccube.helper.news')->getNews($arrData['news_id']);
         $json =  Utils::jsonEncode($arrNewsList);    //JSON形式
 
         return $json;

@@ -72,7 +72,8 @@ class Index extends AbstractAdminPage
      */
     public function action()
     {
-        $objNews = new NewsHelper();
+        /* @var $objNews NewsHelper */
+        $objNews = Application::alias('eccube.helper.news');
 
         $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);

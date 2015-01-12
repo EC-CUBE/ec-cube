@@ -82,7 +82,8 @@ class Index extends AbstractPage
      */
     public function lfGetNews()
     {
-        $objNews = new NewsHelper();
+        /* @var $objNews NewsHelper */
+        $objNews = Application::alias('eccube.helper.news');
         $arrNews = $objNews->getList();
 
         /* @var $objDb DbHelper */
