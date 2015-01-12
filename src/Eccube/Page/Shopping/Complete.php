@@ -56,7 +56,7 @@ class Complete extends AbstractPage
      */
     public function action()
     {
-        $this->arrInfo = DbHelper::getBasisData();
+        $this->arrInfo = Application::alias('eccube.helper.db')->getBasisData();
     }
 
     /**
