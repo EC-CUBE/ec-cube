@@ -206,7 +206,8 @@ class Css extends AbstractAdminPage
      */
     public function getCSSList($css_dir)
     {
-        $objFileManager = new FileManagerHelper();
+        /* @var $objFileManager FileManagerHelper */
+        $objFileManager = Application::alias('eccube.helper.file_manager');
 
         $arrFileList = $objFileManager->sfGetFileList($css_dir);
         foreach ($arrFileList as $val) {

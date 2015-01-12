@@ -74,7 +74,8 @@ class FileManager extends AbstractAdminPage
         $this->lfInitFile($objUpFile);
 
         // ファイル操作クラス
-        $objFileManager = new FileManagerHelper();
+        /* @var $objFileManager FileManagerHelper */
+        $objFileManager = Application::alias('eccube.helper.file_manager');
 
         switch ($this->getMode()) {
             // フォルダ移動

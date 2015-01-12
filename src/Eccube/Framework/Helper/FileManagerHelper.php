@@ -50,7 +50,7 @@ class FileManagerHelper
                     if ($file != '.' && $file != '..') {
                         $path = $dir.'/'.$file;
                         // SELECT内の見た目を整えるため指定文字数で切る
-                        $file_size = Utils::sfCutString(static::sfGetDirSize($path), FILE_NAME_LEN);
+                        $file_size = Utils::sfCutString($this->sfGetDirSize($path), FILE_NAME_LEN);
                         $file_time = date('Y/m/d', filemtime($path));
 
                         // ディレクトリとファイルで格納配列を変える
@@ -84,7 +84,7 @@ class FileManagerHelper
      * @param  string $dir ディレクトリ
      * @return integer
      */
-    public static function sfGetDirSize($dir)
+    public function sfGetDirSize($dir)
     {
         $bytes = 0;
         if (file_exists($dir)) {
@@ -99,7 +99,7 @@ class FileManagerHelper
                         $bytes += filesize($path);
                     } elseif (is_dir($path) && $file != '..' && $file != '.') {
                         // 下層ファイルのバイト数を取得する為、再帰的に呼び出す。
-                        $bytes += static::sfGetDirSize($path);
+                        $bytes += $this->sfGetDirSize($path);
                     }
                 }
             } else {
@@ -343,7 +343,7 @@ class FileManagerHelper
 
         $debug_message = $dir . ' から ' . $dlFileName . " を作成します...\n";
         // ファイル一覧取得
-        $arrFileHash = static::sfGetFileList($dir);
+        $arrFileHash = $this->sfGetFileList($dir);
         $arrFileList = array();
         foreach ($arrFileHash as $val) {
             $arrFileList[] = $val['file_name'];
@@ -392,7 +392,7 @@ class FileManagerHelper
         GcUtils::gfPrintLog('解凍：' . $dir.'/'.$file_name.'->'.$dir.'/'.$unpacking_name);
 
         // フォルダ削除
-        static::deleteFile($dir . '/' . $unpacking_name);
+        $this->deleteFile($dir . '/' . $unpacking_name);
         // 圧縮ファイル削除
         unlink($path);
 
@@ -406,7 +406,7 @@ class FileManagerHelper
      * @param  boolean $del_myself $pathそのものを削除するか. true なら削除する.
      * @return void
      */
-    public static function deleteFile($path, $del_myself = true)
+    public function deleteFile($path, $del_myself = true)
     {
         $flg = false;
         // 対象が存在するかを検証.
@@ -423,7 +423,7 @@ class FileManagerHelper
                 $cur_path = $path . '/' . $item;
                 if (is_dir($cur_path)) {
                     // ディレクトリの場合、再帰処理
-                    $flg = static::deleteFile($cur_path);
+                    $flg = $this->deleteFile($cur_path);
                 } else {
                     // ファイルの場合、unlink
                     $flg = @unlink($cur_path);

@@ -127,7 +127,8 @@ class FileView extends AbstractAdminPage
         $extension = pathinfo($file, PATHINFO_EXTENSION);
 
         if (in_array($extension, $arrViewFile)) {
-            $objFileManager = new FileManagerHelper();
+            /* @var $objFileManager FileManagerHelper */
+            $objFileManager = Application::alias('eccube.helper.file_manager');
             // ファイルを読み込んで表示
             header("Content-type: text/plain\n\n");
             echo $objFileManager->sfReadFile(USER_REALDIR . $file);
