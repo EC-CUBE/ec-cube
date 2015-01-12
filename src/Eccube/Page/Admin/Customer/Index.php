@@ -58,7 +58,8 @@ class Index extends AbstractAdminPage
         $this->arrMagazineType = $masterData->getMasterData('mtb_magazine_type');
 
         // 日付プルダウン設定
-        $objDate = new Date();
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date');
         // 登録・更新日検索用
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE('Y'));

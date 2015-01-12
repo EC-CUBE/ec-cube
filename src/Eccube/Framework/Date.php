@@ -28,10 +28,14 @@ class Date
     public static $arrRegularHoliday = NULL;
 
     // コンストラクタ
-    public function __construct($start_year='', $end_year='')
+    public function __construct($start_year = '', $end_year = '')
     {
-        if ($start_year)  $this->setStartYear($start_year);
-        if ($end_year)    $this->setEndYear($end_year);
+        if ($start_year) {
+            $this->setStartYear($start_year);
+        }
+        if ($end_year) {
+            $this->setEndYear($end_year);
+        }
     }
 
     public function setStartYear($year)
@@ -79,13 +83,19 @@ class Date
      */
     public function getYear($year = '', $default_year = false, $default_key = '----')
     {
-        if ($year) $this->setStartYear($year);
+        if ($year) {
+            $this->setStartYear($year);
+        }
 
         $year = $this->start_year;
-        if (! $year) $year = DATE('Y');
+        if (!$year) {
+            $year = DATE('Y');
+        }
 
         $end_year = $this->end_year;
-        if (! $end_year) $end_year = (DATE('Y') + 3);
+        if (!$end_year) {
+            $end_year = (DATE('Y') + 3);
+        }
 
         $year_array = array();
 
@@ -105,13 +115,19 @@ class Date
 
     public function getZeroYear($year = '')
     {
-        if ($year) $this->setStartYear($year);
+        if ($year) {
+            $this->setStartYear($year);
+        }
 
         $year = $this->start_year;
-        if (! $year) $year = DATE('Y');
+        if (!$year) {
+            $year = DATE('Y');
+        }
 
         $end_year = $this->end_year;
-        if (! $end_year) $end_year = (DATE('Y') + 3);
+        if (!$end_year) {
+            $end_year = (DATE('Y') + 3);
+        }
 
         $year_array = array();
 
@@ -138,10 +154,12 @@ class Date
     {
         $month_array = array();
 
-        if ($default) $month_array[''] = '--';
+        if ($default) {
+            $month_array[''] = '--';
+        }
 
-        for ($i=0; $i < 12; $i++) {
-            $month_array[$i + 1 ] = $i + 1;
+        for ($i = 0; $i < 12; $i++) {
+            $month_array[$i + 1] = $i + 1;
         }
 
         return $month_array;
@@ -151,10 +169,12 @@ class Date
     {
         $day_array = array();
 
-        if ($default) $day_array[''] = '--';
+        if ($default) {
+            $day_array[''] = '--';
+        }
 
-        for ($i=0; $i < 31; $i++) {
-            $day_array[ $i + 1 ] = $i + 1;
+        for ($i = 0; $i < 31; $i++) {
+            $day_array[$i + 1] = $i + 1;
         }
 
         return $day_array;
@@ -197,8 +217,12 @@ class Date
      */
     public function isHoliday($year, $month, $day)
     {
-        if (is_null(static::$arrHoliday)) $this->setArrHoliday();
-        if (is_null(static::$arrRegularHoliday)) $this->setRegularHoliday();
+        if (is_null(static::$arrHoliday)) {
+            $this->setArrHoliday();
+        }
+        if (is_null(static::$arrRegularHoliday)) {
+            $this->setRegularHoliday();
+        }
 
         if (!empty(static::$arrHoliday[$month])) {
             if (in_array($day, static::$arrHoliday[$month])) {
@@ -222,7 +246,8 @@ class Date
      */
     private function setArrHoliday()
     {
-        $objHoliday = new HolidayHelper();
+        /* @var $objHoliday HolidayHelper */
+        $objHoliday = Application::alias('eccube.helper.holiday');
         $holiday = $objHoliday->getList();
         $arrHoliday = array();
         foreach ($holiday AS $val) {

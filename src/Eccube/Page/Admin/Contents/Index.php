@@ -48,7 +48,8 @@ class Index extends AbstractAdminPage
         $this->tpl_maintitle = 'コンテンツ管理';
         $this->tpl_subtitle = '新着情報管理';
         //---- 日付プルダウン設定
-        $objDate = new Date(ADMIN_NEWS_STARTYEAR);
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date', ADMIN_NEWS_STARTYEAR);
         $this->arrYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();

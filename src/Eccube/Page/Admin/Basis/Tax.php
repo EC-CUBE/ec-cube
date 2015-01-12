@@ -33,6 +33,9 @@ class Tax extends AbstractAdminPage
     /** エラー情報 */
     public $arrErr;
 
+    /** @var Date objDate */
+    public $objDate;
+
     /**
      * Page を初期化する.
      *
@@ -51,7 +54,7 @@ class Tax extends AbstractAdminPage
         $this->arrTAXCALCRULE = $masterData->getMasterData('mtb_taxrule');
 
         //適用時刻の項目値設定
-        $this->objDate = new Date();
+        $this->objDate = Application::alias('eccube.date');
         //適用時間の年を、「現在年~現在年＋2」の範囲に設定
         for ($year=date("Y"); $year<=date("Y") + 2;$year++) {
             $arrYear[$year] = $year;

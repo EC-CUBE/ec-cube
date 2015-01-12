@@ -63,7 +63,8 @@ class Calendar extends AbstractBloc
      */
     public function lfGetCalendar($disp_month = 1)
     {
-        $objDate = new Date();
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date');
         $arrCalendar = array();
         $today = date('Y/m/d');
 

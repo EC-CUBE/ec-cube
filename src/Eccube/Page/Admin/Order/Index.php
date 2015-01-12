@@ -57,7 +57,8 @@ class Index extends AbstractAdminPage
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrPageMax = $masterData->getMasterData('mtb_page_max');
 
-        $objDate = new Date();
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date');
         // 登録・更新日検索用
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE('Y'));

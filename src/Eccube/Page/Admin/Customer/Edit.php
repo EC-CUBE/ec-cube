@@ -56,7 +56,8 @@ class Edit extends AbstractAdminPage
         $this->arrMailMagazineType = $masterData->getMasterData('mtb_mail_magazine_type');
 
         // 日付プルダウン設定
-        $objDate = new Date(BIRTH_YEAR);
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date', BIRTH_YEAR);
         $this->arrYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();

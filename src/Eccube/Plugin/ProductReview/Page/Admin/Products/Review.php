@@ -52,7 +52,8 @@ class Review extends AbstractAdminPage
         $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
 
-        $objDate = new Date();
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date');
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE('Y'));

@@ -74,7 +74,8 @@ class Pdf extends AbstractAdminPage
     {
         /* @var $objDb DbHelper */
         $objDb = Application::alias('eccube.helper.db');
-        $objDate = new Date(1901);
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date', 1901);
         $objDate->setStartYear(RELEASE_YEAR);
         $this->arrYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();

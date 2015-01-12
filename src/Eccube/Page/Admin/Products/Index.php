@@ -57,7 +57,8 @@ class Index extends AbstractAdminPage
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
 
-        $objDate = new Date();
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date');
         // 登録・更新検索開始年
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE('Y'));

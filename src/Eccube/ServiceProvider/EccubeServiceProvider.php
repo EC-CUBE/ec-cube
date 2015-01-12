@@ -72,6 +72,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.check_error'] = $app->protect(function ($array = '') {
             return new \Eccube\Framework\CheckError($array);
         });
+        $app['eccube.date'] = $app->protect(function ($start_year = '', $end_year = '') {
+            return new \Eccube\Framework\Date($start_year, $end_year);
+        });
         $app['eccube.display'] = $app->protect(function ($hasPrevURL = true) {
             return new \Eccube\Framework\Display($hasPrevURL);
         });

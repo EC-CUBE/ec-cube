@@ -51,7 +51,8 @@ class Index extends AbstractPage
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->tpl_onload = 'eccube.toggleDeliveryForm();';
 
-        $objDate = new Date(BIRTH_YEAR, date('Y'));
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date', BIRTH_YEAR, date('Y'));
         $this->arrYear = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);

@@ -57,7 +57,8 @@ class Index extends AbstractAdminPage
         $this->arrMailType = $masterData->getMasterData('mtb_mail_type');
 
         // 日付プルダウン設定
-        $objDate = new Date(BIRTH_YEAR);
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date', BIRTH_YEAR);
         $this->arrBirthYear = $objDate->getYear();
         $this->arrRegistYear = $objDate->getYear();
         $this->arrMonth = $objDate->getMonth();

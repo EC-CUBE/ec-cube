@@ -56,7 +56,8 @@ class Index extends AbstractAdminPage
         $this->arrJob               = $masterData->getMasterData('mtb_job');
 
         // 登録・更新日検索用
-        $objDate                    = new Date();
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date');
         $objDate->setStartYear(RELEASE_YEAR);
         $objDate->setEndYear(DATE('Y'));
         $this->arrYear              = $objDate->getYear();

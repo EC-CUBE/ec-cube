@@ -60,9 +60,11 @@ class Holiday extends AbstractAdminPage
      */
     public function action()
     {
-        $objHoliday = new HolidayHelper();
+        /* @var $objHoliday HolidayHelper */
+        $objHoliday = Application::alias('eccube.helper.holiday');
 
-        $objDate = new Date();
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date');
         $this->arrMonth = $objDate->getMonth();
         $this->arrDay = $objDate->getDay();
 

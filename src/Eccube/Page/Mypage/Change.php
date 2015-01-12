@@ -50,7 +50,8 @@ class Change extends AbstractMypage
         $this->httpCacheControl('nocache');
 
         // 生年月日選択肢の取得
-        $objDate            = new Date(BIRTH_YEAR, date('Y'));
+        /* @var $objDate Date */
+        $objDate = Application::alias('eccube.date', BIRTH_YEAR, date('Y'));
         $this->arrYear      = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth     = $objDate->getMonth(true);
         $this->arrDay       = $objDate->getDay(true);

@@ -107,12 +107,14 @@ class Edit extends Index
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrJob = $masterData->getMasterData('mtb_job');
 
-        $objShippingDate = new Date(RELEASE_YEAR);
+        /* @var $objShippingDate Date */
+        $objShippingDate = Application::alias('eccube.date', RELEASE_YEAR);
         $this->arrYearShippingDate = $objShippingDate->getYear('', date('Y'), '');
         $this->arrMonthShippingDate = $objShippingDate->getMonth(true);
         $this->arrDayShippingDate = $objShippingDate->getDay(true);
 
-        $objBirthDate = new Date(BIRTH_YEAR, date('Y'));
+        /* @var $objBirthDate Date */
+        $objBirthDate = Application::alias('eccube.date', BIRTH_YEAR, date('Y'));
         $this->arrBirthYear = $objBirthDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrBirthMonth = $objBirthDate->getMonth(true);
         $this->arrBirthDay = $objBirthDate->getDay(true);
