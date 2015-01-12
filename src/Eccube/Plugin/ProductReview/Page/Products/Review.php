@@ -21,8 +21,8 @@ use Eccube\Framework\Product;
 use Eccube\Framework\Query;
 use Eccube\Framework\Response;
 use Eccube\Framework\Db\MasterData;
-use Eccube\Framework\Helper\ReviewHelper;
 use Eccube\Framework\Util\Utils;
+use Eccube\Plugin\ProductReview\Helper\ReviewHelper;
 
 /**
  * お客様の声投稿のページクラス.

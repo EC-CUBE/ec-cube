@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Mail;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\Query;
 use Eccube\Framework\DB\MasterData;

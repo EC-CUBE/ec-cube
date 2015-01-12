@@ -21,8 +21,8 @@ use Eccube\Framework\PageNavi;
 use Eccube\Framework\Response;
 use Eccube\Framework\DB\MasterData;
 use Eccube\Framework\Helper\CsvHelper;
-use Eccube\Framework\Helper\ReviewHelper;
 use Eccube\Framework\Util\Utils;
+use Eccube\Plugin\ProductReview\Helper\ReviewHelper;
 
 /**
  * レビュー管理 のページクラス.

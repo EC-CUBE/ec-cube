@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Mail;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\Date;
 use Eccube\Framework\FormParam;

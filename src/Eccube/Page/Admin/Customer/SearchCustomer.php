@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Customer;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Helper\CustomerHelper;

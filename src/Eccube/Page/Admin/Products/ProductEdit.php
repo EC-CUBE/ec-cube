@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Products;
 
+use Eccube\Application;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Image;

@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Order;
 
+use Eccube\Application;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Date;
 use Eccube\Framework\FormParam;

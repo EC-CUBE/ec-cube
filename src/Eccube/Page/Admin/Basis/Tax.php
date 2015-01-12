@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Basis;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Date;

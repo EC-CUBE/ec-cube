@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Order;
 
+use Eccube\Application;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\DB\MasterData;
 use Eccube\Framework\Helper\CustomerHelper;

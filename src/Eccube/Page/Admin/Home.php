@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\Query;
 use Eccube\Framework\DB\DBFactory;

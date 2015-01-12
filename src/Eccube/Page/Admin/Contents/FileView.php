@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\Contents;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Response;

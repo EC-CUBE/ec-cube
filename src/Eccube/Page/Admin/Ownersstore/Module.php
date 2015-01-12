@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Admin\OwnersStore;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 
 /**

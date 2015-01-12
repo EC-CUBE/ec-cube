@@ -102,7 +102,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/products/upload_csv_category.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSVCategory')->bind('admin_products_upload_csv_category');
 
         // system
-        $controllers->match('/system/', '\\Eccube\\Page\\Admin\\System')->bind('admin_system');
+        $controllers->match('/system/', '\\Eccube\\Page\\Admin\\System\\Index')->bind('admin_system');
         $controllers->match('/system/adminarea.php', '\\Eccube\\Page\\Admin\\System\\AdminArea')->bind('admin_system_adminarea');
         $controllers->match('/system/bkup.php', '\\Eccube\\Page\\Admin\\System\\Bkup')->bind('admin_system_bkup');
         $controllers->match('/system/delete.php', '\\Eccube\\Page\\Admin\\System\\Delete')->bind('admin_system_delete');

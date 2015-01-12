@@ -16,8 +16,8 @@ use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\DB\MasterData;
-use Eccube\Framework\Helper\ReviewHelper;
 use Eccube\Framework\Util\Utils;
+use Eccube\Plugin\ProductReview\Helper\ReviewHelper;
 
 /**
  * レビュー編集 のページクラス.
@@ -25,7 +25,7 @@ use Eccube\Framework\Util\Utils;
  * @package Page
  * @author LOCKON CO.,LTD.
  */
-class ReviewEdit extends AbstractAdminPage
+class ReviewEdit extends Review
 {
     /**
      * Page を初期化する.
