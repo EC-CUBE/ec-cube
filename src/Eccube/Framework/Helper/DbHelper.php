@@ -62,7 +62,7 @@ class DbHelper
         $dsn = $dbFactory->getDSN($dsn);
 
         /* @var $objQuery Query */
-        $objQuery = Query::getSingletonInstance($dsn);
+        $objQuery = Application::alias('eccube.query', $dsn);
 
         // テーブルが無ければエラー
         if (!in_array($tableName, $objQuery->listTables())) return false;

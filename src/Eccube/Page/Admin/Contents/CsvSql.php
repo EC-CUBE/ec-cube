@@ -307,8 +307,8 @@ class CsvSql extends AbstractAdminPage
      */
     public function lfCheckSQL($sql)
     {
-        // FIXME: 意図的に new Query しています。 force_runをtrueにする必要があるので.本当はqueryの引数で制御したい。ref Query
-        $objQuery = new Query('', true);
+        // force_run
+        $objQuery = Application::alias('eccube.query', '', true);
         $err = '';
         $sql = 'SELECT ' . $sql . ' ';
         $objErrMsg = $objQuery->query($sql);
