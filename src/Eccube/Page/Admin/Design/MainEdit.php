@@ -236,7 +236,7 @@ class MainEdit extends AbstractAdminPage
             $tpl_path = $objLayout->getTemplatePath($arrParams['device_type_id']) . $filename . '.tpl';
         }
 
-        if (!FileManagerHelper::sfWriteFile($tpl_path, $arrParams['tpl_data'])) {
+        if (!Application::alias('eccube.helper.file_manager')->sfWriteFile($tpl_path, $arrParams['tpl_data'])) {
             $this->arrErr['err'] = '※ TPLファイルの書き込みに失敗しました<br />';
             $objQuery->rollback();
 
@@ -370,6 +370,6 @@ class MainEdit extends AbstractAdminPage
         $replaceStrings = "require_once '" . str_repeat('../', substr_count($filename, '/')) . "../require.php';";
         $php_contents = str_replace($defaultStrings, $replaceStrings, $php_contents);
 
-        return FileManagerHelper::sfWriteFile($path, $php_contents);
+        return Application::alias('eccube.helper.file_manager')->sfWriteFile($path, $php_contents);
     }
 }

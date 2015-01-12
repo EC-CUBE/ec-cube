@@ -229,7 +229,7 @@ class UpDown extends AbstractAdminPage
         $objUpFile->moveTempFile();
 
         // 解凍
-        if (!FileManagerHelper::unpackFile($template_dir . '/' . $_FILES['template_file']['name'])) {
+        if (!Application::alias('eccube.helper.file_manager')->unpackFile($template_dir . '/' . $_FILES['template_file']['name'])) {
             $this->arrErr['err'] = '※ テンプレートファイルの解凍に失敗しました。<br/>';
             $objQuery->rollback();
 

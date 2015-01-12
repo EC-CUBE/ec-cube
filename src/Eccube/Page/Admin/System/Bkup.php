@@ -105,11 +105,11 @@ class Bkup extends AbstractAdminPage
 
                     $work_dir = $this->bkup_dir . $arrData['bkup_name'] . '/';
                     // バックアップデータの事前削除
-                    FileManagerHelper::deleteFile($work_dir);
+                    Application::alias('eccube.helper.file_manager')->deleteFile($work_dir);
                     // バックアップファイル作成
                     $res = $this->lfCreateBkupData($arrData['bkup_name'], $work_dir);
                     // バックアップデータの事後削除
-                    FileManagerHelper::deleteFile($work_dir);
+                    Application::alias('eccube.helper.file_manager')->deleteFile($work_dir);
 
                     $arrErrTmp[3] = array();
                     if ($res !== true) {

@@ -343,9 +343,9 @@ class Index extends AbstractAdminPage
         $objQuery->begin();
 
         // 一時展開ディレクトリにファイルがある場合は事前に削除.
-        $arrFileHash = FileManagerHelper::sfGetFileList(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
+        $arrFileHash = Application::alias('eccube.helper.file_manager')->sfGetFileList(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR);
         if (count($arrFileHash) > 0) {
-            FileManagerHelper::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
+            Application::alias('eccube.helper.file_manager')->deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
         }
 
         //シンタックスエラーがあるtar.gzをアップ後、削除するとたまにディレクトリが消えるので追加
@@ -429,7 +429,7 @@ class Index extends AbstractAdminPage
         $objQuery->commit();
 
         // 不要なファイルの削除
-        FileManagerHelper::deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile(DOWNLOADS_TEMP_PLUGIN_INSTALL_DIR, false);
 
         return $arrErr;
     }
@@ -445,14 +445,14 @@ class Index extends AbstractAdminPage
     public function rollBack($temp_dir, $plugin_id = '', $plugin_html_dir_path ='')
     {
         // 一時ディレクトリを削除.
-        FileManagerHelper::deleteFile($temp_dir, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile($temp_dir, false);
         // DBからプラグイン情報を削除
         if (empty($plugin_id) === false) {
             PluginUtil::deletePluginByPluginId($plugin_id);
         }
         // htmlディレクトリを削除
         if (empty($plugin_html_dir_path) === false) {
-            FileManagerHelper::deleteFile($plugin_html_dir_path, true);
+            Application::alias('eccube.helper.file_manager')->deleteFile($plugin_html_dir_path, true);
         }
     }
 
@@ -584,7 +584,7 @@ class Index extends AbstractAdminPage
     public function updatePlugin($target_plugin, $upload_file_name)
     {
         // アップデート前に不要なファイルを消しておきます.
-        FileManagerHelper::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
 
         $arrErr = array();
 
@@ -628,7 +628,7 @@ class Index extends AbstractAdminPage
         }
 
         // 保存ディレクトリの削除.
-        FileManagerHelper::deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile(DOWNLOADS_TEMP_PLUGIN_UPDATE_DIR, false);
 
         return $arrErr;
     }
@@ -975,11 +975,11 @@ class Index extends AbstractAdminPage
 
         PluginUtil::deletePluginByPluginId($plugin_id);
 
-        if (FileManagerHelper::deleteFile($this->getPluginDir($plugin_code)) === false) {
+        if (Application::alias('eccube.helper.file_manager')->deleteFile($this->getPluginDir($plugin_code)) === false) {
             // TODO エラー処理
         }
 
-        if (FileManagerHelper::deleteFile($this->getHtmlPluginDir($plugin_code)) === false) {
+        if (Application::alias('eccube.helper.file_manager')->deleteFile($this->getHtmlPluginDir($plugin_code)) === false) {
             // TODO エラー処理
         }
 

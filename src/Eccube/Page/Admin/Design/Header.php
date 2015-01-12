@@ -154,7 +154,7 @@ class Header extends AbstractAdminPage
         $contents = $objFormParam->getValue($division);
         $tpl_path = $this->getTemplatePath($objFormParam->getValue('device_type_id'), $division);
         if ($tpl_path === false
-            || !FileManagerHelper::sfWriteFile($tpl_path, $contents)) {
+            || !Application::alias('eccube.helper.file_manager')->sfWriteFile($tpl_path, $contents)) {
             $this->arrErr['err'] = '※ ファイルの書き込みに失敗しました<br />';
 
             return false;

@@ -171,7 +171,7 @@ class Css extends AbstractAdminPage
             }
         }
 
-        if (!FileManagerHelper::sfWriteFile($css_path, $css_data)) {
+        if (!Application::alias('eccube.helper.file_manager')->sfWriteFile($css_path, $css_data)) {
             $this->arrErr['err'] = '※ CSSの書き込みに失敗しました<br />';
 
             return false;

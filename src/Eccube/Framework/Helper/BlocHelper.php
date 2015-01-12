@@ -135,7 +135,7 @@ class BlocHelper
         }
 
         $bloc_path = $bloc_dir . $arrValues['tpl_path'];
-        if (!FileManagerHelper::sfWriteFile($bloc_path, $sqlval['bloc_html'])) {
+        if (!Application::alias('eccube.helper.file_manager')->sfWriteFile($bloc_path, $sqlval['bloc_html'])) {
             $objQuery->rollback();
 
             return false;

@@ -217,7 +217,7 @@ class Template extends AbstractAdminPage
             $error =  '※ テンプレートの削除ができませんでした<br />';
             // テンプレート削除
             $templates_dir = SMARTY_TEMPLATES_REALDIR . $template_code. '/';
-            if (FileManagerHelper::deleteFile($templates_dir) === false) {
+            if (Application::alias('eccube.helper.file_manager')->deleteFile($templates_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
 
@@ -225,7 +225,7 @@ class Template extends AbstractAdminPage
             }
             // ユーザーデータ削除
             $user_dir = USER_TEMPLATE_REALDIR. $template_code. '/';
-            if (FileManagerHelper::deleteFile($user_dir) === false) {
+            if (Application::alias('eccube.helper.file_manager')->deleteFile($user_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
 
@@ -234,7 +234,7 @@ class Template extends AbstractAdminPage
 
             // コンパイル削除
             $templates_c_dir = DATA_REALDIR. 'Smarty/templates_c/'. $template_code. '/';
-            if (FileManagerHelper::deleteFile($templates_c_dir) === false) {
+            if (Application::alias('eccube.helper.file_manager')->deleteFile($templates_c_dir) === false) {
                 $this->arrErr['err'] = $error;
                 $objQuery->rollback();
 
@@ -297,7 +297,7 @@ class Template extends AbstractAdminPage
             return false;
         }
         Utils::sfCopyDir($from_dir, $to_dir);
-        if (FileManagerHelper::downloadArchiveFiles(SMARTY_TEMPLATES_REALDIR . $template_code, $template_code) === false) {
+        if (Application::alias('eccube.helper.file_manager')->downloadArchiveFiles(SMARTY_TEMPLATES_REALDIR . $template_code, $template_code) === false) {
             $this->arrErr['err'] = '※ アーカイブファイルの作成に失敗しました<br />';
 
             return false;

@@ -140,7 +140,7 @@ class FileManager extends AbstractAdminPage
                 $this->arrErr = $objFormParam->checkError();
                 $path_exists = Utils::checkFileExistsWithInBasePath($objFormParam->getValue('select_file'), USER_REALDIR);
                 if (Utils::isBlank($this->arrErr) && ($path_exists)) {
-                    FileManagerHelper::deleteFile($objFormParam->getValue('select_file'));
+                    Application::alias('eccube.helper.file_manager')->deleteFile($objFormParam->getValue('select_file'));
                 }
                 break;
             // ファイル作成

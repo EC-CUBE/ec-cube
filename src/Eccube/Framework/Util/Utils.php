@@ -1891,10 +1891,10 @@ class Utils
     public static function clearCompliedTemplate()
     {
         // コンパイルファイルの削除処理
-        FileManagerHelper::deleteFile(COMPILE_REALDIR, false);
-        FileManagerHelper::deleteFile(COMPILE_ADMIN_REALDIR, false);
-        FileManagerHelper::deleteFile(SMARTPHONE_COMPILE_REALDIR, false);
-        FileManagerHelper::deleteFile(MOBILE_COMPILE_REALDIR, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile(COMPILE_REALDIR, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile(COMPILE_ADMIN_REALDIR, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile(SMARTPHONE_COMPILE_REALDIR, false);
+        Application::alias('eccube.helper.file_manager')->deleteFile(MOBILE_COMPILE_REALDIR, false);
     }
 
     /**
