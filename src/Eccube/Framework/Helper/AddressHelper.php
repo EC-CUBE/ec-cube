@@ -36,6 +36,7 @@ class AddressHelper
             return false;
         }
 
+        /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
         $customer_id = $sqlval['customer_id'];
         $other_deliv_id = $sqlval['other_deliv_id'];
@@ -83,9 +84,10 @@ class AddressHelper
         if ($this->delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
             return false;
         }
-        
+
+        /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
-        
+
         $col    = '*';
         $from   = 'dtb_other_deliv';
         $where  = 'customer_id = ? AND other_deliv_id = ?';
@@ -107,7 +109,8 @@ class AddressHelper
         if ($this->delivErrorCheck(array('customer_id' => $customer_id))) {
             return false;
         }
-        
+
+        /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('other_deliv_id DESC');
         //スマートフォン用の処理

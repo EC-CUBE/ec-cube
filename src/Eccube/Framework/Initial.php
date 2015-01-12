@@ -181,8 +181,8 @@ class Initial
             require_once CACHE_REALDIR . 'mtb_constants.php';
 
             // キャッシュが無ければ, 初期データからコピー
-        } elseif (is_file(CACHE_REALDIR . '../mtb_constants_init.php')) {
-            $mtb_constants = file_get_contents(CACHE_REALDIR . '../mtb_constants_init.php');
+        } elseif (is_file(CACHE_REALDIR . '../../mtb_constants_init.php')) {
+            $mtb_constants = file_get_contents(CACHE_REALDIR . '../../mtb_constants_init.php');
             if (is_writable(CACHE_REALDIR)) {
                 $handle = fopen(CACHE_REALDIR . 'mtb_constants.php', 'w');
                 if (!$handle) {
