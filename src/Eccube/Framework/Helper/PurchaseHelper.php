@@ -825,9 +825,10 @@ class PurchaseHelper
         }
         $this->registerOrderDetail($orderParams['order_id'], $arrDetail);
 
-        $objQuery->update('dtb_order_temp', array('del_flg' => 1),
-                          'order_temp_id = ?',
-                          array(SiteSession::getUniqId()));
+        $objQuery->update(
+            'dtb_order_temp', array('del_flg' => 1),
+            'order_temp_id = ?',
+            array(Application::alias('eccube.site_session')->getUniqId()));
 
         return $orderParams['order_id'];
     }
@@ -1333,7 +1334,7 @@ __EOS__;
     {
         // カートの内容を削除する.
         $objCartSession->delAllProducts($cartKey);
-        SiteSession::unsetUniqId();
+        Application::alias('eccube.site_session')->unsetUniqId();
 
         // セッションの配送情報を破棄する.
         $this->unsetAllShippingTemp(true);
