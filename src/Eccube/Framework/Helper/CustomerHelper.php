@@ -529,7 +529,8 @@ class CustomerHelper
         $arrParams = $objFormParam->getHashArray();
 
         // 入力データを渡す。
-        $objErr = new CheckError($arrParams);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrParams);
         $objErr->arrErr = $objFormParam->checkError();
 
         $objErr->doFunc(array('電話番号', $prefix . 'tel01', $prefix . 'tel02', $prefix . 'tel03'), array('TEL_CHECK'));
@@ -546,7 +547,7 @@ class CustomerHelper
      * @param  boolean       $isAdmin 管理画面チェック時:true
      * @return CheckError $objErr エラー情報
      */
-    public function sfCustomerRegisterErrorCheck(&$objErr, $isAdmin = false)
+    public function sfCustomerRegisterErrorCheck(CheckError &$objErr, $isAdmin = false)
     {
         $objErr->doFunc(array('生年月日', 'year', 'month', 'day'), array('CHECK_BIRTHDAY'));
         $objErr->doFunc(array('パスワード', 'password', PASSWORD_MIN_LEN, PASSWORD_MAX_LEN), array('NUM_RANGE_CHECK'));
@@ -631,7 +632,8 @@ class CustomerHelper
         // エラーチェック対象のパラメータ取得
         $array = $objFormParam->getHashArray();
         // 拡張エラーチェック初期化
-        $objErr = new CheckError($array);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $array);
         // 拡張エラーチェック
         $objErr->doFunc(array('誕生日(開始日)', 'search_b_start_year', 'search_b_start_month', 'search_b_start_day'), array('CHECK_DATE'));
         $objErr->doFunc(array('誕生日(終了日)', 'search_b_end_year', 'search_b_end_month', 'search_b_end_day'), array('CHECK_DATE'));

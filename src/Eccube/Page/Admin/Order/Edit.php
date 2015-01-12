@@ -669,7 +669,9 @@ class Edit extends Index
         foreach ($arrValues['shipping_date_year'] as $key_index => $year) {
             $month = $arrValues['shipping_date_month'][$key_index];
             $day = $arrValues['shipping_date_day'][$key_index];
-            $objError = new CheckError(array('shipping_date_year' => $year,
+            /* @var $objError CheckError */
+            $objError = Application::alias('eccube.check_error', array(
+                'shipping_date_year' => $year,
                 'shipping_date_month' => $month,
                 'shipping_date_day' => $day));
             $objError->doFunc(array('お届け日', 'shipping_date_year', 'shipping_date_month', 'shipping_date_day'), array('CHECK_DATE'));
@@ -681,9 +683,11 @@ class Edit extends Index
         $year = $arrValues['order_birth_year'];
         $month = $arrValues['order_birth_month'];
         $day = $arrValues['order_birth_day'];
-        $objError = new CheckError(array('order_birth_year' => $year,
-                                               'order_birth_month' => $month,
-                                               'order_birth_day' => $day));
+        /* @var $objError CheckError */
+        $objError = Application::alias('eccube.check_error', array(
+            'order_birth_year' => $year,
+            'order_birth_month' => $month,
+            'order_birth_day' => $day));
         $objError->doFunc(array('生年月日', 'order_birth_year', 'order_birth_month', 'order_birth_day'),
                           array('CHECK_BIRTHDAY'));
         $arrErrTemp['order_birth_year'] = $objError->arrErr['order_birth_year'];

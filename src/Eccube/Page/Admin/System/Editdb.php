@@ -147,7 +147,8 @@ class Editdb extends AbstractAdminPage
                             'indexflag_new' => $arrIndexFlagNew[$i],
                             'table_name' => $arrTableName[$i],
                             'column_name' => $arrColumnName[$i]);
-            $objErr = new CheckError($param);
+            /* @var $objErr CheckError */
+            $objErr = Application::alias('eccube.check_error', $param);
             $objErr->doFunc(array('インデックス(' . $i . ')', 'indexflag', INT_LEN), array('NUM_CHECK'));
             $objErr->doFunc(array('インデックス変更後(' . $i . ')', 'indexflag_new', INT_LEN), array('NUM_CHECK'));
             $objErr->doFunc(array('インデックス変更後(' . $i . ')', 'indexflag_new', INT_LEN), array('NUM_CHECK'));

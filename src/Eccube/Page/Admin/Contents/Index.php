@@ -164,7 +164,8 @@ class Index extends AbstractAdminPage
      */
     public function lfCheckError(&$objFormParam)
     {
-        $objErr = new CheckError($objFormParam->getHashArray());
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
         $objErr->doFunc(array('日付', 'year', 'month', 'day'), array('CHECK_DATE'));
 

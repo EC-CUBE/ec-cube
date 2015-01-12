@@ -307,7 +307,8 @@ class ProductClass extends AbstractAdminPage
      */
     public function lfCheckSelectClass()
     {
-        $objErr = new CheckError();
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error');
         $objErr->doFunc(array('規格1', 'class_id1'), array('EXIST_CHECK'));
         $objErr->doFunc(array('規格', 'class_id1', 'select_class_id2'), array('TOP_EXIST_CHECK'));
         $objErr->doFunc(array('規格1', '規格2', 'class_id1', 'class_id2'), array('DIFFERENT_CHECK'));

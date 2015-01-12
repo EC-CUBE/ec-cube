@@ -157,7 +157,8 @@ class CsvSql extends AbstractAdminPage
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
-        $objErr = new CheckError($objFormParam->getHashArray());
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $objFormParam->getHashArray());
         $objErr->doFunc(array('名称', 'sql_name'), array('EXIST_CHECK'));
         $objErr->doFunc(array('SQL文', 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
@@ -186,7 +187,8 @@ class CsvSql extends AbstractAdminPage
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
-        $objErr = new CheckError($objFormParam->getHashArray());
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $objFormParam->getHashArray());
         $objErr->doFunc(array('SQL文', 'csv_sql', '30000'), array('EXIST_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('SQL文には読み込み関係以外のSQLコマンドおよび";"記号', 'csv_sql', $this->lfGetSqlDenyList()), array('PROHIBITED_STR_CHECK'));
         if (!Utils::isBlank($objErr->arrErr)) {
@@ -207,7 +209,8 @@ class CsvSql extends AbstractAdminPage
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
-        $objErr = new CheckError($objFormParam->getHashArray());
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $objFormParam->getHashArray());
         $objErr->doFunc(array('SQL ID', 'sql_id'), array('EXIST_CHECK'));
         if (!Utils::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);
@@ -227,7 +230,8 @@ class CsvSql extends AbstractAdminPage
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();
         // 拡張エラーチェック
-        $objErr = new CheckError($objFormParam->getHashArray());
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $objFormParam->getHashArray());
         $objErr->doFunc(array('CSV出力対象SQL ID', 'csv_output_id'), array('EXIST_CHECK'));
         if (!Utils::isBlank($objErr->arrErr)) {
             $arrErr = array_merge($arrErr, $objErr->arrErr);

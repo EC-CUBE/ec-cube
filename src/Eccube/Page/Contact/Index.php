@@ -163,7 +163,8 @@ class Index extends AbstractPage
     {
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
-        $objErr = new CheckError($arrForm);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrForm);
         $objErr->arrErr = $objFormParam->checkError();
         $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', 'email02'), array('EQUAL_CHECK'));
 

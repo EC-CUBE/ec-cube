@@ -76,7 +76,8 @@ class ItemLookup extends Base
         case 'product_id':
         case 'product_class_id':
         default:
-            $objErr = new CheckError($arrParam);
+            /* @var $objErr CheckError */
+            $objErr = Application::alias('eccube.check_error', $arrParam);
             $objErr->doFunc(array('指定ID', 'ItemId', INT_LEN), array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
             $this->addError($objErr->arrErr);
             break;

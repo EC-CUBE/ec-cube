@@ -104,7 +104,8 @@ class EmailMobile extends AbstractPage
     public function lfCheckError(&$objFormParam)
     {
         $objFormParam->convParam();
-        $objErr         = new CheckError();
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error');
         $objErr->arrErr = $objFormParam->checkError();
 
         // FIXME: lfInitParam() で設定すれば良いように感じる

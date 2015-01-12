@@ -210,7 +210,8 @@ class Input extends AbstractAdminPage
         if (isset($arrErr) && count($arrErr) > 0) return $arrErr;
 
         // ログインID・パスワードの文字数チェック
-        $objErr = new CheckError();
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error');
         if ($mode == 'new') {
             $objErr->doFunc(array('パスワード', 'password', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));
             $objErr->doFunc(array('ログインID', 'login_id', ID_MIN_LEN, ID_MAX_LEN), array('NUM_RANGE_CHECK'));

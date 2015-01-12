@@ -515,7 +515,8 @@ class Detail extends AbstractPage
         case 'add_favorite':
             /* @var $objCustomer Customer */
             $objCustomer = Application::alias('eccube.customer');
-            $objErr = new CheckError();
+            /* @var $objErr CheckError */
+            $objErr = Application::alias('eccube.check_error');
             $customer_id = $objCustomer->getValue('customer_id');
             $favorite_product_id = $objFormParam->getValue('favorite_product_id');
             if (Application::alias('eccube.helper.db')->dataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
@@ -525,7 +526,8 @@ class Detail extends AbstractPage
         default:
             // 入力データを渡す。
             $arrRet =  $objFormParam->getHashArray();
-            $objErr = new CheckError($arrRet);
+            /* @var $objErr CheckError */
+            $objErr = Application::alias('eccube.check_error', $arrRet);
             $objErr->arrErr = $objFormParam->checkError();
 
             // 複数項目チェック

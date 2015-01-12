@@ -207,7 +207,8 @@ __EOS__;
      */
     public function lfCheckError(&$objFormParam)
     {
-        $objErr = new CheckError($objFormParam->getHashArray());
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $objFormParam->getHashArray());
         $objErr->arrErr = $objFormParam->checkError();
 
         return $objErr->arrErr;

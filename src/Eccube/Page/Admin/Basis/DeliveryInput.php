@@ -223,7 +223,8 @@ class DeliveryInput extends AbstractAdminPage
     {
         // 入力データを渡す。
         $arrRet =  $objFormParam->getHashArray();
-        $objErr = new CheckError($arrRet);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrRet);
         $objErr->arrErr = $objFormParam->checkError();
 
         if (!isset($objErr->arrErr['name'])) {

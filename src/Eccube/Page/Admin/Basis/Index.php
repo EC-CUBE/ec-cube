@@ -197,7 +197,8 @@ class Index extends AbstractAdminPage
         $arrErr = $objFormParam->checkError();
         $post = $objFormParam->getHashArray();
 
-        $objErr = new CheckError($post);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $post);
         $objErr->doFunc(array('郵便番号', 'zip01', 'zip02'), array('ALL_EXIST_CHECK'));
 
         // 電話番号チェック

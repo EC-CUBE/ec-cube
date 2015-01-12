@@ -304,7 +304,8 @@ class MainEdit extends AbstractAdminPage
     public function lfCheckError(&$objFormParam, &$arrErr)
     {
         $arrParams = $objFormParam->getHashArray();
-        $objErr = new CheckError($arrParams);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrParams);
         $objErr->arrErr =& $arrErr;
         $objErr->doFunc(array('名称', 'page_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('URL', 'filename', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK'));

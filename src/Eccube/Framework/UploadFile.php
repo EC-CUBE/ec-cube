@@ -100,7 +100,8 @@ class UploadFile
      */
     public function makeTempFile($keyname, $rename = IMAGE_RENAME)
     {
-        $objErr = new CheckError();
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error');
         $cnt = 0;
         $check = $this->checkUploadError($keyname, $objErr);
         if ($check) {
@@ -146,7 +147,8 @@ class UploadFile
     // アップロードされたダウンロードファイルを保存する。
     public function makeTempDownFile($keyname='down_file')
     {
-        $objErr = new CheckError();
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error');
         $cnt = 0;
         $check = $this->checkUploadError($keyname, $objErr);
         if ($check) {

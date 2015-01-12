@@ -230,7 +230,8 @@ class Css extends AbstractAdminPage
     public function lfCheckError(&$objFormParam, &$arrErr)
     {
         $arrParams = $objFormParam->getHashArray();
-        $objErr = new CheckError($arrParams);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrParams);
         $objErr->arrErr =& $arrErr;
         $objErr->doFunc(array('CSSファイル名', 'css_name', STEXT_LEN), array('EXIST_CHECK', 'SPTAB_CHECK', 'MAX_LENGTH_CHECK', 'FILE_NAME_CHECK_BY_NOUPLOAD'));
 

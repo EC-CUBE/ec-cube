@@ -453,7 +453,8 @@ class ProductEdit extends Index
      */
     public function lfCheckError_Edit(&$objFormParam, &$objUpFile, &$objDownFile, $arrForm)
     {
-        $objErr = new CheckError($arrForm);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrForm);
         $arrErr = array();
 
         // 入力パラメーターチェック

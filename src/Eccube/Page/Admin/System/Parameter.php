@@ -134,7 +134,8 @@ class Parameter extends AbstractAdminPage
      */
     public function errorCheck(&$arrKeys, &$arrForm)
     {
-        $objErr = new CheckError($arrForm);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrForm);
         for ($i = 0; $i < count($arrKeys); $i++) {
             $objErr->doFunc(array($arrKeys[$i],
                                   $arrForm[$arrKeys[$i]]),

@@ -113,7 +113,8 @@ class Index extends AbstractPage
      */
     public function lfCheckError($array)
     {
-        $objErr     = new CheckError($array);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $array);
 
         if (preg_match("/^[[:alnum:]]+$/", $array['id'])) {
             if (!is_numeric(CustomerHelper::sfGetCustomerId($array['id'], true))) {

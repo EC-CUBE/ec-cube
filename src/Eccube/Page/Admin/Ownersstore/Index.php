@@ -243,7 +243,8 @@ class Index extends AbstractAdminPage
      */
     public function checkUploadFile($file_key)
     {
-        $objErr = new CheckError();
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error');
         // 拡張子チェック
         $objErr->doFunc(array('プラグインファイル', $file_key, explode(',', PLUGIN_EXTENSION)), array('FILE_EXT_CHECK'));
         // ファイルサイズチェック
@@ -549,7 +550,8 @@ class Index extends AbstractAdminPage
 
             return $arrErr;
         }
-        $objErr = new CheckError($arrPluginInfo);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrPluginInfo);
         $objErr->doFunc(array('PLUGIN_CODE', 'PLUGIN_CODE', STEXT_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));
         $objErr->doFunc(array('PLUGIN_NAME', 'PLUGIN_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK'));
         $objErr->doFunc(array('CLASS_NAME', 'CLASS_NAME', STEXT_LEN), array('MAX_LENGTH_CHECK','GRAPH_CHECK'));

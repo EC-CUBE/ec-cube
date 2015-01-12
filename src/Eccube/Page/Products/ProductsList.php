@@ -271,7 +271,8 @@ class ProductsList extends AbstractPage
     {
         // 入力データを渡す。
         $arrForm =  $objFormParam->getHashArray();
-        $objErr = new CheckError($arrForm);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrForm);
         $objErr->arrErr = $objFormParam->checkError();
 
         // 動的チェック

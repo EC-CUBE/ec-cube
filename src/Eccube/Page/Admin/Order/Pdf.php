@@ -206,7 +206,8 @@ class Pdf extends AbstractAdminPage
         // 入力データを渡す。
         $arrParams = $objFormParam->getHashArray();
         $arrErr = $objFormParam->checkError();
-        $objError = new CheckError($arrParams);
+        /* @var $objErr CheckError */
+        $objError = Application::alias('eccube.check_error', $arrParams);
 
         $year = $objFormParam->getValue('year');
         if (!is_numeric($year)) {

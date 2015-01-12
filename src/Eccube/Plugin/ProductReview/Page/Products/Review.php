@@ -154,7 +154,8 @@ class Review extends AbstractPage
         $arrErr = $objFormParam->checkError();
 
         if (REVIEW_ALLOW_URL == false) {
-            $objErr = new CheckError($objFormParam->getHashArray());
+            /* @var $objErr CheckError */
+            $objErr = Application::alias('eccube.check_error', $objFormParam->getHashArray());
             // コメント欄へのURLの入力を禁止
             $objErr->doFunc(array('URL', 'comment', $this->arrReviewDenyURL), array('PROHIBITED_STR_CHECK'));
             $arrErr += $objErr->arrErr;

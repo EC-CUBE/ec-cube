@@ -133,7 +133,8 @@ class Header extends AbstractAdminPage
     public function lfCheckError(&$objFormParam, &$arrErr)
     {
         $arrParams = $objFormParam->getHashArray();
-        $objErr = new CheckError($arrParams);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrParams);
         $objErr->arrErr =& $arrErr;
         $objErr->doFunc(array('division', 'division', STEXT_LEN), array('EXIST_CHECK'));
 

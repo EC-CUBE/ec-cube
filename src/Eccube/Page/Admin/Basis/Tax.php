@@ -261,7 +261,8 @@ class Tax extends AbstractAdminPage
     {
         $arrErr = $objFormParam->checkError();
         $arrForm = $objFormParam->getHashArray();
-        $objErr = new CheckError($arrForm);
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', $arrForm);
 
         // tax_rule_id の正当性チェック
         if (!empty($arrForm['tax_rule_id'])) {
