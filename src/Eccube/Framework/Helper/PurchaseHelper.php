@@ -104,7 +104,7 @@ class PurchaseHelper
 
         //会員情報の最終購入日、購入合計を更新
         if ($customerId > 0) {
-            Customer::updateOrderSummary($customerId);
+            Application::alias('eccube.customer')->updateOrderSummary($customerId);
         }
 
         $this->cleanupSession($order_id, $objCartSession, $objCustomer, $cartkey);
@@ -1219,7 +1219,7 @@ __EOS__;
 
         //会員情報の最終購入日、購入合計を更新
         if ($arrOrderOld['customer_id'] > 0 and $arrOrderOld['status'] != $newStatus) {
-            Customer::updateOrderSummary($arrOrderOld['customer_id']);
+            Application::alias('eccube.customer')->updateOrderSummary($arrOrderOld['customer_id']);
         }
     }
 
