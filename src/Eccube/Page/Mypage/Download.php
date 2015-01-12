@@ -141,7 +141,7 @@ class Download extends AbstractPage
         // DisplayやResponseに大容量ファイルレスポンスが実装されたら移行可能だと思います。
 
         // ダウンロード実行 モバイル端末はダウンロード方法が異なる
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             // キャリアがAUのモバイル端末はさらにダウンロード方法が異なる
             if (MobileUserAgent::getCarrier() == 'ezweb') {
                 // AUモバイル

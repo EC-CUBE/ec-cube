@@ -65,7 +65,7 @@ class Kiyaku extends AbstractPage
         $this->max = count($arrKiyaku);
 
         // mobile時はGETでページ指定
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->offset = $this->lfSetOffset($_GET['offset']);
         } else {
             $this->offset = null;

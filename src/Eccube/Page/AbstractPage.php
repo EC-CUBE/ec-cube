@@ -84,6 +84,9 @@ abstract class AbstractPage
     public $arrForm;
     public $arrErr;
 
+    /** @var Display */
+    public $objDisplay;
+
     public function __construct($app = null)
     {
         $this->app = $app;
@@ -102,7 +105,7 @@ abstract class AbstractPage
         $this->tpl_authority = isset($_SESSION['authority']) ? $_SESSION['authority'] : null;
 
         // ディスプレイクラス生成
-        $this->objDisplay = new Display();
+        $this->objDisplay = Application::alias('eccube.display');
 
         if (!$this->skip_load_page_layout) {
             /* @var $objLayout PageLayoutHelper */

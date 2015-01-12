@@ -213,7 +213,7 @@ class Customer
             if ($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
                 // ただし $dont_check_email_mobile が true の場合はチェックしない。
-                if (Display::detectDevice() == DEVICE_TYPE_MOBILE && !$dont_check_email_mobile) {
+                if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE && !$dont_check_email_mobile) {
                     $email_mobile = $objQuery->get('email_mobile', 'dtb_customer', 'customer_id = ?', array($_SESSION['customer']['customer_id']));
 
                     return isset($email_mobile);
@@ -334,7 +334,7 @@ __EOS__;
      */
     public function doLogin($login_email, $login_pass)
     {
-        switch (Display::detectDevice()) {
+        switch (Application::alias('eccube.display')->detectDevice()) {
             case DEVICE_TYPE_MOBILE:
                 if (!$this->getCustomerDataFromMobilePhoneIdPass($login_pass) &&
                     !$this->getCustomerDataFromEmailPass($login_pass, $login_email, true)

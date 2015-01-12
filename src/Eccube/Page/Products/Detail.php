@@ -225,7 +225,7 @@ class Detail extends AbstractPage
         $this->tpl_onload .= 'lnOnLoad();';
 
         // モバイル用 規格選択セレクトボックスの作成
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->lfMakeSelectMobile($this, $product_id, $this->objFormParam->getValue('classcategory_id1'));
         }
 
@@ -261,7 +261,7 @@ class Detail extends AbstractPage
         }
 
         // モバイル用 ポストバック処理
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             switch ($this->mode) {
                 case 'select':
                     $this->doMobileSelect();

@@ -35,12 +35,12 @@ class RefusalComplete extends AbstractPage
         parent::init();
         $this->tpl_title    = 'MYページ';
 
-        if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_title .= '/退会手続き(完了ページ)';
         } else {
             $this->tpl_subtitle = '退会手続き(完了ページ)';
         }
-        $this->tpl_navi     = Application::alias('eccube.helper.page_layout')->getTemplatePath(Display::detectDevice()) . 'mypage/navi.tpl';
+        $this->tpl_navi     = Application::alias('eccube.helper.page_layout')->getTemplatePath(Application::alias('eccube.display')->detectDevice()) . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';
         $this->point_disp   = false;
     }

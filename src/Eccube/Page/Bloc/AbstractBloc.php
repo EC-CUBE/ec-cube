@@ -28,6 +28,9 @@ use Eccube\Framework\Util\Utils;
 abstract class AbstractBloc extends AbstractPage
 {
 
+    /** @var Display */
+    public $objDisplay;
+
     /**
      * Page を初期化する.
      *
@@ -41,7 +44,7 @@ abstract class AbstractBloc extends AbstractPage
         $this->tpl_authority = $_SESSION['authority'];
 
         // ディスプレイクラス生成
-        $this->objDisplay = new Display();
+        $this->objDisplay = Application::alias('eccube.display');
 
         $this->setTplMainpage($this->blocItems['tpl_path']);
 

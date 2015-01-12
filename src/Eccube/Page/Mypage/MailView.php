@@ -71,7 +71,7 @@ class MailView extends AbstractMypage
         $this->tpl_subject  = $arrMailView[0]['subject'];
         $this->tpl_body     = $arrMailView[0]['mail_body'];
 
-        if (Display::detectDevice() === DEVICE_TYPE_PC) {
+        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_PC) {
             $this->setTemplate('mypage/mail_view.tpl');
         } else {
             $this->tpl_title    = 'メール履歴詳細';

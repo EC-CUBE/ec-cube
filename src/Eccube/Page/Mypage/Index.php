@@ -43,7 +43,7 @@ class Index extends AbstractMypage
     {
         parent::init();
         $this->tpl_mypageno = 'index';
-        if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_subtitle = 'MYページ';
         } else {
             $this->tpl_subtitle = '購入履歴一覧';
@@ -87,7 +87,7 @@ class Index extends AbstractMypage
                                             'eccube.movePage',
                                             NAVI_PMAX,
                                             'pageno=#page#',
-                                            Display::detectDevice() !== DEVICE_TYPE_MOBILE);
+                                            Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE);
 
         $this->arrOrder = $this->lfGetOrderHistory($customer_id, $this->objNavi->start_row);
 

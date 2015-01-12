@@ -128,7 +128,7 @@ class DeliveryAddr extends AbstractPage
                         $this->lfRegistDataNonMember($objFormParam);
                     }
 
-                    if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+                    if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
                         // モバイルの場合、元のページに遷移
                         Response::sendRedirect($this->getLocation($_POST['ParentPage']));
                         Response::actionExit();
@@ -155,7 +155,7 @@ class DeliveryAddr extends AbstractPage
         }
 
         $this->arrForm = $objFormParam->getFormParamList();
-        if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_mainpage = 'mypage/delivery_addr.tpl';
         } else {
             $this->setTemplate('mypage/delivery_addr.tpl');

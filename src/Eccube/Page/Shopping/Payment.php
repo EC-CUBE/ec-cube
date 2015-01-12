@@ -151,7 +151,7 @@ class Payment extends AbstractPage
                     $this->tpl_mainpage = 'shopping/select_deliv.tpl'; // モバイル用
                 }
 
-                if (Display::detectDevice() != DEVICE_TYPE_MOBILE) {
+                if (Application::alias('eccube.display')->detectDevice() != DEVICE_TYPE_MOBILE) {
                     echo Utils::jsonEncode($arrSelectedDeliv);
                     Response::actionExit();
                 } else {
@@ -237,7 +237,7 @@ class Payment extends AbstractPage
         }
 
         // モバイル用 ポストバック処理
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE
             && Utils::isBlank($this->arrErr)) {
             $this->tpl_mainpage = $this->getMobileMainpage($this->is_single_deliv, $this->getMode());
         }

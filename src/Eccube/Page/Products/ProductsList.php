@@ -144,11 +144,11 @@ class ProductsList extends AbstractPage
         $this->tpl_linemax  = $this->lfGetProductAllNum($arrSearchCondition);
         $urlParam           = "category_id={$this->arrSearchData['category_id']}&pageno=#page#";
         // モバイルの場合に検索条件をURLの引数に追加
-        if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
             $searchNameUrl = urlencode(mb_convert_encoding($this->arrSearchData['name'], 'SJIS-win', 'UTF-8'));
             $urlParam .= "&mode={$this->mode}&name={$searchNameUrl}&orderby={$this->orderby}";
         }
-        $this->objNavi      = new PageNavi($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'eccube.movePage', NAVI_PMAX, $urlParam, Display::detectDevice() !== DEVICE_TYPE_MOBILE);
+        $this->objNavi      = new PageNavi($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'eccube.movePage', NAVI_PMAX, $urlParam, Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $objProduct);
 
         switch ($this->getMode()) {
@@ -547,7 +547,7 @@ class ProductsList extends AbstractPage
         $this->productStatus = $this->arrProducts['productStatus'];
         unset($this->arrProducts['productStatus']);
         $this->tpl_javascript .= 'eccube.productsClassCategories = ' . Utils::jsonEncode($objProduct->classCategories) . ';';
-        if (Display::detectDevice() === DEVICE_TYPE_PC) {
+        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_PC) {
             //onloadスクリプトを設定. 在庫ありの商品のみ出力する
             foreach ($this->arrProducts as $arrProduct) {
                 if ($arrProduct['stock_unlimited_max'] || $arrProduct['stock_max'] > 0) {

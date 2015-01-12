@@ -58,7 +58,7 @@ class Category extends AbstractBloc
     public function action()
     {
         // モバイル判定
-        switch (Display::detectDevice()) {
+        switch (Application::alias('eccube.display')->detectDevice()) {
             case DEVICE_TYPE_MOBILE:
                 // メインカテゴリの取得
                 $this->arrCat = $this->lfGetMainCat(true);

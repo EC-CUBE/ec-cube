@@ -28,6 +28,10 @@ use Eccube\Framework\Helper\PluginHelper;
  */
 class DispError extends AbstractAdminPage
 {
+
+    /** @var Display */
+    public $objDisplay;
+
     /**
      * Page を初期化する.
      * LC_Page_Adminクラス内でエラーページを表示しようとした際に無限ループに陥るのを防ぐため,
@@ -43,7 +47,7 @@ class DispError extends AbstractAdminPage
         $this->tpl_mainpage = 'login_error.tpl';
         $this->tpl_title = 'ログインエラー';
         // ディスプレイクラス生成
-        $this->objDisplay = new Display();
+        $this->objDisplay = Application::alias('eccube.display');
 
         // transformでフックしている場合に, 再度エラーが発生するため, コールバックを無効化.
         $objHelperPlugin = PluginHelper::getSingletonInstance($this->plugin_activate_flg);

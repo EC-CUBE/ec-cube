@@ -32,6 +32,9 @@ abstract class AbstractAdminPage extends AbstractPage
     public $tpl_maintitle;
     public $tpl_subtitle;
 
+    /** @var Display */
+    public $objDisplay;
+
     /**
      * Page を初期化する.
      *
@@ -59,7 +62,7 @@ abstract class AbstractAdminPage extends AbstractPage
         $this->tpl_authority = $_SESSION['authority'];
 
         // ディスプレイクラス生成
-        $this->objDisplay = new Display();
+        $this->objDisplay = Application::alias('eccube.display');
 
         // スーパーフックポイントを実行.
         $objPlugin = PluginHelper::getSingletonInstance($this->plugin_activate_flg);

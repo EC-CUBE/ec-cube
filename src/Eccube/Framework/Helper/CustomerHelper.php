@@ -355,7 +355,7 @@ class CustomerHelper
             $objFormParam->addParam('所持ポイント', 'point', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK'), 0);
         }
 
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             // 登録確認画面の「戻る」ボタンのためのパラメーター
             $objFormParam->addParam('戻る', 'return', '', '', array(), '', false);
         }
@@ -372,7 +372,7 @@ class CustomerHelper
     {
         CustomerHelper::sfCustomerCommonParam($objFormParam);
         CustomerHelper::sfCustomerRegisterParam($objFormParam, false, true);
-        if (Display::detectDevice() !== DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam('携帯メールアドレス', 'email_mobile', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'));
             $objFormParam->addParam('携帯メールアドレス(確認)', 'email_mobile02', null, 'a', array('NO_SPTAB', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK', 'MOBILE_EMAIL_CHECK'), '', false);
         } else {
@@ -442,7 +442,7 @@ class CustomerHelper
 
         $objFormParam->addParam('メールマガジン', $prefix . 'mailmaga_flg', INT_LEN, 'n', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
 
-        if (Display::detectDevice() !== DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE) {
             $objFormParam->addParam('メールアドレス', $prefix . 'email', null, 'a', array('NO_SPTAB', 'EXIST_CHECK', 'EMAIL_CHECK', 'SPTAB_CHECK', 'EMAIL_CHAR_CHECK'));
             $objFormParam->addParam('パスワード(確認)', $prefix . 'password02', PASSWORD_MAX_LEN, '', array('EXIST_CHECK', 'SPTAB_CHECK', 'GRAPH_CHECK'), '', false);
             if (!$isAdmin) {
@@ -552,7 +552,7 @@ class CustomerHelper
         $objErr->doFunc(array('生年月日', 'year', 'month', 'day'), array('CHECK_BIRTHDAY'));
         $objErr->doFunc(array('パスワード', 'password', PASSWORD_MIN_LEN, PASSWORD_MAX_LEN), array('NUM_RANGE_CHECK'));
 
-        if (Display::detectDevice() !== DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE) {
             if (!$isAdmin) {
                 $objErr->doFunc(array('メールアドレス', 'メールアドレス(確認)', 'email', 'email02'), array('EQUAL_CHECK'));
             }

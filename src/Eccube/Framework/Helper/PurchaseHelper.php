@@ -289,7 +289,7 @@ class PurchaseHelper
         if (Utils::isBlank($uniqId)) {
             return;
         }
-        $params['device_type_id'] = Display::detectDevice();
+        $params['device_type_id'] = Application::alias('eccube.display')->detectDevice();
         $objQuery = Application::alias('eccube.query');
         // 存在するカラムのみを対象とする
         $cols = $objQuery->listTableFields('dtb_order_temp');
@@ -505,7 +505,7 @@ class PurchaseHelper
                 }
             }
 
-            if ((Display::detectDevice() == DEVICE_TYPE_MOBILE)
+            if ((Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE)
                 && in_array('email', $keys)
             ) {
                 $email_mobile = $objCustomer->getValue('email_mobile');

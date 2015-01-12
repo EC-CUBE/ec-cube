@@ -144,7 +144,7 @@ class Utils
         $objPage->objSiteSess = $objSiteSess;
         $objPage->return_top = $return_top;
         $objPage->err_msg = $err_msg;
-        $objPage->is_mobile = Display::detectDevice() == DEVICE_TYPE_MOBILE;
+        $objPage->is_mobile = Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE;
         $objPage->process();
         exit;
     }

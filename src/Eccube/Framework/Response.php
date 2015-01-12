@@ -204,7 +204,7 @@ class Response
         $netUrl->querystring = array_merge($netUrl->querystring, $arrQueryString);
 
         $session = SessionFactory::getInstance();
-        if ((Display::detectDevice() == DEVICE_TYPE_MOBILE)
+        if ((Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE)
             || ($session->useCookie() == false)
         ) {
             $netUrl->addQueryString(session_name(), session_id());

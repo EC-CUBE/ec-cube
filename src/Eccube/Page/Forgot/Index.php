@@ -61,7 +61,7 @@ class Index extends AbstractPage
         $this->tpl_mainno = '';
         $masterData = Application::alias('eccube.db.master_data');
         $this->arrReminder = $masterData->getMasterData('mtb_reminder');
-        $this->device_type = Display::detectDevice();
+        $this->device_type = Application::alias('eccube.display')->detectDevice();
         $this->httpCacheControl('nocache');
         // デフォルトログインアドレスロード
         $objCookie = new Cookie();

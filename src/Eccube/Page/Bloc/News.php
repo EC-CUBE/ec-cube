@@ -119,7 +119,7 @@ class News extends AbstractBloc
         $arrNewsList = $objNews->getList($dispNumber, $pageNo);
 
         // モバイルサイトのセッション保持 (#797)
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             foreach ($arrNewsList as $key => $value) {
                 $arrRow =& $arrNewsList[$key];
                 if (Utils::isAppInnerUrl($arrRow['news_url'])) {

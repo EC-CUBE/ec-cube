@@ -211,7 +211,7 @@ class Index extends AbstractPage
         $CONF = Application::alias('eccube.helper.db')->getBasisData();
         $arrResults['point'] = $CONF['welcome_point'];
 
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             // 携帯メールアドレス
             $arrResults['email_mobile']     = $arrResults['email'];
             // PHONE_IDを取り出す
@@ -296,7 +296,7 @@ class Index extends AbstractPage
             $entry_urlpath,
         );
 
-        if (Display::detectDevice() !== DEVICE_TYPE_MOBILE
+        if (Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE
             && !in_array($referer_urlpath, $allowed_urlpath)) {
             return false;
         }

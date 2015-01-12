@@ -92,7 +92,7 @@ class Index extends AbstractPage
         $this->mode = $this->getMode();
 
         // モバイル対応
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             if (isset($_GET['cart_no'])) {
                 $objFormParam->setValue('cart_no', $_GET['cart_no']);
             }

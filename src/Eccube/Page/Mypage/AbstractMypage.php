@@ -70,7 +70,7 @@ abstract class AbstractMypage extends AbstractPage
             }
 
             // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-            if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+            if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
                 $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
             }
             $this->tpl_title        = 'MYページ(ログイン)';

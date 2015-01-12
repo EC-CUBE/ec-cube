@@ -88,7 +88,7 @@ class Refusal extends AbstractMypage
                 break;
 
             default:
-                if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+                if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
                     $this->refusal_transactionid = $this->getRefusalToken();
                 }
                 break;

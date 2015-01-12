@@ -138,9 +138,9 @@ class Display
     /**
      * 端末種別を判別する。
      *
-     * Display::MOBILE = ガラケー = 1
-     * Display::SMARTPHONE = スマホ = 2
-     * Display::PC = PC = 10
+     * Display::->MOBILE = ガラケー = 1
+     * Display::->SMARTPHONE = スマホ = 2
+     * Display::->PC = PC = 10
      *
      * @static
      * @param          $reset boolean

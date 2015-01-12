@@ -223,7 +223,7 @@ class History extends AbstractMypage
     {
         $this->isAU = false;
         // モバイル端末かつ、キャリアがAUの場合に処理を行う
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE && MobileUserAgent::getCarrier() == 'ezweb') {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE && MobileUserAgent::getCarrier() == 'ezweb') {
             // MIMETYPE、ファイル名のセット
             $this->tpl_arrOrderDetail = $this->lfSetMimetype($arrOrderDetails);
 

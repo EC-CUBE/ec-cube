@@ -51,7 +51,7 @@ class SessionFactory
             // セッションの維持にリクエストパラメーターを使用する
             case 'useRequest':
                 $session = new \Eccube\SessionFactory\UseRequestSessionFactory();
-                Display::detectDevice() == DEVICE_TYPE_MOBILE
+                Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE
                     ? $session->setState('mobile')
                     : $session->setState('pc');
                 break;
@@ -60,7 +60,7 @@ class SessionFactory
             case 'useCookie':
             default:
                 // モバイルの場合はEccube\SessionFactory\UseRequestを使用する
-                if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+                if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
                     $session = new \Eccube\Framework\SessionFactory\UseRequestSessionFactory();
                     $session->setState('mobile');
                 } else {

@@ -39,7 +39,7 @@ class Index extends AbstractPage
     public function init()
     {
         parent::init();
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             $this->tpl_title = 'お問い合わせ';
         } else {
             $this->tpl_title = 'お問い合わせ(入力ページ)';
@@ -49,7 +49,7 @@ class Index extends AbstractPage
         $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
 
-        if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
             // @deprecated EC-CUBE 2.11 テンプレート互換用
             $this->CONF = Application::alias('eccube.helper.db')->getBasisData();
         }

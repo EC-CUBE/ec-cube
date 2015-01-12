@@ -118,7 +118,7 @@ class Index extends AbstractPage
         }
 
         // 携帯端末IDが一致する会員が存在するかどうかをチェックする。
-        if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
             $this->tpl_valid_phone_id = $objCustomer->checkMobilePhoneId();
         }
 
@@ -144,13 +144,13 @@ class Index extends AbstractPage
                     }
 
                     // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
-                    if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+                    if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
                         if (!$objCustomer->hasValue('email_mobile')) {
                             Response::sendRedirectFromUrlPath('entry/email_mobile.php');
                             Response::actionExit();
                         }
                     // スマートフォンの場合はログイン成功を返す
-                    } elseif (Display::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                    } elseif (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                         echo Utils::jsonEncode(array('success' =>
                                                      $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                                             $objCustomer, $objPurchase,
@@ -167,7 +167,7 @@ class Index extends AbstractPage
                 } else {
                     // 仮登録の場合
                     if (CustomerHelper::checkTempCustomer($objFormParam->getValue('login_email'))) {
-                        if (Display::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                             Response::actionExit();
                         } else {
@@ -175,7 +175,7 @@ class Index extends AbstractPage
                             Response::actionExit();
                         }
                     } else {
-                        if (Display::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
                             Response::actionExit();
                         } else {

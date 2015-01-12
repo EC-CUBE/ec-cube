@@ -96,7 +96,7 @@ class LoginCheck extends AbstractPage
 
                 // エラーの場合はエラー画面に遷移
                 if (count($arrErr) > 0) {
-                    if (Display::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                    if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                         echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                         Response::actionExit();
                     } else {
@@ -119,7 +119,7 @@ class LoginCheck extends AbstractPage
                 if (count($arrErr) == 0) {
                     // ログイン処理
                     if ($objCustomer->doLogin($arrForm['login_email'], $arrForm['login_pass'])) {
-                        if (Display::detectDevice() === DEVICE_TYPE_MOBILE) {
+                        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
                             // ログインが成功した場合は携帯端末IDを保存する。
                             $objCustomer->updateMobilePhoneId();
 
@@ -137,7 +137,7 @@ class LoginCheck extends AbstractPage
                         }
 
                         // --- ログインに成功した場合
-                        if (Display::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                        if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo Utils::jsonEncode(array('success' => $url));
                         } else {
                             Response::sendRedirect($url);
@@ -156,7 +156,7 @@ class LoginCheck extends AbstractPage
                         $exists = $objQuery->exists('dtb_customer', $where, array($arrForm['login_email'], $arrForm['login_email']));
                         // ログインエラー表示 TODO リファクタリング
                         if ($exists) {
-                            if (Display::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                            if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                                 echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
                                 Response::actionExit();
                             } else {
@@ -164,7 +164,7 @@ class LoginCheck extends AbstractPage
                                 Response::actionExit();
                             }
                         } else {
-                            if (Display::detectDevice() === DEVICE_TYPE_SMARTPHONE) {
+                            if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                                 echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
                                 Response::actionExit();
                             } else {

@@ -44,6 +44,9 @@ class Index extends AbstractPage
     /** モバイルサイトの場合 true */
     public $is_mobile = false;
 
+    /** @var Display */
+    public $objDisplay;
+
     /**
      * Page を初期化する.
      *
@@ -58,7 +61,7 @@ class Index extends AbstractPage
         $this->tpl_mainpage = 'error.tpl';
         $this->tpl_title = 'エラー';
         // ディスプレイクラス生成
-        $this->objDisplay = new Display();
+        $this->objDisplay = Application::alias('eccube.display');
 
         $objHelperPlugin = PluginHelper::getSingletonInstance($this->plugin_activate_flg);
         if (is_object($objHelperPlugin)) {

@@ -115,7 +115,7 @@ class CallbackResolver extends \Silex\CallbackResolver
                     // 絵文字変換 (除去) フィルターを組み込む。
                     ob_start(array('\\Eccube\\Framework\\MobileEmoji', 'handler'));
 
-                    if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
+                    if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
                         // resize_image.phpは除外
                         if (!$objPage instanceof \Eccube\Page\ResizeImage) {
                             $objMobile = new MobileHelper();
