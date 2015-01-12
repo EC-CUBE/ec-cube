@@ -56,6 +56,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         // framework
+        $app['eccube.cart_session'] = $app->protect(function ($cartKey = 'cart') {
+            return new \Eccube\Framework\CartSession($cartKey);
+        });
         $app['eccube.customer'] = function () {
             return new \Eccube\Framework\Customer();
         };

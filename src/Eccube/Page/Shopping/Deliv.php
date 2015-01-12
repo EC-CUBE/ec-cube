@@ -70,8 +70,10 @@ class Deliv extends AbstractPage
         $objPurchase = new PurchaseHelper();
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
-        $objSiteSess = new SiteSession();
-        $objCartSess = new CartSession();
+        /* @var $objSiteSess SiteSession */
+        $objSiteSess = Application::alias('eccube.site_session');
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
         $objCustomer = new Customer();
         $objFormParam = Application::alias('eccube.form_param');
         $objAddress = new AddressHelper();

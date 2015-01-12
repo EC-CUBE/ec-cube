@@ -75,8 +75,10 @@ class Confirm extends AbstractPage
         $objPurchase = new PurchaseHelper();
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
-        $objCartSess = new CartSession();
-        $objSiteSess = new SiteSession();
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
+        /* @var $objSiteSess SiteSession */
+        $objSiteSess = Application::alias('eccube.site_session');
         $objCustomer = new Customer();
 
         $this->is_multiple = $objPurchase->isMultiple();

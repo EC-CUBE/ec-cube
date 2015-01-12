@@ -58,7 +58,8 @@ class NaviHeader extends Login
         parent::action();
 
         //ヘッダーナビのカート情報を取得
-        $objCart = new CartSession();
+        /* @var $objCart CartSession */
+        $objCart = Application::alias('eccube.cart_session');
         $cartKeys = $objCart->getKeys();
         $arrInfo = DbHelper::getBasisData();
         $this->freeRule = $arrInfo['free_rule'];

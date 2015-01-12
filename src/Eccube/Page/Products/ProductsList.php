@@ -453,7 +453,8 @@ class ProductsList extends AbstractPage
      */
     public function lfAddCart($arrForm)
     {
-        $objCartSess = new CartSession();
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
 
         $product_class_id = $arrForm['product_class_id'];
         $objCartSess->addProduct($product_class_id, $arrForm['quantity']);

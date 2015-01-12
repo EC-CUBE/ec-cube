@@ -95,7 +95,8 @@ class Order extends AbstractMypage
     // 商品をカートに追加
     public function lfAddCartProducts($arrOrderDetail)
     {
-        $objCartSess = new CartSession();
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
         foreach ($arrOrderDetail as $order_row) {
             $objCartSess->addProduct($order_row['product_class_id'], $order_row['quantity']);
         }

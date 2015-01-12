@@ -52,7 +52,8 @@ class SiteView extends View
 
     public function setPrevURL()
     {
-            $objCartSess = new CartSession();
-            $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
+        $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
     }
 }

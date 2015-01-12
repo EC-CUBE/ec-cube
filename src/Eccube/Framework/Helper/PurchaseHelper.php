@@ -69,8 +69,10 @@ class PurchaseHelper
     public function completeOrder($orderStatus = ORDER_NEW)
     {
         $objQuery = Application::alias('eccube.query');
-        $objSiteSession = new SiteSession();
-        $objCartSession = new CartSession();
+        /* @var $objSiteSession SiteSession */
+        $objSiteSession = Application::alias('eccube.site_session');
+        /* @var $objCartSession CartSession */
+        $objCartSession = Application::alias('eccube.cart_session');
         $objCustomer = new Customer();
         $customerId = $objCustomer->getValue('customer_id');
 
@@ -180,8 +182,10 @@ class PurchaseHelper
         $arrOrderTemp = $this->getOrderTempByOrderId($order_id);
         $_SESSION = array_merge($_SESSION, unserialize($arrOrderTemp['session']));
 
-        $objSiteSession = new SiteSession();
-        $objCartSession = new CartSession();
+        /* @var $objSiteSession SiteSession */
+        $objSiteSession = Application::alias('eccube.site_session');
+        /* @var $objCartSession CartSession */
+        $objCartSession = Application::alias('eccube.cart_session');
         $objCustomer = new Customer();
 
         // 新たに受注一時情報を保存する
@@ -375,7 +379,7 @@ class PurchaseHelper
 
         // カート情報から読みこめば済むと思うが、一旦保留。むしろ、カート情報も含め、セッション情報を縮小すべきかもしれない。
         /*
-        $objCartSession = new CartSession();
+        $objCartSession = Application::alias('eccube.cart_session');
         $cartKey = $objCartSession->getKey();
         // 詳細情報を取得
         $cartItems = $objCartSession->getCartList($cartKey);
@@ -1339,7 +1343,8 @@ __EOS__;
      */
     public function setShipmentItemTempForSole(&$objCartSession, $shipping_id = 0)
     {
-        $objCartSess = new CartSession();
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
 
         $this->clearShipmentItemTemp();
 
@@ -1413,7 +1418,8 @@ __EOS__;
                 foreach ($arrOrders as $key => $arrOrder) {
                     $order_id = $arrOrder['order_id'];
                     if ($key == 0) {
-                        $objCartSess = new CartSession();
+                        /* @var $objCartSess CartSession */
+                        $objCartSess = Application::alias('eccube.cart_session');
                         $cartKeys = $objCartSess->getKeys();
                         $term = PENDING_ORDER_CANCEL_TIME;
                         if (preg_match("/^[0-9]+$/", $term)) {
@@ -1450,7 +1456,8 @@ __EOS__;
             $objQuery->begin();
             $arrOrder =  static::getOrder($order_id);
             if ($arrOrder['status'] == ORDER_PENDING) {
-                $objCartSess = new CartSession();
+                /* @var $objCartSess CartSession */
+                $objCartSess = Application::alias('eccube.cart_session');
                 $cartKeys = $objCartSess->getKeys();
                 if (Utils::isBlank($cartKeys)) {
                     static::rollbackOrder($order_id, ORDER_CANCEL, true);

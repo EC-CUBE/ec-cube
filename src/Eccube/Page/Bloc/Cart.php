@@ -55,7 +55,8 @@ class Cart extends AbstractBloc
      */
     public function action()
     {
-        $objCart = new CartSession();
+        /* @var $objCartSess CartSession */
+        $objCart = Application::alias('eccube.cart_session');
         $this->isMultiple = $objCart->isMultiple();
         $this->hasDownload = $objCart->hasProductType(PRODUCT_TYPE_DOWNLOAD);
         // 旧仕様との互換のため、不自然なセットとなっている

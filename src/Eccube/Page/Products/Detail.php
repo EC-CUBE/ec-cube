@@ -608,7 +608,8 @@ class Detail extends AbstractPage
                                             $this->tpl_classcat_find1,
                                             $this->tpl_classcat_find2);
         if (count($this->arrErr) == 0) {
-            $objCartSess = new CartSession();
+            /* @var $objCartSess CartSession */
+            $objCartSess = Application::alias('eccube.cart_session');
             $product_class_id = $this->objFormParam->getValue('product_class_id');
 
             $objCartSess->addProduct($product_class_id, $this->objFormParam->getValue('quantity'));

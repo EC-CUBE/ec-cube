@@ -56,7 +56,8 @@ class Display
     public function setPrevURL()
     {
         // TODO SiteSession で実装した方が良さげ
-        $objCartSess = new CartSession();
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
         $objCartSess->setPrevURL($_SERVER['REQUEST_URI']);
     }
 

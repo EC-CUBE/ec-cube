@@ -191,7 +191,8 @@ class Customer
         PurchaseHelper::unsetAllShippingTemp(true);
         // トランザクショントークンの破棄
         SessionHelper::destroyToken();
-        $objSiteSess = new SiteSession();
+        /* @var $objSiteSess SiteSession */
+        $objSiteSess = Application::alias('eccube.site_session');
         $objSiteSess->unsetUniqId();
 
         // ログに記録する

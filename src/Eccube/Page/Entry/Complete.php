@@ -56,7 +56,8 @@ class Complete extends AbstractPage
     public function action()
     {
         // カートが空かどうかを確認する。
-        $objCartSess            = new CartSession();
+        /* @var $objCartSess CartSession */
+        $objCartSess = Application::alias('eccube.cart_session');
         $arrCartKeys = $objCartSess->getKeys();
         $this->tpl_cart_empty = true;
         foreach ($arrCartKeys as $cart_key) {
