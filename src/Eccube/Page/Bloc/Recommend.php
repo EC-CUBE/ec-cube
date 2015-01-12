@@ -69,7 +69,8 @@ class Recommend extends AbstractBloc
      */
     public function lfGetRanking()
     {
-        $objRecommend = new BestProductsHelper();
+        /* @var $objRecommend BestProductsHelper */
+        $objRecommend = Application::alias('eccube.helper.best_products');
 
         // おすすめ商品取得
         $arrRecommends = $objRecommend->getList(RECOMMEND_NUM);

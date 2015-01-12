@@ -71,7 +71,8 @@ class Recommend extends AbstractAdminPage
         $objFormParam->convParam();
         $arrPost = $objFormParam->getHashArray();
 
-        $objRecommend = new BestProductsHelper();
+        /* @var $objRecommend BestProductsHelper */
+        $objRecommend = Application::alias('eccube.helper.best_products');
 
         switch ($this->getMode()) {
             case 'down': //商品の並び替えをする。

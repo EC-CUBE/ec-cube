@@ -260,7 +260,8 @@ class Index extends AbstractAdminPage
         $objQuery->update('dtb_products_class', $sqlval, "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
         $objQuery->delete('dtb_customer_favorite_products', "product_id IN (SELECT product_id FROM dtb_products WHERE $where)", $arrParam);
 
-        $objRecommend = new BestProductsHelper();
+        /* @var $objRecommend BestProductsHelper */
+        $objRecommend = Application::alias('eccube.helper.best_products');
         $objRecommend->deleteByProductIDs($product_ids);
 
         $objQuery->update('dtb_products', $sqlval, $where, $arrParam);
