@@ -71,7 +71,8 @@ class DeliveryAddr extends AbstractPage
     {
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
-        $objAddress  = new AddressHelper();
+        /* @var $objAddress AddressHelper */
+        $objAddress = Application::alias('eccube.helper.address');
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
 
         // GETでページを指定されている場合には指定ページに戻す
@@ -168,7 +169,7 @@ class DeliveryAddr extends AbstractPage
      * @param AddressHelper $objAddress
      * @param FormParam $objFormParam
      */
-    public function lfRegistData($objAddress, $objFormParam, $customer_id)
+    public function lfRegistData(AddressHelper $objAddress, FormParam $objFormParam, $customer_id)
     {
         $arrRet     = $objFormParam->getHashArray();
         $sqlval     = $objFormParam->getDbArray();

@@ -73,8 +73,10 @@ class Multiple extends AbstractPage
         $objCartSess = Application::alias('eccube.cart_session');
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
+        /* @var $objFormParam FormParam */
         $objFormParam = Application::alias('eccube.form_param');
-        $objAddress = new AddressHelper();
+        /* @var $objAddress AddressHelper */
+        $objAddress = Application::alias('eccube.helper.address');
 
         // 複数配送先指定が無効な場合はエラー
         if (USE_MULTIPLE_SHIPPING === false) {
@@ -124,7 +126,7 @@ class Multiple extends AbstractPage
      * @param  FormParam $objFormParam FormParam インスタンス
      * @return void
      */
-    public function lfInitParam(&$objFormParam)
+    public function lfInitParam(FormParam &$objFormParam)
     {
         $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('商品名', 'name');
@@ -145,9 +147,9 @@ class Multiple extends AbstractPage
     /**
      * カートの商品を数量ごとに分割し, フォームに設定する.
      *
-     * @param  FormParam   $objFormParam FormParam インスタンス
-     * @param  CartSession $objCartSess  CartSession インスタンス
-     * @return void
+     * @param   FormParam   $objFormParam FormParam インスタンス
+     * @param   CartSession $objCartSess  CartSession インスタンス
+     * @return  void
      */
     public function setParamToSplitItems(FormParam &$objFormParam, CartSession &$objCartSess)
     {
@@ -182,7 +184,7 @@ class Multiple extends AbstractPage
      * @param AddressHelper $objAddress
      * @return array              配送住所のプルダウン用連想配列
      */
-    public function getDelivAddrs(Customer &$objCustomer, &$objPurchase, &$objAddress)
+    public function getDelivAddrs(Customer &$objCustomer, PurchaseHelper &$objPurchase, AddressHelper &$objAddress)
     {
         $masterData = Application::alias('eccube.db.master_data');
         $arrPref = $masterData->getMasterData('mtb_pref');
@@ -230,8 +232,8 @@ class Multiple extends AbstractPage
     /**
      * 入力チェックを行う.
      *
-     * @param  FormParam $objFormParam FormParam インスタンス
-     * @return array        エラー情報の配列
+     * @param   FormParam   $objFormParam FormParam インスタンス
+     * @return  array       エラー情報の配列
      */
     public function lfCheckError(FormParam &$objFormParam)
     {
@@ -290,14 +292,14 @@ class Multiple extends AbstractPage
      *
      * 会員ログインしている場合は, その他のお届け先から住所情報を取得する.
      *
-     * @param  integer            $uniqid       一時受注テーブルのユニークID
-     * @param  FormParam       $objFormParam FormParam インスタンス
-     * @param  Customer        $objCustomer  Customer インスタンス
-     * @param  PurchaseHelper $objPurchase  PurchaseHelper インスタンス
-     * @param AddressHelper $objAddress
-     * @return void
+     * @param   integer         $uniqid       一時受注テーブルのユニークID
+     * @param   FormParam       $objFormParam FormParam インスタンス
+     * @param   Customer        $objCustomer  Customer インスタンス
+     * @param   PurchaseHelper  $objPurchase  PurchaseHelper インスタンス
+     * @param   AddressHelper   $objAddress
+     * @return  void
      */
-    public function saveMultipleShippings($uniqid, &$objFormParam, &$objCustomer, &$objPurchase, &$objAddress)
+    public function saveMultipleShippings($uniqid, FormParam &$objFormParam, Customer &$objCustomer, PurchaseHelper &$objPurchase, AddressHelper &$objAddress)
     {
         $arrParams = $objFormParam->getSwapArray();
 

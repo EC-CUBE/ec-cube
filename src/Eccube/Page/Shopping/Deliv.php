@@ -76,8 +76,10 @@ class Deliv extends AbstractPage
         $objCartSess = Application::alias('eccube.cart_session');
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
+        /* @var $objFormParam FormParam */
         $objFormParam = Application::alias('eccube.form_param');
-        $objAddress = new AddressHelper();
+        /* @var $objAddress AddressHelper */
+        $objAddress = Application::alias('eccube.helper.address');
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
@@ -202,7 +204,7 @@ class Deliv extends AbstractPage
      * @param  FormParam $objFormParam FormParam インスタンス
      * @return void
      */
-    public function lfInitParam(&$objFormParam)
+    public function lfInitParam(FormParam &$objFormParam)
     {
         $objFormParam->addParam('その他のお届け先ID', 'other_deliv_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('お届け先チェック', 'deliv_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK'));
@@ -222,7 +224,7 @@ class Deliv extends AbstractPage
      * @param AddressHelper $objAddress
      * @return boolean            お届け先チェックの値が妥当な場合 true
      */
-    public function registerDeliv($other_deliv_id, $uniqid, &$objPurchase, Customer &$objCustomer, $objAddress)
+    public function registerDeliv($other_deliv_id, $uniqid, PurchaseHelper &$objPurchase, Customer &$objCustomer, AddressHelper $objAddress)
     {
         $arrValues = array();
         // 会員登録住所がチェックされている場合

@@ -64,7 +64,9 @@ class Delivery extends AbstractMypage
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
         $customer_id    = $objCustomer->getValue('customer_id');
-        $objAddress     = new AddressHelper();
+        /* @var $objAddress AddressHelper */
+        $objAddress = Application::alias('eccube.helper.address');
+        /* @var $objFormParam FormParam */
         $objFormParam   = Application::alias('eccube.form_param');
 
         $this->lfInitParam($objFormParam);
