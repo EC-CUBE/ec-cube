@@ -199,7 +199,8 @@ class History extends AbstractMypage
      */
     public function lfSetMimetype($arrOrderDetails)
     {
-        $objHelperMobile = new MobileHelper();
+        /* @var $objHelperMobile MobileHelper */
+        $objHelperMobile = Application::alias('eccube.helper.mobile');
         $i = 0;
         foreach ($arrOrderDetails as $arrOrderDetail) {
             $objQuery = Application::alias('eccube.query');

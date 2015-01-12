@@ -128,7 +128,8 @@ class LoginCheck extends AbstractPage
                              * email がモバイルドメインでは無く,
                              * 携帯メールアドレスが登録されていない場合
                              */
-                            $objMobile = new MobileHelper();
+                            /* @var $objMobile MobileHelper */
+                            $objMobile = Application::alias('eccube.helper.mobile');
                             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                                 if (!$objCustomer->hasValue('email_mobile')) {
                                     Application::alias('eccube.response')->sendRedirectFromUrlPath('entry/email_mobile.php');

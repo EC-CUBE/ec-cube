@@ -118,7 +118,8 @@ class CallbackResolver extends \Silex\CallbackResolver
                     if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
                         // resize_image.phpは除外
                         if (!$objPage instanceof \Eccube\Page\ResizeImage) {
-                            $objMobile = new MobileHelper();
+                            /* @var $objMobile MobileHelper */
+                            $objMobile = Application::alias('eccube.helper.mobile');
                             $objMobile->sfMobileInit();
                         }
                     }

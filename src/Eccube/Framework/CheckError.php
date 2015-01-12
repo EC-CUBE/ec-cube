@@ -1599,7 +1599,8 @@ class CheckError
 
         $this->createParam($value);
 
-        $objMobile = new MobileHelper();
+        /* @var $objMobile MobileHelper */
+        $objMobile = Application::alias('eccube.helper.mobile');
         $input_var = $this->arrParam[$keyname];
         if (strlen($input_var) > 0
             &&!$objMobile->gfIsMobileMailAddress($input_var)

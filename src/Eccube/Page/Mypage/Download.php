@@ -222,7 +222,8 @@ __EOS__;
      */
     public function lfMobileHeader($realpath, $sdown_filename)
     {
-        $objHelperMobile = new MobileHelper();
+        /* @var $objHelperMobile MobileHelper */
+        $objHelperMobile = Application::alias('eccube.helper.mobile');
         //ファイルの拡張子からコンテンツタイプを取得する
         $mime_type = $objHelperMobile->getMIMEType($realpath);
         header('Content-Type: ' . $mime_type);
