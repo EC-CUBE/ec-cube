@@ -79,7 +79,8 @@ class Index extends AbstractAdminPage
         // ページ送りの処理 $_GET['pageno']が信頼しうる値かどうかチェックする。
         $pageno = $this->lfCheckPageNo($_GET['pageno']);
 
-        $objNavi = new PageNavi($pageno, $linemax, MEMBER_PMAX, 'eccube.moveMemberPage', NAVI_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias('eccube.page_navi', $pageno, $linemax, MEMBER_PMAX, 'eccube.moveMemberPage', NAVI_PMAX);
         $this->tpl_strnavi  = $objNavi->strnavi;
         $this->tpl_disppage = $objNavi->now_page;
         $this->tpl_pagemax  = $objNavi->max_page;

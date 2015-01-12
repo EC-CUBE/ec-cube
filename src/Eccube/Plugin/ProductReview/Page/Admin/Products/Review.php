@@ -338,8 +338,12 @@ class Review extends AbstractAdminPage
 
         // ページ送りの取得
         $page_max = Utils::sfGetSearchPageMax($arrForm['search_page_max']);
-        $objNavi = new PageNavi($this->tpl_pageno, $linemax, $page_max,
-                                      'eccube.moveNaviPage', NAVI_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias(
+            'eccube.page_navi',
+            $this->tpl_pageno, $linemax, $page_max,
+            'eccube.moveNaviPage', NAVI_PMAX
+        );
         $this->arrPagenavi = $objNavi->arrPagenavi;
         $startno = $objNavi->start_row;
 

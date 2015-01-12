@@ -318,7 +318,8 @@ class Edit extends AbstractAdminPage
         // 購入履歴の件数取得
         $linemax = $objQuery->count($table, $where, $arrVal);
         // ページ送りの取得
-        $objNavi = new PageNavi($pageno, $linemax, $page_max, 'eccube.moveSecondSearchPage', NAVI_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias('eccube.page_navi', $pageno, $linemax, $page_max, 'eccube.moveSecondSearchPage', NAVI_PMAX);
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset($page_max, $objNavi->start_row);
         // 表示順序

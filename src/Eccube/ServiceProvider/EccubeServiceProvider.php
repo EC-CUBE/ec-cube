@@ -78,6 +78,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.form_param'] = function () {
             return new \Eccube\Framework\FormParam();
         };
+        $app['eccube.page_navi'] = $app->protect(function ($now_page, $all_row, $page_row, $func_name, $navi_max = NAVI_PMAX, $urlParam = '', $display_number = true) {
+            return new \Eccube\Framework\PageNavi($now_page, $all_row, $page_row, $func_name, $navi_max, $urlParam, $display_number);
+        });
         $app['eccube.product'] = $app->protect(function () {
             return new \Eccube\Framework\Product();
         });

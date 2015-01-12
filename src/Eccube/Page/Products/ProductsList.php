@@ -58,8 +58,11 @@ class ProductsList extends AbstractPage
 
     public $tpl_subtitle = '';
 
-    /** ランダム文字列 **/
+    /** ランダム文字列 */
     public $tpl_rnd = '';
+
+    /** @var PageNavi */
+    public $objNavi;
 
     /**
      * Page を初期化する.
@@ -148,7 +151,7 @@ class ProductsList extends AbstractPage
             $searchNameUrl = urlencode(mb_convert_encoding($this->arrSearchData['name'], 'SJIS-win', 'UTF-8'));
             $urlParam .= "&mode={$this->mode}&name={$searchNameUrl}&orderby={$this->orderby}";
         }
-        $this->objNavi      = new PageNavi($this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'eccube.movePage', NAVI_PMAX, $urlParam, Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE);
+        $this->objNavi = Application::alias('eccube.page_navi', $this->tpl_pageno, $this->tpl_linemax, $this->disp_number, 'eccube.movePage', NAVI_PMAX, $urlParam, Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE);
         $this->arrProducts  = $this->lfGetProductsList($arrSearchCondition, $this->disp_number, $this->objNavi->start_row, $objProduct);
 
         switch ($this->getMode()) {

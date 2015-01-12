@@ -109,9 +109,13 @@ class History extends AbstractAdminPage
         $objSelect->setLimitOffset(SEARCH_PMAX, $offset);
         $arrResult = $objSelect->select($col, 'dtb_send_history', ' del_flg = 0');
 
-        $objNavi = new PageNavi($search_pageno,
-                                    $linemax,
-                                    SEARCH_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias(
+            'eccube.page_navi',
+            $search_pageno,
+            $linemax,
+            SEARCH_PMAX
+        );
 
         return array($linemax, $arrResult, $objNavi->arrPagenavi);
     }

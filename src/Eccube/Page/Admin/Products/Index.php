@@ -157,9 +157,13 @@ class Index extends AbstractAdminPage
                             // ページ送りの処理
                             $page_max = Utils::sfGetSearchPageMax($objFormParam->getValue('search_page_max'));
                             // ページ送りの取得
-                            $objNavi = new PageNavi($this->arrHidden['search_pageno'],
-                                                          $this->tpl_linemax, $page_max,
-                                                          'eccube.moveNaviPage', NAVI_PMAX);
+                            /* @var $objNavi PageNavi */
+                            $objNavi = Application::alias(
+                                'eccube.page_navi',
+                                $this->arrHidden['search_pageno'],
+                                $this->tpl_linemax, $page_max,
+                                'eccube.moveNaviPage', NAVI_PMAX
+                            );
                             $this->arrPagenavi = $objNavi->arrPagenavi;
 
                             // 検索結果の取得

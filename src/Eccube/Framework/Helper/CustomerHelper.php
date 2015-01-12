@@ -698,11 +698,15 @@ class CustomerHelper
         $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
 
         // ページ送りの取得
-        $objNavi = new PageNavi($arrParam['search_pageno'],
-                                    $linemax,
-                                    $page_max,
-                                    'eccube.moveSearchPage',
-                                    NAVI_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias(
+            'eccube.page_navi',
+            $arrParam['search_pageno'],
+            $linemax,
+            $page_max,
+            'eccube.moveSearchPage',
+            NAVI_PMAX
+        );
 
         return array($linemax, $arrData, $objNavi);
     }

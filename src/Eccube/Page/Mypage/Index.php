@@ -34,6 +34,9 @@ class Index extends AbstractMypage
     /** ページナンバー */
     public $tpl_pageno;
 
+    /** @var PageNavi */
+    public $objNavi;
+
     /**
      * Page を初期化する.
      *
@@ -81,13 +84,17 @@ class Index extends AbstractMypage
         $customer_id = $objCustomer->getValue('customer_id');
 
         //ページ送り用
-        $this->objNavi = new PageNavi($_REQUEST['pageno'],
-                                            $this->lfGetOrderHistory($customer_id),
-                                            SEARCH_PMAX,
-                                            'eccube.movePage',
-                                            NAVI_PMAX,
-                                            'pageno=#page#',
-                                            Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE);
+        /* @var $objNavi PageNavi */
+        $this->objNavi = Application::alias(
+            'eccube.page_navi',
+            $_REQUEST['pageno'],
+            $this->lfGetOrderHistory($customer_id),
+            SEARCH_PMAX,
+            'eccube.movePage',
+            NAVI_PMAX,
+            'pageno=#page#',
+            Application::alias('eccube.display')->detectDevice() !== DEVICE_TYPE_MOBILE
+        );
 
         $this->arrOrder = $this->lfGetOrderHistory($customer_id, $this->objNavi->start_row);
 

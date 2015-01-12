@@ -119,7 +119,8 @@ class ProductRank extends AbstractAdminPage
         // 該当件数表示用
         $this->tpl_linemax = $linemax;
 
-        $objNavi = new PageNavi($this->tpl_pageno, $linemax, SEARCH_PMAX, 'eccube.movePage', NAVI_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias('eccube.page_navi', $this->tpl_pageno, $linemax, SEARCH_PMAX, 'eccube.movePage', NAVI_PMAX);
         $startno = $objNavi->start_row;
         $this->tpl_start_row = $objNavi->start_row;
         $this->tpl_strnavi = $objNavi->strnavi;     // Navi表示文字列

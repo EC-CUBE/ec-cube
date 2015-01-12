@@ -161,7 +161,8 @@ class Status extends AbstractAdminPage
         $page_max = ORDER_STATUS_MAX;
 
         // ページ送りの取得
-        $objNavi = new PageNavi($pageno, $linemax, $page_max, 'eccube.moveSearchPage', NAVI_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias('eccube.page_navi', $pageno, $linemax, $page_max, 'eccube.moveSearchPage', NAVI_PMAX);
         $this->tpl_strnavi = $objNavi->strnavi;      // 表示文字列
         $startno = $objNavi->start_row;
 

@@ -89,7 +89,8 @@ class ProductSelect extends AbstractAdminPage
                 $page_max = Utils::sfGetSearchPageMax($_POST['search_page_max']);
 
                 // ページ送りの取得
-                $objNavi = new PageNavi($_POST['search_pageno'], $this->tpl_linemax, $page_max, 'eccube.moveSearchPage', NAVI_PMAX);
+                /* @var $objNavi PageNavi */
+                $objNavi = Application::alias('eccube.page_navi', $_POST['search_pageno'], $this->tpl_linemax, $page_max, 'eccube.moveSearchPage', NAVI_PMAX);
                 $this->tpl_strnavi = $objNavi->strnavi;     // 表示文字列
                 $startno = $objNavi->start_row;
                 $arrProduct_id = $this->getProducts($wheres, $objProduct, $page_max, $startno);

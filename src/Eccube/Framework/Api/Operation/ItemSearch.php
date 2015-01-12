@@ -60,7 +60,8 @@ class ItemSearch extends Base
             /* @var $objProduct Product */
             $objProduct = Application::alias('eccube.product');
             $linemax = $objProduct->findProductCount($objQuery, $arrSearchCondition['arrval']);
-            $objNavi = new PageNavi($arrRequest['ItemPage'], $linemax, $disp_number);
+            /* @var $objNavi PageNavi */
+            $objNavi = Application::alias('eccube.page_navi', $arrRequest['ItemPage'], $linemax, $disp_number);
             $arrProducts = $this->getProductsList($arrSearchCondition, $disp_number, $objNavi->start_row, $linemax, $objProduct);
 
             if (!Utils::isBlank($arrProducts)) {

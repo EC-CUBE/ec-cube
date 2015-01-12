@@ -131,7 +131,8 @@ class Favorite extends AbstractMypage
         $objPage->tpl_linemax = $linemax;   // 何件が該当しました。表示用
 
         // ページ送りの取得
-        $objNavi        = new PageNavi($objPage->tpl_pageno, $linemax, SEARCH_PMAX, 'eccube.movePage', NAVI_PMAX);
+        /* @var $objNavi PageNavi */
+        $objNavi = Application::alias('eccube.page_navi', $objPage->tpl_pageno, $linemax, SEARCH_PMAX, 'eccube.movePage', NAVI_PMAX);
         $this->tpl_strnavi = $objNavi->strnavi; // 表示文字列
         $startno        = $objNavi->start_row;
 
