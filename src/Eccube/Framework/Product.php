@@ -729,7 +729,7 @@ __EOS__;
         if (
             Utils::sfIsInt($product_id)
             && !Utils::sfIsZeroFilling($product_id)
-            && DbHelper::isRecord('dtb_products', 'product_id', array($product_id), $where)
+            && Application::alias('eccube.helper.db')->isRecord('dtb_products', 'product_id', array($product_id), $where)
         ) {
             return true;
         }

@@ -106,7 +106,7 @@ class DbHelper
      * @return bool   データが存在する場合 true, データの追加に成功した場合 true,
      *               $add == false で, データが存在しない場合 false
      */
-    public static function dataExists($tableName, $where, $arrWhereVal)
+    public function dataExists($tableName, $where, $arrWhereVal)
     {
         /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
@@ -124,7 +124,7 @@ class DbHelper
      * @param  boolean $force 強制的にDB取得するか
      * @return array   店舗基本情報の配列
      */
-    public static function getBasisData($force = false)
+    public function getBasisData($force = false)
     {
         static $arrData = null;
 
@@ -856,7 +856,7 @@ __EOS__;
 
         while (count($arrRet) > 0) {
             $arrChildren = array_merge($arrChildren, $arrRet);
-            $arrRet = static::getChildrenArraySub($table, $pid_name, $id_name, $arrRet);
+            $arrRet = $this->getChildrenArraySub($table, $pid_name, $id_name, $arrRet);
         }
 
         return $arrChildren;
@@ -894,7 +894,7 @@ __EOS__;
      */
     public function getParents($table, $pid_name, $id_name, $id)
     {
-        $arrRet = static::getParentsArray($table, $pid_name, $id_name, $id);
+        $arrRet = $this->getParentsArray($table, $pid_name, $id_name, $id);
 
         return $arrRet;
     }
@@ -921,7 +921,7 @@ __EOS__;
             }
 
             $arrParents[] = $ret;
-            $ret = static::getParentsArraySub($table, $pid_name, $id_name, $ret);
+            $ret = $this->getParentsArraySub($table, $pid_name, $id_name, $ret);
 
             ++$loop_cnt;
         }
@@ -962,7 +962,7 @@ __EOS__;
     public function getCatWhere($category_id)
     { 
        // 子カテゴリIDの取得
-        $arrRet = static::getChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
+        $arrRet = $this->getChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
 
         $where = 'category_id IN (' . Utils::repeatStrWithSeparator('?', count($arrRet)) . ')';
 
@@ -979,7 +979,7 @@ __EOS__;
      * @param  array  $arrVal プレースホルダ
      * @return array  SELECT ボックス用リストの配列
      */
-    public static function getIDValueList($table, $keyname, $valname, $where = '', $arrVal = array())
+    public function getIDValueList($table, $keyname, $valname, $where = '', $arrVal = array())
     {
         /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
@@ -1345,7 +1345,7 @@ __EOS__;
      * @param  string  $addwhere SQL の AND 条件である WHERE 句
      * @return bool   レコードが存在する場合 true
      */
-    public static function isRecord($table, $col, $arrVal, $addwhere = '')
+    public function isRecord($table, $col, $arrVal, $addwhere = '')
     {
         /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
@@ -1483,7 +1483,7 @@ __EOS__;
     public function tax($price)
     {
         // 店舗基本情報を取得
-        $CONF = static::getBasisData();
+        $CONF = $this->getBasisData();
 
         return Utils::sfTax($price, $CONF['tax'], $CONF['tax_rule']);
     }
@@ -1497,10 +1497,10 @@ __EOS__;
      * @param  int $tax_rule
      * @return double 税金付与した金額
      */
-    public static function calcIncTax($price, $tax = null, $tax_rule = null)
+    public function calcIncTax($price, $tax = null, $tax_rule = null)
     {
         // 店舗基本情報を取得
-        $CONF = static::getBasisData();
+        $CONF = $this->getBasisData();
         $tax      = $tax      === null ? $CONF['tax']      : $tax;
         $tax_rule = $tax_rule === null ? $CONF['tax_rule'] : $tax_rule;
 
@@ -1514,10 +1514,10 @@ __EOS__;
      * @param  integer $use_point
      * @return integer 加算ポイント
      */
-    public static function getAddPoint($totalpoint, $use_point)
+    public function getAddPoint($totalpoint, $use_point)
     {
         // 店舗基本情報を取得
-        $CONF = static::getBasisData();
+        $CONF = $this->getBasisData();
 
         return Utils::getAddPoint($totalpoint, $use_point, $CONF['point_rate']);
     }
@@ -1571,7 +1571,7 @@ __EOS__;
      * @param  array $arrData 登録するデータ
      * @return void
      */
-    public static function registerBasisData($arrData)
+    public function registerBasisData($arrData)
     {
         /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');

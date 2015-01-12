@@ -151,7 +151,8 @@ class BestProductsHelper
      */
     public function deleteByProductIDs($productIDs)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrList = $this->getList();
         foreach ($arrList as $recommend) {
             if (in_array($recommend['product_id'], $productIDs)) {

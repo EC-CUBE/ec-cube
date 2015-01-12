@@ -51,7 +51,7 @@ class Index extends AbstractPage
 
         if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
             // @deprecated EC-CUBE 2.11 テンプレート互換用
-            $this->CONF = DbHelper::getBasisData();
+            $this->CONF = Application::alias('eccube.helper.db')->getBasisData();
         }
     }
 
@@ -178,7 +178,7 @@ class Index extends AbstractPage
      */
     public function lfSendMail(&$objPage)
     {
-        $CONF = DbHelper::getBasisData();
+        $CONF = Application::alias('eccube.helper.db')->getBasisData();
         $objPage->tpl_shopname = $CONF['shop_name'];
         $objPage->tpl_infoemail = $CONF['email02'];
         $helperMail = new MailHelper();

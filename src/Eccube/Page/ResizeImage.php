@@ -134,7 +134,7 @@ class ResizeImage extends AbstractPage
         $col = $arrForm['image_key'];
         $product_id = $arrForm['product_id'];
         //指定されたカラムが存在する場合にのみ商品テーブルからファイル名を取得
-        if (DbHelper::columnExists($table, $col, '', '', false)) {
+        if (Application::alias('eccube.helper.db')->columnExists($table, $col, '', '', false)) {
             $product_image = $objQuery->get($col, $table, 'product_id = ?', array($product_id));
         } else {
             GcUtils::gfPrintLog('invalid access :resize_image.php image_key=' . $col);

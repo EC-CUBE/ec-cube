@@ -156,7 +156,7 @@ class Refusal extends AbstractMypage
             return false;
         }
 
-        $CONF = DbHelper::getBasisData();
+        $CONF = Application::alias('eccube.helper.db')->getBasisData();
 
         $objMailText = new SiteView();
         $objMailText->setPage($this);

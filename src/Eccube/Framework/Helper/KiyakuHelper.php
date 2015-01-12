@@ -103,7 +103,8 @@ class KiyakuHelper
      */
     public function deleteKiyaku($kiyaku_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // ランク付きレコードの削除
         $objDb->deleteRankRecord('dtb_kiyaku', 'kiyaku_id', $kiyaku_id);
     }
@@ -116,7 +117,8 @@ class KiyakuHelper
      */
     public function rankUp($kiyaku_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankUp('dtb_kiyaku', 'kiyaku_id', $kiyaku_id);
     }
 
@@ -128,7 +130,8 @@ class KiyakuHelper
      */
     public function rankDown($kiyaku_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankDown('dtb_kiyaku', 'kiyaku_id', $kiyaku_id);
     }
 

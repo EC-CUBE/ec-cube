@@ -268,7 +268,8 @@ class UploadCSVCategory extends AbstractAdminPage
         $objQuery->commit();
 
         // カテゴリ件数を更新
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->countCategory($objQuery);
 
         return;

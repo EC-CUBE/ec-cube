@@ -238,7 +238,7 @@ class Date
      */
     private function setRegularHoliday()
     {
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         static::$arrRegularHoliday = explode('|', $arrInfo['regular_holiday_ids']);
     }
 }

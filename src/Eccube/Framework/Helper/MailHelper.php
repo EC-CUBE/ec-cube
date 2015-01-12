@@ -13,6 +13,7 @@
 namespace Eccube\Framework\Helper;
 
 use Eccube\Application;
+use Eccube\Page\AbstractPage;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Query;
 use Eccube\Framework\SendMail;
@@ -55,9 +56,9 @@ class MailHelper
     /**
      * LC_Pageオブジェクトをセットします.
      *
-     * @param LC_Page $objPage
+     * @param AbstractPage $objPage
      */
-    public function setPage(LC_Page $objPage)
+    public function setPage(AbstractPage $objPage)
     {
         $this->objPage = $objPage;
     }
@@ -65,7 +66,7 @@ class MailHelper
     /**
      * LC_Pageオブジェクトを返します.
      *
-     * @return LC_Page
+     * @return AbstractPage
      */
     public function getPage()
     {
@@ -88,7 +89,7 @@ class MailHelper
         $objPage->tpl_footer = $mailtemplate['footer'];
         $tmp_subject = $mailtemplate['subject'];
 
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
 
         $objMailView = new SiteView();
         $objMailView->setPage($this->getPage());
@@ -112,8 +113,8 @@ class MailHelper
     /* 注文受付メール送信 */
     public function sfSendOrderMail($order_id, $template_id, $subject = '', $header = '', $footer = '', $send = true)
     {
-        $arrTplVar = new stdClass();
-        $arrInfo = DbHelper::getBasisData();
+        $arrTplVar = new \stdClass();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         $arrTplVar->arrInfo = $arrInfo;
 
         $objQuery = Application::alias('eccube.query');
@@ -242,7 +243,7 @@ class MailHelper
     {
         $objMailView = new SiteView();
         $objMailView->setPage($this->getPage());
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         // メール本文の取得
         $objPage->tpl_shopname=$arrInfo['shop_name'];
         $objPage->tpl_infoemail = $arrInfo['email02'];
@@ -262,7 +263,7 @@ class MailHelper
     // 通常のメール送信
     public function sfSendMail($to, $tmp_subject, $body)
     {
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         // メール送信処理
         $objSendMail = new SendMail();
         $bcc = $arrInfo['email01'];
@@ -285,9 +286,9 @@ class MailHelper
             $objMailView = new SiteView();
             $objMailView->setPage($this->getPage());
         }
-        $objTplAssign = new stdClass;
+        $objTplAssign = new \stdClass;
 
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         $objTplAssign->tpl_shopname=$arrInfo['shop_name'];
         $objTplAssign->tpl_infoemail=$subject; // 従来互換
         $objTplAssign->tpl_mailtitle=$subject;
@@ -362,7 +363,7 @@ class MailHelper
             return false;
         }
 
-        $CONF = DbHelper::getBasisData();
+        $CONF = Application::alias('eccube.helper.db')->getBasisData();
 
         $objMailText = new SiteView();
         $objMailText->setPage($this->getPage());
@@ -476,7 +477,8 @@ class MailHelper
     public function sfSendMailmagazine($send_id)
     {
         $objQuery = Application::alias('eccube.query');
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objSite = $objDb->getBasisData();
         $objMail = new SendMail();
 

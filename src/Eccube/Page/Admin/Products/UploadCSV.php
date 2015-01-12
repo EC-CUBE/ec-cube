@@ -74,7 +74,7 @@ class UploadCSV extends AbstractAdminPage
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrMaker = MakerHelper::getIDValueList();
         $this->arrPayments = Application::alias('eccube.helper.payment')->getIDValueList();
-        $this->arrInfo = DbHelper::getBasisData();
+        $this->arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
         $this->arrTagCheckItem = array();
     }
@@ -97,7 +97,8 @@ class UploadCSV extends AbstractAdminPage
      */
     public function action()
     {
-        $this->objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
 
         // CSV管理ヘルパー
         $objCSV = new CsvHelper();

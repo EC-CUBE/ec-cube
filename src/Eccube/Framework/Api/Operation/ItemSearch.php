@@ -190,7 +190,7 @@ class ItemSearch extends Base
 
         // カテゴリからのWHERE文字列取得
         if (!Utils::isBlank($arrSearchData['category_id'])) {
-            list($searchCondition['where_category'], $searchCondition['arrvalCategory']) = DbHelper::getCatWhere($arrSearchData['category_id']);
+            list($searchCondition['where_category'], $searchCondition['arrvalCategory']) = Application::alias('eccube.helper.db')->getCatWhere($arrSearchData['category_id']);
         }
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）

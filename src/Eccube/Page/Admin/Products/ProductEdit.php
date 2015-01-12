@@ -163,7 +163,8 @@ class ProductEdit extends Index
 
                     // 件数カウントバッチ実行
                     $objQuery = Application::alias('eccube.query');
-                    $objDb = new DbHelper();
+                    /* @var $objDb DbHelper */
+                    $objDb = Application::alias('eccube.helper.db');
                     $objDb->countCategory($objQuery);
                     $objDb->countMaker($objQuery);
 
@@ -584,7 +585,8 @@ class ProductEdit extends Index
     public function lfSetViewParam_InputPage(&$objUpFile, &$objDownFile, &$arrForm)
     {
         // カテゴリマスターデータ取得
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         list($this->arrCatVal, $this->arrCatOut) = $objDb->getLevelCatList(false);
 
         if (isset($arrForm['category_id']) && !is_array($arrForm['category_id'])) {
@@ -617,7 +619,7 @@ class ProductEdit extends Index
         $arrForm['down_realfilename'] = $objDownFile->getFormDownFile();
 
         // 基本情報(デフォルトポイントレート用)
-        $arrForm['arrInfo'] = DbHelper::getBasisData();
+        $arrForm['arrInfo'] = Application::alias('eccube.helper.db')->getBasisData();
 
         // サブ情報ありなしフラグ
         $arrForm['sub_find'] = $this->hasSubProductData($arrForm);
@@ -881,7 +883,8 @@ __EOF__;
         $arrProduct[0]['category_id'] = $objQuery->getCol($col, $table, $where, array($product_id));
 
         // 規格情報ありなしフラグ取得
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrProduct[0]['has_product_class'] = $objDb->hasProductClass($product_id);
 
         // 規格が登録されていなければ規格ID取得
@@ -966,7 +969,8 @@ __EOF__;
      */
     public function lfGetCategoryList_Edit()
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrCategoryList = array();
 
         list($arrCatVal, $arrCatOut) = $objDb->getLevelCatList(false);
@@ -1000,7 +1004,8 @@ __EOF__;
     public function lfRegistProduct(&$objUpFile, &$objDownFile, $arrList)
     {
         $objQuery = Application::alias('eccube.query');
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
 
         // 配列の添字を定義
         $checkArray = array('name', 'status',
@@ -1155,7 +1160,8 @@ __EOF__;
     public function lfInsertDummyProductClass($arrList)
     {
         $objQuery = Application::alias('eccube.query');
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
 
         // 配列の添字を定義
         $checkArray = array('product_class_id', 'product_id', 'product_code', 'stock', 'stock_unlimited', 'price01', 'price02', 'sale_limit', 'deliv_fee', 'point_rate', 'product_type_id', 'down_filename', 'down_realfilename');

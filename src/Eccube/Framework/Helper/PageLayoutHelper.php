@@ -81,7 +81,7 @@ class PageLayoutHelper
 
             $objPage->arrPageLayout =& $arrPageData[0];
             if (strlen($objPage->arrPageLayout['author']) === 0) {
-                $arrInfo = DbHelper::getBasisData();
+                $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
                 $objPage->arrPageLayout['author'] = $arrInfo['company_name'];
             }
 

@@ -174,7 +174,7 @@ class Index extends AbstractPage
             default:
                 break;
         }
-        $this->arrInfo = DbHelper::getBasisData();
+        $this->arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         $totalIncTax = 0;
         foreach ($this->cartKeys as $key) {
             // カート集計処理

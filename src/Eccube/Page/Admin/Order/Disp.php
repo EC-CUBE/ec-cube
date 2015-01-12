@@ -130,7 +130,7 @@ class Disp extends Index
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->tpl_shipping_quantity = count($this->arrAllShipping);
         $this->arrDelivTime = Application::alias('eccube.helper.delivery')->getDelivTime($objFormParam->getValue('deliv_id'));
-        $this->arrInfo = DbHelper::getBasisData();
+        $this->arrInfo = Application::alias('eccube.helper.db')->getBasisData();
 
         $this->setTemplate($this->tpl_mainpage);
     }
@@ -329,7 +329,7 @@ class Disp extends Index
         $objFormParam->setParam($arrOrder);
 
         // ポイントを設定
-        list($db_point, $rollback_point) = DbHelper::getRollbackPoint(
+        list($db_point, $rollback_point) = Application::alias('eccube.helper.db')->getRollbackPoint(
             $order_id, $arrOrder['use_point'], $arrOrder['add_point'], $arrOrder['status']
         );
         $objFormParam->setValue('total_point', $db_point);

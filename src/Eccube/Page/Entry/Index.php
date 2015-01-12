@@ -208,7 +208,7 @@ class Index extends AbstractPage
         $arrResults['secret_key'] = CustomerHelper::sfGetUniqSecretKey();
 
         // 入会時ポイント
-        $CONF = DbHelper::getBasisData();
+        $CONF = Application::alias('eccube.helper.db')->getBasisData();
         $arrResults['point'] = $CONF['welcome_point'];
 
         if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
@@ -229,7 +229,7 @@ class Index extends AbstractPage
      */
     public function lfSendMail($uniqid, $arrForm)
     {
-        $CONF           = DbHelper::getBasisData();
+        $CONF           = Application::alias('eccube.helper.db')->getBasisData();
 
         $objMailText    = new SiteView();
         $objMailText->setPage($this);

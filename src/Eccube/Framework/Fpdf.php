@@ -96,7 +96,8 @@ class Fpdf extends Helper\FPDI
     {
         // ショップ情報
 
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrInfo = $objDb->getBasisData();
 
         // ショップ名
@@ -179,7 +180,7 @@ class Fpdf extends Helper\FPDI
             $data[0] = $this->arrDisp['quantity'][$i];
 
             // 税込金額（単価）
-            $data[1] = DbHelper::calcIncTax($this->arrDisp['price'][$i], $this->arrDisp['tax_rate'][$i], $this->arrDisp['tax_rule'][$i]);
+            $data[1] = Application::alias('eccube.helper.db')->calcIncTax($this->arrDisp['price'][$i], $this->arrDisp['tax_rate'][$i], $this->arrDisp['tax_rule'][$i]);
 
             // 小計（商品毎）
             $data[2] = $data[0] * $data[1];

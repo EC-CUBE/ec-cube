@@ -73,7 +73,8 @@ class Index extends AbstractAdminPage
      */
     public function action()
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam, $_POST);
         $objFormParam->setParam($_POST);
@@ -97,7 +98,7 @@ class Index extends AbstractAdminPage
 
             case 'complete':
                 $arrData = $objFormParam->getDbArray();
-                DbHelper::registerBasisData($arrData);
+                Application::alias('eccube.helper.db')->registerBasisData($arrData);
 
                 // キャッシュファイル更新
                 $objDb->createBasisDataCache();
@@ -120,7 +121,7 @@ class Index extends AbstractAdminPage
     public function lfUpdateData($arrData)
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
-        DbHelper::registerBasisData($arrData);
+        Application::alias('eccube.helper.db')->registerBasisData($arrData);
     }
 
     /**
@@ -131,7 +132,7 @@ class Index extends AbstractAdminPage
     public function lfInsertData($arrData)
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
-        DbHelper::registerBasisData($arrData);
+        Application::alias('eccube.helper.db')->registerBasisData($arrData);
     }
 
     /**

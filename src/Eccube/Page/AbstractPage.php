@@ -115,7 +115,7 @@ abstract class AbstractPage
         $objPlugin->doAction('Eccube.Page.preProcess', array($this));
 
         // 店舗基本情報取得
-        $this->arrSiteInfo = DbHelper::getBasisData();
+        $this->arrSiteInfo = Application::alias('eccube.helper.db')->getBasisData();
 
         // トランザクショントークンの検証と生成
         $this->doValidToken();

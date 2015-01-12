@@ -218,7 +218,8 @@ class ProductClass extends AbstractAdminPage
     public function registerProductClass($arrList, $product_id, $total)
     {
         $objQuery = Application::alias('eccube.query');
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
 
         $objQuery->begin();
 
@@ -556,7 +557,8 @@ class ProductClass extends AbstractAdminPage
         // 在庫無し商品の非表示対応
         if (NOSTOCK_HIDDEN) {
             // 件数カウントバッチ実行
-            $objDb = new DbHelper();
+            /* @var $objDb DbHelper */
+            $objDb = Application::alias('eccube.helper.db');
             $objDb->countCategory($objQuery);
         }
     }
@@ -729,7 +731,7 @@ __EOF__;
      */
     public function getAllClass()
     {
-        $arrClass = DbHelper::getIDValueList('dtb_class', 'class_id', 'name');
+        $arrClass = Application::alias('eccube.helper.db')->getIDValueList('dtb_class', 'class_id', 'name');
 
         // 規格分類が登録されていない規格は表示しないようにする。
         $arrClassCatCount = Utils::sfGetClassCatCount();

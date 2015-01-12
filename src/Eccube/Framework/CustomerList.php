@@ -29,7 +29,8 @@ class CustomerList extends SelectSql
     {
         parent::__construct($array);
 
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $dbFactory = DBFactory::getInstance();
 
         if ($mode == '') {

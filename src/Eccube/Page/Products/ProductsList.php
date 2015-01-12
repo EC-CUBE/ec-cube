@@ -378,7 +378,8 @@ class ProductsList extends AbstractPage
 
         // カテゴリからのWHERE文字列取得
         if ($arrSearchData['category_id'] != 0) {
-            $objDb = new DbHelper();
+            /* @var $objDb DbHelper */
+            $objDb = Application::alias('eccube.helper.db');
             list($searchCondition['where_category'], $searchCondition['arrvalCategory']) = $objDb->getCatWhere($arrSearchData['category_id']);
         }
         // ▼対象商品IDの抽出
@@ -557,7 +558,7 @@ class ProductsList extends AbstractPage
         if ($target_product_id > 0) {
             // 商品IDの正当性チェック
             if (!Utils::sfIsInt($this->arrForm['product_id'])
-                || !DbHelper::isRecord('dtb_products', 'product_id', $this->arrForm['product_id'], 'del_flg = 0 AND status = 1')) {
+                || !Application::alias('eccube.helper.db')->isRecord('dtb_products', 'product_id', $this->arrForm['product_id'], 'del_flg = 0 AND status = 1')) {
                 Utils::sfDispSiteError(PRODUCT_NOT_FOUND);
             }
 

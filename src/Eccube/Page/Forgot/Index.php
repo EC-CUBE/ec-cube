@@ -227,7 +227,8 @@ class Index extends AbstractPage
                 $new_password = GcUtils::gfMakePassword(8);
                 if (FORGOT_MAIL == 1) {
                     // メールで変更通知をする
-                    $objDb = new DbHelper();
+                    /* @var $objDb DbHelper */
+                    $objDb = Application::alias('eccube.helper.db');
                     $CONF = $objDb->getBasisData();
                     $this->lfSendMail($CONF, $arrForm['email'], $arrForm['name01'], $new_password);
                 }

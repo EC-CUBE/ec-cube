@@ -636,7 +636,7 @@ class Edit extends Index
 
         // ポイントを設定
         if (USE_POINT !== false) {
-            list($db_point, $rollback_point) = DbHelper::getRollbackPoint(
+            list($db_point, $rollback_point) = Application::alias('eccube.helper.db')->getRollbackPoint(
                 $order_id, $arrOrder['use_point'],
                 $arrOrder['add_point'], $arrOrder['status']
             );
@@ -695,7 +695,7 @@ class Edit extends Index
         $totaltax = 0;
         for ($i = 0; $i < $max; $i++) {
             // 小計の計算
-            $subtotal += DbHelper::calcIncTax($arrValues['price'][$i], $arrValues['tax_rate'][$i], $arrValues['tax_rule'][$i]) * $arrValues['quantity'][$i];
+            $subtotal += Application::alias('eccube.helper.db')->calcIncTax($arrValues['price'][$i], $arrValues['tax_rate'][$i], $arrValues['tax_rule'][$i]) * $arrValues['quantity'][$i];
             // 小計の計算
             $totaltax += Utils::sfTax($arrValues['price'][$i], $arrValues['tax_rate'][$i], $arrValues['tax_rule'][$i]) * $arrValues['quantity'][$i];
             // 加算ポイントの計算
@@ -731,7 +731,7 @@ class Edit extends Index
         $arrValues['payment_total'] = $arrValues['total'] - ($arrValues['use_point'] * POINT_VALUE);
 
         // 加算ポイント
-        $arrValues['add_point'] = DbHelper::getAddPoint($totalpoint, $arrValues['use_point']) + $arrValues['birth_point'];
+        $arrValues['add_point'] = Application::alias('eccube.helper.db')->getAddPoint($totalpoint, $arrValues['use_point']) + $arrValues['birth_point'];
 
         // 最終保持ポイント
         $arrValues['total_point'] = $objFormParam->getValue('point') - $arrValues['use_point'];

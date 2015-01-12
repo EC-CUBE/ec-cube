@@ -292,7 +292,8 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfDeleteClassCat($class_id, $classcategory_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $where = 'class_id = ' . Utils::sfQuoteSmart($class_id);
         $objDb->deleteRankRecord('dtb_classcategory', 'classcategory_id', $classcategory_id, $where, true);
     }
@@ -305,7 +306,8 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfUpRank($class_id, $classcategory_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $where = 'class_id = ' . Utils::sfQuoteSmart($class_id);
         $objDb->rankUp('dtb_classcategory', 'classcategory_id', $classcategory_id, $where);
     }
@@ -318,7 +320,8 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfDownRank($class_id, $classcategory_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $where = 'class_id = ' . Utils::sfQuoteSmart($class_id);
         $objDb->rankDown('dtb_classcategory', 'classcategory_id', $classcategory_id, $where);
     }

@@ -57,7 +57,8 @@ class Index extends AbstractPage
      */
     public function action()
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $this->arrOrder = $objDb->getBasisData();
     }
 }

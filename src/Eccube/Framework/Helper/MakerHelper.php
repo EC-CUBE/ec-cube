@@ -121,7 +121,8 @@ class MakerHelper
      */
     public function delete($maker_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // ランク付きレコードの削除
         $objDb->deleteRankRecord('dtb_maker', 'maker_id', $maker_id, '', true);
     }
@@ -134,7 +135,8 @@ class MakerHelper
      */
     public function rankUp($maker_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankUp('dtb_maker', 'maker_id', $maker_id);
     }
 
@@ -146,7 +148,8 @@ class MakerHelper
      */
     public function rankDown($maker_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankDown('dtb_maker', 'maker_id', $maker_id);
     }
 
@@ -157,6 +160,6 @@ class MakerHelper
      */
     public static function getIDValueList()
     {
-        return DbHelper::getIDValueList('dtb_maker', 'maker_id', 'name');
+        return Application::alias('eccube.helper.db')->getIDValueList('dtb_maker', 'maker_id', 'name');
     }
 }

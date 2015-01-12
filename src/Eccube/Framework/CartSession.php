@@ -679,7 +679,7 @@ class CartSession
         }
 
         // 送料無料条件が設定されている場合
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         if ($arrInfo['free_rule'] > 0) {
             // 小計が送料無料条件以上の場合
             if ($subtotal >= $arrInfo['free_rule']) {
@@ -757,7 +757,7 @@ class CartSession
 
         // 加算ポイントの計算
         if (USE_POINT !== false) {
-            $results['add_point'] = DbHelper::getAddPoint($total_point, $use_point);
+            $results['add_point'] = Application::alias('eccube.helper.db')->getAddPoint($total_point, $use_point);
             if ($objCustomer != '') {
                 // 誕生日月であった場合
                 if ($objCustomer->isBirthMonth()) {

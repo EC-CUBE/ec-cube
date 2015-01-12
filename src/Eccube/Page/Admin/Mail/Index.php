@@ -65,7 +65,8 @@ class Index extends AbstractAdminPage
         $this->objDate = $objDate;
 
         // カテゴリ一覧設定
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $this->arrCatList = $objDb->getCategoryList();
 
         // テンプレート一覧設定

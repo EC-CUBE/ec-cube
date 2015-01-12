@@ -238,7 +238,8 @@ class CategoryHelper
      */
     public function delete($category_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // ランク付きレコードの削除(※処理負荷を考慮してレコードごと削除する。)
         $objDb->deleteRankRecord('dtb_category', 'category_id', $category_id, '', true);
     }
@@ -339,7 +340,8 @@ class CategoryHelper
      */
     private function countAllBranches($category_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // 子ID一覧を取得
         $arrRet = $objDb->getChildrenArray('dtb_category', 'parent_category_id', 'category_id', $category_id);
 
@@ -357,7 +359,8 @@ class CategoryHelper
     private function raiseBranchRank(Query $objQuery, $category_id, $count)
     {
         $table = 'dtb_category';
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // 子ID一覧を取得
         $arrRet = $objDb->getChildrenArray($table, 'parent_category_id', 'category_id', $category_id);
         $line = Utils::sfGetCommaList($arrRet);
@@ -380,7 +383,8 @@ class CategoryHelper
     private function reduceBranchRank(Query $objQuery, $category_id, $count)
     {
         $table = 'dtb_category';
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // 子ID一覧を取得
         $arrRet = $objDb->getChildrenArray($table, 'parent_category_id', 'category_id', $category_id);
         $line = Utils::sfGetCommaList($arrRet);
@@ -408,7 +412,7 @@ class CategoryHelper
         if (
             Utils::sfIsInt($category_id)
             && !Utils::sfIsZeroFilling($category_id)
-            && DbHelper::isRecord('dtb_category', 'category_id', array($category_id), $where)
+            && Application::alias('eccube.helper.db')->isRecord('dtb_category', 'category_id', array($category_id), $where)
         ) {
             return true;
         }

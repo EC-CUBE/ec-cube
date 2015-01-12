@@ -126,7 +126,8 @@ class Recommend extends AbstractAdminPage
         $this->arrItems = $arrItems;
 
         // カテゴリ取得
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $this->arrCatList = $objDb->getCategoryList('level = 1');
     }
 

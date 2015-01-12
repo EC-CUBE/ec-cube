@@ -67,7 +67,8 @@ class Status extends AbstractAdminPage
      */
     public function action()
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
 
         // パラメーター管理クラス
         $objFormParam = Application::alias('eccube.form_param');

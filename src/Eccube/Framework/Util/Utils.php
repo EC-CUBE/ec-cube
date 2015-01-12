@@ -693,7 +693,7 @@ class Utils
     /**
      * 税金額を返す
      *
-     * ・店舗基本情報に基づいた計算は \Eccube\Helper\DbHelper::tax() を使用する
+     * ・店舗基本情報に基づいた計算は \Eccube\Helper\Application::alias('eccube.helper.db')->tax() を使用する
      *
      * @param integer $price 計算対象の金額
      * @param integer $tax   税率(%単位)
@@ -713,7 +713,7 @@ class Utils
     /**
      * 税金付与した金額を返す
      *
-     * ・店舗基本情報に基づいた計算は \Eccube\Helper\DbHelper::tax() を使用する
+     * ・店舗基本情報に基づいた計算は \Eccube\Helper\Application::alias('eccube.helper.db')->tax() を使用する
      *
      * @param integer $price 計算対象の金額
      * @param integer $tax   税率(%単位)
@@ -890,7 +890,7 @@ class Utils
     /**
      * 加算ポイントの計算
      *
-     * ・店舗基本情報に基づいた計算は \Eccube\Helper\DbHelper::getAddPoint() を使用する
+     * ・店舗基本情報に基づいた計算は \Eccube\Helper\Application::alias('eccube.helper.db')->getAddPoint() を使用する
      *
      * @param  integer $totalpoint
      * @param  integer $use_point

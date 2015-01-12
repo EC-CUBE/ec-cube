@@ -50,7 +50,7 @@ class DispError extends AbstractAdminPage
         $objHelperPlugin->arrRegistedPluginActions = array();
 
         // キャッシュから店舗情報取得（DBへの接続は行わない）
-        $this->arrSiteInfo = DbHelper::getBasisDataCache(false);
+        $this->arrSiteInfo = Application::alias('eccube.helper.db')->getBasisDataCache(false);
     }
 
     /**

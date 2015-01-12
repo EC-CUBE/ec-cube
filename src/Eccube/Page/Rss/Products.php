@@ -62,7 +62,7 @@ class Products extends AbstractPage
         $objView = new SiteView();
 
         //店舗情報をセット
-        $this->arrSiteInfo = DbHelper::getBasisData();
+        $this->arrSiteInfo = Application::alias('eccube.helper.db')->getBasisData();
 
         //商品IDを取得
         if (isset($_GET['product_id']) && $_GET['product_id'] != '' && is_numeric($_GET['product_id'])) {
@@ -131,7 +131,7 @@ class Products extends AbstractPage
         // 値の整形
         foreach (array_keys($arrProduct) as $key) {
             //販売価格を税込みに編集
-            $arrProduct[$key]['price02'] = DbHelper::calcIncTax($arrProduct[$key]['price02']);
+            $arrProduct[$key]['price02'] = Application::alias('eccube.helper.db')->calcIncTax($arrProduct[$key]['price02']);
             // 画像ファイルのURLセット
             if (file_exists(IMAGE_SAVE_REALDIR . $arrProduct[$key]['main_list_image'])) {
                 $dir = IMAGE_SAVE_RSS_URL;

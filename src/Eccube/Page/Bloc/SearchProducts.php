@@ -123,7 +123,8 @@ class SearchProducts extends AbstractBloc
     public function lfGetSelectedCategoryId($product_id, $category_id)
     {
         // 選択中のカテゴリIDを判定する
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrCategoryId = $objDb->getCategoryId($product_id, $category_id);
 
         return $arrCategoryId;
@@ -139,7 +140,8 @@ class SearchProducts extends AbstractBloc
     public function lfGetSelectedMakerId($product_id, $maker_id)
     {
         // 選択中のメーカーIDを判定する
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrMakerId = $objDb->getMakerId($product_id, $maker_id);
 
         return $arrMakerId;
@@ -152,7 +154,8 @@ class SearchProducts extends AbstractBloc
      */
     public function lfGetCategoryList()
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // カテゴリ検索用選択リスト
         $arrCategoryList = $objDb->getCategoryList('', true, '　');
         if (is_array($arrCategoryList)) {
@@ -173,7 +176,8 @@ class SearchProducts extends AbstractBloc
      */
     public function lfGetMakerList()
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // メーカー検索用選択リスト
         $arrMakerList = $objDb->getMakerList('', true);
         if (is_array($arrMakerList)) {

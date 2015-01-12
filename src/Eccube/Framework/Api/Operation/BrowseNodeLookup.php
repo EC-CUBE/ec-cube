@@ -37,7 +37,7 @@ class BrowseNodeLookup extends Base
         if (!$this->isParamError()) {
             $category_id = $arrRequest['BrowseNodeId'];
             if ($category_id
-                 && !DbHelper::isRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')) {
+                 && !Application::alias('eccube.helper.db')->isRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')) {
                 $category_id = '0';
             } elseif (Utils::isBlank($category_id)) {
                 $category_id = '0';
@@ -46,7 +46,7 @@ class BrowseNodeLookup extends Base
             $arrCategory = null;    // 選択されたカテゴリ
             $arrChildren = array(); // 子カテゴリ
 
-            $arrAll = DbHelper::getCatTree($category_id, true);
+            $arrAll = Application::alias('eccube.helper.db')->getCatTree($category_id, true);
             foreach ($arrAll as $category) {
                 if ($category_id != 0 && $category['category_id'] == $category_id) {
                     $arrCategory = $category;

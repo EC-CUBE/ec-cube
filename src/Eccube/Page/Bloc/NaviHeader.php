@@ -61,7 +61,7 @@ class NaviHeader extends Login
         /* @var $objCart CartSession */
         $objCart = Application::alias('eccube.cart_session');
         $cartKeys = $objCart->getKeys();
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         $this->freeRule = $arrInfo['free_rule'];
         $this->arrCartList = $this->lfGetCartData($objCart, $arrInfo, $cartKeys);
     }

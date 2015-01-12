@@ -103,7 +103,8 @@ class HolidayHelper
      */
     public function delete($holiday_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // ランク付きレコードの削除
         $objDb->deleteRankRecord('dtb_holiday', 'holiday_id', $holiday_id, '', true);
     }
@@ -116,7 +117,8 @@ class HolidayHelper
      */
     public function rankUp($holiday_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankUp('dtb_holiday', 'holiday_id', $holiday_id);
     }
 
@@ -128,7 +130,8 @@ class HolidayHelper
      */
     public function rankDown($holiday_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankDown('dtb_holiday', 'holiday_id', $holiday_id);
     }
 

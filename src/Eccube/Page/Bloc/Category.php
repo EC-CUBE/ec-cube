@@ -92,7 +92,8 @@ class Category extends AbstractBloc
             $category_id = $arrRequest['category_id'];
         }
         // 選択中のカテゴリIDを判定する
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrCategoryId = $objDb->getCategoryId($product_id, $category_id);
         if (empty($arrCategoryId)) {
             $arrCategoryId = array(0);

@@ -211,7 +211,8 @@ class DeliveryHelper
      */
     public function delete($deliv_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // ランク付きレコードの削除
         $objDb->deleteRankRecord('dtb_deliv', 'deliv_id', $deliv_id);
     }
@@ -224,7 +225,8 @@ class DeliveryHelper
      */
     public function rankUp($deliv_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankUp('dtb_deliv', 'deliv_id', $deliv_id);
     }
 
@@ -236,7 +238,8 @@ class DeliveryHelper
      */
     public function rankDown($deliv_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankDown('dtb_deliv', 'deliv_id', $deliv_id);
     }
 
@@ -248,7 +251,8 @@ class DeliveryHelper
      */
     public function checkExist($arrDeliv)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         if ($arrDeliv['deliv_id'] == '') {
             $ret = $objDb->isRecord('dtb_deliv', 'service_name', array($arrDeliv['service_name']));
         } else {
@@ -267,7 +271,7 @@ class DeliveryHelper
      */
     public function getIDValueList($type = 'name')
     {
-        return DbHelper::getIDValueList('dtb_deliv', 'deliv_id', $type);
+        return Application::alias('eccube.helper.db')->getIDValueList('dtb_deliv', 'deliv_id', $type);
     }
 
     /**

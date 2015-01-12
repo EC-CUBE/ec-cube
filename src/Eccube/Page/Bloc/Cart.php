@@ -90,7 +90,7 @@ class Cart extends AbstractBloc
         $arrCartList['TotalQuantity'] = $total_quantity;
 
         // 店舗情報の取得
-        $arrInfo = DbHelper::getBasisData();
+        $arrInfo = Application::alias('eccube.helper.db')->getBasisData();
         $arrCartList['free_rule'] = $arrInfo['free_rule'];
 
         // 送料無料までの金額

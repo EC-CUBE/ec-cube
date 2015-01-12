@@ -123,7 +123,7 @@ class PgsqlDBFactory extends DBFactory
      */
     public function getDownloadableDaysWhereSql($dtb_order_alias = 'dtb_order')
     {
-        $baseinfo = DbHelper::getBasisData();
+        $baseinfo = Application::alias('eccube.helper.db')->getBasisData();
         //downloadable_daysにNULLが入っている場合(無期限ダウンロード可能時)もあるので、NULLの場合は0日に補正
         $downloadable_days = $baseinfo['downloadable_days'];
         // FIXME 怪しい比較「== null」

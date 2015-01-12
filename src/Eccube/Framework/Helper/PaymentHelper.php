@@ -137,7 +137,8 @@ class PaymentHelper
      */
     public function delete($payment_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // ランク付きレコードの削除
         $objDb->deleteRankRecord('dtb_payment', 'payment_id', $payment_id);
     }
@@ -150,7 +151,8 @@ class PaymentHelper
      */
     public function rankUp($payment_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankUp('dtb_payment', 'payment_id', $payment_id);
     }
 
@@ -162,7 +164,8 @@ class PaymentHelper
      */
     public function rankDown($payment_id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $objDb->rankDown('dtb_payment', 'payment_id', $payment_id);
     }
 
@@ -190,6 +193,6 @@ class PaymentHelper
      */
     public static function getIDValueList($type = 'payment_method')
     {
-        return DbHelper::getIDValueList('dtb_payment', 'payment_id', $type);
+        return Application::alias('eccube.helper.db')->getIDValueList('dtb_payment', 'payment_id', $type);
     }
 }

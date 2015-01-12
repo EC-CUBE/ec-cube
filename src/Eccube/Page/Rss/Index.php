@@ -85,7 +85,8 @@ class Index extends AbstractPage
         $objNews = new NewsHelper();
         $arrNews = $objNews->getList();
 
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         $arrInfo = $objDb->getBasisData();
 
         // RSS用に変換

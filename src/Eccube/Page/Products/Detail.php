@@ -314,7 +314,7 @@ class Detail extends AbstractPage
         if ($objCustomer->isLoginSuccess() === true) {
             //お気に入りボタン表示
             $this->tpl_login = true;
-            $this->is_favorite = DbHelper::dataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($objCustomer->getValue('customer_id'), $product_id));
+            $this->is_favorite = Application::alias('eccube.helper.db')->dataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($objCustomer->getValue('customer_id'), $product_id));
         }
     }
 
@@ -379,9 +379,9 @@ class Detail extends AbstractPage
         $classcat_find2 = false;
 
         // 規格名一覧
-        $arrClassName = DbHelper::getIDValueList('dtb_class', 'class_id', 'name');
+        $arrClassName = Application::alias('eccube.helper.db')->getIDValueList('dtb_class', 'class_id', 'name');
         // 規格分類名一覧
-        $arrClassCatName = DbHelper::getIDValueList('dtb_classcategory', 'classcategory_id', 'name');
+        $arrClassCatName = Application::alias('eccube.helper.db')->getIDValueList('dtb_classcategory', 'classcategory_id', 'name');
         // 商品規格情報の取得
         $arrProductsClass = $this->lfGetProductsClass($product_id);
 
@@ -518,7 +518,7 @@ class Detail extends AbstractPage
             $objErr = new CheckError();
             $customer_id = $objCustomer->getValue('customer_id');
             $favorite_product_id = $objFormParam->getValue('favorite_product_id');
-            if (DbHelper::dataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
+            if (Application::alias('eccube.helper.db')->dataExists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id))) {
                 $objErr->arrErr['add_favorite'.$favorite_product_id] = '※ この商品は既にお気に入りに追加されています。<br />';
             }
             break;
@@ -574,7 +574,7 @@ class Detail extends AbstractPage
     public function lfRegistFavoriteProduct($favorite_product_id, $customer_id)
     {
         // ログイン中のユーザが商品をお気に入りにいれる処理
-        if (!DbHelper::isRecord('dtb_products', 'product_id', $favorite_product_id, 'del_flg = 0 AND status = 1')) {
+        if (!Application::alias('eccube.helper.db')->isRecord('dtb_products', 'product_id', $favorite_product_id, 'del_flg = 0 AND status = 1')) {
             Utils::sfDispSiteError(PRODUCT_NOT_FOUND);
 
             return false;

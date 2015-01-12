@@ -76,7 +76,7 @@ class CategoryList extends AbstractPage
      */
     public function lfCheckCategoryId($category_id)
     {
-        if ($category_id && !DbHelper::isRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')) {
+        if ($category_id && !Application::alias('eccube.helper.db')->isRecord('dtb_category', 'category_id', (array) $category_id, 'del_flg = 0')) {
             return 0;
         }
 
@@ -96,7 +96,7 @@ class CategoryList extends AbstractPage
         $arrCategory = null;    // 選択されたカテゴリ
         $arrChildren = array(); // 子カテゴリ
 
-        $arrAll = DbHelper::getCatTree($category_id, $count_check);
+        $arrAll = Application::alias('eccube.helper.db')->getCatTree($category_id, $count_check);
         foreach ($arrAll as $category) {
             // 選択されたカテゴリの場合
             if ($category['category_id'] == $category_id) {

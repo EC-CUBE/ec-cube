@@ -55,7 +55,7 @@ class Recommend extends AbstractBloc
     public function action()
     {
         // 基本情報を渡す
-        $objSiteInfo = DbHelper::getBasisData();
+        $objSiteInfo = Application::alias('eccube.helper.db')->getBasisData();
         $this->arrInfo = $objSiteInfo->data;
 
         //おすすめ商品表示

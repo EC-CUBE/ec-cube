@@ -141,7 +141,7 @@ class Index extends AbstractPage
         $objCustomer = Application::alias('eccube.customer');
         $objHelperMail  = new MailHelper();
         $objHelperMail->setPage($this);
-        $CONF           = DbHelper::getBasisData();
+        $CONF           = Application::alias('eccube.helper.db')->getBasisData();
 
         //-- 会員データを取得
         $arrCustomer    = $objQuery->select('*', 'dtb_customer', 'secret_key = ?', array($registSecretKey));

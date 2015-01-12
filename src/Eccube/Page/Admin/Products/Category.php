@@ -363,7 +363,8 @@ class Category extends AbstractAdminPage
      */
     public function lfCountChilds($objQuery, $table, $pid_name, $id_name, $id)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // 子ID一覧を取得
         $arrRet = $objDb->getChildrenArray($table, $pid_name, $id_name, $id);
 
@@ -378,7 +379,8 @@ class Category extends AbstractAdminPage
      */
     public function lfUpRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // 子ID一覧を取得
         $arrRet = $objDb->getChildrenArray($table, $pid_name, $id_name, $id);
         $line = Utils::sfGetCommaList($arrRet);
@@ -399,7 +401,8 @@ class Category extends AbstractAdminPage
      */
     public function lfDownRankChilds($objQuery, $table, $pid_name, $id_name, $id, $count)
     {
-        $objDb = new DbHelper();
+        /* @var $objDb DbHelper */
+        $objDb = Application::alias('eccube.helper.db');
         // 子ID一覧を取得
         $arrRet = $objDb->getChildrenArray($table, $pid_name, $id_name, $id);
         $line = Utils::sfGetCommaList($arrRet);
