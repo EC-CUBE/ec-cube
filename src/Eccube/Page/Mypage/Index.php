@@ -75,7 +75,8 @@ class Index extends AbstractMypage
         $objPurchase = new PurchaseHelper();
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $customer_id = $objCustomer->getValue('customer_id');
 
         //ページ送り用

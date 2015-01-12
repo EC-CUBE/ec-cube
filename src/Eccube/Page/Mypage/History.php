@@ -75,7 +75,8 @@ class History extends AbstractMypage
         $objPurchase = new PurchaseHelper();
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
-        $objCustomer    = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $objProduct  = new Product();
 
         if (!Utils::sfIsInt($_GET['order_id'])) {

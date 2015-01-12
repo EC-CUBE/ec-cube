@@ -175,7 +175,8 @@ class MailHelper
         // 国変換
         $arrTplVar->arrCountry = $this->arrCountry;
 
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $arrTplVar->tpl_user_point = $objCustomer->getValue('point');
 
         $objMailView = null;

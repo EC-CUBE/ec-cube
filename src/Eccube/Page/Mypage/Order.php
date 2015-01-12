@@ -77,7 +77,8 @@ class Order extends AbstractMypage
     {
         $objQuery       = Application::alias('eccube.query');
 
-        $objCustomer    = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         //customer_idを検証
         $customer_id    = $objCustomer->getValue('customer_id');
         $order_count    = $objQuery->count('dtb_order', 'order_id = ? and customer_id = ?', array($order_id, $customer_id));

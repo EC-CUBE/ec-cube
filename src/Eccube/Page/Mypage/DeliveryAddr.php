@@ -69,7 +69,8 @@ class DeliveryAddr extends AbstractPage
      */
     public function action()
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $objAddress  = new AddressHelper();
         $ParentPage  = MYPAGE_DELIVADDR_URLPATH;
 

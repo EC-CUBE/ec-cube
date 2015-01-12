@@ -56,7 +56,9 @@ class EmailMobile extends AbstractPage
      */
     public function action()
     {
-        $objCustomer    = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
+        /* @var $objFormParam FormParam */
         $objFormParam   = Application::alias('eccube.form_param');
 
         $this->lfInitParam($objFormParam);

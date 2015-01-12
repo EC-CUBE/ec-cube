@@ -133,7 +133,8 @@ class TaxRuleHelper
         if (empty($data_c[$cache_key])) {
             // ログイン済み会員で国と地域指定が無い場合は、会員情報をデフォルトで利用。管理画面では利用しない
             if (!(defined('ADMIN_FUNCTION') && ADMIN_FUNCTION == true)) {
-                $objCustomer = new Customer();
+                /* @var $objCustomer Customer */
+                $objCustomer = Application::alias('eccube.customer');
                 if ($objCustomer->isLoginSuccess(true)) {
                     if ($country_id == 0) {
                         $country_id = $objCustomer->getValue('country_id');

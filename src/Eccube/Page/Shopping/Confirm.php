@@ -79,7 +79,8 @@ class Confirm extends AbstractPage
         $objCartSess = Application::alias('eccube.cart_session');
         /* @var $objSiteSess SiteSession */
         $objSiteSess = Application::alias('eccube.site_session');
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
 
         $this->is_multiple = $objPurchase->isMultiple();
 

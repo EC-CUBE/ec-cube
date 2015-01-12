@@ -56,7 +56,8 @@ class MailView extends AbstractMypage
      */
     public function action()
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         if (!Utils::sfIsInt($_GET['send_id'])) {
             Utils::sfDispSiteError(CUSTOMER_ERROR);
         }

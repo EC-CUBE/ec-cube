@@ -73,7 +73,8 @@ class PurchaseHelper
         $objSiteSession = Application::alias('eccube.site_session');
         /* @var $objCartSession CartSession */
         $objCartSession = Application::alias('eccube.cart_session');
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $customerId = $objCustomer->getValue('customer_id');
 
         $objQuery->begin();
@@ -186,7 +187,8 @@ class PurchaseHelper
         $objSiteSession = Application::alias('eccube.site_session');
         /* @var $objCartSession CartSession */
         $objCartSession = Application::alias('eccube.cart_session');
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
 
         // 新たに受注一時情報を保存する
         $objSiteSession->unsetUniqId();
@@ -1406,7 +1408,8 @@ __EOS__;
 
     public function checkDbMyPendignOrder()
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         if ($objCustomer->isLoginSuccess(true)) {
             $customer_id = $objCustomer->getValue('customer_id');
             $objQuery = Application::alias('eccube.query');

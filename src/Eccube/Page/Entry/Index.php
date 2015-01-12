@@ -147,7 +147,8 @@ class Index extends AbstractPage
                     // 仮会員が無効の場合
                     if (CUSTOMER_CONFIRM_MAIL == false) {
                         // ログイン状態にする
-                        $objCustomer = new Customer();
+                        /* @var $objCustomer Customer */
+                        $objCustomer = Application::alias('eccube.customer');
                         $objCustomer->setLogin($objFormParam->getValue('email'));
                     }
 

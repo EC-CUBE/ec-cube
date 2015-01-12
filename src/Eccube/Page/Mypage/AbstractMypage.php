@@ -49,7 +49,8 @@ abstract class AbstractMypage extends AbstractPage
     {
         parent::process();
         // ログインチェック
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
 
         // ログインしていない場合は必ずログインページを表示する
         if ($objCustomer->isLoginSuccess(true) === false) {

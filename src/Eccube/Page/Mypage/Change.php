@@ -72,7 +72,8 @@ class Change extends AbstractMypage
      */
     public function action()
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $customer_id = $objCustomer->getValue('customer_id');
 
         // mobile用（戻るボタンでの遷移かどうかを判定）

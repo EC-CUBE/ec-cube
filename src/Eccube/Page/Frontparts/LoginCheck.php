@@ -68,7 +68,8 @@ class LoginCheck extends AbstractPage
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         // 会員管理クラス
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         // クッキー管理クラス
         $objCookie = new Cookie();
         // パラメーター管理クラス

@@ -173,7 +173,8 @@ class Detail extends AbstractPage
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         // 会員クラス
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
 
         // パラメーター管理クラス
         $this->objFormParam = Application::alias('eccube.form_param');
@@ -511,7 +512,8 @@ class Detail extends AbstractPage
         switch ($mode) {
         case 'add_favorite_sphone':
         case 'add_favorite':
-            $objCustomer = new Customer();
+            /* @var $objCustomer Customer */
+            $objCustomer = Application::alias('eccube.customer');
             $objErr = new CheckError();
             $customer_id = $objCustomer->getValue('customer_id');
             $favorite_product_id = $objFormParam->getValue('favorite_product_id');

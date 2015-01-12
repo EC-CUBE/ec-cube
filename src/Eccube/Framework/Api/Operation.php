@@ -83,7 +83,8 @@ class Operation
      */
     protected function checkCustomerAccount($login_email, $login_password)
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         if ($objCustomer->getCustomerDataFromEmailPass($login_password, $login_email)) {
             return true;
         } else {
@@ -235,7 +236,8 @@ class Operation
                     $ret = static::checkMemberAccount($arrParam['member_id'], $arrParam['member_password']);
                     break;
                 case self::API_AUTH_TYPE_CUSTOMER_LOGIN_SESSION:
-                    $objCustomer = new Customer();
+                    /* @var $objCustomer Customer */
+                    $objCustomer = Application::alias('eccube.customer');
                     $ret = $objCustomer->isLoginSuccess();
                     break;
                 case self::API_AUTH_TYPE_MEMBER_LOGIN_SESSION:

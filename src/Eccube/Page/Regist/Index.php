@@ -137,7 +137,8 @@ class Index extends AbstractPage
     public function lfSendRegistMail($registSecretKey)
     {
         $objQuery       = Application::alias('eccube.query');
-        $objCustomer    = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $objHelperMail  = new MailHelper();
         $objHelperMail->setPage($this);
         $CONF           = DbHelper::getBasisData();

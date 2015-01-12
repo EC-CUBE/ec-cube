@@ -60,7 +60,8 @@ class Favorite extends AbstractMypage
      */
     public function action()
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
 
         $customer_id = $objCustomer->getValue('customer_id');
 

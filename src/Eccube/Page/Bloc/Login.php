@@ -57,7 +57,8 @@ class Login extends AbstractBloc
      */
     public function action()
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         // クッキー管理クラス
         $objCookie = new Cookie();
 

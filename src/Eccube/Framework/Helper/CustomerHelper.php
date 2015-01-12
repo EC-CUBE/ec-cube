@@ -165,7 +165,8 @@ class CustomerHelper
      */
     public function sfCheckRegisterUserFromEmail($email)
     {
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         /* @var $objQuery Query*/
         $objQuery = Application::alias('eccube.query');
 
@@ -469,7 +470,8 @@ class CustomerHelper
          * sfCustomerRegisterErrorCheck() では, ログイン中の場合は重複チェック
          * されないので, 再度チェックを行う
          */
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         if ($objCustomer->isLoginSuccess(true)
             && CustomerHelper::sfCustomerEmailDuplicationCheck($objCustomer->getValue('customer_id'), $objFormParam->getValue('email'))) {
             $objErr->arrErr['email'] .= '※ すでに会員登録で使用されているメールアドレスです。<br />';

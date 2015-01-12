@@ -80,7 +80,8 @@ class Download extends AbstractPage
     public function action()
     {
         // ログインチェック
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         if (!$objCustomer->isLoginSuccess(true)) {
             Utils::sfDispSiteError(DOWNFILE_NOT_FOUND, '', true);
         }

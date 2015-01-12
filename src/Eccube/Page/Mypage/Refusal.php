@@ -78,7 +78,8 @@ class Refusal extends AbstractMypage
                     Response::actionExit();
                 }
 
-                $objCustomer = new Customer();
+                /* @var $objCustomer Customer */
+                $objCustomer = Application::alias('eccube.customer');
                 $this->lfSendRefusalMail($objCustomer->getValue('customer_id'));
                 $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
                 $objCustomer->EndSession();

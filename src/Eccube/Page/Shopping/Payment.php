@@ -76,7 +76,8 @@ class Payment extends AbstractPage
         $objSiteSess = Application::alias('eccube.site_session');
         /* @var $objCartSess CartSession */
         $objCartSess = Application::alias('eccube.cart_session');
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         $objFormParam = Application::alias('eccube.form_param');
         $objDelivery = new DeliveryHelper();
 
