@@ -154,7 +154,8 @@ class Category extends AbstractAdminPage
             // CSVダウンロード
             case 'csv':
                 // CSVを送信する
-                $objCSV = new CsvHelper();
+                /* @var $objCSV CsvHelper */
+                $objCSV = Application::alias('eccube.helper.csv');
 
                 $objCSV->sfDownloadCsv('5', '', array(), '', true);
                 Application::alias('eccube.response')->actionExit();

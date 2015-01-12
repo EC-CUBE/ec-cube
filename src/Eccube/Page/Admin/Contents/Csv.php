@@ -41,7 +41,8 @@ class Csv extends AbstractAdminPage
         $this->tpl_maintitle = 'コンテンツ管理';
         $this->tpl_subtitle = 'CSV出力設定';
 
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
         $this->arrSubnavi = $objCSV->arrSubnavi; // 別名
         $this->tpl_subno_csv = $objCSV->arrSubnavi[1]; //デフォルト
         $this->arrSubnaviName = $objCSV->arrSubnaviName; // 表示名
@@ -126,7 +127,8 @@ class Csv extends AbstractAdminPage
      */
     public function lfGetCSVColumn($csv_id, $csv_status_flg = '', $order ='rank, no')
     {
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
         if (Utils::sfIsInt($csv_id)) {
             if ($csv_status_flg !='') {
                 $arrData = $objCSV->sfGetCsvOutput($csv_id, 'status = ?', array($csv_status_flg), $order);
@@ -183,7 +185,8 @@ class Csv extends AbstractAdminPage
      */
     public function lfGetCsvId($subno_csv)
     {
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
         $arrKey = array_keys($objCSV->arrSubnavi, $subno_csv);
         $csv_id = $arrKey[0];
         if (!Utils::sfIsInt($csv_id)) {

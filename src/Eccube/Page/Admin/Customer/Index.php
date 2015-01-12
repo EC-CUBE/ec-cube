@@ -218,7 +218,8 @@ class Index extends AbstractAdminPage
     {
         /* @var $objSelect CustomerList */
         $objSelect = Application::alias('eccube.customer_list', $arrParam, 'customer');
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
 
         $order = 'update_date DESC, customer_id DESC';
 

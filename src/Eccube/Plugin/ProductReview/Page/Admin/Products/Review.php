@@ -224,7 +224,8 @@ class Review extends AbstractAdminPage
      */
     public function lfDoOutputCsv($where, $arrWhereVal)
     {
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
         $objCSV->sfDownloadCsv('4', $where, $arrWhereVal, '', true);
     }
 

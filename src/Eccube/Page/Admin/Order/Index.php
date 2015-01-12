@@ -432,7 +432,8 @@ class Index extends AbstractAdminPage
      */
     public function doOutputCSV($where, $arrVal, $order)
     {
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
         $objCSV->sfDownloadCsv('3', $where, $arrVal, $order, true);
     }
 

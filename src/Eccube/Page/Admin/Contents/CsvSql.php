@@ -351,7 +351,8 @@ class CsvSql extends AbstractAdminPage
      */
     public function lfDoCsvOutput($sql_id)
     {
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
 
         $arrData = $this->lfGetSqlList('sql_id = ?', array($sql_id));
         $sql = 'SELECT ' . $arrData[0]['csv_sql'];

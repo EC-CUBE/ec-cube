@@ -140,7 +140,8 @@ class Index extends AbstractAdminPage
                     switch ($this->getMode()) {
                         // CSVを送信する。
                         case 'csv':
-                            $objCSV = new CsvHelper();
+                            /* @var $objCSV CsvHelper */
+                            $objCSV = Application::alias('eccube.helper.csv');
                             // CSVを送信する。正常終了の場合、終了。
                             $objCSV->sfDownloadCsv(1, $where, $arrWhereVal, $order, true);
                             Application::alias('eccube.response')->actionExit();

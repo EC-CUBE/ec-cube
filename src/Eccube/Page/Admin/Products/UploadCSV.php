@@ -101,7 +101,8 @@ class UploadCSV extends AbstractAdminPage
         $objDb = Application::alias('eccube.helper.db');
 
         // CSV管理ヘルパー
-        $objCSV = new CsvHelper();
+        /* @var $objCSV CsvHelper */
+        $objCSV = Application::alias('eccube.helper.csv');
         // CSV構造読み込み
         $arrCSVFrame = $objCSV->sfGetCsvOutput($this->csv_id);
 
