@@ -53,7 +53,8 @@ class Login extends AbstractMypage
     public function action()
     {
         //決済処理中ステータスのロールバック
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         Response::sendRedirect(DIR_INDEX_PATH);

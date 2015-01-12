@@ -144,7 +144,8 @@ class Edit extends Index
      */
     public function action()
     {
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
         $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーター情報の初期化
@@ -563,7 +564,8 @@ class Edit extends Index
      */
     public function setOrderToFormParam(&$objFormParam, $order_id)
     {
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
 
         // 受注詳細を設定
         $arrOrderDetail = $objPurchase->getOrderDetail($order_id, false);
@@ -702,7 +704,8 @@ class Edit extends Index
             $arrProduct = $objProduct->getDetailAndProductsClass($arrValues['product_class_id'][$i]);
 
             // 編集前の値と比較するため受注詳細を取得
-            $objPurchase = new PurchaseHelper();
+            /* @var $objPurchase PurchaseHelper */
+            $objPurchase = Application::alias('eccube.helper.purchase');
             $arrOrderDetail = Utils::sfSwapArray($objPurchase->getOrderDetail($objFormParam->getValue('order_id'), false));
 
             if ($arrProduct['stock_unlimited'] != '1'

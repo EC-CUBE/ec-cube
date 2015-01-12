@@ -100,7 +100,8 @@ class Index extends AbstractAdminPage
         $this->arrHidden = $objFormParam->getSearchArray();
         $this->arrForm = $objFormParam->getFormParamList();
 
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
 
         switch ($this->getMode()) {
             // 削除

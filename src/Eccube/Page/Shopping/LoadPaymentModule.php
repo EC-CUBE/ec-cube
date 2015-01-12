@@ -77,7 +77,8 @@ class LoadPaymentModule extends AbstractPage
      */
     public function getModulePath($order_id)
     {
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
         $objPayment = new PaymentHelper();
 
         $order = $objPurchase->getOrder($order_id);

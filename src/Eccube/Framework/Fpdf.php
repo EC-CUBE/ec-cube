@@ -316,7 +316,8 @@ class Fpdf extends Helper\FPDI
     {
         if (Utils::sfIsInt($order_id)) {
             // DBから受注情報を読み込む
-            $objPurchase = new PurchaseHelper();
+            /* @var $objPurchase PurchaseHelper */
+            $objPurchase = Application::alias('eccube.helper.purchase');
             $this->arrDisp = $objPurchase->getOrder($order_id);
             list($point) = CustomerHelper::sfGetCustomerPoint($order_id, $this->arrDisp['use_point'], $this->arrDisp['add_point']);
             $this->arrDisp['point'] = $point;

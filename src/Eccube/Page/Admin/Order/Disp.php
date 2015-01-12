@@ -113,7 +113,8 @@ class Disp extends Index
      */
     public function action()
     {
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
         $objFormParam = Application::alias('eccube.form_param');
 
         // パラメータ情報の初期化
@@ -269,7 +270,8 @@ class Disp extends Index
      */
     public function setOrderToFormParam(&$objFormParam, $order_id)
     {
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
 
         // 受注詳細を設定
         $arrOrderDetail = $objPurchase->getOrderDetail($order_id, false);

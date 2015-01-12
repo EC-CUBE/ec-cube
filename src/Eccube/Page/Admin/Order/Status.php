@@ -181,7 +181,8 @@ class Status extends AbstractAdminPage
      */
     public function lfStatusMove($statusId, $arrOrderId)
     {
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
         $objQuery = Application::alias('eccube.query');
 
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
@@ -214,7 +215,8 @@ class Status extends AbstractAdminPage
             return false;
         }
 
-        $objPurchase = new PurchaseHelper();
+        /* @var $objPurchase PurchaseHelper */
+        $objPurchase = Application::alias('eccube.helper.purchase');
         foreach ($arrOrderId as $orderId) {
             $objPurchase->cancelOrder($orderId, ORDER_CANCEL, true);
         }
