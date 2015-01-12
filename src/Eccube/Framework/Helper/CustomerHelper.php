@@ -676,7 +676,8 @@ class CustomerHelper
     {
         /* @var $objQuery Query*/
         $objQuery = Application::alias('eccube.query');
-        $objSelect = new CustomerList($arrParam, 'customer');
+        /* @var $objSelect CustomerList */
+        $objSelect = Application::alias('eccube.customer_list', $arrParam, 'customer');
 
         $page_max = Utils::sfGetSearchPageMax($arrParam['search_page_max']);
         $disp_pageno = $arrParam['search_pageno'];

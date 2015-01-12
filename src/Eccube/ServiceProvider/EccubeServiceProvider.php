@@ -62,6 +62,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.customer'] = function () {
             return new \Eccube\Framework\Customer();
         };
+        $app['eccube.customer_list'] = $app->protect(function ($array, $mode = '') {
+            return new \Eccube\Framework\CustomerList($array, $mode);
+        });
         $app['eccube.cookie'] = $app->protect(function ($day = COOKIE_EXPIRE) {
             return new \Eccube\Framework\Cookie($day);
         });

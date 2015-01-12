@@ -214,7 +214,8 @@ class Index extends AbstractAdminPage
      */
     public function lfDoCSV($arrParam)
     {
-        $objSelect = new CustomerList($arrParam, 'customer');
+        /* @var $objSelect CustomerList */
+        $objSelect = Application::alias('eccube.customer_list', $arrParam, 'customer');
         $objCSV = new CsvHelper();
 
         $order = 'update_date DESC, customer_id DESC';
