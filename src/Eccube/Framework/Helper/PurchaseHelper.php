@@ -235,7 +235,7 @@ class PurchaseHelper
          * POSTのユニークIDとセッションのユニークIDを比較
          *(ユニークIDがPOSTされていない場合はスルー)
          */
-        if (!SiteSession::checkUniqId()) {
+        if (!Application::alias('eccube.site_session')->checkUniqId()) {
             Utils::sfDispSiteError(CANCEL_PURCHASE);
             exit;
         }
