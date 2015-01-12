@@ -66,7 +66,8 @@ class Kiyaku extends AbstractPage
      */
     public function lfGetKiyaku($index, &$objPage)
     {
-        $objKiyaku = new KiyakuHelper();
+        /* @var $objKiyaku KiyakuHelper */
+        $objKiyaku = Application::alias('eccube.helper.kiyaku');
         $arrKiyaku = $objKiyaku->getList();
 
         $number = count($arrKiyaku);

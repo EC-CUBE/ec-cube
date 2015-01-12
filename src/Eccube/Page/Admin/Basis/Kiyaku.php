@@ -59,7 +59,8 @@ class Kiyaku extends AbstractAdminPage
      */
     public function action()
     {
-        $objKiyaku = new KiyakuHelper();
+        /* @var $objKiyaku KiyakuHelper */
+        $objKiyaku = Application::alias('eccube.helper.kiyaku');
 
         $mode = $this->getMode();
         $objFormParam = Application::alias('eccube.form_param');
