@@ -54,7 +54,7 @@ class ProductEdit extends Index
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrSTATUS_IMAGE = $masterData->getMasterData('mtb_status_image');
         $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
-        $this->arrMaker = MakerHelper::getIDValueList();
+        $this->arrMaker = Application::alias('eccube.helper.maker')->getIDValueList();
         $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
     }
 

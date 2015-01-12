@@ -60,7 +60,8 @@ class Maker extends AbstractAdminPage
      */
     public function action()
     {
-        $objMaker = new MakerHelper();
+        /* @var $objMaker MakerHelper */
+        $objMaker = Application::alias('eccube.helper.maker');
         $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーター情報の初期化

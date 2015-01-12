@@ -341,7 +341,8 @@ class ProductsList extends AbstractPage
 
         // メーカー検索条件
         if (strlen($arrSearchData['maker_id']) > 0) {
-            $objMaker = new MakerHelper();
+            /* @var $objMaker MakerHelper */
+            $objMaker = Application::alias('eccube.helper.maker');
             $maker = $objMaker->getMaker($arrSearchData['maker_id']);
             $arrSearch['maker']     = $maker['name'];
         }

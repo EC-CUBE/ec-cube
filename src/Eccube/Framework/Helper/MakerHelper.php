@@ -158,7 +158,7 @@ class MakerHelper
      *
      * @return array
      */
-    public static function getIDValueList()
+    public function getIDValueList()
     {
         return Application::alias('eccube.helper.db')->getIDValueList('dtb_maker', 'maker_id', 'name');
     }
