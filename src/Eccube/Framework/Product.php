@@ -13,7 +13,7 @@
 namespace Eccube\Framework;
 
 use Eccube\Application;
-use Eccube\Framework\Query as Query2;
+use Eccube\Framework\Query;
 use Eccube\Framework\Helper\TaxRuleHelper;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Util\Utils;
@@ -70,7 +70,7 @@ class Product
      * @param  array    $arrVal   検索パラメーターの配列
      * @return array    商品IDの配列
      */
-    public function findProductIdsOrder(&$objQuery, $arrVal = array())
+    public function findProductIdsOrder(Query &$objQuery, $arrVal = array())
     {
         $table = 'dtb_products AS alldtl';
 
@@ -98,7 +98,7 @@ class Product
      * @param  array    $arrVal   検索パラメーターの配列
      * @return integer    対象商品ID数
      */
-    public function findProductCount(&$objQuery, $arrVal = array())
+    public function findProductCount(Query &$objQuery, $arrVal = array())
     {
         $table = 'dtb_products AS alldtl';
 
@@ -115,7 +115,7 @@ class Product
      * @param  Query $objQuery Query インスタンス
      * @return array    商品一覧の配列
      */
-    public function lists(&$objQuery)
+    public function lists(Query &$objQuery)
     {
         $col = <<< __EOS__
              product_id
@@ -157,7 +157,7 @@ __EOS__;
      * @param  array    $arrProductId 商品ID
      * @return array    商品一覧の配列 (キー: 商品ID)
      */
-    public function getListByProductIds(&$objQuery, $arrProductId = array())
+    public function getListByProductIds(Query &$objQuery, $arrProductId = array())
     {
         if (empty($arrProductId)) {
             return array();
@@ -196,7 +196,8 @@ __EOS__;
      */
     public function getDetail($product_id)
     {
-        $objQuery = Query2::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         $from = $this->alldtlSQL();
         $where = 'product_id = ?';
@@ -336,7 +337,7 @@ __EOS__;
      * @param  array    $params   検索パラメーターの配列
      * @return array    商品規格の配列
      */
-    public function getProductsClassByQuery(&$objQuery, $params)
+    public function getProductsClassByQuery(Query &$objQuery, $params)
     {
         // 末端の規格を取得
         $col = <<< __EOS__
@@ -393,7 +394,8 @@ __EOS__;
      */
     public function getProductsClass($productClassId)
     {
-        $objQuery = Query2::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setWhere('product_class_id = ? AND T1.del_flg = 0');
         $arrRes = $this->getProductsClassByQuery($objQuery, $productClassId);
 
@@ -422,7 +424,8 @@ __EOS__;
         if (empty($productIds)) {
             return array();
         }
-        $objQuery = Query2::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $where = 'product_id IN (' . Utils::repeatStrWithSeparator('?', count($productIds)) . ')';
         if (!$has_deleted) {
             $where .= ' AND T1.del_flg = 0';
@@ -457,7 +460,8 @@ __EOS__;
         if (empty($productIds)) {
             return array();
         }
-        $objQuery = Query2::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $cols = 'product_id, product_status_id';
         $from = 'dtb_product_status';
         $where = 'del_flg = 0 AND product_id IN (' . Utils::repeatStrWithSeparator('?', count($productIds)) . ')';
@@ -486,7 +490,8 @@ __EOS__;
         $val['update_date'] = 'CURRENT_TIMESTAMP';
         $val['del_flg'] = '0';
 
-        $objQuery = Query2::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->delete('dtb_product_status', 'product_id = ?', array($productId));
         foreach ($productStatusIds as $productStatusId) {
             if ($productStatusId == '') continue;
@@ -536,7 +541,8 @@ __EOS__;
             return false;
         }
 
-        $objQuery = Query2::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->update('dtb_products_class', array(),
                           'product_class_id = ?', array($productClassId),
                           array('stock' => 'stock - ?'), array($quantity));
@@ -697,7 +703,8 @@ __EOS__;
      */
     public function getCategoryIds($product_id, $include_hidden = false) {
         if ($this->isValidProductId($product_id, $include_hidden)) {
-            $objQuery = Query2::getSingletonInstance();
+            /* @var $objQuery Query */
+            $objQuery = Application::alias('eccube.query');
             $category_id = $objQuery->getCol('category_id', 'dtb_product_categories', 'product_id = ?', array($product_id));
         } else {
             // 不正な場合は、空の配列を返す。
