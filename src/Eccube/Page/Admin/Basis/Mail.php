@@ -60,7 +60,8 @@ class Mail extends AbstractAdminPage
     public function action()
     {
         $masterData = Application::alias('eccube.db.master_data');
-        $objMailtemplate = new MailtemplateHelper();
+        /* @var $objMailtemplate MailtemplateHelper */
+        $objMailtemplate = Application::alias('eccube.helper.mailtemplate');
 
         $mode = $this->getMode();
 

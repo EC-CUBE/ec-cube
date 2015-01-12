@@ -232,7 +232,8 @@ class Mail extends AbstractAdminPage
             $mailTemplates = null;
         // 有効選択時
         } elseif (Utils::sfIsInt($template_id)) {
-            $objMailtemplate = new MailtemplateHelper();
+            /* @var $objMailtemplate MailtemplateHelper */
+            $objMailtemplate = Application::alias('eccube.helper.mailtemplate');
             $mailTemplates = $objMailtemplate->get($template_id);
         // 不正選択時
         } else {

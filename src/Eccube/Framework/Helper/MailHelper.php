@@ -83,7 +83,8 @@ class MailHelper
     public function sfSendTemplateMail($to, $to_name, $template_id, &$objPage, $from_address = '', $from_name = '', $reply_to = '', $bcc = '')
     {
         // メールテンプレート情報の取得
-        $objMailtemplate = new MailtemplateHelper();
+        /* @var $objMailtemplate MailtemplateHelper */
+        $objMailtemplate = Application::alias('eccube.helper.mailtemplate');
         $mailtemplate = $objMailtemplate->get($template_id);
         $objPage->tpl_header = $mailtemplate['header'];
         $objPage->tpl_footer = $mailtemplate['footer'];
@@ -122,7 +123,8 @@ class MailHelper
 
         if ($subject == '' && $header == '' && $footer == '') {
             // メールテンプレート情報の取得
-            $objMailtemplate = new MailtemplateHelper();
+            /* @var $objMailtemplate MailtemplateHelper */
+            $objMailtemplate = Application::alias('eccube.helper.mailtemplate');
             $mailtemplate = $objMailtemplate->get($template_id);
             $arrTplVar->tpl_header = $mailtemplate['header'];
             $arrTplVar->tpl_footer = $mailtemplate['footer'];
