@@ -63,10 +63,16 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Framework\Cookie($day);
         });
         $app['eccube.check_error'] = $app->protect(function ($array = '') {
-            return  new \Eccube\Framework\CheckError($array);
+            return new \Eccube\Framework\CheckError($array);
         });
         $app['eccube.display'] = $app->protect(function ($hasPrevURL = true) {
             return new \Eccube\Framework\Display($hasPrevURL);
+        });
+        $app['eccube.form_param'] = function () {
+            return new \Eccube\Framework\FormParam();
+        };
+        $app['eccube.product'] = $app->protect(function () {
+            return new \Eccube\Framework\Product();
         });
         $app['eccube.response'] = $app->protect(function () {
             return new \Eccube\Framework\Response();
@@ -84,6 +90,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         // db
         $app['eccube.db.factory'] = $app->protect(function ($db_type = DB_TYPE) {
             return \Eccube\Framework\DB\DBFactory::getInstance($db_type);
+        });
+        $app['eccube.db.master_data'] = $app->share(function () {
+            return new \Eccube\Framework\DB\MasterData();
         });
 
         // graph

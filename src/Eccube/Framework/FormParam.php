@@ -64,12 +64,23 @@ class FormParam
         // FormParamのフックポイント
         // TODO: debug_backtrace以外にいい方法があれば良いが、一旦これで
         $backtraces = debug_backtrace();
-        // 呼び出し元のクラスを取得
-        $class = $backtraces[1]['class'];
-        $objPage = $backtraces[1]['object'];
-        $objPlugin = PluginHelper::getSingletonInstance($objPage->plugin_activate_flg);
-        if (is_object($objPlugin)) {
-            $objPlugin->doAction('FormParam_construct', array($class, $this));
+        foreach ($backtraces as $backtrace) {
+            if (!isset($backtrace['object']) || !$backtrace['object'] instanceof \Eccube\Page\AbstractPage) {
+                continue;
+            }
+
+            // 呼び出し元のクラスを取得
+            $class = $backtrace['class'];
+            $objPage = $backtrace['object'];
+            break;
+        }
+
+        if ($class && $objPage) {
+            /* @var $objPlugin PluginHelper */
+            $objPlugin = Application::alias('eccube.helper.plugin', $objPage->plugin_activate_flg);
+            if (is_object($objPlugin)) {
+                $objPlugin->doAction('FormParam_construct', array($class, $this));
+            }
         }
     }
 
@@ -290,7 +301,8 @@ class FormParam
         }
 
         $dummy_key = 'dummy'; // 仮のキーを指定。どんな値でも良い。
-        $objErr = new CheckError(array($dummy_key => $value));
+        /* @var $objErr CheckError */
+        $objErr = Application::alias('eccube.check_error', array($dummy_key => $value));
         $objErr->doFunc(array($disp_name, $dummy_key, $length), array($func));
         if (isset($objErr->arrErr[$dummy_key]) && !Utils::isBlank($objErr->arrErr[$dummy_key])) {
             $arrErr = $objErr->arrErr[$dummy_key];

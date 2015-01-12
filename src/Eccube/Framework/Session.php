@@ -64,7 +64,7 @@ class Session
     public function IsSuccess()
     {
         if ($this->cert == CERT_STRING) {
-            $masterData = new MasterData();
+            $masterData = Application::alias('eccube.db.master_data');
             $admin_path = strtolower(preg_replace('/\/+/', '/', $_SERVER['SCRIPT_NAME']));            
             $arrPERMISSION = array_change_key_case($masterData->getMasterData('mtb_permission'));
             if (isset($arrPERMISSION[$admin_path])) { 

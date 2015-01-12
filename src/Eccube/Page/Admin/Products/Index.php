@@ -50,7 +50,7 @@ class Index extends AbstractAdminPage
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品マスター';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPageMax = $masterData->getMasterData('mtb_page_max');
         $this->arrDISP = $masterData->getMasterData('mtb_disp');
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
@@ -90,7 +90,7 @@ class Index extends AbstractAdminPage
     public function action()
     {
         $objDb = new DbHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $objProduct = new Product();
         $objQuery = Application::alias('eccube.query');
 

@@ -57,7 +57,7 @@ class FileView extends AbstractAdminPage
         switch ($this->getMode()) {
             default:
                 // フォーム操作クラス
-                $objFormParam = new FormParam();
+                $objFormParam = Application::alias('eccube.form_param');
                 // パラメーター情報の初期化
                 $this->lfInitParam($objFormParam);
                 $objFormParam->setParam($_GET);

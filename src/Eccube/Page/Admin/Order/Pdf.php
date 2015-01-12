@@ -79,7 +79,7 @@ class Pdf extends AbstractAdminPage
         $this->arrDay = $objDate->getDay();
 
         // パラメーター管理クラス
-        $this->objFormParam = new FormParam();
+        $this->objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->lfInitParam($this->objFormParam);
         $this->objFormParam->setParam($_POST);

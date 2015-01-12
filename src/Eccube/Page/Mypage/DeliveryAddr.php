@@ -41,7 +41,7 @@ class DeliveryAddr extends AbstractPage
         $this->skip_load_page_layout = true;
         parent::init();
         $this->tpl_title    = 'お届け先の追加･変更';
-        $masterData         = new MasterData();
+        $masterData         = Application::alias('eccube.db.master_data');
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->arrCountry   = $masterData->getMasterData('mtb_country');
         $this->httpCacheControl('nocache');
@@ -103,7 +103,7 @@ class DeliveryAddr extends AbstractPage
         $_SESSION['other_deliv_id'] = $_REQUEST['other_deliv_id'];
 
         // パラメーター管理クラス,パラメーター情報の初期化
-        $objFormParam   = new FormParam();
+        $objFormParam   = Application::alias('eccube.form_param');
         $objAddress->setFormParam($objFormParam);
         $objFormParam->setParam($_POST);
 

@@ -63,7 +63,7 @@ class AdminArea extends AbstractAdminPage
             $this->tpl_enable_ssl = TRUE;
         }
 
-        $objFormParam = new FormParam;
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーターの初期化
         $this->initParam($objFormParam, $_POST);

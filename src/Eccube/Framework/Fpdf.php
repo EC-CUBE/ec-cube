@@ -37,7 +37,7 @@ class Fpdf extends Helper\FPDI
         $this->pdf_download = $download;      // PDFのダウンロード形式（0:表示、1:ダウンロード）
         $this->tpl_title = $title;
         $this->tpl_dispmode = 'real';      // 表示モード
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->width_cell = array(110.3,12,21.7,24.5);
 

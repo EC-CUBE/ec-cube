@@ -45,7 +45,7 @@ class Index extends AbstractAdminPage
         $this->tpl_maintitle = 'システム設定';
         $this->tpl_subtitle = 'メンバー管理';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
         $this->arrWORK = $masterData->getMasterData('mtb_work');
     }

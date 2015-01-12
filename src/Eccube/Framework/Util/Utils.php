@@ -59,7 +59,7 @@ class Utils
     public static function getInstallerPath()
     {
         /* @var $netUrl Net_URL */
-        $netUrl = Application::alias('eccube.net.url');
+        $netUrl = Application::alias('pear.net.url');
 
         $installer = 'install/' . DIR_INDEX_PATH;
         // XXX メソッド名は add で始まるが、実際には置換を行う
@@ -1560,7 +1560,7 @@ class Utils
         /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $arrPref = $masterData->getMasterData('mtb_pref');
         // インデックスと値を反転させる。
         $arrREV_PREF = array_flip($arrPref);
@@ -1678,7 +1678,7 @@ class Utils
     public static function sfIsInternalDomain($url)
     {
         /* @var $netURL Net_URL */
-        $netURL = Application::alias('eccube.net.url', HTTP_URL);
+        $netURL = Application::alias('pear.net.url', HTTP_URL);
         $host = $netURL->host;
         if (!$host) {
             return false;

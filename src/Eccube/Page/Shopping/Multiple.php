@@ -70,7 +70,7 @@ class Multiple extends AbstractPage
         $objSiteSess = new SiteSession();
         $objCartSess = new CartSession();
         $objCustomer = new Customer();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $objAddress = new AddressHelper();
 
         // 複数配送先指定が無効な場合はエラー
@@ -181,7 +181,7 @@ class Multiple extends AbstractPage
      */
     public function getDelivAddrs(Customer &$objCustomer, &$objPurchase, &$objAddress)
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $arrPref = $masterData->getMasterData('mtb_pref');
 
         $arrResults = array('' => '選択してください');

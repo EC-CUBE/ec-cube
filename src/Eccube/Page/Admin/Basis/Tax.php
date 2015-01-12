@@ -45,7 +45,7 @@ class Tax extends AbstractAdminPage
         $this->tpl_mainno = 'basis';
         $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = '税率設定';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXCALCRULE = $masterData->getMasterData('mtb_taxrule');
 
@@ -85,7 +85,7 @@ class Tax extends AbstractAdminPage
     public function action()
     {
         $objTaxRule = new TaxRuleHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
@@ -241,7 +241,7 @@ class Tax extends AbstractAdminPage
             default:
             }
         }
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         // DBのデータを更新
         $res = $masterData->updateMasterData('mtb_constants', array(), $arrData);
         // キャッシュを生成

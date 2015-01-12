@@ -34,7 +34,7 @@ class Index extends AbstractPage
     {
         parent::init();
         $this->tpl_title = '特定商取引に関する法律に基づく表記';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 

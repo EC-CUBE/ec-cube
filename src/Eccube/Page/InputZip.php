@@ -93,7 +93,7 @@ class InputZip extends AbstractPage
     public function fnErrorCheck($arrRequest)
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $objFormParam->addParam('郵便番号1', 'zip1', ZIP01_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('郵便番号2', 'zip2', ZIP02_LEN, 'n', array('NUM_COUNT_CHECK', 'NUM_CHECK'));

@@ -459,7 +459,7 @@ class MobileHelper
      */
     public function gfIsMobileMailAddress($address)
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $arrMobileMailDomains = $masterData->getMasterData('mtb_mobile_domain');
 
         foreach ($arrMobileMailDomains as $domain) {

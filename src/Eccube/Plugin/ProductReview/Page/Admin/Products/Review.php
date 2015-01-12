@@ -12,6 +12,7 @@
 
 namespace Eccube\Plugin\ProductReview\Page\Admin\Products;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Date;
@@ -46,7 +47,7 @@ class Review extends AbstractAdminPage
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = 'レビュー管理';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPageMax = $masterData->getMasterData('mtb_page_max');
         $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
@@ -84,9 +85,10 @@ class Review extends AbstractAdminPage
      */
     public function action()
     {
-        $objReview = new ReviewHelper();
+        /* @var $objReview ReviewHelper */
+        $objReview = Application::alias('eccube.helper.review');
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

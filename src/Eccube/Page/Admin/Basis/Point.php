@@ -60,7 +60,7 @@ class Point extends AbstractAdminPage
     {
         $objDb = new DbHelper();
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         // POST値の取得

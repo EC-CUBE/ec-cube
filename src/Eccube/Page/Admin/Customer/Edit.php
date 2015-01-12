@@ -45,7 +45,7 @@ class Edit extends AbstractAdminPage
         $this->tpl_maintitle = '会員管理';
         $this->tpl_subtitle = '会員登録';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrJob = $masterData->getMasterData('mtb_job');
@@ -83,9 +83,9 @@ class Edit extends AbstractAdminPage
     public function action()
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // 検索引き継ぎ用パラメーター管理クラス
-        $objFormSearchParam = new FormParam();
+        $objFormSearchParam = Application::alias('eccube.form_param');
 
         // モードによる処理切り替え
         switch ($this->getMode()) {

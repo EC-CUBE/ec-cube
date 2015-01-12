@@ -40,7 +40,7 @@ class Change extends AbstractMypage
         $this->tpl_subtitle = '会員登録内容変更(入力ページ)';
         $this->tpl_mypageno = 'change';
 
-        $masterData         = new MasterData();
+        $masterData         = Application::alias('eccube.db.master_data');
         $this->arrReminder  = $masterData->getMasterData('mtb_reminder');
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->arrCountry   = $masterData->getMasterData('mtb_country');
@@ -81,7 +81,7 @@ class Change extends AbstractMypage
         }
 
         // パラメーター管理クラス,パラメーター情報の初期化
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         CustomerHelper::sfCustomerMypageParam($objFormParam);
         $objFormParam->setParam($_POST);    // POST値の取得
 
@@ -176,7 +176,7 @@ class Change extends AbstractMypage
     public function lfCheckError($arrRequest)
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $objFormParam->addParam('郵便番号1', 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('郵便番号2', 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));

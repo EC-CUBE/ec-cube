@@ -91,7 +91,7 @@ class Login extends AbstractBloc
      */
     public function lfCheckDisableLogout()
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $arrDisableLogout = $masterData->getMasterData('mtb_disable_logout');
 
         $current_page = $_SERVER['SCRIPT_NAME'];

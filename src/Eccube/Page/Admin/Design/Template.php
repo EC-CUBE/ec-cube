@@ -45,7 +45,7 @@ class Template extends AbstractAdminPage
         $this->arrErr  = array();
         $this->arrForm = array();
         ini_set('max_execution_time', 300);
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
@@ -67,7 +67,7 @@ class Template extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();
@@ -143,7 +143,7 @@ class Template extends AbstractAdminPage
      */
     public function doUpdateMasterData($template_code, $device_type_id)
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
 
         $defineName = 'TEMPLATE_NAME';
         switch ($device_type_id) {

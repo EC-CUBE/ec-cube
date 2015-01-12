@@ -58,7 +58,7 @@ class Editdb extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーターの初期化
         $this->initForm($objFormParam, $_POST);

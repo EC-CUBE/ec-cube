@@ -63,7 +63,7 @@ class Category extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $objCategory = new CategoryHelper();
 
         // 入力パラメーター初期化

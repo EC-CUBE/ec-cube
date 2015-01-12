@@ -57,7 +57,7 @@ class SearchCustomer extends AbstractAdminPage
     public function action()
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター設定
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

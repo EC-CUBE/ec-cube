@@ -38,7 +38,7 @@ class Index extends AbstractAdminPage
         $this->tpl_mainpage = 'basis/index.tpl';
         $this->tpl_subno = 'index';
         $this->tpl_mainno = 'basis';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
         $this->tpl_maintitle = '基本情報管理';
@@ -73,7 +73,7 @@ class Index extends AbstractAdminPage
     public function action()
     {
         $objDb = new DbHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam, $_POST);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

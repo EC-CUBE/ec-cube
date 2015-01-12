@@ -39,7 +39,7 @@ class ItemSearch extends Base
     {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
-            $masterData                 = new MasterData();
+            $masterData                 = Application::alias('eccube.db.master_data');
             $arrSTATUS            = $masterData->getMasterData('mtb_status');
             $arrSTATUS_IMAGE      = $masterData->getMasterData('mtb_status_image');
 

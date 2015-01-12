@@ -114,7 +114,7 @@ abstract class Base
 
     protected function doInitParam($arrParam = array())
     {
-        $this->objFormParam = new FormParam();
+        $this->objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($this->objFormParam);
         $this->objFormParam->setParam($arrParam);
         $this->objFormParam->convParam();

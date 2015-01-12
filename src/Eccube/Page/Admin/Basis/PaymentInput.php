@@ -63,7 +63,7 @@ class PaymentInput extends AbstractAdminPage
     public function action()
     {
         $objPayment = new PaymentHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $mode = $this->getMode();
         $this->lfInitParam($mode, $objFormParam);
 

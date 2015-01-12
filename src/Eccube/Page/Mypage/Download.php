@@ -86,7 +86,7 @@ class Download extends AbstractPage
         }
 
         // パラメーターチェック
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         // GET、SESSION['customer']値の取得
         $objFormParam->setParam($_SESSION['customer']);

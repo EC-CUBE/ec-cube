@@ -39,7 +39,7 @@ class Input extends AbstractAdminPage
         $this->tpl_mainpage = 'system/input.tpl';
 
         // マスターデータから権限配列を取得
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrAUTHORITY = $masterData->getMasterData('mtb_authority');
         $this->arrWORK = $masterData->getMasterData('mtb_work');
 
@@ -65,7 +65,7 @@ class Input extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // ページ送りの処理 $_REQUEST['pageno']が信頼しうる値かどうかチェックする。
         $this->tpl_pageno = $this->lfCheckPageNo($_REQUEST['pageno']);

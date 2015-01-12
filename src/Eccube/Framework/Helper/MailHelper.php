@@ -46,7 +46,7 @@ class MailHelper
      */
     public function __construct()
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrMAILTPLPATH =  $masterData->getMasterData('mtb_mail_tpl_path');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrCountry = $masterData->getMasterData('mtb_country');

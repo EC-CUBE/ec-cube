@@ -41,7 +41,7 @@ class TemplateInput extends AbstractAdminPage
         $this->tpl_subtitle = 'テンプレート設定';
         $this->tpl_subno = 'template';
         $this->mode = 'regist';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrMagazineType = $masterData->getMasterData('mtb_magazine_type');
     }
 
@@ -75,7 +75,7 @@ class TemplateInput extends AbstractAdminPage
                 break;
             case 'regist':
                 // 新規登録
-                $objFormParam = new FormParam();
+                $objFormParam = Application::alias('eccube.form_param');
 
                 $this->lfInitParam($objFormParam);
                 $objFormParam->setParam($_POST);

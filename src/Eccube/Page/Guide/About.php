@@ -32,7 +32,7 @@ class About extends AbstractPage
     public function init()
     {
         parent::init();
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 

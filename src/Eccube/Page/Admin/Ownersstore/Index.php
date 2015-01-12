@@ -65,7 +65,7 @@ class Index extends AbstractAdminPage
     public function action()
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $mode = $this->getMode();
         // パラメーター情報の初期化
         $this->initParam($objFormParam, $mode);

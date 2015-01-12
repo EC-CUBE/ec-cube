@@ -43,7 +43,7 @@ class ProductSelect extends AbstractAdminPage
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品選択';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPRODUCTSTATUS_COLOR = $masterData->getMasterData('mtb_product_status_color');
     }
 
@@ -67,7 +67,7 @@ class ProductSelect extends AbstractAdminPage
     {
         $objDb = new DbHelper();
 
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

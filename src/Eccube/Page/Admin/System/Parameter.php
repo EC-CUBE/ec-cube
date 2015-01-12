@@ -67,7 +67,7 @@ class Parameter extends AbstractAdminPage
      */
     public function action()
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
 
         // キーの配列を生成
         $this->arrKeys = $this->getParamKeys($masterData);
@@ -112,7 +112,7 @@ class Parameter extends AbstractAdminPage
     public function update(&$arrKeys, &$arrForm)
     {
         $data = array();
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         foreach ($arrKeys as $key) {
             $data[$key] = $arrForm[$key];
         }

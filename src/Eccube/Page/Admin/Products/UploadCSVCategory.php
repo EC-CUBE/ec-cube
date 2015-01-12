@@ -86,7 +86,7 @@ class UploadCSVCategory extends AbstractAdminPage
         $this->tpl_subtitle = 'カテゴリ登録CSV';
         $this->csv_id = '5';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
         $this->arrTagCheckItem = array();
     }
@@ -128,7 +128,7 @@ class UploadCSVCategory extends AbstractAdminPage
         $this->lfInitFile($objUpFile);
 
         // パラメーター情報の初期化
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam, $arrCSVFrame);
 
         $this->max_upload_csv_size = Utils::getUnitDataSize(CSV_SIZE);

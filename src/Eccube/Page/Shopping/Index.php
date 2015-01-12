@@ -44,7 +44,7 @@ class Index extends AbstractPage
     {
         parent::init();
         $this->tpl_title = 'ログイン';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
@@ -86,7 +86,7 @@ class Index extends AbstractPage
         $objCartSess = new CartSession();
         $objCustomer = new Customer();
         $objCookie = new Cookie();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         $nonmember_mainpage = 'shopping/nonmember_input.tpl';
         $nonmember_title = 'お客様情報入力';

@@ -73,7 +73,7 @@ class Index extends AbstractAdminPage
     {
         $objNews = new NewsHelper();
 
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

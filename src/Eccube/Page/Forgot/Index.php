@@ -59,7 +59,7 @@ class Index extends AbstractPage
         $this->tpl_title = 'パスワードを忘れた方';
         $this->tpl_mainpage = 'forgot/index.tpl';
         $this->tpl_mainno = '';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrReminder = $masterData->getMasterData('mtb_reminder');
         $this->device_type = Display::detectDevice();
         $this->httpCacheControl('nocache');
@@ -88,7 +88,7 @@ class Index extends AbstractPage
     public function action()
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         switch ($this->getMode()) {
             case 'mail_check':

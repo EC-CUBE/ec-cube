@@ -70,7 +70,7 @@ class ProductsList extends AbstractPage
     {
         parent::init();
 
-        $masterData                 = new MasterData();
+        $masterData                 = Application::alias('eccube.db.master_data');
         $this->arrSTATUS            = $masterData->getMasterData('mtb_status');
         $this->arrSTATUS_IMAGE      = $masterData->getMasterData('mtb_status_image');
         $this->arrDELIVERYDATE      = $masterData->getMasterData('mtb_delivery_date');
@@ -102,7 +102,7 @@ class ProductsList extends AbstractPage
 
         $objProduct = new Product();
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);

@@ -49,7 +49,7 @@ class Index extends AbstractAdminPage
         $this->tpl_maintitle = '売上集計';
         $this->tpl_mainno           = 'total';
 
-        $masterData                 = new MasterData();
+        $masterData                 = Application::alias('eccube.db.master_data');
         $this->arrWDAY              = $masterData->getMasterData('mtb_wday');
         $this->arrSex               = $masterData->getMasterData('mtb_sex');
         $this->arrJob               = $masterData->getMasterData('mtb_job');
@@ -109,7 +109,7 @@ class Index extends AbstractAdminPage
         }
 
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);

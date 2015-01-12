@@ -61,7 +61,7 @@ class Kiyaku extends AbstractAdminPage
         $objKiyaku = new KiyakuHelper();
 
         $mode = $this->getMode();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($mode, $objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

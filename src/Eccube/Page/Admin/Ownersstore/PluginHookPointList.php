@@ -64,7 +64,7 @@ class PluginHookPointList extends AbstractAdminPage
     public function action()
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->initParam($objFormParam);
         $objFormParam->setParam($_POST);
 

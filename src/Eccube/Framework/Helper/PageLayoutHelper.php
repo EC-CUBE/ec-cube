@@ -91,7 +91,7 @@ class PageLayoutHelper
             }
 
             // 該当ページのブロックを取得し, 配置する
-            $masterData = new MasterData();
+            $masterData = Application::alias('eccube.db.master_data');
             $arrTarget = $masterData->getMasterData('mtb_target');
             $arrBlocs = $this->getBlocPositions($device_type_id, $objPage->arrPageLayout['page_id']);
             // 無効なプラグインのブロックを取り除く.

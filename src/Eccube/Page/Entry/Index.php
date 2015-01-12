@@ -44,7 +44,7 @@ class Index extends AbstractPage
     public function init()
     {
         parent::init();
-        $masterData         = new MasterData();
+        $masterData         = Application::alias('eccube.db.master_data');
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->arrJob       = $masterData->getMasterData('mtb_job');
         $this->arrReminder  = $masterData->getMasterData('mtb_reminder');
@@ -83,7 +83,7 @@ class Index extends AbstractPage
         $objPurchase = new PurchaseHelper();
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // PC時は規約ページからの遷移でなければエラー画面へ遷移する
         if ($this->lfCheckReferer() === false) {
@@ -311,7 +311,7 @@ class Index extends AbstractPage
     public function lfCheckError($arrRequest)
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $objFormParam->addParam('郵便番号1', 'zip01', ZIP01_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('郵便番号2', 'zip02', ZIP02_LEN, 'n', array('EXIST_CHECK', 'NUM_COUNT_CHECK', 'NUM_CHECK'));

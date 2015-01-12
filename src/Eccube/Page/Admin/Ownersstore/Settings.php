@@ -124,7 +124,7 @@ class Settings extends AbstractAdminPage
             $_POST['public_key'] = trim($_POST['public_key']);
         }
 
-        $objForm = new FormParam();
+        $objForm = Application::alias('eccube.form_param');
         $objForm->addParam('認証キー', 'public_key', LTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_POST);
 

@@ -53,7 +53,7 @@ class Index extends AbstractPage
     {
         parent::init();
         $this->tpl_title = '現在のカゴの中';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
     }
 
@@ -221,7 +221,7 @@ class Index extends AbstractPage
      */
     public function lfInitParam($arrRequest)
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $objFormParam->addParam('カートキー', 'cartKey', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objFormParam->addParam('カートナンバー', 'cart_no', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
         // スマートフォン版での数量変更用
@@ -241,7 +241,7 @@ class Index extends AbstractPage
      */
     public function lfInitParam4OpenCategoryTree($arrRequest)
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n',
             array('NUM_CHECK', 'MAX_LENGTH_CHECK'));

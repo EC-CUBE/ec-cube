@@ -45,7 +45,7 @@ class ProductClass extends AbstractAdminPage
         $this->tpl_subno = 'product';
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品登録(商品規格)';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         // 規格プルダウンのリスト
         $this->arrClass = $this->getAllClass();
@@ -70,7 +70,7 @@ class ProductClass extends AbstractAdminPage
     public function action()
     {
         // 商品マスターの検索条件パラメーターを初期化
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->initParam($objFormParam);
 
         $objFormParam->setParam($_POST);

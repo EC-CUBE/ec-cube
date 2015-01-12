@@ -50,7 +50,7 @@ class Index extends AbstractAdminPage
         $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '受注管理';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
         $this->arrORDERSTATUS_COLOR = $masterData->getMasterData('mtb_order_status_color');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
@@ -93,7 +93,7 @@ class Index extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $this->arrHidden = $objFormParam->getSearchArray();

@@ -40,7 +40,7 @@ class Template extends AbstractAdminPage
         $this->tpl_maintitle = 'メルマガ管理';
         $this->tpl_subtitle = 'テンプレート設定';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrMagazineType = $masterData->getMasterData('mtb_magazine_type');
     }
 

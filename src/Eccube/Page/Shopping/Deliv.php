@@ -40,7 +40,7 @@ class Deliv extends AbstractPage
     public function init()
     {
         parent::init();
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->tpl_title = 'お届け先の指定';
@@ -73,7 +73,7 @@ class Deliv extends AbstractPage
         $objSiteSess = new SiteSession();
         $objCartSess = new CartSession();
         $objCustomer = new Customer();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $objAddress = new AddressHelper();
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();

@@ -98,7 +98,7 @@ class Edit extends Index
         $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '受注登録';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
@@ -144,7 +144,7 @@ class Edit extends Index
     public function action()
     {
         $objPurchase = new PurchaseHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);

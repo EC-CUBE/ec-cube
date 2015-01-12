@@ -33,7 +33,7 @@ class NaviHeader extends Login
     public function init()
     {
         parent::init();
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type'); //商品種類を取得
     }
 

@@ -65,7 +65,7 @@ class JsonHelper extends Services_JSON
      */
     public function setError($errCode)
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $arrOStoreErrMsg = $masterData->getMasterData('mtb_ownersstore_err');
 
         $this->arrData['status']  = OSTORE_STATUS_ERROR;

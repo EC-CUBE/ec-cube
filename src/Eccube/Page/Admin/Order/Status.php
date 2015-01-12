@@ -43,7 +43,7 @@ class Status extends AbstractAdminPage
         $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '対応状況管理';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
         $this->arrORDERSTATUS_COLOR = $masterData->getMasterData('mtb_order_status_color');
     }
@@ -69,7 +69,7 @@ class Status extends AbstractAdminPage
         $objDb = new DbHelper();
 
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
@@ -186,7 +186,7 @@ class Status extends AbstractAdminPage
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;
         }
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
 
         $objQuery->begin();

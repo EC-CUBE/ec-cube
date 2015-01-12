@@ -62,7 +62,7 @@ class RecommendSearch extends AbstractAdminPage
     public function action()
     {
         $objDb = new DbHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();

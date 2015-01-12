@@ -46,7 +46,7 @@ class Index extends AbstractPage
         }
         $this->httpCacheControl('nocache');
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
 
         if (Display::detectDevice() == DEVICE_TYPE_MOBILE) {
@@ -74,7 +74,7 @@ class Index extends AbstractPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         $this->arrData = isset($_SESSION['customer']) ? $_SESSION['customer'] : '';
 

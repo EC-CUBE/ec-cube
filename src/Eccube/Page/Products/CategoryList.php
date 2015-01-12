@@ -142,7 +142,7 @@ class CategoryList extends AbstractPage
      */
     public function lfInitParam($arrRequest)
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $objFormParam->addParam('カテゴリID', 'category_id', INT_LEN, 'n', array('NUM_CHECK','MAX_LENGTH_CHECK'));
         // 値の取得
         $objFormParam->setParam($arrRequest);

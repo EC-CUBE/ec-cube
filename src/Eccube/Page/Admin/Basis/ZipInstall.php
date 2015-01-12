@@ -88,7 +88,7 @@ class ZipInstall extends AbstractAdminPage
     public function action()
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->lfInitParam($this->tpl_mode, $objFormParam);
         $objFormParam->setParam($_GET);

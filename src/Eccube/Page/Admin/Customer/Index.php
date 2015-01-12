@@ -47,7 +47,7 @@ class Index extends AbstractAdminPage
         $this->tpl_maintitle = '会員管理';
         $this->tpl_subtitle = '会員マスター';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->arrJob['不明'] = '不明';
@@ -96,7 +96,7 @@ class Index extends AbstractAdminPage
     public function action()
     {
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター設定
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

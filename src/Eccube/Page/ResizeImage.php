@@ -67,7 +67,7 @@ class ResizeImage extends AbstractPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_GET);
         $arrErr = $objFormParam->checkError();

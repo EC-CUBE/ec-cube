@@ -36,7 +36,7 @@ class Delivery extends AbstractAdminPage
         $this->tpl_mainpage = 'basis/delivery.tpl';
         $this->tpl_subno = 'delivery';
         $this->tpl_mainno = 'basis';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
         $this->tpl_maintitle = '基本情報管理';
@@ -65,7 +65,7 @@ class Delivery extends AbstractAdminPage
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $objFormParam = new FormParam();
+            $objFormParam = Application::alias('eccube.form_param');
             $objFormParam->setParam($_POST);
 
             $this->arrErr = $this->lfCheckError($mode, $objFormParam);

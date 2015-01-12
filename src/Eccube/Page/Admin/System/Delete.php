@@ -55,7 +55,7 @@ class Delete extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam;
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーターの初期化
         $this->initParam($objFormParam, $_GET);

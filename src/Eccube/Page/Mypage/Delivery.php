@@ -38,7 +38,7 @@ class Delivery extends AbstractMypage
         parent::init();
         $this->tpl_subtitle = 'お届け先追加･変更';
         $this->tpl_mypageno = 'delivery';
-        $masterData         = new MasterData();
+        $masterData         = Application::alias('eccube.db.master_data');
         $this->arrPref      = $masterData->getMasterData('mtb_pref');
         $this->arrCountry   = $masterData->getMasterData('mtb_country');
         $this->httpCacheControl('nocache');
@@ -64,7 +64,7 @@ class Delivery extends AbstractMypage
         $objCustomer    = new Customer();
         $customer_id    = $objCustomer->getValue('customer_id');
         $objAddress     = new AddressHelper();
-        $objFormParam   = new FormParam();
+        $objFormParam   = Application::alias('eccube.form_param');
 
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

@@ -117,7 +117,7 @@ class SessionHelper
         if (!GcUtils::isAdminFunction()) {
             return;
         } else {
-            $masterData = new MasterData();
+            $masterData = Application::alias('eccube.db.master_data');
             $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
             foreach ($arrExcludes as $exclude) {
                 $arrExcludesPath = explode('/', str_replace('\\', '/', HTML_REALDIR . ADMIN_DIR . $exclude));

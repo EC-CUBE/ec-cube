@@ -38,7 +38,7 @@ class DeliveryInput extends AbstractAdminPage
         $this->tpl_mainpage = 'basis/delivery_input.tpl';
         $this->tpl_subno = 'delivery';
         $this->tpl_mainno = 'basis';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrPayments = PaymentHelper::getIDValueList();
@@ -65,7 +65,7 @@ class DeliveryInput extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($this->mode, $objFormParam);
         $objFormParam->setParam($_POST);
 
@@ -96,7 +96,7 @@ class DeliveryInput extends AbstractAdminPage
     /* パラメーター情報の初期化 */
     public function lfInitParam($mode, &$objFormParam)
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         switch ($mode) {
             case 'edit':

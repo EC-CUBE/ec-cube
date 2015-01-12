@@ -66,7 +66,7 @@ class UploadCSV extends AbstractAdminPage
         $this->tpl_subtitle = '商品登録CSV';
         $this->csv_id = '1';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrDISP = $masterData->getMasterData('mtb_disp');
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
@@ -117,7 +117,7 @@ class UploadCSV extends AbstractAdminPage
         $this->lfInitFile($objUpFile);
 
         // パラメーター情報の初期化
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam, $arrCSVFrame);
 
         $this->max_upload_csv_size = Utils::getUnitDataSize(CSV_SIZE);

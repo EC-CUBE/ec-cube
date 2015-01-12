@@ -58,13 +58,13 @@ class Mail extends AbstractAdminPage
      */
     public function action()
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $objMailtemplate = new MailtemplateHelper();
 
         $mode = $this->getMode();
 
         if (!empty($_POST)) {
-            $objFormParam = new FormParam();
+            $objFormParam = Application::alias('eccube.form_param');
             $this->lfInitParam($mode, $objFormParam);
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();

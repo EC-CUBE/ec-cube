@@ -20,10 +20,8 @@ class Application extends \Silex\Application
         array_shift($args);
         $obj = static::$app[$name];
 
-        if (is_callable($obj) && $args !== array()) {
-            return call_user_func($obj, $args);
-        } elseif (is_callable($obj)) {
-            return call_user_func($obj);
+        if (is_callable($obj)) {
+            return call_user_func_array($obj, $args);
         } else {
             return $obj;
         }

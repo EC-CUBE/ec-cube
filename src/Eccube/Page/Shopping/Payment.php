@@ -45,7 +45,7 @@ class Payment extends AbstractPage
         parent::init();
         $this->tpl_onload = 'eccube.togglePointForm();';
         $this->tpl_title = 'お支払方法・お届け時間等の指定';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
     }
 
@@ -75,7 +75,7 @@ class Payment extends AbstractPage
         $objSiteSess = new SiteSession();
         $objCartSess = new CartSession();
         $objCustomer = new Customer();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $objDelivery = new DeliveryHelper();
 
         $this->is_multiple = $objPurchase->isMultiple();

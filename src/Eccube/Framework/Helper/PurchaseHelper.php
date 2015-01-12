@@ -629,7 +629,7 @@ class PurchaseHelper
      */
     public function getDateArray($start_day, $end_day)
     {
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $arrWDAY = $masterData->getMasterData('mtb_wday');
         //お届け可能日のスタート値がセットされていれば
         if ($start_day >= 1) {

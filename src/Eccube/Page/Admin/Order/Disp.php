@@ -79,7 +79,7 @@ class Disp extends Index
         $this->tpl_subno = '';
         $this->tpl_subtitle = '受注情報表示';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrORDERSTATUS = $masterData->getMasterData('mtb_order_status');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
@@ -113,7 +113,7 @@ class Disp extends Index
     public function action()
     {
         $objPurchase = new PurchaseHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメータ情報の初期化
         $this->lfInitParam($objFormParam);

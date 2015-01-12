@@ -44,7 +44,7 @@ class Header extends AbstractAdminPage
         $this->tpl_mainno = 'design';
         $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'ヘッダー/フッター設定';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
@@ -66,7 +66,7 @@ class Header extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();

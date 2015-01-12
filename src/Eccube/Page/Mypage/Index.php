@@ -48,7 +48,7 @@ class Index extends AbstractMypage
         } else {
             $this->tpl_subtitle = '購入履歴一覧';
         }
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrCustomerOrderStatus = $masterData->getMasterData('mtb_customer_order_status');
 
         $this->httpCacheControl('nocache');

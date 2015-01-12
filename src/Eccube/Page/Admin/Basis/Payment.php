@@ -60,7 +60,7 @@ class Payment extends AbstractAdminPage
         $objPayment = new PaymentHelper();
 
         if (!empty($_POST)) {
-            $objFormParam = new FormParam();
+            $objFormParam = Application::alias('eccube.form_param');
             $objFormParam->addParam('支払方法ID', 'payment_id', INT_LEN, 'n', array('NUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objFormParam->setParam($_POST);
             $objFormParam->convParam();

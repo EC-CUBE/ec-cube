@@ -41,7 +41,7 @@ class Index extends AbstractAdminPage
         $this->tpl_mainno = 'design';
         $this->tpl_maintitle = 'デザイン管理';
         $this->tpl_subtitle = 'レイアウト設定';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrTarget = $masterData->getMasterData('mtb_target');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
@@ -65,7 +65,7 @@ class Index extends AbstractAdminPage
     public function action()
     {
         $objLayout = new PageLayoutHelper();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam, intval($_REQUEST['bloc_cnt']));
         $objFormParam->setParam($_REQUEST);
 

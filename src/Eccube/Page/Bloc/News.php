@@ -56,7 +56,7 @@ class News extends AbstractBloc
     public function action()
     {
         $objNews = Application::alias('eccube.helper.news');
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         switch ($this->getMode()) {
             case 'getList':
                 $this->lfInitNewsParam($objFormParam);

@@ -44,7 +44,7 @@ class UpDown extends AbstractAdminPage
         $this->arrErr  = array();
         $this->arrForm = array();
         ini_set('max_execution_time', 300);
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrDeviceType = $masterData->getMasterData('mtb_device_type');
     }
 
@@ -68,7 +68,7 @@ class UpDown extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);
         $objFormParam->convParam();

@@ -12,6 +12,7 @@
 
 namespace Eccube\Plugin\ProductReview\Page\Products;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 
 /**

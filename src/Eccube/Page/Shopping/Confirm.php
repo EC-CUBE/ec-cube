@@ -41,7 +41,7 @@ class Confirm extends AbstractPage
     {
         parent::init();
         $this->tpl_title = '入力内容のご確認';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrCountry = $masterData->getMasterData('mtb_country');
         $this->arrSex = $masterData->getMasterData('mtb_sex');

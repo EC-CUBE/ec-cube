@@ -58,7 +58,7 @@ class System extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         $this->initForm($objFormParam, $_GET);
         switch ($this->getMode()) {

@@ -60,7 +60,7 @@ class ClassList extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);

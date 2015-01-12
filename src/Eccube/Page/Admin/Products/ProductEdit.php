@@ -47,7 +47,7 @@ class ProductEdit extends Index
         $this->tpl_maintitle = '商品管理';
         $this->tpl_subtitle = '商品登録';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrDISP = $masterData->getMasterData('mtb_disp');
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
@@ -75,7 +75,7 @@ class ProductEdit extends Index
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         // アップロードファイル情報の初期化
         $objUpFile = new UploadFile(IMAGE_TEMP_REALDIR, IMAGE_SAVE_REALDIR);
@@ -523,7 +523,7 @@ class ProductEdit extends Index
     public function lfGetSearchParam($arrPost)
     {
         $arrSearchParam = array();
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
 
         parent::lfInitParam($objFormParam);
         $objFormParam->setParam($arrPost);

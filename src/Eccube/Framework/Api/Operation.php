@@ -295,7 +295,7 @@ class Operation
         // 実行時間計測用
         $start_time = microtime(true);
 
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         static::setApiBaseParam($objFormParam);
         $objFormParam->setParam($arrPost);
         $objFormParam->convParam();

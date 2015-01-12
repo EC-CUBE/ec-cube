@@ -61,7 +61,7 @@ class FileManager extends AbstractAdminPage
     public function action()
     {
         // フォーム操作クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($this->createSetParam($_POST));
@@ -78,7 +78,7 @@ class FileManager extends AbstractAdminPage
         switch ($this->getMode()) {
             // フォルダ移動
             case 'move':
-                $objFormParam = new FormParam();
+                $objFormParam = Application::alias('eccube.form_param');
                 $this->lfInitParamModeMove($objFormParam);
                 $objFormParam->setParam($this->createSetParam($_POST));
                 $objFormParam->convParam();
@@ -92,7 +92,7 @@ class FileManager extends AbstractAdminPage
 
             // ファイル表示
             case 'view':
-                $objFormParam = new FormParam();
+                $objFormParam = Application::alias('eccube.form_param');
                 $this->lfInitParamModeView($objFormParam);
                 $objFormParam->setParam($this->createSetParam($_POST));
                 $objFormParam->convParam();
@@ -110,7 +110,7 @@ class FileManager extends AbstractAdminPage
 
             // ファイルダウンロード
             case 'download':
-                $objFormParam = new FormParam();
+                $objFormParam = Application::alias('eccube.form_param');
                 $this->lfInitParamModeView($objFormParam);
                 $objFormParam->setParam($this->createSetParam($_POST));
                 $objFormParam->convParam();
@@ -132,7 +132,7 @@ class FileManager extends AbstractAdminPage
                 break;
             // ファイル削除
             case 'delete':
-                $objFormParam = new FormParam();
+                $objFormParam = Application::alias('eccube.form_param');
                 $this->lfInitParamModeView($objFormParam);
                 $objFormParam->setParam($this->createSetParam($_POST));
                 $objFormParam->convParam();
@@ -144,7 +144,7 @@ class FileManager extends AbstractAdminPage
                 break;
             // ファイル作成
             case 'create':
-                $objFormParam = new FormParam();
+                $objFormParam = Application::alias('eccube.form_param');
                 $this->lfInitParamModeCreate($objFormParam);
                 $objFormParam->setParam($this->createSetParam($_POST));
                 $objFormParam->convParam();

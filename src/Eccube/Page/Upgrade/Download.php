@@ -245,7 +245,7 @@ class Download extends AbstractUpgrade
 
     public function initParam()
     {
-        $this->objForm = new FormParam();
+        $this->objForm = Application::alias('eccube.form_param');
         $this->objForm->addParam(
             'product_id', 'product_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK')
         );
@@ -322,7 +322,7 @@ class Download extends AbstractUpgrade
         case 'patch_download':
         // モジュール自動アップロード
         case 'auto_update':
-            $objForm = new FormParam;
+            $objForm = Application::alias('eccube.form_param');
             $objForm->addParam('public_key', 'public_key', MTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objForm->addParam('sha1_key', 'sha1_key', MTEXT_LEN, '', array('EXIST_CHECK', 'ALNUM_CHECK', 'MAX_LENGTH_CHECK'));
             $objForm->setParam($_POST);

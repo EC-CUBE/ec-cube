@@ -60,7 +60,7 @@ class Masterdata extends AbstractAdminPage
     public function action()
     {
         $this->arrMasterDataName = $this->getMasterDataNames(array('mtb_pref', 'mtb_zip', 'mtb_constants'));
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
 
         switch ($this->getMode()) {
             case 'edit':

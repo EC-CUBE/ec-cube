@@ -59,7 +59,7 @@ class Log extends AbstractAdminPage
      */
     public function action()
     {
-        $objFormParam = new FormParam;
+        $objFormParam = Application::alias('eccube.form_param');
 
         // パラメーター情報初期化
         $this->lfInitParam($objFormParam);

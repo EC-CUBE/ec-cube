@@ -38,7 +38,7 @@ class Tradelaw extends AbstractAdminPage
         $this->tpl_mainpage = 'basis/tradelaw.tpl';
         $this->tpl_subno = 'tradelaw';
         $this->tpl_mainno = 'basis';
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrTAXRULE = $masterData->getMasterData('mtb_taxrule');
         $this->tpl_maintitle = '基本情報管理';
@@ -65,7 +65,7 @@ class Tradelaw extends AbstractAdminPage
     {
         $objDb = new DbHelper();
 
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
 

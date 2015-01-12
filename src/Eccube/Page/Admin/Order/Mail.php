@@ -42,7 +42,7 @@ class Mail extends AbstractAdminPage
         $this->tpl_maintitle = '受注管理';
         $this->tpl_subtitle = '受注管理';
 
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrMAILTEMPLATE = $masterData->getMasterData('mtb_mail_template');
         $this->httpCacheControl('nocache');
     }
@@ -90,7 +90,7 @@ class Mail extends AbstractAdminPage
         }
 
         // パラメーター管理クラス
-        $objFormParam = new FormParam();
+        $objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
 

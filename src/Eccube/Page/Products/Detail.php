@@ -134,7 +134,7 @@ class Detail extends AbstractPage
     public function init()
     {
         parent::init();
-        $masterData = new MasterData();
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrSTATUS = $masterData->getMasterData('mtb_status');
         $this->arrSTATUS_IMAGE = $masterData->getMasterData('mtb_status_image');
         $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
@@ -176,7 +176,7 @@ class Detail extends AbstractPage
         $objCustomer = new Customer();
 
         // パラメーター管理クラス
-        $this->objFormParam = new FormParam();
+        $this->objFormParam = Application::alias('eccube.form_param');
         // パラメーター情報の初期化
         $this->arrForm = $this->lfInitParam($this->objFormParam);
         // ファイル管理クラス

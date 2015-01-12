@@ -100,7 +100,7 @@ END;
 
     public function initParam()
     {
-        $objForm = new FormParam();
+        $objForm = Application::alias('eccube.form_param');
         $objForm->addParam('log_id', 'log_id', INT_LEN, '', array('EXIST_CHECK', 'NUM_CHECK', 'MAX_LENGTH_CHECK'));
         $objForm->setParam($_GET);
 

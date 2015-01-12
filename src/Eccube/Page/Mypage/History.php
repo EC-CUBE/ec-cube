@@ -45,7 +45,7 @@ class History extends AbstractMypage
         $this->tpl_subtitle     = '購入履歴詳細';
         $this->httpCacheControl('nocache');
 
-        $masterData             = new MasterData();
+        $masterData             = Application::alias('eccube.db.master_data');
         $this->arrMAILTEMPLATE  = $masterData->getMasterData('mtb_mail_template');
         $this->arrPref          = $masterData->getMasterData('mtb_pref');
         $this->arrCountry       = $masterData->getMasterData('mtb_country');

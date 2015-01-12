@@ -12,6 +12,7 @@
 
 namespace Eccube\Plugin\ProductReview\Page\Products;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Customer;
@@ -49,7 +50,8 @@ class Review extends AbstractPage
     {
         parent::init();
 
-        $masterData = new MasterData();
+        /* @var $masterData MasterData */
+        $masterData = Application::alias('eccube.db.master_data');
         $this->arrRECOMMEND = $masterData->getMasterData('mtb_recommend');
         $this->arrSex = $masterData->getMasterData('mtb_sex');
         $this->arrReviewDenyURL = $masterData->getMasterData('mtb_review_deny_url');
@@ -74,7 +76,8 @@ class Review extends AbstractPage
      */
     public function action()
     {
-        $objFormParam = new FormParam();
+        /* @var $objFormParam FormParam */
+        $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_POST);
         $objFormParam->convParam();
@@ -128,7 +131,7 @@ class Review extends AbstractPage
      * @param  FormParam $objFormParam FormParam インスタンス
      * @return void
      */
-    public function lfInitParam(&$objFormParam)
+    public function lfInitParam(FormParam &$objFormParam)
     {
         $objFormParam->addParam('レビューID', 'review_id', INT_LEN, 'aKV');
         $objFormParam->addParam('商品ID', 'product_id', INT_LEN, 'n', array('NUM_CHECK','EXIST_CHECK', 'MAX_LENGTH_CHECK'));
@@ -146,7 +149,7 @@ class Review extends AbstractPage
      * @param  FormParam $objFormParam FormParam インスタンス
      * @return array        エラーメッセージの配列
      */
-    public function lfCheckError(&$objFormParam)
+    public function lfCheckError(FormParam &$objFormParam)
     {
         $arrErr = $objFormParam->checkError();
 
@@ -168,9 +171,10 @@ class Review extends AbstractPage
      */
     public function lfGetProductName($product_id)
     {
+        /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
 
-        return $objQuery->get('name', 'dtb_products', 'product_id = ? AND ' . Product::getProductDispConditions(), array($product_id));
+        return $objQuery->get('name', 'dtb_products', 'product_id = ? AND ' . Application::alias('eccube.product')->getProductDispConditions(), array($product_id));
     }
 
     //登録実行
@@ -178,13 +182,15 @@ class Review extends AbstractPage
     {
         $arrRegist = $objFormParam->getDbArray();
 
-        $objCustomer = new Customer();
+        /* @var $objCustomer Customer */
+        $objCustomer = Application::alias('eccube.customer');
         if ($objCustomer->isLoginSuccess(true)) {
             $arrRegist['customer_id'] = $objCustomer->getValue('customer_id');
         }
 
         //-- 登録実行
-        $objReview = new ReviewHelper();
+        /* @var $objReview ReviewHelper */
+        $objReview = Application::alias('eccube.helper.review');
         $objReview->save($arrRegist);
     }
 }
