@@ -100,7 +100,7 @@ class Index extends AbstractMypage
                 break;
         }
         // 支払い方法の取得
-        $this->arrPayment = PaymentHelper::getIDValueList();
+        $this->arrPayment = Application::alias('eccube.helper.payment')->getIDValueList();
         // 1ページあたりの件数
         $this->dispNumber = SEARCH_PMAX;
 

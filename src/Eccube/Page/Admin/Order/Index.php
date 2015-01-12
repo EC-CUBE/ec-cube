@@ -71,7 +71,7 @@ class Index extends AbstractAdminPage
         $this->arrDay = $objDate->getDay();
 
         // 支払い方法の取得
-        $this->arrPayments = PaymentHelper::getIDValueList();
+        $this->arrPayments = Application::alias('eccube.helper.payment')->getIDValueList();
 
         $this->httpCacheControl('nocache');
     }

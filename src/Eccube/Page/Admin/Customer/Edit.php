@@ -62,7 +62,7 @@ class Edit extends AbstractAdminPage
         $this->arrDay = $objDate->getDay();
 
         // 支払い方法種別
-        $this->arrPayment = PaymentHelper::getIDValueList();
+        $this->arrPayment = Application::alias('eccube.helper.payment')->getIDValueList();
     }
 
     /**

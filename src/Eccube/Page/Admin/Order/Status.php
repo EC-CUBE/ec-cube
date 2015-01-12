@@ -80,7 +80,7 @@ class Status extends AbstractAdminPage
         $this->arrForm = $objFormParam->getHashArray();
 
         //支払方法の取得
-        $this->arrPayment = PaymentHelper::getIDValueList();
+        $this->arrPayment = Application::alias('eccube.helper.payment')->getIDValueList();
 
         switch ($this->getMode()) {
             case 'update':

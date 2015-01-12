@@ -98,7 +98,7 @@ class History extends AbstractMypage
 
         $this->isMultiple       = count($this->arrShipping) > 1;
         // 支払い方法の取得
-        $this->arrPayment       = PaymentHelper::getIDValueList();
+        $this->arrPayment       = Application::alias('eccube.helper.payment')->getIDValueList();
         // 受注商品明細の取得
         $this->tpl_arrOrderDetail = $objPurchase->getOrderDetail($order_id);
         foreach ($this->tpl_arrOrderDetail as $product_index => $arrOrderProductDetail) {

@@ -89,7 +89,7 @@ class Disp extends Index
         $this->arrJob = $masterData->getMasterData('mtb_job');
 
         // 支払い方法の取得
-        $this->arrPayment = PaymentHelper::getIDValueList();
+        $this->arrPayment = Application::alias('eccube.helper.payment')->getIDValueList();
 
         // 配送業者の取得
         $this->arrDeliv = Application::alias('eccube.helper.delivery')->getIDValueList();

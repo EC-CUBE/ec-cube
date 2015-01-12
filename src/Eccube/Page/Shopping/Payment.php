@@ -326,7 +326,8 @@ class Payment extends AbstractPage
                 $objErr->arrErr['use_point'] = '※ ご利用ポイントがご購入金額を超えています。<br>';
             }
             // ポイント差し引き後のお支払い方法チェック
-            $objPayment = new PaymentHelper();
+            /* @var $objPayment PaymentHelper */
+            $objPayment = Application::alias('eccube.helper.payment');
             $arrPayments = $objPayment->get($arrForm['payment_id']);
             if ($arrPayments['rule_max'] > $subtotal - $arrForm['use_point'] * POINT_VALUE) {
                 $objErr->arrErr['use_point'] = '※ 選択したお支払い方法では、ポイントは'.($subtotal - $arrPayments['rule_max']).'ポイントまでご利用いただけます。<br>';
@@ -409,7 +410,8 @@ class Payment extends AbstractPage
             $arrResults['arrDelivTime'] = Application::alias('eccube.helper.delivery')->getDelivTime($deliv_id);
             $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
             $payments_deliv = Application::alias('eccube.helper.delivery')->getPayments($deliv_id);
-            $objPayment = new PaymentHelper();
+            /* @var $objPayment PaymentHelper */
+            $objPayment = Application::alias('eccube.helper.payment');
             $payments_total = $objPayment->getByPrice($total);
             $arrPayment = array();
             foreach ($payments_total as $payment) {

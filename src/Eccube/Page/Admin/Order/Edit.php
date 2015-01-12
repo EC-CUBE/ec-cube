@@ -118,7 +118,7 @@ class Edit extends Index
         $this->arrBirthDay = $objBirthDate->getDay(true);
 
         // 支払い方法の取得
-        $this->arrPayment = PaymentHelper::getIDValueList();
+        $this->arrPayment = Application::alias('eccube.helper.payment')->getIDValueList();
 
         // 配送業者の取得
         $this->arrDeliv = Application::alias('eccube.helper.delivery')->getIDValueList();

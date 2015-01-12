@@ -42,7 +42,7 @@ class DeliveryInput extends AbstractAdminPage
         $masterData = Application::alias('eccube.db.master_data');
         $this->arrPref = $masterData->getMasterData('mtb_pref');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
-        $this->arrPayments = PaymentHelper::getIDValueList();
+        $this->arrPayments = Application::alias('eccube.helper.payment')->getIDValueList();
         $this->tpl_maintitle = '基本情報管理';
         $this->tpl_subtitle = '配送方法設定';
         $this->mode = $this->getMode();

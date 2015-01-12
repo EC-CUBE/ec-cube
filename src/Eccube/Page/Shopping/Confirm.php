@@ -138,7 +138,7 @@ class Confirm extends AbstractPage
         }
 
         // 決済モジュールを使用するかどうか
-        $this->use_module = PaymentHelper::useModule($this->arrForm['payment_id']);
+        $this->use_module = Application::alias('eccube.helper.payment')->useModule($this->arrForm['payment_id']);
 
         switch ($this->getMode()) {
             // 前のページに戻る

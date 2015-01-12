@@ -73,7 +73,7 @@ class UploadCSV extends AbstractAdminPage
         $this->arrDELIVERYDATE = $masterData->getMasterData('mtb_delivery_date');
         $this->arrProductType = $masterData->getMasterData('mtb_product_type');
         $this->arrMaker = MakerHelper::getIDValueList();
-        $this->arrPayments = PaymentHelper::getIDValueList();
+        $this->arrPayments = Application::alias('eccube.helper.payment')->getIDValueList();
         $this->arrInfo = DbHelper::getBasisData();
         $this->arrAllowedTag = $masterData->getMasterData('mtb_allowed_tag');
         $this->arrTagCheckItem = array();
