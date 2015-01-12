@@ -108,7 +108,7 @@ class Product
     /**
      * Queryインスタンスに設定された検索条件をもとに商品一覧の配列を取得する.
      *
-     * 主に Product::findProductIds() で取得した商品IDを検索条件にし,
+     * 主に Application::alias('eccube.product')->findProductIds() で取得した商品IDを検索条件にし,
      * Query::setOrder() や Query::setLimitOffset() を設定して, 商品一覧
      * の配列を取得する.
      *
@@ -183,7 +183,7 @@ __EOS__;
         }
 
         // 税込金額を設定する
-        static::setIncTaxToProducts($arrProducts);
+        $this->setIncTaxToProducts($arrProducts);
 
         return $arrProducts;
     }
@@ -204,7 +204,7 @@ __EOS__;
         $arrProduct = (array)$objQuery->getRow('*', $from, $where, $arrWhereVal);
 
         // 税込金額を設定する
-        static::setIncTaxToProduct($arrProduct);
+        $this->setIncTaxToProduct($arrProduct);
 
         return $arrProduct;
     }
@@ -558,7 +558,7 @@ __EOS__;
      * @param  array $arrProducts 商品情報の配列
      * @return array 旧バージョン互換用のデータ
      */
-    public static function setPriceTaxTo(&$arrProducts)
+    public function setPriceTaxTo(&$arrProducts)
     {
         foreach ($arrProducts as &$arrProduct) {
             $arrProduct['price01_min_format'] = number_format($arrProduct['price01_min']);
@@ -566,7 +566,7 @@ __EOS__;
             $arrProduct['price02_min_format'] = number_format($arrProduct['price02_min']);
             $arrProduct['price02_max_format'] = number_format($arrProduct['price02_max']);
 
-            static::setIncTaxToProduct($arrProduct);
+            $this->setIncTaxToProduct($arrProduct);
 
             $arrProduct['price01_min_inctax_format'] = number_format($arrProduct['price01_min_inctax']);
             $arrProduct['price01_max_inctax_format'] = number_format($arrProduct['price01_max_inctax']);
@@ -593,10 +593,10 @@ __EOS__;
      * @param  array $arrProducts 商品情報の配列
      * @return void
      */
-    public static function setIncTaxToProducts(&$arrProducts)
+    public function setIncTaxToProducts(&$arrProducts)
     {
         foreach ($arrProducts as &$arrProduct) {
-            static::setIncTaxToProduct($arrProduct);
+            $this->setIncTaxToProduct($arrProduct);
         }
     }
 
@@ -606,7 +606,7 @@ __EOS__;
      * @param  array $arrProduct 商品情報の配列
      * @return void
      */
-    public static function setIncTaxToProduct(&$arrProduct)
+    public function setIncTaxToProduct(&$arrProduct)
     {
         $arrProduct['price01_min_inctax'] = isset($arrProduct['price01_min']) ? TaxRuleHelper::sfCalcIncTax($arrProduct['price01_min'], $arrProduct['product_id']) : null;
         $arrProduct['price01_max_inctax'] = isset($arrProduct['price01_max']) ? TaxRuleHelper::sfCalcIncTax($arrProduct['price01_max'], $arrProduct['product_id']) : null;

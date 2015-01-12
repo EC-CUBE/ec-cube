@@ -35,7 +35,8 @@ class ItemLookup extends Base
     {
         $arrRequest = $this->doInitParam($arrParam);
         if (!$this->isParamError()) {
-            $objProduct = new Product();
+            /* @var $objProduct Product */
+            $objProduct = Application::alias('eccube.product');
 
             switch ($arrRequest['IdType']) {
             case 'product_code':

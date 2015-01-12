@@ -93,7 +93,7 @@ class CsvHelper
         if ($csv_id == 1) {
             // この WHERE 句を足さないと無効な規格も出力される。現行仕様と合わせる為追加。
             $inner_where = 'dtb_products_class.del_flg = 0';
-            $from = Product::prdclsSQL($inner_where);
+            $from = Application::alias('eccube.product')->prdclsSQL($inner_where);
         // 会員の場合
         } elseif ($csv_id == 2) {
             $from = 'dtb_customer';

@@ -93,7 +93,8 @@ class Index extends AbstractAdminPage
         /* @var $objDb DbHelper */
         $objDb = Application::alias('eccube.helper.db');
         $objFormParam = Application::alias('eccube.form_param');
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $objQuery = Application::alias('eccube.query');
 
         // パラメーター情報の初期化

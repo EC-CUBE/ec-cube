@@ -661,7 +661,8 @@ class Edit extends Index
      */
     public function lfCheckError(&$objFormParam)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $arrValues = $objFormParam->getHashArray();
         $arrErr = array();
         $arrErrTemp = $objFormParam->checkError();
@@ -1041,7 +1042,8 @@ class Edit extends Index
             }
         } else {
             //届け先に選択商品がない場合
-            $objProduct = new Product();
+            /* @var $objProduct Product */
+            $objProduct = Application::alias('eccube.product');
             $arrAddProductInfo = $objProduct->getDetailAndProductsClass($add_product_class_id);
 
             $arrShipmentProducts['shipment_product_class_id'][$select_shipping_id][] = $add_product_class_id;
@@ -1086,7 +1088,8 @@ class Edit extends Index
                 }
             }
         } else {
-            $objProduct = new Product();
+            /* @var $objProduct Product */
+            $objProduct = Application::alias('eccube.product');
             $arrAddProductInfo = $objProduct->getDetailAndProductsClass($edit_product_class_id);
 
             //上書き

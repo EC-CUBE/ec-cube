@@ -457,7 +457,8 @@ class ProductClass extends AbstractAdminPage
     public function doPreEdit(&$objFormParam)
     {
         $product_id = $objFormParam->getValue('product_id');
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $existsProductsClass = $objProduct->getProductsClassFullByProductId($product_id);
 
         // 規格のデフォルト値(全ての組み合わせ)を取得し, フォームに反映

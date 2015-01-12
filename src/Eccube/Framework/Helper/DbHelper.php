@@ -533,7 +533,8 @@ class DbHelper
         if ($objCategory->isValidCategoryId($category_id, $closed)) {
             $category_id = array($category_id);
         } else {
-            $objProduct = new Product();
+            /* @var $objProduct Product */
+            $objProduct = Application::alias('eccube.product');
             $category_id = $objProduct->getCategoryIds($product_id, $closed);
         }
 
@@ -655,7 +656,8 @@ class DbHelper
      */
     public function countCategory($objQuery = null, $is_force_all_count = false)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         if ($objQuery == null) {
             /* @var $objQuery Query */
@@ -669,7 +671,7 @@ class DbHelper
         }
 
         //共通のfrom/where文の構築
-        $sql_where = Product::getProductDispConditions('alldtl');
+        $sql_where = Application::alias('eccube.product')->getProductDispConditions('alldtl');
         // 在庫無し商品の非表示
         if (NOSTOCK_HIDDEN) {
             $where_products_class = '(stock >= 1 OR stock_unlimited = 1)';

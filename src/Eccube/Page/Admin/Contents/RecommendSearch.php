@@ -79,7 +79,8 @@ class RecommendSearch extends AbstractAdminPage
                 // 入力された値にエラーがない場合、検索処理を行う。
                 // 検索結果の数に応じてページャの処理も入れる。
                 if (Utils::isBlank($this->arrErr)) {
-                    $objProduct = new Product();
+                    /* @var $objProduct Product */
+                    $objProduct = Application::alias('eccube.product');
 
                     $wheres = $this->createWhere($objFormParam, $objDb);
                     $this->tpl_linemax = $this->getLineCount($wheres, $objProduct);

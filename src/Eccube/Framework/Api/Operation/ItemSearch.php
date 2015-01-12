@@ -43,7 +43,8 @@ class ItemSearch extends Base
             $arrSTATUS            = $masterData->getMasterData('mtb_status');
             $arrSTATUS_IMAGE      = $masterData->getMasterData('mtb_status_image');
 
-            $objProduct = new Product();
+            /* @var $objProduct Product */
+            $objProduct = Application::alias('eccube.product');
             $arrSearchData = array(
                 'category_id' => $arrRequest['BrowseNode'],
                 'maker_name' => $arrRequest['Manufacturer'],
@@ -56,14 +57,15 @@ class ItemSearch extends Base
 
             $objQuery = Application::alias('eccube.query');
             $objQuery->setWhere($arrSearchCondition['where_for_count']);
-            $objProduct = new Product();
+            /* @var $objProduct Product */
+            $objProduct = Application::alias('eccube.product');
             $linemax = $objProduct->findProductCount($objQuery, $arrSearchCondition['arrval']);
             $objNavi = new PageNavi($arrRequest['ItemPage'], $linemax, $disp_number);
             $arrProducts = $this->getProductsList($arrSearchCondition, $disp_number, $objNavi->start_row, $linemax, $objProduct);
 
             if (!Utils::isBlank($arrProducts)) {
                 $arrProducts = $this->setStatusDataTo($arrProducts, $arrSTATUS, $arrSTATUS_IMAGE);
-                Product::setPriceTaxTo($arrProducts);
+                Application::alias('eccube.product')->setPriceTaxTo($arrProducts);
                 foreach ($arrProducts as $key=>$val) {
                     $arrProducts[$key]['main_list_image'] = Utils::sfNoImageMainList($val['main_list_image']);
                 }

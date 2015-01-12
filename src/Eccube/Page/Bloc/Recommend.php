@@ -79,7 +79,8 @@ class Recommend extends AbstractBloc
         if (count($arrRecommends) > 0) {
             // 商品一覧を取得
             $objQuery = Application::alias('eccube.query');
-            $objProduct = new Product();
+            /* @var $objProduct Product */
+            $objProduct = Application::alias('eccube.product');
             // where条件生成&セット
             $arrProductId = array();
             foreach ($arrRecommends as $key => $val) {
@@ -88,7 +89,7 @@ class Recommend extends AbstractBloc
             $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);
 
             // 税込金額を設定する
-            Product::setIncTaxToProducts($arrProducts);
+            Application::alias('eccube.product')->setIncTaxToProducts($arrProducts);
 
             // おすすめ商品情報にマージ
             foreach ($arrRecommends as $key => $value) {

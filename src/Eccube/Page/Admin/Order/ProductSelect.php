@@ -78,7 +78,8 @@ class ProductSelect extends AbstractAdminPage
 
         switch ($this->getMode()) {
             case 'search':
-                $objProduct = new Product();
+                /* @var $objProduct Product */
+                $objProduct = Application::alias('eccube.product');
                 $this->arrForm = $objFormParam->getHashArray();
                 $wheres = $this->createWhere($objFormParam, $objDb);
                 $this->tpl_linemax = $this->getLineCount($wheres, $objProduct);

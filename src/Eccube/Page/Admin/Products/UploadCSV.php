@@ -408,7 +408,8 @@ class UploadCSV extends AbstractAdminPage
      */
     public function lfRegistProduct($objQuery, $line = '', &$objFormParam)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         // 登録データ対象取得
         $arrList = $objFormParam->getDbArray();
 
@@ -479,7 +480,8 @@ class UploadCSV extends AbstractAdminPage
      */
     public function lfRegistProductClass($objQuery, $arrList, $product_id, $product_class_id)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         // FIXME: dtb_csvテーブルの中で古いカラム名(右辺)が設定されている。sfArrayIntersectKeysでフィルタされてしまうので、名称を変更する必要がある
         if (array_key_exists('classcategory_id', $arrList) && $arrList['classcategory_id'] != '') {

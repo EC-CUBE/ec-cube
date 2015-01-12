@@ -228,7 +228,7 @@ class Sitemap extends AbstractPage
     public function getAllDetail()
     {
         $objQuery = Application::alias('eccube.query');
-        $sql = 'SELECT product_id, update_date FROM dtb_products WHERE ' . Product::getProductDispConditions();
+        $sql = 'SELECT product_id, update_date FROM dtb_products WHERE ' . Application::alias('eccube.product')->getProductDispConditions();
         $result = $objQuery->getAll($sql);
 
         $arrRet = array();

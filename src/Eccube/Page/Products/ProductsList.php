@@ -101,7 +101,8 @@ class ProductsList extends AbstractPage
         $objPurchase = Application::alias('eccube.helper.purchase');
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         // パラメーター管理クラス
         $objFormParam = Application::alias('eccube.form_param');
 
@@ -358,7 +359,8 @@ class ProductsList extends AbstractPage
         // 検索結果対象となる商品の数を取得
         $objQuery   = Application::alias('eccube.query');
         $objQuery->setWhere($searchCondition['where_for_count']);
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         return $objProduct->findProductCount($objQuery, $searchCondition['arrval']);
     }
@@ -385,7 +387,7 @@ class ProductsList extends AbstractPage
         }
         // ▼対象商品IDの抽出
         // 商品検索条件の作成（未削除、表示）
-        $searchCondition['where'] = Product::getProductDispConditions('alldtl');
+        $searchCondition['where'] = Application::alias('eccube.product')->getProductDispConditions('alldtl');
 
         if (strlen($searchCondition['where_category']) >= 1) {
             $searchCondition['where'] .= ' AND EXISTS (SELECT * FROM dtb_product_categories WHERE ' . $searchCondition['where_category'] . ' AND product_id = alldtl.product_id)';
@@ -497,7 +499,7 @@ class ProductsList extends AbstractPage
     public function doJson()
     {
         $this->arrProducts = $this->setStatusDataTo($this->arrProducts, $this->arrSTATUS, $this->arrSTATUS_IMAGE);
-        Product::setPriceTaxTo($this->arrProducts);
+        Application::alias('eccube.product')->setPriceTaxTo($this->arrProducts);
 
         // 一覧メイン画像の指定が無い商品のための処理
         foreach ($this->arrProducts as $key=>$val) {

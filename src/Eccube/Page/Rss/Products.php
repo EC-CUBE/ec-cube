@@ -235,7 +235,8 @@ class Products extends AbstractPage
      */
     public function lfGetProductsDetail(&$objQuery, $product_id = 'all')
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         // --- 商品詳細の取得
         if ($product_id == 'all') {
@@ -279,7 +280,8 @@ class Products extends AbstractPage
     public function lfGetProductsAllclass(&$objQuery)
     {
         // --- 商品一覧の取得
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $objQuery->setWhere($objProduct->getProductDispConditions());
         $objQuery->setOrder('product_id');
         $arrProductLsit = $objProduct->lists($objQuery);
@@ -306,7 +308,7 @@ class Products extends AbstractPage
         }
 
         // 税込金額を設定する
-        Product::setIncTaxToProducts($arrProducts);
+        Application::alias('eccube.product')->setIncTaxToProducts($arrProducts);
 
         return $arrProducts;
     }

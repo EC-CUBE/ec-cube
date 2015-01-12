@@ -187,7 +187,8 @@ class Detail extends AbstractPage
         $this->objUpFile = $this->lfInitFile($this->objUpFile);
         $this->mode = $this->getMode();
 
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         // プロダクトIDの正当性チェック
         $product_id = $this->lfCheckProductId($this->objFormParam->getValue('admin'), $this->objFormParam->getValue('product_id'), $objProduct);
@@ -466,7 +467,8 @@ class Detail extends AbstractPage
      */
     public function lfGetProductsClass($product_id)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         return $objProduct->getProductsClassFullByProductId($product_id);
     }
@@ -478,7 +480,8 @@ class Detail extends AbstractPage
      */
     public function lfPreGetRecommendProducts($product_id)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         /* @var $objQuery Query */
         $objQuery = Application::alias('eccube.query');
 
@@ -738,7 +741,8 @@ class Detail extends AbstractPage
      */
     public function doMobileSelectItem()
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         $this->arrErr = $this->lfCheckError($this->mode, $this->objFormParam, $this->tpl_classcat_find1, $this->tpl_classcat_find2);
 

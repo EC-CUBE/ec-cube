@@ -78,7 +78,8 @@ class History extends AbstractMypage
 
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
-        $objProduct  = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         if (!Utils::sfIsInt($_GET['order_id'])) {
             Utils::sfDispSiteError(CUSTOMER_ERROR);

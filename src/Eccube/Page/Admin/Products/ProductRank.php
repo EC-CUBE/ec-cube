@@ -108,7 +108,8 @@ class ProductRank extends AbstractAdminPage
         // FIXME Product クラスを使用した実装
         $objQuery = Application::alias('eccube.query');
         $col = 'alldtl.product_id, name, main_list_image, product_code_min, product_code_max, status';
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $table = $objProduct->alldtlSQL();
         $table.= ' LEFT JOIN dtb_product_categories AS T5 ON alldtl.product_id = T5.product_id';
         $where = 'del_flg = 0 AND category_id = ?';

@@ -173,7 +173,8 @@ class Recommend extends AbstractAdminPage
             $product_ids[] = $value['product_id'];
         }
 
-        $objProduct = new Product;
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $objQuery = $objQuery = Application::alias('eccube.query');
         $arrProducts = $objProduct->getListByProductIds($objQuery, $product_ids);
 
@@ -230,7 +231,8 @@ class Recommend extends AbstractAdminPage
      */
     public function getProduct($product_id)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $arrProduct = $objProduct->getDetail($product_id);
         $return = array(
             'product_id' => $arrProduct['product_id'],

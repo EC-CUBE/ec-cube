@@ -245,7 +245,8 @@ class CartSession
     // カートへの商品追加
     public function addProduct($product_class_id, $quantity)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $arrProduct = $objProduct->getProductsClass($product_class_id);
         $productTypeId = $arrProduct['product_type_id'];
         $find = false;
@@ -360,7 +361,8 @@ class CartSession
      */
     public function setCartSession4getCartList($productTypeId, $key)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         $this->cartSession[$productTypeId][$key]['productsClass']
             =& $objProduct->getDetailAndProductsClass($this->cartSession[$productTypeId][$key]['id']);
@@ -392,7 +394,8 @@ class CartSession
      */
     public function getCartList($productTypeId, $pref_id = 0, $country_id = 0)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $max = $this->getMax($productTypeId);
         $arrRet = array();
 /*
@@ -607,7 +610,8 @@ class CartSession
      */
     public function checkProducts($productTypeId)
     {
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         /* @var $objDelivery DeliveryHelper */
         $objDelivery = Application::alias('eccube.helper.delivery');
         $arrDeliv = $objDelivery->getList($productTypeId);

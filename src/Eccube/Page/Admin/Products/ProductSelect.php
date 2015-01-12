@@ -158,7 +158,7 @@ class ProductSelect extends AbstractAdminPage
 
         // 検索結果の取得
         // FIXME 商品コードの表示
-        $arrProducts = $objQuery->select('*', Product::alldtlSQL(), $where, $arrWhereVal);
+        $arrProducts = $objQuery->select('*', Application::alias('eccube.product')->alldtlSQL(), $where, $arrWhereVal);
 
         return $arrProducts;
     }

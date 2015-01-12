@@ -377,7 +377,8 @@ class PurchaseHelper
         $arrItems['product_class_id'] = $product_class_id;
         $arrItems['quantity'] = $quantity;
 
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         // カート情報から読みこめば済むと思うが、一旦保留。むしろ、カート情報も含め、セッション情報を縮小すべきかもしれない。
         /*
@@ -718,7 +719,8 @@ class PurchaseHelper
         $where = 'order_id = ? AND shipping_id = ?';
         $objQuery->delete($table, $where, array($order_id, $shipping_id));
 
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         foreach ($arrParams as $arrValues) {
             if (Utils::isBlank($arrValues['product_class_id'])) {
                 continue;
@@ -794,7 +796,8 @@ class PurchaseHelper
         $cartItems = $objCartSession->getCartList($cartKey, $orderParams['order_pref'], $orderParams['order_country_id']);
 
         // 詳細情報を生成
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $i = 0;
         $arrDetail = array();
         foreach ($cartItems as $item) {
@@ -1051,7 +1054,8 @@ __EOS__;
     public function getShipmentItems($order_id, $shipping_id, $has_detail = true)
     {
         $objQuery = Application::alias('eccube.query');
-        $objProduct = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
         $arrResults = array();
         $objQuery->setOrder('order_detail_id');
         $arrItems = $objQuery->select('dtb_shipment_item.*',

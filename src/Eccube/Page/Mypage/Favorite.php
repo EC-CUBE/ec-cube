@@ -78,7 +78,7 @@ class Favorite extends AbstractMypage
                     $this->tpl_pageno = intval($_POST['pageno']);
                 }
                 $this->arrFavorite = $this->lfGetFavoriteProduct($customer_id, $this);
-                Product::setPriceTaxTo($this->arrFavorite);
+                Application::alias('eccube.product')->setPriceTaxTo($this->arrFavorite);
 
 
                 // 一覧メイン画像の指定が無い商品のための処理
@@ -114,7 +114,8 @@ class Favorite extends AbstractMypage
     public function lfGetFavoriteProduct($customer_id, &$objPage)
     {
         $objQuery       = Application::alias('eccube.query');
-        $objProduct     = new Product();
+        /* @var $objProduct Product */
+        $objProduct = Application::alias('eccube.product');
 
         $objQuery->setOrder('f.create_date DESC');
         $where = 'f.customer_id = ? and p.status = 1';
@@ -155,7 +156,7 @@ class Favorite extends AbstractMypage
         }
 
         // 税込金額を設定する
-        Product::setIncTaxToProducts($arrProductsList);
+        Application::alias('eccube.product')->setIncTaxToProducts($arrProductsList);
 
         return $arrProductsList;
     }
