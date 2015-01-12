@@ -71,7 +71,7 @@ class Index extends AbstractAdminPage
         $this->arrCatList = $objDb->getCategoryList();
 
         // テンプレート一覧設定
-        $this->arrTemplate = $this->lfGetMailTemplateList(MailHelper::sfGetMailmagaTemplate());
+        $this->arrTemplate = $this->lfGetMailTemplateList(Application::alias('eccube.helper.mail')->sfGetMailmagaTemplate());
 
         $this->httpCacheControl('nocache');
     }
@@ -146,7 +146,7 @@ class Index extends AbstractAdminPage
                 $this->arrErr = $objFormParam->checkError();
                 if (Utils::isBlank($this->arrErr)) {
                     $this->tpl_mainpage = 'mail/index.tpl';
-                    MailHelper::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
+                    Application::alias('eccube.helper.mail')->sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
 
                     Application::alias('eccube.response')->sendRedirect('./history.php');
                 }
@@ -161,7 +161,7 @@ class Index extends AbstractAdminPage
             // query:配信履歴から「再送信」
             case 'retry':
                 if (Utils::sfIsInt($_GET['send_id'])) {
-                    MailHelper::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
+                    Application::alias('eccube.helper.mail')->sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
 
                     Application::alias('eccube.response')->sendRedirect('./history.php');
                 } else {

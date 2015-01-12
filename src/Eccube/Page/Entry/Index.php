@@ -240,7 +240,8 @@ class Index extends AbstractPage
         $objMailText->assign('uniqid', $uniqid);
         $objMailText->assignobj($this);
 
-        $objHelperMail  = new MailHelper();
+        /* @var $objHelperMail MailHelper */
+        $objHelperMail = Application::alias('eccube.helper.mail');
         $objHelperMail->setPage($this);
 
         // 仮会員が有効の場合

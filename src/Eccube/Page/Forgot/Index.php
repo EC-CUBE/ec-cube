@@ -289,7 +289,8 @@ class Index extends AbstractPage
         $objMailText->assign('new_password', $new_password);
         $toCustomerMail = $objMailText->fetch('mail_templates/forgot_mail.tpl');
 
-        $objHelperMail = new MailHelper();
+        /* @var $objHelperMail MailHelper */
+        $objHelperMail = Application::alias('eccube.helper.mail');
         $objHelperMail->setPage($this);
 
         // メール送信オブジェクトによる送信処理

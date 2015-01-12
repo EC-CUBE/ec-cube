@@ -192,7 +192,8 @@ class Index extends AbstractAdminPage
         //仮登録メール再送
         $resend_flg = true; 
         // 登録メール再送
-        $objHelperMail = new MailHelper();
+        /* @var $objHelperMail MailHelper */
+        $objHelperMail = Application::alias('eccube.helper.mail');
         $objHelperMail->setPage($this);
         $objHelperMail->sfSendRegistMail($arrData['secret_key'], $customer_id, null, $resend_flg);
         return true;

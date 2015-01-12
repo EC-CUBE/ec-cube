@@ -140,7 +140,8 @@ class Index extends AbstractPage
         $objQuery       = Application::alias('eccube.query');
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
-        $objHelperMail  = new MailHelper();
+        /* @var $objHelperMail MailHelper */
+        $objHelperMail = Application::alias('eccube.helper.mail');
         $objHelperMail->setPage($this);
         $CONF           = Application::alias('eccube.helper.db')->getBasisData();
 

@@ -165,7 +165,8 @@ class Refusal extends AbstractMypage
         $objMailText->assign('name02', $arrCustomerData['name02']);
         $objMailText->assignobj($this);
 
-        $objHelperMail  = new MailHelper();
+        /* @var $objHelperMail MailHelper */
+        $objHelperMail = Application::alias('eccube.helper.mail');
         $objHelperMail->setPage($this);
 
         $subject        = $objHelperMail->sfMakeSubject('退会手続きのご完了', $objMailText);

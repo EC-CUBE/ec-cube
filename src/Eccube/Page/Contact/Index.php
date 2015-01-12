@@ -182,7 +182,8 @@ class Index extends AbstractPage
         $CONF = Application::alias('eccube.helper.db')->getBasisData();
         $objPage->tpl_shopname = $CONF['shop_name'];
         $objPage->tpl_infoemail = $CONF['email02'];
-        $helperMail = new MailHelper();
+        /* @var $helperMail MailHelper */
+        $helperMail = Application::alias('eccube.helper.mail');
         $helperMail->setPage($this);
         $helperMail->sfSendTemplateMail(
             $objPage->arrForm['email']['value'],            // to

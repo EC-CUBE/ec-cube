@@ -64,7 +64,8 @@ class TemplateInput extends AbstractAdminPage
      */
     public function action()
     {
-        $objMailHelper = new MailHelper();
+        /* @var $objMailHelper MailHelper */
+        $objMailHelper = Application::alias('eccube.helper.mail');
 
         switch ($this->getMode()) {
             case 'edit':

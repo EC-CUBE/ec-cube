@@ -1095,7 +1095,8 @@ __EOS__;
      */
     public static function sendOrderMail($order_id, &$objPage = NULL)
     {
-        $objMail = new MailHelper();
+        /* @var $objMail MailHelper */
+        $objMail = Application::alias('eccube.helper.mail');
 
         // setPageは、プラグインの処理に必要(see #1798)
         if (is_object($objPage)) {

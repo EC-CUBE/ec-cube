@@ -172,12 +172,14 @@ class Mail extends AbstractAdminPage
             // 注文受付メール(複数受注ID対応)
             $order_id_array = explode(',', $this->order_id_array);
             foreach ($order_id_array as $order_id) {
-                $objMail = new MailHelper();
+                /* @var $objMail MailHelper */
+                $objMail = Application::alias('eccube.helper.mail');
                 $objSendMail = $objMail->sfSendOrderMail($order_id,
-                $objFormParam->getValue('template_id'),
-                $objFormParam->getValue('subject'),
-                $objFormParam->getValue('header'),
-                $objFormParam->getValue('footer'));
+                    $objFormParam->getValue('template_id'),
+                    $objFormParam->getValue('subject'),
+                    $objFormParam->getValue('header'),
+                    $objFormParam->getValue('footer')
+                );
             }
             // TODO $SendMail から送信がちゃんと出来たか確認できたら素敵。
             return true;
@@ -196,7 +198,8 @@ class Mail extends AbstractAdminPage
         // メールの送信
         if (count($arrErr) == 0) {
             // 注文受付メール(送信なし)
-            $objMail = new MailHelper();
+            /* @var $objMail MailHelper */
+            $objMail = Application::alias('eccube.helper.mail');
             $objSendMail = $objMail->sfSendOrderMail(
                 $objFormParam->getValue('order_id'),
                 $objFormParam->getValue('template_id'),
