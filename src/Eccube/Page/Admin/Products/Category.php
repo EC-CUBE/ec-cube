@@ -65,7 +65,8 @@ class Category extends AbstractAdminPage
     public function action()
     {
         $objFormParam = Application::alias('eccube.form_param');
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
 
         // 入力パラメーター初期化
         $this->initParam($objFormParam);
@@ -194,7 +195,8 @@ class Category extends AbstractAdminPage
      */
     public function doDelete(&$objFormParam)
     {
-        $objCategory = new CategoryHelper(false);
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category', false);
         $category_id = $objFormParam->getValue('category_id');
 
         // 子カテゴリのチェック
@@ -224,7 +226,8 @@ class Category extends AbstractAdminPage
     {
         $category_id = $objFormParam->getValue('category_id');
 
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
         $arrRes = $objCategory->get($category_id);
 
         $objFormParam->setParam($arrRes);
@@ -252,7 +255,8 @@ class Category extends AbstractAdminPage
         // エラーがない場合、追加・更新処理
         if (empty($this->arrErr)) {
             $arrCategory = $objFormParam->getDbArray();
-            $objCategory = new CategoryHelper();
+            /* @var $objCategory CategoryHelper */
+            $objCategory = Application::alias('eccube.helper.category');
             $objCategory->save($arrCategory);
         // エラーがある場合、入力値の再表示
         } else {
@@ -268,7 +272,8 @@ class Category extends AbstractAdminPage
      */
     public function checkError(&$objFormParam)
     {
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
 
         // 入力項目チェック
         $arrErr = $objFormParam->checkError();
@@ -324,7 +329,8 @@ class Category extends AbstractAdminPage
      */
     public function doUp(&$objFormParam)
     {
-        $objCategory = new CategoryHelper(false);
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category', false);
         $category_id = $objFormParam->getValue('category_id');
         $objCategory->rankUp($category_id);
     }
@@ -337,7 +343,8 @@ class Category extends AbstractAdminPage
      */
     public function doDown(&$objFormParam)
     {
-        $objCategory = new CategoryHelper(false);
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category', false);
         $category_id = $objFormParam->getValue('category_id');
         $objCategory->rankDown($category_id);
     }

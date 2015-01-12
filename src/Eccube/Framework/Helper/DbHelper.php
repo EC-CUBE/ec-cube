@@ -530,7 +530,8 @@ class DbHelper
     {
         $category_id = (int) $category_id;
         $product_id = (int) $product_id;
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
         if ($objCategory->isValidCategoryId($category_id, $closed)) {
             $category_id = array($category_id);
         } else {

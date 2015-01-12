@@ -111,7 +111,8 @@ class Category extends AbstractBloc
      */
     public function lfGetCatTree($arrParentCategoryId, $count_check = false)
     {
-        $objCategory = new CategoryHelper($count_check);
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category', $count_check);
         $arrTree = $objCategory->getTree();
 
         $this->arrParentID = array();

@@ -203,7 +203,8 @@ class ProductsList extends AbstractPage
         if (empty($category_id)) return 0;
 
         // 正当性チェック
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
         if ($objCategory->isValidCategoryId($category_id)) {
             return $category_id;
         } else {
@@ -316,7 +317,8 @@ class ProductsList extends AbstractPage
         } elseif ($category_id == 0) {
             return '全商品';
         } else {
-            $objCategory = new CategoryHelper();
+            /* @var $objCategory CategoryHelper */
+            $objCategory = Application::alias('eccube.helper.category');
             $arrCat = $objCategory->get($category_id);
 
             return $arrCat['category_name'];

@@ -293,7 +293,8 @@ class Detail extends AbstractPage
 
         // 関連カテゴリを取得
         $arrCategory_id = $objProduct->getCategoryIds($product_id);
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
         $this->arrRelativeCat = array();
         foreach ($arrCategory_id as $category_id) {
             $this->arrRelativeCat[] = $objCategory->getTreeTrail($category_id, false);

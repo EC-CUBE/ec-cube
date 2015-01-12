@@ -391,7 +391,8 @@ class UploadCSVCategory extends AbstractAdminPage
         // 必須入力では無い項目だが、空文字では問題のある特殊なカラム値の初期値設定
         $sqlval = $this->lfSetCategoryDefaultData($sqlval);
 
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
         $category_id = $objCategory->save($sqlval);
 
         return $category_id;
@@ -451,7 +452,8 @@ class UploadCSVCategory extends AbstractAdminPage
      */
     public function lfCheckErrorDetail($item, $arrErr)
     {
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
         // スタティック変数を初期化
         $objCategory->getTree(true);
         /*

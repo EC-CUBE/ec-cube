@@ -64,7 +64,8 @@ class ProductRank extends AbstractAdminPage
     {
         /* @var $objDb DbHelper */
         $objDb = Application::alias('eccube.helper.db');
-        $objCategory = new CategoryHelper();
+        /* @var $objCategory CategoryHelper */
+        $objCategory = Application::alias('eccube.helper.category');
 
         $this->tpl_pageno = isset($_POST['pageno']) ? $_POST['pageno'] : '';
 
