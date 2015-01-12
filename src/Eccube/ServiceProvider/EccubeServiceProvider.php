@@ -2,7 +2,8 @@
 
 namespace Eccube\ServiceProvider;
 
-use Silex\Application;
+use Eccube\Application;
+use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
 
 class EccubeServiceProvider implements ServiceProviderInterface
@@ -13,9 +14,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
      * This method should only be used to configure services and parameters.
      * It should not get services.
      *
-     * @param Application $app An Application instance
+     * @param BaseApplication $app An Application instance
      */
-    public function register(Application $app)
+    public function register(BaseApplication $app)
     {
         // PEAR
         $app['smarty'] = function () {
@@ -197,29 +198,36 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
         // smarty
         $app['smarty'] = $app->extend('smarty', function ($smarty) {
+            /* @var $DbHelper \Eccube\Framework\Helper\DbHelper */
+            $DbHelper = Application::alias('eccube.helper.db');
+            /* @var $Utils \Eccube\Framework\Util\Utils */
+            $Utils = Application::alias('eccube.util.utils');
+            /* @var $GcUtils \Eccube\Framework\Util\GcUtils */
+            $GcUtils = Application::alias('eccube.util.gc_utils');
+
             $smarty->left_delimiter = '<!--{';
             $smarty->right_delimiter = '}-->';
             $smarty->plugins_dir = array(
                 realpath(__DIR__ . '/../../smarty_extends'),
                 realpath(__DIR__ . '/../../../vendor/smarty/smarty/libs/plugins'),
             );
-            $smarty->register_modifier('sfDispDBDate', array('\\Eccube\\Framework\\Util\\Utils', 'sfDispDBDate'));
-            $smarty->register_modifier('sfGetErrorColor', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetErrorColor'));
-            $smarty->register_modifier('sfTrim', array('\\Eccube\\Framework\\Util\\Utils', 'sfTrim'));
-            $smarty->register_modifier('sfCalcIncTax', array('\\Eccube\\Framework\\Helper\\DbHelper', 'calcIncTax'));
-            $smarty->register_modifier('sfPrePoint', array('\\Eccube\\Framework\\Util\\Utils', 'sfPrePoint'));
-            $smarty->register_modifier('sfGetChecked', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetChecked'));
-            $smarty->register_modifier('sfTrimURL', array('\\Eccube\\Framework\\Util\\Utils', 'sfTrimURL'));
-            $smarty->register_modifier('sfMultiply', array('\\Eccube\\Framework\\Util\\Utils', 'sfMultiply'));
-            $smarty->register_modifier('sfRmDupSlash', array('\\Eccube\\Framework\\Util\\Utils', 'sfRmDupSlash'));
-            $smarty->register_modifier('sfCutString', array('\\Eccube\\Framework\\Util\\Utils', 'sfCutString'));
-            $smarty->register_modifier('sfMbConvertEncoding', array('\\Eccube\\Framework\\Util\\Utils', 'sfMbConvertEncoding'));
-            $smarty->register_modifier('sfGetEnabled', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetEnabled'));
-            $smarty->register_modifier('sfNoImageMainList', array('\\Eccube\\Framework\\Util\\Utils', 'sfNoImageMainList'));
+            $smarty->register_modifier('sfDispDBDate', array($Utils, 'sfDispDBDate'));
+            $smarty->register_modifier('sfGetErrorColor', array($Utils, 'sfGetErrorColor'));
+            $smarty->register_modifier('sfTrim', array($Utils, 'sfTrim'));
+            $smarty->register_modifier('sfCalcIncTax', array($DbHelper, 'calcIncTax'));
+            $smarty->register_modifier('sfPrePoint', array($Utils, 'sfPrePoint'));
+            $smarty->register_modifier('sfGetChecked', array($Utils, 'sfGetChecked'));
+            $smarty->register_modifier('sfTrimURL', array($Utils, 'sfTrimURL'));
+            $smarty->register_modifier('sfMultiply', array($Utils, 'sfMultiply'));
+            $smarty->register_modifier('sfRmDupSlash', array($Utils, 'sfRmDupSlash'));
+            $smarty->register_modifier('sfCutString', array($Utils, 'sfCutString'));
+            $smarty->register_modifier('sfMbConvertEncoding', array($Utils, 'sfMbConvertEncoding'));
+            $smarty->register_modifier('sfGetEnabled', array($Utils, 'sfGetEnabled'));
+            $smarty->register_modifier('sfNoImageMainList', array($Utils, 'sfNoImageMainList'));
             // XXX register_function で登録すると if で使用できないのではないか？
-            $smarty->register_function('sfIsHTTPS', array('\\Eccube\\Framework\\Util\\Utils', 'sfIsHTTPS'));
-            $smarty->register_function('sfSetErrorStyle', array('\\Eccube\\Framework\\Util\\Utils', 'sfSetErrorStyle'));
-            $smarty->register_function('printXMLDeclaration', array('\\Eccube\\Framework\\Util\\GcUtils', 'printXMLDeclaration'));
+            $smarty->register_function('sfIsHTTPS', array($Utils, 'sfIsHTTPS'));
+            $smarty->register_function('sfSetErrorStyle', array($Utils, 'sfSetErrorStyle'));
+            $smarty->register_function('printXMLDeclaration', array($GcUtils, 'printXMLDeclaration'));
             $smarty->default_modifiers = array('script_escape');
 
             $smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
@@ -235,7 +243,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      */
-    public function boot(Application $app)
+    public function boot(BaseApplication $app)
     {
     }
 }
