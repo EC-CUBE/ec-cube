@@ -72,7 +72,8 @@ class LoginCheck extends AbstractPage
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
         // クッキー管理クラス
-        $objCookie = new Cookie();
+        /* @var $objCookie Cookie */
+        $objCookie = Application::alias('eccube.cookie');
         // パラメーター管理クラス
         $objFormParam = Application::alias('eccube.form_param');
 

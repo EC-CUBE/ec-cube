@@ -60,7 +60,8 @@ class Login extends AbstractBloc
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
         // クッキー管理クラス
-        $objCookie = new Cookie();
+        /* @var $objCookie Cookie */
+        $objCookie = Application::alias('eccube.cookie');
 
         // ログイン判定
         if ($objCustomer->isLoginSuccess()) {

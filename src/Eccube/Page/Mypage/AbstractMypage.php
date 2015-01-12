@@ -55,7 +55,8 @@ abstract class AbstractMypage extends AbstractPage
         // ログインしていない場合は必ずログインページを表示する
         if ($objCustomer->isLoginSuccess(true) === false) {
             // クッキー管理クラス
-            $objCookie = new Cookie();
+            /* @var $objCookie Cookie */
+            $objCookie = Application::alias('eccube.cookie');
             // クッキー判定(メールアドレスをクッキーに保存しているか）
             $this->tpl_login_email = $objCookie->getCookie('login_email');
             if ($this->tpl_login_email != '') {

@@ -64,7 +64,8 @@ class Index extends AbstractPage
         $this->device_type = Application::alias('eccube.display')->detectDevice();
         $this->httpCacheControl('nocache');
         // デフォルトログインアドレスロード
-        $objCookie = new Cookie();
+        /* @var $objCookie Cookie */
+        $objCookie = Application::alias('eccube.cookie');
         $this->tpl_login_email = $objCookie->getCookie('login_email');
     }
 

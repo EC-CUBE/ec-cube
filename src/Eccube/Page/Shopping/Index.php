@@ -89,7 +89,8 @@ class Index extends AbstractPage
         $objCartSess = Application::alias('eccube.cart_session');
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
-        $objCookie = new Cookie();
+        /* @var $objCookie Cookie */
+        $objCookie = Application::alias('eccube.cookie');
         $objFormParam = Application::alias('eccube.form_param');
 
         $nonmember_mainpage = 'shopping/nonmember_input.tpl';
