@@ -608,7 +608,8 @@ class CartSession
     public function checkProducts($productTypeId)
     {
         $objProduct = new Product();
-        $objDelivery = new DeliveryHelper();
+        /* @var $objDelivery DeliveryHelper */
+        $objDelivery = Application::alias('eccube.helper.delivery');
         $arrDeliv = $objDelivery->getList($productTypeId);
         $tpl_message = '';
 
@@ -737,7 +738,7 @@ class CartSession
         if (OPTION_DELIV_FEE == 1
             && !Utils::isBlank($deliv_pref)
             && !Utils::isBlank($deliv_id)) {
-            $results['deliv_fee'] += DeliveryHelper::getDelivFee($deliv_pref, $deliv_id);
+            $results['deliv_fee'] += Application::alias('eccube.helper.delivery')->getDelivFee($deliv_pref, $deliv_id);
         }
 
         // 送料無料チェック

@@ -265,7 +265,7 @@ class DeliveryHelper
      * @param  string $type 値のタイプ
      * @return array
      */
-    public static function getIDValueList($type = 'name')
+    public function getIDValueList($type = 'name')
     {
         return DbHelper::getIDValueList('dtb_deliv', 'deliv_id', $type);
     }
@@ -276,7 +276,7 @@ class DeliveryHelper
      * @param  integer $deliv_id 配送業者ID
      * @return array   お届け時間の配列
      */
-    public static function getDelivTime($deliv_id)
+    public function getDelivTime($deliv_id)
     {
         $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('time_id');
@@ -295,7 +295,7 @@ class DeliveryHelper
      * @param  integer $deliv_id 配送業者ID
      * @return array   有効な支払方法IDの配列
      */
-    public static function getPayments($deliv_id)
+    public function getPayments($deliv_id)
     {
         $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('rank');
@@ -310,7 +310,7 @@ class DeliveryHelper
      * @param  integer       $deliv_id 配送業者ID
      * @return string        指定の都道府県, 配送業者の配送料金
      */
-    public static function getDelivFee($pref_id, $deliv_id = 0)
+    public function getDelivFee($pref_id, $deliv_id = 0)
     {
         $objQuery = Application::alias('eccube.query');
         if (!is_array($pref_id)) {
@@ -339,7 +339,7 @@ __EOS__;
      * @param  integer $deliv_id 配送業者ID
      * @return array   配送料金の配列
      */
-    public static function getDelivFeeList($deliv_id)
+    public function getDelivFeeList($deliv_id)
     {
         $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('pref');

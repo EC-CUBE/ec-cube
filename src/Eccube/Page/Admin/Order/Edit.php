@@ -121,7 +121,7 @@ class Edit extends Index
         $this->arrPayment = PaymentHelper::getIDValueList();
 
         // 配送業者の取得
-        $this->arrDeliv = DeliveryHelper::getIDValueList();
+        $this->arrDeliv = Application::alias('eccube.helper.delivery')->getIDValueList();
 
         $this->httpCacheControl('nocache');
     }
@@ -319,12 +319,13 @@ class Edit extends Index
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->tpl_shipping_quantity = count($this->arrAllShipping);
         $this->top_shipping_id      = array_shift((array_keys($this->arrAllShipping)));
-        $this->arrDelivTime   = DeliveryHelper::getDelivTime($objFormParam->getValue('deliv_id'));
+        $this->arrDelivTime   = Application::alias('eccube.helper.delivery')->getDelivTime($objFormParam->getValue('deliv_id'));
         $this->tpl_onload .= $this->getAnchorKey($objFormParam);
         if ($arrValuesBefore['deliv_id']) {
             // 受注当時の配送業者名はdtb_orderにないので、
             // 削除済みの配送業者も含めて情報を取得。
-            $objDelivery = new DeliveryHelper();
+            /* @var $objDelivery DeliveryHelper */
+            $objDelivery = Application::alias('eccube.helper.delivery');
             $arrDelivery = $objDelivery->get($arrValuesBefore['deliv_id'], true);
             $this->arrDeliv[$arrValuesBefore['deliv_id']] = $arrDelivery['name'];
         }
@@ -847,7 +848,7 @@ class Edit extends Index
         $arrAllShipping = $objFormParam->getSwapArray($this->arrShippingKeys);
         $arrAllShipmentItem = $objFormParam->getSwapArray($this->arrShipmentItemKeys);
 
-        $arrDelivTime = DeliveryHelper::getDelivTime($objFormParam->getValue('deliv_id'));
+        $arrDelivTime = Application::alias('eccube.helper.delivery')->getDelivTime($objFormParam->getValue('deliv_id'));
         //商品単価を複数配送にも適応
         $arrShippingValues = array();
         $arrIsNotQuantityUp = array();

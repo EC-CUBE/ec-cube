@@ -62,7 +62,8 @@ class Delivery extends AbstractAdminPage
      */
     public function action()
     {
-        $objDeliv = new DeliveryHelper();
+        /* @var $objDeliv DeliveryHelper */
+        $objDeliv = Application::alias('eccube.helper.delivery');
         $mode = $this->getMode();
 
         if (!empty($_POST)) {

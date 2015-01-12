@@ -136,7 +136,8 @@ class DeliveryInput extends AbstractAdminPage
      */
     public function lfRegistData($arrRet, $member_id)
     {
-        $objDelivery = new DeliveryHelper();
+        /* @var $objDelivery DeliveryHelper */
+        $objDelivery = Application::alias('eccube.helper.delivery');
 
         // 入力データを渡す。
         $sqlval['deliv_id'] = $arrRet['deliv_id'];
@@ -186,7 +187,8 @@ class DeliveryInput extends AbstractAdminPage
     /* 配送業者情報の取得 */
     public function lfGetDelivData(&$objFormParam)
     {
-        $objDelivery = new DeliveryHelper();
+        /* @var $objDelivery DeliveryHelper */
+        $objDelivery = Application::alias('eccube.helper.delivery');
 
         $deliv_id = $objFormParam->getValue('deliv_id');
 
@@ -226,7 +228,8 @@ class DeliveryInput extends AbstractAdminPage
 
         if (!isset($objErr->arrErr['name'])) {
             // 既存チェック
-            $objDelivery = new DeliveryHelper();
+            /* @var $objDelivery DeliveryHelper */
+            $objDelivery = Application::alias('eccube.helper.delivery');
             if ($objDelivery->checkExist($arrRet)) {
                 $objErr->arrErr['service_name'] = '※ 同じ名称の組み合わせは登録できません。<br>';
             }

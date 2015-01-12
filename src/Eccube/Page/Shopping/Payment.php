@@ -80,7 +80,8 @@ class Payment extends AbstractPage
         /* @var $objCustomer Customer */
         $objCustomer = Application::alias('eccube.customer');
         $objFormParam = Application::alias('eccube.form_param');
-        $objDelivery = new DeliveryHelper();
+        /* @var $objDelivery DeliveryHelper */
+        $objDelivery = Application::alias('eccube.helper.delivery');
 
         $this->is_multiple = $objPurchase->isMultiple();
 
@@ -405,9 +406,9 @@ class Payment extends AbstractPage
     {
         $arrResults = array();
         if (strval($deliv_id) === strval(intval($deliv_id))) {
-            $arrResults['arrDelivTime'] = DeliveryHelper::getDelivTime($deliv_id);
+            $arrResults['arrDelivTime'] = Application::alias('eccube.helper.delivery')->getDelivTime($deliv_id);
             $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
-            $payments_deliv = DeliveryHelper::getPayments($deliv_id);
+            $payments_deliv = Application::alias('eccube.helper.delivery')->getPayments($deliv_id);
             $objPayment = new PaymentHelper();
             $payments_total = $objPayment->getByPrice($total);
             $arrPayment = array();

@@ -92,7 +92,7 @@ class Disp extends Index
         $this->arrPayment = PaymentHelper::getIDValueList();
 
         // 配送業者の取得
-        $this->arrDeliv = DeliveryHelper::getIDValueList();
+        $this->arrDeliv = Application::alias('eccube.helper.delivery')->getIDValueList();
     }
 
     /**
@@ -129,7 +129,7 @@ class Disp extends Index
         $this->arrForm = $objFormParam->getFormParamList();
         $this->arrAllShipping = $objFormParam->getSwapArray(array_merge($this->arrShippingKeys, $this->arrShipmentItemKeys));
         $this->tpl_shipping_quantity = count($this->arrAllShipping);
-        $this->arrDelivTime = DeliveryHelper::getDelivTime($objFormParam->getValue('deliv_id'));
+        $this->arrDelivTime = Application::alias('eccube.helper.delivery')->getDelivTime($objFormParam->getValue('deliv_id'));
         $this->arrInfo = DbHelper::getBasisData();
 
         $this->setTemplate($this->tpl_mainpage);

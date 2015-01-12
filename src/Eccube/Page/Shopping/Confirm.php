@@ -48,7 +48,7 @@ class Confirm extends AbstractPage
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
         $this->arrReminder = $masterData->getMasterData('mtb_reminder');
-        $this->arrDeliv = DeliveryHelper::getIDValueList('service_name');
+        $this->arrDeliv = Application::alias('eccube.helper.delivery')->getIDValueList('service_name');
         $this->httpCacheControl('nocache');
     }
 
