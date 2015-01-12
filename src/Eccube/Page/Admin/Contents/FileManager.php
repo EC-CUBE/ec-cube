@@ -126,7 +126,7 @@ class FileManager extends AbstractAdminPage
                         if ($path_exists) {
                             // ファイルダウンロード
                             $objFileManager->sfDownloadFile($objFormParam->getValue('select_file'));
-                            Response::actionExit();
+                            Application::alias('eccube.response')->actionExit();
                         }
                     }
                 }

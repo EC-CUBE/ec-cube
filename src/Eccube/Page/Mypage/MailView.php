@@ -82,7 +82,7 @@ class MailView extends AbstractMypage
             case 'getDetail':
 
                 echo Utils::jsonEncode($arrMailView);
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
             default:
                 break;

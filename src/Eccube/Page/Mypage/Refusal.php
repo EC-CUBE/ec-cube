@@ -75,7 +75,7 @@ class Refusal extends AbstractMypage
                 if (!$this->isValidRefusalToken()) {
                     // エラー画面へ遷移する
                     Utils::sfDispSiteError(PAGE_ERROR, '', true);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
 
                 /* @var $objCustomer Customer */
@@ -84,7 +84,7 @@ class Refusal extends AbstractMypage
                 $this->lfDeleteCustomer($objCustomer->getValue('customer_id'));
                 $objCustomer->EndSession();
 
-                Response::sendRedirect('refusal_complete.php');
+                Application::alias('eccube.response')->sendRedirect('refusal_complete.php');
                 break;
 
             default:

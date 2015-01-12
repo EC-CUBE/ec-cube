@@ -99,10 +99,10 @@ class LoginCheck extends AbstractPage
                 if (count($arrErr) > 0) {
                     if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                         echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     } else {
                         Utils::sfDispSiteError(TEMP_LOGIN_ERROR);
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     }
                 }
 
@@ -131,8 +131,8 @@ class LoginCheck extends AbstractPage
                             $objMobile = new MobileHelper();
                             if (!$objMobile->gfIsMobileMailAddress($objCustomer->getValue('email'))) {
                                 if (!$objCustomer->hasValue('email_mobile')) {
-                                    Response::sendRedirectFromUrlPath('entry/email_mobile.php');
-                                    Response::actionExit();
+                                    Application::alias('eccube.response')->sendRedirectFromUrlPath('entry/email_mobile.php');
+                                    Application::alias('eccube.response')->actionExit();
                                 }
                             }
                         }
@@ -141,9 +141,9 @@ class LoginCheck extends AbstractPage
                         if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo Utils::jsonEncode(array('success' => $url));
                         } else {
-                            Response::sendRedirect($url);
+                            Application::alias('eccube.response')->sendRedirect($url);
                         }
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     } else {
                         // --- ログインに失敗した場合
 
@@ -159,26 +159,26 @@ class LoginCheck extends AbstractPage
                         if ($exists) {
                             if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                                 echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                                Response::actionExit();
+                                Application::alias('eccube.response')->actionExit();
                             } else {
                                 Utils::sfDispSiteError(TEMP_LOGIN_ERROR);
-                                Response::actionExit();
+                                Application::alias('eccube.response')->actionExit();
                             }
                         } else {
                             if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                                 echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
-                                Response::actionExit();
+                                Application::alias('eccube.response')->actionExit();
                             } else {
                                 Utils::sfDispSiteError(SITE_LOGIN_ERROR);
-                                Response::actionExit();
+                                Application::alias('eccube.response')->actionExit();
                             }
                         }
                     }
                 } else {
                     // XXX 到達しない？
                     // 入力エラーの場合、元のアドレスに戻す。
-                    Response::sendRedirect($url);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect($url);
+                    Application::alias('eccube.response')->actionExit();
                 }
 
                 break;
@@ -191,12 +191,12 @@ class LoginCheck extends AbstractPage
                 $mypage_url_search = strpos('.'.$url, 'mypage');
                 if ($mypage_url_search == 2) {
                     // マイページログイン中はログイン画面へ移行
-                    Response::sendRedirectFromUrlPath('mypage/login.php');
+                    Application::alias('eccube.response')->sendRedirectFromUrlPath('mypage/login.php');
                 } else {
                     // 上記以外の場合、トップへ遷移
-                    Response::sendRedirect(TOP_URL);
+                    Application::alias('eccube.response')->sendRedirect(TOP_URL);
                 }
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
 
                 break;
             default:

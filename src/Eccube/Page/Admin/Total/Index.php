@@ -147,7 +147,7 @@ class Index extends AbstractAdminPage
                         list($fime_name, $data) = Utils::sfGetCSVData($head.$data);
 
                         $this->sendResponseCSV($fime_name, $data);
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     }
                 }
                 break;
@@ -354,7 +354,7 @@ class Index extends AbstractAdminPage
             // グラフの出力
             if (DRAW_IMAGE) {
                 $objGraphLine->outputGraph();
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
             }
 
             // ファイルパスを返す
@@ -404,7 +404,7 @@ class Index extends AbstractAdminPage
             // グラフの出力
             if (DRAW_IMAGE) {
                 $objGraphPie->outputGraph();
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
             }
 
             // ファイルパスを返す
@@ -459,7 +459,7 @@ class Index extends AbstractAdminPage
 
             if (DRAW_IMAGE) {
                 $objGraphBar->outputGraph();
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
             }
 
             // ファイルパスを返す

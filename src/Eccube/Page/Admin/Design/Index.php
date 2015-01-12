@@ -78,15 +78,15 @@ class Index extends AbstractAdminPage
             // 新規ブロック作成
             case 'new_bloc':
 
-                Response::sendRedirect('bloc.php', array('device_type_id' => $this->device_type_id));
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect('bloc.php', array('device_type_id' => $this->device_type_id));
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             // 新規ページ作成
             case 'new_page':
 
-                Response::sendRedirect('main_edit.php', array('device_type_id' => $this->device_type_id));
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect('main_edit.php', array('device_type_id' => $this->device_type_id));
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             // プレビュー
@@ -95,16 +95,16 @@ class Index extends AbstractAdminPage
                 $filename = $this->savePreviewData($this->page_id, $objLayout);
                 $_SESSION['preview'] = 'ON';
 
-                Response::sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $filename));
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirectFromUrlPath('preview/' . DIR_INDEX_PATH, array('filename' => $filename));
+                Application::alias('eccube.response')->actionExit();
 
             // 編集実行
             case 'confirm':
                 $this->placingBlocs($objFormParam);
                 $arrQueryString = array('device_type_id' => $this->device_type_id, 'page_id' => $this->page_id, 'msg' => 'on');
 
-                Response::reload($arrQueryString, true);
-                Response::actionExit();
+                Application::alias('eccube.response')->reload($arrQueryString, true);
+                Application::alias('eccube.response')->actionExit();
 
                 break;
 
@@ -114,8 +114,8 @@ class Index extends AbstractAdminPage
                 if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
                     $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
 
-                    Response::reload(array('device_type_id' => $this->device_type_id), true);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->reload(array('device_type_id' => $this->device_type_id), true);
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
 

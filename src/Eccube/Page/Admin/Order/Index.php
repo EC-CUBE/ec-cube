@@ -141,7 +141,7 @@ class Index extends AbstractAdminPage
                         case 'csv':
                             $this->doOutputCSV($where, $arrWhereVal, $order);
 
-                            Response::actionExit();
+                            Application::alias('eccube.response')->actionExit();
                             break;
 
                         // 全件削除(ADMIN_MODE)

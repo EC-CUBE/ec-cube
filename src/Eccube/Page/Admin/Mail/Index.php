@@ -147,7 +147,7 @@ class Index extends AbstractAdminPage
                     $this->tpl_mainpage = 'mail/index.tpl';
                     MailHelper::sfSendMailmagazine($this->lfRegisterData($objFormParam));  // DB登録・送信
 
-                    Response::sendRedirect('./history.php');
+                    Application::alias('eccube.response')->sendRedirect('./history.php');
                 }
                 break;
             // query:配信履歴から「確認」
@@ -162,7 +162,7 @@ class Index extends AbstractAdminPage
                 if (Utils::sfIsInt($_GET['send_id'])) {
                     MailHelper::sfSendMailmagazine($_GET['send_id']);  // DB登録・送信
 
-                    Response::sendRedirect('./history.php');
+                    Application::alias('eccube.response')->sendRedirect('./history.php');
                 } else {
                     $this->tpl_onload = "window.alert('メール送信IDが正しくありません');";
                 }

@@ -94,8 +94,8 @@ class Bloc extends AbstractAdminPage
                                 'msg' => 'on',
                             );
 
-                            Response::reload($arrPram, true);
-                            Response::actionExit();
+                            Application::alias('eccube.response')->reload($arrPram, true);
+                            Application::alias('eccube.response')->actionExit();
                         }
                     }
                 }
@@ -110,8 +110,8 @@ class Bloc extends AbstractAdminPage
                             'msg' => 'on',
                         );
 
-                        Response::reload($arrPram, true);
-                        Response::actionExit();
+                        Application::alias('eccube.response')->reload($arrPram, true);
+                        Application::alias('eccube.response')->actionExit();
                     }
                 }
                 break;

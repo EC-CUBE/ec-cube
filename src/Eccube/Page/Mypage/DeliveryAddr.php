@@ -130,8 +130,8 @@ class DeliveryAddr extends AbstractPage
 
                     if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_MOBILE) {
                         // モバイルの場合、元のページに遷移
-                        Response::sendRedirect($this->getLocation($_POST['ParentPage']));
-                        Response::actionExit();
+                        Application::alias('eccube.response')->sendRedirect($this->getLocation($_POST['ParentPage']));
+                        Application::alias('eccube.response')->actionExit();
                     }
                 }
                 break;
@@ -179,7 +179,7 @@ class DeliveryAddr extends AbstractPage
 
         if (!$objAddress->registAddress($sqlval)) {
             Utils::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先を登録できませんでした。');
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         }
     }
 

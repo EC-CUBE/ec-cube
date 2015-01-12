@@ -75,7 +75,7 @@ class DispError extends AbstractAdminPage
      */
     public function action()
     {
-        Response::sendHttpStatus(500);
+        Application::alias('eccube.response')->sendHttpStatus(500);
 
         switch ($this->type) {
             case LOGIN_ERROR:
@@ -86,7 +86,7 @@ class DispError extends AbstractAdminPage
                 break;
             case AUTH_ERROR:
                 $this->tpl_error='このページにはアクセスできません';
-                Response::sendHttpStatus(403);
+                Application::alias('eccube.response')->sendHttpStatus(403);
                 break;
             case INVALID_MOVE_ERRORR:
                 $this->tpl_error='不正なページ移動です。<br />もう一度ご確認のうえ、再度入力してください。';

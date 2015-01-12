@@ -78,12 +78,12 @@ class Delivery extends AbstractMypage
             case 'delete':
                 if ($objFormParam->checkError()) {
                     Utils::sfDispSiteError(CUSTOMER_ERROR);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
 
                 if (!$objAddress->deleteAddress($objFormParam->getValue('other_deliv_id'), $customer_id)) {
                     Utils::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先を削除できませんでした。');
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
 
@@ -98,7 +98,7 @@ class Delivery extends AbstractMypage
                 $this->arrOtherDeliv = $arrOtherDeliv;
 
                 echo Utils::jsonEncode($this->arrOtherDeliv);
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             // お届け先の表示

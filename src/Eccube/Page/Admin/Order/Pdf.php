@@ -95,7 +95,7 @@ class Pdf extends AbstractAdminPage
 
                 $status = $this->createPdf($this->objFormParam);
                 if ($status === true) {
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 } else {
                     $this->arrErr = $status;
                 }

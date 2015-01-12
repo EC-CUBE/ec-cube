@@ -87,7 +87,7 @@ class Favorite extends AbstractMypage
                 }
 
                 echo Utils::jsonEncode($this->arrFavorite);
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             default:

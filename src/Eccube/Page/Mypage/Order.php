@@ -70,7 +70,7 @@ class Order extends AbstractMypage
         }
 
         $this->lfAddCartProducts($arrOrderDetail);
-        Response::sendRedirect(CART_URL);
+        Application::alias('eccube.response')->sendRedirect(CART_URL);
     }
 
     // 受注詳細データの取得

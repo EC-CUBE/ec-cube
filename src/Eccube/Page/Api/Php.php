@@ -57,6 +57,6 @@ class Php extends AbstractPage
 
         list($response_outer, $arrResponse) = Operation::doApiAction($arrParam);
         Operation::sendApiResponse('php', $response_outer, $arrResponse);
-        Response::actionExit();
+        Application::alias('eccube.response')->actionExit();
     }
 }

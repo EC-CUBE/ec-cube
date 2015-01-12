@@ -95,15 +95,15 @@ class CsvSql extends AbstractAdminPage
             // 新規作成
             case 'new_page':
                 // リロード
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
             // データ削除
             case 'delete':
                 $this->arrErr = $this->lfCheckDeleteError($objFormParam);
                 if (Utils::isBlank($this->arrErr)) {
                     $this->lfDelData($objFormParam->getValue('sql_id'));
-                    Response::reload();
-                    Response::actionExit();
+                    Application::alias('eccube.response')->reload();
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
             // CSV出力
@@ -111,7 +111,7 @@ class CsvSql extends AbstractAdminPage
                 $this->arrErr = $this->lfCheckOutputError($objFormParam);
                 if (Utils::isBlank($this->arrErr)) {
                     $this->lfDoCsvOutput($objFormParam->getValue('csv_output_id'));
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
             default:
@@ -357,7 +357,7 @@ class CsvSql extends AbstractAdminPage
         $sql = 'SELECT ' . $arrData[0]['csv_sql'];
 
         $objCSV->sfDownloadCsvFromSql($sql, array(), 'contents', null, true);
-        Response::actionExit();
+        Application::alias('eccube.response')->actionExit();
     }
 
     /**

@@ -113,15 +113,15 @@ class Payment extends AbstractPage
         $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);
         // 正常に受注情報が格納されていない場合はカート画面へ戻す
         if (Utils::isBlank($arrOrderTemp)) {
-            Response::sendRedirect(CART_URL);
-            Response::actionExit();
+            Application::alias('eccube.response')->sendRedirect(CART_URL);
+            Application::alias('eccube.response')->actionExit();
         }
 
         // カート内商品の妥当性チェック
         $this->tpl_message = $objCartSess->checkProducts($cart_key);
         if (strlen($this->tpl_message) >= 1) {
-            Response::sendRedirect(CART_URL);
-            Response::actionExit();
+            Application::alias('eccube.response')->sendRedirect(CART_URL);
+            Application::alias('eccube.response')->actionExit();
         }
 
         /*
@@ -153,7 +153,7 @@ class Payment extends AbstractPage
 
                 if (Application::alias('eccube.display')->detectDevice() != DEVICE_TYPE_MOBILE) {
                     echo Utils::jsonEncode($arrSelectedDeliv);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 } else {
                     $this->arrPayment = $arrSelectedDeliv['arrPayment'];
                     $this->arrDelivTime = $arrSelectedDeliv['arrDelivTime'];
@@ -174,8 +174,8 @@ class Payment extends AbstractPage
                     $objSiteSess->setRegistFlag();
 
                     // 確認ページへ移動
-                    Response::sendRedirect(SHOPPING_CONFIRM_URLPATH);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect(SHOPPING_CONFIRM_URLPATH);
+                    Application::alias('eccube.response')->actionExit();
                 } else {
                     $deliv_id = $objFormParam->getValue('deliv_id');
 
@@ -212,8 +212,8 @@ class Payment extends AbstractPage
                     $url = SHOPPING_URL . '?from=nonmember';
                 }
 
-                Response::sendRedirect($url);
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect($url);
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             default:

@@ -57,6 +57,6 @@ class Index extends AbstractPage
 
         list($response_outer, $arrResponse) = Operation::doApiAction($arrParam);
         Operation::sendApiResponse('xml', $response_outer, $arrResponse);
-        Response::actionExit();
+        Application::alias('eccube.response')->actionExit();
     }
 }

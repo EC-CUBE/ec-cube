@@ -114,11 +114,11 @@ class Index extends AbstractPage
                     $this->lfSendMail($this);
 
                     // 完了ページへ移動する
-                    Response::sendRedirect('complete.php');
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect('complete.php');
+                    Application::alias('eccube.response')->actionExit();
                 } else {
                     Utils::sfDispSiteError(CUSTOMER_ERROR);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
 

@@ -113,7 +113,7 @@ class ZipInstall extends AbstractAdminPage
                     $this->insertMtbZip($this->arrForm['startRowNum']);
                     break;
             }
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         }
 
         switch ($this->tpl_mode) {

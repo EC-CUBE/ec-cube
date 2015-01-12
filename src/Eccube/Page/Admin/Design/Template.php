@@ -108,7 +108,7 @@ class Template extends AbstractAdminPage
                 if (Utils::isBlank($this->arrErr)) {
                     if ($this->doDownload($template_code) !== false) {
                         // ブラウザに出力し, 終了する
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     }
                 }
                 break;

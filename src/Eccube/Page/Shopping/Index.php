@@ -103,18 +103,18 @@ class Index extends AbstractPage
 
         // ログイン済みの場合は次画面に遷移
         if ($objCustomer->isLoginSuccess(true)) {
-            Response::sendRedirect(
+            Application::alias('eccube.response')->sendRedirect(
                     $this->getNextlocation($this->cartKey, $this->tpl_uniqid,
                                            $objCustomer, $objPurchase,
                                            $objSiteSess));
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         // 非会員かつ, ダウンロード商品の場合はエラー表示
         } else {
             if ($this->cartKey == PRODUCT_TYPE_DOWNLOAD) {
                 $msg = 'ダウンロード商品を含むお買い物は、会員登録が必要です。<br/>'
                      . 'お手数ですが、会員登録をお願いします。';
                 Utils::sfDispSiteError(FREE_ERROR_MSG, $objSiteSess, false, $msg);
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
             }
         }
 
@@ -147,8 +147,8 @@ class Index extends AbstractPage
                     // モバイルサイトで携帯アドレスの登録が無い場合、携帯アドレス登録ページへ遷移
                     if (Application::alias('eccube.display')->detectDevice() == DEVICE_TYPE_MOBILE) {
                         if (!$objCustomer->hasValue('email_mobile')) {
-                            Response::sendRedirectFromUrlPath('entry/email_mobile.php');
-                            Response::actionExit();
+                            Application::alias('eccube.response')->sendRedirectFromUrlPath('entry/email_mobile.php');
+                            Application::alias('eccube.response')->actionExit();
                         }
                     // スマートフォンの場合はログイン成功を返す
                     } elseif (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
@@ -156,32 +156,32 @@ class Index extends AbstractPage
                                                      $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                                             $objCustomer, $objPurchase,
                                                                             $objSiteSess)));
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     }
 
-                    Response::sendRedirect(
+                    Application::alias('eccube.response')->sendRedirect(
                             $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                    $objCustomer, $objPurchase,
                                                    $objSiteSess));
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 // ログインに失敗した場合
                 } else {
                     // 仮登録の場合
                     if (CustomerHelper::checkTempCustomer($objFormParam->getValue('login_email'))) {
                         if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(TEMP_LOGIN_ERROR);
-                            Response::actionExit();
+                            Application::alias('eccube.response')->actionExit();
                         } else {
                             Utils::sfDispSiteError(TEMP_LOGIN_ERROR);
-                            Response::actionExit();
+                            Application::alias('eccube.response')->actionExit();
                         }
                     } else {
                         if (Application::alias('eccube.display')->detectDevice() === DEVICE_TYPE_SMARTPHONE) {
                             echo $this->lfGetErrorMessage(SITE_LOGIN_ERROR);
-                            Response::actionExit();
+                            Application::alias('eccube.response')->actionExit();
                         } else {
                             Utils::sfDispSiteError(SITE_LOGIN_ERROR);
-                            Response::actionExit();
+                            Application::alias('eccube.response')->actionExit();
                         }
                     }
                 }
@@ -203,15 +203,15 @@ class Index extends AbstractPage
 
                     $objSiteSess->setRegistFlag();
 
-                    Response::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
 
             // 前のページに戻る
             case 'return':
-                Response::sendRedirect(CART_URL);
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect(CART_URL);
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             // 複数配送ページへ遷移
@@ -219,7 +219,7 @@ class Index extends AbstractPage
                 // 複数配送先指定が無効な場合はエラー
                 if (USE_MULTIPLE_SHIPPING === false) {
                     Utils::sfDispSiteError(PAGE_ERROR, '', true);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
 
                 $this->lfInitParam($objFormParam);
@@ -231,8 +231,8 @@ class Index extends AbstractPage
 
                     $objSiteSess->setRegistFlag();
 
-                    Response::sendRedirect(MULTIPLE_URLPATH);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect(MULTIPLE_URLPATH);
+                    Application::alias('eccube.response')->actionExit();
                 }
                 $this->tpl_mainpage = $nonmember_mainpage;
                 $this->tpl_title = $nonmember_title;

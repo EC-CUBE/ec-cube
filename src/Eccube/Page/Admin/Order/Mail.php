@@ -79,8 +79,8 @@ class Mail extends AbstractAdminPage
             $this->order_id_array = $post['order_id_array'];
         } else {
             //エラーで元に戻す
-            Response::sendRedirect(ADMIN_ORDER_URLPATH);
-            Response::actionExit();
+            Application::alias('eccube.response')->sendRedirect(ADMIN_ORDER_URLPATH);
+            Application::alias('eccube.response')->actionExit();
         }
 
         //メール本文の確認例は初めの1受注とする
@@ -119,8 +119,8 @@ class Mail extends AbstractAdminPage
             case 'send':
                 $sendStatus = $this->doSend($objFormParam);
                 if ($sendStatus === true) {
-                    Response::sendRedirect(ADMIN_ORDER_URLPATH);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect(ADMIN_ORDER_URLPATH);
+                    Application::alias('eccube.response')->actionExit();
                 }
                 $this->arrErr = $sendStatus;
                 break;

@@ -62,6 +62,6 @@ class Json extends AbstractPage
         }
 
         Operation::sendApiResponse('json', $response_outer, $arrResponse);
-        Response::actionExit();
+        Application::alias('eccube.response')->actionExit();
     }
 }

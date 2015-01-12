@@ -73,7 +73,7 @@ class Complete extends AbstractPage
             $this->tpl_mainpage     = 'entry/complete.tpl';
         } else {
             // 本会員登録完了
-            Response::sendRedirectFromUrlPath('regist/complete.php');
+            Application::alias('eccube.response')->sendRedirectFromUrlPath('regist/complete.php');
         }
 
     }

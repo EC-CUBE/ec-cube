@@ -106,7 +106,7 @@ class Css extends AbstractAdminPage
                             'msg' => 'on',
                         );
 
-                        Response::reload($arrPram, true);
+                        Application::alias('eccube.response')->reload($arrPram, true);
                     }
                 }
                 break;

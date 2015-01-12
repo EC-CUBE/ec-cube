@@ -272,7 +272,7 @@ class CsvHelper
         // CSV 用の HTTP ヘッダーを送出する。
         if ($is_download) {
             $file_name = $file_head . '_' . date('ymd_His') .'.csv';
-            Response::headerForDownload($file_name);
+            Application::alias('eccube.response')->headerForDownload($file_name);
             $return = true;
         }
         // 戻り値にCSVデータをセットする
@@ -336,7 +336,7 @@ class CsvHelper
         } else {
             $file_name = $prefix . date('ymdHis') .'.csv';
         }
-        Response::headerForDownload($file_name);
+        Application::alias('eccube.response')->headerForDownload($file_name);
 
         /* データを出力 */
         $fp = static::fopen_for_output_csv();
@@ -355,7 +355,7 @@ class CsvHelper
     {
         trigger_error('前方互換用メソッドが使用されました。', E_USER_WARNING);
         $file_name = $prefix . date('YmdHis') . '.csv';
-        Response::headerForDownload($file_name);
+        Application::alias('eccube.response')->headerForDownload($file_name);
 
         /* データを出力 */
         // file_get_contentsはメモリマッピングも自動的に使ってくれるので高速＆省メモリ

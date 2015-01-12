@@ -73,7 +73,7 @@ class Index extends AbstractPage
                 $registSecretKey    = $this->lfRegistData($_GET);   //本会員登録（フラグ変更）
                 $this->lfSendRegistMail($registSecretKey);          //本会員登録完了メール送信
 
-                Response::sendRedirect('complete.php', array('ci' => CustomerHelper::sfGetCustomerId($registSecretKey)));
+                Application::alias('eccube.response')->sendRedirect('complete.php', array('ci' => CustomerHelper::sfGetCustomerId($registSecretKey)));
                 break;
             //--　それ以外のアクセスは無効とする
             default:

@@ -135,7 +135,7 @@ class Tax extends AbstractAdminPage
                         $this->tpl_onload = "alert('登録が完了しました。');";
 
                         // リロード
-                        Response::reload();
+                        Application::alias('eccube.response')->reload();
                     }
                 } elseif (Utils::isBlank($this->arrErr['tax_rule_id'])) {
                     // 税率ID以外のエラーの場合、ID情報を引き継ぐ
@@ -168,7 +168,7 @@ class Tax extends AbstractAdminPage
                 $objTaxRule->deleteTaxRuleData($tax_rule_id);
 
                 // リロード
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             default:

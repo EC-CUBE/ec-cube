@@ -510,7 +510,7 @@ class ProductsList extends AbstractPage
         }
 
         echo Utils::jsonEncode($this->arrProducts);
-        Response::actionExit();
+        Application::alias('eccube.response')->actionExit();
     }
 
     /**
@@ -578,8 +578,8 @@ class ProductsList extends AbstractPage
                     'category_id' => $this->arrForm['category_id'],
                 );
 
-                Response::sendRedirect(CART_URL, $arrQueryString);
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect(CART_URL, $arrQueryString);
+                Application::alias('eccube.response')->actionExit();
             }
             $js_fnOnLoad .= $this->lfSetSelectedData($this->arrProducts, $this->arrForm, $arrErr, $target_product_id);
         } else {

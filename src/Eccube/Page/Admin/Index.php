@@ -72,7 +72,7 @@ class Index extends AbstractAdminPage
                 if (Utils::isBlank($this->arrErr)) {
                     $this->lfDoLogin($objFormParam->getValue('login_id'));
 
-                    Response::sendRedirect(ADMIN_HOME_URLPATH);
+                    Application::alias('eccube.response')->sendRedirect(ADMIN_HOME_URLPATH);
                 } else {
                     // ブルートフォースアタック対策
                     // ログイン失敗時に遅延させる

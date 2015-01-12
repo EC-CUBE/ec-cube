@@ -116,7 +116,7 @@ class Index extends AbstractPage
         $arrError = $objFormParam->checkError();
         if (isset($arrError) && !empty($arrError)) {
             Utils::sfDispSiteError(CART_NOT_FOUND);
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         }
 
         $objFormParam4OpenCategoryTree =
@@ -143,33 +143,33 @@ class Index extends AbstractPage
                     $this->lfSetCurrentCart($objSiteSess, $objCartSess, $cartKey);
 
                     // 購入ページへ
-                    Response::sendRedirect(SHOPPING_URL);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect(SHOPPING_URL);
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
             case 'up'://1個追加
                 $objCartSess->upQuantity($cart_no, $cartKey);
 
-                Response::reload($arrQueryString, true);
-                Response::actionExit();
+                Application::alias('eccube.response')->reload($arrQueryString, true);
+                Application::alias('eccube.response')->actionExit();
                 break;
             case 'down'://1個減らす
                 $objCartSess->downQuantity($cart_no, $cartKey);
 
-                Response::reload($arrQueryString, true);
-                Response::actionExit();
+                Application::alias('eccube.response')->reload($arrQueryString, true);
+                Application::alias('eccube.response')->actionExit();
                 break;
             case 'setQuantity'://数量変更
                 $objCartSess->setQuantity($objFormParam->getValue('quantity'), $cart_no, $cartKey);
 
-                Response::reload($arrQueryString, true);
-                Response::actionExit();
+                Application::alias('eccube.response')->reload($arrQueryString, true);
+                Application::alias('eccube.response')->actionExit();
                 break;
             case 'delete'://カートから削除
                 $objCartSess->delProduct($cart_no, $cartKey);
 
-                Response::reload($arrQueryString, true);
-                Response::actionExit();
+                Application::alias('eccube.response')->reload($arrQueryString, true);
+                Application::alias('eccube.response')->actionExit();
                 break;
             default:
                 break;

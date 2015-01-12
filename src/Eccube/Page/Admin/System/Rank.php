@@ -91,7 +91,7 @@ class Rank extends AbstractAdminPage
         }
 
         // ページの表示
-        Response::sendRedirect(ADMIN_SYSTEM_URLPATH);
+        Application::alias('eccube.response')->sendRedirect(ADMIN_SYSTEM_URLPATH);
     }
 
     // ランキングを上げる。

@@ -101,7 +101,7 @@ class Index extends AbstractMypage
         switch ($this->getMode()) {
             case 'getList':
                 echo Utils::jsonEncode($this->arrOrder);
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
             default:
                 break;

@@ -154,7 +154,7 @@ class Index extends AbstractPage
                     }
 
                     // 完了ページに移動させる。
-                    Response::sendRedirect('complete.php', array('ci' => CustomerHelper::sfGetCustomerId($uniqid)));
+                    Application::alias('eccube.response')->sendRedirect('complete.php', array('ci' => CustomerHelper::sfGetCustomerId($uniqid)));
                 }
                 break;
             case 'return':

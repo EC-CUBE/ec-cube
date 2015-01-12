@@ -89,7 +89,7 @@ class Response
      * アプリケーションのexit処理をする。以降の出力は基本的に停止する。
      * 各クラス内では、exit を直接呼び出さない。
      */
-    public static function actionExit()
+    public function actionExit()
     {
         // ローカルフックポイント処理
         $objPlugin = PluginHelper::getSingletonInstance();
@@ -124,7 +124,7 @@ class Response
      * @return void
      * @static
      */
-    public static function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
+    public function sendRedirect($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
     {
         // ローカルフックポイント処理
         $objPlugin = PluginHelper::getSingletonInstance();
@@ -228,13 +228,13 @@ class Response
     public function sendRedirectFromUrlPath($location, $arrQueryString = array(), $inheritQueryString = false, $useSsl = null)
     {
         $location = ROOT_URLPATH . ltrim($location, '/');
-        static::sendRedirect($location, $arrQueryString, $inheritQueryString, $useSsl);
+        $this->sendRedirect($location, $arrQueryString, $inheritQueryString, $useSsl);
     }
 
     /**
      * @static
      */
-    public static function reload($arrQueryString = array(), $removeQueryString = false)
+    public function reload($arrQueryString = array(), $removeQueryString = false)
     {
         // 現在の URL を取得
         $netUrl = new \Net_URL($_SERVER['REQUEST_URI']);
@@ -244,7 +244,7 @@ class Response
         }
         $netUrl->querystring = array();
 
-        static::sendRedirect($netUrl->getURL(), $arrQueryString);
+        $this->sendRedirect($netUrl->getURL(), $arrQueryString);
     }
 
     public function setHeader($headers)
@@ -341,7 +341,7 @@ class Response
      * @param string $file_name
      * @return void
      */
-    public static function headerForDownload($file_name) {
+    public function headerForDownload($file_name) {
         header("Content-disposition: attachment; filename={$file_name}");
         header("Content-type: application/octet-stream; name={$file_name}");
         header('Cache-Control: ');

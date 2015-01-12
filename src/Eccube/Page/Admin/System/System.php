@@ -66,7 +66,7 @@ class System extends AbstractAdminPage
             // PHP INFOを表示
             case 'info':
                 phpinfo();
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             default:

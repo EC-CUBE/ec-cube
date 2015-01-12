@@ -99,8 +99,8 @@ class Deliv extends AbstractPage
             $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval, $objCustomer);
             $objSiteSess->setRegistFlag();
 
-            Response::sendRedirect('payment.php');
-            Response::actionExit();
+            Application::alias('eccube.response')->sendRedirect('payment.php');
+            Application::alias('eccube.response')->actionExit();
         }
 
         $this->lfInitParam($objFormParam);
@@ -109,7 +109,7 @@ class Deliv extends AbstractPage
         $arrErr = $objFormParam->checkError();
         if (!Utils::isBlank($arrErr)) {
             Utils::sfDispSiteError(PAGE_ERROR, '', true);
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         }
 
         $arrForm = $objFormParam->getHashArray();
@@ -119,7 +119,7 @@ class Deliv extends AbstractPage
             case 'delete':
                 if (!$objAddress->deleteAddress($arrForm['other_deliv_id'], $objCustomer->getValue('customer_id'))) {
                     Utils::sfDispSiteError(FREE_ERROR_MSG, '', false, '別のお届け先を削除できませんでした。');
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
 
@@ -136,16 +136,16 @@ class Deliv extends AbstractPage
                 $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
                 $objSiteSess->setRegistFlag();
 
-                Response::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             // 前のページに戻る
             case 'return':
 
                 // 確認ページへ移動
-                Response::sendRedirect(CART_URL);
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect(CART_URL);
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             // お届け先複数指定
@@ -153,11 +153,11 @@ class Deliv extends AbstractPage
                 // 複数配送先指定が無効な場合はエラー
                 if (USE_MULTIPLE_SHIPPING === false) {
                     Utils::sfDispSiteError(PAGE_ERROR, '', true);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
 
-                Response::sendRedirect('multiple.php');
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect('multiple.php');
+                Application::alias('eccube.response')->actionExit();
                 break;
 
             default:

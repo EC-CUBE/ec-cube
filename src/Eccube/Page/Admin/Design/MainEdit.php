@@ -87,9 +87,9 @@ class MainEdit extends AbstractAdminPage
                     if ($objLayout->isEditablePage($this->device_type_id, $this->page_id)) {
                         $objLayout->lfDelPageData($this->page_id, $this->device_type_id);
 
-                        Response::reload(array('device_type_id' => $this->device_type_id,
+                        Application::alias('eccube.response')->reload(array('device_type_id' => $this->device_type_id,
                                                      'msg' => 'on'), true);
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     }
                 }
                 break;
@@ -106,8 +106,8 @@ class MainEdit extends AbstractAdminPage
                                 'page_id' => $result,
                                 'msg' => 'on',
                             );
-                            Response::reload($arrQueryString, true);
-                            Response::actionExit();
+                            Application::alias('eccube.response')->reload($arrQueryString, true);
+                            Application::alias('eccube.response')->actionExit();
                         }
                     }
                 }

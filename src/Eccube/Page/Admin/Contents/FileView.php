@@ -71,7 +71,7 @@ class FileView extends AbstractAdminPage
                     Utils::sfDispError('');
                 }
 
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
         }
     }
@@ -132,7 +132,7 @@ class FileView extends AbstractAdminPage
             header("Content-type: text/plain\n\n");
             echo $objFileManager->sfReadFile(USER_REALDIR . $file);
         } else {
-            Response::sendRedirect(USER_URL . $file);
+            Application::alias('eccube.response')->sendRedirect(USER_URL . $file);
         }
     }
 }

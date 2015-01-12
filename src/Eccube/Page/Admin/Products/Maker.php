@@ -95,7 +95,7 @@ class Maker extends AbstractAdminPage
                     if ($res_maker_id !== FALSE) {
                         // 完了メッセージ
                         $this->tpl_onload = "alert('登録が完了しました。');";
-                        Response::reload();
+                        Application::alias('eccube.response')->reload();
                     } else {
                         $this->arrErr['maker_id'] = '登録に失敗しました。';
                     }
@@ -116,14 +116,14 @@ class Maker extends AbstractAdminPage
                 $objMaker->rankUp($maker_id);
 
                 // リロード
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             case 'down':
                 $objMaker->rankDown($maker_id);
 
                 // リロード
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             // 削除
@@ -131,7 +131,7 @@ class Maker extends AbstractAdminPage
                 $objMaker->delete($maker_id);
 
                 // リロード
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             default:

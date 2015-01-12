@@ -86,7 +86,7 @@ class ClassList extends AbstractAdminPage
                 }
 
                 // 再表示
-                Response::reload();
+                Application::alias('eccube.response')->reload();
             }
             break;
             // 削除
@@ -95,7 +95,7 @@ class ClassList extends AbstractAdminPage
             $this->lfDeleteClass($class_id);
 
             // 再表示
-            Response::reload();
+            Application::alias('eccube.response')->reload();
             break;
             // 編集前処理
         case 'pre_edit':
@@ -108,13 +108,13 @@ class ClassList extends AbstractAdminPage
             $this->lfDownRank($class_id);
 
             // 再表示
-            Response::reload();
+            Application::alias('eccube.response')->reload();
             break;
         case 'up':
             $this->lfUpRank($class_id);
 
             // 再表示
-            Response::reload();
+            Application::alias('eccube.response')->reload();
             break;
         default:
             break;

@@ -137,7 +137,7 @@ class Change extends AbstractMypage
                     $objCustomer->updateSession();
 
                     // 完了ページに移動させる。
-                    Response::sendRedirect('change_complete.php');
+                    Application::alias('eccube.response')->sendRedirect('change_complete.php');
                 }
                 break;
             // 確認ページからの戻り

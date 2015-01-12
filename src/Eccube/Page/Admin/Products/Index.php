@@ -143,7 +143,7 @@ class Index extends AbstractAdminPage
                             $objCSV = new CsvHelper();
                             // CSVを送信する。正常終了の場合、終了。
                             $objCSV->sfDownloadCsv(1, $where, $arrWhereVal, $order, true);
-                            Response::actionExit();
+                            Application::alias('eccube.response')->actionExit();
 
                         // 全件削除(ADMIN_MODE)
                         case 'delete_all':

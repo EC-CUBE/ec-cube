@@ -184,10 +184,10 @@ class Bkup extends AbstractAdminPage
                     $dl_file = $this->bkup_dir.$arrData['list_name'] . $this->bkup_ext;
 
                     // ダウンロード開始
-                    Response::headerForDownload($filename);
+                    Application::alias('eccube.response')->headerForDownload($filename);
                     header('Content-Length: ' . filesize($dl_file));
                     readfile($dl_file);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                     break;
                 }
 

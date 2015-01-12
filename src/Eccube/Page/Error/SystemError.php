@@ -63,7 +63,7 @@ class SystemError extends Index
      */
     public function action()
     {
-        Response::sendHttpStatus(500);
+        Application::alias('eccube.response')->sendHttpStatus(500);
 
         $this->tpl_error = 'システムエラーが発生しました。<br />大変お手数ですが、サイト管理者までご連絡ください。';
 

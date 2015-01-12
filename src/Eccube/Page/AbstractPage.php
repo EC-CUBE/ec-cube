@@ -185,7 +185,7 @@ abstract class AbstractPage
 
         $this->objDisplay->response->body = $data;
         $this->objDisplay->response->write();
-        Response::actionExit();
+        Application::alias('eccube.response')->actionExit();
     }
 
     /**

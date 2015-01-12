@@ -224,7 +224,7 @@ class PurchaseHelper
 
         // カート内が空でないか
         if (Utils::isBlank($cartKey)) {
-            Response::sendRedirect(CART_URL);
+            Application::alias('eccube.response')->sendRedirect(CART_URL);
             exit;
         }
 
@@ -243,7 +243,7 @@ class PurchaseHelper
         // 購入ボタンを押してから変化がないか
         $quantity = $objCartSession->getTotalQuantity($cartKey);
         if ($objCartSession->checkChangeCart($cartKey) || !($quantity > 0)) {
-            Response::sendRedirect(CART_URL);
+            Application::alias('eccube.response')->sendRedirect(CART_URL);
             exit;
         }
     }

@@ -156,7 +156,7 @@ class Category extends AbstractAdminPage
                 $objCSV = new CsvHelper();
 
                 $objCSV->sfDownloadCsv('5', '', array(), '', true);
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
             default:
                 break;

@@ -103,8 +103,8 @@ class Review extends AbstractPage
                     $this->lfRegistRecommendData($objFormParam);
 
                     //レビュー書き込み完了ページへ
-                    Response::sendRedirect('review_complete.php');
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect('review_complete.php');
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
 

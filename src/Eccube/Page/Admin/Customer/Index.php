@@ -133,7 +133,7 @@ class Index extends AbstractAdminPage
             case 'csv':
 
                 $this->lfDoCSV($objFormParam->getHashArray());
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
             default:
                 break;

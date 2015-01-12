@@ -120,7 +120,7 @@ class Index extends AbstractAdminPage
             //----　データ削除
                 $objNews->deleteNews($news_id);
                 //自分にリダイレクト（再読込による誤動作防止）
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             //----　表示順位移動
@@ -128,14 +128,14 @@ class Index extends AbstractAdminPage
                 $objNews->rankUp($news_id);
 
                 // リロード
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             case 'down':
                 $objNews->rankDown($news_id);
 
                 // リロード
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             case 'moveRankSet':
@@ -144,7 +144,7 @@ class Index extends AbstractAdminPage
                 if (Utils::sfIsInt($input_pos)) {
                     $objNews->moveRank($news_id, $input_pos);
                 }
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
 
             default:

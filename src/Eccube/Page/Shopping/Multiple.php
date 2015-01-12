@@ -82,7 +82,7 @@ class Multiple extends AbstractPage
         // 複数配送先指定が無効な場合はエラー
         if (USE_MULTIPLE_SHIPPING === false) {
             Utils::sfDispSiteError(PAGE_ERROR, '', true);
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         }
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
@@ -105,8 +105,8 @@ class Multiple extends AbstractPage
                                                  $objAddress);
                     $objSiteSess->setRegistFlag();
 
-                    Response::sendRedirect('payment.php');
-                    Response::actionExit();
+                    Application::alias('eccube.response')->sendRedirect('payment.php');
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
 
@@ -313,7 +313,7 @@ class Multiple extends AbstractPage
 
                     if (!$otherDeliv) {
                         Utils::sfDispSiteError(FREE_ERROR_MSG, '', false, "入力値が不正です。<br />正しい値を入力してください。");
-                        Response::actionExit();
+                        Application::alias('eccube.response')->actionExit();
                     }
 
                     foreach ($otherDeliv as $key => $val) {

@@ -89,7 +89,7 @@ class ClassCategory extends AbstractAdminPage
                     }
 
                     // 再表示
-                    Response::reload();
+                    Application::alias('eccube.response')->reload();
                 }
                 break;
                 // 削除
@@ -97,7 +97,7 @@ class ClassCategory extends AbstractAdminPage
                 // ランク付きレコードの削除
                 $this->lfDeleteClassCat($class_id, $classcategory_id);
 
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
                 // 編集前処理
             case 'pre_edit':
@@ -110,13 +110,13 @@ class ClassCategory extends AbstractAdminPage
                 //並び順を下げる
                 $this->lfDownRank($class_id, $classcategory_id);
 
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
             case 'up':
                 //並び順を上げる
                 $this->lfUpRank($class_id, $classcategory_id);
 
-                Response::reload();
+                Application::alias('eccube.response')->reload();
                 break;
             default:
                 break;

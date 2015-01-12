@@ -55,7 +55,7 @@ class Logout extends AbstractAdminPage
         $this->lfDoLogout();
 
         // ログイン画面に遷移
-        Response::sendRedirectFromUrlPath(ADMIN_DIR . DIR_INDEX_PATH);
+        Application::alias('eccube.response')->sendRedirectFromUrlPath(ADMIN_DIR . DIR_INDEX_PATH);
     }
 
     /**

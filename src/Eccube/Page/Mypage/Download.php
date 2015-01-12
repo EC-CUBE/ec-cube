@@ -356,7 +356,7 @@ __EOS__;
         $handle = fopen($realpath, 'rb');
         if ($handle === false) {
             Utils::sfDispSiteError(DOWNFILE_NOT_FOUND, '', true);
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         }
         while (!feof($handle)) {
             echo fread($handle, DOWNLOAD_BLOCK*1024);

@@ -92,12 +92,12 @@ class Index extends AbstractPage
      */
     public function action()
     {
-        Response::sendHttpStatus(500);
+        Application::alias('eccube.response')->sendHttpStatus(500);
 
         switch ($this->type) {
             case PRODUCT_NOT_FOUND:
                 $this->tpl_error='ご指定のページはございません。';
-                Response::sendHttpStatus(404);
+                Application::alias('eccube.response')->sendHttpStatus(404);
                 break;
             case PAGE_ERROR:
                 $this->tpl_error='不正なページ移動です。';
@@ -113,7 +113,7 @@ class Index extends AbstractPage
                 break;
             case CATEGORY_NOT_FOUND:
                 $this->tpl_error='ご指定のカテゴリは存在しません。';
-                Response::sendHttpStatus(404);
+                Application::alias('eccube.response')->sendHttpStatus(404);
                 break;
             case SITE_LOGIN_ERROR:
                 $this->tpl_error='メールアドレスもしくはパスワードが正しくありません。';

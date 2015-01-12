@@ -67,10 +67,10 @@ class News extends AbstractBloc
                     $arrData = $objFormParam->getHashArray();
                     $json = $this->lfGetNewsForJson($arrData, $objNews);
                     echo $json;
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 } else {
                     echo $this->lfGetErrors($this->arrErr);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
             case 'getDetail':
@@ -82,10 +82,10 @@ class News extends AbstractBloc
                     $arrData = $objFormParam->getHashArray();
                     $json = $this->lfGetNewsDetailForJson($arrData);
                     echo $json;
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 } else {
                     echo $this->lfGetErrors($this->arrErr);
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
                 break;
             default:

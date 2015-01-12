@@ -12,6 +12,8 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
+
 /**
  * アプリケーションの初期設定クラス.
  *
@@ -531,8 +533,8 @@ class Initial
             $msg .= 'リダイレクト先=' . var_export($correct_url, true) . ' ';
             trigger_error($msg, E_USER_WARNING);
             // リダイレクト(恒久的)
-            \Eccube\Framework\Response::sendHttpStatus(301);
-            \Eccube\Framework\Response::sendRedirect($correct_url);
+            Application::alias('eccube.response')->sendHttpStatus(301);
+            Application::alias('eccube.response')->sendRedirect($correct_url);
         }
     }
 }

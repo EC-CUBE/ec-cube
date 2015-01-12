@@ -627,8 +627,8 @@ class Detail extends AbstractPage
                 'product_id' => $this->objFormParam->getValue('product_id'),
             );
 
-            Response::sendRedirect(CART_URL, $arrQueryString);
-            Response::actionExit();
+            Application::alias('eccube.response')->sendRedirect(CART_URL, $arrQueryString);
+            Application::alias('eccube.response')->actionExit();
         }
     }
 
@@ -645,7 +645,7 @@ class Detail extends AbstractPage
             $this->arrErr = $this->lfCheckError($this->mode, $this->objFormParam);
             if (count($this->arrErr) == 0) {
                 if (!$this->lfRegistFavoriteProduct($this->objFormParam->getValue('favorite_product_id'), $objCustomer->getValue('customer_id'))) {
-                    Response::actionExit(); 
+                    Application::alias('eccube.response')->actionExit(); 
                 }
                 $objPlugin = PluginHelper::getSingletonInstance($this->plugin_activate_flg);
                 $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite', array($this));
@@ -669,11 +669,11 @@ class Detail extends AbstractPage
                     $objPlugin = PluginHelper::getSingletonInstance($this->plugin_activate_flg);
                     $objPlugin->doAction('LC_Page_Products_Detail_action_add_favorite_sphone', array($this));
                     print 'true';
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
             }
             print 'error';
-            Response::actionExit();
+            Application::alias('eccube.response')->actionExit();
         }
     }
 

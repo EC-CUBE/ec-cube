@@ -55,7 +55,7 @@ abstract class AbstractAdminPage extends AbstractPage
         //SSL制限チェック
         if (ADMIN_FORCE_SSL == TRUE) {
             if (Utils::sfIsHTTPS() === false) {
-                Response::sendRedirect($_SERVER['REQUEST_URI'], $_GET, FALSE, TRUE);
+                Application::alias('eccube.response')->sendRedirect($_SERVER['REQUEST_URI'], $_GET, FALSE, TRUE);
             }
         }
 

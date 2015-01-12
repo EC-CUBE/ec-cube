@@ -119,7 +119,7 @@ class Review extends AbstractAdminPage
                     list($where, $arrWhereVal) = $this->lfGetWhere($this->arrForm);
                     $this->lfDoOutputCsv($where, $arrWhereVal);
 
-                    Response::actionExit();
+                    Application::alias('eccube.response')->actionExit();
                 }
 
                 break;

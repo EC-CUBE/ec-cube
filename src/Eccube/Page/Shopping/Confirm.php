@@ -102,8 +102,8 @@ class Confirm extends AbstractPage
         // カート内商品のチェック
         $this->tpl_message = $objCartSess->checkProducts($this->cartKey);
         if (!Utils::isBlank($this->tpl_message)) {
-            Response::sendRedirect(CART_URL);
-            Response::actionExit();
+            Application::alias('eccube.response')->sendRedirect(CART_URL);
+            Application::alias('eccube.response')->actionExit();
         }
 
         // カートの商品を取得
@@ -146,8 +146,8 @@ class Confirm extends AbstractPage
                 // 正常な推移であることを記録しておく
                 $objSiteSess->setRegistFlag();
 
-                Response::sendRedirect(SHOPPING_PAYMENT_URLPATH);
-                Response::actionExit();
+                Application::alias('eccube.response')->sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                Application::alias('eccube.response')->actionExit();
                 break;
             case 'confirm':
                 /*
@@ -167,15 +167,15 @@ class Confirm extends AbstractPage
                 if ($this->use_module) {
                     $objPurchase->completeOrder(ORDER_PENDING);
 
-                    Response::sendRedirect(SHOPPING_MODULE_URLPATH);
+                    Application::alias('eccube.response')->sendRedirect(SHOPPING_MODULE_URLPATH);
                 // 購入完了ページ
                 } else {
                     $objPurchase->completeOrder(ORDER_NEW);
                     PurchaseHelper::sendOrderMail($this->arrForm['order_id'], $this);
 
-                    Response::sendRedirect(SHOPPING_COMPLETE_URLPATH);
+                    Application::alias('eccube.response')->sendRedirect(SHOPPING_COMPLETE_URLPATH);
                 }
-                Response::actionExit();
+                Application::alias('eccube.response')->actionExit();
                 break;
             default:
                 break;

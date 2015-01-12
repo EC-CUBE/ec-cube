@@ -13,6 +13,7 @@
 namespace Eccube\Framework;
 
 use Eccube\Application;
+use Eccube\Framework\Response;
 use Eccube\Framework\View\SiteView;
 use Eccube\Framework\View\SmartphoneView;
 use Eccube\Framework\View\MobileView;
@@ -26,6 +27,7 @@ use Eccube\Framework\View\AdminView;
  */
 class Display
 {
+    /** @var Response */
     public $response;
 
     /** 端末種別を保持する */
@@ -47,7 +49,7 @@ class Display
 
     public function __construct($hasPrevURL = true)
     {
-        $this->response = new Response();
+        $this->response = Application::alias('eccube.response');
         if ($hasPrevURL) {
             $this->setPrevURL();
         }

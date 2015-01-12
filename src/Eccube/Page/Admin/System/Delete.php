@@ -77,7 +77,7 @@ class Delete extends AbstractAdminPage
         $url = $this->getLocation(ADMIN_SYSTEM_URLPATH)
              . '?pageno=' . $objFormParam->getValue('pageno');
 
-        Response::sendRedirect($url);
+        Application::alias('eccube.response')->sendRedirect($url);
     }
 
     /**
