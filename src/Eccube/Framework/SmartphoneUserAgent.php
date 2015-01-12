@@ -12,6 +12,8 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
+
 /**
  * スマートフォンの情報を扱うクラス.
  *

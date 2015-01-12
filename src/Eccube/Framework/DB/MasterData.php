@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\DB;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Util\Utils;
 
@@ -36,10 +37,8 @@ use Eccube\Framework\Util\Utils;
  */
 class MasterData
 {
-    /** Query インスタンス */
-    public $objQuery;
 
-    /** デフォルトのテーブルカラム名 */
+    /** @var array デフォルトのテーブルカラム名 */
     public $columns = array('id', 'name', 'rank', 'remarks');
 
     /**
@@ -93,20 +92,21 @@ class MasterData
     {
         $columns = $this->getDefaultColumnName($columns);
 
-        $this->objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         if ($autoCommit) {
-            $this->objQuery->begin();
+            $objQuery->begin();
         }
         $i = 0;
         foreach ($masterData as $key => $val) {
             $sqlVal = array($columns[0] => (string) $key,
                             $columns[1] => (string) $val,
                             $columns[2] => (string) $i);
-            $this->objQuery->insert($name, $sqlVal);
+            $objQuery->insert($name, $sqlVal);
             $i++;
         }
         if ($autoCommit) {
-            $this->objQuery->commit();
+            $objQuery->commit();
         }
 
         return $i;
@@ -129,20 +129,21 @@ class MasterData
     {
         $columns = $this->getDefaultColumnName($columns);
 
-        $this->objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         if ($autoCommit) {
-            $this->objQuery->begin();
+            $objQuery->begin();
         }
 
         // 指定のデータを更新
         $i = 0;
         foreach ($masterData as $key => $val) {
             $sqlVal = array($columns[1] => $val);
-            $this->objQuery->update($name, $sqlVal, $columns[0] . ' = ' .  Utils::sfQuoteSmart($key));
+            $objQuery->update($name, $sqlVal, $columns[0] . ' = ' .  Utils::sfQuoteSmart($key));
             $i++;
         }
         if ($autoCommit) {
-            $this->objQuery->commit();
+            $objQuery->commit();
         }
 
         return $i;
@@ -164,20 +165,21 @@ class MasterData
     {
         $columns = $this->getDefaultColumnName();
 
-        $this->objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         if ($autoCommit) {
-            $this->objQuery->begin();
+            $objQuery->begin();
         }
 
         // 指定のデータを追加
         $sqlVal[$columns[0]] = $key;
         $sqlVal[$columns[1]] = $value;
-        $sqlVal[$columns[2]] = $this->objQuery->max($columns[2], $name) + 1;
+        $sqlVal[$columns[2]] = $objQuery->max($columns[2], $name) + 1;
         $sqlVal[$columns[3]] = $comment;
-        $this->objQuery->insert($name, $sqlVal);
+        $objQuery->insert($name, $sqlVal);
 
         if ($autoCommit) {
-            $this->objQuery->commit();
+            $objQuery->commit();
         }
 
         return 1;
@@ -195,17 +197,18 @@ class MasterData
      */
     public function deleteMasterData($name, $autoCommit = true)
     {
-        $this->objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         if ($autoCommit) {
-            $this->objQuery->begin();
+            $objQuery->begin();
         }
 
         // DB の内容とキャッシュをクリア
-        $result = $this->objQuery->delete($name);
+        $result = $objQuery->delete($name);
         $this->clearCache($name);
 
         if ($autoCommit) {
-            $this->objQuery->commit();
+            $objQuery->commit();
         }
 
         return $result;
@@ -301,11 +304,12 @@ class MasterData
     {
         $columns = $this->getDefaultColumnName($columns);
 
-        $this->objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         if (isset($columns[2]) && strlen($columns[2]) >= 1) {
-            $this->objQuery->setOrder($columns[2]);
+            $objQuery->setOrder($columns[2]);
         }
-        $results = $this->objQuery->select($columns[0] . ', ' . $columns[1], $name);
+        $results = $objQuery->select($columns[0] . ', ' . $columns[1], $name);
 
         // 結果を key => value 形式に格納
         $masterData = array();

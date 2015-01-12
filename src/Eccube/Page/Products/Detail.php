@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Products;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CartSession;
 use Eccube\Framework\CheckError;
@@ -476,7 +477,8 @@ class Detail extends AbstractPage
     public function lfPreGetRecommendProducts($product_id)
     {
         $objProduct = new Product();
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         $objQuery->setOrder('rank DESC');
         $arrRecommendData = $objQuery->select('recommend_product_id, comment', 'dtb_recommend_products as t1 left join dtb_products as t2 on t1.recommend_product_id = t2.product_id', 't1.product_id = ? and t2.del_flg = 0 and t2.status = 1', array($product_id));
@@ -486,7 +488,8 @@ class Detail extends AbstractPage
             $recommendProductIds[] = $recommend['recommend_product_id'];
         }
 
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $arrProducts = $objProduct->getListByProductIds($objQuery, $recommendProductIds);
 
         foreach ($arrRecommendData as $key => $arrRow) {
@@ -573,7 +576,8 @@ class Detail extends AbstractPage
 
             return false;
         } else {
-            $objQuery = Query::getSingletonInstance();
+            /* @var $objQuery Query */
+            $objQuery = Application::alias('eccube.query');
             $exists = $objQuery->exists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $favorite_product_id));
 
             if (!$exists) {

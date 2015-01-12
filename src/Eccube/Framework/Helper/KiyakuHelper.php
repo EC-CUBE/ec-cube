@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Util\Utils;
@@ -33,7 +34,7 @@ class KiyakuHelper
      */
     public function getKiyaku($kiyaku_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'kiyaku_id = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -51,7 +52,7 @@ class KiyakuHelper
      */
     public function getList($has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'kiyaku_id, kiyaku_title, kiyaku_text';
         $where = '';
         if (!$has_deleted) {
@@ -72,7 +73,7 @@ class KiyakuHelper
      */
     public function saveKiyaku($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $kiyaku_id = $sqlval['kiyaku_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -140,7 +141,7 @@ class KiyakuHelper
      */
     public function isTitleExist($title, $kiyaku_id = NULL)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $where  = 'del_flg = 0 AND kiyaku_title = ?';
         $arrVal = array($title);

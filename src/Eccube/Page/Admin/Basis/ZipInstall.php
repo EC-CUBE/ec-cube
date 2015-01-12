@@ -152,7 +152,7 @@ class ZipInstall extends AbstractAdminPage
 
     public function lfAutoCommitZip()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // DB更新
         $objQuery->begin();
@@ -168,7 +168,7 @@ class ZipInstall extends AbstractAdminPage
      */
     public function lfDeleteZip()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // DB
         $objQuery->delete('mtb_zip');
@@ -197,7 +197,7 @@ class ZipInstall extends AbstractAdminPage
      */
     public function insertMtbZip($start = 1)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $img_path = USER_URL . USER_PACKAGE_DIR . 'admin/img/basis/'; // 画像パスは admin 固定
 
@@ -313,7 +313,7 @@ class ZipInstall extends AbstractAdminPage
 
     public function countMtbZip()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->count('mtb_zip');
     }

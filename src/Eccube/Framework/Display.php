@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\View\SiteView;
 use Eccube\Framework\View\SmartphoneView;
 use Eccube\Framework\View\MobileView;
@@ -31,7 +32,7 @@ class Display
     // XXX プロパティとして保持する必要があるのか疑問。
     public static $device;
 
-    /** \Eccube\Framework\View インスタンス */
+    /** @var \Eccube\Framework\View インスタンス */
     public $view;
 
     public $deviceSeted = false;

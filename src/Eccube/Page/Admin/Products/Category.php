@@ -97,7 +97,7 @@ class Category extends AbstractAdminPage
                 // DnDしたカテゴリと移動先のセットを分解する
                 $keys = explode('-', $_POST['keySet']);
                 if ($keys[0] && $keys[1]) {
-                    $objQuery = Query::getSingletonInstance();
+                    $objQuery = Application::alias('eccube.query');
                     $objQuery->begin();
 
                     // 移動したデータのrank、level、parent_category_idを取得

@@ -11,6 +11,7 @@
  */
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Util\Utils;
 
 /**

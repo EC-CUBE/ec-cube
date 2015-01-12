@@ -239,7 +239,7 @@ class Edit extends AbstractAdminPage
         $arrErr = CustomerHelper::sfCustomerMypageErrorCheck($objFormParam, true);
 
         // メアド重複チェック(共通ルーチンは使えない)
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
         $col = 'email, email_mobile, customer_id';
         $table = 'dtb_customer';
         $where = 'del_flg <> 1 AND (email Like ? OR email_mobile Like ?)';
@@ -309,7 +309,7 @@ class Edit extends AbstractAdminPage
         if (Utils::isBlank($customer_id)) {
             return array('0', array(), NULL);
         }
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $page_max = SEARCH_PMAX;
         $table = 'dtb_order';
         $where = 'customer_id = ? AND del_flg <> 1';

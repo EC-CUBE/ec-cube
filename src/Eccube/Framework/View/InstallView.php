@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\View;
 
+use Eccube\Application;
 use Eccube\Framework\View;
 
 class InstallView extends View

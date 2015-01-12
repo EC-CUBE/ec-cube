@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Error;
 
+use Eccube\Application;
 use Eccube\Page\Admin\AbstractAdminPage;
 use Eccube\Framework\Display;
 use Eccube\Framework\Response;

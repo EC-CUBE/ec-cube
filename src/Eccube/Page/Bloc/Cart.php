@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Bloc;
 
+use Eccube\Application;
 use Eccube\Framework\CartSession;
 use Eccube\Framework\Db\MasterData;
 use Eccube\Framework\Helper\DbHelper;

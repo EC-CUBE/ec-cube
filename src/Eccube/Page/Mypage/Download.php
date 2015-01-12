@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Customer;
@@ -164,7 +165,7 @@ class Download extends AbstractPage
      */
     public function lfGetRealFileName($customer_id, $order_id, $product_class_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = <<< __EOS__
             pc.down_realfilename AS down_realfilename,
             pc.down_filename AS down_filename

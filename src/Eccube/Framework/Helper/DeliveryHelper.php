@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
 
@@ -32,7 +33,7 @@ class DeliveryHelper
      */
     public function get($deliv_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 配送業者一覧の取得
         $col = '*';
@@ -69,7 +70,7 @@ class DeliveryHelper
      */
     public function getList($product_type_id = null, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = '';
         $arrVal = array();
@@ -98,7 +99,7 @@ class DeliveryHelper
      */
     public function save($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         // お届け時間
@@ -251,7 +252,7 @@ class DeliveryHelper
         if ($arrDeliv['deliv_id'] == '') {
             $ret = $objDb->isRecord('dtb_deliv', 'service_name', array($arrDeliv['service_name']));
         } else {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $ret = (($objQuery->count('dtb_deliv', 'deliv_id != ? AND service_name = ? AND del_flg = 0', array($arrDeliv['deliv_id'], $arrDeliv['service_name'])) > 0) ? true : false);
         }
 
@@ -277,7 +278,7 @@ class DeliveryHelper
      */
     public static function getDelivTime($deliv_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('time_id');
         $results = $objQuery->select('time_id, deliv_time', 'dtb_delivtime', 'deliv_id = ?', array($deliv_id));
         $arrDelivTime = array();
@@ -296,7 +297,7 @@ class DeliveryHelper
      */
     public static function getPayments($deliv_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('rank');
 
         return $objQuery->getCol('payment_id', 'dtb_payment_options', 'deliv_id = ?', array($deliv_id), MDB2_FETCHMODE_ORDERED);
@@ -311,7 +312,7 @@ class DeliveryHelper
      */
     public static function getDelivFee($pref_id, $deliv_id = 0)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         if (!is_array($pref_id)) {
             $pref_id = array($pref_id);
         }
@@ -340,7 +341,7 @@ __EOS__;
      */
     public static function getDelivFeeList($deliv_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('pref');
         $col = 'fee_id, fee, pref';
         $where = 'deliv_id = ?';

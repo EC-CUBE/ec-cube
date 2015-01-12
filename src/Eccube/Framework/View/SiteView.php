@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\View;
 
+use Eccube\Application;
 use Eccube\Framework\CartSession;
 use Eccube\Framework\View;
 use Eccube\Framework\Helper\PluginHelper;

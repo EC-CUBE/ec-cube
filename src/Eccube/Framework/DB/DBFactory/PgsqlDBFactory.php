@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\DB\DBFactory;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\DB\DBFactory;
 use Eccube\Framework\Helper\DbHelper;
@@ -37,7 +38,8 @@ class PgsqlDBFactory extends DBFactory
      */
     public function sfGetDBVersion($dsn = '')
     {
-        $objQuery = Query::getSingletonInstance($dsn);
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query', $dsn);
         $val = $objQuery->getOne('select version()');
         $arrLine = explode(' ', $val);
 
@@ -223,7 +225,7 @@ __EOS__;
      */
     public function findTableNames($expression = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sql = '   SELECT c.relname AS name, '
             .  '     CASE c.relkind '
             .  "     WHEN 'r' THEN 'table' "

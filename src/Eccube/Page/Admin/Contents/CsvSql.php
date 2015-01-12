@@ -242,7 +242,7 @@ class CsvSql extends AbstractAdminPage
      */
     public function lfGetTableList()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
         $arrTable = $objQuery->listTables();
         if (Utils::isBlank($arrTable)) {
@@ -270,7 +270,7 @@ class CsvSql extends AbstractAdminPage
         if (Utils::isBlank($table)) {
             return array();
         }
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // 実テーブル上のカラム設定を見に行く仕様に変更 ref #476
         $arrColList = $objQuery->listTableFields($table);
         $arrColList= Utils::sfArrCombine($arrColList, $arrColList);
@@ -287,7 +287,7 @@ class CsvSql extends AbstractAdminPage
      */
     public function lfGetSqlList($where = '' , $arrVal = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $table = 'dtb_csv_sql';
         $objQuery->setOrder('sql_id');
 
@@ -364,7 +364,7 @@ class CsvSql extends AbstractAdminPage
      */
     public function lfUpdData($sql_id, $arrSqlVal)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $table = 'dtb_csv_sql';
         $arrSqlVal['update_date'] = 'CURRENT_TIMESTAMP';
         if (Utils::sfIsInt($sql_id)) {
@@ -390,7 +390,7 @@ class CsvSql extends AbstractAdminPage
      */
     public function lfDelData($sql_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $table = 'dtb_csv_sql';
         $where = 'sql_id = ?';
         if (Utils::sfIsInt($sql_id)) {

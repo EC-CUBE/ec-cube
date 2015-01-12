@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Api;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Query;
@@ -56,7 +57,7 @@ class Operation
      */
     protected function checkMemberAccount($member_id, $member_password)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         //パスワード、saltの取得
         $cols = 'password, salt';
         $table = 'dtb_member';
@@ -195,7 +196,7 @@ class Operation
      */
     protected function getApiSecretKey($access_key)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $secret_key = $objQuery->get('api_secret_key', 'dtb_api_account', 'api_access_key = ? and enable = 1 and del_flg = 0', array($access_key));
 
         return $secret_key;

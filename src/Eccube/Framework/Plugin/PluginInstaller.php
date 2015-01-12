@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Plugin;
 
+use Eccube\Application;
 use Eccube\Framework\Util\Utils;
 use Eccube\Framework\Util\GcUtils;
 use Eccube\Framework\Query;
@@ -70,7 +71,8 @@ class PluginInstaller
             return $arrErr;
         }
 
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         // SQLの実行
         if (!Utils::isBlank($arrSql)) {
@@ -232,7 +234,8 @@ class PluginInstaller
     protected function verifySql($sql, $params)
     {
         // FIXME $paramsのチェックも行いたい.
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         // force runを有効にし, システムエラーを回避する
         $objQuery->force_run = true;

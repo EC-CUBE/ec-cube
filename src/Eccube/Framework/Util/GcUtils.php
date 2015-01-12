@@ -12,6 +12,8 @@
 
 namespace Eccube\Framework\Util;
 
+use Eccube\Application;
+
 /**
  * 各種ユーティリティクラス.
  *

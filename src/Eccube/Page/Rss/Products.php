@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Rss;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Product;
 use Eccube\Framework\Query;
@@ -120,7 +121,7 @@ class Products extends AbstractPage
      */
     public function lfGetProductsDetailData($mode, $product_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         //商品詳細を取得
         if ($mode == 'all') {
             $arrProduct = $this->lfGetProductsDetail($objQuery, $mode);
@@ -173,7 +174,7 @@ class Products extends AbstractPage
      */
     public function lfGetProductsListData()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         //商品一覧を取得
         $arrProduct = $objQuery->getAll('SELECT product_id, name AS product_name FROM dtb_products');
 
@@ -187,7 +188,7 @@ class Products extends AbstractPage
      */
     public function lfGetProductsAllData()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         //商品情報を取得
         $arrProduct = $this->lfGetProductsAllclass($objQuery);
         // 値の整形

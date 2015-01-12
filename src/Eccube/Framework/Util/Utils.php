@@ -12,12 +12,15 @@
 
 namespace Eccube\Framework\Util;
 
+use Eccube\Application;
 use Eccube\Framework\Display;
 use Eccube\Framework\Query;
 use Eccube\Framework\Session;
 use Eccube\Framework\Helper\FileManagerHelper;
 use Eccube\Framework\Helper\TaxRuleHelper;
 use Eccube\Framework\DB\MasterData;
+use Net_URL;
+use Services_JSON;
 
 /**
  * 各種ユーティリティクラス.
@@ -55,7 +58,8 @@ class Utils
      */
     public static function getInstallerPath()
     {
-        $netUrl = new \Net_URL();
+        /* @var $netUrl Net_URL */
+        $netUrl = Application::alias('eccube.net.url');
 
         $installer = 'install/' . DIR_INDEX_PATH;
         // XXX メソッド名は add で始まるが、実際には置換を行う
@@ -765,7 +769,9 @@ class Utils
         $sql.= 'from dtb_class inner join dtb_classcategory on dtb_class.class_id = dtb_classcategory.class_id ';
         $sql.= 'where dtb_class.del_flg = 0 AND dtb_classcategory.del_flg = 0 ';
         $sql.= 'group by dtb_class.class_id, dtb_class.name';
-        $objQuery = Query::getSingletonInstance();
+
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $arrList = $objQuery->getAll($sql);
         // キーと値をセットした配列を取得
         $arrRet = static::sfArrKeyValue($arrList, 'class_id', 'count');
@@ -789,7 +795,8 @@ class Utils
         if (!$classcategory_id2) {
           $classcategory_id2 = 0;
         }
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $ret = $objQuery->get('product_class_id', 'dtb_products_class', $where, Array($product_id, $classcategory_id1, $classcategory_id2));
 
         return $ret;
@@ -1550,7 +1557,8 @@ class Utils
      */
     public static function sfGetAddress($zipcode)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         $masterData = new MasterData();
         $arrPref = $masterData->getMasterData('mtb_pref');
@@ -1669,11 +1677,16 @@ class Utils
      */
     public static function sfIsInternalDomain($url)
     {
-        $netURL = new \Net_URL(HTTP_URL);
+        /* @var $netURL Net_URL */
+        $netURL = Application::alias('eccube.net.url', HTTP_URL);
         $host = $netURL->host;
-        if (!$host) return false;
+        if (!$host) {
+            return false;
+        }
         $host = preg_quote($host, '#');
-        if (!preg_match("#^(http|https)://{$host}#i", $url)) return false;
+        if (!preg_match("#^(http|https)://{$host}#i", $url)) {
+            return false;
+        }
 
         return true;
     }
@@ -1769,7 +1782,8 @@ class Utils
             return json_encode($value);
         } else {
             GcUtils::gfPrintLog(' *use Services_JSON::encode(). faster than using the json_encode!');
-            $objJson = new Services_JSON();
+            /* @var $objJson Services_JSON */
+            $objJson = Application::alias('pear.services.json');
 
             return $objJson->encode($value);
         }
@@ -1793,7 +1807,8 @@ class Utils
             return json_decode($json);
         } else {
             GcUtils::gfPrintLog(' *use Services_JSON::decode(). faster than using the json_decode!');
-            $objJson = new Services_JSON();
+            /* @var $objJson Services_JSON */
+            $objJson = Application::alias('pear.services.json');
 
             return $objJson->decode($json);
         }

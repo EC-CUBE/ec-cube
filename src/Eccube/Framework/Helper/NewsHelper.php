@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
 
@@ -23,6 +24,7 @@ use Eccube\Framework\Helper\DbHelper;
  */
 class NewsHelper
 {
+
     /**
      * ニュースの情報を取得.
      *
@@ -32,7 +34,7 @@ class NewsHelper
      */
     public static function getNews($news_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*, cast(news_date as date) as cast_news_date';
         $where = 'news_id = ?';
         if (!$has_deleted) {
@@ -53,7 +55,7 @@ class NewsHelper
      */
     public function getList($dispNumber = 0, $pageNumber = 0, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*, cast(news_date as date) as cast_news_date';
         $where = '';
         if (!$has_deleted) {
@@ -81,7 +83,7 @@ class NewsHelper
      */
     public function saveNews($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $news_id = $sqlval['news_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -111,9 +113,8 @@ class NewsHelper
      */
     public function deleteNews($news_id)
     {
-        $objDb = new DbHelper();
         // ランク付きレコードの削除
-        $objDb->deleteRankRecord('dtb_news', 'news_id', $news_id);
+        Application::alias('eccube.helper.db')->deleteRankRecord('dtb_news', 'news_id', $news_id);
     }
 
     /**
@@ -124,8 +125,7 @@ class NewsHelper
      */
     public function rankUp($news_id)
     {
-        $objDb = new DbHelper();
-        $objDb->rankUp('dtb_news', 'news_id', $news_id);
+        Application::alias('eccube.helper.db')->rankUp('dtb_news', 'news_id', $news_id);
     }
 
     /**
@@ -136,8 +136,7 @@ class NewsHelper
      */
     public function rankDown($news_id)
     {
-        $objDb = new DbHelper();
-        $objDb->rankDown('dtb_news', 'news_id', $news_id);
+        Application::alias('eccube.helper.db')->rankDown('dtb_news', 'news_id', $news_id);
     }
 
     /**
@@ -149,8 +148,7 @@ class NewsHelper
      */
     public function moveRank($news_id, $rank)
     {
-        $objDb = new DbHelper();
-        $objDb->moveRank('dtb_news', 'news_id', $news_id, $rank);
+        Application::alias('eccube.helper.db')->moveRank('dtb_news', 'news_id', $news_id, $rank);
     }
 
     /**
@@ -161,13 +159,12 @@ class NewsHelper
      */
     public function getCount($has_deleted = false)
     {
-        $objDb = new DbHelper();
         if (!$has_deleted) {
             $where = 'del_flg = 0';
         } else {
             $where = '';
         }
 
-        return $objDb->countRecords('dtb_news', $where);
+        return Application::alias('eccube.helper.db')->countRecords('dtb_news', $where);
     }
 }

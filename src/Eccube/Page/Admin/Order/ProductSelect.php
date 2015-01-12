@@ -129,7 +129,7 @@ class ProductSelect extends AbstractAdminPage
      */
     public function getProductList($arrProductId, Product &$objProduct)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 表示順序
         $order = 'update_date DESC, product_id DESC';
@@ -170,7 +170,7 @@ class ProductSelect extends AbstractAdminPage
     {
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setWhere($where);
         // 取得範囲の指定(開始行番号、行数のセット)
         $objQuery->setLimitOffset($page_max, $startno);
@@ -192,7 +192,7 @@ class ProductSelect extends AbstractAdminPage
         $where = $whereAndBind['where'];
         $bind = $whereAndBind['bind'];
         // 検索結果対象となる商品の数を取得
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setWhere($where);
         $linemax = $objProduct->findProductCount($objQuery, $bind);
 

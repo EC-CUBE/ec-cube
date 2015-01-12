@@ -534,7 +534,7 @@ class Index extends AbstractAdminPage
     /** 会員別集計 **/
     public function lfGetOrderMember($type, $sdate, $edate)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
         $where .= ' AND del_flg = 0 AND status <> ?';
@@ -576,7 +576,7 @@ __EOS__;
     /** 商品別集計 **/
     public function lfGetOrderProducts($type, $sdate, $edate)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
@@ -608,7 +608,7 @@ __EOS__;
     /** 職業別集計 **/
     public function lfGetOrderJob($type, $sdate, $edate)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         list($where, $arrWhereVal) = $this->lfGetWhereMember('dtb_order.create_date', $sdate, $edate, $type);
 
         $col = <<< __EOS__
@@ -645,7 +645,7 @@ __EOS__;
     /** 年代別集計 **/
     public function lfGetOrderAge($type, $sdate, $edate)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
@@ -683,7 +683,7 @@ __EOS__;
     // todo あいだの日付埋める
     public function lfGetOrderTerm($type, $sdate, $edate)
     {
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
 
         list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate);
         $where .= ' AND del_flg = 0 AND status <> ?';

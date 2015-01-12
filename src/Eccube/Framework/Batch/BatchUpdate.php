@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Batch;
 
+use Eccube\Application;
 use Eccube\Framework\Batch\AbstractBatch;
 use Eccube\Framework\Util\GcUtils;
 

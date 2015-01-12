@@ -12,6 +12,9 @@
 
 namespace Eccube\Framework\SessionFactory\UseRequest;
 
+use Eccube\Application;
+use Eccube\Framework\MobileUserAgent;
+
 /**
  * モバイルサイト用のセッションデータ管理クラス
  *

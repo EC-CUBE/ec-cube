@@ -133,7 +133,7 @@ class Index extends AbstractAdminPage
      */
     public function lfIsLoginMember($login_id, $pass)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         //パスワード、saltの取得
         $cols = 'password, salt';
         $table = 'dtb_member';
@@ -158,7 +158,7 @@ class Index extends AbstractAdminPage
      */
     public function lfDoLogin($login_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         //メンバー情報取得
         $cols = 'member_id, authority, login_date, name';
         $table = 'dtb_member';
@@ -220,7 +220,7 @@ class Index extends AbstractAdminPage
         GcUtils::gfPrintLog($str_log);
 
         // 最終ログイン日時更新
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sqlval = array();
         $sqlval['login_date'] = date('Y-m-d H:i:s');
         $table = 'dtb_member';

@@ -267,7 +267,7 @@ class Bkup extends AbstractAdminPage
      */
     public function lfCreateBkupData($bkup_name, $work_dir)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $csv_autoinc = '';
         $arrData = array();
 
@@ -368,7 +368,7 @@ class Bkup extends AbstractAdminPage
      */
     public function lfGetAutoIncrement()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrSequences = $objQuery->listSequences();
 
         foreach ($arrSequences as $name) {
@@ -391,7 +391,7 @@ class Bkup extends AbstractAdminPage
     // バックアップテーブルにデータを更新する
     public function lfUpdBkupData($data)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $arrVal = array();
         $arrVal['bkup_name'] = $data['bkup_name'];
@@ -406,7 +406,7 @@ class Bkup extends AbstractAdminPage
      */
     public function lfGetBkupData($sql_option = '', $filter_bkup_name = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // テーブルから取得
         $arrVal = array();
@@ -460,7 +460,7 @@ class Bkup extends AbstractAdminPage
      */
     public function lfRestore($bkup_name, $bkup_dir, $bkup_ext, $mode)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $bkup_filepath = $bkup_dir . $bkup_name . $bkup_ext;
         $work_dir = $bkup_dir . $bkup_name . '/';
@@ -605,7 +605,7 @@ class Bkup extends AbstractAdminPage
     // 選択したバックアップをDBから削除
     public function lfDeleteBackUp(&$arrForm, $bkup_dir, $bkup_ext)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $del_file = $bkup_dir.$arrForm['list_name'] . $bkup_ext;
         // ファイルの削除

@@ -219,7 +219,7 @@ class Csv extends AbstractAdminPage
      */
     public function lfUpdCsvOutput($csv_id, $arrData = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // ひとまず、全部使用しないで更新する
         $table = 'dtb_csv';
         $where = 'csv_id = ?';

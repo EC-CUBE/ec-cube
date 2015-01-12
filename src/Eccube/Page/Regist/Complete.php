@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Regist;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 
 /**

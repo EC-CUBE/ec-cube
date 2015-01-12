@@ -12,6 +12,8 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
+
 /**
  * 登録内容変更完了 のページクラス.
  *

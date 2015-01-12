@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Shopping;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Helper\DbHelper;
 

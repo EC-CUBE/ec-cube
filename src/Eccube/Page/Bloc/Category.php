@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Bloc;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Display;
 use Eccube\Framework\Util\Utils;
@@ -130,7 +131,7 @@ class Category extends AbstractBloc
      */
     public function lfGetMainCat($count_check = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
         // メインカテゴリとその直下のカテゴリを取得する。

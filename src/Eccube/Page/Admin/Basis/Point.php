@@ -114,7 +114,7 @@ class Point extends AbstractAdminPage
         // 入力データを渡す。
         $sqlval = $post;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // UPDATEの実行
         $objQuery->update('dtb_baseinfo', $sqlval);
     }
@@ -125,7 +125,7 @@ class Point extends AbstractAdminPage
         $sqlval = $post;
         $sqlval['id'] = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // INSERTの実行
         $objQuery->insert('dtb_baseinfo', $sqlval);
     }

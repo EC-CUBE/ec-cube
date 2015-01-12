@@ -178,7 +178,7 @@ class Masterdata extends AbstractAdminPage
         }
 
         // マスターデータを更新
-        $masterData->objQuery = Query::getSingletonInstance();
+        $masterData->objQuery = Application::alias('eccube.query');
         $masterData->objQuery->begin();
         $masterData->deleteMasterData($master_data_name, false);
         // TODO カラム名はメタデータから取得した方が良い

@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\Display;
 use Eccube\Framework\MobileUserAgent;
 use Eccube\Framework\Query;
@@ -44,7 +45,7 @@ class Customer
         }
         // 本登録された会員のみ
         $sql = 'SELECT * FROM dtb_customer WHERE (email = ?' . $sql_mobile . ') AND del_flg = 0 AND status = 2';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $result = $objQuery->getAll($sql, $arrValues);
         if (empty($result)) {
             return false;
@@ -82,7 +83,7 @@ class Customer
         }
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $exists = $objQuery->exists('dtb_customer', 'mobile_phone_id = ? AND del_flg = 0 AND status = 2', array($_SESSION['mobile']['phone_id']));
 
         return $exists;
@@ -110,7 +111,7 @@ class Customer
 
         // 携帯端末IDが一致し、本登録された会員を検索する。
         $sql = 'SELECT * FROM dtb_customer WHERE mobile_phone_id = ? AND del_flg = 0 AND status = 2';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         @list($data) = $objQuery->getAll($sql, array($_SESSION['mobile']['phone_id']));
 
         // パスワードが合っている場合は、会員情報をcustomer_dataに格納してtrueを返す。
@@ -139,7 +140,7 @@ class Customer
             return;
         }
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sqlval = array('mobile_phone_id' => $_SESSION['mobile']['phone_id']);
         $where = 'customer_id = ? AND del_flg = 0 AND status = 2';
         $objQuery->update('dtb_customer', $sqlval, $where, array($this->customer_data['customer_id']));
@@ -152,7 +153,7 @@ class Customer
     {
         // 本登録された会員のみ
         $sql = 'SELECT * FROM dtb_customer WHERE (email = ? OR email_mobile = ?) AND del_flg = 0 AND status = 2';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $result = $objQuery->getAll($sql, array($email, $email));
         $data = isset($result[0]) ? $result[0] : '';
         $this->customer_data = $data;
@@ -164,7 +165,7 @@ class Customer
     {
         $sql = 'SELECT * FROM dtb_customer WHERE customer_id = ? AND del_flg = 0';
         $customer_id = $this->getValue('customer_id');
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->getAll($sql, array($customer_id));
         $this->customer_data = isset($arrRet[0]) ? $arrRet[0] : '';
         $_SESSION['customer'] = $this->customer_data;
@@ -206,7 +207,7 @@ class Customer
         if (isset($_SESSION['customer']['customer_id'])
             && Utils::sfIsInt($_SESSION['customer']['customer_id'])
         ) {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $email = $objQuery->get('email', 'dtb_customer', 'customer_id = ?', array($_SESSION['customer']['customer_id']));
             if ($email == $_SESSION['customer']['email']) {
                 // モバイルサイトの場合は携帯のメールアドレスが登録されていることもチェックする。
@@ -229,7 +230,7 @@ class Customer
     {
         // ポイントはリアルタイム表示
         if ($keyname == 'point') {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $point = $objQuery->get('point', 'dtb_customer', 'customer_id = ?', array($_SESSION['customer']['customer_id']));
             $_SESSION['customer']['point'] = $point;
 
@@ -302,7 +303,7 @@ class Customer
     //受注関連の会員情報を更新
     public function updateOrderSummary($customer_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $col = <<< __EOS__
             SUM( payment_total) AS buy_total,

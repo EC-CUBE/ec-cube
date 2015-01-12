@@ -338,7 +338,7 @@ class Index extends AbstractAdminPage
      */
     public function installPlugin($archive_file_name, $key)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         // 一時展開ディレクトリにファイルがある場合は事前に削除.
@@ -765,7 +765,7 @@ class Index extends AbstractAdminPage
      */
     public function updatePriority($plugin_id, $priority)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // UPDATEする値を作成する。
         $sqlval['priority'] = $priority;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -786,7 +786,7 @@ class Index extends AbstractAdminPage
     public function registerData($arrPluginInfo, $mode = 'install')
     {
         // プラグイン情報をDB登録.
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arr_sqlval_plugin = array();
         $arr_sqlval_plugin['plugin_name'] = $arrPluginInfo['PLUGIN_NAME'];
         $arr_sqlval_plugin['plugin_code'] = $arrPluginInfo['PLUGIN_CODE'];
@@ -948,7 +948,7 @@ class Index extends AbstractAdminPage
      */
     public function updatePluginEnable($plugin_id, $enable_flg)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // UPDATEする値を作成する。
         $sqlval['enable'] = $enable_flg;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -969,7 +969,7 @@ class Index extends AbstractAdminPage
     public function deletePlugin($plugin_id, $plugin_code)
     {
         $arrErr = array();
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         PluginUtil::deletePluginByPluginId($plugin_id);
@@ -1053,7 +1053,7 @@ class Index extends AbstractAdminPage
 
         $conflict_alert_message = '';
         $arrConflictPluginName = array();
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         foreach ($hookPoints as $hookPoint) {
             // 競合するプラグインを取得する,
             $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 ON T1.plugin_id = T2.plugin_id';
@@ -1099,7 +1099,7 @@ class Index extends AbstractAdminPage
      */
     public function getHookPoint($plugin_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $table = 'dtb_plugin_hookpoint';
         $where = 'plugin_id = ?';

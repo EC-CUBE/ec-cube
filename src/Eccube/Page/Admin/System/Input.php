@@ -258,7 +258,7 @@ class Input extends AbstractAdminPage
         $columns = 'name,department,login_id,authority, work';
         $where   = 'member_id = ?';
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->getRow($columns, $table, $where, array($id));
     }
@@ -272,7 +272,7 @@ class Input extends AbstractAdminPage
      */
     public function memberDataExists($where, $val)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $table = 'dtb_member';
 
@@ -311,7 +311,7 @@ class Input extends AbstractAdminPage
      */
     public function insertMemberData($arrMemberData)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // INSERTする値を作成する.
         $salt                  = Utils::sfGetRandomString(10);
@@ -342,7 +342,7 @@ class Input extends AbstractAdminPage
      */
     public function updateMemberData($member_id, $arrMemberData)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // Updateする値を作成する.
         $sqlVal = array();

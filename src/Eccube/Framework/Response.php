@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\Display;
 use Eccube\Framework\SessionFactory;
 use Eccube\Framework\Helper\PluginHelper;
@@ -22,7 +23,6 @@ use Eccube\Framework\Util\Utils;
  * HttpResponse を扱うクラス.
  *
  * @author Ryuichi Tokugami
- * @version $Id$
  */
 class Response
 {

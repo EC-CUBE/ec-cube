@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Query;
 use Eccube\Framework\SendMail;
@@ -115,7 +116,7 @@ class MailHelper
         $arrInfo = DbHelper::getBasisData();
         $arrTplVar->arrInfo = $arrInfo;
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         if ($subject == '' && $header == '' && $footer == '') {
             // メールテンプレート情報の取得
@@ -217,7 +218,7 @@ class MailHelper
      */
     function sfGetShippingData($order_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $objQuery->setOrder('shipping_id');
         $arrRet = $objQuery->select('*', 'dtb_shipping', 'order_id = ?', array($order_id));
@@ -317,7 +318,7 @@ class MailHelper
         }
         $sqlval['mail_body'] = $body;
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sqlval['send_id'] = $objQuery->nextVal('dtb_mail_history_send_id');
         $objQuery->insert('dtb_mail_history', $sqlval);
     }
@@ -328,7 +329,7 @@ class MailHelper
         $col = 'email, mailmaga_flg, customer_id';
         $from = 'dtb_customer';
         $where = '(email = ? OR email_mobile = ?) AND status = 2 AND del_flg = 0';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->select($col, $from, $where, array($email));
         // 会員のメールアドレスが登録されている
         if (!empty($arrRet[0]['customer_id'])) {
@@ -417,7 +418,7 @@ class MailHelper
     {
         // 初期化
         $where = '';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 条件文
         $where = 'del_flg = ?';
@@ -445,7 +446,7 @@ class MailHelper
     {
         // 初期化
         $where = '';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 条件文
         $where = 'del_flg = ?';
@@ -473,7 +474,7 @@ class MailHelper
      */
     public function sfSendMailmagazine($send_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objDb = new DbHelper();
         $objSite = $objDb->getBasisData();
         $objMail = new SendMail();

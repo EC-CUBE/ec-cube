@@ -170,7 +170,7 @@ class Recommend extends AbstractAdminPage
         }
 
         $objProduct = new Product;
-        $objQuery = $objQuery = Query::getSingletonInstance();
+        $objQuery = $objQuery = Application::alias('eccube.query');
         $arrProducts = $objProduct->getListByProductIds($objQuery, $product_ids);
 
         $arrReturnProducts = array();

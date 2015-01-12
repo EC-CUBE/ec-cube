@@ -12,7 +12,8 @@
 
 namespace Eccube\Page\Api;
 
-use Eccube\Page\Page;
+use Eccube\Application;
+use Eccube\Page\AbstractPage;
 use Eccube\Framework\Api\Operation;
 use Eccube\Framework\Response;
 
@@ -22,7 +23,7 @@ use Eccube\Framework\Response;
  * @package Page
  * @author LOCKON CO.,LTD.
  */
-class Xml extends Page
+class Xml extends AbstractPage
 {
     /**
      * Page を初期化する.

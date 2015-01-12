@@ -12,10 +12,11 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\ImageConverter;
 use Eccube\Framework\MobileUserAgent;
 
-define('MOBILE_IMAGE_INC_REALDIR', realpath(dirname(__FILE__) . '/../../mobile_image'));
+define('MOBILE_IMAGE_INC_REALDIR', realpath(__DIR__ . '/../../mobile_image'));
 
 /**
  * 画像変換クラス
@@ -45,7 +46,7 @@ class MobileImage
             $result = preg_match_all($pattern, $buffer, $images);
 
             // 端末の情報を取得する
-            $fp = fopen(MOBILE_IMAGE_INC_REALDIR . "/imagemobile_image_map_$carrier.csv", 'r');
+            $fp = fopen(MOBILE_IMAGE_INC_REALDIR . "/mobile_image_map_$carrier.csv", 'r');
             // 取得できない場合は, 入力内容をそのまま返す
             if ($fp === false) {
                 return $buffer;

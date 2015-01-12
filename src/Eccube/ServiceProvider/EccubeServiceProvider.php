@@ -17,56 +17,200 @@ class EccubeServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['ecube.customer'] = function () use ($app) {
+        // PEAR
+        $app['smarty'] = function () {
+            return new \Smarty();
+        };
+        $app['mobile.detect'] = function () {
+            return new \Mobile_Detect();
+        };
+        $app['pear.archive.tar'] = $app->protect(function ($p_tarname, $p_compress = null) {
+            return new \Archive_Tar($p_tarname, $p_compress);
+        });
+        $app['pear.cache.lite'] = $app->protect(function ($options = array()) {
+            return new \Cache_Lite($options);
+        });
+        $app['pear.calendar.month.weekdays'] = $app->protect(function ($y, $m, $firstDay=null) {
+            return new \Calendar_Month_Weekdays($y, $m, $firstDay);
+        });
+        $app['pear.http.request'] = $app->protect(function ($url = '', $params = array()) {
+            return new \HTTP_Request($url, $params);
+        });
+        $app['pear.mail'] = $app->protect(function ($driver, $params = array()) {
+            return \Mail::factory($driver, $params);
+        });
+        $app['pear.net.user_agent.mobile'] = $app->protect(function ($userAgent = null) {
+            return \Net_UserAgent_Mobile::singleton($userAgent);
+        });
+        $app['pear.net.url'] = $app->protect(function ($url = null, $useBrackets = true) {
+            return new \Net_URL($url, $useBrackets);
+        });
+        $app['pear.services.json'] = $app->protect(function ($use = 0) {
+            return new \Services_JSON($use);
+        });
+        $app['pear.text.password'] = $app->protect(function ($length = 10, $type = 'pronounceable', $chars = '') {
+            return \Text_Password::create($length, $type, $chars);
+        });
+        $app['pear.xml.serializer'] = $app->protect(function ($options = null) {
+            return new \XML_Serializer($options);
+        });
+
+        // framework
+        $app['eccube.customer'] = function () {
             return new \Eccube\Framework\Customer();
         };
-        $app['ecube.cookie'] = function () use ($app) {
-            return new \Eccube\Framework\Cookie();
-        };
-        $app['ecube.check_error'] = function () use ($app) {
-            return new \Eccube\Framework\CheckError();
-        };
-        $app['ecube.display'] = $app->protect(function ($hasPrevURL = true) use ($app) {
+        $app['eccube.cookie'] = $app->protect(function ($day = COOKIE_EXPIRE) {
+            return new \Eccube\Framework\Cookie($day);
+        });
+        $app['eccube.check_error'] = $app->protect(function ($array = '') {
+            return  new \Eccube\Framework\CheckError($array);
+        });
+        $app['eccube.display'] = $app->protect(function ($hasPrevURL = true) {
             return new \Eccube\Framework\Display($hasPrevURL);
         });
-        $app['ecube.response'] = function () use ($app) {
+        $app['eccube.response'] = $app->protect(function () {
             return new \Eccube\Framework\Response();
-        };
-        $app['ecube.query'] = function () use ($app) {
-            return \Eccube\Framework\Query::getSingletonInstance();
-        };
-        $app['ecube.response.action_exit'] = function () use ($app) {
-            return \Eccube\Framework\Response::actionExit();
-        };
-        $app['ecube.site_session'] = function () use ($app) {
-            return new \Eccube\Framework\SiteSession();
-        };
-        $app['ecube.sendmail'] = function () use ($app) {
-            return new \Eccube\Framework\Sendmail();
-        };
-        
-        // db
-        $app['ecube.db.factory'] = function () use ($app) {
-            return new \Eccube\Framework\DB\DB_DBFactory();
-        };
-        
-        // helper
-        $app['ecube.helper.db'] = function () use ($app) {
-            return new \Eccube\Framework\Helper\DbHelper();
-        };
-        $app['ecube.helper.db.func'] = $app->protect(function ($name, $parameter = null) use ($app) {
-            return call_user_func('\\Eccube\\Framework\\Helper\\DbHelper::'.$name, $parameter);
         });
-        $app['ecube.helper.page_layout'] = function () use ($app) {
+        $app['eccube.query'] = $app->protect(function ($dsn = '', $force_run = false, $new = false) {
+            return \Eccube\Framework\Query::getSingletonInstance($dsn, $force_run, $new);
+        });
+        $app['eccube.site_session'] = $app->share(function () {
+            return new \Eccube\Framework\SiteSession();
+        });
+        $app['eccube.sendmail'] = $app->protect(function () {
+            return new \Eccube\Framework\Sendmail();
+        });
+
+        // db
+        $app['eccube.db.factory'] = $app->protect(function ($db_type = DB_TYPE) {
+            return \Eccube\Framework\DB\DBFactory::getInstance($db_type);
+        });
+
+        // graph
+        $app['eccube.graph.bar'] = $app->protect(function ($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP, $area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
+            return new \Eccube\Framework\Graph\BarGraph($bgw, $bgh, $left, $top, $area_width, $area_height);
+        });
+        $app['eccube.graph.line'] = $app->protect(function ($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = LINE_LEFT, $top = LINE_TOP, $area_width = LINE_AREA_WIDTH, $area_height = LINE_AREA_HEIGHT) {
+            return new \Eccube\Framework\Graph\LineGraph($bgw, $bgh, $left, $top, $area_width, $area_height);
+        });
+        $app['eccube.graph.pie'] = $app->protect(function ($bgw = BG_WIDTH, $bgh = BG_HEIGHT, $left = PIE_LEFT, $top = PIE_TOP) {
+            return new \Eccube\Framework\Graph\PieGraph($bgw, $bgh, $left, $top);
+        });
+
+        // helper
+        $app['eccube.helper.address'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\AddressHelper();
+        });
+        $app['eccube.helper.best_products'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\BestProductsHelper();
+        });
+        $app['eccube.helper.bloc'] = $app->protect(function ($devide_type_id = DEVICE_TYPE_PC) {
+            return new \Eccube\Framework\Helper\BlocHelper($devide_type_id);
+        });
+        $app['eccube.helper.category'] = $app->protect(function ($count_check = false) {
+            return new \Eccube\Framework\Helper\CategoryHelper($count_check);
+        });
+        $app['eccube.helper.csv'] = function () {
+            return new \Eccube\Framework\Helper\CsvHelper();
+        };
+        $app['eccube.helper.customer'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\CustomerHelper();
+        });
+        $app['eccube.helper.db'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\DbHelper();
+        });
+        $app['eccube.helper.delivery'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\DeliveryHelper();
+        });
+        $app['eccube.helper.file_manager'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\FileManagerHelper();
+        });
+        $app['eccube.helper.fpdi'] = $app->protect(function ($orientation = 'P', $unit = 'mm', $size = 'A4') {
+            return new \Eccube\Framework\Helper\FpdiHelper($orientation, $unit, $size);
+        });
+        $app['eccube.helper.holiday'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\HolidayHelper();
+        });
+        $app['eccube.helper.kiyaku'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\KiyakuHelper();
+        });
+        $app['eccube.helper.mail'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\MailHelper();
+        });
+        $app['eccube.helper.mailtemplate'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\MailtemplateHelper();
+        });
+        $app['eccube.helper.maker'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\MakerHelper();
+        });
+        $app['eccube.helper.mobile'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\MobileHelper();
+        });
+        $app['eccube.helper.news'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\NewsHelper();
+        });
+        $app['eccube.helper.page_layout'] = $app->share(function () {
             return new \Eccube\Framework\Helper\PageLayoutHelper();
-        };
-        $app['ecube.helper.purchase'] = function () use ($app) {
-            return new \Eccube\Framework\Helper\PurchaseHelper();
-        };
-        $app['ecube.helper.plugin'] = function () use ($app) {
-            $plugin_activate_flg = true;
+        });
+        $app['eccube.helper.payment'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\PaymentHelper();
+        });
+        $app['eccube.helper.plugin'] = function () {
+            $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG;
             return \Eccube\Framework\Helper\PluginHelper::getSingletonInstance($plugin_activate_flg);
         };
+        $app['eccube.helper.purchase'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\PurchaseHelper();
+        });
+        $app['eccube.helper.session'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\SessionHelper();
+        });
+        $app['eccube.helper.tax_rule'] = $app->share(function () {
+            return new \Eccube\Framework\Helper\TaxRuleHelper();
+        });
+        $app['eccube.helper.transform'] = $app->protect(function ($source) {
+            return new \Eccube\Framework\Helper\TransformHelper($source);
+        });
+
+        // util
+        $app['eccube.util.utils'] = $app->share(function () {
+            return new \Eccube\Framework\Util\Utils();
+        });
+        $app['eccube.util.gc_utils'] = $app->share(function () {
+            return new \Eccube\Framework\Util\GcUtils();
+        });
+
+        // smarty
+        $app['smarty'] = $app->extend('smarty', function ($smarty) {
+            $smarty->left_delimiter = '<!--{';
+            $smarty->right_delimiter = '}-->';
+            $smarty->plugins_dir = array(
+                realpath(__DIR__ . '/../../smarty_extends'),
+                realpath(__DIR__ . '/../../../vendor/smarty/smarty/libs/plugins'),
+            );
+            $smarty->register_modifier('sfDispDBDate', array('\\Eccube\\Framework\\Util\\Utils', 'sfDispDBDate'));
+            $smarty->register_modifier('sfGetErrorColor', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetErrorColor'));
+            $smarty->register_modifier('sfTrim', array('\\Eccube\\Framework\\Util\\Utils', 'sfTrim'));
+            $smarty->register_modifier('sfCalcIncTax', array('\\Eccube\\Framework\\Helper\\DbHelper', 'calcIncTax'));
+            $smarty->register_modifier('sfPrePoint', array('\\Eccube\\Framework\\Util\\Utils', 'sfPrePoint'));
+            $smarty->register_modifier('sfGetChecked', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetChecked'));
+            $smarty->register_modifier('sfTrimURL', array('\\Eccube\\Framework\\Util\\Utils', 'sfTrimURL'));
+            $smarty->register_modifier('sfMultiply', array('\\Eccube\\Framework\\Util\\Utils', 'sfMultiply'));
+            $smarty->register_modifier('sfRmDupSlash', array('\\Eccube\\Framework\\Util\\Utils', 'sfRmDupSlash'));
+            $smarty->register_modifier('sfCutString', array('\\Eccube\\Framework\\Util\\Utils', 'sfCutString'));
+            $smarty->register_modifier('sfMbConvertEncoding', array('\\Eccube\\Framework\\Util\\Utils', 'sfMbConvertEncoding'));
+            $smarty->register_modifier('sfGetEnabled', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetEnabled'));
+            $smarty->register_modifier('sfNoImageMainList', array('\\Eccube\\Framework\\Util\\Utils', 'sfNoImageMainList'));
+            // XXX register_function で登録すると if で使用できないのではないか？
+            $smarty->register_function('sfIsHTTPS', array('\\Eccube\\Framework\\Util\\Utils', 'sfIsHTTPS'));
+            $smarty->register_function('sfSetErrorStyle', array('\\Eccube\\Framework\\Util\\Utils', 'sfSetErrorStyle'));
+            $smarty->register_function('printXMLDeclaration', array('\\Eccube\\Framework\\Util\\GcUtils', 'printXMLDeclaration'));
+            $smarty->default_modifiers = array('script_escape');
+
+            $smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
+
+            return $smarty;
+        });
     }
 
     /**

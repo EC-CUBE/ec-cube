@@ -168,7 +168,7 @@ class Review extends AbstractPage
      */
     public function lfGetProductName($product_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->get('name', 'dtb_products', 'product_id = ? AND ' . Product::getProductDispConditions(), array($product_id));
     }

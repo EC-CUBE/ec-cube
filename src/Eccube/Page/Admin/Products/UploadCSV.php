@@ -273,7 +273,7 @@ class UploadCSV extends AbstractAdminPage
         // 登録フォーム カラム情報
         $this->arrFormKeyList = $objFormParam->getKeyList();
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         // CSVからの読み込み、入力エラーチェック
@@ -389,7 +389,7 @@ class UploadCSV extends AbstractAdminPage
      */
     public function lfInitTableInfo()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $this->arrProductColumn = $objQuery->listTableFields('dtb_products');
         $this->arrProductClassColumn = $objQuery->listTableFields('dtb_products_class');
     }
@@ -863,7 +863,7 @@ class UploadCSV extends AbstractAdminPage
         $count = count($arrItems);
         $where = $tblkey .' IN (' . Utils::repeatStrWithSeparator('?', $count) . ')';
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $db_count = $objQuery->count($table, $where, $arrItems);
         if ($count != $db_count) {
             return false;

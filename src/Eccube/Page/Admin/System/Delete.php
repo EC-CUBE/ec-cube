@@ -101,7 +101,7 @@ class Delete extends AbstractAdminPage
      */
     public function deleteMember($id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         $this->renumberRank($objQuery, $id);

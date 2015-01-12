@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Bloc;
 
+use Eccube\Application;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Util\Utils;
 

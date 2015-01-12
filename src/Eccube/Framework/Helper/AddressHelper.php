@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\CustomerHelper;
 
@@ -31,11 +32,11 @@ class AddressHelper
      */
     public function registAddress($sqlval)
     {
-        if (self::delivErrorCheck($sqlval)) {
+        if ($this->delivErrorCheck($sqlval)) {
             return false;
         }
-        
-        $objQuery = Query::getSingletonInstance();
+
+        $objQuery = Application::alias('eccube.query');
         $customer_id = $sqlval['customer_id'];
         $other_deliv_id = $sqlval['other_deliv_id'];
 
@@ -79,11 +80,11 @@ class AddressHelper
      */
     public function getAddress($other_deliv_id, $customer_id = '')
     {
-        if (self::delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
+        if ($this->delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
             return false;
         }
         
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         
         $col    = '*';
         $from   = 'dtb_other_deliv';
@@ -103,11 +104,11 @@ class AddressHelper
      */
     public function getList($customer_id, $startno = '')
     {
-        if (self::delivErrorCheck(array('customer_id' => $customer_id))) {
+        if ($this->delivErrorCheck(array('customer_id' => $customer_id))) {
             return false;
         }
         
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('other_deliv_id DESC');
         //スマートフォン用の処理
         if ($startno != '') {
@@ -128,11 +129,11 @@ class AddressHelper
      */
     public function deleteAddress($other_deliv_id, $customer_id = '')
     {
-        if (self::delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
+        if ($this->delivErrorCheck(array('customer_id' => $customer_id, 'other_deliv_id' => $other_deliv_id))) {
             return false;
         }
         
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
 
         $from   = 'dtb_other_deliv';
         $where  = 'customer_id = ? AND other_deliv_id = ?';

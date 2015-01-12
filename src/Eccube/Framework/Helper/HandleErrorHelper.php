@@ -33,12 +33,6 @@ class HandleErrorHelper
      */
     public static function load()
     {
-        // E_DEPRECATED 定数 (for PHP < 5.3)
-        // TODO バージョン互換処理に統合したい。
-        if (!defined('E_DEPRECATED')) {
-            define('E_DEPRECATED', 8192);
-        }
-
         // エラーレベル設定 (PHPのログに対する指定であり、以降のエラーハンドリングには影響しない模様)
         // 開発時は -1 (全て) を推奨
         error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_STRICT);

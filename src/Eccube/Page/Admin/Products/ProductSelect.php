@@ -136,7 +136,7 @@ class ProductSelect extends AbstractAdminPage
 
         $order = 'update_date DESC, product_id DESC ';
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // 行数の取得
         $linemax = $objQuery->count('dtb_products', $where, $arrWhereVal);
         $this->tpl_linemax = $linemax;              // 何件が該当しました。表示用

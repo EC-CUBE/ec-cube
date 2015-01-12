@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Customer;
 use Eccube\Framework\CustomerList;
@@ -40,7 +41,8 @@ class CustomerHelper
      */
     public function sfEditCustomerData($arrData, $customer_id = null)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         $old_version_flag = false;
@@ -131,7 +133,8 @@ class CustomerHelper
      */
     public function sfGetCustomerPoint($order_id, $use_point, $add_point)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
 
         $arrRet = $objQuery->select('customer_id', 'dtb_order', 'order_id = ?', array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
@@ -163,7 +166,8 @@ class CustomerHelper
     public function sfCheckRegisterUserFromEmail($email)
     {
         $objCustomer = new Customer();
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
 
         // ログインしている場合、すでに登録している自分のemailの場合
         if ($objCustomer->isLoginSuccess(true)
@@ -211,7 +215,8 @@ class CustomerHelper
      */
     public function sfCustomerEmailDuplicationCheck($customer_id, $email)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
 
         $arrResults = $objQuery->getRow('email, email_mobile',
                                         'dtb_customer', 'customer_id = ?',
@@ -234,7 +239,7 @@ class CustomerHelper
      */
     public function sfGetCustomerData($customer_id, $mask_flg = true)
     {
-        $objQuery       = Query::getSingletonInstance();
+        $objQuery       = Application::alias('eccube.query');
 
         // 会員情報DB取得
         $ret        = $objQuery->select('*', 'dtb_customer', 'customer_id=?', array($customer_id));
@@ -272,7 +277,7 @@ class CustomerHelper
      */
     public function sfGetCustomerDataFromId($customer_id, $add_where = '', $arrAddVal = array())
     {
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
 
         if ($add_where == '') {
             $where = 'customer_id = ?';
@@ -297,7 +302,8 @@ class CustomerHelper
      */
     public function sfGetUniqSecretKey()
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
 
         do {
             $uniqid = Utils::sfGetUniqRandomId('r');
@@ -317,7 +323,7 @@ class CustomerHelper
      */
     public function sfGetCustomerId($uniqid, $check_status = false)
     {
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
 
         $where      = 'secret_key = ?';
 
@@ -666,7 +672,8 @@ class CustomerHelper
      */
     public function sfGetSearchData($arrParam, $limitMode = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
         $objSelect = new CustomerList($arrParam, 'customer');
 
         $page_max = Utils::sfGetSearchPageMax($arrParam['search_page_max']);
@@ -681,7 +688,8 @@ class CustomerHelper
         $arrData = $objQuery->getAll($objSelect->getList(), $objSelect->arrVal);
 
         // 該当全体件数の取得
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
         $linemax = $objQuery->getOne($objSelect->getListCount(), $objSelect->arrVal);
 
         // ページ送りの取得
@@ -702,7 +710,8 @@ class CustomerHelper
      */
     public function checkTempCustomer($login_email)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query*/
+        $objQuery = Application::alias('eccube.query');
 
         $where = 'email = ? AND status = 1 AND del_flg = 0';
         $exists = $objQuery->exists('dtb_customer', $where, array($login_email));

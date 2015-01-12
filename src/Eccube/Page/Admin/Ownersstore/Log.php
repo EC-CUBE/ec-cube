@@ -92,7 +92,7 @@ FROM
     ) AS modules ON dtb_module_update_logs.module_id = modules.module_id
 ORDER BY update_date DESC
 END;
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->getAll($sql);
 
         return isset($arrRet) ? $arrRet : array();
@@ -123,7 +123,7 @@ FROM
 WHERE
     log_id = ?
 END;
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->getAll($sql, array($log_id));
 
         return isset($arrRet[0]) ? $arrRet[0] : array();

@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Entry;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Customer;
@@ -122,7 +123,7 @@ class EmailMobile extends AbstractPage
      */
     public function lfRegistEmailMobile($email_mobile, $customer_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->update('dtb_customer',
                           array('email_mobile' => $email_mobile),
                           'customer_id = ?', array($customer_id));

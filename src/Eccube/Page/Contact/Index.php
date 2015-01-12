@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Contact;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Display;

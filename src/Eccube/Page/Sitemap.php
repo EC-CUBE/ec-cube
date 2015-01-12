@@ -23,6 +23,7 @@
 
 namespace Eccube\Page;
 
+use Eccube\Application;
 use Eccube\Framework\Product;
 use Eccube\Framework\Query;
 
@@ -204,7 +205,7 @@ class Sitemap extends AbstractPage
     public function getAllProducts()
     {
         // XXX: 商品登録の無いカテゴリは除外する方が良い気もする
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sql = 'SELECT category_id FROM dtb_category WHERE del_flg = 0';
         $result = $objQuery->getAll($sql);
 
@@ -226,7 +227,7 @@ class Sitemap extends AbstractPage
      */
     public function getAllDetail()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sql = 'SELECT product_id, update_date FROM dtb_products WHERE ' . Product::getProductDispConditions();
         $result = $objQuery->getAll($sql);
 
@@ -250,7 +251,7 @@ class Sitemap extends AbstractPage
      */
     public function getPageData($where = '', $arrVal = '')
     {
-        $objQuery = Query::getSingletonInstance();     // DB操作オブジェクト
+        $objQuery = Application::alias('eccube.query');     // DB操作オブジェクト
         $sql = '';                      // データ取得SQL生成用
         $arrPageList = array();              // データ取得用
 

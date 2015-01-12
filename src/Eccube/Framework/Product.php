@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\Query as Query2;
 use Eccube\Framework\Helper\TaxRuleHelper;
 use Eccube\Framework\Helper\DbHelper;

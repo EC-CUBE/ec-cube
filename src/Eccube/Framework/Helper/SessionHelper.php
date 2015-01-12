@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Session;
 use Eccube\Framework\Util\GcUtils;
 use Eccube\Framework\DB\MasterData;

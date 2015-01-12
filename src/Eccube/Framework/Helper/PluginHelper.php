@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Util\GcUtils;
 use Eccube\Framework\Plugin\PluginUtil;
@@ -81,7 +82,7 @@ class PluginHelper
     /**
      * PluginHelper オブジェクトを返す（Singletonパターン）
      *
-     * @return object PluginHelperオブジェクト
+     * @return PluginHelper PluginHelperオブジェクト
      */
     public static function getSingletonInstance($plugin_activate_flg = true)
     {
@@ -89,7 +90,7 @@ class PluginHelper
             // プラグインのローダーがDB接続を必要とするため、
             // Queryインスタンス生成後のみオブジェクトを生成する。
             if (is_null(Query::getPoolInstance())) {
-                return false;
+                return null;
             }
 
             $GLOBALS['_PluginHelper_instance'] = new static();

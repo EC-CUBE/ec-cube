@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\FrontParts;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Cookie;
 use Eccube\Framework\Customer;
@@ -148,7 +149,7 @@ class LoginCheck extends AbstractPage
                         sleep(LOGIN_RETRY_INTERVAL);
 
                         $arrForm['login_email'] = strtolower($arrForm['login_email']);
-                        $objQuery = Query::getSingletonInstance();
+                        $objQuery = Application::alias('eccube.query');
                         $where = '(email = ? OR email_mobile = ?) AND status = 1 AND del_flg = 0';
                         $exists = $objQuery->exists('dtb_customer', $where, array($arrForm['login_email'], $arrForm['login_email']));
                         // ログインエラー表示 TODO リファクタリング

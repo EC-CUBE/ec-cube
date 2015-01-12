@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Api\Operation;
 
+use Eccube\Application;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Product;
 

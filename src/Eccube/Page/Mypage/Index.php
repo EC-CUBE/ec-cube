@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Display;
 use Eccube\Framework\PageNavi;
@@ -115,7 +116,7 @@ class Index extends AbstractMypage
      */
     public function lfGetOrderHistory($customer_id, $startno = -1)
     {
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
 
         $col        = 'order_id, create_date, payment_id, payment_total, status';
         $from       = 'dtb_order';

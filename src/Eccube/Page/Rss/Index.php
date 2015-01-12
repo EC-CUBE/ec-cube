@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Rss;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Helper\NewsHelper;

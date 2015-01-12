@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Cart;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CartSession;
 use Eccube\Framework\Customer;
@@ -264,7 +265,7 @@ class Index extends AbstractPage
     {
         $sqlval['order_temp_id'] = $uniqid;
         $where = 'order_temp_id = ?';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $res = $objQuery->update('dtb_order_temp', $sqlval, $where, array($pre_uniqid));
         if ($res != 1) {
             return false;

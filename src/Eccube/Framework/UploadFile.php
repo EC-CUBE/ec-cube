@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Image;
 use Eccube\Framework\Util\Utils;

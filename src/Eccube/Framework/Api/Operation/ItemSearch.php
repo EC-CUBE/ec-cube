@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Api\Operation;
 
+use Eccube\Application;
 use Eccube\Framework\PageNavi;
 use Eccube\Framework\Product;
 use Eccube\Framework\Query;
@@ -53,7 +54,7 @@ class ItemSearch extends Base
             $arrSearchCondition = $this->getSearchCondition($arrSearchData);
             $disp_number = 10;
 
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $objQuery->setWhere($arrSearchCondition['where_for_count']);
             $objProduct = new Product();
             $linemax = $objProduct->findProductCount($objQuery, $arrSearchCondition['arrval']);
@@ -111,7 +112,7 @@ class ItemSearch extends Base
      */
     protected function getProductsList($searchCondition, $disp_number, $startno, $linemax, &$objProduct)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $arrOrderVal = array();
 
@@ -162,7 +163,7 @@ class ItemSearch extends Base
         // 表示すべきIDとそのIDの並び順を一気に取得
         $arrProductId = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrOrderVal));
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);
         // 規格を設定
         $objProduct->setProductsClassByProductIds($arrProductId);

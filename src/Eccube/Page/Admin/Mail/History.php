@@ -88,8 +88,8 @@ class History extends AbstractAdminPage
             $search_pageno = 1;
         }
         //
-        $objSelect = Query::getSingletonInstance();    // 一覧データ取得用
-        $objQuery = Query::getSingletonInstance();    // 件数取得用
+        $objSelect = Application::alias('eccube.query');    // 一覧データ取得用
+        $objQuery = Application::alias('eccube.query');    // 件数取得用
 
         // 該当全体件数の取得
         $linemax = $objQuery->count('dtb_send_history', 'del_flg = 0');
@@ -121,7 +121,7 @@ class History extends AbstractAdminPage
      */
     public function lfDeleteHistory($send_id)
     {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $objQuery->update('dtb_send_history',
                               array('del_flg' =>1),
                               'send_id = ?',

@@ -152,7 +152,7 @@ class UpDown extends AbstractAdminPage
         }
 
         // DBにすでに登録されていないかチェック
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $exists = $objQuery->exists('dtb_templates', 'template_code = ?', array($template_code));
         if ($exists) {
             $arrErr['template_code'] = '※ すでに登録されているテンプレートコードです。<br/>';
@@ -194,7 +194,7 @@ class UpDown extends AbstractAdminPage
         $template_dir = SMARTY_TEMPLATES_REALDIR . $template_code;
         $compile_dir  = DATA_REALDIR . 'Smarty/templates_c/' . $template_code;
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         $arrValues = array(

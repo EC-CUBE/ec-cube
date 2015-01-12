@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Display;
 use Eccube\Framework\Helper\PageLayoutHelper;

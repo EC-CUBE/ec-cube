@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\Helper\PluginHelper;
 use Eccube\Framework\Helper\PageLayoutHelper;
 
@@ -29,34 +30,12 @@ class View
 
     public function init()
     {
-        $this->_smarty = new \Smarty;
-        $this->_smarty->left_delimiter = '<!--{';
-        $this->_smarty->right_delimiter = '}-->';
-        $this->_smarty->plugins_dir = array(realpath(dirname(__FILE__) . '/../../smarty_extends'), 'plugins');
-        $this->_smarty->register_modifier('sfDispDBDate', array('\\Eccube\\Framework\\Util\\Utils', 'sfDispDBDate'));
-        $this->_smarty->register_modifier('sfGetErrorColor', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetErrorColor'));
-        $this->_smarty->register_modifier('sfTrim', array('\\Eccube\\Framework\\Util\\Utils', 'sfTrim'));
-        $this->_smarty->register_modifier('sfCalcIncTax', array('\\Eccube\\Framework\\Helper\\DbHelper', 'calcIncTax'));
-        $this->_smarty->register_modifier('sfPrePoint', array('\\Eccube\\Framework\\Util\\Utils', 'sfPrePoint'));
-        $this->_smarty->register_modifier('sfGetChecked', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetChecked'));
-        $this->_smarty->register_modifier('sfTrimURL', array('\\Eccube\\Framework\\Util\\Utils', 'sfTrimURL'));
-        $this->_smarty->register_modifier('sfMultiply', array('\\Eccube\\Framework\\Util\\Utils', 'sfMultiply'));
-        $this->_smarty->register_modifier('sfRmDupSlash', array('\\Eccube\\Framework\\Util\\Utils', 'sfRmDupSlash'));
-        $this->_smarty->register_modifier('sfCutString', array('\\Eccube\\Framework\\Util\\Utils', 'sfCutString'));
-        $this->_smarty->register_modifier('sfMbConvertEncoding', array('\\Eccube\\Framework\\Util\\Utils', 'sfMbConvertEncoding'));
-        $this->_smarty->register_modifier('sfGetEnabled', array('\\Eccube\\Framework\\Util\\Utils', 'sfGetEnabled'));
-        $this->_smarty->register_modifier('sfNoImageMainList', array('\\Eccube\\Framework\\Util\\Utils', 'sfNoImageMainList'));
-        // XXX register_function で登録すると if で使用できないのではないか？
-        $this->_smarty->register_function('sfIsHTTPS', array('\\Eccube\\Framework\\Util\\Utils', 'sfIsHTTPS'));
-        $this->_smarty->register_function('sfSetErrorStyle', array('\\Eccube\\Framework\\Util\\Utils', 'sfSetErrorStyle'));
-        $this->_smarty->register_function('printXMLDeclaration', array('\\Eccube\\Framework\\Util\\GcUtils', 'printXMLDeclaration'));
-        $this->_smarty->default_modifiers = array('script_escape');
+        $this->_smarty = Application::alias('smarty');
 
         if (ADMIN_MODE == '1') {
             $this->time_start = microtime(true);
         }
 
-        $this->_smarty->force_compile = SMARTY_FORCE_COMPILE_MODE === true;
         // 各filterをセットします.
         $this->registFilter();
     }
@@ -133,11 +112,13 @@ class View
      */
     public function prefilter_transform($source, &$smarty)
     {
+        // EC-CUBE 2.13 互換用置換
         $source = preg_replace('/'.$smarty->_quote_replace($smarty->left_delimiter).'include_php /', $smarty->left_delimiter.'render ', $source);
 
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
-            $objPlugin = PluginHelper::getSingletonInstance($this->objPage->plugin_activate_flg);
+            /* @var $objPlugin PluginHelper */
+            $objPlugin = Application::alias('eccube.helper.plugin', $this->objPage->plugin_activate_flg);
             if (is_object($objPlugin)) {
                 $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
             }
@@ -156,7 +137,8 @@ class View
     {
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
-            $objPlugin = PluginHelper::getSingletonInstance($this->objPage->plugin_activate_flg);
+            /* @var $objPlugin PluginHelper */
+            $objPlugin = Application::alias('eccube.helper.plugin', $this->objPage->plugin_activate_flg);
             if (is_object($objPlugin)) {
                 $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
             }
@@ -210,11 +192,14 @@ class View
      */
     public function assignTemplatePath($device_type_id)
     {
+        /* @var $PageLayoutHelper PageLayoutHelper */
+        $PageLayoutHelper = Application::alias('eccube.helper.page_layout');
+
         // テンプレート変数を割り当て
-        $this->assign('TPL_URLPATH', PageLayoutHelper::getUserDir($device_type_id, true));
+        $this->assign('TPL_URLPATH', $PageLayoutHelper->getUserDir($device_type_id, true));
 
         // ヘッダとフッタを割り当て
-        $templatePath = PageLayoutHelper::getTemplatePath($device_type_id);
+        $templatePath = $PageLayoutHelper->getTemplatePath($device_type_id);
         $header_tpl = $templatePath . 'header.tpl';
         $footer_tpl = $templatePath . 'footer.tpl';
 

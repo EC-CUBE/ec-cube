@@ -12,6 +12,8 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
+
 /* ※使用条件※
     ・formタグに以下を追加する。
         <input type='hidden' name='pageno' value="<!--{$tpl_pageno}-->">

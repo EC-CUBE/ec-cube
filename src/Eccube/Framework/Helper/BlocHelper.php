@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\FileManagerHelper;
 use Eccube\Framework\Helper\PageLayoutHelper;
@@ -40,7 +41,7 @@ class BlocHelper
      */
     public function getBloc($bloc_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = 'bloc_id = ? AND device_type_id = ?';
         $arrRet = $objQuery->getRow($col, 'dtb_bloc', $where, array($bloc_id, $this->device_type_id));
@@ -63,7 +64,7 @@ class BlocHelper
      */
     public function getList()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = 'device_type_id = ?';
         $table = 'dtb_bloc';
@@ -80,7 +81,7 @@ class BlocHelper
      */
     public function getWhere($where = '', $sqlval = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = 'device_type_id = ? ' . (Utils::isBlank($where) ? $where : 'AND ' . $where);
         array_unshift($sqlval, $this->device_type_id);
@@ -98,7 +99,7 @@ class BlocHelper
      */
     public function save($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         // blod_id が空の場合は新規登録
@@ -153,7 +154,7 @@ class BlocHelper
      */
     public function delete($bloc_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         $arrExists = $this->getWhere('bloc_id = ? AND deletable_flg = 1', array($bloc_id));

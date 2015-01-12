@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\Display;
 
 /**
@@ -128,7 +129,7 @@ class SessionFactory
      */
     public function sfSessRead($id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->select('sess_data', 'dtb_session', 'sess_id = ?', array($id));
         if (empty($arrRet)) {
             return '';
@@ -146,7 +147,7 @@ class SessionFactory
      */
     public function sfSessWrite($id, $sess_data)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $exists = $objQuery->exists('dtb_session', 'sess_id = ?', array($id));
         $sqlval = array();
         if ($exists) {
@@ -178,7 +179,7 @@ class SessionFactory
      */
     public function sfSessDestroy($id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->delete('dtb_session', 'sess_id = ?', array($id));
 
         return true;
@@ -195,7 +196,7 @@ class SessionFactory
     public function sfSessGc($maxlifetime)
     {
         // MAX_LIFETIME以上更新されていないセッションを削除する。
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $limit = date("Y-m-d H:i:s", time() - MAX_LIFETIME);
         $where = "update_date < '". $limit . "' ";
         $objQuery->delete('dtb_session', $where);

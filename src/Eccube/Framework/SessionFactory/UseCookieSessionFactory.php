@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\SessionFactory;
 
+use Eccube\Application;
 use Eccube\Framework\SessionFactory;
 
 /**

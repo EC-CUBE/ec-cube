@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Response;

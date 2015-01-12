@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\DB\DBFactory;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\DB\DBFactory;
 use Eccube\Framework\Util\Utils;
@@ -39,7 +40,8 @@ class MysqlDBFactory extends DBFactory
      */
     public function sfGetDBVersion($dsn = '')
     {
-        $objQuery = Query::getSingletonInstance($dsn);
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query', $dsn);
         $val = $objQuery->getOne('select version()');
 
         return 'MySQL ' . $val;
@@ -75,7 +77,7 @@ class MysqlDBFactory extends DBFactory
      */
     public function getCharSet()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->getAll("SHOW VARIABLES LIKE 'char%'");
 
         return $arrRet;
@@ -239,7 +241,7 @@ __EOS__;
      */
     public function findTableNames($expression = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sql = 'SHOW TABLES LIKE '. $objQuery->quote('%' . $expression . '%');
         $arrColList = $objQuery->getAll($sql);
         $arrColList = Utils::sfSwapArray($arrColList, false);
@@ -321,7 +323,7 @@ __EOS__;
      */
     public function sfGetCreateIndexDefinition($table, $name, $definition)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrTblInfo = $objQuery->getTableInfo($table);
         foreach ($arrTblInfo as $fieldInfo) {
             if (array_key_exists($fieldInfo['name'], $definition['fields'])) {

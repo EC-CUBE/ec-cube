@@ -163,7 +163,7 @@ class Settings extends AbstractAdminPage
     public function registerOwnersStoreSettings($arrSettingsData)
     {
         $table = 'dtb_ownersstore_settings';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $exists = $objQuery->exists($table);
 
         if ($exists) {
@@ -184,7 +184,7 @@ class Settings extends AbstractAdminPage
         $table   = 'dtb_ownersstore_settings';
         $colmuns = '*';
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->select($colmuns, $table);
 
         if (isset($arrRet[0])) return $arrRet[0];

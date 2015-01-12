@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Display;
 use Eccube\Framework\Product;
 use Eccube\Framework\Query;
@@ -67,7 +68,7 @@ class PurchaseHelper
      */
     public function completeOrder($orderStatus = ORDER_NEW)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objSiteSession = new SiteSession();
         $objCartSession = new CartSession();
         $objCustomer = new Customer();
@@ -126,7 +127,7 @@ class PurchaseHelper
      */
     public function cancelOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $in_transaction = $objQuery->inTransaction();
         if (!$in_transaction) {
             $objQuery->begin();
@@ -169,7 +170,7 @@ class PurchaseHelper
      */
     public function rollbackOrder($order_id, $orderStatus = ORDER_CANCEL, $is_delete = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $in_transaction = $objQuery->inTransaction();
         if (!$in_transaction) {
             $objQuery->begin();
@@ -249,7 +250,7 @@ class PurchaseHelper
      */
     public function getOrderTemp($uniqId)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->getRow('*', 'dtb_order_temp', 'order_temp_id = ?', array($uniqId));
     }
@@ -262,7 +263,7 @@ class PurchaseHelper
      */
     public function getOrderTempByOrderId($order_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->getRow('*', 'dtb_order_temp', 'order_id = ?', array($order_id));
     }
@@ -283,7 +284,7 @@ class PurchaseHelper
             return;
         }
         $params['device_type_id'] = Display::detectDevice();
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // 存在するカラムのみを対象とする
         $cols = $objQuery->listTableFields('dtb_order_temp');
         $sqlval = array();
@@ -663,7 +664,7 @@ class PurchaseHelper
      */
     public function registerShipping($order_id, $arrParams, $convert_shipping_date = true)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $table = 'dtb_shipping';
         $where = 'order_id = ?';
         $objQuery->delete($table, $where, array($order_id));
@@ -706,7 +707,7 @@ class PurchaseHelper
      */
     public function registerShipmentItem($order_id, $shipping_id, $arrParams)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $table = 'dtb_shipment_item';
         $where = 'order_id = ? AND shipping_id = ?';
         $objQuery->delete($table, $where, array($order_id, $shipping_id));
@@ -763,7 +764,7 @@ class PurchaseHelper
      */
     public function registerOrderComplete($orderParams, &$objCartSession, $cartKey)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 不要な変数を unset
         $unsets = array('mailmaga_flg', 'deliv_check', 'point_check', 'password',
@@ -836,7 +837,7 @@ class PurchaseHelper
     {
         $table = 'dtb_order';
         $where = 'order_id = ?';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrValues = $objQuery->extractOnlyColsOf($table, $arrParams);
 
         $exists = $objQuery->exists($table, $where, array($order_id));
@@ -890,7 +891,7 @@ class PurchaseHelper
     {
         $table = 'dtb_order_detail';
         $where = 'order_id = ?';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $objQuery->delete($table, $where, array($order_id));
         foreach ($arrParams as $arrDetail) {
@@ -910,7 +911,7 @@ class PurchaseHelper
      */
     public function getOrder($order_id, $customer_id = null)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'order_id = ?';
         $arrValues = array($order_id);
         if (!Utils::isBlank($customer_id)) {
@@ -930,7 +931,7 @@ class PurchaseHelper
      */
     public function getOrderDetail($order_id, $has_order_status = true)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $dbFactory  = DBFactory::getInstance();
         $col = <<< __EOS__
             T3.product_id,
@@ -1011,7 +1012,7 @@ __EOS__;
      */
     public function getShippings($order_id, $has_items = true)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrResults = array();
         $objQuery->setOrder('shipping_id');
         $arrShippings = $objQuery->select('*', 'dtb_shipping', 'order_id = ?',
@@ -1043,7 +1044,7 @@ __EOS__;
      */
     public function getShipmentItems($order_id, $shipping_id, $has_detail = true)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objProduct = new Product();
         $arrResults = array();
         $objQuery->setOrder('order_detail_id');
@@ -1113,7 +1114,7 @@ __EOS__;
      */
     public function sfUpdateOrderStatus($orderId, $newStatus = null, $newAddPoint = null, $newUsePoint = null, &$sqlval = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrOrderOld = $objQuery->getRow('status, add_point, use_point, customer_id', 'dtb_order', 'order_id = ?', array($orderId));
 
         // 対応状況が変更無しの場合、DB値を引き継ぐ
@@ -1221,7 +1222,7 @@ __EOS__;
      */
     public function sfUpdateOrderNameCol($order_id, $temp_table = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         if ($temp_table) {
             $tgt_table = 'dtb_order_temp';
@@ -1356,7 +1357,7 @@ __EOS__;
      */
     public function getNextOrderID()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->nextVal('dtb_order_order_id');
     }
@@ -1383,7 +1384,7 @@ __EOS__;
         $term = PENDING_ORDER_CANCEL_TIME;
         if (!Utils::isBlank($term) && preg_match("/^[0-9]+$/", $term)) {
             $target_time = strtotime('-' . $term . ' sec');
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $arrVal = array(date('Y/m/d H:i:s', $target_time), ORDER_PENDING);
             $objQuery->begin();
             $arrOrders = $objQuery->select('order_id', 'dtb_order', 'create_date <= ? and status = ? and del_flg = 0', $arrVal);
@@ -1403,7 +1404,7 @@ __EOS__;
         $objCustomer = new Customer();
         if ($objCustomer->isLoginSuccess(true)) {
             $customer_id = $objCustomer->getValue('customer_id');
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $arrVal = array($customer_id, ORDER_PENDING);
             $objQuery->setOrder('create_date desc');
             $objQuery->begin();
@@ -1445,7 +1446,7 @@ __EOS__;
         if (isset($_SESSION['order_id']) && !Utils::isBlank($_SESSION['order_id'])) {
             $order_id = $_SESSION['order_id'];
             unset($_SESSION['order_id']);
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $objQuery->begin();
             $arrOrder =  static::getOrder($order_id);
             if ($arrOrder['status'] == ORDER_PENDING) {

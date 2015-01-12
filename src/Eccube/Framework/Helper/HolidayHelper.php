@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Util\Utils;
@@ -33,7 +34,7 @@ class HolidayHelper
      */
     public function get($holiday_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'holiday_id = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -51,7 +52,7 @@ class HolidayHelper
      */
     public function getList($has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'holiday_id, title, month, day';
         $where = '';
         if (!$has_deleted) {
@@ -72,7 +73,7 @@ class HolidayHelper
      */
     public function save($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $holiday_id = $sqlval['holiday_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -141,7 +142,7 @@ class HolidayHelper
      */
     public function isDateExist($month, $day, $holiday_id = NULL)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'del_flg = 0 AND month = ? AND day = ?';
         $arrVal = array($month, $day);
         if (!Utils::isBlank($holiday_id)) {

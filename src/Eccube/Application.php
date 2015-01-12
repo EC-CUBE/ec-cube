@@ -6,10 +6,33 @@ use Symfony\Component\HttpFoundation\Request as BaseRequest;
 
 class Application extends \Silex\Application
 {
+    /** @var Application app */
+    protected static $app;
+
+    /**
+     * Alias
+     * 
+     * @return object 
+     */
+    public static function alias($name)
+    {
+        $args = func_get_args();
+        array_shift($args);
+        $obj = static::$app[$name];
+
+        if (is_callable($obj) && $args !== array()) {
+            return call_user_func($obj, $args);
+        } elseif (is_callable($obj)) {
+            return call_user_func($obj);
+        } else {
+            return $obj;
+        }
+    }
 
     public function __construct(array $values = array())
     {
         $app = $this;
+        static::$app = $this;
         ini_set('error_reporting', E_ALL | ~E_STRICT);
 
         parent::__construct($values);
@@ -30,7 +53,7 @@ class Application extends \Silex\Application
             return new CallbackResolver($app);
         });
 
-        // テスト用
+        // テスト実装
         $this->register(new Plugin\ProductReview\ProductReview());
     }
 

@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Bloc;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Product;
 use Eccube\Framework\Helper\DbHelper;
@@ -76,7 +77,7 @@ class Recommend extends AbstractBloc
         $response = array();
         if (count($arrRecommends) > 0) {
             // 商品一覧を取得
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $objProduct = new Product();
             // where条件生成&セット
             $arrProductId = array();

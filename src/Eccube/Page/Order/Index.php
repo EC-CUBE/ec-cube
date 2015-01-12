@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Order;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\DB\MasterData;
 use Eccube\Framework\Helper\DbHelper;

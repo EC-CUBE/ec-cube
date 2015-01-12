@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\Helper\PluginHelper;
 use Eccube\Framework\Util\Utils;
 use Eccube\Framework\CheckError;

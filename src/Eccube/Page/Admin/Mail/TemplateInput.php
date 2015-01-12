@@ -111,7 +111,7 @@ class TemplateInput extends AbstractAdminPage
      */
     public function lfRegistData(&$objFormParam, $template_id = null)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sqlval = $objFormParam->getDbArray();
 
         $sqlval['creator_id'] = $_SESSION['member_id'];

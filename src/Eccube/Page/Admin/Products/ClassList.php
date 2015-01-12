@@ -144,7 +144,7 @@ class ClassList extends AbstractAdminPage
      */
     public function lfGetClass()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $where = 'del_flg <> 1';
         $objQuery->setOrder('rank DESC');
@@ -161,7 +161,7 @@ class ClassList extends AbstractAdminPage
      */
     public function lfGetClassName($class_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'class_id = ?';
         $class_name = $objQuery->get('name', 'dtb_class', $where, array($class_id));
 
@@ -176,7 +176,7 @@ class ClassList extends AbstractAdminPage
      */
     public function lfInsertClass($arrForm)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // INSERTする値を作成する。
         $sqlval['name'] = $arrForm['name'];
         $sqlval['creator_id'] = $_SESSION['member_id'];
@@ -198,7 +198,7 @@ class ClassList extends AbstractAdminPage
      */
     public function lfUpdateClass($arrForm)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // UPDATEする値を作成する。
         $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -218,7 +218,7 @@ class ClassList extends AbstractAdminPage
     public function lfDeleteClass($class_id)
     {
         $objDb = new DbHelper();
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $ret = $objDb->deleteRankRecord('dtb_class', 'class_id', $class_id, '', true);
         $where= 'class_id = ?';
@@ -235,7 +235,7 @@ class ClassList extends AbstractAdminPage
      */
     public function lfCheckError(&$objFormParam)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrForm = $objFormParam->getHashArray();
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();

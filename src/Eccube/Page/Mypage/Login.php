@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Framework\Response;
 use Eccube\Framework\Helper\PurchaseHelper;
 

@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Plugin;
 
+use Eccube\Application;
 use Eccube\Framework\Helper\PluginHelper;
 
 /**

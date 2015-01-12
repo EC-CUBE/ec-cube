@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Util\Utils;
 use Eccube\Framework\Helper\DbHelper;
@@ -31,7 +32,7 @@ class CategoryHelper
      *
      * @param boolean $count_check 登録商品数をチェックする場合はtrue
      */
-    public function __construct($count_check = FALSE)
+    public function __construct($count_check = false)
     {
         $this->count_check = $count_check;
     }
@@ -44,7 +45,7 @@ class CategoryHelper
      */
     public function get($category_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'dtb_category.*, dtb_category_total_count.product_count';
         $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
         $where = 'dtb_category.category_id = ? AND del_flg = 0';
@@ -74,7 +75,7 @@ class CategoryHelper
         }
 
         if (!isset($arrCategory[$this->count_check])) {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $col = 'dtb_category.*, dtb_category_total_count.product_count';
             $from = 'dtb_category left join dtb_category_total_count ON dtb_category.category_id = dtb_category_total_count.category_id';
             // 登録商品数のチェック
@@ -175,7 +176,7 @@ class CategoryHelper
      */
     public function save($data)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $category_id = $data['category_id'];
         // ミリ秒付きの時間文字列を取得. CSVへの対応.
@@ -250,7 +251,7 @@ class CategoryHelper
      */
     public function rankUp($category_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
         $up_id = $this->getNeighborRankId('upper', $category_id);
         if ($up_id != '') {
@@ -276,7 +277,7 @@ class CategoryHelper
      */
     public function rankDown($category_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
         $down_id = $this->getNeighborRankId('lower', $category_id);
         if ($down_id != '') {

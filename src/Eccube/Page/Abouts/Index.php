@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Abouts;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\DB\MasterData;
 

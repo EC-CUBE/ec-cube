@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\CartSession;
 use Eccube\Framework\Query;
@@ -74,7 +75,7 @@ class Order extends AbstractMypage
     // 受注詳細データの取得
     public function lfGetOrderDetail($order_id)
     {
-        $objQuery       = Query::getSingletonInstance();
+        $objQuery       = Application::alias('eccube.query');
 
         $objCustomer    = new Customer();
         //customer_idを検証

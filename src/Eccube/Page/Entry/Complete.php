@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Entry;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CartSession;
 use Eccube\Framework\Response;

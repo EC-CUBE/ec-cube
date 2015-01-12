@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Product;
 use Eccube\Framework\DB\DBFactory;
@@ -60,6 +61,7 @@ class DbHelper
         $dbFactory = DBFactory::getInstance();
         $dsn = $dbFactory->getDSN($dsn);
 
+        /* @var $objQuery Query */
         $objQuery = Query::getSingletonInstance($dsn);
 
         // テーブルが無ければエラー
@@ -89,7 +91,8 @@ class DbHelper
      */
     public function columnAdd($tableName, $colName, $colType)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->query("ALTER TABLE $tableName ADD $colName $colType ");
     }
@@ -105,7 +108,8 @@ class DbHelper
      */
     public static function dataExists($tableName, $where, $arrWhereVal)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $exists = $objQuery->exists($tableName, $where, $arrWhereVal);
 
         return $exists;
@@ -125,7 +129,8 @@ class DbHelper
         static $arrData = null;
 
         if ($force || is_null($arrData)) {
-            $objQuery = Query::getSingletonInstance();
+            /* @var $objQuery Query */
+            $objQuery = Application::alias('eccube.query');
 
             $arrData = $objQuery->getRow('*', 'dtb_baseinfo');
         }
@@ -208,7 +213,8 @@ class DbHelper
      */
     public function getBasisCount()
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->count('dtb_baseinfo');
     }
@@ -220,7 +226,8 @@ class DbHelper
      */
     public function getBasisExists()
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->exists('dtb_baseinfo');
     }
@@ -265,7 +272,8 @@ class DbHelper
      */
     public function getRollbackPoint($order_id, $use_point, $add_point, $order_status)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->select('customer_id', 'dtb_order', 'order_id = ?', array($order_id));
         $customer_id = $arrRet[0]['customer_id'];
         if ($customer_id != '' && $customer_id >= 1) {
@@ -299,7 +307,8 @@ class DbHelper
      */
     public function getCatTree($parent_category_id, $count_check = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $col = '';
         $col .= ' cat.category_id,';
         $col .= ' cat.category_name,';
@@ -371,7 +380,8 @@ class DbHelper
     public function getCatCombName($category_id)
     {
         // 商品が属するカテゴリIDを縦に取得
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $arrCatID = $this->getParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
         $ConbName = '';
 
@@ -397,7 +407,8 @@ class DbHelper
     public function getFirstCat($category_id)
     {
         // 商品が属するカテゴリIDを縦に取得
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $arrRet = array();
         $arrCatID = $this->getParents('dtb_category', 'parent_category_id', 'category_id', $category_id);
         $arrRet['id'] = $arrCatID[0];
@@ -422,7 +433,8 @@ class DbHelper
      */
     public function getCategoryList($addwhere = '', $products_check = false, $head = CATEGORY_HEAD)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $where = 'del_flg = 0';
 
         if ($addwhere != '') {
@@ -463,7 +475,8 @@ class DbHelper
      */
     public function getLevelCatList($parent_zero = true)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         // カテゴリ名リストを取得
         $col = 'category_id, parent_category_id, category_name';
@@ -536,7 +549,8 @@ class DbHelper
      */
     public function addProductBeforCategories($category_id, $product_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         $sqlval = array('category_id' => $category_id,
                         'product_id' => $product_id);
@@ -561,7 +575,8 @@ class DbHelper
         $sqlval = array('category_id' => $category_id,
                         'product_id' => $product_id);
 
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         // 現在の商品カテゴリを取得
         $arrCat = $objQuery->select('product_id, category_id, rank',
@@ -591,7 +606,8 @@ class DbHelper
      */
     public function removeProductByCategories($category_id, $product_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->delete('dtb_product_categories',
                           'category_id = ? AND product_id = ?', array($category_id, $product_id));
     }
@@ -605,7 +621,8 @@ class DbHelper
      */
     public function updateProductCategories($arrCategory_id, $product_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         // 現在のカテゴリ情報を取得
         $arrCurrentCat = $objQuery->getCol('category_id',
@@ -636,12 +653,13 @@ class DbHelper
      * @param  boolean  $is_force_all_count 全カテゴリの集計を強制する場合 true
      * @return void
      */
-    public function countCategory($objQuery = NULL, $is_force_all_count = false)
+    public function countCategory($objQuery = null, $is_force_all_count = false)
     {
         $objProduct = new Product();
 
-        if ($objQuery == NULL) {
-            $objQuery = Query::getSingletonInstance();
+        if ($objQuery == null) {
+            /* @var $objQuery Query */
+            $objQuery = Application::alias('eccube.query');
         }
 
         $is_out_trans = false;
@@ -855,7 +873,8 @@ __EOS__;
      */
     public function getChildrenArraySub($table, $pid_name, $id_name, $arrPID)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         $where = "$pid_name IN (" . Utils::repeatStrWithSeparator('?', count($arrPID)) . ')';
 
@@ -924,7 +943,8 @@ __EOS__;
         if (Utils::isBlank($child)) {
             return false;
         }
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         if (!is_array($child)) {
             $child = array($child);
         }
@@ -961,7 +981,8 @@ __EOS__;
      */
     public static function getIDValueList($table, $keyname, $valname, $where = '', $arrVal = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $col = "$keyname, $valname";
         $objQuery->setWhere('del_flg = 0');
         $objQuery->setOrder('rank DESC');
@@ -988,7 +1009,8 @@ __EOS__;
      */
     public function rankUp($table, $colname, $id, $andwhere = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
         $where = "$colname = ?";
         if ($andwhere != '') {
@@ -1040,7 +1062,8 @@ __EOS__;
      */
     public function rankDown($table, $colname, $id, $andwhere = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
         $where = "$colname = ?";
         if ($andwhere != '') {
@@ -1092,7 +1115,8 @@ __EOS__;
      */
     public function moveRank($tableName, $keyIdColumn, $keyId, $pos, $where = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         // 自身のランクを取得する
@@ -1199,7 +1223,8 @@ __EOS__;
      */
     public function deleteRankRecord($table, $colname, $id, $andwhere = '',
                                 $delete = false) {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
         // 削除レコードのランクを取得する。
         $where = "$colname = ?";
@@ -1246,7 +1271,7 @@ __EOS__;
      * @param  array    $arrId    IDの配列
      * @return array    特定のカラムの配列
      */
-    public function getParentsCol($objQuery, $table, $id_name, $col_name, $arrId)
+    public function getParentsCol(Query $objQuery, $table, $id_name, $col_name, $arrId)
     {
         $col = $col_name;
         $len = count($arrId);
@@ -1322,7 +1347,8 @@ __EOS__;
      */
     public static function isRecord($table, $col, $arrVal, $addwhere = '')
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $arrCol = preg_split('/[, ]/', $col);
 
         $where = 'del_flg = 0';
@@ -1393,7 +1419,7 @@ __EOS__;
             if (Utils::sfIsInt($maker_id) && $maker_id != 0 && $this->isRecord('dtb_maker', 'maker_id', $maker_id)) {
                 $this->g_maker_id = array($maker_id);
             } elseif (Utils::sfIsInt($product_id) && $product_id != 0 && $this->isRecord('dtb_products', 'product_id', $product_id, $status)) {
-                $objQuery = Query::getSingletonInstance();
+                $objQuery = Application::alias('eccube.query');
                 $maker_id = $objQuery->getCol('maker_id', 'dtb_products', 'product_id = ?', array($product_id));
                 $this->g_maker_id = $maker_id;
             } else {
@@ -1416,7 +1442,8 @@ __EOS__;
      */
     public function getMakerList($addwhere = '', $products_check = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $where = 'del_flg = 0';
 
         if ($addwhere != '') {
@@ -1506,7 +1533,8 @@ __EOS__;
     public function execSqlByFile($sqlFilePath)
     {
         if (file_exists($sqlFilePath)) {
-            $objQuery = Query::getSingletonInstance();
+            /* @var $objQuery Query */
+            $objQuery = Application::alias('eccube.query');
 
             $sqls = file_get_contents($sqlFilePath);
             if ($sqls === false) trigger_error('ファイルは存在するが読み込めない', E_USER_ERROR);
@@ -1529,7 +1557,8 @@ __EOS__;
     {
         if (!Utils::sfIsInt($product_id)) return false;
 
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $where = 'product_id = ? AND del_flg = 0 AND (classcategory_id1 != 0 OR classcategory_id2 != 0)';
         $exists = $objQuery->exists('dtb_products_class', $where, array($product_id));
 
@@ -1544,7 +1573,8 @@ __EOS__;
      */
     public static function registerBasisData($arrData)
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
 
         $arrData = $objQuery->extractOnlyColsOf('dtb_baseinfo', $arrData);
 
@@ -1577,7 +1607,8 @@ __EOS__;
      */
     public function countRecords($table, $where = '', $arrval = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        /* @var $objQuery Query */
+        $objQuery = Application::alias('eccube.query');
         $col = 'COUNT(*)';
 
         return $objQuery->get($col, $table, $where, $arrval);

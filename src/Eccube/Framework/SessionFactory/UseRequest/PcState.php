@@ -12,6 +12,9 @@
 
 namespace Eccube\Framework\SessionFactory\UseRequest;
 
+use Eccube\Application;
+use Eccube\Framework\Util\GcUtils;
+
 /**
  * PCサイト用のセッションデータ管理クラス
  *

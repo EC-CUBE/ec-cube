@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Query;
 
@@ -155,7 +156,7 @@ class TaxRuleHelper
             $arrPriorityKeys = explode(',', TAX_RULE_PRIORITY);
 
             // 条件に基づいて税の設定情報を取得
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $table = 'dtb_tax_rule';
             $cols = '*';
 
@@ -268,7 +269,7 @@ class TaxRuleHelper
         $arrValues['update_date'] = 'CURRENT_TIMESTAMP';
 
         // 新規か更新か？
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         if ($tax_rule_id == NULL && $product_id != 0 && $product_class_id != 0) {
             $where = 'product_id = ? AND product_class_id= ? AND pref_id = ? AND country_id = ?';
             $arrVal = array($product_id, $product_class_id, $pref_id, $country_id);
@@ -300,7 +301,7 @@ class TaxRuleHelper
      */
     public function getTaxRuleList($has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'tax_rule_id, tax_rate, calc_rule, apply_date';
         $where = '';
         if (!$has_deleted) {
@@ -321,7 +322,7 @@ class TaxRuleHelper
      */
     public function getTaxRuleData($tax_rule_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'tax_rule_id = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -337,7 +338,7 @@ class TaxRuleHelper
      */
     public function getTaxRuleByTime($apply_date, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'apply_date = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -355,7 +356,7 @@ class TaxRuleHelper
      */
     public function deleteTaxRuleData($tax_rule_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $sqlval = array();
         $sqlval['del_flg']     = 1;

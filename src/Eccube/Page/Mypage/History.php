@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Display;
 use Eccube\Framework\MobileUserAgent;
@@ -135,7 +136,7 @@ class History extends AbstractMypage
      */
     public function lfGetMailHistory($order_id)
     {
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
         $col        = 'send_date, subject, template_id, send_id';
         $where      = 'order_id = ?';
         $objQuery->setOrder('send_date DESC');
@@ -178,7 +179,7 @@ class History extends AbstractMypage
     {
         $i = 0;
         foreach ($arrOrderDetails as $arrOrderDetail) {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $arrProduct = $objQuery->select('main_list_image', 'dtb_products', 'product_id = ?', array($arrOrderDetail['product_id']));
             $arrOrderDetails[$i]['main_list_image'] = $arrProduct[0]['main_list_image'];
             $i++;
@@ -198,7 +199,7 @@ class History extends AbstractMypage
         $objHelperMobile = new MobileHelper();
         $i = 0;
         foreach ($arrOrderDetails as $arrOrderDetail) {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $arrProduct = $objQuery->select('down_realfilename,down_filename', 'dtb_products_class', 'product_id = ? AND product_class_id = ?', array($arrOrderDetail['product_id'],$arrOrderDetail['product_class_id']));
             $arrOrderDetails[$i]['mime_type'] = $objHelperMobile->getMimeType($arrProduct[0]['down_realfilename']);
             $arrOrderDetails[$i]['down_filename'] = $arrProduct[0]['down_filename'];

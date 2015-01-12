@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Upgrade;
 
+use Eccube\Application;
 use Eccube\Page\Upgrade\Helper\LogHelper;
 use Eccube\Page\Upgrade\Helper\JsonHelper;
 use Eccube\Framework\View\AdminView;

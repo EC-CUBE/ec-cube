@@ -209,7 +209,7 @@ class UploadCSVCategory extends AbstractAdminPage
         // 行数
         $line_count = 0;
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         $errFlag = false;
@@ -363,7 +363,7 @@ class UploadCSVCategory extends AbstractAdminPage
      */
     public function lfInitTableInfo()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $this->arrRegistColumn = $objQuery->listTableFields('dtb_category');
     }
 

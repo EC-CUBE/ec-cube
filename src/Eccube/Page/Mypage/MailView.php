@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Display;
 use Eccube\Framework\Query;
@@ -98,7 +99,7 @@ class MailView extends AbstractMypage
      */
     public function lfGetMailView($send_id, $customer_id)
     {
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
         $col        = 'subject, mail_body';
         $where      = 'send_id = ? AND customer_id = ?';
         $arrWhereVal = array($send_id, $customer_id);

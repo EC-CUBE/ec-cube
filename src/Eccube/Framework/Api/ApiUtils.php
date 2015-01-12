@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Api;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Util\Utils;
 use Eccube\Framework\Util\GcUtils;
@@ -76,7 +77,7 @@ class ApiUtils
     public function getApiConfig($operation_name)
     {
         // 設定優先度 DB > plugin default > base
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'operation_name Like ? AND del_flg = 0 AND enable = 1';
         $arrApiConfig = $objQuery->getRow('*', 'dtb_api_config', $where, array($operation_name));
         if (Utils::isBlank($arrApiConfig)) {
@@ -216,8 +217,6 @@ class ApiUtils
      */
     public function sendResponseXml($response_outer_name, &$arrResponse)
     {
-        require_once 'XML/Serializer.php';
-
         $options = array(
             'mode' => 'simplexml',
             'indent' => "\t",
@@ -232,7 +231,7 @@ class ApiUtils
             'attributesArray' => '_attributes'
         );
 
-        $objSerializer = new XML_Serializer($options);
+        $objSerializer = new \XML_Serializer($options);
         $ret = $objSerializer->serialize($arrResponse);
         $xml = $objSerializer->getSerializedData();
         header('Content-Type: text/xml; charset=UTF-8');

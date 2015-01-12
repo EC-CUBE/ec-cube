@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Util\Utils;
@@ -33,7 +34,7 @@ class PaymentHelper
      */
     public function get($payment_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'payment_id = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -51,7 +52,7 @@ class PaymentHelper
      */
     public function getList($has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'payment_id, payment_method, payment_image, charge, rule_max, upper_rule, note, fix, charge_flg';
         $where = '';
         if (!$has_deleted) {
@@ -108,7 +109,7 @@ class PaymentHelper
      */
     public function save($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $payment_id = $sqlval['payment_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -175,7 +176,7 @@ class PaymentHelper
      */
     public static function useModule($payment_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $memo03 = $objQuery->get('memo03', 'dtb_payment', 'payment_id = ?', array($payment_id));
 
         return !Utils::isBlank($memo03);

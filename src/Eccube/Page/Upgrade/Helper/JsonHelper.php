@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Upgrade\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\DB\MasterData;
 use Eccube\Framework\Util\Utils;
 

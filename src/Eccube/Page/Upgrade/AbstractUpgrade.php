@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Upgrade;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Query;
 use Eccube\Framework\Session;
@@ -44,7 +45,7 @@ abstract class AbstractUpgrade extends AbstractPage
     public function autoUpdateEnable($product_id)
     {
         $where = 'module_id = ?';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->select('auto_update_flg', 'dtb_module', $where, array($product_id));
 
         if (isset($arrRet[0]['auto_update_flg'])
@@ -107,7 +108,7 @@ abstract class AbstractUpgrade extends AbstractPage
 
     public function getPublicKey()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrRet = $objQuery->select('*', 'dtb_ownersstore_settings');
 
         return isset($arrRet[0]['public_key'])

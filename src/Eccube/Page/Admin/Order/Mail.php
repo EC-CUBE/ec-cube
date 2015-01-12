@@ -149,7 +149,7 @@ class Mail extends AbstractAdminPage
      */
     public function getMailHistory($order_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'send_date, subject, template_id, send_id';
         $where = 'order_id = ?';
         $objQuery->setOrder('send_date DESC');

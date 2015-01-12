@@ -134,7 +134,7 @@ class Tradelaw extends AbstractAdminPage
     public function lfUpdateData($sqlval)
     {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // UPDATEの実行
         $objQuery->update('dtb_baseinfo', $sqlval);
     }
@@ -142,7 +142,7 @@ class Tradelaw extends AbstractAdminPage
     public function lfInsertData($sqlval)
     {
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // INSERTの実行
         $objQuery->insert('dtb_baseinfo', $sqlval);
     }

@@ -224,7 +224,7 @@ class Index extends AbstractAdminPage
      */
     public function lfGetTemplateData(&$objFormParam, $template_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('template_id DESC');
         $where = 'template_id = ?';
         $arrResults = $objQuery->getRow('*', 'dtb_mailmaga_template', $where, array($template_id));
@@ -239,7 +239,7 @@ class Index extends AbstractAdminPage
      */
     public function lfRegisterData(&$objFormParam)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         list($linemax, $arrSendCustomer, $objNavi) = CustomerHelper::sfGetSearchData($objFormParam->getHashArray(), 'All');
         $send_customer_cnt = count($arrSendCustomer);
@@ -284,7 +284,7 @@ class Index extends AbstractAdminPage
      */
     public function lfGetMailQuery($send_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 送信履歴より、送信条件確認画面
         $sql = 'SELECT search_data FROM dtb_send_history WHERE send_id = ?';

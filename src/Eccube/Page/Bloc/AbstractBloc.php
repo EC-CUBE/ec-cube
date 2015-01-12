@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Bloc;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Display;
 use Eccube\Framework\Helper\PageLayoutHelper;
@@ -26,10 +27,6 @@ use Eccube\Framework\Util\Utils;
  */
 abstract class AbstractBloc extends AbstractPage
 {
-
-    public function __construct()
-    {
-    }
 
     /**
      * Page を初期化する.

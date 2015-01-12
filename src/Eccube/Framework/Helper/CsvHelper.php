@@ -12,18 +12,18 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Product;
 use Eccube\Framework\Query;
 use Eccube\Framework\Response;
-use Eccube\Framework\Helper\CsvHelper;
 use Eccube\Framework\Util\Utils;
 
-  /**
-   * CSV 関連 のヘルパークラス.
-   *
-   * @package Page
-   * @author LOCKON CO.,LTD.
-   */
+/**
+ * CSV 関連 のヘルパークラス.
+ *
+ * @package Page
+ * @author LOCKON CO.,LTD.
+ */
 class CsvHelper
 {
     /** 項目英名 */
@@ -80,7 +80,7 @@ class CsvHelper
      */
     public function sfDownloadCsv($csv_id, $where = '', $arrVal = array(), $order = '', $is_download = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // CSV出力タイトル行の作成
         $arrOutput = Utils::sfSwapArray($this->sfGetCsvOutput($csv_id, 'status = ' . CSV_COLUMN_STATUS_FLG_ENABLE));
@@ -125,7 +125,7 @@ class CsvHelper
      */
     public function sfGetCsvOutput($csv_id = '', $where = '', $arrVal = array(), $order = 'rank, no')
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $cols = 'no, csv_id, col, disp_name, rank, status, rw_flg, mb_convert_kana_option, size_const_type, error_check_types';
         $table = 'dtb_csv';
@@ -241,7 +241,7 @@ class CsvHelper
      */
     public function sfDownloadCsvFromSql($sql, $arrVal = array(), $file_head = 'csv', $arrHeader = null, $is_download = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         if (!$is_download) {
             ob_start();

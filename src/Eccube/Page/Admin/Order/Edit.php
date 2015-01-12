@@ -763,7 +763,7 @@ class Edit extends Index
      */
     public function doRegister($order_id, PurchaseHelper &$objPurchase, &$objFormParam, &$message, &$arrValuesBefore)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrValues = $objFormParam->getDbArray();
 
         $where = 'order_id = ?';

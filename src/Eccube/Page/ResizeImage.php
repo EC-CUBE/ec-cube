@@ -23,6 +23,7 @@
 
 namespace Eccube\Page;
 
+use Eccube\Application;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
@@ -128,7 +129,7 @@ class ResizeImage extends AbstractPage
      */
     public function lfGetProductImage($arrForm)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $table = 'dtb_products';
         $col = $arrForm['image_key'];
         $product_id = $arrForm['product_id'];

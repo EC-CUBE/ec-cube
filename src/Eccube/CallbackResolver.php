@@ -75,7 +75,7 @@ class CallbackResolver extends \Silex\CallbackResolver
                     define('CACHE_REALDIR', DATA_REALDIR . "cache/eccube/");
                 }
 
-                \Eccube\Framework\Helper\HandleErrorHelper::load();
+//                \Eccube\Framework\Helper\HandleErrorHelper::load();
 
                 // アプリケーション初期化処理
                 $objInit = new \Eccube\Framework\Initial();
@@ -107,9 +107,6 @@ class CallbackResolver extends \Silex\CallbackResolver
                         SessionHelper::adminAuthorization();
                     }
                 }
-
-                // FIXME: プラグイン実行
-                $app['ecube.helper.plugin'];
 
                 // bufferを初期化する
                 if ($objPage instanceof \Eccube\Page\Admin\AbstractAdminPage) {

@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Mypage;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\PageNavi;
 use Eccube\Framework\Product;
@@ -111,7 +112,7 @@ class Favorite extends AbstractMypage
      */
     public function lfGetFavoriteProduct($customer_id, &$objPage)
     {
-        $objQuery       = Query::getSingletonInstance();
+        $objQuery       = Application::alias('eccube.query');
         $objProduct     = new Product();
 
         $objQuery->setOrder('f.create_date DESC');
@@ -121,7 +122,7 @@ class Favorite extends AbstractMypage
         }
         $arrProductId  = $objQuery->getCol('f.product_id', 'dtb_customer_favorite_products f inner join dtb_products p using (product_id)', $where, array($customer_id));
 
-        $objQuery       = Query::getSingletonInstance();
+        $objQuery       = Application::alias('eccube.query');
         $objQuery->setWhere($this->lfMakeWhere('alldtl.', $arrProductId));
         $linemax        = $objProduct->findProductCount($objQuery);
 
@@ -132,7 +133,7 @@ class Favorite extends AbstractMypage
         $this->tpl_strnavi = $objNavi->strnavi; // 表示文字列
         $startno        = $objNavi->start_row;
 
-        $objQuery       = Query::getSingletonInstance();
+        $objQuery       = Application::alias('eccube.query');
         //$objQuery->setLimitOffset(SEARCH_PMAX, $startno);
         // 取得範囲の指定(開始行番号、行数のセット)
         $arrProductId  = array_slice($arrProductId, $startno, SEARCH_PMAX);
@@ -184,7 +185,7 @@ class Favorite extends AbstractMypage
      */
     public function lfDeleteFavoriteProduct($customer_id, $product_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $exists = $objQuery->exists('dtb_customer_favorite_products', 'customer_id = ? AND product_id = ?', array($customer_id, $product_id));
 

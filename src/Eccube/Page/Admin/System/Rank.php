@@ -96,7 +96,7 @@ class Rank extends AbstractAdminPage
     // ランキングを上げる。
     public function lfRunkUp($id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 自身のランクを取得する。
         $rank = $objQuery->getOne('SELECT rank FROM dtb_member WHERE member_id = ?', array($id));
@@ -127,7 +127,7 @@ class Rank extends AbstractAdminPage
     // ランキングを下げる。
     public function lfRunkDown($id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 自身のランクを取得する。
         $rank = $objQuery->getOne('SELECT rank FROM dtb_member WHERE member_id = ?', array($id));

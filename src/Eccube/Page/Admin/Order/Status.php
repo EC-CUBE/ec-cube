@@ -144,7 +144,7 @@ class Status extends AbstractAdminPage
     // 対応状況一覧の表示
     public function lfStatusDisp($status,$pageno)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $select ='*';
         $from = 'dtb_order';
@@ -181,7 +181,7 @@ class Status extends AbstractAdminPage
     public function lfStatusMove($statusId, $arrOrderId)
     {
         $objPurchase = new PurchaseHelper();
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;
@@ -207,7 +207,7 @@ class Status extends AbstractAdminPage
      */
     public function lfDelete($arrOrderId)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         if (!isset($arrOrderId) || !is_array($arrOrderId)) {
             return false;

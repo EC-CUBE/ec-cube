@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Regist;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CheckError;
 use Eccube\Framework\Customer;
@@ -91,7 +92,7 @@ class Index extends AbstractPage
      */
     public function lfRegistData($array)
     {
-        $objQuery                   = Query::getSingletonInstance();
+        $objQuery                   = Application::alias('eccube.query');
         $arrRegist['secret_key']    = CustomerHelper::sfGetUniqSecretKey(); //本登録ID発行
         $arrRegist['status']        = 2;
         $arrRegist['update_date']   = 'CURRENT_TIMESTAMP';
@@ -135,7 +136,7 @@ class Index extends AbstractPage
      */
     public function lfSendRegistMail($registSecretKey)
     {
-        $objQuery       = Query::getSingletonInstance();
+        $objQuery       = Application::alias('eccube.query');
         $objCustomer    = new Customer();
         $objHelperMail  = new MailHelper();
         $objHelperMail->setPage($this);

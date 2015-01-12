@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Products;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\CartSession;
 use Eccube\Framework\CheckError;
@@ -212,7 +213,7 @@ class ProductsList extends AbstractPage
      */
     public function lfGetProductsList($searchCondition, $disp_number, $startno, &$objProduct)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $arrOrderVal = array();
 
@@ -250,7 +251,7 @@ class ProductsList extends AbstractPage
         // 表示すべきIDとそのIDの並び順を一気に取得
         $arrProductId = $objProduct->findProductIdsOrder($objQuery, array_merge($searchCondition['arrval'], $arrOrderVal));
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrProducts = $objProduct->getListByProductIds($objQuery, $arrProductId);
 
         // 規格を設定
@@ -323,7 +324,7 @@ class ProductsList extends AbstractPage
      */
     public function lfGetSearchConditionDisp($arrSearchData)
     {
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
         $arrSearch  = array('category' => '指定なし', 'maker' => '指定なし', 'name' => '指定なし');
         // カテゴリ検索条件
         if ($arrSearchData['category_id'] > 0) {
@@ -353,7 +354,7 @@ class ProductsList extends AbstractPage
     public function lfGetProductAllNum($searchCondition)
     {
         // 検索結果対象となる商品の数を取得
-        $objQuery   = Query::getSingletonInstance();
+        $objQuery   = Application::alias('eccube.query');
         $objQuery->setWhere($searchCondition['where_for_count']);
         $objProduct = new Product();
 

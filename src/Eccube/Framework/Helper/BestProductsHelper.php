@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
 
@@ -32,7 +33,7 @@ class BestProductsHelper
      */
     public function getBestProducts($best_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = 'best_id = ?';
         if (!$has_deleted) {
@@ -52,7 +53,7 @@ class BestProductsHelper
      */
     public function getByRank($rank, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = 'rank = ?';
         if (!$has_deleted) {
@@ -73,7 +74,7 @@ class BestProductsHelper
      */
     public function getList($dispNumber = 0, $pageNumber = 0, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = '';
         if (!$has_deleted) {
@@ -101,7 +102,7 @@ class BestProductsHelper
      */
     public function saveBestProducts($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $best_id = $sqlval['best_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -133,7 +134,7 @@ class BestProductsHelper
      */
     public function deleteBestProducts($best_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $table = 'dtb_best_products';
         $arrVal = array('del_flg' => 1);
@@ -224,7 +225,7 @@ class BestProductsHelper
      */
     public function changeRank($best_id, $rank)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $table = 'dtb_best_products';
         $sqlval = array('rank' => $rank);

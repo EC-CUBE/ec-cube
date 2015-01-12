@@ -184,7 +184,7 @@ class Template extends AbstractAdminPage
             // 改行、タブを1スペースに変換
             $sql = preg_replace("/[\r\n\t]/", ' ', $sql);
             $sql_split = explode(';', $sql);
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             foreach ($sql_split as $val) {
                 if (trim($val) != '') {
                     $objQuery->query($val);
@@ -208,7 +208,7 @@ class Template extends AbstractAdminPage
 
             return false;
         } else {
-            $objQuery = Query::getSingletonInstance();
+            $objQuery = Application::alias('eccube.query');
             $objQuery->begin();
             $objQuery->delete('dtb_templates', 'template_code = ? AND device_type_id = ?',
                               array($template_code, $device_type_id));
@@ -313,7 +313,7 @@ class Template extends AbstractAdminPage
      */
     public function getAllTemplates($device_type_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->select('*', 'dtb_templates', 'device_type_id = ?', array($device_type_id));
     }

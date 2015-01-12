@@ -406,7 +406,7 @@ class Index extends AbstractAdminPage
      */
     public function doDelete($where, $arrParam = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sqlval['del_flg']     = 1;
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
         $objQuery->update('dtb_order', $sqlval, $where, $arrParam);
@@ -438,7 +438,7 @@ class Index extends AbstractAdminPage
      */
     public function getNumberOfLines($where, $arrValues)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->count('dtb_order', $where, $arrValues);
     }
@@ -455,7 +455,7 @@ class Index extends AbstractAdminPage
      */
     public function findOrders($where, $arrValues, $limit, $offset, $order)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         if ($limit != 0) {
             $objQuery->setLimitOffset($limit, $offset);
         }

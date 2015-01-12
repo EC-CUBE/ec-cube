@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\DB;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\DB\DBFactory\MysqlDBFactory;
 use Eccube\Framework\DB\DBFactory\PgsqlDBFactory;
@@ -29,7 +30,7 @@ class DBFactory
      * DB_TYPE に応じた DBFactory インスタンスを生成する.
      *
      * @param  string $db_type 任意のインスタンスを返したい場合は DB_TYPE 文字列を指定
-     * @return \Eccube\Framework\DB\DBFactory  DBFactory インスタンス
+     * @return DBFactory  DBFactory インスタンス
      */
     public static function getInstance($db_type = DB_TYPE)
     {

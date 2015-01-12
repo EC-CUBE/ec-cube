@@ -12,6 +12,8 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
+use Eccube\Framework\MobileImage;
 use Eccube\Framework\MobileUserAgent;
 use Eccube\Framework\SessionFactory;
 use Eccube\Framework\Query;
@@ -131,7 +133,7 @@ class MobileHelper
 
         $url = $matches[1];
         $time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         foreach ($_REQUEST as $key => $value) {
             $session_id = $objQuery->get('session_id', 'dtb_mobile_ext_session_id',
@@ -231,7 +233,9 @@ class MobileHelper
         mb_http_output('SJIS-win');
 
         // 端末に合わせて画像サイズを変換する。
-        ob_start(array('\\Eccube\\Framework\\MobileImage', 'handler'));
+        ob_start(function ($buffer) {
+            return MobileImage::handler($buffer);
+        });
 
         // 内部エンコーディングから Shift JIS に変換する。
         ob_start('mb_output_handler');
@@ -239,7 +243,9 @@ class MobileHelper
         //download.phpに対してカタカナ変換をするとファイルが壊れてしまうため回避する
         if ($_SERVER['SCRIPT_FILENAME'] != HTML_REALDIR . 'mypage/download.php') {
             // 全角カタカナを半角カタカナに変換する。
-            ob_start(create_function('$buffer', 'return mb_convert_kana($buffer, "k");'));
+            ob_start(function ($buffer) {
+                return mb_convert_kana($buffer, "k");
+            });
         }
     }
 
@@ -316,7 +322,7 @@ class MobileHelper
             $session_id = session_id();
         }
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // GC
         $time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
@@ -359,7 +365,7 @@ class MobileHelper
      */
     public function gfRegisterKaraMail($token, $email)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // GC
         $time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);
@@ -390,7 +396,7 @@ class MobileHelper
      */
     public function gfFinishKaraMail($token)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $arrRow = $objQuery->getRow(
             'session_id, next_url, email',
@@ -429,7 +435,7 @@ class MobileHelper
      */
     public function sfMobileSetExtSessionId($param_key, $param_value, $url)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // GC
         $time = date('Y-m-d H:i:s', time() - MOBILE_SESSION_LIFETIME);

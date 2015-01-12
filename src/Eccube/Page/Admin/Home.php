@@ -124,7 +124,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetCustomerCnt()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'COUNT(customer_id)';
         $table = 'dtb_customer';
         $where = 'del_flg = 0 AND status = 2';
@@ -140,7 +140,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetOrderYesterday($method)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = DBFactory::getInstance();
@@ -157,7 +157,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetOrderMonth($method)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $month = date('Y/m', mktime());
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
@@ -174,7 +174,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetTotalCustomerPoint()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $col = 'SUM(point)';
         $where = 'del_flg = 0';
@@ -190,7 +190,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetReviewYesterday()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
         $dbFactory = DBFactory::getInstance();
@@ -206,7 +206,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetReviewNonDisp()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $table = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id';
         $where = 'A.del_flg = 0 AND A.status = 2 AND B.del_flg = 0';
@@ -221,7 +221,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetSoldOut()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $cols = 'product_id, name';
         $table = 'dtb_products';
@@ -240,7 +240,7 @@ class Home extends AbstractAdminPage
      */
     public function lfGetNewOrder()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $objQuery->setOrder('order_detail_id');
         $sql_product_name = $objQuery->getSql('product_name', 'dtb_order_detail', 'order_id = dtb_order.order_id');

@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Product;
 use Eccube\Framework\Helper\DbHelper;

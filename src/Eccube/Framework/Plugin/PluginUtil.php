@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Plugin;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 
 // プラグインのユーティリティクラス.
@@ -22,7 +23,7 @@ class PluginUtil
      */
     public function getEnablePlugin()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'enable = 1';
@@ -51,7 +52,7 @@ class PluginUtil
      */
     public function getAllPlugin()
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $table = 'dtb_plugin';
         // XXX 2.11.0 互換のため
@@ -72,7 +73,7 @@ class PluginUtil
      */
     public function getPluginByPluginId($plugin_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'plugin_id = ?';
@@ -89,7 +90,7 @@ class PluginUtil
      */
     public function getPluginByPluginCode($plugin_code)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $table = 'dtb_plugin';
         $where = 'plugin_code = ?';
@@ -106,7 +107,7 @@ class PluginUtil
      */
     public function deletePluginByPluginId($plugin_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'plugin_id = ?';
         $objQuery->delete('dtb_plugin', $where, array($plugin_id));
         $objQuery->delete('dtb_plugin_hookpoint', $where, array($plugin_id));
@@ -141,7 +142,7 @@ class PluginUtil
      */
     public function getPluginHookPoint($plugin_id, $use_type = 1)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $cols = '*';
         $from = 'dtb_plugin_hookpoint';
         $where = 'plugin_id = ?';
@@ -170,7 +171,7 @@ class PluginUtil
      */
     public function getPluginHookPointList($use_type = 3)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('hook_point ASC, priority DESC');
         $cols = 'dtb_plugin_hookpoint.*, dtb_plugin.priority, dtb_plugin.plugin_name';
         $from = 'dtb_plugin_hookpoint LEFT JOIN dtb_plugin USING(plugin_id)';
@@ -233,7 +234,7 @@ class PluginUtil
      */
     public function setPluginHookPointChangeUse($plugin_hookpoint_id, $use_flg = 0)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $sqlval['use_flg'] = $use_flg;
         $objQuery->update('dtb_plugin_hookpoint', $sqlval, 'plugin_hookpoint_id = ?', array($plugin_hookpoint_id));
     }
@@ -258,7 +259,7 @@ class PluginUtil
         $conflict_alert_message = '';
         $arrConflictPluginName = array();
         $arrConflictHookPoint = array();
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setGroupBy('T1.hook_point, T1.plugin_id, T2.plugin_name');
         $table = 'dtb_plugin_hookpoint AS T1 LEFT JOIN dtb_plugin AS T2 ON T1.plugin_id = T2.plugin_id';
         foreach ($hookPoints as $hookPoint) {

@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Upgrade;
 
+use Eccube\Application;
 use Eccube\Page\Upgrade\Helper\LogHelper;
 use Eccube\Page\Upgrade\Helper\JsonHelper;
 use Eccube\Framework\Batch\BatchUpdate;
@@ -260,7 +261,7 @@ class Download extends AbstractUpgrade
     {
         $table = 'dtb_module';
         $where = 'module_id = ?';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $exists = $objQuery->exists($table, $where, array($objRet->product_id));
         if ($exists) {
@@ -363,7 +364,7 @@ class Download extends AbstractUpgrade
 
     public function registerUpdateLog($arrLog, $objRet)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrInsert = array(
             'log_id'      => $objQuery->nextVal('dtb_module_update_logs_log_id'),
             'module_id'   => $objRet->product_id,

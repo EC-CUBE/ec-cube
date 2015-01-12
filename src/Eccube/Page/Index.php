@@ -12,6 +12,8 @@
 
 namespace Eccube\Page;
 
+use Eccube\Application;
+
 /**
  * Index のページクラス.
  *
@@ -50,11 +52,11 @@ class Index extends AbstractPage
     public function action()
     {
         //決済処理中ステータスのロールバック
-        $objPurchase = $this->app['ecube.helper.purchase'];
+        $objPurchase = Application::alias('eccube.helper.purchase');
         $objPurchase->cancelPendingOrder(PENDING_ORDER_CANCEL_FLAG);
 
         $this->tpl_title = '';
-        $objCustomer = $this->app['ecube.customer'];
+        $objCustomer = Application::alias('eccube.customer');
         $this->isLogin = $objCustomer->isLoginSuccess(true);
     }
 }

@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\SessionFactory;
 
+use Eccube\Application;
 use Eccube\Framework\MobileUserAgent;
 use Eccube\Framework\Query;
 use Eccube\Framework\SessionFactory;
@@ -80,7 +81,7 @@ class UseRequestSessionFactory extends SessionFactory
         $url = $matches[1];
         $lifetime = $this->state->getLifeTime();
         $time = date('Y-m-d H:i:s', time() - $lifetime);
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         foreach ($_REQUEST as $key => $value) {
             $session_id = $objQuery->get('session_id', 'dtb_mobile_ext_session_id',
@@ -104,7 +105,7 @@ class UseRequestSessionFactory extends SessionFactory
      */
     public function setExtSessionId($param_key, $param_value, $url)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // GC
         $lifetime = $this->state->getLifeTime();

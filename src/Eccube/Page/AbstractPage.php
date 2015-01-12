@@ -12,6 +12,7 @@
 
 namespace Eccube\Page;
 
+use Eccube\Application;
 use Eccube\Framework\Response;
 use Eccube\Framework\Display;
 use Eccube\Framework\Helper\DbHelper;

@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Api\Operation;
 
+use Eccube\Application;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Util\Utils;
 

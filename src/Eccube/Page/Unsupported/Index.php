@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Unsupported;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 
 /**

@@ -92,7 +92,7 @@ class Index extends AbstractAdminPage
         $objDb = new DbHelper();
         $objFormParam = new FormParam();
         $objProduct = new Product();
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // パラメーター情報の初期化
         $this->lfInitParam($objFormParam);
@@ -249,7 +249,7 @@ class Index extends AbstractAdminPage
      */
     public function doDelete($where, $arrParam = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $product_ids = $objQuery->getCol('product_id', "dtb_products", $where, $arrParam);
 
         $sqlval['del_flg']     = 1;
@@ -368,7 +368,7 @@ class Index extends AbstractAdminPage
      */
     public function getNumberOfLines($where, $arrValues)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         return $objQuery->count('dtb_products', $where, $arrValues);
     }
@@ -386,7 +386,7 @@ class Index extends AbstractAdminPage
      */
     public function findProducts($where, $arrValues, $limit, $offset, $order, Product &$objProduct)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 読み込む列とテーブルの指定
         $col = 'product_id, name, main_list_image, status, product_code_min, product_code_max, price02_min, price02_max, stock_min, stock_max, stock_unlimited_min, stock_unlimited_max, update_date';

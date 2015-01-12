@@ -235,7 +235,7 @@ class Index extends AbstractAdminPage
     public function savePreviewData($page_id, &$objLayout)
     {
         $arrPageData = $objLayout->getPageProperties(DEVICE_TYPE_PC, $page_id);
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrPageData[0]['page_id'] = 0;
         $objQuery->update('dtb_pagelayout', $arrPageData[0], 'page_id = 0 AND device_type_id = ?', array(DEVICE_TYPE_PC));
 
@@ -254,7 +254,7 @@ class Index extends AbstractAdminPage
         $page_id = $is_preview ? 0 : $objFormParam->getValue('page_id');
         $device_type_id = $objFormParam->getValue('device_type_id');
         $bloc_cnt = $objFormParam->getValue('bloc_cnt');
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
         $objQuery->delete('dtb_blocposition', 'page_id = ? AND device_type_id = ?',
                           array($page_id, $device_type_id));

@@ -207,7 +207,7 @@ class MainEdit extends AbstractAdminPage
         $arrParams['keyword']       = $objFormParam->getValue('keyword');
         $arrParams['meta_robots']   = $objFormParam->getValue('meta_robots');
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
 
         $page_id = $this->registerPage($arrParams, $objLayout);
@@ -256,7 +256,7 @@ class MainEdit extends AbstractAdminPage
      */
     public function registerPage($arrParams, &$objLayout)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // ページIDが空の場合は新規登録
         $is_new = Utils::isBlank($arrParams['page_id']);
@@ -333,7 +333,7 @@ class MainEdit extends AbstractAdminPage
             $arrValues[] = $arrParams['page_id'];
         }
 
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $exists = $objQuery->exists('dtb_pagelayout', $where, $arrValues);
         if ($exists) {
             $objErr->arrErr['filename'] = '※ 同じURLのデータが存在しています。別のURLを入力してください。<br />';

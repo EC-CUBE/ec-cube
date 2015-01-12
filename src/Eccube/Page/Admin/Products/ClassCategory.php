@@ -149,7 +149,7 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfGetClassCat($class_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $where = 'del_flg <> 1 AND class_id = ?';
         $objQuery->setOrder('rank DESC'); // XXX 降順
@@ -166,7 +166,7 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfGetClassName($class_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $where = 'class_id = ?';
         $name = $objQuery->get('name', 'dtb_class', $where, array($class_id));
@@ -182,7 +182,7 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfGetClassCatName($classcategory_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'classcategory_id = ?';
         $name = $objQuery->get('name', 'dtb_classcategory', $where, array($classcategory_id));
 
@@ -197,7 +197,7 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfInsertClass($arrForm)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->begin();
         // 親規格IDの存在チェック
         $where = 'del_flg <> 1 AND class_id = ?';
@@ -227,7 +227,7 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfUpdateClass($arrForm)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // UPDATEする値を作成する。
         $sqlval['name'] = $arrForm['name'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';
@@ -246,7 +246,7 @@ class ClassCategory extends AbstractAdminPage
      */
     public function lfCheckError(&$objFormParam)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrForm = $objFormParam->getHashArray();
         // パラメーターの基本チェック
         $arrErr = $objFormParam->checkError();

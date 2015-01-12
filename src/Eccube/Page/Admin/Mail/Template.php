@@ -85,7 +85,7 @@ class Template extends AbstractAdminPage
      */
     public function lfDeleteMailTemplate($template_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->update('dtb_mailmaga_template',
                           array('del_flg' =>1),
                           'template_id = ?',

@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Forgot;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\Cookie;
 use Eccube\Framework\Display;
@@ -148,7 +149,7 @@ class Index extends AbstractPage
     public function lfCheckForgotMail(&$arrForm, &$arrReminder)
     {
         $errmsg = NULL;
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = '(email = ? OR email_mobile = ?) AND name01 = ? AND name02 = ? AND del_flg = 0';
         $arrVal = array($arrForm['email'], $arrForm['email'], $arrForm['name01'], $arrForm['name02']);
         $result = $objQuery->select('reminder, status', 'dtb_customer', $where, $arrVal);
@@ -198,7 +199,7 @@ class Index extends AbstractPage
     public function lfCheckForgotSecret(&$arrForm, &$arrReminder)
     {
         $errmsg = '';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $cols = 'customer_id, reminder, reminder_answer, salt';
         $table = 'dtb_customer';
         $where = '(email = ? OR email_mobile = ?)'

@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 
 /**
@@ -31,7 +32,7 @@ class MailtemplateHelper
      */
     public function get($template_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = 'template_id = ?';
         if (!$has_deleted) {
@@ -50,7 +51,7 @@ class MailtemplateHelper
      */
     public function getList($has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = '*';
         $where = '';
         if (!$has_deleted) {
@@ -70,7 +71,7 @@ class MailtemplateHelper
      */
     public function save($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $template_id = $sqlval['template_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';

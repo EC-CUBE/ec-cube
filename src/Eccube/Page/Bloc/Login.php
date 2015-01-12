@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Bloc;
 
+use Eccube\Application;
 use Eccube\Framework\Customer;
 use Eccube\Framework\Cookie;
 use Eccube\Framework\Db\MasterData;

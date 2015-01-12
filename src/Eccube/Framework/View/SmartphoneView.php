@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\View;
 
+use Eccube\Application;
 use Eccube\Framework\View\SiteView;
 
 class SmartphoneView extends SiteView

@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Helper\DbHelper;
 
@@ -32,7 +33,7 @@ class MakerHelper
      */
     public function getMaker($maker_id, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'maker_id = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -51,7 +52,7 @@ class MakerHelper
      */
     public function getByName($name, $has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'name = ?';
         if (!$has_deleted) {
             $where .= ' AND del_flg = 0';
@@ -69,7 +70,7 @@ class MakerHelper
      */
     public function getList($has_deleted = false)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'maker_id, name';
         $where = '';
         if (!$has_deleted) {
@@ -90,7 +91,7 @@ class MakerHelper
      */
     public function saveMaker($sqlval)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $maker_id = $sqlval['maker_id'];
         $sqlval['update_date'] = 'CURRENT_TIMESTAMP';

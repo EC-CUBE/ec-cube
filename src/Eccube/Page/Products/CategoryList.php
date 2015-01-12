@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Products;
 
+use Eccube\Application;
 use Eccube\Page\AbstractPage;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Helper\DbHelper;

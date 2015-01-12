@@ -100,7 +100,7 @@ class Editdb extends AbstractAdminPage
      */
     public function lfDoChange(&$objFormParam)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrTarget = $this->lfGetTargetData($objFormParam);
         $message = '';
         if (is_array($arrTarget) && count($arrTarget) == 0) {
@@ -131,7 +131,7 @@ class Editdb extends AbstractAdminPage
      */
     public function lfGetTargetData(&$objFormParam)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $arrIndexFlag    = $objFormParam->getValue('indexflag');
         $arrIndexFlagNew = $objFormParam->getValue('indexflag_new');
         $arrTableName    = $objFormParam->getValue('table_name');
@@ -178,7 +178,7 @@ class Editdb extends AbstractAdminPage
     public function lfGetIndexList()
     {
         // データベースからインデックス設定一覧を取得する
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('table_name, column_name');
         $arrIndexList = $objQuery->select('table_name , column_name , recommend_flg, recommend_comment', 'dtb_index_list');
 

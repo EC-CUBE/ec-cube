@@ -12,6 +12,7 @@
 
 namespace Eccube\Page\Bloc;
 
+use Eccube\Application;
 use Eccube\Framework\Display;
 use Eccube\Framework\FormParam;
 use Eccube\Framework\Response;
@@ -54,7 +55,7 @@ class News extends AbstractBloc
      */
     public function action()
     {
-        $objNews = new NewsHelper();
+        $objNews = Application::alias('eccube.helper.news');
         $objFormParam = new FormParam();
         switch ($this->getMode()) {
             case 'getList':

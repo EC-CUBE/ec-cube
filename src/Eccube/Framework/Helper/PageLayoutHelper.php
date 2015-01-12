@@ -12,6 +12,7 @@
 
 namespace Eccube\Framework\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Helper\DbHelper;
 use Eccube\Framework\Helper\PluginHelper;
 use Eccube\Framework\Helper\BlocHelper;
@@ -134,7 +135,7 @@ class PageLayoutHelper
      */
     public function getPageProperties($device_type_id = DEVICE_TYPE_PC, $page_id = null, $where = '', $arrParams = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $where = 'device_type_id = ? ' . (Utils::isBlank($where) ? $where : 'AND ' . $where);
         if ($page_id === null) {
             $where = 'page_id <> ? AND ' . $where;
@@ -180,7 +181,7 @@ class PageLayoutHelper
      */
     public function getBlocPositions($device_type_id, $page_id, $has_realpath = true)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $table = <<< __EOF__
         dtb_blocposition AS pos
@@ -223,7 +224,7 @@ __EOF__;
      */
     public function lfDelPageData($page_id, $device_type_id = DEVICE_TYPE_PC)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // page_id が空でない場合にはdeleteを実行
         if ($page_id != '') {
             $arrPageData = $this->getPageProperties($device_type_id, $page_id);
@@ -247,7 +248,7 @@ __EOF__;
      */
     public function lfDelFile($filename, $device_type_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         /*
          * 同名ファイルの使用件数

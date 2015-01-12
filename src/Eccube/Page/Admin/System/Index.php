@@ -98,7 +98,7 @@ class Index extends AbstractAdminPage
      */
     public function getMemberCount($where)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $table = 'dtb_member';
 
         return $objQuery->count($table, $where);
@@ -116,7 +116,7 @@ class Index extends AbstractAdminPage
         $col = 'member_id,name,department,login_id,authority,rank,work';
         $from = 'dtb_member';
         $where = 'del_flg <> 1 AND member_id <> ?';
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $objQuery->setOrder('rank DESC');
         $objQuery->setLimitOffset(MEMBER_PMAX, $startno);
         $arrMemberData = $objQuery->select($col, $from, $where, array(ADMIN_ID));

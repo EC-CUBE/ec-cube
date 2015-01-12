@@ -10,8 +10,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Framework\Helper;
+namespace Eccube\Plugin\ProductReview\Helper;
 
+use Eccube\Application;
 use Eccube\Framework\Query;
 use Eccube\Framework\Util\Utils;
 
@@ -63,7 +64,7 @@ class ReviewHelper
      */
     public function save($data)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $review_id = $data['review_id'];
         $data['update_date'] = 'CURRENT_TIMESTAMP';
@@ -92,7 +93,7 @@ class ReviewHelper
      */
     public function delete($review_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $data['del_flg'] = 1;
         $objQuery->update('dtb_review', $data, 'review_id = ?', array($review_id));
     }
@@ -105,7 +106,7 @@ class ReviewHelper
      */
     public function find($params = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         // 検索条件を作成
         $query = (isset($params['query'])) ? $params['query'] : array();
@@ -144,7 +145,7 @@ class ReviewHelper
      */
     public function count($query = array())
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         // 検索条件を作成
         list($where, $values) = $this->makeWhere($query);
         $from = 'dtb_review AS A LEFT JOIN dtb_products AS B ON A.product_id = B.product_id ';

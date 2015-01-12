@@ -104,7 +104,7 @@ class ProductRank extends AbstractAdminPage
     public function lfGetProduct($category_id)
     {
         // FIXME Product クラスを使用した実装
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'alldtl.product_id, name, main_list_image, product_code_min, product_code_max, status';
         $objProduct = new Product();
         $table = $objProduct->alldtlSQL();
@@ -138,7 +138,7 @@ class ProductRank extends AbstractAdminPage
      */
     public function lfRenumber($parent_category_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
 
         $sql = <<< __EOS__
             UPDATE dtb_product_categories

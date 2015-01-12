@@ -71,7 +71,7 @@ class MailView extends AbstractAdminPage
      */
     public function getMailHistory($send_id)
     {
-        $objQuery = Query::getSingletonInstance();
+        $objQuery = Application::alias('eccube.query');
         $col = 'subject, mail_body';
         $where = 'send_id = ?';
         $mailHistory = $objQuery->select($col, 'dtb_mail_history', $where, array($send_id));
