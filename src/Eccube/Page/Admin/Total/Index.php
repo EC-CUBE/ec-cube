@@ -326,7 +326,9 @@ class Index extends AbstractAdminPage
             if ($interval < 1) {
                 $interval = 1;
             }
-            $objGraphLine = new LineGraph();
+
+            /* @var $objGraphLine LineGraph */
+            $objGraphLine = Application::alias('eccube.graph.line');;
 
             // 値のセット
             $objGraphLine->setData($arrList);
@@ -384,7 +386,8 @@ class Index extends AbstractAdminPage
             $pngname = $this->lfGetGraphPng($type);
             $path = GRAPH_REALDIR . $pngname;
 
-            $objGraphPie = new PieGraph();
+            /* @var $objGraphPie PieGraph */
+            $objGraphPie = Application::alias('eccube.graph.pie');
 
             // データをセットする
             $objGraphPie->setData($arrList);
@@ -435,7 +438,8 @@ class Index extends AbstractAdminPage
             $pngname = $this->lfGetGraphPng($type);
             $path = GRAPH_REALDIR . $pngname;
 
-            $objGraphBar = new BarGraph();
+            /* @var $objGraphBar BarGraph */
+            $objGraphBar = Application::alias('eccube.graph.bar');
 
             foreach ($arrList as $key => $value) {
                 $arrKey[] = preg_replace('/～/u', '-', $key);
