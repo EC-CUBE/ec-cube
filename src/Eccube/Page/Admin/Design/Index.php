@@ -65,7 +65,8 @@ class Index extends AbstractAdminPage
      */
     public function action()
     {
-        $objLayout = new PageLayoutHelper();
+        /* @var $objLayout PageLayoutHelper */
+        $objLayout = Application::alias('eccube.helper.page_layout');
         $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam, intval($_REQUEST['bloc_cnt']));
         $objFormParam->setParam($_REQUEST);

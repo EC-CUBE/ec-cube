@@ -68,7 +68,8 @@ class MainEdit extends AbstractAdminPage
      */
     public function action()
     {
-        $objLayout = new PageLayoutHelper();
+        /* @var $objLayout PageLayoutHelper */
+        $objLayout = Application::alias('eccube.helper.page_layout');
         $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
         $objFormParam->setParam($_REQUEST);

@@ -172,7 +172,7 @@ class Header extends AbstractAdminPage
      */
     public function getTemplatePath($device_type_id, $division)
     {
-        $tpl_path = PageLayoutHelper::getTemplatePath($device_type_id) . '/' . $division . '.tpl';
+        $tpl_path = Application::alias('eccube.helper.page_layout')->getTemplatePath($device_type_id) . '/' . $division . '.tpl';
         if (file_exists($tpl_path)) {
             return $tpl_path;
         } else {

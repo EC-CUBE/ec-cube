@@ -67,7 +67,8 @@ class Css extends AbstractAdminPage
      */
     public function action()
     {
-        $objLayout = new PageLayoutHelper();
+        /* @var $objLayout PageLayoutHelper */
+        $objLayout = Application::alias('eccube.helper.page_layout');
 
         $objFormParam = Application::alias('eccube.form_param');
         $this->lfInitParam($objFormParam);
@@ -265,7 +266,7 @@ class Css extends AbstractAdminPage
      */
     public function getCSSDir($device_type_id)
     {
-        return PageLayoutHelper::getTemplatePath($device_type_id, true) . 'css/';
+        return Application::alias('eccube.helper.page_layout')->getTemplatePath($device_type_id, true) . 'css/';
     }
 
     /**

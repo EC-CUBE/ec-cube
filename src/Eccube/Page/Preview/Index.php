@@ -53,7 +53,8 @@ class Index extends AbstractPage
 
         if (isset($_SESSION['preview']) && $_SESSION['preview'] === 'ON') {
             // プレビュー用のレイアウトデザインを取得
-            $objLayout = new PageLayoutHelper();
+            /* @var $objLayout PageLayoutHelper */
+            $objLayout = Application::alias('eccube.helper.page_layout');
             $objLayout->sfGetPageLayout($this, true);
 
             // 画面の表示

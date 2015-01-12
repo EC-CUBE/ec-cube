@@ -64,7 +64,7 @@ abstract class AbstractBloc extends AbstractPage
         if (Utils::isAbsoluteRealPath($bloc_file)) {
             $this->tpl_mainpage = $bloc_file;
         } else {
-            $this->tpl_mainpage = PageLayoutHelper::getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;
+            $this->tpl_mainpage = Application::alias('eccube.helper.page_layout')->getTemplatePath($this->objDisplay->detectDevice()) . BLOC_DIR . $bloc_file;
         }
 
         $this->setTemplate($this->tpl_mainpage);

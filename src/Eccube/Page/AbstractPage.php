@@ -105,8 +105,9 @@ abstract class AbstractPage
         $this->objDisplay = new Display();
 
         if (!$this->skip_load_page_layout) {
-            $layout = new PageLayoutHelper();
-            $layout->sfGetPageLayout($this, false, $_SERVER['SCRIPT_NAME'],
+            /* @var $objLayout PageLayoutHelper */
+            $objLayout = Application::alias('eccube.helper.page_layout');
+            $objLayout->sfGetPageLayout($this, false, $_SERVER['SCRIPT_NAME'],
                                      $this->objDisplay->detectDevice());
         }
 

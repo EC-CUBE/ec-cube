@@ -40,7 +40,7 @@ class RefusalComplete extends AbstractPage
         } else {
             $this->tpl_subtitle = '退会手続き(完了ページ)';
         }
-        $this->tpl_navi     = PageLayoutHelper::getTemplatePath(Display::detectDevice()) . 'mypage/navi.tpl';
+        $this->tpl_navi     = Application::alias('eccube.helper.page_layout')->getTemplatePath(Display::detectDevice()) . 'mypage/navi.tpl';
         $this->tpl_mypageno = 'refusal';
         $this->point_disp   = false;
     }

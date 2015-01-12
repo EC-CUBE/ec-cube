@@ -48,7 +48,7 @@ class BlocHelper
         if (Utils::isAbsoluteRealPath($arrRet['tpl_path'])) {
             $tpl_path = $arrRet['tpl_path'];
         } else {
-            $tpl_path = PageLayoutHelper::getTemplatePath($this->device_type_id) . BLOC_DIR . $arrRet['tpl_path'];
+            $tpl_path = Application::alias('eccube.helper.page_layout')->getTemplatePath($this->device_type_id) . BLOC_DIR . $arrRet['tpl_path'];
         }
         if (file_exists($tpl_path)) {
             $arrRet['bloc_html'] = file_get_contents($tpl_path);
@@ -104,7 +104,7 @@ class BlocHelper
 
         // blod_id が空の場合は新規登録
         $is_new = Utils::isBlank($sqlval['bloc_id']);
-        $bloc_dir = PageLayoutHelper::getTemplatePath($sqlval['device_type_id']) . BLOC_DIR;
+        $bloc_dir = Application::alias('eccube.helper.page_layout')->getTemplatePath($sqlval['device_type_id']) . BLOC_DIR;
         // 既存データの重複チェック
         if (!$is_new) {
             $arrExists = $this->getBloc($sqlval['bloc_id']);
@@ -165,7 +165,7 @@ class BlocHelper
             $objQuery->delete('dtb_blocposition', 'bloc_id = ? AND device_type_id = ?',
                               array($arrExists[0]['bloc_id'], $arrExists[0]['device_type_id']));
 
-            $bloc_dir = PageLayoutHelper::getTemplatePath($this->device_type_id) . BLOC_DIR;
+            $bloc_dir = Application::alias('eccube.helper.page_layout')->getTemplatePath($this->device_type_id) . BLOC_DIR;
             $exists_file = $bloc_dir . $arrExists[0]['filename'] . '.tpl';
 
             // ファイルの削除
