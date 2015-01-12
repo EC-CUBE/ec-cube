@@ -651,7 +651,7 @@ __EOS__;
 
         list($where, $arrWhereVal) = $this->lfGetWhereMember('create_date', $sdate, $edate, $type);
 
-        $dbFactory = DBFactory::getInstance();
+        $dbFactory = Application::alias('eccube.db.factory');
         $col = $dbFactory->getOrderTotalAgeColSql() . ' AS age';
         $col .= ',COUNT(order_id) AS order_count';
         $col .= ',SUM(total) AS total';
@@ -720,7 +720,7 @@ __EOS__;
                 break;
         }
 
-        $dbFactory = DBFactory::getInstance();
+        $dbFactory = Application::alias('eccube.db.factory');
         // todo postgres
         $col = $dbFactory->getOrderTotalDaysWhereSql($type);
 

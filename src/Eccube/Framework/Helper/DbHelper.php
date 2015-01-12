@@ -58,7 +58,8 @@ class DbHelper
      */
     public function columnExists($tableName, $colName, $colType = '', $dsn = '', $add = false)
     {
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         $dsn = $dbFactory->getDSN($dsn);
 
         /* @var $objQuery Query */

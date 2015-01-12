@@ -31,7 +31,8 @@ class CustomerList extends SelectSql
 
         /* @var $objDb DbHelper */
         $objDb = Application::alias('eccube.helper.db');
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
 
         if ($mode == '') {
             // 会員本登録会員で削除していない会員

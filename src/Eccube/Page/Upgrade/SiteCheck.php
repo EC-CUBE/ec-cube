@@ -46,7 +46,7 @@ class SiteCheck extends AbstractUpgrade
 
         $objLog->start($mode);
 
-        $dbFactory = DBFactory::getInstance();
+        $dbFactory = Application::alias('eccube.db.factory');
         $arrSystemInfo = array(
             'eccube_version' => ECCUBE_VERSION,
             'php_version'    => phpversion(),

@@ -278,7 +278,8 @@ class Index extends AbstractAdminPage
      */
     public function buildQuery($key, &$where, &$arrValues, &$objFormParam)
     {
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         switch ($key) {
             case 'search_product_name':
                 $where .= ' AND EXISTS (SELECT 1 FROM dtb_order_detail od WHERE od.order_id = dtb_order.order_id AND od.product_name LIKE ?)';

@@ -628,9 +628,10 @@ __EOS__;
      */
     public function alldtlSQL($where_products_class = '')
     {
-        $objDBFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
 
-        return $objDBFactory->alldtlSQL($where_products_class);
+        return $dbFactory->alldtlSQL($where_products_class);
     }
 
     /**

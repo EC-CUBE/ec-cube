@@ -1066,7 +1066,8 @@ __EOF__;
                 } else {
                     //規格がある場合の複製は複製元の内容で追加登録を行う
                     // dtb_products_class のカラムを取得
-                    $dbFactory = DBFactory::getInstance();
+                    /* @var $dbFactory DBFactory */
+                    $dbFactory = Application::alias('eccube.db.factory');
                     $arrColList = $objQuery->listTableFields('dtb_products_class');
                     $arrColList_tmp = array_flip($arrColList);
 

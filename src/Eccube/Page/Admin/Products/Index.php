@@ -291,7 +291,8 @@ class Index extends AbstractAdminPage
      */
     public function buildQuery($key, &$where, &$arrValues, &$objFormParam, &$objDb)
     {
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         switch ($key) {
             // 商品ID
             case 'search_product_id':

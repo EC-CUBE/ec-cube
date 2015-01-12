@@ -119,7 +119,8 @@ class Masterdata extends AbstractAdminPage
      */
     public function getMasterDataNames($ignores = array())
     {
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         $arrMasterDataName = $dbFactory->findTableNames('mtb_');
 
         $i = 0;

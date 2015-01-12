@@ -178,7 +178,7 @@ __EOS__;
             JOIN dtb_products_class AS pc USING(product_id, product_class_id)
 __EOS__;
 
-        $dbFactory = DBFactory::getInstance();
+        $dbFactory = Application::alias('eccube.db.factory');
         $where = 'o.customer_id = ? AND o.order_id = ? AND od.product_class_id = ?';
         $where .= ' AND ' . $dbFactory->getDownloadableDaysWhereSql('o');
         $where .= ' = 1';

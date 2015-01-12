@@ -113,7 +113,8 @@ class Home extends AbstractAdminPage
      */
     public function lfGetDBVersion()
     {
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
 
         return $dbFactory->sfGetDBVersion();
     }
@@ -144,7 +145,8 @@ class Home extends AbstractAdminPage
         $objQuery = Application::alias('eccube.query');
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         $sql = $dbFactory->getOrderYesterdaySql($method);
 
         return $objQuery->getOne($sql);
@@ -162,7 +164,8 @@ class Home extends AbstractAdminPage
         $month = date('Y/m', mktime());
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         $sql = $dbFactory->getOrderMonthSql($method);
 
         return $objQuery->getOne($sql, array($month));
@@ -194,7 +197,8 @@ class Home extends AbstractAdminPage
         $objQuery = Application::alias('eccube.query');
 
         // TODO: DBFactory使わないでも共通化できそうな気もしますが
-        $dbFactory = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         $sql = $dbFactory->getReviewYesterdaySql();
 
         return $objQuery->getOne($sql);

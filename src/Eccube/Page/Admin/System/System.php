@@ -96,12 +96,13 @@ class System extends AbstractAdminPage
      */
     public function getSystemInfo()
     {
-        $objDB = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
 
         $arrSystemInfo = array(
             array('title' => 'EC-CUBE',     'value' => ECCUBE_VERSION),
             array('title' => 'サーバーOS',    'value' => php_uname()),
-            array('title' => 'DBサーバー',    'value' => $objDB->sfGetDBVersion()),
+            array('title' => 'DBサーバー',    'value' => $dbFactory->sfGetDBVersion()),
             array('title' => 'WEBサーバー',   'value' => $_SERVER['SERVER_SOFTWARE']),
         );
 

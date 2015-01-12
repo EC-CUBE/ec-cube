@@ -942,7 +942,8 @@ class PurchaseHelper
     public function getOrderDetail($order_id, $has_order_status = true)
     {
         $objQuery = Application::alias('eccube.query');
-        $dbFactory  = DBFactory::getInstance();
+        /* @var $dbFactory DBFactory */
+        $dbFactory = Application::alias('eccube.db.factory');
         $col = <<< __EOS__
             T3.product_id,
             T3.product_class_id as product_class_id,
