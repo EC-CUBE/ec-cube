@@ -77,7 +77,8 @@ class Bloc extends AbstractAdminPage
         $this->bloc_id = $objFormParam->getValue('bloc_id');
         $this->device_type_id = $objFormParam->getValue('device_type_id', DEVICE_TYPE_PC);
 
-        $objBloc = new BlocHelper($this->device_type_id);
+        /* @var $objBloc BlocHelper */
+        $objBloc = Application::alias('eccube.helper.bloc', $this->device_type_id);
 
         switch ($this->getMode()) {
             // 登録/更新

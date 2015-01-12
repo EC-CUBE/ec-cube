@@ -161,7 +161,8 @@ class PageLayoutHelper
      */
     public function getBlocs($device_type_id = DEVICE_TYPE_PC, $where = '', $arrParams = array(), $has_realpath = true)
     {
-        $objBloc = new BlocHelper($device_type_id);
+        /* @var $objBloc BlocHelper */
+        $objBloc = Application::alias('eccube.helper.bloc', $device_type_id);
         $arrBlocs = $objBloc->getWhere($where, $arrParams);
         if ($has_realpath) {
             $this->setBlocPathTo($device_type_id, $arrBlocs);
