@@ -56,7 +56,7 @@ class MailHelper
      *
      * @param LC_Page $objPage
      */
-    public function setPage(LC_Page $objPage)
+    public function setPage($objPage)
     {
         $this->objPage = $objPage;
     }
@@ -283,7 +283,7 @@ class MailHelper
             $objMailView = new SiteView();
             $objMailView->setPage($this->getPage());
         }
-        $objTplAssign = new stdClass;
+        $objTplAssign = new \stdClass;
 
         $arrInfo = DbHelper::getBasisData();
         $objTplAssign->tpl_shopname=$arrInfo['shop_name'];

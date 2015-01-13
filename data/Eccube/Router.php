@@ -7,6 +7,7 @@ class Router
     var $adminDir;
     var $isAdmin;
     var $template;
+    var $args;
 
     function __construct()
     {
@@ -18,20 +19,24 @@ class Router
         // Routingするため値が変わってしまうので戻す
         $url = parse_url($_SERVER['REQUEST_URI']);
         $path = $url['path'];
+        /* 既存パス対応 */
         if (end(split('\.', $path)) !== 'php') {
             $path .= (substr($path, -1) === '/') ? 'index.php' : '.php';
         }
+        
         $_SERVER['SCRIPT_NAME'] = $path;
         $_SERVER['SCRIPT_FILENAME'] = $_SERVER['DOCUMENT_ROOT'] . $path;
         $this->template = str_replace('.php', '', str_replace(ROOT_URLPATH, '', $path));
 
         $settings = $this->getSettingsFromUrl();
 
-        $namespaces = array('Eccube\\Page');
-        if ($this->isAdmin) $namespaces[] = 'Admin';
-        if (!empty($settings['dir'])) $namespaces[] = ucfirst($settings['dir']);
-        if (!empty($settings['class'])) $namespaces[] = ucfirst($settings['class']);
-        $namespace = implode('\\', $namespaces);
+        $namespace = 'Eccube\\Page';
+        if ($this->isAdmin) {
+            $namespace .= '\\Admin';
+        }
+        if (!empty($settings['class'])) {
+            $namespace .= $settings['class'];
+        }
 
         $obj = new $namespace;
         call_user_func(array($obj, 'init'));
@@ -46,8 +51,12 @@ class Router
 
         $mapKey= 'index';
         foreach ($map as $path => $settings) {
-            if ($this->isAdmin) $path = str_replace('admin', $this->adminDir, $path);
-            if (preg_match('/' . preg_quote($path, '/') . '/', $this->template)) $mapKey = $path;
+            if ($this->isAdmin) {
+                $path = str_replace('admin', $this->adminDir, $path);
+            }
+            if (preg_match('/' . preg_quote($path, '/') . '/', $this->template)) {
+                $mapKey = $path;
+            }
         }
         return $map[$mapKey];
     }
