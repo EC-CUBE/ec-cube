@@ -92,7 +92,7 @@ class Deliv extends AbstractPage
             $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval, $objCustomer);
             $objSiteSess->setRegistFlag();
 
-            Response::sendRedirect('payment.php');
+            Response::sendRedirect('confirm.php');
             Response::actionExit();
         }
 
@@ -129,7 +129,7 @@ class Deliv extends AbstractPage
                 $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
                 $objSiteSess->setRegistFlag();
 
-                Response::sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                Response::sendRedirect(SHOPPING_CONFIRM_URLPATH);
                 Response::actionExit();
                 break;
 
@@ -137,7 +137,7 @@ class Deliv extends AbstractPage
             case 'return':
 
                 // 確認ページへ移動
-                Response::sendRedirect(CART_URL);
+                Response::sendRedirect('confirm.php');
                 Response::actionExit();
                 break;
 

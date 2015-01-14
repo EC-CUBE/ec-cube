@@ -111,7 +111,7 @@ class MailHelper
     /* 注文受付メール送信 */
     public function sfSendOrderMail($order_id, $template_id, $subject = '', $header = '', $footer = '', $send = true)
     {
-        $arrTplVar = new stdClass();
+        $arrTplVar = new \stdClass();
         $arrInfo = DbHelper::getBasisData();
         $arrTplVar->arrInfo = $arrInfo;
 

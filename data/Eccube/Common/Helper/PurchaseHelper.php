@@ -75,9 +75,6 @@ class PurchaseHelper
 
         $objQuery->begin();
         if (!$objSiteSession->isPrePage()) {
-            // エラー時は、正当なページ遷移とは認めない
-            $objSiteSess->setNowPage('');
-
             Utils::sfDispSiteError(PAGE_ERROR, $objSiteSession);
         }
 
@@ -559,6 +556,65 @@ class PurchaseHelper
         }
 
         return Utils::sfArrayIntersectKeys($arrSrc, $arrKey);
+    }
+
+    public function setDefaultPurchase($uniqId, $cartKey, &$objCustomer, &$objCartSess)
+    {
+        // 基本配送情報登録
+        $sqlval = array();
+        $this->copyFromCustomer($sqlval, $objCustomer, 'shipping');
+        $this->saveShippingTemp($sqlval);
+        // 基本配送業者・支払方法登録
+        $objDelivery = new DeliveryHelper();
+        $arrDeliv = $objDelivery->getList($cartKey);
+        $deliv_id = $arrDeliv[0]['deliv_id'];
+        $sqlval['deliv_id'] = $deliv_id;
+        $arrPaymentDeliv = $objDelivery->getPayments($deliv_id);
+        $total = $objCartSess->getAllProductsTotal($cartKey);
+        $objPayment = new PaymentHelper();
+        $arrPaymentTotal = $objPayment->getByPrice($total);
+        foreach ($arrPaymentTotal as $payment) {
+            if (in_array($payment['payment_id'], $arrPaymentDeliv)) {
+                $sqlval['payment_id'] = $payment['payment_id'];
+                $sqlval['charge'] = $payment['charge'];
+                $sqlval['payment_method'] = $payment['payment_method'];
+                break;
+            }
+        }
+        $this->saveOrderTemp($uniqId, $sqlval);
+    }
+
+    /**
+     * 配送業者IDから, 支払い方法, お届け時間の配列を取得する.
+     *
+     * 結果の連想配列の添字の値は以下の通り
+     * - 'arrDelivTime' - お届け時間の配列
+     * - 'arrPayment' - 支払い方法の配列
+     * - 'img_show' - 支払い方法の画像の有無
+     *
+     * @param  SC_CartSession $objCartSess SC_CartSession インスタンス
+     * @param  integer        $deliv_id    配送業者ID
+     * @return array          支払い方法, お届け時間を格納した配列
+     */
+    public function getSelectablePayment(&$objCartSess, $deliv_id, $is_list = false)
+    {
+        $arrPayment = array();
+        if (strval($deliv_id) === strval(intval($deliv_id))) {
+            $total = $objCartSess->getAllProductsTotal($objCartSess->getKey());
+            $payments_deliv = DeliveryHelper::getPayments($deliv_id);
+            $objPayment = new PaymentHelper();
+            $payments_total = $objPayment->getByPrice($total);
+            foreach ($payments_total as $payment) {
+                if (in_array($payment['payment_id'], $payments_deliv)) {
+                    if ($is_list) {
+                        $arrPayment[$payment['payment_id']] = $payment['payment_method'];
+                    } else {
+                        $arrPayment[] = $payment;
+                    }
+                }
+            }
+        }
+        return $arrPayment;
     }
 
     /**

@@ -67,7 +67,7 @@ class DeliveryHelper
      * @param  boolean $has_deleted     削除された支払方法も含む場合 true; 初期値 false
      * @return array
      */
-    public function getList($product_type_id = null, $has_deleted = false)
+    public function getList($product_type_id = null, $has_deleted = false, $is_last = false)
     {
         $objQuery = Query::getSingletonInstance();
         $col = '*';
@@ -87,6 +87,13 @@ class DeliveryHelper
         $objQuery->setOrder('rank DESC');
         $arrRet = $objQuery->select($col, $table, $where, $arrVal);
 
+        if ($is_list) {
+            $arrTmp = $arrRet;
+            $arrRet = array();
+            foreach ($arrTmp as $deliv) {
+                $arrRet[$deliv['deliv_id']] = $deliv['service_name'];
+            }
+        }
         return $arrRet;
     }
 
@@ -347,5 +354,14 @@ __EOS__;
         $table = 'dtb_delivfee';
 
         return $objQuery->select($col, $table, $where, array($deliv_id));
+    }
+
+    public function isSingleDeliv($product_type_id)
+    {
+        $arrList = $this->getList($product_type_id);
+        if (count($arrList) <= 1) {
+            return true;
+        }
+        return false;
     }
 }

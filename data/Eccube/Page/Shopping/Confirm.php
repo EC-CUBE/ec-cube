@@ -15,6 +15,7 @@ namespace Eccube\Page\Shopping;
 use Eccube\Page\AbstractPage;
 use Eccube\Common\Customer;
 use Eccube\Common\CartSession;
+use Eccube\Common\FormParam;
 use Eccube\Common\SiteSession;
 use Eccube\Common\Response;
 use Eccube\Common\Helper\DeliveryHelper;
@@ -47,7 +48,6 @@ class Confirm extends AbstractPage
         $this->arrJob = $masterData->getMasterData('mtb_job');
         $this->arrMAILMAGATYPE = $masterData->getMasterData('mtb_mail_magazine_type');
         $this->arrReminder = $masterData->getMasterData('mtb_reminder');
-        $this->arrDeliv = DeliveryHelper::getIDValueList('service_name');
         $this->httpCacheControl('nocache');
     }
 
@@ -82,9 +82,6 @@ class Confirm extends AbstractPage
 
         // 前のページで正しく登録手続きが行われた記録があるか判定
         if (!$objSiteSess->isPrePage()) {
-            // エラー時は、正当なページ遷移とは認めない
-            $objSiteSess->setNowPage('');
-
             Utils::sfDispSiteError(PAGE_ERROR, $objSiteSess);
         }
 
@@ -100,19 +97,39 @@ class Confirm extends AbstractPage
             Response::sendRedirect(CART_URL);
             Response::actionExit();
         }
+        $this->is_download = ($this->cartKey == PRODUCT_TYPE_DOWNLOAD);
 
         // カートの商品を取得
         $this->arrShipping = $objPurchase->getShippingTemp($this->is_multiple);
         $this->arrCartItems = $objCartSess->getCartList($this->cartKey);
         // 合計金額
-        $this->tpl_total_inctax[$this->cartKey] = $objCartSess->getAllProductsTotal($this->cartKey);
+        $this->tpl_total_inctax = $objCartSess->getAllProductsTotal($this->cartKey);
         // 税額
-        $this->tpl_total_tax[$this->cartKey] = $objCartSess->getAllProductsTax($this->cartKey);
-        // ポイント合計
-        $this->tpl_total_point[$this->cartKey] = $objCartSess->getAllProductsPoint($this->cartKey);
+        $this->tpl_total_tax = $objCartSess->getAllProductsTax($this->cartKey);
+        $this->tpl_total_tax = $objCartSess->getAllProductsTax($this->cartKey);
+
+        $objFormParam = new FormParam();
+        $this->lfInitParam($objFormParam, $this->arrShipping);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
+        $objFormParam->trimParam();
 
         // 一時受注テーブルの読込
         $arrOrderTemp = $objPurchase->getOrderTemp($this->tpl_uniqid);
+
+        // 配送業者を取得
+        $objDelivery = new DeliveryHelper();
+        $this->arrDeliv = $objDelivery->getList($this->cartKey, false, true);
+        $this->tpl_is_single_deliv = $objDelivery->isSingleDeliv($this->cartKey);
+
+        // お届け日一覧の取得
+        $this->arrDelivDate = $objPurchase->getDelivDate($objCartSess, $this->cartKey);
+
+        if (Utils::sfIsInt($arrOrderTemp['deliv_id'])) {
+           $this->arrPayment = $objPurchase->getSelectablePayment($objCartSess, $arrOrderTemp['deliv_id'], true);
+            $this->arrDelivTime = DeliveryHelper::getDelivTime($arrOrderTemp['deliv_id']);
+        }
+
         // カート集計を元に最終計算
         $arrCalcResults = $objCartSess->calculate($this->cartKey, $objCustomer,
                                                   $arrOrderTemp['use_point'],
@@ -125,6 +142,11 @@ class Confirm extends AbstractPage
                                                   );
 
         $this->arrForm = array_merge($arrOrderTemp, $arrCalcResults);
+        foreach ($objFormParam->getHashArray() as $key => $param) {
+            if (!Utils::isBlank($param) && Utils::isBlank($this->arrForm[$key])) {
+                $this->arrForm[$key] = $param;
+            }
+        }
 
         // 会員ログインチェック
         if ($objCustomer->isLoginSuccess(true)) {
@@ -136,6 +158,18 @@ class Confirm extends AbstractPage
         $this->use_module = PaymentHelper::useModule($this->arrForm['payment_id']);
 
         switch ($this->getMode()) {
+            case 'select_deliv':
+                $sqlval = $objFormParam->getHashArray();
+                if (Utils::isBlank($sqlval['use_point'])) {
+                    $sqlval['use_point'] = '0';
+                }
+                $deliv_id = $objFormParam->getValue('deliv_id');
+                $arrPayment = $objPurchase->getSelectablePayment($objCartSess, $deliv_id);
+                $sqlval['payment_id'] = $arrPayment[0]['payment_id'];
+                $sqlval['payment_method'] = $arrPayment[0]['payment_method'];
+                $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval);
+                Response::reload();
+                break;
             // 前のページに戻る
             case 'return':
                 // 正常な推移であることを記録しておく
@@ -145,6 +179,10 @@ class Confirm extends AbstractPage
                 Response::actionExit();
                 break;
             case 'confirm':
+                $this->saveShippings($objFormParam, $this->arrDelivTime);
+                $deliv_id = $objFormParam->getValue('deliv_id');
+                $arrPayment = $objPurchase->getSelectablePayment($objCartSess, $deliv_id);
+                $this->lfRegistPayment($this->tpl_uniqid, $objFormParam->getHashArray(), $objPurchase, $arrPayment);
                 /*
                  * 決済モジュールで必要なため, 受注番号を取得
                  */
@@ -176,5 +214,85 @@ class Confirm extends AbstractPage
                 break;
         }
 
+    }
+
+
+    /**
+     * パラメーター情報の初期化を行う.
+     *
+     * @param  SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param  array        $arrShipping  配送先情報の配列
+     * @return void
+     */
+    public function lfInitParam(&$objFormParam, &$arrShipping)
+    {
+        $objFormParam->addParam('配送業者', 'deliv_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
+        $objFormParam->addParam('ポイント', 'use_point', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK', 'ZERO_START'));
+        $objFormParam->addParam('その他お問い合わせ', 'message', LTEXT_LEN, 'KVa', array('SPTAB_CHECK', 'MAX_LENGTH_CHECK'));
+        $objFormParam->addParam('ポイントを使用する', 'point_check', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'), '2');
+
+        $objFormParam->addParam('お支払い方法', 'payment_id', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+
+        foreach ($arrShipping as $val) {
+            $objFormParam->addParam('お届け時間', 'deliv_time_id' . $val['shipping_id'], INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
+            $objFormParam->addParam('お届け日', 'deliv_date' . $val['shipping_id'], STEXT_LEN, 'KVa', array('MAX_LENGTH_CHECK'));
+        }
+
+        $objFormParam->setParam($arrShipping);
+        $objFormParam->convParam();
+    }
+
+    /**
+     * 配送情報を保存する.
+     *
+     * @param SC_FormParam $objFormParam SC_FormParam インスタンス
+     * @param array        $arrDelivTime 配送時間の配列
+     */
+    public function saveShippings(&$objFormParam, $arrDelivTime)
+    {
+        // ダウンロード商品の場合は配送先が存在しない
+        if ($this->is_download) return;
+
+        $deliv_id = $objFormParam->getValue('deliv_id');
+        /* TODO
+         * SC_Purchase::getShippingTemp() で取得して,
+         * リファレンスで代入すると, セッションに添字を追加できない？
+         */
+        foreach (array_keys($_SESSION['shipping']) as $key) {
+            $shipping_id = $_SESSION['shipping'][$key]['shipping_id'];
+            $time_id = $objFormParam->getValue('deliv_time_id' . $shipping_id);
+            $_SESSION['shipping'][$key]['deliv_id'] = $deliv_id;
+            $_SESSION['shipping'][$key]['time_id'] = $time_id;
+            $_SESSION['shipping'][$key]['shipping_time'] = $arrDelivTime[$time_id];
+            $_SESSION['shipping'][$key]['shipping_date'] = $objFormParam->getValue("deliv_date{$shipping_id}");
+        }
+    }
+
+    /**
+     * 受注一時テーブルへ登録を行う.
+     *
+     * @param  integer            $uniqid      受注一時テーブルのユニークID
+     * @param  array              $arrForm     フォームの入力値
+     * @param  SC_Helper_Purchase $objPurchase SC_Helper_Purchase インスタンス
+     * @param  array              $arrPayment  お支払い方法の配列
+     * @return void
+     */
+    public function lfRegistPayment($uniqid, $arrForm, &$objPurchase, $arrPayment)
+    {
+        $arrForm['order_temp_id'] = $uniqid;
+        $arrForm['update_date'] = 'CURRENT_TIMESTAMP';
+
+        if ($arrForm['point_check'] != '1') {
+            $arrForm['use_point'] = 0;
+        }
+
+        foreach ($arrPayment as $payment) {
+            if ($arrForm['payment_id'] == $payment['payment_id']) {
+                $arrForm['charge'] = $payment['charge'];
+                $arrForm['payment_method'] = $payment['payment_method'];
+                break;
+            }
+        }
+        $this->arrForm = array_merge($this->arrForm, $arrForm);
     }
 }

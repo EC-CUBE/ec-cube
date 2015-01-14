@@ -29,7 +29,7 @@ class RouteMap
                 'action' => 'process',
                 'template' => 'abouts',
             ),
-            'cart' => array(
+            'cart/index' => array(
                 'class' => '\\Cart\\Index',
                 'action' => 'process',
                 'template' => 'cart',
@@ -240,7 +240,7 @@ class RouteMap
                 'action' => 'process',
                 'template' => 'rss_products',
             ),
-            'shopping' => array(
+            'shopping/index' => array(
                 'class' => '\\Shopping\\Index',
                 'action' => 'process',
                 'template' => 'shopping',
@@ -318,19 +318,19 @@ class RouteMap
 
 // admin
             'admin/index' => array(
-                'class' => 'Index',
+                'class' => '\\Index',
                 'action' => 'process',
                 'ssl' => true,
                 'template' => 'admin_index',
             ),
             'admin/home' => array(
-                'class' => 'Home',
+                'class' => '\\Home',
                 'action' => 'process',
                 'ssl' => true,
                 'template' => 'admin_home',
             ),
             'admin/logout' => array(
-                'class' => 'Logout',
+                'class' => '\\Logout',
                 'action' => 'action',
                 'ssl' => true,
                 'template' => 'admin_logout',
