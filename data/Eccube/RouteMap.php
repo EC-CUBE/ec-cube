@@ -6,6 +6,17 @@ class RouteMap
 {
     public function getMap() {
         return array(
+// sample
+            'products/detail/[:product_id]/[:category_id]' => array(
+                'class' => '\\Products\\Detail',
+                'action' => 'process',
+                'template' => 'produdcts_detail',
+            ),
+            'products/detail/[:product_id]/' => array(
+                'class' => '\\Products\\Detail',
+                'action' => 'process',
+                'template' => 'produdcts_detail',
+            ),
 // front
             'index' => array(
                 'method' => 'GET|POST',
