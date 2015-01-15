@@ -6,6 +6,13 @@ class RouteMap
 {
     public function getMap() {
         return array(
+// api
+            'api/customer' => array(
+                'method' => 'GET|POST|PUT|DELETE',
+                'class' => '\\customer\\Index',
+                'action' => 'process',
+            ),
+
 // sample
             'products/detail/[:product_id]/[:category_id]' => array(
                 'class' => '\\Products\\Detail',

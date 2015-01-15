@@ -6,12 +6,15 @@ class Router
 {
     var $adminDir;
     var $isAdmin;
+    var $isApi;
     var $template;
     var $args;
+    var $method;
 
     function __construct()
     {
         $this->adminDir = (substr(ADMIN_DIR, -1) === '/' ) ? substr(ADMIN_DIR, 0, strlen(ADMIN_DIR) - 1) : ADMIN_DIR;
+        $this->method = ($_SERVER['REQUEST_METHOD']) ?: 'GET';
     }
 
     public function action()
@@ -30,7 +33,12 @@ class Router
 
         $settings = $this->getSettingsFromUrl();
 
-        $namespace = 'Eccube\\Page';
+        $namespace = 'Eccube';
+        if ($this->isApi) {
+            $namespace .= '\\Api';
+        } else {
+            $namespace .= '\\Page';
+        }
         if ($this->isAdmin) {
             $namespace .= '\\Admin';
         }
@@ -48,7 +56,9 @@ class Router
     {
         $map = RouteMap::getMap();
         $this->isAdmin = strpos($this->template, $this->adminDir) !== FALSE;
+        $this->isApi = strpos($this->template, 'api/') !== FALSE;
         $mapKey= 'index';
+
         foreach ($map as $path => $settings) {
             $pathes = array_filter(explode('/', $path));
             $templates = array_filter(explode('/', $this->template));
@@ -60,6 +70,13 @@ class Router
             if ($pathCount !== $tempCount) {
                 continue;
             }
+            // methodが合わない定義は評価しない
+            $method = ($settings['method']) ?: $settings['method'];
+            $methods = explode('|', $method);
+            if (!in_array($this->method, $methods)) {
+                continue;
+            }
+
             if ($this->isAdmin) {
                 $path = str_replace('admin', $this->adminDir, $path);
             }
@@ -68,12 +85,15 @@ class Router
                 $classPath = substr($path, 0, strpos($path, '/[:'));
                 $argsPath = substr($path, strpos($path, '/[:'), strlen($path));
                 $args = array_filter(explode('/', $argsPath));
-
+                if (strpos($this->template, $classPath) !== 0) {
+                    continue;
+                }
                 $query = str_replace($classPath, '', $this->template);
                 $queries = array_filter(explode('/', $query));
+
                 foreach ($args as $argKey => $argVal) {
                     $argVal = str_replace(array('[:', ']'), array('', ''), $argVal);
-                    $_GET[$argVal] = $queries[$argKey];
+                    $_REQUEST[$argVal] = $queries[$argKey];
                 }
                 $mapKey = $path;
             } else {
