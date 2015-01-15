@@ -21,8 +21,27 @@
  *}-->
 
 <script type="text/javascript">
-    $(function() {
-        $('input[type="number"]').change(function() {
+$(function(){
+    $(".addline").on("click", function(){
+        var target = $(this).next().val(),
+            max = $(this).next().next().val();        
+        var line = parseInt($('input[name="line_of_num[' + target + ']"]').val());
+        if (line >= max || line >= <!--{$tpl_addrmax}--> + 1) {
+            return false;
+        }
+
+        var max = parseInt($('input[name="max_' + target + '"]').val());
+        $('input[name="max_' + target + '"]').val(max + 1);
+        line += 1;
+        $('input[name="line_of_num[' + target + ']"]').val(line);
+
+        $('#image_' + target).prop('rowspan', line + 1);
+        $('#item_' + target).prop('rowspan', line + 1);
+
+        var $inputs = $('#default').slice(0);
+        $inputs.html($inputs.html().replace(/##PID##/g, target));
+        $('#total_' + target).before($inputs);
+        $inputs.find("input[type='number']").on("change", function(){
             var sum = 0;
             var target = $(this).attr('id');
             target = target.replace(/quantity_/, '');
@@ -33,23 +52,18 @@
         });
     });
 
-    function addLine(target, max) {
-        var line = parseInt($('input[name="line_of_num[' + target + ']"]').val());
-        if (line >= max || line >= <!--{$tpl_addrmax}--> + 1) {
-            return false;
-        }
-        var max = parseInt($('input[name="max_' + target + '"]').val());
-        $('input[name="max_' + target + '"]').val(max + 1);
-        line += 1;
-        $('input[name="line_of_num[' + target + ']"]').val(line);
-        $('#image_' + target).prop('rowspan', line + 1);
-        $('#item_' + target).prop('rowspan', line + 1);
-        var inputs = $('#default').html();
-        inputs = inputs.replace(/##PID##/g, target);
-        $('#total_' + target).before(inputs);
-        //$('.quantity_' + target).bind('change', 'calcSum');
-        //FIXME:追加したHTMLが$().change で反応しない.
-    }
+    $(function() {
+        $('input[type="number"]').on("change", function(){
+            var sum = 0;
+            var target = $(this).attr('id');
+            target = target.replace(/quantity_/, '');
+            $('.quantity_' + target).each(function() {
+                sum += parseInt($(this).val());
+            });
+            $('input[name="max_' + target + '"]').val(sum);
+        });
+    });
+});
 </script>
 <div id="undercolumn">
     <div id="undercolumn_shopping">
@@ -137,7 +151,9 @@
                         <!--{/section}-->
                     <tr id="total_<!--{$item.id}-->">
                         <td>
-                            <a class="btn_normal" href="javascript:;" onclick="addLine('<!--{$item.id}-->', '<!--{$item.quantity}-->');">お届け先の追加</a>
+                            <a class="btn_normal addline" href="javascript:;" <!--{*onclick="addLine('<!--{$item.id}-->', '<!--{$item.quantity}-->');*}-->">お届け先の追加</a>
+                            <input type="hidden" name="item.id" value="<!--{$item.id}-->" />
+                            <input type="hidden" name="item.quantity" value="<!--{$item.quantity}-->" />
                         </td>
                         <td class="alignR"><input type="text" name="max_<!--{$item.id}-->" value="<!--{$sum}-->" class="box40" readonly="readonly" /><span class="attention"> / <!--{$item.quantity|n2s}--></span></td>
                     </tr>
@@ -154,8 +170,8 @@
                 </ul>
             </div>
         </form>
-        <table style="display:none;"><tbody id="default">
-            <tr>
+        <table style="display:none;"><tbody>
+            <tr id="default">
                 <td>
                     <!--{assign var=key value="product_class_id"}-->
                     <input type="hidden" name="<!--{$key}-->[]" value="##PID##" />
