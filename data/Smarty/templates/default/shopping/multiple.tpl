@@ -22,6 +22,16 @@
 
 <script type="text/javascript">
 $(function(){
+    function calcSum(_this) {
+            var sum = 0;
+            var target = _this.attr('id');
+            target = target.replace(/quantity_/, '');
+            $('.quantity_' + target).each(function() {
+                sum += parseInt($(this).val());
+            });
+            $('input[name="max_' + target + '"]').val(sum);
+
+    }
     $(".addline").on("click", function(){
         var target = $(this).next().val(),
             max = $(this).next().next().val();        
@@ -42,25 +52,13 @@ $(function(){
         $inputs.html($inputs.html().replace(/##PID##/g, target));
         $('#total_' + target).before($inputs);
         $inputs.find("input[type='number']").on("change", function(){
-            var sum = 0;
-            var target = $(this).attr('id');
-            target = target.replace(/quantity_/, '');
-            $('.quantity_' + target).each(function() {
-                sum += parseInt($(this).val());
-            });
-            $('input[name="max_' + target + '"]').val(sum);
+            calcSum($(this));
         });
     });
 
     $(function() {
         $('input[type="number"]').on("change", function(){
-            var sum = 0;
-            var target = $(this).attr('id');
-            target = target.replace(/quantity_/, '');
-            $('.quantity_' + target).each(function() {
-                sum += parseInt($(this).val());
-            });
-            $('input[name="max_' + target + '"]').val(sum);
+            calcSum($(this));
         });
     });
 });
