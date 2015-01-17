@@ -34,7 +34,7 @@ abstract class AbstractApi
     {
         $this->requestMethod = $this->getRequestMethod();
         $this->requestBody = $this->getRequestBody();
-        $this->responseStatusCode = 201;
+        $this->responseStatusCode = 200;
     }
 
     /**
@@ -74,7 +74,8 @@ abstract class AbstractApi
         $f = fopen('php://input', 'r');
         $content = stream_get_contents($f);
         fclose($f);
-        return $content;
+        // 連想配列でreturn
+        return json_decode($content, true);
     }
 
 }

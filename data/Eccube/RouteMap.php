@@ -7,8 +7,13 @@ class RouteMap
     public function getMap() {
         return array(
 // api
+            'api/customer/[:customer_id]' => array(
+                'method' => 'GET|DELETE',
+                'class' => '\\customer\\Index',
+                'action' => 'process',
+            ),
             'api/customer' => array(
-                'method' => 'GET|POST|PUT|DELETE',
+                'method' => 'POST|PUT',
                 'class' => '\\customer\\Index',
                 'action' => 'process',
             ),

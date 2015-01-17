@@ -79,15 +79,61 @@ class Index extends AbstractApi
 
     private function getCustomer()
     {
-        $this->responseBody = "get customer";
+        $this->responseBody = json_encode(CustomerHelper::sfGetCustomerData($_REQUEST['customer_id']));
+        $this->responseStatusCode = 200;
     }
-    private function PostCustomer() {
-        $this->responseBody = "post customer";
+
+    private function PostCustomer()
+    {
+        if (isset($this->requestBody['customer_id'])) {
+            $customer = CustomerHelper::sfEditCustomerData($this->requestBody, $this->requestBody['customer_id']);
+            $this->responseStatusCode = 200;
+        } else {
+            $this->responseStatusCode = 400;
+        }
     }
-    private function PutCustomer() {
-        $this->responseBody = "put customer";
+
+    private function PutCustomer()
+    {
+        if (isset($this->requestBody['customer_id'])) {
+            $this->responseStatusCode = 400;
+        } else {
+            if ($this->checkError($this->requestBody)) {
+                $this->requestBody['update_date'] = 'now()';
+                $query = new Query();
+
+                $query->begin();
+                $this->requestBody['customer_id'] = $query->nextVal('dtb_customer_customer_id');
+                $query->insert('dtb_customer', $this->requestBody);
+                $query->commit();
+                $this->responseStatusCode = 201;
+            } else {
+                $this->responseStatusCode = 400;
+            }
+        }
     }
-    private function DeleteCustomer() {
-        $this->responseBody = "delete customer";
+
+    private function DeleteCustomer()
+    {
+        if (isset($_REQUEST['customer_id'])) {
+            if (CustomerHelper::delete($_REQUEST['customer_id'])) {
+                $this->responseStatusCode = 200;
+            } else {
+                $this->responseStatusCode = 404;
+            }
+        } else {
+            $this->responseStatusCode = 400;
+        }
+    }
+
+    private function checkError($request)
+    {
+        $notNullParam = array('name01', 'name02', 'email', 'secret_key');
+        foreach ($notNullParam as $param) {
+            if (!isset($request[$param])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
