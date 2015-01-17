@@ -12,7 +12,7 @@
 
 namespace Eccube\Api\Customer;
 
-use Eccube\Page\AbstractPage;
+use Eccube\Api\AbstractApi;
 use Eccube\Common\Date;
 use Eccube\Common\FormParam;
 use Eccube\Common\PageNavi;
@@ -30,15 +30,8 @@ use Eccube\Common\Util\Utils;
  * @package Page
  * @author LOCKON CO.,LTD.
  */
-class Index extends AbstractPage
+class Index extends AbstractApi
 {
-    var $data;
-    var $requestBody;
-    var $requestMethod;
-    var $responseStatusCode;
-    var $responseBody;
-
-
     /**
      * Page を初期化する.
      *
@@ -46,10 +39,7 @@ class Index extends AbstractPage
      */
     public function init()
     {
-        $this->requestMethod = $this->getRequestMethod();
-        $this->requestBody = $this->getRequestBody();
-
-        $this->responseStatusCode = 201;
+        parent::init();
     }
 
     /**
@@ -59,8 +49,9 @@ class Index extends AbstractPage
      */
     public function process()
     {
+        parent::process();
         $this->action();
-        $this->sendResponseJson();
+        $this->sendResponseJson($this->responseBody);
     }
 
     /**
@@ -72,73 +63,31 @@ class Index extends AbstractPage
     {
         switch($this->requestMethod) {
             case 'GET':
+                $this->getCustomer();
                 break;
             case 'POST':
+                $this->PostCustomer();
                 break;
             case 'PUT':
+                $this->PutCustomer();
                 break;
             case 'DELETE':
+                $this->DeleteCustomer();
                 break;
         }
-
-        // $this->lfRegistData($objFormParam);
     }
 
-    public function sendResponseJson () {
-        $objDisplay = new Display();
-        $objDisplay->prepare($this);
-        $objDisplay->addHeader('HTTP/1.1', $this->responseStatusCode);
-        $objDisplay->addHeader('Content-type', "application/json; charset=utf-8");
-        $objDisplay->addHeader('Cache-Control', '');
-        $objDisplay->addHeader('Pragma', '');
-
-        $objDisplay->response->body = json_encode($this->responseData);
-        $objDisplay->response->write();
-        Response::actionExit();
-    }
-
-    /**
-     * 登録処理
-     *
-     * @param  array $objFormParam フォームパラメータークラス
-     * @return integer エラー配列
-     */
-    public function lfRegistData(&$objFormParam)
+    private function getCustomer()
     {
-        // 登録用データ取得
-        $arrData = $objFormParam->getDbArray();
-        // 足りないものを作る
-        if (!Utils::isBlank($objFormParam->getValue('year'))) {
-            $arrData['birth'] = $objFormParam->getValue('year') . '/'
-                            . $objFormParam->getValue('month') . '/'
-                            . $objFormParam->getValue('day')
-                            . ' 00:00:00';
-        }
-
-        if (!is_numeric($arrData['customer_id'])) {
-            $arrData['secret_key'] = Utils::sfGetUniqRandomId('r');
-        } else {
-            $arrOldCustomerData = CustomerHelper::sfGetCustomerData($arrData['customer_id']);
-            if ($arrOldCustomerData['status'] != $arrData['status']) {
-                $arrData['secret_key'] = Utils::sfGetUniqRandomId('r');
-            }
-        }
-
-        return CustomerHelper::sfEditCustomerData($arrData, $arrData['customer_id']);
+        $this->responseBody = "get customer";
     }
-
-    /**
-     * メソッド取得
-     * @return string 
-     */
-    protected function getRequestMethod() {
-        return $_SERVER['REQUEST_METHOD'];
+    private function PostCustomer() {
+        $this->responseBody = "post customer";
     }
-    
-    protected function getRequestBody() {
-        $f = fopen('php://input', 'r');
-        $content = stream_get_contents($f);
-        fclose($f);
-        return $content;
+    private function PutCustomer() {
+        $this->responseBody = "put customer";
+    }
+    private function DeleteCustomer() {
+        $this->responseBody = "delete customer";
     }
 }
