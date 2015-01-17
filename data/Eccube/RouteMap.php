@@ -455,7 +455,7 @@ class RouteMap
                 'ssl' => true,
                 'template' => 'admin_contents_recommend_search',
             ),
-            'admin/customer/' => array(
+            'admin/customer/index' => array(
                 'class' => '\\Customer\\Index',
                 'action' => 'process',
                 'ssl' => true,

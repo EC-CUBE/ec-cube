@@ -58,7 +58,6 @@ class Router
         $this->isAdmin = strpos($this->template, $this->adminDir) !== FALSE;
         $this->isApi = strpos($this->template, 'api/') !== FALSE;
         $mapKey= 'index';
-
         foreach ($map as $path => $settings) {
             $pathes = array_filter(explode('/', $path));
             $templates = array_filter(explode('/', $this->template));
@@ -70,13 +69,13 @@ class Router
             if ($pathCount !== $tempCount) {
                 continue;
             }
+
             // methodが合わない定義は評価しない
-            $method = ($settings['method']) ?: $settings['method'];
+            $method = ($settings['method']) ?: "GET|POST";
             $methods = explode('|', $method);
             if (!in_array($this->method, $methods)) {
                 continue;
             }
-
             if ($this->isAdmin) {
                 $path = str_replace('admin', $this->adminDir, $path);
             }
