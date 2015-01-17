@@ -51,7 +51,7 @@ class Index extends AbstractApi
     {
         parent::process();
         $this->action();
-        $this->sendResponseJson($this->responseBody);
+        $this->sendResponseJson();
     }
 
     /**
