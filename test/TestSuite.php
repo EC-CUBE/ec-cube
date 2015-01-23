@@ -39,7 +39,7 @@ class TestSuite
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('ECCUBE');
+        $suite = new PHPUnit_Common_TestSuite('ECCUBE');
         $suite->addTest(Page_AllTests::suite());
         $suite->addTest(DB_AllTests::suite());
         $suite->addTest(Helper_AllTests::suite());

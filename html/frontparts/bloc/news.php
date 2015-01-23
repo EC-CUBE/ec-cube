@@ -20,10 +20,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-require_once realpath(dirname(__FILE__)) . '/../../require.php';
-require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_News_Ex.php';
 
-$objPage            = new LC_Page_FrontParts_BLoc_News_Ex();
+require_once realpath(dirname(__FILE__)) . '/../../require.php';
+
+$objPage = new Eccube\Page\Bloc\News();
 $objPage->blocItems = $params['items'];
 $objPage->init();
 $objPage->process();

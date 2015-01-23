@@ -45,5 +45,13 @@
         "satooshi/php-coveralls": "dev-master",
         "phpunit/phpunit": "3.7.*",
         "phing/phing": "2.*"
+<<<<<<< HEAD
+    },
+    "autoload": {
+        "psr-0": {
+            "Eccube": "data/"
+        }
+=======
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
     }
 }

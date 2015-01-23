@@ -22,8 +22,7 @@
  */
 
 require_once '../require.php';
-require_once CLASS_EX_REALDIR . 'page_extends/frontparts/LC_Page_FrontParts_LoginCheck_Ex.php';
 
-$objPage = new LC_Page_FrontParts_LoginCheck_Ex();
+$objPage = new Eccube\Page\Bloc\LoginCheck();
 $objPage->init();
 $objPage->process();

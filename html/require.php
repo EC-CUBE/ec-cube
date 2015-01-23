@@ -37,10 +37,11 @@ require_once HTML_REALDIR . HTML2DATA_DIR . 'require_base.php';
 // 絵文字変換 (除去) フィルターを組み込む。
 ob_start(array('SC_MobileEmoji', 'handler'));
 
-if (SC_Display_Ex::detectDevice() == DEVICE_TYPE_MOBILE) {
+if (Eccube\Common\Display::detectDevice() == DEVICE_TYPE_MOBILE) {
     // resize_image.phpは除外
     if (stripos($_SERVER['REQUEST_URI'], ROOT_URLPATH . 'resize_image.php') === FALSE) {
-        $objMobile = new SC_Helper_Mobile_Ex();
+        $objMobile = new Eccube\Common\Helper\MobileHelper();
         $objMobile->sfMobileInit();
     }
 }
+

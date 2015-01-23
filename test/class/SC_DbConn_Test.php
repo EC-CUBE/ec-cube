@@ -31,7 +31,7 @@ require_once(realpath(dirname(__FILE__)) . "/../../data/class/SC_DbConn.php");
  * @author Kentaro Ohkouchi
  * @version $Id$
  */
-class SC_DbConn_Test extends PHPUnit_Framework_TestCase 
+class SC_DbConn_Test extends PHPUnit_Common_TestCase 
 {
 
     /** SC_DbConn インスタンス */

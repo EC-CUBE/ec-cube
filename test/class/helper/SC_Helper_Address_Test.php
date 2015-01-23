@@ -10,7 +10,7 @@
  *
  * @author cyberwill
  */
-class SC_Helper_Address_Test extends PHPUnit_Framework_TestCase
+class SC_Helper_Address_Test extends PHPUnit_Common_TestCase
 {
     public $objQuery = "";
     public $objAddress = "";
