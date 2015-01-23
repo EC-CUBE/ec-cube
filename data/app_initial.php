@@ -39,10 +39,16 @@ if (!defined('CACHE_REALDIR')) {
 //require_once(CLASS_EX_REALDIR . 'helper_extends/SC_Helper_Plugin_Ex.php');
 
 // クラスのオートローディングを定義する
+<<<<<<< HEAD
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/Eccube/Common/ClassAutoloader.php';
 $Autoloader = new Eccube\Common\ClassAutoloader();
 spl_autoload_register(array($Autoloader, 'autoload'));
+=======
+require_once __DIR__.'/../vendor/autoload.php';
+require_once(CLASS_EX_REALDIR . 'SC_ClassAutoloader_Ex.php');
+spl_autoload_register(array('SC_ClassAutoloader_Ex', 'autoload'));
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
 
 Eccube\Common\Helper\HandleErrorHelper::load();
 //SC_Helper_HandleError_Ex::load();

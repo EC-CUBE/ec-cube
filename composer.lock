@@ -4,7 +4,11 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "hash": "8955ff1b2364c1658bb9961fff25b0c6",
+=======
+    "hash": "05f8c47a64c10e867f5ed142cf64462d",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
     "packages": [
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -1388,17 +1392,30 @@
         },
         {
             "name": "symfony/config",
+<<<<<<< HEAD
             "version": "v2.6.3",
+=======
+            "version": "v2.6.1",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
             "target-dir": "Symfony/Component/Config",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config.git",
+<<<<<<< HEAD
                 "reference": "d94f222eff99a22ce313555b78642b4873418d56"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Config/zipball/d94f222eff99a22ce313555b78642b4873418d56",
                 "reference": "d94f222eff99a22ce313555b78642b4873418d56",
+=======
+                "reference": "84c0c150c1520995f09ea9e47e817068b353cb0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Config/zipball/84c0c150c1520995f09ea9e47e817068b353cb0f",
+                "reference": "84c0c150c1520995f09ea9e47e817068b353cb0f",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
                 "shasum": ""
             },
             "require": {
@@ -1432,21 +1449,38 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
             "time": "2015-01-03 08:01:59"
         },
         {
             "name": "symfony/console",
             "version": "v2.6.3",
+=======
+            "time": "2014-12-02 20:19:20"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v2.6.1",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
+<<<<<<< HEAD
                 "reference": "6ac6491ff60c0e5a941db3ccdc75a07adbb61476"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Console/zipball/6ac6491ff60c0e5a941db3ccdc75a07adbb61476",
                 "reference": "6ac6491ff60c0e5a941db3ccdc75a07adbb61476",
+=======
+                "reference": "ef825fd9f809d275926547c9e57cbf14968793e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/ef825fd9f809d275926547c9e57cbf14968793e8",
+                "reference": "ef825fd9f809d275926547c9e57cbf14968793e8",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
                 "shasum": ""
             },
             "require": {
@@ -1489,21 +1523,38 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
             "time": "2015-01-06 17:50:02"
         },
         {
             "name": "symfony/event-dispatcher",
             "version": "v2.6.3",
+=======
+            "time": "2014-12-02 20:19:20"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v2.6.1",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
+<<<<<<< HEAD
                 "reference": "40ff70cadea3785d83cac1c8309514b36113064e"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/40ff70cadea3785d83cac1c8309514b36113064e",
                 "reference": "40ff70cadea3785d83cac1c8309514b36113064e",
+=======
+                "reference": "720fe9bca893df7ad1b4546649473b5afddf0216"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/720fe9bca893df7ad1b4546649473b5afddf0216",
+                "reference": "720fe9bca893df7ad1b4546649473b5afddf0216",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
                 "shasum": ""
             },
             "require": {
@@ -1511,10 +1562,17 @@
             },
             "require-dev": {
                 "psr/log": "~1.0",
+<<<<<<< HEAD
                 "symfony/config": "~2.0,>=2.0.5",
                 "symfony/dependency-injection": "~2.6",
                 "symfony/expression-language": "~2.6",
                 "symfony/stopwatch": "~2.3"
+=======
+                "symfony/config": "~2.0",
+                "symfony/dependency-injection": "~2.6",
+                "symfony/expression-language": "~2.6",
+                "symfony/stopwatch": "~2.2"
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
             },
             "suggest": {
                 "symfony/dependency-injection": "",
@@ -1547,21 +1605,38 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
             "time": "2015-01-05 14:28:40"
         },
         {
             "name": "symfony/filesystem",
             "version": "v2.6.3",
+=======
+            "time": "2014-12-02 20:19:20"
+        },
+        {
+            "name": "symfony/filesystem",
+            "version": "v2.6.1",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
             "target-dir": "Symfony/Component/Filesystem",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Filesystem.git",
+<<<<<<< HEAD
                 "reference": "a1f566d1f92e142fa1593f4555d6d89e3044a9b7"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Filesystem/zipball/a1f566d1f92e142fa1593f4555d6d89e3044a9b7",
                 "reference": "a1f566d1f92e142fa1593f4555d6d89e3044a9b7",
+=======
+                "reference": "ff6efc95256cb33031933729e68b01d720b5436b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/ff6efc95256cb33031933729e68b01d720b5436b",
+                "reference": "ff6efc95256cb33031933729e68b01d720b5436b",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
                 "shasum": ""
             },
             "require": {
@@ -1594,21 +1669,38 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
             "time": "2015-01-03 21:13:09"
         },
         {
             "name": "symfony/stopwatch",
             "version": "v2.6.3",
+=======
+            "time": "2014-12-02 20:19:20"
+        },
+        {
+            "name": "symfony/stopwatch",
+            "version": "v2.6.1",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
             "target-dir": "Symfony/Component/Stopwatch",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Stopwatch.git",
+<<<<<<< HEAD
                 "reference": "e8da5286132ba75ce4b4275fbf0f4cd369bfd71c"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Stopwatch/zipball/e8da5286132ba75ce4b4275fbf0f4cd369bfd71c",
                 "reference": "e8da5286132ba75ce4b4275fbf0f4cd369bfd71c",
+=======
+                "reference": "261abd360cfb6ac65ea93ffd82073e2011d034fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Stopwatch/zipball/261abd360cfb6ac65ea93ffd82073e2011d034fc",
+                "reference": "261abd360cfb6ac65ea93ffd82073e2011d034fc",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
                 "shasum": ""
             },
             "require": {
@@ -1641,21 +1733,38 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
             "time": "2015-01-03 08:01:59"
         },
         {
             "name": "symfony/yaml",
             "version": "v2.6.3",
+=======
+            "time": "2014-12-02 20:19:20"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v2.6.1",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
+<<<<<<< HEAD
                 "reference": "82462a90848a52c2533aa6b598b107d68076b018"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Yaml/zipball/82462a90848a52c2533aa6b598b107d68076b018",
                 "reference": "82462a90848a52c2533aa6b598b107d68076b018",
+=======
+                "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/3346fc090a3eb6b53d408db2903b241af51dcb20",
+                "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20",
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
                 "shasum": ""
             },
             "require": {
@@ -1688,7 +1797,11 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
+<<<<<<< HEAD
             "time": "2015-01-03 15:33:07"
+=======
+            "time": "2014-12-02 20:19:20"
+>>>>>>> e96c4c175cdfde99ea5b44f68bd09ada46bac4c3
         }
     ],
     "aliases": [
