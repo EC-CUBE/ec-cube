@@ -30,7 +30,7 @@
                 <!--{else}-->
                     <!--{assign var=disp_child value=0}-->
                 <!--{/if}-->
-                <!--{if isset($child.children|smarty:nodefaults)}-->
+                <!--{if isset($child.children)}-->
                     <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$child.children display=$disp_child}-->
                 <!--{/if}-->
             </li>

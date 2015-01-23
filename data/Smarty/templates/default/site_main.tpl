@@ -22,7 +22,7 @@
 
 <!--{strip}-->
     <body class="<!--{$tpl_page_class_name|h}-->">
-        <!--{$GLOBAL_ERR}-->
+        <!--{$GLOBAL_ERR nofilter}-->
         <noscript>
             <p>JavaScript を有効にしてご利用下さい.</p>
         </noscript>
@@ -37,9 +37,9 @@
                     <!--{foreach key=HeaderTopNaviKey item=HeaderTopNaviItem from=$arrPageLayout.HeaderTopNavi}-->
                         <!-- ▼<!--{$HeaderTopNaviItem.bloc_name}--> -->
                         <!--{if $HeaderTopNaviItem.php_path != ""}-->
-                            <!--{include_php file=$HeaderTopNaviItem.php_path items=$HeaderTopNaviItem}-->
+                            <!--{include_php_ex file=$HeaderTopNaviItem.php_path assign=$HeaderTopNaviItem}-->
                         <!--{else}-->
-                            <!--{include file=$HeaderTopNaviItem.tpl_path items=$HeaderTopNaviItem}-->
+                            <!--{include file=$HeaderTopNaviItem.tpl_path}-->
                         <!--{/if}-->
                         <!-- ▲<!--{$HeaderTopNaviItem.bloc_name}--> -->
                     <!--{/foreach}-->
@@ -62,9 +62,9 @@
                         <!--{foreach key=TopNaviKey item=TopNaviItem from=$arrPageLayout.TopNavi}-->
                             <!-- ▼<!--{$TopNaviItem.bloc_name}--> -->
                             <!--{if $TopNaviItem.php_path != ""}-->
-                                <!--{include_php file=$TopNaviItem.php_path items=$TopNaviItem}-->
+                                <!--{include_php_ex items=$TopNaviItem}-->
                             <!--{else}-->
-                                <!--{include file=$TopNaviItem.tpl_path items=$TopNaviItem}-->
+                                <!--{include file=$TopNaviItem.tpl_path assign=$TopNaviItem}-->
                             <!--{/if}-->
                             <!-- ▲<!--{$TopNaviItem.bloc_name}--> -->
                         <!--{/foreach}-->
@@ -80,9 +80,9 @@
                         <!--{foreach key=LeftNaviKey item=LeftNaviItem from=$arrPageLayout.LeftNavi}-->
                             <!-- ▼<!--{$LeftNaviItem.bloc_name}--> -->
                             <!--{if $LeftNaviItem.php_path != ""}-->
-                                <!--{include_php file=$LeftNaviItem.php_path items=$LeftNaviItem}-->
+                                <!--{include_php_ex items=$LeftNaviItem}-->
                             <!--{else}-->
-                                <!--{include file=$LeftNaviItem.tpl_path items=$LeftNaviItem}-->
+                                <!--{include file=$LeftNaviItem.tpl_path}-->
                             <!--{/if}-->
                             <!-- ▲<!--{$LeftNaviItem.bloc_name}--> -->
                         <!--{/foreach}-->
@@ -104,9 +104,9 @@
                         <!--{foreach key=MainHeadKey item=MainHeadItem from=$arrPageLayout.MainHead}-->
                             <!-- ▼<!--{$MainHeadItem.bloc_name}--> -->
                             <!--{if $MainHeadItem.php_path != ""}-->
-                                <!--{include_php file=$MainHeadItem.php_path items=$MainHeadItem}-->
+                                <!--{include_php_ex items=$MainHeadItem}-->
                             <!--{else}-->
-                                <!--{include file=$MainHeadItem.tpl_path items=$MainHeadItem}-->
+                                <!--{include file=$MainHeadItem.tpl_path}-->
                             <!--{/if}-->
                             <!-- ▲<!--{$MainHeadItem.bloc_name}--> -->
                         <!--{/foreach}-->
@@ -122,9 +122,9 @@
                         <!--{foreach key=MainFootKey item=MainFootItem from=$arrPageLayout.MainFoot}-->
                             <!-- ▼<!--{$MainFootItem.bloc_name}--> -->
                             <!--{if $MainFootItem.php_path != ""}-->
-                                <!--{include_php file=$MainFootItem.php_path items=$MainFootItem}-->
+                                <!--{include_php_ex items=$MainFootItem}-->
                             <!--{else}-->
-                                <!--{include file=$MainFootItem.tpl_path items=$MainFootItem}-->
+                                <!--{include file=$MainFootItem.tpl_path}-->
                             <!--{/if}-->
                             <!-- ▲<!--{$MainFootItem.bloc_name}--> -->
                         <!--{/foreach}-->
@@ -140,9 +140,9 @@
                         <!--{foreach key=RightNaviKey item=RightNaviItem from=$arrPageLayout.RightNavi}-->
                             <!-- ▼<!--{$RightNaviItem.bloc_name}--> -->
                             <!--{if $RightNaviItem.php_path != ""}-->
-                                <!--{include_php file=$RightNaviItem.php_path items=$RightNaviItem}-->
+                                <!--{include_php_ex items=$RightNaviItem}-->
                             <!--{else}-->
-                                <!--{include file=$RightNaviItem.tpl_path items=$RightNaviItem}-->
+                                <!--{include file=$RightNaviItem.tpl_path}-->
                             <!--{/if}-->
                             <!-- ▲<!--{$RightNaviItem.bloc_name}--> -->
                         <!--{/foreach}-->
@@ -158,9 +158,9 @@
                         <!--{foreach key=BottomNaviKey item=BottomNaviItem from=$arrPageLayout.BottomNavi}-->
                             <!-- ▼<!--{$BottomNaviItem.bloc_name}--> -->
                             <!--{if $BottomNaviItem.php_path != ""}-->
-                                <!--{include_php file=$BottomNaviItem.php_path items=$BottomNaviItem}-->
+                                <!--{include_php_ex items=$BottomNaviItem}-->
                             <!--{else}-->
-                                <!--{include file=$BottomNaviItem.tpl_path items=$BottomNaviItem}-->
+                                <!--{include file=$BottomNaviItem.tpl_path}-->
                             <!--{/if}-->
                             <!-- ▲<!--{$BottomNaviItem.bloc_name}--> -->
                         <!--{/foreach}-->
@@ -183,9 +183,9 @@
                     <!--{foreach key=FooterBottomNaviKey item=FooterBottomNaviItem from=$arrPageLayout.FooterBottomNavi}-->
                         <!-- ▼<!--{$FooterBottomNaviItem.bloc_name}--> -->
                         <!--{if $FooterBottomNaviItem.php_path != ""}-->
-                            <!--{include_php file=$FooterBottomNaviItem.php_path items=$FooterBottomNaviItem}-->
+                            <!--{include_php_ex items=$FooterBottomNaviItem}-->
                         <!--{else}-->
-                            <!--{include file=$FooterBottomNaviItem.tpl_path items=$FooterBottomNaviItem}-->
+                            <!--{include file=$FooterBottomNaviItem.tpl_path}-->
                         <!--{/if}-->
                         <!-- ▲<!--{$FooterBottomNaviItem.bloc_name}--> -->
                     <!--{/foreach}-->

@@ -27,17 +27,16 @@ class SC_View
 
     public $objPage;
 
-    // コンストラクタ
-    public function __construct()
-    {
-        $this->init();
+    public function __construct() {
+       $this->init();
     }
 
     public function init()
     {
-        $this->_smarty = new Smarty;
+        $this->_smarty = new SmartyBC();
         $this->_smarty->left_delimiter = '<!--{';
         $this->_smarty->right_delimiter = '}-->';
+        $this->_smarty->allow_php_tag = true;
         $this->_smarty->register_modifier('sfDispDBDate', array('SC_Utils_Ex', 'sfDispDBDate'));
         $this->_smarty->register_modifier('sfGetErrorColor', array('SC_Utils_Ex', 'sfGetErrorColor'));
         $this->_smarty->register_modifier('sfTrim', array('SC_Utils_Ex', 'sfTrim'));
@@ -48,7 +47,6 @@ class SC_View
         $this->_smarty->register_modifier('sfMultiply', array('SC_Utils_Ex', 'sfMultiply'));
         $this->_smarty->register_modifier('sfRmDupSlash', array('SC_Utils_Ex', 'sfRmDupSlash'));
         $this->_smarty->register_modifier('sfCutString', array('SC_Utils_Ex', 'sfCutString'));
-        $this->_smarty->plugins_dir=array('plugins', realpath(dirname(__FILE__)) . '/../smarty_extends');
         $this->_smarty->register_modifier('sfMbConvertEncoding', array('SC_Utils_Ex', 'sfMbConvertEncoding'));
         $this->_smarty->register_modifier('sfGetEnabled', array('SC_Utils_Ex', 'sfGetEnabled'));
         $this->_smarty->register_modifier('sfNoImageMainList', array('SC_Utils_Ex', 'sfNoImageMainList'));
@@ -56,7 +54,15 @@ class SC_View
         $this->_smarty->register_function('sfIsHTTPS', array('SC_Utils_Ex', 'sfIsHTTPS'));
         $this->_smarty->register_function('sfSetErrorStyle', array('SC_Utils_Ex', 'sfSetErrorStyle'));
         $this->_smarty->register_function('printXMLDeclaration', array('GC_Utils_Ex', 'printXMLDeclaration'));
-        $this->_smarty->default_modifiers = array('script_escape');
+
+        // default escape
+        $this->_smarty->escape_html = true;
+        $this->_smarty->register_function('include_php_ex', array($this, 'include_php_ex'));
+        $this->_smarty->plugins_dir = array(
+            'plugins',
+            DATA_REALDIR . '../vendor/smarty/smarty/libs/plugins/', // defaultのplugnのpath
+            DATA_REALDIR . 'smarty_extends/',
+        );
 
         if (ADMIN_MODE == '1') {
             $this->time_start = microtime(true);
@@ -126,8 +132,9 @@ class SC_View
      */
     public function registFilter()
     {
-        $this->_smarty->register_prefilter(array(&$this, 'prefilter_transform'));
-        $this->_smarty->register_outputfilter(array(&$this, 'outputfilter_transform'));
+        $this->_smarty->registerFilter('pre', array($this, 'prefilter_transform'));
+        $this->_smarty->registerFilter("output", array($this, 'outputfilter_transform'));
+
     }
 
     /**
@@ -136,13 +143,13 @@ class SC_View
      * @param  Smarty_Compiler $smarty Smartyのコンパイラクラス
      * @return string          $source ソース
      */
-    public function prefilter_transform($source, &$smarty)
+    public function prefilter_transform($source, $smarty)
     {
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
             if (is_object($objPlugin)) {
-                $objPlugin->doAction('prefilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+                $objPlugin->doAction('prefilterTransform', array($source, $this->objPage, $smarty->_current_file));
             }
         }
 
@@ -155,13 +162,13 @@ class SC_View
      * @param  Smarty_Compiler $smarty Smartyのコンパイラクラス
      * @return string          $source ソース
      */
-    public function outputfilter_transform($source, &$smarty)
+    public function outputfilter_transform($source, $smarty)
     {
         if (!is_null($this->objPage)) {
             // フックポイントを実行.
             $objPlugin = SC_Helper_Plugin_Ex::getSingletonInstance($this->objPage->plugin_activate_flg);
             if (is_object($objPlugin)) {
-                $objPlugin->doAction('outputfilterTransform', array(&$source, $this->objPage, $smarty->_current_file));
+                $objPlugin->doAction('outputfilterTransform', array($source, $this->objPage, $smarty->_current_file));
             }
         }
 
@@ -229,5 +236,14 @@ class SC_View
     public function debug($var = true)
     {
         $this->_smarty->debugging = $var;
+    }
+
+    public function include_php_ex($params, $smarty) {
+
+        // todo 要pathチェック
+        if ($params['items']['php_path'] == false) {
+            $smarty->trigger_error("{include_php} file '". $params['file'] ."' is not readable", E_USER_NOTICE);
+        }
+        include_once $params['items']['php_path'];
     }
 }
