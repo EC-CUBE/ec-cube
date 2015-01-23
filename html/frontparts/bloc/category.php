@@ -22,8 +22,9 @@
  */
 
 require_once realpath(dirname(__FILE__)) . '/../../require.php';
+require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_Category_Ex.php';
 
-$objPage = new Eccube\Page\Bloc\Category();
+$objPage = new LC_Page_FrontParts_BLoc_Category_Ex();
 $objPage->blocItems = $params['items'];
 $objPage->init();
 $objPage->process();

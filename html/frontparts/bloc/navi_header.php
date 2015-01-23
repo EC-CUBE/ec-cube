@@ -22,8 +22,9 @@
  */
 
 require_once realpath(dirname(__FILE__)) . '/../../require.php';
+require_once CLASS_EX_REALDIR . 'page_extends/frontparts/bloc/LC_Page_FrontParts_Bloc_NaviHeader_Ex.php';
 
-$objPage = new Eccube\Page\Bloc\NaviHeader();
+$objPage = new LC_Page_FrontParts_BLoc_NaviHeader_Ex();
 $objPage->blocItems = $params['items'];
 $objPage->init();
 $objPage->process();

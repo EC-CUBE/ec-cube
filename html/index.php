@@ -21,5 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 require_once './require.php';
-$router = new Eccube\Router();
-$router->action();
+require_once CLASS_EX_REALDIR . 'page_extends/LC_Page_Index_Ex.php';
+
+$objPage = new LC_Page_Index_Ex();
+$objPage->init();
+$objPage->process();

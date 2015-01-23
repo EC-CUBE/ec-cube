@@ -20,6 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 if (!defined('DATA_REALDIR')) {
     define('DATA_REALDIR', HTML_REALDIR . HTML2DATA_DIR);
 }
@@ -30,15 +31,18 @@ require_once DATA_REALDIR . 'app_initial.php';
 // 定数 SAFE が設定されている場合、DBアクセスを回避する。主に、エラー画面を意図する。
 if (!defined('SAFE') || !SAFE) {
     // インストール中で無い場合、
-    if (!Eccube\Common\Util\GcUtils::isInstallFunction()) {
-        Eccube\Common\Util\Utils::sfInitInstall();
+    if (!GC_Utils_Ex::isInstallFunction()) {
+        // インストールチェック
+        SC_Utils_Ex::sfInitInstall();
+
         // セッション初期化・開始
-        $sessionFactory = Eccube\Common\SessionFactory::getInstance();
+        $sessionFactory = SC_SessionFactory_Ex::getInstance();
         $sessionFactory->initSession();
+
         /*
          * 管理画面の場合は認証行う.
          * 認証処理忘れ防止のため, LC_Page_Admin::init() 等ではなく, ここでチェックする.
          */
-        Eccube\Common\Helper\SessionHelper::adminAuthorization();
+        SC_Helper_Session_Ex::adminAuthorization();
     }
 }

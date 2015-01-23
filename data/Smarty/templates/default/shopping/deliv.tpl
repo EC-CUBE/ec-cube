@@ -35,6 +35,14 @@
                 <!--{/if}-->
                 <p class="mini attention">※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
             </div>
+            <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
+                <div class="add_multiple">
+                    <p>この商品を複数の<br />お届け先に送りますか？</p>
+                    <a href="javascript:;" onclick="eccube.setModeAndSubmit('multiple', '', ''); return false">
+                        <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" />
+                    </a>
+                </div>
+            <!--{/if}-->
         </div>
 
         <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
@@ -114,7 +122,9 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="javascript:;" onclick="eccube.setModeAndSubmit('return', '', '');"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" /></a>
+                        <a href="<!--{$smarty.const.CART_URL}-->">
+                            <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" />
+                        </a>
                     </li>
                     <li>
                         <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="選択したお届け先に送る" name="send_button" id="send_button" />
