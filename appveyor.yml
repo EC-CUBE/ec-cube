@@ -63,4 +63,4 @@ before_test:
 
 test_script:
   - php -i
-  - vendor\bin\phpunit.bat --bootstrap app\config\eccube\config.php tests
+#  - vendor\bin\phpunit.bat --bootstrap app\config\eccube\config.php tests
