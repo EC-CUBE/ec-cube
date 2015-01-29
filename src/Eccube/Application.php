@@ -38,10 +38,6 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\TwigServiceProvider());
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-        $this->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-            'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
-            'profiler.mount_prefix' => '/_profiler', // this is the default
-        ));
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());

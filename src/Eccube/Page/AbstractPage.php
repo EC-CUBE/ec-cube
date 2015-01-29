@@ -334,34 +334,8 @@ abstract class AbstractPage
         // Windowsの場合は, ディレクトリの区切り文字を\から/に変換する
         $path = str_replace('\\', '/', $path);
         $htmlPath = str_replace('\\', '/', HTML_REALDIR);
-
-        // PHP 5.1 対策 ( http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4277&forum=9)
-        if (strlen($path) == 0) {
-            $path = '.';
-        }
-
-        // $path が / で始まっている場合
-        if (substr($path, 0, 1) == '/') {
-            $realPath = realpath($htmlPath . substr_replace($path, '', 0, strlen(ROOT_URLPATH)));
-        // 相対パスの場合
-        } else {
-            $realPath = realpath($path);
-        }
-        if ($realPath === false) {
-            trigger_error('realpath でエラー発生。', E_USER_ERROR);
-        }
-        $realPath = str_replace('\\', '/', $realPath);
-
-        // $path が / で終わっている場合、realpath によって削られた末尾の / を復元する。
-        if (substr($path, -1, 1) == '/' && substr($realPath, -1, 1) != '/') {
-            $realPath .= '/';
-        }
-
-        // HTML_REALDIR を削除した文字列を取得.
-        if (substr($realPath, 0, strlen($htmlPath)) !== $htmlPath) {
-            trigger_error('不整合', E_USER_ERROR);
-        }
-        $rootPath = substr($realPath, strlen($htmlPath));
+        
+        $rootPath = str_replace(array(ROOT_URLPATH, $_SERVER['DOCUMENT_ROOT']), array('',''), $path);
 
         // QUERY_STRING を復元する。
         if (strlen($query_string) >= 1) {

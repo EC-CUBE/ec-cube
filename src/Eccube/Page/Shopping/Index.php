@@ -52,7 +52,7 @@ class Index extends AbstractPage
         $this->tpl_onload = 'eccube.toggleDeliveryForm();';
 
         /* @var $objDate Date */
-        $objDate = Application::alias('eccube.date', BIRTH_YEAR, date('Y'));
+        $objDate = Application::alias('eccube.date', BIRTH_YEAR, date('Y'), strtotime('now'));
         $this->arrYear = $objDate->getYear('', START_BIRTH_YEAR, '');
         $this->arrMonth = $objDate->getMonth(true);
         $this->arrDay = $objDate->getDay(true);
@@ -107,7 +107,7 @@ class Index extends AbstractPage
             Application::alias('eccube.response')->sendRedirect(
                     $this->getNextlocation($this->cartKey, $this->tpl_uniqid,
                                            $objCustomer, $objPurchase,
-                                           $objSiteSess));
+                                           $objSiteSess, $objCartSess));
             Application::alias('eccube.response')->actionExit();
         // 非会員かつ, ダウンロード商品の場合はエラー表示
         } else {
@@ -156,7 +156,7 @@ class Index extends AbstractPage
                         echo Utils::jsonEncode(array('success' =>
                                                      $this->getNextLocation($this->cartKey, $this->tpl_uniqid,
                                                                             $objCustomer, $objPurchase,
-                                                                            $objSiteSess)));
+                                                                            $objSiteSess, $objCartSess)));
                         Application::alias('eccube.response')->actionExit();
                     }
 
@@ -330,20 +330,20 @@ class Index extends AbstractPage
      * @param  SiteSession     $objSiteSess     SiteSession インスタンス
      * @return string             遷移先のパス
      */
-    public function getNextLocation($product_type_id, $uniqid, Customer &$objCustomer, &$objPurchase, SiteSession &$objSiteSess)
+    public function getNextLocation($product_type_id, $uniqid, Customer &$objCustomer, &$objPurchase, SiteSession &$objSiteSess, &$objCartSess)
     {
+        $objPurchase->setDefaultPurchase($uniqid, $product_type_id, $objCustomer, $objCartSess);
         switch ($product_type_id) {
             case PRODUCT_TYPE_DOWNLOAD:
                 $objPurchase->unsetAllShippingTemp(true);
                 $objPurchase->saveOrderTemp($uniqid, array(), $objCustomer);
-                $objSiteSess->setRegistFlag();
-
-                return 'payment.php';
-
+                break;
             case PRODUCT_TYPE_NORMAL:
             default:
-                return 'deliv.php';
+                break;
         }
+        $objSiteSess->setRegistFlag();
+        return 'confirm.php';
     }
 
     /**
