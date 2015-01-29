@@ -87,16 +87,20 @@ class Multiple extends AbstractPage
 
         $this->tpl_uniqid = $objSiteSess->getUniqId();
 
-        $this->addrs = $this->getDelivAddrs($objCustomer, $objPurchase, $objAddress);
-        $this->tpl_addrmax = count($this->addrs) - 2; // 「選択してください」と会員の住所をカウントしない
-        $this->lfInitParam($objFormParam);
+        $this->arrAddress = $this->getDelivAddress($objCustomer, $objPurchase, $objAddress);
+        $this->tpl_addrmax = count($this->arrAddress) - 2; // 「選択してください」と会員の住所をカウントしない
 
         $objPurchase->verifyChangeCart($this->tpl_uniqid, $objCartSess);
+
+        $this->arrCartItem = $objCartSess->getCartList($objCartSess->getKey());
+        $this->lfInitParam($objFormParam, $this->arrCartItem);
+        $objFormParam->setParam($_POST);
+        $objFormParam->convParam();
 
         switch ($this->getMode()) {
             case 'confirm':
                 $objFormParam->setParam($_POST);
-                $this->arrErr = $this->lfCheckError($objFormParam);
+                $this->arrErr = $this->lfCheckError($objFormParam, $this->arrCartItem);
                 if (Utils::isBlank($this->arrErr)) {
                     // フォームの情報を一時保存しておく
                     $_SESSION['multiple_temp'] = $objFormParam->getHashArray();
@@ -105,19 +109,22 @@ class Multiple extends AbstractPage
                                                  $objAddress);
                     $objSiteSess->setRegistFlag();
 
-                    Application::alias('eccube.response')->sendRedirect('payment.php');
+                    Application::alias('eccube.response')->sendRedirect('confirm.php');
                     Application::alias('eccube.response')->actionExit();
                 }
                 break;
+            // 前のページに戻る
+            case 'return':
+                $objSiteSess->setRegistFlag();
 
+                // 確認ページへ移動
+                Response::sendRedirect('confirm.php');
+                Response::actionExit();
+                break;
             default:
-                $this->setParamToSplitItems($objFormParam, $objCartSess);
+                break;
         }
 
-        // 前のページから戻ってきた場合
-        if ($_GET['from'] == 'multiple') {
-            $objFormParam->setParam($_SESSION['multiple_temp']);
-        }
         $this->arrForm = $objFormParam->getFormParamList();
     }
 
@@ -127,51 +134,19 @@ class Multiple extends AbstractPage
      * @param  FormParam $objFormParam FormParam インスタンス
      * @return void
      */
-    public function lfInitParam(FormParam &$objFormParam)
+    public function lfInitParam(FormParam &$objFormParam, &$arrCartItem)
     {
         $objFormParam->addParam('商品規格ID', 'product_class_id', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('商品名', 'name');
-        $objFormParam->addParam('規格1', 'class_name1');
-        $objFormParam->addParam('規格2', 'class_name2');
-        $objFormParam->addParam('規格分類1', 'classcategory_name1');
-        $objFormParam->addParam('規格分類2', 'classcategory_name2');
-        $objFormParam->addParam('メイン画像', 'main_image');
-        $objFormParam->addParam('メイン一覧画像', 'main_list_image');
-        $objFormParam->addParam(SALE_PRICE_TITLE, 'price');
-        $objFormParam->addParam(SALE_PRICE_TITLE . '(税込)', 'price_inctax');
         $objFormParam->addParam('数量', 'quantity', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'), 1);
         $objFormParam->addParam('お届け先', 'shipping', INT_LEN, 'n', array('MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        $objFormParam->addParam('カート番号', 'cart_no', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
         $objFormParam->addParam('行数', 'line_of_num', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-    }
-
-    /**
-     * カートの商品を数量ごとに分割し, フォームに設定する.
-     *
-     * @param   FormParam   $objFormParam FormParam インスタンス
-     * @param   CartSession $objCartSess  CartSession インスタンス
-     * @return  void
-     */
-    public function setParamToSplitItems(FormParam &$objFormParam, CartSession &$objCartSess)
-    {
-        $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
-        $arrItems = array();
-        $index = 0;
-        foreach (array_keys($cartLists) as $key) {
-            $arrProductsClass = $cartLists[$key]['productsClass'];
-            $quantity = (int) $cartLists[$key]['quantity'];
-            for ($i = 0; $i < $quantity; $i++) {
-                foreach ($arrProductsClass as $key2 => $val) {
-                    $arrItems[$key2][$index] = $val;
-                }
-                $arrItems['quantity'][$index] = 1;
-                $arrItems['price'][$index] = $cartLists[$key]['price'];
-                $arrItems['price_inctax'][$index] = $cartLists[$key]['price_inctax'];
-                $index++;
-            }
+        $arrItem = array();
+        foreach ($arrCartItem as $item) {
+            $product_class_id = $item['productsClass']['product_class_id'];
+            $arrItem['line_of_num'][$product_class_id] = 1;
+            $arrItem['quantity'][] = 1;
         }
-        $objFormParam->setParam($arrItems);
-        $objFormParam->setValue('line_of_num', $index);
+        $objFormParam->setParam($arrItem);
     }
 
     /**
@@ -185,7 +160,7 @@ class Multiple extends AbstractPage
      * @param AddressHelper $objAddress
      * @return array              配送住所のプルダウン用連想配列
      */
-    public function getDelivAddrs(Customer &$objCustomer, PurchaseHelper &$objPurchase, AddressHelper &$objAddress)
+    public function getDelivAddress(Customer &$objCustomer, PurchaseHelper &$objPurchase, AddressHelper &$objAddress)
     {
         $masterData = Application::alias('eccube.db.master_data');
         $arrPref = $masterData->getMasterData('mtb_pref');
@@ -211,8 +186,8 @@ class Multiple extends AbstractPage
                     'tel03'             => $objCustomer->getValue('tel03'),
                 )
             );
-            $arrAddrs = array_merge($addr, $objAddress->getList($objCustomer->getValue('customer_id')));
-            foreach ($arrAddrs as $val) {
+            $arrAddress = array_merge($addr, $objAddress->getList($objCustomer->getValue('customer_id')));
+            foreach ($arrAddress as $val) {
                 $other_deliv_id = Utils::isBlank($val['other_deliv_id']) ? 0 : $val['other_deliv_id'];
                 $arrResults[$other_deliv_id] = $val['name01'] . $val['name02']
                     . ' ' . $arrPref[$val['pref']] . $val['addr01'] . $val['addr02'];
@@ -236,13 +211,11 @@ class Multiple extends AbstractPage
      * @param   FormParam   $objFormParam FormParam インスタンス
      * @return  array       エラー情報の配列
      */
-    public function lfCheckError(FormParam &$objFormParam)
+    public function lfCheckError(FormParam &$objFormParam, &$arrCartItem)
     {
         /* @var $objCartSess CartSession */
         $objCartSess = Application::alias('eccube.cart_session');
 
-        $objFormParam->convParam();
-        // 数量未入力は0に置換
         $objFormParam->setValue('quantity', $objFormParam->getValue('quantity', 0));
 
         $arrErr = $objFormParam->checkError();
@@ -250,6 +223,8 @@ class Multiple extends AbstractPage
         $arrParams = $objFormParam->getSwapArray();
 
         if (empty($arrErr)) {
+            $arrTarget = array('product_class_id', 'quantity', 'shipping');
+            $arrParams = $objFormParam->getSwapArray($arrTarget);            
             foreach ($arrParams as $index => $arrParam) {
                 // 数量0で、お届け先を選択している場合
                 if ($arrParam['quantity'] == 0 && !Utils::isBlank($arrParam['shipping'])) {
@@ -271,14 +246,13 @@ class Multiple extends AbstractPage
                 $arrQuantity[$product_class_id] += $arrParam['quantity'];
             }
             // カゴの中身と突き合わせ
-            $cartLists =& $objCartSess->getCartList($objCartSess->getKey());
-            foreach ($cartLists as $arrCartRow) {
-                $product_class_id = $arrCartRow['id'];
+            foreach ($arrCartItem as $item) {
+                $product_class_id = $item['id'];
                 // 差異がある場合、エラーを記録
-                if ($arrCartRow['quantity'] != $arrQuantity[$product_class_id]) {
+                if ($item['quantity'] != $arrQuantity[$product_class_id]) {
                     foreach ($arrParams as $index => $arrParam) {
                         if ($arrParam['product_class_id'] == $product_class_id) {
-                            $arrErr['quantity'][$index] = '※ 数量合計を「' . $arrCartRow['quantity'] .'」にしてください。<br />';
+                            $arrErr['line_of_num'][$product_class_id] = "※ 数量合計を「{$item['quantity']}」にしてください。<br />";
                         }
                     }
                 }
@@ -302,6 +276,8 @@ class Multiple extends AbstractPage
      */
     public function saveMultipleShippings($uniqid, FormParam &$objFormParam, Customer &$objCustomer, PurchaseHelper &$objPurchase, AddressHelper &$objAddress)
     {
+        $arrValues = array();
+        $arrItemTemp = array();
         $arrParams = $objFormParam->getSwapArray();
 
         foreach ($arrParams as $arrParam) {
@@ -320,12 +296,18 @@ class Multiple extends AbstractPage
                         $arrValues[$other_deliv_id]['shipping_' . $key] = $val;
                     }
                 } else {
-                    $objPurchase->copyFromCustomer($arrValues[0], $objCustomer,
-                                                   'shipping');
+                    $objPurchase->copyFromCustomer($arrValues[0], $objCustomer, 'shipping');
                 }
             } else {
                 $arrValues = $objPurchase->getShippingTemp();
             }
+            if (!isset($arrItemTemp[$other_deliv_id])) {
+                $arrItemTemp[$other_deliv_id] = array();
+            }
+            if (!isset($arrItemTemp[$other_deliv_id][$arrParam['product_class_id']])) {
+                $arrItemTemp[$other_deliv_id][$arrParam['product_class_id']] = 0;
+            }
+
             $arrItemTemp[$other_deliv_id][$arrParam['product_class_id']] += $arrParam['quantity'];
         }
 
@@ -338,9 +320,7 @@ class Multiple extends AbstractPage
         foreach ($arrItemTemp as $other_deliv_id => $arrProductClassIds) {
             foreach ($arrProductClassIds as $product_class_id => $quantity) {
                 if ($quantity == 0) continue;
-                $objPurchase->setShipmentItemTemp($other_deliv_id,
-                                                  $product_class_id,
-                                                  $quantity);
+                $objPurchase->setShipmentItemTemp($other_deliv_id, $product_class_id, $quantity);
             }
         }
 

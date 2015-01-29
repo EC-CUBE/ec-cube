@@ -99,7 +99,7 @@ class Deliv extends AbstractPage
             $objPurchase->saveOrderTemp($this->tpl_uniqid, $sqlval, $objCustomer);
             $objSiteSess->setRegistFlag();
 
-            Application::alias('eccube.response')->sendRedirect('payment.php');
+            Application::alias('eccube.response')->sendRedirect('confirm.php');
             Application::alias('eccube.response')->actionExit();
         }
 
@@ -136,7 +136,7 @@ class Deliv extends AbstractPage
                 $objPurchase->setShipmentItemTempForSole($objCartSess, $shipping_id);
                 $objSiteSess->setRegistFlag();
 
-                Application::alias('eccube.response')->sendRedirect(SHOPPING_PAYMENT_URLPATH);
+                Application::alias('eccube.response')->sendRedirect(SHOPPING_CONFIRM_URLPATH);
                 Application::alias('eccube.response')->actionExit();
                 break;
 
@@ -144,7 +144,7 @@ class Deliv extends AbstractPage
             case 'return':
 
                 // 確認ページへ移動
-                Application::alias('eccube.response')->sendRedirect(CART_URL);
+                Application::alias('eccube.response')->sendRedirect('confirm.php');
                 Application::alias('eccube.response')->actionExit();
                 break;
 
