@@ -75,7 +75,7 @@ class CallbackResolver extends \Silex\CallbackResolver
                     define('CACHE_REALDIR', DATA_REALDIR . "cache/eccube/");
                 }
 
-//                \Eccube\Framework\Helper\HandleErrorHelper::load();
+                \Eccube\Framework\Helper\HandleErrorHelper::load();
 
                 // アプリケーション初期化処理
                 $objInit = new \Eccube\Framework\Initial();
