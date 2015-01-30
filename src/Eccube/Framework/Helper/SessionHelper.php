@@ -120,7 +120,7 @@ class SessionHelper
             $masterData = Application::alias('eccube.db.master_data');
             $arrExcludes = $masterData->getMasterData('mtb_auth_excludes');
             foreach ($arrExcludes as $exclude) {
-                $arrExcludesPath = explode('/', str_replace('\\', '/', HTML_REALDIR . ADMIN_DIR . $exclude));
+                $arrExcludesPath = explode('/', str_replace('\\', '/', realpath(HTML_REALDIR . ADMIN_DIR . $exclude)));
                 $arrDiff = array_diff_assoc($arrExcludesPath, $arrScriptPath);
                 if (count($arrDiff) === 0) {
                     return;
