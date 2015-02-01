@@ -53,6 +53,7 @@ class CallbackResolver extends \Silex\CallbackResolver
                     $path_info .= 'index.php';
                 }
                 $_SERVER['SCRIPT_NAME'] = $path_info.(substr($path_info, -1) == '/' ? 'index.php' : '');
+                $_SERVER['SCRIPT_NAME'] = ltrim($_SERVER['SCRIPT_NAME'], '/');
                 $_SERVER['SCRIPT_FILENAME'] = dirname($request->server->get('SCRIPT_FILENAME')).$path_info;
 
                 // rtrim は PHP バージョン依存対策
