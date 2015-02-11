@@ -1,6 +1,19 @@
 # EC-CUBE
 [![Build Status](https://travis-ci.org/EC-CUBE/ec-cube.svg)](https://travis-ci.org/EC-CUBE/ec-cube)
 [![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
+
+* * * * * * * * * * * * * * * * * * * *
+### POC
+
+現在、[こちらのリポジトリ](https://github.com/shinichi-takahashi/ec-cube-poc)にてPOCを行っております。
+POCでは、Silex＋DoctrineORMの構築の上で、下記観点の検証を行っていきます。
+
+* カスタマイズが自由に行えるか
+* プラグイン開発が自由に行えるか
+* モジュールが作成できるか
+
+フィードバック・レビューは、本リポジトリの [#52 モックの開発と、そのレビュー](https://github.com/EC-CUBE/ec-cube/issues/52) にて受け付けております。お気兼ねなくコメント頂けると幸いです。
+
 * * * * * * * * * * * * * * * * * * * *
 ### 開発協力
 
