@@ -3,10 +3,10 @@
 [![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
 
 * * * * * * * * * * * * * * * * * * * *
-### POC
+### プロトタイプ実装 / 動作検証
 
-現在、[こちらのリポジトリ](https://github.com/shinichi-takahashi/ec-cube-poc)にてPOCを行っております。
-POCでは、Silex＋DoctrineORMの構築の上で、下記観点の検証を行っていきます。
+現在、[こちらのリポジトリ](https://github.com/shinichi-takahashi/ec-cube-poc)にてプロトタイプ実装を行っております。
+プロトタイプをもとに、Silex＋DoctrineORMの構築の上で、下記観点の検証を行っていきます。
 
 * カスタマイズが自由に行えるか
 * プラグイン開発が自由に行えるか
