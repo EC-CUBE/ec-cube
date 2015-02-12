@@ -107,7 +107,7 @@ class ApiUtils
      *
      * @param string $msg            出力文字列
      * @param text $operation_name
-     @ @rturn void
+     * @return void
      */
     public function printApiLog($msg, $start_time = '' , $operation_name = '')
     {
