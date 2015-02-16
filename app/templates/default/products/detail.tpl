@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
+ */
+*}-->
 <script type="text/javascript">//<![CDATA[
     // 規格2に選択肢を割り当てる。
     function fnSetClassCategories(form, classcat_id2_selected) {
@@ -31,7 +32,7 @@
     }
 //]]></script>
 
-<div id="undercolumn">
+<article id="article_detail" class="undercolumn" itemscope itemtype="http://schema.org/Product">
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <div id="detailarea" class="clearfix">
@@ -46,7 +47,7 @@
                             target="_blank"
                         >
                     <!--{/if}-->
-                        <img src="<!--{$arrFile[$key].filepath|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" />
+                        <img src="<!--{$arrFile[$key].filepath|h}-->" width="<!--{$arrFile[$key].width}-->" height="<!--{$arrFile[$key].height}-->" alt="<!--{$arrProduct.name|h}-->" class="picture" itemprop="image">
                     <!--{if $arrProduct.main_large_image|strlen >= 1}-->
                         </a>
                     <!--{/if}-->
@@ -58,8 +59,7 @@
                                 href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct.main_large_image|h}-->"
                                 class="expansion"
                                 target="_blank"
-                            >
-                                画像を拡大する</a>
+                            >画像を拡大する</a>
                     </span>
                 <!--{/if}-->
             </div>
@@ -93,7 +93,7 @@
                 </dl>
 
                 <!--★商品名★-->
-                <h2><!--{$arrProduct.name|h}--></h2>
+                <h1 itemprop="name"><!--{$arrProduct.name|h}--></h1>
 
                 <!--★通常価格★-->
                 <!--{if $arrProduct.price01_min_inctax > 0}-->
@@ -113,12 +113,12 @@
                 <!--{/if}-->
 
                 <!--★販売価格★-->
-                <dl class="sale_price">
+                <dl class="sale_price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                     <dt><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：</dt>
                     <dd class="price">
                         <span id="price02_default"><!--{strip}-->
                             <!--{if $arrProduct.price02_min_inctax == $arrProduct.price02_max_inctax}-->
-                                <!--{$arrProduct.price02_min_inctax|n2s}-->
+                                <span itemprop="price"><!--{$arrProduct.price02_min_inctax|n2s}--></span>
                             <!--{else}-->
                                 <!--{$arrProduct.price02_min_inctax|n2s}-->～<!--{$arrProduct.price02_max_inctax|n2s}-->
                             <!--{/if}-->
@@ -147,9 +147,9 @@
 
                 <!--{* ▼メーカー *}-->
                 <!--{if $arrProduct.maker_name|strlen >= 1}-->
-                    <dl class="maker">
+                    <dl class="maker" itemprop="brand" itemscope itemtype="http://schema.org/Brand">
                         <dt>メーカー：</dt>
-                        <dd><!--{$arrProduct.maker_name|h}--></dd>
+                        <dd itemprop="name"><!--{$arrProduct.maker_name|h}--></dd>
                     </dl>
                 <!--{/if}-->
                 <!--{* ▲メーカー *}-->
@@ -158,10 +158,10 @@
                 <!--{if $arrProduct.comment1|strlen >= 1}-->
                     <dl class="comment1">
                         <dt>メーカーURL：</dt>
-                        <dd><a href="<!--{$arrProduct.comment1|h}-->"><!--{$arrProduct.comment1|h}--></a></dd>
+                        <dd><a href="<!--{$arrProduct.comment1|h}-->" target="_blank"><!--{$arrProduct.comment1|h}--></a></dd>
                     </dl>
                 <!--{/if}-->
-                <!--▼メーカーURL-->
+                <!--▲メーカーURL-->
 
                 <!--★関連カテゴリ★-->
                 <dl class="relative_cat">
@@ -177,7 +177,7 @@
                 </dl>
 
                 <!--★詳細メインコメント★-->
-                <div class="main_comment"><!--{$arrProduct.main_comment|nl2br_html}--></div>
+                <div class="main_comment" itemprop="description"><!--{$arrProduct.main_comment|nl2br_html}--></div>
 
                 <!--▼買い物カゴ-->
                 <div class="cart_area clearfix">
@@ -197,7 +197,7 @@
                                         <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
                                         </select>
                                         <!--{if $arrErr.classcategory_id1 != ""}-->
-                                        <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
+                                        <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力してください</span>
                                         <!--{/if}-->
                                     </li>
                                 </ul>
@@ -210,7 +210,7 @@
                                         <select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
                                         </select>
                                         <!--{if $arrErr.classcategory_id2 != ""}-->
-                                        <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
+                                        <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力してください</span>
                                         <!--{/if}-->
                                     </li>
                                 </ul>
@@ -233,9 +233,7 @@
                             <div class="cartin_btn">
                                 <div id="cartbtn_default">
                                     <!--★カゴに入れる★-->
-                                    <a href="javascript:void(document.form1.submit())">
-                                        <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_cartin.jpg" alt="カゴに入れる" />
-                                    </a>
+                                    <a href="javascript:void(document.form1.submit())" class="btn btn-warning">カゴに入れる</a>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +250,7 @@
                                 <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
                             <!--{/if}-->
                             <!--{if !$is_favorite}-->
-                                <a href="javascript:eccube.changeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); eccube.setModeAndSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite.jpg" alt="お気に入りに追加" /></a>
+                                <a href="javascript:eccube.changeAction('?product_id=<!--{$arrProduct.product_id|h}-->'); eccube.setModeAndSubmit('add_favorite','favorite_product_id','<!--{$arrProduct.product_id|h}-->');" class="btn btn-default btn-xs">お気に入りに追加</a>
                             <!--{else}-->
                                 <img src="<!--{$TPL_URLPATH}-->img/button/btn_add_favorite_on.jpg" title="お気に入りに登録済み" alt="お気に入りに登録済み" id="add_favorite_product" />
                                 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.ui/jquery.ui.core.min.js"></script>
@@ -278,7 +276,6 @@
             </div>
         </div>
     </form>
-
     <!--詳細ここまで-->
 
     <!--▼サブコメント-->
@@ -286,26 +283,27 @@
         <!--{assign var=key value="sub_title`$smarty.section.cnt.index+1`"}-->
         <!--{assign var=ikey value="sub_image`$smarty.section.cnt.index+1`"}-->
         <!--{if $arrProduct[$key] != "" or $arrProduct[$ikey]|strlen >= 1}-->
-            <div class="sub_area clearfix">
-                <h3><!--★サブタイトル★--><!--{$arrProduct[$key]|h}--></h3>
+            <div class="sub_area cf">
+                <h2><!--★サブタイトル★--><!--{$arrProduct[$key]|h}--></h2>
                 <!--{assign var=ckey value="sub_comment`$smarty.section.cnt.index+1`"}-->
                 <!--▼サブ画像-->
                 <!--{assign var=lkey value="sub_large_image`$smarty.section.cnt.index+1`"}-->
                 <!--{if $arrProduct[$ikey]|strlen >= 1}-->
-                    <div class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></div>
-                    <div class="subphotoimg">
+                    <p class="subphotoimg">
                         <!--{if $arrProduct[$lkey]|strlen >= 1}-->
                             <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" target="_blank" >
                         <!--{/if}-->
                         <img src="<!--{$arrFile[$ikey].filepath}-->" alt="<!--{$arrProduct.name|h}-->" width="<!--{$arrFile[$ikey].width}-->" height="<!--{$arrFile[$ikey].height}-->" />
                         <!--{if $arrProduct[$lkey]|strlen >= 1}-->
-                            </a>
-                            <span class="mini">
+                            </a><br>
+							<small class="mini">
                                 <a href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrProduct[$lkey]|h}-->" class="expansion" target="_blank">
-                                    画像を拡大する</a>
-                            </span>
+                                    画像を拡大する
+								</a>
+                            </small>
                         <!--{/if}-->
-                    </div>
+                    </p>
+                    <p class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></p>
                 <!--{else}-->
                     <p class="subtext"><!--★サブテキスト★--><!--{$arrProduct[$ckey]|nl2br_html}--></p>
                 <!--{/if}-->
@@ -315,52 +313,67 @@
     <!--{/section}-->
     <!--▲サブコメント-->
 
-    <!--この商品に対するお客様の声-->
-    <div id="customervoice_area">
-        <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_voice.png" alt="この商品に対するお客様の声" /></h2>
+    <!--▼この商品に対するお客様の声-->
+	<section id="customervoice_area">
+		<article>
+			<h1 class="title">この商品に対するお客様の声</h1>
+	
+			<div class="review_bloc clearfix">
+				<p>この商品に対するご感想をぜひお寄せください。</p>
+				<div class="review_btn">
+					<!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
+						<!--★新規コメントを書き込む★-->
+						<a href="./review.php"
+							onclick="eccube.openWindow('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
+							target="_blank" class="btn btn-default btn-xs">
+						新規コメントを書き込む
+						</a>
+					<!--{/if}-->
+				</div>
+			</div>
 
-        <div class="review_bloc clearfix">
-            <p>この商品に対するご感想をぜひお寄せください。</p>
-            <div class="review_btn">
-                <!--{if count($arrReview) < $smarty.const.REVIEW_REGIST_MAX}-->
-                    <!--★新規コメントを書き込む★-->
-                    <a href="./review.php"
-                        onclick="eccube.openWindow('./review.php?product_id=<!--{$arrProduct.product_id}-->','review','600','640'); return false;"
-                        target="_blank">
-                        <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_comment.jpg" alt="新規コメントを書き込む" />
-                    </a>
-                <!--{/if}-->
-            </div>
-        </div>
-
-        <!--{if count($arrReview) > 0}-->
-            <ul>
-                <!--{section name=cnt loop=$arrReview}-->
-                    <li>
-                        <p class="voicetitle"><!--{$arrReview[cnt].title|h}--></p>
-                        <p class="voicedate"><!--{$arrReview[cnt].create_date|sfDispDBDate:false}-->　投稿者：<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|h}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|h}--><!--{/if}-->　おすすめレベル：<span class="recommend_level"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|h}--></span></p>
-                        <p class="voicecomment"><!--{$arrReview[cnt].comment|h|nl2br}--></p>
-                    </li>
-                <!--{/section}-->
-            </ul>
-        <!--{/if}-->
-    </div>
-    <!--お客様の声ここまで-->
+			<!--{if count($arrReview) > 0}-->
+				<ul itemprop="review" itemscope itemtype="http://schema.org/Review">
+					<!--{section name=cnt loop=$arrReview}-->
+						<li itemprop="author" itemscope itemtype="http://schema.org/Person">
+							<p class="voicetitle" itemprop="name"><!--{$arrReview[cnt].title|h}--></p>
+							<p class="voicedate">
+								<span itemprop="datePublished" content="<!--{$arrReview[cnt].create_date|sfDispDBDate:false}-->"><!--{$arrReview[cnt].create_date|sfDispDBDate:false}--></span>
+								　投稿者：<!--{if $arrReview[cnt].reviewer_url}--><a href="<!--{$arrReview[cnt].reviewer_url}-->" target="_blank"><!--{$arrReview[cnt].reviewer_name|h}--></a><!--{else}--><!--{$arrReview[cnt].reviewer_name|h}--><!--{/if}-->
+								　おすすめレベル：<span class="recommend_level"><!--{assign var=level value=$arrReview[cnt].recommend_level}--><!--{$arrRECOMMEND[$level]|h}-->
+								<!--{* $recomend_level=$arrRECOMMEND[$level] *}-->
+								<!--{assign var="foo" value="$arrRECOMMEND[$level]|@count"}-->
+								<span itemprop="rating" itemscope itemtype="http://data-vocabulary.org/Rating">
+									<span itemprop="rating"><!--{$arrRECOMMEND[$level]|@mb_strlen}--></span>/<span itemprop="best">5</span>
+								</span>
+								</span>
+							</p>
+							<p class="voicecomment" itemprop="reviewBody"><!--{$arrReview[cnt].comment|h|nl2br}--></p>
+						</li>
+					<!--{/section}-->
+				</ul>
+			<!--{/if}-->
+		</article>
+	</section>
+    <!--▲お客様の声ここまで-->
 
     <!--▼関連商品-->
     <!--{if $arrRecommend}-->
-        <div id="whobought_area">
-            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_product_recommend.png" alt="その他のオススメ商品" /></h2>
+	<section id="whobought_area">
+		<article>
+            <h1 class="title">その他のオススメ商品</h1>
             <!--{foreach from=$arrRecommend item=arrItem name="arrRecommend"}-->
-                <div class="product_item">
-                    <div class="productImage">
+			<section class="product_item">
+                <article>
+                    <p class="productImage">
                         <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->">
-                            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrItem.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$arrItem.name|h}-->" /></a>
-                    </div>
+                            <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrItem.main_list_image|sfNoImageMainList|h}-->" alt="<!--{$arrItem.name|h}-->">
+						</a>
+                    </p>
                     <!--{assign var=price02_min value=`$arrItem.price02_min_inctax`}-->
                     <!--{assign var=price02_max value=`$arrItem.price02_max_inctax`}-->
                     <div class="productContents">
-                        <h3><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->"><!--{$arrItem.name|h}--></a></h3>
+                        <h1><a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$arrItem.product_id|u}-->"><!--{$arrItem.name|h}--></a></h1>
                         <p class="sale_price"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)：<span class="price">
                             <!--{if $price02_min == $price02_max}-->
                                 <!--{$price02_min|n2s}-->
@@ -369,13 +382,12 @@
                             <!--{/if}-->円</span></p>
                         <p class="mini"><!--{$arrItem.comment|h|nl2br}--></p>
                     </div>
-                </div><!--{* /.item *}-->
-                <!--{if $smarty.foreach.arrRecommend.iteration % 2 === 0}-->
-                    <div class="clear"></div>
-                <!--{/if}-->
+                </article><!--{* /.item *}-->
+			</section>
+			<!--{if $smarty.foreach.arrRecommend.iteration % 2 === 0}--><!--hr class="clear"--><!--{/if}-->
             <!--{/foreach}-->
-        </div>
+		</article>
+	</section>
     <!--{/if}-->
     <!--▲関連商品-->
-
-</div>
+</article>

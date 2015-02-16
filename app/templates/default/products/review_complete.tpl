@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,25 +19,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
+ */
+*}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="お客様の声書き込み（完了ページ）"}-->
 
-<div id="window_area">
-    <h2 class="title">お客様の声書き込み</h2>
+<article id="popup_review_complete" class="window_area">
+    <h1 class="title">お客様の声書き込み</h1>
     <div id="completebox">
         <p class="message">登録が完了しました。ご利用ありがとうございました。</p>
-        <p>弊社にて登録内容を確認後、ホームページに反映させていただきます。<br />
-            今しばらくお待ちくださいませ。</p>
+        <p>
+			弊社にて登録内容を確認後、ホームページに反映させていただきます。<br />
+            今しばらくお待ちくださいませ。
+		</p>
     </div>
     <div class="btn_area">
         <ul>
             <li>
-                <a href="javascript:window.close()">
-                    <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_close.jpg" alt="閉じる" />
+                <a href="javascript:window.close()" class="btn btn-default">
+					閉じる
                 </a>
             </li>
         </ul>
     </div>
-</div>
+</article>
 
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

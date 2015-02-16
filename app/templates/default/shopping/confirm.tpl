@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,14 +19,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
+ */
+*}-->
 <script type="text/javascript">//<![CDATA[
     var sent = false;
 
     function fnCheckSubmit() {
         if (sent) {
-            alert("只今、処理中です。しばらくお待ち下さい。");
+            alert("只今、処理中です。しばらくお待ちください。");
             return false;
         }
         sent = true;
@@ -34,287 +35,274 @@
 //]]></script>
 
 <!--CONTENTS-->
-<div id="undercolumn">
-    <div id="undercolumn_shopping">
-        <p class="flow_area"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_03.jpg" alt="購入手続きの流れ" /></p>
-        <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_shopping" class="undercolumn">
+	<p class="flow_area"><img src="<!--{$TPL_URLPATH}-->img/picture/img_flow_03.jpg" alt="購入手続きの流れ" /></p>
+	<h1 class="title"><!--{$tpl_title|h}--></h1>
 
-        <p class="information">下記ご注文内容で送信してもよろしいでしょうか？<br />
-            よろしければ、「<!--{if $use_module}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
+	<p class="information">下記ご注文内容で送信してもよろしいでしょうか？<br />
+		よろしければ、「<!--{if $use_module}-->次へ<!--{else}-->ご注文完了ページへ<!--{/if}-->」ボタンをクリックしてください。</p>
 
-        <form name="form1" id="form1" method="post" action="?">
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-            <input type="hidden" name="mode" value="confirm" />
-            <input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
+	<form name="form1" id="form1" method="post" action="?">
+		<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+		<input type="hidden" name="mode" value="confirm" />
+		<input type="hidden" name="uniqid" value="<!--{$tpl_uniqid}-->" />
 
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <a href="<!--{$smarty.const.CART_URLPATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key}-->" /></a>
-                    </li>
-                        <!--{if $use_module}-->
-                    <li>
-                        <input type="image" onclick="return fnCheckSubmit();" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next-top" id="next-top" />
-                    </li>
-                        <!--{else}-->
-                    <li>
-                        <input type="image" onclick="return fnCheckSubmit();" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-top" id="next-top" />
-                    </li>
-                    <!--{/if}-->
-                </ul>
-            </div>
+		<div class="btn_area">
+			<ul>
+				<li>
+					<a href="./payment.php" class="btn btn-default">戻る</a>
+				</li>
+					<!--{if $use_module}-->
+				<li>
+					<input type="submit" onclick="return fnCheckSubmit();" class="btn btn-success" value="次へ" name="next-top" id="next-top" />
+				</li>
+					<!--{else}-->
+				<li>
+					<input type="submit" onclick="return fnCheckSubmit();" class="btn btn-success" value="ご注文完了ページへ" name="next-top" id="next-top" />
+				</li>
+				<!--{/if}-->
+			</ul>
+		</div>
 
-            <table summary="ご注文内容確認">
-                <col width="10%" />
-                <col width="40%" />
-                <col width="20%" />
-                <col width="10%" />
-                <col width="20%" />
-                <tr>
-                    <th scope="col">商品写真</th>
-                    <th scope="col">商品名</th>
-                    <th scope="col">単価</th>
-                    <th scope="col">数量</th>
-                    <th scope="col">小計</th>
-                </tr>
-                <!--{foreach from=$arrCartItems item=item}-->
-                    <tr>
-                        <td class="alignC">
-                            <a
-                                <!--{if $item.productsClass.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
-                                <!--{/if}-->
-                            >
-                                <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$item.productsClass.name|h}-->" /></a>
-                        </td>
-                        <td>
-                            <ul>
-                                <li><strong><!--{$item.productsClass.name|h}--></strong></li>
-                                <!--{if $item.productsClass.classcategory_name1 != ""}-->
-                                <li><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}--></li>
-                                <!--{/if}-->
-                                <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                                <li><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}--></li>
-                                <!--{/if}-->
-                            </ul>
-                        </td>
-                        <td class="alignR">
-                            <!--{$item.price_inctax|n2s}-->円
-                        </td>
-                        <td class="alignR"><!--{$item.quantity|n2s}--></td>
-                        <td class="alignR"><!--{$item.total_inctax|n2s}-->円</td>
-                    </tr>
-                <!--{/foreach}-->
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">小計</th>
-                    <td class="alignR"><!--{$tpl_total_inctax|n2s}-->円</td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">送料</th>
-                    <td class="alignR"><!--{$arrForm.deliv_fee|n2s}-->円</td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">手数料</th>
-                    <td class="alignR"><!--{$arrForm.charge|n2s}-->円</td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">合計</th>
-                    <td class="alignR"><span class="price"><!--{$arrForm.payment_total|n2s}-->円</span></td>
-                </tr>
-            </table>
+		<table summary="ご注文内容確認">
+			<col width="66%" />
+			<col width="34%" />
+			<tr>
+				<th class="alignC">商品詳細</th>
+				<th class="alignC">小計</th>
+			</tr>
+			<!--{foreach from=$arrCartItems item=item}-->
+				<tr>
+					<td>
+						<a
+							<!--{if $item.productsClass.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
+							<!--{/if}-->
+						>
+							<img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$item.productsClass.name|h}-->" class="fr" />
+						</a>
+						<strong><!--{$item.productsClass.name|h}--></strong>
+					<!--{if $item.productsClass.classcategory_name1 != ""}-->
+						<br><!--{$item.productsClass.class_name1|h}-->：<!--{$item.productsClass.classcategory_name1|h}-->
+					<!--{/if}-->
+					<!--{if $item.productsClass.classcategory_name2 != ""}-->
+						<br><!--{$item.productsClass.class_name2|h}-->：<!--{$item.productsClass.classcategory_name2|h}-->
+					<!--{/if}-->
+					</td>
+					<td class="alignR" rowspan="2"><!--{$item.total_inctax|n2s}-->円</td>
+				</tr><tr>
+					<td>
+						<!--{$item.price_inctax|n2s}-->円 x <!--{$item.quantity|n2s}-->
+					</td>
+				</tr>
+			<!--{/foreach}-->
+			<tr>
+				<th class="alignR" scope="row">小計</th>
+				<td class="alignR"><!--{$tpl_total_inctax[$cartKey]|n2s}-->円</td>
+			</tr>
+			<!--{if $smarty.const.USE_POINT !== false}-->
+				<!--{if $arrForm.use_point > 0}-->
+				<tr>
+					<th class="alignR" scope="row">値引き（ポイントご使用時）</th>
+					<td class="alignR">
+						<!--{assign var=discount value=`$arrForm.use_point*$smarty.const.POINT_VALUE`}-->
+						-<!--{$discount|n2s|default:0}-->円</td>
+				</tr>
+				<!--{/if}-->
+			<!--{/if}-->
+			<tr>
+				<th class="alignR" scope="row">送料</th>
+				<td class="alignR"><!--{$arrForm.deliv_fee|n2s}-->円</td>
+			</tr>
+			<tr>
+				<th class="alignR" scope="row">手数料</th>
+				<td class="alignR"><!--{$arrForm.charge|n2s}-->円</td>
+			</tr>
+			<tr>
+				<th class="alignR" scope="row">合計</th>
+				<td class="alignR"><span class="price"><!--{$arrForm.payment_total|n2s}-->円</span></td>
+			</tr>
+		</table>
 
-            <!-- ▼ポイント使用 -->
-            <!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
-                <table summary="ポイント利用">
-                    <col width="20%" />
-                    <col width="80%" />
-                    <tr>
-                        <th>ポイントのご利用</th>
-                        <td>
-                            <span class="user_name"><!--{$arrForm.order_name01|h}--> <!--{$arrForm.order_name02|h}-->様</span>の、現在の所持ポイントは「<span class="point"><!--{$tpl_user_point|default:0|n2s}-->Pt</span>」です。1ポイントを<!--{$smarty.const.POINT_VALUE|n2s}-->円</span>として使用する事ができます。<br />
-                            <input type="radio" id="point_off" name="point_check" value="2" <!--{$arrForm.point_check.value|sfGetChecked:2}--> onclick="eccube.togglePointForm();" /><label for="point_off">ポイントを使用しない</label>&nbsp;
-                            <!--{assign var=key value="use_point"}-->
-                            <input type="radio" id="point_on" name="point_check" value="1" <!--{$arrForm.point_check.value|sfGetChecked:1}--> onclick="eccube.togglePointForm();" /><label for="point_on">ポイントを<input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|default:$tpl_user_point}-->" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" class="box60" />&nbsp;Ptを使用する。</label>
-<span class="attention"><!--{$arrErr[$key]}--></span>
-                    </div>
-                    </tr>
-                </table>
-            <!--{/if}-->
-            <!-- ▲ポイント使用 -->
+		<!--{* ログイン済みの会員のみ *}-->
+		<!--{if $tpl_login == 1 && $smarty.const.USE_POINT !== false}-->
+			<dl title="ポイント確認" class="delivname table">
+				<dt>ご注文前のポイント</dt>
+				<dd><!--{$tpl_user_point|n2s|default:0}-->Pt&nbsp;</dd>
 
-            <h3>配送方法・お支払方法</h3>
-            <table summary="配送方法・お支払方法" class="delivname">
-                <col width="20%" />
-                <col width="80%" />
-                <tbody>
-                <tr>
-                    <th scope="row">配送方法</th>
-                    <td>
-                        <!--{assign var=key value="deliv_id"}-->
-                        <!--{if $tpl_is_single_deliv == true}-->
-                            <!--{assign var=deliv value=$arrForm[$key]}-->
-                            <!--{$arrDeliv.$deliv|h}-->
-                            <input type="hidden" name="<!--{$key}-->" value="<!--{$arrForm[$key]}-->" />
-                        <!--{else}-->
-                            <span class="attention"><!--{$arrErr[$key]}--></span>
-                            <select name="<!--{$key}-->" id="<!--{$key}-->" onchange="eccube.setModeAndSubmit('select_deliv', '', '');" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                                <!--{html_options options=$arrDeliv selected=$arrForm[$key]}-->
-                            </select>
-                        <!--{/if}-->
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">お支払方法</th>
-                    <td>
-                        <!--{assign var=key value="payment_id"}-->
-                        <span class="attention"><!--{$arrErr[$key]}--></span>
-                        <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                            <!--{html_options options=$arrPayment selected=$arrForm[$key]}-->
-                        </select>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+				<dt scope="row">ご使用ポイント</dt>
+				<dd>-<!--{$arrForm.use_point|n2s|default:0}-->Pt&nbsp;</dd>
 
-            <!--{* ▼お届け先 *}-->
-            <h3>お届け先情報&nbsp;
-                    <!--{if !$is_multiple}-->
-                        <a href="./deliv.php">変更する</a>&nbsp;
-                    <!--{/if}-->
-                    <!--{if $smarty.const.USE_MULTIPLE_SHIPPING !== false}-->
-                        <a href="./multiple.php"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_several_address.jpg" alt="お届け先を複数指定する" /></a>
-                    <!--{/if}-->
-            </h3>
-            <!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->
-                <!--{if $is_multiple}--><h2>お届け先<!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h2>
-                <!--{if $is_multiple}-->
-                    <table summary="ご注文内容確認">
-                        <col width="10%" />
-                        <col width="60%" />
-                        <col width="20%" />
-                        <col width="10%" />
-                        <tr>
-                            <th scope="col">商品写真</th>
-                            <th scope="col">商品名</th>
-                            <th scope="col">数量</th>
-                            <th scope="col">小計</th>
-                        </tr>
-                        <!--{foreach item=item from=$shippingItem.shipment_item}-->
-                            <tr>
-                                <td class="alignC">
-                                    <a
-                                        <!--{if $item.productsClass.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
-                                        <!--{/if}-->
-                                    >
-                                        <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$item.productsClass.name|h}-->" /></a>
-                                </td>
-                                <td><!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong><br />
-                                    <!--{if $item.productsClass.classcategory_name1 != ""}-->
-                                        <!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}--><br />
-                                    <!--{/if}-->
-                                    <!--{if $item.productsClass.classcategory_name2 != ""}-->
-                                        <!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
-                                    <!--{/if}-->
-                                </td>
-                                <td class="alignC"><!--{$item.quantity}--></td>
-                                <td class="alignR">
-                                    <!--{$item.total_inctax|n2s}-->円
-                                </td>
-                            </tr>
-                        <!--{/foreach}-->
-                    </table>
-                <!--{/if}-->
-                <table summary="お届け先確認" class="delivname">
-                    <col width="20%" />
-                    <col width="80%" />
-                    <tbody>
-                        <tr>
-                            <th scope="row">お届け先</th>
-                            <td>
-                                <!--{if $shippingItem.shipping_company_name}--><!--{$shippingItem.shipping_company_name|h}--><br /><!--{/if}-->
-                                <!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}-->
-                                <!--{if $shippingItem.shipping_kana01}-->(<!--{$shippingItem.shipping_kana01|h}--> <!--{$shippingItem.shipping_kana02|h}-->)<!--{/if}--><br />
-                                <!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
-                                    <!--{$shippingItem.shipping_zipcode|h}--><br />
-                                    <!--{$arrCountry[$shippingItem.shipping_country_id]|h}--><br />
-                                <!--{else}-->
-                                    〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}--><br />
-                                    <!--{$arrPref[$shippingItem.shipping_pref]}-->
-                                <!--{/if}-->
-                                <!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}-->
-                                TEL:<!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}-->
-                                <!--{if $shippingItem.shipping_fax01 > 0}-->
-                                    <br />FAX:<!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}-->
-                                <!--{/if}-->
-                            </td>
-                        </tr>
-                        <!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
-                            <!--{assign var=index value=$shippingItem.shipping_id}-->
-                            <tr>
-                                <th scope="row">お届け日</th>
-                                <td>
-                                    <!--★お届け日★-->
-                                    <!--{assign var=key value="deliv_date`$index`"}-->
-                                    <span class="attention"><!--{$arrErr[$key]}--></span>
-                                    お届け日：
-                                    <!--{if !$arrDelivDate}-->
-                                        ご指定頂けません。
-                                    <!--{else}-->
-                                        <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                                            <option value="" selected="">指定なし</option>
-                                            <!--{assign var=shipping_date_value value=$arrForm[$key].value|default:$shippingItem.shipping_date}-->
-                                            <!--{html_options options=$arrDelivDate selected=$shipping_date_value}-->
-                                        </select>&nbsp;
-                                    <!--{/if}-->
-                                    <!--★お届け時間★-->
-                                    <!--{assign var=key value="deliv_time_id`$index`"}-->
-                                    <span class="attention"><!--{$arrErr[$key]}--></span>
-                                    お届け時間：
-                                    <select name="<!--{$key}-->" id="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                                        <option value="" selected="">指定なし</option>
-                                        <!--{assign var=shipping_time_value value=$arrForm[$key].value|default:$shippingItem.time_id}-->
-                                        <!--{html_options options=$arrDelivTime selected=$shipping_time_value}-->
-                                    </select>
-                                </td>
-                            </tr>
-                        <!--{/if}-->
-                    </tbody>
-                </table>
-            <!--{/foreach}-->
-            <!--{* ▲お届け先 *}-->
+			<!--{if $arrForm.birth_point > 0}-->
+				<dt>お誕生月ポイント</dt>
+				<dd>+<!--{$arrForm.birth_point|n2s|default:0}-->Pt&nbsp;</dd>
+			<!--{/if}-->
+				<dt>今回加算予定のポイント</dt>
+				<dd>+<!--{$arrForm.add_point|n2s|default:0}-->Pt&nbsp;</dd>
+			<!--{assign var=total_point value=`$tpl_user_point-$arrForm.use_point+$arrForm.add_point`}-->
+				<dt>加算後のポイント</dt>
+				<dd><!--{$total_point|n2s}-->Pt&nbsp;</dd>
+			</dl>
+		<!--{/if}-->
+		<!--{* ログイン済みの会員のみ *}-->
 
-            <div class="pay_area01">
-                <h3>お問い合わせ</h3>
-                <table summary="お問い合わせ">
-                    <col width="20%" />
-                    <col width="80%" />
-                    <tr>
-                        <th>お問い合わせ</th>
-                        <td>
-                            <!--{assign var=key value="message"}-->
-                            <span class="attention"><!--{$arrErr[$key]}--></span>
-                            <textarea name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" cols="70" rows="8" class="txtarea" wrap="hard" placeholder="お問い合わせ事項がございましたら、こちらにご入力ください。"><!--{"\n"}--><!--{$arrForm[$key]|h}--></textarea>
-                            <p class="attention"> (<!--{$smarty.const.LTEXT_LEN}-->文字まで)</p>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+		<!--{* ▼注文者 *}-->
+		<h3>ご注文者</h3>
+		<dl title="ご注文者" class="customer table">
+			<dt>お名前</dt>
+			<dd><!--{$arrForm.order_name01|h}--> <!--{$arrForm.order_name02|h}-->&nbsp;</dd>
 
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <a href="<!--{$smarty.const.CART_URLPATH}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back<!--{$key}-->" /></a>
-                    </li>
-                    <!--{if $use_module}-->
-                    <li>
-                        <input type="image" onclick="return fnCheckSubmit();" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next" id="next" />
-                    </li>
-                    <!--{else}-->
-                    <li>
-                        <input type="image" onclick="return fnCheckSubmit();" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_order_complete.jpg" alt="ご注文完了ページへ"  name="next" id="next" />
-                    </li>
-                    <!--{/if}-->
-                </ul>
-            </div>
-        </form>
-    </div>
-</div>
+			<dt>お名前(フリガナ)</dt>
+			<dd><!--{$arrForm.order_kana01|h}--> <!--{$arrForm.order_kana02|h}-->&nbsp;</dd>
+
+			<dt>会社名</dt>
+			<dd><!--{$arrForm.order_company_name|h}-->&nbsp;</dd>
+
+		<!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+			<dt>国</dt>
+			<dd><!--{$arrCountry[$arrForm.order_country_id]|h}-->&nbsp;</dd>
+
+			<dt>ZIPCODE</dt>
+			<dd><!--{$arrForm.order_zipcode|h}-->&nbsp;</dd>
+		<!--{/if}-->
+			<dt>郵便番号</dt>
+			<dd>〒<!--{$arrForm.order_zip01|h}-->-<!--{$arrForm.order_zip02|h}-->&nbsp;</dd>
+
+			<dt>住所</dt>
+			<dd><!--{$arrPref[$arrForm.order_pref]}--><!--{$arrForm.order_addr01|h}--><!--{$arrForm.order_addr02|h}-->&nbsp;</dd>
+
+			<dt>電話番号</dt>
+			<dd><!--{$arrForm.order_tel01}-->-<!--{$arrForm.order_tel02}-->-<!--{$arrForm.order_tel03}-->&nbsp;</dd>
+
+			<dt>FAX番号</dt>
+			<dd>
+				<!--{if $arrForm.order_fax01 > 0}-->
+					<!--{$arrForm.order_fax01}-->-<!--{$arrForm.order_fax02}-->-<!--{$arrForm.order_fax03}-->
+				<!--{/if}-->
+			&nbsp;</dd>
+
+			<dt>メールアドレス</dt>
+			<dd><!--{$arrForm.order_email|h}-->&nbsp;</dd>
+
+			<dt>性別</dt>
+			<dd><!--{$arrSex[$arrForm.order_sex]|h}-->&nbsp;</dd>
+
+			<dt>職業</dt>
+			<dd><!--{$arrJob[$arrForm.order_job]|default:'(未登録)'|h}-->&nbsp;</dd>
+
+			<dt>生年月日</dt>
+			<dd>
+				<!--{$arrForm.order_birth|regex_replace:"/ .+/":""|regex_replace:"/-/":"/"|default:'(未登録)'|h}-->
+			&nbsp;</dd>
+		</dl>
+
+		<!--{* ▼お届け先 *}-->
+		<!--{foreach item=shippingItem from=$arrShipping name=shippingItem}-->
+			<h3>お届け先<!--{if $is_multiple}--><!--{$smarty.foreach.shippingItem.iteration}--><!--{/if}--></h3>
+			<!--{if $is_multiple}-->
+				<table summary="ご注文内容確認">
+					<col width="66%" />
+					<col width="34%" />
+					<tr>
+						<th class="alignC">商品詳細</th>
+						<th class="alignC">小計</th>
+					</tr>
+					<!--{foreach item=item from=$shippingItem.shipment_item}-->
+						<tr>
+							<td>
+								<a
+									<!--{if $item.productsClass.main_image|strlen >= 1}--> href="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_image|sfNoImageMainList|h}-->" class="expansion" target="_blank"
+									<!--{/if}-->
+								>
+									<img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$item.productsClass.main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$item.productsClass.name|h}-->" class="fr" /></a>
+							<!--{* 商品名 *}--><strong><!--{$item.productsClass.name|h}--></strong>
+								<!--{if $item.productsClass.classcategory_name1 != ""}-->
+									<br><!--{$item.productsClass.class_name1}-->：<!--{$item.productsClass.classcategory_name1}-->
+								<!--{/if}-->
+								<!--{if $item.productsClass.classcategory_name2 != ""}-->
+									<br><!--{$item.productsClass.class_name2}-->：<!--{$item.productsClass.classcategory_name2}-->
+								<!--{/if}-->
+									<br>数量： <!--{$item.quantity}-->
+							</td>
+							<td class="alignR">
+								<!--{$item.total_inctax|n2s}-->円
+							</td>
+						</tr>
+					<!--{/foreach}-->
+				</table>
+			<!--{/if}-->
+
+			<dl title="お届け先確認" class="delivname table">
+				<dt>お名前</dt>
+				<dd><!--{$shippingItem.shipping_name01|h}--> <!--{$shippingItem.shipping_name02|h}-->&nbsp;</dd>
+
+				<dt>お名前(フリガナ)</dt>
+				<dd><!--{$shippingItem.shipping_kana01|h}--> <!--{$shippingItem.shipping_kana02|h}-->&nbsp;</dd>
+
+				<dt>会社名</dt>
+				<dd><!--{$shippingItem.shipping_company_name|h}-->&nbsp;</dd>
+
+			<!--{if $smarty.const.FORM_COUNTRY_ENABLE}-->
+				<dt>国</dt>
+				<dd><!--{$arrCountry[$shippingItem.shipping_country_id]|h}-->&nbsp;</dd>
+
+				<dt>ZIPCODE</dt>
+				<dd><!--{$shippingItem.shipping_zipcode|h}-->&nbsp;</dd>
+			<!--{/if}-->
+
+				<dt>郵便番号</dt>
+				<dd>〒<!--{$shippingItem.shipping_zip01|h}-->-<!--{$shippingItem.shipping_zip02|h}-->&nbsp;</dd>
+
+				<dt>住所</dt>
+				<dd><!--{$arrPref[$shippingItem.shipping_pref]}--><!--{$shippingItem.shipping_addr01|h}--><!--{$shippingItem.shipping_addr02|h}-->&nbsp;</dd>
+
+				<dt>電話番号</dt>
+				<dd><!--{$shippingItem.shipping_tel01}-->-<!--{$shippingItem.shipping_tel02}-->-<!--{$shippingItem.shipping_tel03}-->&nbsp;</dd>
+
+				<dt>FAX番号</dt>
+				<dd>
+					<!--{if $shippingItem.shipping_fax01 > 0}-->
+						<!--{$shippingItem.shipping_fax01}-->-<!--{$shippingItem.shipping_fax02}-->-<!--{$shippingItem.shipping_fax03}-->
+					<!--{/if}-->
+				&nbsp;</dd>
+
+			<!--{if $cartKey != $smarty.const.PRODUCT_TYPE_DOWNLOAD}-->
+					<dt>お届け日</dt>
+					<dd><!--{$shippingItem.shipping_date|default:"指定なし"|h}-->&nbsp;</dd>
+
+					<dt>お届け時間</dt>
+					<dd><!--{$shippingItem.shipping_time|default:"指定なし"|h}-->&nbsp;</dd>
+			<!--{/if}-->
+			</dl>
+		<!--{/foreach}-->
+		<!--{* ▲お届け先 *}-->
+
+		<h3>配送方法・お支払方法・その他お問い合わせ</h3>
+		<dl title="配送方法・お支払方法・その他お問い合わせ" class="delivname table">
+			<dt>配送方法</dt>
+			<dd><!--{$arrDeliv[$arrForm.deliv_id]|h}-->&nbsp;</dd>
+
+			<dt>お支払方法</dt>
+			<dd><!--{$arrForm.payment_method|h}-->&nbsp;</dd>
+
+			<dt>その他お問い合わせ</dt>
+			<dd><!--{$arrForm.message|h|nl2br}-->&nbsp;</dd>
+		</dl>
+
+		<div class="btn_area">
+			<ul>
+				<li>
+					<a href="./payment.php" class="btn btn-default" name="back<!--{$key}-->" id="back<!--{$key}-->">戻る</a>
+				</li>
+				<!--{if $use_module}-->
+				<li>
+					<input type="submit" onclick="return fnCheckSubmit();" class="btn btn-success" value="次へ" name="next" id="next" />
+				</li>
+				<!--{else}-->
+				<li>
+					<input type="submit" onclick="return fnCheckSubmit();" class="btn btn-success" value="ご注文完了ページへ"  name="next" id="next" />
+				</li>
+				<!--{/if}-->
+			</ul>
+		</div>
+	</form>
+</article>

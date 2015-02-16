@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,11 +19,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
+ */
+*}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(確認ページ)"}-->
 
-<div id="window_area">
-    <h2>パスワードの再発行 秘密の質問の確認</h2>
+<article id="popup_pw_secret" class="window_area">
+    <h1 class="title">パスワードの再発行 秘密の質問の確認</h1>
     <p class="information">
         ご登録時に入力した下記質問の答えを入力して「次へ」ボタンをクリックしてください。<br />
         ※下記質問の答えをお忘れになられた場合は、<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentitiy'}--></a>までご連絡ください。<br />
@@ -48,10 +50,10 @@
         </div>
         <div class="btn_area">
             <ul>
-                <li><input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_next.jpg" alt="次へ" name="next" id="next" />
+                <li><input type="submit" class="btn btn-success" value="次へ" name="next" id="next" /></li>
             </ul>
         </div>
     </form>
-</div>
+</article>
 
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

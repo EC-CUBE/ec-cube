@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,12 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_mypage" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
-        <h3><!--{$tpl_subtitle|h}--></h3>
+        <h2><!--{$tpl_subtitle|h}--></h2>
         <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
             入力後、一番下の「確認ページへ」ボタンをクリックしてください。</p>
 
@@ -34,16 +33,17 @@
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="confirm" />
             <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value|h}-->" />
-            <table summary="会員登録内容変更 " class="delivname">
+			<!--会員登録内容変更-->
+            <dl class="table">
                 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_input.tpl" flgFields=3 emailMobile=true prefix=""}-->
-            </table>
+            </dl>
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_confirm.jpg" alt="確認ページへ" name="refusal" id="refusal" />
+                        <input type="submit" class="btn btn-success" value="確認ページへ" name="refusal" id="refusal" />
                     </li>
                 </ul>
             </div>
         </form>
     </div>
-</div>
+</article>

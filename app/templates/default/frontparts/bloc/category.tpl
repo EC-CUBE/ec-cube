@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
+ */
+*}-->
 <script type="text/javascript">//<![CDATA[
     $(function(){
         $('#category_area li.level1:last').css('border-bottom', 'none');
@@ -27,12 +28,12 @@
 //]]></script>
 
 <!--{strip}-->
-    <div class="block_outer">
-        <div id="category_area">
-            <div class="block_body">
-                <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_category.gif" alt="商品カテゴリ" /></h2>
-                <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$arrTree treeID="" display=1}-->
-            </div>
-        </div>
-    </div>
+<aside id="block_category" class="block_outer">
+	<div class="block_inner">
+		<h2 class="title">商品カテゴリ</h2>
+		<div class="block_body">
+			<!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/bloc/category_tree_fork.tpl" children=$arrTree treeID="" display=1}-->
+		</div>
+	</div>
+</aside>
 <!--{/strip}-->

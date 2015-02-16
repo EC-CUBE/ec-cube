@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,8 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mynavi_area">
+<article id="article_mynavi" class="undercolumn">
     <!--{strip}-->
         <ul class="mynavi_list clearfix">
 
@@ -71,6 +70,5 @@
         <!--{/if}-->
         <!--▲現在のポイント-->
     <!--{/strip}-->
-
-</div>
+</article>
 <!--▲NAVI-->

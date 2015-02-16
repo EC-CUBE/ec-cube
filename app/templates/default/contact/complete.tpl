@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,34 +19,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
+ */
+*}-->
+<article id="article_contact" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
+	<div id="complete_area">
+		<p class="message">お問い合わせ内容の送信が完了いたしました。</p>
+		<p>
+			万一、ご回答メールが届かない場合は、トラブルの可能性もありますので<br />
+			大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。<br />
+			今後ともご愛顧賜りますようよろしくお願い申し上げます。
+		</p>
+		<div class="shop_information">
+			<p class="name"><!--{$arrSiteInfo.company_name|h}--></p>
+			<p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}-->
+				<!--{if $arrSiteInfo.business_hour != ""}-->
+				(受付時間/<!--{$arrSiteInfo.business_hour}-->)
+				<!--{/if}--><br />
+				E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
+			</p>
+		</div>
 
-<div id="undercolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
-    <div id="undercolumn_contact">
-        <div id="complete_area">
-            <p class="message">お問い合わせ内容の送信が完了いたしました。</p>
-            <p>
-                万一、ご回答メールが届かない場合は、トラブルの可能性もありますので<br />大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせください。<br />
-                今後ともご愛顧賜りますようよろしくお願い申し上げます。
-            </p>
-            <div class="shop_information">
-            <p class="name"><!--{$arrSiteInfo.company_name|h}--><br />
-            <p>TEL：<!--{$arrSiteInfo.tel01}-->-<!--{$arrSiteInfo.tel02}-->-<!--{$arrSiteInfo.tel03}-->
-                <!--{if $arrSiteInfo.business_hour != ""}-->
-                (受付時間/<!--{$arrSiteInfo.business_hour}-->)
-                <!--{/if}--><br />
-                E-mail：<a href="mailto:<!--{$arrSiteInfo.email02|escape:'hex'}-->"><!--{$arrSiteInfo.email02|escape:'hexentity'}--></a></p>
-            </p>
-            </div>
-
-            <div class="btn_area">
-                <ul>
-                <li>
-                    <a href="<!--{$smarty.const.TOP_URL}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" /></a>
-                </li>
-                </ul>
-            </div>
-        </div>
+		<div class="btn_area">
+			<ul>
+			<li>
+				<a href="<!--{$smarty.const.TOP_URL}-->" class="btn btn-success">トップページへ</a>
+			</li>
+			</ul>
+		</div>
     </div>
-</div>
+</article>

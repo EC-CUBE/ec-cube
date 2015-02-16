@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,11 +19,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
+ */
+*}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="お客様の声書き込み（確認ページ）"}-->
 
-<div id="window_area">
-    <h2 class="title">お客様の声書き込み</h2>
+<article id="popup_review_confirm" class="window_area">
+    <h1 class="title">お客様の声書き込み</h1>
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
         <input type="hidden" name="mode" value="complete" />
@@ -32,45 +34,30 @@
             <!--{/if}-->
         <!--{/foreach}-->
 
-        <table summary="お客様の声書き込み">
-            <col width="30%" />
-            <col width="70%" />
-            <tr>
-                <th>商品名</th>
-                <td><!--{$arrForm.name|h}--></td>
-            </tr>
-            <tr>
-                <th>投稿者名</th>
-                <td><!--{$arrForm.reviewer_name|h}--></td>
-            </tr>
-            <tr>
-                <th>投稿者URL</th>
-                <td><!--{$arrForm.reviewer_url|h}--></td>
-            </tr>
-            <tr>
-                <th>性別</th>
-                <td><!--{if $arrForm.sex eq 1}-->男性<!--{elseif $arrForm.sex eq 2}-->女性<!--{/if}--></td>
-            </tr>
-            <tr>
-                <th>おすすめレベル</th>
-                <td><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span></td>
-            </tr>
-            <tr>
-                <th>タイトル</th>
-                <td><!--{$arrForm.title|h}--></td>
-            </tr>
-            <tr>
-                <th>コメント</th>
-                <td><!--{$arrForm.comment|h|nl2br}--></td>
-            </tr>
-        </table>
+		<!--お客様の声書き込み-->
+        <dl class="table">
+			<dt>商品名</dt>
+			<dd><!--{$arrForm.name|h}-->&nbsp;</dd>
+			<dt>投稿者名</dt>
+			<dd><!--{$arrForm.reviewer_name|h}-->&nbsp;</dd>
+			<dt>投稿者URL</dt>
+			<dd><!--{$arrForm.reviewer_url|h}-->&nbsp;</dd>
+			<dt>性別</dt>
+			<dd><!--{if $arrForm.sex eq 1}-->男性<!--{elseif $arrForm.sex eq 2}-->女性<!--{/if}-->&nbsp;</dd>
+			<dt>おすすめレベル</dt>
+			<dd><span class="recommend_level"><!--{$arrRECOMMEND[$arrForm.recommend_level]}--></span>&nbsp;</dd>
+			<dt>タイトル</dt>
+			<dd><!--{$arrForm.title|h}-->&nbsp;</dd>
+			<dt>コメント</dt>
+			<dd><!--{$arrForm.comment|h|nl2br}-->&nbsp;</dd>
+		</dl>
         <div class="btn_area">
             <ul>
-                <li><input type="image" onclick="mode.value='return';" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" name="back" id="back" /></li>
-                <li><input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg" alt="送信" name="send" id="send" /></li>
+                <li><input type="submit" onclick="mode.value='return';" class="btn btn-default" value="戻る" name="back" id="back" /></li>
+                <li><input type="submit" class="btn btn-success" value="送信" name="send" id="send" /></li>
             </ul>
         </div>
     </form>
-</div>
+</article>
 
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->

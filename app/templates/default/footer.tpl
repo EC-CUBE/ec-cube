@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,18 +19,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
+ */
+*}-->
 <!--▼FOOTER-->
 <!--{strip}-->
-    <div id="footer_wrap">
-        <div id="footer" class="clearfix">
-            <div id="pagetop"><a href="#top">このページの先頭へ</a></div>
-            <div id="copyright">Copyright ©
-                &nbsp;<!--{if $smarty.const.RELEASE_YEAR != $smarty.now|date_format:"%Y"}--><!--{$smarty.const.RELEASE_YEAR}-->-<!--{/if}--><!--{$smarty.now|date_format:"%Y"}-->
-                &nbsp;<!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|h}--> All rights reserved.
-            </div>
-        </div>
-    </div>
+<div id="footer_wrap">
+	<footer id="footer" class="cf">
+		<div id="pagetop"><a href="#top">このページの先頭へ</a></div>
+		<div id="copyright">&copy;
+			&nbsp;<!--{if $smarty.const.RELEASE_YEAR != $smarty.now|date_format:"%Y"}--><!--{$smarty.const.RELEASE_YEAR}-->-<!--{/if}--><!--{$smarty.now|date_format:"%Y"}-->
+			&nbsp;<!--{$arrSiteInfo.shop_name_eng|default:$arrSiteInfo.shop_name|h}-->.
+		</div>
+	</footer>
+</div>
 <!--{/strip}-->
 <!--▲FOOTER-->

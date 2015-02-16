@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,9 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_mypage" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
     <!--{include file=$tpl_navi}-->
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
@@ -31,7 +30,7 @@
         <input type="hidden" name="mode" value="complete" />
 
         <div id="mycontents_area">
-            <h3><!--{$tpl_subtitle|h}--></h3>
+            <h2><!--{$tpl_subtitle|h}--></h2>
             <div id="complete_area">
                 <div class="message">退会手続きを実行してもよろしいでしょうか？</div>
                 <div class="message_area">
@@ -40,10 +39,10 @@
                         お届け先等の情報は全てなくなりますのでご注意ください。</p>
                         <ul>
                             <li>
-                                <a href="./refusal.php"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_not.jpg" alt="いいえ、退会しません" /></a>
+                                <a href="./refusal.php" class="btn btn-success">いいえ しません</a>
                             </li>
                             <li>
-                                <input type="image" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse_do.jpg" alt="はい、退会します" class="hover_change_image" name="refuse_do" id="refuse_do" />
+                                <input type="submit" value="はい 退会します" class="btn btn-default" name="refuse_do" id="refuse_do" />
                             </li>
                         </ul>
                     </div>
@@ -51,4 +50,5 @@
             </div>
         </div>
     </form>
-</div>
+
+</article>

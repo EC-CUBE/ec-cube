@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,11 +19,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
+ */
+*}-->
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_header.tpl" subtitle="パスワードを忘れた方(完了ページ)"}-->
 
-<div id="window_area">
-    <h2 class="title">パスワードを忘れた方</h2>
+<article id="popup_pw_complete" class="window_area">
+    <h1 class="title">パスワードを忘れた方</h1>
     <p class="information">パスワードの発行が完了いたしました。ログインには下記のパスワードをご利用ください。<br />
         ※下記パスワードは、MYページの「会員登録内容変更」よりご変更いただけます。</p>
     <form action="?" method="post" name="form1">
@@ -36,10 +38,10 @@
         </div>
         <div class="btn_area">
             <ul>
-                <li><a href="javascript:window.close()"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_close.jpg" alt="閉じる" /></a></li>
+                <li><a href="javascript:window.close()" class="btn btn-default">閉じる</a></li>
             </ul>
         </div>
     </form>
-</div>
+</article>
 
 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`popup_footer.tpl"}-->
