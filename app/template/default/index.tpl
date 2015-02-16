@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,12 +19,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
+ */
+*}-->
 <!--{strip}-->
-    <div id="main_image">
-        <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1">
-            <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="詳細はこちら" />
-        </a>
-    </div>
+<article id="article_top" class="undercolumn">
+    <a href="<!--{$smarty.const.P_DETAIL_URLPATH}-->1">
+        <img src="<!--{$TPL_URLPATH}-->img/banner/bnr_top_main.jpg" alt="詳細はこちら" class="w100p" />
+    </a>
+</article>
 <!--{/strip}-->

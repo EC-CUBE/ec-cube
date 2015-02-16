@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,12 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_mypage" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
-        <h3><!--{$tpl_subtitle|h}--></h3>
+        <h2><!--{$tpl_subtitle|h}--></h2>
 
         <div id="complete_area">
             <div class="message">
@@ -35,4 +34,4 @@
             <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
         </div>
     </div>
-</div>
+</article>

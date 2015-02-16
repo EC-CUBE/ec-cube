@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,12 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_mypage" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
-        <h3><!--{$tpl_subtitle|h}--></h3>
+        <h2><!--{$tpl_subtitle|h}--></h2>
         <form name="form1" id="form1" method="post" action="?">
             <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
             <input type="hidden" name="mode" value="confirm" />
@@ -39,7 +38,7 @@
                     <div class="btn_area">
                         <ul>
                             <li>
-                                <input type="image" src="<!--{$TPL_URLPATH}-->img/button/btn_refuse.jpg" alt="会員退会を行う" class="hover_change_image" name="refusal" id="refusal" />
+                                <input type="submit" value="会員退会を行う" class="btn btn-success" name="refusal" id="refusal" />
                             </li>
                         </ul>
                     </div>
@@ -47,4 +46,4 @@
             </div>
         </form>
     </div>
-</div>
+</article>

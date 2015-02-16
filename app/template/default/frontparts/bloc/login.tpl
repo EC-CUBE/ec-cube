@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,53 +19,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
+ */
+*}-->
 <!--{strip}-->
-    <div class="block_outer">
-        <div id="login_area">
-            <h2><img src="<!--{$TPL_URLPATH}-->img/title/tit_bloc_login.gif" alt="ログイン" /></h2>
-            <form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php"<!--{if $tpl_login}--> onsubmit="return eccube.checkLoginFormInputted('login_form')"<!--{/if}-->>
-                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-                <input type="hidden" name="mode" value="login" />
-                <input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
-                <div class="block_body">
-                    <!--{if $tpl_login}-->
-                        <p>ようこそ<br />
-                            <span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--> 様</span><br />
-                            <!--{if $smarty.const.USE_POINT !== false}-->
-                                所持ポイント：<span class="point"> <!--{$tpl_user_point|n2s|default:0}--> pt</span>
-                            <!--{/if}-->
-                        </p>
-                        <!--{if !$tpl_disable_logout}-->
-                            <p class="btn">
-                                <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_logout.jpg" onclick="eccube.fnFormModeSubmit('login_form', 'logout', '', ''); return false;" alt="ログアウト" />
-                            </p>
-                        <!--{/if}-->
-                    <!--{else}-->
-                        <dl class="formlist">
-                            <dt>メールアドレス</dt>
-                            <dd>
-                                <input type="text" name="login_email" class="box140" value="<!--{$tpl_login_email|h}-->" style="ime-mode: disabled;" />
-                            </dd>
-                            <dd class="mini">
-                                <input type="checkbox" name="login_memory" id="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> />
-                                <label for="login_memory"><span>コンピューターに記憶する</span></label>
-                            </dd>
-                        </dl>
-                        <dl class="formlist">
-                            <dt class="password">パスワード</dt>
-                            <dd><input type="password" name="login_pass" class="box140" /></dd>
-                            <dd class="mini">
-                                <a href="<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="eccube.openWindow('<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','400',{scrollbars:'no',resizable:'no'}); return false;" target="_blank">パスワードを忘れた方はこちら</a>
-                            </dd>
-                        </dl>
-                        <p class="btn">
-                            <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_bloc_login.jpg" alt="ログイン" />
-                        </p>
-                    <!--{/if}-->
-                </div>
-            </form>
-        </div>
-    </div>
+<aside id="block_login" class="block_outer">
+	<div class="block_inner">
+		<h2 class="title">ログイン</h2>
+		<form name="login_form" id="login_form" method="post" action="<!--{$smarty.const.HTTPS_URL}-->frontparts/login_check.php"<!--{if $tpl_login}--> onsubmit="return eccube.checkLoginFormInputted('login_form')"<!--{/if}-->>
+			<input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+			<input type="hidden" name="mode" value="login" />
+			<input type="hidden" name="url" value="<!--{$smarty.server.REQUEST_URI|h}-->" />
+			<div class="block_body">
+				<!--{if $tpl_login}-->
+					<p>ようこそ<br />
+						<span class="user_name"><!--{$tpl_name1|h}--> <!--{$tpl_name2|h}--> 様</span><br />
+						<!--{if $smarty.const.USE_POINT !== false}-->
+							所持ポイント：<span class="point"> <!--{$tpl_user_point|n2s|default:0}--> pt</span>
+						<!--{/if}-->
+					</p>
+					<!--{if !$tpl_disable_logout}-->
+						<p class="ecbtn">
+							<input type="submit" class="btn btn-success" onclick="eccube.fnFormModeSubmit('login_form', 'logout', '', ''); return false;" value="ログアウト" />
+						</p>
+					<!--{/if}-->
+				<!--{else}-->
+					<dl class="formlist">
+						<dt>メールアドレス</dt>
+						<dd>
+							<input type="email" name="login_email" class="w96p" value="<!--{$tpl_login_email|h}-->" placeholder="メールアドレス" style="ime-mode: disabled;" />
+						</dd>
+						<dd class="mini">
+							<input type="checkbox" name="login_memory" id="login_memory" value="1" <!--{$tpl_login_memory|sfGetChecked:1}--> />
+							<label for="login_memory"><span>コンピューターに記憶する</span></label>
+						</dd>
+					</dl>
+					<dl class="formlist">
+						<dt class="password">パスワード</dt>
+						<dd><input type="password" name="login_pass" class="w96p" placeholder="パスワード" /></dd>
+						<dd class="mini">
+							<a href="<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->" onclick="eccube.openWindow('<!--{$smarty.const.HTTPS_URL}-->forgot/<!--{$smarty.const.DIR_INDEX_PATH}-->','forget','600','400',{scrollbars:'no',resizable:'no'}); return false;" target="_blank">パスワードを忘れた方はこちら</a>
+						</dd>
+					</dl>
+					<div class="ecbtn">
+						<input type="submit" class="btn btn-success" value="ログイン" />
+					</div>
+				<!--{/if}-->
+			</div>
+		</form>
+	</div>
+</aside>
 <!--{/strip}-->

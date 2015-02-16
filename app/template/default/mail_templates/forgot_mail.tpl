@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -25,4 +25,4 @@
 
 新しいパスワード：<!--{$new_password}-->
 
-このパスワードは一時的なものですので、お早めにご変更下さい。
+このパスワードは一時的なものですので、お早めにご変更ください。

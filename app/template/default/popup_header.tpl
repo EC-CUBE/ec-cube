@@ -1,8 +1,8 @@
-<!--{printXMLDeclaration}--><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -19,15 +19,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+ */
+*}-->
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="ie ie6 lt-ie9 lt-ie8 lt-ie7" lang="ja"><![endif]-->
+<!--[if IE 7]><html class="ie ie7 lt-ie9 lt-ie8" lang="ja"><![endif]-->
+<!--[if IE 8]><html class="ie ie8 lt-ie9" lang="ja"><![endif]-->
+<!--[if IE 9]><html class="ie ie9 gte-ie9" lang="ja"><![endif]-->
+<!--[if !IE]><!--><html class="mdbw" lang="ja"><!--<![endif]-->
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/import.css" type="text/css" media="all" />
-<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.colorbox/colorbox.css" type="text/css" media="all" />
+<meta charset="<!--{$smarty.const.CHAR_CODE}-->">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|h}--></title>
+
+<!--{*デザインライブラリ bootstamp CDN*}-->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/csslib.css" type="text/css" media="all">
+<link rel="stylesheet" href="<!--{$TPL_URLPATH}-->css/style.css" type="text/css" media="all">
+<link rel="stylesheet" href="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.colorbox/colorbox.css" type="text/css" media="all">
+<link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico">
+<link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico">
+
 <!--[if lt IE 9]>
 <script src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery-1.11.1.min.js"></script>
 <![endif]-->
@@ -38,9 +54,6 @@
 <!-- #2342 次期メジャーバージョン(2.14)にてeccube.legacy.jsは削除予定.モジュール、プラグインの互換性を考慮して2.13では残します. -->
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/eccube.legacy.js"></script>
 <script type="text/javascript" src="<!--{$smarty.const.ROOT_URLPATH}-->js/jquery.colorbox/jquery.colorbox-min.js"></script>
-<title><!--{$arrSiteInfo.shop_name}-->/<!--{$subtitle|h}--></title>
-<link rel="shortcut icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
-<link rel="icon" type="image/vnd.microsoft.icon" href="<!--{$TPL_URLPATH}-->img/common/favicon.ico" />
 <script type="text/javascript">//<![CDATA[
     <!--{$tpl_javascript}-->
     $(function(){
@@ -49,11 +62,9 @@
 //]]></script>
 </head>
 
-<body>
-<noscript>
-    <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
+<body id="page_<!--{$tpl_page_class_name|h}-->" class="<!--{$tpl_page_class_name|h}--> popup">
+<noscript name="top" id="top">
+    <p><em>JavaScriptを有効にしてご利用ください。</em></p>
 </noscript>
-
-<a name="top" id="top"></a>
 
 <!--{if !$disable_wincol}--><div id="windowcolumn"><!--{/if}-->
