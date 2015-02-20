@@ -3,16 +3,23 @@
 [![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
 
 * * * * * * * * * * * * * * * * * * * *
-### プロトタイプ実装 / 動作検証
+### β開発
 
-現在、[こちらのリポジトリ](https://github.com/shinichi-takahashi/ec-cube-poc)にてプロトタイプ実装を行っております。
-プロトタイプをもとに、Silex＋DoctrineORMの構築の上で、下記観点の検証を行っていきます。
+現在、eccube-3.0.0-betaブランチにてβ版の開発を行っております。
+[プロトタイプ](https://github.com/shinichi-takahashi/ec-cube-poc)をもとに、Silex＋DoctrineORMの構築へすべく、全体に大きなリファクタを行います。
 
-* カスタマイズが自由に行えるか
-* プラグイン開発が自由に行えるか
-* モジュールが作成できるか
-
-フィードバック・レビューは、本リポジトリの [#52 モックの開発と、そのレビュー](https://github.com/EC-CUBE/ec-cube/issues/52) にて受け付けております。お気兼ねなくコメント頂けると幸いです。
+* ～3/初週：土台の挿げ替え
+  + ORMの導入
+    - ec-cube-poc参照
+  + ディレクトリ・ファイル構成の整備
+    - ec-cube-poc参照
+  + Smarty3の導入
+    - 未実装
+  + DBの見直し
+    - https://github.com/EC-CUBE/ec-cube/issues/4
+    - スキーマの見直し
+  + テスト
+～3/末：全機能のリファクタ
 
 * * * * * * * * * * * * * * * * * * * *
 ### 開発協力
