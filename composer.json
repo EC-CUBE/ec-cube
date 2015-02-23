@@ -41,7 +41,16 @@
         "pear-pear.php.net/XML_Parser" : "*",
         "pear-pear.php.net/XML_Serializer" : "*",
         "pear-pear.php.net/XML_Util" : "*",
-        "silex/web-profiler": "~1.0"
+        "silex/web-profiler": "~1.0",
+        "symfony/monolog-bridge": "~2.1",
+        "symfony/twig-bridge": "~2.1",
+        "symfony/form": "~2.1",
+        "symfony/finder": "2.2.*",
+        "symfony/yaml": "2.2.*",
+        "symfony/form": "2.2.*",
+        "symfony/translation": "~2.1",
+        "symfony/config": "2.2.*",
+        "dflydev/doctrine-orm-service-provider": "1.0.*@dev"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
