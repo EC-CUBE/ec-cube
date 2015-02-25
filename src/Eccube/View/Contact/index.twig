@@ -1,0 +1,98 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+
+	<div id="undercolumn">
+	    <h2 class="title">{{ title }}</h2>
+
+	    <div id="undercolumn_contact">
+
+	        <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+	        また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+
+	        {{ form_errors(form) }}
+	        <form name="form1" id="form1" method="post" action="?">
+ 				{{ form_widget(form._token) }}
+	            <table summary="お問い合わせ">
+	                <tr>
+	                    <th>お名前<span class="attention">※</span></th>
+	                    <td>
+	                        姓&nbsp;{{ form_widget(form.name01) }}
+	                        名&nbsp;{{ form_widget(form.name02) }}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>お名前(フリガナ)<span class="attention">※</span></th>
+	                    <td>
+	                        セイ&nbsp;{{ form_widget(form.kana01) }}
+	                        メイ&nbsp;{{ form_widget(form.kana02) }}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>郵便番号</th>
+	                    <td>
+	                        <p class="top">
+	                            〒&nbsp;{{ form_widget(form.zip01) }} &nbsp;-&nbsp; {{ form_widget(form.zip02) }}
+	                        </p>
+	                        <p class="zipimg">
+	                            <a href="javascript:;">
+	                                <img src="{{ constant('Eccube\\Constant::TPL')}}img/button/btn_address_input.jpg" alt="住所自動入力" /></a>
+	                            <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
+	                        </p>
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>住所</th>
+	                    <td>
+	                        <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
+	                        <option value="">都道府県を選択</option><!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}--></select>
+
+	                        <p>
+	                            {{ form_widget(form.addr01) }}
+	                        </p>
+
+	                        <p>
+	                            {{ form_widget(form.addr02) }}
+	                        </p>
+
+	                        <p class="mini"><span class="attention">住所は2つに分けてご記入ください。マンション名は必ず記入してください。</span></p>
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>電話番号</th>
+	                    <td>
+	                    	{{ form_widget(form.tel01) }} &nbsp;-&nbsp; {{ form_widget(form.tel02) }} &nbsp;-&nbsp; {{ form_widget(form.tel03) }}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>メールアドレス<span class="attention">※</span></th>
+	                    <td>
+	                        {{ form_widget(form.email) }}
+	                        {{ form_widget(form.email02) }}
+	                        <p class="mini"><span class="attention">確認のため2度入力してください。</span></p>
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <th>お問い合わせ内容<span class="attention">※</span><br />
+	                    <td>
+	                    	{{ form_widget(form.contents) }}
+	                        <p class="mini attention">※ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。</p>
+	                    </td>
+	                </tr>
+	            </table>
+
+	            <div class="btn_area">
+	                <ul>
+	                    <li>
+	                        <input type="image" class="hover_change_image" src="{{constant('Eccube\\Constant::TPL') }}img/button/btn_confirm.jpg" alt="確認ページへ" name="confirm" />
+	                    </li>
+	                </ul>
+	            </div>
+
+	        </form>
+	    </div>
+	</div>
+
+
+
+{% endblock %}

@@ -41,8 +41,11 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/cart/', '\\Eccube\\Page\\Cart\\Index')->bind('cart');
 
         // contact
-        $controllers->match('/contact/', '\\Eccube\\Page\\Contact\\Index')->bind('contact');
-        $controllers->match('/contact/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('contact_complete');
+        // $controllers->match('/contact/', '\\Eccube\\Page\\Contact\\Index')->bind('contact');
+        // $controllers->match('/contact/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('contact_complete');
+        $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::Index')->bind('contact');
+        $controllers->match('/contact/complete.php', '\\Eccube\\Controller\\ContactController::Complete')->bind('contact_complete');
+
 
         // entry
         $controllers->match('/entry/', '\\Eccube\\Page\\Entry\\Index')->bind('entry');

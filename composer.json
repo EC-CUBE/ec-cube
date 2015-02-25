@@ -44,13 +44,14 @@
         "silex/web-profiler": "~1.0",
         "symfony/monolog-bridge": "~2.4",
         "symfony/twig-bridge": "~2.4",
-        "symfony/form": "~2.4",
         "symfony/finder": "~2.4",
         "symfony/yaml": "~2.4",
         "symfony/form": "~2.4",
+        "symfony/validator": "~2.4",
         "symfony/translation": "~2.4",
         "symfony/config": "~2.4",
-        "dflydev/doctrine-orm-service-provider": "1.0.*@dev"
+        "dflydev/doctrine-orm-service-provider": "1.0.*@dev",
+        "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",

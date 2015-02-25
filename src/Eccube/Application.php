@@ -47,6 +47,10 @@ class Application extends \Silex\Application
             'twig.path' => __DIR__ . '/View',
         ));
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        $this->register(new \Silex\Provider\FormServiceProvider());
+        $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new \Silex\Provider\TranslationServiceProvider());
+        $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
