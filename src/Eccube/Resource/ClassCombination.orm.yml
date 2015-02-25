@@ -1,0 +1,38 @@
+Eccube\Entity\ClassCombination:
+    type: entity
+    table: dtb_class_combination
+    repositoryClass: Eccube\Repository\ClassCombinationRepository
+    fields:
+        id:
+            type: integer
+            column: class_combination_id
+            id: true
+            generator:
+                strategy: AUTO
+        parent_class_combination_id:
+            type: integer
+        classcategory_id:
+            type: integer
+        level:
+            type: integer
+    manyToOne:
+        Parent:
+            targetEntity: Eccube\Entity\ClassCombination
+            inversedBy: Children
+            joinColumn:
+                name: parent_class_combination_id
+                referencedColumnName: class_combination_id
+        ClassCategory:
+            targetEntity: Eccube\Entity\ClassCategory
+            inversedBy: ClassCombinations
+            joinColumn:
+                name: classcategory_id
+                referencedColumnName: classcategory_id
+    oneToMany:
+        Children:
+            targetEntity: Eccube\Entity\ClassCombination
+            mappedBy: Parent
+        ProductClasses:
+            targetEntity: Eccube\Entity\ProductClass
+            mappedBy: ClassCombination
+    lifecycleCallbacks: {  }

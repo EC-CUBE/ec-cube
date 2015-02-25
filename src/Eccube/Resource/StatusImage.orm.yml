@@ -1,0 +1,20 @@
+Eccube\Entity\StatusImage:
+    type: entity
+    table: mtb_status_image
+    repositoryClass: Eccube\Repository\StatusImageRepository
+    fields:
+        id:
+            type: smallint
+            length: 6
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: text
+        rank:
+            type: smallint
+    oneToMany:
+        ProductStatuses:
+            targetEntity: Eccube\Entity\ProductStatus
+            mappedBy: StatusImage
+    lifecycleCallbacks: {  }

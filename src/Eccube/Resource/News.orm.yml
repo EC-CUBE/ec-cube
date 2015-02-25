@@ -1,0 +1,44 @@
+Eccube\Entity\News:
+    type: entity
+    table: dtb_news
+    repositoryClass: Eccube\Repository\NewsRepository
+    fields:
+        id:
+            type: integer
+            column: news_id
+            length: 11
+            id: true
+            generator:
+                strategy: AUTO
+        news_date:
+            type: datetime
+        rank:
+            type: integer
+        news_title:
+            type: text
+        news_comment:
+            type: text
+        news_url:
+            type: text
+        news_select:
+            type: smallint
+        link_method:
+            type: text
+        creator_id:
+            type: integer
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
+        del_flg:
+            type: smallint
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: NewsCreators
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+    lifecycleCallbacks:
+        prePersist: [ setCreateDateAuto ]
+        preUpdate:  [ setUpdateDateAuto ]

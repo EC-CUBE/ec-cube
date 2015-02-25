@@ -1,0 +1,17 @@
+Eccube\Entity\CategoryTotalCount:
+    type: entity
+    table: dtb_category_total_count
+    repositoryClass: Eccube\Repository\CategoryTotalCountRepository
+    fields:
+        id:
+            type: integer
+            column: category_id
+            size: 11
+            id: true
+            generator:
+                strategy: AUTO
+        product_count:
+            type: integer
+        create_date:
+            type: datetime
+    lifecycleCallbacks: {  }
