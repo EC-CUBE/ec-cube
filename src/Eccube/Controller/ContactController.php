@@ -16,7 +16,7 @@ class ContactController
 
 	public function Index(Application $app)
 	{
-        $form = $app['form.factory']->createBuilder()
+            $form = $app['form.factory']->createBuilder()
             ->add('name01', 'text', array(
             	'constraints' => array(new Assert\NotBlank())
             ))
@@ -61,21 +61,21 @@ class ContactController
             	'constraints' => array(new Assert\NotBlank())
             ))
             ->getForm();
-        
-        $form->handleRequest($app['request']);
 
-        if ($form->isValid()) {
-            $data = $form->getData();
-		    $message = \Swift_Message::newInstance()
-		        ->setSubject('[TEST] mail test')
-		        ->setFrom(array('shinichi-takahashi+eccube3from@lockon.co.jp'))
-		        ->setTo(array('shinichi-takahashi+eccube3to@lockon.co.jp'))
-		        ->setBody('testmail');
+            $form->handleRequest($app['request']);
 
-		    $app['mailer']->send($message);
+            if ($form->isValid()) {
+                  $data = $form->getData();
+                  $message = $app['mail.message']
+                        ->setSubject('[EC-CUBE3] お問い合わせを受け付けました。')
+                        ->setFrom(array('sample@example.com'))
+                        ->setCc(array('shinichi_takahashi@lockon.co.jp'))
+                        ->setTo(array($data['email']))
+                        ->setBody(array($data['contents']));
+                  $app['mailer']->send($message);
 
-            return $app->redirect('complete.php');
-        }
+                  return $app->redirect('complete.php');
+            }
 
 		return $app['twig']->render('Contact/index.twig', array(
 			'title' => $this->title,

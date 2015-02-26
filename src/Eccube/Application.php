@@ -41,6 +41,7 @@ class Application extends \Silex\Application
             $config = Yaml::parse(__DIR__ .'/../../app/config/eccube/config.yml');
             return $config;
         };
+        $this['swiftmailer.option'] = $this['config']['mail'];
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
@@ -54,6 +55,9 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
+        $this['mail.message'] = function() {
+            return \Swift_Message::newInstance();
+        };
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
