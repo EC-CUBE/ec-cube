@@ -17,50 +17,61 @@ class ContactController
 	public function Index(Application $app)
 	{
             $form = $app['form.factory']->createBuilder()
-            ->add('name01', 'text', array(
-            	'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('name02', 'text', array(
-            	'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('kana01', 'text', array(
-            	'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('kana02', 'text', array(
-            	'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('zip01', 'text', array(
-            	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
-            ))
-            ->add('zip02', 'text', array(
-            	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 4)))
-            ))
-            ->add('pref')
-            ->add('addr01', 'text', array(
-            	'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('addr02', 'text', array(
-            	'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('tel01', 'text', array(
-            	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 2)))
-            ))
-            ->add('tel02', 'text', array(
-            	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
-            ))
-            ->add('tel03', 'text', array(
-            	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
-            ))
-            ->add('email', 'email', array(
-            	'constraints' => array(new Assert\NotBlank(), new Assert\Email())
-            ))
-            ->add('email02', 'email', array(
-            	'constraints' => array(new Assert\NotBlank(), new Assert\Email())
-            ))
-            ->add('contents', 'textarea', array(
-            	'constraints' => array(new Assert\NotBlank())
-            ))
-            ->getForm();
+                  ->add('name01', 'text', array(
+                        'constraints' => array(new Assert\NotBlank())
+                  ))
+                  ->add('name02', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank())
+                  ))
+                  ->add('kana01', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank())
+                  ))
+                  ->add('kana02', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank())
+                  ))
+                  ->add('zip01', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
+                  ))
+                  ->add('zip02', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 4)))
+                  ))
+                  ->add('pref', 'choice', array(
+                        'choices' => array(
+                        // TODO: FormTypeにまとめる
+                              1 => '北海道',
+                              2 => '青森県',
+                        ),
+                        'multiple' => false,
+                        'expanded' => false,
+                        'required' => false,
+                        'empty_value' => '都道府県を選択してください',
+                        'empty_data' => null,
+                  ))
+                  ->add('addr01', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank())
+                  ))
+                  ->add('addr02', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank())
+                  ))
+                  ->add('tel01', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 2)))
+                  ))
+                  ->add('tel02', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
+                  ))
+                  ->add('tel03', 'text', array(
+                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
+                  ))
+                  ->add('email', 'email', array(
+                  	'constraints' => array(new Assert\NotBlank(), new Assert\Email())
+                  ))
+                  ->add('email02', 'email', array(
+                  	'constraints' => array(new Assert\NotBlank(), new Assert\Email())
+                  ))
+                  ->add('contents', 'textarea', array(
+                  	'constraints' => array(new Assert\NotBlank())
+                  ))
+                  ->getForm();
 
             $form->handleRequest($app['request']);
 

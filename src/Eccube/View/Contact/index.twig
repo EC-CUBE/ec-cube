@@ -44,9 +44,7 @@
 	                <tr>
 	                    <th>住所</th>
 	                    <td>
-	                        <select name="pref" style="<!--{$arrErr.pref|sfGetErrorColor}-->">
-	                        <option value="">都道府県を選択</option><!--{html_options options=$arrPref selected=$arrForm.pref.value|default:$arrData.pref|h}--></select>
-
+	                    	{{ form_widget(form.pref) }}
 	                        <p>
 	                            {{ form_widget(form.addr01) }}
 	                        </p>
