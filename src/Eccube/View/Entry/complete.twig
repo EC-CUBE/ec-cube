@@ -1,0 +1,34 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+
+<div id="undercolumn">
+    <h2 class="title">{{ title }}</h2>
+    <div id="undercolumn_contact">
+        <div id="complete_area">
+            <p class="message">会員登録の受付が完了いたしました。</p>
+            <p>現在<span class="attention">仮会員</span>の状態です。<br />
+                ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、本会員登録になった上でお買い物をお楽しみください。<br />
+                今後ともご愛顧賜りますようよろしくお願い申し上げます。
+            </p>
+            <div class="shop_information">
+            <p class="name">DUMMY<br />
+            <p>TEL：00-0000-0000
+                E-mail：<a href="mailto:sample@example.com">sample@example.com</a></p>
+            </p>
+            </div>
+
+            <div class="btn_area">
+                <ul>
+                <li>
+                    <a href="{{ constant('Eccube\\Constant::ROOT')}}"><img class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_toppage.jpg" alt="トップページへ" /></a>
+                </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -48,10 +48,13 @@ class FrontControllerProvider implements ControllerProviderInterface
 
 
         // entry
-        $controllers->match('/entry/', '\\Eccube\\Page\\Entry\\Index')->bind('entry');
-        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Page\\Entry\\Kiyaku')->bind('entry_kiyaku');
-        $controllers->match('/entry/email_mobile.php', '\\Eccube\\Page\\Entry\\EmailMobile')->bind('entry_email_mobile');
-        $controllers->match('/entry/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('entry_complete');
+        // $controllers->match('/entry/', '\\Eccube\\Page\\Entry\\Index')->bind('entry');
+        // $controllers->match('/entry/kiyaku.php', '\\Eccube\\Page\\Entry\\Kiyaku')->bind('entry_kiyaku');
+        // $controllers->match('/entry/email_mobile.php', '\\Eccube\\Page\\Entry\\EmailMobile')->bind('entry_email_mobile');
+        // $controllers->match('/entry/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('entry_complete');
+        $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::Index')->bind('entry');
+        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Controller\\EntryController::Kiyaku')->bind('entry_kiyaku');
+        $controllers->match('/entry/complete.php', '\\Eccube\\Controller\\EntryController::Complete')->bind('entry_complete');
 
         // forgot
         $controllers->match('/forgot/', '\\Eccube\\Page\\Forgot\\Index')->bind('forgot');
