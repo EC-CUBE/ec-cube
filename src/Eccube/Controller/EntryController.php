@@ -40,21 +40,32 @@ class EntryController
         $entryUrl = $app['url_generator']->generate('entry');
         
         if (!in_array($referer['path'], array($kiyakuUrl, $entryUrl))) {
-            return $app->redirect('kiyaku.php');
+            return $app->redirect($kiyakuUrl);
         }
 
-        $form = $app['form.factory']->createBuilder('form', new \Eccube\Entity\Customer)
-            ->add('name01', 'text')
-            ->add('name02', 'text')
-            ->add('kana01', 'text')
-            ->add('kana02', 'text')
-            ->add('email', 'email')
-            ->add('password', 'password')
+        $form = $app['form.factory']
+            ->createBuilder(new \Eccube\FormType\CustomerType(), new \Eccube\Entity\Customer())
             ->getForm();
 
         $form->handleRequest($app['request']);
 
+        // 戻るボタン時 or validate error時
+        if ($app['request']->get('back') || !$form->isValid()) {
+            return $app['twig']->render('Entry/index.twig', array(
+                'title' => $this->title,
+                'form' => $form->createView(),
+            ));
+        }
+
         if ($form->isValid()) {
+            if (!$app['request']->get('confirm')) {
+                // 確認画面へ
+                return $app['twig']->render('Entry/confirm.twig', array(
+                    'title' => 'かくにん',
+                    'form' => $form->createView()
+                ));
+            }
+
             $data = $form->getData();
             $message = $app['mail.message']
                 ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
@@ -75,13 +86,8 @@ class EntryController
             $app['orm.em']->persist($data);
             $app['orm.em']->flush();
 
-            return $app->redirect('complete.php');
+            return $app->redirect( $app['url_generator']->generate('entry_complete'));
         }
-
-        return $app['twig']->render('Entry/index.twig', array(
-            'title' => $this->title,
-            'form' => $form->createView(),
-        ));
     }
 
     public function Complete(Application $app)
