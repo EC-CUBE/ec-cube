@@ -44,20 +44,12 @@ class EntryController
         }
 
         $form = $app['form.factory']->createBuilder('form', new \Eccube\Entity\Customer)
-            ->add('name01', 'text', array(
-                'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('name02', 'text', array(
-                'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('kana01', 'text', array(
-                'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('kana02', 'text', array(
-                'constraints' => array(new Assert\NotBlank())
-            ))
-            ->add('email')
-            ->add('password')
+            ->add('name01', 'text')
+            ->add('name02', 'text')
+            ->add('kana01', 'text')
+            ->add('kana02', 'text')
+            ->add('email', 'email')
+            ->add('password', 'password')
             ->getForm();
 
         $form->handleRequest($app['request']);
@@ -73,7 +65,7 @@ class EntryController
             $app['mailer']->send($message);
 
             $data
-                ->setSecretKey($data->getPassword())
+                ->setSecretKey(uniqid())
                 ->setCreateDate(new \DateTime())
                 ->setUpdateDate(new \DateTime())
                 ->setPoint(0)
