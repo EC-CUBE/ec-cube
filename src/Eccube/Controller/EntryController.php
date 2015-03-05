@@ -3,15 +3,17 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use Symfony\Component\Validator\Constraints as Assert;
 
-class EntryController
+class EntryController extends AbstractController
 {
     private $title;
+
+    public $form;
 
     public function __construct()
     {
         $this->title = '会員登録';
+
     }
 
     public function Kiyaku(Application $app)
@@ -33,50 +35,47 @@ class EntryController
 
     public function Index(Application $app)
     {
-        // 規約確認
-        $referer = parse_url($app['request']->headers->get('referer'));
+        $this->redirectKiyakuPage($app);
+        $form = $this->getBoundForm($app, 'customer');
+        // $form = $app['form.factory']
+        //     ->createBuilder(new \Eccube\Form\Type\CustomerType(), new \Eccube\Entity\Customer())
+        //     ->getForm();
+        // $form->handleRequest($app['request']);
 
-        $kiyakuUrl = $app['url_generator']->generate('entry_kiyaku');
-        $entryUrl = $app['url_generator']->generate('entry');
-        
-        if (!in_array($referer['path'], array($kiyakuUrl, $entryUrl))) {
-            return $app->redirect($kiyakuUrl);
-        }
+        return $app['twig']->render('Entry/index.twig', array(
+            'title' => $this->title,
+            'form' => $form->createView(),
+        ));
+    }
 
-        $form = $app['form.factory']
-            ->createBuilder(new \Eccube\FormType\CustomerType(), new \Eccube\Entity\Customer())
-            ->getForm();
+    public function Confirm(Application $app)
+    {
+        $this->redirectKiyakuPage($app);
+        $form = $this->getBoundForm($app, 'customer');
 
-        $form->handleRequest($app['request']);
+        if ($form->isValid()) {
 
-        // 戻るボタン時 or validate error時
-        if ($app['request']->get('back') || !$form->isValid()) {
-            return $app['twig']->render('Entry/index.twig', array(
+            return $app['twig']->render('Entry/confirm.twig', array(
                 'title' => $this->title,
                 'form' => $form->createView(),
             ));
+
+        } else {
+
+            return $this->Index($app);
+
         }
+    }
+
+    public function Complete(Application $app)
+    {
+        $this->redirectKiyakuPage($app);
+        $form = $this->getBoundForm($app, 'customer');
 
         if ($form->isValid()) {
-            if (!$app['request']->get('confirm')) {
-                // 確認画面へ
-                return $app['twig']->render('Entry/confirm.twig', array(
-                    'title' => 'かくにん',
-                    'form' => $form->createView()
-                ));
-            }
 
             $data = $form->getData();
-            $message = $app['mail.message']
-                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                ->setFrom(array('sample@example.com'))
-                ->setCc(array('shinichi_takahashi@lockon.co.jp'))
-                ->setTo(array($data->getEmail()))
-                ->setBody('会員登録が完了しました。');
-            $app['mailer']->send($message);
-
-            $data
-                ->setSecretKey(uniqid())
+            $data->setSecretKey(uniqid())
                 ->setCreateDate(new \DateTime())
                 ->setUpdateDate(new \DateTime())
                 ->setPoint(0)
@@ -86,15 +85,40 @@ class EntryController
             $app['orm.em']->persist($data);
             $app['orm.em']->flush();
 
-            return $app->redirect( $app['url_generator']->generate('entry_complete'));
+            $message = $app['mail.message']
+                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
+                ->setFrom(array('sample@example.com'))
+                ->setCc(array('shinichi_takahashi@lockon.co.jp'))
+                ->setTo(array($data->getEmail()))
+                ->setBody('会員登録が完了しました。');
+
+            $app['mailer']->send($message);
+
+            return $app['twig']->render('Entry/complete.twig', array(
+                'title' => $this->title,
+            ));
+
+        } else {
+
+            return $this->Index($app);
+
         }
+
     }
 
-    public function Complete(Application $app)
+    // 規約画面からの遷移でない場合、規約ページへリダイレクト
+    private function redirectKiyakuPage($app)
     {
-        return $app['twig']->render('Entry/complete.twig', array(
-            'title' => $this->title,
-        ));
+        // 規約確認
+        $referer = parse_url($app['request']->headers->get('referer'));
+
+        $kiyakuUrl = $app['url_generator']->generate('entry_kiyaku');
+        $indexUrl = $app['url_generator']->generate('entry');
+        $confirmUrl = $app['url_generator']->generate('entry_confirm');
+        
+        if (!in_array($referer['path'], array($kiyakuUrl, $indexUrl, $confirmUrl))) {
+            return $app->redirect($kiyakuUrl);
+        }
     }
 
 }

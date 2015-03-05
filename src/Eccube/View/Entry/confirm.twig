@@ -9,7 +9,7 @@
             ご登録されますと、まずは仮会員となります。<br />
             入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
         </p>
-        <form name="form1" id="form1" method="post" action="?">
+        <form name="form1" id="form1" method="post" action="{{ url('entry_confirm') }}">
             {{ form_errors(form) }}
             {{ form_widget(form._token) }}
             {{ form_widget(form.name01, {type: 'hidden'}) }}
@@ -53,10 +53,10 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" onClick="document.form1.action='?back=1'" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_back.jpg" alt="戻る" name="back" />
+                        <input type="image" onClick="document.form1.action='{{ url('entry') }}';" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_back.jpg" alt="戻る" name="back" value="1" />
                     </li>
                     <li>
-                        <input type="image" onClick="document.form1.action='?confirm=1'" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_entry.jpg" alt="会員登録をする" name="confirm" id="send" />
+                        <input type="image" onClick="document.form1.action='{{ url('entry_complete') }}';" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_entry.jpg" alt="会員登録をする" name="complete" value="1" id="send" />
                     </li>
                 </ul>
             </div>

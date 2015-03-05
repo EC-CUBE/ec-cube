@@ -54,6 +54,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         // $controllers->match('/entry/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('entry_complete');
         $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::Index')->bind('entry');
         $controllers->match('/entry/kiyaku.php', '\\Eccube\\Controller\\EntryController::Kiyaku')->bind('entry_kiyaku');
+        $controllers->match('/entry/confirm.php', '\\Eccube\\Controller\\EntryController::Confirm')->bind('entry_confirm');
         $controllers->match('/entry/complete.php', '\\Eccube\\Controller\\EntryController::Complete')->bind('entry_complete');
 
         // forgot
