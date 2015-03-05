@@ -3,6 +3,32 @@
 [![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
 
 * * * * * * * * * * * * * * * * * * * *
+### インストール方法
+* Composerのインストール  
+  `curl -sS https://getcomposer.org/installer | php`
+* EC-CUBEインストーラーの実行
+  実行前に環境に合わせて修正すること  
+  `sh eccube_intall.sh mysql`  
+  `sh eccube_intall.sh pgsql`  
+* `app/config/eccube/config.yml`を環境に合わせて作成  
+```
+# sample
+database:
+    driver: pdo_pgsql
+    dbname: db_name
+    user: db_user
+    password : password
+    charset: utf8
+mail:
+    host: localhost
+    port: 25
+    username: vagrant
+    password: vagrant
+    encryption: 
+    auth_mode: 
+```
+
+* * * * * * * * * * * * * * * * * * * *
 ### β開発
 
 現在、eccube-3.0.0-betaブランチにてβ版の開発を行っております。
