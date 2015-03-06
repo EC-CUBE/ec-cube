@@ -22,8 +22,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.entity.customer'] = $app->share(function() {
             return new \Eccube\Entity\Customer();
         });
-        
-        // FormType
+        // Repository
+        $app['eccube.repository.customer'] = function() use ($app) {
+            return $app['orm.em']->getRepository('\\Eccube\\Entity\\Customer');
+        };
+        // Form\Type
         $app['eccube.form.type.customer'] = function() {
             return new \Eccube\Form\Type\CustomerType();
         };

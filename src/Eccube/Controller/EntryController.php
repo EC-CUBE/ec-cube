@@ -37,10 +37,6 @@ class EntryController extends AbstractController
     {
         $this->redirectKiyakuPage($app);
         $form = $this->getBoundForm($app, 'customer');
-        // $form = $app['form.factory']
-        //     ->createBuilder(new \Eccube\Form\Type\CustomerType(), new \Eccube\Entity\Customer())
-        //     ->getForm();
-        // $form->handleRequest($app['request']);
 
         return $app['twig']->render('Entry/index.twig', array(
             'title' => $this->title,
@@ -61,9 +57,7 @@ class EntryController extends AbstractController
             ));
 
         } else {
-
             return $this->Index($app);
-
         }
     }
 
@@ -99,9 +93,8 @@ class EntryController extends AbstractController
             ));
 
         } else {
-
-            return $this->Index($app);
-
+            // 確認->完了でエラー起きた場合は、エラーページへ
+            return $app->redirect($app['url_generator']->generate('error'));
         }
 
     }

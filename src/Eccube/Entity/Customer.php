@@ -4,7 +4,6 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Customer
@@ -228,14 +227,6 @@ class Customer
         $this->name01 = $name01;
 
         return $this;
-    }
-
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addPropertyConstraint('name01', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('name02', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('kana01', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('kana02', new Assert\NotBlank());
     }
 
     /**
