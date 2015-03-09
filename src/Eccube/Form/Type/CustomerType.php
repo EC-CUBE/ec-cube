@@ -6,9 +6,16 @@ use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\FormBuilder;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
+use \Symfony\Component\Validator\ExecutionContextInterface;
 
 class CustomerType extends AbstractType
 {
+	public $app;
+
+	public function __construct (\Eccube\Application $app)
+	{
+		$this->app = $app;
+	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
@@ -16,7 +23,21 @@ class CustomerType extends AbstractType
 		$builder->add('name02', 'text', array('constraints' => array(new Assert\NotBlank() )));
 		$builder->add('kana01', 'text', array('constraints' => array(new Assert\NotBlank() )));
 		$builder->add('kana02', 'text', array('constraints' => array(new Assert\NotBlank() )));
-		$builder->add('email', 'email', array('constraints' => array(new Assert\NotBlank(), new Assert\Email() )));
+		$builder->add('email', 'email', array('constraints' => array(
+			new Assert\NotBlank(),
+			new Assert\Email(),
+			new Assert\Callback(function($email, ExecutionContextInterface $context) {
+					$customer = $this->app['orm.em']->getRepository('Eccube\\Entity\\Customer')
+						->findBy(array(
+						       'email' => $email,
+						       'del_flg' => '0',
+						)
+					);
+					if (count($customer) > 0) {
+			            $context->addViolationAt('email', '入力されたメールアドレスは既に使用されています。', array(), null);
+					}
+        		}),
+		 )));
 		$builder->add('password', 'repeated');
 	}
 
