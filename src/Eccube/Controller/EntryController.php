@@ -40,7 +40,7 @@ class EntryController extends AbstractController
         $customer = $app['eccube.repository.customer']->newCustomer();
 
         $form = $app['form.factory']
-            ->createBuilder($app['eccube.form.type.customer'], $customer)
+            ->createBuilder('customer', $customer)
             ->getForm();
         $form->handleRequest($app['request']);
 

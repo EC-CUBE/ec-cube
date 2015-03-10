@@ -16,82 +16,46 @@ class ContactController
 
 	public function Index(Application $app)
 	{
-            $form = $app['form.factory']->createBuilder()
-                  ->add('name01', 'text', array(
-                        'constraints' => array(new Assert\NotBlank())
-                  ))
-                  ->add('name02', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank())
-                  ))
-                  ->add('kana01', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank())
-                  ))
-                  ->add('kana02', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank())
-                  ))
-                  ->add('zip01', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
-                  ))
-                  ->add('zip02', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 4)))
-                  ))
-                  ->add('pref', 'choice', array(
-                        'choices' => array(
-                        // TODO: FormTypeにまとめる
-                              1 => '北海道',
-                              2 => '青森県',
-                        ),
-                        'multiple' => false,
-                        'expanded' => false,
-                        'required' => false,
-                        'empty_value' => '都道府県を選択してください',
-                        'empty_data' => null,
-                  ))
-                  ->add('addr01', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank())
-                  ))
-                  ->add('addr02', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank())
-                  ))
-                  ->add('tel01', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 2)))
-                  ))
-                  ->add('tel02', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
-                  ))
-                  ->add('tel03', 'text', array(
-                  	'constraints' => array(new Assert\NotBlank(), new Assert\Length(array('min' => 3)))
-                  ))
-                  ->add('email', 'email', array(
-                  	'constraints' => array(new Assert\NotBlank(), new Assert\Email())
-                  ))
-                  ->add('email02', 'email', array(
-                  	'constraints' => array(new Assert\NotBlank(), new Assert\Email())
-                  ))
-                  ->add('contents', 'textarea', array(
-                  	'constraints' => array(new Assert\NotBlank())
-                  ))
-                  ->getForm();
+        $form = $app['form.factory']
+              ->createBuilder('contact')
+              ->getForm();
+        $form->handleRequest($app['request']);
 
-            $form->handleRequest($app['request']);
+        if ($app['request']->getMethod() === 'POST' && $form->isValid()) {
 
-            if ($form->isValid()) {
-                  $data = $form->getData();
-                  $message = $app['mail.message']
+            $data = $form->getData();
+
+            switch ($app['request']->get('mode')) {
+                case 'confirm' :
+                    return $app['twig']->render('Contact/confirm.twig', array(
+                        'title' => $this->title,
+                        'form' => $form->createView(),
+                    ));
+                    break;
+                case 'complete':
+                    $app['orm.em']->persist($customer);
+                    $app['orm.em']->flush();
+
+                    // TODO: 後でEventとして実装する
+                    $message = $app['mail.message']
                         ->setSubject('[EC-CUBE3] お問い合わせを受け付けました。')
                         ->setFrom(array('sample@example.com'))
                         ->setCc(array('shinichi_takahashi@lockon.co.jp'))
                         ->setTo(array($data['email']))
-                        ->setBody(array($data['contents']));
-                  $app['mailer']->send($message);
+                        ->setBody($data['contents']);
+                    $app['mailer']->send($message);
 
-                  return $app->redirect('complete.php');
+                    return $app->redirect($app['url_generator']->generate('contact_complete'));
+                    break;
             }
 
-		return $app['twig']->render('Contact/index.twig', array(
-			'title' => $this->title,
-			'form' => $form->createView(),
-		));
+        }
+
+        return $app['twig']->render('Contact/index.twig', array(
+            'title' => $this->title,
+            'form' => $form->createView(),
+        ));
+
 	}
 
 	public function Complete(Application $app)

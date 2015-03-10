@@ -44,6 +44,10 @@ class Application extends \Silex\Application
         $this['swiftmailer.option'] = $this['config']['mail'];
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $this->register(new \Silex\Provider\SessionServiceProvider());
+       //  $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
+       //      'security.firewalls' => ''
+       // ));
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.path' => __DIR__ . '/View',
         ));
@@ -55,6 +59,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
+        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
         $this['mail.message'] = function() {
             return \Swift_Message::newInstance();
         };
