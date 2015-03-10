@@ -34,7 +34,7 @@ class CustomerType extends AbstractType
 						)
 					);
 					if (count($customer) > 0) {
-			            $context->addViolationAt('email', '入力されたメールアドレスは既に使用されています。', array(), null);
+			            $context->addViolation('入力されたメールアドレスは既に使用されています。');
 					}
         		}),
 		 )));
