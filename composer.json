@@ -50,13 +50,16 @@
         "symfony/validator": "~2.4",
         "symfony/translation": "~2.4",
         "symfony/config": "~2.4",
+        "symfony/security": "~2.4",
         "dflydev/doctrine-orm-service-provider": "1.0.*@dev",
         "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
         "phpunit/phpunit": "3.7.*",
-        "phing/phing": "2.*"
+        "phing/phing": "2.*",
+        "symfony/browser-kit": ">=2.3,<2.4-dev",
+        "symfony/css-selector": ">=2.3,<2.4-dev"
     },
     "autoload": {
         "psr-0": {
