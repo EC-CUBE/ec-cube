@@ -36,7 +36,41 @@ class EntryController extends AbstractController
     public function Index(Application $app)
     {
         $this->redirectKiyakuPage($app);
-        $form = $this->getBoundForm($app, 'customer');
+
+        $customer = $app['eccube.repository.customer']->newCustomer();
+
+        $form = $app['form.factory']
+            ->createBuilder($app['eccube.form.type.customer'], $customer)
+            ->getForm();
+        $form->handleRequest($app['request']);
+
+        if ($app['request']->getMethod() === 'POST' && $form->isValid()) {
+            
+            switch ($app['request']->get('mode')) {
+                case 'confirm' :
+                    return $app['twig']->render('Entry/confirm.twig', array(
+                        'title' => $this->title,
+                        'form' => $form->createView(),
+                    ));
+                    break;
+                case 'complete':
+                    $app['orm.em']->persist($customer);
+                    $app['orm.em']->flush();
+
+                    // TODO: 後でEventとして実装する
+                    // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
+                    $message = $app['mail.message']
+                        ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
+                        ->setFrom(array('sample@example.com'))
+                        ->setCc(array('shinichi_takahashi@lockon.co.jp'))
+                        ->setTo(array($customer->getEmail()))
+                        ->setBody('会員登録が完了しました。');
+                    $app['mailer']->send($message);
+
+                    return $app->redirect($app['url_generator']->generate('entry_complete'));
+                    break;
+            }
+        }
 
         return $app['twig']->render('Entry/index.twig', array(
             'title' => $this->title,
@@ -44,59 +78,11 @@ class EntryController extends AbstractController
         ));
     }
 
-    public function Confirm(Application $app)
-    {
-        $this->redirectKiyakuPage($app);
-        $form = $this->getBoundForm($app, 'customer');
-
-        if ($form->isValid()) {
-
-            return $app['twig']->render('Entry/confirm.twig', array(
-                'title' => $this->title,
-                'form' => $form->createView(),
-            ));
-
-        } else {
-            return $this->Index($app);
-        }
-    }
-
     public function Complete(Application $app)
     {
-        $this->redirectKiyakuPage($app);
-        $form = $this->getBoundForm($app, 'customer');
-
-        if ($form->isValid()) {
-
-            $data = $form->getData();
-            $data->setSecretKey(uniqid())
-                ->setCreateDate(new \DateTime())
-                ->setUpdateDate(new \DateTime())
-                ->setPoint(0)
-                ->setStatus(1)
-                ->setDelFlg(0);
-
-            $app['orm.em']->persist($data);
-            $app['orm.em']->flush();
-
-            $message = $app['mail.message']
-                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                ->setFrom(array('sample@example.com'))
-                ->setCc(array('shinichi_takahashi@lockon.co.jp'))
-                ->setTo(array($data->getEmail()))
-                ->setBody('会員登録が完了しました。');
-
-            $app['mailer']->send($message);
-
-            return $app['twig']->render('Entry/complete.twig', array(
-                'title' => $this->title,
-            ));
-
-        } else {
-            // 確認->完了でエラー起きた場合は、エラーページへ
-            return $app->redirect($app['url_generator']->generate('error'));
-        }
-
+        return $app['twig']->render('Entry/complete.twig', array(
+            'title' => $this->title,
+        ));
     }
 
     // 規約画面からの遷移でない場合、規約ページへリダイレクト

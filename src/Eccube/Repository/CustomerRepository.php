@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomerRepository extends EntityRepository
 {
+    public $app;
+
+    public function setApplication($app)
+    {
+        $this->app = $app;
+    }
+
+    public function newCustomer()
+    {
+        $customer = new \Eccube\Entity\Customer();
+
+        $customer->setSecretKey(uniqid())
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime())
+            ->setPoint(0)
+            ->setStatus(1)
+            ->setDelFlg(0);
+
+        return $customer;
+    }
+
 }

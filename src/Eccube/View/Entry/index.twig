@@ -24,7 +24,7 @@
             ご登録されますと、まずは仮会員となります。<br />
             入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
         </p>
-        <form name="form1" id="form1" method="post" action="{{ url('entry_confirm') }}">
+        <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
             {{ form_widget(form._token) }}
             <table summary="会員登録フォーム">
 
@@ -72,7 +72,7 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL')}}img/button/btn_confirm.jpg" alt="確認ページへ" name="confirm" value="1" id="confirm" />
+                        <input type="image" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL')}}img/button/btn_confirm.jpg" alt="確認ページへ" name="mode" value="confirm" />
                     </li>
                 </ul>
             </div>

@@ -19,6 +19,7 @@ class CustomerType extends AbstractType
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$app = $this->app;
 		$builder->add('name01', 'text', array('constraints' => array(new Assert\NotBlank() )));
 		$builder->add('name02', 'text', array('constraints' => array(new Assert\NotBlank() )));
 		$builder->add('kana01', 'text', array('constraints' => array(new Assert\NotBlank() )));
@@ -26,14 +27,15 @@ class CustomerType extends AbstractType
 		$builder->add('email', 'email', array('constraints' => array(
 			new Assert\NotBlank(),
 			new Assert\Email(),
-			new Assert\Callback(function($email, ExecutionContextInterface $context) {
-					$customer = $this->app['orm.em']->getRepository('Eccube\\Entity\\Customer')
+			new Assert\Callback(function($email, ExecutionContextInterface $context) use ($app) {
+					$customers = $app['orm.em']
+						->getRepository('Eccube\\Entity\\Customer')
 						->findBy(array(
 						       'email' => $email,
 						       'del_flg' => '0',
 						)
 					);
-					if (count($customer) > 0) {
+					if (count($customers) > 0) {
 			            $context->addViolation('入力されたメールアドレスは既に使用されています。');
 					}
         		}),
