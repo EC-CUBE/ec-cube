@@ -23,6 +23,7 @@ class PrefType extends AbstractType
         $builder->add('pref', 'entity', array(
             'class' => 'Eccube\Entity\Pref',
             'property' => 'name',
+            'label' => false,
         ));
     }
 
