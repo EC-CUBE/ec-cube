@@ -17,9 +17,15 @@ class PrefType extends AbstractType
         $this->app = $app;
     }
 
+    public function getName()
+    {
+        return 'pref';
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $app = $this->app;
+
         $builder->add('pref', 'entity', array(
             'class' => 'Eccube\Entity\Pref',
             'property' => 'name',
@@ -30,8 +36,4 @@ class PrefType extends AbstractType
         ));
     }
 
-    public function getName()
-    {
-        return 'pref';
-    }
 }
