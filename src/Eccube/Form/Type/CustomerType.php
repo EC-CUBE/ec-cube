@@ -17,6 +17,11 @@ class CustomerType extends AbstractType
 		$this->app = $app;
 	}
 
+	public function getName()
+	{
+		return 'customer';
+	}
+
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$app = $this->app;
@@ -41,10 +46,5 @@ class CustomerType extends AbstractType
         		}),
 		 )));
 		$builder->add('password', 'repeated');
-	}
-
-	public function getName()
-	{
-		return 'customer';
 	}
 }

@@ -24,6 +24,9 @@ class PrefType extends AbstractType
             'class' => 'Eccube\Entity\Pref',
             'property' => 'name',
             'label' => false,
+            'multiple'=> false,
+            'expanded' => false,
+            'required' => false,
         ));
     }
 

@@ -18,44 +18,64 @@ class ContactType extends AbstractType
         $this->app = $app;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $app = $this->app;
-        $builder->add('name01', 'text', array('constraints' => array(new Assert\NotBlank() )));
-        $builder->add('name02', 'text', array('constraints' => array(new Assert\NotBlank() )));
-        $builder->add('kana01', 'text', array('constraints' => array(new Assert\NotBlank() )));
-        $builder->add('kana02', 'text', array('constraints' => array(new Assert\NotBlank() )));
-        $builder->add('zip01', 'text', array('constraints' => array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('min' => 3, 'max' => 3))
-        )));
-        $builder->add('zip02', 'text', array('constraints' => array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('min' => 4, 'max' => 4))
-        )));
-        $builder->add('pref', 'pref', array(
-            'constraints' => array(new Assert\NotBlank()),
-        ));
-        $builder->add('addr01', 'text', array('constraints' => array(new Assert\NotBlank() )));
-        $builder->add('addr02', 'text', array('constraints' => array(new Assert\NotBlank() )));
-        $builder->add('tel01', 'text', array('constraints' => array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('min' => 2, 'max' => 3))
-        )));
-        $builder->add('tel02', 'text', array('constraints' => array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('min' => 2, 'max' => 4))
-        )));
-        $builder->add('tel03', 'text', array('constraints' => array(
-            new Assert\NotBlank(),
-            new Assert\Length(array('min' => 2, 'max' => 4))
-        )));
-        $builder->add('email', 'email', array('constraints' => array(new Assert\NotBlank(), new Assert\Email() )));
-        $builder->add('contents', 'textarea', array('constraints' => array(new Assert\NotBlank() )));
-    }
-
     public function getName()
     {
         return 'contact';
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $app = $this->app;
+
+        $builder
+            ->add('name01', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+            )))
+            ->add('name02', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+            )))
+            ->add('kana01', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+            )))
+            ->add('kana02', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+            )))
+            ->add('zip01', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 3, 'max' => 3)),
+            )))
+            ->add('zip02', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 4, 'max' => 4)),
+            )))
+            ->add('pref', 'pref', array('constraints' => array(
+                new Assert\NotBlank()
+            )))
+            ->add('addr01', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+            )))
+            ->add('addr02', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+            )))
+            ->add('tel01', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 2, 'max' => 3)),
+            )))
+            ->add('tel02', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 2, 'max' => 4))
+            )))
+            ->add('tel03', 'text', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 2, 'max' => 4))
+            )))
+            ->add('email', 'email', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Email(),
+            )))
+            ->add('contents', 'textarea', array('constraints' => array(
+                new Assert\NotBlank(),
+            )))
+        ;
     }
 }

@@ -20,7 +20,6 @@ class ContactController
               ->createBuilder('contact')
               ->getForm();
         $form->handleRequest($app['request']);
-
         if ($app['request']->getMethod() === 'POST' && $form->isValid()) {
 
             $data = $form->getData();
@@ -33,9 +32,6 @@ class ContactController
                     ));
                     break;
                 case 'complete':
-                    $app['orm.em']->persist($customer);
-                    $app['orm.em']->flush();
-
                     // TODO: 後でEventとして実装する
                     $message = $app['mail.message']
                         ->setSubject('[EC-CUBE3] お問い合わせを受け付けました。')
