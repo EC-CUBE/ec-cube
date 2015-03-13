@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,12 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_mypage" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
-        <h3><!--{$tpl_subtitle|h}--></h3>
+        <h2><!--{$tpl_subtitle|h}--></h2>
         <p>下記の内容で送信してもよろしいでしょうか？<br />
             よろしければ、一番下の「完了ページへ」ボタンをクリックしてください。</p>
 
@@ -39,21 +38,20 @@
                 <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item.value|h}-->" />
                 <!--{/if}-->
             <!--{/foreach}-->
-            <table summary=" " class="delivname">
+            <dl class="table">
                 <!--{include file="`$smarty.const.TEMPLATE_REALDIR`frontparts/form_personal_confirm.tpl" flgFields=3 emailMobile=true prefix=""}-->
-            </table>
+            </dl>
 
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="?" onclick="eccube.setModeAndSubmit('return', '', ''); return false;">
-                            <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" /></a>
+                        <a href="?" class="btn btn-default" onclick="eccube.setModeAndSubmit('return', '', ''); return false;">戻る</a>
                     </li>
                     <li>
-                        <input type="image" class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_complete.jpg" alt="送信" name="complete" id="complete" />
+                        <input type="submit" class="btn btn-success" value="送信" name="complete" id="complete" />
                     </li>
                 </ul>
             </div>
         </form>
     </div>
-</div>
+</article>

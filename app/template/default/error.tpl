@@ -1,7 +1,8 @@
 <!--{*
+/*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -18,27 +19,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *}-->
-
+ */
+*}-->
 <!--{strip}-->
-    <div id="undercolumn">
-        <div id="undercolumn_error">
-            <div class="message_area">
-                <!--★エラーメッセージ-->
-                <p class="error"><!--{$tpl_error}--></p>
-            </div>
+<article id="article_error" class="undercolumn">
+	<div class="message_area">
+		<!--★エラーメッセージ-->
+		<p class="error"><!--{$tpl_error}--></p>
+	</div>
 
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <!--{if $return_top}-->
-                            <a href="<!--{$smarty.const.TOP_URL}-->"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_toppage.jpg" alt="トップページへ" /></a>
-                        <!--{else}-->
-                            <a href="javascript:history.back()"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_back.jpg" alt="戻る" /></a>
-                        <!--{/if}-->
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+	<div class="btn_area">
+		<ul>
+			<li>
+				<!--{if $return_top}-->
+					<a href="<!--{$smarty.const.TOP_URL}-->" class="btn btn-success">トップページへ</a>
+				<!--{else}-->
+					<a href="javascript:history.back()" class="btn btn-default">戻る</a>
+				<!--{/if}-->
+			</li>
+		</ul>
+	</div>
+</article>
 <!--{/strip}-->

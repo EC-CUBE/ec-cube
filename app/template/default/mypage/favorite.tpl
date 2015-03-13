@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,9 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_mypage" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
     <!--{if $tpl_navi != ""}-->
         <!--{include file=$tpl_navi}-->
     <!--{else}-->
@@ -36,7 +35,7 @@
             <input type="hidden" name="pageno" value="<!--{$tpl_pageno}-->" />
             <input type="hidden" name="mode" value="" />
             <input type="hidden" name="product_id" value="" />
-            <h3><!--{$tpl_subtitle|h}--></h3>
+            <h2><!--{$tpl_subtitle|h}--></h2>
 
             <!--{if $tpl_linemax > 0}-->
 
@@ -49,12 +48,10 @@
 
                 <table summary="お気に入り">
                     <col width="15%" />
-                    <col width="20%" />
-                    <col width="45%" />
-                    <col width="20%" />
+                    <col width="60%" />
+                    <col width="25%" />
                     <tr>
                         <th class="alignC">削除</th>
-                        <th class="alignC">商品画像</th>
                         <th class="alignC">商品名</th>
                         <th class="alignC"><!--{$smarty.const.SALE_PRICE_TITLE}-->(税込)</th>
                     </tr>
@@ -63,15 +60,17 @@
                         <tr>
                             <td class="alignC">
                                 <a href="javascript:eccube.setModeAndSubmit('delete_favorite','product_id','<!--{$product_id|h}-->');">
-                                    削除</a>
-                            </td>
-                            <td class="alignC">
-                                <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->">
-                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$arrFavorite[cnt].name|h}-->" />
+                                    削除
+								</a>
                             </td>
                             <td>
+								<!--{*商品画像*}-->
                                 <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->">
-                                    <!--{$arrFavorite[cnt].name|h}--></a>
+                                    <img src="<!--{$smarty.const.IMAGE_SAVE_URLPATH}--><!--{$arrFavorite[cnt].main_list_image|sfNoImageMainList|h}-->" style="max-width: 65px;max-height: 65px;" alt="<!--{$arrFavorite[cnt].name|h}-->" class="fr">
+								</a>
+                                <a href="<!--{$smarty.const.P_DETAIL_URLPATH}--><!--{$product_id|u}-->">
+                                    <!--{$arrFavorite[cnt].name|h}-->
+								</a>
                             </td>
                             <td class="alignR sale_price">
                                 <span class="price">
@@ -79,7 +78,8 @@
                                         <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->
                                     <!--{else}-->
                                         <!--{$arrFavorite[cnt].price02_min_inctax|n2s}-->～<!--{$arrFavorite[cnt].price02_max_inctax|n2s}-->
-                                    <!--{/if}-->円</span>
+                                    <!--{/if}-->円
+								</span>
                             </td>
                         </tr>
                     <!--{/section}-->
@@ -91,4 +91,4 @@
             <!--{/if}-->
         </form>
     </div>
-</div>
+</article>

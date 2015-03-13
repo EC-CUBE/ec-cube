@@ -2,7 +2,7 @@
 /*
  * This file is part of EC-CUBE
  *
- * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
  * http://www.lockon.co.jp/
  *
@@ -21,20 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 *}-->
-
-<div id="mypagecolumn">
-    <h2 class="title"><!--{$tpl_title|h}--></h2>
+<article id="article_mypage" class="undercolumn">
+    <h1 class="title"><!--{$tpl_title|h}--></h1>
     <!--{include file=$tpl_navi}-->
     <div id="mycontents_area">
-        <h3><!--{$tpl_subtitle|h}--></h3>
-        <p class="inforamtion">登録住所以外への住所へ送付される場合等にご利用いただくことができます。<br />
-        ※最大<span class="attention"><!--{$smarty.const.DELIV_ADDR_MAX|h}-->件</span>まで登録できます。</p>
+        <h2><!--{$tpl_subtitle|h}--></h2>
+        <p class="inforamtion">
+			登録住所以外への住所へ送付される場合等にご利用いただくことができます。<br />
+        	※最大<span class="attention"><!--{$smarty.const.DELIV_ADDR_MAX|h}-->件</span>まで登録できます。
+		</p>
 
         <!--{if $tpl_linemax < $smarty.const.DELIV_ADDR_MAX}-->
             <!--{* 退会時非表示 *}-->
             <!--{if $tpl_login}-->
                 <p class="add_address">
-                    <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" onclick="eccube.openWindow('./delivery_addr.php','delivadd','600','640',{menubar:'no'}); return false;" target="_blank"><img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_add_address.jpg" alt="新しいお届け先を追加" /></a>
+                    <a href="<!--{$smarty.const.ROOT_URLPATH}-->mypage/delivery_addr.php" class="btn btn-default btn-xs" onclick="eccube.openWindow('./delivery_addr.php','delivadd','600','640',{menubar:'no'}); return false;" target="_blank">
+						新しいお届け先を追加
+					</a>
                 </p>
             <!--{/if}-->
         <!--{/if}-->
@@ -83,4 +86,4 @@
             <p class="delivempty"><strong>新しいお届け先はありません。</strong></p>
         <!--{/if}-->
     </div>
-</div>
+</article>
