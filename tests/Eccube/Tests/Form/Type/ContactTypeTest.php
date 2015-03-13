@@ -1,8 +1,7 @@
 <?php
 
-namespace Eccube\Tests\Controller;
+namespace Eccube\Tests\Form\Type;
 
-use Eccube\Form\Type\ContactType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class ContactTypeTest extends TypeTestCase
