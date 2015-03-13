@@ -5,7 +5,7 @@ namespace Eccube\Tests\Controller;
 use Eccube\Form\Type\ContactType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class ContractControllerTest extends TypeTestCase
+class ContactTypeTest extends TypeTestCase
 {
 	// デフォルト値（正常系）を設定
 	private $formData = array(
