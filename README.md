@@ -10,6 +10,20 @@
   実行前に環境に合わせて修正すること  
   `sh eccube_intall.sh mysql`  
   `sh eccube_intall.sh pgsql`  
+* `src/Eccube/Constant.php`を環境に合わせて作成
+```
+<?php
+
+namespace Eccube;
+
+class Constant
+{
+	const ROOT = '/eccube-3/html/';
+	const TPL = '/eccube-3/html/user_data/packages/default/';
+	const SHOP_NAME = 'EC-CUBE3 SHOP';
+	const RELEASE_YEAR = '2015';
+}
+```
 * `app/config/eccube/config.yml`を環境に合わせて作成  
 ```
 # sample
