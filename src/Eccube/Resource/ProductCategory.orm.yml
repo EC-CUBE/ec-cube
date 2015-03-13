@@ -1,0 +1,31 @@
+Eccube\Entity\ProductCategory:
+    type: entity
+    table: dtb_product_categories
+    repositoryClass: Eccube\Repository\ProductCategoryRepository
+    fields:
+        product_id:
+            type: integer
+            id: true
+            generator:
+                strategy: NONE
+        category_id:
+            type: integer
+            id: true
+            generator:
+                strategy: NONE
+        rank:
+            type: integer
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: ProductCategories
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+        Category:
+            targetEntity: Eccube\Entity\Category
+            inversedBy: ProductCategories
+            joinColumn:
+                name: category_id
+                referencedColumnName: category_id
+    lifecycleCallbacks: {  }

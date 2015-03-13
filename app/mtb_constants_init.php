@@ -333,7 +333,7 @@ define('MOBILE_TEMPLATE_NAME', "mobile");
 /** スマートフォンテンプレート名 */
 define('SMARTPHONE_TEMPLATE_NAME', "sphone");
 /** SMARTYテンプレート */
-define('SMARTY_TEMPLATES_REALDIR',  DATA_REALDIR . "templates/");
+define('SMARTY_TEMPLATES_REALDIR',  DATA_REALDIR . "template/");
 /** SMARTYテンプレート(PC) */
 define('TEMPLATE_REALDIR', SMARTY_TEMPLATES_REALDIR . TEMPLATE_NAME . "/");
 /** SMARTYテンプレート(管理機能) */

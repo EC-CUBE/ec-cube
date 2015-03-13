@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->" />
+<title>{{ constant('Eccube\\Constant::SHOP_NAME') }}</title>
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="author" content="author" />
+<meta name="description" content="description" />
+<meta name="keywords" content="keyword" />
+<meta name="robots" content="robots" />
+<link rel="shortcut icon" href="{{ constant('Eccube\\Constant::ROOT') }}img/common/favicon.ico" />
+<link rel="icon" type="image/vnd.microsoft.icon" href="{{ constant('Eccube\\Constant::TPL') }}img/common/favicon.ico" />
+<link rel="stylesheet" href="{{ constant('Eccube\\Constant::ROOT') }}js/jquery.colorbox/colorbox.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ constant('Eccube\\Constant::TPL') }}css/import.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ constant('Eccube\\Constant::ROOT') }}js/jquery.ui/theme/jquery.ui.core.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ constant('Eccube\\Constant::ROOT') }}js/jquery.ui/theme/jquery.ui.tooltip.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ constant('Eccube\\Constant::ROOT') }}js/jquery.ui/theme/jquery.ui.theme.css" type="text/css" media="all" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<!--{$smarty.const.HTTP_URL}-->rss/<!--{$smarty.const.DIR_INDEX_PATH}-->" />
+<!--[if lt IE 9]>
+<script src="{{ constant('Eccube\\Constant::ROOT') }}js/jquery-1.11.1.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script src="{{ constant('Eccube\\Constant::ROOT') }}js/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="{{ constant('Eccube\\Constant::ROOT') }}js/eccube.js"></script>
+<!-- #2342 次期メジャーバージョン(2.14)にてeccube.legacy.jsは削除予定.モジュール、プラグインの互換性を考慮して2.13では残します. -->
+<script type="text/javascript" src="{{ constant('Eccube\\Constant::ROOT') }}js/eccube.legacy.js"></script>
+<script type="text/javascript" src="{{ constant('Eccube\\Constant::ROOT') }}js/jquery.colorbox/jquery.colorbox-min.js"></script>
+<!--
+<script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+-->
+<script type="text/javascript">//<![CDATA[
+    $(function(){
+    });
+//]]></script>
+
+<!--{* ▼Head COLUMN*}-->
+    <!--{* ▼上ナビ *}-->
+    <!--{* ▲上ナビ *}-->
+<!--{* ▲Head COLUMN*}-->
+</head>
+
+
+    <body class="<!--{$tpl_page_class_name|h}-->">
+
+        <div class="frame_outer">
+            <a name="top" id="top"></a>
+
+            <!--{* ▼HeaderHeaderTop COLUMN*}-->
+                <div id="headertopcolumn">
+                    <!--{* ▼上ナビ *}-->
+                    <!--{* ▲上ナビ *}-->
+                </div>
+            <!--{* ▲HeaderHeaderTop COLUMN*}-->
+
+            <!--{* ▼HEADER *}-->
+                <div id="header_wrap">
+                    <div id="header" class="clearfix">
+                        <div id="logo_area">
+                            <p id="site_description">EC-CUBE発!世界中を旅して見つけた立方体グルメを立方隊長が直送！</p>
+                            <a href="{{ constant('Eccube\\Constant::ROOT') }}"><img src="{{ constant('Eccube\\Constant::TPL') }}img/common/logo.gif" alt="" /></a>
+                        </div>
+                        <div id="header_utility">
+                            <div id="headerInternalColumn">
+                            <!--{* ▼HeaderInternal COLUMN *}-->
+                                <!--{* ▼上ナビ *}-->
+                                <!--{* ▲上ナビ *}-->
+                            <!--{* ▲HeaderInternal COLUMN *}-->
+                            </div>
+                            <div id="header_navi">
+                                <ul>
+                                    <li class="mypage">
+                                        <a href="{{ constant('Eccube\\Constant::ROOT') }}mypage/login.php"><img class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/common/btn_header_mypage.jpg" alt="MYページ" /></a>
+                                    </li>
+                                    <li class="entry">
+                                        <a href="{{ constant('Eccube\\Constant::ROOT') }}entry/kiyaku.php"><img class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/common/btn_header_entry.jpg" alt="会員登録" /></a>
+                                    </li>
+                                    <li>
+                                        <a href="<!--{$smarty.const.CART_URL}-->"><img class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/common/btn_header_cart.jpg" alt="カゴの中を見る" /></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!--{* ▲HEADER *}-->
+
+            <div id="container" class="clearfix">
+
+                <!--{* ▼TOP COLUMN*}-->
+                    <div id="topcolumn">
+                        <!--{* ▼上ナビ *}-->
+                        <!--{* ▲上ナビ *}-->
+                    </div>
+                <!--{* ▲TOP COLUMN*}-->
+
+                <!--{* ▼LEFT COLUMN *}-->
+                    <div id="leftcolumn" class="side_column">
+                        <!--{* ▼左ナビ *}-->
+                        <!--{* ▲左ナビ *}-->
+                    </div>
+                <!--{* ▲LEFT COLUMN *}-->
+
+                <!--{* ▼CENTER COLUMN *}-->
+                <div id="main_column" class="colnum2 left">
+                    <!--{* ▼メイン上部 *}-->
+                    <!--{* ▲メイン上部 *}-->
+
+                    <!-- ▼メイン -->
+
+                    {% block main %}{% endblock %}
+
+                    <!-- ▲メイン -->
+
+                    <!--{* ▼メイン下部 *}-->
+                    <!--{* ▲メイン下部 *}-->
+                </div>
+                <!--{* ▲CENTER COLUMN *}-->
+
+                <!--{* ▼RIGHT COLUMN *}-->
+                    <div id="rightcolumn" class="side_column">
+                        <!--{* ▼右ナビ *}-->
+                        <!--{* ▲右ナビ *}-->
+                    </div>
+                <!--{* ▲RIGHT COLUMN *}-->
+
+                <!--{* ▼BOTTOM COLUMN*}-->
+                    <div id="bottomcolumn">
+                        <!--{* ▼下ナビ *}-->
+                        <!--{* ▲下ナビ *}-->
+                    </div>
+                <!--{* ▲BOTTOM COLUMN*}-->
+
+            </div>
+
+            <!--{* ▼FOOTER *}-->
+            <div id="footer_wrap">
+                <div id="footer" class="clearfix">
+                    <div id="pagetop"><a href="#top">このページの先頭へ</a></div>
+                    <div id="copyright">Copyright ©
+                        &nbsp;{{ constant('Eccube\\Constant::RELEASE_YEAR') }}
+                        &nbsp;{{ constant('Eccube\\Constant::SHOP_NAME') }} All rights reserved.
+                    </div>
+                </div>
+            </div>
+
+            <!--{* ▲FOOTER *}-->
+
+            <!--{* ▼FooterBottom COLUMN*}-->
+                <div id="footerbottomcolumn">
+                    <!--{* ▼上ナビ *}-->
+                    <!--{* ▲上ナビ *}-->
+                </div>
+            <!--{* ▲FooterBottom COLUMN*}-->
+        </div>
+    </body>

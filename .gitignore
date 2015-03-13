@@ -4,6 +4,7 @@ composer.phar
 /vendor/
 /app/cache/*/*
 /app/config/eccube/config.php
+/app/config/eccube/config.yml
 /app/logs/*
 /app/upload/csv/*
 /html/install/temp/*

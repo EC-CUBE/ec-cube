@@ -1,0 +1,20 @@
+Eccube\Entity\DeliveryDate:
+    type: entity
+    table: mtb_delivery_date
+    repositoryClass: Eccube\Repository\DeliveryDateRepository
+    fields:
+        id:
+            type: smallint
+            length: 6
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: text
+        rank:
+            type: smallint
+    oneToMany:
+        Products:
+            targetEntity: Eccube\Entity\Product
+            mappedBy: DeliveryDate
+    lifecycleCallbacks: {  }

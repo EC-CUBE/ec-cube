@@ -1,0 +1,16 @@
+Eccube\Entity\Pref:
+    type: entity
+    table: mtb_pref
+    repositoryClass: Eccube\Repository\PrefRepository
+    fields:
+        id:
+            type: integer
+            length: 11
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: text
+        rank:
+            type: smallint
+    lifecycleCallbacks: {  }

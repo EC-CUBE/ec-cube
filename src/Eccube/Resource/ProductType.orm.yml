@@ -1,0 +1,20 @@
+Eccube\Entity\ProductType:
+    type: entity
+    table: mtb_product_type
+    repositoryClass: Eccube\Repository\ProductTypeRepository
+    fields:
+        id:
+            type: smallint
+            length: 6
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: text
+        rank:
+            type: smallint
+    oneToMany:
+        ProductClasses:
+            targetEntity: Eccube\Entity\ProductClass
+            mappedBy: ProductType
+    lifecycleCallbacks: {  }
