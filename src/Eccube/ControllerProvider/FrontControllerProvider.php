@@ -41,14 +41,21 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/cart/', '\\Eccube\\Page\\Cart\\Index')->bind('cart');
 
         // contact
-        $controllers->match('/contact/', '\\Eccube\\Page\\Contact\\Index')->bind('contact');
-        $controllers->match('/contact/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('contact_complete');
+        // $controllers->match('/contact/', '\\Eccube\\Page\\Contact\\Index')->bind('contact');
+        // $controllers->match('/contact/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('contact_complete');
+        $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::Index')->bind('contact');
+        $controllers->match('/contact/complete.php', '\\Eccube\\Controller\\ContactController::Complete')->bind('contact_complete');
+
 
         // entry
-        $controllers->match('/entry/', '\\Eccube\\Page\\Entry\\Index')->bind('entry');
-        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Page\\Entry\\Kiyaku')->bind('entry_kiyaku');
-        $controllers->match('/entry/email_mobile.php', '\\Eccube\\Page\\Entry\\EmailMobile')->bind('entry_email_mobile');
-        $controllers->match('/entry/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('entry_complete');
+        // $controllers->match('/entry/', '\\Eccube\\Page\\Entry\\Index')->bind('entry');
+        // $controllers->match('/entry/kiyaku.php', '\\Eccube\\Page\\Entry\\Kiyaku')->bind('entry_kiyaku');
+        // $controllers->match('/entry/email_mobile.php', '\\Eccube\\Page\\Entry\\EmailMobile')->bind('entry_email_mobile');
+        // $controllers->match('/entry/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('entry_complete');
+        $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::Index')->bind('entry');
+        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Controller\\EntryController::Kiyaku')->bind('entry_kiyaku');
+        $controllers->match('/entry/confirm.php', '\\Eccube\\Controller\\EntryController::Confirm')->bind('entry_confirm');
+        $controllers->match('/entry/complete.php', '\\Eccube\\Controller\\EntryController::Complete')->bind('entry_complete');
 
         // forgot
         $controllers->match('/forgot/', '\\Eccube\\Page\\Forgot\\Index')->bind('forgot');

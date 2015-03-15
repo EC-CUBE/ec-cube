@@ -1,0 +1,67 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+
+<div id="undercolumn">
+    <div id="undercolumn_entry">
+        <h2 class="title">{{ title }}</h2>
+        <p>
+            ご登録されますと、まずは仮会員となります。<br />
+            入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
+        </p>
+        <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
+            {{ form_errors(form) }}
+            {{ form_widget(form._token) }}
+            {{ form_widget(form.name01, {type: 'hidden'}) }}
+            {{ form_widget(form.name02, {type: 'hidden'}) }}
+            {{ form_widget(form.kana01, {type: 'hidden'}) }}
+            {{ form_widget(form.kana02, {type: 'hidden'}) }}
+            {{ form_widget(form.email, {type: 'hidden'}) }}
+            {{ form_widget(form.password.first, {type: 'hidden'}) }}
+            {{ form_widget(form.password.second, {type: 'hidden'}) }}
+            <table summary="会員登録フォーム">
+
+                <col width="30%" />
+                <col width="70%" />
+                <tr>
+                    <th>お名前<span class="attention">※</span></th>
+                    <td>
+                        {{ form.name01.vars.value }}&nbsp;{{ form.name02.vars.value }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>お名前(フリガナ)</th>
+                    <td>
+                        {{ form.kana01.vars.value }}&nbsp;{{ form.kana02.vars.value }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールアドレス<span class="attention">※</span></th>
+                    <td>
+                        {{ form.email.vars.value }}<br />
+                    </td>
+                </tr>
+                <tr>
+                    <th>希望するパスワード<span class="attention">※</span><br />
+                    </th>
+                    <td>
+                        {{ form.password.first.vars.value }}
+                    </td>
+                </tr>
+            </table>
+
+            <div class="btn_area">
+                <ul>
+                    <li>
+                        <input type="image" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_back.jpg" alt="戻る" name="mode" value="back" />
+                    </li>
+                    <li>
+                        <input type="image" class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_entry.jpg" alt="会員登録をする" name="mode" value="complete" id="send" />
+                    </li>
+                </ul>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+Eccube\Entity\MailTemplate:
+    type: entity
+    table: dtb_mailtemplate
+    repositoryClass: Eccube\Repository\MailTemplateRepository
+    fields:
+        id:
+            type: integer
+            column: template_id
+            id: true
+            generator:
+                strategy: AUTO
+        subject:
+            type: text
+        header:
+            type: text
+        footer:
+            type: text
+        creator_id:
+            type: integer
+        del_flg:
+            type: smallint
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: MailTemplateCreators
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+    lifecycleCallbacks:
+        prePersist: [ setCreateDateAuto ]
+        preUpdate:  [ setUpdateDateAuto ]

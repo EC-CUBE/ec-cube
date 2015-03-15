@@ -42,20 +42,26 @@
         "pear-pear.php.net/XML_Serializer" : "*",
         "pear-pear.php.net/XML_Util" : "*",
         "silex/web-profiler": "~1.0",
-        "symfony/monolog-bridge": "~2.1",
-        "symfony/twig-bridge": "~2.1",
-        "symfony/form": "~2.1",
-        "symfony/finder": "2.2.*",
-        "symfony/yaml": "2.2.*",
-        "symfony/form": "2.2.*",
-        "symfony/translation": "~2.1",
-        "symfony/config": "2.2.*",
-        "dflydev/doctrine-orm-service-provider": "1.0.*@dev"
+        "symfony/monolog-bridge": "~2.4",
+        "symfony/twig-bridge": "~2.4",
+        "symfony/finder": "~2.4",
+        "symfony/yaml": "~2.4",
+        "symfony/form": "~2.4",
+        "symfony/validator": "~2.4",
+        "symfony/translation": "~2.4",
+        "symfony/config": "~2.4",
+        "symfony/security": "~2.4",
+        "dflydev/doctrine-orm-service-provider": "*",
+        "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
+        "symfony/doctrine-bridge": "~2.3",
+        "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
         "phpunit/phpunit": "3.7.*",
-        "phing/phing": "2.*"
+        "phing/phing": "2.*",
+        "symfony/browser-kit": ">=2.3,<2.4-dev",
+        "symfony/css-selector": ">=2.3,<2.4-dev"
     },
     "autoload": {
         "psr-0": {

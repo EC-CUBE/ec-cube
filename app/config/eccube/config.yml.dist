@@ -1,0 +1,13 @@
+database:
+    driver: pdo_pgsql
+    dbname: sample_dbname
+    user: sample_user
+    password: sample_password
+    charset: utf8
+mail:
+    host: localhost
+    port: 25
+    username: sample
+    password: sample
+    encryption:
+    auth_mode: 
