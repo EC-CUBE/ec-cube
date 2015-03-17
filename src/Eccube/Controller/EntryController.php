@@ -35,7 +35,10 @@ class EntryController extends AbstractController
 
     public function Index(Application $app)
     {
-        $this->redirectKiyakuPage($app);
+
+        if (!$this->hasCorrectReferer($app)) {
+            return $app->redirect($app['url_generator']->generate('entry_kiyaku'), '302');
+        }
 
         $customer = $app['eccube.repository.customer']->newCustomer();
 
@@ -86,18 +89,17 @@ class EntryController extends AbstractController
     }
 
     // 規約画面からの遷移でない場合、規約ページへリダイレクト
-    private function redirectKiyakuPage($app)
+    private function hasCorrectReferer($app)
     {
         // 規約確認
-        $referer = parse_url($app['request']->headers->get('referer'));
-
+        $referer = parse_url($app['request']->server->get('HTTP_REFERER'));
         $kiyakuUrl = $app['url_generator']->generate('entry_kiyaku');
         $indexUrl = $app['url_generator']->generate('entry');
         $confirmUrl = $app['url_generator']->generate('entry_confirm');
-        
-        if (!in_array($referer['path'], array($kiyakuUrl, $indexUrl, $confirmUrl))) {
-            return $app->redirect($kiyakuUrl);
+        if ($referer['path'] == '' || !in_array($referer['path'], array($kiyakuUrl, $indexUrl, $confirmUrl))) {
+            return false;
         }
+        return true;
     }
 
 }
