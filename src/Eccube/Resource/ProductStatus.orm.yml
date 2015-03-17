@@ -1,0 +1,49 @@
+Eccube\Entity\ProductStatus:
+    type: entity
+    table: dtb_product_status
+    repositoryClass: Eccube\Repository\ProductStatusRepository
+    fields:
+        id:
+            type: integer
+            column: product_status_id
+            id: true
+            generator:
+                strategy: AUTO
+        product_id:
+            type: integer
+        creator_id:
+            type: integer
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
+        del_flg:
+            type: smallint
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: ProductStatuses
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: ProductStatuses
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+        StatusImage:
+            targetEntity: Eccube\Entity\StatusImage
+            inversedBy: ProductStatuses
+            joinColumn:
+                name: product_status_id
+                referencedColumnName: id
+        Status:
+            targetEntity: Eccube\Entity\Status
+            inversedBy: ProductStatuses
+            joinColumn:
+                name: product_status_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [ setCreateDateAuto ]
+        preUpdate:  [ setUpdateDateAuto ]

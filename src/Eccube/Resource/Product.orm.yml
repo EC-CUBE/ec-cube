@@ -1,0 +1,157 @@
+Eccube\Entity\Product:
+    type: entity
+    table: dtb_products
+    repositoryClass: Eccube\Repository\ProductRepository
+    fields:
+        id:
+            type: integer
+            column: product_id
+            length: 11
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: text
+        maker_id:
+            type: integer
+        status:
+            type: smallint
+        comment1:
+            type: text
+        comment2:
+            type: text
+        comment3:
+            type: text
+        comment4:
+            type: text
+        comment5:
+            type: text
+        comment6:
+            type: text
+        note:
+            type: text
+        main_list_comment:
+            type: text
+        main_list_image:
+            type: text
+        main_comment:
+            type: text
+        main_image:
+            type: text
+        main_large_image:
+            type: text
+        sub_title1:
+            type: text
+        sub_comment1:
+            type: text
+        sub_image1:
+            type: text
+        sub_large_image1:
+            type: text
+        sub_title2:
+            type: text
+        sub_comment2:
+            type: text
+        sub_image2:
+            type: text
+        sub_large_image2:
+            type: text
+        sub_title3:
+            type: text
+        sub_comment3:
+            type: text
+        sub_image3:
+            type: text
+        sub_large_image3:
+            type: text
+        sub_title4:
+            type: text
+        sub_comment4:
+            type: text
+        sub_image4:
+            type: text
+        sub_large_image4:
+            type: text
+        sub_title5:
+            type: text
+        sub_comment5:
+            type: text
+        sub_image5:
+            type: text
+        sub_large_image5:
+            type: text
+        sub_title6:
+            type: text
+        sub_comment6:
+            type: text
+        sub_image6:
+            type: text
+        sub_large_image6:
+            type: text
+        del_flg:
+            type: smallint
+        creator_id:
+            type: integer
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
+        deliv_date_id:
+            type: integer
+    manyToOne:
+        Maker:
+            targetEntity: Eccube\Entity\Maker
+            inversedBy: Products
+            joinColumn:
+                name: maker_id
+                referencedColumnName: maker_id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: ProductCreators
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+        DeliveryDate:
+            targetEntity: Eccube\Entity\DeliveryDate
+            inversedBy: Products
+            joinColumn:
+                name: deliv_date_id
+                referencedColumnName: id
+    oneToMany:
+        ProductCategories:
+            targetEntity: Eccube\Entity\ProductCategory
+            mappedBy: Product
+        ProductClasses:
+            targetEntity: Eccube\Entity\ProductClass
+            mappedBy: Product
+        ProductStatuses:
+            targetEntity: Eccube\Entity\ProductStatus
+            mappedBy: Product
+        RecommendProducts:
+            targetEntity: Eccube\Entity\RecommendProduct
+            mappedBy: Product
+        RecommendedProducts:
+            targetEntity: Eccube\Entity\RecommendProduct
+            mappedBy: Product
+        Reviews:
+            targetEntity: Eccube\Entity\Review
+            mappedBy: Product
+            orderBy:
+                create_date: DESC
+        BestProducts:
+            targetEntity: Eccube\Entity\BestProduct
+            mappedBy: Product
+    manyToMany:
+        Categories:
+            targetEntity: Category
+            joinTable:
+                name: dtb_product_categories
+                joinColumns:
+                    product_id:
+                        referencedColumnName: product_id
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: category_id
+    lifecycleCallbacks:
+        prePersist: [ setCreateDateAuto ]
+        preUpdate:  [ setUpdateDateAuto ]

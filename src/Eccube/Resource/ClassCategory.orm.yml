@@ -1,0 +1,49 @@
+Eccube\Entity\ClassCategory:
+    type: entity
+    table: dtb_classcategory
+    repositoryClass: Eccube\Repository\ClassCategoryRepository
+    fields:
+        id:
+            type: integer
+            column: classcategory_id
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: text
+        class_id:
+            type: integer
+        rank:
+            type: integer
+        creator_id:
+            type: integer
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
+        del_flg:
+            type: smallint
+            length: 6
+    manyToOne:
+        ClassName:
+            targetEntity: Eccube\Entity\ClassName
+            inversedBy: ClassCategories
+            joinColumn:
+                name: class_id
+                referencedColumnName: class_id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: ClassCategoryCreators
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+    oneToMany:
+        Children:
+            targetEntity: Eccube\Entity\ClassCombination
+            mappedBy: Parent
+        ClassCombinations:
+            targetEntity: Eccube\Entity\ClassCombination
+            mappedBy: ClassCategory
+    lifecycleCallbacks:
+        prePersist: [ setCreateDateAuto ]
+        preUpdate:  [ setUpdateDateAuto ]
