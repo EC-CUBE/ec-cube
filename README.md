@@ -3,6 +3,29 @@
 [![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
 
 * * * * * * * * * * * * * * * * * * * *
+### インストール方法
+* Composerのインストール  
+  `curl -sS https://getcomposer.org/installer | php`
+* EC-CUBEインストーラーの実行
+  実行前に環境に合わせて修正すること  
+  `sh eccube_intall.sh mysql`  
+  `sh eccube_intall.sh pgsql`  
+* `src/Eccube/Constant.php`を環境に合わせて作成
+```
+<?php
+
+namespace Eccube;
+
+class Constant
+{
+	const ROOT = '/eccube-3/html/';
+	const TPL = '/eccube-3/html/user_data/packages/default/';
+	const SHOP_NAME = 'EC-CUBE3 SHOP';
+	const RELEASE_YEAR = '2015';
+}
+```
+
+
 ### β開発
 
 現在、eccube-3.0.0-betaブランチにてβ版の開発を行っております。
