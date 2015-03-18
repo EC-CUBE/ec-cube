@@ -40,13 +40,13 @@ class EntryController extends AbstractController
             return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
         }
 
-        if ($app['request']->getMethod() === 'POST') {
-            $customer = $app['eccube.repository.customer']->newCustomer();
-            $form = $app['form.factory']
-                ->createBuilder('customer', $customer)
-                ->getForm();
-            $form->handleRequest($app['request']);
+        $customer = $app['eccube.repository.customer']->newCustomer();
+        $form = $app['form.factory']
+            ->createBuilder('customer', $customer)
+            ->getForm();
+        $form->handleRequest($app['request']);
 
+        if ($app['request']->getMethod() === 'POST') {
             if ($form->isValid()) {
                 $app['session']->set('entry', $form->getData());
 
@@ -72,10 +72,30 @@ class EntryController extends AbstractController
         if (!$app['session']->has('entry')) {
             return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
         }
+
         if ($app['request']->request->get('back')) {
             return $app->redirect($app['url_generator']->generate('entry'));
         }
+
         if ($app['request']->request->get('send')) {
+
+            $sessionData = $app['session']->get('entry');
+            $app['orm.em']->persist($sessionData);
+            $app['orm.em']->flush();
+
+            // TODO: 後でEventとして実装する
+            // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
+            $message = $app['mail.message']
+                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
+                ->setFrom(array('sample@example.com'))
+                ->setCc(array('shinichi_takahashi@lockon.co.jp'))
+                ->setTo(array($sessionData->getEmail()))
+                ->setBody('会員登録が完了しました。');
+            $app['mailer']->send($message);
+
+            // リダイレクト対策
+            $app['session']->remove('entry');
+
             return $app->redirect($app['url_generator']->generate('entry_complete'));
         }
 
@@ -87,25 +107,6 @@ class EntryController extends AbstractController
 
 
     public function Complete(Application $app) {
-        if (!$app['session']->has('entry')) {
-            return $app->redirect($app['url_generator']->generate('entry'));
-        }
-        $sessionData = $app['session']->get('entry');
-        $app['orm.em']->persist($sessionData);
-        $app['orm.em']->flush();
-
-        // TODO: 後でEventとして実装する
-        // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
-        $message = $app['mail.message']
-            ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-            ->setFrom(array('sample@example.com'))
-            ->setCc(array('shinichi_takahashi@lockon.co.jp'))
-            ->setTo(array($sessionData->getEmail()))
-            ->setBody('会員登録が完了しました。');
-        $app['mailer']->send($message);
-
-        // リダイレクト対策
-        $app['session']->remove('entry');
 
         return $app['twig']->render('Entry/complete.twig', array(
             'title' => $this->title,
