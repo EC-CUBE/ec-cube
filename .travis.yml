@@ -23,7 +23,7 @@ before_script:
 
 script:
   - mkdir -p reports/coverage
-#  - vendor/bin/phpunit -c phpunit.xml.dist
+  - vendor/bin/phpunit -c phpunit.xml.dist
   - grunt
 
 after_script:
