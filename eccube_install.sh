@@ -201,7 +201,7 @@ database:
     dbname: ${DBNAME}
     port: ${DBPORT}
     user: ${DBUSER}
-    password : ${CONFIGPASS:-$DBPASS}'
+    password : ${CONFIGPASS:-$DBPASS}
     charset: utf8
 mail:
     host: localhost
