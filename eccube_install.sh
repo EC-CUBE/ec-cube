@@ -28,6 +28,7 @@
 # Configuration
 #-- Shop Configuration
 CONFIG_PHP="app/config/eccube/config.php"
+CONFIG_YML="app/config/eccube/config.yml"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 HTTP_URL=${HTTP_URL:-"http://test.local"}
@@ -54,6 +55,7 @@ case "${DBTYPE}" in
     DROPDB=dropdb
     CREATEDB=createdb
     DBPORT=5432
+    DBDRIVER=pdo_pgsql
 ;;
 "mysql" )
     #-- DB Seting MySQL
@@ -62,6 +64,7 @@ case "${DBTYPE}" in
     ROOTPASS=$DBPASS
     DBSERVER="127.0.0.1"
     DBPORT=3306
+    DBDRIVER=pdo_mysql
 ;;
 * ) echo "ERROR:: argument is invaid"
 exit
@@ -190,6 +193,26 @@ define('SMTP_PASSWORD', '');
 __EOF__
 }
 
+create_config_yml()
+{
+    cat > "./${CONFIG_YML}" <<__EOF__
+database:
+    driver: ${DBDRIVER}
+    dbname: ${DBNAME}
+    port: ${DBPORT}
+    user: ${DBUSER}
+    password : ${CONFIGPASS:-$DBPASS}
+    charset: utf8
+mail:
+    host: localhost
+    port: 25
+    username: 
+    password: 
+    encryption: 
+    auth_mode: 
+__EOF__
+}
+
 
 #######################################################################
 # Install
@@ -250,6 +273,9 @@ cp -rv "./html/install/save_image" "./html/upload/"
 
 echo "creating ${CONFIG_PHP}..."
 create_config_php
+
+echo "creating ${CONFIG_YML}..."
+create_config_yml
 
 echo "get composer..."
 curl -sS https://getcomposer.org/installer | php

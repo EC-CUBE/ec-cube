@@ -12,7 +12,7 @@ class CustomerTypeTest extends TypeTestCase
             'name02' => 'しんいち',
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
-            'email' => 'shinichi_takahashi@lockon.co.jp',
+            'email' => 'default@example.com',
             'password' => array(
                 'first' => 'password',
                 'second' => 'password',
@@ -35,7 +35,6 @@ class CustomerTypeTest extends TypeTestCase
 	public function testValidData()
 	{
         $this->form->submit($this->formData);
-
         $this->assertTrue($this->form->isValid());
 	}
 
