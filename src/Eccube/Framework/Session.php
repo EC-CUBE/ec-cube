@@ -63,6 +63,9 @@ class Session
     /* 認証成功の判定 */
     public function IsSuccess()
     {
+        // FIXME ログイン認証は後ほど実装、管理画面開発用に、現状は潰しておく
+        return SUCCESS;
+        
         if ($this->cert == CERT_STRING) {
             $masterData = Application::alias('eccube.db.master_data');
             $admin_path = strtolower(preg_replace('/\/+/', '/', $_SERVER['SCRIPT_NAME']));            
