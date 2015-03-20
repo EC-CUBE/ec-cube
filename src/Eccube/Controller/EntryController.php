@@ -34,6 +34,7 @@ class EntryController extends AbstractController
         ));
     }
 
+
     public function Index(Application $app)
     {
         if (!$this->hasCorrectReferer($app)) {
@@ -77,10 +78,11 @@ class EntryController extends AbstractController
             return $app->redirect($app['url_generator']->generate('entry'));
         }
 
-        if ($app['request']->request->get('send')) {
+        $session = $app['session']->get('entry');
+        if ($app['request']->request->get('send') && $app['validator']->validate($session)) {
 
-            $sessionData = $app['session']->get('entry');
-            $app['orm.em']->persist($sessionData);
+            $session->setSecretKey($this->getUniqueSecretKey($app));
+            $app['orm.em']->persist($session);
             $app['orm.em']->flush();
 
             // TODO: 後でEventとして実装する
@@ -89,7 +91,7 @@ class EntryController extends AbstractController
                 ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
                 ->setFrom(array('sample@example.com'))
                 ->setCc(array('shinichi_takahashi@lockon.co.jp'))
-                ->setTo(array($sessionData->getEmail()))
+                ->setTo(array($session->getEmail()))
                 ->setBody('会員登録が完了しました。');
             $app['mailer']->send($message);
 
@@ -126,6 +128,20 @@ class EntryController extends AbstractController
             return false;
         }
         return true;
+    }
+
+
+    // ユニークなキーを取得する
+    private function getUniqueSecretKey($app) {
+        $unique = md5(uniqid(rand(),1));
+        $customer = $app['eccube.repository.customer']->findBy(array(
+            'secret_key' => $unique,
+        ));
+        if (count($customer) == 0) {
+            return $unique;
+        } else {
+            return $this->getUniqueSecretKey($app);
+        }
     }
 
 }
