@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class BaseInfo
 {
     /**
+     * @var integer
+     */
+    private $id;
+    
+    /**
      * @var string
      */
     private $company_name;
@@ -207,16 +212,6 @@ class BaseInfo
     /**
      * @var string
      */
-    private $tax;
-
-    /**
-     * @var integer
-     */
-    private $tax_rule;
-
-    /**
-     * @var string
-     */
     private $email01;
 
     /**
@@ -233,11 +228,6 @@ class BaseInfo
      * @var string
      */
     private $email04;
-
-    /**
-     * @var string
-     */
-    private $email05;
 
     /**
      * @var string
@@ -329,7 +319,29 @@ class BaseInfo
      */
     private $downloadable_days_unlimited;
 
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return BaseInfo
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
+        return $this;
+    }
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
     /**
      * Set company_name
      *
@@ -1228,52 +1240,6 @@ class BaseInfo
     }
 
     /**
-     * Set tax
-     *
-     * @param string $tax
-     * @return BaseInfo
-     */
-    public function setTax($tax)
-    {
-        $this->tax = $tax;
-
-        return $this;
-    }
-
-    /**
-     * Get tax
-     *
-     * @return string 
-     */
-    public function getTax()
-    {
-        return $this->tax;
-    }
-
-    /**
-     * Set tax_rule
-     *
-     * @param integer $taxRule
-     * @return BaseInfo
-     */
-    public function setTaxRule($taxRule)
-    {
-        $this->tax_rule = $taxRule;
-
-        return $this;
-    }
-
-    /**
-     * Get tax_rule
-     *
-     * @return integer 
-     */
-    public function getTaxRule()
-    {
-        return $this->tax_rule;
-    }
-
-    /**
      * Set email01
      *
      * @param string $email01
@@ -1363,29 +1329,6 @@ class BaseInfo
     public function getEmail04()
     {
         return $this->email04;
-    }
-
-    /**
-     * Set email05
-     *
-     * @param string $email05
-     * @return BaseInfo
-     */
-    public function setEmail05($email05)
-    {
-        $this->email05 = $email05;
-
-        return $this;
-    }
-
-    /**
-     * Get email05
-     *
-     * @return string 
-     */
-    public function getEmail05()
-    {
-        return $this->email05;
     }
 
     /**

@@ -3,14 +3,13 @@ Eccube\Entity\BaseInfo:
     table: dtb_baseinfo
     repositoryClass: Eccube\Repository\BaseInfoRepository
     fields:
-#        id:
-#            type: integer
-#            id: true
-#            generator:
-#                strategy: AUTO
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
         company_name:
             type: text
-            id: true
         company_kana:
             type: text
         zip01:
@@ -87,10 +86,6 @@ Eccube\Entity\BaseInfo:
             type: text
         law_term10:
             type: text
-        tax:
-            type: decimal
-        tax_rule:
-            type: smallint
         email01:
             type: text
         email02:
@@ -98,8 +93,6 @@ Eccube\Entity\BaseInfo:
         email03:
             type: text
         email04:
-            type: text
-        email05:
             type: text
         free_rule:
             type: decimal
