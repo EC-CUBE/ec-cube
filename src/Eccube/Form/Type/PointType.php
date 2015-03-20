@@ -17,32 +17,24 @@ class PointType extends AbstractType
 
     public function getName()
     {
-        return 'adminbasispoint';
+        return 'point';
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$app = $this->app;
-        //$objFormParam->addParam('ポイント付与率', 'point_rate', PERCENTAGE_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        //$objFormParam->addParam('会員登録時付与ポイント', 'welcome_point', INT_LEN, 'n', array('EXIST_CHECK', 'MAX_LENGTH_CHECK', 'NUM_CHECK'));
-        
         $builder
-            ->add('point_rate', 'integer', array('constraints' => array(
-                new Assert\NotBlank(),
-                new Assert\Range(array(
-                    'min' => 0,
-                    'max' => 100, // PERCENTAGE_LEN
-                )),
+            ->add('point_rate', 'integer', array(
                 'required' => true,
-            )))
-            ->add('welcome_point', 'integer', array('constraints' => array(
-                new Assert\NotBlank(),
-                new Assert\Range(array(
-                    'min' => 0,
-                    'max' => 999999999, // INT_LEN
-                )),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Range(array('min' => 0, 'max' => 100))),
+            ))
+            ->add('welcome_point', 'integer', array(
                 'required' => true,
-            )))
-        ;
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Range(array('min' => 0, 'max' => 999999999))),
+            ))
+            ->add('save', 'submit', array('label' => 'この内容で登録する'));
     }
 }

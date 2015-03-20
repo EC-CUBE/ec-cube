@@ -23,11 +23,16 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Customer');
         };
 
+        $app['eccube.repository.baseinfo'] = function() use ($app) {
+            return $app['orm.em']->getRepository('\\Eccube\\Entity\\BaseInfo');
+        };
+        
         // Form\Type
         $app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             $types[] = new \Eccube\Form\Type\ContactType($app);
             $types[] = new \Eccube\Form\Type\PrefType($app);
+            $types[] = new \Eccube\Form\Type\PointType($app);
 
             return $types;
         });
