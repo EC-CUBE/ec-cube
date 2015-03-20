@@ -23,8 +23,7 @@ class CustomerRepository extends EntityRepository
     {
         $customer = new \Eccube\Entity\Customer();
 
-        $customer->setSecretKey(uniqid())
-            ->setCreateDate(new \DateTime())
+        $customer->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())
             ->setPoint(0)
             ->setStatus(1)
