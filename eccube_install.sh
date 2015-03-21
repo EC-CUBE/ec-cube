@@ -29,18 +29,18 @@
 #-- Shop Configuration
 CONFIG_PHP="app/config/eccube/config.php"
 CONFIG_YML="app/config/eccube/config.yml"
-ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
+ADMIN_MAIL=${ADMIN_MAIL:-"eccube@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-HTTP_URL=${HTTP_URL:-"http://test.local"}
-HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
+HTTP_URL=${HTTP_URL:-"http://localhost"}
+HTTPS_URL=${HTTPS_URL:-"https://localhost"}
 ROOT_URLPATH=${ROOT_URLPATH:-"/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
 ADMIN_DIR=${ADMIN_DIR:-"admin/"}
 
 DBSERVER=${DBSERVER-"127.0.0.1"}
-DBNAME=${DBNAME:-"cube3_dev"}
-DBUSER=${DBUSER:-"cube3_dev_user"}
-DBPASS=${DBPASS:-"password"}
+DBNAME=${DBNAME:-"eccube"}
+DBUSER=${DBUSER:-"root"}
+DBPASS=${DBPASS:-""}
 
 ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
 AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
@@ -60,9 +60,9 @@ case "${DBTYPE}" in
 "mysql" )
     #-- DB Seting MySQL
     MYSQL=mysql
-    ROOTUSER=root
+    ROOTUSER=$DBUSER
     ROOTPASS=$DBPASS
-    DBSERVER="127.0.0.1"
+    DBSERVER=$DBSERVER
     DBPORT=3306
     DBDRIVER=pdo_mysql
 ;;
@@ -153,7 +153,7 @@ dtb_tax_rule_tax_rule_id_seq
             echo ${comb_sql} | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
         ;;
         mysql)
-            echo ${comb_sql} | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+            echo ${comb_sql} | ${MYSQL} -u ${DBUSER} ${PASSOPT}  -h ${DBSERVER} ${DBNAME}
         ;;
     esac
 }
@@ -203,6 +203,7 @@ database:
     user: ${DBUSER}
     password : ${CONFIGPASS:-$DBPASS}
     charset: utf8
+    host: "${DBSERVER}"
 mail:
     host: localhost
     port: 25
@@ -248,21 +249,21 @@ case "${DBTYPE}" in
     fi
     # MySQL
     echo "dropdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database \`${DBNAME}\`"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -h ${DBSERVER} -e "drop database \`${DBNAME}\`"
     echo "createdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\`"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -h ${DBSERVER} -e "create database \`${DBNAME}\`  DEFAULT CHARACTER SET utf8"
     #echo "grant user..."
     #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
     echo "create table..."
     echo "SET SESSION storage_engine = InnoDB;" |
         cat - ${SQL_DIR}/create_table_mysql.sql |
-        ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+        ${MYSQL} -u ${DBUSER} ${PASSOPT}  -h ${DBSERVER} ${DBNAME}
     echo "insert data..."
-    ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/insert_data.sql
+    ${MYSQL} -u ${DBUSER} ${PASSOPT} -h ${DBSERVER} ${DBNAME} < ${SQL_DIR}/insert_data.sql
     echo "create sequence table..."
     create_sequence_tables
     echo "execute optional SQL..."
-    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT}  -h ${DBSERVER} ${DBNAME}
 ;;
 esac
 
@@ -277,10 +278,10 @@ create_config_php
 echo "creating ${CONFIG_YML}..."
 create_config_yml
 
-echo "get composer..."
-curl -sS https://getcomposer.org/installer | php
+#echo "get composer..."
+#curl -sS https://getcomposer.org/installer | php
 
-echo "install composer..."
-php composer.phar install
+#echo "install composer..."
+#php composer.phar install
 
 echo "Finished Successful!"
