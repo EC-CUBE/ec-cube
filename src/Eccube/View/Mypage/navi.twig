@@ -3,7 +3,7 @@
         <ul class="mynavi_list clearfix">
 
             {# 会員状態 #}
-            {% if app.user %}
+            {% if is_granted('ROLE_USER') %}
                 <li><a href="{{ path('mypage') }}"{% if mypageno == 'index' %} class="selected"{% endif %}>購入履歴一覧</a></li>
                 {% if app.config.option_favorite_product %}
                     <li><a href="{{ path('mypage_favorite') }}"{% if mypageno == 'favorite' %} class="selected"{% endif %}>お気に入り一覧</a></li>
