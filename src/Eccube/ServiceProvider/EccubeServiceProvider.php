@@ -31,7 +31,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             $types[] = new \Eccube\Form\Type\ContactType($app);
             $types[] = new \Eccube\Form\Type\PrefType($app);
-            $types[] = new \Eccube\Form\Type\CustomerLoginType();
+            $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
 
             return $types;
         });

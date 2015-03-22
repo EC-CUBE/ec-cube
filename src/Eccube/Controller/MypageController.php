@@ -21,9 +21,7 @@ class MypageController extends AbstractController
     {
         /* @var $form \Symfony\Component\Form\Form */
         $form = $app['form.factory']
-            ->createNamedBuilder('', 'customer_login', array(
-                'login_email' => $app['session']->get('_security.last_username'),
-            ))
+            ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
         return $app['twig']->render('Mypage/login.twig', array(
