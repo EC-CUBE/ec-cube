@@ -2,105 +2,30 @@
 
 {% block main %}
 
-	<div id="undercolumn">
-	    <h2 class="title">{{ title }}</h2>
+    <div id="undercolumn">
+        <h2 class="title">{{ title }}</h2>
 
-	    <div id="undercolumn_contact">
+        <div id="undercolumn_contact">
 
-	        <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
-	        また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
-	        <form name="form1" id="form1" method="post" action="?">
- 				{{ form_widget(form._token) }}
+            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+            <form name="form1" id="form1" method="post" action="?" {{ form_enctype(form) }}>
+                {{ form_widget(form) }}
 
-                {{ form_widget(form.name01, {type: 'hidden'}) }}
-                {{ form_widget(form.name02, {type: 'hidden'}) }}
-                {{ form_widget(form.kana01, {type: 'hidden'}) }}
-                {{ form_widget(form.kana02, {type: 'hidden'}) }}
-                {{ form_widget(form.zip01, {type: 'hidden'}) }}
-                {{ form_widget(form.zip02, {type: 'hidden'}) }}
-                {{ form_widget(form.addr01, {type: 'hidden'}) }}
-                {{ form_widget(form.addr02, {type: 'hidden'}) }}
-                {{ form_widget(form.addr02, {type: 'hidden'}) }}
-            	{{ form_widget(form.tel01, {type: 'hidden'}) }}
-            	{{ form_widget(form.tel02, {type: 'hidden'}) }}
-            	{{ form_widget(form.tel03, {type: 'hidden'}) }}
-                {{ form_widget(form.email, {type: 'hidden'}) }}
-                <input type="hidden" name="contact[pref][pref]" value="{{ form.pref.vars.value.pref.id }}" />
-                <input type="hidden" name="contact[{{ form.contents.vars.name }}]" value="{{ form.contents.vars.value }}" />
-
-
-	            <table summary="お問い合わせ">
-	                <tr>
-	                    <th>お名前<span class="attention">※</span></th>
-	                    <td>
-                        	{{ form.name01.vars.value }}&nbsp;{{ form.name02.vars.value }}
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>お名前(フリガナ)<span class="attention">※</span></th>
-	                    <td>
-                        	{{ form.kana01.vars.value }}&nbsp;{{ form.kana02.vars.value }}
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>郵便番号</th>
-	                    <td>
-	                        <p class="top">
-	                            〒&nbsp;
-	                            {{ form.zip01.vars.value }} &nbsp;-&nbsp; 
-	                            {{ form.zip02.vars.value }}
-	                        </p>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>住所</th>
-	                    <td>
-                			{{ form.pref.vars.value.pref.name }}
-	                        <p>
-	                            {{ form.addr01.vars.value }}
-	                        </p>
-	                        <p>
-	                            {{ form.addr02.vars.value }}
-	                        </p>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>電話番号</th>
-	                    <td>
-	                    	{{ form.tel01.vars.value }} -
-	                    	{{ form.tel02.vars.value }} -
-	                    	{{ form.tel03.vars.value }}
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>メールアドレス<span class="attention">※</span></th>
-	                    <td>
-	                        {{ form.email.vars.value }}
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th>お問い合わせ内容<span class="attention">※</span><br />
-	                    <td>
-	                    	{{ form.contents.vars.value|nl2br }}
-	                    </td>
-	                </tr>
-	            </table>
-
-	            <div class="btn_area">
-	                <ul>
-	                    <li>
-	                        <input type="image" class="hover_change_image" src="{{constant('Eccube\\Constant::TPL') }}img/button/btn_back.jpg" alt="戻る" name="mode" value="back" />
-	                    </li>
-	                    <li>
-	                        <input type="image" class="hover_change_image" src="{{constant('Eccube\\Constant::TPL') }}img/button/btn_complete.jpg" alt="送信" name="mode" value="complete" id="send" />
-	                    </li>
-
-	                </ul>
-	            </div>
-
-	        </form>
-	    </div>
-	</div>
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="mode" value="back" />
+                        </li>
+                        <li>
+                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_complete.jpg" alt="送信" name="mode" value="complete" id="send" />
+                        </li>
+                    </ul>
+                </div>
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
 
 
 

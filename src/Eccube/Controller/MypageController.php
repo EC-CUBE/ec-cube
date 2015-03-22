@@ -23,7 +23,7 @@ class MypageController extends AbstractController
             return $app->redirect($app['url_generator']->generate('mypage'));
         }
 
-        /* @var $form \Symfony\Component\Form\Form */
+        /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $app['form.factory']
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
