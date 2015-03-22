@@ -23,6 +23,7 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // root
         $controllers->match('/', "\\Eccube\\Page\\Index")->bind('index');
+        $controllers->match('/', "\\Eccube\\Page\\Index")->bind('homepage');
         $controllers->match('/input_zip.php', '\\Eccube\\Page\\InputZip')->bind('input_zip');
         $controllers->match('/sitemap.php', '\\Eccube\\Page\\Sitemap')->bind('sitemap');
         $controllers->match('/error.php', '\\Eccube\\Page\\Error\\SystemError')->bind('error');
@@ -68,7 +69,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/guide/usage.php', '\\Eccube\\Page\\Guide\\Usage')->bind('guide_usage');
 
         // mypage
-        $controllers->match('/mypage/', '\\Eccube\\Page\\Mypage\\Index')->bind('mypage');
+        $controllers->match('/mypage/', '\\Eccube\\Controller\\MypageController::Index')->bind('mypage');
+        $controllers->match('/mypage/login.php', '\\Eccube\\Controller\\MypageController::Login')->bind('mypage_login');
         $controllers->match('/mypage/change.php', '\\Eccube\\Page\\Mypage\\Change')->bind('mypage_change');
         $controllers->match('/mypage/change_complete.php', '\\Eccube\\Page\\Mypage\\ChangeComplete')->bind('mypage_change_complete');
         $controllers->match('/mypage/delivery.php', '\\Eccube\\Page\\Mypage\\Delivery')->bind('mypage_delivery');
@@ -76,7 +78,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/mypage/download.php', '\\Eccube\\Page\\Mypage\\Download')->bind('mypage_download');
         $controllers->match('/mypage/favorite.php', '\\Eccube\\Page\\Mypage\\Favorite')->bind('mypage_favorite');
         $controllers->match('/mypage/history.php', '\\Eccube\\Page\\Mypage\\History')->bind('mypage_history');
-        $controllers->match('/mypage/login.php', '\\Eccube\\Page\\Mypage\\Login')->bind('mypage_login');
         $controllers->match('/mypage/mail_view.php', '\\Eccube\\Page\\Mypage\\MailView')->bind('mypage_mail_view');
         $controllers->match('/mypage/order.php', '\\Eccube\\Page\\Mypage\\Order')->bind('mypage_order');
         $controllers->match('/mypage/refusal.php', '\\Eccube\\Page\\Mypage\\Refusal')->bind('mypage_refusal');

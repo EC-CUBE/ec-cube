@@ -3,6 +3,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Framework\Util\Utils;
 
 class EntryController extends AbstractController
 {
@@ -78,11 +79,20 @@ class EntryController extends AbstractController
             return $app->redirect($app['url_generator']->generate('entry'));
         }
 
-        $session = $app['session']->get('entry');
-        if ($app['request']->request->get('send') && $app['validator']->validate($session)) {
+        /* @var $customer \Eccube\Entity\Customer */
+        $customer = $app['session']->get('entry');
+        if ($app['request']->request->get('send') && $app['validator']->validate($customer)) {
 
-            $session->setSecretKey($this->getUniqueSecretKey($app));
-            $app['orm.em']->persist($session);
+            $customer->setSecretKey($this->getUniqueSecretKey($app));
+
+            // password
+            $salt = Utils::sfGetRandomString(10);
+            $customer->setSalt($salt);
+            $encoder = $app['security.encoder_factory']->getEncoder($customer);
+            $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
+            $customer->setPassword($encoded_password);
+
+            $app['orm.em']->persist($customer);
             $app['orm.em']->flush();
 
             // TODO: 後でEventとして実装する
@@ -90,8 +100,8 @@ class EntryController extends AbstractController
             $message = $app['mail.message']
                 ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
                 ->setFrom(array('sample@example.com'))
-                ->setCc(array('shinichi_takahashi@lockon.co.jp'))
-                ->setTo(array($session->getEmail()))
+                ->setCc($app['config']['mail_cc'])
+                ->setTo(array($customer->getEmail()))
                 ->setBody('会員登録が完了しました。');
             $app['mailer']->send($message);
 
