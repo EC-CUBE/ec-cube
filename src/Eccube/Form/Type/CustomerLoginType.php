@@ -30,7 +30,6 @@ class CustomerLoginType extends AbstractType
         ));
         $builder->add('login_memory', 'checkbox', array(
             'required' => false,
-            'label' => 'メールアドレスをコンピューターに記憶させる',
         ));
         $builder->add('login_pass', 'password', array(
             'attr' => array(
