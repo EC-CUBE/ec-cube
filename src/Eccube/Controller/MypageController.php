@@ -19,14 +19,16 @@ class MypageController extends AbstractController
 
     public function Login(Application $app, Request $request)
     {
+        /* @var $form \Symfony\Component\Form\Form */
         $form = $app['form.factory']
-            ->createNamedBuilder('', 'customer_login')
+            ->createNamedBuilder('', 'customer_login', array(
+                'login_email' => $app['session']->get('_security.last_username'),
+            ))
             ->getForm();
 
         return $app['twig']->render('Mypage/login.twig', array(
             'title' => $this->title,
             'error' => $app['security.last_error']($request),
-            'last_username' => $app['session']->get('_security.last_username'),
             'form' => $form->createView(),
         ));
     }
