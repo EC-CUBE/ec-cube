@@ -19,6 +19,10 @@ class MypageController extends AbstractController
 
     public function Login(Application $app, Request $request)
     {
+        if ($app['security']->isGranted('ROLE_USER')) {
+            return $app->redirect($app['url_generator']->generate('mypage'));
+        }
+
         /* @var $form \Symfony\Component\Form\Form */
         $form = $app['form.factory']
             ->createNamedBuilder('', 'customer_login')
