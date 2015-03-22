@@ -43,4 +43,11 @@ class routingTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->app['url_generator']->generate('entry_kiyaku')));
     }
 
+    // 特定商取引法のテスト
+    public function testRoutingHelpTradelaw()
+    {
+        $client = $this->createClient();
+        $crawler = $client->request('GET', '/help/tradelaw/');
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
 }
