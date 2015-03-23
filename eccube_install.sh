@@ -198,6 +198,7 @@ create_config_yml()
     cat > "./${CONFIG_YML}" <<__EOF__
 database:
     driver: ${DBDRIVER}
+    host: ${DBSERVER}
     dbname: ${DBNAME}
     port: ${DBPORT}
     user: ${DBUSER}

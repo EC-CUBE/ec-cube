@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BaseInfo
  */
-class BaseInfo
+class BaseInfo extends AbstractEntity
 {
     /**
      * @var string
@@ -207,12 +207,12 @@ class BaseInfo
     /**
      * @var string
      */
-    private $tax;
+    //private $tax;
 
     /**
      * @var integer
      */
-    private $tax_rule;
+    //private $tax_rule;
 
     /**
      * @var string
@@ -346,7 +346,7 @@ class BaseInfo
     /**
      * Get company_name
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -369,7 +369,7 @@ class BaseInfo
     /**
      * Get company_kana
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyKana()
     {
@@ -392,7 +392,7 @@ class BaseInfo
     /**
      * Get zip01
      *
-     * @return string 
+     * @return string
      */
     public function getZip01()
     {
@@ -415,7 +415,7 @@ class BaseInfo
     /**
      * Get zip02
      *
-     * @return string 
+     * @return string
      */
     public function getZip02()
     {
@@ -438,7 +438,7 @@ class BaseInfo
     /**
      * Get pref
      *
-     * @return integer 
+     * @return integer
      */
     public function getPref()
     {
@@ -461,7 +461,7 @@ class BaseInfo
     /**
      * Get addr01
      *
-     * @return string 
+     * @return string
      */
     public function getAddr01()
     {
@@ -484,7 +484,7 @@ class BaseInfo
     /**
      * Get addr02
      *
-     * @return string 
+     * @return string
      */
     public function getAddr02()
     {
@@ -507,7 +507,7 @@ class BaseInfo
     /**
      * Get tel01
      *
-     * @return string 
+     * @return string
      */
     public function getTel01()
     {
@@ -530,7 +530,7 @@ class BaseInfo
     /**
      * Get tel02
      *
-     * @return string 
+     * @return string
      */
     public function getTel02()
     {
@@ -553,7 +553,7 @@ class BaseInfo
     /**
      * Get tel03
      *
-     * @return string 
+     * @return string
      */
     public function getTel03()
     {
@@ -576,7 +576,7 @@ class BaseInfo
     /**
      * Get fax01
      *
-     * @return string 
+     * @return string
      */
     public function getFax01()
     {
@@ -599,7 +599,7 @@ class BaseInfo
     /**
      * Get fax02
      *
-     * @return string 
+     * @return string
      */
     public function getFax02()
     {
@@ -622,7 +622,7 @@ class BaseInfo
     /**
      * Get fax03
      *
-     * @return string 
+     * @return string
      */
     public function getFax03()
     {
@@ -645,7 +645,7 @@ class BaseInfo
     /**
      * Get business_hour
      *
-     * @return string 
+     * @return string
      */
     public function getBusinessHour()
     {
@@ -668,7 +668,7 @@ class BaseInfo
     /**
      * Get law_company
      *
-     * @return string 
+     * @return string
      */
     public function getLawCompany()
     {
@@ -691,7 +691,7 @@ class BaseInfo
     /**
      * Get law_manager
      *
-     * @return string 
+     * @return string
      */
     public function getLawManager()
     {
@@ -714,7 +714,7 @@ class BaseInfo
     /**
      * Get law_zip01
      *
-     * @return string 
+     * @return string
      */
     public function getLawZip01()
     {
@@ -737,7 +737,7 @@ class BaseInfo
     /**
      * Get law_zip02
      *
-     * @return string 
+     * @return string
      */
     public function getLawZip02()
     {
@@ -760,7 +760,7 @@ class BaseInfo
     /**
      * Get law_pref
      *
-     * @return integer 
+     * @return integer
      */
     public function getLawPref()
     {
@@ -783,7 +783,7 @@ class BaseInfo
     /**
      * Get law_addr01
      *
-     * @return string 
+     * @return string
      */
     public function getLawAddr01()
     {
@@ -806,7 +806,7 @@ class BaseInfo
     /**
      * Get law_addr02
      *
-     * @return string 
+     * @return string
      */
     public function getLawAddr02()
     {
@@ -829,7 +829,7 @@ class BaseInfo
     /**
      * Get law_tel01
      *
-     * @return string 
+     * @return string
      */
     public function getLawTel01()
     {
@@ -852,7 +852,7 @@ class BaseInfo
     /**
      * Get law_tel02
      *
-     * @return string 
+     * @return string
      */
     public function getLawTel02()
     {
@@ -875,7 +875,7 @@ class BaseInfo
     /**
      * Get law_tel03
      *
-     * @return string 
+     * @return string
      */
     public function getLawTel03()
     {
@@ -898,7 +898,7 @@ class BaseInfo
     /**
      * Get law_fax01
      *
-     * @return string 
+     * @return string
      */
     public function getLawFax01()
     {
@@ -921,7 +921,7 @@ class BaseInfo
     /**
      * Get law_fax02
      *
-     * @return string 
+     * @return string
      */
     public function getLawFax02()
     {
@@ -944,7 +944,7 @@ class BaseInfo
     /**
      * Get law_fax03
      *
-     * @return string 
+     * @return string
      */
     public function getLawFax03()
     {
@@ -967,7 +967,7 @@ class BaseInfo
     /**
      * Get law_email
      *
-     * @return string 
+     * @return string
      */
     public function getLawEmail()
     {
@@ -990,7 +990,7 @@ class BaseInfo
     /**
      * Get law_url
      *
-     * @return string 
+     * @return string
      */
     public function getLawUrl()
     {
@@ -1013,7 +1013,7 @@ class BaseInfo
     /**
      * Get law_term01
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm01()
     {
@@ -1036,7 +1036,7 @@ class BaseInfo
     /**
      * Get law_term02
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm02()
     {
@@ -1059,7 +1059,7 @@ class BaseInfo
     /**
      * Get law_term03
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm03()
     {
@@ -1082,7 +1082,7 @@ class BaseInfo
     /**
      * Get law_term04
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm04()
     {
@@ -1105,7 +1105,7 @@ class BaseInfo
     /**
      * Get law_term05
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm05()
     {
@@ -1128,7 +1128,7 @@ class BaseInfo
     /**
      * Get law_term06
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm06()
     {
@@ -1151,7 +1151,7 @@ class BaseInfo
     /**
      * Get law_term07
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm07()
     {
@@ -1174,7 +1174,7 @@ class BaseInfo
     /**
      * Get law_term08
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm08()
     {
@@ -1197,7 +1197,7 @@ class BaseInfo
     /**
      * Get law_term09
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm09()
     {
@@ -1220,7 +1220,7 @@ class BaseInfo
     /**
      * Get law_term10
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm10()
     {
@@ -1243,7 +1243,7 @@ class BaseInfo
     /**
      * Get tax
      *
-     * @return string 
+     * @return string
      */
     public function getTax()
     {
@@ -1266,7 +1266,7 @@ class BaseInfo
     /**
      * Get tax_rule
      *
-     * @return integer 
+     * @return integer
      */
     public function getTaxRule()
     {
@@ -1289,7 +1289,7 @@ class BaseInfo
     /**
      * Get email01
      *
-     * @return string 
+     * @return string
      */
     public function getEmail01()
     {
@@ -1312,7 +1312,7 @@ class BaseInfo
     /**
      * Get email02
      *
-     * @return string 
+     * @return string
      */
     public function getEmail02()
     {
@@ -1335,7 +1335,7 @@ class BaseInfo
     /**
      * Get email03
      *
-     * @return string 
+     * @return string
      */
     public function getEmail03()
     {
@@ -1358,7 +1358,7 @@ class BaseInfo
     /**
      * Get email04
      *
-     * @return string 
+     * @return string
      */
     public function getEmail04()
     {
@@ -1381,7 +1381,7 @@ class BaseInfo
     /**
      * Get email05
      *
-     * @return string 
+     * @return string
      */
     public function getEmail05()
     {
@@ -1404,7 +1404,7 @@ class BaseInfo
     /**
      * Get free_rule
      *
-     * @return string 
+     * @return string
      */
     public function getFreeRule()
     {
@@ -1427,7 +1427,7 @@ class BaseInfo
     /**
      * Get shop_name
      *
-     * @return string 
+     * @return string
      */
     public function getShopName()
     {
@@ -1450,7 +1450,7 @@ class BaseInfo
     /**
      * Get shop_kana
      *
-     * @return string 
+     * @return string
      */
     public function getShopKana()
     {
@@ -1473,7 +1473,7 @@ class BaseInfo
     /**
      * Get shop_name_eng
      *
-     * @return string 
+     * @return string
      */
     public function getShopNameEng()
     {
@@ -1496,7 +1496,7 @@ class BaseInfo
     /**
      * Get point_rate
      *
-     * @return string 
+     * @return string
      */
     public function getPointRate()
     {
@@ -1519,7 +1519,7 @@ class BaseInfo
     /**
      * Get welcome_point
      *
-     * @return string 
+     * @return string
      */
     public function getWelcomePoint()
     {
@@ -1542,7 +1542,7 @@ class BaseInfo
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -1565,7 +1565,7 @@ class BaseInfo
     /**
      * Get top_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getTopTpl()
     {
@@ -1588,7 +1588,7 @@ class BaseInfo
     /**
      * Get product_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getProductTpl()
     {
@@ -1611,7 +1611,7 @@ class BaseInfo
     /**
      * Get detail_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getDetailTpl()
     {
@@ -1634,7 +1634,7 @@ class BaseInfo
     /**
      * Get mypage_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getMypageTpl()
     {
@@ -1657,7 +1657,7 @@ class BaseInfo
     /**
      * Get good_traded
      *
-     * @return string 
+     * @return string
      */
     public function getGoodTraded()
     {
@@ -1680,7 +1680,7 @@ class BaseInfo
     /**
      * Get message
      *
-     * @return string 
+     * @return string
      */
     public function getMessage()
     {
@@ -1703,7 +1703,7 @@ class BaseInfo
     /**
      * Get regular_holiday_ids
      *
-     * @return string 
+     * @return string
      */
     public function getRegularHolidayIds()
     {
@@ -1726,7 +1726,7 @@ class BaseInfo
     /**
      * Get latitude
      *
-     * @return string 
+     * @return string
      */
     public function getLatitude()
     {
@@ -1749,7 +1749,7 @@ class BaseInfo
     /**
      * Get longitude
      *
-     * @return string 
+     * @return string
      */
     public function getLongitude()
     {
@@ -1772,7 +1772,7 @@ class BaseInfo
     /**
      * Get downloadable_days
      *
-     * @return string 
+     * @return string
      */
     public function getDownloadableDays()
     {
@@ -1795,7 +1795,7 @@ class BaseInfo
     /**
      * Get downloadable_days_unlimited
      *
-     * @return string 
+     * @return string
      */
     public function getDownloadableDaysUnlimited()
     {
