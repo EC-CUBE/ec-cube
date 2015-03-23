@@ -2,9 +2,7 @@
 
 namespace Eccube;
 
-use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\Yaml\Yaml;
-use Silex\Provider;
 
 class Application extends \Silex\Application
 {
@@ -74,12 +72,6 @@ class Application extends \Silex\Application
             return \Swift_Message::newInstance();
         };
 
-        // Silex Web Profiler
-        $app->register(new Provider\WebProfilerServiceProvider(), array(
-            'profiler.cache_dir' => __DIR__.'/../../app/cache/profiler',
-            'profiler.mount_prefix' => '/_profiler', // this is the default
-        ));
-
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
@@ -135,6 +127,12 @@ class Application extends \Silex\Application
             return ($token !== null) ? $token->getUser() : null;
         });
 
+        // Silex Web Profiler
+        $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
+            'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
+            'profiler.mount_prefix' => '/_profiler', // this is the default
+        ));
+
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/admin', new ControllerProvider\AdminControllerProvider());
 
@@ -144,20 +142,6 @@ class Application extends \Silex\Application
 
         // テスト実装
         $this->register(new Plugin\ProductReview\ProductReview());
-    }
-
-    /**
-     * Handles the request and delivers the response.
-     *
-     * @param Request|null $request Request to process
-     */
-    public function run(BaseRequest $request = null)
-    {
-        if (null === $request) {
-            $request = Request::createFromGlobals();
-        }
-
-        parent::run($request);
     }
 
 }
