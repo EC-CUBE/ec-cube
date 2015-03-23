@@ -67,7 +67,7 @@ class ContactController
                 'kana02' => $user->getKana02(),
                 'zip01' => $user->getZip01(),
                 'zip02' => $user->getZip02(),
-                'pref_id' => $user->getPrefId(),
+                'pref' => $user->getPrefId(),
                 'addr01' => $user->getAddr01(),
                 'addr02' => $user->getAddr02(),
                 'tel01' => $user->getTel01(),
