@@ -7,327 +7,327 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BaseInfo
  */
-class BaseInfo
+class BaseInfo extends AbstractEntity
 {
     /**
      * @var string
      */
-    public $company_name;
+    private $company_name;
 
     /**
      * @var string
      */
-    public $company_kana;
+    private $company_kana;
 
     /**
      * @var string
      */
-    public $zip01;
+    private $zip01;
 
     /**
      * @var string
      */
-    public $zip02;
+    private $zip02;
 
     /**
      * @var integer
      */
-    public $pref;
+    private $pref;
 
     /**
      * @var string
      */
-    public $addr01;
+    private $addr01;
 
     /**
      * @var string
      */
-    public $addr02;
+    private $addr02;
 
     /**
      * @var string
      */
-    public $tel01;
+    private $tel01;
 
     /**
      * @var string
      */
-    public $tel02;
+    private $tel02;
 
     /**
      * @var string
      */
-    public $tel03;
+    private $tel03;
 
     /**
      * @var string
      */
-    public $fax01;
+    private $fax01;
 
     /**
      * @var string
      */
-    public $fax02;
+    private $fax02;
 
     /**
      * @var string
      */
-    public $fax03;
+    private $fax03;
 
     /**
      * @var string
      */
-    public $business_hour;
+    private $business_hour;
 
     /**
      * @var string
      */
-    public $law_company;
+    private $law_company;
 
     /**
      * @var string
      */
-    public $law_manager;
+    private $law_manager;
 
     /**
      * @var string
      */
-    public $law_zip01;
+    private $law_zip01;
 
     /**
      * @var string
      */
-    public $law_zip02;
+    private $law_zip02;
 
     /**
      * @var integer
      */
-    public $law_pref;
+    private $law_pref;
 
     /**
      * @var string
      */
-    public $law_addr01;
+    private $law_addr01;
 
     /**
      * @var string
      */
-    public $law_addr02;
+    private $law_addr02;
 
     /**
      * @var string
      */
-    public $law_tel01;
+    private $law_tel01;
 
     /**
      * @var string
      */
-    public $law_tel02;
+    private $law_tel02;
 
     /**
      * @var string
      */
-    public $law_tel03;
+    private $law_tel03;
 
     /**
      * @var string
      */
-    public $law_fax01;
+    private $law_fax01;
 
     /**
      * @var string
      */
-    public $law_fax02;
+    private $law_fax02;
 
     /**
      * @var string
      */
-    public $law_fax03;
+    private $law_fax03;
 
     /**
      * @var string
      */
-    public $law_email;
+    private $law_email;
 
     /**
      * @var string
      */
-    public $law_url;
+    private $law_url;
 
     /**
      * @var string
      */
-    public $law_term01;
+    private $law_term01;
 
     /**
      * @var string
      */
-    public $law_term02;
+    private $law_term02;
 
     /**
      * @var string
      */
-    public $law_term03;
+    private $law_term03;
 
     /**
      * @var string
      */
-    public $law_term04;
+    private $law_term04;
 
     /**
      * @var string
      */
-    public $law_term05;
+    private $law_term05;
 
     /**
      * @var string
      */
-    public $law_term06;
+    private $law_term06;
 
     /**
      * @var string
      */
-    public $law_term07;
+    private $law_term07;
 
     /**
      * @var string
      */
-    public $law_term08;
+    private $law_term08;
 
     /**
      * @var string
      */
-    public $law_term09;
+    private $law_term09;
 
     /**
      * @var string
      */
-    public $law_term10;
+    private $law_term10;
 
     /**
      * @var string
      */
-    //public $tax;
+    //private $tax;
 
     /**
      * @var integer
      */
-    //public $tax_rule;
+    //private $tax_rule;
 
     /**
      * @var string
      */
-    public $email01;
+    private $email01;
 
     /**
      * @var string
      */
-    public $email02;
+    private $email02;
 
     /**
      * @var string
      */
-    public $email03;
+    private $email03;
 
     /**
      * @var string
      */
-    public $email04;
+    private $email04;
 
     /**
      * @var string
      */
-    public $email05;
+    private $email05;
 
     /**
      * @var string
      */
-    public $free_rule;
+    private $free_rule;
 
     /**
      * @var string
      */
-    public $shop_name;
+    private $shop_name;
 
     /**
      * @var string
      */
-    public $shop_kana;
+    private $shop_kana;
 
     /**
      * @var string
      */
-    public $shop_name_eng;
+    private $shop_name_eng;
 
     /**
      * @var string
      */
-    public $point_rate;
+    private $point_rate;
 
     /**
      * @var string
      */
-    public $welcome_point;
+    private $welcome_point;
 
     /**
      * @var \DateTime
      */
-    public $update_date;
+    private $update_date;
 
     /**
      * @var string
      */
-    public $top_tpl;
+    private $top_tpl;
 
     /**
      * @var string
      */
-    public $product_tpl;
+    private $product_tpl;
 
     /**
      * @var string
      */
-    public $detail_tpl;
+    private $detail_tpl;
 
     /**
      * @var string
      */
-    public $mypage_tpl;
+    private $mypage_tpl;
 
     /**
      * @var string
      */
-    public $good_traded;
+    private $good_traded;
 
     /**
      * @var string
      */
-    public $message;
+    private $message;
 
     /**
      * @var string
      */
-    public $regular_holiday_ids;
+    private $regular_holiday_ids;
 
     /**
      * @var string
      */
-    public $latitude;
+    private $latitude;
 
     /**
      * @var string
      */
-    public $longitude;
+    private $longitude;
 
     /**
      * @var string
      */
-    public $downloadable_days;
+    private $downloadable_days;
 
     /**
      * @var string
      */
-    public $downloadable_days_unlimited;
+    private $downloadable_days_unlimited;
 
 
     /**
