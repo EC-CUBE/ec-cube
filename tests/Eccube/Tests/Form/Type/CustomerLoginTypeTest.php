@@ -21,6 +21,9 @@ class CustomerLoginTypeTest extends TypeTestCase
         parent::setUp();
 
         $this->app = new \Eccube\Application;
+        $this->app['debug'] = true;
+        $this->app['session.test'] = true;
+        $this->app['exception_handler']->disable();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
