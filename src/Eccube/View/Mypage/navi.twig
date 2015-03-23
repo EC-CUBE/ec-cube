@@ -1,0 +1,42 @@
+<div id="mynavi_area">
+    {% spaceless %}
+        <ul class="mynavi_list clearfix">
+
+            {# 会員状態 #}
+            {% if is_granted('ROLE_USER') %}
+                <li><a href="{{ path('mypage') }}"{% if mypageno == 'index' %} class="selected"{% endif %}>購入履歴一覧</a></li>
+                {% if app.config.option_favorite_product %}
+                    <li><a href="{{ path('mypage_favorite') }}"{% if mypageno == 'favorite' %} class="selected"{% endif %}>お気に入り一覧</a></li>
+               {% endif %}
+                <li><a href="{{ path('mypage_change') }}"{% if mypageno == 'change' %} class="selected"{% endif %}>会員登録内容変更</a></li>
+                <li><a href="{{ path('mypage_delivery') }}"{% if mypageno == 'delivery' %} class="selected"{% endif %}>お届け先追加・変更</a></li>
+                <li><a href="{{ path('mypage_refusal') }}"{% if mypageno == 'refusal' %} class="selected"{% endif %}>退会手続き</a></li>
+
+            {# 退会状態 #}
+            {% else %}
+                <li><a href="{{ path('homepage') }}"{% if mypageno == 'index' %} class="selected"{% endif %}>購入履歴一覧</a></li>
+                {% if app.config.option_favorite_product %}
+                    <li><a href="{{ path('homepage') }}"{% if mypageno == 'favorite' %} class="selected"{% endif %}>お気に入り一覧</a></li>
+                {% endif %}
+                <li><a href="{{ path('homepage') }}"{% if mypageno == 'change' %} class="selected"{% endif %}>会員登録内容変更</a></li>
+                <li><a href="{{ path('homepage') }}"{% if mypageno == 'delivery' %} class="selected"{% endif %}>お届け先追加・変更</a></li>
+                <li><a href="{{ path('homepage') }}"{% if mypageno == 'refusal' %} class="selected"{% endif %}>退会手続き</a></li>
+            {% endif %}
+        </ul>
+
+        <!--▼現在のポイント-->
+        {% if point_disp is not defined or point_disp %}
+            <div class="point_announce clearfix">
+                <p>ようこそ&nbsp;／&nbsp;
+                    <span class="user_name">{{ app.user.name01 }} {{ app.user.name02 }}様</span>
+                    {% if app.config.use_point %}&nbsp;
+                        現在の所持ポイントは&nbsp;<span class="point st">{{ app.user.point|number_format }}pt</span>&nbsp;です。
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+        <!--▲現在のポイント-->
+    {% endspaceless %}
+
+</div>
+<!--▲NAVI-->

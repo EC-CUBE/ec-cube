@@ -4,11 +4,12 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Customer
  */
-class Customer
+class Customer implements UserInterface
 {
     /**
      * @var integer
@@ -205,6 +206,20 @@ class Customer
      */
     private $Pref;
 
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+    }
 
     /**
      * Get id
