@@ -146,14 +146,14 @@
     {%- for child in form %}
         {{- form_errors(child) -}}
     {% endfor -%}
-    <p class="top">
-        〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
-        {{- form_widget(form[form.vars.zip02_name], {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}　
-        {%- if freeze == false -%}
+    {%- if freeze -%}
+        〒&nbsp;{{ form_widget(form[form.vars.zip01_name]) }}&nbsp;-&nbsp;{{- form_widget(form[form.vars.zip02_name]) }}
+    {%- else -%}
+        <p class="top">
+            〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
+            {{- form_widget(form[form.vars.zip02_name], {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}　
             <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a>
-        {%- endif -%}
-    </p>
-    {%- if freeze == false -%}
+        </p>
         <p class="zipimg">
             <a href="javascript:eccube.getAddress('{{ path('input_zip') }}', 'zip01', 'zip02', 'pref', 'addr01');">
                 <img src="{{ app.config.tpl }}img/button/btn_address_input.jpg" alt="住所自動入力" /></a>
