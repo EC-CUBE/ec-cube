@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class BaseInfo extends AbstractEntity
 {
     /**
+     * @var integer
+     */
+    private $id;
+    
+    /**
      * @var string
      */
     private $company_name;
@@ -237,11 +242,6 @@ class BaseInfo extends AbstractEntity
     /**
      * @var string
      */
-    private $email05;
-
-    /**
-     * @var string
-     */
     private $free_rule;
 
     /**
@@ -329,7 +329,29 @@ class BaseInfo extends AbstractEntity
      */
     private $downloadable_days_unlimited;
 
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return BaseInfo
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
+        return $this;
+    }
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
     /**
      * Set company_name
      *

@@ -35,7 +35,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/mail.php', '\\Eccube\\Page\\Admin\\Basis\\Mail')->bind('admin_basis_mail');
         $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
         $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
-        $controllers->match('/basis/point.php', '\\Eccube\\Page\\Admin\\Basis\\Point')->bind('admin_basis_point');
+        // $controllers->match('/basis/point.php', '\\Eccube\\Page\\Admin\\Basis\\Point')->bind('admin_basis_point');
+        $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::Index')->bind('admin_basis_point');
         $controllers->match('/basis/tax.php', '\\Eccube\\Page\\Admin\\Basis\\Tax')->bind('admin_basis_tax');
         $controllers->match('/basis/tradelaw.php', '\\Eccube\\Page\\Admin\\Basis\\Tradelaw')->bind('admin_basis_tradelaw');
         $controllers->match('/basis/zip_install.php', '\\Eccube\\Page\\Admin\\Basis\\ZipInstall')->bind('admin_basis_zip_install');
