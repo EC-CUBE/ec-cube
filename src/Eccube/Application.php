@@ -4,6 +4,7 @@ namespace Eccube;
 
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\Yaml\Yaml;
+use Silex\Provider;
 
 class Application extends \Silex\Application
 {
@@ -12,8 +13,8 @@ class Application extends \Silex\Application
 
     /**
      * Alias
-     * 
-     * @return object 
+     *
+     * @return object
      */
     public static function alias($name)
     {
@@ -63,6 +64,12 @@ class Application extends \Silex\Application
         $this['mail.message'] = function() {
             return \Swift_Message::newInstance();
         };
+
+        // Silex Web Profiler
+        $app->register(new Provider\WebProfilerServiceProvider(), array(
+            'profiler.cache_dir' => __DIR__.'/../../app/cache/profiler',
+            'profiler.mount_prefix' => '/_profiler', // this is the default
+        ));
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',

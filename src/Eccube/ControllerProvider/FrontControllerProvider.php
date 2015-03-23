@@ -55,7 +55,7 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // forgot
         $controllers->match('/forgot/', '\\Eccube\\Page\\Forgot\\Index')->bind('forgot');
-        
+
         // frontparts
         $controllers->match('/frontparts/login_check.php', '\\Eccube\\Page\\FrontParts\\LoginCheck')->bind('frontparts_login_check');
 
@@ -82,8 +82,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/mypage/refusal.php', '\\Eccube\\Page\\Mypage\\Refusal')->bind('mypage_refusal');
         $controllers->match('/mypage/refusal_complete.php', '\\Eccube\\Page\\Mypage\\RefusalComplete')->bind('mypage_refusal_complete');
 
-        // order
-        $controllers->match('/order/', '\\Eccube\\Page\\Order\\Index')->bind('order');
+        // 特定商取引 order -> help/traderaw
+        $controllers->match('/help/tradelaw/', '\\Eccube\\Controller\\HelpController::tradelaw')->bind('help_tradelaw');
 
         // preview
         $controllers->match('/preview/', '\\Eccube\\Page\\Preview\\Index')->bind('preview');
