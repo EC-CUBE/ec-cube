@@ -55,8 +55,8 @@ install:
   - echo mbstring.http_output = pass >> C:\tools\php\php.ini
   - echo mbstring.internal_encoding = UTF-8 >> C:\tools\php\php.ini
     #- cd C:\projects\ec-cube
-  - php -r "readfile('https://getcomposer.org/installer');" | php
-  - php composer.phar install
+    #- php -r "readfile('https://getcomposer.org/installer');" | php
+    #- php composer.phar install
 
 # Don't actually build.
 build: off
@@ -65,5 +65,5 @@ before_test:
   - bash eccube_install.sh mysql
 
 test_script:
-  - php -i
-  - vendor\bin\phpunit.bat --bootstrap app\config\eccube\config.php tests
+    #- php -i
+  - vendor\bin\phpunit.bat

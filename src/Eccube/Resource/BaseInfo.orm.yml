@@ -86,6 +86,10 @@ Eccube\Entity\BaseInfo:
             type: text
         law_term10:
             type: text
+        #tax:
+        #    type: decimal
+        #tax_rule:
+        #    type: smallint
         email01:
             type: text
         email02:
@@ -94,6 +98,8 @@ Eccube\Entity\BaseInfo:
             type: text
         email04:
             type: text
+        #email05:
+        #    type: text
         free_rule:
             type: decimal
         shop_name:
