@@ -6,22 +6,34 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class ContactTypeTest extends TypeTestCase
 {
+    /** @var \Symfony\Component\Form\FormInterface */
+    private $form;
 
-    // デフォルト値（正常系）を設定
+    /** @var array デフォルト値（正常系）を設定 */
     private $formData = array(
-        'name01' => 'たかはし',
-        'name02' => 'しんいち',
-        'kana01' => 'タカハシ',
-        'kana02' => 'シンイチ',
-        'zip01' => '530',
-        'zip02' => '0001',
-        'pref' => 5,
-        'addr01' => '北区',
-        'addr02' => '梅田',
-        'tel01' => '012',
-        'tel02' => '345',
-        'tel03' => '6789',
-        'email' => 'shinichi_takahashi@lockon.co.jp',
+        'name' => array(
+            'name01' => 'たかはし',
+            'name02' => 'しんいち',
+        ),
+        'kana' => array(
+            'kana01' => 'タカハシ',
+            'kana02' => 'シンイチ',
+        ),
+        'zip' => array(
+            'zip01' => '530',
+            'zip02' => '0001',
+        ),
+        'address' => array(
+            'pref' => '5',
+            'addr01' => '北区',
+            'addr02' => '梅田',
+        ),
+        'tel' => array(
+            'tel01' => '012',
+            'tel02' => '345',
+            'tel03' => '6789',
+        ),
+        'email' => 'eccube@example.com',
         'contents' => 'お問い合わせ内容テスト',
     );
 
@@ -33,10 +45,10 @@ class ContactTypeTest extends TypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-                ->createBuilder('contact', null, array(
-                    'csrf_protection' => false,
-                ))
-                ->getForm();
+            ->createBuilder('contact', null, array(
+                'csrf_protection' => false,
+            ))
+            ->getForm();
     }
 
     public function testValidData()
@@ -48,7 +60,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidNam01_NotBlank()
     {
-        $this->formData['name01'] = '';
+        $this->formData['name']['name01'] = '';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -56,7 +68,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidNam02_NotBlank()
     {
-        $this->formData['name02'] = '';
+        $this->formData['name']['name02'] = '';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -64,7 +76,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidKana01_NotBlank()
     {
-        $this->formData['kana01'] = '';
+        $this->formData['kana']['kana01'] = '';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -72,7 +84,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidKana02_NotBlank()
     {
-        $this->formData['kana02'] = '';
+        $this->formData['kana']['kana02'] = '';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -80,7 +92,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidZip01_LengthMin()
     {
-        $this->formData['zip01'] = '1';
+        $this->formData['zip']['zip01'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -88,7 +100,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidZip01_LengthMax()
     {
-        $this->formData['zip01'] = '1234';
+        $this->formData['zip']['zip01'] = '1234';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -96,7 +108,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidZip02_LengthMin()
     {
-        $this->formData['zip02'] = '1';
+        $this->formData['zip']['zip02'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -104,7 +116,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidZip02_LengthMax()
     {
-        $this->formData['zip02'] = '12345';
+        $this->formData['zip']['zip02'] = '12345';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -112,7 +124,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidPref_Invalid()
     {
-        $this->formData['pref']['pref'] = '100';
+        $this->formData['address']['pref'] = '100';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -120,7 +132,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidTel01_LengthMin()
     {
-        $this->formData['tel01'] = '1';
+        $this->formData['tel']['tel01'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -128,7 +140,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidTel01_LengthMax()
     {
-        $this->formData['tel01'] = '1234';
+        $this->formData['tel']['tel01'] = '1234';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -136,7 +148,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidTel02_LengthMin()
     {
-        $this->formData['tel02'] = '1';
+        $this->formData['tel']['tel02'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -144,7 +156,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidTel02_LengthMax()
     {
-        $this->formData['tel02'] = '12345';
+        $this->formData['tel']['tel02'] = '12345';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -152,7 +164,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidTel03_LengthMin()
     {
-        $this->formData['tel03'] = '1';
+        $this->formData['tel']['tel03'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -160,7 +172,7 @@ class ContactTypeTest extends TypeTestCase
 
     public function testInvalidTel03_LengthMax()
     {
-        $this->formData['tel03'] = '12345';
+        $this->formData['tel']['tel03'] = '12345';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
