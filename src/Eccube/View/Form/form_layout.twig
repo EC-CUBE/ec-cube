@@ -87,7 +87,7 @@
     {% if freeze %}
         {% for choice in choices %}
             {% if choice is selectedchoice(value) %}
-                {{ choice.label|trans({}, translation_domain) }}<br />
+                {{ choice.label|trans({}, translation_domain) }}
                 <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }}>
             {% endif %}
         {% endfor %}
@@ -120,7 +120,7 @@
 
 
 
-{# EC-CUBE Widet #}
+{# EC-CUBE Widget #}
 
 {%- block name_widget -%}
     {%- for child in form %}
