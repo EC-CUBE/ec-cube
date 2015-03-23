@@ -7,7 +7,13 @@ use Symfony\Component\Form\Test\TypeTestCase;
 class CustomerTypeTest extends TypeTestCase
 {
 
-    // デフォルト値（正常系）を設定
+    /** @var \Eccube\Application */
+    private $app;
+
+    /** @var \Symfony\Component\Form\FormInterface */
+    private $form;
+
+    /** @var array デフォルト値（正常系）を設定 */
     private $formData = array(
         'name01' => 'たかはし',
         'name02' => 'しんいち',
