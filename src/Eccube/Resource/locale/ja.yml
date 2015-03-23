@@ -1,0 +1,19 @@
+Login email: メールアドレス
+Login pass: パスワード
+Login memory: メールアドレスをコンピューターに記憶させる
+
+Name: お名前
+Name01: 姓
+Name02: 名
+Kana: お名前(フリガナ)
+Kana01: セイ
+Kana02: メイ
+Zip: 郵便番号
+Address: 住所
+Tel: 電話番号
+Email: メールアドレス
+Contents: お問い合わせ内容
+form.pref.empty_value: 都道府県を選択
+
+form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
+form.contact.contents.help: ※ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。

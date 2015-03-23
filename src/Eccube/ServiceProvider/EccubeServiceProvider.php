@@ -27,14 +27,25 @@ class EccubeServiceProvider implements ServiceProviderInterface
         };
 
         // Form\Type
-        $app->extend('form.types', function ($types) use ($app) {
+        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
+            $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
+            $extensions[] = new \Eccube\Form\Extension\FreezeTypeExtension();
+
+            return $extensions;
+        }));
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+            $types[] = new \Eccube\Form\Type\NameType();
+            $types[] = new \Eccube\Form\Type\TelType();
+            $types[] = new \Eccube\Form\Type\PrefType();
+            $types[] = new \Eccube\Form\Type\ZipType();
+            $types[] = new \Eccube\Form\Type\AddressType();
+
             $types[] = new \Eccube\Form\Type\CustomerType($app);
-            $types[] = new \Eccube\Form\Type\ContactType($app);
-            $types[] = new \Eccube\Form\Type\PrefType($app);
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
+            $types[] = new \Eccube\Form\Type\ContactType($app['config']);
 
             return $types;
-        });
+        }));
 
         // PEAR
         $app['smarty'] = function () {

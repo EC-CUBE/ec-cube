@@ -1,4 +1,5 @@
 <?php
+
 namespace Eccube\Tests\Web;
 
 use Silex\WebTestCase;
@@ -6,12 +7,10 @@ use Eccube\Application;
 
 class HelpControllerTest extends WebTestCase
 {
-    public $app;
 
     public function createApplication()
     {
         $app = new Application();
-        $this->app = $app;
 
         $app['debug'] = true;
         $app['session.test'] = true;
@@ -20,11 +19,14 @@ class HelpControllerTest extends WebTestCase
         return $app;
     }
 
-    // 特定商取引法のテスト
+    /**
+     * 特定商取引法のテスト
+     */
     public function testRoutingHelpTradelaw()
     {
         $client = $this->createClient();
         $crawler = $client->request('GET', '/help/tradelaw/');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
+
 }

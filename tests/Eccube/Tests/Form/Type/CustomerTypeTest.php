@@ -6,37 +6,45 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class CustomerTypeTest extends TypeTestCase
 {
-	// デフォルト値（正常系）を設定
-	private $formData = array(
-            'name01' => 'たかはし',
-            'name02' => 'しんいち',
-            'kana01' => 'タカハシ',
-            'kana02' => 'シンイチ',
-            'email' => 'default@example.com',
-            'password' => array(
-                'first' => 'password',
-                'second' => 'password',
-            )
-        );
 
-    public function setUp() {
+    /** @var \Eccube\Application */
+    private $app;
+
+    /** @var \Symfony\Component\Form\FormInterface */
+    private $form;
+
+    /** @var array デフォルト値（正常系）を設定 */
+    private $formData = array(
+        'name01' => 'たかはし',
+        'name02' => 'しんいち',
+        'kana01' => 'タカハシ',
+        'kana02' => 'シンイチ',
+        'email' => 'default@example.com',
+        'password' => array(
+            'first' => 'password',
+            'second' => 'password',
+        )
+    );
+
+    public function setUp()
+    {
         parent::setUp();
-        
+
         $this->app = new \Eccube\Application;
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-              ->createBuilder('customer', null, array(
-                    'csrf_protection' => false,
-                ))
-              ->getForm();
+            ->createBuilder('customer', null, array(
+                'csrf_protection' => false,
+            ))
+            ->getForm();
     }
 
-	public function testValidData()
-	{
+    public function testValidData()
+    {
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
-	}
+    }
 
     public function testInvalidNam01_NotBlank()
     {
@@ -115,7 +123,7 @@ class CustomerTypeTest extends TypeTestCase
         $this->formData['password']['first'] = 'poss';
         $this->form->submit($this->formData);
 
-        $this->assertFalse($this->form->isValid());        
+        $this->assertFalse($this->form->isValid());
     }
 
 }
