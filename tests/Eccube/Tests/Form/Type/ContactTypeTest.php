@@ -6,6 +6,10 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class ContactTypeTest extends TypeTestCase
 {
+
+    /** @var \Eccube\Application */
+    private $app;
+
     /** @var \Symfony\Component\Form\FormInterface */
     private $form;
 

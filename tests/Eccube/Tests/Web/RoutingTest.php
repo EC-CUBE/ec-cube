@@ -1,16 +1,16 @@
 <?php
+
 namespace Eccube\Tests\Web;
+
 use Silex\WebTestCase;
 use Eccube\Application;
-class routingTest extends WebTestCase
-{
 
-    public $app;
+class RoutingTest extends WebTestCase
+{
 
     public function createApplication()
     {
         $app = new Application();
-        $this->app = $app;
 
         $app['debug'] = true;
         $app['session.test'] = true;
