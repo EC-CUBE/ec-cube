@@ -55,26 +55,26 @@ class ContactController
                         break;
                 }
             }
-        }
-
-        if ($app['security']->isGranted('ROLE_USER')) {
-            /* @var $user \Eccube\Entity\Customer */
-            $user = $app['user'];
-            $form->setData(array(
-                'name01' => $user->getName01(),
-                'name02' => $user->getName02(),
-                'kana01' => $user->getKana01(),
-                'kana02' => $user->getKana02(),
-                'zip01' => $user->getZip01(),
-                'zip02' => $user->getZip02(),
-                'pref' => $user->getPrefId(),
-                'addr01' => $user->getAddr01(),
-                'addr02' => $user->getAddr02(),
-                'tel01' => $user->getTel01(),
-                'tel02' => $user->getTel02(),
-                'tel03' => $user->getTel03(),
-                'email' => $user->getEmail(),
-            ));
+        } else {
+            if ($app['security']->isGranted('ROLE_USER')) {
+                /* @var $user \Eccube\Entity\Customer */
+                $user = $app['user'];
+                $form->setData(array(
+                    'name01' => $user->getName01(),
+                    'name02' => $user->getName02(),
+                    'kana01' => $user->getKana01(),
+                    'kana02' => $user->getKana02(),
+                    'zip01' => $user->getZip01(),
+                    'zip02' => $user->getZip02(),
+                    'pref' => $user->getPrefId(),
+                    'addr01' => $user->getAddr01(),
+                    'addr02' => $user->getAddr02(),
+                    'tel01' => $user->getTel01(),
+                    'tel02' => $user->getTel02(),
+                    'tel03' => $user->getTel03(),
+                    'email' => $user->getEmail(),
+                ));
+            }
         }
 
         return $app['twig']->render('Contact/index.twig', array(
