@@ -46,9 +46,7 @@ class Application extends \Silex\Application
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
-       //  $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
-       //      'security.firewalls' => ''
-       // ));
+
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.path' => __DIR__ . '/View',
         ));
@@ -85,6 +83,47 @@ class Application extends \Silex\Application
         ));
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
+
+        // Security
+        $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
+             'security.firewalls' => array(
+                'customer' => array(
+                    'pattern' => '^/',
+                    'form' => array(
+                        'login_path' => '/mypage/login.php',
+                        'check_path' => '/login_check',
+                        'username_parameter' =>  'login_email',
+                        'password_parameter' => 'login_pass',
+                        'with_csrf' => true,
+                        'use_forward' => true,
+                    ),
+                    'logout' => array(
+                        'logout_path' => '/logout',
+                        'target_url' => '/',
+                    ),
+                    'users' => $app['eccube.repository.customer'],
+                    'anonymous' => true,
+                ),
+            ),
+        ));
+        $app['security.access_rules'] = array(
+            array('^/mypage/login.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/', 'ROLE_USER'),
+        );
+        $app['eccube.encoder.customer'] = $app->share(function ($app) {
+            return new \Eccube\Framework\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
+        });
+        $app['security.encoder_factory'] = $app->share(function ($app) {
+            return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
+                'Eccube\Entity\Customer' => $app['eccube.encoder.customer'],
+            ));
+        });
+        $app['user'] = $app->share(function($app) {
+            $token = $app['security']->getToken();
+
+            return ($token !== null) ? $token->getUser() : null;
+        });
+
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/admin', new ControllerProvider\AdminControllerProvider());
 

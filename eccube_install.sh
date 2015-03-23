@@ -211,6 +211,19 @@ mail:
     password: 
     encryption: 
     auth_mode: 
+auth_type: HMAC
+auth_magic: ${AUTH_MAGIC}
+password_hash_algos: sha256
+use_point: true
+option_favorite_product: true
+mypage_order_status_disp_flag: true
+root: ${ROOT_URLPATH}
+tpl: ${ROOT_URLPATH}user_data/packages/default/
+shop_name: ${SHOP_NAME}
+release_year: 2015
+mail_cc:
+    - ${ADMIN_MAIL}
+
 __EOF__
 }
 
