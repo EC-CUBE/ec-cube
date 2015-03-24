@@ -141,6 +141,7 @@ class Application extends \Silex\Application
             return new CallbackResolver($app);
         });
 
+        $app['eccube.layout'] = null;
         $this->before(function (Request $request, \Silex\Application $app) {
             $url = str_replace($app['config']['root'], '', $app['request']->server->get('REDIRECT_URL'));
             if (substr($url, -1) === '/') {
@@ -165,7 +166,7 @@ class Application extends \Silex\Application
                     ->getSingleResult();
             } catch (\Doctrine\ORM\NoResultException $e) {
             }
-            
+
             $app['eccube.layout'] = $result;
         });
         // テスト実装

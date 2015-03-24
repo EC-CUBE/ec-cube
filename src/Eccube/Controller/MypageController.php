@@ -17,7 +17,7 @@ class MypageController extends AbstractController
 
     }
 
-    public function Login(Application $app, Request $request)
+    public function login(Application $app, Request $request)
     {
         if ($app['security']->isGranted('ROLE_USER')) {
             return $app->redirect($app['url_generator']->generate('mypage'));
@@ -36,7 +36,7 @@ class MypageController extends AbstractController
     }
 
 
-    public function Index(Application $app)
+    public function index(Application $app)
     {
         return $app['twig']->render('Mypage/index.twig', array(
             'title' => $this->title,

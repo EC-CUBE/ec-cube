@@ -6,7 +6,7 @@ use Eccube\Application;
 
 class NewsController
 {
-	function Index(Application $app)
+	function index(Application $app)
 	{
 		return 'bloc_news';
 	}
