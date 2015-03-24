@@ -90,7 +90,7 @@ class PluginHelper
             // プラグインのローダーがDB接続を必要とするため、
             // Queryインスタンス生成後のみオブジェクトを生成する。
             if (is_null(Query::getPoolInstance())) {
-                return null;
+                // return null;
             }
 
             $GLOBALS['_PluginHelper_instance'] = new static();

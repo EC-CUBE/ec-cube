@@ -9,6 +9,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class BlocPosition
 {
+
+    const UNUSED = 0;
+    const HEAD = 7;
+    const HEAD_TOP = 8;
+    const HEAD_INTERNAL = 10;
+    const TOP = 5;
+    const LEFT = 1;
+    const MAIN_HEAD = 2;
+    const RIGHT = 3;
+    const MAIN_FOOT = 4;
+    const BOTTOM = 6;
+    const FOOT = 9;
+
+
     /**
      * @var integer
      */
