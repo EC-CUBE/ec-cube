@@ -17,7 +17,7 @@ class EntryController extends AbstractController
 
     }
 
-    public function Kiyaku(Application $app)
+    public function kiyaku(Application $app)
     {
         $app['session']->remove('entry');
         $kiyaku = '規約内容を取得して表示';
@@ -36,7 +36,7 @@ class EntryController extends AbstractController
     }
 
 
-    public function Index(Application $app)
+    public function index(Application $app)
     {
         if (!$this->hasCorrectReferer($app)) {
             return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
@@ -70,7 +70,7 @@ class EntryController extends AbstractController
     }
 
 
-    public function Confirm(Application $app) {
+    public function confirm(Application $app) {
         if (!$app['session']->has('entry')) {
             return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
         }
@@ -118,7 +118,7 @@ class EntryController extends AbstractController
     }
 
 
-    public function Complete(Application $app) {
+    public function complete(Application $app) {
 
         return $app['twig']->render('Entry/complete.twig', array(
             'title' => $this->title,

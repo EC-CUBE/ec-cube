@@ -20,13 +20,13 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="{{ constant('Eccube\\Constant::ROOT') }}">
-                            <img class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_entry_cannot.jpg" alt="同意しない" />
+                        <a href="{{ url('index') }}">
+                            <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_cannot.jpg" alt="同意しない" />
                         </a>
                     </li>
                     <li>
-                        <a href="{{ constant('Eccube\\Constant::ROOT')}}entry/">
-                            <img class="hover_change_image" src="{{ constant('Eccube\\Constant::TPL') }}img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" />
+                        <a href="{{ url('entry') }}">
+                            <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" />
                         </a>
                     </li>
                 </ul>

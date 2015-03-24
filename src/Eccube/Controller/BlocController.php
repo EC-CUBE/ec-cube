@@ -8,7 +8,7 @@ use Eccube\Entity\BlocPosition;
 class BlocController
 {
 
-    public function Index(Application $app)
+    public function index(Application $app)
     {
         $position = $app['request']->get('position');
 

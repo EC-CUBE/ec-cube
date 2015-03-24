@@ -15,7 +15,7 @@ class ContactController
         $this->title = 'お問い合わせ';
     }
 
-    public function Index(Application $app, Request $request)
+    public function index(Application $app, Request $request)
     {
         
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
@@ -83,7 +83,7 @@ class ContactController
         ));
     }
 
-    public function Complete(Application $app)
+    public function complete(Application $app)
     {
         return $app['twig']->render('Contact/complete.twig', array(
             'title' => $this->title,

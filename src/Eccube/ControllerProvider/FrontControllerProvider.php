@@ -44,15 +44,15 @@ class FrontControllerProvider implements ControllerProviderInterface
         // contact
         // $controllers->match('/contact/', '\\Eccube\\Page\\Contact\\Index')->bind('contact');
         // $controllers->match('/contact/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('contact_complete');
-        $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::Index')->bind('contact');
-        $controllers->match('/contact/complete.php', '\\Eccube\\Controller\\ContactController::Complete')->bind('contact_complete');
+        $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::index')->bind('contact');
+        $controllers->match('/contact/complete.php', '\\Eccube\\Controller\\ContactController::complete')->bind('contact_complete');
 
 
         // entry
-        $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::Index')->bind('entry');
-        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Controller\\EntryController::Kiyaku')->bind('entry_kiyaku');
-        $controllers->match('/entry/confirm.php', '\\Eccube\\Controller\\EntryController::Confirm')->bind('entry_confirm');
-        $controllers->match('/entry/complete.php', '\\Eccube\\Controller\\EntryController::Complete')->bind('entry_complete');
+        $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::index')->bind('entry');
+        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Controller\\EntryController::kiyaku')->bind('entry_kiyaku');
+        $controllers->match('/entry/confirm.php', '\\Eccube\\Controller\\EntryController::confirm')->bind('entry_confirm');
+        $controllers->match('/entry/complete.php', '\\Eccube\\Controller\\EntryController::complete')->bind('entry_complete');
 
         // forgot
         $controllers->match('/forgot/', '\\Eccube\\Page\\Forgot\\Index')->bind('forgot');
@@ -62,14 +62,14 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/bloc/', '\\Eccube\\Controller\\BlocController::index')->bind('bloc');
 
         // bloc
-        $controllers->match('/frontparts/bloc/category.php', '\\Eccube\\Controller\\Bloc\\CategoryController::Index')->bind('bloc_category');
-        $controllers->match('/frontparts/bloc/cart.php', '\\Eccube\\Controller\\Bloc\\CartController::Index')->bind('bloc_cart');
-        $controllers->match('/frontparts/bloc/search_product.php', '\\Eccube\\Controller\\Bloc\\SearchProductController::Index')->bind('bloc_search_product');
-        $controllers->match('/frontparts/bloc/news.php', '\\Eccube\\Controller\\Bloc\\NewsController::Index')->bind('bloc_news');
-        $controllers->match('/frontparts/bloc/login.php', '\\Eccube\\Controller\\Bloc\\LoginController::Index')->bind('bloc_login');
-        $controllers->match('/frontparts/bloc/recommend.php', '\\Eccube\\Controller\\Bloc\\RecommendController::Index')->bind('bloc_recommend');
-        $controllers->match('/frontparts/bloc/calendar.php', '\\Eccube\\Controller\\Bloc\\CalendarController::Index')->bind('bloc_calendar');
-        $controllers->match('/frontparts/bloc/login_header.php', '\\Eccube\\Controller\\Bloc\\LoginHeaderController::Index')->bind('bloc_login_header');
+        $controllers->match('/frontparts/bloc/category.php', '\\Eccube\\Controller\\Bloc\\CategoryController::index')->bind('bloc_category');
+        $controllers->match('/frontparts/bloc/cart.php', '\\Eccube\\Controller\\Bloc\\CartController::index')->bind('bloc_cart');
+        $controllers->match('/frontparts/bloc/search_product.php', '\\Eccube\\Controller\\Bloc\\SearchProductController::index')->bind('bloc_search_product');
+        $controllers->match('/frontparts/bloc/news.php', '\\Eccube\\Controller\\Bloc\\NewsController::index')->bind('bloc_news');
+        $controllers->match('/frontparts/bloc/login.php', '\\Eccube\\Controller\\Bloc\\LoginController::index')->bind('bloc_login');
+        $controllers->match('/frontparts/bloc/recommend.php', '\\Eccube\\Controller\\Bloc\\RecommendController::index')->bind('bloc_recommend');
+        $controllers->match('/frontparts/bloc/calendar.php', '\\Eccube\\Controller\\Bloc\\CalendarController::index')->bind('bloc_calendar');
+        $controllers->match('/frontparts/bloc/login_header.php', '\\Eccube\\Controller\\Bloc\\LoginHeaderController::index')->bind('bloc_login_header');
 
         // guide
         $controllers->match('/guide/', '\\Eccube\\Page\\Guide\\Index')->bind('guide');
@@ -80,8 +80,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/guide/usage.php', '\\Eccube\\Page\\Guide\\Usage')->bind('guide_usage');
 
         // mypage
-        $controllers->match('/mypage/', '\\Eccube\\Controller\\MypageController::Index')->bind('mypage');
-        $controllers->match('/mypage/login.php', '\\Eccube\\Controller\\MypageController::Login')->bind('mypage_login');
+        $controllers->match('/mypage/', '\\Eccube\\Controller\\MypageController::index')->bind('mypage');
+        $controllers->match('/mypage/login.php', '\\Eccube\\Controller\\MypageController::login')->bind('mypage_login');
         $controllers->match('/mypage/change.php', '\\Eccube\\Page\\Mypage\\Change')->bind('mypage_change');
         $controllers->match('/mypage/change_complete.php', '\\Eccube\\Page\\Mypage\\ChangeComplete')->bind('mypage_change_complete');
         $controllers->match('/mypage/delivery.php', '\\Eccube\\Page\\Mypage\\Delivery')->bind('mypage_delivery');

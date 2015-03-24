@@ -6,7 +6,7 @@ use Eccube\Application;
 
 class CartController
 {
-	function Index(Application $app)
+	function index(Application $app)
 	{
 		return 'bloc_cart';
 	}
