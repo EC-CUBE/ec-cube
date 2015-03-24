@@ -10,7 +10,6 @@ Eccube\Entity\BaseInfo:
                 strategy: AUTO
         company_name:
             type: text
-            id: true
         company_kana:
             type: text
         zip01:
