@@ -19,11 +19,13 @@ class BlocController
 
 		$blocs = array();
 		
-        foreach ($app['eccube.layout']->getBlocPositions() as $blocPositions) {
-        	if ($blocPositions->getTargetId() == constant("Eccube\Entity\BlocPosition::" . $position)) {
-        		$blocs[] = $blocPositions->getBloc();
-        	}
-        }
+		if ($app['eccube.layout']) {
+	        foreach ($app['eccube.layout']->getBlocPositions() as $blocPositions) {
+	        	if ($blocPositions->getTargetId() == constant("Eccube\Entity\BlocPosition::" . $position)) {
+	        		$blocs[] = $blocPositions->getBloc();
+	        	}
+	        }
+	    }
 
 		return $app['twig']->render('bloc.twig', array(
 			'blocs' => $blocs,
