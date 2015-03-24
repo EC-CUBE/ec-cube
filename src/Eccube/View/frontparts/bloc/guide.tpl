@@ -25,16 +25,16 @@
         <div id="guide_area" class="block_body">
             <ul class="button_like">
                 <li>
-                    <a href="{{ app.config.root }}abouts/" class="">当サイトについて</a>
+                    <a href="{{ url('guide_about') }}" class="">当サイトについて</a>
                 </li>
                 <li>
-                    <a href="{{ app.config.root }}contact/" class="">お問い合わせ</a>
+                    <a href="{{ url('contact') }}" class="">お問い合わせ</a>
                 </li>
                 <li>
-                    <a href="{{ app.config.root }}order/" class="">特定商取引法に基づく表記</a>
+                    <a href="{{ url('help_tradelaw') }}" class="">特定商取引法に基づく表記</a>
                 </li>
                 <li>
-                    <a href="{{ app.config.root }}guide/privacy.php" class="">プライバシーポリシー</a>
+                    <a href="{{ url('guide_privacy') }}" class="">プライバシーポリシー</a>
                 </li>
             </ul>
         </div>
