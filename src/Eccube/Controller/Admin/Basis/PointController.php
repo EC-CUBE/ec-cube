@@ -22,7 +22,7 @@ class PointController extends AbstractController
     public function Index(Application $app)
     {
         $baseinfo = $app['eccube.repository.baseinfo']->findAll();
-        $baseinfo = $baseinfo_t[0];
+        $baseinfo = $baseinfo[0];
         
         $form = $app['form.factory']
             ->createBuilder('point', $baseinfo)
