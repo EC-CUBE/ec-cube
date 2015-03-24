@@ -25,10 +25,12 @@
     <!-- カバーレージのターゲット -->
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src/Eccube/Form/Type/</directory>
-            <directory suffix=".php">./src/Eccube/Service/</directory>
+            <directory suffix=".php">./src/Eccube/</directory>
             <exclude>
                 <directory>./src/Eccube/Page/</directory>
+                <directory>./src/Eccube/Framework/</directory>
+                <directory>./src/Eccube/Entity/</directory>
+                <directory>./src/Eccube/View/</directory>
             </exclude>
         </whitelist>
     </filter>

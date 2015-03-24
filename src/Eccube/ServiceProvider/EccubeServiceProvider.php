@@ -25,7 +25,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.member'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Member');
         };
-
+        $app['eccube.repository.baseinfo'] = function() use ($app) {
+            return $app['orm.em']->getRepository('\\Eccube\\Entity\\BaseInfo');
+        };
         // Form\Type
         $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
@@ -43,7 +45,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
-
+            $types[] = new \Eccube\Form\Type\PointType($app);
             return $types;
         }));
 
