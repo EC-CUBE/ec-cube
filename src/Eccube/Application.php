@@ -3,6 +3,7 @@
 namespace Eccube;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\Request;
 
 class Application extends \Silex\Application
 {
@@ -140,6 +141,33 @@ class Application extends \Silex\Application
             return new CallbackResolver($app);
         });
 
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $url = str_replace($app['config']['root'], '', $app['request']->server->get('REDIRECT_URL'));
+            if (substr($url, -1) === '/') {
+                $url .= 'index.php';
+            }
+
+            $qb = $app['orm.em']->createQueryBuilder()
+                ->select('p, bp, b')
+                ->from('Eccube\Entity\PageLayout', 'p')
+                ->leftJoin('p.BlocPositions', 'bp', \Doctrine\ORM\Query\Expr\Join::WITH, 'p.page_id = bp.page_id OR bp.anywhere = 1')
+                ->innerJoin('bp.Bloc', 'b')
+                ->andWhere('p.device_type_id = :device_type_id AND p.url = :url')
+                ->addOrderBy('bp.target_id', 'ASC')
+                ->addOrderBy('bp.bloc_row', 'ASC');
+            $result = null;
+            try {
+                $result = $qb->getQuery()
+                    ->setParameters(array(
+                        'device_type_id'    => 10,
+                        'url'               => $url,
+                    ))
+                    ->getSingleResult();
+            } catch (\Doctrine\ORM\NoResultException $e) {
+            }
+            
+            $app['eccube.layout'] = $result;
+        });
         // テスト実装
         $this->register(new Plugin\ProductReview\ProductReview());
     }

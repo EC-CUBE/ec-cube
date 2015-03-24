@@ -59,6 +59,17 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // frontparts
         $controllers->match('/frontparts/login_check.php', '\\Eccube\\Page\\FrontParts\\LoginCheck')->bind('frontparts_login_check');
+        $controllers->match('/bloc/', '\\Eccube\\Controller\\BlocController::index')->bind('bloc');
+
+        // bloc
+        $controllers->match('/frontparts/bloc/category.php', '\\Eccube\\Controller\\Bloc\\CategoryController::Index')->bind('bloc_category');
+        $controllers->match('/frontparts/bloc/cart.php', '\\Eccube\\Controller\\Bloc\\CartController::Index')->bind('bloc_cart');
+        $controllers->match('/frontparts/bloc/search_product.php', '\\Eccube\\Controller\\Bloc\\SearchProductController::Index')->bind('bloc_search_product');
+        $controllers->match('/frontparts/bloc/news.php', '\\Eccube\\Controller\\Bloc\\NewsController::Index')->bind('bloc_news');
+        $controllers->match('/frontparts/bloc/login.php', '\\Eccube\\Controller\\Bloc\\LoginController::Index')->bind('bloc_login');
+        $controllers->match('/frontparts/bloc/recommend.php', '\\Eccube\\Controller\\Bloc\\RecommendController::Index')->bind('bloc_recommend');
+        $controllers->match('/frontparts/bloc/calendar.php', '\\Eccube\\Controller\\Bloc\\CalendarController::Index')->bind('bloc_calendar');
+        $controllers->match('/frontparts/bloc/login_header.php', '\\Eccube\\Controller\\Bloc\\LoginHeaderController::Index')->bind('bloc_login_header');
 
         // guide
         $controllers->match('/guide/', '\\Eccube\\Page\\Guide\\Index')->bind('guide');
