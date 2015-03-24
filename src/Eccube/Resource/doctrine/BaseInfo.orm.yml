@@ -3,11 +3,11 @@ Eccube\Entity\BaseInfo:
     table: dtb_baseinfo
     repositoryClass: Eccube\Repository\BaseInfoRepository
     fields:
-#        id:
-#            type: integer
-#            id: true
-#            generator:
-#                strategy: AUTO
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
         company_name:
             type: text
             id: true
