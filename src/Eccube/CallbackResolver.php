@@ -17,6 +17,7 @@ use Eccube\Framework\Helper\MobileHelper;
 use Eccube\Framework\Helper\SessionHelper;
 use Eccube\Framework\Util\GcUtils;
 use Eccube\Framework\Util\Utils;
+use Symfony\Component\HttpFoundation\Request;
 
 class CallbackResolver extends \Silex\CallbackResolver
 {
