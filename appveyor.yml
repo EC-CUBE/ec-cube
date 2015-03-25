@@ -12,7 +12,7 @@ environment:
   global:
     USER: "root" 
     DBNAME: "myapp_test"
-    DBPASS: " "
+    DBPASS: "Password12!"
     DBUSER: "root"
   matrix:
   - db: mysql
@@ -20,21 +20,18 @@ environment:
 
 services:
   - iis  
+  - mysql
 
 # Install scripts. (runs after repo cloning)
 install:
   # Set MySQL.
   - cp tests/my.cnf c:\
-  - cinst mysql
-  - SET PATH=C:\tools\mysql\current\bin\;%PATH%
-  # Set bash.
-    #- cinst mingw-get
-    #- set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin
-    #- mingw-get install mingw-developer-toolkit
-  ## Set PHP.
+  - SET PATH=C:\Program Files\MySql\MySQL Server 5.6\bin\;%PATH%
+  #- cinst mysql
+  #- SET PATH=C:\tools\mysql\current\bin\;%PATH%
+  # Set PHP.
   - cinst php
   - SET PATH=C:\tools\php\;%PATH%
-    #- cd C:\tools\php
   - copy C:\tools\php\php.ini-production C:\tools\php\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php\php.ini
   - echo extension_dir=ext >> C:\tools\php\php.ini
@@ -43,7 +40,7 @@ install:
   - echo extension=php_mbstring.dll >> C:\tools\php\php.ini
   - echo extension=php_mysql.dll >> C:\tools\php\php.ini
   - echo extension=php_pgsql.dll >> C:\tools\php\php.ini
-  - echo extension=php_pdo.dll >> C:\tools\php\php.ini
+  #- echo extension=php_pdo.dll >> C:\tools\php\php.ini
   - echo extension=php_pdo_mysql.dll >> C:\tools\php\php.ini
   - echo extension=php_pdo_pgsql.dll >> C:\tools\php\php.ini
   - echo extension=php_curl.dll >> C:\tools\php\php.ini
@@ -54,9 +51,10 @@ install:
   - echo mbstring.http_input = UTF-8 >> C:\tools\php\php.ini
   - echo mbstring.http_output = pass >> C:\tools\php\php.ini
   - echo mbstring.internal_encoding = UTF-8 >> C:\tools\php\php.ini
-    #- cd C:\projects\ec-cube
-    #- php -r "readfile('https://getcomposer.org/installer');" | php
-    #- php composer.phar install
+
+cache:
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 # Don't actually build.
 build: off
@@ -65,5 +63,4 @@ before_test:
   - bash eccube_install.sh mysql
 
 test_script:
-    #- php -i
   - vendor\bin\phpunit.bat
