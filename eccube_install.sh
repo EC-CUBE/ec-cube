@@ -219,7 +219,7 @@ option_favorite_product: true
 mypage_order_status_disp_flag: true
 root: ${ROOT_URLPATH}
 tpl: ${ROOT_URLPATH}user_data/packages/default/
-tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}
+admin_tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}
 shop_name: ${SHOP_NAME}
 release_year: 2015
 mail_cc:
