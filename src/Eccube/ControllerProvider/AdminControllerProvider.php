@@ -42,18 +42,18 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/zip_install.php', '\\Eccube\\Page\\Admin\\Basis\\ZipInstall')->bind('admin_basis_zip_install');
 
         // contents
-        $controllers->match('/contents/', '\\Eccube\\Page\\Admin\\Contents\\Index')->bind('admin_contents');
-        $controllers->match('/contents/csv.php', '\\Eccube\\Page\\Admin\\Contents\\Csv')->bind('admin_contents_csv');
-        $controllers->match('/contents/csv_sql.php', '\\Eccube\\Page\\Admin\\Contents\\CsvSql')->bind('admin_contents_csv_sql');
-        $controllers->match('/contents/file_manager.php', '\\Eccube\\Page\\Admin\\Contents\\FileManager')->bind('admin_contents_file_manager');
-        $controllers->match('/contents/file_view.php', '\\Eccube\\Page\\Admin\\Contents\\FileView')->bind('admin_contents_file_view');
-        $controllers->match('/contents/recommend.php', '\\Eccube\\Page\\Admin\\Contents\\Recommend')->bind('admin_contents_recommend');
-        $controllers->match('/contents/recommend_search.php', '\\Eccube\\Page\\Admin\\Contents\\RecommendSearch')->bind('admin_contents_recommend_search');
+        $controllers->match('/content/', '\\Eccube\\Page\\Admin\\Content\\Index')->bind('admin_content');
+        $controllers->match('/content/csv.php', '\\Eccube\\Page\\Admin\\Content\\Csv')->bind('admin_content_csv');
+        $controllers->match('/content/csv_sql.php', '\\Eccube\\Page\\Admin\\Content\\CsvSql')->bind('admin_content_csv_sql');
+        $controllers->match('/content/file_manager.php', '\\Eccube\\Controller\\Admin\\Content\\FileController::index')->bind('admin_content_file');
+        $controllers->match('/content/file_view.php', '\\Eccube\\Controller\\Admin\\Content\\FileController::view')->bind('admin_content_file_view');
+        $controllers->match('/content/recommend.php', '\\Eccube\\Page\\Admin\\Content\\Recommend')->bind('admin_content_recommend');
+        $controllers->match('/content/recommend_search.php', '\\Eccube\\Page\\Admin\\Content\\RecommendSearch')->bind('admin_content_recommend_search');
 
         // customer
         $controllers->match('/customer/', '\\Eccube\\Page\\Admin\\Customer\\Index')->bind('admin_customer');
         $controllers->match('/customer/edit.php', '\\Eccube\\Page\\Admin\\Customer\\Edit')->bind('admin_customer_edit');
-        $controllers->match('/customer/seaech_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
+        $controllers->match('/customer/search_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
 
         // design
         $controllers->match('/design/', '\\Eccube\\Page\\Admin\\Design\\Index')->bind('admin_design');
