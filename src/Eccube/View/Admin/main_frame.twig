@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+{#
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+#}
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-script-type" content="text/javascript" />
+<meta http-equiv="content-style-type" content="text/css" />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="stylesheet" href="{{ app.config.admin_tpl }}css/reset.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ app.config.admin_tpl }}css/admin_contents.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ app.config.admin_tpl }}css/admin_file_manager.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ app.config.root }}js/jquery.colorbox/colorbox.css" type="text/css" media="all" />
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="{{ app.config.root }}js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="{{ app.config.root }}js/eccube.js"></script>
+<script type="text/javascript" src="{{ app.config.admin_tpl }}js/eccube.admin.js"></script>
+<script type="text/javascript" src="{{ app.config.root }}js/jquery.colorbox/jquery.colorbox-min.js"></script>
+<title>{{ title|default('') }}</title>
+<link rel="shortcut icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
+<link rel="icon" type="image/vnd.microsoft.icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
+<script type="text/javascript">//<![CDATA[
+    {{ tpl_javascript|default('') }}
+    $(function(){
+        {{ tpl_onload|default('') }}
+    });
+//]]></script>
+</head>
+
+<body class="">
+<noscript>
+    <p>JavaScript を有効にしてご利用下さい.</p>
+</noscript>
+
+<div id="container">
+<a name="top"></a>
+
+{# ▼HEADER #}
+<div id="header">
+    <div id="header-contents">
+        <div id="logo"><a href="{{ url('admin_index') }}"><img src="{{ app.config.admin_tpl }}img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
+        <div id="site-check">
+            <p class="info">
+                <span><strong>ログイン&nbsp;:&nbsp;</strong>DUMMY</span>&nbsp;様,&nbsp;&nbsp;
+                <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong>DUMMY</span>
+            </p>
+            <ul>
+                <li><a href="{{ url('admin_index') }}" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>
+                <li><a href="{{ url('admin_logout') }}" class="btn-tool-format">LOGOUT</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{# ▲HEADER #}
+
+{# ▼NAVI #}
+<div id="navi-wrap">
+    <ul id="navi" class="clearfix">
+        <li id="navi-basis" class="on_level1">
+            <div><span>基本情報管理</span></div>
+            {{ include('admin/basis/subnavi.twig') }}
+        </li>
+        <li id="navi-products" class="on_level1">
+            <div><span>商品管理</span></div>
+            {{ include('admin/product/subnavi.twig') }}
+        </li>
+        <li id="navi-customer" class="on_level1">
+            <div><span>会員管理</span></div>
+            {{ include('admin/customer/subnavi.twig') }}
+        </li>
+        <li id="navi-order" class="on_level1">
+            <div><span>受注管理</span></div>
+            {{ include('admin/order/subnavi.twig') }}
+        </li>
+        <li id="navi-total" class="on_level1">
+            <div><span>売上集計</span></div>
+            {{ include('admin/total/subnavi.twig') }}
+        </li>
+        <li id="navi-mail" class="on_level1">
+            <div><span>メルマガ管理</span></div>
+            {{ include('admin/mail/subnavi.twig') }}
+        </li>
+        <li id="navi-content" class="on_level1">
+            <div><span>コンテンツ管理</span></div>
+            {{ include('admin/content/subnavi.twig') }}
+        </li>
+        <li id="navi-design" class="on_level1">
+            <div><span>デザイン管理</span></div>
+            {{ include('admin/design/subnavi.twig') }}
+        </li>
+        <li id="navi-system" class="on_level1">
+            <div><span>システム設定</span></div>
+            {{ include('admin/system/subnavi.twig') }}
+        </li>
+        <li id="navi-ownersstore" class="on_level1">
+            <div><span>オーナーズストア</span></div>
+            {{ include('admin/ownersstore/subnavi.twig') }}
+        </li>
+    </ul>
+</div>
+{# ▲NAVI #}
+
+<h1><span class="title">{{ tpl_maintitle|default('') }}{{ tpl_subtitle|default('') }}</span></h1>
+
+<div id="contents" class="clearfix">
+    {% block main %}
+    {% endblock %}
+</div>
+{# ▼FOOTER #}
+<div id="footer">
+    <div id="footer-contents">
+        <div id="copyright">Copyright &copy; 2000- {{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</div>
+        <div id="topagetop">
+            <ul class="sites">
+                <li><a href="#top" class="btn-tool-format">PAGE TOP</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{# ▲FOOTER #}
+
+</div>
+</body>
+</html>
