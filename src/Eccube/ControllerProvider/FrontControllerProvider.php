@@ -72,11 +72,11 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/frontparts/bloc/login_header.php', '\\Eccube\\Controller\\Bloc\\LoginHeaderController::index')->bind('bloc_login_header');
 
         // guide
-        $controllers->match('/guide/', '\\Eccube\\Page\\Guide\\Index')->bind('guide');
+        $controllers->match('/guide/', '\\Eccube\\Controller\\Guide\\Controller::Index')->bind('guide');
         $controllers->match('/guide/about.php', '\\Eccube\\Page\\Guide\\About')->bind('guide_about');
         $controllers->match('/guide/charge.php', '\\Eccube\\Page\\Guide\\Charge')->bind('guide_charge');
         $controllers->match('/guide/kiyaku.php', '\\Eccube\\Page\\Guide\\Kiyaku')->bind('guide_kiyaku');
-        $controllers->match('/guide/privacy.php', '\\Eccube\\Page\\Guide\\Privacy')->bind('guide_privacy');
+        $controllers->match('/guide/privacy/', '\\Eccube\\Controller\\Guide\\Controller::Index')->bind('guide_privacy');
         $controllers->match('/guide/usage.php', '\\Eccube\\Page\\Guide\\Usage')->bind('guide_usage');
 
         // mypage

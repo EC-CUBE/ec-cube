@@ -17,3 +17,5 @@ composer.phar
 /phpunit.xml
 /tests/tmp/*
 /reports/*
+
+.c9/
