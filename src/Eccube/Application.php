@@ -128,6 +128,10 @@ class Application extends \Silex\Application
             return ($token !== null) ? $token->getUser() : null;
         });
 
+        $app['filesystem'] = function() {
+            return new \Symfony\Component\Filesystem\Filesystem();
+        };
+
         // Silex Web Profiler
         $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
             'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
