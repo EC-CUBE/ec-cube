@@ -2,6 +2,33 @@
 [![Build Status](https://travis-ci.org/EC-CUBE/ec-cube.svg)](https://travis-ci.org/EC-CUBE/ec-cube)
 [![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
 
+
+### β開発
+
+現在、[リファクタリング対象一覧](https://docs.google.com/spreadsheets/d/1df5Sc4eoEQv4ZVm6_q8-QE0-PduS2gnAtNXVQco0x-8/edit?usp=sharing)を元に、eccube-3.0.0-betaブランチにてβ版の開発を行っております。
+開発着手時は、上記ファイルのassigneeにGitHubアカウントを記入してから開発を行ってください。
+
+開発の指針については、[Wikiの開発要件](https://github.com/EC-CUBE/ec-cube/wiki/%E9%96%8B%E7%99%BA%E8%A6%81%E4%BB%B6)を参照してください。
+[プロトタイプ](https://github.com/shinichi-takahashi/ec-cube-poc)をもとに、Silex＋DoctrineORMの構築へ向け、全体に大きなリファクタを行います。
+
+
+
+
+* ～3/初週：土台の挿げ替え
+  + ORMの導入
+    - ec-cube-poc参照
+  + ディレクトリ・ファイル構成の整備
+    - [Wiki参照](https://github.com/EC-CUBE/ec-cube/wiki/%E9%96%8B%E7%99%BA%E8%A6%81%E4%BB%B6#%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90)
+  + Smarty3の導入
+    - 未実装
+  + DBの見直し
+    - https://github.com/EC-CUBE/ec-cube/issues/4
+    - スキーマの見直し
+  + テスト
+～3/末：全機能のリファクタ
+
+
+
 * * * * * * * * * * * * * * * * * * * *
 ### インストール方法
 * Composerのインストール  
@@ -24,26 +51,6 @@ class Constant
 	const RELEASE_YEAR = '2015';
 }
 ```
-
-
-### β開発
-
-現在、eccube-3.0.0-betaブランチにてβ版の開発を行っております。
-開発の指針については、[Wikiの開発要件](https://github.com/EC-CUBE/ec-cube/wiki/%E9%96%8B%E7%99%BA%E8%A6%81%E4%BB%B6)を参照してください。
-[プロトタイプ](https://github.com/shinichi-takahashi/ec-cube-poc)をもとに、Silex＋DoctrineORMの構築へ向け、全体に大きなリファクタを行います。
-
-* ～3/初週：土台の挿げ替え
-  + ORMの導入
-    - ec-cube-poc参照
-  + ディレクトリ・ファイル構成の整備
-    - [Wiki参照](https://github.com/EC-CUBE/ec-cube/wiki/%E9%96%8B%E7%99%BA%E8%A6%81%E4%BB%B6#%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E6%A7%8B%E6%88%90)
-  + Smarty3の導入
-    - 未実装
-  + DBの見直し
-    - https://github.com/EC-CUBE/ec-cube/issues/4
-    - スキーマの見直し
-  + テスト
-～3/末：全機能のリファクタ
 
 * * * * * * * * * * * * * * * * * * * *
 ### 開発協力
