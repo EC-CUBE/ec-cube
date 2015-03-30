@@ -96,6 +96,9 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // 特定商取引 order -> help/traderaw
         $controllers->match('/help/tradelaw/', '\\Eccube\\Controller\\HelpController::tradelaw')->bind('help_tradelaw');
+        $controllers->match('/help/guide/', '\\Eccube\\Controller\\HelpController::guide')->bind('help_guide');
+        $controllers->match('/help/about/', '\\Eccube\\Controller\\HelpController::about')->bind('help_about');
+        $controllers->match('/help/privacy/', '\\Eccube\\Controller\\HelpController::privacy')->bind('help_privacy');
 
         // preview
         $controllers->match('/preview/', '\\Eccube\\Page\\Preview\\Index')->bind('preview');

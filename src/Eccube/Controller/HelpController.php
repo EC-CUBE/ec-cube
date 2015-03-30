@@ -14,18 +14,51 @@ class HelpController extends AbstractController
     {
         $title = '特定商取引法';
 
-        $tradelaw = $app['orm.em']
+        $baseInfo = $app['orm.em']
             ->getRepository('Eccube\Entity\BaseInfo')
-            ->findAll();
-
-        // todo getRow的なものが欲しい
-        $tradelaw = $tradelaw[0];
+            ->getBaseInfo();
 
         // todo mtb_*を処理する共通クラス
         $pref = $app['orm.em']
             ->getRepository('Eccube\Entity\Pref')
             ->findMasterData();
 
-        return $app['twig']->render('Help/tradelaw.twig', compact('title', 'tradelaw', 'pref'));
+        return $app['twig']->render('Help/tradelaw.twig', compact('title', 'baseInfo', 'pref'));
+    }
+
+
+    public function guide(Application $app)
+    {
+        $title = 'ご利用ガイド';
+
+        return $app['twig']->render('Help/guide.twig', compact('title'));
+    }
+
+
+    public function about(Application $app)
+    {
+        $title = '当サイトについて';
+
+        $baseInfo = $app['orm.em']
+            ->getRepository('Eccube\Entity\BaseInfo')
+            ->getBaseInfo();
+
+        $pref = $app['orm.em']
+            ->getRepository('Eccube\Entity\Pref')
+            ->findMasterData();
+
+        return $app['twig']->render('Help/about.twig', compact('title', 'baseInfo', 'pref'));
+    }
+
+
+    public function privacy(Application $app)
+    {
+        $title = 'プライバシーポリシー';
+
+        $baseInfo = $app['orm.em']
+            ->getRepository('Eccube\Entity\BaseInfo')
+            ->getBaseInfo();
+
+        return $app['twig']->render('Help/privacy.twig', compact('title', 'baseInfo'));
     }
 }
