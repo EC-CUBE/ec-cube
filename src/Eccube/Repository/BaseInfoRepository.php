@@ -12,4 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class BaseInfoRepository extends EntityRepository
 {
+    public function getBaseInfo($id = 1)
+    {
+        return $this->find($id);
+    }
 }

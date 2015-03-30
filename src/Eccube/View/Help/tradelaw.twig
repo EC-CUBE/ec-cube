@@ -4,61 +4,62 @@
 
 <div id="undercolumn">
     <div id="undercolumn_order">
-        <h2 class="title">{{title}}</h2>
-        <table summary="{{title}}">
+        <h2 class="title">{{ title }}</h2>
+        <table summary="{{ title }}">
             <col width="20%" />
             <col width="80%" />
             <tr>
                 <th>販売業者</th>
-                <td>{{tradelaw.law_company}}</td>
+                <td>{{ baseInfo.law_company }}</td>
             </tr>
             <tr>
                 <th>運営責任者</th>
-                <td>{{tradelaw.law_manager}}</td>
+                <td>{{ baseInfo.law_manager }}</td>
             </tr>
             <tr>
                 <th>住所</th>
-                <td>〒{{tradelaw.law_zip01}}-{{tradelaw.law_zip02}}<br />{{pref[tradelaw.law_pref]}}{{tradelaw.law_addr01}}{{tradelaw.law_addr02}}</td>
+                <td>〒{{ baseInfo.law_zip01 }}-{{ baseInfo.law_zip02 }}<br />
+                {{ pref[baseInfo.law_pref] }}{{ baseInfo.law_addr01 }}{{ baseInfo.law_addr02 }}</td>
             </tr>
             <tr>
                 <th>電話番号</th>
-                <td>{{tradelaw.law_tel01}}-{{tradelaw.law_tel02}}-{{tradelaw.law_tel03}}</td>
+                <td>{{ baseInfo.law_tel01 }}-{{ baseInfo.law_tel02 }}-{{ baseInfo.law_tel03 }}</td>
             </tr>
             <tr>
                 <th>FAX番号</th>
-                <td>{{tradelaw.law_fax01}}-{{tradelaw.law_fax02}}-{{tradelaw.law_fax03}}</td>
+                <td>{{ baseInfo.law_fax01 }}-{{ baseInfo.law_fax02 }}-{{ baseInfo.law_fax03 }}</td>
             </tr>
             <tr>
                 <th>メールアドレス</th>
-                <td><a href="mailto:{{tradelaw.law_email}}">{{tradelaw.law_email}}</a></td>
+                <td><a href="mailto:{{ baseInfo.law_email }}">{{ baseInfo.law_email }}</a></td>
             </tr>
             <tr>
                 <th>URL</th>
-                <td><a href="{{tradelaw.law_url}}">{{tradelaw.law_url}}</a></td>
+                <td><a href="{{ baseInfo.law_url }}">{{ baseInfo.law_url }}</a></td>
             </tr>
             <tr>
                 <th>商品以外の必要代金</th>
-                <td>{{tradelaw.law_term01}}</td>
+                <td>{{ baseInfo.law_term01|nl2br }}</td>
             </tr>
             <tr>
                 <th>注文方法</th>
-                <td>{{tradelaw.law_term02}}</td>
+                <td>{{ baseInfo.law_term02|nl2br }}</td>
             </tr>
             <tr>
                 <th>支払方法</th>
-                <td>{{tradelaw.law_term03}}</td>
+                <td>{{ baseInfo.law_term03|nl2br }}</td>
             </tr>
             <tr>
                 <th>支払期限</th>
-                <td>{{tradelaw.law_term04}}</td>
+                <td>{{ baseInfo.law_term04|nl2br }}</td>
             </tr>
             <tr>
                 <th>引渡し時期</th>
-                <td>{{tradelaw.law_term05}}</td>
+                <td>{{ baseInfo.law_term05|nl2br }}</td>
             </tr>
             <tr>
                 <th>返品・交換について</th>
-                <td>{{tradelaw.law_term06}}</td>
+                <td>{{ baseInfo.law_term06|nl2br }}</td>
             </tr>
         </table>
     </div>
