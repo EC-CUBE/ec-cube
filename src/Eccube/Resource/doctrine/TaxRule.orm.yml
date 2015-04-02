@@ -1,0 +1,82 @@
+Eccube\Entity\TaxRule:
+    type: entity
+    table: dtb_tax_rule
+    id:
+        taxRuleId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: tax_rule_id
+            generator:
+                strategy: SEQUENCE
+    fields:
+        countryId:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: country_id
+        prefId:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: pref_id
+        productId:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: product_id
+        productClassId:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: product_class_id
+        calcRule:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+            column: calc_rule
+        taxRate:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '8'
+            column: tax_rate
+        taxAdjust:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+            column: tax_adjust
+        applyDate:
+            type: datetime
+            nullable: false
+            default: now()
+            column: apply_date
+        memberId:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: member_id
+        delFlg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: del_flg
+        createDate:
+            type: datetime
+            nullable: false
+            column: create_date
+        updateDate:
+            type: datetime
+            nullable: false
+            column: update_date
+    lifecycleCallbacks: {  }

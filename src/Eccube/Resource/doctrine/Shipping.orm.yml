@@ -1,0 +1,162 @@
+Eccube\Entity\Shipping:
+    type: entity
+    table: dtb_shipping
+    id:
+        shippingId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: shipping_id
+        orderId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: order_id
+    fields:
+        shippingName01:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_name01
+        shippingName02:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_name02
+        shippingKana01:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_kana01
+        shippingKana02:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_kana02
+        shippingCompanyName:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_company_name
+        shippingTel01:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_tel01
+        shippingTel02:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_tel02
+        shippingTel03:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_tel03
+        shippingFax01:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_fax01
+        shippingFax02:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_fax02
+        shippingFax03:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_fax03
+        shippingCountryId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: shipping_country_id
+        shippingPref:
+            type: smallint
+            nullable: true
+            unsigned: false
+            column: shipping_pref
+        shippingZip01:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_zip01
+        shippingZip02:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_zip02
+        shippingZipcode:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_zipcode
+        shippingAddr01:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_addr01
+        shippingAddr02:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_addr02
+        timeId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: time_id
+        shippingTime:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: shipping_time
+        shippingDate:
+            type: datetime
+            nullable: true
+            column: shipping_date
+        shippingCommitDate:
+            type: datetime
+            nullable: true
+            column: shipping_commit_date
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        createDate:
+            type: datetime
+            nullable: false
+            default: now()
+            column: create_date
+        updateDate:
+            type: datetime
+            nullable: false
+            column: update_date
+        delFlg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: del_flg
+    lifecycleCallbacks: {  }
