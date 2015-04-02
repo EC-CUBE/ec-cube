@@ -1,0 +1,85 @@
+Eccube\Entity\OrderDetail:
+    type: entity
+    table: dtb_order_detail
+    indexes:
+        dtb_order_detail_product_id_key:
+            columns:
+                - product_id
+    id:
+        orderDetailId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: order_detail_id
+            generator:
+                strategy: SEQUENCE
+    fields:
+        orderId:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: order_id
+        productId:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: product_id
+        productClassId:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: product_class_id
+        productName:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            column: product_name
+        productCode:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: product_code
+        classcategoryName1:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: classcategory_name1
+        classcategoryName2:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: classcategory_name2
+        price:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        quantity:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        pointRate:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+            column: point_rate
+        taxRate:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+            column: tax_rate
+        taxRule:
+            type: smallint
+            nullable: true
+            unsigned: false
+            column: tax_rule
+    lifecycleCallbacks: {  }
