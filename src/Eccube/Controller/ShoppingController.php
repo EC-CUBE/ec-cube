@@ -36,4 +36,37 @@ class ShoppingController extends AbstractController
                     'order' => $preOrder)
         );
     }
+    
+    // todo 初期化は外に出す
+    private function initOrderService(Application $app) {
+        $order = $app["eccube.service.order"];
+        $customer = $app['session']->get('user');
+
+        // 税金計算する人
+        $taxRule = $app['orm.em']->getRepository("\\Eccube\Entity\TaxRule")
+                ->findCurrentRule();
+        $taxCalculator = new TaxCalculator();
+        $taxCalculator->setTaxRule($taxRule);
+        $taxCalculator->setPrefId($customer->getPrefId());
+        $taxCalculator->setCountryId($customer->getCountryId());
+        $order->addTaxCalculator($taxCalculator);
+        
+        // 加算ポイント計算
+        $baseInfo = $app['orm.em']->getRepository("\\Eccube\Entity\BaseInfo")
+                ->find(1);
+        // 通常ポイント
+        $pointCalculator = new PointCalculator();
+        $pointCalculator->setBaseInfo($baseInfo);
+        // 誕生日ポイント
+        $birthPointCalculator = new BirthPointCalculator();
+        $birthPointCalculator->setBaseInfo($baseInfo);
+        $order->addPointCalculator($pointCalculator);
+        $order->addPointCalculator($birthPointCalculator);
+        
+        // 配送料計算する人
+        $order->addDeliveryFeeCalculator();
+        $order->addPaymentFeeCalculator();
+        $order->addSubTotalCalculator();
+        $order->addChargeCalculator();
+    }
 }
