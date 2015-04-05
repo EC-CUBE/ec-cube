@@ -17,12 +17,3 @@ define('USE_FILENAME_DIR_INDEX', null);
 while (ob_get_level() > 0 && ob_get_level() > 0) {
     ob_end_clean();
 }
-
-/*
- * Local variables:
- * coding: utf-8
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */

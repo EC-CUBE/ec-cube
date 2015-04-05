@@ -13,3 +13,10 @@ php_value mbstring.internal_encoding UTF-8
 php_value upload_max_filesize 5M
 #php_value post_max_size 8M
 php_flag register_globals off
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+#    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

@@ -3,7 +3,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
     colors="true"
-    bootstrap="./data/config/config.php"
+    bootstrap="./tests/bootstrap.php"
     >
 
     <!-- テストの場所 -->
@@ -25,12 +25,9 @@
     <!-- カバーレージのターゲット -->
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./data/class/</directory>
+            <directory suffix=".php">./src/Eccube/</directory>
             <exclude>
-                <directory>./data/class/pages/</directory>
-                <directory>./data/class/graph/</directory>
-                <directory>./data/class/batch/</directory>
-                <directory>./data/class/db/dbfactory/</directory>
+                <directory>./src/Eccube/Page/</directory>
             </exclude>
         </whitelist>
     </filter>

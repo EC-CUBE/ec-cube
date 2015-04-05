@@ -28,29 +28,30 @@ install:
   - cinst mysql
   - SET PATH=C:\tools\mysql\current\bin\;%PATH%
   # Set bash.
-  - cinst mingw-get
-  - set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin
-  - mingw-get install mingw-developer-toolkit
+    #- cinst mingw-get
+    #- set PATH=%PATH%;C:\MinGW\msys\1.0\bin;C:\MinGW\bin
+    #- mingw-get install mingw-developer-toolkit
   ## Set PHP.
   - cinst php
-  - SET PATH=C:\php\;%PATH%
-  - cd c:\php
-  - copy php.ini-production php.ini
-  - echo date.timezone="Asia/Tokyo" >> php.ini
-  - echo extension_dir=ext >> php.ini
-  - echo extension=php_openssl.dll >> php.ini
-  - echo extension=php_gd2.dll >> php.ini
-  - echo extension=php_mbstring.dll >> php.ini
-  - echo extension=php_mysql.dll >> php.ini
-  - echo extension=php_curl.dll >> php.ini
-  - echo output_buffering = Off >> php.ini
-  - echo default_charset = UTF-8 >> php.ini
-  - echo mbstring.language = Japanese >> php.ini
-  - echo mbstring.encoding_translation = On >> php.ini
-  - echo mbstring.http_input = UTF-8 >> php.ini
-  - echo mbstring.http_output = pass >> php.ini
-  - echo mbstring.internal_encoding = UTF-8 >> php.ini
-  - cd C:\projects\ec-cube
+  - SET PATH=C:\tools\php\;%PATH%
+    #- cd C:\tools\php
+  - copy C:\tools\php\php.ini-production C:\tools\php\php.ini
+  - echo date.timezone="Asia/Tokyo" >> C:\tools\php\php.ini
+  - echo extension_dir=ext >> C:\tools\php\php.ini
+  - echo extension=php_openssl.dll >> C:\tools\php\php.ini
+  - echo extension=php_gd2.dll >> C:\tools\php\php.ini
+  - echo extension=php_mbstring.dll >> C:\tools\php\php.ini
+  - echo extension=php_mysql.dll >> C:\tools\php\php.ini
+  - echo extension=php_pgsql.dll >> C:\tools\php\php.ini
+  - echo extension=php_curl.dll >> C:\tools\php\php.ini
+  - echo output_buffering = Off >> C:\tools\php\php.ini
+  - echo default_charset = UTF-8 >> C:\tools\php\php.ini
+  - echo mbstring.language = Japanese >> C:\tools\php\php.ini
+  - echo mbstring.encoding_translation = On >> C:\tools\php\php.ini
+  - echo mbstring.http_input = UTF-8 >> C:\tools\php\php.ini
+  - echo mbstring.http_output = pass >> C:\tools\php\php.ini
+  - echo mbstring.internal_encoding = UTF-8 >> C:\tools\php\php.ini
+    #- cd C:\projects\ec-cube
   - php -r "readfile('https://getcomposer.org/installer');" | php
   - php composer.phar install
 
@@ -59,8 +60,7 @@ build: off
 
 before_test:
   - bash eccube_install.sh mysql
-  - cp tests/require.php.jenkins tests/require.php
-    
+
 test_script:
   - php -i
-  - vendor\bin\phpunit.bat --bootstrap data\config\config.php tests
+#  - vendor\bin\phpunit.bat --bootstrap app\config\eccube\config.php tests

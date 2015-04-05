@@ -17,14 +17,13 @@ before_script:
   - php composer.phar install --dev --no-interaction
   - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql; fi"
   - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql; fi"
-  - cp tests/require.php.jenkins tests/require.php
-  - cat ./data/config/config.php
+  - cat ./app/config/eccube/config.php
   - npm install -g grunt-cli 
   - npm install 
 
 script:
   - mkdir -p reports/coverage
-  - phpunit -c phpunit.xml.dist
+#  - vendor/bin/phpunit -c phpunit.xml.dist
   - grunt
 
 after_script:

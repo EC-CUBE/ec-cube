@@ -27,7 +27,7 @@
 #######################################################################
 # Configuration
 #-- Shop Configuration
-CONFIG_PHP="data/config/config.php"
+CONFIG_PHP="app/config/eccube/config.php"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 HTTP_URL=${HTTP_URL:-"http://test.local"}
@@ -37,8 +37,8 @@ DOMAIN_NAME=${DOMAIN_NAME:-""}
 ADMIN_DIR=${ADMIN_DIR:-"admin/"}
 
 DBSERVER=${DBSERVER-"127.0.0.1"}
-DBNAME=${DBNAME:-"cube213_dev"}
-DBUSER=${DBUSER:-"cube213_dev_user"}
+DBNAME=${DBNAME:-"cube3_dev"}
+DBUSER=${DBUSER:-"cube3_dev_user"}
 DBPASS=${DBPASS:-"password"}
 
 ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
@@ -75,21 +75,18 @@ esac
 adjust_directory_permissions()
 {
     chmod -R go+w "./html"
-    chmod go+w "./data"
-    chmod -R go+w "./data/Smarty"
-    chmod -R go+w "./data/cache"
-    chmod -R go+w "./data/class"
-    chmod -R go+w "./data/class_extends"
-    chmod go+w "./data/config"
-    chmod -R go+w "./data/download"
-    chmod -R go+w "./data/downloads"
-    chmod go+w "./data/fonts"
-    chmod go+w "./data/include"
-    chmod go+w "./data/logs"
-    chmod -R go+w "./data/module"
-    chmod go+w "./data/smarty_extends"
-    chmod go+w "./data/upload"
-    chmod go+w "./data/upload/csv"
+    chmod go+w "./app"
+    chmod -R go+w "./app/templates"
+    chmod -R go+w "./app/cache"
+    chmod go+w "./app/config"
+    chmod -R go+w "./app/download"
+    chmod -R go+w "./app/downloads"
+    chmod go+w "./app/fonts"
+    chmod go+w "./app/logs"
+    chmod -R go+w "./src/Eccube/page"
+    chmod go+w "./src/smarty_extends"
+    chmod go+w "./app/upload"
+    chmod go+w "./app/upload/csv"
 }
 
 create_sequence_tables()
@@ -253,5 +250,11 @@ cp -rv "./html/install/save_image" "./html/upload/"
 
 echo "creating ${CONFIG_PHP}..."
 create_config_php
+
+echo "get composer..."
+curl -sS https://getcomposer.org/installer | php
+
+echo "install composer..."
+php composer.phar install
 
 echo "Finished Successful!"

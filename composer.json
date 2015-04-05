@@ -1,6 +1,70 @@
 {
+    "name": "EC-CUBE/ec-cube",
+    "description": "EC-CUBE EC open platform.",
+    "type": "project",
+    "homepage": "http://www.ec-cube.net/",
+    "license": [
+       "GPL-2.0",
+       "Commercial"
+    ],
+    "support": {
+        "issues": "https://github.com/EC-CUBE/ec-cube/issues"
+    },
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "silex/silex": "~1.2",
+        "smarty/smarty": "~2.6",
+        "mobiledetect/mobiledetectlib": "~2.8",
+        "pear-pear.php.net/PEAR" : "*",
+        "pear-pear.php.net/Archive_Tar" : "*",
+        "pear-pear.php.net/Mail" : "*",
+        "pear-pear.php.net/Calendar" : "*",
+        "pear-pear.php.net/Cache_Lite" : "*",
+        "pear-pear.php.net/File_SearchReplace" : "*",
+        "pear-pear.php.net/HTTP_Request" : "*",
+        "pear-pear.php.net/MDB2_Driver_mysql" : "1.5.0b4",
+        "pear-pear.php.net/MDB2_Driver_pgsql" : "1.5.0b4",
+        "pear-pear.php.net/MDB2" : "2.5.0-beta5 as 2.5.0",
+        "pear-pear.php.net/Net_SMTP" : "*",
+        "pear-pear.php.net/Net_Socket" : "*",
+        "pear-pear.php.net/Net_URL" : "*",
+        "pear-pear.php.net/Net_UserAgent_Mobile" : "*",
+        "pear-pear.php.net/SOAP" : "*",
+        "pear-pear.php.net/Services_JSON" : "*",
+        "pear-pear.php.net/Text_Password" : "*",
+        "pear-pear.php.net/XML_Parser" : "*",
+        "pear-pear.php.net/XML_Serializer" : "*",
+        "pear-pear.php.net/XML_Util" : "*",
+        "silex/web-profiler": "~1.0",
+        "symfony/monolog-bridge": "~2.1",
+        "symfony/twig-bridge": "~2.1",
+        "symfony/form": "~2.1",
+        "symfony/finder": "2.2.*",
+        "symfony/yaml": "2.2.*",
+        "symfony/form": "2.2.*",
+        "symfony/translation": "~2.1",
+        "symfony/config": "2.2.*",
+        "dflydev/doctrine-orm-service-provider": "1.0.*@dev"
+    },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "3.7.*",
+        "phing/phing": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Eccube": "src/"
+        },
+        "classmap": [
+            "src/fpdf/fpdf.php",
+            "src/fpdi",
+            "src/gdthumb"
+        ]
     }
 }
