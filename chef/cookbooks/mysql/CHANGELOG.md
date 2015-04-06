@@ -2,6 +2,76 @@ mysql Cookbook CHANGELOG
 ========================
 This file is used to list changes made in each version of the mysql cookbook.
 
+v5.5.4 (2014-10-07)
+------------------
+- Adding sensitive flag to execute resources to protect passwords from logs  
+
+v5.5.3 (2014-09-24)
+------------------
+- Reverting back to Upstart on Ubuntu 14.04
+
+v5.5.2 (2014-09-8)
+------------------
+- Reverting commit that broke Debian pass_string
+
+v5.5.1 (2014-09-2)
+------------------
+- Switching Ubuntu service provider to use SysVinit instead of Upstart
+
+v5.5.0 (2014-08-27)
+-------------------
+- Adding package version and action parameters to mysql_service resource
+- Fixing Debian pass_string
+
+v5.4.4 (2014-08-27)
+-------------------
+- Changing module namespace to MysqlCookbook
+
+v5.4.3 (2014-08-25)
+-------------------
+- More refactoring. Moving helper function bits into resource parsed_parameters
+
+v5.4.2 (2014-08-25)
+-------------------
+- Moving provider local variables into definitions for RHEL provider
+
+v5.4.1 (2014-08-25)
+-------------------
+- Refactoring resources into the LWRP style with parsed parameters
+- Moving provider local variables into definitions
+
+v5.4.0 (2014-08-25)
+-------------------
+- #212 - support for centos-7 (mysql55 and mysql56)
+- Adding (untested) Debian-6 support
+- Adding Suse support to metadata.rb
+- Adding ability to change MySQL root password
+- Added libmysqlclient-devel package to SuSE client provider
+- Appeasing AppArmor
+- Reducing duplication in client provider
+
+v5.3.6 (2014-06-18)
+-------------------
+- Fixing pid path location. Updating tests to include real RHEL
+
+
+v5.3.4 (2014-06-16)
+-------------------
+- Fixing specs for Amazon Linux server package names
+
+
+v5.3.2 (2014-06-16)
+-------------------
+- Fixing Amazon Linux support
+
+
+v5.3.0 (2014-06-11)
+-------------------
+- #189 - Fix server_repl_password description
+- #191 - Adding support for server55 and server56 on el-6
+- #193 - Fix syntax in mysql_service example
+- #199 - Adding Suse support
+
 
 v5.2.12 (2014-05-19)
 --------------------

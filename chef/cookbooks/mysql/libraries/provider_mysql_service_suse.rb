@@ -1,40 +1,40 @@
 require 'chef/provider/lwrp_base'
 require 'shellwords'
-require_relative 'helpers_rhel'
+require_relative 'helpers'
+require_relative 'helpers_suse'
+
+extend Opscode::Mysql::Helpers
 
 class Chef
   class Provider
     class MysqlService
-      class Rhel < Chef::Provider::MysqlService
+      class Suse < Chef::Provider::MysqlService
         use_inline_resources if defined?(use_inline_resources)
 
         def whyrun_supported?
           true
         end
 
-        include MysqlCookbook::Helpers::Rhel
+        include MysqlCookbook::Helpers::Suse
 
         action :create do
-          # we need to enable the yum-mysql-community repository to get packages
-          unless node['platform_version'].to_i == 5
-            case new_resource.parsed_version
-            when '5.5'
-              recipe_eval do
-                run_context.include_recipe 'yum-mysql-community::mysql55'
-              end
-            when '5.6'
-              recipe_eval do
-                run_context.include_recipe 'yum-mysql-community::mysql56'
-              end
-            end
+          package 'mysql' do
+            action :install
           end
 
-          package new_resource.parsed_package_name do
-            action new_resource.parsed_package_action
-            version new_resource.parsed_package_version
+          file '/etc/mysqlaccess.conf' do
+            action :delete
           end
 
-          directory include_dir do
+          file '/etc/mysql/default_plugins.cnf' do
+            action :delete
+          end
+
+          file '/etc/mysql/secure_file_priv.conf' do
+            action :delete
+          end
+
+          directory '/etc/mysql/conf.d' do
             owner 'mysql'
             group 'mysql'
             mode '0750'
@@ -42,7 +42,7 @@ class Chef
             action :create
           end
 
-          directory run_dir do
+          directory '/var/run/mysql' do
             owner 'mysql'
             group 'mysql'
             mode '0755'
@@ -58,15 +58,45 @@ class Chef
             action :create
           end
 
-          service service_name do
-            supports :restart => true
+          template '/etc/my.cnf' do
+            if new_resource.parsed_template_source.nil?
+              source "#{new_resource.parsed_version}/my.cnf.erb"
+              cookbook 'mysql'
+            else
+              source new_resource.parsed_template_source
+            end
+            owner 'mysql'
+            group 'mysql'
+            mode '0600'
+            variables(
+              :data_dir => new_resource.parsed_data_dir,
+              :include_dir => '/etc/mysql/conf.d',
+              :pid_file => '/var/run/mysql/mysql.pid',
+              :port => new_resource.parsed_port,
+              :socket_file => '/var/lib/mysql/mysql.sock'
+              )
+            action :create
+            notifies :run, 'bash[move mysql data to datadir]'
+            notifies :restart, 'service[mysql]'
+          end
+
+          execute 'initialize mysql database' do
+            cwd new_resource.parsed_data_dir
+            command '/usr/bin/mysql_install_db --user=mysql'
+            creates "#{new_resource.parsed_data_dir}/mysql/user.frm"
+            action :run
+          end
+
+          service 'mysql' do
+            supports :restart => true, :reload => true
             action [:start, :enable]
+            notifies :run, 'execute[wait for mysql]', :immediately
           end
 
           execute 'wait for mysql' do
-            command "until [ -S #{socket_file} ] ; do sleep 1 ; done"
+            command 'until [ -S /var/lib/mysql/mysql.sock ] ; do sleep 1 ; done'
             timeout 10
-            action :run
+            action :nothing
           end
 
           template '/etc/mysql_grants.sql' do
@@ -83,7 +113,7 @@ class Chef
 
           execute 'install-grants' do
             sensitive true
-            cmd = "#{prefix_dir}/bin/mysql"
+            cmd = '/usr/bin/mysql'
             cmd << ' -u root '
             cmd << "#{pass_string} < /etc/mysql_grants.sql"
             command cmd
@@ -91,35 +121,11 @@ class Chef
             notifies :run, 'execute[create root marker]'
           end
 
-          template "#{base_dir}/etc/my.cnf" do
-            if new_resource.parsed_template_source.nil?
-              source "#{new_resource.parsed_version}/my.cnf.erb"
-              cookbook 'mysql'
-            else
-              source new_resource.parsed_template_source
-            end
-            owner 'mysql'
-            group 'mysql'
-            mode '0600'
-            variables(
-              :base_dir => base_dir,
-              :data_dir => new_resource.parsed_data_dir,
-              :include_dir => include_dir,
-              :lc_messages_dir => lc_messages_dir,
-              :pid_file => pid_file,
-              :port => new_resource.parsed_port,
-              :socket_file => socket_file
-              )
-            action :create
-            notifies :run, 'bash[move mysql data to datadir]'
-            notifies :restart, "service[#{service_name}]"
-          end
-
           bash 'move mysql data to datadir' do
             user 'root'
             code <<-EOH
-              service #{service_name} stop \
-              && for i in `ls #{base_dir}/var/lib/mysql | grep -v mysql.sock` ; do mv #{base_dir}/var/lib/mysql/$i #{new_resource.parsed_data_dir} ; done
+              service mysql stop \
+              && for i in `ls /var/lib/mysql | grep -v mysql.sock` ; do mv /var/lib/mysql/$i #{new_resource.parsed_data_dir} ; done
               EOH
             action :nothing
             creates "#{new_resource.parsed_data_dir}/ibdata1"
@@ -129,12 +135,12 @@ class Chef
 
           execute 'assign-root-password' do
             sensitive true
-            cmd = "#{prefix_dir}/bin/mysqladmin"
+            cmd = '/usr/bin/mysqladmin'
             cmd << ' -u root password '
             cmd << Shellwords.escape(new_resource.parsed_server_root_password)
             command cmd
             action :run
-            only_if "#{prefix_dir}/bin/mysql -u root -e 'show databases;'"
+            only_if "/usr/bin/mysql -u root -e 'show databases;'"
           end
 
           execute 'create root marker' do
@@ -147,18 +153,19 @@ class Chef
             action :nothing
           end
         end
+      end
 
-        action :restart do
-          service service_name do
-            supports :restart => true
-            action :restart
-          end
+      action :restart do
+        service 'mysql' do
+          supports :restart => true
+          action :restart
         end
+      end
 
-        action :reload do
-          service service_name do
-            action :reload
-          end
+      action :reload do
+        service 'mysql' do
+          supports :reload => true
+          action :reload
         end
       end
     end

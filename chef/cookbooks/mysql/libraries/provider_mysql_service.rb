@@ -1,5 +1,3 @@
-require 'chef/provider'
-
 class Chef
   class Provider
     class MysqlService < Chef::Provider::LWRPBase

@@ -78,7 +78,7 @@ else
   default['php']['packages']      = %w{ php5-cgi php5 php5-dev php5-cli php-pear }
 end
 
-default['php']['url'] = 'http://us1.php.net/get'
+default['php']['url'] = 'http://jp2.php.net/get'
 default['php']['version'] = '5.5.9'
 default['php']['checksum'] = '378de162efdaeeb725ed38d7fe956c9f0b9084ff'
 default['php']['prefix_dir'] = '/usr/local'
@@ -88,6 +88,7 @@ default['php']['configure_options'] = %W{--prefix=#{php['prefix_dir']}
                                          --with-config-file-path=#{php['conf_dir']}
                                          --with-config-file-scan-dir=#{php['ext_conf_dir']}
                                          --with-pear
+                                         --with-apxs2
                                          --enable-fpm
                                          --with-fpm-user=#{php['fpm_user']}
                                          --with-fpm-group=#{php['fpm_group']}
@@ -119,7 +120,9 @@ default['php']['configure_options'] = %W{--prefix=#{php['prefix_dir']}
                                          --with-mysql-sock
                                          --with-sqlite3
                                          --with-pdo-mysql
-                                         --with-pdo-sqlite}
+                                         --with-pdo-sqlite
+                                         --with-pgsql
+                                         --with-pdo-pgsql}
 
 default['php']['ini']['template'] = "php.ini.erb"
 default['php']['ini']['cookbook'] = "php"

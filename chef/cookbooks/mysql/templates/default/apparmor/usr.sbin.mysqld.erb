@@ -30,6 +30,7 @@
   /var/log/mysql.log rw,
   /var/log/mysql.err rw,
   /var/lib/mysql/ r,
+  <%= node['mysql']['data_dir'] %>/ r,
   <%= node['mysql']['data_dir'] %>/** rwk,
   /var/log/mysql/ r,
   /var/log/mysql/* rw,
