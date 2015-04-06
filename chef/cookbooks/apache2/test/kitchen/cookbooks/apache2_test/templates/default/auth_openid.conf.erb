@@ -1,0 +1,8 @@
+<IfModule mod_auth_openid.cpp>
+  <Location /secure>
+    AuthType OpenID
+    AuthOpenIDTrustRoot http://opscode.example.com
+    AuthName "private area"
+    Require valid-user
+  </Location>
+</IfModule>

@@ -1,0 +1,13 @@
+{
+  "sources": {
+    "logrotate": {
+      "path": "."
+    },
+    "apt": {
+      "locked_version": "2.1.1"
+    },
+    "fake": {
+      "path": "./test/fixtures/cookbooks/fake"
+    }
+  }
+}

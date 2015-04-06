@@ -1,0 +1,20 @@
+DEPENDENCIES
+  build-essential
+    git: git://github.com/opscode-cookbooks/build-essential.git
+    revision: 830a2b8b8bc09df05b4a6eb4eda23c0e683e4b90
+  minitest-handler
+  postgresql
+    path: .
+    metadata: true
+
+GRAPH
+  apt (2.3.8)
+  build-essential (2.0.1)
+  chef_handler (1.1.6)
+  minitest-handler (1.1.4)
+    chef_handler (>= 0.0.0)
+  openssl (1.1.0)
+  postgresql (3.3.4)
+    apt (>= 1.9.0)
+    build-essential (>= 0.0.0)
+    openssl (>= 0.0.0)

@@ -1,0 +1,9 @@
+<IfModule mod_status.c>
+  <Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+    Allow from localhost ip6-localhost
+    Allow from <%= node['apache_test']['remote_host_ip'] %>
+  </Location>
+</IfModule>

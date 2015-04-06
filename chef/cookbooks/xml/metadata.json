@@ -1,0 +1,41 @@
+{
+  "name": "xml",
+  "version": "1.2.4",
+  "description": "Installs xml",
+  "long_description": "XML Cookbook\n============\n[![Build Status](https://secure.travis-ci.org/opscode-cookbooks/xml.png?branch=master)](http://travis-ci.org/opscode-cookbooks/xml)\n\nInstalls development package for libxml.\n\n\nRequirements\n------------\nDebian, Ubuntu, CentOS, Red Hat, Scientific, Fedora, SUSE, ArchLinux\n\nAttributes\n----------\n- `node['xml']['packages']` - Array of package names that should be installed\n- `node['xml']['nokogiri']['use_system_libraries']` - Whether to use system libraries for nokogiri (defaults to `true`)\n\n\nRecipes\n-------\n### default\nInstalls the development packages for libxml2 and libxslt.\n\nFor installing the packages during compile time:\n\n```ruby\nnode.set['xml']['compiletime'] = true\ninclude_recipe 'xml::default'\n```\n\n### ruby\nInstalls the nokogiri gem into Chef's Ruby environment so it can be used in recipes.\n\n\nLicense & Authors\n-----------------\n- Author:: Joshua Timberman (<joshua@opscode.com>)\n\n```text\nCopyright 2009-2013, Opscode, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n```\n",
+  "maintainer": "Opscode, Inc.",
+  "maintainer_email": "cookbooks@opscode.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "amazon": ">= 0.0.0",
+    "arch": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "freebsd": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "scientific": ">= 0.0.0",
+    "suse": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+    "build-essential": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "xml": "Installs libxml development packages"
+  }
+}

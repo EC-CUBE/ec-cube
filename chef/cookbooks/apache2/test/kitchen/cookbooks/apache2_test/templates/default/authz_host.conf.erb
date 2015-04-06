@@ -1,0 +1,4 @@
+<Location /secure>
+  Deny from all
+  Allow from <%= @params[:remote_host_ip] %>
+</Location>

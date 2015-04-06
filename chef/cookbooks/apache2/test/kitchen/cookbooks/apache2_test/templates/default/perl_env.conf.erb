@@ -1,0 +1,9 @@
+<IfModule mod_perl.c>
+  Alias /env/ <%= @params[:app_dir] %>/
+
+  <Location /env/perl>
+      SetHandler perl-script
+      PerlResponseHandler ModPerl::Registry
+      Options ExecCGI
+  </Location>
+</IfModule>

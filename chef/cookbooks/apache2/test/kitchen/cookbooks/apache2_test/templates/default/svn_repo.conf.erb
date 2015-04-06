@@ -1,0 +1,6 @@
+<IfModule mod_dav_svn.c>
+<Location /svn>
+DAV svn
+SVNPath <%= @params[:repo_dir] %>
+</Location>
+</IfModule>
