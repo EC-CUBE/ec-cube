@@ -115,7 +115,7 @@ class Application extends \Silex\Application
             array('^/mypage/', 'ROLE_USER'),
         );
         $app['eccube.encoder.customer'] = $app->share(function ($app) {
-            return new \Eccube\Framework\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
+            return new \Eccube\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
         });
         $app['security.encoder_factory'] = $app->share(function ($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(

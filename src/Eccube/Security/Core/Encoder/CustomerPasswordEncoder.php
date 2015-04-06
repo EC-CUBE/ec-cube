@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Framework\Security\Core\Encoder;
+namespace Eccube\Security\Core\Encoder;
 
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
