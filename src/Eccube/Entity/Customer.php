@@ -232,6 +232,17 @@ class Customer implements UserInterface
     }
 
     /**
+     * Set id
+     *
+     * @return Customer 
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+    
+    /**
      * Set name01
      *
      * @param string $name01
