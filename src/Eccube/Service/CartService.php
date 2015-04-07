@@ -58,7 +58,28 @@ class CartService
 
     public function getProducts()
     {
-        return $this->cart->getProducts();
+        $products = $this->cart->getProducts();
+
+        if (count($products) > 0) {
+            foreach ($products as $productClassId => $product) {
+                $productClassData = $this->app['orm.em']
+                    ->getRepository('\Eccube\Entity\ProductClass')
+                    ->find($productClassId);
+                $productData = $this->app['orm.em']
+                    ->getRepository('\Eccube\Entity\Product')
+                    ->find($productClassData->getProductId());
+
+                $products[$productClassId] = array(
+                    // 'tax_rate' => $product['tax_rate'],
+                    'quantity' => $product['quantity'],
+                    'Product' => $productData,
+                    'ProductClass' => $productClassData,
+                );
+            }
+            return $products;
+        } 
+
+        return array();    
     }
 
     public function addProduct($productClassId)
@@ -113,13 +134,12 @@ class CartService
         $stock = $product->getStock();
         $stockUnlimited = $product->getStockUnlimited();
         $saleLimit = $product->getSaleLimit();
-
         if (!$stockUnlimited && $quantity > $stock) {
             $quantity = $stock;
-            $this->errors[] = 'cart.over.stock';
+            $this->setError('cart.over.stock');
         } elseif ($saleLimit && $quantity > $saleLimit) {
             $quantity = $saleLimit;
-            $this->errors[] = 'cart.over.sale_limit';
+            $this->setError('cart.over.sale_limit');
         }
 
         if ($quantity > 0) {
@@ -143,7 +163,12 @@ class CartService
 
     public function setError($error)
     {
+
         $this->errors[] = $error;
+
+        if ($this->errors) {
+            $this->app['session']->getFlashBag()->add('errors', $error);
+        }
 
         return $this;
     }

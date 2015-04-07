@@ -84,8 +84,10 @@ class Cart
         $product = $this->app['orm.em']
             ->getRepository('Eccube\Entity\ProductClass')
             ->find($productClassId);
+        
         $this->products[$productClassId] = array(
-            'entity' => $product,
+            'price' => $product->getPrice02(),
+            // 'tax_rate' => $product->getTaxRate(),
             'quantity' => $quantity,
         );
         $this->setCartSession();

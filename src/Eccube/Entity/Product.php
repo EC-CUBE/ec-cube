@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Product
  */
-class Product
+class Product extends AbstractEntity
 {
     /**
      * @var integer

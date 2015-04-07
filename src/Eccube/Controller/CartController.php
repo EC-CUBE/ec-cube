@@ -3,6 +3,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class CartController
 {
@@ -15,17 +16,16 @@ class CartController
         $cart = $app['eccube.service.cart'];
         $products = $cart->getProducts();
         $title = 'カゴの中';
-        $errors = $cart->getErrors();
-        $messages = $cart->getMessages();
 
         return $app['twig']->render(
             'Cart/index.twig',
-            compact('title', 'products', 'errors', 'messages')
+            compact('title', 'products')
         );
     }
 
-    public function add(Application $app, $productClassId)
+    public function add(Application $app, Request $request)
     {
+        $productClassId = $request->get('product_class_id');
         $app['eccube.service.cart']->addProduct($productClassId);
 
         return $app->redirect($app['url_generator']->generate('cart'));
