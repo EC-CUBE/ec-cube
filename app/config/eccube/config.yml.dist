@@ -20,6 +20,7 @@ mypage_order_status_disp_flag: true
 root: /
 tpl: /user_data/packages/default/
 admin_tpl: /user_data/packages/admin/
+image_path: /upload/save_image/
 shop_name: EC-CUBE3 SHOP
 release_year: 2015
 mail_cc:
