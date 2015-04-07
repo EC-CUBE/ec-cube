@@ -184,3 +184,16 @@
         {%- endif -%}
     {%- endif -%}
 {%- endblock address_widget -%}
+
+{% block gender_widget %}
+    {% spaceless %}
+            <ul {{ block('widget_container_attributes') }}>
+                {% for child in form %}
+                    <li>
+                        {{ form_widget(child) }}
+                        {{ form_label(child) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            {{ block('choice_widget') }}
+{% endblock %}

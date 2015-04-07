@@ -104,7 +104,7 @@ class Customer implements UserInterface
     /**
      * @var integer
      */
-    private $sex;
+    private $gender;
 
     /**
      * @var integer
@@ -623,26 +623,26 @@ class Customer implements UserInterface
     }
 
     /**
-     * Set sex
+     * Set gender
      *
-     * @param integer $sex
+     * @param integer $gender
      * @return Customer
      */
-    public function setSex($sex)
+    public function setGender($gender)
     {
-        $this->sex = $sex;
+        $this->gender = $gender;
 
         return $this;
     }
 
     /**
-     * Get sex
+     * Get gender
      *
      * @return integer 
      */
-    public function getSex()
+    public function getGender()
     {
-        return $this->sex;
+        return $this->gender;
     }
 
     /**

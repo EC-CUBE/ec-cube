@@ -39,6 +39,19 @@ class CustomerType extends AbstractType
 			->add('kana02', 'text', array('constraints' => array(
 				new Assert\NotBlank(),
 			)))
+            ->add('zip', 'zip', array(
+                'required' => false,
+            ))
+            ->add('address', 'address', array(
+                'help' => 'form.contact.address.help',
+                'required' => false,
+            ))
+            ->add('tel', 'tel', array(
+                'required' => false,
+            ))
+            ->add('fax', 'tel', array(
+                'required' => false,
+            ))
 			->add('email', 'email', array('constraints' => array(
 				new Assert\NotBlank(),
 				new Assert\Email(),
@@ -55,6 +68,9 @@ class CustomerType extends AbstractType
 						}
 	        		}),
 			 )))
+            ->add('gender', 'gender', array(
+                'required' => false,
+            ))
 			->add('password', 'repeated')
 		;
 	}

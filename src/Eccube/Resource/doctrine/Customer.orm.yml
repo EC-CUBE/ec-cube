@@ -57,7 +57,7 @@ Eccube\Entity\Customer:
         fax03:
             type: text
             nullable: true
-        sex:
+        gender:
             type: smallint
             nullable: true
         job:
