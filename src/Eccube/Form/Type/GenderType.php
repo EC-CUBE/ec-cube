@@ -21,6 +21,7 @@ class GenderType extends AbstractType
         $builder
             ->add('gender', 'choice', array(
                 'choices' => array('1' => '男性', '2' => '女性'),
+                'expanded' => true,
             ));
     }
 
@@ -30,7 +31,8 @@ class GenderType extends AbstractType
             'choices' => array(
                 '1' => '男性',
                 '2' => '女性',
-            )
+            ),
+            'expanded' => true,
         ));
     }
 
