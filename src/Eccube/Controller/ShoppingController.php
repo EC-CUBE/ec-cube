@@ -10,26 +10,26 @@ class ShoppingController extends AbstractController
     {
         if (!$app['security']->isGranted('ROLE_USER')) {
             // TODO ログイン/非会員購入など実装
-            $app->abort("ログインが必要です。");
+            //$app->abort("ログインが必要です。");
         }
 
-        /** @var Eccube\Entity\Customer */
+        /** @var $customer \Eccube\Entity\Customer */
         $customer = $app['user'];
-        /** @var Eccube\Service\Cart */
+        /** @var $cart \Eccube\Service\Cart */
         $cart = $app['eccube.service.cart'];
-        
+
         // カートに変更がある場合はエラーにする
         if (!$cart->isLocked()) {
             // TODO エラーハンドリングする
             $app->abort("カートが変更されました");
         }
         
-        /** @var Eccube\Service\Order */
+        /** @var $orderService \Eccube\Service\Order\Order */
         $orderService = $app['eccube.service.order'];
         $this->initOrderService($orderService);
 
-        /** @var Eccube\Entity\Order */
-        $order = $orderService->findPreOrder($cart->getPreOrderId());
+        /** @var $order \Eccube\Entity\Order */
+        $order = $orderService->findPreOrderByOrderId($cart->getPreOrderId());
         
         // 購入途中の受注がない場合は新規受注を作成
         if (is_null($order)) {
@@ -37,7 +37,10 @@ class ShoppingController extends AbstractController
             $cart->setPreOrderId($order->getOrderId());
         }
         // 受注の金額計算
-        $orderService->calculate($order->getOrderId());
+        $orderService->setOrder($order);
+        $orderService->setOrderDetails($orderService->findOrderDetailsByOrderId($order->getOrderId()));
+        $orderService->calc();
+        $orderService->registerOrder($orderService->getOrder(), $orderService->getOrderDetais());
         
         $title = "購入確認 | レジ";
         
@@ -60,7 +63,7 @@ class ShoppingController extends AbstractController
         
     }
     // 配送業者設定
-    public function deliv()
+    public function delivery()
     {
         
     }
@@ -74,37 +77,17 @@ class ShoppingController extends AbstractController
     {
         
     }
-    // todo 初期化は外に出す
-    private function initOrderService(\Eccube\Service\Order\Order $orderService) {
-        $order = $app["eccube.service.order"];
-        $customer = $app['user'];
 
-        // 税金計算する人
-        $taxRule = $app['orm.em']->getRepository("Eccube\Entity\TaxRule")
-                ->findCurrentRule();
-        $taxCalculator = new TaxCalculator();
-        $taxCalculator->setTaxRule($taxRule);
-        $taxCalculator->setPrefId($customer->getPrefId());
-        $taxCalculator->setCountryId($customer->getCountryId());
-        $order->addTaxCalculator($taxCalculator);
-        
-        // 加算ポイント計算
-        $baseInfo = $app['orm.em']->getRepository("\\Eccube\Entity\BaseInfo")
-                ->find(1);
-        // 通常ポイント
-        $pointCalculator = new PointCalculator();
-        $pointCalculator->setBaseInfo($baseInfo);
-        // 誕生日ポイント
-        $birthPointCalculator = new BirthPointCalculator();
-        $birthPointCalculator->setBaseInfo($baseInfo);
-        $birthPointCalculator->setCustomer($customer);
-        $order->addPointCalculator($pointCalculator);
-        $order->addPointCalculator($birthPointCalculator);
-        
-        // 配送料計算する人
-        $order->addDeliveryFeeCalculator();
-        $order->addPaymentFeeCalculator();
-        $order->addSubTotalCalculator();
-        $order->addChargeCalculator();
+    private function initOrderService(\Eccube\Service\Order\Order $orderService) {
+        // 税率
+        $taxCalculator = new \Eccube\Service\Order\TaxCalculator($this->app);
+        $taxCalculator->setTaxRule($this->app['eccube.repository.baseinfo']->findCurrentRule());
+        $orderService->addCalcurator($taxCalculator);
+
+        // ポイント
+        $pointCalculator = new \Eccube\Service\Order\PointCalculator($this->app);
+        $pointCalculator->setBaseInfo($this->app['eccube.repository.baseinfo']->find(1));
+        $pointCalculator->setCustomer($this->app['user']);
+        $orderService->addCalcurator($taxCalculator);
     }
 }
