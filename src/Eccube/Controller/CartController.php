@@ -26,7 +26,7 @@ class CartController
     public function add(Application $app, Request $request)
     {
         $productClassId = $request->get('product_class_id');
-        $quantity = $request->has('quantity') ? $request->get('quantity'): 1;
+        $quantity = $request->request->has('quantity') ? $request->get('quantity'): 1;
         $app['eccube.service.cart']->addProduct($productClassId, $quantity);
 
         return $app->redirect($app['url_generator']->generate('cart'));
