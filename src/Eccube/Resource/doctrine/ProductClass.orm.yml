@@ -12,8 +12,6 @@ Eccube\Entity\ProductClass:
                 strategy: AUTO
         product_id:
             type: integer
-        class_combination_id:
-            type: integer
         product_type_id:
             type: integer
         product_code:
@@ -63,12 +61,6 @@ Eccube\Entity\ProductClass:
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
-        ClassCombination:
-            targetEntity: Eccube\Entity\ClassCombination
-            inversedBy: ProductClasses
-            joinColumn:
-                name: class_combination_id
-                referencedColumnName: class_combination_id
         ProductType:
             targetEntity: Eccube\Entity\ProductType
             inversedBy: ProductClasses

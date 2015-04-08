@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ProductClass
  */
-class ProductClass
+class ProductClass extends AbstractEntity
 {
     /**
      * @var integer
@@ -22,7 +22,12 @@ class ProductClass
     /**
      * @var integer
      */
-    private $class_combination_id;
+    private $classcategory_id1;
+
+    /**
+     * @var integer
+     */
+    private $classcategory_id2;
 
     /**
      * @var integer
@@ -105,9 +110,14 @@ class ProductClass
     private $Product;
 
     /**
-     * @var \Eccube\Entity\ClassCombination
+     * @var \Eccube\Entity\ClassCategory
      */
-    private $ClassCombination;
+    private $ClassCategory1;
+
+    /**
+     * @var \Eccube\Entity\ClassCategory
+     */
+    private $ClassCategory2;
 
     /**
      * @var \Eccube\Entity\ProductType
@@ -154,26 +164,49 @@ class ProductClass
     }
 
     /**
-     * Set class_combination_id
+     * Set classcategory_id1
      *
-     * @param integer $classCombinationId
+     * @param integer $classcategory_id1
      * @return ProductClass
      */
-    public function setClassCombinationId($classCombinationId)
+    public function setClassCategoryId1($classCategoryId1)
     {
-        $this->class_combination_id = $classCombinationId;
+        $this->classcategory_id1 = $classCategoryId1;
 
         return $this;
     }
 
     /**
-     * Get class_combination_id
+     * Get classcategory_id1
      *
      * @return integer 
      */
-    public function getClassCombinationId()
+    public function getClassCategoryId1()
     {
-        return $this->class_combination_id;
+        return $this->classcategory_id1;
+    }
+
+    /**
+     * Set classcategory_id2
+     *
+     * @param integer $classcategory_id2
+     * @return ProductClass
+     */
+    public function setClassCategoryId2($classCategoryId2)
+    {
+        $this->classcategory_id2 = $classCategoryId2;
+
+        return $this;
+    }
+
+    /**
+     * Get classcategory_id2
+     *
+     * @return integer 
+     */
+    public function getClassCategoryId2()
+    {
+        return $this->classcategory_id2;
     }
 
     /**
