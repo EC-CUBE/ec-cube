@@ -43,7 +43,19 @@ class CartService
 
     public function isLocked()
     {
-        return $this->cart->lock;
+        return $this->cart->getLock();
+    }
+
+    public function setPreOrderId($id)
+    {
+        $this->cart->setPreOrderId($id);
+
+        return $this;
+    }
+
+    public function getPreOrderId()
+    {
+        return $this->cart->getPreOrderId();
     }
 
     public function clear()
@@ -180,7 +192,7 @@ class CartService
 
     public function setMessage($message)
     {
-        $this->message[] = $message;
+        $this->messages[] = $message;
 
         return $this;
     }
