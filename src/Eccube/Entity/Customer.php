@@ -215,9 +215,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $CustomerFavoriteProducts;
 
     /**
-     * @var \Eccube\Entity\Master\sex
+     * @var \Eccube\Entity\Master\Sex
      */
-    private sex;
+    private $Sex;
 
     /**
      * @var \Eccube\Entity\Master\Job
