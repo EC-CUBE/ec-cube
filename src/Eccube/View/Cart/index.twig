@@ -1,0 +1,113 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+
+<div id="undercolumn">
+    <div id="undercolumn_cart">
+        <h2 class="title">{{ title }}</h2>
+
+        <p class="totalmoney_area">
+            {% for error in app.session.flashbag.get('errors')  %}
+                {{ error|trans|raw }}<br />
+            {% endfor %}
+        </p>
+
+        {% if products|length > 0 %}
+        <div class="form_area">
+            <form name="form" id="form_cart" method="post" action="{{ url('cart') }}">
+                <p>
+                    カゴの中の商品の合計金額は「<span class="price">{{ total_inctax|default(0) }}円</span>」です。
+                    {{ message.deliv_fee|default('') }}
+                </p>
+
+                <table summary="商品情報">
+                    <col width="10%" />
+                    <col width="15%" />
+                    <col width="30%" />
+                    <col width="15%" />
+                    <col width="15%" />
+                    <col width="15%" />
+                    <tr>
+                        <th class="alignC">削除</th>
+                        <th class="alignC">商品写真</th>
+                        <th class="alignC">商品名</th>
+                        <th class="alignC">単価</th>
+                        <th class="alignC">数量</th>
+                        <th class="alignC">小計</th>
+                    </tr>
+
+                    {% for product in products %}
+                        {% set key = loop.index %}
+                        <tr>
+                            <td class="alignC">
+                                <a href="{{ url('cart_remove', {'productClassId': product.ProductClass.id }) }}">削除</a>
+                            </td>
+                            <td class="alignC">
+                                <a class="expansion" target="_blank" href="{{ app.config.root }}{{ app.config.image_path }}{{ product.Product.main_image }}">
+                                   <img src="{{ app.config.root }}{{ app.config.image_path }}{{ product.Product.main_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ product.Product.name }}" />
+                                </a>
+                            </td>
+                            <td>
+                                {# 商品名 #}
+                                <strong>{{ product.Product.name }}</strong>
+                                {% if product.Product.classcategory_name1 is defined %}
+                                    <div>{{ product.Product.ClassCategory.classcategory_name1 }}</div>
+                                {% endif %}
+                                {% if product.Product.classcategory_name2 is defined %}
+                                    <div>{{ product.Product.classcategory_name2|default('') }}</div>
+                                {% endif %}
+                            </td>
+                            <td class="alignR">
+                                {{ product.ProductClass.price02|default(0) }}
+                            </td>
+                            <td class="alignC">
+                                {{ product.quantity }}
+                                <ul id="quantity_level">
+                                    <li>
+                                        <a href="{{ url('cart_up', {'productClassId': product.ProductClass.id}) }}"><img src="{{ app.config.tpl }}img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a>
+                                    </li>
+                                    {% if product.quantity > 1 %}
+                                        <li>
+                                            <a href="{{ url('cart_down', {'productClassId': product.ProductClass.id}) }}"><img src="{{ app.config.tpl }}img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </td>
+                            <td class="alignR">{{ product.Product.total_inctax|default(0) }}円</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="5" class="alignR">合計</th>
+                            <td class="alignR">
+                                <span class="price">{{ total_price|default(0) }}円</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <p class="alignC">上記内容でよろしければ「購入手続きへ」ボタンをクリックしてください。</p>
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                            <!--{if $tpl_prev_url != ""}-->
+                                <a href="<!--{$tpl_prev_url|h}-->">
+                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="back<!--{$key|h}-->" /></a>
+                            <!--{/if}-->
+                        </li>
+                        <li>
+                            <!--{if strlen($tpl_error) == 0}-->
+                                <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
+                            <!--{/if}-->
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        {% else %}
+            <p class="empty">
+                <span class="attention">※ 現在カート内に商品はございません。</span>
+            </p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -18,6 +18,16 @@ class EccubeServiceProvider implements ServiceProviderInterface
      */
     public function register(BaseApplication $app)
     {
+        // Service
+        $app['eccube.service.cart'] = function() use ($app) {
+            return new \Eccube\Service\CartService($app);
+        };
+
+        // Entity
+        $app['eccube.entity.cart'] = function() use ($app) {
+            return new \Eccube\Entity\Cart($app);
+        };
+
         // Repository
         $app['eccube.repository.customer'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Customer');

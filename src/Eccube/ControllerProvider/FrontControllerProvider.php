@@ -39,7 +39,22 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/abouts/', '\\Eccube\\Page\\Abouts\\Index')->bind('abouts');
 
         // cart
-        $controllers->match('/cart/', '\\Eccube\\Page\\Cart\\Index')->bind('cart');
+        $controllers->match('/cart/', '\\Eccube\\Controller\\CartController::index')->bind('cart');
+        $controllers->post('/cart/add/', '\\Eccube\\Controller\\CartController::add')
+            ->bind('cart_add'); 
+        $controllers->match('/cart/up/{productClassId}', '\\Eccube\\Controller\\CartController::up')
+            ->bind('cart_up')
+            ->assert('productClassId', '\d+');
+        $controllers->match('/cart/down/{productClassId}', '\\Eccube\\Controller\\CartController::down')
+            ->bind('cart_down')
+            ->assert('productClassId', '\d+');
+        $controllers->match('/cart/setQuantity/{productClassId}/{quantity}', '\\Eccube\\Controller\\CartController::setQuantity')
+            ->bind('cart_set_quantity')
+            ->assert('productClassId', '\d+')
+            ->assert('quantity', '\d+');
+        $controllers->match('/cart/remove/{productClassId}', '\\Eccube\\Controller\\CartController::remove')
+            ->bind('cart_remove')
+            ->assert('productClassId', '\d+');
 
         // contact
         // $controllers->match('/contact/', '\\Eccube\\Page\\Contact\\Index')->bind('contact');
