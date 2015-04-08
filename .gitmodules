@@ -1,0 +1,3 @@
+[submodule "vagrant"]
+	path = vagrant
+	url = git@github.com:poego/vagrant-centos6-eccube.git
