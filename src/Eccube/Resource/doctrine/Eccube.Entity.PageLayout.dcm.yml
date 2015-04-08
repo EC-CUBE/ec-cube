@@ -1,0 +1,69 @@
+Eccube\Entity\PageLayout:
+    type: entity
+    table: dtb_pagelayout
+    repositoryClass: Eccube\Repository\PageLayoutRepository
+    id:
+        device_type_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        page_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        name:
+            type: text
+            nullable: true
+            column: page_name
+        url:
+            type: text
+            nullable: false
+        filename:
+            type: text
+            nullable: true
+        header_chk:
+            type: smallint
+            nullable: true
+            unsigned: false
+            default: '1'
+        footer_chk:
+            type: smallint
+            nullable: true
+            unsigned: false
+            default: '1'
+        edit_flg:
+            type: smallint
+            nullable: true
+            unsigned: false
+            default: '1'
+        author:
+            type: text
+            nullable: true
+        description:
+            type: text
+            nullable: true
+        keyword:
+            type: text
+            nullable: true
+        update_url:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        meta_robots:
+            type: text
+            nullable: true
+    oneToMany:
+        BlocPositions:
+            targetEntity: Eccube\Entity\BlocPosition
+            mappedBy: PageLayout
+    lifecycleCallbacks: {  }

@@ -2,9 +2,9 @@
 
 namespace Eccube\Form\Type;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PointType extends AbstractType
 {
@@ -15,11 +15,9 @@ class PointType extends AbstractType
         $this->app = $app;
     }
 
-    public function getName()
-    {
-        return 'point';
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -36,5 +34,13 @@ class PointType extends AbstractType
                     new Assert\Range(array('min' => 0, 'max' => 999999999))),
             ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'point';
     }
 }

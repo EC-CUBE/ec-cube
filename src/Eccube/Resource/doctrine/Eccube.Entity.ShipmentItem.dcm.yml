@@ -1,0 +1,44 @@
+Eccube\Entity\ShipmentItem:
+    type: entity
+    table: dtb_shipment_item
+    repositoryClass: Eccube\Repository\ShipmentItemRepository
+    id:
+        shipping_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        product_class_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        order_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        product_name:
+            type: text
+            nullable: false
+        product_code:
+            type: text
+            nullable: true
+        classcategory_name1:
+            type: text
+            nullable: true
+        classcategory_name2:
+            type: text
+            nullable: true
+        price:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        quantity:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+    lifecycleCallbacks: {  }
