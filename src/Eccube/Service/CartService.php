@@ -67,7 +67,7 @@ class CartService
                     ->find($productClassId);
                 $productData = $this->app['orm.em']
                     ->getRepository('\Eccube\Entity\Product')
-                    ->find($productClassData->getProductId());
+                    ->find($productClassData->getProduct()->getId());
 
                 $products[$productClassId] = array(
                     // 'tax_rate' => $product['tax_rate'],

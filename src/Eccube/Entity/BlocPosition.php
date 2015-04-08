@@ -22,7 +22,6 @@ class BlocPosition
     const BOTTOM = 6;
     const FOOT = 9;
 
-
     /**
      * @var integer
      */

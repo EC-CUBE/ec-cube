@@ -78,9 +78,12 @@ class Application extends \Silex\Application
             'orm.em.options' => array(
                 'mappings' => array(
                     array(
-                        'type' => 'simple_yml',
+                        'type' => 'yml',
                         'namespace' => 'Eccube\Entity',
-                        'path' => __DIR__ . '/Resource/doctrine',
+                        'path' => array(
+                            __DIR__ . '/Resource/doctrine',
+                            __DIR__ . '/Resource/doctrine/master',
+                        ),
                     ),
                 ),
             ),
@@ -160,7 +163,6 @@ class Application extends \Silex\Application
                 ->andWhere('p.device_type_id = :device_type_id AND p.url = :url')
                 ->addOrderBy('bp.target_id', 'ASC')
                 ->addOrderBy('bp.bloc_row', 'ASC');
-            $result = null;
             try {
                 $result = $qb->getQuery()
                     ->setParameters(array(
@@ -169,10 +171,12 @@ class Application extends \Silex\Application
                     ))
                     ->getSingleResult();
             } catch (\Doctrine\ORM\NoResultException $e) {
+                $result = null;
             }
 
             $app['eccube.layout'] = $result;
         });
+
         // テスト実装
         $this->register(new Plugin\ProductReview\ProductReview());
     }

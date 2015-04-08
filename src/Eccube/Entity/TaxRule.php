@@ -12,352 +12,352 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $taxRuleId;
+    private $id;
 
     /**
      * @var integer
      */
-    private $countryId;
+    private $country_id;
 
     /**
      * @var integer
      */
-    private $prefId;
+    private $pref_id;
 
     /**
      * @var integer
      */
-    private $productId;
+    private $product_id;
 
     /**
      * @var integer
      */
-    private $productClassId;
+    private $product_class_id;
 
     /**
      * @var integer
      */
-    private $calcRule;
+    private $calc_rule;
 
     /**
      * @var string
      */
-    private $taxRate;
+    private $tax_rate;
 
     /**
      * @var string
      */
-    private $taxAdjust;
+    private $tax_adjust;
 
     /**
      * @var \DateTime
      */
-    private $applyDate;
+    private $apply_date;
 
     /**
      * @var integer
      */
-    private $memberId;
+    private $member_id;
 
     /**
      * @var integer
      */
-    private $delFlg;
+    private $del_flg;
 
     /**
      * @var \DateTime
      */
-    private $createDate;
+    private $create_date;
 
     /**
      * @var \DateTime
      */
-    private $updateDate;
+    private $update_date;
 
 
     /**
-     * Get taxRuleId
+     * Get id
      *
      * @return integer 
      */
-    public function getTaxRuleId()
+    public function getId()
     {
-        return $this->taxRuleId;
+        return $this->id;
     }
 
     /**
-     * Set countryId
+     * Set country_id
      *
      * @param integer $countryId
      * @return TaxRule
      */
     public function setCountryId($countryId)
     {
-        $this->countryId = $countryId;
+        $this->country_id = $countryId;
 
         return $this;
     }
 
     /**
-     * Get countryId
+     * Get country_id
      *
      * @return integer 
      */
     public function getCountryId()
     {
-        return $this->countryId;
+        return $this->country_id;
     }
 
     /**
-     * Set prefId
+     * Set pref_id
      *
      * @param integer $prefId
      * @return TaxRule
      */
     public function setPrefId($prefId)
     {
-        $this->prefId = $prefId;
+        $this->pref_id = $prefId;
 
         return $this;
     }
 
     /**
-     * Get prefId
+     * Get pref_id
      *
      * @return integer 
      */
     public function getPrefId()
     {
-        return $this->prefId;
+        return $this->pref_id;
     }
 
     /**
-     * Set productId
+     * Set product_id
      *
      * @param integer $productId
      * @return TaxRule
      */
     public function setProductId($productId)
     {
-        $this->productId = $productId;
+        $this->product_id = $productId;
 
         return $this;
     }
 
     /**
-     * Get productId
+     * Get product_id
      *
      * @return integer 
      */
     public function getProductId()
     {
-        return $this->productId;
+        return $this->product_id;
     }
 
     /**
-     * Set productClassId
+     * Set product_class_id
      *
      * @param integer $productClassId
      * @return TaxRule
      */
     public function setProductClassId($productClassId)
     {
-        $this->productClassId = $productClassId;
+        $this->product_class_id = $productClassId;
 
         return $this;
     }
 
     /**
-     * Get productClassId
+     * Get product_class_id
      *
      * @return integer 
      */
     public function getProductClassId()
     {
-        return $this->productClassId;
+        return $this->product_class_id;
     }
 
     /**
-     * Set calcRule
+     * Set calc_rule
      *
      * @param integer $calcRule
      * @return TaxRule
      */
     public function setCalcRule($calcRule)
     {
-        $this->calcRule = $calcRule;
+        $this->calc_rule = $calcRule;
 
         return $this;
     }
 
     /**
-     * Get calcRule
+     * Get calc_rule
      *
      * @return integer 
      */
     public function getCalcRule()
     {
-        return $this->calcRule;
+        return $this->calc_rule;
     }
 
     /**
-     * Set taxRate
+     * Set tax_rate
      *
      * @param string $taxRate
      * @return TaxRule
      */
     public function setTaxRate($taxRate)
     {
-        $this->taxRate = $taxRate;
+        $this->tax_rate = $taxRate;
 
         return $this;
     }
 
     /**
-     * Get taxRate
+     * Get tax_rate
      *
      * @return string 
      */
     public function getTaxRate()
     {
-        return $this->taxRate;
+        return $this->tax_rate;
     }
 
     /**
-     * Set taxAdjust
+     * Set tax_adjust
      *
      * @param string $taxAdjust
      * @return TaxRule
      */
     public function setTaxAdjust($taxAdjust)
     {
-        $this->taxAdjust = $taxAdjust;
+        $this->tax_adjust = $taxAdjust;
 
         return $this;
     }
 
     /**
-     * Get taxAdjust
+     * Get tax_adjust
      *
      * @return string 
      */
     public function getTaxAdjust()
     {
-        return $this->taxAdjust;
+        return $this->tax_adjust;
     }
 
     /**
-     * Set applyDate
+     * Set apply_date
      *
      * @param \DateTime $applyDate
      * @return TaxRule
      */
     public function setApplyDate($applyDate)
     {
-        $this->applyDate = $applyDate;
+        $this->apply_date = $applyDate;
 
         return $this;
     }
 
     /**
-     * Get applyDate
+     * Get apply_date
      *
      * @return \DateTime 
      */
     public function getApplyDate()
     {
-        return $this->applyDate;
+        return $this->apply_date;
     }
 
     /**
-     * Set memberId
+     * Set member_id
      *
      * @param integer $memberId
      * @return TaxRule
      */
     public function setMemberId($memberId)
     {
-        $this->memberId = $memberId;
+        $this->member_id = $memberId;
 
         return $this;
     }
 
     /**
-     * Get memberId
+     * Get member_id
      *
      * @return integer 
      */
     public function getMemberId()
     {
-        return $this->memberId;
+        return $this->member_id;
     }
 
     /**
-     * Set delFlg
+     * Set del_flg
      *
      * @param integer $delFlg
      * @return TaxRule
      */
     public function setDelFlg($delFlg)
     {
-        $this->delFlg = $delFlg;
+        $this->del_flg = $delFlg;
 
         return $this;
     }
 
     /**
-     * Get delFlg
+     * Get del_flg
      *
      * @return integer 
      */
     public function getDelFlg()
     {
-        return $this->delFlg;
+        return $this->del_flg;
     }
 
     /**
-     * Set createDate
+     * Set create_date
      *
      * @param \DateTime $createDate
      * @return TaxRule
      */
     public function setCreateDate($createDate)
     {
-        $this->createDate = $createDate;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Get createDate
+     * Get create_date
      *
      * @return \DateTime 
      */
     public function getCreateDate()
     {
-        return $this->createDate;
+        return $this->create_date;
     }
 
     /**
-     * Set updateDate
+     * Set update_date
      *
      * @param \DateTime $updateDate
      * @return TaxRule
      */
     public function setUpdateDate($updateDate)
     {
-        $this->updateDate = $updateDate;
+        $this->update_date = $updateDate;
 
         return $this;
     }
 
     /**
-     * Get updateDate
+     * Get update_date
      *
      * @return \DateTime 
      */
     public function getUpdateDate()
     {
-        return $this->updateDate;
+        return $this->update_date;
     }
 }

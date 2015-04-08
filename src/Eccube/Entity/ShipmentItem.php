@@ -12,37 +12,37 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $shippingId;
+    private $shipping_id;
 
     /**
      * @var integer
      */
-    private $productClassId;
+    private $product_class_id;
 
     /**
      * @var integer
      */
-    private $orderId;
+    private $order_id;
 
     /**
      * @var string
      */
-    private $productName;
+    private $product_name;
 
     /**
      * @var string
      */
-    private $productCode;
+    private $product_code;
 
     /**
      * @var string
      */
-    private $classcategoryName1;
+    private $classcategory_name1;
 
     /**
      * @var string
      */
-    private $classcategoryName2;
+    private $classcategory_name2;
 
     /**
      * @var string
@@ -56,164 +56,164 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
 
 
     /**
-     * Set shippingId
+     * Set shipping_id
      *
      * @param integer $shippingId
      * @return ShipmentItem
      */
     public function setShippingId($shippingId)
     {
-        $this->shippingId = $shippingId;
+        $this->shipping_id = $shippingId;
 
         return $this;
     }
 
     /**
-     * Get shippingId
+     * Get shipping_id
      *
      * @return integer 
      */
     public function getShippingId()
     {
-        return $this->shippingId;
+        return $this->shipping_id;
     }
 
     /**
-     * Set productClassId
+     * Set product_class_id
      *
      * @param integer $productClassId
      * @return ShipmentItem
      */
     public function setProductClassId($productClassId)
     {
-        $this->productClassId = $productClassId;
+        $this->product_class_id = $productClassId;
 
         return $this;
     }
 
     /**
-     * Get productClassId
+     * Get product_class_id
      *
      * @return integer 
      */
     public function getProductClassId()
     {
-        return $this->productClassId;
+        return $this->product_class_id;
     }
 
     /**
-     * Set orderId
+     * Set order_id
      *
      * @param integer $orderId
      * @return ShipmentItem
      */
     public function setOrderId($orderId)
     {
-        $this->orderId = $orderId;
+        $this->order_id = $orderId;
 
         return $this;
     }
 
     /**
-     * Get orderId
+     * Get order_id
      *
      * @return integer 
      */
     public function getOrderId()
     {
-        return $this->orderId;
+        return $this->order_id;
     }
 
     /**
-     * Set productName
+     * Set product_name
      *
      * @param string $productName
      * @return ShipmentItem
      */
     public function setProductName($productName)
     {
-        $this->productName = $productName;
+        $this->product_name = $productName;
 
         return $this;
     }
 
     /**
-     * Get productName
+     * Get product_name
      *
      * @return string 
      */
     public function getProductName()
     {
-        return $this->productName;
+        return $this->product_name;
     }
 
     /**
-     * Set productCode
+     * Set product_code
      *
      * @param string $productCode
      * @return ShipmentItem
      */
     public function setProductCode($productCode)
     {
-        $this->productCode = $productCode;
+        $this->product_code = $productCode;
 
         return $this;
     }
 
     /**
-     * Get productCode
+     * Get product_code
      *
      * @return string 
      */
     public function getProductCode()
     {
-        return $this->productCode;
+        return $this->product_code;
     }
 
     /**
-     * Set classcategoryName1
+     * Set classcategory_name1
      *
      * @param string $classcategoryName1
      * @return ShipmentItem
      */
     public function setClasscategoryName1($classcategoryName1)
     {
-        $this->classcategoryName1 = $classcategoryName1;
+        $this->classcategory_name1 = $classcategoryName1;
 
         return $this;
     }
 
     /**
-     * Get classcategoryName1
+     * Get classcategory_name1
      *
      * @return string 
      */
     public function getClasscategoryName1()
     {
-        return $this->classcategoryName1;
+        return $this->classcategory_name1;
     }
 
     /**
-     * Set classcategoryName2
+     * Set classcategory_name2
      *
      * @param string $classcategoryName2
      * @return ShipmentItem
      */
     public function setClasscategoryName2($classcategoryName2)
     {
-        $this->classcategoryName2 = $classcategoryName2;
+        $this->classcategory_name2 = $classcategoryName2;
 
         return $this;
     }
 
     /**
-     * Get classcategoryName2
+     * Get classcategory_name2
      *
      * @return string 
      */
     public function getClasscategoryName2()
     {
-        return $this->classcategoryName2;
+        return $this->classcategory_name2;
     }
 
     /**

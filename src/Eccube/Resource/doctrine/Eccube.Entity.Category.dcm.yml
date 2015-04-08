@@ -1,0 +1,76 @@
+Eccube\Entity\Category:
+    type: entity
+    table: dtb_category
+    repositoryClass: Eccube\Repository\CategoryRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: category_id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+            column: category_name
+#        parent_category_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+#            default: '0'
+        level:
+            type: integer
+            nullable: false
+            unsigned: false
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Parent:
+            targetEntity: Eccube\Entity\Category
+            inversedBy: Children
+            joinColumn:
+                name: parent_category_id
+                referencedColumnName: category_id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: Categories
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+    oneToMany:
+        ProductCategories:
+            targetEntity: Eccube\Entity\ProductCategory
+            mappedBy: Category
+        Children:
+            targetEntity: Eccube\Entity\Category
+            mappedBy: Parent
+    oneToOne:
+        CategoryCount:
+            targetEntity: CategoryCount
+            mappedBy: Category
+        CategoryTotalCount:
+            targetEntity: CategoryTotalCount
+            mappedBy: Category
+    lifecycleCallbacks: {  }

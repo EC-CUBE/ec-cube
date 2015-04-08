@@ -12,12 +12,12 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $paymentId;
+    private $id;
 
     /**
      * @var string
      */
-    private $paymentMethod;
+    private $method;
 
     /**
      * @var string
@@ -27,7 +27,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $ruleMax;
+    private $rule_max;
 
     /**
      * @var integer
@@ -52,57 +52,57 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $delFlg;
+    private $del_flg;
 
     /**
      * @var integer
      */
-    private $creatorId;
+    private $creator_id;
 
     /**
      * @var \DateTime
      */
-    private $createDate;
+    private $create_date;
 
     /**
      * @var \DateTime
      */
-    private $updateDate;
+    private $update_date;
 
     /**
      * @var string
      */
-    private $paymentImage;
+    private $payment_image;
 
     /**
      * @var string
      */
-    private $upperRule;
+    private $upper_rule;
 
     /**
      * @var integer
      */
-    private $chargeFlg;
+    private $charge_flg;
 
     /**
      * @var string
      */
-    private $ruleMin;
+    private $rule_min;
 
     /**
      * @var string
      */
-    private $upperRuleMax;
+    private $upper_rule_max;
 
     /**
      * @var integer
      */
-    private $moduleId;
+    private $module_id;
 
     /**
      * @var string
      */
-    private $modulePath;
+    private $module_path;
 
     /**
      * @var string
@@ -154,38 +154,50 @@ class Payment extends \Eccube\Entity\AbstractEntity
      */
     private $memo10;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Delivs;
 
     /**
-     * Get paymentId
-     *
-     * @return integer 
+     * Constructor
      */
-    public function getPaymentId()
+    public function __construct()
     {
-        return $this->paymentId;
+        $this->Delivs = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Set paymentMethod
+     * Get id
      *
-     * @param string $paymentMethod
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set method
+     *
+     * @param string $method
      * @return Payment
      */
-    public function setPaymentMethod($paymentMethod)
+    public function setMethod($method)
     {
-        $this->paymentMethod = $paymentMethod;
+        $this->method = $method;
 
         return $this;
     }
 
     /**
-     * Get paymentMethod
+     * Get method
      *
      * @return string 
      */
-    public function getPaymentMethod()
+    public function getMethod()
     {
-        return $this->paymentMethod;
+        return $this->method;
     }
 
     /**
@@ -212,26 +224,26 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set ruleMax
+     * Set rule_max
      *
      * @param string $ruleMax
      * @return Payment
      */
     public function setRuleMax($ruleMax)
     {
-        $this->ruleMax = $ruleMax;
+        $this->rule_max = $ruleMax;
 
         return $this;
     }
 
     /**
-     * Get ruleMax
+     * Get rule_max
      *
      * @return string 
      */
     public function getRuleMax()
     {
-        return $this->ruleMax;
+        return $this->rule_max;
     }
 
     /**
@@ -327,256 +339,256 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delFlg
+     * Set del_flg
      *
      * @param integer $delFlg
      * @return Payment
      */
     public function setDelFlg($delFlg)
     {
-        $this->delFlg = $delFlg;
+        $this->del_flg = $delFlg;
 
         return $this;
     }
 
     /**
-     * Get delFlg
+     * Get del_flg
      *
      * @return integer 
      */
     public function getDelFlg()
     {
-        return $this->delFlg;
+        return $this->del_flg;
     }
 
     /**
-     * Set creatorId
+     * Set creator_id
      *
      * @param integer $creatorId
      * @return Payment
      */
     public function setCreatorId($creatorId)
     {
-        $this->creatorId = $creatorId;
+        $this->creator_id = $creatorId;
 
         return $this;
     }
 
     /**
-     * Get creatorId
+     * Get creator_id
      *
      * @return integer 
      */
     public function getCreatorId()
     {
-        return $this->creatorId;
+        return $this->creator_id;
     }
 
     /**
-     * Set createDate
+     * Set create_date
      *
      * @param \DateTime $createDate
      * @return Payment
      */
     public function setCreateDate($createDate)
     {
-        $this->createDate = $createDate;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Get createDate
+     * Get create_date
      *
      * @return \DateTime 
      */
     public function getCreateDate()
     {
-        return $this->createDate;
+        return $this->create_date;
     }
 
     /**
-     * Set updateDate
+     * Set update_date
      *
      * @param \DateTime $updateDate
      * @return Payment
      */
     public function setUpdateDate($updateDate)
     {
-        $this->updateDate = $updateDate;
+        $this->update_date = $updateDate;
 
         return $this;
     }
 
     /**
-     * Get updateDate
+     * Get update_date
      *
      * @return \DateTime 
      */
     public function getUpdateDate()
     {
-        return $this->updateDate;
+        return $this->update_date;
     }
 
     /**
-     * Set paymentImage
+     * Set payment_image
      *
      * @param string $paymentImage
      * @return Payment
      */
     public function setPaymentImage($paymentImage)
     {
-        $this->paymentImage = $paymentImage;
+        $this->payment_image = $paymentImage;
 
         return $this;
     }
 
     /**
-     * Get paymentImage
+     * Get payment_image
      *
      * @return string 
      */
     public function getPaymentImage()
     {
-        return $this->paymentImage;
+        return $this->payment_image;
     }
 
     /**
-     * Set upperRule
+     * Set upper_rule
      *
      * @param string $upperRule
      * @return Payment
      */
     public function setUpperRule($upperRule)
     {
-        $this->upperRule = $upperRule;
+        $this->upper_rule = $upperRule;
 
         return $this;
     }
 
     /**
-     * Get upperRule
+     * Get upper_rule
      *
      * @return string 
      */
     public function getUpperRule()
     {
-        return $this->upperRule;
+        return $this->upper_rule;
     }
 
     /**
-     * Set chargeFlg
+     * Set charge_flg
      *
      * @param integer $chargeFlg
      * @return Payment
      */
     public function setChargeFlg($chargeFlg)
     {
-        $this->chargeFlg = $chargeFlg;
+        $this->charge_flg = $chargeFlg;
 
         return $this;
     }
 
     /**
-     * Get chargeFlg
+     * Get charge_flg
      *
      * @return integer 
      */
     public function getChargeFlg()
     {
-        return $this->chargeFlg;
+        return $this->charge_flg;
     }
 
     /**
-     * Set ruleMin
+     * Set rule_min
      *
      * @param string $ruleMin
      * @return Payment
      */
     public function setRuleMin($ruleMin)
     {
-        $this->ruleMin = $ruleMin;
+        $this->rule_min = $ruleMin;
 
         return $this;
     }
 
     /**
-     * Get ruleMin
+     * Get rule_min
      *
      * @return string 
      */
     public function getRuleMin()
     {
-        return $this->ruleMin;
+        return $this->rule_min;
     }
 
     /**
-     * Set upperRuleMax
+     * Set upper_rule_max
      *
      * @param string $upperRuleMax
      * @return Payment
      */
     public function setUpperRuleMax($upperRuleMax)
     {
-        $this->upperRuleMax = $upperRuleMax;
+        $this->upper_rule_max = $upperRuleMax;
 
         return $this;
     }
 
     /**
-     * Get upperRuleMax
+     * Get upper_rule_max
      *
      * @return string 
      */
     public function getUpperRuleMax()
     {
-        return $this->upperRuleMax;
+        return $this->upper_rule_max;
     }
 
     /**
-     * Set moduleId
+     * Set module_id
      *
      * @param integer $moduleId
      * @return Payment
      */
     public function setModuleId($moduleId)
     {
-        $this->moduleId = $moduleId;
+        $this->module_id = $moduleId;
 
         return $this;
     }
 
     /**
-     * Get moduleId
+     * Get module_id
      *
      * @return integer 
      */
     public function getModuleId()
     {
-        return $this->moduleId;
+        return $this->module_id;
     }
 
     /**
-     * Set modulePath
+     * Set module_path
      *
      * @param string $modulePath
      * @return Payment
      */
     public function setModulePath($modulePath)
     {
-        $this->modulePath = $modulePath;
+        $this->module_path = $modulePath;
 
         return $this;
     }
 
     /**
-     * Get modulePath
+     * Get module_path
      *
      * @return string 
      */
     public function getModulePath()
     {
-        return $this->modulePath;
+        return $this->module_path;
     }
 
     /**
@@ -807,5 +819,38 @@ class Payment extends \Eccube\Entity\AbstractEntity
     public function getMemo10()
     {
         return $this->memo10;
+    }
+
+    /**
+     * Add Delivs
+     *
+     * @param \Eccube\Entity\Deliv $delivs
+     * @return Payment
+     */
+    public function addDeliv(\Eccube\Entity\Deliv $delivs)
+    {
+        $this->Delivs[] = $delivs;
+
+        return $this;
+    }
+
+    /**
+     * Remove Delivs
+     *
+     * @param \Eccube\Entity\Deliv $delivs
+     */
+    public function removeDeliv(\Eccube\Entity\Deliv $delivs)
+    {
+        $this->Delivs->removeElement($delivs);
+    }
+
+    /**
+     * Get Delivs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDelivs()
+    {
+        return $this->Delivs;
     }
 }

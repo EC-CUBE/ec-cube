@@ -1,0 +1,69 @@
+Eccube\Entity\News:
+    type: entity
+    table: dtb_news
+    repositoryClass: Eccube\Repository\NewsRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: news_id
+            generator:
+                strategy: AUTO
+    fields:
+        date:
+            type: datetime
+            nullable: true
+            column: news_date
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        title:
+            type: text
+            nullable: false
+            column: news_title
+        comment:
+            type: text
+            nullable: true
+            column: news_comment
+        url:
+            type: text
+            nullable: true
+            column: news_url
+        select:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: news_select
+        link_method:
+            type: text
+            nullable: true
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: Newses
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

@@ -12,122 +12,112 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $shippingId;
+    private $shipping_id;
 
     /**
      * @var integer
      */
-    private $orderId;
+    private $order_id;
 
     /**
      * @var string
      */
-    private $shippingName01;
+    private $name01;
 
     /**
      * @var string
      */
-    private $shippingName02;
+    private $name02;
 
     /**
      * @var string
      */
-    private $shippingKana01;
+    private $kana01;
 
     /**
      * @var string
      */
-    private $shippingKana02;
+    private $kana02;
 
     /**
      * @var string
      */
-    private $shippingCompanyName;
+    private $company_name;
 
     /**
      * @var string
      */
-    private $shippingTel01;
+    private $tel01;
 
     /**
      * @var string
      */
-    private $shippingTel02;
+    private $tel02;
 
     /**
      * @var string
      */
-    private $shippingTel03;
+    private $tel03;
 
     /**
      * @var string
      */
-    private $shippingFax01;
+    private $fax01;
 
     /**
      * @var string
      */
-    private $shippingFax02;
+    private $fax02;
 
     /**
      * @var string
      */
-    private $shippingFax03;
+    private $fax03;
+
+    /**
+     * @var string
+     */
+    private $zip01;
+
+    /**
+     * @var string
+     */
+    private $zip02;
+
+    /**
+     * @var string
+     */
+    private $zipcode;
+
+    /**
+     * @var string
+     */
+    private $addr01;
+
+    /**
+     * @var string
+     */
+    private $addr02;
 
     /**
      * @var integer
      */
-    private $shippingCountryId;
-
-    /**
-     * @var integer
-     */
-    private $shippingPref;
+    private $time_id;
 
     /**
      * @var string
      */
-    private $shippingZip01;
-
-    /**
-     * @var string
-     */
-    private $shippingZip02;
-
-    /**
-     * @var string
-     */
-    private $shippingZipcode;
-
-    /**
-     * @var string
-     */
-    private $shippingAddr01;
-
-    /**
-     * @var string
-     */
-    private $shippingAddr02;
-
-    /**
-     * @var integer
-     */
-    private $timeId;
-
-    /**
-     * @var string
-     */
-    private $shippingTime;
+    private $shipping_time;
 
     /**
      * @var \DateTime
      */
-    private $shippingDate;
+    private $shipping_date;
 
     /**
      * @var \DateTime
      */
-    private $shippingCommitDate;
+    private $shipping_commit_date;
 
     /**
      * @var integer
@@ -137,569 +127,533 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime
      */
-    private $createDate;
+    private $create_date;
 
     /**
      * @var \DateTime
      */
-    private $updateDate;
+    private $update_date;
 
     /**
      * @var integer
      */
-    private $delFlg;
+    private $del_flg;
+
+    /**
+     * @var \Eccube\Entity\Master\Country
+     */
+    private $Country;
+
+    /**
+     * @var \Eccube\Entity\Master\Pref
+     */
+    private $Pref;
 
 
     /**
-     * Set shippingId
+     * Set shipping_id
      *
      * @param integer $shippingId
      * @return Shipping
      */
     public function setShippingId($shippingId)
     {
-        $this->shippingId = $shippingId;
+        $this->shipping_id = $shippingId;
 
         return $this;
     }
 
     /**
-     * Get shippingId
+     * Get shipping_id
      *
      * @return integer 
      */
     public function getShippingId()
     {
-        return $this->shippingId;
+        return $this->shipping_id;
     }
 
     /**
-     * Set orderId
+     * Set order_id
      *
      * @param integer $orderId
      * @return Shipping
      */
     public function setOrderId($orderId)
     {
-        $this->orderId = $orderId;
+        $this->order_id = $orderId;
 
         return $this;
     }
 
     /**
-     * Get orderId
+     * Get order_id
      *
      * @return integer 
      */
     public function getOrderId()
     {
-        return $this->orderId;
+        return $this->order_id;
     }
 
     /**
-     * Set shippingName01
+     * Set name01
      *
-     * @param string $shippingName01
+     * @param string $name01
      * @return Shipping
      */
-    public function setShippingName01($shippingName01)
+    public function setName01($name01)
     {
-        $this->shippingName01 = $shippingName01;
+        $this->name01 = $name01;
 
         return $this;
     }
 
     /**
-     * Get shippingName01
+     * Get name01
      *
      * @return string 
      */
-    public function getShippingName01()
+    public function getName01()
     {
-        return $this->shippingName01;
+        return $this->name01;
     }
 
     /**
-     * Set shippingName02
+     * Set name02
      *
-     * @param string $shippingName02
+     * @param string $name02
      * @return Shipping
      */
-    public function setShippingName02($shippingName02)
+    public function setName02($name02)
     {
-        $this->shippingName02 = $shippingName02;
+        $this->name02 = $name02;
 
         return $this;
     }
 
     /**
-     * Get shippingName02
+     * Get name02
      *
      * @return string 
      */
-    public function getShippingName02()
+    public function getName02()
     {
-        return $this->shippingName02;
+        return $this->name02;
     }
 
     /**
-     * Set shippingKana01
+     * Set kana01
      *
-     * @param string $shippingKana01
+     * @param string $kana01
      * @return Shipping
      */
-    public function setShippingKana01($shippingKana01)
+    public function setKana01($kana01)
     {
-        $this->shippingKana01 = $shippingKana01;
+        $this->kana01 = $kana01;
 
         return $this;
     }
 
     /**
-     * Get shippingKana01
+     * Get kana01
      *
      * @return string 
      */
-    public function getShippingKana01()
+    public function getKana01()
     {
-        return $this->shippingKana01;
+        return $this->kana01;
     }
 
     /**
-     * Set shippingKana02
+     * Set kana02
      *
-     * @param string $shippingKana02
+     * @param string $kana02
      * @return Shipping
      */
-    public function setShippingKana02($shippingKana02)
+    public function setKana02($kana02)
     {
-        $this->shippingKana02 = $shippingKana02;
+        $this->kana02 = $kana02;
 
         return $this;
     }
 
     /**
-     * Get shippingKana02
+     * Get kana02
      *
      * @return string 
      */
-    public function getShippingKana02()
+    public function getKana02()
     {
-        return $this->shippingKana02;
+        return $this->kana02;
     }
 
     /**
-     * Set shippingCompanyName
+     * Set company_name
      *
-     * @param string $shippingCompanyName
+     * @param string $companyName
      * @return Shipping
      */
-    public function setShippingCompanyName($shippingCompanyName)
+    public function setCompanyName($companyName)
     {
-        $this->shippingCompanyName = $shippingCompanyName;
+        $this->company_name = $companyName;
 
         return $this;
     }
 
     /**
-     * Get shippingCompanyName
+     * Get company_name
      *
      * @return string 
      */
-    public function getShippingCompanyName()
+    public function getCompanyName()
     {
-        return $this->shippingCompanyName;
+        return $this->company_name;
     }
 
     /**
-     * Set shippingTel01
+     * Set tel01
      *
-     * @param string $shippingTel01
+     * @param string $tel01
      * @return Shipping
      */
-    public function setShippingTel01($shippingTel01)
+    public function setTel01($tel01)
     {
-        $this->shippingTel01 = $shippingTel01;
+        $this->tel01 = $tel01;
 
         return $this;
     }
 
     /**
-     * Get shippingTel01
+     * Get tel01
      *
      * @return string 
      */
-    public function getShippingTel01()
+    public function getTel01()
     {
-        return $this->shippingTel01;
+        return $this->tel01;
     }
 
     /**
-     * Set shippingTel02
+     * Set tel02
      *
-     * @param string $shippingTel02
+     * @param string $tel02
      * @return Shipping
      */
-    public function setShippingTel02($shippingTel02)
+    public function setTel02($tel02)
     {
-        $this->shippingTel02 = $shippingTel02;
+        $this->tel02 = $tel02;
 
         return $this;
     }
 
     /**
-     * Get shippingTel02
+     * Get tel02
      *
      * @return string 
      */
-    public function getShippingTel02()
+    public function getTel02()
     {
-        return $this->shippingTel02;
+        return $this->tel02;
     }
 
     /**
-     * Set shippingTel03
+     * Set tel03
      *
-     * @param string $shippingTel03
+     * @param string $tel03
      * @return Shipping
      */
-    public function setShippingTel03($shippingTel03)
+    public function setTel03($tel03)
     {
-        $this->shippingTel03 = $shippingTel03;
+        $this->tel03 = $tel03;
 
         return $this;
     }
 
     /**
-     * Get shippingTel03
+     * Get tel03
      *
      * @return string 
      */
-    public function getShippingTel03()
+    public function getTel03()
     {
-        return $this->shippingTel03;
+        return $this->tel03;
     }
 
     /**
-     * Set shippingFax01
+     * Set fax01
      *
-     * @param string $shippingFax01
+     * @param string $fax01
      * @return Shipping
      */
-    public function setShippingFax01($shippingFax01)
+    public function setFax01($fax01)
     {
-        $this->shippingFax01 = $shippingFax01;
+        $this->fax01 = $fax01;
 
         return $this;
     }
 
     /**
-     * Get shippingFax01
+     * Get fax01
      *
      * @return string 
      */
-    public function getShippingFax01()
+    public function getFax01()
     {
-        return $this->shippingFax01;
+        return $this->fax01;
     }
 
     /**
-     * Set shippingFax02
+     * Set fax02
      *
-     * @param string $shippingFax02
+     * @param string $fax02
      * @return Shipping
      */
-    public function setShippingFax02($shippingFax02)
+    public function setFax02($fax02)
     {
-        $this->shippingFax02 = $shippingFax02;
+        $this->fax02 = $fax02;
 
         return $this;
     }
 
     /**
-     * Get shippingFax02
+     * Get fax02
      *
      * @return string 
      */
-    public function getShippingFax02()
+    public function getFax02()
     {
-        return $this->shippingFax02;
+        return $this->fax02;
     }
 
     /**
-     * Set shippingFax03
+     * Set fax03
      *
-     * @param string $shippingFax03
+     * @param string $fax03
      * @return Shipping
      */
-    public function setShippingFax03($shippingFax03)
+    public function setFax03($fax03)
     {
-        $this->shippingFax03 = $shippingFax03;
+        $this->fax03 = $fax03;
 
         return $this;
     }
 
     /**
-     * Get shippingFax03
+     * Get fax03
      *
      * @return string 
      */
-    public function getShippingFax03()
+    public function getFax03()
     {
-        return $this->shippingFax03;
+        return $this->fax03;
     }
 
     /**
-     * Set shippingCountryId
+     * Set zip01
      *
-     * @param integer $shippingCountryId
+     * @param string $zip01
      * @return Shipping
      */
-    public function setShippingCountryId($shippingCountryId)
+    public function setZip01($zip01)
     {
-        $this->shippingCountryId = $shippingCountryId;
+        $this->zip01 = $zip01;
 
         return $this;
     }
 
     /**
-     * Get shippingCountryId
-     *
-     * @return integer 
-     */
-    public function getShippingCountryId()
-    {
-        return $this->shippingCountryId;
-    }
-
-    /**
-     * Set shippingPref
-     *
-     * @param integer $shippingPref
-     * @return Shipping
-     */
-    public function setShippingPref($shippingPref)
-    {
-        $this->shippingPref = $shippingPref;
-
-        return $this;
-    }
-
-    /**
-     * Get shippingPref
-     *
-     * @return integer 
-     */
-    public function getShippingPref()
-    {
-        return $this->shippingPref;
-    }
-
-    /**
-     * Set shippingZip01
-     *
-     * @param string $shippingZip01
-     * @return Shipping
-     */
-    public function setShippingZip01($shippingZip01)
-    {
-        $this->shippingZip01 = $shippingZip01;
-
-        return $this;
-    }
-
-    /**
-     * Get shippingZip01
+     * Get zip01
      *
      * @return string 
      */
-    public function getShippingZip01()
+    public function getZip01()
     {
-        return $this->shippingZip01;
+        return $this->zip01;
     }
 
     /**
-     * Set shippingZip02
+     * Set zip02
      *
-     * @param string $shippingZip02
+     * @param string $zip02
      * @return Shipping
      */
-    public function setShippingZip02($shippingZip02)
+    public function setZip02($zip02)
     {
-        $this->shippingZip02 = $shippingZip02;
+        $this->zip02 = $zip02;
 
         return $this;
     }
 
     /**
-     * Get shippingZip02
+     * Get zip02
      *
      * @return string 
      */
-    public function getShippingZip02()
+    public function getZip02()
     {
-        return $this->shippingZip02;
+        return $this->zip02;
     }
 
     /**
-     * Set shippingZipcode
+     * Set zipcode
      *
-     * @param string $shippingZipcode
+     * @param string $zipcode
      * @return Shipping
      */
-    public function setShippingZipcode($shippingZipcode)
+    public function setZipcode($zipcode)
     {
-        $this->shippingZipcode = $shippingZipcode;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
 
     /**
-     * Get shippingZipcode
+     * Get zipcode
      *
      * @return string 
      */
-    public function getShippingZipcode()
+    public function getZipcode()
     {
-        return $this->shippingZipcode;
+        return $this->zipcode;
     }
 
     /**
-     * Set shippingAddr01
+     * Set addr01
      *
-     * @param string $shippingAddr01
+     * @param string $addr01
      * @return Shipping
      */
-    public function setShippingAddr01($shippingAddr01)
+    public function setAddr01($addr01)
     {
-        $this->shippingAddr01 = $shippingAddr01;
+        $this->addr01 = $addr01;
 
         return $this;
     }
 
     /**
-     * Get shippingAddr01
+     * Get addr01
      *
      * @return string 
      */
-    public function getShippingAddr01()
+    public function getAddr01()
     {
-        return $this->shippingAddr01;
+        return $this->addr01;
     }
 
     /**
-     * Set shippingAddr02
+     * Set addr02
      *
-     * @param string $shippingAddr02
+     * @param string $addr02
      * @return Shipping
      */
-    public function setShippingAddr02($shippingAddr02)
+    public function setAddr02($addr02)
     {
-        $this->shippingAddr02 = $shippingAddr02;
+        $this->addr02 = $addr02;
 
         return $this;
     }
 
     /**
-     * Get shippingAddr02
+     * Get addr02
      *
      * @return string 
      */
-    public function getShippingAddr02()
+    public function getAddr02()
     {
-        return $this->shippingAddr02;
+        return $this->addr02;
     }
 
     /**
-     * Set timeId
+     * Set time_id
      *
      * @param integer $timeId
      * @return Shipping
      */
     public function setTimeId($timeId)
     {
-        $this->timeId = $timeId;
+        $this->time_id = $timeId;
 
         return $this;
     }
 
     /**
-     * Get timeId
+     * Get time_id
      *
      * @return integer 
      */
     public function getTimeId()
     {
-        return $this->timeId;
+        return $this->time_id;
     }
 
     /**
-     * Set shippingTime
+     * Set shipping_time
      *
      * @param string $shippingTime
      * @return Shipping
      */
     public function setShippingTime($shippingTime)
     {
-        $this->shippingTime = $shippingTime;
+        $this->shipping_time = $shippingTime;
 
         return $this;
     }
 
     /**
-     * Get shippingTime
+     * Get shipping_time
      *
      * @return string 
      */
     public function getShippingTime()
     {
-        return $this->shippingTime;
+        return $this->shipping_time;
     }
 
     /**
-     * Set shippingDate
+     * Set shipping_date
      *
      * @param \DateTime $shippingDate
      * @return Shipping
      */
     public function setShippingDate($shippingDate)
     {
-        $this->shippingDate = $shippingDate;
+        $this->shipping_date = $shippingDate;
 
         return $this;
     }
 
     /**
-     * Get shippingDate
+     * Get shipping_date
      *
      * @return \DateTime 
      */
     public function getShippingDate()
     {
-        return $this->shippingDate;
+        return $this->shipping_date;
     }
 
     /**
-     * Set shippingCommitDate
+     * Set shipping_commit_date
      *
      * @param \DateTime $shippingCommitDate
      * @return Shipping
      */
     public function setShippingCommitDate($shippingCommitDate)
     {
-        $this->shippingCommitDate = $shippingCommitDate;
+        $this->shipping_commit_date = $shippingCommitDate;
 
         return $this;
     }
 
     /**
-     * Get shippingCommitDate
+     * Get shipping_commit_date
      *
      * @return \DateTime 
      */
     public function getShippingCommitDate()
     {
-        return $this->shippingCommitDate;
+        return $this->shipping_commit_date;
     }
 
     /**
@@ -726,71 +680,117 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set createDate
+     * Set create_date
      *
      * @param \DateTime $createDate
      * @return Shipping
      */
     public function setCreateDate($createDate)
     {
-        $this->createDate = $createDate;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Get createDate
+     * Get create_date
      *
      * @return \DateTime 
      */
     public function getCreateDate()
     {
-        return $this->createDate;
+        return $this->create_date;
     }
 
     /**
-     * Set updateDate
+     * Set update_date
      *
      * @param \DateTime $updateDate
      * @return Shipping
      */
     public function setUpdateDate($updateDate)
     {
-        $this->updateDate = $updateDate;
+        $this->update_date = $updateDate;
 
         return $this;
     }
 
     /**
-     * Get updateDate
+     * Get update_date
      *
      * @return \DateTime 
      */
     public function getUpdateDate()
     {
-        return $this->updateDate;
+        return $this->update_date;
     }
 
     /**
-     * Set delFlg
+     * Set del_flg
      *
      * @param integer $delFlg
      * @return Shipping
      */
     public function setDelFlg($delFlg)
     {
-        $this->delFlg = $delFlg;
+        $this->del_flg = $delFlg;
 
         return $this;
     }
 
     /**
-     * Get delFlg
+     * Get del_flg
      *
      * @return integer 
      */
     public function getDelFlg()
     {
-        return $this->delFlg;
+        return $this->del_flg;
+    }
+
+    /**
+     * Set Country
+     *
+     * @param \Eccube\Entity\Master\Country $country
+     * @return Shipping
+     */
+    public function setCountry(\Eccube\Entity\Master\Country $country = null)
+    {
+        $this->Country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get Country
+     *
+     * @return \Eccube\Entity\Master\Country 
+     */
+    public function getCountry()
+    {
+        return $this->Country;
+    }
+
+    /**
+     * Set Pref
+     *
+     * @param \Eccube\Entity\Master\Pref $pref
+     * @return Shipping
+     */
+    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+    {
+        $this->Pref = $pref;
+
+        return $this;
+    }
+
+    /**
+     * Get Pref
+     *
+     * @return \Eccube\Entity\Master\Pref 
+     */
+    public function getPref()
+    {
+        return $this->Pref;
     }
 }

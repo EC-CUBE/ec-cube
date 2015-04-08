@@ -12,12 +12,7 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $orderTempId;
-
-    /**
-     * @var integer
-     */
-    private $customerId;
+    private $id;
 
     /**
      * @var string
@@ -27,112 +22,92 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $orderName01;
+    private $name01;
 
     /**
      * @var string
      */
-    private $orderName02;
+    private $name02;
 
     /**
      * @var string
      */
-    private $orderKana01;
+    private $kana01;
 
     /**
      * @var string
      */
-    private $orderKana02;
+    private $kana02;
 
     /**
      * @var string
      */
-    private $orderCompanyName;
+    private $company_name;
 
     /**
      * @var string
      */
-    private $orderEmail;
+    private $email;
 
     /**
      * @var string
      */
-    private $orderTel01;
+    private $tel01;
 
     /**
      * @var string
      */
-    private $orderTel02;
+    private $tel02;
 
     /**
      * @var string
      */
-    private $orderTel03;
+    private $tel03;
 
     /**
      * @var string
      */
-    private $orderFax01;
+    private $fax01;
 
     /**
      * @var string
      */
-    private $orderFax02;
+    private $fax02;
 
     /**
      * @var string
      */
-    private $orderFax03;
+    private $fax03;
 
     /**
      * @var string
      */
-    private $orderZip01;
+    private $zip01;
 
     /**
      * @var string
      */
-    private $orderZip02;
+    private $zip02;
 
     /**
      * @var string
      */
-    private $orderZipcode;
-
-    /**
-     * @var integer
-     */
-    private $orderCountryId;
-
-    /**
-     * @var integer
-     */
-    private $orderPref;
+    private $zipcode;
 
     /**
      * @var string
      */
-    private $orderAddr01;
+    private $addr01;
 
     /**
      * @var string
      */
-    private $orderAddr02;
-
-    /**
-     * @var integer
-     */
-    private $orderSex;
+    private $addr02;
 
     /**
      * @var \DateTime
      */
-    private $orderBirth;
-
-    /**
-     * @var integer
-     */
-    private $orderJob;
+    private $birth;
 
     /**
      * @var string
@@ -145,14 +120,9 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     private $discount;
 
     /**
-     * @var integer
-     */
-    private $delivId;
-
-    /**
      * @var string
      */
-    private $delivFee;
+    private $deliv_fee;
 
     /**
      * @var string
@@ -162,17 +132,17 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $usePoint;
+    private $use_point;
 
     /**
      * @var string
      */
-    private $addPoint;
+    private $add_point;
 
     /**
      * @var string
      */
-    private $birthPoint;
+    private $birth_point;
 
     /**
      * @var string
@@ -187,17 +157,12 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $paymentTotal;
-
-    /**
-     * @var integer
-     */
-    private $paymentId;
+    private $payment_total;
 
     /**
      * @var string
      */
-    private $paymentMethod;
+    private $payment_method;
 
     /**
      * @var string
@@ -207,7 +172,7 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $mailFlag;
+    private $mail_flag;
 
     /**
      * @var integer
@@ -217,37 +182,27 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $delivCheck;
+    private $deliv_check;
 
     /**
      * @var integer
      */
-    private $pointCheck;
+    private $point_check;
 
     /**
      * @var \DateTime
      */
-    private $createDate;
+    private $create_date;
 
     /**
      * @var \DateTime
      */
-    private $updateDate;
+    private $update_date;
 
     /**
      * @var integer
      */
-    private $deviceTypeId;
-
-    /**
-     * @var integer
-     */
-    private $delFlg;
-
-    /**
-     * @var integer
-     */
-    private $orderId;
+    private $del_flg;
 
     /**
      * @var string
@@ -304,38 +259,60 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
      */
     private $session;
 
+    /**
+     * @var \Eccube\Entity\Customer
+     */
+    private $Customer;
 
     /**
-     * Get orderTempId
+     * @var \Eccube\Entity\Master\Country
+     */
+    private $Country;
+
+    /**
+     * @var \Eccube\Entity\Master\Pref
+     */
+    private $Pref;
+
+    /**
+     * @var \Eccube\Entity\Master\Sex
+     */
+    private $Sex;
+
+    /**
+     * @var \Eccube\Entity\Master\Job
+     */
+    private $Job;
+
+    /**
+     * @var \Eccube\Entity\Deliv
+     */
+    private $Deliv;
+
+    /**
+     * @var \Eccube\Entity\Payment
+     */
+    private $Payment;
+
+    /**
+     * @var \Eccube\Entity\Master\DeviceType
+     */
+    private $DeviceType;
+
+    /**
+     * @var \Eccube\Entity\Master\Order
+     */
+    private $Order;
+
+
+    /**
+     * Get id
      *
      * @return string 
      */
-    public function getOrderTempId()
+    public function getId()
     {
-        return $this->orderTempId;
-    }
-
-    /**
-     * Set customerId
-     *
-     * @param integer $customerId
-     * @return OrderTemp
-     */
-    public function setCustomerId($customerId)
-    {
-        $this->customerId = $customerId;
-
-        return $this;
-    }
-
-    /**
-     * Get customerId
-     *
-     * @return integer 
-     */
-    public function getCustomerId()
-    {
-        return $this->customerId;
+        return $this->id;
     }
 
     /**
@@ -362,509 +339,417 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set orderName01
+     * Set name01
      *
-     * @param string $orderName01
+     * @param string $name01
      * @return OrderTemp
      */
-    public function setOrderName01($orderName01)
+    public function setName01($name01)
     {
-        $this->orderName01 = $orderName01;
+        $this->name01 = $name01;
 
         return $this;
     }
 
     /**
-     * Get orderName01
+     * Get name01
      *
      * @return string 
      */
-    public function getOrderName01()
+    public function getName01()
     {
-        return $this->orderName01;
+        return $this->name01;
     }
 
     /**
-     * Set orderName02
+     * Set name02
      *
-     * @param string $orderName02
+     * @param string $name02
      * @return OrderTemp
      */
-    public function setOrderName02($orderName02)
+    public function setName02($name02)
     {
-        $this->orderName02 = $orderName02;
+        $this->name02 = $name02;
 
         return $this;
     }
 
     /**
-     * Get orderName02
+     * Get name02
      *
      * @return string 
      */
-    public function getOrderName02()
+    public function getName02()
     {
-        return $this->orderName02;
+        return $this->name02;
     }
 
     /**
-     * Set orderKana01
+     * Set kana01
      *
-     * @param string $orderKana01
+     * @param string $kana01
      * @return OrderTemp
      */
-    public function setOrderKana01($orderKana01)
+    public function setKana01($kana01)
     {
-        $this->orderKana01 = $orderKana01;
+        $this->kana01 = $kana01;
 
         return $this;
     }
 
     /**
-     * Get orderKana01
+     * Get kana01
      *
      * @return string 
      */
-    public function getOrderKana01()
+    public function getKana01()
     {
-        return $this->orderKana01;
+        return $this->kana01;
     }
 
     /**
-     * Set orderKana02
+     * Set kana02
      *
-     * @param string $orderKana02
+     * @param string $kana02
      * @return OrderTemp
      */
-    public function setOrderKana02($orderKana02)
+    public function setKana02($kana02)
     {
-        $this->orderKana02 = $orderKana02;
+        $this->kana02 = $kana02;
 
         return $this;
     }
 
     /**
-     * Get orderKana02
+     * Get kana02
      *
      * @return string 
      */
-    public function getOrderKana02()
+    public function getKana02()
     {
-        return $this->orderKana02;
+        return $this->kana02;
     }
 
     /**
-     * Set orderCompanyName
+     * Set company_name
      *
-     * @param string $orderCompanyName
+     * @param string $companyName
      * @return OrderTemp
      */
-    public function setOrderCompanyName($orderCompanyName)
+    public function setCompanyName($companyName)
     {
-        $this->orderCompanyName = $orderCompanyName;
+        $this->company_name = $companyName;
 
         return $this;
     }
 
     /**
-     * Get orderCompanyName
+     * Get company_name
      *
      * @return string 
      */
-    public function getOrderCompanyName()
+    public function getCompanyName()
     {
-        return $this->orderCompanyName;
+        return $this->company_name;
     }
 
     /**
-     * Set orderEmail
+     * Set email
      *
-     * @param string $orderEmail
+     * @param string $email
      * @return OrderTemp
      */
-    public function setOrderEmail($orderEmail)
+    public function setEmail($email)
     {
-        $this->orderEmail = $orderEmail;
+        $this->email = $email;
 
         return $this;
     }
 
     /**
-     * Get orderEmail
+     * Get email
      *
      * @return string 
      */
-    public function getOrderEmail()
+    public function getEmail()
     {
-        return $this->orderEmail;
+        return $this->email;
     }
 
     /**
-     * Set orderTel01
+     * Set tel01
      *
-     * @param string $orderTel01
+     * @param string $tel01
      * @return OrderTemp
      */
-    public function setOrderTel01($orderTel01)
+    public function setTel01($tel01)
     {
-        $this->orderTel01 = $orderTel01;
+        $this->tel01 = $tel01;
 
         return $this;
     }
 
     /**
-     * Get orderTel01
+     * Get tel01
      *
      * @return string 
      */
-    public function getOrderTel01()
+    public function getTel01()
     {
-        return $this->orderTel01;
+        return $this->tel01;
     }
 
     /**
-     * Set orderTel02
+     * Set tel02
      *
-     * @param string $orderTel02
+     * @param string $tel02
      * @return OrderTemp
      */
-    public function setOrderTel02($orderTel02)
+    public function setTel02($tel02)
     {
-        $this->orderTel02 = $orderTel02;
+        $this->tel02 = $tel02;
 
         return $this;
     }
 
     /**
-     * Get orderTel02
+     * Get tel02
      *
      * @return string 
      */
-    public function getOrderTel02()
+    public function getTel02()
     {
-        return $this->orderTel02;
+        return $this->tel02;
     }
 
     /**
-     * Set orderTel03
+     * Set tel03
      *
-     * @param string $orderTel03
+     * @param string $tel03
      * @return OrderTemp
      */
-    public function setOrderTel03($orderTel03)
+    public function setTel03($tel03)
     {
-        $this->orderTel03 = $orderTel03;
+        $this->tel03 = $tel03;
 
         return $this;
     }
 
     /**
-     * Get orderTel03
+     * Get tel03
      *
      * @return string 
      */
-    public function getOrderTel03()
+    public function getTel03()
     {
-        return $this->orderTel03;
+        return $this->tel03;
     }
 
     /**
-     * Set orderFax01
+     * Set fax01
      *
-     * @param string $orderFax01
+     * @param string $fax01
      * @return OrderTemp
      */
-    public function setOrderFax01($orderFax01)
+    public function setFax01($fax01)
     {
-        $this->orderFax01 = $orderFax01;
+        $this->fax01 = $fax01;
 
         return $this;
     }
 
     /**
-     * Get orderFax01
+     * Get fax01
      *
      * @return string 
      */
-    public function getOrderFax01()
+    public function getFax01()
     {
-        return $this->orderFax01;
+        return $this->fax01;
     }
 
     /**
-     * Set orderFax02
+     * Set fax02
      *
-     * @param string $orderFax02
+     * @param string $fax02
      * @return OrderTemp
      */
-    public function setOrderFax02($orderFax02)
+    public function setFax02($fax02)
     {
-        $this->orderFax02 = $orderFax02;
+        $this->fax02 = $fax02;
 
         return $this;
     }
 
     /**
-     * Get orderFax02
+     * Get fax02
      *
      * @return string 
      */
-    public function getOrderFax02()
+    public function getFax02()
     {
-        return $this->orderFax02;
+        return $this->fax02;
     }
 
     /**
-     * Set orderFax03
+     * Set fax03
      *
-     * @param string $orderFax03
+     * @param string $fax03
      * @return OrderTemp
      */
-    public function setOrderFax03($orderFax03)
+    public function setFax03($fax03)
     {
-        $this->orderFax03 = $orderFax03;
+        $this->fax03 = $fax03;
 
         return $this;
     }
 
     /**
-     * Get orderFax03
+     * Get fax03
      *
      * @return string 
      */
-    public function getOrderFax03()
+    public function getFax03()
     {
-        return $this->orderFax03;
+        return $this->fax03;
     }
 
     /**
-     * Set orderZip01
+     * Set zip01
      *
-     * @param string $orderZip01
+     * @param string $zip01
      * @return OrderTemp
      */
-    public function setOrderZip01($orderZip01)
+    public function setZip01($zip01)
     {
-        $this->orderZip01 = $orderZip01;
+        $this->zip01 = $zip01;
 
         return $this;
     }
 
     /**
-     * Get orderZip01
+     * Get zip01
      *
      * @return string 
      */
-    public function getOrderZip01()
+    public function getZip01()
     {
-        return $this->orderZip01;
+        return $this->zip01;
     }
 
     /**
-     * Set orderZip02
+     * Set zip02
      *
-     * @param string $orderZip02
+     * @param string $zip02
      * @return OrderTemp
      */
-    public function setOrderZip02($orderZip02)
+    public function setZip02($zip02)
     {
-        $this->orderZip02 = $orderZip02;
+        $this->zip02 = $zip02;
 
         return $this;
     }
 
     /**
-     * Get orderZip02
+     * Get zip02
      *
      * @return string 
      */
-    public function getOrderZip02()
+    public function getZip02()
     {
-        return $this->orderZip02;
+        return $this->zip02;
     }
 
     /**
-     * Set orderZipcode
+     * Set zipcode
      *
-     * @param string $orderZipcode
+     * @param string $zipcode
      * @return OrderTemp
      */
-    public function setOrderZipcode($orderZipcode)
+    public function setZipcode($zipcode)
     {
-        $this->orderZipcode = $orderZipcode;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
 
     /**
-     * Get orderZipcode
+     * Get zipcode
      *
      * @return string 
      */
-    public function getOrderZipcode()
+    public function getZipcode()
     {
-        return $this->orderZipcode;
+        return $this->zipcode;
     }
 
     /**
-     * Set orderCountryId
+     * Set addr01
      *
-     * @param integer $orderCountryId
+     * @param string $addr01
      * @return OrderTemp
      */
-    public function setOrderCountryId($orderCountryId)
+    public function setAddr01($addr01)
     {
-        $this->orderCountryId = $orderCountryId;
+        $this->addr01 = $addr01;
 
         return $this;
     }
 
     /**
-     * Get orderCountryId
-     *
-     * @return integer 
-     */
-    public function getOrderCountryId()
-    {
-        return $this->orderCountryId;
-    }
-
-    /**
-     * Set orderPref
-     *
-     * @param integer $orderPref
-     * @return OrderTemp
-     */
-    public function setOrderPref($orderPref)
-    {
-        $this->orderPref = $orderPref;
-
-        return $this;
-    }
-
-    /**
-     * Get orderPref
-     *
-     * @return integer 
-     */
-    public function getOrderPref()
-    {
-        return $this->orderPref;
-    }
-
-    /**
-     * Set orderAddr01
-     *
-     * @param string $orderAddr01
-     * @return OrderTemp
-     */
-    public function setOrderAddr01($orderAddr01)
-    {
-        $this->orderAddr01 = $orderAddr01;
-
-        return $this;
-    }
-
-    /**
-     * Get orderAddr01
+     * Get addr01
      *
      * @return string 
      */
-    public function getOrderAddr01()
+    public function getAddr01()
     {
-        return $this->orderAddr01;
+        return $this->addr01;
     }
 
     /**
-     * Set orderAddr02
+     * Set addr02
      *
-     * @param string $orderAddr02
+     * @param string $addr02
      * @return OrderTemp
      */
-    public function setOrderAddr02($orderAddr02)
+    public function setAddr02($addr02)
     {
-        $this->orderAddr02 = $orderAddr02;
+        $this->addr02 = $addr02;
 
         return $this;
     }
 
     /**
-     * Get orderAddr02
+     * Get addr02
      *
      * @return string 
      */
-    public function getOrderAddr02()
+    public function getAddr02()
     {
-        return $this->orderAddr02;
+        return $this->addr02;
     }
 
     /**
-     * Set orderSex
+     * Set birth
      *
-     * @param integer $orderSex
+     * @param \DateTime $birth
      * @return OrderTemp
      */
-    public function setOrderSex($orderSex)
+    public function setBirth($birth)
     {
-        $this->orderSex = $orderSex;
+        $this->birth = $birth;
 
         return $this;
     }
 
     /**
-     * Get orderSex
-     *
-     * @return integer 
-     */
-    public function getOrderSex()
-    {
-        return $this->orderSex;
-    }
-
-    /**
-     * Set orderBirth
-     *
-     * @param \DateTime $orderBirth
-     * @return OrderTemp
-     */
-    public function setOrderBirth($orderBirth)
-    {
-        $this->orderBirth = $orderBirth;
-
-        return $this;
-    }
-
-    /**
-     * Get orderBirth
+     * Get birth
      *
      * @return \DateTime 
      */
-    public function getOrderBirth()
+    public function getBirth()
     {
-        return $this->orderBirth;
-    }
-
-    /**
-     * Set orderJob
-     *
-     * @param integer $orderJob
-     * @return OrderTemp
-     */
-    public function setOrderJob($orderJob)
-    {
-        $this->orderJob = $orderJob;
-
-        return $this;
-    }
-
-    /**
-     * Get orderJob
-     *
-     * @return integer 
-     */
-    public function getOrderJob()
-    {
-        return $this->orderJob;
+        return $this->birth;
     }
 
     /**
@@ -914,49 +799,26 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delivId
-     *
-     * @param integer $delivId
-     * @return OrderTemp
-     */
-    public function setDelivId($delivId)
-    {
-        $this->delivId = $delivId;
-
-        return $this;
-    }
-
-    /**
-     * Get delivId
-     *
-     * @return integer 
-     */
-    public function getDelivId()
-    {
-        return $this->delivId;
-    }
-
-    /**
-     * Set delivFee
+     * Set deliv_fee
      *
      * @param string $delivFee
      * @return OrderTemp
      */
     public function setDelivFee($delivFee)
     {
-        $this->delivFee = $delivFee;
+        $this->deliv_fee = $delivFee;
 
         return $this;
     }
 
     /**
-     * Get delivFee
+     * Get deliv_fee
      *
      * @return string 
      */
     public function getDelivFee()
     {
-        return $this->delivFee;
+        return $this->deliv_fee;
     }
 
     /**
@@ -983,72 +845,72 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set usePoint
+     * Set use_point
      *
      * @param string $usePoint
      * @return OrderTemp
      */
     public function setUsePoint($usePoint)
     {
-        $this->usePoint = $usePoint;
+        $this->use_point = $usePoint;
 
         return $this;
     }
 
     /**
-     * Get usePoint
+     * Get use_point
      *
      * @return string 
      */
     public function getUsePoint()
     {
-        return $this->usePoint;
+        return $this->use_point;
     }
 
     /**
-     * Set addPoint
+     * Set add_point
      *
      * @param string $addPoint
      * @return OrderTemp
      */
     public function setAddPoint($addPoint)
     {
-        $this->addPoint = $addPoint;
+        $this->add_point = $addPoint;
 
         return $this;
     }
 
     /**
-     * Get addPoint
+     * Get add_point
      *
      * @return string 
      */
     public function getAddPoint()
     {
-        return $this->addPoint;
+        return $this->add_point;
     }
 
     /**
-     * Set birthPoint
+     * Set birth_point
      *
      * @param string $birthPoint
      * @return OrderTemp
      */
     public function setBirthPoint($birthPoint)
     {
-        $this->birthPoint = $birthPoint;
+        $this->birth_point = $birthPoint;
 
         return $this;
     }
 
     /**
-     * Get birthPoint
+     * Get birth_point
      *
      * @return string 
      */
     public function getBirthPoint()
     {
-        return $this->birthPoint;
+        return $this->birth_point;
     }
 
     /**
@@ -1098,72 +960,49 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set paymentTotal
+     * Set payment_total
      *
      * @param string $paymentTotal
      * @return OrderTemp
      */
     public function setPaymentTotal($paymentTotal)
     {
-        $this->paymentTotal = $paymentTotal;
+        $this->payment_total = $paymentTotal;
 
         return $this;
     }
 
     /**
-     * Get paymentTotal
+     * Get payment_total
      *
      * @return string 
      */
     public function getPaymentTotal()
     {
-        return $this->paymentTotal;
+        return $this->payment_total;
     }
 
     /**
-     * Set paymentId
-     *
-     * @param integer $paymentId
-     * @return OrderTemp
-     */
-    public function setPaymentId($paymentId)
-    {
-        $this->paymentId = $paymentId;
-
-        return $this;
-    }
-
-    /**
-     * Get paymentId
-     *
-     * @return integer 
-     */
-    public function getPaymentId()
-    {
-        return $this->paymentId;
-    }
-
-    /**
-     * Set paymentMethod
+     * Set payment_method
      *
      * @param string $paymentMethod
      * @return OrderTemp
      */
     public function setPaymentMethod($paymentMethod)
     {
-        $this->paymentMethod = $paymentMethod;
+        $this->payment_method = $paymentMethod;
 
         return $this;
     }
 
     /**
-     * Get paymentMethod
+     * Get payment_method
      *
      * @return string 
      */
     public function getPaymentMethod()
     {
-        return $this->paymentMethod;
+        return $this->payment_method;
     }
 
     /**
@@ -1190,26 +1029,26 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set mailFlag
+     * Set mail_flag
      *
      * @param integer $mailFlag
      * @return OrderTemp
      */
     public function setMailFlag($mailFlag)
     {
-        $this->mailFlag = $mailFlag;
+        $this->mail_flag = $mailFlag;
 
         return $this;
     }
 
     /**
-     * Get mailFlag
+     * Get mail_flag
      *
      * @return integer 
      */
     public function getMailFlag()
     {
-        return $this->mailFlag;
+        return $this->mail_flag;
     }
 
     /**
@@ -1236,164 +1075,118 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set delivCheck
+     * Set deliv_check
      *
      * @param integer $delivCheck
      * @return OrderTemp
      */
     public function setDelivCheck($delivCheck)
     {
-        $this->delivCheck = $delivCheck;
+        $this->deliv_check = $delivCheck;
 
         return $this;
     }
 
     /**
-     * Get delivCheck
+     * Get deliv_check
      *
      * @return integer 
      */
     public function getDelivCheck()
     {
-        return $this->delivCheck;
+        return $this->deliv_check;
     }
 
     /**
-     * Set pointCheck
+     * Set point_check
      *
      * @param integer $pointCheck
      * @return OrderTemp
      */
     public function setPointCheck($pointCheck)
     {
-        $this->pointCheck = $pointCheck;
+        $this->point_check = $pointCheck;
 
         return $this;
     }
 
     /**
-     * Get pointCheck
+     * Get point_check
      *
      * @return integer 
      */
     public function getPointCheck()
     {
-        return $this->pointCheck;
+        return $this->point_check;
     }
 
     /**
-     * Set createDate
+     * Set create_date
      *
      * @param \DateTime $createDate
      * @return OrderTemp
      */
     public function setCreateDate($createDate)
     {
-        $this->createDate = $createDate;
+        $this->create_date = $createDate;
 
         return $this;
     }
 
     /**
-     * Get createDate
+     * Get create_date
      *
      * @return \DateTime 
      */
     public function getCreateDate()
     {
-        return $this->createDate;
+        return $this->create_date;
     }
 
     /**
-     * Set updateDate
+     * Set update_date
      *
      * @param \DateTime $updateDate
      * @return OrderTemp
      */
     public function setUpdateDate($updateDate)
     {
-        $this->updateDate = $updateDate;
+        $this->update_date = $updateDate;
 
         return $this;
     }
 
     /**
-     * Get updateDate
+     * Get update_date
      *
      * @return \DateTime 
      */
     public function getUpdateDate()
     {
-        return $this->updateDate;
+        return $this->update_date;
     }
 
     /**
-     * Set deviceTypeId
-     *
-     * @param integer $deviceTypeId
-     * @return OrderTemp
-     */
-    public function setDeviceTypeId($deviceTypeId)
-    {
-        $this->deviceTypeId = $deviceTypeId;
-
-        return $this;
-    }
-
-    /**
-     * Get deviceTypeId
-     *
-     * @return integer 
-     */
-    public function getDeviceTypeId()
-    {
-        return $this->deviceTypeId;
-    }
-
-    /**
-     * Set delFlg
+     * Set del_flg
      *
      * @param integer $delFlg
      * @return OrderTemp
      */
     public function setDelFlg($delFlg)
     {
-        $this->delFlg = $delFlg;
+        $this->del_flg = $delFlg;
 
         return $this;
     }
 
     /**
-     * Get delFlg
+     * Get del_flg
      *
      * @return integer 
      */
     public function getDelFlg()
     {
-        return $this->delFlg;
-    }
-
-    /**
-     * Set orderId
-     *
-     * @param integer $orderId
-     * @return OrderTemp
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get orderId
-     *
-     * @return integer 
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
+        return $this->del_flg;
     }
 
     /**
@@ -1647,5 +1440,212 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     public function getSession()
     {
         return $this->session;
+    }
+
+    /**
+     * Set Customer
+     *
+     * @param \Eccube\Entity\Customer $customer
+     * @return OrderTemp
+     */
+    public function setCustomer(\Eccube\Entity\Customer $customer = null)
+    {
+        $this->Customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get Customer
+     *
+     * @return \Eccube\Entity\Customer 
+     */
+    public function getCustomer()
+    {
+        return $this->Customer;
+    }
+
+    /**
+     * Set Country
+     *
+     * @param \Eccube\Entity\Master\Country $country
+     * @return OrderTemp
+     */
+    public function setCountry(\Eccube\Entity\Master\Country $country = null)
+    {
+        $this->Country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get Country
+     *
+     * @return \Eccube\Entity\Master\Country 
+     */
+    public function getCountry()
+    {
+        return $this->Country;
+    }
+
+    /**
+     * Set Pref
+     *
+     * @param \Eccube\Entity\Master\Pref $pref
+     * @return OrderTemp
+     */
+    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+    {
+        $this->Pref = $pref;
+
+        return $this;
+    }
+
+    /**
+     * Get Pref
+     *
+     * @return \Eccube\Entity\Master\Pref 
+     */
+    public function getPref()
+    {
+        return $this->Pref;
+    }
+
+    /**
+     * Set Sex
+     *
+     * @param \Eccube\Entity\Master\Sex $sex
+     * @return OrderTemp
+     */
+    public function setSex(\Eccube\Entity\Master\Sex $sex = null)
+    {
+        $this->Sex = $sex;
+
+        return $this;
+    }
+
+    /**
+     * Get Sex
+     *
+     * @return \Eccube\Entity\Master\Sex 
+     */
+    public function getSex()
+    {
+        return $this->Sex;
+    }
+
+    /**
+     * Set Job
+     *
+     * @param \Eccube\Entity\Master\Job $job
+     * @return OrderTemp
+     */
+    public function setJob(\Eccube\Entity\Master\Job $job = null)
+    {
+        $this->Job = $job;
+
+        return $this;
+    }
+
+    /**
+     * Get Job
+     *
+     * @return \Eccube\Entity\Master\Job 
+     */
+    public function getJob()
+    {
+        return $this->Job;
+    }
+
+    /**
+     * Set Deliv
+     *
+     * @param \Eccube\Entity\Deliv $deliv
+     * @return OrderTemp
+     */
+    public function setDeliv(\Eccube\Entity\Deliv $deliv = null)
+    {
+        $this->Deliv = $deliv;
+
+        return $this;
+    }
+
+    /**
+     * Get Deliv
+     *
+     * @return \Eccube\Entity\Deliv 
+     */
+    public function getDeliv()
+    {
+        return $this->Deliv;
+    }
+
+    /**
+     * Set Payment
+     *
+     * @param \Eccube\Entity\Payment $payment
+     * @return OrderTemp
+     */
+    public function setPayment(\Eccube\Entity\Payment $payment = null)
+    {
+        $this->Payment = $payment;
+
+        return $this;
+    }
+
+    /**
+     * Get Payment
+     *
+     * @return \Eccube\Entity\Payment 
+     */
+    public function getPayment()
+    {
+        return $this->Payment;
+    }
+
+    /**
+     * Set DeviceType
+     *
+     * @param \Eccube\Entity\Master\DeviceType $deviceType
+     * @return OrderTemp
+     */
+    public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
+    {
+        $this->DeviceType = $deviceType;
+
+        return $this;
+    }
+
+    /**
+     * Get DeviceType
+     *
+     * @return \Eccube\Entity\Master\DeviceType 
+     */
+    public function getDeviceType()
+    {
+        return $this->DeviceType;
+    }
+
+    /**
+     * Set Order
+     *
+     * @param \Eccube\Entity\Order $order
+     * @return OrderTemp
+     */
+    public function setOrder(\Eccube\Entity\Order $order = null)
+    {
+        $this->Order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order 
+     */
+    public function getOrder()
+    {
+        return $this->Order;
     }
 }

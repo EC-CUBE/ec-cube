@@ -12,42 +12,27 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $orderDetailId;
-
-    /**
-     * @var integer
-     */
-    private $orderId;
-
-    /**
-     * @var integer
-     */
-    private $productId;
-
-    /**
-     * @var integer
-     */
-    private $productClassId;
+    private $id;
 
     /**
      * @var string
      */
-    private $productName;
+    private $product_name;
 
     /**
      * @var string
      */
-    private $productCode;
+    private $product_code;
 
     /**
      * @var string
      */
-    private $classcategoryName1;
+    private $classcategory_name1;
 
     /**
      * @var string
      */
-    private $classcategoryName2;
+    private $classcategory_name2;
 
     /**
      * @var string
@@ -62,188 +47,134 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $pointRate;
+    private $point_rate;
 
     /**
      * @var string
      */
-    private $taxRate;
+    private $tax_rate;
 
     /**
      * @var integer
      */
-    private $taxRule;
+    private $tax_rule;
+
+    /**
+     * @var \Eccube\Entity\Order
+     */
+    private $Order;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
+
+    /**
+     * @var \Eccube\Entity\ProductClass
+     */
+    private $ProductClass;
 
 
     /**
-     * Get orderDetailId
+     * Get id
      *
      * @return integer 
      */
-    public function getOrderDetailId()
+    public function getId()
     {
-        return $this->orderDetailId;
+        return $this->id;
     }
 
     /**
-     * Set orderId
-     *
-     * @param integer $orderId
-     * @return OrderDetail
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get orderId
-     *
-     * @return integer 
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
-    }
-
-    /**
-     * Set productId
-     *
-     * @param integer $productId
-     * @return OrderDetail
-     */
-    public function setProductId($productId)
-    {
-        $this->productId = $productId;
-
-        return $this;
-    }
-
-    /**
-     * Get productId
-     *
-     * @return integer 
-     */
-    public function getProductId()
-    {
-        return $this->productId;
-    }
-
-    /**
-     * Set productClassId
-     *
-     * @param integer $productClassId
-     * @return OrderDetail
-     */
-    public function setProductClassId($productClassId)
-    {
-        $this->productClassId = $productClassId;
-
-        return $this;
-    }
-
-    /**
-     * Get productClassId
-     *
-     * @return integer 
-     */
-    public function getProductClassId()
-    {
-        return $this->productClassId;
-    }
-
-    /**
-     * Set productName
+     * Set product_name
      *
      * @param string $productName
      * @return OrderDetail
      */
     public function setProductName($productName)
     {
-        $this->productName = $productName;
+        $this->product_name = $productName;
 
         return $this;
     }
 
     /**
-     * Get productName
+     * Get product_name
      *
      * @return string 
      */
     public function getProductName()
     {
-        return $this->productName;
+        return $this->product_name;
     }
 
     /**
-     * Set productCode
+     * Set product_code
      *
      * @param string $productCode
      * @return OrderDetail
      */
     public function setProductCode($productCode)
     {
-        $this->productCode = $productCode;
+        $this->product_code = $productCode;
 
         return $this;
     }
 
     /**
-     * Get productCode
+     * Get product_code
      *
      * @return string 
      */
     public function getProductCode()
     {
-        return $this->productCode;
+        return $this->product_code;
     }
 
     /**
-     * Set classcategoryName1
+     * Set classcategory_name1
      *
      * @param string $classcategoryName1
      * @return OrderDetail
      */
     public function setClasscategoryName1($classcategoryName1)
     {
-        $this->classcategoryName1 = $classcategoryName1;
+        $this->classcategory_name1 = $classcategoryName1;
 
         return $this;
     }
 
     /**
-     * Get classcategoryName1
+     * Get classcategory_name1
      *
      * @return string 
      */
     public function getClasscategoryName1()
     {
-        return $this->classcategoryName1;
+        return $this->classcategory_name1;
     }
 
     /**
-     * Set classcategoryName2
+     * Set classcategory_name2
      *
      * @param string $classcategoryName2
      * @return OrderDetail
      */
     public function setClasscategoryName2($classcategoryName2)
     {
-        $this->classcategoryName2 = $classcategoryName2;
+        $this->classcategory_name2 = $classcategoryName2;
 
         return $this;
     }
 
     /**
-     * Get classcategoryName2
+     * Get classcategory_name2
      *
      * @return string 
      */
     public function getClasscategoryName2()
     {
-        return $this->classcategoryName2;
+        return $this->classcategory_name2;
     }
 
     /**
@@ -293,71 +224,140 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set pointRate
+     * Set point_rate
      *
      * @param string $pointRate
      * @return OrderDetail
      */
     public function setPointRate($pointRate)
     {
-        $this->pointRate = $pointRate;
+        $this->point_rate = $pointRate;
 
         return $this;
     }
 
     /**
-     * Get pointRate
+     * Get point_rate
      *
      * @return string 
      */
     public function getPointRate()
     {
-        return $this->pointRate;
+        return $this->point_rate;
     }
 
     /**
-     * Set taxRate
+     * Set tax_rate
      *
      * @param string $taxRate
      * @return OrderDetail
      */
     public function setTaxRate($taxRate)
     {
-        $this->taxRate = $taxRate;
+        $this->tax_rate = $taxRate;
 
         return $this;
     }
 
     /**
-     * Get taxRate
+     * Get tax_rate
      *
      * @return string 
      */
     public function getTaxRate()
     {
-        return $this->taxRate;
+        return $this->tax_rate;
     }
 
     /**
-     * Set taxRule
+     * Set tax_rule
      *
      * @param integer $taxRule
      * @return OrderDetail
      */
     public function setTaxRule($taxRule)
     {
-        $this->taxRule = $taxRule;
+        $this->tax_rule = $taxRule;
 
         return $this;
     }
 
     /**
-     * Get taxRule
+     * Get tax_rule
      *
      * @return integer 
      */
     public function getTaxRule()
     {
-        return $this->taxRule;
+        return $this->tax_rule;
+    }
+
+    /**
+     * Set Order
+     *
+     * @param \Eccube\Entity\Order $order
+     * @return OrderDetail
+     */
+    public function setOrder(\Eccube\Entity\Order $order)
+    {
+        $this->Order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order 
+     */
+    public function getOrder()
+    {
+        return $this->Order;
+    }
+
+    /**
+     * Set Product
+     *
+     * @param \Eccube\Entity\Product $product
+     * @return OrderDetail
+     */
+    public function setProduct(\Eccube\Entity\Product $product)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->Product;
+    }
+
+    /**
+     * Set ProductClass
+     *
+     * @param \Eccube\Entity\ProductClass $productClass
+     * @return OrderDetail
+     */
+    public function setProductClass(\Eccube\Entity\ProductClass $productClass)
+    {
+        $this->ProductClass = $productClass;
+
+        return $this;
+    }
+
+    /**
+     * Get ProductClass
+     *
+     * @return \Eccube\Entity\ProductClass 
+     */
+    public function getProductClass()
+    {
+        return $this->ProductClass;
     }
 }

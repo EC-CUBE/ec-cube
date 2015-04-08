@@ -1,0 +1,39 @@
+Eccube\Entity\ApiAccount:
+    type: entity
+    table: dtb_api_account
+    repositoryClass: Eccube\Repository\ApiAccountRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: api_account_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        api_access_key:
+            type: text
+            nullable: false
+        api_secret_key:
+            type: text
+            nullable: false
+        enable:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    lifecycleCallbacks: {  }
