@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PageLayout
  */
-class PageLayout
+class PageLayout extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
@@ -22,7 +22,7 @@ class PageLayout
     /**
      * @var string
      */
-    private $page_name;
+    private $name;
 
     /**
      * @var string
@@ -78,6 +78,11 @@ class PageLayout
      * @var \DateTime
      */
     private $update_date;
+
+    /**
+     * @var string
+     */
+    private $meta_robots;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -139,26 +144,26 @@ class PageLayout
     }
 
     /**
-     * Set page_name
+     * Set name
      *
-     * @param string $pageName
+     * @param string $name
      * @return PageLayout
      */
-    public function setPageName($pageName)
+    public function setName($name)
     {
-        $this->page_name = $pageName;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get page_name
+     * Get name
      *
      * @return string 
      */
-    public function getPageName()
+    public function getName()
     {
-        return $this->page_name;
+        return $this->name;
     }
 
     /**
@@ -412,6 +417,29 @@ class PageLayout
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set meta_robots
+     *
+     * @param string $metaRobots
+     * @return PageLayout
+     */
+    public function setMetaRobots($metaRobots)
+    {
+        $this->meta_robots = $metaRobots;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_robots
+     *
+     * @return string 
+     */
+    public function getMetaRobots()
+    {
+        return $this->meta_robots;
     }
 
     /**

@@ -1,0 +1,38 @@
+Eccube\Entity\CustomerFavoriteProduct:
+    type: entity
+    table: dtb_customer_favorite_products
+    repositoryClass: Eccube\Repository\CustomerFavoriteProductRepository
+    id:
+        customer_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        product_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    manyToOne:
+        Customer:
+            targetEntity: Eccube\Entity\Customer
+            inversedBy: CustomerFavoriteProducts
+            joinColumn:
+                name: customer_id
+                referencedColumnName: customer_id
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: CustomerFavoriteProducts
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+    lifecycleCallbacks: {  }

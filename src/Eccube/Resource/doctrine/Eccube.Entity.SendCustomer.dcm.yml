@@ -1,0 +1,31 @@
+Eccube\Entity\SendCustomer:
+    type: entity
+    table: dtb_send_customer
+    repositoryClass: Eccube\Repository\SendCustomerRepository
+    indexes:
+        dtb_send_customer_customer_id_key:
+            columns:
+                - customer_id
+    id:
+        send_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        customer_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        email:
+            type: text
+            nullable: true
+        name:
+            type: text
+            nullable: true
+        send_flag:
+            type: smallint
+            nullable: true
+            unsigned: false
+    lifecycleCallbacks: {  }

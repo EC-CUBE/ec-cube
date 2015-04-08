@@ -1,0 +1,49 @@
+Eccube\Entity\ModuleUpdateLog:
+    type: entity
+    table: dtb_module_update_logs
+    repositoryClass: Eccube\Repository\ModuleUpdateLogRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: log_id
+            generator:
+                strategy: AUTO
+    fields:
+#        module_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        buckup_path:
+            type: text
+            nullable: true
+        error_flg:
+            type: smallint
+            nullable: true
+            unsigned: false
+            default: '0'
+        error:
+            type: text
+            nullable: true
+        ok:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    manyToOne:
+        Module:
+            targetEntity: Eccube\Entity\Module
+            inversedBy: ModuleUpdateLogs
+            joinColumn:
+                name: module_id
+                referencedColumnName: module_id
+                nullable: false
+    lifecycleCallbacks: {  }

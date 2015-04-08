@@ -1,0 +1,64 @@
+Eccube\Entity\Member:
+    type: entity
+    table: dtb_member
+    repositoryClass: Eccube\Repository\MemberRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: member_id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        department:
+            type: text
+            nullable: true
+        login_id:
+            type: text
+            nullable: false
+        password:
+            type: text
+            nullable: false
+        salt:
+            type: text
+            nullable: false
+        authority:
+            type: smallint
+            nullable: false
+            unsigned: false
+        rank:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+        work:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        creator_id:
+            type: integer
+            nullable: false
+            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        login_date:
+            type: datetime
+            nullable: true
+    lifecycleCallbacks: {  }

@@ -1,0 +1,64 @@
+Eccube\Entity\BestProduct:
+    type: entity
+    table: dtb_best_products
+    repositoryClass: Eccube\Repository\BestProductRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: best_id
+            generator:
+                strategy: AUTO
+    fields:
+        category_id:
+            type: integer
+            nullable: false
+            unsigned: false
+        rank:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+#        product_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        title:
+            type: text
+            nullable: true
+        comment:
+            type: text
+            nullable: true
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: BestProducts
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: BestProducts
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+    lifecycleCallbacks: {  }

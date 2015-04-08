@@ -1,0 +1,27 @@
+Eccube\Entity\DelivTime:
+    type: entity
+    table: dtb_delivtime
+    repositoryClass: Eccube\Repository\DelivTimeRepository
+    id:
+        deliv_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        time_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        deliv_time:
+            type: text
+            nullable: false
+    manyToOne:
+        Deliv:
+            targetEntity: Eccube\Entity\Deliv
+            inversedBy: DelivTimes
+            joinColumn:
+                name: deliv_id
+                referencedColumnName: deliv_id
+    lifecycleCallbacks: {  }

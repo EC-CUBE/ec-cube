@@ -1,0 +1,95 @@
+Eccube\Entity\OtherDeliv:
+    type: entity
+    table: dtb_other_deliv
+    repositoryClass: Eccube\Repository\OtherDelivRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: other_deliv_id
+            generator:
+                strategy: AUTO
+    fields:
+#        customer_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        name01:
+            type: text
+            nullable: true
+        name02:
+            type: text
+            nullable: true
+        kana01:
+            type: text
+            nullable: true
+        kana02:
+            type: text
+            nullable: true
+        company_name:
+            type: text
+            nullable: true
+        zip01:
+            type: text
+            nullable: true
+        zip02:
+            type: text
+            nullable: true
+        zipcode:
+            type: text
+            nullable: true
+#        country_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+#        pref:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+        addr01:
+            type: text
+            nullable: true
+        addr02:
+            type: text
+            nullable: true
+        tel01:
+            type: text
+            nullable: true
+        tel02:
+            type: text
+            nullable: true
+        tel03:
+            type: text
+            nullable: true
+        fax01:
+            type: text
+            nullable: true
+        fax02:
+            type: text
+            nullable: true
+        fax03:
+            type: text
+            nullable: true
+    manyToOne:
+        Customer:
+            targetEntity: Eccube\Entity\Customer
+            inversedBy: OtherDelivs
+            joinColumn:
+                name: customer_id
+                referencedColumnName: customer_id
+                nullable: false
+        Country:
+            targetEntity: Eccube\Entity\Master\Country
+            inversedBy: OtherDelivs
+            joinColumn:
+                name: country_id
+                referencedColumnName: id
+        Pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            inversedBy: OtherDelivs
+            joinColumn:
+                name: pref
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

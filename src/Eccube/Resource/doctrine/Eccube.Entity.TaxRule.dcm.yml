@@ -1,0 +1,73 @@
+Eccube\Entity\TaxRule:
+    type: entity
+    table: dtb_tax_rule
+    repositoryClass: Eccube\Repository\TaxRuleRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: tax_rule_id
+            generator:
+                strategy: AUTO
+    fields:
+        country_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+        pref_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+        product_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+        product_class_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+        calc_rule:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        tax_rate:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '8'
+        tax_adjust:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+        apply_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        member_id:
+            type: integer
+            nullable: false
+            unsigned: false
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        create_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    lifecycleCallbacks: {  }

@@ -20,7 +20,7 @@ class HelpController extends AbstractController
 
         // todo mtb_*を処理する共通クラス
         $pref = $app['orm.em']
-            ->getRepository('Eccube\Entity\Pref')
+            ->getRepository('Eccube\Entity\Master\Pref')
             ->findMasterData();
 
         return $app['twig']->render('Help/tradelaw.twig', compact('title', 'baseInfo', 'pref'));
@@ -44,7 +44,7 @@ class HelpController extends AbstractController
             ->getBaseInfo();
 
         $pref = $app['orm.em']
-            ->getRepository('Eccube\Entity\Pref')
+            ->getRepository('Eccube\Entity\Master\Pref')
             ->findMasterData();
 
         return $app['twig']->render('Help/about.twig', compact('title', 'baseInfo', 'pref'));
