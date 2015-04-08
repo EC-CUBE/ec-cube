@@ -1,0 +1,74 @@
+Eccube\Entity\Plugin:
+    type: entity
+    table: dtb_plugin
+    repositoryClass: Eccube\Repository\PluginRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: plugin_id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: false
+            column: plugin_name
+        code:
+            type: text
+            nullable: false
+            column: plugin_code
+        class_name:
+            type: text
+            nullable: false
+        author:
+            type: text
+            nullable: true
+        author_site_url:
+            type: text
+            nullable: true
+        plugin_site_url:
+            type: text
+            nullable: true
+        plugin_version:
+            type: text
+            nullable: true
+        compliant_version:
+            type: text
+            nullable: true
+        plugin_description:
+            type: text
+            nullable: true
+        priority:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+        enable:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        free_field1:
+            type: text
+            nullable: true
+        free_field2:
+            type: text
+            nullable: true
+        free_field3:
+            type: text
+            nullable: true
+        free_field4:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    lifecycleCallbacks: {  }

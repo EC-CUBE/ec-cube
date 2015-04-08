@@ -9,8 +9,21 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Customer
  */
-class Customer implements UserInterface
+class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+    }
     /**
      * @var integer
      */
@@ -39,6 +52,11 @@ class Customer implements UserInterface
     /**
      * @var string
      */
+    private $company_name;
+
+    /**
+     * @var string
+     */
     private $zip01;
 
     /**
@@ -47,9 +65,9 @@ class Customer implements UserInterface
     private $zip02;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $pref_id;
+    private $zipcode;
 
     /**
      * @var string
@@ -100,16 +118,6 @@ class Customer implements UserInterface
      * @var string
      */
     private $fax03;
-
-    /**
-     * @var integer
-     */
-    private $gender;
-
-    /**
-     * @var integer
-     */
-    private $job;
 
     /**
      * @var \DateTime
@@ -202,23 +210,36 @@ class Customer implements UserInterface
     private $mailmaga_flg;
 
     /**
-     * @var \Eccube\Entity\Pref
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $CustomerFavoriteProducts;
+
+    /**
+     * @var \Eccube\Entity\Master\sex
+     */
+    private sex;
+
+    /**
+     * @var \Eccube\Entity\Master\Job
+     */
+    private $Job;
+
+    /**
+     * @var \Eccube\Entity\Master\Country
+     */
+    private $Country;
+
+    /**
+     * @var \Eccube\Entity\Master\Pref
      */
     private $Pref;
 
-
-    public function getRoles()
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
-        return array('ROLE_USER');
-    }
-
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
+        $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -324,6 +345,29 @@ class Customer implements UserInterface
     }
 
     /**
+     * Set company_name
+     *
+     * @param string $companyName
+     * @return Customer
+     */
+    public function setCompanyName($companyName)
+    {
+        $this->company_name = $companyName;
+
+        return $this;
+    }
+
+    /**
+     * Get company_name
+     *
+     * @return string 
+     */
+    public function getCompanyName()
+    {
+        return $this->company_name;
+    }
+
+    /**
      * Set zip01
      *
      * @param string $zip01
@@ -370,14 +414,14 @@ class Customer implements UserInterface
     }
 
     /**
-     * Set pref_id
+     * Set zipcode
      *
-     * @param integer $prefId
+     * @param string $zipcode
      * @return Customer
      */
-    public function setPrefId($prefId)
+    public function setZipcode($zipcode)
     {
-        $this->pref_id = $prefId;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
@@ -620,52 +664,6 @@ class Customer implements UserInterface
     public function getFax03()
     {
         return $this->fax03;
-    }
-
-    /**
-     * Set gender
-     *
-     * @param integer $gender
-     * @return Customer
-     */
-    public function setGender($gender)
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
-    /**
-     * Get gender
-     *
-     * @return integer 
-     */
-    public function getGender()
-    {
-        return $this->gender;
-    }
-
-    /**
-     * Set job
-     *
-     * @param integer $job
-     * @return Customer
-     */
-    public function setJob($job)
-    {
-        $this->job = $job;
-
-        return $this;
-    }
-
-    /**
-     * Get job
-     *
-     * @return integer 
-     */
-    public function getJob()
-    {
-        return $this->job;
     }
 
     /**
@@ -1083,12 +1081,114 @@ class Customer implements UserInterface
     }
 
     /**
-     * Set Pref
+     * Add CustomerFavoriteProducts
      *
-     * @param \Eccube\Entity\Pref $pref
+     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
      * @return Customer
      */
-    public function setPref(\Eccube\Entity\Pref $pref = null)
+    public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
+    {
+        $this->CustomerFavoriteProducts[] = $customerFavoriteProducts;
+
+        return $this;
+    }
+
+    /**
+     * Remove CustomerFavoriteProducts
+     *
+     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
+     */
+    public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
+    {
+        $this->CustomerFavoriteProducts->removeElement($customerFavoriteProducts);
+    }
+
+    /**
+     * Get CustomerFavoriteProducts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCustomerFavoriteProducts()
+    {
+        return $this->CustomerFavoriteProducts;
+    }
+
+    /**
+     * Set Sex
+     *
+     * @param \Eccube\Entity\Master\Sex $sex
+     * @return Customer
+     */
+    public function setSex(\Eccube\Entity\Master\Sex $sex = null)
+    {
+        $this->Sex = $sex;
+
+        return $this;
+    }
+
+    /**
+     * Get Sex
+     *
+     * @return \Eccube\Entity\Master\Sex 
+     */
+    public function getSex()
+    {
+        return $this->Sex;
+    }
+
+    /**
+     * Set Job
+     *
+     * @param \Eccube\Entity\Master\Job $job
+     * @return Customer
+     */
+    public function setJob(\Eccube\Entity\Master\Job $job = null)
+    {
+        $this->Job = $job;
+
+        return $this;
+    }
+
+    /**
+     * Get Job
+     *
+     * @return \Eccube\Entity\Master\Job 
+     */
+    public function getJob()
+    {
+        return $this->Job;
+    }
+
+    /**
+     * Set Country
+     *
+     * @param \Eccube\Entity\Master\Country $country
+     * @return Customer
+     */
+    public function setCountry(\Eccube\Entity\Master\Country $country = null)
+    {
+        $this->Country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get Country
+     *
+     * @return \Eccube\Entity\Master\Country 
+     */
+    public function getCountry()
+    {
+        return $this->Country;
+    }
+
+    /**
+     * Set Pref
+     *
+     * @param \Eccube\Entity\Master\Pref $pref
+     * @return Customer
+     */
+    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
     {
         $this->Pref = $pref;
 
@@ -1098,25 +1198,10 @@ class Customer implements UserInterface
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Pref 
+     * @return \Eccube\Entity\Master\Pref 
      */
     public function getPref()
     {
         return $this->Pref;
-    }
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreateDateAuto()
-    {
-        // Add your code here
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdateDateAuto()
-    {
-        // Add your code here
     }
 }

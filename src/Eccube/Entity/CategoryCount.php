@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CategoryCount
  */
-class CategoryCount
+class CategoryCount extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
      */
-    private $id;
+    private $category_id;
 
     /**
      * @var integer
@@ -24,15 +24,20 @@ class CategoryCount
      */
     private $create_date;
 
+    /**
+     * @var \Eccube\Entity\Category
+     */
+    private $Category;
+
 
     /**
-     * Get id
+     * Get category_id
      *
      * @return integer 
      */
-    public function getId()
+    public function getCategoryId()
     {
-        return $this->id;
+        return $this->category_id;
     }
 
     /**
@@ -79,5 +84,28 @@ class CategoryCount
     public function getCreateDate()
     {
         return $this->create_date;
+    }
+
+    /**
+     * Set Category
+     *
+     * @param \Eccube\Entity\Category $category
+     * @return CategoryCount
+     */
+    public function setCategory(\Eccube\Entity\Category $category = null)
+    {
+        $this->Category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get Category
+     *
+     * @return \Eccube\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->Category;
     }
 }

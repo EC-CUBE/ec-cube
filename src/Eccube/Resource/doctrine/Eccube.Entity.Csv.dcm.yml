@@ -1,0 +1,56 @@
+Eccube\Entity\Csv:
+    type: entity
+    table: dtb_csv
+    repositoryClass: Eccube\Repository\CsvRepository
+    id:
+        'no':
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        csv_id:
+            type: integer
+            nullable: false
+            unsigned: false
+        col:
+            type: text
+            nullable: true
+        disp_name:
+            type: text
+            nullable: true
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        rw_flg:
+            type: smallint
+            nullable: true
+            unsigned: false
+            default: '1'
+        status:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        mb_convert_kana_option:
+            type: text
+            nullable: true
+        size_const_type:
+            type: text
+            nullable: true
+        error_check_types:
+            type: text
+            nullable: true
+    lifecycleCallbacks: {  }

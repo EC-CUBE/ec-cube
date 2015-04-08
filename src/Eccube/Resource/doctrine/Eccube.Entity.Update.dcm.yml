@@ -1,0 +1,57 @@
+Eccube\Entity\Update:
+    type: entity
+    table: dtb_update
+    repositoryClass: Eccube\Repository\UpdateRepository
+    id:
+        module_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        module_name:
+            type: text
+            nullable: false
+        now_version:
+            type: text
+            nullable: true
+        latest_version:
+            type: text
+            nullable: false
+        module_explain:
+            type: text
+            nullable: true
+        main_php:
+            type: text
+            nullable: false
+        extern_php:
+            type: text
+            nullable: false
+        install_sql:
+            type: text
+            nullable: true
+        uninstall_sql:
+            type: text
+            nullable: true
+        other_files:
+            type: text
+            nullable: true
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        release_date:
+            type: datetime
+            nullable: false
+    lifecycleCallbacks: {  }
