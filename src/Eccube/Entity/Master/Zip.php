@@ -12,7 +12,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $zipId;
+    private $id;
 
     /**
      * @var string
@@ -36,13 +36,13 @@ class Zip extends \Eccube\Entity\AbstractEntity
 
 
     /**
-     * Get zipId
+     * Get id
      *
      * @return integer 
      */
-    public function getZipId()
+    public function getId()
     {
-        return $this->zipId;
+        return $this->id;
     }
 
     /**

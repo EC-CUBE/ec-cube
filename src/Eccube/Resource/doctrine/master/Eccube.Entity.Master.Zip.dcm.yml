@@ -3,7 +3,7 @@ Eccube\Entity\Master\Zip:
     table: mtb_zip
     repositoryClass: Eccube\Repository\Master\ZipRepository
     id:
-        zipId:
+        id:
             type: integer
             nullable: false
             unsigned: false
