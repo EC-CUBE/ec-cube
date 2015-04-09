@@ -18,26 +18,24 @@ class PointController extends AbstractController
         $this->main_title = '基本情報管理';
         $this->title = 'ポイント設定';
     }
-    
+
     public function Index(Application $app)
     {
-        $baseinfo = $app['eccube.repository.baseinfo']->findAll();
-        $baseinfo = $baseinfo[0];
-        
+        $baseInfo = $app['eccube.repository.base_info']->get();
+
         $form = $app['form.factory']
-            ->createBuilder('point', $baseinfo)
+            ->createBuilder('point', $baseInfo)
             ->getForm();
 
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                $data = $form->getData();
-                $app['orm.em']->persist($data);
+                $app['orm.em']->persist($baseInfo);
                 $app['orm.em']->flush();
                 return $app->redirect($app['url_generator']->generate('admin_basis_point'));
             }
         }
-        
+
         return $app['twig']->render('Admin/Basis/point.twig', array(
             'main_title' => $this->main_title,
             'title'      => $this->title,
