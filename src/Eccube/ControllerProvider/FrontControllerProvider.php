@@ -57,8 +57,6 @@ class FrontControllerProvider implements ControllerProviderInterface
             ->assert('productClassId', '\d+');
 
         // contact
-        // $controllers->match('/contact/', '\\Eccube\\Page\\Contact\\Index')->bind('contact');
-        // $controllers->match('/contact/complete.php', '\\Eccube\\Page\\Contact\\Complete')->bind('contact_complete');
         $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::index')->bind('contact');
         $controllers->match('/contact/complete.php', '\\Eccube\\Controller\\ContactController::complete')->bind('contact_complete');
 
@@ -110,10 +108,10 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/mypage/refusal_complete.php', '\\Eccube\\Page\\Mypage\\RefusalComplete')->bind('mypage_refusal_complete');
 
         // 特定商取引 order -> help/traderaw
-        $controllers->match('/help/tradelaw/', '\\Eccube\\Controller\\HelpController::tradelaw')->bind('help_tradelaw');
-        $controllers->match('/help/guide/', '\\Eccube\\Controller\\HelpController::guide')->bind('help_guide');
-        $controllers->match('/help/about/', '\\Eccube\\Controller\\HelpController::about')->bind('help_about');
-        $controllers->match('/help/privacy/', '\\Eccube\\Controller\\HelpController::privacy')->bind('help_privacy');
+        $controllers->match('/help/about', '\\Eccube\\Controller\\HelpController::about')->bind('help_about');
+        $controllers->match('/help/guide', '\\Eccube\\Controller\\HelpController::guide')->bind('help_guide');
+        $controllers->match('/help/privacy', '\\Eccube\\Controller\\HelpController::privacy')->bind('help_privacy');
+        $controllers->match('/help/tradelaw', '\\Eccube\\Controller\\HelpController::tradelaw')->bind('help_tradelaw');
 
         // preview
         $controllers->match('/preview/', '\\Eccube\\Page\\Preview\\Index')->bind('preview');

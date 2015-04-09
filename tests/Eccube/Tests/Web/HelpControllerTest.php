@@ -26,7 +26,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpTradelaw()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/tradelaw/');
+        $crawler = $client->request('GET', '/help/tradelaw');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -36,7 +36,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpAbout()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/about/');
+        $crawler = $client->request('GET', '/help/about');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -46,7 +46,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpGuide()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/guide/');
+        $crawler = $client->request('GET', '/help/guide');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -56,7 +56,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpPrivacy()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/privacy/');
+        $crawler = $client->request('GET', '/help/privacy');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
