@@ -40,7 +40,7 @@ class Application extends \Silex\Application
         if (!isset($app['env']) || empty($app['env'])) {
             $app['env'] = 'prod';
         }
-        if ($app['env'] == 'dev' || $app['env'] == 'test') {
+        if ($app['env'] === 'dev' || $app['env'] === 'test') {
             $app['debug'] = true;
         }
 
@@ -144,7 +144,7 @@ class Application extends \Silex\Application
         };
 
         // Silex Web Profiler
-        if ($app['env'] == 'dev') {
+        if ($app['env'] === 'dev') {
             $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
                 'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
                 'profiler.mount_prefix' => '/_profiler', // this is the default
@@ -190,7 +190,7 @@ class Application extends \Silex\Application
         // テスト実装
         $this->register(new Plugin\ProductReview\ProductReview());
 
-        if ($app['env'] == 'test') {
+        if ($app['env'] === 'test') {
             $app['session.test'] = true;
             $app['exception_handler']->disable();
         }
