@@ -10,7 +10,7 @@ Eccube\Entity\Master\ProductType:
             default: '0'
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
     fields:
         name:
             type: text

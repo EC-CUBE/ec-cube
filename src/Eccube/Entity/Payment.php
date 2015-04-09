@@ -157,14 +157,14 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $Delivs;
+    private $PaymentOptions;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->Delivs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->PaymentOptions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -822,35 +822,35 @@ class Payment extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add Delivs
+     * Add PaymentOptions
      *
-     * @param \Eccube\Entity\Deliv $delivs
+     * @param \Eccube\Entity\PaymentOption $paymentOptions
      * @return Payment
      */
-    public function addDeliv(\Eccube\Entity\Deliv $delivs)
+    public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
     {
-        $this->Delivs[] = $delivs;
+        $this->PaymentOptions[] = $paymentOptions;
 
         return $this;
     }
 
     /**
-     * Remove Delivs
+     * Remove PaymentOptions
      *
-     * @param \Eccube\Entity\Deliv $delivs
+     * @param \Eccube\Entity\PaymentOption $paymentOptions
      */
-    public function removeDeliv(\Eccube\Entity\Deliv $delivs)
+    public function removePaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
     {
-        $this->Delivs->removeElement($delivs);
+        $this->PaymentOptions->removeElement($paymentOptions);
     }
 
     /**
-     * Get Delivs
+     * Get PaymentOptions
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getDelivs()
+    public function getPaymentOptions()
     {
-        return $this->Delivs;
+        return $this->PaymentOptions;
     }
 }

@@ -63,6 +63,9 @@ Eccube\Entity\Deliv:
                 referencedColumnName: member_id
                 nullable: false
     oneToMany:
+        PaymentOptions:
+            targetEntity: Eccube\Entity\PaymentOption
+            mappedBy: Deliv
         DelivFees:
             targetEntity: Eccube\Entity\DelivFee
             mappedBy: Deliv

@@ -80,4 +80,17 @@ class Bkup extends \Eccube\Entity\AbstractEntity
     {
         return $this->create_date;
     }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Bkup
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }

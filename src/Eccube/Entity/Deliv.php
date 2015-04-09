@@ -416,4 +416,42 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     {
         return $this->Creator;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $PaymentOptions;
+
+
+    /**
+     * Add PaymentOptions
+     *
+     * @param \Eccube\Entity\PaymentOption $paymentOptions
+     * @return Deliv
+     */
+    public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
+    {
+        $this->PaymentOptions[] = $paymentOptions;
+
+        return $this;
+    }
+
+    /**
+     * Remove PaymentOptions
+     *
+     * @param \Eccube\Entity\PaymentOption $paymentOptions
+     */
+    public function removePaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
+    {
+        $this->PaymentOptions->removeElement($paymentOptions);
+    }
+
+    /**
+     * Get PaymentOptions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPaymentOptions()
+    {
+        return $this->PaymentOptions;
+    }
 }
