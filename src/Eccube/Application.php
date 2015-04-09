@@ -36,11 +36,19 @@ class Application extends \Silex\Application
 
         parent::__construct($values);
 
+        // set env
+        if (!isset($app['env']) || empty($app['env'])) {
+            $app['env'] = 'prod';
+        }
+        if ($app['env'] == 'dev' || $app['env'] == 'test') {
+            $app['debug'] = true;
+        }
+
         // load config
-        $this['config'] = function () {
+        $this['config'] = $app->share(function () {
             $config = Yaml::parse(__DIR__ .'/../../app/config/eccube/config.yml');
             return $config;
-        };
+        });
         $this['swiftmailer.option'] = $this['config']['mail'];
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
@@ -136,10 +144,12 @@ class Application extends \Silex\Application
         };
 
         // Silex Web Profiler
-        $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-            'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
-            'profiler.mount_prefix' => '/_profiler', // this is the default
-        ));
+        if ($app['env'] == 'dev') {
+            $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
+                'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
+                'profiler.mount_prefix' => '/_profiler', // this is the default
+            ));
+        }
 
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/admin', new ControllerProvider\AdminControllerProvider());
@@ -179,6 +189,11 @@ class Application extends \Silex\Application
 
         // テスト実装
         $this->register(new Plugin\ProductReview\ProductReview());
+
+        if ($app['env'] == 'test') {
+            $app['session.test'] = true;
+            $app['exception_handler']->disable();
+        }
     }
 
 }
