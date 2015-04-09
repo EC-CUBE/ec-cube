@@ -9,8 +9,6 @@ Eccube\Entity\Template:
             nullable: false
             id: true
             column: template_code
-            generator:
-                strategy: IDENTITY
     fields:
         device_type_id:
             type: integer
