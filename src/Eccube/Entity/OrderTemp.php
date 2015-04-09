@@ -1648,4 +1648,17 @@ class OrderTemp extends \Eccube\Entity\AbstractEntity
     {
         return $this->Order;
     }
+
+    /**
+     * Set id
+     *
+     * @param string $id
+     * @return OrderTemp
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

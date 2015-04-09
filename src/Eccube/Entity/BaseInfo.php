@@ -10,6 +10,21 @@ use Doctrine\ORM\Mapping as ORM;
 class BaseInfo extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * getLawPrefName
+     * 
+     * @param string $default デフォルト
+     * @return string
+     */
+    public function getLawPrefName($default = '')
+    {
+        if ($this->getLawPref()) {
+            return $this->getLawPref()->getName();
+        } else {
+            return $default;
+        }
+    }
+
+    /**
      * @var integer
      */
     private $id;

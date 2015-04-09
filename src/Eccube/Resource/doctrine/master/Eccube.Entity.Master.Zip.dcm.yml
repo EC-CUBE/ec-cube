@@ -11,7 +11,7 @@ Eccube\Entity\Master\Zip:
             id: true
             column: zip_id
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
     fields:
         zipcode:
             type: text
