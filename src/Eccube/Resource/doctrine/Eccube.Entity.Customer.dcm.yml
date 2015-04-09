@@ -1,0 +1,195 @@
+Eccube\Entity\Customer:
+    type: entity
+    table: dtb_customer
+    repositoryClass: Eccube\Repository\CustomerRepository
+    indexes:
+        dtb_customer_mobile_phone_id_key:
+            columns:
+                - mobile_phone_id
+    uniqueConstraints:
+        secret_key:
+            columns:
+                - secret_key
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: customer_id
+            generator:
+                strategy: AUTO
+    fields:
+        name01:
+            type: text
+            nullable: false
+        name02:
+            type: text
+            nullable: false
+        kana01:
+            type: text
+            nullable: true
+        kana02:
+            type: text
+            nullable: true
+        company_name:
+            type: text
+            nullable: true
+        zip01:
+            type: text
+            nullable: true
+        zip02:
+            type: text
+            nullable: true
+        zipcode:
+            type: text
+            nullable: true
+#        country_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+#        pref:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+        addr01:
+            type: text
+            nullable: true
+        addr02:
+            type: text
+            nullable: true
+        email:
+            type: text
+            nullable: false
+        email_mobile:
+            type: text
+            nullable: true
+        tel01:
+            type: text
+            nullable: true
+        tel02:
+            type: text
+            nullable: true
+        tel03:
+            type: text
+            nullable: true
+        fax01:
+            type: text
+            nullable: true
+        fax02:
+            type: text
+            nullable: true
+        fax03:
+            type: text
+            nullable: true
+#        sex:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+#        job:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+        birth:
+            type: datetime
+            nullable: true
+        password:
+            type: text
+            nullable: true
+        reminder:
+            type: smallint
+            nullable: true
+            unsigned: false
+        reminder_answer:
+            type: text
+            nullable: true
+        salt:
+            type: text
+            nullable: true
+        secret_key:
+            type: string
+            length: 200
+            nullable: false
+        first_buy_date:
+            type: datetime
+            nullable: true
+        last_buy_date:
+            type: datetime
+            nullable: true
+        buy_times:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+            default: '0'
+        buy_total:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+            default: '0'
+        point:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+        note:
+            type: text
+            nullable: true
+        status:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        mobile_phone_id:
+            type: string
+            length: 200
+            nullable: true
+        mailmaga_flg:
+            type: smallint
+            nullable: true
+            unsigned: false
+    manyToOne:
+        Sex:
+            targetEntity: Eccube\Entity\Master\Sex
+            inversedBy: Customers
+            joinColumn:
+                name: sex
+                referencedColumnName: id
+        Job:
+            targetEntity: Eccube\Entity\Master\Job
+            inversedBy: Customers
+            joinColumn:
+                name: job
+                referencedColumnName: id
+        Country:
+            targetEntity: Eccube\Entity\Master\Country
+            inversedBy: Customers
+            joinColumn:
+                name: country_id
+                referencedColumnName: id
+        Pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            inversedBy: Customers
+            joinColumn:
+                name: pref
+                referencedColumnName: id
+    oneToMany:
+        CustomerFavoriteProducts:
+            targetEntity: Eccube\Entity\CustomerFavoriteProduct
+            mappedBy: Customer
+    lifecycleCallbacks: {  }

@@ -1,0 +1,56 @@
+Eccube\Entity\Holiday:
+    type: entity
+    table: dtb_holiday
+    repositoryClass: Eccube\Repository\HolidayRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: holiday_id
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: text
+            nullable: false
+        month:
+            type: smallint
+            nullable: false
+            unsigned: false
+        day:
+            type: smallint
+            nullable: false
+            unsigned: false
+        rank:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: Holidays
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

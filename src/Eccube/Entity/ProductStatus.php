@@ -7,22 +7,17 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ProductStatus
  */
-class ProductStatus
+class ProductStatus extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
      */
-    private $id;
+    private $product_status_id;
 
     /**
      * @var integer
      */
     private $product_id;
-
-    /**
-     * @var integer
-     */
-    private $creator_id;
 
     /**
      * @var \DateTime
@@ -40,34 +35,32 @@ class ProductStatus
     private $del_flg;
 
     /**
-     * @var \Eccube\Entity\Product
-     */
-    private $Product;
-
-    /**
      * @var \Eccube\Entity\Member
      */
     private $Creator;
 
+
     /**
-     * @var \Eccube\Entity\StatusImage
+     * Set product_status_id
+     *
+     * @param integer $productStatusId
+     * @return ProductStatus
      */
-    private $StatusImage;
+    public function setProductStatusId($productStatusId)
+    {
+        $this->product_status_id = $productStatusId;
+
+        return $this;
+    }
 
     /**
-     * @var \Eccube\Entity\Status
-     */
-    private $Status;
-
-
-    /**
-     * Get id
+     * Get product_status_id
      *
      * @return integer 
      */
-    public function getId()
+    public function getProductStatusId()
     {
-        return $this->id;
+        return $this->product_status_id;
     }
 
     /**
@@ -91,29 +84,6 @@ class ProductStatus
     public function getProductId()
     {
         return $this->product_id;
-    }
-
-    /**
-     * Set creator_id
-     *
-     * @param integer $creatorId
-     * @return ProductStatus
-     */
-    public function setCreatorId($creatorId)
-    {
-        $this->creator_id = $creatorId;
-
-        return $this;
-    }
-
-    /**
-     * Get creator_id
-     *
-     * @return integer 
-     */
-    public function getCreatorId()
-    {
-        return $this->creator_id;
     }
 
     /**
@@ -186,29 +156,6 @@ class ProductStatus
     }
 
     /**
-     * Set Product
-     *
-     * @param \Eccube\Entity\Product $product
-     * @return ProductStatus
-     */
-    public function setProduct(\Eccube\Entity\Product $product = null)
-    {
-        $this->Product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Get Product
-     *
-     * @return \Eccube\Entity\Product 
-     */
-    public function getProduct()
-    {
-        return $this->Product;
-    }
-
-    /**
      * Set Creator
      *
      * @param \Eccube\Entity\Member $creator
@@ -229,66 +176,5 @@ class ProductStatus
     public function getCreator()
     {
         return $this->Creator;
-    }
-
-    /**
-     * Set StatusImage
-     *
-     * @param \Eccube\Entity\StatusImage $statusImage
-     * @return ProductStatus
-     */
-    public function setStatusImage(\Eccube\Entity\StatusImage $statusImage = null)
-    {
-        $this->StatusImage = $statusImage;
-
-        return $this;
-    }
-
-    /**
-     * Get StatusImage
-     *
-     * @return \Eccube\Entity\StatusImage 
-     */
-    public function getStatusImage()
-    {
-        return $this->StatusImage;
-    }
-
-    /**
-     * Set Status
-     *
-     * @param \Eccube\Entity\Status $status
-     * @return ProductStatus
-     */
-    public function setStatus(\Eccube\Entity\Status $status = null)
-    {
-        $this->Status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get Status
-     *
-     * @return \Eccube\Entity\Status 
-     */
-    public function getStatus()
-    {
-        return $this->Status;
-    }
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreateDateAuto()
-    {
-        // Add your code here
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdateDateAuto()
-    {
-        // Add your code here
     }
 }

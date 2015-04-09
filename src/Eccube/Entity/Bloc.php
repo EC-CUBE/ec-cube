@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Bloc
  */
-class Bloc
+class Bloc extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
@@ -22,7 +22,7 @@ class Bloc
     /**
      * @var string
      */
-    private $bloc_name;
+    private $name;
 
     /**
      * @var string
@@ -58,6 +58,11 @@ class Bloc
      * @var \Doctrine\Common\Collections\Collection
      */
     private $BlocPositions;
+
+    /**
+     * @var \Eccube\Entity\Plugin
+     */
+    private $Plugin;
 
     /**
      * Constructor
@@ -114,26 +119,26 @@ class Bloc
     }
 
     /**
-     * Set bloc_name
+     * Set name
      *
-     * @param string $blocName
+     * @param string $name
      * @return Bloc
      */
-    public function setBlocName($blocName)
+    public function setName($name)
     {
-        $this->bloc_name = $blocName;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get bloc_name
+     * Get name
      *
      * @return string 
      */
-    public function getBlocName()
+    public function getName()
     {
-        return $this->bloc_name;
+        return $this->name;
     }
 
     /**
@@ -306,19 +311,27 @@ class Bloc
     {
         return $this->BlocPositions;
     }
+
     /**
-     * @ORM\PrePersist
+     * Set Plugin
+     *
+     * @param \Eccube\Entity\Plugin $plugin
+     * @return Bloc
      */
-    public function setCreateDateAuto()
+    public function setPlugin(\Eccube\Entity\Plugin $plugin = null)
     {
-        // Add your code here
+        $this->Plugin = $plugin;
+
+        return $this;
     }
 
     /**
-     * @ORM\PreUpdate
+     * Get Plugin
+     *
+     * @return \Eccube\Entity\Plugin 
      */
-    public function setUpdateDateAuto()
+    public function getPlugin()
     {
-        // Add your code here
+        return $this->Plugin;
     }
 }

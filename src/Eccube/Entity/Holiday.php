@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Holiday
  */
-class Holiday
+class Holiday extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
@@ -33,11 +33,6 @@ class Holiday
      * @var integer
      */
     private $rank;
-
-    /**
-     * @var integer
-     */
-    private $creator_id;
 
     /**
      * @var \DateTime
@@ -163,29 +158,6 @@ class Holiday
     }
 
     /**
-     * Set creator_id
-     *
-     * @param integer $creatorId
-     * @return Holiday
-     */
-    public function setCreatorId($creatorId)
-    {
-        $this->creator_id = $creatorId;
-
-        return $this;
-    }
-
-    /**
-     * Get creator_id
-     *
-     * @return integer 
-     */
-    public function getCreatorId()
-    {
-        return $this->creator_id;
-    }
-
-    /**
      * Set create_date
      *
      * @param \DateTime $createDate
@@ -260,7 +232,7 @@ class Holiday
      * @param \Eccube\Entity\Member $creator
      * @return Holiday
      */
-    public function setCreator(\Eccube\Entity\Member $creator = null)
+    public function setCreator(\Eccube\Entity\Member $creator)
     {
         $this->Creator = $creator;
 
@@ -275,20 +247,5 @@ class Holiday
     public function getCreator()
     {
         return $this->Creator;
-    }
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreateDateAuto()
-    {
-        // Add your code here
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdateDateAuto()
-    {
-        // Add your code here
     }
 }
