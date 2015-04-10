@@ -2,10 +2,10 @@
 
 namespace Eccube;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Eccube\Event\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 
@@ -59,7 +59,10 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.path' => array(__DIR__ . '/View'),
+            'twig.path' => array(
+                __DIR__ . '/View',
+                __DIR__ . '/../../app/plugin/',
+            ),
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
@@ -162,14 +165,37 @@ class Application extends \Silex\Application
             return new CallbackResolver($app);
         });
 
-        // Event
+
+        // EventDispatcher
         $app['eccube.event.dispatcher'] = $app->share(function() {
             return new EventDispatcher();
         });
-        $app['eccube.event.subscriber'] = $app->share(function() use ($app) {
-            return new EventSubscriber($app);
-        });
-        $app['eccube.event.subscriber']->subscribe();
+
+        // EventSubscriber
+        $basePath = __DIR__ . '/../../app/plugin';
+        $finder = Finder::create()
+            ->in($basePath)
+            ->directories()
+            ->depth(0);
+
+        // Plugin events / service
+        foreach ($finder as $dir) {
+            $vendor = $dir->getFilename();
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+
+            // Type: Event
+            if (isset($config['event'])) {
+                $class = '\\Plugin\\' . $vendor . '\\' . $config['event'];
+                $subscriber = new $class($app);
+                $app['eccube.event.dispatcher']->addSubscriber($subscriber);
+            }
+
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                $class = '\\Plugin\\' . $vendor . '\\' . $config['service'];
+                $app->register(new $class($app));
+            }
+        }
 
         // hook point
         $this->before(function (Request $request, Application $app) {
@@ -224,9 +250,6 @@ class Application extends \Silex\Application
 
             $app['eccube.layout'] = $result;
         });
-
-        // テスト実装
-        $this->register(new Plugin\ProductReview\ProductReview());
 
         if ($app['env'] === 'test') {
             $app['session.test'] = true;
