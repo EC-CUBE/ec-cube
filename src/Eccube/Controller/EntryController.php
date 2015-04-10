@@ -38,10 +38,6 @@ class EntryController extends AbstractController
 
     public function index(Application $app)
     {
-        if (!$this->hasCorrectReferer($app)) {
-            return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
-        }
-
         $customer = $app['eccube.repository.customer']->newCustomer();
         $form = $app['form.factory']
             ->createBuilder('customer', $customer)
@@ -70,7 +66,8 @@ class EntryController extends AbstractController
     }
 
 
-    public function confirm(Application $app) {
+    public function confirm(Application $app)
+    {
         if (!$app['session']->has('entry')) {
             return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
         }
@@ -118,7 +115,8 @@ class EntryController extends AbstractController
     }
 
 
-    public function complete(Application $app) {
+    public function complete(Application $app)
+    {
 
         return $app['twig']->render('Entry/complete.twig', array(
             'title' => $this->title,
@@ -126,24 +124,10 @@ class EntryController extends AbstractController
     }
 
 
-    // 規約画面からの遷移でない場合、規約ページへリダイレクト
-    private function hasCorrectReferer($app)
-    {
-        // 規約確認
-        $referer = parse_url($app['request']->server->get('HTTP_REFERER'));
-        $kiyakuUrl = $app['url_generator']->generate('entry_kiyaku');
-        $indexUrl = $app['url_generator']->generate('entry');
-        $confirmUrl = $app['url_generator']->generate('entry_confirm');
-        if ($referer['path'] == '' || !in_array($referer['path'], array($kiyakuUrl, $indexUrl, $confirmUrl))) {
-            return false;
-        }
-        return true;
-    }
-
-
     // ユニークなキーを取得する
-    private function getUniqueSecretKey($app) {
-        $unique = md5(uniqid(rand(),1));
+    private function getUniqueSecretKey($app)
+    {
+        $unique = md5(uniqid(rand(), 1));
         $customer = $app['eccube.repository.customer']->findBy(array(
             'secret_key' => $unique,
         ));

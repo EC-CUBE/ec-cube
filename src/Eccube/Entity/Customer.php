@@ -427,13 +427,13 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get zipcode
+     * Get pref_id
      *
-     * @return string 
+     * @return integer 
      */
-    public function getZipcode()
+    public function getPrefId()
     {
-        return $this->zipcode;
+        return $this->pref_id;
     }
 
     /**
