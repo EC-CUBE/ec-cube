@@ -192,8 +192,10 @@ class Application extends \Silex\Application
 
             // Type: ServiceProvider
             if (isset($config['service'])) {
-                $class = '\\Plugin\\' . $vendor . '\\' . $config['service'];
-                $app->register(new $class($app));
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\' . $vendor . '\\' . $service;
+                    $app->register(new $class($app));
+                }
             }
         }
 

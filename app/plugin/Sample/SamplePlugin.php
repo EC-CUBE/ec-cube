@@ -18,6 +18,9 @@ class SamplePlugin implements EventSubscriberInterface
             'eccube.event.controller.cart.index.before' => array(
                 array('onCartIndexBefore', 10),
             ),
+            'eccube.event.controller.cart.index.after' => array(
+                array('onCartIndexAfter', 10),
+            ),
             'eccube.event.controller.cart.index.finish' => array(
                 array('onCartIndexFinish', 10),
             ),
@@ -25,6 +28,11 @@ class SamplePlugin implements EventSubscriberInterface
     }
 
     public function onCartIndexBefore()
+    {
+        echo 'Called method:: onCartIndexBefore()<br />';
+    }
+
+    public function onCartIndexAfter()
     {
         echo 'Called method:: onCartIndexBefore()<br />';
     }

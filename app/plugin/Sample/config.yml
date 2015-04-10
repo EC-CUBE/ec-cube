@@ -1,3 +1,4 @@
 vendor: Sample
 event: SamplePlugin
-service: SamplePluginServiceProvider
+service: 
+    - SamplePluginServiceProvider
