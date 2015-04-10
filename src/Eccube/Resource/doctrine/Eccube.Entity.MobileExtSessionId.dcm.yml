@@ -9,8 +9,6 @@ Eccube\Entity\MobileExtSessionId:
             nullable: false
             id: true
             column: session_id
-            generator:
-                strategy: IDENTITY
     fields:
         param_key:
             type: text

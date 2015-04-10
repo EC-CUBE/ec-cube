@@ -45,7 +45,9 @@ Eccube\Entity\BlocPosition:
         PageLayout:
             targetEntity: Eccube\Entity\PageLayout
             inversedBy: BlocPositions
-            joinColumn:
-                name: device_type_id
-                referencedColumnName: device_type_id
+            joinColumns:
+                device_type_id:
+                    referencedColumnName: device_type_id
+                page_id:
+                    referencedColumnName: page_id
     lifecycleCallbacks: {  }

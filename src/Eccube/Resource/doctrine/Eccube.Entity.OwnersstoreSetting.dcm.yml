@@ -8,6 +8,4 @@ Eccube\Entity\OwnersstoreSetting:
             length: 200
             nullable: false
             id: true
-            generator:
-                strategy: IDENTITY
     lifecycleCallbacks: {  }

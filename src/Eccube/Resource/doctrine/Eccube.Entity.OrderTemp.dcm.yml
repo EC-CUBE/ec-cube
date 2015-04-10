@@ -9,8 +9,6 @@ Eccube\Entity\OrderTemp:
             nullable: false
             id: true
             column: order_temp_id
-            generator:
-                strategy: IDENTITY
     fields:
 #        customer_id:
 #            type: integer
