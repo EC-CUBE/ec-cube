@@ -4,6 +4,10 @@ namespace Eccube;
 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Eccube\Event\EventSubscriber;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 
 class Application extends \Silex\Application
 {
@@ -158,6 +162,40 @@ class Application extends \Silex\Application
             return new CallbackResolver($app);
         });
 
+        // Event
+        $app['eccube.event.dispatcher'] = $app->share(function() {
+            return new EventDispatcher();
+        });
+        $app['eccube.event.subscriber'] = $app->share(function() use ($app) {
+            return new EventSubscriber($app);
+        });
+        $app['eccube.event.subscriber']->subscribe();
+
+        // hook point
+        $this->before(function (Request $request, Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.app.before');
+        }, \Silex\Application::EARLY_EVENT);
+
+        $this->before(function(Request $request, \Silex\Application $app) {
+            $event = $this->parseController($request) . '.before';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function(Request $request, Response $response) use ($app) {
+            $event = $this->parseController($request) . '.after';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response) use ($app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.app.after');
+        }, \Silex\Application::LATE_EVENT);
+
+        $this->finish(function(Request $request, Response $response) use ($app) {
+            $event = $this->parseController($request) . '.finish';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+
         $app['eccube.layout'] = null;
         $this->before(function (Request $request, \Silex\Application $app) {
             $url = str_replace($app['config']['root'], '', $app['request']->server->get('REDIRECT_URL'));
@@ -196,4 +234,16 @@ class Application extends \Silex\Application
         }
     }
 
+    private function parseController(Request $request)
+    {
+        $controller = $request->attributes->get('_controller');
+        if (preg_match('/\A\\\\Eccube\\\\Controller\\\\(\w+)Controller\:\:(\w+)/', $controller, $matches)) {
+            $controllerName = strtolower($matches[1]);
+            $methodName = strtolower($matches[2]);
+            $namespace = 'eccube.event.controller.' . $controllerName . '.' . $methodName;
+
+            return $namespace;
+        }
+        return ;
+    }
 }
