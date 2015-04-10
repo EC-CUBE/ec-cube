@@ -1,138 +1,147 @@
 <?php
-namespace Eccube\Service\Order;
+namespace Eccube\Service;
 
 use Eccube\Application;
 
-class Order {
+class OrderService
+{
     
-    /**
-     *
-     * @var Eccube\Application
-     */
-    protected $app;
+    /** @var \Eccube\Application */
+    public $app;
     
-    /**
-     *
-     * @var Eccube\Entity\Order
-     */
-    protected $order;
-
-    /**
-     *
-     * @var array
-     */
-    protected $orderDetails;
-
-    /**
-     * @var array
-     */
-    protected $clculator;
-
-    public function __construct(Application $app) {
+    public function __construct(Application $app)
+    {
         $this->app = $app;
     }
 
-    function setOrder($order) {
-        $this->order = $order;
-    }
-
-    function getOrder() {
-        return $this->order;
-    }
-
-    function setOrderDetails(array $orderDetails) {
-        $this->orderDetails = $orderDetails;
-    }
-
-    function getOrderDetais() {
-        return $this->orderDetails;
-    }
-
-    function calc() {
-        foreach ($this->orderDetails as $detail) {
-            foreach ($this->calculator as $c) {
-                $c->calcOrderDetail($this->order, $detail);
-            }
+    public function copyToOrderFromCustomer(\Eccube\Entity\Order $order, \Eccube\Entity\Customer $customer = null)
+    {
+        if (is_null($customer)) {
+            return $order;
         }
-        foreach ($this->calculator as $c) {
-            $c->calcOrder($this->order);
-        }
-    }
 
-    function addCalcurator(\Eccube\Service\Order\Calculator $c){
-        $this->calculator[] = $c;
-    }
+        $order->setCustomer($customer)
+              ->setName01($customer->getName01())
+              ->setName02($customer->getName02())
+              ->setKana01($customer->getKana02())
+              ->setKana02($customer->getKana02())
+              ->setCompanyName($customer->getCompanyName())
+              ->setEmail($customer->getEmail())
+              ->setTel01($customer->getTel01())
+              ->setTel02($customer->getTel02())
+              ->setTel03($customer->getTel03())
+              ->setFax01($customer->getFax01())
+              ->setFax02($customer->getFax02())
+              ->setFax03($customer->getFax03())
+              ->setZip01($customer->getZip01())
+              ->setZip02($customer->getZip02())
+              ->setPref($customer->getPref())
+              ->setAddr01($customer->getAddr01())
+              ->setAddr02($customer->getAddr02())
+              ->setSex($customer->getSex())
+              ->setBirth($customer->getBirth())
+              ->setJob($customer->getJob());
 
-    function findOrderByOrderId($orderId) {
-        return $this->app['orm.em']
-            ->getRepository("Eccube\\Entity\\Order")
-            ->find($orderId);
-    }
-
-    public function findPreOrderByOrderId($preOrderId) {
-        return $this->app['orm.em']->createQueryBuilder()
-            ->select('o')
-            ->from("Eccube\\Entity\\Order", 'o')
-            ->where("o.orderId = :orderId and o.delFlg = 1")
-            ->setParameter("orderId", $preOrderId)
-            ->getQuery()
-            ->getSingleResult();
-    }
-
-    function findOrderDetailsByOrderId($orderId) {
-        return $this->app['orm.em']->createQueryBuilder()
-            ->select('od')
-            ->from("Eccube\\Entity\\OrderDetail", 'od')
-            ->where("o.orderId = :orderId")
-            ->setParameter("orderId", $orderId)
-            ->getQuery()
-            ->getResult();
-    }
-
-    function registerOrder($order, $orderDetails) {
-        $this->app['orm.em']->persist($order);
-        foreach ($orderDetails as $detail) {
-            $this->app['orm.em']->persist($detail);
-        }
-        $this->app['orm.em']->flush();
-    }
-
-    public function createPreOrder(array $products) {
-        $order = new \Eccube\Entity\Order();
-        $order->setCustomerId($this->customer->getId());
-        $order->setCreateDate(new \DateTime());
-        $order->setUpdateDate(new \DateTime());
-        $order->setDiscount(0);
-        $order->setUsePoint(0);
-        $order->setAddPoint(0);
-        $order->setBirthPoint(0);
-        $order->setStatus(1);
-        $order->setDelFlg(1); // todo 未確定受注を、del_flg：1で立てる（仮）
-        $this->app['orm.em']->persist($order);
-        $this->app['orm.em']->flush();
-        $orderId = $order->getOrderId();
-        foreach ($products as $p) {
-            $productClass = $p['entity'];
-            $quantity = $p['quantity'];
-            $orderDetail = new \Eccube\Entity\OrderDetail();
-            $orderDetail->setOrderId($orderId);
-            $orderDetail->setProductId($productClass->getProductId());
-            $orderDetail->setProductClassId($productClass->getProductClassId());
-            $orderDetail->setProductName($productClass->getProductName());
-            $orderDetail->setProductCode($productClass->getProductCode());
-            $orderDetail->setPrice($productClass->getPrice02());
-            $orderDetail->setQuantity($quantity);
-            $this->app['orm.em']->persist($orderDetail);
-            $this->app['orm.em']->flush();
-        }
         return $order;
     }
 
-    public function commit($orderId) {
+    public function copyToShippingFromCustomer(\Eccube\Entity\Shipping $shipping, \Eccube\Entity\Customer $customer = null)
+    {
+        if (is_null($customer)) {
+            return $shipping;
+        }
+
+        $shipping
+            ->setName01($customer->getName01())
+            ->setName02($customer->getName02())
+            ->setKana01($customer->getKana02())
+            ->setKana02($customer->getKana02())
+            ->setCompanyName($customer->getCompanyName())
+            ->setTel01($customer->getTel01())
+            ->setTel02($customer->getTel02())
+            ->setTel03($customer->getTel03())
+            ->setFax01($customer->getFax01())
+            ->setFax02($customer->getFax02())
+            ->setFax03($customer->getFax03())
+            ->setZip01($customer->getZip01())
+            ->setZip02($customer->getZip02())
+            ->setPref($customer->getPref())
+            ->setAddr01($customer->getAddr01())
+            ->setAddr02($customer->getAddr02());
+
+        return $shipping;
+    }
+    public function registerPreOrderFromCart(array $products, \Eccube\Entity\Customer $customer = null)
+    {
+        // 受注
+        $order = new \Eccube\Entity\Order();
+        $this->copyToOrderFromCustomer($order, $customer)
+             ->setCreateDate(new \DateTime())
+             ->setUpdateDate(new \DateTime())
+             ->setDiscount(0)
+             ->setUsePoint(0)
+             ->setAddPoint(0)
+             ->setBirthPoint(0)
+             ->setStatus(1)
+             ->setDelFlg(1); // todo 未確定受注を、del_flg：1で立てる（仮）
+        $this->app['orm.em']->persist($order);
+
+        // 配送先
+        $shipping = new \Eccube\Entity\Shipping();
+        $this->copyToShippingFromCustomer($shipping, $customer)
+             ->setShippingId(1)
+             ->setOrderId($order->getId())
+             ->setCreateDate(new \DateTime())
+             ->setUpdateDate(new \DateTime())
+             ->setDelFlg(0);
+        $this->app['orm.em']->persist($shipping);
+
+        // 受注詳細, 配送商品
+        foreach ($products as $p) {
+            $product = $p['Product'];
+            $productClass = $p['ProductClass'];
+            $quantity = $p['quantity'];
+
+            // 受注詳細
+            $orderDetail = new \Eccube\Entity\OrderDetail();
+            $orderDetail->setOrder($order)
+                        ->setProduct($product)
+                        ->setProductClass($productClass)
+                        ->setProductName($product->getName())
+                        ->setProductCode($productClass->getProductCode())
+                        ->setClasscategoryName1($productClass->getClassCategory1()->getName())
+                        ->setClasscategoryName2($productClass->getClassCategory2()->getName())
+                        ->setPrice($productClass->getPrice02())
+                        ->setQuantity($quantity)
+                        ->setPointRate(0) // todo
+                        ->setTaxRule(0) // todo
+                        ->setTaxRate(0); // todo
+            $this->app['orm.em']->persist($orderDetail);
+
+            // 配送商品
+            $shipmentItem = new \Eccube\Entity\ShipmentItem();
+            $shipmentItem->setShippingId($shipping->getShippingId())
+                         ->setOrderId($order->getId())
+                         ->setProductClassId($productClass->getId())
+                         ->setProductName($product->getName())
+                         ->setProductCode($productClass->getProductCode())
+                         ->setClasscategoryName1($productClass->getClassCategory1()->getName())
+                         ->setClasscategoryName2($productClass->getClassCategory2()->getName())
+                         ->setPrice($productClass->getPrice02())
+                         ->setQuantity($quantity);
+            $this->app['orm.em']->persist($shipmentItem);
+        }
+
+        $this->app['orm.em']->flush();
+        return $order;
+    }
+
+    public function commit($orderId)
+    {
         $order = $this->app['orm.em']
                 ->getRepository("Eccube\\Entity\\Order")
                 ->find($orderId);
-        $order->setDelFlg(0);
+        $order->setDelFlg(0); // todo
         $this->app['orm.em']->persist($order);
         $this->app['orm.em']->flush();
     }

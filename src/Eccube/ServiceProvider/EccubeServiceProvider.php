@@ -22,7 +22,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.cart'] = function() use ($app) {
             return new \Eccube\Service\CartService($app);
         };
-
+        $app['eccube.service.order'] = function() use ($app) {
+            return new \Eccube\Service\Order\OrderService($app);
+        };
         // Entity
         $app['eccube.entity.cart'] = function() use ($app) {
             return new \Eccube\Entity\Cart($app);
@@ -37,6 +39,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         };
         $app['eccube.repository.baseinfo'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\BaseInfo');
+        };
+        $app['eccube.repository.order'] = function() use ($app) {
+            return $app['orm.em']->getRepository('\\Eccube\\Entity\\Order');
         };
         // Form\Type
         $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
@@ -56,6 +61,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\PointType($app);
+            $types[] = new \Eccube\Form\Type\ShoppingType($app);
             return $types;
         }));
 
