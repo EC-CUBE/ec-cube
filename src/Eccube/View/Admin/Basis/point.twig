@@ -1,4 +1,10 @@
-{{ main_title }} {{ title }}
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+    {% for message in app.session.flashbag.get('point.complete')  %}
+        {{ message|trans|raw }}<br />
+    {% endfor %}
 
 <form name="point_form" id="point_form" method="post" action="{{ url('admin_basis_point') }}">
     {{ form_widget(form._token) }}
@@ -25,3 +31,5 @@
         </div>
     </div>
 </form>
+
+{% endblock %}

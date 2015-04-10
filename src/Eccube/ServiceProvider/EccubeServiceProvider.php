@@ -37,7 +37,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.member'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Member');
         };
-        $app['eccube.repository.baseinfo'] = function() use ($app) {
+        $app['eccube.repository.base_info'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\BaseInfo');
         };
         $app['eccube.repository.order'] = function() use ($app) {

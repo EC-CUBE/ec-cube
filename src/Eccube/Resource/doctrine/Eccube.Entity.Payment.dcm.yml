@@ -119,15 +119,8 @@ Eccube\Entity\Payment:
         memo10:
             type: text
             nullable: true
-    manyToMany:
-        Delivs:
-            targetEntity: Deliv
-            joinTable:
-                name: dtb_payment_options
-                joinColumns:
-                    payment_id:
-                        referencedColumnName: payment_id
-                inverseJoinColumns:
-                    deliv_id:
-                        referencedColumnName: deliv_id
+    oneToMany:
+        PaymentOptions:
+            targetEntity: Eccube\Entity\PaymentOption
+            mappedBy: Payment
     lifecycleCallbacks: {  }

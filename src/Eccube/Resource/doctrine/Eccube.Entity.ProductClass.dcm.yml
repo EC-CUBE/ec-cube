@@ -2,10 +2,6 @@ Eccube\Entity\ProductClass:
     type: entity
     table: dtb_products_class
     repositoryClass: Eccube\Repository\ProductClassRepository
-    indexes:
-        dtb_products_class_product_id_key:
-            columns:
-                - product_id
     uniqueConstraints:
         dtb_products_class_unique_key:
             columns:

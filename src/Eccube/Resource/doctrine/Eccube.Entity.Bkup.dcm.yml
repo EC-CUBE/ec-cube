@@ -9,8 +9,6 @@ Eccube\Entity\Bkup:
             nullable: false
             id: true
             column: bkup_name
-            generator:
-                strategy: IDENTITY
     fields:
         memo:
             type: text

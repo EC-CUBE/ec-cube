@@ -11,11 +11,9 @@ class PrefRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testfindMasterData()
     {
-        $app = new Application();
-
-        $app['debug'] = true;
-        $app['session.test'] = true;
-        $app['exception_handler']->disable();
+        $app = new Application(array(
+            'env' => 'test',
+        ));
 
         $pref = $app['orm.em']
             ->getRepository('Eccube\Entity\Master\Pref')

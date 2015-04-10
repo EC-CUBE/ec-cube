@@ -136,4 +136,17 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     {
         return $this->create_date;
     }
+
+    /**
+     * Set id
+     *
+     * @param string $id
+     * @return MobileExtSessionId
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

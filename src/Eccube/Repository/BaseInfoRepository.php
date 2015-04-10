@@ -12,7 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class BaseInfoRepository extends EntityRepository
 {
-    public function getBaseInfo($id = 1)
+    /**
+     * get
+     * 
+     * @param mixed $id The identifier.
+     *
+     * @return object|null The entity instance or NULL if the entity can not be found.
+     */
+    public function get($id = 1)
     {
         return $this->find($id);
     }
