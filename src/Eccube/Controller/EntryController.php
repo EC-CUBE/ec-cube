@@ -68,11 +68,7 @@ class EntryController extends AbstractController
 
     public function confirm(Application $app)
     {
-        if (!$app['session']->has('entry')) {
-            return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
-        }
-
-        if ($app['request']->request->get('back')) {
+        if (!$app['session']->has('entry') || $app['request']->request->get('back') ) {
             return $app->redirect($app['url_generator']->generate('entry'));
         }
 

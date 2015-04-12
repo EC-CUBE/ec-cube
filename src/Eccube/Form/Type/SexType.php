@@ -21,7 +21,9 @@ class SexType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'choices' => array('1' => '男性', '2' => '女性'),
+            'class' => 'Eccube\Entity\Master\Sex',
+            'property' => 'name',
+            'label' => false,
             'expanded' => true,
             'empty_value' => false,
         ));
@@ -29,7 +31,7 @@ class SexType extends AbstractType
 
     public function getParent()
     {
-        return 'choice';
+        return 'entity';
     }
 
     public function getName()

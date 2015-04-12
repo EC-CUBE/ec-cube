@@ -15,15 +15,45 @@ class CustomerTypeTest extends TypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     private $formData = array(
-        'name01' => 'たかはし',
-        'name02' => 'しんいち',
-        'kana01' => 'タカハシ',
-        'kana02' => 'シンイチ',
+        'name' => array(
+            'name01' => 'たかはし',
+            'name02' => 'しんいち',
+        ),
+        'kana'=> array(
+            'kana01' => 'タカハシ',
+            'kana02' => 'シンイチ',
+        ),
+        'company_name' => 'ロックオン',
+        'zip' => array(
+            'zip01' => '530',
+            'zip02' => '0001',
+        ),
+        'address' => array(
+            'pref' => '5',
+            'addr01' => '北区',
+            'addr02' => '梅田',
+        ),
+        'tel' => array(
+            'tel01' => '012',
+            'tel02' => '345',
+            'tel03' => '6789',
+        ),
+        'fax' => array(
+            'fax01' => '112',
+            'fax02' => '345',
+            'fax03' => '6789',
+        ),
         'email' => 'default@example.com',
+        'sex' => 1,
+        'job' => 1,
+        'birth' => '1983-02-14',
         'password' => array(
             'first' => 'password',
             'second' => 'password',
-        )
+        ),
+        'reminder' => 1,
+        'reminder_answer' => 'なし',
+        'mailmaga_flg' => 1,
     );
 
     public function setUp()
