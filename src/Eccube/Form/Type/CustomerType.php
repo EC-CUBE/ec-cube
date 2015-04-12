@@ -66,9 +66,8 @@ class CustomerType extends AbstractType
                         }
                     }),
                  )))
-                ->add('sex', 'choice', array(
-                    'choices' => array('1' => '男性', '2' => '女性'),
-                    'expanded' => true,
+                ->add('sex', 'sex', array(
+                    'required' => false,
                 ))
                 ->add('password', 'repeated')
             ;
