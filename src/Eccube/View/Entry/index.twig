@@ -33,19 +33,22 @@
                 <tr>
                     <th>お名前<span class="attention">※</span></th>
                     <td>
-                        姓&nbsp;{{ form_widget(form.name01) }}&nbsp;
-                        名&nbsp;{{ form_widget(form.name02) }}
-                        {{ form_errors(form.name01) }}
-                        {{ form_errors(form.name02) }}
+                        {{ form_widget(form.name) }}
+                        {{ form_errors(form.name) }}
                     </td>
                 </tr>
                 <tr>
                     <th>お名前(フリガナ)</th>
                     <td>
-                        セイ&nbsp;{{ form_widget(form.kana01) }}&nbsp;
-                        メイ&nbsp;{{ form_widget(form.kana02) }}
-                        {{ form_errors(form.kana01) }}
-                        {{ form_errors(form.kana02) }}
+                        {{ form_widget(form.kana) }}
+                        {{ form_errors(form.kana) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>会社名</th>
+                    <td>
+                        {{ form_widget(form.company_name) }}
+                        {{ form_errors(form.company_name) }}
                     </td>
                 </tr>
                 <tr>
@@ -91,6 +94,27 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>職業</th>
+                    <td>
+                        {{ form_widget(form.job) }}<br />
+                        {{ form_errors(form.job) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>生年月日</th>
+                    <td>
+                        {{ form_widget(form.birth) }}<br />
+                        {{ form_errors(form.birth) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>生年月日</th>
+                    <td>
+                        {{ form_widget(form.birth) }}<br />
+                        {{ form_errors(form.birth) }}
+                    </td>
+                </tr>
+                <tr>
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
@@ -99,6 +123,22 @@
                         {{ form_errors(form.password.first) }}
                         <p><span class="attention mini">半角英数字8〜16文字でお願いします。（記号可）</span></p>
                         <p><span class="attention mini">確認のために2度入力してください。</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
+                    <td>
+                        質問：{{ form_widget(form.reminder) }}<br />
+                        {{ form_errors(form.reminder) }}<br />
+                        答え：{{ form_widget(form.reminder_answer) }}<br />
+                        {{ form_errors(form.reminder_answer) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールマガジンの送付について<span class="attention">※</span></th>
+                    <td>
+                        質問：{{ form_widget(form.mailmaga_flg) }}<br />
+                        {{ form_errors(form.mailmaga_flg) }}<br />
                     </td>
                 </tr>
             </table>
