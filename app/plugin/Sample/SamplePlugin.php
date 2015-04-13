@@ -3,6 +3,7 @@
 namespace Plugin\Sample;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Eccube\Event\RenderEvent;
 
 class SamplePlugin implements EventSubscriberInterface
 {
@@ -15,14 +16,17 @@ class SamplePlugin implements EventSubscriberInterface
     
     public static function getSubscribedEvents() {
         return array(
-            'eccube.event.controller.cart.index.before' => array(
+            'eccube.event.controller.cart.before' => array(
                 array('onCartIndexBefore', 10),
             ),
-            'eccube.event.controller.cart.index.after' => array(
+            'eccube.event.controller.cart.after' => array(
                 array('onCartIndexAfter', 10),
             ),
-            'eccube.event.controller.cart.index.finish' => array(
+            'eccube.event.controller.cart.finish' => array(
                 array('onCartIndexFinish', 10),
+            ),
+            'eccube.event.render.cart.before' => array(
+                array('onCartRenderBefore', 10),
             ),
         );
     }
@@ -34,11 +38,16 @@ class SamplePlugin implements EventSubscriberInterface
 
     public function onCartIndexAfter()
     {
-        echo 'Called method:: onCartIndexBefore()<br />';
+        echo 'Called method:: onCartIndexAfter()<br />';
     }
 
     public function onCartIndexFinish()
     {
         echo 'Called method:: onCartIndexFinish()<br />';
+    }
+
+    public function onCartRenderBefore(RenderEvent $event)
+    {
+        $event->replace(array('アイスクリーム'), array('３倍アイスクリーム'));
     }
 }

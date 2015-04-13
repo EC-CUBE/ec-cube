@@ -261,14 +261,7 @@ class Application extends \Silex\Application
 
     private function parseController(Request $request)
     {
-        $controller = $request->attributes->get('_controller');
-        if (preg_match('/\A\\\\Eccube\\\\Controller\\\\(\w+)Controller\:\:(\w+)/', $controller, $matches)) {
-            $controllerName = strtolower($matches[1]);
-            $methodName = strtolower($matches[2]);
-            $namespace = 'eccube.event.controller.' . $controllerName . '.' . $methodName;
-
-            return $namespace;
-        }
-        return ;
+        $route = str_replace('_', '.', $request->attributes->get('_route'));
+        return 'eccube.event.controller.' . $route;
     }
 }
