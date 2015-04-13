@@ -22,9 +22,4 @@ class RenderEvent extends Event
     {
         return $this->source;
     }
-
-    public function replace(array $from, array $to)
-    {
-        return $this->source = str_replace($from, $to, $this->source);
-    }
 }

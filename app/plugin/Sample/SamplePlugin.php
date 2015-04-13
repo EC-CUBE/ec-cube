@@ -48,6 +48,9 @@ class SamplePlugin implements EventSubscriberInterface
 
     public function onCartRenderBefore(RenderEvent $event)
     {
-        $event->replace(array('アイスクリーム'), array('３倍アイスクリーム'));
+        echo 'Called method:: onCartRenderBefore()<br />';
+        $source = $event->getSource();
+        $source = str_replace(array('アイスクリーム'), array('３倍アイスクリーム'), $source);
+        $event->setSource($source);
     }
 }
