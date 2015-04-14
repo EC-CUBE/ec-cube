@@ -180,12 +180,11 @@ class Application extends \Silex\Application
 
         // Plugin events / service
         foreach ($finder as $dir) {
-            $vendor = $dir->getFilename();
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
 
             // Type: Event
             if (isset($config['event'])) {
-                $class = '\\Plugin\\' . $vendor . '\\' . $config['event'];
+                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
                 $subscriber = new $class($app);
                 $app['eccube.event.dispatcher']->addSubscriber($subscriber);
             }
@@ -193,7 +192,7 @@ class Application extends \Silex\Application
             // Type: ServiceProvider
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\' . $vendor . '\\' . $service;
+                    $class = '\\Plugin\\' . $config['name'] . '\\' . $service;
                     $app->register(new $class($app));
                 }
             }
