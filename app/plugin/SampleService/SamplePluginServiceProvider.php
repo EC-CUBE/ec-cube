@@ -10,21 +10,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\Sample;
+namespace Plugin\SampleService;
 
 use Eccube\Application;
 use Silex\Application as BaseApplication;
 use Silex\ServiceProviderInterface;
-use Plugin\Sample\SamplePluginService;
+use Plugin\SampleService\SamplePluginService;
 
 class SamplePluginServiceProvider implements ServiceProviderInterface
 {
     public function register(BaseApplication $app)
     {
-        $app->match('/plugin/sample', '\\Plugin\\Sample\\Controller\\SamplePluginServiceController::index')->bind('plugin_sample');
+        $app->match('/plugin/sample', '\\Plugin\\SampleService\\Controller\\SamplePluginServiceController::index')->bind('plugin_sample');
 
         $app['eccube.plugin.sample.service'] = $app->share(function () use ($app) {
-            return new \Plugin\Sample\Service\SamplePluginService($app);
+            return new \Plugin\SampleService\Service\SamplePluginService($app);
         });
     }
 

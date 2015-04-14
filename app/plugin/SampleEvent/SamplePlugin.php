@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\Sample;
+namespace Plugin\SampleEvent;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Eccube\Event\RenderEvent;

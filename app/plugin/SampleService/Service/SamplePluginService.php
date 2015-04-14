@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\Sample\Service;
+namespace Plugin\SampleService\Service;
 
 use Eccube\Application;
 
@@ -12,6 +12,7 @@ class SamplePluginService
     {
         $this->app = $app;
     }
+
     public function sample()
     {
         return 'sample service';

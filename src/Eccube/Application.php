@@ -201,7 +201,7 @@ class Application extends \Silex\Application
 
         // hook point
         $this->before(function (Request $request, Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.app.before');
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
         }, \Silex\Application::EARLY_EVENT);
 
         $this->before(function(Request $request, \Silex\Application $app) {
@@ -215,7 +215,7 @@ class Application extends \Silex\Application
         });
 
         $this->after(function (Request $request, Response $response) use ($app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.app.after');
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
         }, \Silex\Application::LATE_EVENT);
 
         $this->finish(function(Request $request, Response $response) use ($app) {
