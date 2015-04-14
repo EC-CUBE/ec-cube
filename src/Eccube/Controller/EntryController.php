@@ -103,7 +103,6 @@ class EntryController extends AbstractController
 
             return $app->redirect($app['url_generator']->generate('entry_complete'));
         }
-
         return $app['twig']->render('Entry/confirm.twig', array(
             'title' => $this->title,
             'form' => $app['session']->get('entry'),

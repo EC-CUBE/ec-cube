@@ -21,7 +21,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>お名前(フリガナ)</th>
+                    <th>お名前(フリガナ)<span class="attention">※</span></th>
                     <td>
                         {{ form.kana01 }}&nbsp;{{ form.kana02 }}
                     </td>
@@ -33,16 +33,71 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>郵便番号<span class="attention">※</span></th>
+                    <td>
+                        {{ form.zip01 }}-{{ form.zip02 }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>住所<span class="attention">※</span></th>
+                    <td>
+                        {{ form.Pref.name }}{{ form.addr01 }}{{ form.addr02 }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>電話番号<span class="attention">※</span></th>
+                    <td>
+                        {{ form.tel01 }}-{{ form.tel02 }}-{{ form.tel03 }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>FAX</th>
+                    <td>
+                        {{ form.fax01 }}-{{ form.fax02 }}-{{ form.fax03 }}
+                    </td>
+                </tr>
+                <tr>
                     <th>メールアドレス<span class="attention">※</span></th>
                     <td>
                         {{ form.email }}<br />
                     </td>
                 </tr>
                 <tr>
+                    <th>性別<span class="attention">※</span></th>
+                    <td>
+                        {{ form.Sex.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>職業</th>
+                    <td>
+                        {{ form.Job.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>生年月日</th>
+                    <td>
+                        {{ form.birth|date("Y年m月d日") }}
+                    </td>
+                </tr>
+                <tr>
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
-                        *******
+                        ********
+                    </td>
+                </tr>
+                <tr>
+                    <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
+                    <td>
+                        質問：{{ form.Reminder.name }}<br />
+                        答え：{{ form.reminder_answer }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールマガジンの送付について<span class="attention">※</span></th>
+                    <td>
+                        {{ form.mailmaga_flg.name }}
                     </td>
                 </tr>
             </table>

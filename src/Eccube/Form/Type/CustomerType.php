@@ -95,12 +95,12 @@ class CustomerType extends AbstractType
                 'input' => 'timestamp',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'years' => range(1950,date('Y')),
+                'years' => range(1950, date('Y')),
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('password', 'repeated')
             ->add('reminder', 'reminder', array(
-            'required' => 'true',
+                'required' => 'true',
             ))
             ->add('reminder_answer', 'text', array(
                 'required' => 'true',

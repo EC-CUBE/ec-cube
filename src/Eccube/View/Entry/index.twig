@@ -38,7 +38,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>お名前(フリガナ)</th>
+                    <th>お名前(フリガナ<span class="attention">※</span></th>
                     <td>
                         {{ form_widget(form.kana) }}
                         {{ form_errors(form.kana) }}
@@ -130,7 +130,7 @@
                 <tr>
                     <th>メールマガジンの送付について<span class="attention">※</span></th>
                     <td>
-                        質問：{{ form_widget(form.mailmaga_flg) }}<br />
+                        {{ form_widget(form.mailmaga_flg) }}<br />
                         {{ form_errors(form.mailmaga_flg) }}<br />
                     </td>
                 </tr>
