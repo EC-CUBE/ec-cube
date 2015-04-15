@@ -8,14 +8,13 @@ use Eccube\Application;
 class RoutingTest extends WebTestCase
 {
 
-    /**
-     * {@inheritdoc}
-     */
     public function createApplication()
     {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
+        $app = new Application();
+
+        $app['debug'] = true;
+        $app['session.test'] = true;
+        $app['exception_handler']->disable();
 
         return $app;
     }

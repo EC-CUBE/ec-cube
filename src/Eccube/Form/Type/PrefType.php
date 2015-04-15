@@ -2,10 +2,10 @@
 
 namespace Eccube\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use \Symfony\Component\Validator\Constraints as Assert;
 
 class PrefType extends AbstractType
 {
@@ -23,7 +23,7 @@ class PrefType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Pref',
+            'class' => 'Eccube\Entity\Pref',
             'property' => 'name',
             'label' => false,
             'multiple'=> false,

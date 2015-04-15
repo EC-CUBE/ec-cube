@@ -7,12 +7,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ProductClass
  */
-class ProductClass extends \Eccube\Entity\AbstractEntity
+class ProductClass
 {
     /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
+     * @var integer
+     */
+    private $class_combination_id;
 
     /**
      * @var integer
@@ -60,6 +70,11 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $point_rate;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var \DateTime
      */
     private $create_date;
@@ -90,14 +105,14 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $Product;
 
     /**
-     * @var \Eccube\Entity\ClassCategory
+     * @var \Eccube\Entity\ClassCombination
      */
-    private $ClassCategory1;
+    private $ClassCombination;
 
     /**
-     * @var \Eccube\Entity\ClassCategory
+     * @var \Eccube\Entity\ProductType
      */
-    private $ClassCategory2;
+    private $ProductType;
 
     /**
      * @var \Eccube\Entity\Member
@@ -113,6 +128,52 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set product_id
+     *
+     * @param integer $productId
+     * @return ProductClass
+     */
+    public function setProductId($productId)
+    {
+        $this->product_id = $productId;
+
+        return $this;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer 
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * Set class_combination_id
+     *
+     * @param integer $classCombinationId
+     * @return ProductClass
+     */
+    public function setClassCombinationId($classCombinationId)
+    {
+        $this->class_combination_id = $classCombinationId;
+
+        return $this;
+    }
+
+    /**
+     * Get class_combination_id
+     *
+     * @return integer 
+     */
+    public function getClassCombinationId()
+    {
+        return $this->class_combination_id;
     }
 
     /**
@@ -323,6 +384,29 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return ProductClass
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
      * Set create_date
      *
      * @param \DateTime $createDate
@@ -443,7 +527,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\Product $product
      * @return ProductClass
      */
-    public function setProduct(\Eccube\Entity\Product $product)
+    public function setProduct(\Eccube\Entity\Product $product = null)
     {
         $this->Product = $product;
 
@@ -461,49 +545,49 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set ClassCategory1
+     * Set ClassCombination
      *
-     * @param \Eccube\Entity\ClassCategory $classCategory1
+     * @param \Eccube\Entity\ClassCombination $classCombination
      * @return ProductClass
      */
-    public function setClassCategory1(\Eccube\Entity\ClassCategory $classCategory1 = null)
+    public function setClassCombination(\Eccube\Entity\ClassCombination $classCombination = null)
     {
-        $this->ClassCategory1 = $classCategory1;
+        $this->ClassCombination = $classCombination;
 
         return $this;
     }
 
     /**
-     * Get ClassCategory1
+     * Get ClassCombination
      *
-     * @return \Eccube\Entity\ClassCategory 
+     * @return \Eccube\Entity\ClassCombination 
      */
-    public function getClassCategory1()
+    public function getClassCombination()
     {
-        return $this->ClassCategory1;
+        return $this->ClassCombination;
     }
 
     /**
-     * Set ClassCategory2
+     * Set ProductType
      *
-     * @param \Eccube\Entity\ClassCategory $classCategory2
+     * @param \Eccube\Entity\ProductType $productType
      * @return ProductClass
      */
-    public function setClassCategory2(\Eccube\Entity\ClassCategory $classCategory2 = null)
+    public function setProductType(\Eccube\Entity\ProductType $productType = null)
     {
-        $this->ClassCategory2 = $classCategory2;
+        $this->ProductType = $productType;
 
         return $this;
     }
 
     /**
-     * Get ClassCategory2
+     * Get ProductType
      *
-     * @return \Eccube\Entity\ClassCategory 
+     * @return \Eccube\Entity\ProductType 
      */
-    public function getClassCategory2()
+    public function getProductType()
     {
-        return $this->ClassCategory2;
+        return $this->ProductType;
     }
 
     /**
@@ -512,7 +596,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\Member $creator
      * @return ProductClass
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -527,5 +611,20 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

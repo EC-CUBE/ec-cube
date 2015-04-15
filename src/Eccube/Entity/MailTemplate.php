@@ -5,9 +5,9 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Mailtemplate
+ * MailTemplate
  */
-class Mailtemplate extends \Eccube\Entity\AbstractEntity
+class MailTemplate
 {
     /**
      * @var integer
@@ -28,6 +28,11 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $footer;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
 
     /**
      * @var integer
@@ -64,7 +69,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * Set subject
      *
      * @param string $subject
-     * @return Mailtemplate
+     * @return MailTemplate
      */
     public function setSubject($subject)
     {
@@ -87,7 +92,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * Set header
      *
      * @param string $header
-     * @return Mailtemplate
+     * @return MailTemplate
      */
     public function setHeader($header)
     {
@@ -110,7 +115,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * Set footer
      *
      * @param string $footer
-     * @return Mailtemplate
+     * @return MailTemplate
      */
     public function setFooter($footer)
     {
@@ -130,10 +135,33 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return MailTemplate
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
      * Set del_flg
      *
      * @param integer $delFlg
-     * @return Mailtemplate
+     * @return MailTemplate
      */
     public function setDelFlg($delFlg)
     {
@@ -156,7 +184,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * Set create_date
      *
      * @param \DateTime $createDate
-     * @return Mailtemplate
+     * @return MailTemplate
      */
     public function setCreateDate($createDate)
     {
@@ -179,7 +207,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * Set update_date
      *
      * @param \DateTime $updateDate
-     * @return Mailtemplate
+     * @return MailTemplate
      */
     public function setUpdateDate($updateDate)
     {
@@ -202,9 +230,9 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * Set Creator
      *
      * @param \Eccube\Entity\Member $creator
-     * @return Mailtemplate
+     * @return MailTemplate
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -219,5 +247,20 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

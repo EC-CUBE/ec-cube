@@ -1,6 +1,6 @@
 # EC-CUBE
-[![Build Status](https://travis-ci.org/EC-CUBE/ec-cube.svg?branch=eccube-3.0.0-beta)](https://travis-ci.org/EC-CUBE/ec-cube)
-[![Coverage Status](https://coveralls.io/repos/EC-CUBE/ec-cube/badge.svg?branch=eccube-3.0.0-beta)](https://coveralls.io/r/EC-CUBE/ec-cube?branch=eccube-3.0.0-beta)
+[![Build Status](https://travis-ci.org/EC-CUBE/ec-cube.svg)](https://travis-ci.org/EC-CUBE/ec-cube)
+[![Coverage Status](https://img.shields.io/coveralls/EC-CUBE/ec-cube.svg)](https://coveralls.io/r/EC-CUBE/ec-cube)
 
 
 ### β開発への参加

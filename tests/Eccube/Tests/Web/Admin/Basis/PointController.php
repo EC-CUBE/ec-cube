@@ -6,15 +6,16 @@ use Eccube\Application;
 
 class PointControllerTest extends WebTestCase
 {
+    public $app;
 
-    /**
-     * {@inheritdoc}
-     */
     public function createApplication()
     {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
+        $app = new Application();
+        $this->app = $app;
+
+        $app['debug'] = true;
+        $app['session.test'] = true;
+        $app['exception_handler']->disable();
 
         return $app;
     }

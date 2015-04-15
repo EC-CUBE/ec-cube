@@ -1,0 +1,81 @@
+Eccube\Entity\Deliv:
+    type: entity
+    table: dtb_deliv
+    repositoryClass: Eccube\Repository\DelivRepository
+    id:
+        delivId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: deliv_id
+            generator:
+                strategy: SEQUENCE
+    fields:
+        productTypeId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: product_type_id
+        name:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+        serviceName:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: service_name
+        remark:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+        confirmUrl:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: confirm_url
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        status:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        delFlg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: del_flg
+        creatorId:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: creator_id
+        createDate:
+            type: datetime
+            nullable: false
+            default: now()
+            column: create_date
+        updateDate:
+            type: datetime
+            nullable: false
+            column: update_date
+    oneToMany:
+        Delivtimes:
+            targetEntity: Eccube\Entity\Delivtime
+            mappedBy: Delivtime
+        PaymentOptions:
+            targetEntity: Eccube\Entity\PaymentOption
+            mappedBy: PaymentOption
+        Delivfees:
+            targetEntity: Eccube\Entity\Delivfee
+            mappedBy: Delivfee
+    lifecycleCallbacks: {  }

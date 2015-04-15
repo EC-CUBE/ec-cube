@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BestProduct
  */
-class BestProduct extends \Eccube\Entity\AbstractEntity
+class BestProduct
 {
     /**
      * @var integer
@@ -25,6 +25,11 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
      * @var string
      */
     private $title;
@@ -33,6 +38,11 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $comment;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
 
     /**
      * @var \DateTime
@@ -117,6 +127,29 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set product_id
+     *
+     * @param integer $productId
+     * @return BestProduct
+     */
+    public function setProductId($productId)
+    {
+        $this->product_id = $productId;
+
+        return $this;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer 
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
      * Set title
      *
      * @param string $title
@@ -160,6 +193,29 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return BestProduct
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**
@@ -275,5 +331,20 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

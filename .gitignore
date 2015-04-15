@@ -18,4 +18,3 @@ composer.phar
 /tests/tmp/*
 /reports/*
 .idea
-*.php~

@@ -14,9 +14,16 @@ class HelpController extends AbstractController
     {
         $title = '特定商取引法';
 
-        $baseInfo = $app['eccube.repository.base_info']->get();
+        $baseInfo = $app['orm.em']
+            ->getRepository('Eccube\Entity\BaseInfo')
+            ->getBaseInfo();
 
-        return $app['twig']->render('Help/tradelaw.twig', compact('title', 'baseInfo'));
+        // todo mtb_*を処理する共通クラス
+        $pref = $app['orm.em']
+            ->getRepository('Eccube\Entity\Pref')
+            ->findMasterData();
+
+        return $app['twig']->render('Help/tradelaw.twig', compact('title', 'baseInfo', 'pref'));
     }
 
 
@@ -32,9 +39,15 @@ class HelpController extends AbstractController
     {
         $title = '当サイトについて';
 
-        $baseInfo = $app['eccube.repository.base_info']->get();
+        $baseInfo = $app['orm.em']
+            ->getRepository('Eccube\Entity\BaseInfo')
+            ->getBaseInfo();
 
-        return $app['twig']->render('Help/about.twig', compact('title', 'baseInfo'));
+        $pref = $app['orm.em']
+            ->getRepository('Eccube\Entity\Pref')
+            ->findMasterData();
+
+        return $app['twig']->render('Help/about.twig', compact('title', 'baseInfo', 'pref'));
     }
 
 
@@ -42,7 +55,9 @@ class HelpController extends AbstractController
     {
         $title = 'プライバシーポリシー';
 
-        $baseInfo = $app['eccube.repository.base_info']->get();
+        $baseInfo = $app['orm.em']
+            ->getRepository('Eccube\Entity\BaseInfo')
+            ->getBaseInfo();
 
         return $app['twig']->render('Help/privacy.twig', compact('title', 'baseInfo'));
     }

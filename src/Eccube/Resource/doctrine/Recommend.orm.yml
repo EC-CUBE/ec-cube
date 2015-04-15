@@ -1,0 +1,19 @@
+Eccube\Entity\Recommend:
+    type: entity
+    table: mtb_recommend
+    repositoryClass: Eccube\Repository\RecommendRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: text
+        rank:
+            type: smallint
+    oneToMany:
+        Reviews:
+            targetEntity: Eccube\Entity\Review
+            mappedBy: Recommend
+    lifecycleCallbacks: {  }

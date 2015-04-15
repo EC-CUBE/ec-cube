@@ -12,12 +12,12 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    private $delivId;
 
     /**
      * @var integer
      */
-    private $product_type_id;
+    private $productTypeId;
 
     /**
      * @var string
@@ -27,7 +27,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $service_name;
+    private $serviceName;
 
     /**
      * @var string
@@ -37,7 +37,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $confirm_url;
+    private $confirmUrl;
 
     /**
      * @var integer
@@ -52,73 +52,79 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $del_flg;
+    private $delFlg;
+
+    /**
+     * @var integer
+     */
+    private $creatorId;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    private $createDate;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    private $updateDate;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $DelivFees;
+    private $Delivtimes;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $DelivTimes;
+    private $PaymentOptions;
 
     /**
-     * @var \Eccube\Entity\Member
+     * @var \Doctrine\Common\Collections\Collection
      */
-    private $Creator;
+    private $Delivfees;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->DelivFees = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->DelivTimes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Delivtimes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->PaymentOptions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Delivfees = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get delivId
      *
      * @return integer 
      */
-    public function getId()
+    public function getDelivId()
     {
-        return $this->id;
+        return $this->delivId;
     }
 
     /**
-     * Set product_type_id
+     * Set productTypeId
      *
      * @param integer $productTypeId
      * @return Deliv
      */
     public function setProductTypeId($productTypeId)
     {
-        $this->product_type_id = $productTypeId;
+        $this->productTypeId = $productTypeId;
 
         return $this;
     }
 
     /**
-     * Get product_type_id
+     * Get productTypeId
      *
      * @return integer 
      */
     public function getProductTypeId()
     {
-        return $this->product_type_id;
+        return $this->productTypeId;
     }
 
     /**
@@ -145,26 +151,26 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set service_name
+     * Set serviceName
      *
      * @param string $serviceName
      * @return Deliv
      */
     public function setServiceName($serviceName)
     {
-        $this->service_name = $serviceName;
+        $this->serviceName = $serviceName;
 
         return $this;
     }
 
     /**
-     * Get service_name
+     * Get serviceName
      *
      * @return string 
      */
     public function getServiceName()
     {
-        return $this->service_name;
+        return $this->serviceName;
     }
 
     /**
@@ -191,26 +197,26 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set confirm_url
+     * Set confirmUrl
      *
      * @param string $confirmUrl
      * @return Deliv
      */
     public function setConfirmUrl($confirmUrl)
     {
-        $this->confirm_url = $confirmUrl;
+        $this->confirmUrl = $confirmUrl;
 
         return $this;
     }
 
     /**
-     * Get confirm_url
+     * Get confirmUrl
      *
      * @return string 
      */
     public function getConfirmUrl()
     {
-        return $this->confirm_url;
+        return $this->confirmUrl;
     }
 
     /**
@@ -260,167 +266,129 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set del_flg
+     * Set delFlg
      *
      * @param integer $delFlg
      * @return Deliv
      */
     public function setDelFlg($delFlg)
     {
-        $this->del_flg = $delFlg;
+        $this->delFlg = $delFlg;
 
         return $this;
     }
 
     /**
-     * Get del_flg
+     * Get delFlg
      *
      * @return integer 
      */
     public function getDelFlg()
     {
-        return $this->del_flg;
+        return $this->delFlg;
     }
 
     /**
-     * Set create_date
+     * Set creatorId
+     *
+     * @param integer $creatorId
+     * @return Deliv
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creatorId = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creatorId
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creatorId;
+    }
+
+    /**
+     * Set createDate
      *
      * @param \DateTime $createDate
      * @return Deliv
      */
     public function setCreateDate($createDate)
     {
-        $this->create_date = $createDate;
+        $this->createDate = $createDate;
 
         return $this;
     }
 
     /**
-     * Get create_date
+     * Get createDate
      *
      * @return \DateTime 
      */
     public function getCreateDate()
     {
-        return $this->create_date;
+        return $this->createDate;
     }
 
     /**
-     * Set update_date
+     * Set updateDate
      *
      * @param \DateTime $updateDate
      * @return Deliv
      */
     public function setUpdateDate($updateDate)
     {
-        $this->update_date = $updateDate;
+        $this->updateDate = $updateDate;
 
         return $this;
     }
 
     /**
-     * Get update_date
+     * Get updateDate
      *
      * @return \DateTime 
      */
     public function getUpdateDate()
     {
-        return $this->update_date;
+        return $this->updateDate;
     }
 
     /**
-     * Add DelivFees
+     * Add Delivtimes
      *
-     * @param \Eccube\Entity\DelivFee $delivFees
+     * @param \Eccube\Entity\Delivtime $delivtimes
      * @return Deliv
      */
-    public function addDelivFee(\Eccube\Entity\DelivFee $delivFees)
+    public function addDelivtime(\Eccube\Entity\Delivtime $delivtimes)
     {
-        $this->DelivFees[] = $delivFees;
+        $this->Delivtimes[] = $delivtimes;
 
         return $this;
     }
 
     /**
-     * Remove DelivFees
+     * Remove Delivtimes
      *
-     * @param \Eccube\Entity\DelivFee $delivFees
+     * @param \Eccube\Entity\Delivtime $delivtimes
      */
-    public function removeDelivFee(\Eccube\Entity\DelivFee $delivFees)
+    public function removeDelivtime(\Eccube\Entity\Delivtime $delivtimes)
     {
-        $this->DelivFees->removeElement($delivFees);
+        $this->Delivtimes->removeElement($delivtimes);
     }
 
     /**
-     * Get DelivFees
+     * Get Delivtimes
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getDelivFees()
+    public function getDelivtimes()
     {
-        return $this->DelivFees;
+        return $this->Delivtimes;
     }
-
-    /**
-     * Add DelivTimes
-     *
-     * @param \Eccube\Entity\DelivTime $delivTimes
-     * @return Deliv
-     */
-    public function addDelivTime(\Eccube\Entity\DelivTime $delivTimes)
-    {
-        $this->DelivTimes[] = $delivTimes;
-
-        return $this;
-    }
-
-    /**
-     * Remove DelivTimes
-     *
-     * @param \Eccube\Entity\DelivTime $delivTimes
-     */
-    public function removeDelivTime(\Eccube\Entity\DelivTime $delivTimes)
-    {
-        $this->DelivTimes->removeElement($delivTimes);
-    }
-
-    /**
-     * Get DelivTimes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getDelivTimes()
-    {
-        return $this->DelivTimes;
-    }
-
-    /**
-     * Set Creator
-     *
-     * @param \Eccube\Entity\Member $creator
-     * @return Deliv
-     */
-    public function setCreator(\Eccube\Entity\Member $creator)
-    {
-        $this->Creator = $creator;
-
-        return $this;
-    }
-
-    /**
-     * Get Creator
-     *
-     * @return \Eccube\Entity\Member 
-     */
-    public function getCreator()
-    {
-        return $this->Creator;
-    }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $PaymentOptions;
-
 
     /**
      * Add PaymentOptions
@@ -453,5 +421,38 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     public function getPaymentOptions()
     {
         return $this->PaymentOptions;
+    }
+
+    /**
+     * Add Delivfees
+     *
+     * @param \Eccube\Entity\Delivfee $delivfees
+     * @return Deliv
+     */
+    public function addDelivfee(\Eccube\Entity\Delivfee $delivfees)
+    {
+        $this->Delivfees[] = $delivfees;
+
+        return $this;
+    }
+
+    /**
+     * Remove Delivfees
+     *
+     * @param \Eccube\Entity\Delivfee $delivfees
+     */
+    public function removeDelivfee(\Eccube\Entity\Delivfee $delivfees)
+    {
+        $this->Delivfees->removeElement($delivfees);
+    }
+
+    /**
+     * Get Delivfees
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDelivfees()
+    {
+        return $this->Delivfees;
     }
 }

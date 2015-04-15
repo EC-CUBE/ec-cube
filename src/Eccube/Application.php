@@ -36,19 +36,11 @@ class Application extends \Silex\Application
 
         parent::__construct($values);
 
-        // set env
-        if (!isset($app['env']) || empty($app['env'])) {
-            $app['env'] = 'prod';
-        }
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            $app['debug'] = true;
-        }
-
         // load config
-        $this['config'] = $app->share(function () {
+        $this['config'] = function () {
             $config = Yaml::parse(__DIR__ .'/../../app/config/eccube/config.yml');
             return $config;
-        });
+        };
         $this['swiftmailer.option'] = $this['config']['mail'];
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
@@ -86,12 +78,9 @@ class Application extends \Silex\Application
             'orm.em.options' => array(
                 'mappings' => array(
                     array(
-                        'type' => 'yml',
+                        'type' => 'simple_yml',
                         'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/Resource/doctrine',
-                            __DIR__ . '/Resource/doctrine/master',
-                        ),
+                        'path' => __DIR__ . '/Resource/doctrine',
                     ),
                 ),
             ),
@@ -126,7 +115,7 @@ class Application extends \Silex\Application
             array('^/mypage/', 'ROLE_USER'),
         );
         $app['eccube.encoder.customer'] = $app->share(function ($app) {
-            return new \Eccube\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
+            return new \Eccube\Framework\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
         });
         $app['security.encoder_factory'] = $app->share(function ($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
@@ -144,12 +133,10 @@ class Application extends \Silex\Application
         };
 
         // Silex Web Profiler
-        if ($app['env'] === 'dev') {
-            $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-                'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
-                'profiler.mount_prefix' => '/_profiler', // this is the default
-            ));
-        }
+        $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
+            'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
+            'profiler.mount_prefix' => '/_profiler', // this is the default
+        ));
 
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/admin', new ControllerProvider\AdminControllerProvider());
@@ -173,6 +160,7 @@ class Application extends \Silex\Application
                 ->andWhere('p.device_type_id = :device_type_id AND p.url = :url')
                 ->addOrderBy('bp.target_id', 'ASC')
                 ->addOrderBy('bp.bloc_row', 'ASC');
+            $result = null;
             try {
                 $result = $qb->getQuery()
                     ->setParameters(array(
@@ -181,19 +169,12 @@ class Application extends \Silex\Application
                     ))
                     ->getSingleResult();
             } catch (\Doctrine\ORM\NoResultException $e) {
-                $result = null;
             }
 
             $app['eccube.layout'] = $result;
         });
-
         // テスト実装
         $this->register(new Plugin\ProductReview\ProductReview());
-
-        if ($app['env'] === 'test') {
-            $app['session.test'] = true;
-            $app['exception_handler']->disable();
-        }
     }
 
 }

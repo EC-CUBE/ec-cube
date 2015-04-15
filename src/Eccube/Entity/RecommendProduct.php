@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RecommendProduct
  */
-class RecommendProduct extends \Eccube\Entity\AbstractEntity
+class RecommendProduct
 {
     /**
      * @var integer
@@ -35,6 +35,11 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     private $status;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var \DateTime
      */
     private $create_date;
@@ -43,6 +48,16 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
      * @var \DateTime
      */
     private $update_date;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $RecommendProduct;
 
     /**
      * @var \Eccube\Entity\Member
@@ -166,6 +181,29 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return RecommendProduct
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
      * Set create_date
      *
      * @param \DateTime $createDate
@@ -212,6 +250,52 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set Product
+     *
+     * @param \Eccube\Entity\Product $product
+     * @return RecommendProduct
+     */
+    public function setProduct(\Eccube\Entity\Product $product = null)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->Product;
+    }
+
+    /**
+     * Set RecommendProduct
+     *
+     * @param \Eccube\Entity\Product $recommendProduct
+     * @return RecommendProduct
+     */
+    public function setRecommendProduct(\Eccube\Entity\Product $recommendProduct = null)
+    {
+        $this->RecommendProduct = $recommendProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get RecommendProduct
+     *
+     * @return \Eccube\Entity\Product 
+     */
+    public function getRecommendProduct()
+    {
+        return $this->RecommendProduct;
+    }
+
+    /**
      * Set Creator
      *
      * @param \Eccube\Entity\Member $creator
@@ -232,5 +316,20 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

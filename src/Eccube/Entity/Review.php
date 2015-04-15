@@ -7,12 +7,17 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Review
  */
-class Review extends \Eccube\Entity\AbstractEntity
+class Review
 {
     /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var integer
+     */
+    private $product_id;
 
     /**
      * @var string
@@ -23,6 +28,16 @@ class Review extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $reviewer_url;
+
+    /**
+     * @var integer
+     */
+    private $sex_id;
+
+    /**
+     * @var integer
+     */
+    private $customer_id;
 
     /**
      * @var integer
@@ -45,6 +60,11 @@ class Review extends \Eccube\Entity\AbstractEntity
     private $status;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var \DateTime
      */
     private $create_date;
@@ -65,14 +85,19 @@ class Review extends \Eccube\Entity\AbstractEntity
     private $Product;
 
     /**
-     * @var \Eccube\Entity\Master\Sex
+     * @var \Eccube\Entity\Customer
+     */
+    private $Customer;
+
+    /**
+     * @var \Eccube\Entity\Sex
      */
     private $Sex;
 
     /**
-     * @var \Eccube\Entity\Customer
+     * @var \Eccube\Entity\Recommend
      */
-    private $Customer;
+    private $Recommend;
 
     /**
      * @var \Eccube\Entity\Member
@@ -88,6 +113,29 @@ class Review extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set product_id
+     *
+     * @param integer $productId
+     * @return Review
+     */
+    public function setProductId($productId)
+    {
+        $this->product_id = $productId;
+
+        return $this;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer 
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
     }
 
     /**
@@ -134,6 +182,52 @@ class Review extends \Eccube\Entity\AbstractEntity
     public function getReviewerUrl()
     {
         return $this->reviewer_url;
+    }
+
+    /**
+     * Set sex_id
+     *
+     * @param integer $sexId
+     * @return Review
+     */
+    public function setSexId($sexId)
+    {
+        $this->sex_id = $sexId;
+
+        return $this;
+    }
+
+    /**
+     * Get sex_id
+     *
+     * @return integer 
+     */
+    public function getSexId()
+    {
+        return $this->sex_id;
+    }
+
+    /**
+     * Set customer_id
+     *
+     * @param integer $customerId
+     * @return Review
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customer_id = $customerId;
+
+        return $this;
+    }
+
+    /**
+     * Get customer_id
+     *
+     * @return integer 
+     */
+    public function getCustomerId()
+    {
+        return $this->customer_id;
     }
 
     /**
@@ -229,6 +323,29 @@ class Review extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return Review
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
      * Set create_date
      *
      * @param \DateTime $createDate
@@ -303,7 +420,7 @@ class Review extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\Product $product
      * @return Review
      */
-    public function setProduct(\Eccube\Entity\Product $product)
+    public function setProduct(\Eccube\Entity\Product $product = null)
     {
         $this->Product = $product;
 
@@ -318,29 +435,6 @@ class Review extends \Eccube\Entity\AbstractEntity
     public function getProduct()
     {
         return $this->Product;
-    }
-
-    /**
-     * Set Sex
-     *
-     * @param \Eccube\Entity\Master\Sex $sex
-     * @return Review
-     */
-    public function setSex(\Eccube\Entity\Master\Sex $sex = null)
-    {
-        $this->Sex = $sex;
-
-        return $this;
-    }
-
-    /**
-     * Get Sex
-     *
-     * @return \Eccube\Entity\Master\Sex 
-     */
-    public function getSex()
-    {
-        return $this->Sex;
     }
 
     /**
@@ -367,6 +461,52 @@ class Review extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set Sex
+     *
+     * @param \Eccube\Entity\Sex $sex
+     * @return Review
+     */
+    public function setSex(\Eccube\Entity\Sex $sex = null)
+    {
+        $this->Sex = $sex;
+
+        return $this;
+    }
+
+    /**
+     * Get Sex
+     *
+     * @return \Eccube\Entity\Sex 
+     */
+    public function getSex()
+    {
+        return $this->Sex;
+    }
+
+    /**
+     * Set Recommend
+     *
+     * @param \Eccube\Entity\Recommend $recommend
+     * @return Review
+     */
+    public function setRecommend(\Eccube\Entity\Recommend $recommend = null)
+    {
+        $this->Recommend = $recommend;
+
+        return $this;
+    }
+
+    /**
+     * Get Recommend
+     *
+     * @return \Eccube\Entity\Recommend 
+     */
+    public function getRecommend()
+    {
+        return $this->Recommend;
+    }
+
+    /**
      * Set Creator
      *
      * @param \Eccube\Entity\Member $creator
@@ -387,5 +527,20 @@ class Review extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

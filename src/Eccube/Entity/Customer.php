@@ -9,21 +9,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Customer
  */
-class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
+class Customer implements UserInterface
 {
-    public function getRoles()
-    {
-        return array('ROLE_USER');
-    }
-
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
-    }
     /**
      * @var integer
      */
@@ -52,11 +39,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var string
      */
-    private $company_name;
-
-    /**
-     * @var string
-     */
     private $zip01;
 
     /**
@@ -65,9 +47,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $zip02;
 
     /**
-     * @var string
+     * @var integer
      */
-    private $zipcode;
+    private $pref_id;
 
     /**
      * @var string
@@ -118,6 +100,16 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      * @var string
      */
     private $fax03;
+
+    /**
+     * @var integer
+     */
+    private $sex;
+
+    /**
+     * @var integer
+     */
+    private $job;
 
     /**
      * @var \DateTime
@@ -210,36 +202,23 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $mailmaga_flg;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $CustomerFavoriteProducts;
-
-    /**
-     * @var \Eccube\Entity\Master\Sex
-     */
-    private $Sex;
-
-    /**
-     * @var \Eccube\Entity\Master\Job
-     */
-    private $Job;
-
-    /**
-     * @var \Eccube\Entity\Master\Country
-     */
-    private $Country;
-
-    /**
-     * @var \Eccube\Entity\Master\Pref
+     * @var \Eccube\Entity\Pref
      */
     private $Pref;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+
+    public function getRoles()
     {
-        $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
+        return array('ROLE_USER');
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
     }
 
     /**
@@ -345,29 +324,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set company_name
-     *
-     * @param string $companyName
-     * @return Customer
-     */
-    public function setCompanyName($companyName)
-    {
-        $this->company_name = $companyName;
-
-        return $this;
-    }
-
-    /**
-     * Get company_name
-     *
-     * @return string 
-     */
-    public function getCompanyName()
-    {
-        return $this->company_name;
-    }
-
-    /**
      * Set zip01
      *
      * @param string $zip01
@@ -414,26 +370,26 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set zipcode
+     * Set pref_id
      *
-     * @param string $zipcode
+     * @param integer $prefId
      * @return Customer
      */
-    public function setZipcode($zipcode)
+    public function setPrefId($prefId)
     {
-        $this->zipcode = $zipcode;
+        $this->pref_id = $prefId;
 
         return $this;
     }
 
     /**
-     * Get zipcode
+     * Get pref_id
      *
-     * @return string 
+     * @return integer 
      */
-    public function getZipcode()
+    public function getPrefId()
     {
-        return $this->zipcode;
+        return $this->pref_id;
     }
 
     /**
@@ -664,6 +620,52 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getFax03()
     {
         return $this->fax03;
+    }
+
+    /**
+     * Set sex
+     *
+     * @param integer $sex
+     * @return Customer
+     */
+    public function setSex($sex)
+    {
+        $this->sex = $sex;
+
+        return $this;
+    }
+
+    /**
+     * Get sex
+     *
+     * @return integer 
+     */
+    public function getSex()
+    {
+        return $this->sex;
+    }
+
+    /**
+     * Set job
+     *
+     * @param integer $job
+     * @return Customer
+     */
+    public function setJob($job)
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    /**
+     * Get job
+     *
+     * @return integer 
+     */
+    public function getJob()
+    {
+        return $this->job;
     }
 
     /**
@@ -1081,114 +1083,12 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Add CustomerFavoriteProducts
-     *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
-     * @return Customer
-     */
-    public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
-    {
-        $this->CustomerFavoriteProducts[] = $customerFavoriteProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove CustomerFavoriteProducts
-     *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
-     */
-    public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
-    {
-        $this->CustomerFavoriteProducts->removeElement($customerFavoriteProducts);
-    }
-
-    /**
-     * Get CustomerFavoriteProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCustomerFavoriteProducts()
-    {
-        return $this->CustomerFavoriteProducts;
-    }
-
-    /**
-     * Set Sex
-     *
-     * @param \Eccube\Entity\Master\Sex $sex
-     * @return Customer
-     */
-    public function setSex(\Eccube\Entity\Master\Sex $sex = null)
-    {
-        $this->Sex = $sex;
-
-        return $this;
-    }
-
-    /**
-     * Get Sex
-     *
-     * @return \Eccube\Entity\Master\Sex 
-     */
-    public function getSex()
-    {
-        return $this->Sex;
-    }
-
-    /**
-     * Set Job
-     *
-     * @param \Eccube\Entity\Master\Job $job
-     * @return Customer
-     */
-    public function setJob(\Eccube\Entity\Master\Job $job = null)
-    {
-        $this->Job = $job;
-
-        return $this;
-    }
-
-    /**
-     * Get Job
-     *
-     * @return \Eccube\Entity\Master\Job 
-     */
-    public function getJob()
-    {
-        return $this->Job;
-    }
-
-    /**
-     * Set Country
-     *
-     * @param \Eccube\Entity\Master\Country $country
-     * @return Customer
-     */
-    public function setCountry(\Eccube\Entity\Master\Country $country = null)
-    {
-        $this->Country = $country;
-
-        return $this;
-    }
-
-    /**
-     * Get Country
-     *
-     * @return \Eccube\Entity\Master\Country 
-     */
-    public function getCountry()
-    {
-        return $this->Country;
-    }
-
-    /**
      * Set Pref
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param \Eccube\Entity\Pref $pref
      * @return Customer
      */
-    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+    public function setPref(\Eccube\Entity\Pref $pref = null)
     {
         $this->Pref = $pref;
 
@@ -1198,10 +1098,25 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Pref 
      */
     public function getPref()
     {
         return $this->Pref;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

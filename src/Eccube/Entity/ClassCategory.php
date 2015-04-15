@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ClassCategory
  */
-class ClassCategory extends \Eccube\Entity\AbstractEntity
+class ClassCategory
 {
     /**
      * @var integer
@@ -22,7 +22,17 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
+    private $class_id;
+
+    /**
+     * @var integer
+     */
     private $rank;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
 
     /**
      * @var \DateTime
@@ -40,6 +50,16 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     private $del_flg;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Children;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ClassCombinations;
+
+    /**
      * @var \Eccube\Entity\ClassName
      */
     private $ClassName;
@@ -49,6 +69,14 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ClassCombinations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -84,6 +112,29 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set class_id
+     *
+     * @param integer $classId
+     * @return ClassCategory
+     */
+    public function setClassId($classId)
+    {
+        $this->class_id = $classId;
+
+        return $this;
+    }
+
+    /**
+     * Get class_id
+     *
+     * @return integer 
+     */
+    public function getClassId()
+    {
+        return $this->class_id;
+    }
+
+    /**
      * Set rank
      *
      * @param integer $rank
@@ -104,6 +155,29 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
+    }
+
+    /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return ClassCategory
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**
@@ -176,12 +250,78 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Add Children
+     *
+     * @param \Eccube\Entity\ClassCombination $children
+     * @return ClassCategory
+     */
+    public function addChild(\Eccube\Entity\ClassCombination $children)
+    {
+        $this->Children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove Children
+     *
+     * @param \Eccube\Entity\ClassCombination $children
+     */
+    public function removeChild(\Eccube\Entity\ClassCombination $children)
+    {
+        $this->Children->removeElement($children);
+    }
+
+    /**
+     * Get Children
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->Children;
+    }
+
+    /**
+     * Add ClassCombinations
+     *
+     * @param \Eccube\Entity\ClassCombination $classCombinations
+     * @return ClassCategory
+     */
+    public function addClassCombination(\Eccube\Entity\ClassCombination $classCombinations)
+    {
+        $this->ClassCombinations[] = $classCombinations;
+
+        return $this;
+    }
+
+    /**
+     * Remove ClassCombinations
+     *
+     * @param \Eccube\Entity\ClassCombination $classCombinations
+     */
+    public function removeClassCombination(\Eccube\Entity\ClassCombination $classCombinations)
+    {
+        $this->ClassCombinations->removeElement($classCombinations);
+    }
+
+    /**
+     * Get ClassCombinations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getClassCombinations()
+    {
+        return $this->ClassCombinations;
+    }
+
+    /**
      * Set ClassName
      *
      * @param \Eccube\Entity\ClassName $className
      * @return ClassCategory
      */
-    public function setClassName(\Eccube\Entity\ClassName $className)
+    public function setClassName(\Eccube\Entity\ClassName $className = null)
     {
         $this->ClassName = $className;
 
@@ -204,7 +344,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\Member $creator
      * @return ClassCategory
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -219,5 +359,20 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

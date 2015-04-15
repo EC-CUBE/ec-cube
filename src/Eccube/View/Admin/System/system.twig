@@ -1,0 +1,23 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+
+<table border="0" cellspacing="1" cellpadding="8" summary=" ">
+   {% for key, item in arrSystemInfo %}
+  
+        <tr>
+            <th>
+           {{item.title}}
+            </th>
+            <td>
+           {{item.value}}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<h2>PHP情報</h2>
+<iframe src="?mode=info" height="500" frameborder="0" style="width: 100%;"></iframe>
+
+{% endblock %}

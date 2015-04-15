@@ -1,0 +1,44 @@
+Eccube\Entity\PageLayout:
+    type: entity
+    table: dtb_pagelayout
+    repositoryClass: Eccube\Repository\PageLayoutRepository
+    fields:
+        device_type_id:
+            type: integer
+            id: true
+            generator:
+                strategy: NONE
+        page_id:
+            type: integer
+            id: true
+            generator:
+                strategy: NONE
+        page_name:
+            type: text
+        url:
+            type: text
+        filename:
+            type: text
+        header_chk:
+            type: smallint
+        footer_chk:
+            type: smallint
+        edit_flg:
+            type: smallint
+        author:
+            type: text
+        description:
+            type: text
+        keyword:
+            type: text
+        update_url:
+          type: text
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
+    oneToMany:
+        BlocPositions:
+            targetEntity: Eccube\Entity\BlocPosition
+            mappedBy: PageLayout
+    lifecycleCallbacks: {  }

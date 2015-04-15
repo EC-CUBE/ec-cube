@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Product
  */
-class Product extends \Eccube\Entity\AbstractEntity
+class Product
 {
     /**
      * @var integer
@@ -18,6 +18,11 @@ class Product extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $name;
+
+    /**
+     * @var integer
+     */
+    private $maker_id;
 
     /**
      * @var integer
@@ -210,6 +215,11 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $del_flg;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var \DateTime
      */
     private $create_date;
@@ -218,6 +228,11 @@ class Product extends \Eccube\Entity\AbstractEntity
      * @var \DateTime
      */
     private $update_date;
+
+    /**
+     * @var integer
+     */
+    private $deliv_date_id;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -255,11 +270,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $BestProducts;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $CustomerFavoriteProducts;
-
-    /**
      * @var \Eccube\Entity\Maker
      */
     private $Maker;
@@ -270,9 +280,14 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $Creator;
 
     /**
-     * @var \Eccube\Entity\Master\DeliveryDate
+     * @var \Eccube\Entity\DeliveryDate
      */
     private $DeliveryDate;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Categories;
 
     /**
      * Constructor
@@ -286,7 +301,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->RecommendedProducts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Reviews = new \Doctrine\Common\Collections\ArrayCollection();
         $this->BestProducts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Categories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -320,6 +335,29 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set maker_id
+     *
+     * @param integer $makerId
+     * @return Product
+     */
+    public function setMakerId($makerId)
+    {
+        $this->maker_id = $makerId;
+
+        return $this;
+    }
+
+    /**
+     * Get maker_id
+     *
+     * @return integer 
+     */
+    public function getMakerId()
+    {
+        return $this->maker_id;
     }
 
     /**
@@ -1197,6 +1235,29 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return Product
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
      * Set create_date
      *
      * @param \DateTime $createDate
@@ -1240,6 +1301,29 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set deliv_date_id
+     *
+     * @param integer $delivDateId
+     * @return Product
+     */
+    public function setDelivDateId($delivDateId)
+    {
+        $this->deliv_date_id = $delivDateId;
+
+        return $this;
+    }
+
+    /**
+     * Get deliv_date_id
+     *
+     * @return integer 
+     */
+    public function getDelivDateId()
+    {
+        return $this->deliv_date_id;
     }
 
     /**
@@ -1474,39 +1558,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add CustomerFavoriteProducts
-     *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
-     * @return Product
-     */
-    public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
-    {
-        $this->CustomerFavoriteProducts[] = $customerFavoriteProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove CustomerFavoriteProducts
-     *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
-     */
-    public function removeCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
-    {
-        $this->CustomerFavoriteProducts->removeElement($customerFavoriteProducts);
-    }
-
-    /**
-     * Get CustomerFavoriteProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCustomerFavoriteProducts()
-    {
-        return $this->CustomerFavoriteProducts;
-    }
-
-    /**
      * Set Maker
      *
      * @param \Eccube\Entity\Maker $maker
@@ -1535,7 +1586,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\Member $creator
      * @return Product
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -1555,10 +1606,10 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set DeliveryDate
      *
-     * @param \Eccube\Entity\Master\DeliveryDate $deliveryDate
+     * @param \Eccube\Entity\DeliveryDate $deliveryDate
      * @return Product
      */
-    public function setDeliveryDate(\Eccube\Entity\Master\DeliveryDate $deliveryDate = null)
+    public function setDeliveryDate(\Eccube\Entity\DeliveryDate $deliveryDate = null)
     {
         $this->DeliveryDate = $deliveryDate;
 
@@ -1568,10 +1619,58 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get DeliveryDate
      *
-     * @return \Eccube\Entity\Master\DeliveryDate 
+     * @return \Eccube\Entity\DeliveryDate 
      */
     public function getDeliveryDate()
     {
         return $this->DeliveryDate;
+    }
+
+    /**
+     * Add Categories
+     *
+     * @param \Eccube\Entity\Category $categories
+     * @return Product
+     */
+    public function addCategory(\Eccube\Entity\Category $categories)
+    {
+        $this->Categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove Categories
+     *
+     * @param \Eccube\Entity\Category $categories
+     */
+    public function removeCategory(\Eccube\Entity\Category $categories)
+    {
+        $this->Categories->removeElement($categories);
+    }
+
+    /**
+     * Get Categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->Categories;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

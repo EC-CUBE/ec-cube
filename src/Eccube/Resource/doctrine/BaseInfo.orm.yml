@@ -1,0 +1,139 @@
+Eccube\Entity\BaseInfo:
+    type: entity
+    table: dtb_baseinfo
+    repositoryClass: Eccube\Repository\BaseInfoRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        company_name:
+            type: text
+        company_kana:
+            type: text
+        zip01:
+            type: text
+        zip02:
+            type: text
+        pref:
+            type: smallint
+        addr01:
+            type: text
+        addr02:
+            type: text
+        tel01:
+            type: text
+        tel02:
+            type: text
+        tel03:
+            type: text
+        fax01:
+            type: text
+        fax02:
+            type: text
+        fax03:
+            type: text
+        business_hour:
+            type: text
+        law_company:
+            type: text
+        law_manager:
+            type: text
+        law_zip01:
+            type: text
+        law_zip02:
+            type: text
+        law_pref:
+            type: smallint
+        law_addr01:
+            type: text
+        law_addr02:
+            type: text
+        law_tel01:
+            type: text
+        law_tel02:
+            type: text
+        law_tel03:
+            type: text
+        law_fax01:
+            type: text
+        law_fax02:
+            type: text
+        law_fax03:
+            type: text
+        law_email:
+            type: text
+        law_url:
+            type: text
+        law_term01:
+            type: text
+        law_term02:
+            type: text
+        law_term03:
+            type: text
+        law_term04:
+            type: text
+        law_term05:
+            type: text
+        law_term06:
+            type: text
+        law_term07:
+            type: text
+        law_term08:
+            type: text
+        law_term09:
+            type: text
+        law_term10:
+            type: text
+        #tax:
+        #    type: decimal
+        #tax_rule:
+        #    type: smallint
+        email01:
+            type: text
+        email02:
+            type: text
+        email03:
+            type: text
+        email04:
+            type: text
+        #email05:
+        #    type: text
+        free_rule:
+            type: decimal
+        shop_name:
+            type: text
+        shop_kana:
+            type: text
+        shop_name_eng:
+            type: text
+        point_rate:
+            type: decimal
+        welcome_point:
+            type: decimal
+        update_date:
+            type: datetime
+        top_tpl:
+            type: text
+        product_tpl:
+            type: text
+        detail_tpl:
+            type: text
+        mypage_tpl:
+            type: text
+        good_traded:
+            type: text
+        message:
+            type: text
+        regular_holiday_ids:
+            type: text
+        latitude:
+            type: text
+        longitude:
+            type: text
+        downloadable_days:
+            type: decimal
+        downloadable_days_unlimited:
+            type: decimal
+    lifecycleCallbacks: {  }

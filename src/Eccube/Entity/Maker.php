@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Maker
  */
-class Maker extends \Eccube\Entity\AbstractEntity
+class Maker
 {
     /**
      * @var integer
@@ -25,6 +25,11 @@ class Maker extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var \DateTime
      */
     private $create_date;
@@ -38,11 +43,6 @@ class Maker extends \Eccube\Entity\AbstractEntity
      * @var integer
      */
     private $del_flg;
-
-    /**
-     * @var \Eccube\Entity\MakerCount
-     */
-    private $MakerCount;
 
     /**
      * @var \Eccube\Entity\Member
@@ -104,6 +104,29 @@ class Maker extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
+    }
+
+    /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return Maker
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**
@@ -176,35 +199,12 @@ class Maker extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set MakerCount
-     *
-     * @param \Eccube\Entity\MakerCount $makerCount
-     * @return Maker
-     */
-    public function setMakerCount(\Eccube\Entity\MakerCount $makerCount = null)
-    {
-        $this->MakerCount = $makerCount;
-
-        return $this;
-    }
-
-    /**
-     * Get MakerCount
-     *
-     * @return \Eccube\Entity\MakerCount 
-     */
-    public function getMakerCount()
-    {
-        return $this->MakerCount;
-    }
-
-    /**
      * Set Creator
      *
      * @param \Eccube\Entity\Member $creator
      * @return Maker
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -219,5 +219,20 @@ class Maker extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

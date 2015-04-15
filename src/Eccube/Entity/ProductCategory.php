@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ProductCategory
  */
-class ProductCategory extends \Eccube\Entity\AbstractEntity
+class ProductCategory
 {
     /**
      * @var integer

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PageLayout
  */
-class PageLayout extends \Eccube\Entity\AbstractEntity
+class PageLayout
 {
     /**
      * @var integer
@@ -22,7 +22,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $name;
+    private $page_name;
 
     /**
      * @var string
@@ -78,11 +78,6 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      * @var \DateTime
      */
     private $update_date;
-
-    /**
-     * @var string
-     */
-    private $meta_robots;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -144,26 +139,26 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set page_name
      *
-     * @param string $name
+     * @param string $pageName
      * @return PageLayout
      */
-    public function setName($name)
+    public function setPageName($pageName)
     {
-        $this->name = $name;
+        $this->page_name = $pageName;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get page_name
      *
      * @return string 
      */
-    public function getName()
+    public function getPageName()
     {
-        return $this->name;
+        return $this->page_name;
     }
 
     /**
@@ -417,29 +412,6 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
-    }
-
-    /**
-     * Set meta_robots
-     *
-     * @param string $metaRobots
-     * @return PageLayout
-     */
-    public function setMetaRobots($metaRobots)
-    {
-        $this->meta_robots = $metaRobots;
-
-        return $this;
-    }
-
-    /**
-     * Get meta_robots
-     *
-     * @return string 
-     */
-    public function getMetaRobots()
-    {
-        return $this->meta_robots;
     }
 
     /**

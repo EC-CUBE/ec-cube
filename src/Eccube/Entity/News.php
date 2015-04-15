@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * News
  */
-class News extends \Eccube\Entity\AbstractEntity
+class News
 {
     /**
      * @var integer
@@ -17,7 +17,7 @@ class News extends \Eccube\Entity\AbstractEntity
     /**
      * @var \DateTime
      */
-    private $date;
+    private $news_date;
 
     /**
      * @var integer
@@ -27,27 +27,32 @@ class News extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $title;
+    private $news_title;
 
     /**
      * @var string
      */
-    private $comment;
+    private $news_comment;
 
     /**
      * @var string
      */
-    private $url;
+    private $news_url;
 
     /**
      * @var integer
      */
-    private $select;
+    private $news_select;
 
     /**
      * @var string
      */
     private $link_method;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
 
     /**
      * @var \DateTime
@@ -81,26 +86,26 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set date
+     * Set news_date
      *
-     * @param \DateTime $date
+     * @param \DateTime $newsDate
      * @return News
      */
-    public function setDate($date)
+    public function setNewsDate($newsDate)
     {
-        $this->date = $date;
+        $this->news_date = $newsDate;
 
         return $this;
     }
 
     /**
-     * Get date
+     * Get news_date
      *
      * @return \DateTime 
      */
-    public function getDate()
+    public function getNewsDate()
     {
-        return $this->date;
+        return $this->news_date;
     }
 
     /**
@@ -127,95 +132,95 @@ class News extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set title
+     * Set news_title
      *
-     * @param string $title
+     * @param string $newsTitle
      * @return News
      */
-    public function setTitle($title)
+    public function setNewsTitle($newsTitle)
     {
-        $this->title = $title;
+        $this->news_title = $newsTitle;
 
         return $this;
     }
 
     /**
-     * Get title
+     * Get news_title
      *
      * @return string 
      */
-    public function getTitle()
+    public function getNewsTitle()
     {
-        return $this->title;
+        return $this->news_title;
     }
 
     /**
-     * Set comment
+     * Set news_comment
      *
-     * @param string $comment
+     * @param string $newsComment
      * @return News
      */
-    public function setComment($comment)
+    public function setNewsComment($newsComment)
     {
-        $this->comment = $comment;
+        $this->news_comment = $newsComment;
 
         return $this;
     }
 
     /**
-     * Get comment
+     * Get news_comment
      *
      * @return string 
      */
-    public function getComment()
+    public function getNewsComment()
     {
-        return $this->comment;
+        return $this->news_comment;
     }
 
     /**
-     * Set url
+     * Set news_url
      *
-     * @param string $url
+     * @param string $newsUrl
      * @return News
      */
-    public function setUrl($url)
+    public function setNewsUrl($newsUrl)
     {
-        $this->url = $url;
+        $this->news_url = $newsUrl;
 
         return $this;
     }
 
     /**
-     * Get url
+     * Get news_url
      *
      * @return string 
      */
-    public function getUrl()
+    public function getNewsUrl()
     {
-        return $this->url;
+        return $this->news_url;
     }
 
     /**
-     * Set select
+     * Set news_select
      *
-     * @param integer $select
+     * @param integer $newsSelect
      * @return News
      */
-    public function setSelect($select)
+    public function setNewsSelect($newsSelect)
     {
-        $this->select = $select;
+        $this->news_select = $newsSelect;
 
         return $this;
     }
 
     /**
-     * Get select
+     * Get news_select
      *
      * @return integer 
      */
-    public function getSelect()
+    public function getNewsSelect()
     {
-        return $this->select;
+        return $this->news_select;
     }
 
     /**
@@ -239,6 +244,29 @@ class News extends \Eccube\Entity\AbstractEntity
     public function getLinkMethod()
     {
         return $this->link_method;
+    }
+
+    /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return News
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**
@@ -316,7 +344,7 @@ class News extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\Member $creator
      * @return News
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $creator = null)
     {
         $this->Creator = $creator;
 
@@ -331,5 +359,20 @@ class News extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

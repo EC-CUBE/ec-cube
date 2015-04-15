@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Category
  */
-class Category extends \Eccube\Entity\AbstractEntity
+class Category
 {
     /**
      * @var integer
@@ -17,7 +17,12 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $name;
+    private $category_name;
+
+    /**
+     * @var integer
+     */
+    private $parent_category_id;
 
     /**
      * @var integer
@@ -28,6 +33,11 @@ class Category extends \Eccube\Entity\AbstractEntity
      * @var integer
      */
     private $rank;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
 
     /**
      * @var \DateTime
@@ -94,26 +104,49 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set name
+     * Set category_name
      *
-     * @param string $name
+     * @param string $categoryName
      * @return Category
      */
-    public function setName($name)
+    public function setCategoryName($categoryName)
     {
-        $this->name = $name;
+        $this->category_name = $categoryName;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get category_name
      *
      * @return string 
      */
-    public function getName()
+    public function getCategoryName()
     {
-        return $this->name;
+        return $this->category_name;
+    }
+
+    /**
+     * Set parent_category_id
+     *
+     * @param integer $parentCategoryId
+     * @return Category
+     */
+    public function setParentCategoryId($parentCategoryId)
+    {
+        $this->parent_category_id = $parentCategoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get parent_category_id
+     *
+     * @return integer 
+     */
+    public function getParentCategoryId()
+    {
+        return $this->parent_category_id;
     }
 
     /**
@@ -160,6 +193,29 @@ class Category extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
+    }
+
+    /**
+     * Set creator_id
+     *
+     * @param integer $creatorId
+     * @return Category
+     */
+    public function setCreatorId($creatorId)
+    {
+        $this->creator_id = $creatorId;
+
+        return $this;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer 
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**
@@ -387,5 +443,20 @@ class Category extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreateDateAuto()
+    {
+        // Add your code here
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDateAuto()
+    {
+        // Add your code here
     }
 }

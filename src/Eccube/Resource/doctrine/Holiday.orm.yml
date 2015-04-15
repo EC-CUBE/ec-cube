@@ -1,0 +1,38 @@
+Eccube\Entity\Holiday:
+    type: entity
+    table: dtb_holiday
+    repositoryClass: Eccube\Repository\HolidayRepository
+    fields:
+        id:
+            type: integer
+            column: holiday_id
+            length: 11
+            id: true
+            generator:
+                strategy: AUTO
+        title:
+            type: text
+        month:
+            type: smallint
+        day:
+            type: smallint
+        rank:
+            type: integer
+        creator_id:
+            type: integer
+        create_date:
+            type: datetime
+        update_date:
+            type: datetime
+        del_flg:
+            type: smallint
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: HolidayCreators
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+    lifecycleCallbacks:
+        prePersist: [ setCreateDateAuto ]
+        preUpdate:  [ setUpdateDateAuto ]
