@@ -88,28 +88,92 @@ class Application extends \Silex\Application
             return \Swift_Message::newInstance();
         };
 
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/Resource/doctrine',
-                            __DIR__ . '/Resource/doctrine/master',
-                        ),
-                    ),
-                    array(
-                        'alias' => 'sample_plugin',
-                        'type' => 'yml',
-                        'namespace' => 'Plugin\SampleEntity\Entity',
-                        'path' => array(
-                            __DIR__ . '/../../app/plugin',
-                        ),
+        $ormOptions = array(
+            'mappings' => array(
+                array(
+                    'type' => 'yml',
+                    'namespace' => 'Eccube\Entity',
+                    'path' => array(
+                        __DIR__ . '/Resource/doctrine',
+                        __DIR__ . '/Resource/doctrine/master',
                     ),
                 ),
             ),
+        );
+
+       // EventDispatcher
+        $app['eccube.event.dispatcher'] = $app->share(function() {
+            return new EventDispatcher();
+        });
+
+        // EventSubscriber
+        $basePath = __DIR__ . '/../../app/plugin';
+        $finder = Finder::create()
+            ->in($basePath)
+            ->directories()
+            ->depth(0);
+
+        // Plugin events / service
+        foreach ($finder as $dir) {
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+
+            // Type: Event
+            if (isset($config['event'])) {
+                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
+                $subscriber = new $class($app);
+                $app['eccube.event.dispatcher']->addSubscriber($subscriber);
+            }
+
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\' . $config['name'] . '\\' . $service;
+                    $app->register(new $class($app));
+                }
+            }
+
+            // Doctrine Extend
+            if (isset($config['orm.path'])) {
+                $pathes = array();
+                foreach($config['orm.path'] as $path) {
+                    $pathes[] = $basePath . '/' . $config['name'] . $path;
+                }
+                $ormOptions['mappings'][] = array(
+                    'type' => 'yml',
+                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'path' => $pathes,
+                );
+            }
+        }
+
+        // hook point
+        $this->before(function (Request $request, Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+        }, \Silex\Application::EARLY_EVENT);
+
+        $this->before(function(Request $request, \Silex\Application $app) {
+            $event = $this->parseController($request) . '.before';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function(Request $request, Response $response) use ($app) {
+            $event = $this->parseController($request) . '.after';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response) use ($app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+        }, \Silex\Application::LATE_EVENT);
+
+        $this->finish(function(Request $request, Response $response) use ($app) {
+            $event = $this->parseController($request) . '.finish';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        //Doctrine ORM
+        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.em.options' => $ormOptions,
         ));
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
@@ -171,63 +235,6 @@ class Application extends \Silex\Application
 
         $this['callback_resolver'] = $this->share(function () use ($app) {
             return new CallbackResolver($app);
-        });
-
-
-        // EventDispatcher
-        $app['eccube.event.dispatcher'] = $app->share(function() {
-            return new EventDispatcher();
-        });
-
-        // EventSubscriber
-        $basePath = __DIR__ . '/../../app/plugin';
-        $finder = Finder::create()
-            ->in($basePath)
-            ->directories()
-            ->depth(0);
-
-        // Plugin events / service
-        foreach ($finder as $dir) {
-            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
-
-            // Type: Event
-            if (isset($config['event'])) {
-                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
-                $subscriber = new $class($app);
-                $app['eccube.event.dispatcher']->addSubscriber($subscriber);
-            }
-
-            // Type: ServiceProvider
-            if (isset($config['service'])) {
-                foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\' . $config['name'] . '\\' . $service;
-                    $app->register(new $class($app));
-                }
-            }
-        }
-
-        // hook point
-        $this->before(function (Request $request, Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
-        }, \Silex\Application::EARLY_EVENT);
-
-        $this->before(function(Request $request, \Silex\Application $app) {
-            $event = $this->parseController($request) . '.before';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function(Request $request, Response $response) use ($app) {
-            $event = $this->parseController($request) . '.after';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function (Request $request, Response $response) use ($app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
-        }, \Silex\Application::LATE_EVENT);
-
-        $this->finish(function(Request $request, Response $response) use ($app) {
-            $event = $this->parseController($request) . '.finish';
-            $app['eccube.event.dispatcher']->dispatch($event);
         });
 
 

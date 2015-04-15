@@ -1,2 +1,4 @@
 name: SampleEntity
 event: SampleEntity
+orm.path:
+    - /Resource/doctrine

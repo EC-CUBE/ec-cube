@@ -23,8 +23,8 @@ class SampleEntity implements EventSubscriberInterface
 
     public function onHelpTradelawBefore()
     {
-        $repo = $this->app['orm.em']->getRepository('Plugin\SampleEntity\Entity\Extend');
-        var_dump($repo);
-        echo 'Called method:: onHelpTradelawBefore()<br />';
+        $extend = $this->app['orm.em']->getRepository('Plugin\SampleEntity\Entity\Extend')
+            ->find(1);
+        var_dump($extend);
     }
 }
