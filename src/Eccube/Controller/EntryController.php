@@ -5,6 +5,7 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Framework\Util\Utils;
 
+
 class EntryController extends AbstractController
 {
     private $title;
@@ -35,28 +36,48 @@ class EntryController extends AbstractController
         ));
     }
 
-
     public function index(Application $app)
     {
+
         $customer = $app['eccube.repository.customer']->newCustomer();
-        $form = $app['form.factory']
-            ->createBuilder('customer', $customer)
-            ->getForm();
-        $form->handleRequest($app['request']);
+
+        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+        $builder = $app['form.factory']->createBuilder('customer', $customer);
+
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $form = $builder->getForm();
 
         if ($app['request']->getMethod() === 'POST') {
+            $form->handleRequest($app['request']);
+
             if ($form->isValid()) {
-                $app['session']->set('entry', $form->getData());
 
-                return $app->redirect($app['url_generator']->generate('entry_confirm'));
+                switch ($app['request']->get('mode')) {
+                    case 'confirm' :
+                        $builder->setAttribute('freeze', true);
+                        $form = $builder->getForm();
+                        $form->handleRequest($app['request']);
+                        return $app['twig']->render('Entry/confirm.twig', array(
+                            'title' => $this->title,
+                            'form' => $form->createView(),
+                        ));
+                        break;
+                    case 'complete':
+                        $data = $form->getData();
+
+                        // TODO: 後でEventとして実装する
+                        $message = $app['mail.message']
+                            ->setSubject('[EC-CUBE3] お問い合わせを受け付けました。')
+                            ->setFrom(array('sample@example.com'))
+                            ->setCc($app['config']['mail_cc'])
+                            ->setTo(array($data['email']))
+                            ->setBody($data['contents']);
+                        $app['mailer']->send($message);
+
+                        return $app->redirect($app['url_generator']->generate('contact_complete'));
+                        break;
+                }
             }
-
-        } elseif ($app['session']->has('entry')) {
-
-            $sessionData = $app['session']->get('entry');
-            $form = $app['form.factory']
-                ->createBuilder('customer', $sessionData)
-                ->getForm();
         }
 
         return $app['twig']->render('Entry/index.twig', array(
@@ -64,7 +85,6 @@ class EntryController extends AbstractController
             'form' => $form->createView(),
         ));
     }
-
 
     public function confirm(Application $app)
     {
