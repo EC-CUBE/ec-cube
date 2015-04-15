@@ -18,6 +18,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
      */
     public function register(BaseApplication $app)
     {
+        // Service
+        $app['eccube.service.system'] = function() use ($app) {
+            return new \Eccube\Service\SystemService($app);
+        };
+        
         // Repository
         $app['eccube.repository.customer'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Customer');
