@@ -1,0 +1,40 @@
+Eccube\Entity\DelivFee:
+    type: entity
+    table: dtb_delivfee
+    repositoryClass: Eccube\Repository\DelivFeeRepository
+    id:
+        deliv_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        fee_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        fee:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+#        pref:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+    manyToOne:
+        Deliv:
+            targetEntity: Eccube\Entity\Deliv
+            inversedBy: DelivFees
+            joinColumn:
+                name: deliv_id
+                referencedColumnName: deliv_id
+        Pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            inversedBy: DelivFees
+            joinColumn:
+                name: pref
+                referencedColumnName: id
+                nullable: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,38 @@
+Eccube\Entity\PluginHookpoint:
+    type: entity
+    table: dtb_plugin_hookpoint
+    repositoryClass: Eccube\Repository\PluginHookpointRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: plugin_hookpoint_id
+            generator:
+                strategy: AUTO
+    fields:
+        plugin_id:
+            type: integer
+            nullable: false
+            unsigned: false
+        hook_point:
+            type: text
+            nullable: false
+        callback:
+            type: text
+            nullable: true
+        use_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    lifecycleCallbacks: {  }

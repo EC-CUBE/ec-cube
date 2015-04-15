@@ -1,0 +1,23 @@
+Eccube\Entity\Master\MailTemplate:
+    type: entity
+    table: mtb_mail_template
+    repositoryClass: Eccube\Repository\Master\MailTemplateRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    lifecycleCallbacks: {  }

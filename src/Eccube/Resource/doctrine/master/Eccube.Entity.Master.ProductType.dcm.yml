@@ -1,0 +1,22 @@
+Eccube\Entity\Master\ProductType:
+    type: entity
+    table: mtb_product_type
+    repositoryClass: Eccube\Repository\Master\ProductTypeRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+    lifecycleCallbacks: {  }

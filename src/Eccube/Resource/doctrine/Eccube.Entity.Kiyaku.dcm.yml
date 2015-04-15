@@ -1,0 +1,53 @@
+Eccube\Entity\Kiyaku:
+    type: entity
+    table: dtb_kiyaku
+    repositoryClass: Eccube\Repository\KiyakuRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: kiyaku_id
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: text
+            nullable: false
+            column: kiyaku_title
+        text:
+            type: text
+            nullable: false
+            column: kiyaku_text
+        rank:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: Kiyakus
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

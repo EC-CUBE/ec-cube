@@ -1,0 +1,25 @@
+Eccube\Entity\IndexList:
+    type: entity
+    table: dtb_index_list
+    repositoryClass: Eccube\Repository\IndexListRepository
+    id:
+        table_name:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+        column_name:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+    fields:
+        recommend_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        recommend_comment:
+            type: text
+            nullable: true
+    lifecycleCallbacks: {  }

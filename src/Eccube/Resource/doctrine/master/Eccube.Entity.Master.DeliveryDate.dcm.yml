@@ -1,0 +1,23 @@
+Eccube\Entity\Master\DeliveryDate:
+    type: entity
+    table: mtb_delivery_date
+    repositoryClass: Eccube\Repository\Master\DeliveryDateRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    lifecycleCallbacks: {  }

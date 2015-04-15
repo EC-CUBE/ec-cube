@@ -1,0 +1,130 @@
+Eccube\Entity\ProductClass:
+    type: entity
+    table: dtb_products_class
+    repositoryClass: Eccube\Repository\ProductClassRepository
+    uniqueConstraints:
+        dtb_products_class_unique_key:
+            columns:
+                - product_id
+                - classcategory_id1
+                - classcategory_id2
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: product_class_id
+            generator:
+                strategy: AUTO
+    fields:
+#        product_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+#        classcategory_id1:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+#            default: '0'
+#        classcategory_id2:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+#            default: '0'
+        product_type_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+        product_code:
+            type: text
+            nullable: true
+            fixed: false
+        stock:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        stock_unlimited:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        sale_limit:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        price01:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        price02:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+        deliv_fee:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        point_rate:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        down_filename:
+            type: text
+            nullable: true
+        down_realfilename:
+            type: text
+            nullable: true
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: ProductClasses
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+                nullable: false
+        ClassCategory1:
+            targetEntity: Eccube\Entity\ClassCategory
+            inversedBy: ProductClasses
+            joinColumn:
+                name: classcategory_id1
+                referencedColumnName: classcategory_id
+        ClassCategory2:
+            targetEntity: Eccube\Entity\ClassCategory
+            inversedBy: ProductClasses
+            joinColumn:
+                name: classcategory_id2
+                referencedColumnName: classcategory_id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: ProductClasses
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

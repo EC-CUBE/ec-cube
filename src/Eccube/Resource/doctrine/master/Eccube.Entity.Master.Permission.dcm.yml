@@ -1,0 +1,21 @@
+Eccube\Entity\Master\Permission:
+    type: entity
+    table: mtb_permission
+    repositoryClass: Eccube\Repository\Master\PermissionRepository
+    id:
+        id:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+    fields:
+        name:
+            type: text
+            nullable: true
+            length: 65535
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    lifecycleCallbacks: {  }

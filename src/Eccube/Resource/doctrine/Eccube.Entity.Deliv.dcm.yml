@@ -1,0 +1,75 @@
+Eccube\Entity\Deliv:
+    type: entity
+    table: dtb_deliv
+    repositoryClass: Eccube\Repository\DelivRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: deliv_id
+            generator:
+                strategy: AUTO
+    fields:
+        product_type_id:
+            type: integer
+            nullable: true
+            unsigned: false
+        name:
+            type: text
+            nullable: true
+        service_name:
+            type: text
+            nullable: true
+        remark:
+            type: text
+            nullable: true
+        confirm_url:
+            type: text
+            nullable: true
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        status:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: Delivs
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    oneToMany:
+        PaymentOptions:
+            targetEntity: Eccube\Entity\PaymentOption
+            mappedBy: Deliv
+        DelivFees:
+            targetEntity: Eccube\Entity\DelivFee
+            mappedBy: Deliv
+        DelivTimes:
+            targetEntity: Eccube\Entity\DelivTime
+            mappedBy: Deliv
+    lifecycleCallbacks: {  }
