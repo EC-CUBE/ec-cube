@@ -100,6 +100,14 @@ class Application extends \Silex\Application
                             __DIR__ . '/Resource/doctrine/master',
                         ),
                     ),
+                    array(
+                        'alias' => 'sample_plugin',
+                        'type' => 'yml',
+                        'namespace' => 'Plugin\SampleEntity\Entity',
+                        'path' => array(
+                            __DIR__ . '/../../app/plugin',
+                        ),
+                    ),
                 ),
             ),
         ));

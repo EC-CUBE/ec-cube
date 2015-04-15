@@ -245,4 +245,5 @@ Eccube\Entity\BaseInfo:
             joinColumn:
                 name: law_pref
                 referencedColumnName: id
-    lifecycleCallbacks: {  }
+    lifecycleCallbacks: 
+        loadClassMetadata: {  }
