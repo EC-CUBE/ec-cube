@@ -17,7 +17,7 @@ class CartController
         $products = $cart->getProducts();
         $title = 'カゴの中';
 
-        return $app['twig']->render(
+        return $app['view']->render(
             'Cart/index.twig',
             compact('title', 'products')
         );
