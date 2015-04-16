@@ -18,12 +18,12 @@ class SystemService
     public function getDbversion()
     {
         
+        $dbversion[0]['version'] = "";
         $dbversion = $this->system
            ->fetchAll("SELECT version()");
-        if (isset($dbversion)){
-        $dbversion = $dbversion[0]['version'];
-        }
         
+        $dbversion = $dbversion[0]['version'];
+ 
         return $dbversion;
     }
    
