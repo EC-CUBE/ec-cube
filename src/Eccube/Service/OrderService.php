@@ -92,6 +92,7 @@ class OrderService
         $this->copyToShippingFromCustomer($shipping, $customer)
              ->setShippingId(1)
              ->setOrderId($order->getId())
+             ->setOrder($order)
              ->setCreateDate(new \DateTime())
              ->setUpdateDate(new \DateTime())
              ->setDelFlg(0);

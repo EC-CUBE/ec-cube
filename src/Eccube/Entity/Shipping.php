@@ -149,6 +149,9 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     private $Pref;
 
+    /**
+     * @var \Eccube\Entity\Order
+     */
     private $Order;
 
     /**
