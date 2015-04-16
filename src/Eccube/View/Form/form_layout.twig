@@ -96,6 +96,21 @@
     {%- endif -%}
 {%- endblock choice_widget_collapsed -%}
 
+
+{%- block choice_widget_expanded -%}
+    {% if freeze %}
+        {% for choice in choices %}
+            {% if choice is selectedchoice(value) %}
+                {{ choice.label|trans({}, translation_domain) }}
+                <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }}>
+            {% endif %}
+        {% endfor %}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock choice_widget_expanded -%}
+
+
 {%- block checkbox_widget -%}
     {%- if freeze -%}
         {%- if checked -%}
@@ -127,7 +142,11 @@
         {{- form_errors(child) -}}
     {% endfor -%}
     {%- for child in form %}
-        {{- form_label(child) }}&nbsp;{{ form_widget(child, {'attr': {'class': 'box120', 'style': 'ime-mode: active;'}}) -}}
+        {%- if freeze -%}
+            {{ form_widget(child) }}
+        {%- else -%}
+            {{ form_label(child) }}&nbsp;{{ form_widget(child, {'attr': {'class': 'box120', 'style': 'ime-mode: active;'}}) -}}
+        {%- endif -%}
         {%- if loop.last == false%}　{% endif -%}
     {% endfor -%}
 {%- endblock name_widget -%}
@@ -184,21 +203,3 @@
         {%- endif -%}
     {%- endif -%}
 {%- endblock address_widget -%}
-
-{% block sex_widget %}
-    {% spaceless %}
-        {% if expanded %}
-            <ul {{ block('widget_container_attributes') }}>
-                {% for child in form %}
-                    <li>
-                        {{ form_widget(child) }}
-                        {{ form_label(child) }}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            {# choice widgetにそのままselectタグを出力させる #}
-            {{ block('choice_widget') }}
-        {% endif %}
-    {% endspaceless %}
-{% endblock %}

@@ -46,12 +46,10 @@ class EntryController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
-
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
 
             if ($form->isValid()) {
-
                 switch ($app['request']->get('mode')) {
                     case 'confirm' :
                         $builder->setAttribute('freeze', true);

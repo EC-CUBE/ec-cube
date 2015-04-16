@@ -11,7 +11,7 @@
             ご登録されますと、まずは仮会員となります。<br />
             入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
         </p>
-        <form name="form1" id="form1" method="post" action="{{ url('entry_confirm') }}">
+        <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
             <table summary="会員登録フォーム">
 
                 <col width="30%" />
@@ -86,8 +86,8 @@
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
-                        ********
-                        {{ form_widget(form.password.first, {type: "password"}) }}
+                        {{ form_widget(form.password.first, {type: "hidden"}) }}
+                        {{ form_widget(form.password.second, {type: "hidden"}) }}
                     </td>
                 </tr>
                 <tr>
@@ -108,10 +108,10 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="back" value="1" />
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="mode" value="back"  />
                     </li>
                     <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry.jpg" alt="会員登録をする" name="send" value="1" id="send" />
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry.jpg" alt="会員登録をする" name="mode" value="complete" id="send" />
                     </li>
                 </ul>
             </div>
