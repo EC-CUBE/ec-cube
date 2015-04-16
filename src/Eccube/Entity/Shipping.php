@@ -149,6 +149,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     private $Pref;
 
+    private $Order;
 
     /**
      * Set shipping_id
@@ -787,10 +788,33 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {
         return $this->Pref;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
+    }
+
+    /**
+     * Set Order
+     *
+     * @param \Eccube\Entity\Order $order
+     * @return Shipping
+     */
+    public function setOrder(\Eccube\Entity\Order $order = null)
+    {
+        $this->Order = $order;
+
+        return $this;
     }
 }
