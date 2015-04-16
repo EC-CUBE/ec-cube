@@ -132,7 +132,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var integer
      */
-    private $reminder;
+    private $Reminder;
 
     /**
      * @var string
@@ -207,7 +207,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var integer
      */
-    private $mailmaga_flg;
+    private $Mailmaga_flg;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -715,12 +715,12 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set reminder
      *
-     * @param integer $reminder
+     * @param \Eccube\Entity\Master\Reminder $reminder
      * @return Customer
      */
-    public function setReminder($reminder)
+    public function setReminder(\Eccube\Entity\Master\Reminder $Reminder = null)
     {
-        $this->reminder = $reminder;
+        $this->Reminder = $Reminder;
 
         return $this;
     }
@@ -728,11 +728,11 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get reminder
      *
-     * @return integer 
+     * @return \Eccube\Entity\Master\Reminder
      */
     public function getReminder()
     {
-        return $this->reminder;
+        return $this->Reminder;
     }
 
     /**
@@ -1060,24 +1060,24 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set mailmaga_flg
      *
-     * @param integer $mailmagaFlg
+     * @param \Eccube\Entity\Master\MailMagazinType $MailmagaFlg
      * @return Customer
      */
-    public function setMailmagaFlg($mailmagaFlg)
+    public function setMailmagaFlg($MailmagaFlg)
     {
-        $this->mailmaga_flg = $mailmagaFlg;
+        $this->Mailmaga_flg = $MailmagaFlg;
 
         return $this;
     }
 
     /**
-     * Get mailmaga_flg
+     * Get Mailmaga_flg
      *
-     * @return integer 
+     * @return \Eccube\Entity\Master\MailMagazinType
      */
     public function getMailmagaFlg()
     {
-        return $this->mailmaga_flg;
+        return $this->Mailmaga_flg;
     }
 
     /**

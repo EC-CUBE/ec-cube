@@ -12,6 +12,7 @@
             入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
         </p>
         <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
+            {{ form_widget(form._token) }}
             <table summary="会員登録フォーム">
 
                 <col width="30%" />

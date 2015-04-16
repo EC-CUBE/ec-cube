@@ -92,7 +92,7 @@ class CustomerType extends AbstractType
             ))
             ->add('birth', 'date', array(
                 'required' => 'false',
-                'input' => 'timestamp',
+                'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'years' => range(1950, date('Y')),

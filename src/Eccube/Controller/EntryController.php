@@ -4,6 +4,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Framework\Util\Utils;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 
 
 class EntryController extends AbstractController
@@ -38,7 +39,6 @@ class EntryController extends AbstractController
 
     public function index(Application $app)
     {
-
         $customer = $app['eccube.repository.customer']->newCustomer();
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
@@ -48,7 +48,6 @@ class EntryController extends AbstractController
         $form = $builder->getForm();
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
-
             if ($form->isValid()) {
                 switch ($app['request']->get('mode')) {
                     case 'confirm' :
@@ -61,18 +60,32 @@ class EntryController extends AbstractController
                         ));
                         break;
                     case 'complete':
+
+                        $customer->setSecretKey($this->getUniqueSecretKey($app));
+
+                        // password
+                        $generator = new SecureRandom();
+                        $salt = bin2hex($generator->nextBytes(10));
+                        $customer->setSalt($salt);
+                        $encoder = $app['security.encoder_factory']->getEncoder($customer);
+                        $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
+                        $customer->setPassword($encoded_password);
+
+                        $app['orm.em']->persist($customer);
+                        $app['orm.em']->flush();
+
                         $data = $form->getData();
 
                         // TODO: 後でEventとして実装する
+                        // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
                         $message = $app['mail.message']
-                            ->setSubject('[EC-CUBE3] お問い合わせを受け付けました。')
+                            ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
                             ->setFrom(array('sample@example.com'))
                             ->setCc($app['config']['mail_cc'])
-                            ->setTo(array($data['email']))
-                            ->setBody($data['contents']);
+                            ->setTo(array($customer->getEmail()))
+                            ->setBody('会員登録が完了しました。');
                         $app['mailer']->send($message);
-
-                        return $app->redirect($app['url_generator']->generate('contact_complete'));
+                        return $app->redirect($app['url_generator']->generate('entry_complete'));
                         break;
                 }
             }
@@ -81,49 +94,6 @@ class EntryController extends AbstractController
         return $app['twig']->render('Entry/index.twig', array(
             'title' => $this->title,
             'form' => $form->createView(),
-        ));
-    }
-
-    public function confirm(Application $app)
-    {
-        if (!$app['session']->has('entry') || $app['request']->request->get('back') ) {
-            return $app->redirect($app['url_generator']->generate('entry'));
-        }
-
-        /* @var $customer \Eccube\Entity\Customer */
-        $customer = $app['session']->get('entry');
-        if ($app['request']->request->get('send') && $app['validator']->validate($customer)) {
-
-            $customer->setSecretKey($this->getUniqueSecretKey($app));
-
-            // password
-            $salt = Utils::sfGetRandomString(10);
-            $customer->setSalt($salt);
-            $encoder = $app['security.encoder_factory']->getEncoder($customer);
-            $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
-            $customer->setPassword($encoded_password);
-
-            $app['orm.em']->persist($customer);
-            $app['orm.em']->flush();
-
-            // TODO: 後でEventとして実装する
-            // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
-            $message = $app['mail.message']
-                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                ->setFrom(array('sample@example.com'))
-                ->setCc($app['config']['mail_cc'])
-                ->setTo(array($customer->getEmail()))
-                ->setBody('会員登録が完了しました。');
-            $app['mailer']->send($message);
-
-            // リダイレクト対策
-            $app['session']->remove('entry');
-
-            return $app->redirect($app['url_generator']->generate('entry_complete'));
-        }
-        return $app['twig']->render('Entry/confirm.twig', array(
-            'title' => $this->title,
-            'form' => $app['session']->get('entry'),
         ));
     }
 
