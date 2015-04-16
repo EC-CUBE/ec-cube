@@ -155,12 +155,12 @@ class Application extends \Silex\Application
         }, \Silex\Application::EARLY_EVENT);
 
         $this->before(function(Request $request, \Silex\Application $app) {
-            $event = $this->parseController($request) . '.before';
+            $event = $app->parseController($request) . '.before';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
         $this->after(function(Request $request, Response $response) use ($app) {
-            $event = $this->parseController($request) . '.after';
+            $event = $app->parseController($request) . '.after';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
@@ -169,7 +169,7 @@ class Application extends \Silex\Application
         }, \Silex\Application::LATE_EVENT);
 
         $this->finish(function(Request $request, Response $response) use ($app) {
-            $event = $this->parseController($request) . '.finish';
+            $event = $app->parseController($request) . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
