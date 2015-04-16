@@ -1,7 +1,7 @@
 # for travis-ci
 # see also. https://travis-ci.org
 language: php
-
+sudo: required
 php:
   - 5.6
   - 5.5
