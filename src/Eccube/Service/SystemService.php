@@ -20,8 +20,8 @@ class SystemService
         
         $dbversion[0]['version'] = "";
         $dbversion = $this->system
-           ->fetchAll("SELECT version()");
-        
+           ->fetchAll("SELECT VERSION()");
+        var_dump($dbversion);
         $dbversion = $dbversion[0]['version'];
  
         return $dbversion;
