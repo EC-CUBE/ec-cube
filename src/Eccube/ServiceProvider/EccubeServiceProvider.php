@@ -23,7 +23,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\CartService($app);
         };
         $app['eccube.service.order'] = function() use ($app) {
-            return new \Eccube\Service\Order\OrderService($app);
+            return new \Eccube\Service\OrderService($app);
         };
         // Entity
         $app['eccube.entity.cart'] = function() use ($app) {

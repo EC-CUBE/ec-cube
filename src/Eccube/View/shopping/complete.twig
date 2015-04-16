@@ -1,0 +1,38 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+
+<div id="undercolumn">
+    <div id="undercolumn_shopping">
+        <p class="flow_area">
+            <img src="{{ app.config.tpl }}img/picture/img_flow_04.jpg" alt="購入手続きの流れ" />
+        </p>
+        <h2 class="title">{{ title }}</h2>
+
+        <div id="complete_area">
+            <p class="message">{{ baseInfo.shop_name }}の商品をご購入いただき、ありがとうございました。</p>
+            <p>ただいま、ご注文の確認メールをお送りさせていただきました。<br />
+                万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br />
+                今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
+
+            <div class="shop_information">
+                <p class="name">{{ baseInfo.shop_name }}</p>
+                <p>TEL：{{ baseInfo.tel01 }}-{{ baseInfo.tel02 }}-{{ baseInfo.tel03 }} {% if baseInfo.business_hour %} （受付時間/{{ baseInfo.business_hour }}）{%  endif %}<br />
+                    E-mail：<a href="mailto:{{ baseInfo.email02 }}">{{ baseInfo.email02 }}</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="btn_area">
+            <ul>
+                <li>
+                    <a href="{{ url('index') }}">
+                        <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_toppage.jpg" alt="トップページへ" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

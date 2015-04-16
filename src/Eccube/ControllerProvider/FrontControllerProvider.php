@@ -132,14 +132,19 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/rss/products.php', '\\Eccube\\Page\\Rss\\Products')->bind('rss_products');
 
         // shopping
-        $controllers->match('/shopping/', '\\Eccube\\Controller\\ShoppingController::Index')->bind('shopping');
+        $controllers->match('/shopping/', '\\Eccube\\Controller\\ShoppingController::index')->bind('shopping');
+        $controllers->post('/shopping/confirm/', '\\Eccube\\Controller\\ShoppingController::confirm')->bind('shopping_confirm');
+        $controllers->post('/shopping/delivery/', '\\Eccube\\Controller\\ShoppingController::delivery')->bind('shopping_delivery');
+        $controllers->post('/shopping/payment/', '\\Eccube\\Controller\\ShoppingController::payment')->bind('shopping_payment');
+        $controllers->match('/shopping/shipping/', '\\Eccube\\Controller\\ShoppingController::shipping')->bind('shopping_shipping');
+        $controllers->match('/shopping/complete/', '\\Eccube\\Controller\\ShoppingController::complete')->bind('shopping_complete');
         //$controllers->match('/shopping/', '\\Eccube\\Page\\Shopping\\Index')->bind('shopping');
-        $controllers->match('/shopping/deliv.php', '\\Eccube\\Page\\Shopping\\Deliv')->bind('shopping_deliv');
+        //$controllers->match('/shopping/deliv.php', '\\Eccube\\Page\\Shopping\\Deliv')->bind('shopping_deliv');
         $controllers->match('/shopping/multiple.php', '\\Eccube\\Page\\Shopping\\Multiple')->bind('shopping_multiple');
-        $controllers->match('/shopping/payment.php', '\\Eccube\\Page\\Shopping\\Payment')->bind('shopping_payment');
-        $controllers->match('/shopping/confirm.php', '\\Eccube\\Page\\Shopping\\Confirm')->bind('shopping_confirm');
+        //$controllers->match('/shopping/payment.php', '\\Eccube\\Page\\Shopping\\Payment')->bind('shopping_payment');
+        //$controllers->match('/shopping/confirm.php', '\\Eccube\\Page\\Shopping\\Confirm')->bind('shopping_confirm');
         $controllers->match('/shopping/load_payment_module.php', '\\Eccube\\Page\\Shopping\\LoadPaymentModule')->bind('shopping_load_payment_module');
-        $controllers->match('/shopping/complete.php', '\\Eccube\\Page\\Shopping\\Complete')->bind('shopping_complete');
+        //$controllers->match('/shopping/complete.php', '\\Eccube\\Page\\Shopping\\Complete')->bind('shopping_complete');
 
         // order
         $controllers->match('/unsupported/', '\\Eccube\\Page\\Unsupported\\Index')->bind('unsupported');

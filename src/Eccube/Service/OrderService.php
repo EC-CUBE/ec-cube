@@ -71,6 +71,7 @@ class OrderService
 
         return $shipping;
     }
+
     public function registerPreOrderFromCart(array $products, \Eccube\Entity\Customer $customer = null)
     {
         // 受注
@@ -96,11 +97,17 @@ class OrderService
              ->setDelFlg(0);
         $this->app['orm.em']->persist($shipping);
 
+        // 商品種別
+        $productTypeIds = array();
+
         // 受注詳細, 配送商品
         foreach ($products as $p) {
             $product = $p['Product'];
             $productClass = $p['ProductClass'];
             $quantity = $p['quantity'];
+
+            // 商品種別
+            $productTypeIds[] = $productClass->getProductTypeId();
 
             // 受注詳細
             $orderDetail = new \Eccube\Entity\OrderDetail();
@@ -132,15 +139,34 @@ class OrderService
             $this->app['orm.em']->persist($shipmentItem);
         }
 
+        // 初期選択の配送業者をセット
+        $productTypeIds = array_unique($productTypeIds);
+        $qb = $this->app['orm.em']->createQueryBuilder();
+        $delivery = $qb->select("d")
+            ->from("\\Eccube\\Entity\\Deliv", "d")
+            ->where($qb->expr()->in('d.product_type_id', $productTypeIds))
+            ->andWhere("d.del_flg = 0")
+            ->orderBy("d.rank", "ASC")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+        $deliveryFees = $delivery->getDelivFees();
+        $order->setDeliv($delivery);
+        $order->setDelivFee($deliveryFees[0]->getFee());
+
+        // 初期選択の支払い方法をセット
+        $paymentOptions = $delivery->getPaymentOptions();
+        $payment = $paymentOptions[0]->getPayment();;
+        $order->setPayment($payment);
+        $order->setPaymentMethod($payment->getMethod());
+        $order->setCharge($payment->getCharge());
+
         $this->app['orm.em']->flush();
         return $order;
     }
 
-    public function commit($orderId)
+    public function commit(\Eccube\Entity\Order $order)
     {
-        $order = $this->app['orm.em']
-                ->getRepository("Eccube\\Entity\\Order")
-                ->find($orderId);
         $order->setDelFlg(0); // todo
         $this->app['orm.em']->persist($order);
         $this->app['orm.em']->flush();

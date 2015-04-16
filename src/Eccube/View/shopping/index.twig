@@ -3,16 +3,23 @@
 {% block main %}
 
 <script type="text/javascript">//<![CDATA[
-    var sent = false;
+var sent = false;
+$(document).ready(function(){
+    $('#form1').on('submit', function () {
+        $(this).find('input:image').attr('disabled', 'disabled');
+    });
 
-    function fnCheckSubmit() {
-        if (sent) {
-            alert("只今、処理中です。しばらくお待ち下さい。");
-            return false;
-        }
-        sent = true;
-        return true;
-    }
+    $("#shopping_delivery").on('change', function () {
+        $("#form1").attr("action", "{{ path('shopping_delivery') }}" )
+                   .submit();
+    });
+
+    $("#shopping_payment").on('change', function () {
+        $("#form1").attr("action", "{{ path('shopping_payment') }}" )
+                   .submit();
+    });
+});
+
 //]]></script>
 
 <!--CONTENTS-->
@@ -23,16 +30,16 @@
 
         <p class="information">下記ご注文内容で送信してもよろしいでしょうか？<br />よろしければ、「ご注文完了ページへ」ボタンをクリックしてください。</p>
 
-        <form name="form1" id="form1" method="post" action="{{ url('shopping_confirm') }}">
+        <form name="form1" id="form1" method="post" action="{{ path('shopping_confirm') }}">
             {{ form_widget(form._token) }}
 
             <div class="btn_area">
                 <ul>
                     <li>
-                        <a href="{{ url('cart') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
+                        <a href="{{ path('cart') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
                     </li>
                     <li>
-                        <input type="image" onclick="return fnCheckSubmit();" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-top" id="next-top" />
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-top" id="next-top" />
                     </li>
                 </ul>
             </div>
@@ -53,7 +60,7 @@
                 {% for detail in order.OrderDetails %}
                 <tr>
                     <td class="alignC">
-                        <a href="{{ url('products_detail') }}/{{ detail.Product.id }}" target="_blank"><img src="{{ app.config.image_path }}{{ detail.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ detail.Product.name }}" /></a>
+                        <img src="{{ app.config.image_path }}{{ detail.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ detail.Product.name }}" />
                     </td>
                     <td>
                         <ul>
@@ -131,8 +138,8 @@
     </table>
 
     <h3>お届け先情報&nbsp;
-        <a href="./deliv.php">変更する</a>&nbsp;
-        <a href="./multiple.php"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_several_address.jpg" alt="お届け先を複数指定する" /></a>
+        <a href="{{ path('shopping_shipping') }}">変更する</a>&nbsp;
+        <!--<a href="./multiple.php"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_several_address.jpg" alt="お届け先を複数指定する" /></a>-->
     </h3>
 
     <h2>お届け先</h2>
@@ -148,7 +155,7 @@
         {% for item in shipmentItems %}
         <tr>
             <td class="alignC">
-                <a href="{{ url('products_detail') }}/{{ item.product_class_id }}" target="_blank"><img src="" style="max-width: 65px;max-height: 65px;" alt="{{ item.product_name }}" /></a>
+                <img src="{{ app.config.image_path }}{# item.ProductClass.Product.main_list_image #}" style="max-width: 65px;max-height: 65px;" alt="{{ item.product_name }}" />
             </td>
             <td><strong>{{ item.product_name }}</strong><br />{# 商品規格 #}</td>
             <td class="alignC">{{ item.quantity }}</td>
@@ -197,10 +204,10 @@
     <div class="btn_area">
         <ul>
             <li>
-                <a href="{{ url('cart') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る"  /></a>
+                <a href="{{ path('cart') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る"  /></a>
             </li>
             <li>
-                <input type="image" onclick="return fnCheckSubmit();" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-bottom" id="next-bottom" />
+                <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-bottom" id="next-bottom" />
             </li>
         </ul>
     </div>
