@@ -99,12 +99,8 @@
 
 {%- block choice_widget_expanded -%}
     {% if freeze %}
-        {% for choice in choices %}
-            {% if choice is selectedchoice(value) %}
-                {{ choice.label|trans({}, translation_domain) }}
-                <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }}>
-            {% endif %}
-        {% endfor %}
+        {{ form.vars.data.name }}
+        <input type="hidden" value="{{ form.vars.data.id }}" {{ block('widget_attributes') }}>
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}
@@ -133,6 +129,14 @@
     {%- endif -%}
 {%- endblock radio_widget -%}
 
+
+{%- block password_widget -%}
+    {%- if freeze -%}
+        <input type="hidden" {{ block('widget_attributes') }} value="{{ form.vars.data }}" />
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock password_widget -%}
 
 
 {# EC-CUBE Widget #}

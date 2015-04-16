@@ -98,7 +98,9 @@ class CustomerType extends AbstractType
                 'years' => range(1950, date('Y')),
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('password', 'repeated')
+            ->add('password', 'repeated', array(
+                'type' => 'password'
+            ))
             ->add('reminder', 'reminder', array(
                 'required' => 'true',
             ))

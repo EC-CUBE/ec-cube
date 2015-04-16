@@ -111,8 +111,8 @@
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
-                        {{ form_widget(form.password.first, {type: "password"}) }}<br />
-                        {{ form_widget(form.password.second, {type: "password"}) }}
+                        {{ form_widget(form.password.first) }}<br />
+                        {{ form_widget(form.password.second) }}
                         {{ form_errors(form.password.first) }}
                         <p><span class="attention mini">半角英数字8〜16文字でお願いします。（記号可）</span></p>
                         <p><span class="attention mini">確認のために2度入力してください。</span></p>
