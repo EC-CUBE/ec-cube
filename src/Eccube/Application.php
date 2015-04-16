@@ -276,7 +276,7 @@ class Application extends \Silex\Application
         }
     }
 
-    private function parseController(Request $request)
+    public function parseController(Request $request)
     {
         $route = str_replace('_', '.', $request->attributes->get('_route'));
         return 'eccube.event.controller.' . $route;
