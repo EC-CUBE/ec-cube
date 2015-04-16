@@ -13,15 +13,16 @@ class SystemService
     {
         $this->app = $app;
         $this->system = $app['db'];
-        //$this->server = $app['request']->server;
     }
     
     public function getDbversion()
     {
-        $dbversion = $this->system
-           ->fetchAll('SELECT version()');
         
+        $dbversion = $this->system
+           ->fetchAll("SELECT version()");
+        if (isset($dbversion)){
         $dbversion = $dbversion[0]['version'];
+        }
         
         return $dbversion;
     }

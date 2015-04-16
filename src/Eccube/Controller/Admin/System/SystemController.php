@@ -21,8 +21,13 @@ class SystemController
     { 
          switch ($app['request']->get('mode')) {
             case 'info':
+                ob_start();
                 phpinfo();
-                Application::alias('eccube.response')->actionExit();
+                $phpinfo = ob_get_contents();
+                ob_end_clean();
+
+                return $phpinfo;
+               
                 break;
             default:
                 break;
