@@ -54,6 +54,7 @@ class EntryController extends AbstractController
                         $builder->setAttribute('freeze', true);
                         $form = $builder->getForm();
                         $form->handleRequest($app['request']);
+
                         return $app['twig']->render('Entry/confirm.twig', array(
                             'title' => $this->title,
                             'form' => $form->createView(),
@@ -85,13 +86,14 @@ class EntryController extends AbstractController
                             ->setTo(array($customer->getEmail()))
                             ->setBody('会員登録が完了しました。');
                         $app['mailer']->send($message);
+
                         return $app->redirect($app['url_generator']->generate('entry_complete'));
                         break;
                 }
             }
         }
 
-        return $app['twig']->render('Entry/index.twig', array(
+        return $app['view']->render('Entry/index.twig', array(
             'title' => $this->title,
             'form' => $form->createView(),
         ));
@@ -101,7 +103,7 @@ class EntryController extends AbstractController
     public function complete(Application $app)
     {
 
-        return $app['twig']->render('Entry/complete.twig', array(
+        return $app['view']->render('Entry/complete.twig', array(
             'title' => $this->title,
         ));
     }

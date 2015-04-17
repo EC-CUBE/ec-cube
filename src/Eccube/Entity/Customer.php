@@ -24,6 +24,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function eraseCredentials()
     {
     }
+
     /**
      * @var integer
      */
@@ -245,7 +246,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -268,7 +269,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get name01
      *
-     * @return string 
+     * @return string
      */
     public function getName01()
     {
@@ -291,7 +292,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get name02
      *
-     * @return string 
+     * @return string
      */
     public function getName02()
     {
@@ -314,7 +315,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get kana01
      *
-     * @return string 
+     * @return string
      */
     public function getKana01()
     {
@@ -337,7 +338,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get kana02
      *
-     * @return string 
+     * @return string
      */
     public function getKana02()
     {
@@ -360,7 +361,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get company_name
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -383,7 +384,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get zip01
      *
-     * @return string 
+     * @return string
      */
     public function getZip01()
     {
@@ -406,7 +407,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get zip02
      *
-     * @return string 
+     * @return string
      */
     public function getZip02()
     {
@@ -429,7 +430,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get pref_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrefId()
     {
@@ -452,7 +453,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get addr01
      *
-     * @return string 
+     * @return string
      */
     public function getAddr01()
     {
@@ -475,7 +476,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get addr02
      *
-     * @return string 
+     * @return string
      */
     public function getAddr02()
     {
@@ -498,7 +499,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -521,7 +522,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get email_mobile
      *
-     * @return string 
+     * @return string
      */
     public function getEmailMobile()
     {
@@ -544,7 +545,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get tel01
      *
-     * @return string 
+     * @return string
      */
     public function getTel01()
     {
@@ -567,7 +568,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get tel02
      *
-     * @return string 
+     * @return string
      */
     public function getTel02()
     {
@@ -590,7 +591,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get tel03
      *
-     * @return string 
+     * @return string
      */
     public function getTel03()
     {
@@ -613,7 +614,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get fax01
      *
-     * @return string 
+     * @return string
      */
     public function getFax01()
     {
@@ -636,7 +637,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get fax02
      *
-     * @return string 
+     * @return string
      */
     public function getFax02()
     {
@@ -659,7 +660,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get fax03
      *
-     * @return string 
+     * @return string
      */
     public function getFax03()
     {
@@ -682,7 +683,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get birth
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirth()
     {
@@ -705,7 +706,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -751,7 +752,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get reminder_answer
      *
-     * @return string 
+     * @return string
      */
     public function getReminderAnswer()
     {
@@ -774,7 +775,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get salt
      *
-     * @return string 
+     * @return string
      */
     public function getSalt()
     {
@@ -797,7 +798,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get secret_key
      *
-     * @return string 
+     * @return string
      */
     public function getSecretKey()
     {
@@ -820,7 +821,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get first_buy_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFirstBuyDate()
     {
@@ -843,7 +844,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get last_buy_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastBuyDate()
     {
@@ -866,7 +867,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get buy_times
      *
-     * @return string 
+     * @return string
      */
     public function getBuyTimes()
     {
@@ -889,7 +890,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get buy_total
      *
-     * @return string 
+     * @return string
      */
     public function getBuyTotal()
     {
@@ -912,7 +913,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get point
      *
-     * @return string 
+     * @return string
      */
     public function getPoint()
     {
@@ -935,7 +936,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get note
      *
-     * @return string 
+     * @return string
      */
     public function getNote()
     {
@@ -958,7 +959,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -981,7 +982,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -1004,7 +1005,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -1027,7 +1028,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -1050,7 +1051,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get mobile_phone_id
      *
-     * @return string 
+     * @return string
      */
     public function getMobilePhoneId()
     {
@@ -1106,7 +1107,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get CustomerFavoriteProducts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCustomerFavoriteProducts()
     {
@@ -1129,7 +1130,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get Sex
      *
-     * @return \Eccube\Entity\Master\Sex 
+     * @return \Eccube\Entity\Master\Sex
      */
     public function getSex()
     {
@@ -1152,7 +1153,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get Job
      *
-     * @return \Eccube\Entity\Master\Job 
+     * @return \Eccube\Entity\Master\Job
      */
     public function getJob()
     {
@@ -1175,7 +1176,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get Country
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country
      */
     public function getCountry()
     {
@@ -1198,7 +1199,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {
