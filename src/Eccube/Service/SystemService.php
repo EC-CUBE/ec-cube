@@ -13,18 +13,19 @@ class SystemService
     {
         $this->app = $app;
         $this->system = $app['db'];
+       
     }
     
     public function getDbversion()
     {
         
-        $dbversion[0]['version'] = "";
-        $dbversion = $this->system
-           ->fetchAll("SELECT VERSION()");
-        var_dump($dbversion);
-        $dbversion = $dbversion[0]['version'];
- 
-        return $dbversion;
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm->addScalarResult('version', 'v');
+
+        $version = $this->app['orm.em']->createNativeQuery('select version()', $rsm)
+                                 ->getSingleScalarResult();
+          
+        return $version;
     }
    
 }
