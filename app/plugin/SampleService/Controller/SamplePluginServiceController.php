@@ -9,7 +9,7 @@ class SamplePluginServiceController
 {
     public function index(Application $app, Request $request)
     {
-        $sample = $app['eccube.plugin.sample.service']->sample();
+        $sample = $app['eccube.plugin.service.sample']->sample();
 
         return $app['twig']->render('SampleService/View/index.twig', compact('sample'));
     }
