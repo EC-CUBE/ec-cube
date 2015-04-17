@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Controller\Bloc;
+namespace Eccube\Controller\Block;
 
 use Eccube\Application;
 
@@ -8,6 +8,6 @@ class CartController
 {
 	function index(Application $app)
 	{
-		return 'bloc_cart';
+		return 'block_cart';
 	}
 }

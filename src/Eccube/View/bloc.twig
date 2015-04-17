@@ -1,11 +1,11 @@
-{% if blocs|length > 0 %}
-        {% for bloc in blocs %}
-            <!-- ▼{{ bloc.name }} -->
-            {% if bloc.phpPath %}
-                {{ render(path('bloc_' ~ bloc.filename)) }}
+{% if blocks|length > 0 %}
+        {% for block in blocks %}
+            <!-- ▼{{ block.name }} -->
+            {% if block.phpPath %}
+                {{ render(path('block_' ~ block.filename)) }}
             {% else %}
-            	{{ include('frontparts/bloc/' ~ bloc.tplPath) }}
+            	{{ include('frontparts/bloc/' ~ block.tplPath) }}
             {% endif %}
-            <!-- ▲{{ bloc.name }} -->
+            <!-- ▲{{ block.name }} -->
         {% endfor %}
 {% endif %}

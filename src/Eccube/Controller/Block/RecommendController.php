@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Controller\Bloc;
+namespace Eccube\Controller\Block;
 
 use Eccube\Application;
 
@@ -8,6 +8,6 @@ class RecommendController
 {
 	function index(Application $app)
 	{
-		return 'bloc_recommend';
+		return 'block_recommend';
 	}
 }
