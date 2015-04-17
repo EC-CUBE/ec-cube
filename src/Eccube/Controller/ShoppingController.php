@@ -62,7 +62,7 @@ class ShoppingController extends AbstractController
     public function index(Application $app)
     {
         $this->init($app);
-        //$this->test($app);
+        // $this->test($app);
 
         // ログインチェック
         $this->verifyCustomerAndAbort();
@@ -118,7 +118,7 @@ class ShoppingController extends AbstractController
                 'data' => $order->getPayment()));
 
         $title = "ご注文内容の確認";
-        return $app['twig']->render(
+        return $app['view']->render(
                 'shopping/index.twig',
                 array(
                     'form' => $this->form->createView(),
@@ -156,7 +156,7 @@ class ShoppingController extends AbstractController
     {
         $title = "ご購入完了";
         $baseInfo = $app['eccube.repository.base_info']->find(1);
-        return $app['twig']->render(
+        return $app['view']->render(
             'shopping/complete.twig', array(
                 'title' => $title,
                 'baseInfo' => $baseInfo
@@ -224,7 +224,7 @@ class ShoppingController extends AbstractController
         $this->init($app);
         $this->verifyCartAndAbort();
 
-        return $app['twig']->render(
+        return $app['view']->render(
             'shopping/point.twig',
             array()
         );
@@ -308,7 +308,7 @@ class ShoppingController extends AbstractController
             }
         }
 
-        return $app['twig']->render(
+        return $app['view']->render(
             'shopping/shipping.twig', array(
                 'form'  => $form->createView(),
                 'title' => 'お届け先設定',

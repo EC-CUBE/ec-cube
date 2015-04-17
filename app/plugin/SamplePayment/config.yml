@@ -1,0 +1,7 @@
+name: SamplePayment
+enable: true
+form:
+    onPreSetData:
+        PaymentForm
+service: 
+    - PaymentServiceProvider

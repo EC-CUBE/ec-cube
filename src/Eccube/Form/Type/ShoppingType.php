@@ -32,7 +32,9 @@ class ShoppingType extends AbstractType
                     'required' => false,
                     'constraints' => array(
                         new Assert\Length(array('min' => 0, 'max' => 500))),
-            ));
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        ;
     }
 
     /**

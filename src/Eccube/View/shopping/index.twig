@@ -106,7 +106,7 @@ $(document).ready(function(){
                 <tr>
                 <th>ポイントのご利用</th>
                 <td>
-                    <span class="user_name">{# ユーザ名 ##}様</span>の、現在の所持ポイントは「<span class="point">Pt</span>」です。1ポイントを{{ app.config.point_value }}円</span>として使用する事ができます。<br />
+                    <span class="user_name">{# ユーザ名 ##}様</span>の、現在の所持ポイントは「<span class="point">Pt</span>」です。1ポイントを{{ app.config.point_value|default(0) }}円</span>として使用する事ができます。<br />
                     <input type="radio" id="point_off" name="point_check" value="2" onclick="eccube.togglePointForm();" /><label for="point_off">ポイントを使用しない</label>&nbsp;
                     <input type="radio" id="point_on" name="point_check" value="1" onclick="eccube.togglePointForm();" /><label for="point_on">ポイントを<input type="text" name="" value="" maxlength="" style="" class="box60" />&nbsp;Ptを使用する。</label>
                     <span class="attention">{# エラーメッセージ #}</span>
@@ -172,7 +172,7 @@ $(document).ready(function(){
             <td>
                 {% if shipping.company_name %}{{ shipping.company_name }}<br />{% endif %}
                 {{ shipping.name01 }} {{ shipping.name02 }} {% if shipping.kana01 %}({{ shipping.kana01 }}{{ shipping.kana02 }}){% endif %}<br />
-                〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.Pref.name }} {{ shipping.addr01 }}{{ shipping.addr02 }}<br />
+                〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.Pref }} {{ shipping.addr01 }}{{ shipping.addr02 }}<br />
                 TEL:{{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}<br />
                 FAX:{{ shipping.fax01 }}-{{ shipping.fax02 }}-{{ shipping.fax03 }}
             </td>
@@ -200,6 +200,8 @@ $(document).ready(function(){
             </tr>
         </table>
     </div>
+    {{ form_widget(form) }}
+
 
     <div class="btn_area">
         <ul>
