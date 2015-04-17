@@ -3,7 +3,7 @@
 namespace Eccube\Form\Type;
 
 use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\FormBuilder;
+use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 use \Symfony\Component\Validator\ExecutionContextInterface;
@@ -28,7 +28,7 @@ class CustomerType extends AbstractType
             ->add('name', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => 50,
+                        'maxlength' => $app['config']['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -38,7 +38,7 @@ class CustomerType extends AbstractType
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => 50,
+                        'maxlength' => $app['config']['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -49,7 +49,7 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => 50,
+                        'max' => $app['config']['stext_len'],
                     ))
                 ),
             ))
@@ -90,16 +90,15 @@ class CustomerType extends AbstractType
             ->add('job', 'job', array(
                 'required' => false,
             ))
-            ->add('birth', 'date', array(
-                'required' => 'false',
+            ->add('birth', 'birthday', array(
+                'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'years' => range(1950, date('Y')),
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('password', 'repeated', array(
-                'type' => 'password'
+                'type' => 'password',
             ))
             ->add('reminder', 'reminder', array(
                 'required' => 'true',
@@ -109,7 +108,7 @@ class CustomerType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => 50
+                        'max' => $app['config']['stext_len']
                     ))
                 )
             ))

@@ -46,7 +46,11 @@ class CustomerTypeTest extends TypeTestCase
         'email' => 'default@example.com',
         'sex' => 1,
         'job' => 1,
-        'birth' => '1983-02-14',
+        'birth' => array(
+            'year' => '1983',
+            'month' => '2',
+            'day' => '14',
+        ),
         'password' => array(
             'first' => 'password',
             'second' => 'password',
@@ -126,15 +130,15 @@ class CustomerTypeTest extends TypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidEmail_InvalidCallback()
+    public function testInvalidEmail_Duplicate()
     {
         $testVal = 'sample@example.com';
         $customer = $this->app['eccube.repository.customer']->newCustomer()
-            ->setName01($this->formData['name01'])
-            ->setName02($this->formData['name02'])
-            ->setKana01($this->formData['kana01'])
-            ->setKana02($this->formData['kana02'])
-            ->setPassword($this->formData['password'])
+            ->setName01($this->formData['name']['name01'])
+            ->setName02($this->formData['name']['name02'])
+            ->setKana01($this->formData['kana']['kana01'])
+            ->setKana02($this->formData['kana']['kana02'])
+            ->setPassword($this->formData['password']['first'])
             ->setEmail($testVal);
 
         $form = $this->app['form.factory']
@@ -142,8 +146,8 @@ class CustomerTypeTest extends TypeTestCase
                 'csrf_protection' => false,
             ))
             ->getForm();
-
         $this->app['orm.em']->persist($customer);
+
         $this->formData['email'] = $testVal;
         $form->submit($this->formData);
 
@@ -152,7 +156,7 @@ class CustomerTypeTest extends TypeTestCase
 
     public function testInvalidPassword_Invalid()
     {
-        $this->formData['password']['first'] = 'poss';
+        $this->formData['password']['first'] = 'anotherPassword';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
