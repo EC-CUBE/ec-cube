@@ -22,7 +22,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.system'] = function() use ($app) {
             return new \Eccube\Service\SystemService($app);
         };
-        
+        $app['view'] = function() use ($app) {
+            return new \Eccube\Service\ViewService($app);
+        };
         $app['eccube.service.cart'] = function() use ($app) {
             return new \Eccube\Service\CartService($app);
         };
