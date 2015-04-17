@@ -228,7 +228,7 @@ mail_cc:
 stext_len: 50
 sample_address1: 市区町村名 (例：千代田区神田神保町)
 sample_address2: 番地・ビル名 (例：1-3-5)
-
+ECCUBE_VERSION: 3.0.0-dev
 __EOF__
 }
 

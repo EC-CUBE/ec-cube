@@ -19,6 +19,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
     public function register(BaseApplication $app)
     {
         // Service
+        $app['eccube.service.system'] = function() use ($app) {
+            return new \Eccube\Service\SystemService($app);
+        };
         $app['view'] = function() use ($app) {
             return new \Eccube\Service\ViewService($app);
         };
