@@ -96,10 +96,10 @@ Eccube\Entity\Customer:
         password:
             type: text
             nullable: true
-        reminder:
-            type: smallint
-            nullable: true
-            unsigned: false
+#        reminder:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
         reminder_answer:
             type: text
             nullable: true
@@ -159,11 +159,17 @@ Eccube\Entity\Customer:
             type: string
             length: 200
             nullable: true
-        mailmaga_flg:
-            type: smallint
-            nullable: true
-            unsigned: false
+#        mailmaga_flg:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
     manyToOne:
+        Reminder:
+            targetEntity: Eccube\Entity\Master\Reminder
+            inversedBy: Customers
+            joinColumn:
+                name: reminder
+                referencedColumnName: id
         Sex:
             targetEntity: Eccube\Entity\Master\Sex
             inversedBy: Customers
@@ -187,6 +193,12 @@ Eccube\Entity\Customer:
             inversedBy: Customers
             joinColumn:
                 name: pref
+                referencedColumnName: id
+        Mailmaga_flg:
+            targetEntity: Eccube\Entity\Master\MailMagazineType
+            inversedBy: Customers
+            joinColumn:
+                name: mailmaga_flg
                 referencedColumnName: id
     oneToMany:
         CustomerFavoriteProducts:
