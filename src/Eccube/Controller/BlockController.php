@@ -5,25 +5,25 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Entity\BlocPosition;
 
-class BlocController
+class BlockController
 {
 
     public function index(Application $app)
     {
         $position = $app['request']->get('position');
 
-        $blocs = array();
+        $blocks = array();
 
         if ($app['eccube.layout']) {
             foreach ($app['eccube.layout']->getBlocPositions() as $blocPositions) {
                 if ($blocPositions->getTargetId() == constant("Eccube\Entity\BlocPosition::" . $position)) {
-                    $blocs[] = $blocPositions->getBloc();
+                    $blocks[] = $blocPositions->getBloc();
                 }
             }
         }
 
         return $app['twig']->render('bloc.twig', array(
-            'blocs' => $blocs,
+            'blocks' => $blocks,
         ));
     }
 
