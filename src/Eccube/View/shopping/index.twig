@@ -98,7 +98,6 @@ $(document).ready(function(){
             </table>
 
             {# ポイント todo 画面遷移へ変更する #}
-            <!--
             {% if app.config.use_point %}
             <table summary="ポイント利用">
                 <col width="20%" />
@@ -106,15 +105,17 @@ $(document).ready(function(){
                 <tr>
                 <th>ポイントのご利用</th>
                 <td>
-                    <span class="user_name">{# ユーザ名 ##}様</span>の、現在の所持ポイントは「<span class="point">Pt</span>」です。1ポイントを{{ app.config.point_value }}円</span>として使用する事ができます。<br />
-                    <input type="radio" id="point_off" name="point_check" value="2" onclick="eccube.togglePointForm();" /><label for="point_off">ポイントを使用しない</label>&nbsp;
-                    <input type="radio" id="point_on" name="point_check" value="1" onclick="eccube.togglePointForm();" /><label for="point_on">ポイントを<input type="text" name="" value="" maxlength="" style="" class="box60" />&nbsp;Ptを使用する。</label>
-                    <span class="attention">{# エラーメッセージ #}</span>
+                    <span class="user_name">{{ app.user.name01 }}{{ app.user.name02 }}様</span>の、現在の所持ポイントは「<span class="point">{{ app.user.point }}Pt</span>」です。1ポイントを{{ app.config.point_value }}円</span>として使用する事ができます。<br />
+                    {% if order.use_point > 0 %}
+                        ポイントを{{ order.use_point }}Pt使用する&nbsp;
+                    {%  else %}
+                        ポイントを使用しない&nbsp;
+                    {% endif %}
+                    <a href="{{ path('shopping_point') }}">変更する</a>
                 </div>
                 </tr>
             </table>
             {% endif %}
-            -->
             {# ポイント #}
 
     <h3>配送方法・お支払方法</h3>

@@ -134,6 +134,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         // shopping
         $controllers->match('/shopping/', '\\Eccube\\Controller\\ShoppingController::index')->bind('shopping');
         $controllers->match('/shopping/confirm/', '\\Eccube\\Controller\\ShoppingController::confirm')->bind('shopping_confirm');
+        $controllers->match('/shopping/point/', '\\Eccube\\Controller\\ShoppingController::point')->bind('shopping_point');
         $controllers->match('/shopping/delivery/', '\\Eccube\\Controller\\ShoppingController::delivery')->bind('shopping_delivery');
         $controllers->match('/shopping/payment/', '\\Eccube\\Controller\\ShoppingController::payment')->bind('shopping_payment');
         $controllers->match('/shopping/shipping/', '\\Eccube\\Controller\\ShoppingController::shipping')->bind('shopping_shipping');

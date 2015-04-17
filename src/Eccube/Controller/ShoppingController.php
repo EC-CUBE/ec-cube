@@ -2,6 +2,7 @@
 
 namespace Eccube\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use \Doctrine\Common\Util\Debug;
 
@@ -219,14 +220,48 @@ class ShoppingController extends AbstractController
     }
 
     // ポイント設定
-    public function point()
+    public function point(Application $app)
     {
         $this->init($app);
         $this->verifyCartAndAbort();
 
+        /** @var $order \Eccube\Entity\Order */
+        $order = $this->orderRepository->find($this->cartService->getPreOrderId());
+        $point = $order->getUsePoint();
+        $pointFlg = $point > 0 ? 1 : 0;
+
+        $form = $app['form.factory']->createBuilder()
+            ->add('point_flg', 'choice', array(
+                    'required' => true,
+                    'choices'  => array(0 => '使用しない', 1 => '使用する'),
+                    'expanded' => true,
+                    'data' => $pointFlg))
+            ->add('point', 'integer', array(
+                    'required' => true,
+                    'data' => $point))
+            ->getForm();
+
+        if ('POST' === $app['request']->getMethod()) {
+            $form->handleRequest($app['request']);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $pointFlg = $data['point_flg'];
+                $point = $data['point'];
+                if ($pointFlg == 0) {
+                    $point = 0;
+                }
+                $order->setUsePoint($point);
+                $app['orm.em']->persist($order);
+                $app['orm.em']->flush();
+                return $app->redirect($app['url_generator']->generate('shopping'));
+            }
+        }
         return $app['twig']->render(
-            'shopping/point.twig',
-            array()
+            'shopping/point.twig', array(
+                'title' => 'ポイント設定',
+                'order' => $order,
+                'form' => $form->createView()
+            )
         );
     }
 
