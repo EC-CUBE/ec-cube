@@ -19,7 +19,7 @@ class ShoppingController extends AbstractController
     /** @var \Symfony\Component\Form\Form */
     protected $form;
 
-    protected function test($app)
+    public function test(Application $app)
     {
         /** @var $cartService \Eccube\Service\CartService */
         $cartService = $app['eccube.service.cart'];
@@ -31,6 +31,7 @@ class ShoppingController extends AbstractController
         $cartService->addProduct(10);
         $cartService->addProduct(2);
         $cartService->lock();
+        return $app->redirect($app['url_generator']->generate('shopping'));
     }
 
     protected function init($app)
@@ -63,7 +64,6 @@ class ShoppingController extends AbstractController
     public function index(Application $app)
     {
         $this->init($app);
-        //$this->test($app);
 
         // ログインチェック
         $this->verifyCustomerAndAbort();
@@ -72,9 +72,10 @@ class ShoppingController extends AbstractController
 
         // 受注関連情報を取得
         $preOrderId = $this->cartService->getPreOrderId();
-        $order = $this->orderRepository
-                      ->findOneBy(array("id" => $preOrderId)); // todo nullでfindするとorm exception
-
+        $order = null;
+        if (!is_null($preOrderId)) {
+            $order = $this->orderRepository->find($preOrderId);
+        }
         // 初回アクセスの場合は受注データを作成
         if (is_null($order)) {
             $order = $this->orderService
@@ -96,7 +97,9 @@ class ShoppingController extends AbstractController
             ->findBy(array("order_id" => $order->getId()));
 
         // todo 受注情報の金額計算
-        // todo ポイント設定
+        //$this->orderService->calcurate($order);
+        //$deliveries = $this->orderService->findDeliveriesByOrder($order);
+        //$payments = $this->orderService->findPaymentByOrder($order);
 
         // 配送業者選択
         $deliveries = $this->findDeliveriesFromOrderDetails($order->getOrderDetails());
@@ -347,6 +350,33 @@ class ShoppingController extends AbstractController
             'shopping/shipping.twig', array(
                 'form'  => $form->createView(),
                 'title' => 'お届け先設定',
+            )
+        );
+    }
+
+    public function shipping_multiple(Application $app)
+    {
+
+        $this->init($app);
+        $this->verifyCartAndAbort();
+        $order = $this->orderRepository->find($this->cartService->getPreOrderId());
+        $orderDetails = $order->getOrderDetails();
+
+        $form = $app['form.factory']->createBuilder()
+            ->add('orderDetails', 'collection', array(
+                    'required' => true,
+                    'choices'  => array(0 => '使用しない', 1 => '使用する'),
+                    'expanded' => true,
+                    'data' => $pointFlg))
+            ->getForm();
+
+
+        $form = $this->form;
+        return $app['twig']->render(
+            'shopping/shipping_multiple.twig', array(
+                'form'  => $form->createView(),
+                'order' => $order,
+                'title' => 'お届け先設定(複数配送)',
             )
         );
     }
