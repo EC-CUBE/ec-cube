@@ -17,7 +17,7 @@ class SystemController
         $this->subtitle = 'システム情報';
     }
     
-    public function Index(Application $app)
+    public function index(Application $app)
     { 
          switch ($app['request']->get('mode')) {
             case 'info':
