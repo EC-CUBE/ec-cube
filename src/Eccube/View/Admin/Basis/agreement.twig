@@ -1,36 +1,31 @@
 {% extends 'Admin/main_frame.twig' %}
 
 {% block main %}
-<form name="form1" id="form1" method="post" action="?">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="mode" value="edit" />
-    <input type="hidden" name="kiyaku_id" value="<!--{$tpl_kiyaku_id}-->" />
+<form name="form1" id="form1" method="post" action="{{ url('admin_basis_agreement_edit', { 'kiyakuId': Kiyaku.id }) }}">
+    {{ form_widget(form._token) }}
+    <input type="hidden" name="id" value="{{ Kiyaku.id }}" />
     <div id="basis" class="contents-main">
-        <table class="form">
+        
+        <table>
             <tr>
                 <th>規約タイトル<span class="attention"> *</span></th>
                 <td>
-                    <span class="attention"><!--{$arrErr.kiyaku_title}--></span>
-                    <span class="attention"><!--{$arrErr.name}--></span>
-                    <input type="text" name="kiyaku_title" value="<!--{$arrForm.kiyaku_title.value|h}-->" maxlength="<!--{$smarty.const.SMTEXT_LEN}-->" style="<!--{if $arrErr.kiyaku_title != "" || $arrErr.name != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" size="60" class="box60"/>
-                    <span class="attention"> (上限<!--{$smarty.const.SMTEXT_LEN}-->文字)</span>
+                    {{ form_widget(form.title) }}
+                    {{ form_errors(form.title) }}
                 </td>
             </tr>
             <tr>
                 <th>規約内容<span class="attention"> *</span></th>
                 <td>
-                <span class="attention"><!--{$arrErr.kiyaku_text}--></span>
-                <textarea name="kiyaku_text" maxlength="<!--{$smarty.const.MLTEXT_LEN}-->" cols="60" rows="8" class="area60" style="<!--{if $arrErr.kiyaku_text != ""}-->background-color: <!--{$smarty.const.ERR_COLOR}-->;<!--{/if}-->" ><!--{"\n"}--><!--{$arrForm.kiyaku_text.value|h}--></textarea>
-                <span class="attention"> (上限<!--{$smarty.const.MLTEXT_LEN}-->文字)</span>
+                    {{ form_widget(form.text) }}
+                    {{ form_errors(form.text) }}
                 </td>
             </tr>
         </table>
         <div class="btn-area">
-            <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'confirm', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-            </ul>
+            {{ form_widget(form.save) }}
         </div>
-
+        
         <table class="list">
             <col width="65%" />
             <col width="10%" />
