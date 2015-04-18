@@ -18,10 +18,20 @@ use Eccube\Framework\Helper\SessionHelper;
 use Eccube\Framework\Util\GcUtils;
 use Eccube\Framework\Util\Utils;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 
 class CallbackResolver extends \Silex\CallbackResolver
 {
     const PAGE_PATTERN = '/\A\\\\Eccube(\\\\Plugin\\\\\w+)?\\\\Page\\\\/';
+
+    private $app2;
+
+    public function __construct(\Pimple $app)
+    {
+        $this->app2 = $app;
+
+        parent::__construct($app);
+    }
 
     /**
      * Returns true if the string is a valid service method representation.
@@ -32,6 +42,22 @@ class CallbackResolver extends \Silex\CallbackResolver
      */
     public function isValid($name)
     {
+        if (!is_string($name) || !preg_match(static::PAGE_PATTERN, $name)) {
+            // constant 上書き
+            $app = $this->app2;
+            $app['config'] = $app->share($app->extend("config", function ($config, \Silex\Application $app) {
+                $constant_file = __DIR__ .'/../../app/config/eccube/constant.yml';
+                if (is_readable($constant_file)) {
+                    $config_constant = Yaml::parse(__DIR__ .'/../../app/config/eccube/constant.yml');
+                } else {
+                    $config_constant = $app['eccube.repository.master.constant']->getAll();
+                    file_put_contents($constant_file, Yaml::dump($config_constant));
+                }
+
+                return array_merge($config_constant, $config);
+            }));
+        }
+
         return parent::isValid($name) || (is_string($name) && preg_match(static::PAGE_PATTERN, $name));
     }
 

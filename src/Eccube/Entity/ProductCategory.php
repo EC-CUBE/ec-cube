@@ -10,6 +10,30 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductCategory extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * getPath
+     *
+     * @return \Eccube\Entity\Category[] 
+     */
+    public function getPath()
+    {
+        $path = array();
+        $Category = $this->getCategory();
+        $max = 10;
+
+        while ($max--) {
+            $path[] = $Category;
+
+            $Category = $Category->getParent();
+            if (!$Category || !$Category->getId()) {
+                break;
+            }
+        }
+
+        return array_reverse($path);
+    }
+
+
+    /**
      * @var integer
      */
     private $product_id;
