@@ -1,8 +1,8 @@
 filter:
     excluded_paths: 
-        - html/js/jquery.*.js
-        - html/js/**/.js 
-        - html/user_data/packages/**/**/jquery.*.js
+        - html/js/jquery*.js
+        - html/js/**/jquery*.js 
+        - html/user_data/packages/**/**/jquery*.js
         - src/Eccube/Framework/*"
         - src/Eccube/Page/*
 
