@@ -1,3 +1,11 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+    {% for message in app.session.flashbag.get('tradelaw.complete')  %}
+        {{ message|trans|raw }}<br />
+    {% endfor %}
+
 {{ main_title }} {{ title }}
 
 <form name="tradelaw_form" id="tradelaw_form" method="post" action="{{ url('admin_basis_tradelaw') }}">
@@ -123,3 +131,5 @@
         </div>
     </div>
 </form>
+
+{% endblock %}

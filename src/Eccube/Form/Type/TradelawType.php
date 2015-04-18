@@ -1,0 +1,141 @@
+<?php
+
+namespace Eccube\Form\Type;
+
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Validator\Constraints as Assert;
+
+class TradelawType extends AbstractType
+{
+    public $app;
+
+    public function __construct (\Eccube\Application $app)
+    {
+        $this->app = $app;
+    }
+
+    public function getName()
+    {
+        return 'tradelaw';
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('law_company', 'text', array(
+                'required' => true
+            ))
+            ->add('law_manager', 'text', array(
+                'required' => true
+            ))
+            ->add('law_zip01', 'text', array('required' => true, 'constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 3, 'max' => 3)),
+                new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+             )))
+            ->add('law_zip02', 'text', array('required' => true, 'constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('min' => 4, 'max' => 4)),
+                new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+             )))
+            ->add('law_pref', 'integer', array(
+                'required' => true
+            ))
+            ->add('law_addr01', 'text', array(
+                'required' => true
+            ))
+            ->add('law_addr02', 'text', array(
+                'required' => true
+            ))
+            ->add('law_tel01', 'text', array(
+                'required' => true
+            ))
+            ->add('law_tel01', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'maxlength' => 4,
+                ),
+                'constraints' => array(
+                    new Assert\Length(array('min' => 2, 'max' => 4)),
+                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                ),
+            ))
+            ->add('law_tel02', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'maxlength' => 4,
+                ),
+                'constraints' => array(
+                    new Assert\Length(array('min' => 2, 'max' => 4)),
+                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                ),
+            ))
+            ->add('law_tel03', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'maxlength' => 4,
+                ),
+                'constraints' => array(
+                    new Assert\Length(array('min' => 2, 'max' => 4)),
+                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                ),
+            ))
+            ->add('law_fax01', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'maxlength' => 4,
+                ),
+                'constraints' => array(
+                    new Assert\Length(array('min' => 2, 'max' => 4)),
+                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                ),
+            ))
+            ->add('law_fax02', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'maxlength' => 4,
+                ),
+                'constraints' => array(
+                    new Assert\Length(array('min' => 2, 'max' => 4)),
+                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                ),
+            ))
+            ->add('law_fax03', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'maxlength' => 4,
+                ),
+                'constraints' => array(
+                    new Assert\Length(array('min' => 2, 'max' => 4)),
+                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                ),
+            ))
+            ->add('law_email', 'email', array('constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Email(),
+             )))
+            ->add('law_url', 'text', array(
+                'required' => true
+            ))
+            ->add('law_term01', 'textarea', array(
+                'required' => true
+            ))
+            ->add('law_term02', 'textarea', array(
+                'required' => true
+            ))
+            ->add('law_term03', 'textarea', array(
+                'required' => true
+            ))
+            ->add('law_term04', 'textarea', array(
+                'required' => true
+            ))
+            ->add('law_term05', 'textarea', array(
+                'required' => true
+            ))
+            ->add('law_term06', 'textarea', array(
+                'required' => true
+            ))
+            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+    }
+}

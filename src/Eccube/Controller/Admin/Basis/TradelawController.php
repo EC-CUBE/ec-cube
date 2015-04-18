@@ -24,10 +24,20 @@ class TradelawController extends AbstractController
 
         $baseinfo = $app['eccube.repository.baseinfo']->findAll();
         $baseinfo = $baseinfo[0];
-        
+   
         $form = $app['form.factory']
-            ->createBuilder('point', $baseinfo)
+            ->createBuilder('tradelaw', $baseinfo)
             ->getForm();
+
+        if ($app['request']->getMethod() === 'POST') {
+            $form->handleRequest($app['request']);
+            if ($form->isValid()) {
+                $app['orm.em']->persist($baseinfo);
+                $app['orm.em']->flush();
+                $app['session']->getFlashBag()->add('tradelaw.complete', 'admin.register.complete');
+                return $app->redirect($app['url_generator']->generate('admin_basis_tradelaw'));
+            }
+        }
 
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
@@ -44,30 +54,5 @@ class TradelawController extends AbstractController
             'title'      => $this->title,
             'form'       => $form->createView(),
         ));
-
-/*
-        $baseinfo = $app['eccube.repository.baseinfo']->findAll();
-        $baseinfo = $baseinfo[0];
-        
-        $form = $app['form.factory']
-            ->createBuilder('point', $baseinfo)
-            ->getForm();
-
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $app['orm.em']->persist($data);
-                $app['orm.em']->flush();
-                return $app->redirect($app['url_generator']->generate('admin_basis_point'));
-            }
-        }
-        
-        return $app['twig']->render('Admin/Basis/point.twig', array(
-            'main_title' => $this->main_title,
-            'title'      => $this->title,
-            'form'       => $form->createView(),
-        ));
-*/
     }
 }
