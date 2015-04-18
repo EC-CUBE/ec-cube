@@ -113,7 +113,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/system/masterdata.php', '\\Eccube\\Page\\Admin\\System\\Masterdata')->bind('admin_system_masterdata');
         $controllers->match('/system/parameter.php', '\\Eccube\\Page\\Admin\\System\\Parameter')->bind('admin_system_parameter');
         $controllers->match('/system/rank.php', '\\Eccube\\Page\\Admin\\System\\Rank')->bind('admin_system_rank');
-        $controllers->match('/system/system.php', '\\Eccube\\Page\\Admin\\System\\System')->bind('admin_system_system');
+        $controllers->match('/system/system.php', '\\Eccube\\Controller\\Admin\\System\\SystemController::index')->bind('admin_system_system');
 
         // total
         $controllers->match('/total/', '\\Eccube\\Page\\Admin\\Total\\Index')->bind('admin_total');

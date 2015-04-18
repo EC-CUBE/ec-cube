@@ -1,0 +1,18 @@
+Plugin\SampleEntity\Entity\Extend:
+    type: entity
+    table: plugin_extend
+    repositoryClass: Plugin\SampleEntity\Repository\ExtendRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+    lifecycleCallbacks: {  }

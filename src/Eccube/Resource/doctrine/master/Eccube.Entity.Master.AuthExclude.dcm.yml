@@ -1,0 +1,23 @@
+Eccube\Entity\Master\AuthExclude:
+    type: entity
+    table: mtb_auth_excludes
+    repositoryClass: Eccube\Repository\Master\AuthExcludeRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    lifecycleCallbacks: {  }

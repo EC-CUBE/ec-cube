@@ -1,0 +1,58 @@
+Eccube\Entity\ClassCategory:
+    type: entity
+    table: dtb_classcategory
+    repositoryClass: Eccube\Repository\ClassCategoryRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: classcategory_id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+#        class_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        ClassName:
+            targetEntity: Eccube\Entity\ClassName
+            inversedBy: ClassCategories
+            joinColumn:
+                name: class_id
+                referencedColumnName: class_id
+                nullable: false
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: ClassCategories
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

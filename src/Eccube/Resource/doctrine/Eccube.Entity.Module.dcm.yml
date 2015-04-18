@@ -1,0 +1,48 @@
+Eccube\Entity\Module:
+    type: entity
+    table: dtb_module
+    repositoryClass: Eccube\Repository\ModuleRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: module_id
+            generator:
+                strategy: AUTO
+    fields:
+        code:
+            type: text
+            nullable: false
+            column: module_code
+        name:
+            type: text
+            nullable: false
+            column: module_name
+        sub_data:
+            type: text
+            nullable: true
+        auto_update_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    oneToMany:
+        ModuleUpdateLogs:
+            targetEntity: Eccube\Entity\ModuleUpdateLog
+            mappedBy: Module
+    lifecycleCallbacks: {  }

@@ -1,0 +1,28 @@
+Eccube\Entity\Template:
+    type: entity
+    table: dtb_templates
+    repositoryClass: Eccube\Repository\TemplateRepository
+    id:
+        code:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+            column: template_code
+    fields:
+        device_type_id:
+            type: integer
+            nullable: false
+            unsigned: false
+        template_name:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    lifecycleCallbacks: {  }

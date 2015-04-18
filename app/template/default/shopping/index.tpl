@@ -80,7 +80,7 @@
                 <div class="btn_area">
                     <ul>
                         <li>
-                            <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/kiyaku.php">
+                            <a href="<!--{$smarty.const.ROOT_URLPATH}-->entry/">
                                 <img class="hover_change_image" src="<!--{$TPL_URLPATH}-->img/button/btn_entry.jpg" alt="会員登録をする" />
                             </a>
                         </li>

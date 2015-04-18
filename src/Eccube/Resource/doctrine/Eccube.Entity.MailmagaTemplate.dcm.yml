@@ -1,0 +1,50 @@
+Eccube\Entity\MailmagaTemplate:
+    type: entity
+    table: dtb_mailmaga_template
+    repositoryClass: Eccube\Repository\MailmagaTemplateRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: template_id
+            generator:
+                strategy: AUTO
+    fields:
+        subject:
+            type: text
+            nullable: true
+        mail_method:
+            type: integer
+            nullable: true
+            unsigned: false
+        body:
+            type: text
+            nullable: true
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: MailmagaTemplates
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

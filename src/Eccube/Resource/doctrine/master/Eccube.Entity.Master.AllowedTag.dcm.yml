@@ -1,0 +1,23 @@
+Eccube\Entity\Master\AllowedTag:
+    type: entity
+    table: mtb_allowed_tag
+    repositoryClass: Eccube\Repository\Master\AllowedTagRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    lifecycleCallbacks: {  }

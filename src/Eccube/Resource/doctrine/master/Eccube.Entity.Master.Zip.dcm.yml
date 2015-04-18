@@ -1,0 +1,28 @@
+Eccube\Entity\Master\Zip:
+    type: entity
+    table: mtb_zip
+    repositoryClass: Eccube\Repository\Master\ZipRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            column: zip_id
+            generator:
+                strategy: AUTO
+    fields:
+        zipcode:
+            type: text
+            nullable: true
+        state:
+            type: text
+            nullable: true
+        city:
+            type: text
+            nullable: true
+        town:
+            type: text
+            nullable: true
+    lifecycleCallbacks: {  }

@@ -1,0 +1,23 @@
+Eccube\Entity\Master\Recommend:
+    type: entity
+    table: mtb_recommend
+    repositoryClass: Eccube\Repository\Master\RecommendRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    lifecycleCallbacks: {  }

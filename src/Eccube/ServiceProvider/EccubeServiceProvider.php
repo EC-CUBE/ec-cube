@@ -18,6 +18,22 @@ class EccubeServiceProvider implements ServiceProviderInterface
      */
     public function register(BaseApplication $app)
     {
+        // Service
+        $app['eccube.service.system'] = function() use ($app) {
+            return new \Eccube\Service\SystemService($app);
+        };
+        $app['view'] = function() use ($app) {
+            return new \Eccube\Service\ViewService($app);
+        };
+        $app['eccube.service.cart'] = function() use ($app) {
+            return new \Eccube\Service\CartService($app);
+        };
+
+        // Entity
+        $app['eccube.entity.cart'] = function() use ($app) {
+            return new \Eccube\Entity\Cart($app);
+        };
+
         // Repository
         $app['eccube.repository.customer'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Customer');
@@ -25,9 +41,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.member'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Member');
         };
-        $app['eccube.repository.baseinfo'] = function() use ($app) {
+        $app['eccube.repository.base_info'] = function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\BaseInfo');
         };
+
         // Form\Type
         $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
@@ -41,6 +58,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\PrefType();
             $types[] = new \Eccube\Form\Type\ZipType();
             $types[] = new \Eccube\Form\Type\AddressType();
+            $types[] = new \Eccube\Form\Type\SexType();
+            $types[] = new \Eccube\Form\Type\JobType();
+            $types[] = new \Eccube\Form\Type\ReminderType();
+            $types[] = new \Eccube\Form\Type\MailMagazineType();
 
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);

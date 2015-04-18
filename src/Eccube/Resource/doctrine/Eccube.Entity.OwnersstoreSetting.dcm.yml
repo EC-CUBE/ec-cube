@@ -1,0 +1,11 @@
+Eccube\Entity\OwnersstoreSetting:
+    type: entity
+    table: dtb_ownersstore_settings
+    repositoryClass: Eccube\Repository\OwnersstoreSettingRepository
+    id:
+        public_key:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+    lifecycleCallbacks: {  }

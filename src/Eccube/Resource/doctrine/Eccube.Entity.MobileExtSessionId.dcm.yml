@@ -1,0 +1,26 @@
+Eccube\Entity\MobileExtSessionId:
+    type: entity
+    table: dtb_mobile_ext_session_id
+    repositoryClass: Eccube\Repository\MobileExtSessionIdRepository
+    id:
+        id:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+            column: session_id
+    fields:
+        param_key:
+            type: text
+            nullable: true
+        param_value:
+            type: text
+            nullable: true
+        url:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+    lifecycleCallbacks: {  }

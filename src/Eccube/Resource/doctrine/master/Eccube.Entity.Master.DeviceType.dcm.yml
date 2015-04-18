@@ -1,0 +1,22 @@
+Eccube\Entity\Master\DeviceType:
+    type: entity
+    table: mtb_device_type
+    repositoryClass: Eccube\Repository\Master\DeviceTypeRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+    lifecycleCallbacks: {  }

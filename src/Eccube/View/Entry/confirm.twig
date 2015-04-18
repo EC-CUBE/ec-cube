@@ -1,5 +1,7 @@
 {% extends 'site_main.twig' %}
 
+{% form_theme form _self %}
+
 {% block main %}
 
 <div id="undercolumn">
@@ -9,7 +11,8 @@
             ご登録されますと、まずは仮会員となります。<br />
             入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
         </p>
-        <form name="form1" id="form1" method="post" action="{{ url('entry_confirm') }}">
+        <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
+            {{ form_widget(form._token) }}
             <table summary="会員登録フォーム">
 
                 <col width="30%" />
@@ -17,26 +20,89 @@
                 <tr>
                     <th>お名前<span class="attention">※</span></th>
                     <td>
-                        {{ form.name01 }}&nbsp;{{ form.name02 }}
+                        {{ form_widget(form.name) }}
                     </td>
                 </tr>
                 <tr>
-                    <th>お名前(フリガナ)</th>
+                    <th>お名前(フリガナ)<span class="attention">※</span></th>
                     <td>
-                        {{ form.kana01 }}&nbsp;{{ form.kana02 }}
+                        {{ form_widget(form.kana) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>会社名</th>
+                    <td>
+                        {{ form_widget(form.company_name) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>郵便番号<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.zip) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>住所<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.address) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>電話番号</th>
+                    <td>
+                        {{ form_widget(form.tel) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>FAX</th>
+                    <td>
+                        {{ form_widget(form.fax) }}
                     </td>
                 </tr>
                 <tr>
                     <th>メールアドレス<span class="attention">※</span></th>
                     <td>
-                        {{ form.email }}<br />
+                        {{ form_widget(form.email) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>性別</th>
+                    <td>
+                        {{ form_widget(form.sex) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>職業</th>
+                    <td>
+                        {{ form_widget(form.job) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>生年月日</th>
+                    <td>
+                        {{ form_widget(form.birth) }}
                     </td>
                 </tr>
                 <tr>
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
-                        {{ form.password }}
+                        {{ form_widget(form.password.first) }}
+                        {{ form_widget(form.password.second) }}
+                        ********
+                    </td>
+                </tr>
+                <tr>
+                    <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
+                    <td>
+                        質問：{{ form_widget(form.reminder) }}<br />
+                        答え：{{ form_widget(form.reminder_answer) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールマガジンの送付について<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.mailmaga_flg) }}
                     </td>
                 </tr>
             </table>
@@ -44,10 +110,10 @@
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="back" value="1" />
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="mode" value="back"  />
                     </li>
                     <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry.jpg" alt="会員登録をする" name="send" value="1" id="send" />
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry.jpg" alt="会員登録をする" name="mode" value="complete" id="send" />
                     </li>
                 </ul>
             </div>

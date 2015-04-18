@@ -1,0 +1,28 @@
+Eccube\Entity\MakerCount:
+    type: entity
+    table: dtb_maker_count
+    repositoryClass: Eccube\Repository\MakerCountRepository
+    id:
+        maker_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        product_count:
+            type: integer
+            nullable: false
+            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+    oneToOne:
+        Maker:
+            targetEntity: Maker
+            joinColumn:
+                name: maker_id
+                referencedColumnName: maker_id
+    lifecycleCallbacks: {  }

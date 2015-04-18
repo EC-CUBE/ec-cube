@@ -1,0 +1,126 @@
+Eccube\Entity\Payment:
+    type: entity
+    table: dtb_payment
+    repositoryClass: Eccube\Repository\PaymentRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: payment_id
+            generator:
+                strategy: AUTO
+    fields:
+        method:
+            type: text
+            nullable: true
+            column: payment_method
+        charge:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        rule_max:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        note:
+            type: text
+            nullable: true
+        fix:
+            type: smallint
+            nullable: true
+            unsigned: false
+        status:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        creator_id:
+            type: integer
+            nullable: false
+            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        payment_image:
+            type: text
+            nullable: true
+        upper_rule:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        charge_flg:
+            type: smallint
+            nullable: true
+            unsigned: false
+            default: '1'
+        rule_min:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        upper_rule_max:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        module_id:
+            type: integer
+            nullable: true
+            unsigned: false
+        module_path:
+            type: text
+            nullable: true
+        memo01:
+            type: text
+            nullable: true
+        memo02:
+            type: text
+            nullable: true
+        memo03:
+            type: text
+            nullable: true
+        memo04:
+            type: text
+            nullable: true
+        memo05:
+            type: text
+            nullable: true
+        memo06:
+            type: text
+            nullable: true
+        memo07:
+            type: text
+            nullable: true
+        memo08:
+            type: text
+            nullable: true
+        memo09:
+            type: text
+            nullable: true
+        memo10:
+            type: text
+            nullable: true
+    oneToMany:
+        PaymentOptions:
+            targetEntity: Eccube\Entity\PaymentOption
+            mappedBy: Payment
+    lifecycleCallbacks: {  }

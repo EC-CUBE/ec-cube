@@ -15,22 +15,58 @@ class CustomerTypeTest extends TypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     private $formData = array(
-        'name01' => 'たかはし',
-        'name02' => 'しんいち',
-        'kana01' => 'タカハシ',
-        'kana02' => 'シンイチ',
+        'name' => array(
+            'name01' => 'たかはし',
+            'name02' => 'しんいち',
+        ),
+        'kana'=> array(
+            'kana01' => 'タカハシ',
+            'kana02' => 'シンイチ',
+        ),
+        'company_name' => 'ロックオン',
+        'zip' => array(
+            'zip01' => '530',
+            'zip02' => '0001',
+        ),
+        'address' => array(
+            'pref' => '5',
+            'addr01' => '北区',
+            'addr02' => '梅田',
+        ),
+        'tel' => array(
+            'tel01' => '012',
+            'tel02' => '345',
+            'tel03' => '6789',
+        ),
+        'fax' => array(
+            'fax01' => '112',
+            'fax02' => '345',
+            'fax03' => '6789',
+        ),
         'email' => 'default@example.com',
+        'sex' => 1,
+        'job' => 1,
+        'birth' => array(
+            'year' => '1983',
+            'month' => '2',
+            'day' => '14',
+        ),
         'password' => array(
             'first' => 'password',
             'second' => 'password',
-        )
+        ),
+        'reminder' => 1,
+        'reminder_answer' => 'なし',
+        'mailmaga_flg' => 1,
     );
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->app = new \Eccube\Application;
+        $this->app = new \Eccube\Application(array(
+            'env' => 'test',
+        ));
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
@@ -94,15 +130,15 @@ class CustomerTypeTest extends TypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidEmail_InvalidCallback()
+    public function testInvalidEmail_Duplicate()
     {
         $testVal = 'sample@example.com';
         $customer = $this->app['eccube.repository.customer']->newCustomer()
-            ->setName01($this->formData['name01'])
-            ->setName02($this->formData['name02'])
-            ->setKana01($this->formData['kana01'])
-            ->setKana02($this->formData['kana02'])
-            ->setPassword($this->formData['password'])
+            ->setName01($this->formData['name']['name01'])
+            ->setName02($this->formData['name']['name02'])
+            ->setKana01($this->formData['kana']['kana01'])
+            ->setKana02($this->formData['kana']['kana02'])
+            ->setPassword($this->formData['password']['first'])
             ->setEmail($testVal);
 
         $form = $this->app['form.factory']
@@ -110,8 +146,8 @@ class CustomerTypeTest extends TypeTestCase
                 'csrf_protection' => false,
             ))
             ->getForm();
-
         $this->app['orm.em']->persist($customer);
+
         $this->formData['email'] = $testVal;
         $form->submit($this->formData);
 
@@ -120,7 +156,7 @@ class CustomerTypeTest extends TypeTestCase
 
     public function testInvalidPassword_Invalid()
     {
-        $this->formData['password']['first'] = 'poss';
+        $this->formData['password']['first'] = 'anotherPassword';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
