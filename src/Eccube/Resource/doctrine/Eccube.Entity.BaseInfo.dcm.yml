@@ -1,0 +1,249 @@
+Eccube\Entity\BaseInfo:
+    type: entity
+    table: dtb_baseinfo
+    repositoryClass: Eccube\Repository\BaseInfoRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        company_name:
+            type: text
+            nullable: true
+        company_kana:
+            type: text
+            nullable: true
+        zip01:
+            type: text
+            nullable: true
+        zip02:
+            type: text
+            nullable: true
+        zipcode:
+            type: text
+            nullable: true
+#        country_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+#        pref:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+        addr01:
+            type: text
+            nullable: true
+        addr02:
+            type: text
+            nullable: true
+        tel01:
+            type: text
+            nullable: true
+        tel02:
+            type: text
+            nullable: true
+        tel03:
+            type: text
+            nullable: true
+        fax01:
+            type: text
+            nullable: true
+        fax02:
+            type: text
+            nullable: true
+        fax03:
+            type: text
+            nullable: true
+        business_hour:
+            type: text
+            nullable: true
+        law_company:
+            type: text
+            nullable: true
+        law_manager:
+            type: text
+            nullable: true
+        law_zip01:
+            type: text
+            nullable: true
+        law_zip02:
+            type: text
+            nullable: true
+        law_zipcode:
+            type: text
+            nullable: true
+#        law_country_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+#        law_pref:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+        law_addr01:
+            type: text
+            nullable: true
+        law_addr02:
+            type: text
+            nullable: true
+        law_tel01:
+            type: text
+            nullable: true
+        law_tel02:
+            type: text
+            nullable: true
+        law_tel03:
+            type: text
+            nullable: true
+        law_fax01:
+            type: text
+            nullable: true
+        law_fax02:
+            type: text
+            nullable: true
+        law_fax03:
+            type: text
+            nullable: true
+        law_email:
+            type: text
+            nullable: true
+        law_url:
+            type: text
+            nullable: true
+        law_term01:
+            type: text
+            nullable: true
+        law_term02:
+            type: text
+            nullable: true
+        law_term03:
+            type: text
+            nullable: true
+        law_term04:
+            type: text
+            nullable: true
+        law_term05:
+            type: text
+            nullable: true
+        law_term06:
+            type: text
+            nullable: true
+        law_term07:
+            type: text
+            nullable: true
+        law_term08:
+            type: text
+            nullable: true
+        law_term09:
+            type: text
+            nullable: true
+        law_term10:
+            type: text
+            nullable: true
+        email01:
+            type: text
+            nullable: true
+        email02:
+            type: text
+            nullable: true
+        email03:
+            type: text
+            nullable: true
+        email04:
+            type: text
+            nullable: true
+        free_rule:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        shop_name:
+            type: text
+            nullable: true
+        shop_kana:
+            type: text
+            nullable: true
+        shop_name_eng:
+            type: text
+            nullable: true
+        point_rate:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+        welcome_point:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+        update_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        top_tpl:
+            type: text
+            nullable: true
+        product_tpl:
+            type: text
+            nullable: true
+        detail_tpl:
+            type: text
+            nullable: true
+        mypage_tpl:
+            type: text
+            nullable: true
+        good_traded:
+            type: text
+            nullable: true
+        message:
+            type: text
+            nullable: true
+        regular_holiday_ids:
+            type: text
+            nullable: true
+        latitude:
+            type: text
+            nullable: true
+        longitude:
+            type: text
+            nullable: true
+        downloadable_days:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+            default: '30'
+        downloadable_days_unlimited:
+            type: smallint
+            nullable: true
+            unsigned: false
+    manyToOne:
+        Country:
+            targetEntity: Eccube\Entity\Master\Country
+            joinColumn:
+                name: country_id
+                referencedColumnName: id
+        Pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            joinColumn:
+                name: pref
+                referencedColumnName: id
+        LawCountry:
+            targetEntity: Eccube\Entity\Master\Country
+            joinColumn:
+                name: law_country_id
+                referencedColumnName: id
+        LawPref:
+            targetEntity: Eccube\Entity\Master\Pref
+            joinColumn:
+                name: law_pref
+                referencedColumnName: id
+    lifecycleCallbacks: 
+        loadClassMetadata: {  }

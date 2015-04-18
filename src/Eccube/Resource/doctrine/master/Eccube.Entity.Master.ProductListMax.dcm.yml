@@ -1,0 +1,23 @@
+Eccube\Entity\Master\ProductListMax:
+    type: entity
+    table: mtb_product_list_max
+    repositoryClass: Eccube\Repository\Master\ProductListMaxRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    lifecycleCallbacks: {  }

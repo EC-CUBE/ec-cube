@@ -1,113 +1,109 @@
 {% extends 'site_main.twig' %}
 
 {% block main %}
-
-{% if baseInfo.latitude and baseInfo.longitude %}
-    <script type="text/javascript">//<![CDATA[
-        $(function() {
-            $("#maps").css({
-                'margin-top': '15px',
-                'margin-left': 'auto',
-                'margin-right': 'auto',
-                'width': '98%',
-                'height': '300px'
+    {% if baseInfo.latitude is not empty and baseInfo.longitude is not empty %}
+        <script type="text/javascript">//<![CDATA[
+            $(function() {
+                $("#maps").css({
+                    'margin-top': '15px',
+                    'margin-left': 'auto',
+                    'margin-right': 'auto',
+                    'width': '98%',
+                    'height': '300px'
+                });
+                var lat = {{ baseInfo.latitude|escape('js') }};
+                var lng = {{ baseInfo.longitude|escape('js') }};
+                if (lat && lng) {
+                    var latlng = new google.maps.LatLng(lat, lng);
+                    var mapOptions = {
+                        zoom: 15,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map($("#maps").get(0), mapOptions);
+                    var marker = new google.maps.Marker({map: map, position: latlng});
+                } else {
+                    $("#maps").remove();
+                }
             });
-            var lat = {{ baseInfo.latitude }}
-            var lng = {{ baseInfo.longitude }}
-            if (lat && lng) {
-                var latlng = new google.maps.LatLng(lat, lng);
-                var mapOptions = {
-                    zoom: 15,
-                    center: latlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map($("#maps").get(0), mapOptions);
-                var marker = new google.maps.Marker({map: map, position: latlng});
-            } else {
-                $("#maps").remove();
-            }
-        });
-    //]]></script>
-{% endif %}
+        //]]></script>
+    {% endif %}
 
-<div id="undercolumn">
+    <div id="undercolumn">
+        <div id="undercolumn_aboutus">
+            <h2 class="title">{{ title }}</h2>
 
-    <div id="undercolumn_aboutus">
-        <h2 class="title">{{ title }}</h2>
+            <table summary="当サイトについて">
+                <col width="20%" />
+                <col width="80%" />
+                {% if baseInfo.shop_name is not empty %}
+                    <tr>
+                        <th>店名</th>
+                        <td>{{ baseInfo.shop_name }}</td>
+                    </tr>
+                {% endif %}
 
-        <table summary="当サイトについて">
-            <col width="20%" />
-            <col width="80%" />
-            {% if baseInfo.shop_name|length > 0 %}
-                <tr>
-                    <th>店名</th>
-                    <td>{{ baseInfo.shop_name }}</td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.company_name is not empty %}
+                    <tr>
+                        <th>会社名</th>
+                        <td>{{ baseInfo.company_name }}</td>
+                    </tr>
+                {% endif %}
 
-            {% if baseInfo.company_name|length > 0 %}
-                <tr>
-                    <th>会社名</th>
-                    <td>{{ baseInfo.company_name }}</td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.zip01 is not empty %}
+                    <tr>
+                        <th>所在地</th>
+                        <td>
+                            〒{{ baseInfo.zip01 }}-{{ baseInfo.zip02 }}<br />
+                            {{ baseInfo.law_pref_name }}{{ baseInfo.addr01 }}{{ baseInfo.addr02 }}
+                        </td>
+                    </tr>
+                {% endif %}
 
-            {% if baseInfo.zip01 %}
-                <tr>
-                    <th>所在地</th>
-                    <td>
-                        〒{{ baseInfo.zip01 }}-{{ baseInfo.zip02 }}<br />
-                        {{ pref[baseInfo.law_pref] }}{{ baseInfo.addr01 }}{{ baseInfo.addr02 }}
-                    </td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.tel01 is not empty %}
+                    <tr>
+                        <th>電話番号</th>
+                        <td>{{ baseInfo.tel01 }}-{{ baseInfo.tel02 }}-{{ baseInfo.tel03 }}</td>
+                    </tr>
+                {% endif %}
 
-            {% if baseInfo.tel01|length > 0 %}
-                <tr>
-                    <th>電話番号</th>
-                    <td>{{ baseInfo.tel01 }}-{{ baseInfo.tel02 }}-{{ baseInfo.tel03 }}</td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.fax01 is not empty %}
+                    <tr>
+                        <th>FAX番号</th>
+                        <td>{{ baseInfo.fax01 }}-{{ baseInfo.fax02 }}-{{ baseInfo.fax03 }}</td>
+                    </tr>
+                {% endif %}
 
-            {% if baseInfo.fax01|length > 0 %}
-                <tr>
-                    <th>FAX番号</th>
-                    <td>{{ baseInfo.fax01 }}-{{ baseInfo.fax02 }}-{{ baseInfo.fax03 }}</td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.email02 is not empty %}
+                    <tr>
+                        <th>メールアドレス</th>
+                        <td><a href="mailto:{{ baseInfo.email02 }}">{{ baseInfo.email02 }}</a></td>
+                    </tr>
+                {% endif %}
 
-            {% if baseInfo.email02|length > 0 %}
-                <tr>
-                    <th>メールアドレス</th>
-                    <td><a href="mailto:{{ baseInfo.email02 }}">{{ baseInfo.email02 }}</a></td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.business_hour is not empty %}
+                    <tr>
+                        <th>営業時間</th>
+                        <td>{{ baseInfo.business_hour }}</td>
+                    </tr>
+                {% endif %}
 
-            {% if baseInfo.business_hour|length > 0 %}
-                <tr>
-                    <th>営業時間</th>
-                    <td>{{ baseInfo.business_hour }}</td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.good_traded is not empty %}
+                    <tr>
+                        <th>取扱商品</th>
+                        <td>{{ baseInfo.good_traded|nl2br }}</td>
+                    </tr>
+                {% endif %}
 
-            {% if baseInfo.good_traded|length > 0 %}
-                <tr>
-                    <th>取扱商品</th>
-                    <td>{{ baseInfo.good_traded|nl2br }}</td>
-                </tr>
-            {% endif %}
+                {% if baseInfo.message is not empty %}
+                    <tr>
+                        <th>メッセージ</th>
+                        <td>{{ baseInfo.message|nl2br }}</td>
+                    </tr>
+                {% endif %}
+            </table>
 
-            {% if baseInfo.message %}
-                <tr>
-                    <th>メッセージ</th>
-                    <td>{{ baseInfo.message|nl2br }}</td>
-                </tr>
-            {% endif %}
-
-        </table>
-
-        <div id="maps"></div>
+            <div id="maps"></div>
+        </div>
     </div>
-</div>
-
 {% endblock %}

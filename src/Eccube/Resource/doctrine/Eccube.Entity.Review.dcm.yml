@@ -1,0 +1,93 @@
+Eccube\Entity\Review:
+    type: entity
+    table: dtb_review
+    repositoryClass: Eccube\Repository\ReviewRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: review_id
+            generator:
+                strategy: AUTO
+    fields:
+#        product_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        reviewer_name:
+            type: text
+            nullable: false
+            fixed: false
+        reviewer_url:
+            type: text
+            nullable: true
+            fixed: false
+#        sex:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+#        customer_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+        recommend_level:
+            type: smallint
+            nullable: false
+            unsigned: false
+        title:
+            type: text
+            nullable: false
+        comment:
+            type: text
+            nullable: false
+        status:
+            type: smallint
+            nullable: true
+            unsigned: false
+            default: '2'
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: Reviews
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+                nullable: false
+        Sex:
+            targetEntity: Eccube\Entity\Master\Sex
+            inversedBy: Reviews
+            joinColumn:
+                name: sex
+                referencedColumnName: id
+        Customer:
+            targetEntity: Eccube\Entity\Customer
+            inversedBy: Reviews
+            joinColumn:
+                name: customer_id
+                referencedColumnName: customer_id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: Reviews
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+    lifecycleCallbacks: {  }

@@ -1,0 +1,30 @@
+Eccube\Entity\CsvSql:
+    type: entity
+    table: dtb_csv_sql
+    repositoryClass: Eccube\Repository\CsvSqlRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            column: sql_id
+            generator:
+                strategy: AUTO
+    fields:
+        sql_name:
+            type: text
+            nullable: false
+        csv_sql:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    lifecycleCallbacks: {  }

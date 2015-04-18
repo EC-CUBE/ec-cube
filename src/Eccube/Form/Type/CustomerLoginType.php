@@ -17,6 +17,9 @@ class CustomerLoginType extends AbstractType
         $this->session = $session;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('login_email', 'text', array(
@@ -41,6 +44,9 @@ class CustomerLoginType extends AbstractType
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -48,6 +54,9 @@ class CustomerLoginType extends AbstractType
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'customer_login';

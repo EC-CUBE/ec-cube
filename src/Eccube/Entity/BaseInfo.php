@@ -7,8 +7,23 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BaseInfo
  */
-class BaseInfo extends AbstractEntity
+class BaseInfo extends \Eccube\Entity\AbstractEntity
 {
+    /**
+     * getLawPrefName
+     * 
+     * @param string $default デフォルト
+     * @return string
+     */
+    public function getLawPrefName($default = '')
+    {
+        if ($this->getLawPref()) {
+            return $this->getLawPref()->getName();
+        } else {
+            return $default;
+        }
+    }
+
     /**
      * @var integer
      */
@@ -35,9 +50,9 @@ class BaseInfo extends AbstractEntity
     private $zip02;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $pref;
+    private $zipcode;
 
     /**
      * @var string
@@ -105,9 +120,9 @@ class BaseInfo extends AbstractEntity
     private $law_zip02;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $law_pref;
+    private $law_zipcode;
 
     /**
      * @var string
@@ -315,33 +330,41 @@ class BaseInfo extends AbstractEntity
     private $downloadable_days;
 
     /**
-     * @var string
+     * @var integer
      */
     private $downloadable_days_unlimited;
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     * @return BaseInfo
+     * @var \Eccube\Entity\Master\Country
      */
-    public function setId($id)
-    {
-        $this->id = $id;
+    private $Country;
 
-        return $this;
-    }
+    /**
+     * @var \Eccube\Entity\Master\Pref
+     */
+    private $Pref;
+
+    /**
+     * @var \Eccube\Entity\Master\Country
+     */
+    private $LawCountry;
+
+    /**
+     * @var \Eccube\Entity\Master\Pref
+     */
+    private $LawPref;
+
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
     /**
      * Set company_name
      *
@@ -358,7 +381,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get company_name
      *
-     * @return string
+     * @return string 
      */
     public function getCompanyName()
     {
@@ -381,7 +404,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get company_kana
      *
-     * @return string
+     * @return string 
      */
     public function getCompanyKana()
     {
@@ -404,7 +427,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get zip01
      *
-     * @return string
+     * @return string 
      */
     public function getZip01()
     {
@@ -427,7 +450,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get zip02
      *
-     * @return string
+     * @return string 
      */
     public function getZip02()
     {
@@ -435,26 +458,26 @@ class BaseInfo extends AbstractEntity
     }
 
     /**
-     * Set pref
+     * Set zipcode
      *
-     * @param integer $pref
+     * @param string $zipcode
      * @return BaseInfo
      */
-    public function setPref($pref)
+    public function setZipcode($zipcode)
     {
-        $this->pref = $pref;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
 
     /**
-     * Get pref
+     * Get zipcode
      *
-     * @return integer
+     * @return string 
      */
-    public function getPref()
+    public function getZipcode()
     {
-        return $this->pref;
+        return $this->zipcode;
     }
 
     /**
@@ -473,7 +496,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get addr01
      *
-     * @return string
+     * @return string 
      */
     public function getAddr01()
     {
@@ -496,7 +519,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get addr02
      *
-     * @return string
+     * @return string 
      */
     public function getAddr02()
     {
@@ -519,7 +542,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get tel01
      *
-     * @return string
+     * @return string 
      */
     public function getTel01()
     {
@@ -542,7 +565,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get tel02
      *
-     * @return string
+     * @return string 
      */
     public function getTel02()
     {
@@ -565,7 +588,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get tel03
      *
-     * @return string
+     * @return string 
      */
     public function getTel03()
     {
@@ -588,7 +611,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get fax01
      *
-     * @return string
+     * @return string 
      */
     public function getFax01()
     {
@@ -611,7 +634,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get fax02
      *
-     * @return string
+     * @return string 
      */
     public function getFax02()
     {
@@ -634,7 +657,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get fax03
      *
-     * @return string
+     * @return string 
      */
     public function getFax03()
     {
@@ -657,7 +680,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get business_hour
      *
-     * @return string
+     * @return string 
      */
     public function getBusinessHour()
     {
@@ -680,7 +703,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_company
      *
-     * @return string
+     * @return string 
      */
     public function getLawCompany()
     {
@@ -703,7 +726,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_manager
      *
-     * @return string
+     * @return string 
      */
     public function getLawManager()
     {
@@ -726,7 +749,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_zip01
      *
-     * @return string
+     * @return string 
      */
     public function getLawZip01()
     {
@@ -749,7 +772,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_zip02
      *
-     * @return string
+     * @return string 
      */
     public function getLawZip02()
     {
@@ -757,26 +780,26 @@ class BaseInfo extends AbstractEntity
     }
 
     /**
-     * Set law_pref
+     * Set law_zipcode
      *
-     * @param integer $lawPref
+     * @param string $lawZipcode
      * @return BaseInfo
      */
-    public function setLawPref($lawPref)
+    public function setLawZipcode($lawZipcode)
     {
-        $this->law_pref = $lawPref;
+        $this->law_zipcode = $lawZipcode;
 
         return $this;
     }
 
     /**
-     * Get law_pref
+     * Get law_zipcode
      *
-     * @return integer
+     * @return string 
      */
-    public function getLawPref()
+    public function getLawZipcode()
     {
-        return $this->law_pref;
+        return $this->law_zipcode;
     }
 
     /**
@@ -795,7 +818,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_addr01
      *
-     * @return string
+     * @return string 
      */
     public function getLawAddr01()
     {
@@ -818,7 +841,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_addr02
      *
-     * @return string
+     * @return string 
      */
     public function getLawAddr02()
     {
@@ -841,7 +864,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_tel01
      *
-     * @return string
+     * @return string 
      */
     public function getLawTel01()
     {
@@ -864,7 +887,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_tel02
      *
-     * @return string
+     * @return string 
      */
     public function getLawTel02()
     {
@@ -887,7 +910,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_tel03
      *
-     * @return string
+     * @return string 
      */
     public function getLawTel03()
     {
@@ -910,7 +933,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_fax01
      *
-     * @return string
+     * @return string 
      */
     public function getLawFax01()
     {
@@ -933,7 +956,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_fax02
      *
-     * @return string
+     * @return string 
      */
     public function getLawFax02()
     {
@@ -956,7 +979,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_fax03
      *
-     * @return string
+     * @return string 
      */
     public function getLawFax03()
     {
@@ -979,7 +1002,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_email
      *
-     * @return string
+     * @return string 
      */
     public function getLawEmail()
     {
@@ -1002,7 +1025,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_url
      *
-     * @return string
+     * @return string 
      */
     public function getLawUrl()
     {
@@ -1025,7 +1048,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term01
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm01()
     {
@@ -1048,7 +1071,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term02
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm02()
     {
@@ -1071,7 +1094,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term03
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm03()
     {
@@ -1094,7 +1117,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term04
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm04()
     {
@@ -1117,7 +1140,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term05
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm05()
     {
@@ -1140,7 +1163,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term06
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm06()
     {
@@ -1163,7 +1186,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term07
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm07()
     {
@@ -1186,7 +1209,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term08
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm08()
     {
@@ -1209,7 +1232,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term09
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm09()
     {
@@ -1232,7 +1255,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get law_term10
      *
-     * @return string
+     * @return string 
      */
     public function getLawTerm10()
     {
@@ -1255,7 +1278,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get email01
      *
-     * @return string
+     * @return string 
      */
     public function getEmail01()
     {
@@ -1278,7 +1301,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get email02
      *
-     * @return string
+     * @return string 
      */
     public function getEmail02()
     {
@@ -1301,7 +1324,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get email03
      *
-     * @return string
+     * @return string 
      */
     public function getEmail03()
     {
@@ -1324,7 +1347,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get email04
      *
-     * @return string
+     * @return string 
      */
     public function getEmail04()
     {
@@ -1347,7 +1370,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get free_rule
      *
-     * @return string
+     * @return string 
      */
     public function getFreeRule()
     {
@@ -1370,7 +1393,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get shop_name
      *
-     * @return string
+     * @return string 
      */
     public function getShopName()
     {
@@ -1393,7 +1416,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get shop_kana
      *
-     * @return string
+     * @return string 
      */
     public function getShopKana()
     {
@@ -1416,7 +1439,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get shop_name_eng
      *
-     * @return string
+     * @return string 
      */
     public function getShopNameEng()
     {
@@ -1439,7 +1462,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get point_rate
      *
-     * @return string
+     * @return string 
      */
     public function getPointRate()
     {
@@ -1462,7 +1485,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get welcome_point
      *
-     * @return string
+     * @return string 
      */
     public function getWelcomePoint()
     {
@@ -1485,7 +1508,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getUpdateDate()
     {
@@ -1508,7 +1531,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get top_tpl
      *
-     * @return string
+     * @return string 
      */
     public function getTopTpl()
     {
@@ -1531,7 +1554,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get product_tpl
      *
-     * @return string
+     * @return string 
      */
     public function getProductTpl()
     {
@@ -1554,7 +1577,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get detail_tpl
      *
-     * @return string
+     * @return string 
      */
     public function getDetailTpl()
     {
@@ -1577,7 +1600,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get mypage_tpl
      *
-     * @return string
+     * @return string 
      */
     public function getMypageTpl()
     {
@@ -1600,7 +1623,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get good_traded
      *
-     * @return string
+     * @return string 
      */
     public function getGoodTraded()
     {
@@ -1623,7 +1646,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get message
      *
-     * @return string
+     * @return string 
      */
     public function getMessage()
     {
@@ -1646,7 +1669,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get regular_holiday_ids
      *
-     * @return string
+     * @return string 
      */
     public function getRegularHolidayIds()
     {
@@ -1669,7 +1692,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get latitude
      *
-     * @return string
+     * @return string 
      */
     public function getLatitude()
     {
@@ -1692,7 +1715,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get longitude
      *
-     * @return string
+     * @return string 
      */
     public function getLongitude()
     {
@@ -1715,7 +1738,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Get downloadable_days
      *
-     * @return string
+     * @return string 
      */
     public function getDownloadableDays()
     {
@@ -1725,7 +1748,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Set downloadable_days_unlimited
      *
-     * @param string $downloadableDaysUnlimited
+     * @param integer $downloadableDaysUnlimited
      * @return BaseInfo
      */
     public function setDownloadableDaysUnlimited($downloadableDaysUnlimited)
@@ -1738,10 +1761,102 @@ class BaseInfo extends AbstractEntity
     /**
      * Get downloadable_days_unlimited
      *
-     * @return string
+     * @return integer 
      */
     public function getDownloadableDaysUnlimited()
     {
         return $this->downloadable_days_unlimited;
+    }
+
+    /**
+     * Set Country
+     *
+     * @param \Eccube\Entity\Master\Country $country
+     * @return BaseInfo
+     */
+    public function setCountry(\Eccube\Entity\Master\Country $country = null)
+    {
+        $this->Country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get Country
+     *
+     * @return \Eccube\Entity\Master\Country 
+     */
+    public function getCountry()
+    {
+        return $this->Country;
+    }
+
+    /**
+     * Set Pref
+     *
+     * @param \Eccube\Entity\Master\Pref $pref
+     * @return BaseInfo
+     */
+    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+    {
+        $this->Pref = $pref;
+
+        return $this;
+    }
+
+    /**
+     * Get Pref
+     *
+     * @return \Eccube\Entity\Master\Pref 
+     */
+    public function getPref()
+    {
+        return $this->Pref;
+    }
+
+    /**
+     * Set LawCountry
+     *
+     * @param \Eccube\Entity\Master\Country $lawCountry
+     * @return BaseInfo
+     */
+    public function setLawCountry(\Eccube\Entity\Master\Country $lawCountry = null)
+    {
+        $this->LawCountry = $lawCountry;
+
+        return $this;
+    }
+
+    /**
+     * Get LawCountry
+     *
+     * @return \Eccube\Entity\Master\Country 
+     */
+    public function getLawCountry()
+    {
+        return $this->LawCountry;
+    }
+
+    /**
+     * Set LawPref
+     *
+     * @param \Eccube\Entity\Master\Pref $lawPref
+     * @return BaseInfo
+     */
+    public function setLawPref(\Eccube\Entity\Master\Pref $lawPref = null)
+    {
+        $this->LawPref = $lawPref;
+
+        return $this;
+    }
+
+    /**
+     * Get LawPref
+     *
+     * @return \Eccube\Entity\Master\Pref 
+     */
+    public function getLawPref()
+    {
+        return $this->LawPref;
     }
 }

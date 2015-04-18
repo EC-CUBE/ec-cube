@@ -1,0 +1,305 @@
+Eccube\Entity\OrderTemp:
+    type: entity
+    table: dtb_order_temp
+    repositoryClass: Eccube\Repository\OrderTempRepository
+    id:
+        id:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+            column: order_temp_id
+    fields:
+#        customer_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+        message:
+            type: text
+            nullable: true
+        name01:
+            type: text
+            nullable: true
+            column: order_name01
+        name02:
+            type: text
+            nullable: true
+            column: order_name02
+        kana01:
+            type: text
+            nullable: true
+            column: order_kana01
+        kana02:
+            type: text
+            nullable: true
+            column: order_kana02
+        company_name:
+            type: text
+            nullable: true
+            column: order_company_name
+        email:
+            type: text
+            nullable: true
+            column: order_email
+        tel01:
+            type: text
+            nullable: true
+            column: order_tel01
+        tel02:
+            type: text
+            nullable: true
+            column: order_tel02
+        tel03:
+            type: text
+            nullable: true
+            column: order_tel03
+        fax01:
+            type: text
+            nullable: true
+            column: order_fax01
+        fax02:
+            type: text
+            nullable: true
+            column: order_fax02
+        fax03:
+            type: text
+            nullable: true
+            column: order_fax03
+        zip01:
+            type: text
+            nullable: true
+            column: order_zip01
+        zip02:
+            type: text
+            nullable: true
+            column: order_zip02
+        zipcode:
+            type: text
+            nullable: true
+            column: order_zipcode
+#        country_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+#            column: order_country_id
+#        pref:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+#            column: order_pref
+        addr01:
+            type: text
+            nullable: true
+            column: order_addr01
+        addr02:
+            type: text
+            nullable: true
+            column: order_addr02
+#        sex:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+#            column: order_sex
+        birth:
+            type: datetime
+            nullable: true
+            column: order_birth
+#        job:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+#            column: order_job
+        subtotal:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        discount:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+#        deliv_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+        deliv_fee:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        charge:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        use_point:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+        add_point:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+        birth_point:
+            type: decimal
+            nullable: false
+            precision: 10
+            scale: 0
+            default: '0'
+        tax:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        total:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        payment_total:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+#        payment_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+        payment_method:
+            type: text
+            nullable: true
+        note:
+            type: text
+            nullable: true
+        mail_flag:
+            type: smallint
+            nullable: true
+            unsigned: false
+        status:
+            type: smallint
+            nullable: true
+            unsigned: false
+        deliv_check:
+            type: smallint
+            nullable: true
+            unsigned: false
+        point_check:
+            type: smallint
+            nullable: true
+            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+#        device_type_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+#        order_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+        memo01:
+            type: text
+            nullable: true
+        memo02:
+            type: text
+            nullable: true
+        memo03:
+            type: text
+            nullable: true
+        memo04:
+            type: text
+            nullable: true
+        memo05:
+            type: text
+            nullable: true
+        memo06:
+            type: text
+            nullable: true
+        memo07:
+            type: text
+            nullable: true
+        memo08:
+            type: text
+            nullable: true
+        memo09:
+            type: text
+            nullable: true
+        memo10:
+            type: text
+            nullable: true
+        session:
+            type: text
+            nullable: true
+    manyToOne:
+        Customer:
+            targetEntity: Eccube\Entity\Customer
+            inversedBy: OrderTemps
+            joinColumn:
+                name: customer_id
+                referencedColumnName: customer_id
+        Country:
+            targetEntity: Eccube\Entity\Master\Country
+            inversedBy: OrderTemps
+            joinColumn:
+                name: order_country_id
+                referencedColumnName: id
+        Pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            inversedBy: OrderTemps
+            joinColumn:
+                name: order_pref
+                referencedColumnName: id
+        Sex:
+            targetEntity: Eccube\Entity\Master\Sex
+            inversedBy: OrderTemps
+            joinColumn:
+                name: order_sex
+                referencedColumnName: id
+        Job:
+            targetEntity: Eccube\Entity\Master\Job
+            inversedBy: OrderTemps
+            joinColumn:
+                name: order_job
+                referencedColumnName: id
+        Deliv:
+            targetEntity: Eccube\Entity\Deliv
+            inversedBy: OrderTemps
+            joinColumn:
+                name: deliv_id
+                referencedColumnName: deliv_id
+        Payment:
+            targetEntity: Eccube\Entity\Payment
+            inversedBy: OrderTemps
+            joinColumn:
+                name: payment_id
+                referencedColumnName: payment_id
+        DeviceType:
+            targetEntity: Eccube\Entity\Master\DeviceType
+            inversedBy: OrderTemps
+            joinColumn:
+                name: device_type_id
+                referencedColumnName: id
+        Order:
+            targetEntity: Eccube\Entity\Order
+            inversedBy: OrderTemps
+            joinColumn:
+                name: order_id
+                referencedColumnName: order_id
+    lifecycleCallbacks: {  }

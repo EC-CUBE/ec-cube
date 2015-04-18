@@ -1,0 +1,134 @@
+Eccube\Entity\Shipping:
+    type: entity
+    table: dtb_shipping
+    repositoryClass: Eccube\Repository\ShippingRepository
+    id:
+        shipping_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        order_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        name01:
+            type: text
+            nullable: true
+            column: shipping_name01
+        name02:
+            type: text
+            nullable: true
+            column: shipping_name02
+        kana01:
+            type: text
+            nullable: true
+            column: shipping_kana01
+        kana02:
+            type: text
+            nullable: true
+            column: shipping_kana02
+        company_name:
+            type: text
+            nullable: true
+            column: shipping_company_name
+        tel01:
+            type: text
+            nullable: true
+            column: shipping_tel01
+        tel02:
+            type: text
+            nullable: true
+            column: shipping_tel02
+        tel03:
+            type: text
+            nullable: true
+            column: shipping_tel03
+        fax01:
+            type: text
+            nullable: true
+            column: shipping_fax01
+        fax02:
+            type: text
+            nullable: true
+            column: shipping_fax02
+        fax03:
+            type: text
+            nullable: true
+            column: shipping_fax03
+#        country_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
+#            column: shipping_country_id
+#        pref:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
+#            column: shipping_pref
+        zip01:
+            type: text
+            nullable: true
+            column: shipping_zip01
+        zip02:
+            type: text
+            nullable: true
+            column: shipping_zip02
+        zipcode:
+            type: text
+            nullable: true
+            column: shipping_zipcode
+        addr01:
+            type: text
+            nullable: true
+            column: shipping_addr01
+        addr02:
+            type: text
+            nullable: true
+            column: shipping_addr02
+        time_id:
+            type: integer
+            nullable: true
+            unsigned: false
+        shipping_time:
+            type: text
+            nullable: true
+        shipping_date:
+            type: datetime
+            nullable: true
+        shipping_commit_date:
+            type: datetime
+            nullable: true
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Country:
+            targetEntity: Eccube\Entity\Master\Country
+            inversedBy: Orders
+            joinColumn:
+                name: shipping_country_id
+                referencedColumnName: id
+        Pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            inversedBy: Orders
+            joinColumn:
+                name: shipping_pref
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

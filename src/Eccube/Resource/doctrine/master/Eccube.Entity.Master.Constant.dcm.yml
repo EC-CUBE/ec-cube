@@ -1,0 +1,23 @@
+Eccube\Entity\Master\Constant:
+    type: entity
+    table: mtb_constants
+    repositoryClass: Eccube\Repository\Master\ConstantRepository
+    id:
+        id:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        remarks:
+            type: text
+            nullable: true
+    lifecycleCallbacks: {  }

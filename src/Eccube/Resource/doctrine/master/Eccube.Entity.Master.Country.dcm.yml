@@ -1,0 +1,22 @@
+Eccube\Entity\Master\Country:
+    type: entity
+    table: mtb_country
+    repositoryClass: Eccube\Repository\Master\CountryRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: integer
+            nullable: false
+            unsigned: false
+    lifecycleCallbacks: {  }

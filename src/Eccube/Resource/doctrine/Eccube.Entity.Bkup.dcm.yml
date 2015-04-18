@@ -1,0 +1,21 @@
+Eccube\Entity\Bkup:
+    type: entity
+    table: dtb_bkup
+    repositoryClass: Eccube\Repository\BkupRepository
+    id:
+        name:
+            type: string
+            length: 200
+            nullable: false
+            id: true
+            column: bkup_name
+    fields:
+        memo:
+            type: text
+            nullable: true
+            column: bkup_memo
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+    lifecycleCallbacks: {  }

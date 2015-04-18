@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Category
  */
-class Category
+class Category extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
@@ -17,12 +17,7 @@ class Category
     /**
      * @var string
      */
-    private $category_name;
-
-    /**
-     * @var integer
-     */
-    private $parent_category_id;
+    private $name;
 
     /**
      * @var integer
@@ -33,11 +28,6 @@ class Category
      * @var integer
      */
     private $rank;
-
-    /**
-     * @var integer
-     */
-    private $creator_id;
 
     /**
      * @var \DateTime
@@ -104,49 +94,26 @@ class Category
     }
 
     /**
-     * Set category_name
+     * Set name
      *
-     * @param string $categoryName
+     * @param string $name
      * @return Category
      */
-    public function setCategoryName($categoryName)
+    public function setName($name)
     {
-        $this->category_name = $categoryName;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get category_name
+     * Get name
      *
      * @return string 
      */
-    public function getCategoryName()
+    public function getName()
     {
-        return $this->category_name;
-    }
-
-    /**
-     * Set parent_category_id
-     *
-     * @param integer $parentCategoryId
-     * @return Category
-     */
-    public function setParentCategoryId($parentCategoryId)
-    {
-        $this->parent_category_id = $parentCategoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get parent_category_id
-     *
-     * @return integer 
-     */
-    public function getParentCategoryId()
-    {
-        return $this->parent_category_id;
+        return $this->name;
     }
 
     /**
@@ -193,29 +160,6 @@ class Category
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set creator_id
-     *
-     * @param integer $creatorId
-     * @return Category
-     */
-    public function setCreatorId($creatorId)
-    {
-        $this->creator_id = $creatorId;
-
-        return $this;
-    }
-
-    /**
-     * Get creator_id
-     *
-     * @return integer 
-     */
-    public function getCreatorId()
-    {
-        return $this->creator_id;
     }
 
     /**
@@ -443,20 +387,5 @@ class Category
     public function getCreator()
     {
         return $this->Creator;
-    }
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreateDateAuto()
-    {
-        // Add your code here
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdateDateAuto()
-    {
-        // Add your code here
     }
 }

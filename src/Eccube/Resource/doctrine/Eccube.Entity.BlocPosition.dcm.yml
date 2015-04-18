@@ -1,0 +1,53 @@
+Eccube\Entity\BlocPosition:
+    type: entity
+    table: dtb_blocposition
+    repositoryClass: Eccube\Repository\BlocpositionRepository
+    id:
+        device_type_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        page_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        target_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        bloc_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        bloc_row:
+            type: integer
+            nullable: true
+            unsigned: false
+        anywhere:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    manyToOne:
+        Bloc:
+            targetEntity: Eccube\Entity\Bloc
+            inversedBy: BlocPositions
+            joinColumns:
+                device_type_id:
+                    referencedColumnName: device_type_id
+                bloc_id:
+                    referencedColumnName: bloc_id
+        PageLayout:
+            targetEntity: Eccube\Entity\PageLayout
+            inversedBy: BlocPositions
+            joinColumns:
+                device_type_id:
+                    referencedColumnName: device_type_id
+                page_id:
+                    referencedColumnName: page_id
+    lifecycleCallbacks: {  }

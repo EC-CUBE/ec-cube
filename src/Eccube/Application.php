@@ -2,8 +2,12 @@
 
 namespace Eccube;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 
 class Application extends \Silex\Application
 {
@@ -36,18 +40,29 @@ class Application extends \Silex\Application
 
         parent::__construct($values);
 
+        // set env
+        if (!isset($app['env']) || empty($app['env'])) {
+            $app['env'] = 'prod';
+        }
+        if ($app['env'] === 'dev' || $app['env'] === 'test') {
+            $app['debug'] = true;
+        }
+
         // load config
-        $this['config'] = function () {
+        $this['config'] = $app->share(function () {
             $config = Yaml::parse(__DIR__ .'/../../app/config/eccube/config.yml');
             return $config;
-        };
+        });
         $this['swiftmailer.option'] = $this['config']['mail'];
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.path' => array(__DIR__ . '/View'),
+            'twig.path' => array(
+                __DIR__ . '/View',
+                __DIR__ . '/../../app/plugin/',
+            ),
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
@@ -73,17 +88,95 @@ class Application extends \Silex\Application
             return \Swift_Message::newInstance();
         };
 
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'simple_yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => __DIR__ . '/Resource/doctrine',
+        $ormOptions = array(
+            'mappings' => array(
+                array(
+                    'type' => 'yml',
+                    'namespace' => 'Eccube\Entity',
+                    'path' => array(
+                        __DIR__ . '/Resource/doctrine',
+                        __DIR__ . '/Resource/doctrine/master',
                     ),
                 ),
             ),
+        );
+
+       // EventDispatcher
+        $app['eccube.event.dispatcher'] = $app->share(function() {
+            return new EventDispatcher();
+        });
+
+        // EventSubscriber
+        $basePath = __DIR__ . '/../../app/plugin';
+        $finder = Finder::create()
+            ->in($basePath)
+            ->directories()
+            ->depth(0);
+
+        // Plugin events / service
+        foreach ($finder as $dir) {
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+            
+            if ($config['enable'] === true) {
+
+                // Type: Event
+                if (isset($config['event'])) {
+                    $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
+                    $subscriber = new $class($app);
+                    $app['eccube.event.dispatcher']->addSubscriber($subscriber);
+                }
+
+                // Type: ServiceProvider
+                if (isset($config['service'])) {
+                    foreach ($config['service'] as $service) {
+                        $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
+                        $app->register(new $class($app));
+                    }
+                }
+
+                // Doctrine Extend
+                if (isset($config['orm.path'])) {
+                    $pathes = array();
+                    foreach($config['orm.path'] as $path) {
+                        $pathes[] = $basePath . '/' . $config['name'] . $path;
+                    }
+                    $ormOptions['mappings'][] = array(
+                        'type' => 'yml',
+                        'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                        'path' => $pathes,
+                    );
+                }
+            }
+        }
+
+        // hook point
+        $this->before(function (Request $request, Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+        }, \Silex\Application::EARLY_EVENT);
+
+        $this->before(function(Request $request, \Silex\Application $app) {
+            $event = $app->parseController($request) . '.before';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function(Request $request, Response $response) use ($app) {
+            $event = $app->parseController($request) . '.after';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response) use ($app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+        }, \Silex\Application::LATE_EVENT);
+
+        $this->finish(function(Request $request, Response $response) use ($app) {
+            $event = $app->parseController($request) . '.finish';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        //Doctrine ORM
+        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.em.options' => $ormOptions,
         ));
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
@@ -115,7 +208,7 @@ class Application extends \Silex\Application
             array('^/mypage/', 'ROLE_USER'),
         );
         $app['eccube.encoder.customer'] = $app->share(function ($app) {
-            return new \Eccube\Framework\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
+            return new \Eccube\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
         });
         $app['security.encoder_factory'] = $app->share(function ($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
@@ -133,10 +226,12 @@ class Application extends \Silex\Application
         };
 
         // Silex Web Profiler
-        $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-            'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
-            'profiler.mount_prefix' => '/_profiler', // this is the default
-        ));
+        if ($app['env'] === 'dev') {
+            $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
+                'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
+                'profiler.mount_prefix' => '/_profiler', // this is the default
+            ));
+        }
 
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/admin', new ControllerProvider\AdminControllerProvider());
@@ -144,6 +239,7 @@ class Application extends \Silex\Application
         $this['callback_resolver'] = $this->share(function () use ($app) {
             return new CallbackResolver($app);
         });
+
 
         $app['eccube.layout'] = null;
         $this->before(function (Request $request, \Silex\Application $app) {
@@ -160,7 +256,6 @@ class Application extends \Silex\Application
                 ->andWhere('p.device_type_id = :device_type_id AND p.url = :url')
                 ->addOrderBy('bp.target_id', 'ASC')
                 ->addOrderBy('bp.bloc_row', 'ASC');
-            $result = null;
             try {
                 $result = $qb->getQuery()
                     ->setParameters(array(
@@ -169,12 +264,21 @@ class Application extends \Silex\Application
                     ))
                     ->getSingleResult();
             } catch (\Doctrine\ORM\NoResultException $e) {
+                $result = null;
             }
 
             $app['eccube.layout'] = $result;
         });
-        // テスト実装
-        $this->register(new Plugin\ProductReview\ProductReview());
+
+        if ($app['env'] === 'test') {
+            $app['session.test'] = true;
+            $app['exception_handler']->disable();
+        }
     }
 
+    public function parseController(Request $request)
+    {
+        $route = str_replace('_', '.', $request->attributes->get('_route'));
+        return 'eccube.event.controller.' . $route;
+    }
 }
