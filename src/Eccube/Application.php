@@ -64,6 +64,11 @@ class Application extends \Silex\Application
             ),
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
+        $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+            $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
+
+            return $twig;
+        }));
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
@@ -71,7 +76,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
-        $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+        $app['translator'] = $app->share($app->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
             $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', 'ja');
 

@@ -9,6 +9,284 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Product extends \Eccube\Entity\AbstractEntity
 {
+    private $_calc = false;
+    private $stockFinds = array();
+    private $price01s = array();
+    private $price02s = array();
+    private $price01IncTaxs = array();
+    private $price02IncTaxs = array();
+    private $productCodes = array();
+    private $pointRates = array();
+    private $classCategories1 = array();
+    private $classCategories2 = array();
+    private $className1;
+    private $className2;
+
+    public function _calc()
+    {
+        if (!$this->_calc) {
+            $i = 0;
+            foreach ($this->getProductClasses() as $ProductClass) {
+                /* @var $ProductClass \Eccube\Entity\ProductClass */
+                // del_flg
+                if ($ProductClass->getDelFlg() === 1) {
+                    continue;
+                }
+
+                // stock_find
+                $this->stockFinds[] = $ProductClass->getStockFind();
+
+                // price01
+                $this->price01s[] = $ProductClass->getPrice01();
+
+                // price02
+                $this->price02s[] = $ProductClass->getPrice02();
+
+                // price01IncTax
+                $this->price01IncTaxs[] = $ProductClass->getPrice01IncTax();
+
+                // price02IncTax
+                $this->price02IncTaxs[] = $ProductClass->getPrice02IncTax();
+
+                // product_code
+                $this->codes[] = $ProductClass->getCode();
+
+                // point_rate
+                $this->pointRates[] = $ProductClass->getPointRate();
+
+                if ($i === 0) {
+                    if ($ProductClass->getClassCategory1()) {
+                        $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getName();
+                    }
+                    if ($ProductClass->getClassCategory2()) {
+                        $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getName();
+                    }
+                }
+                if ($ProductClass->getClassCategory1()) {
+                    $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
+                    if ($ProductClass->getClassCategory2()) {
+                        $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                    }
+                }
+                $i++;
+            }
+            $this->_calc = true;
+        }
+    }
+
+    /**
+     * Get ClassName1
+     *
+     * @return bool 
+     */
+    public function getClassName1()
+    {
+        $this->_calc();
+
+        return $this->className1;
+    }
+
+    /**
+     * Get ClassName1
+     *
+     * @return bool 
+     */
+    public function getClassName2()
+    {
+        $this->_calc();
+
+        return $this->className2;
+    }
+
+    /**
+     * Get getClassCategories1
+     *
+     * @return bool 
+     */
+    public function getClassCategories1()
+    {
+        $this->_calc();
+
+        return $this->classCategories1;
+    }
+
+    /**
+     * Get getClassCategories2
+     *
+     * @return bool 
+     */
+    public function getClassCategories2($class_category1)
+    {
+        $this->_calc();
+
+        return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : array();
+    }
+
+    /**
+     * Get StockFind
+     *
+     * @return bool 
+     */
+    public function getStockFind()
+    {
+        $this->_calc();
+
+        return max($this->stockFinds);
+    }
+
+    /**
+     * Get Price01 min
+     *
+     * @return integer 
+     */
+    public function getPrice01Min()
+    {
+        $this->_calc();
+
+        return min($this->price01s);
+    }
+
+    /**
+     * Get Price01 max
+     *
+     * @return integer 
+     */
+    public function getPrice01Max()
+    {
+        $this->_calc();
+
+        return max($this->price01s);
+    }
+
+    /**
+     * Get Price02 min
+     *
+     * @return integer 
+     */
+    public function getPrice02Min()
+    {
+        $this->_calc();
+
+        return min($this->price02s);
+    }
+
+    /**
+     * Get Price02 max
+     *
+     * @return integer 
+     */
+    public function getPrice02Max()
+    {
+        $this->_calc();
+
+        return max($this->price02s);
+    }
+
+    /**
+     * Get Price01IncTax min
+     *
+     * @return integer 
+     */
+    public function getPrice01IncTaxMin()
+    {
+        $this->_calc();
+
+        return min($this->price01IncTaxs);
+    }
+
+    /**
+     * Get Price01IncTax max
+     *
+     * @return integer 
+     */
+    public function getPrice01IncTaxMax()
+    {
+        $this->_calc();
+
+        return max($this->price01IncTaxs);
+    }
+
+    /**
+     * Get Price02IncTax min
+     *
+     * @return integer 
+     */
+    public function getPrice02IncTaxMin()
+    {
+        $this->_calc();
+
+        return min($this->price02IncTaxs);
+    }
+
+    /**
+     * Get Price02IncTax max
+     *
+     * @return integer 
+     */
+    public function getPrice02IncTaxMax()
+    {
+        $this->_calc();
+
+        return max($this->price02IncTaxs);
+    }
+
+    /**
+     * Get Point min
+     *
+     * @return integer 
+     */
+    public function getPointMin()
+    {
+        return $this->getPrice02Min() * $this->getPointRate() / 100;
+    }
+
+    /**
+     * Get Point max
+     *
+     * @return integer 
+     */
+    public function getPointMax()
+    {
+        return $this->getPrice02Max() * $this->getPointRate() / 100;
+    }
+
+    /**
+     * Get Product_code min
+     *
+     * @return integer 
+     */
+    public function getCodeMin()
+    {
+        $this->_calc();
+
+        return min($this->codes);
+    }
+
+    /**
+     * Get Product_code max
+     *
+     * @return integer 
+     */
+    public function getCodeMax()
+    {
+        $this->_calc();
+
+        return max($this->codes);
+    }
+
+    /**
+     * Get getPointRate
+     *
+     * @return integer 
+     */
+    public function getPointRate()
+    {
+        $this->_calc();
+
+        return max($this->pointRates);
+    }
+
+
     /**
      * @var integer
      */

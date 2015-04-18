@@ -3,6 +3,8 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * ProductRepository
@@ -12,4 +14,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductRepository extends EntityRepository
 {
+    /**
+     * get
+     * 
+     * @param integer $productId
+     * @return Eccube\Entity\Product
+     * 
+     * @throws NotFoundHttpException
+     */
+    public function get($productId)
+    {
+        // Product
+        try {
+            $qb = $this->createQueryBuilder('p')
+                ->select('p, pc')
+                ->leftJoin('p.ProductClasses', 'pc')
+                ->andWhere('p.id = :id');
+            $product = $qb
+                ->getQuery()
+                ->setParameters(array(
+                    'id' => $productId,
+                ))
+                ->getSingleResult();
+        } catch (NoResultException $e) {
+            throw new NotFoundHttpException();
+        }
+
+        return $product;
+    }
 }
