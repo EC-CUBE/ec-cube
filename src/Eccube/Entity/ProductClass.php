@@ -59,6 +59,29 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set point
+     *
+     * @param string $point
+     * @return ProductClass
+     */
+    public function setPoint($point)
+    {
+        $this->point = $point;
+
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return string 
+     */
+    public function getPoint()
+    {
+        return $this->point;
+    }
+
+    /**
      * Get StockFind
      *
      * @return bool 

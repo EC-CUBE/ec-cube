@@ -91,7 +91,7 @@ class TaxRuleRepository extends EntityRepository
 
         $parameters = array();
         $qb = $this->createQueryBuilder('t')
-            ->where('t.apply_date < CURRENT_TIMESTAMP() AND t.del_flg = 0')
+            ->where('t.apply_date < CURRENT_TIMESTAMP()')
             ->orderBy('t.apply_date', 'DESC');
 
         // Pref

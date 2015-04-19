@@ -17,6 +17,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $price02IncTaxs = array();
     private $productCodes = array();
     private $pointRates = array();
+    private $points = array();
     private $classCategories1 = array();
     private $classCategories2 = array();
     private $className1;
@@ -50,6 +51,9 @@ class Product extends \Eccube\Entity\AbstractEntity
 
                 // product_code
                 $this->codes[] = $ProductClass->getCode();
+
+                // point
+                $this->points[] = $ProductClass->getPoint();
 
                 // point_rate
                 $this->pointRates[] = $ProductClass->getPointRate();
@@ -237,7 +241,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getPointMin()
     {
-        return $this->getPrice02Min() * $this->getPointRate() / 100;
+        return min($this->points);
     }
 
     /**
@@ -247,7 +251,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getPointMax()
     {
-        return $this->getPrice02Max() * $this->getPointRate() / 100;
+        return max($this->points);
     }
 
     /**
@@ -284,6 +288,54 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->_calc();
 
         return max($this->pointRates);
+    }
+
+    /**
+     * Get ClassCategories
+     *
+     * @return array
+     */
+    public function getClassCategories()
+    {
+        $this->_calc();
+
+        $class_categories = array(
+            '__unselected' => array(
+                '__unselected' => array(
+                    'name'              => '選択してください',
+                    'product_class_id'  => '',
+                ),
+            ),
+        );
+        foreach ($this->getProductClasses() as $ProductClass) {
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            $ClassCategory1 = $ProductClass->getClassCategory1();
+            $ClassCategory2 = $ProductClass->getClassCategory2();
+
+            $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
+            $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
+            $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
+            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
+            
+            $class_categories[$class_category_id1]['#'] = array(
+                'classcategory_id2' => '',
+                'name'              => '選択してください',
+                'product_class_id'  => '',
+            );
+            $class_categories[$class_category_id1]['#'.$class_category_id2] = array(
+                'classcategory_id2' => $class_category_id2,
+                'name'              => $class_category_name2,
+                'stock_find'        => $ProductClass->getStockFind(),
+                'price01'           => number_format($ProductClass->getPrice01IncTax()),
+                'price02'           => number_format($ProductClass->getPrice02IncTax()),
+                'point'             => number_format($ProductClass->getPoint()),
+                'product_class_id'  => (string) $ProductClass->getId(),
+                'product_code'      => $ProductClass->getCode(),
+                'product_type'      => (string) $ProductClass->getProductTypeId(),
+            );
+        }
+
+        return $class_categories;
     }
 
 

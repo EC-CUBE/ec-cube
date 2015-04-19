@@ -117,7 +117,6 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // total
         $controllers->match('/total/', '\\Eccube\\Page\\Admin\\Total\\Index')->bind('admin_total');
-
         return $controllers;
     }
 }

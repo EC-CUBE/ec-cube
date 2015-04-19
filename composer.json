@@ -54,6 +54,7 @@
         "symfony/security": "~2.4",
         "dflydev/doctrine-orm-service-provider": "*",
         "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
+        "saxulum/saxulum-webprofiler-provider": "*",
         "symfony/doctrine-bridge": "~2.3",
         "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
     },

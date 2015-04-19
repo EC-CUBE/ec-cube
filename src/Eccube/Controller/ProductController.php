@@ -13,7 +13,7 @@ class ProductController
 
     public function __construct()
     {
-        $this->title = 'お問い合わせ';
+        $this->title = '';
     }
 
     public function index(Application $app, Request $request)
@@ -32,7 +32,7 @@ class ProductController
         }
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('add_cart', null, array(
+        $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
             'product' => $Product,
         ));
 
