@@ -5,7 +5,7 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Framework\Util\Utils;
 use Symfony\Component\Security\Core\Util\SecureRandom;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EntryController extends AbstractController
 {
@@ -64,7 +64,7 @@ class EntryController extends AbstractController
 
                         $customer->setSecretKey($this->getUniqueSecretKey($app));
 
-                        // password
+                        // secpassword
                         $generator = new SecureRandom();
                         $salt = bin2hex($generator->nextBytes(10));
                         $customer->setSalt($salt);
@@ -72,22 +72,26 @@ class EntryController extends AbstractController
                         $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
                         $customer->setPassword($encoded_password);
 
+                        $activateUrl = $app['url_generator']->generate('entry_activate')
+                            . '?id=' . $customer->getSecretKey();
+
                         $app['orm.em']->persist($customer);
                         $app['orm.em']->flush();
 
-                        $data = $form->getData();
+                        if ($app['config']['CUSTOMER_CONFIRM_MAIL']) {
 
-                        // TODO: 後でEventとして実装する
-                        // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
-                        $message = $app['mail.message']
-                            ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                            ->setFrom(array('sample@example.com'))
-                            ->setCc($app['config']['mail_cc'])
-                            ->setTo(array($customer->getEmail()))
-                            ->setBody('会員登録が完了しました。');
-                        $app['mailer']->send($message);
+                            $app['mail.message']
+                                ->setSubject('[EC-CUBE3] 会員登録のご確認')
+                                ->setBody('認証URL：' . $activateUrl);
 
-                        return $app->redirect($app['url_generator']->generate('entry_complete'));
+                            $this->sendMail($app, $customer);
+
+                            return $app->redirect($app['url_generator']->generate('entry_complete'));
+
+                        } else {
+                            return $app->redirect($activateUrl);
+                        }
+
                         break;
                 }
             }
@@ -108,6 +112,42 @@ class EntryController extends AbstractController
         ));
     }
 
+    public function activate(Application $app)
+    {
+
+        //--　本登録完了のためにメールから接続した場合の処理
+        if ($app['request']->getMethod() === 'GET') {
+            //-- 入力チェック
+            // シークレットキーからユーザーを取得
+            $secret_key = $app['request']->get('id');
+            $customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
+                ->findOneBy(array(
+                        'secret_key' => $secret_key,
+                        'status' => 1,
+                        'del_flg' => 0,
+                    )
+                );
+            if (!$customer) {
+                throw new NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
+            }
+            $customer->setStatus(2);
+            $app['orm.em']->persist($customer);
+            $app['orm.em']->flush();
+
+            $app['mail.message']
+                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
+                ->setBody('会員登録が完了しました。');
+
+            $this->sendMail($app, $customer);
+
+            return $app['view']->render('Entry/activate.twig', array(
+                'title' => $this->title,
+            ));
+        } else {
+
+            return 'error';//--　それ以外のアクセスは無効としてエラーメッセージをだす
+        }
+    }
 
     // ユニークなキーを取得する
     private function getUniqueSecretKey($app)
@@ -121,6 +161,17 @@ class EntryController extends AbstractController
         } else {
             return $this->getUniqueSecretKey($app);
         }
+    }
+
+    private function sendMail(Application $app, $customer)
+    {
+        // TODO: 後でEventとして実装する
+        // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
+        $message = $app['mail.message']
+            ->setFrom(array('sample@example.com'))
+            ->setCc($app['config']['mail_cc'])
+            ->setTo(array($customer->getEmail()));
+        $app['mailer']->send($message);
     }
 
 }
