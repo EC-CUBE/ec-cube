@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b2a8451366f0026ba9eca75634c5af11",
+    "hash": "48a71815cedcaa09b3732dfdc6f3d6ce",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -1694,21 +1694,21 @@
         },
         {
             "name": "silex/web-profiler",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "target-dir": "Silex/Provider",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex-WebProfiler.git",
-                "reference": "f0797151b766e41ab953e81bc66eb9d9114800f5"
+                "reference": "49ae2ae6fc1fa4e3eec26f0fb5b05b9fe1582a1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex-WebProfiler/zipball/f0797151b766e41ab953e81bc66eb9d9114800f5",
-                "reference": "f0797151b766e41ab953e81bc66eb9d9114800f5",
+                "url": "https://api.github.com/repos/silexphp/Silex-WebProfiler/zipball/49ae2ae6fc1fa4e3eec26f0fb5b05b9fe1582a1f",
+                "reference": "49ae2ae6fc1fa4e3eec26f0fb5b05b9fe1582a1f",
                 "shasum": ""
             },
             "require": {
-                "silex/silex": "~1.0",
+                "silex/silex": "~1.1",
                 "symfony/stopwatch": "~2.2",
                 "symfony/web-profiler-bundle": "~2.4"
             },
@@ -1735,7 +1735,7 @@
             ],
             "description": "A WebProfiler for Silex",
             "homepage": "http://silex.sensiolabs.org/",
-            "time": "2015-03-27 13:32:13"
+            "time": "2015-04-19 10:15:17"
         },
         {
             "name": "smarty/smarty",
@@ -1790,25 +1790,28 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v4.1.8",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "28ac862c8d5ccbe5c7ee8cecc07e1ca9d5195b56"
+                "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/28ac862c8d5ccbe5c7ee8cecc07e1ca9d5195b56",
-                "reference": "28ac862c8d5ccbe5c7ee8cecc07e1ca9d5195b56",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/31454f258f10329ae7c48763eb898a75c39e0a9f",
+                "reference": "31454f258f10329ae7c48763eb898a75c39e0a9f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.4"
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "5.4-dev"
                 }
             },
             "autoload": {
@@ -1818,17 +1821,15 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "name": "Chris Corbyn"
                 },
                 {
-                    "name": "Chris Corbyn"
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Swiftmailer, free feature-rich PHP mailer",
@@ -1837,7 +1838,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2012-06-17 20:55:34"
+            "time": "2015-03-14 06:06:39"
         },
         {
             "name": "symfony/config",
@@ -3200,20 +3201,20 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.18.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf"
+                "reference": "9f70492f44398e276d1b81c1b43adfe6751c7b7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/4cf7464348e7f9893a93f7096a90b73722be99cf",
-                "reference": "4cf7464348e7f9893a93f7096a90b73722be99cf",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9f70492f44398e276d1b81c1b43adfe6751c7b7f",
+                "reference": "9f70492f44398e276d1b81c1b43adfe6751c7b7f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.4"
+                "php": ">=5.2.7"
             },
             "type": "library",
             "extra": {
@@ -3253,7 +3254,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-01-25 17:32:08"
+            "time": "2015-04-19 08:30:27"
         }
     ],
     "packages-dev": [
@@ -3887,17 +3888,17 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v2.3.27",
+            "version": "v2.6.6",
             "target-dir": "Symfony/Component/BrowserKit",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/BrowserKit.git",
-                "reference": "8d708185137152fab42aca14efca19c71ee701dc"
+                "reference": "f21189b0eccbe56528515858ca1d5089a741692f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/BrowserKit/zipball/8d708185137152fab42aca14efca19c71ee701dc",
-                "reference": "8d708185137152fab42aca14efca19c71ee701dc",
+                "url": "https://api.github.com/repos/symfony/BrowserKit/zipball/f21189b0eccbe56528515858ca1d5089a741692f",
+                "reference": "f21189b0eccbe56528515858ca1d5089a741692f",
                 "shasum": ""
             },
             "require": {
@@ -3915,7 +3916,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -3939,21 +3940,21 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "http://symfony.com",
-            "time": "2015-03-27 22:05:05"
+            "time": "2015-03-30 15:54:10"
         },
         {
             "name": "symfony/css-selector",
-            "version": "v2.3.27",
+            "version": "v2.6.6",
             "target-dir": "Symfony/Component/CssSelector",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/CssSelector.git",
-                "reference": "241746d062f873d77d1886c2b97b56811bb5f659"
+                "reference": "db2c48df9658423a8c168d89f7b971b73d3d74a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/CssSelector/zipball/241746d062f873d77d1886c2b97b56811bb5f659",
-                "reference": "241746d062f873d77d1886c2b97b56811bb5f659",
+                "url": "https://api.github.com/repos/symfony/CssSelector/zipball/db2c48df9658423a8c168d89f7b971b73d3d74a4",
+                "reference": "db2c48df9658423a8c168d89f7b971b73d3d74a4",
                 "shasum": ""
             },
             "require": {
@@ -3965,7 +3966,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -3993,7 +3994,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "http://symfony.com",
-            "time": "2015-03-22 16:41:17"
+            "time": "2015-03-22 16:55:57"
         },
         {
             "name": "symfony/dom-crawler",
@@ -4066,6 +4067,7 @@
         "satooshi/php-coveralls": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },

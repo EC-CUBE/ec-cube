@@ -11,18 +11,13 @@ mail:
     password: sample
     encryption:
     auth_mode: 
-auth_type: HMAC
 auth_magic: droucliuijeanamiundpnoufrouphudrastiokec
 password_hash_algos: sha256
-use_point: true
-option_favorite_product: true
-mypage_order_status_disp_flag: true
 root: /
 tpl: /user_data/packages/default/
 admin_tpl: /user_data/packages/admin/
 image_path: /upload/save_image/
 shop_name: EC-CUBE3 SHOP
-release_year: 2015
 mail_cc:
     - eccube@example.com
 ECCUBE_VERSION: 3.0.0-dev
