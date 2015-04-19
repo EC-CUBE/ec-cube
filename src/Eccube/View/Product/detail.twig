@@ -2,27 +2,16 @@
  * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
- *
  * http://www.lockon.co.jp/
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  #}
 {% extends 'site_main.twig' %}
 
-{% block main %}
-<script type="text/javascript">//<![CDATA[
+{% block javascript %}
+    eccube.classCategories = {{ Product.class_categories|json_encode|raw }};
+
     // 規格2に選択肢を割り当てる。
     function fnSetClassCategories(form, classcat_id2_selected) {
         var $form = $(form);
@@ -31,190 +20,183 @@
         var $sele2 = $form.find('select[name=classcategory_id2]');
         eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
-//]]></script>
+{% endblock %}
+{% block onload %}
+    {% if form.classcategory_id2 is defined %}
+        fnSetClassCategories(
+            document.form1, {{ form.classcategory_id2.vars.value|json_encode|raw }}
+        );
+    {% endif %}
+{% endblock%}
 
+{% block main %}
 <div id="undercolumn">
-    <div id="detailarea" class="clearfix">
-        <div id="detailphotobloc">
-            <div class="photo">
-                {% set main_image = image_info(app.config.image_path~Product.main_image) %}
-                <!--★画像★-->
-                {% if Product.main_large_image is not empty %}
-                    <a href="{{ app.config.image_path }}<!--{$arrProduct.main_large_image|h}-->" class="expansion" target="_blank">
-                {% endif %}
-                    <img src="{{ main_image.path }}" width="{{ main_image.width }}" height="{{ main_image.height }}" alt="{{ Product.name }}" class="picture" />
-                {% if Product.main_large_image is not empty %}
-                    </a>
-                {% endif %}
+    <form name="form1" id="form1" method="post" action="?">
+        <div id="detailarea" class="clearfix">
+            <div id="detailphotobloc">
+                <div class="photo">
+                    {% set main_image = image_info(app.config.image_path~Product.main_image) %}
+                    <!--★画像★-->
+                    {% if Product.main_large_image is not empty %}
+                        <a href="{{ app.config.image_path }}{{ Product.main_large_image }}" class="expansion" target="_blank">
+                    {% endif %}
+                        <img src="{{ main_image.path }}" width="{{ main_image.width }}" height="{{ main_image.height }}" alt="{{ Product.name }}" class="picture" />
+                    {% if Product.main_large_image is not empty %}
+                        </a>
+                    {% endif %}
+                </div>
+                    {% if Product.main_large_image is not empty %}
+                    <span class="mini">
+                        <!--★拡大する★-->
+                        <a href="{{ app.config.image_path }}{{ Product.main_large_image }}" class="expansion" target="_blank">画像を拡大する</a>
+                    </span>
+                    {% endif %}
             </div>
-                {% if Product.main_large_image is not empty %}
-                <span class="mini">
-                    <!--★拡大する★-->
-                    <a href="{{ app.config.image_path }}{{ Product.main_large_image }}" class="expansion" target="_blank">画像を拡大する</a>
-                </span>
+
+            <div id="detailrightbloc">
+                <!--▼商品ステータス-->
+                {% if Product.ProductStatuses is not empty %}
+                    <ul class="status_icon clearfix">
+                        {% for ProductStatus in Product.ProductStatuses %}
+                        <li>
+                            <img src="{{ app.config.tpl }}{{ ProductStatus.StatusImage.name }}" width="60" height="17" alt="{{ ProductStatus.Status.name }}" id="icon{{ ProductStatus.Status.id }}" />
+                        </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
-        </div>
+                <!--▲商品ステータス-->
 
-        <div id="detailrightbloc">
-            <!--▼商品ステータス-->
-            {% if Product.ProductStatuses is not empty %}
-                <ul class="status_icon clearfix">
-                    {% for ProductStatus in Product.ProductStatuses %}
-                    <li>
-                        <img src="{{ app.config.tpl }}{{ ProductStatus.StatusImage.name }}" width="60" height="17" alt="{{ ProductStatus.Status.name }}" id="icon{{ ProductStatus.Status.id }}" />
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <!--▲商品ステータス-->
-
-            <!--★商品コード★-->
-            <dl class="product_code">
-                <dt>商品コード：</dt>
-                <dd>
-                    <span id="product_code_default">
-                        {% if Product.code_min == Product.code_max %}
-                            {{ Product.code_min }}
-                        {% else %}
-                            {{ Product.code_min }}～{{ Product.code_max }}
-                        {% endif %}
-                    </span><span id="product_code_dynamic"></span>
-                </dd>
-            </dl>
-
-            <!--★商品名★-->
-            <h2>{{ Product.name }}</h2>
-
-            <!--★通常価格★-->
-            {% if Product.price01_inc_tax_min %}
-                <dl class="normal_price">
-                    <dt>{{ app.config.normal_price_title }}(税込)：</dt>
-                    <dd class="price">
-                        <span id="price01_default">{% spaceless %}
-                            {% if Product.price01_inc_tax_min == Product.price01_inc_tax_max %}
-                                {{ Product.price01_inc_tax_min|number_format }}
+                <!--★商品コード★-->
+                <dl class="product_code">
+                    <dt>商品コード：</dt>
+                    <dd>
+                        <span id="product_code_default">
+                            {% if Product.code_min == Product.code_max %}
+                                {{ Product.code_min }}
                             {% else %}
-                                {{ Product.price01_inc_tax_min|number_format }}～{{ Product.price01_inc_tax_max|number_format }}
+                                {{ Product.code_min }}～{{ Product.code_max }}
                             {% endif %}
-                        {% endspaceless %}</span><span id="price01_dynamic"></span>
+                        </span><span id="product_code_dynamic"></span>
+                    </dd>
+                </dl>
+
+                <!--★商品名★-->
+                <h2>{{ Product.name }}</h2>
+
+                <!--★通常価格★-->
+                {% if Product.price01_inc_tax_min %}
+                    <dl class="normal_price">
+                        <dt>{{ app.config.normal_price_title }}(税込)：</dt>
+                        <dd class="price">
+                            <span id="price01_default">{% spaceless %}
+                                {% if Product.price01_inc_tax_min == Product.price01_inc_tax_max %}
+                                    {{ Product.price01_inc_tax_min|number_format }}
+                                {% else %}
+                                    {{ Product.price01_inc_tax_min|number_format }}～{{ Product.price01_inc_tax_max|number_format }}
+                                {% endif %}
+                            {% endspaceless %}</span><span id="price01_dynamic"></span>
+                            円
+                        </dd>
+                    </dl>
+                {% endif %}
+
+                <!--★販売価格★-->
+                <dl class="sale_price">
+                    <dt>{{ app.config.sale_price_title }}(税込)：</dt>
+                    <dd class="price">
+                        <span id="price02_default">{% spaceless %}
+                            {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
+                                {{ Product.price02_inc_tax_min|number_format }}
+                            {% else %}
+                                {{ Product.price02_inc_tax_min|number_format }}～{{ Product.price02_inc_tax_max|number_format }}
+                            {% endif %}
+                        {% endspaceless %}</span><span id="price02_dynamic"></span>
                         円
                     </dd>
                 </dl>
-            {% endif %}
 
-            <!--★販売価格★-->
-            <dl class="sale_price">
-                <dt>{{ app.config.sale_price_title }}(税込)：</dt>
-                <dd class="price">
-                    <span id="price02_default">{% spaceless %}
-                        {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
-                            {{ Product.price02_inc_tax_min|number_format }}
-                        {% else %}
-                            {{ Product.price02_inc_tax_min|number_format }}～{{ Product.price02_inc_tax_max|number_format }}
-                        {% endif %}
-                    {% endspaceless %}</span><span id="price02_dynamic"></span>
-                    円
-                </dd>
-            </dl>
+                <!--★ポイント★-->
+                {% if app.config.use_point != false %}
+                    <div class="point">ポイント：
+                        <span id="point_default">{% spaceless %}
+                            {% if Product.point_min == Product.point_max %}
+                                {{ Product.point_min|number_format }}
+                            {% else %}
+                                {{ Product.point_min|number_format }}～{{ Product.point_max|number_format }}
+                            {% endif %}
+                        {% endspaceless %}</span><span id="point_dynamic"></span>
+                        Pt
+                    </div>
+                {% endif %}
 
-            <!--★ポイント★-->
-            {% if app.config.use_point != false %}
-                <div class="point">ポイント：
-                    <span id="point_default">{% spaceless %}
-                        {% if Product.point_min == Product.point_max %}
-                            {{ Product.point_min|number_format }}
-                        {% else %}
-                            {{ Product.point_min|number_format }}～{{ Product.point_max|number_format }}
-                        {% endif %}
-                    {% endspaceless %}</span><span id="point_dynamic"></span>
-                    Pt
-                </div>
-            {% endif %}
+                {# ▼メーカー #}
+                {% if Product.Maker is not empty %}
+                    <dl class="maker">
+                        <dt>メーカー：</dt>
+                        <dd><{{ Product.Maker.name }}</dd>
+                    </dl>
+                {% endif %}
+                {# ▲メーカー #}
 
-            {# ▼メーカー #}
-            {% if Product.Maker is not empty %}
-                <dl class="maker">
-                    <dt>メーカー：</dt>
-                    <dd><{{ Product.Maker.name }}</dd>
+                <!--▼メーカーURL-->
+                {% if Product.comment1 is not empty %}
+                    <dl class="comment1">
+                        <dt>メーカーURL：</dt>
+                        <dd><a href="{{ Product.comment1|escape('url') }}">{{ Product.comment1 }}</a></dd>
+                    </dl>
+                {% endif %}
+                <!--▼メーカーURL-->
+
+                <!--★関連カテゴリ★-->
+                <dl class="relative_cat">
+                    <dt>関連カテゴリ：</dt>
+                    {% for ProductCategory in Product.ProductCategories %}
+                        <dd>
+                            {% for Category in ProductCategory.path %}
+                                <a href="{{ path('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}</a>
+                                {%if loop.last == false %}{{ app.config.sepa_catnavi|escape }}{% endif %}
+                            {% endfor %}
+                        </dd>
+                    {% endfor %}
                 </dl>
-            {% endif %}
-            {# ▲メーカー #}
 
-            <!--▼メーカーURL-->
-            {% if Product.comment1 is not empty %}
-                <dl class="comment1">
-                    <dt>メーカーURL：</dt>
-                    <dd><a href="{{ Product.comment1|escape('url') }}">{{ Product.comment1 }}</a></dd>
-                </dl>
-            {% endif %}
-            <!--▼メーカーURL-->
+                <!--★詳細メインコメント★-->
+                <div class="main_comment">{{ Product.main_comment|raw|nl2br }}</div>
 
-            <!--★関連カテゴリ★-->
-            <dl class="relative_cat">
-                <dt>関連カテゴリ：</dt>
-                {% for ProductCategory in Product.ProductCategories %}
-                    <dd>
-                        {% for Category in ProductCategory.path %}
-                            <a href="{{ path('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}</a>
-                            {%if loop.last == false %}{{ app.config.sepa_catnavi|escape }}{% endif %}
-                        {% endfor %}
-                    </dd>
-                {% endfor %}
-            </dl>
-
-            <!--★詳細メインコメント★-->
-            <div class="main_comment">{{ Product.main_comment|raw|nl2br }}</div>
-
-            {% if Product.stock_find %}
                 <!--▼買い物カゴ-->
                 <div class="cart_area clearfix">
-                    <form name="form1" id="form1" method="post" action="?">
-                        {{ form_widget(form) }}
-                        <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-                        <input type="hidden" name="mode" value="cart" />
-                        <input type="hidden" name="product_id" value="<!--{$tpl_product_id}-->" />
-                        <input type="hidden" name="product_class_id" value="<!--{$tpl_product_class_id}-->" id="product_class_id" />
-                        <input type="hidden" name="favorite_product_id" value="" />
-
-                        <!--{if $tpl_classcat_find1}-->
+                    {% if Product.stock_find %}
+                        {% if form.classcategory_id1 is defined %}
                             <div class="classlist">
                                 <!--▼規格1-->
                                 <ul class="clearfix">
-                                    <li><!--{$tpl_class_name1|h}-->：</li>
+                                    <li>{{ form_label(form.classcategory_id1) }}：</li>
                                     <li>
-                                        <select name="classcategory_id1" style="<!--{$arrErr.classcategory_id1|sfGetErrorColor}-->">
-                                        <!--{html_options options=$arrClassCat1 selected=$arrForm.classcategory_id1.value}-->
-                                        </select>
-                                        <!--{if $arrErr.classcategory_id1 != ""}-->
-                                        <br /><span class="attention">※ <!--{$tpl_class_name1}-->を入力して下さい。</span>
-                                        <!--{/if}-->
+                                        {{ form_widget(form.classcategory_id1) }}<br />
+                                        {{ form_errors(form.classcategory_id1) }}
                                     </li>
                                 </ul>
                                 <!--▲規格1-->
-                                <!--{if $tpl_classcat_find2}-->
+                                {% if form.classcategory_id2 is defined %}
                                 <!--▼規格2-->
                                 <ul class="clearfix">
-                                    <li><!--{$tpl_class_name2|h}-->：</li>
+                                    <li>{{ form_label(form.classcategory_id2) }}：</li>
                                     <li>
-                                        <select name="classcategory_id2" style="<!--{$arrErr.classcategory_id2|sfGetErrorColor}-->">
-                                        </select>
-                                        <!--{if $arrErr.classcategory_id2 != ""}-->
-                                        <br /><span class="attention">※ <!--{$tpl_class_name2}-->を入力して下さい。</span>
-                                        <!--{/if}-->
+                                        {{ form_widget(form.classcategory_id2) }}<br />
+                                        {{ form_errors(form.classcategory_id2) }}
                                     </li>
                                 </ul>
                                 <!--▲規格2-->
-                                <!--{/if}-->
+                                {% endif %}
                             </div>
-                        <!--{/if}-->
+                        {% endif %}
 
                         <!--★数量★-->
                         <dl class="quantity">
-                            <dt>数量：</dt>
-                            <dd><input type="text" class="box60" name="quantity" value="<!--{$arrForm.quantity.value|default:1|h}-->" maxlength="<!--{$smarty.const.INT_LEN}-->" style="<!--{$arrErr.quantity|sfGetErrorColor}-->" />
-                                <!--{if $arrErr.quantity != ""}-->
-                                    <br /><span class="attention"><!--{$arrErr.quantity}--></span>
-                                <!--{/if}-->
+                            <dt>{{ form_label(form.quantity) }}：</dt>
+                            <dd>
+                                {{ form_widget(form.quantity, {'attr': {'class': 'box60'}}) }}<br />
+                                {{ form_errors(form.quantity) }}
                             </dd>
                         </dl>
 
@@ -229,6 +211,7 @@
                             </div>
                         </div>
                         <div class="attention" id="cartbtn_dynamic"></div>
+                        {{ form_rest(form) }}
                     {% else %}
                         <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
                     {% endif %}
@@ -241,7 +224,7 @@
                                 <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
                             <!--{/if}-->
                             {% if is_favorite is not defined or is_favorite == false %}
-                                <a href="javascript:eccube.changeAction('?product_id={{ Product.id }}'); eccube.setModeAndSubmit('add_favorite','favorite_product_id','{{ Product.id }}');"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_favorite.jpg" alt="お気に入りに追加" /></a>
+                                <a href="javascript:eccube.setModeAndSubmit('add_favorite','product_id','{{ Product.id }}');"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_favorite.jpg" alt="お気に入りに追加" /></a>
                             {% else %}
                                 <img src="{{ app.config.tpl }}img/button/btn_add_favorite_on.jpg" title="お気に入りに登録済み" alt="お気に入りに登録済み" id="add_favorite_product" />
                                 <script type="text/javascript" src="{{ app.config.root }}js/jquery.ui/jquery.ui.core.min.js"></script>
@@ -253,21 +236,21 @@
                                     favoriteButton.tooltip();
 
                                     {% if just_added_favorite is defined and just_added_favorite == true %}
-                                    favoriteButton.load(function(){ $(this).tooltip("open") });
-                                    $(function(){
-                                        var tid = setTimeout('favoriteButton.tooltip("close")',5000);
-                                    });
+                                        favoriteButton.load(function(){ $(this).tooltip("open") });
+                                        $(function(){
+                                            var tid = setTimeout('favoriteButton.tooltip("close")',5000);
+                                        });
                                     {% endif %}
                                 </script>
                             {% endif %}
                         </div>
-                    </form>
+                    {% endif %}
                 </div>
                 <!--▲買い物カゴ-->
-            {% endif %}
+            </div>
         </div>
-    </div>
-    <!--詳細ここまで-->
+        <!--詳細ここまで-->
+    </form>
 
     <!--▼サブコメント-->
     {% for i in range(1, app.config.productsub_max) %}
@@ -358,9 +341,9 @@
                         <p class="mini">{{ RecommendProduct.comment|nl2br }}</p>
                     </div>
                 </div>
-                <!--{if $smarty.foreach.arrRecommend.iteration % 2 === 0}-->
+                {% if loop.index is even %}
                     <div class="clear"></div>
-                <!--{/if}-->
+                {% endif %}
             {% endfor %}
         </div>
     {% endif %}

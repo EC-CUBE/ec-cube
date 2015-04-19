@@ -29,9 +29,14 @@ class AddCartType extends AbstractType
         $Product = $options['product'];
 
         $builder
+            ->add('product_id', 'hidden', array(
+                'data' => $Product->getId(),
+            ))
             ->add('product_class_id', 'hidden')
             ->add('quantity', 'integer', array(
+                'data' => 1,
                 'attr' => array(
+                    'min' => 1,
                     'maxlength' => $this->config['int_len'],
                 ),
                 'constraints' => array(
@@ -41,42 +46,51 @@ class AddCartType extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($Product) {
-            $builder = $event->getForm();
+            $form = $event->getForm();
 
             if ($Product && $Product->getProductClasses()) {
                 if ($Product->getClassName1()) {
-                    $builder->add('classcategory_id1', 'choice', array(
+                    $form->add('classcategory_id1', 'choice', array(
                         'label' => $Product->getClassName1(),
-                        'empty_value' => '選択してください',
-                        'choices'   => $Product->getClassCategories1(),
+                        'choices'   => array('__unselected' => '選択してください') + $Product->getClassCategories1(),
                         'constraints' => array(
                             new Assert\NotBlank(),
+                            new Assert\NotEqualTo(array(
+                                'value' => '__unselected',
+                                'message' => 'This value should be blank.',
+                            )),
                         ),
                     ));
                 }
                 if ($Product->getClassName2()) {
-                    $builder->add('classcategory_id2', 'choice', array(
+                    $form->add('classcategory_id2', 'choice', array(
                         'label' => $Product->getClassName2(),
-                        'empty_value' => '選択してください',
-                        'choices' => array(),
+                        'choices' => array('__unselected' => '選択してください'),
                         'constraints' => array(
                             new Assert\NotBlank(),
+                            new Assert\NotEqualTo(array(
+                                'value' => '__unselected',
+                                'message' => 'This value should be blank.',
+                            )),
                         ),
                     ));
                 }
             }
         });
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($Product) {
-            $builder = $event->getForm();
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
+            $data = $event->getData();
+            $form = $event->getForm();
             if ($Product->getClassName2()) {
-                $classcategory_id1 = $builder->get('classcategory_id1')->getData();
-                if ($classcategory_id1) {
-                    $builder->add('classcategory_id2', 'choice', array(
+                if ($data['classcategory_id1']) {
+                    $form->add('classcategory_id2', 'choice', array(
                         'label' => $Product->getClassName2(),
-                        'empty_value' => '選択してください',
-                        'choices' => $Product->getClassCategories2($classcategory_id1),
+                        'choices' => array('__unselected' => '選択してください') + $Product->getClassCategories2($data['classcategory_id1']),
                         'constraints' => array(
                             new Assert\NotBlank(),
+                            new Assert\NotEqualTo(array(
+                                'value' => '__unselected',
+                                'message' => 'This value should be blank.',
+                            )),
                         ),
                     ));
                 }

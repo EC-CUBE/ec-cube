@@ -55,7 +55,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email OR c.email_mobile = :email_mobile')
-            ->andWhere('c.del_flg = 0')
             ->setParameter('email', $username)
             ->setParameter('email_mobile', $username)
             ->getQuery();

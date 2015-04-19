@@ -67,6 +67,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $taxRuleRepository->setApp($app);
             $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
             $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
+            $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\PointEventSubscriber($app['config'], $taxRuleService));
 
             // save
             $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber());

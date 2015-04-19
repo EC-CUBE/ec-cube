@@ -54,6 +54,19 @@ class Application extends \Silex\Application
             return $config;
         });
 
+        // constant 上書き
+        $app['config'] = $app->share($app->extend("config", function ($config, \Silex\Application $app) {
+            $constant_file = __DIR__ .'/../../app/config/eccube/constant.yml';
+            if (is_readable($constant_file)) {
+                $config_constant = Yaml::parse(__DIR__ .'/../../app/config/eccube/constant.yml');
+            } else {
+                $config_constant = $app['eccube.repository.master.constant']->getAll();
+                file_put_contents($constant_file, Yaml::dump($config_constant));
+            }
+
+            return array_merge($config_constant, $config);
+        }));
+
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
@@ -63,6 +76,7 @@ class Application extends \Silex\Application
                 __DIR__ . '/../../app/plugin/',
             ),
             'twig.form.templates' => array('Form/form_layout.twig'),
+            'twig.options' => array('cache' => __DIR__ . '/../../app/cache/twig'),
         ));
         $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
@@ -241,12 +255,17 @@ class Application extends \Silex\Application
             return new \Symfony\Component\Filesystem\Filesystem();
         };
 
+        $app->register(new \Silex\Provider\MonologServiceProvider(), array(
+            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
+        ));
+
         // Silex Web Profiler
         if ($app['env'] === 'dev') {
             $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
                 'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
                 'profiler.mount_prefix' => '/_profiler', // this is the default
             ));
+            $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
         }
 
         $this->mount('', new ControllerProvider\FrontControllerProvider());

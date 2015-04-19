@@ -14,6 +14,7 @@ namespace Eccube\ControllerProvider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class FrontControllerProvider implements ControllerProviderInterface
 {
