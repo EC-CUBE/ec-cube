@@ -20,10 +20,25 @@
 <div id="undercolumn">
     <div id="undercolumn_entry">
         <h2 class="title">{{ title }}</h2>
+        {% if app.config.customer_confirm_mail %}
         <p>
             ご登録されますと、まずは仮会員となります。<br />
             入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
         </p>
+        {% endif %}
+        <p class="message">【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</p>
+        <p>
+            規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
+            「同意して会員登録へ」ボタンをクリックすると、あなたが本規約の全ての条件に同意したことになります。
+        </p>
+
+        <textarea name="textfield" class="kiyaku_text" cols="80" rows="20" readonly="readonly">
+            {%- for child in kiyaku -%}
+            {{- child.title }}{{ "\n" }}
+            {{- child.text }}{{ "\n" }}{{ "\n" }}
+            {%- endfor -%}
+        </textarea>
+
         <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
             {{ form_widget(form._token) }}
             <table summary="会員登録フォーム">
@@ -136,10 +151,17 @@
                 </tr>
             </table>
 
+
+
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_confirm.jpg" alt="確認ページへ" name="mode" value="confirm" />
+                        <a href="{{ url('index') }}">
+                            <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_cannot.jpg" alt="同意しない" />
+                        </a>
+                    </li>
+                    <li>
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" name="mode" value="confirm" />
                     </li>
                 </ul>
             </div>

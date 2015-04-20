@@ -63,8 +63,6 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // entry
         $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::index')->bind('entry');
-        //TODO: 規約は削除予定
-        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Controller\\EntryController::kiyaku')->bind('entry_kiyaku');
         $controllers->match('/entry/complete', '\\Eccube\\Controller\\EntryController::complete')->bind('entry_complete');
         $controllers->match('/entry/activate', '\\Eccube\\Controller\\EntryController::activate')->bind('entry_activate');
 
