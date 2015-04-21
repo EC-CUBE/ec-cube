@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-
 class Application extends \Silex\Application
 {
     /** @var Application app */
@@ -53,7 +52,6 @@ class Application extends \Silex\Application
             $config = Yaml::parse(__DIR__ .'/../../app/config/eccube/config.yml');
             return $config;
         });
-        $this['swiftmailer.option'] = $this['config']['mail'];
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
@@ -68,7 +66,6 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
-
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
@@ -79,14 +76,29 @@ class Application extends \Silex\Application
             return $translator;
         }));
 
+
+
+        // インストールされてなければこれこまで読み込む
+        if (!is_array($this['config'])) {
+            $this->mount('', new ControllerProvider\FrontControllerProvider());
+            $this->register(new ServiceProvider\EccubeServiceProvider());
+            return ;
+        }
+
+
+
+        // Mail
+        $this['swiftmailer.option'] = $this['config']['mail'];
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
+        $this['mail.message'] = function() {
+            return \Swift_Message::newInstance();
+        };
+
+        // ORM
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
-        $this['mail.message'] = function() {
-            return \Swift_Message::newInstance();
-        };
 
         $ormOptions = array(
             'mappings' => array(

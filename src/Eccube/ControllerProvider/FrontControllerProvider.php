@@ -21,6 +21,10 @@ class FrontControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        // installer
+        $controllers->match('/install/', "\\Eccube\\Controller\\InstallController::index")->bind('install');
+        $controllers->match('/install/complete', "\\Eccube\\Controller\\InstallController::complete")->bind('install_complete');
+
         // root
         $controllers->match('/', "\\Eccube\\Page\\Index")->bind('index');
         $controllers->match('/', "\\Eccube\\Page\\Index")->bind('homepage');
