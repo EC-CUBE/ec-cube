@@ -3,6 +3,8 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -104,6 +106,21 @@ class AddCartType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired('product');
+        $resolver->setDefaults(array(
+            'id_add_product_id' => true,
+        ));
+    }
+
+    /*
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        if ($options['id_add_product_id']) {
+            foreach ($view->vars['form']->children as $child) {
+                $child->vars['id'] .= $options['product']->getId();
+            }
+        }
     }
 
     /**

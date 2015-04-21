@@ -56,7 +56,8 @@
         "dflydev/doctrine-orm-service-provider": "*",
         "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
         "saxulum/saxulum-webprofiler-provider": "*",
-        "swiftmailer/swiftmailer": "5.*"
+        "swiftmailer/swiftmailer": "5.*",
+        "knplabs/knp-components": "*"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",

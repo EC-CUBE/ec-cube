@@ -10,6 +10,67 @@ use Doctrine\ORM\Mapping as ORM;
 class Category extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * __toString
+     * 
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getName();
+    }
+
+    /**
+     * Set category_name
+     *
+     * @param text $categoryName
+     */
+    public function getPath()
+    {
+        $path = array();
+        $Category = $this;
+
+        $max = 10;
+        while ($max--) {
+            $path[] = $Category;
+
+            $Category = $Category->getParent();
+            if (!$Category || !$Category->getId()) {
+                break;
+            }
+        }
+
+        return array_reverse($path);
+    }
+    
+    public function getNameWithLevel()
+    {
+        return str_repeat('&nbsp;&nbsp;', $this->getLevel()) . $this->getName();
+    }
+
+    public function getDescendants()
+    {
+        $DescendantCategories = array();
+
+        $max = 10;
+        $ChildCategories = $this->getChildren();
+        foreach ($ChildCategories as $ChildCategory) {
+            $DescendantCategories[$ChildCategory->getId()] = $ChildCategory;
+            $DescendantCategories2 = $ChildCategory->getDescendants();
+            foreach ($DescendantCategories2 as $DescendantCategory) {
+                $DescendantCategories[$DescendantCategory->getId()] = $DescendantCategory;
+            }
+        }
+
+        return $DescendantCategories;
+    }
+
+    public function getSelfAndDescendants()
+    {
+        return array_merge(array($this), $this->getDescendants());
+    
+    }
+
+    /**
      * @var integer
      */
     private $id;
