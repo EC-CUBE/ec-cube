@@ -1,11 +1,12 @@
 <?php
 
-namespace Eccube\Controller;
+namespace Eccube\Controller\MyPage;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class MypageController extends AbstractController
+class MyPageController extends AbstractController
 {
     private $title;
 
@@ -28,7 +29,7 @@ class MypageController extends AbstractController
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
-        return $app['twig']->render('Mypage/login.twig', array(
+        return $app['twig']->render('MyPage/login.twig', array(
             'title' => $this->title,
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
@@ -38,7 +39,7 @@ class MypageController extends AbstractController
 
     public function index(Application $app)
     {
-        return $app['twig']->render('Mypage/index.twig', array(
+        return $app['twig']->render('MyPage/index.twig', array(
             'title' => $this->title,
             'subtitle' => '購入履歴一覧',
             'mypageno' => 'index',
