@@ -20,10 +20,25 @@
 <div id="undercolumn">
     <div id="undercolumn_entry">
         <h2 class="title">{{ title }}</h2>
+        {% if app.config.customer_confirm_mail %}
         <p>
             ご登録されますと、まずは仮会員となります。<br />
             入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
         </p>
+        {% endif %}
+        <p class="message">【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</p>
+        <p>
+            規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
+            「同意して会員登録へ」ボタンをクリックすると、あなたが本規約の全ての条件に同意したことになります。
+        </p>
+
+        <textarea name="textfield" class="kiyaku_text" cols="80" rows="20" readonly="readonly">
+            {%- for child in kiyaku -%}
+            {{- child.title }}{{ "\n" }}
+            {{- child.text }}{{ "\n" }}{{ "\n" }}
+            {%- endfor -%}
+        </textarea>
+
         <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
             {{ form_widget(form._token) }}
             <table summary="会員登録フォーム">
@@ -33,19 +48,50 @@
                 <tr>
                     <th>お名前<span class="attention">※</span></th>
                     <td>
-                        姓&nbsp;{{ form_widget(form.name01) }}&nbsp;
-                        名&nbsp;{{ form_widget(form.name02) }}
-                        {{ form_errors(form.name01) }}
-                        {{ form_errors(form.name02) }}
+                        {{ form_widget(form.name) }}
+                        {{ form_errors(form.name) }}
                     </td>
                 </tr>
                 <tr>
-                    <th>お名前(フリガナ)</th>
+                    <th>お名前(フリガナ)<span class="attention">※</span></th>
                     <td>
-                        セイ&nbsp;{{ form_widget(form.kana01) }}&nbsp;
-                        メイ&nbsp;{{ form_widget(form.kana02) }}
-                        {{ form_errors(form.kana01) }}
-                        {{ form_errors(form.kana02) }}
+                        {{ form_widget(form.kana) }}
+                        {{ form_errors(form.kana) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>会社名</th>
+                    <td>
+                        {{ form_widget(form.company_name) }}
+                        {{ form_errors(form.company_name) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>郵便番号<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.zip) }}<br />
+                        {{ form_errors(form.zip) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>住所<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.address) }}<br />
+                        {{ form_errors(form.address) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>電話番号</th>
+                    <td>
+                        {{ form_widget(form.tel) }}<br />
+                        {{ form_errors(form.tel) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>FAX</th>
+                    <td>
+                        {{ form_widget(form.fax) }}<br />
+                        {{ form_errors(form.fax) }}
                     </td>
                 </tr>
                 <tr>
@@ -56,22 +102,66 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>性別</th>
+                    <td>
+                        {{ form_widget(form.sex) }}<br />
+                        {{ form_errors(form.sex) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>職業</th>
+                    <td>
+                        {{ form_widget(form.job) }}<br />
+                        {{ form_errors(form.job) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>生年月日</th>
+                    <td>
+                        {{ form_widget(form.birth) }}<br />
+                        {{ form_errors(form.birth) }}
+                    </td>
+                </tr>
+                <tr>
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
-                        {{ form_widget(form.password.first, {type: "password"}) }}<br />
-                        {{ form_widget(form.password.second, {type: "password"}) }}
+                        {{ form_widget(form.password.first) }}<br />
+                        {{ form_widget(form.password.second) }}
                         {{ form_errors(form.password.first) }}
                         <p><span class="attention mini">半角英数字8〜16文字でお願いします。（記号可）</span></p>
                         <p><span class="attention mini">確認のために2度入力してください。</span></p>
                     </td>
                 </tr>
+                <tr>
+                    <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
+                    <td>
+                        質問：{{ form_widget(form.reminder) }}<br />
+                        {{ form_errors(form.reminder) }}<br />
+                        答え：{{ form_widget(form.reminder_answer) }}<br />
+                        {{ form_errors(form.reminder_answer) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールマガジンの送付について<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.mailmaga_flg) }}<br />
+                        {{ form_errors(form.mailmaga_flg) }}<br />
+                    </td>
+                </tr>
             </table>
+
+
 
             <div class="btn_area">
                 <ul>
                     <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_confirm.jpg" alt="確認ページへ" name="mode" value="confirm" />
+                        <a href="{{ url('index') }}">
+                            <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_cannot.jpg" alt="同意しない" />
+                        </a>
+                    </li>
+                    <li>
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" name="mode" value="confirm" />
                     </li>
                 </ul>
             </div>

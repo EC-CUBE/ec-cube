@@ -1,36 +1,69 @@
-#before_commands:
-#- "composer update --prefer-source"
+filter:
+    excluded_paths: 
+        - html/js/jquery*.js
+        - html/js/**/jquery*.js 
+        - html/user_data/packages/**/**/jquery*.js
+        - src/Eccube/Framework/*"
+        - src/Eccube/Page/*
 
 tools:
-    #external_code_coverage: true
-    #php_code_coverage: true
+    # Runs the JSHint static analysis tool (https://scrutinizer-ci.com/docs/tools/javascript/jshint/)
+    js_hint:
+        config:
+            boss: true
+            curly: true
+            eqeqeq: true
+            eqnull: true
+            es3: true
+            expr: true
+            immed: true
+            noarg: true
+            onevar: true
+            quotmark: single
+            trailing: true
+            undef: true
+            unused: true
+            browser: true
+            globals: { _: false, Backbone: false, jQuery: false, eccube: false }
+
+    external_code_coverage: 
+        runs: 2
+        timeout: 600
+
     php_code_sniffer:
         enabled: true
         config:
             standard: PSR2
         filter:
             paths: ["src/*", "tests/*"]
+
     php_cpd:
-        enabled: true
+        enabled: false
         excluded_dirs: ["build", "docs", "tests", "vendor"]
+
     php_cs_fixer:
         enabled: true
         config:
             level: all
         filter:
             paths: ["src/*", "tests/*"]
+
     php_loc:
         enabled: true
         excluded_dirs: ["build", "docs", "tests", "vendor"]
+
     php_mess_detector:
         enabled: true
         filter:
             paths: ["src/*"]
+
     php_pdepend:
         enabled: true
         excluded_dirs: ["build", "docs", "tests", "vendor"]
+
     php_analyzer: true
     php_analyzer:
         filter:
             paths: ["src/*", "tests/*"]
+
     sensiolabs_security_checker: true
