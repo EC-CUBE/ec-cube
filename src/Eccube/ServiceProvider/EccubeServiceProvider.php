@@ -38,6 +38,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         };
 
         // Repository
+        $app['eccube.repository.category'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Category');
+        });
         $app['eccube.repository.customer'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Customer');
         });
@@ -45,7 +48,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\Member');
         });
         $app['eccube.repository.product'] = $app->share(function() use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Product');
+            $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
+            $productRepository->setConfig($app['config']);
+
+            return $productRepository;
         });
         $app['eccube.repository.base_info'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
@@ -75,6 +81,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             // 
             $config = $em->getConfiguration();
             $config->addFilter("soft_delete", "\Eccube\Doctrine\Filter\SoftDeleteFilter");
+            $config->addFilter("nostock_hidden", "\Eccube\Doctrine\Filter\NoStockHiddenFilter");
             $em->getFilters()->enable('soft_delete');
 
             return $em;
@@ -100,6 +107,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             $types[] = new \Eccube\Form\Type\AddCartType($app['config']);
+            $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\PointType($app);

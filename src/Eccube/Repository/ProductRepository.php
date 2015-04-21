@@ -15,6 +15,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductRepository extends EntityRepository
 {
     /**
+     * @var array
+     */
+    private $config;
+
+    /**
+     * setConfig
+     * 
+     * @param array $config
+     */
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
      * get
      * 
      * @param integer $productId
@@ -28,8 +43,9 @@ class ProductRepository extends EntityRepository
         try {
             $qb = $this->createQueryBuilder('p')
                 ->select('p, pc')
-                ->leftJoin('p.ProductClasses', 'pc')
+                ->innerJoin('p.ProductClasses', 'pc')
                 ->andWhere('p.id = :id');
+
             $product = $qb
                 ->getQuery()
                 ->setParameters(array(
@@ -41,5 +57,70 @@ class ProductRepository extends EntityRepository
         }
 
         return $product;
+    }
+
+    /**
+     * get
+     * 
+     * @param array $searchData
+     * @return Eccube\Entity\Product[]
+     */
+    public function getQueryBuilderBySearchData($searchData)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, pc')
+            ->innerJoin('p.ProductClasses', 'pc')
+            ->andWhere('p.status = 1');
+
+        // category
+        $categoryJoin = false;
+        if (!empty($searchData['category_id']) && $searchData['category_id']) {
+            $Categories = $searchData['category_id']->getSelfAndDescendants();
+            if ($Categories) {
+                $qb
+                    ->innerJoin('p.ProductCategories', 'pct')
+                    ->innerJoin('pct.Category', 'c')
+                    ->andWhere($qb->expr()->in('pct.Category', ':Categories'))
+                    ->setParameter('Categories', $Categories);
+                $categoryJoin = true;
+            }
+        }
+        
+        // maker_id
+        if (!empty($searchData['maker_id']) && $searchData['maker_id']) {
+            $qb
+                ->andWhere('p.Maker = :Maker')
+                ->setParameter('Maker', $searchData['maker_id']);
+        }
+
+        // name
+        if (!empty($searchData['name']) && $searchData['name']) {
+            $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($keywords as $keyword) {
+                $qb
+                    ->andWhere('p.name LIKE :keyword OR p.comment3 LIKE :keyword')
+                    ->setParameter('keyword', '%'.$keyword.'%');
+            }
+        }
+
+        // Order By
+        if (!empty($searchData['orderby']) && $searchData['orderby'] === 'price') {
+            $qb->orderBy('pc.price02', 'ASC');
+        } elseif (!empty($searchData['orderby']) && $searchData['orderby'] === 'date') {
+            $qb->orderBy('pc.create_date', 'DESC');
+        } else {
+            if ($categoryJoin == false) {
+                $qb
+                    ->innerJoin('p.ProductCategories', 'pct')
+                    ->innerJoin('pct.Category', 'c')
+                ;
+            }
+            $qb
+                ->orderBy('c.rank', 'DESC')
+                ->addOrderBy('pct.rank', 'DESC')
+                ->addOrderBy('p.id', 'DESC');
+        }
+
+        return $qb;
     }
 }

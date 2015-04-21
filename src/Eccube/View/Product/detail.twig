@@ -21,6 +21,7 @@
         eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
 {% endblock %}
+
 {% block onload %}
     {% if form.classcategory_id2 is defined %}
         fnSetClassCategories(
@@ -152,7 +153,7 @@
                     <dt>関連カテゴリ：</dt>
                     {% for ProductCategory in Product.ProductCategories %}
                         <dd>
-                            {% for Category in ProductCategory.path %}
+                            {% for Category in ProductCategory.Category.path %}
                                 <a href="{{ path('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}</a>
                                 {%if loop.last == false %}{{ app.config.sepa_catnavi|escape }}{% endif %}
                             {% endfor %}
@@ -178,15 +179,15 @@
                                 </ul>
                                 <!--▲規格1-->
                                 {% if form.classcategory_id2 is defined %}
-                                <!--▼規格2-->
-                                <ul class="clearfix">
-                                    <li>{{ form_label(form.classcategory_id2) }}：</li>
-                                    <li>
-                                        {{ form_widget(form.classcategory_id2) }}<br />
-                                        {{ form_errors(form.classcategory_id2) }}
-                                    </li>
-                                </ul>
-                                <!--▲規格2-->
+                                    <!--▼規格2-->
+                                    <ul class="clearfix">
+                                        <li>{{ form_label(form.classcategory_id2) }}：</li>
+                                        <li>
+                                            {{ form_widget(form.classcategory_id2) }}<br />
+                                            {{ form_errors(form.classcategory_id2) }}
+                                        </li>
+                                    </ul>
+                                    <!--▲規格2-->
                                 {% endif %}
                             </div>
                         {% endif %}

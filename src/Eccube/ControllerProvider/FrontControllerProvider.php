@@ -20,6 +20,7 @@ class FrontControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
+        /* @var $controllers \Silex\ControllerCollection */
         $controllers = $app['controllers_factory'];
 
         // installer

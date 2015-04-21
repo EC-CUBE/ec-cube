@@ -5,12 +5,12 @@ namespace Eccube\Doctrine\Filter;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-class SoftDeleteFilter extends SQLFilter
+class NoStockHiddenFilter extends SQLFilter
 {
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if ($targetEntity->hasField('del_flg')) {
-            return $targetTableAlias . '.del_flg = 0';
+        if ($targetEntity->reflClass->getName() === 'Eccube\Entity\ProductClass') {
+            return $targetTableAlias . '.stock >= 1 OR ' . $targetTableAlias . '.stock_unlimited = 1';
         } else {
             return "";
         }
