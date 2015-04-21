@@ -2,10 +2,10 @@
 
 namespace Eccube\Controller;
 
-use \Eccube\Application;
-use \Symfony\Component\Security\Core\Util\SecureRandom;
-use \Symfony\Component\Validator\Constraints as Assert;
-use \Symfony\Component\HttpKernel\Exception as HttpException;
+use Eccube\Application;
+use Symfony\Component\Security\Core\Util\SecureRandom;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class EntryController extends AbstractController
 {
@@ -74,7 +74,10 @@ class EntryController extends AbstractController
 
                             $message = $app['mail.message']
                                 ->setSubject('[EC-CUBE3] 会員登録のご確認')
-                                ->setBody('認証URL：' . $activateUrl);
+                                ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
+                                        'customer' => $customer,
+                                        'activateUrl' => $activateUrl,
+                                    )));
 
                             $this->sendMail($app, $customer, $message);
 
@@ -152,7 +155,9 @@ class EntryController extends AbstractController
 
             $message = $app['mail.message']
                 ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                ->setBody('会員登録が完了しました。');
+                ->setBody($app['view']->render('Mail/entry_complete.twig', array(
+                    'customer' => $customer,
+                )));
 
             $this->sendMail($app, $customer, $message);
 
@@ -192,10 +197,10 @@ class EntryController extends AbstractController
      */
     private function sendMail(Application $app, $customer, $message)
     {
-        // TODO: 後でEventとして実装する
+        // TODO: 後でEventとして実装する、送信元アドレス、BCCを調整する
         // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
         $message->setFrom(array('sample@example.com'))
-            ->setCc($app['config']['mail_cc'])
+            ->setBcc($app['config']['mail_cc'])
             ->setTo(array($customer->getEmail()));
         $app['mailer']->send($message);
     }
