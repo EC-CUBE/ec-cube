@@ -53,6 +53,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $productRepository;
         });
+        $app['eccube.repository.customer_favorite_product'] = $app->share(function() use ($app) {
+            $customerFavoriteProductRepository = $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
+            $customerFavoriteProductRepository->setSecurity($app['security']);
+
+            return $customerFavoriteProductRepository;
+        });
         $app['eccube.repository.base_info'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
         });
@@ -64,6 +70,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.master.constant'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Constant');
+        });
+
+        // 
+        $app['paginator'] = $app->protect(function() {
+            return new \Knp\Component\Pager\Paginator();
         });
 
         // em
@@ -101,12 +112,13 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ZipType();
             $types[] = new \Eccube\Form\Type\AddressType();
             $types[] = new \Eccube\Form\Type\SexType();
+            $types[] = new \Eccube\Form\Type\ProductListMaxType();
             $types[] = new \Eccube\Form\Type\JobType();
             $types[] = new \Eccube\Form\Type\ReminderType();
             $types[] = new \Eccube\Form\Type\MailMagazineType();
 
             $types[] = new \Eccube\Form\Type\CustomerType($app);
-            $types[] = new \Eccube\Form\Type\AddCartType($app['config']);
+            $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
             $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);

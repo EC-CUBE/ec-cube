@@ -59,17 +59,7 @@ class SearchProductType extends AbstractType
                 'min' => 1,
             ),
         ));
-        $builder->add('disp_number', 'entity', array(
-            'class' => 'Eccube\Entity\Master\ProductListMax',
-            'property' => 'name',
-            'query_builder' => function(EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('pn')
-                    ->orderBy('pn.rank', 'ASC');
-            },
-            'empty_value' => false,
-            'empty_data' => null,
-            'required' => false,
+        $builder->add('disp_number', 'product_list_max', array(
             'label' => '表示件数',
         ));
         $builder->add('orderby', 'choice', array(
@@ -81,7 +71,6 @@ class SearchProductType extends AbstractType
             'empty_data' => null,
             'required' => false,
         ));
-        $builder->setMethod('GET');
     }
 
     /**

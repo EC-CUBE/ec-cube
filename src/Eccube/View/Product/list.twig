@@ -40,7 +40,7 @@
         var searchForm = $("#form1");
         var cartForm = $(productForm);
         // 検索条件を引き継ぐ
-        var hiddenValues = ['mode','category_id','maker_id','name','orderby','disp_number','pageno','rnd'];
+        var hiddenValues = ['mode','category_id','maker_id','name','orderby','disp_number','pageno'];
         $.each(hiddenValues, function(){
             // 商品別のフォームに検索条件の値があれば上書き
             if (cartForm.has('input[name='+this+']').length != 0) {
@@ -57,46 +57,40 @@
 {% endblock%}
 
 {% block onload %}
-    {% for Product in pagination %}
-        {% if Product.stock_find %}
-            fnSetClassCategories(document.product_form{{ Product.id|escape('js') }});
-        {% endif %}
-    {% endfor %}
-
-    {#fnSetClassCategories(document.product_form{{ |escape('js') }}, {{ $classcategory_id2|escape('js') }});";#}
+    {%- for Product in pagination %}
+        {%- if Product.stock_find %}
+            {%- if forms[Product.id].vars.data.classcategory_id2 is defined %}
+                fnSetClassCategories(document.product_form{{ Product.id|escape('js') }}, "{{ forms[Product.id].vars.data.classcategory_id2|default('')|escape('js') }}");
+            {%- else %}
+                fnSetClassCategories(document.product_form{{ Product.id|escape('js') }});
+            {%- endif %}
+        {%- endif %}
+    {%- endfor %}
 {% endblock%}
 
-{% block page_navi_body %}
+{% set page_navi_body %}
     <!--▼ページナビ(本文)-->
     {% if pagination.totalItemCount %}
         <div class="pagenumber_area clearfix">
             <div class="change">
-                {% if search_form.vars.data.orderby is defined and search_form.vars.data.orderby == 'price' %}
+                {% if search_form.vars.data.orderby == 'price' %}
                     <strong>価格順</strong>
                 {% else %}
                     <a href="javascript:fnChangeOrderby('price');">価格順</a>
                 {% endif %}&nbsp;
-                {% if search_form.vars.data.orderby is defined and search_form.vars.data.orderby == 'date' %}
+                {% if search_form.vars.data.orderby == 'date' %}
                     <strong>新着順</strong>
                 {% else %}
                     <a href="javascript:fnChangeOrderby('date');">新着順</a>
                 {% endif %}
                 表示件数
-                <select name="disp_number" onchange="javascript:fnChangeDispNumber(this.value);">
-                    <!--{foreach from=$arrPRODUCTLISTMAX item="dispnum" key="num"}-->
-                        <!--{if $num == $disp_number}-->
-                            <option value="<!--{$num}-->" selected="selected" ><!--{$dispnum}--></option>
-                        <!--{else}-->
-                            <option value="<!--{$num}-->" ><!--{$dispnum}--></option>
-                        <!--{/if}-->
-                    <!--{/foreach}-->
-                </select>
+                {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
             </div>
-            <div class="navi"><!--{$tpl_strnavi}--></div>
+            <div class="navi">{% include "pagination.twig" with { 'pages' : pagination.paginationData } %}</div>
         </div>
     {% endif %}
     <!--▲ページナビ(本文)-->
-{% endblock %}
+{% endset %}
 
 {% block main %}
 <div id="undercolumn">
@@ -107,11 +101,11 @@
     <!--★タイトル★-->
     <h2 class="title">{{ subtitle }}</h2>
 
-    {% if search_form.vars.data.mode is defined and search_form.vars.data.mode ==  'search'%}
+    {% if search_form.vars.data.mode ==  'search'%}
         <!--▼検索条件-->
         <ul class="pagecond_area">
             <li><strong>商品カテゴリ：</strong>{{ search_form.vars.data.category_id|default('指定なし') }}</li>
-            {% if search_form.vars.data.maker_id is defined and search_form.vars.data.maker_id %}<li><strong>メーカー：</strong>{{ search_form.vars.data.maker_id }}</li>{% endif %}
+            {% if search_form.vars.data.maker_id %}<li><strong>メーカー：</strong>{{ search_form.vars.data.maker_id }}</li>{% endif %}
             <li><strong>商品名：</strong>{{ search_form.vars.data.name|default('指定なし') }}</li>
         </ul>
         <!--▲検索条件-->
@@ -125,14 +119,14 @@
         <!--▲件数-->
 
         <!--▼ページナビ(上部)-->
-        <form name="page_navi_top" id="page_navi_top" action="?">
-            {{ block('page_navi_body') }}
+        <form name="page_navi_top" id="page_navi_top" method="get" action="?">
+            {{ page_navi_body }}
         </form>
         <!--▲ページナビ(上部)-->
 
         {% for Product in pagination %}
             <!--▼商品-->
-            <form name="product_form{{ Product.id }}" action="?">
+            <form name="product_form{{ Product.id }}" method="post" action="{{ app.request.requestUri }}">
                 {% set form = forms[Product.id] %}
                 <div class="list_area clearfix">
                     <a name="product{{ Product.id }}"></a>
@@ -236,8 +230,8 @@
         {% endfor %}
 
         <!--▼ページナビ(下部)-->
-        <form name="page_navi_bottom" id="page_navi_bottom" action="?">
-            {{ block('page_navi_body') }}
+        <form name="page_navi_bottom" id="page_navi_bottom" method="get" action="?">
+            {{ page_navi_body }}
         </form>
         <!--▲ページナビ(下部)-->
     {% else %}
@@ -246,7 +240,7 @@
             <div class="message_area">
                 <!--★エラーメッセージ-->
                 <p class="error">
-                    {% if search_form.vars.data.mode is defined and search_form.vars.data.mode ==  'search'%}
+                    {% if search_form.vars.data.mode ==  'search'%}
                         該当件数<strong>0件</strong>です。<br />
                         他の検索キーワードより再度検索をしてください。
                     {% else %}
