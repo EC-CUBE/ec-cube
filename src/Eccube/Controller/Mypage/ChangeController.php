@@ -26,11 +26,7 @@ class ChangeController extends AbstractController
      */
     public function index(Application $app)
     {
-        if (!$app['security']->isGranted('ROLE_USER')) {
-            return $app->redirect($app['url_generator']->generate('mypage'));
-        }
-
-        $customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
+       $customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
             ->findOneBy(array(
                     'id' => $app['user']->getId(),
                 )
@@ -47,6 +43,11 @@ class ChangeController extends AbstractController
             if ($form->isValid()) {
                 switch ($app['request']->get('mode')) {
                     case 'complete':
+
+                        // secure password
+                        $encoder = $app['security.encoder_factory']->getEncoder($customer);
+                        $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
+                        $customer->setPassword($encoded_password);
 
                         $app['orm.em']->persist($customer);
                         $app['orm.em']->flush();
@@ -74,8 +75,10 @@ class ChangeController extends AbstractController
     public function complete(Application $app)
     {
 
-        return $app['view']->render('MyPage/complete.twig', array(
+        return $app['view']->render('MyPage/change_complete.twig', array(
             'title' => $this->title,
+            'subtitle' => '会員登録内容変更(完了ページ)',
+            'mypageno' => 'change',
         ));
     }
 

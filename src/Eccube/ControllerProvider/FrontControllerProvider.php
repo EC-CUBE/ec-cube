@@ -95,7 +95,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/mypage/', '\\Eccube\\Controller\\MyPage\\MyPageController::index')->bind('mypage');
         $controllers->match('/mypage/login.php', '\\Eccube\\Controller\\MyPage\\MyPageController::login')->bind('mypage_login');
         $controllers->match('/mypage/change', '\\Eccube\\Controller\\MyPage\\ChangeController::index')->bind('mypage_change');
-        $controllers->match('/mypage/change_complete.php', '\\Eccube\\MyPage\\ChangeController::Complete')->bind('mypage_change_complete');
+        $controllers->match('/mypage/change_complete', '\\Eccube\\Controller\\MyPage\\ChangeController::Complete')->bind('mypage_change_complete');
         $controllers->match('/mypage/delivery.php', '\\Eccube\\Page\\Mypage\\Delivery')->bind('mypage_delivery');
         $controllers->match('/mypage/delivery_addr.php', '\\Eccube\\Page\\Mypage\\DeliveryAddr')->bind('mypage_delivery_addr');
         $controllers->match('/mypage/download.php', '\\Eccube\\Page\\Mypage\\Download')->bind('mypage_download');
