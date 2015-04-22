@@ -31,7 +31,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         $customer->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())
             ->setPoint(0)
-            ->setStatus(1)
+            ->setStatus(new \Eccube\Entity\Master\CustomerStatus())
             ->setDelFlg(0);
 
         return $customer;

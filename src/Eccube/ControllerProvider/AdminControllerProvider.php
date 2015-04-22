@@ -52,7 +52,12 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // customer
         $controllers->match('/customer/', '\\Eccube\\Page\\Admin\\Customer\\Index')->bind('admin_customer');
-        $controllers->match('/customer/edit.php', '\\Eccube\\Page\\Admin\\Customer\\Edit')->bind('admin_customer_edit');
+        $controllers->match('/customer/edit/{customerId}', '\\Eccube\\Controller\\Admin\\Customer\\CustomerEditController::index')
+            ->assert('customerId', '\d+')
+            ->bind('admin_customer_edit');
+        $controllers->match('/customer/edit/', '\\Eccube\\Controller\\Admin\\Customer\\CustomerEditController::index')
+            ->bind('admin_customer_new');
+        //$controllers->match('/customer/edit.php', '\\Eccube\\Page\\Admin\\Customer\\Edit')->bind('admin_customer_edit');
         $controllers->match('/customer/search_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
 
         // design

@@ -194,9 +194,9 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $note;
 
     /**
-     * @var integer
+     * @var \Eccube\Entity\Master\CustomerStatus
      */
-    private $status;
+    private $Status;
 
     /**
      * @var \DateTime
@@ -957,26 +957,26 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set status
+     * Set Status
      *
-     * @param integer $status
+     * @param \Eccube\Entity\Master\CustomerStatus $status
      * @return Customer
      */
-    public function setStatus($status)
+    public function setStatus(\Eccube\Entity\Master\CustomerStatus $status = null)
     {
-        $this->status = $status;
+        $this->Status = $status;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get Status
      *
-     * @return integer
+     * @return \Eccube\Entity\Master\CustomerStatus
      */
     public function getStatus()
     {
-        return $this->status;
+        return $this->Status;
     }
 
     /**
