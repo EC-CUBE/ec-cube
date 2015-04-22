@@ -40,9 +40,9 @@ class TaxRuleRepository extends EntityRepository
         }
 
         // Pref Country 設定
-        if (!$Pref && !$Country && $this->app['security']->isGranted('ROLE_USER')) {
+        if (!$Pref && !$Country && $this->app['security']->getToken() && $this->app['security']->isGranted('ROLE_USER')) {
             /* @var $Customer \Eccube\Entity\Customer */
-            $Customer = $this->app['user'];
+            $Customer = $this->app['security']->getToken()->getUser();
             $Pref = $Customer->getPref();
             $Country = $Customer->getCountry();
         }
