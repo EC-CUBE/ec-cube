@@ -155,6 +155,49 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $Order;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ShipmentItems;
+
+    public function __construct()
+    {
+        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ShipmentItem
+     *
+     * @param \Eccube\Entity\ShipmentItem $ShipmentItem
+     * @return Shipping
+     */
+    public function addShipmentItem(\Eccube\Entity\ShipmentItem $ShipmentItem)
+    {
+        $this->ShipmentItems[] = $ShipmentItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove ShipmentItem
+     *
+     * @param \Eccube\Entity\ShipmentItem $ShipmentItem
+     */
+    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $ShipmentItem)
+    {
+        $this->ShipmentItems->removeElement($ShipmentItem);
+    }
+
+    /**
+     * Get ShipmentItem
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShipmentItem()
+    {
+        return $this->ShipmentItems;
+    }
+
+    /**
      * Set shipping_id
      *
      * @param integer $shippingId

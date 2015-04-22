@@ -54,6 +54,61 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      */
     private $quantity;
 
+    /**
+     * @var \Eccube\Entity\Order
+     */
+    private $Order;
+
+    /**
+     * @var \Eccube\Entity\Shipping
+     */
+    private $Shipping;
+
+    /**
+     * Set Order
+     *
+     * @param Shipping $Order
+     * @return ShipmentItem
+     */
+    public function setOrder($Order)
+    {
+        $this->Order = $Order;
+
+        return $this;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
+    }
+
+    /**
+     * Set Shipping
+     *
+     * @param Shipping $Shipping
+     * @return ShipmentItem
+     */
+    public function setShipping($Shipping)
+    {
+        $this->Shipping = $Shipping;
+
+        return $this;
+    }
+
+    /**
+     * Get Shipping
+     *
+     * @return Shipping
+     */
+    public function getShipping()
+    {
+        return $this->Shipping;
+    }
 
     /**
      * Set shipping_id
@@ -71,7 +126,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get shipping_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getShippingId()
     {

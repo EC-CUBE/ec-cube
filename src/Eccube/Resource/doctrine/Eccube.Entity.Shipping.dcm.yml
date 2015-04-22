@@ -137,5 +137,8 @@ Eccube\Entity\Shipping:
             joinColumn:
                 name: order_id
                 referencedColumnName: order_id
-                nullable: false
+    oneToMany:
+        ShipmentItems:
+            targetEntity: Eccube\Entity\ShipmentItem
+            mappedBy: Shipping
     lifecycleCallbacks: {  }

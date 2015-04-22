@@ -41,4 +41,13 @@ Eccube\Entity\ShipmentItem:
             nullable: true
             precision: 10
             scale: 0
+    manyToOne:
+         Shipping:
+             targetEntity: Eccube\Entity\Shipping
+             inversedBy: ShipmentItems
+             joinColumns:
+                 shipping_id:
+                     referencedColumnName: shipping_id
+                 order_id:
+                     referencedColumnName: order_id
     lifecycleCallbacks: {  }
