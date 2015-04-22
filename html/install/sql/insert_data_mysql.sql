@@ -1,3 +1,6 @@
+SET FOREIGN_KEY_CHECKS=0;
+SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';
+
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (0, 'table', 0);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (1, 'tr', 1);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (2, 'td', 2);

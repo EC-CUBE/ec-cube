@@ -9,9 +9,9 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 class PointEventSubscriber implements EventSubscriber
 {
     /**
-     * @var array 
+     * @var string 
      */
-    private $config;
+    private $point_rule;
 
     /**
      * @var \Eccube\Service\TaxRuleService
@@ -21,12 +21,12 @@ class PointEventSubscriber implements EventSubscriber
     /**
      * __construct
      * 
-     * @param array $config
+     * @param string $point_rule
      * @param \Eccube\Service\TaxRuleService $taxRateService
      */
-    public function __construct($config, \Eccube\Service\TaxRuleService $taxRateService)
+    public function __construct($point_rule, \Eccube\Service\TaxRuleService $taxRateService)
     {
-        $this->config = $config;
+        $this->point_rule = $point_rule;
         $this->taxRateService = $taxRateService;
     }
 
@@ -45,7 +45,7 @@ class PointEventSubscriber implements EventSubscriber
 
         if ($entity instanceof \Eccube\Entity\ProductClass) {
             $point = $entity->getPrice02() * $entity->getPointRate() / 100;
-            $entity->setPoint($this->taxRateService->roundByCalcRule($point, $this->config['point_rule']));
+            $entity->setPoint($this->taxRateService->roundByCalcRule($point, $this->point_rule));
         }
     }
 
@@ -55,7 +55,7 @@ class PointEventSubscriber implements EventSubscriber
 
         if ($entity instanceof \Eccube\Entity\ProductClass) {
             $point = $entity->getPrice02() * $entity->getPointRate() / 100;
-            $entity->setPoint($this->taxRateService->roundByCalcRule($point, $this->config['point_rule']));
+            $entity->setPoint($this->taxRateService->roundByCalcRule($point, $this->point_rule));
         }
     }
 
@@ -65,7 +65,7 @@ class PointEventSubscriber implements EventSubscriber
 
         if ($entity instanceof \Eccube\Entity\ProductClass) {
             $point = $entity->getPrice02() * $entity->getPointRate() / 100;
-            $entity->setPoint($this->taxRateService->roundByCalcRule($point, $this->config['point_rule']));
+            $entity->setPoint($this->taxRateService->roundByCalcRule($point, $this->point_rule));
         }
     }
 }

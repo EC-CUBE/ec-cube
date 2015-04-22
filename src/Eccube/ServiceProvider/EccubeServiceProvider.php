@@ -38,6 +38,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         };
 
         // Repository
+        $app['eccube.repository.master.constant'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Constant');
+        });
         $app['eccube.repository.category'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Category');
         });
@@ -68,9 +71,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $taxRuleRepository;
         });
-        $app['eccube.repository.master.constant'] = $app->share(function() use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Constant');
-        });
 
         // 
         $app['paginator'] = $app->protect(function() {
@@ -78,13 +78,14 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         // em
-        $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
+        $point_rule = $app['config']['point_rule'];
+        $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) use($point_rule) {
             // tax_rule
             $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
             $taxRuleRepository->setApp($app);
             $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
             $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
-            $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\PointEventSubscriber($app['config'], $taxRuleService));
+            $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\PointEventSubscriber($point_rule, $taxRuleService));
 
             // save
             $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber());

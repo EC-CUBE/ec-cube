@@ -11,6 +11,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
 {
     private $price01_inc_tax = null;
     private $price02_inc_tax = null;
+    private $point = null;
 
     /**
      * Set price01 IncTax

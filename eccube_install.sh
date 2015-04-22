@@ -234,53 +234,9 @@ __EOF__
 echo "update permissions..."
 adjust_directory_permissions
 
-#-- Setup Database
-SQL_DIR="./html/install/sql"
 
-case "${DBTYPE}" in
-"pgsql" )
-    # PostgreSQL
-    echo "dropdb..."
-    sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
-    echo "createdb..."
-    sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
-    echo "create table..."
-    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
-    echo "insert data..."
-    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}
-    echo "create sequence table..."
-    create_sequence_tables
-    echo "execute optional SQL..."
-    get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
-;;
-"mysql" )
-    DBPASS=`echo $DBPASS | tr -d " "`
-    if [ -n ${DBPASS} ]; then
-	PASSOPT="--password=$DBPASS"
-	CONFIGPASS=$DBPASS
-    fi
-    # MySQL
-    echo "dropdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database \`${DBNAME}\`"
-    echo "createdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
-    #echo "grant user..."
-    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
-    echo "create table..."
-    echo "SET SESSION storage_engine = InnoDB;" |
-        cat - ${SQL_DIR}/create_table_mysql.sql |
-        ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
-    echo "insert data..."
-    ${MYSQL} -u ${DBUSER} ${PASSOPT} --default-character-set=utf8  ${DBNAME} < ${SQL_DIR}/insert_data.sql
-    echo "create sequence table..."
-    create_sequence_tables
-    echo "execute optional SQL..."
-    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
-;;
-esac
 
 #-- Setup Initial Data
-
 echo "copy images..."
 cp -rv "./html/install/save_image" "./html/upload/"
 
@@ -295,5 +251,56 @@ curl -sS https://getcomposer.org/installer | php
 
 echo "install composer..."
 php composer.phar install
+
+
+
+#-- Setup Database
+SQL_DIR="./html/install/sql"
+
+case "${DBTYPE}" in
+"pgsql" )
+    # PostgreSQL
+    echo "dropdb..."
+    sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
+
+    echo "createdb..."
+    sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
+
+    echo "create table..."
+    ./vendor/bin/doctrine orm:schema-tool:create
+
+    echo "insert data..."
+    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data_pgsql.sql ${DBNAME}
+
+    echo "execute optional SQL..."
+    get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
+;;
+"mysql" )
+    DBPASS=`echo $DBPASS | tr -d " "`
+    if [ -n ${DBPASS} ]; then
+        PASSOPT="--password=$DBPASS"
+        CONFIGPASS=$DBPASS
+    fi
+
+    # MySQL
+    echo "dropdb..."
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database \`${DBNAME}\`"
+
+    echo "createdb..."
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+
+    #echo "grant user..."
+    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
+
+    echo "create table..."
+    ./vendor/bin/doctrine orm:schema-tool:create
+
+    echo "insert data..."
+    ${MYSQL} -u ${DBUSER} ${PASSOPT} --default-character-set=utf8  ${DBNAME} < ${SQL_DIR}/insert_data_mysql.sql
+
+    echo "execute optional SQL..."
+    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+;;
+esac
 
 echo "Finished Successful!"
