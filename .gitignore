@@ -5,6 +5,8 @@ composer.phar
 /app/cache/*/*
 /app/config/eccube/config.php
 /app/config/eccube/config.yml
+/app/config/eccube/constant.yml
+/app/log/*
 /app/logs/*
 /app/upload/csv/*
 /html/install/temp/*

@@ -12,9 +12,9 @@ Eccube\Entity\Order:
             generator:
                 strategy: AUTO
     fields:
-#        order_temp_id:
-#            type: text
-#            nullable: true
+        order_temp_id:
+            type: text
+            nullable: true
 #        customer_id:
 #            type: integer
 #            nullable: false
@@ -240,12 +240,12 @@ Eccube\Entity\Order:
             type: text
             nullable: true
     manyToOne:
-        OrderTemp:
-            targetEntity: Eccube\Entity\OrderTemp
-            inversedBy: Orders
-            joinColumn:
-                name: order_temp_id
-                referencedColumnName: order_temp_id
+#        OrderTemp:
+#            targetEntity: Eccube\Entity\OrderTemp
+#            inversedBy: Orders
+#            joinColumn:
+#                name: order_temp_id
+#                referencedColumnName: order_temp_id
         Customer:
             targetEntity: Eccube\Entity\Customer
             inversedBy: Orders

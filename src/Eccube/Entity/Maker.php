@@ -10,6 +10,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Maker extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * __toString
+     * 
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getName();
+    }
+
+    /**
      * @var integer
      */
     private $id;

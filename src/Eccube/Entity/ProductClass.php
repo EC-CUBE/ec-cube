@@ -9,6 +9,93 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductClass extends \Eccube\Entity\AbstractEntity
 {
+    private $price01_inc_tax = null;
+    private $price02_inc_tax = null;
+
+    /**
+     * Set price01 IncTax
+     *
+     * @param string $price01
+     * @return ProductClass
+     */
+    public function setPrice01IncTax($price01_inc_tax)
+    {
+        $this->price01_inc_tax = $price01_inc_tax;
+
+        return $this;
+    }
+
+    /**
+     * Get price01 IncTax
+     *
+     * @return string 
+     */
+    public function getPrice01IncTax()
+    {
+        return $this->price01_inc_tax;
+    }
+
+    /**
+     * Set price02 IncTax
+     *
+     * @param string $price02
+     * @return ProductClass
+     */
+    public function setPrice02IncTax($price02_inc_tax)
+    {
+        $this->price02_inc_tax = $price02_inc_tax;
+
+        return $this;
+    }
+
+    /**
+     * Get price02 IncTax
+     *
+     * @return string 
+     */
+    public function getPrice02IncTax()
+    {
+        return $this->price02_inc_tax;
+    }
+
+    /**
+     * Set point
+     *
+     * @param string $point
+     * @return ProductClass
+     */
+    public function setPoint($point)
+    {
+        $this->point = $point;
+
+        return $this;
+    }
+
+    /**
+     * Get point
+     *
+     * @return string 
+     */
+    public function getPoint()
+    {
+        return $this->point;
+    }
+
+    /**
+     * Get StockFind
+     *
+     * @return bool 
+     */
+    public function getStockFind()
+    {
+        if ($this->getStock() > 0 || $this->getStockUnlimited() == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     /**
      * @var integer
      */
@@ -22,7 +109,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $product_code;
+    private $code;
 
     /**
      * @var string
@@ -139,26 +226,26 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set product_code
+     * Set code
      *
-     * @param string $productCode
+     * @param string $code
      * @return ProductClass
      */
-    public function setProductCode($productCode)
+    public function setCode($code)
     {
-        $this->product_code = $productCode;
+        $this->code = $code;
 
         return $this;
     }
 
     /**
-     * Get product_code
+     * Get code
      *
      * @return string 
      */
-    public function getProductCode()
+    public function getCode()
     {
-        return $this->product_code;
+        return $this->code;
     }
 
     /**

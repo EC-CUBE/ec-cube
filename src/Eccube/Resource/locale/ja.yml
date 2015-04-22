@@ -24,3 +24,5 @@ cart.over.stock: ※ 選択された商品の在庫が不足しております�
 cart.over.sale_limit: ※ 選択された商品は販売制限しております。<br />一度に販売制限数を超える購入はできません。
 
 admin.register.complete: ※ 登録が完了しました。
+
+Quantity: 数量

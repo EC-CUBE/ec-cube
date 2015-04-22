@@ -3,6 +3,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * TaxRuleRepository
@@ -12,4 +13,219 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaxRuleRepository extends EntityRepository
 {
+    private $rules = array();
+
+    private $app;
+
+    public function setApp($app)
+    {
+        $this->app = $app;
+    }
+
+    /**
+     * 現在有効な税率設定情報を返す
+     *
+     * @param int|null|\Eccube\Entity\Product $Product 商品
+     * @param int|null|\Eccube\Entity\ProductClass $ProductClass 商品規格
+     * @param int|null|\Eccube\Entity\Master\Pref $Pref 都道府県
+     * @param int|null|\Eccube\Entity\Master\Country $Country 国
+     * @return \Eccube\Entity\TaxRule 税設定情報
+     * 
+     * @throws NoResultException
+     */
+    public function getByRule($Product = null, $ProductClass = null, $Pref = null, $Country = null)
+    {
+        if (!$this->app) {
+            throw new \LogicException();
+        }
+
+        // Pref Country 設定
+        if (!$Pref && !$Country && $this->app['security']->isGranted('ROLE_USER')) {
+            /* @var $Customer \Eccube\Entity\Customer */
+            $Customer = $this->app['user'];
+            $Pref = $Customer->getPref();
+            $Country = $Customer->getCountry();
+        }
+
+        // 商品単位税率設定がOFFの場合
+        if ($this->app['config']['option_product_tax_rule'] !== 1) {
+            $Product = null;
+            $ProductClass = null;
+        }
+
+        // Cache Key 設定
+        if ($Product instanceof \Eccube\Entity\Product) {
+            $productId = $Product->getId();
+        } elseif ($Product) {
+            $productId = $Product;
+        } else {
+            $productId = '';
+        }
+        if ($ProductClass instanceof \Eccube\Entity\ProductClass) {
+            $productClassId = $ProductClass->getId();
+        } elseif ($ProductClass) {
+            $productClassId = $ProductClass;
+        } else {
+            $productClassId = '';
+        }
+        if ($Pref instanceof \Eccube\Entity\Master\Pref) {
+            $prefId = $Pref->getId();
+        } elseif ($Pref) {
+            $prefId = $Pref;
+        } else {
+            $prefId = '';
+        }
+        if ($Country instanceof \Eccube\Entity\Master\Country) {
+            $countryId = $Country->getId();
+        } elseif ($Country) {
+            $countryId = $Country;
+        } else {
+            $countryId = '';
+        }
+        $cacheKey = $productId . ':' . $productClassId . ':' . $prefId . ':' . $countryId;
+
+        // すでに取得している場合はキャッシュから
+        if (isset($this->rules[$cacheKey])) {
+            return $this->rules[$cacheKey];
+        }
+
+        $parameters = array();
+        $qb = $this->createQueryBuilder('t')
+            ->where('t.apply_date < CURRENT_TIMESTAMP()')
+            ->orderBy('t.apply_date', 'DESC');
+
+        // Pref
+        if ($Pref) {
+            $qb->andWhere('t.Pref IS NULL OR t.Pref = :Pref');
+            $parameters['Pref'] = $Pref;
+        } else {
+            $qb->andWhere('t.Pref IS NULL');
+        }
+
+        // Country
+        if ($Country) {
+            $qb->andWhere('t.Country IS NULL OR t.Country = :Country');
+            $parameters['Country'] = $Country;
+        } else {
+            $qb->andWhere('t.Country IS NULL');
+        }
+
+        // Product
+        if ($Product) {
+            $qb->andWhere('t.Product IS NULL OR t.Product = :Product');
+            $parameters['Product'] = $Product;
+        } else {
+            $qb->andWhere('t.Product IS NULL');
+        }
+
+        // ProductClass
+        if ($ProductClass) {
+            $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
+            $parameters['ProductClass'] = $ProductClass;
+        } else {
+            $qb->andWhere('t.ProductClass IS NULL');
+        }
+
+        $TaxRules = (array) $qb
+            ->getQuery()
+            ->setParameters($parameters)
+            ->getResult();
+
+        // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
+        // 後に書いてあるほど優先される
+        $priorityKeys = explode(',', $this->app['config']['tax_rule_priority']);
+        $priorityKeys = array();
+        foreach (explode(',', $this->app['config']['tax_rule_priority']) as $key) {
+            $priorityKeys[] = preg_replace('/_id\z/', '', $key);
+        }
+
+        foreach ($TaxRules as $TaxRule) {
+            $rank = 0;
+            foreach ($priorityKeys as $index => $key) {
+                if ($TaxRule[$key]) {
+                    // 配列の数値添字を重みとして利用する
+                    $rank += 1 << ($index + 1);
+                }
+            }
+            $TaxRule->setRank($rank);
+        }
+
+        usort($TaxRules, function($a, $b) {
+            return strcmp($a->getRank(), $b->getRank());
+        });
+
+        if ($TaxRules) {
+            $this->rules[$cacheKey] = $TaxRules[0];
+            return $TaxRules[0];
+        } else {
+            throw new NoResultException();
+        }
+    }
+
+    /**
+     * getList
+     * 
+     * @return array|null
+     */
+    public function getList()
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->orderBy('t.apply_date', 'DESC')
+            ->where('.Product IS NULL AND t.ProductClass IS NULL');
+        $TaxRules = $qb
+            ->getQuery()
+            ->getResult();
+
+        return $TaxRules;
+    }
+
+    /**
+     * getById
+     * 
+     * @param int $id
+     * @return array
+     */
+    public function getById($id)
+    {
+        $criteria = array(
+            'id' => $id,
+        );
+
+        return $this->findOneBy($criteria);
+    }
+
+    /**
+     * getByTime
+     * 
+     * @param string $applyDate
+     * @return mixed
+     */
+    public function getByTime($applyDate)
+    {
+        $criteria = array(
+            'apply_date' => $applyDate,
+        );
+
+        return $this->findOneBy($criteria);
+    }
+
+    /**
+     * 税規約の削除.
+     *
+     * @param  int|\Eccube\Entity\TaxRule $TaxRule 税規約
+     * @return void
+     * @throws NoResultException
+     */
+    public function delete($TaxRule)
+    {
+        if (!$TaxRule instanceof \Eccube\Entity\TaxRule) {
+            $TaxRule = $this->find($taxRule);
+        }
+        if (!$TaxRule) {
+            throw new NoResultException;
+        }
+        $TaxRule->setDelFlg(1);
+        $this->getEntityManager()->persist($TaxRule);
+        $this->getEntityManager()->flust();
+    }
 }
