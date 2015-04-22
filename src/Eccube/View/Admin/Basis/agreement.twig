@@ -1,0 +1,71 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+<form name="form1" id="form1" method="post" action="{{ url('admin_basis_agreement_edit', { 'kiyakuId': Kiyaku.id }) }}">
+    {{ form_widget(form._token) }}
+    <input type="hidden" name="id" value="{{ Kiyaku.id }}" />
+    <div id="basis" class="contents-main">
+        
+        <table>
+            <tr>
+                <th>規約タイトル<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.title) }}
+                    {{ form_errors(form.title) }}
+                </td>
+            </tr>
+            <tr>
+                <th>規約内容<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.text) }}
+                    {{ form_errors(form.text) }}
+                </td>
+            </tr>
+        </table>
+        <div class="btn-area">
+            {{ form_widget(form.save) }}
+        </div>
+        
+        <table class="list">
+            <col width="65%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="15%" />
+            <tr>
+                <th>規約タイトル</th>
+                <th>編集</th>
+                <th>削除</th>
+                <th>移動</th>
+            </tr>
+            {% for Kiyaku in Kiyakus %}
+                <tr style="">
+                    <td>{# 規格名 #}{{ Kiyaku.title }}</td>
+                    <td align="center">
+                        <!--{if $tpl_kiyaku_id != $arrKiyaku[cnt].kiyaku_id}-->
+                        <a href="?" onclick="eccube.setModeAndSubmit('pre_edit', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">編集</a>
+                        <!--{else}-->
+                        編集中
+                        <!--{/if}-->
+                    </td>
+                    <td align="center">
+                        <!--{if $arrClassCatCount[$class_id] > 0}-->
+                        -
+                        <!--{else}-->
+                        <a href="?" onclick="eccube.setModeAndSubmit('delete', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">削除</a>
+                        <!--{/if}-->
+                    </td>
+                    <td align="center">
+                        <!--{if $smarty.section.cnt.iteration != 1}-->
+                        <a href="?" onclick="eccube.setModeAndSubmit('up', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">上へ</a>
+                        <!--{/if}-->
+                        <!--{if $smarty.section.cnt.iteration != $smarty.section.cnt.last}-->
+                        <a href="?" onclick="eccube.setModeAndSubmit('down', 'kiyaku_id', <!--{$arrKiyaku[cnt].kiyaku_id}-->); return false;">下へ</a>
+                        <!--{/if}-->
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</form>
+{% endblock %}

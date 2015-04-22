@@ -31,7 +31,11 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/delivery.php', '\\Eccube\\Page\\Admin\\Basis\\Delivery')->bind('admin_basis_delivery');
         $controllers->match('/basis/delivery_input.php', '\\Eccube\\Page\\Admin\\Basis\\DeliveryInput')->bind('admin_basis_delivery_input');
         $controllers->match('/basis/holiday.php', '\\Eccube\\Page\\Admin\\Basis\\Holiday')->bind('admin_basis_holiday');
-        $controllers->match('/basis/kiyaku.php', '\\Eccube\\Page\\Admin\\Basis\\Kiyaku')->bind('admin_basis_kiyaku');
+        $controllers->match('/basis/agreement/', '\\Eccube\\Controller\\Admin\\Basis\\AgreementController::index')
+            ->bind('admin_basis_agreement');
+        $controllers->match('/basis/agreement/edit/{kiyakuId}', '\\Eccube\\Controller\\Admin\\Basis\\AgreementController::edit')
+            ->value('kiyakuId', null)
+            ->bind('admin_basis_agreement_edit');        
         $controllers->match('/basis/mail.php', '\\Eccube\\Page\\Admin\\Basis\\Mail')->bind('admin_basis_mail');
         $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
         $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
