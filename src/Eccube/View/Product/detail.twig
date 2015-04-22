@@ -212,7 +212,6 @@
                             </div>
                         </div>
                         <div class="attention" id="cartbtn_dynamic"></div>
-                        {{ form_rest(form) }}
                     {% else %}
                         <div class="attention">申し訳ございませんが、只今品切れ中です。</div>
                     {% endif %}
@@ -220,12 +219,9 @@
                     <!--★お気に入り登録★-->
                     {% if app.config.option_favorite_product == 1 and is_granted('ROLE_USER')%}
                         <div class="favorite_btn">
-                            <!--{assign var=add_favorite value="add_favorite`$product_id`"}-->
-                            <!--{if $arrErr[$add_favorite]}-->
-                                <div class="attention"><!--{$arrErr[$add_favorite]}--></div>
-                            <!--{/if}-->
-                            {% if is_favorite is not defined or is_favorite == false %}
-                                <a href="javascript:eccube.setModeAndSubmit('add_favorite','product_id','{{ Product.id }}');"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_favorite.jpg" alt="お気に入りに追加" /></a>
+                            {{ form_errors(form) }}
+                            {% if is_favorite == false %}
+                                <a href="javascript:eccube.setModeAndSubmit('add_favorite','','');"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_favorite.jpg" alt="お気に入りに追加" /></a>
                             {% else %}
                                 <img src="{{ app.config.tpl }}img/button/btn_add_favorite_on.jpg" title="お気に入りに登録済み" alt="お気に入りに登録済み" id="add_favorite_product" />
                                 <script type="text/javascript" src="{{ app.config.root }}js/jquery.ui/jquery.ui.core.min.js"></script>
@@ -236,7 +232,7 @@
                                     var favoriteButton = $("#add_favorite_product");
                                     favoriteButton.tooltip();
 
-                                    {% if just_added_favorite is defined and just_added_favorite == true %}
+                                    {% if app.session.getFlashBag.get('just_added_favorite') %}
                                         favoriteButton.load(function(){ $(this).tooltip("open") });
                                         $(function(){
                                             var tid = setTimeout('favoriteButton.tooltip("close")',5000);
@@ -246,6 +242,7 @@
                             {% endif %}
                         </div>
                     {% endif %}
+                    {{ form_rest(form) }}
                 </div>
                 <!--▲買い物カゴ-->
             </div>

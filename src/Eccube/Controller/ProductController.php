@@ -18,41 +18,79 @@ class ProductController
 
     public function index(Application $app, Request $request)
     {
+        // Doctrine SQLFilter
         if ($app['config']['nostock_hidden']) {
             $app['orm.em']->getFilters()->enable('nostock_hidden');
         }
 
+        // handleRequestは空のqueryの場合は無視するため
+        if ($request->getMethod() === 'GET') {
+            $request->query->set('pageno', $request->query->get('pageno', ''));
+        }
+
+        // searchForm
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createNamedBuilder('', 'search_product');
         $builder->setAttribute('freeze', true);
         $builder->setAttribute('freeze_display_text', false);
+        if ($request->getMethod() === 'GET') {
+            $builder->setMethod('GET');
+        }
         /* @var $searchForm \Symfony\Component\Form\FormInterface */
         $searchForm = $builder->getForm();
         $searchForm->handleRequest($request);
+
+        // paginator
         $searchData = $searchForm->getData();
         $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
-
-        $paginator = new \Knp\Component\Pager\Paginator;
-        $pagination = $paginator->paginate(
+        $pagination = $app['paginator']()->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            !empty($searchData['disp_num']) ? $searchData['disp_num'] : 15
+            $searchData['disp_number']->getId()
         );
 
+        // addCart form
         $forms = array();
         foreach ($pagination as $Product) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
             $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
                 'product' => $Product,
+                'allow_extra_fields' => true,
             ));
-            /* @var $searchForm \Symfony\Component\Form\FormInterface */
-            $forms[$Product->getId()] = $builder->getForm()->createView();
+            $addCartForm = $builder->getForm();
+
+            if ($request->getMethod() === 'POST' && (string) $Product->getId() === $request->get('product_id')) {
+                $addCartForm->handleRequest($request);
+
+                if ($addCartForm->isValid()) {
+                    $addCartData = $addCartForm->getData();
+                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+
+                    return $app->redirect($app['url_generator']->generate('cart'));
+                }
+            }
+
+            $forms[$Product->getId()] = $addCartForm->createView();
         }
+
+        // 
+        $builder = $app['form.factory']->createNamedBuilder('disp_number', 'product_list_max', null, array(
+            'empty_data' => null,
+            'required' => false,
+            'label' => '表示件数',
+            'allow_extra_fields' => true,
+        ));
+        if ($request->getMethod() === 'GET') {
+            $builder->setMethod('GET');
+        }
+        $dispNumberForm = $builder->getForm();
+        $dispNumberForm->handleRequest($request);
 
         return $app['twig']->render('Product/list.twig', array(
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),
+            'disp_number_form' => $dispNumberForm->createView(),
             'forms' => $forms,
         ));
     }
@@ -72,6 +110,7 @@ class ProductController
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
             'product' => $Product,
+            'id_add_product_id' => false,
         ));
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -80,7 +119,17 @@ class ProductController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                
+                $addCartData = $form->getData();
+                if ($addCartData['mode'] === 'add_favorite') {
+                    $app['eccube.repository.customer_favorite_product']->addFavorite($Product);
+                    $app['session']->getFlashBag()->set('just_added_favorite', $Product->getId());
+
+                    return $app->redirect($app['url_generator']->generate('product_detail', array('productId' => $Product->getId())));
+                } else {
+                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+
+                    return $app->redirect($app['url_generator']->generate('cart'));
+                }
             }
         }
 
@@ -88,6 +137,7 @@ class ProductController
             'title' => $this->title,
             'form' => $form->createView(),
             'Product' => $Product,
+            'is_favorite' => $app['eccube.repository.customer_favorite_product']->isFavorite($Product),
         ));
     }
 
