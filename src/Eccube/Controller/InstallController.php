@@ -38,7 +38,7 @@ class InstallController
                 }
                 $this->data = $data;
                 $this->install();
-exit;
+
                 return $app->redirect($app['url_generator']->generate('install_complete'));
             }
         }
