@@ -95,9 +95,14 @@ class InstallController
         fclose($fp);
 
         $sqls = explode(';', $sql);
+        $sqls[] = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank,create_date, update_date) VALUES (2, 'admin', 'password', 'eccube300beta', '1',  '0', '0', '0', '1', now(), now());";
+        $sqls[] = "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date, point_rate, welcome_point) VALUES (1, 'eccube3dev', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'default1', 'default1', 'default1', 'default1', now(), 0, 0);"
+
         foreach ($sqls as $sql) {
             $this->PDO->query(trim($sql));
         }
+
+
 
         return $this;
     }
