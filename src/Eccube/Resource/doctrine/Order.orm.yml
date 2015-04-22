@@ -1,119 +1,158 @@
 Eccube\Entity\Order:
     type: entity
     table: dtb_order
-    repositoryClass: Eccube\Repository\OrderRepository
     id:
-        id:
+        orderId:
             type: integer
             nullable: false
             unsigned: false
             id: true
             column: order_id
             generator:
-                strategy: AUTO
+                strategy: SEQUENCE
     fields:
-#        order_temp_id:
-#            type: text
-#            nullable: true
-#        customer_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
+        orderTempId:
+            type: text
+            nullable: true
+            length: null
+            fixed: false
+            column: order_temp_id
+        customerId:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: customer_id
         message:
             type: text
             nullable: true
-        name01:
+            length: null
+            fixed: false
+        orderName01:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_name01
-        name02:
+        orderName02:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_name02
-        kana01:
+        orderKana01:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_kana01
-        kana02:
+        orderKana02:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_kana02
-        company_name:
+        orderCompanyName:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_company_name
-        email:
+        orderEmail:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_email
-        tel01:
+        orderTel01:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_tel01
-        tel02:
+        orderTel02:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_tel02
-        tel03:
+        orderTel03:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_tel03
-        fax01:
+        orderFax01:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_fax01
-        fax02:
+        orderFax02:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_fax02
-        fax03:
+        orderFax03:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_fax03
-        zip01:
+        orderZip01:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_zip01
-        zip02:
+        orderZip02:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_zip02
-        zipcode:
+        orderZipcode:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_zipcode
-#        country_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-#            column: order_country_id
-#        pref:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
-#            column: order_pref
-        addr01:
+        orderCountryId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: order_country_id
+        orderPref:
+            type: smallint
+            nullable: true
+            unsigned: false
+            column: order_pref
+        orderAddr01:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_addr01
-        addr02:
+        orderAddr02:
             type: text
             nullable: true
+            length: null
+            fixed: false
             column: order_addr02
-#        sex:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
-#            column: order_sex
-        birth:
+        orderSex:
+            type: smallint
+            nullable: true
+            unsigned: false
+            column: order_sex
+        orderBirth:
             type: datetime
             nullable: true
             column: order_birth
-#        job:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-#            column: order_job
+        orderJob:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: order_job
         subtotal:
             type: decimal
             nullable: true
@@ -125,38 +164,43 @@ Eccube\Entity\Order:
             precision: 10
             scale: 0
             default: '0'
-#        deliv_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-        deliv_fee:
+        delivId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: deliv_id
+        delivFee:
             type: decimal
             nullable: true
             precision: 10
             scale: 0
+            column: deliv_fee
         charge:
             type: decimal
             nullable: true
             precision: 10
             scale: 0
-        use_point:
+        usePoint:
             type: decimal
             nullable: false
             precision: 10
             scale: 0
             default: '0'
-        add_point:
+            column: use_point
+        addPoint:
             type: decimal
             nullable: false
             precision: 10
             scale: 0
             default: '0'
-        birth_point:
+            column: add_point
+        birthPoint:
             type: decimal
             nullable: false
             precision: 10
             scale: 0
             default: '0'
+            column: birth_point
         tax:
             type: decimal
             nullable: true
@@ -167,138 +211,108 @@ Eccube\Entity\Order:
             nullable: true
             precision: 10
             scale: 0
-        payment_total:
+        paymentTotal:
             type: decimal
             nullable: true
             precision: 10
             scale: 0
-#        payment_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-        payment_method:
+            column: payment_total
+        paymentId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: payment_id
+        paymentMethod:
             type: text
             nullable: true
+            length: null
+            fixed: false
+            column: payment_method
         note:
             type: text
             nullable: true
+            length: null
+            fixed: false
         status:
             type: smallint
             nullable: true
             unsigned: false
-        create_date:
+        createDate:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
-        update_date:
+            default: now()
+            column: create_date
+        updateDate:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
-        commit_date:
+            column: update_date
+        commitDate:
             type: datetime
             nullable: true
-        payment_date:
+            column: commit_date
+        paymentDate:
             type: datetime
             nullable: true
-#        device_type_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-        del_flg:
+            column: payment_date
+        deviceTypeId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: device_type_id
+        delFlg:
             type: smallint
             nullable: false
             unsigned: false
             default: '0'
+            column: del_flg
         memo01:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo02:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo03:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo04:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo05:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo06:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo07:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo08:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo09:
             type: text
             nullable: true
+            length: null
+            fixed: false
         memo10:
             type: text
             nullable: true
-    manyToOne:
-        OrderTemp:
-            targetEntity: Eccube\Entity\OrderTemp
-            inversedBy: Orders
-            joinColumn:
-                name: order_temp_id
-                referencedColumnName: order_temp_id
-        Customer:
-            targetEntity: Eccube\Entity\Customer
-            inversedBy: Orders
-            joinColumn:
-                name: customer_id
-                referencedColumnName: customer_id
-        Country:
-            targetEntity: Eccube\Entity\Master\Country
-            inversedBy: Orders
-            joinColumn:
-                name: order_country_id
-                referencedColumnName: id
-        Pref:
-            targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: Orders
-            joinColumn:
-                name: order_pref
-                referencedColumnName: id
-        Sex:
-            targetEntity: Eccube\Entity\Master\Sex
-            inversedBy: Orders
-            joinColumn:
-                name: order_sex
-                referencedColumnName: id
-        Job:
-            targetEntity: Eccube\Entity\Master\Job
-            inversedBy: Orders
-            joinColumn:
-                name: order_job
-                referencedColumnName: id
-        Deliv:
-            targetEntity: Eccube\Entity\Deliv
-            inversedBy: Orders
-            joinColumn:
-                name: deliv_id
-                referencedColumnName: deliv_id
-        Payment:
-            targetEntity: Eccube\Entity\Payment
-            inversedBy: Orders
-            joinColumn:
-                name: payment_id
-                referencedColumnName: payment_id
-        DeviceType:
-            targetEntity: Eccube\Entity\Master\DeviceType
-            inversedBy: Orders
-            joinColumn:
-                name: device_type_id
-                referencedColumnName: id
-    oneToMany:
-        OrderDetails:
-            targetEntity: Eccube\Entity\OrderDetail
-            mappedBy: Order
-        Shippings:
-            targetEntity: Eccube\Entity\Shipping
-            mappedBy: Order
+            length: null
+            fixed: false
     lifecycleCallbacks: {  }

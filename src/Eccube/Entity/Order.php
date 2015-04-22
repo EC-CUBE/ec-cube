@@ -255,6 +255,11 @@ class Order extends \Eccube\Entity\AbstractEntity
     private $OrderDetails;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Shippings;
+
+    /**
      * @var \Eccube\Entity\OrderTemp
      */
     private $OrderTemp;
@@ -305,6 +310,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function __construct()
     {
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1636,5 +1642,38 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getDeviceType()
     {
         return $this->DeviceType;
+    }
+
+    /**
+     * Add Shippings
+     *
+     * @param \Eccube\Entity\Shipping $shippings
+     * @return Order
+     */
+    public function addShipping(\Eccube\Entity\Shipping $shippings)
+    {
+        $this->Shippings[] = $shippings;
+
+        return $this;
+    }
+
+    /**
+     * Remove Shippings
+     *
+     * @param \Eccube\Entity\Shipping $shippings
+     */
+    public function removeShipping(\Eccube\Entity\Shipping $shippings)
+    {
+        $this->Shippings->removeElement($shippings);
+    }
+
+    /**
+     * Get Shippings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShippings()
+    {
+        return $this->Shippings;
     }
 }
