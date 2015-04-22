@@ -1,0 +1,136 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+<script type="text/javascript">
+<!--
+
+    function fnDelete(action) {
+        if (confirm('この会員情報を削除しても宜しいですか？')) {
+            document.search_form.action = action;
+            document.search_form.submit();
+        }
+    }
+
+    function fnEdit(action) {
+        document.search_form.action = action;
+        document.search_form.submit();
+    }
+
+    function fnReSendMail(action) {
+        if (confirm('仮登録メールを再送しても宜しいですか？')) {
+            document.search_form.action = action;
+            document.search_form.submit();
+        }
+    }
+//-->
+</script>
+
+    {% for message in app.session.flashbag.get('admin.customer.complete')  %}
+        {{ message|trans|raw }}<br />
+    {% endfor %}
+
+
+<div id="customer" class="contents-main">
+    <form name="search_form" id="search_form" method="post" action="{{ url('admin_customer') }}">
+
+        <h2>検索条件設定</h2>
+
+        <!--検索条件設定テーブルここから-->
+        <table class="form">
+
+
+            {{ form_widget(form) }}
+
+
+        </table>
+        <div class="btn">
+            <p class="page_rows">検索結果表示件数
+            {#
+            <select name="search_page_max">
+                <option>10<option>
+            </select> 件</p>
+            #}
+            <div class="btn-area">
+                <ul>
+                    <li>
+                        <input type="submit" value="この条件で検索する" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+    {% if showResult %}
+
+        <!-- ★★検索結果一覧★★ -->
+        <form name="form1" id="form1" method="post" action="?">
+            <h2>検索結果一覧</h2>
+            <div class="btn">
+                <span class="attention">{{ Customers|length }}件</span>&nbsp;が該当しました。
+                <!-- 検索結果 -->
+                <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
+                <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</a>
+            </div>
+
+            <!-- 検索結果表示テーブル -->
+            <table class="list" id="customer-search-result">
+                <col width="10%" />
+                <col width="10%" />
+                <col width="50%" />
+                <col width="30%" />
+
+                <tr>
+                    <th>種別</th>
+                    <th>会員ID</th>
+                    <th>会員情報</th>
+                    <th>操作</th>
+                </tr>
+                {% for Customer in Customers %}
+                    <tr>
+                        <td class="center">
+                            {% if Customer.status == 1 %}
+                                仮
+                            {% else %}
+                                本
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ Customer.id }}
+                        </td>
+                        <td>
+                            {{ Customer.name01 }} {{Customer.name02}}<br />
+                            {{ Customer.tel01 }} - {{ Customer.tel02 }} - {{ Customer.tel03 }}
+                        </td>
+                        <td class="center">
+                            {% set delete_action = url('admin_customer_delete', {customerId: Customer.id}) %}
+                            {% set resend_action = url('admin_customer_resend', {customerId: Customer.id}) %}
+                            {% set edit_action = url('admin_customer_edit', {customerId: Customer.id}) %}
+                            <span class="icon_edit">
+                                <a href="#" onclick="return fnEdit('{{ edit_action }}');">編集</a>
+                            </span>
+                             | 
+                            <span class="icon_delete">
+                                <a href="#" onclick="return fnDelete('{{ delete_action }}');">削除</a>
+                            </span>
+                            {% if Customer.status == 1 %}
+                                | <a href="#" onclick="return fnReSendMail('{{ resend_action }}');">仮登録メール再送</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="center">
+                            検索条件に該当するデータがありませんでした。
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <!-- 検索結果表示テーブル -->
+
+        </form>
+        <!-- ★★検索結果一覧★★ -->
+
+    {% endif %}
+</div>
+
+{% endblock %}

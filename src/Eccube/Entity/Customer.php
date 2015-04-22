@@ -236,11 +236,17 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $Pref;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Orders;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1113,6 +1119,42 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     {
         return $this->CustomerFavoriteProducts;
     }
+
+
+
+    /**
+     * Add Orders
+     *
+     * @param \Eccube\Entity\Orders $order
+     * @return Customer
+     */
+    public function addOrder(\Eccube\Entity\Order $order)
+    {
+        $this->Orders[] = $order;
+
+        return $this;
+    }
+
+    /**
+     * Remove Orders
+     *
+     * @param \Eccube\Entity\Orders $customerFavoriteProducts
+     */
+    public function removeOrder(\Eccube\Entity\Order $order)
+    {
+        $this->Orders->removeElement($order);
+    }
+
+    /**
+     * Get Orders
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrders()
+    {
+        return $this->Orders;
+    }
+
 
     /**
      * Set Sex
