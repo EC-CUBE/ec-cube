@@ -50,8 +50,10 @@ class Application extends \Silex\Application
 
         // load config
         $this['config'] = $app->share(function () {
-            $config = Yaml::parse(__DIR__ .'/../../app/config/eccube/config.yml');
-            return $config;
+            $config = Yaml::parse(__DIR__ . '/../../app/config/eccube/config.yml');
+            $config_constant = Yaml::parse(__DIR__ . '/../../app/config/eccube/constant.yml.dist');
+
+            return array_merge($config_constant, $config);
         });
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
@@ -63,7 +65,13 @@ class Application extends \Silex\Application
                 __DIR__ . '/../../app/plugin/',
             ),
             'twig.form.templates' => array('Form/form_layout.twig'),
+            'twig.options' => array('cache' => __DIR__ . '/../../app/cache/twig'),
         ));
+        $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+            $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
+
+            return $twig;
+        }));
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
@@ -71,7 +79,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
-        $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+        $app['translator'] = $app->share($app->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
             $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', 'ja');
 
@@ -79,7 +87,7 @@ class Application extends \Silex\Application
         }));
 
         // インストールされてなければこれこまで読み込む
-        if (!is_array($this['config'])) {
+        if (!file_exists(__DIR__ . '/../../app/config/eccube/config.yml')) {
             $this->mount('', new ControllerProvider\FrontControllerProvider());
             $this->register(new ServiceProvider\EccubeServiceProvider());
             return ;
@@ -99,18 +107,24 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
-        $ormOptions = array(
-            'mappings' => array(
-                array(
-                    'type' => 'yml',
-                    'namespace' => 'Eccube\Entity',
-                    'path' => array(
-                        __DIR__ . '/Resource/doctrine',
-                        __DIR__ . '/Resource/doctrine/master',
+        //Doctrine ORM
+        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.em.options' => array(
+                'mappings' => array(
+                    array(
+                        'type' => 'yml',
+                        'namespace' => 'Eccube\Entity',
+                        'path' => array(
+                            __DIR__ . '/Resource/doctrine',
+                            __DIR__ . '/Resource/doctrine/master',
+                        ),
                     ),
                 ),
             ),
-        );
+        ));
+
+        $this->register(new ServiceProvider\EccubeServiceProvider());
 
        // EventDispatcher
         $app['eccube.event.dispatcher'] = $app->share(function() {
@@ -129,7 +143,6 @@ class Application extends \Silex\Application
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
             
             if ($config['enable'] === true) {
-
                 // Type: Event
                 if (isset($config['event'])) {
                     $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
@@ -151,11 +164,13 @@ class Application extends \Silex\Application
                     foreach($config['orm.path'] as $path) {
                         $pathes[] = $basePath . '/' . $config['name'] . $path;
                     }
-                    $ormOptions['mappings'][] = array(
-                        'type' => 'yml',
-                        'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
-                        'path' => $pathes,
-                    );
+                    $app['orm.em.options'] = $app->extend('orm.em.options', function ($options) use ($config, $pathes) {
+                        $options['mappings'][] = array(
+                            'type' => 'yml',
+                            'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                            'path' => $pathes,
+                        );
+                    });
                 }
             }
         }
@@ -183,14 +198,6 @@ class Application extends \Silex\Application
             $event = $app->parseController($request) . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
-
-        //Doctrine ORM
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => $ormOptions,
-        ));
-
-        $this->register(new ServiceProvider\EccubeServiceProvider());
 
         // Security
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
@@ -236,12 +243,17 @@ class Application extends \Silex\Application
             return new \Symfony\Component\Filesystem\Filesystem();
         };
 
+        $app->register(new \Silex\Provider\MonologServiceProvider(), array(
+            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
+        ));
+
         // Silex Web Profiler
         if ($app['env'] === 'dev') {
             $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
                 'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
-                'profiler.mount_prefix' => '/_profiler', // this is the default
+                'profiler.mount_prefix' => '/_profiler',
             ));
+            $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
         }
 
         $this->mount('', new ControllerProvider\FrontControllerProvider());
@@ -291,5 +303,27 @@ class Application extends \Silex\Application
     {
         $route = str_replace('_', '.', $request->attributes->get('_route'));
         return 'eccube.event.controller.' . $route;
+    }
+
+    public function boot()
+    {
+        parent::boot();
+
+        $app = $this;
+
+        // constant 上書き
+        $app['config'] = $app->share($app->extend("config", function ($config, \Silex\Application $app) {
+            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
+            if (is_readable($constant_file)) {
+                $config_constant = Yaml::parse($constant_file);
+            } else {
+                $config_constant = $app['eccube.repository.master.constant']->getAll();
+                if ($config_constant) {
+                    file_put_contents($constant_file, Yaml::dump($config_constant));
+                }
+            }
+
+            return array_merge($config_constant, $config);
+        }));
     }
 }

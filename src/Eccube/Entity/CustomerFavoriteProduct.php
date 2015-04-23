@@ -39,20 +39,6 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
      */
     private $Product;
 
-
-    /**
-     * Set customer_id
-     *
-     * @param integer $customerId
-     * @return CustomerFavoriteProduct
-     */
-    public function setCustomerId($customerId)
-    {
-        $this->customer_id = $customerId;
-
-        return $this;
-    }
-
     /**
      * Get customer_id
      *
@@ -61,19 +47,6 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     public function getCustomerId()
     {
         return $this->customer_id;
-    }
-
-    /**
-     * Set product_id
-     *
-     * @param integer $productId
-     * @return CustomerFavoriteProduct
-     */
-    public function setProductId($productId)
-    {
-        $this->product_id = $productId;
-
-        return $this;
     }
 
     /**
@@ -141,6 +114,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     public function setCustomer(\Eccube\Entity\Customer $customer = null)
     {
         $this->Customer = $customer;
+        $this->customer_id = $customer ? $customer->getId() : null;
 
         return $this;
     }
@@ -164,6 +138,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     public function setProduct(\Eccube\Entity\Product $product = null)
     {
         $this->Product = $product;
+        $this->product_id = $product ? $product->getId() : null;
 
         return $this;
     }

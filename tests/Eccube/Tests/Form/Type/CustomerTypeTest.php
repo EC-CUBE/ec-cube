@@ -67,6 +67,7 @@ class CustomerTypeTest extends TypeTestCase
         $this->app = new \Eccube\Application(array(
             'env' => 'test',
         ));
+        $this->app->boot();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']

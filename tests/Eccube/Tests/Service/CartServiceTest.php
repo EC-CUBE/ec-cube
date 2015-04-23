@@ -9,13 +9,12 @@ class CartServiceTest extends \PHPUnit_Framework_TestCase
 {
     private $app;
 
-    private $cart;
-
     public function setUp()
     {
         $this->app = new Application(array(
             'env' => 'test'
         ));
+        $this->app->boot();
     }
 
     public function testUnlock()
@@ -138,13 +137,11 @@ class CartServiceTest extends \PHPUnit_Framework_TestCase
     public function testGetMessages()
     {
         $cart = $this->app['eccube.service.cart'];
-
-        $cart = $this->app['eccube.service.cart'];
         $this->assertCount(0, $cart->getMessages());
-        
+
         $cart->setMessage('foo');
         $cart->setMessage('bar');
-        
+
         $this->assertCount(2, $cart->getMessages());
     }
 
