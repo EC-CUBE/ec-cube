@@ -80,7 +80,12 @@ class AdminControllerProvider implements ControllerProviderInterface
         // order
         $controllers->match('/order/', '\\Eccube\\Page\\Admin\\Order\\Index')->bind('admin_order');
         $controllers->match('/order/disp.php', '\\Eccube\\Page\\Admin\\Order\\Disp')->bind('admin_order_disp');
-        $controllers->match('/order/edit.php', '\\Eccube\\Page\\Admin\\Order\\Edit')->bind('admin_order_edit');
+        //$controllers->match('/order/edit.php', '\\Eccube\\Page\\Admin\\Order\\Edit')->bind('admin_order_edit');
+        $controllers->match('/order/edit/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderEditController::index')
+                    ->assert('orderId', '\d+')
+                    ->bind('admin_order_edit');
+        $controllers->match('/order/edit/', '\\Eccube\\Controller\\Admin\\Order\\OrderEditController::index')
+                    ->bind('admin_order_new');
         $controllers->match('/order/mail.php', '\\Eccube\\Page\\Admin\\Order\\Mail')->bind('admin_order_mail');
         $controllers->match('/order/mail_view.php', '\\Eccube\\Page\\Admin\\Order\\MailView')->bind('admin_order_mail_view');
         $controllers->match('/order/multiple.php', '\\Eccube\\Page\\Admin\\Order\\Multiple')->bind('admin_order_multiple');
