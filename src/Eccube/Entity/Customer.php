@@ -5,9 +5,12 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Customer
+ *
+ *  @UniqueEntity("email")
  */
 class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
@@ -23,6 +26,15 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    // TODO: できればFormTypeで行いたい
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint(new UniqueEntity(array(
+            'fields'  => 'email',
+            'message' => '既に利用されているメールアドレスです'
+        )));
     }
 
     /**
@@ -82,6 +94,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 
     /**
      * @var string
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
