@@ -46,7 +46,7 @@ class CustomerController
             'showResult' => $showResult,
             'Customers' => $Customers,
             'title' => $this->title,
-            'tpl_maintitle' => '会員マスター',
+            'tpl_maintitle' => '会員管理＞会員マスター',
         ));
     }
 
