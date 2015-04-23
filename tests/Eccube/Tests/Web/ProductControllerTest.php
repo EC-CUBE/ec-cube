@@ -32,16 +32,6 @@ class ProductControllerTest extends WebTestCase
         $client = $this->createClient();
         $client->request('GET', $this->app['url_generator']->generate('product_detail', array('productId' => '1')));
         $this->assertTrue($client->getResponse()->isSuccessful());
-
-        $client->request('GET', $this->app['url_generator']->generate('product_detail', array('productId' => '999999999')));
-        $this->assertFalse($client->getResponse()->isSuccessful());
-    }
-
-    public function testRoutingDetailFail()
-    {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('product_detail', array('productId' => '999999999')));
-        $this->assertFalse($client->getResponse()->isSuccessful());
     }
 
 }
