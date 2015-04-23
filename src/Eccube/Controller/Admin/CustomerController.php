@@ -60,7 +60,7 @@ class CustomerController
             $app['session']->getFlashBag()->add('admin.customer.complete', 'admin.customer.resend.complete');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_customer'));
+        return $this->index($app);
     }
 
     public function delete(Application $app, $customerId)
@@ -76,8 +76,9 @@ class CustomerController
             $app['session']->getFlashBag()->add('admin.customer.complete', 'admin.customer.delete.complete');
         }
 
-        return $app['request'];
-        // return $app->redirect($app['url_generator']->generate('admin_customer'));
+        $url = $app['url_generator']->generate('admin_customer');
+
+        return $this->index($app);
     }
 
 }

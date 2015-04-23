@@ -68,8 +68,10 @@
             <div class="btn">
                 <span class="attention">{{ Customers|length }}件</span>&nbsp;が該当しました。
                 <!-- 検索結果 -->
+                {#
                 <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
                 <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</a>
+                #}
             </div>
 
             <!-- 検索結果表示テーブル -->
