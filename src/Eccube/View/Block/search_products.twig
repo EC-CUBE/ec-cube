@@ -1,0 +1,43 @@
+{#
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2014 LOCKON CO.,LTD. All Rights Reserved.
+ * http://www.lockon.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ #}
+<!--{strip}-->
+    <div class="block_outer">
+        <div id="search_area">
+        <h2><span class="title"><img src="{{ app.config.tpl }}img/title/tit_bloc_search.gif" alt="検索条件" /></span></h2>
+            <div class="block_body">
+                <!--検索フォーム-->
+                <form name="search_form" id="search_form" method="get" action="{{ path('product_list') }}">
+                    <input type="hidden" name="mode" value="search" />
+                    <dl class="formlist">
+                        <dt>{{ form_label(form.category_id) }}</dt>
+                        <dd>
+                            {{ form_widget(form.category_id, {'attr': {'class': "box145"}}) }}
+                        </dd>
+                    </dl>
+                    {% if form.maker_id.vars.choices %}
+                    <dl class="formlist">
+                        <dt>{{ form_label(form.maker_id) }}</dt>
+                        <dd>
+                            {{ form_widget(form.maker_id, {'attr': {'class': "box145"}}) }}
+                        </dd>
+                    </dl>
+                    {% endif %}
+                    <dl class="formlist">
+                        <dt>{{ form_label(form.name) }}</dt>
+                        <dd>{{ form_widget(form.name, {'attr': {'class': "box140"}}) }}</dd>
+                    </dl>
+                    <p class="btn">
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_search.jpg" alt="検索" name="search" />
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+<!--{/strip}-->

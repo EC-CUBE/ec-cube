@@ -222,7 +222,9 @@ Eccube\Entity\Product:
             mappedBy: Product
         RecommendProducts:
             targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: Product
+            mappedBy: RecommendedProduct
+            orderBy:
+                rank: ASC
         RecommendedProducts:
             targetEntity: Eccube\Entity\RecommendProduct
             mappedBy: Product
