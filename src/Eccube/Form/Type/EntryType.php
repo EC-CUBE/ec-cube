@@ -7,7 +7,7 @@ use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 
-class CustomerType extends AbstractType
+class EntryType extends AbstractType
 {
     public $app;
 
@@ -100,15 +100,6 @@ class CustomerType extends AbstractType
             ->add('mailmaga_flg', 'mailmagazinetype', array(
                 'required' => false,
             ))
-            ->add('status', 'customer_status', array(
-                'required' => false,
-            ))
-            ->add('note', 'textarea', array(
-                'required' => false,
-            ))
-            ->add('point', 'text', array(
-                'required' => false,
-            ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'));
     }
 
@@ -117,7 +108,7 @@ class CustomerType extends AbstractType
      */
     public function getName()
     {
-        return 'customer';
+        return 'entry';
     }
 
 }

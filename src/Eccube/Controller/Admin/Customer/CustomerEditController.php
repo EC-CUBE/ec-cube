@@ -26,7 +26,6 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class CustomerEditController extends AbstractController
@@ -84,8 +83,11 @@ class CustomerEditController extends AbstractController
             if ($form->isValid()) {
 
                 if ($Customer->getId() === null ) {
-                    $generator = new SecureRandom();
-                    $Customer->setSalt(bin2hex($generator->nextBytes(5)));
+                    $Customer->setSalt(
+                        $app['orm.em']
+                            ->getRepository('Eccube\Entity\Customer')
+                            ->createSalt(5)
+                    );
                     $Customer->setSecretKey(
                         $app['orm.em']
                             ->getRepository('Eccube\Entity\Customer')
@@ -96,9 +98,11 @@ class CustomerEditController extends AbstractController
                 if ( $Customer->getPassword() === $app['config']['default_password']) {
                     $Customer->setPassword($previous_password);
                 } else {
-                    $encoder = $app['security.encoder_factory']->getEncoder($Customer);
-                    $encoded_password = $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
-                    $Customer->setPassword($encoded_password);
+                    $Customer->setPassword(
+                        $app['orm.em']
+                            ->getRepository('Eccube\Entity\Customer')
+                            ->encryptPassword($app, $Customer)
+                    );
                 }
 
                 $app['orm.em']->persist($Customer);
