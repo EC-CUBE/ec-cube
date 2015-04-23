@@ -5,6 +5,9 @@ namespace Eccube\Controller;
 use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use \Doctrine\Common\Util\Debug;
+use Eccube\Entity\ShipmentItemVirtual;
+use Eccube\Form\Type\HogeType;
+use Eccube\Form\Type\ShippingMultiType;
 
 class ShoppingController extends AbstractController
 {
@@ -354,34 +357,137 @@ class ShoppingController extends AbstractController
         );
     }
 
+    // 複数配送
     public function shipping_multiple(Application $app)
     {
-
         $this->init($app);
         $this->verifyCartAndAbort();
-        $order = $this->orderRepository->find($this->cartService->getPreOrderId());
-        $orderDetails = $order->getOrderDetails();
 
-        $form = $app['form.factory']->createBuilder()
-            ->add('orderDetails', 'collection', array(
-                    'required' => true,
-                    'choices'  => array(0 => '使用しない', 1 => '使用する'),
-                    'expanded' => true,
-                    'data' => $pointFlg))
-            ->getForm();
+        $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
 
+        $Products = array();
+        $data = array();
+        foreach ($Order->getOrderDetails() as $OrderDetail) {
+            /** @var  $OrderDetail \Eccube\Entity\OrderDetail */
+            $max = $OrderDetail->getQuantity();
+            for ($i = 0; $i < $max; $i++) {
+                $productClassId =  $OrderDetail->getProductClass()->getId();
+                $data[] = array(
+                    'product_class_id' => $productClassId,
+                );
+                $Products[$productClassId] = $OrderDetail->getProduct();
+                $ProductClasses[$productClassId] = $OrderDetail->getProductClass();
+            }
+        }
 
-        $form = $this->form;
+        $builder = $app['form.factory']->createBuilder();
+        $builder->add('shipping_multi', 'collection', array(
+                'type' => new ShippingMultiType($app),
+                'options' => array(),
+                'data' => $data
+        ));
+
+        $form = $builder->getForm();
+        if ('POST' === $app['request']->getMethod()) {
+            $form->handleRequest($app['request']);
+            if ($form->isValid()) {
+                $Shippings = $Order->getShippings();
+                foreach ($Shippings as $Shipping) {
+                    $ShipmentItems = $Shipping->getShipmentItems();
+                    foreach ($ShipmentItems as $ShipmentItem) {
+                        $app['orm.em']->remove($ShipmentItem);
+                    }
+                    $app['orm.em']->remove($Shipping);
+                    $app['orm.em']->flush();
+                }
+
+                $data = $form->getData();
+                $arrayData = array();
+                foreach ($data['shipping_multi'] as $line) {
+                    $productClassId = $line['product_class_id'];
+                    $ProductClass = $app['orm.em']->getRepository('Eccube\Entity\ProductClass')->find($productClassId);
+                    $OtherDeliv = $line['other_deliv'];
+                    $quantity = $line['quantity'];
+                    if ($quantity < 1) {
+                        continue;
+                    }
+                    $arrayData[$OtherDeliv->getId()]['other_deliv'] = $OtherDeliv;
+                    $arrayData[$OtherDeliv->getId()]['shipment_items'][] = array(
+                        'ProductClass' => $ProductClass,
+                        'quantity' => $quantity
+                    );
+                }
+                $i = 1;
+                foreach ($arrayData as $key => $values) {
+                    $OtherDeliv = $values['other_deliv'];
+                    $ShipmentItems = $values['shipment_items'];
+                    $Shipping = $this->newShipping($OtherDeliv);
+                    $Shipping->setShippingId($i++)
+                        ->setOrderId($Order->getId())
+                        ->setOrder($Order);
+                    $app['orm.em']->persist($Shipping);
+                    foreach ($ShipmentItems as $item) {
+                        $ProductClass = $item['ProductClass'];
+                        $Product = $ProductClass->getProduct();
+                        $quantity = $item['quantity'];
+                        $ShipmentItem = new \Eccube\Entity\ShipmentItem();
+                        $ShipmentItem->setShippingId($Shipping->getShippingId());
+                        $ShipmentItem->setShipping($Shipping)
+                            ->setOrderId($Order->getId())
+                            ->setProductClassId($ProductClass->getId())
+                            ->setProductClass($ProductClass)
+                            ->setProductName($Product->getName())
+                            ->setProductCode($ProductClass->getProductCode())
+                            ->setClasscategoryName1($ProductClass->getClassCategory1()->getName())
+                            ->setClasscategoryName2($ProductClass->getClassCategory2()->getName())
+                            ->setPrice($ProductClass->getPrice02())
+                            ->setQuantity($quantity);
+                        $app['orm.em']->persist($ShipmentItem);
+                    }
+                }
+                $app['orm.em']->flush();
+                return $app->redirect($app['url_generator']->generate('shopping'));
+            }
+        }
+
         return $app['twig']->render(
             'shopping/shipping_multiple.twig', array(
                 'form'  => $form->createView(),
-                'order' => $order,
+                'Products' => $Products,
+                'ProductClassess' => $ProductClasses,
                 'title' => 'お届け先設定(複数配送)',
             )
         );
     }
 
-    // todo サービスに移動
+    // todo リファクタ
+    private function newShipping($OtherDeliv)
+    {
+        $Shipping = new \Eccube\Entity\Shipping();
+        $Shipping
+            ->setName01($OtherDeliv->getName01())
+            ->setName02($OtherDeliv->getName02())
+            ->setKana01($OtherDeliv->getKana02())
+            ->setKana02($OtherDeliv->getKana02())
+            ->setCompanyName($OtherDeliv->getCompanyName())
+            ->setTel01($OtherDeliv->getTel01())
+            ->setTel02($OtherDeliv->getTel02())
+            ->setTel03($OtherDeliv->getTel03())
+            ->setFax01($OtherDeliv->getFax01())
+            ->setFax02($OtherDeliv->getFax02())
+            ->setFax03($OtherDeliv->getFax03())
+            ->setZip01($OtherDeliv->getZip01())
+            ->setZip02($OtherDeliv->getZip02())
+            ->setPref($OtherDeliv->getPref())
+            ->setAddr01($OtherDeliv->getAddr01())
+            ->setAddr02($OtherDeliv->getAddr02())
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime())
+            ->setDelFlg(0);
+        return $Shipping;
+    }
+
+    // todo リファクタ
     public function findDeliveriesFromOrderDetails($details)
     {
         $productTypeIds = array();

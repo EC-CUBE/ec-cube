@@ -41,8 +41,14 @@ Eccube\Entity\ShipmentItem:
             nullable: true
             precision: 10
             scale: 0
+    oneToOne:
+        ProductClass:
+            targetEntity: Eccube\Entity\ProductClass
+            joinColumn:
+                name: product_class_id
+                referencedColumnName: product_class_id
     manyToOne:
-         Shipping:
+        Shipping:
              targetEntity: Eccube\Entity\Shipping
              inversedBy: ShipmentItems
              joinColumns:

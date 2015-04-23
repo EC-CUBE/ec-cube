@@ -170,7 +170,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\ShipmentItem $ShipmentItem
      * @return Shipping
      */
-    public function addShipmentItem(\Eccube\Entity\ShipmentItem $ShipmentItem)
+    public function addShipmentItems(\Eccube\Entity\ShipmentItem $ShipmentItem)
     {
         $this->ShipmentItems[] = $ShipmentItem;
 
@@ -182,7 +182,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @param \Eccube\Entity\ShipmentItem $ShipmentItem
      */
-    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $ShipmentItem)
+    public function removeShipmentItems(\Eccube\Entity\ShipmentItem $ShipmentItem)
     {
         $this->ShipmentItems->removeElement($ShipmentItem);
     }
@@ -192,7 +192,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getShipmentItem()
+    public function getShipmentItems()
     {
         return $this->ShipmentItems;
     }

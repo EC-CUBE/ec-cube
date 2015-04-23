@@ -65,6 +65,11 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     private $Shipping;
 
     /**
+     * @var \Eccube\Entity\ProductClass
+     */
+    private $ProductClass;
+
+    /**
      * Set Order
      *
      * @param Shipping $Order
@@ -108,6 +113,29 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     public function getShipping()
     {
         return $this->Shipping;
+    }
+
+    /**
+     * Set ProductClass
+     *
+     * @param ProductClass $ProductClass
+     * @return ShipmentItem
+     */
+    public function setProductClass($ProductClass)
+    {
+        $this->ProductClass = $ProductClass;
+
+        return $this;
+    }
+
+    /**
+     * Get ProductClass
+     *
+     * @return ProductClass
+     */
+    public function getProductClass()
+    {
+        return $this->ProductClass;
     }
 
     /**

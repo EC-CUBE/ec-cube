@@ -1,6 +1,7 @@
 <?php
 namespace Eccube\Service;
 
+use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 
 class OrderService
@@ -187,9 +188,11 @@ class OrderService
 
             // 配送商品
             $shipmentItem = new \Eccube\Entity\ShipmentItem();
-            $shipmentItem->setShippingId($shipping->getShippingId())
+            $shipmentItem->setShippingId($shipping->getShippingId());
+            $shipmentItem->setShipping($shipping)
                          ->setOrderId($order->getId())
                          ->setProductClassId($productClass->getId())
+                         ->setProductClass($productClass)
                          ->setProductName($product->getName())
                          ->setProductCode($productClass->getProductCode())
                          ->setClasscategoryName1($productClass->getClassCategory1()->getName())
