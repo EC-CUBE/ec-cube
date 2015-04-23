@@ -45,14 +45,33 @@ class CustomerEditController extends AbstractController
     public function index(Application $app, $customerId = null)
     {
 
-        $Customer = $this->getCustomer($app, $customerId);
-        if ( $Customer === null ) {
-            throw new HttpException\NotFoundHttpException("※ 会員ID：$customerId が見つかりません。");
+        if ( $customerId ) {
+            $Customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
+                ->findOneBy(array(
+                        'id' => $customerId,
+                        'del_flg' => 0,
+                    )
+                );
+
+            if ( $Customer === null ) {
+                throw new HttpException\NotFoundHttpException("※ 会員ID：$customerId が見つかりません。");
+            }
+
+            if ($app['request']->getMethod() != 'POST') {
+                // 編集用にデフォルトパスワードをセット
+                $Customer->setPassword($app['config']['default_password']);
+            } else {
+                $previous_password = $Customer->getPassword();
+
+            }
+
+        } else {
+            $Customer =  $app['eccube.repository.customer']->newCustomer();
         }
 
-        //TODO: 購入処理ができてから実装する
-        $Order = $this->getOrder($app, $Customer);
 
+        //TODO: 購入処理ができてからちゃんと実装する
+        $Order = $this->getOrder($app, $Customer);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createBuilder('customer', $Customer);
@@ -63,22 +82,32 @@ class CustomerEditController extends AbstractController
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                if ( $Customer->getPassword() <> $app['config']['default_password']) {
-                    if (!$Customer->getSalt()) {
-                        $generator = new SecureRandom();
-                        $Customer->setSalt(bin2hex($generator->nextBytes(5)));
-                        // TODO: 冗長なので見直す
-                        $Customer->setSecretKey($this->getUniqueSecretKey($app));
-                    }
 
-                    // secure password
+                if ($Customer->getId() === null ) {
+                    $generator = new SecureRandom();
+                    $Customer->setSalt(bin2hex($generator->nextBytes(5)));
+                    $Customer->setSecretKey(
+                        $app['orm.em']
+                            ->getRepository('Eccube\Entity\Customer')
+                            ->getUniqueSecretKey($app)
+                    );
+                }
+
+                if ( $Customer->getPassword() === $app['config']['default_password']) {
+                    $Customer->setPassword($previous_password);
+                } else {
                     $encoder = $app['security.encoder_factory']->getEncoder($Customer);
                     $encoded_password = $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
                     $Customer->setPassword($encoded_password);
                 }
+
                 $app['orm.em']->persist($Customer);
                 $app['orm.em']->flush();
                 $app['session']->getFlashBag()->add('customer.complete', 'admin.register.complete');
+
+                return $app->redirect($app['url_generator']->generate('admin_customer_edit', array(
+                    'customerId' => $Customer->getId(),
+                    )));
             }
         }
 
@@ -102,20 +131,7 @@ class CustomerEditController extends AbstractController
      */
     private function getCustomer(Application $app, $customerId) {
 
-        if ( $customerId ) {
-            $customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
-                ->findOneBy(array(
-                        'id' => $customerId,
-                        'del_flg' => 0,
-                    )
-                );
-            $customer->setPassword($app['config']['default_password']);
 
-            return $customer;
-
-        } else {
-            return $app['eccube.repository.customer']->newCustomer();
-        }
     }
 
     /**
@@ -139,19 +155,6 @@ class CustomerEditController extends AbstractController
             return $Order;
         } else {
             return null;
-        }
-    }
-
-    private function getUniqueSecretKey($app)
-    {
-        $unique = md5(uniqid(rand(), 1));
-        $customer = $app['eccube.repository.customer']->findBy(array(
-            'secret_key' => $unique,
-        ));
-        if (count($customer) == 0) {
-            return $unique;
-        } else {
-            return $this->getUniqueSecretKey($app);
         }
     }
 }

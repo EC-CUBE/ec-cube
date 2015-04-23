@@ -26,15 +26,15 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
     public function newCustomer()
     {
-        $customer = new \Eccube\Entity\Customer();
+        $Customer = new \Eccube\Entity\Customer();
 
-        $customer->setCreateDate(new \DateTime())
+        $Customer->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())
             ->setPoint(0)
             ->setStatus(new \Eccube\Entity\Master\CustomerStatus())
             ->setDelFlg(0);
 
-        return $customer;
+        return $Customer;
     }
 
     /**
@@ -297,4 +297,23 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         return $qb;
     }
+
+    /**
+     * ユニークなシークレットキーを返す
+     * @param $app
+     * @return string
+     */
+    public function getUniqueSecretKey($app)
+    {
+        $unique = md5(uniqid(rand(), 1));
+        $Customer = $app['eccube.repository.customer']->findBy(array(
+            'secret_key' => $unique,
+        ));
+        if (count($Customer) == 0) {
+            return $unique;
+        } else {
+            return $this->getUniqueSecretKey($app);
+        }
+    }
+
 }
