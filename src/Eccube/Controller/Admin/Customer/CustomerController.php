@@ -1,15 +1,23 @@
 <?php
 
-namespace Eccube\Controller\Admin;
+namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-
+ 
 class CustomerController
 {
+    public $title;
+
+    public function __construct()
+    {
+        $this->title = '会員マスター';
+    }
+
     public function index(Application $app)
     {
+
         $Customers = array();
 
         $form = $app['form.factory']
@@ -37,6 +45,8 @@ class CustomerController
             'form' => $form->createView(),
             'showResult' => $showResult,
             'Customers' => $Customers,
+            'title' => $this->title,
+            'tpl_maintitle' => '会員マスター',
         ));
     }
 
