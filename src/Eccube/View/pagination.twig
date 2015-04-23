@@ -1,0 +1,21 @@
+{% if pages.pageCount > 1 %}
+    {% if pages.previous is defined %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}">&lt;&lt;前へ</a>
+    {% endif %}
+
+    {% if pages.pagesInRange|length > 2 %}
+        {% for page in pages.pagesInRange %}
+            {% if page == pages.current %}
+                <strong>{{ page }}</strong>
+            {% else %}
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+         | 
+    {% endif %}
+
+    {% if pages.next is defined %}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}">次へ&gt;&gt;</a>
+    {% endif %}
+{% endif %}

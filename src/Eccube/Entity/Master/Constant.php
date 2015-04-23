@@ -108,4 +108,17 @@ class Constant extends \Eccube\Entity\AbstractEntity
     {
         return $this->remarks;
     }
+
+    /**
+     * Set id
+     *
+     * @param string $id
+     * @return Constant
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

@@ -1,733 +1,3 @@
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 1, 'カテゴリ', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 2, '利用ガイド', 'guide.tpl', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 3, 'カゴの中', 'cart.tpl', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 4, '商品検索', 'search_products.tpl', 'search_products', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/search_products.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 5, '新着情報', 'news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 6, 'ログイン', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 7, 'おすすめ商品', 'recommend.tpl', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 8, 'カレンダー', 'calendar.tpl', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/calendar.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 9, '【ヘッダー】ログイン', 'login_header.tpl', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 1, 'サイトロゴ', 'site_logo.tpl', 'site_logo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 2, '新着情報', 'news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 3, 'おすすめ商品', 'recommend.tpl', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 4, 'カテゴリ', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 5, 'ログイン', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 6, '【ヘッダー】ログイン', 'login_header.tpl', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 1, '新着情報', 'news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 2, 'ログイン', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 3, 'おすすめ商品', 'recommend.tpl', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 4, 'カテゴリ', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 5, '【ヘッダー】ログイン', 'login_header.tpl', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 6, '【ヘッダー】ナビ', 'navi_header.tpl', 'navi_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/navi_header.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 7, '【フッター】ログイン', 'login_footer.tpl', 'login_footer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_footer.php', 0);
-INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 8, '【フッター】ナビ', 'navi_footer.tpl', 'navi_footer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/navi_footer.php', 0);
-
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 4, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 8, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 7, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 5, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 10, 9, 1, 1);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 5, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 5, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 5, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 6, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 6, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 6, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 7, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 7, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 7, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 8, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 8, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 8, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 9, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 9, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 9, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 10, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 10, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 10, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 11, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 11, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 11, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 12, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 12, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 12, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 13, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 13, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 13, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 14, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 14, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 14, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 15, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 15, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 15, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 16, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 16, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 16, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 17, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 17, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 17, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 18, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 18, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 18, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 19, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 19, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 19, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 20, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 20, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 20, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 21, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 21, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 21, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 22, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 22, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 22, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 23, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 23, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 23, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 24, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 24, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 24, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 25, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 25, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 25, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 26, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 26, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 26, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 27, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 27, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 27, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 28, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 28, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 28, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 10, 1, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 2, 2, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 2, 3, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 2, 4, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 1, 4, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 2, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 3, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 4, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 10, 5, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 2, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 2, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 2, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 3, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 3, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 3, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 4, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 4, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 4, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 5, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 5, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 5, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 6, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 6, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 6, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 7, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 7, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 7, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 8, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 8, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 8, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 9, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 9, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 9, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 10, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 10, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 10, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 11, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 11, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 11, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 12, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 12, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 12, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 13, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 13, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 13, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 14, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 14, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 14, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 15, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 15, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 15, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 16, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 16, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 16, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 17, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 17, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 17, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 18, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 18, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 18, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 19, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 19, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 19, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 20, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 20, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 20, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 21, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 21, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 21, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 22, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 22, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 22, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 23, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 23, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 23, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 24, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 24, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 24, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 25, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 25, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 25, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 26, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 26, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 26, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 27, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 27, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 27, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 10, 6, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 6, 7, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 6, 8, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 10, 6, 1, 0);
-
-INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '食品', 0, 1, 5, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '雑貨', 0, 1, 6, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (3, 'お菓子', 1, 2, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (4, 'なべ', 1, 2, 4, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (5, 'アイス', 3, 3, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (6, 'レシピ', 0, 1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
-INSERT INTO dtb_category_count (category_id, product_count, create_date) VALUES (4, 2, CURRENT_TIMESTAMP);
-INSERT INTO dtb_category_count (category_id, product_count, create_date) VALUES (5, 1, CURRENT_TIMESTAMP);
-INSERT INTO dtb_category_count (category_id, product_count, create_date) VALUES (6, 1, CURRENT_TIMESTAMP);
-
-INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (3, 1, CURRENT_TIMESTAMP);
-INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (1, 3, CURRENT_TIMESTAMP);
-INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (2, NULL, CURRENT_TIMESTAMP);
-INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (5, 1, CURRENT_TIMESTAMP);
-INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (4, 2, CURRENT_TIMESTAMP);
-INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (6, 1, CURRENT_TIMESTAMP);
-
-INSERT INTO dtb_class (class_id, name, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '味', 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_class (class_id, name, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '大きさ', 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (1, 'バニラ', 1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (2, 'チョコ', 1, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '抹茶', 1, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (4, 'L', 2, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (5, 'M', 2, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (6, 'S', 2, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (0, NULL, 0, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (1, 1, 'product_id', '商品ID', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (2, 1, 'product_class_id', '商品規格ID', 2, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (3, 1, 'parent_classcategory_id', '親規格分類ID', 3, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (4, 1, 'classcategory_id', '規格分類ID', 4, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (5, 1, 'parent_classcategory_name', '親規格分類名', 5, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (6, 1, 'classcategory_name', '規格分類名', 6, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (7, 1, 'maker_id', 'メーカーID', 7, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (8, 1, '(SELECT name as maker_name FROM dtb_maker WHERE prdcls.maker_id = dtb_maker.maker_id) as maker_name', 'メーカー名', 8, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (9, 1, 'name', '商品名', 9, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (10, 1, 'status', '表示ステータス(公開・非公開)', 10, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (11, 1, 'comment1', 'メーカーURL(コメント1)', 11, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'URL_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,URL_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (12, 1, 'comment2', 'コメント2', 12, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (13, 1, 'comment3', '検索ワード(コメント3)', 13, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (14, 1, 'comment4', 'コメント4', 14, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (15, 1, 'comment5', 'コメント5', 15, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (16, 1, 'comment6', 'コメント6', 16, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (17, 1, 'note', '備考欄(SHOP専用)', 17, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (18, 1, 'main_list_comment', '一覧-メインコメント', 18, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (19, 1, 'main_list_image', '一覧-メイン画像', 19, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (20, 1, 'main_comment', '詳細-メインコメント', 20, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK,HTML_TAG_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (21, 1, 'main_image', '詳細-メイン画像', 21, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (22, 1, 'main_large_image', '詳細-メイン拡大画像 ', 22, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (23, 1, 'sub_title1', '詳細-サブタイトル(1)', 23, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (24, 1, 'sub_comment1', '詳細-サブコメント(1)', 24, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,HTML_TAG_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (25, 1, 'sub_image1', '詳細-サブ画像(1)', 25, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (26, 1, 'sub_large_image1', '詳細-サブ拡大画像(1)', 26, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (27, 1, 'sub_title2', '詳細-サブタイトル(2)', 27, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (28, 1, 'sub_comment2', '詳細-サブコメント(2)', 28, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (29, 1, 'sub_image2', '詳細-サブ画像(2)', 29, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (30, 1, 'sub_large_image2', '詳細-サブ拡大画像(2)', 30, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (31, 1, 'sub_title3', '詳細-サブタイトル(3)', 31, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (32, 1, 'sub_comment3', '詳細-サブコメント(3)', 32, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (33, 1, 'sub_image3', '詳細-サブ画像(3)', 33, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (34, 1, 'sub_large_image3', '詳細-サブ拡大画像(3)', 34, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (35, 1, 'sub_title4', '詳細-サブタイトル(4)', 35, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (36, 1, 'sub_comment4', '詳細-サブコメント(4)', 36, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (37, 1, 'sub_image4', '詳細-サブ画像(4)', 37, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (38, 1, 'sub_large_image4', '詳細-サブ拡大画像(4)', 38, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (39, 1, 'sub_title5', '詳細-サブタイトル(5)', 39, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (40, 1, 'sub_comment5', '詳細-サブコメント(5)', 40, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (41, 1, 'sub_image5', '詳細-サブ画像(5)', 41, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (42, 1, 'sub_large_image5', '詳細-サブ拡大画像(5)', 42, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (43, 1, 'deliv_date_id', '発送日目安ID', 43, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (44, 1, 'del_flg', '削除フラグ', 44, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (45, 1, 'product_type_id', '商品種別ID', 45, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (46, 1, 'product_code', '商品コード', 46, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'EXIST_CHECK,SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (47, 1, 'stock', '在庫数', 47, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'AMOUNT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (48, 1, 'stock_unlimited', '在庫無制限フラグ', 48, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (49, 1, 'sale_limit', '販売制限数', 49, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'AMOUNT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (50, 1, 'price01', '通常価格', 50, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (51, 1, 'price02', '販売価格', 51, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (52, 1, 'deliv_fee', '送料', 52, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (53, 1, 'point_rate', 'ポイント付与率', 53, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PERCENTAGE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (54, 1, 'down_filename', 'ダウンロードファイル名', 54, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (55, 1, 'down_realfilename', 'ダウンロード実ファイル', 55, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,DOWN_FILE_EXISTS');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (56, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 0) AS recommend_product_id1', '関連商品ID(1)', 56, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (57, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 0) AS recommend_comment1', '関連商品コメント(1)', 57, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (58, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 1) AS recommend_product_id2', '関連商品ID(2)', 58, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (59, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 1) AS recommend_comment2', '関連商品コメント(2)', 59, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (60, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 2) AS recommend_product_id3', '関連商品ID(3)', 60, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (61, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 2) AS recommend_comment3', '関連商品コメント(3)', 61, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (62, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 3) AS recommend_product_id4', '関連商品ID(4)', 62, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (63, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 3) AS recommend_comment4', '関連商品コメント(4)', 63, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (64, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 4) AS recommend_product_id5', '関連商品ID(5)', 64, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (65, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 4) AS recommend_comment5', '関連商品コメント(5)', 65, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (66, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 5) AS recommend_product_id6', '関連商品ID(6)', 66, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (67, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 5) AS recommend_comment6', '関連商品コメント(6)', 67, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (68, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT product_status_id FROM dtb_product_status WHERE dtb_product_status.product_id = prdcls.product_id and del_flg = 0 ORDER BY dtb_product_status.product_status_id), '','')) as product_statuses', '商品ステータス', 68, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (69, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT name FROM dtb_product_status LEFT JOIN mtb_status ON  dtb_product_status.product_status_id = mtb_status.id  WHERE dtb_product_status.product_id = prdcls.product_id and del_flg = 0 ORDER BY dtb_product_status.product_status_id), '','')) as product_status_names', '商品ステータス名', 69, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (70, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_id FROM dtb_product_categories WHERE dtb_product_categories.product_id = prdcls.product_id ORDER BY dtb_product_categories.rank), '','')) as category_ids', 'カテゴリID', 70, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (71, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_name FROM dtb_product_categories LEFT JOIN dtb_category ON dtb_product_categories.category_id = dtb_category.category_id WHERE dtb_product_categories.product_id = prdcls.product_id ORDER BY dtb_product_categories.rank), '','')) as category_names', 'カテゴリ名', 71, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (72, 2, 'customer_id', '会員ID', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (73, 2, 'name01', 'お名前(姓)', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (74, 2, 'name02', 'お名前(名)', 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (75, 2, 'kana01', 'お名前(フリガナ・姓)', 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (76, 2, 'kana02', 'お名前(フリガナ・名)', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date, mb_convert_kana_option) VALUES (77, 2, 'company_name', '会社名', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (78, 2, 'zip01', '郵便番号1', 7, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (79, 2, 'zip02', '郵便番号2', 8, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (80, 2, 'zipcode', 'ZIP CODE', 9, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (81, 2, '(SELECT name FROM mtb_country WHERE mtb_country.id = dtb_customer.country_id) as country', '国', 10, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (82, 2, '(SELECT name FROM mtb_pref WHERE mtb_pref.id = dtb_customer.pref) as pref', '都道府県', 11, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (83, 2, 'addr01', '住所1', 12, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (84, 2, 'addr02', '住所2', 13, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (85, 2, 'email', 'E-MAIL', 14, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (86, 2, 'tel01', 'TEL1', 15, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (87, 2, 'tel02', 'TEL2', 16, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (88, 2, 'tel03', 'TEL3', 17, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (89, 2, 'fax01', 'FAX1', 18, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (90, 2, 'fax02', 'FAX2', 19, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (91, 2, 'fax03', 'FAX3', 20, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (92, 2, '(SELECT name FROM mtb_sex WHERE mtb_sex.id = dtb_customer.sex) as sex', '性別', 21, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (93, 2, '(SELECT name FROM mtb_job WHERE mtb_job.id = dtb_customer.job) as job', '職業', 22, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (94, 2, 'birth', '誕生日', 23, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (95, 2, 'first_buy_date', '初回購入日', 24, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (96, 2, 'last_buy_date', '最終購入日', 25, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (97, 2, 'buy_times', '購入回数', 26, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (98, 2, 'point', 'ポイント残高', 27, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (99, 2, 'note', '備考', 28, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (100, 2, 'create_date', '登録日', 29, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (101, 2, 'update_date', '更新日', 30, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (102, 3, 'order_id', '注文番号', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (103, 3, 'customer_id', '会員ID', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (104, 3, 'message', '要望等', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (105, 3, 'order_name01', 'お名前(姓)', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (106, 3, 'order_name02', 'お名前(名)', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (107, 3, 'order_kana01', 'お名前(フリガナ・姓)', 6, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVCa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (108, 3, 'order_kana02', 'お名前(フリガナ名)', 7, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVCa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option) VALUES (109, 3, 'order_company_name', '会社名', 8, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (110, 3, 'order_email', 'メールアドレス', 9, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', 'null', 'NO_SPTAB,EMAIL_CHECK,EMAIL_CHAR_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (111, 3, 'order_tel01', '電話番号1', 10, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (112, 3, 'order_tel02', '電話番号2', 11, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (113, 3, 'order_tel03', '電話番号3', 12, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (114, 3, 'order_fax01', 'FAX1', 13, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (115, 3, 'order_fax02', 'FAX2', 14, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (116, 3, 'order_fax03', 'FAX3', 15, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (117, 3, 'order_zip01', '郵便番号1', 16, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'ZIP01_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK,NUM_COUNT_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (118, 3, 'order_zip02', '郵便番号2', 17, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'ZIP02_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK,NUM_COUNT_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (119, 3, 'order_zipcode', 'ZIP CODE', 18, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'STEXT_LEN', 'GRAPH_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (120, 3, '(SELECT name FROM mtb_country WHERE mtb_country.id = dtb_order.order_country_id) as country', '国', 19, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (121, 3, '(SELECT name FROM mtb_pref WHERE mtb_pref.id = dtb_order.order_pref) as pref', '都道府県', 20, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (122, 3, 'order_addr01', '住所1', 21, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (123, 3, 'order_addr02', '住所2', 23, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (124, 3, 'order_sex', '性別', 23, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (125, 3, 'order_birth', '生年月日', 24, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (126, 3, 'order_job', '職種', 25, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (127, 3, 'subtotal', '小計', 38, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (128, 3, 'discount', '値引き', 39, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (129, 3, 'deliv_fee', '送料', 40, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (130, 3, 'charge', '手数料', 41, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (131, 3, 'use_point', '使用ポイント', 42, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (132, 3, 'add_point', '加算ポイント', 43, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (133, 3, 'tax', '税金', 44, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (134, 3, 'total', '合計', 45, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (135, 3, 'payment_total', 'お支払い合計', 46, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (136, 3, 'deliv_id', '配送業者ID', 47, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (137, 3, 'payment_method', '支払い方法', 48, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (138, 3, 'note', 'SHOPメモ', 50, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (139, 3, 'status', '対応状況', 51, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (140, 3, 'create_date', '注文日時', 52, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (141, 3, 'update_date', '更新日時', 53, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (142, 3, 'commit_date', '発送完了日時', 54, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (143, 3, 'device_type_id', '端末種別ID', 55, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (144, 3, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT shipping_id FROM dtb_shipping WHERE dtb_shipping.order_id = dtb_order.order_id), '','')) as shipping_ids', '配送情報ID', 57, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (145, 4, 'B.name', '商品名', 1, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (146, 4, '(SELECT name FROM mtb_disp WHERE mtb_disp.id = A.status) as status', 'レビュー表示', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (147, 4, 'A.create_date', '投稿日', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (148, 4, 'A.reviewer_name', '投稿者名', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (149, 4, 'A.reviewer_url', '投稿者URL', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVas', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (150, 4, '(SELECT name FROM mtb_sex WHERE mtb_sex.id = A.sex) as sex', '性別', 6, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (151, 4, '(SELECT name FROM mtb_recommend WHERE mtb_recommend.id = A.recommend_level) as recommend_level', 'おすすめレベル', 7, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (152, 4, 'A.title', 'タイトル', 8, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (153, 4, 'A.comment', 'コメント', 9, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (154, 5, 'category_id', 'カテゴリID', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (155, 5, 'category_name', 'カテゴリ名', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (156, 5, 'parent_category_id', '親カテゴリID', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (157, 5, 'level', '階層', NULL, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (158, 5, 'rank', '表示ランク', NULL, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (159, 5, 'del_flg', '削除フラグ', NULL, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
-
-INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 1, 'サンプル業者', 'サンプル業者', NULL, 2, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (2, 2, '配送無し(ダウンロード商品用)', 'なし', NULL, 1, 1, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 1, 1);
-INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 2, 2);
-INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 3, 3);
-INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 4, 4);
-INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (2, 3, 1);
-
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 1, 1000, 1);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 2, 1000, 2);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 3, 1000, 3);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 4, 1000, 4);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 5, 1000, 5);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 6, 1000, 6);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 7, 1000, 7);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 8, 1000, 8);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 9, 1000, 9);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 10, 1000, 10);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 11, 1000, 11);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 12, 1000, 12);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 13, 1000, 13);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 14, 1000, 14);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 15, 1000, 15);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 16, 1000, 16);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 17, 1000, 17);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 18, 1000, 18);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 19, 1000, 19);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 20, 1000, 20);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 21, 1000, 21);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 22, 1000, 22);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 23, 1000, 23);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 24, 1000, 24);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 25, 1000, 25);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 26, 1000, 26);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 27, 1000, 27);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 28, 1000, 28);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 29, 1000, 29);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 30, 1000, 30);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 31, 1000, 31);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 32, 1000, 32);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 33, 1000, 33);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 34, 1000, 34);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 35, 1000, 35);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 36, 1000, 36);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 37, 1000, 37);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 38, 1000, 38);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 39, 1000, 39);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 40, 1000, 40);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 41, 1000, 41);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 42, 1000, 42);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 43, 1000, 43);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 44, 1000, 44);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 45, 1000, 45);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 46, 1000, 46);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 47, 1000, 47);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 1, 0, 1);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 2, 0, 2);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 3, 0, 3);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 4, 0, 4);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 5, 0, 5);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 6, 0, 6);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 7, 0, 7);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 8, 0, 8);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 9, 0, 9);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 10, 0, 10);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 11, 0, 11);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 12, 0, 12);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 13, 0, 13);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 14, 0, 14);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 15, 0, 15);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 16, 0, 16);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 17, 0, 17);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 18, 0, 18);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 19, 0, 19);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 20, 0, 20);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 21, 0, 21);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 22, 0, 22);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 23, 0, 23);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 24, 0, 24);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 25, 0, 25);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 26, 0, 26);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 27, 0, 27);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 28, 0, 28);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 29, 0, 29);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 30, 0, 30);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 31, 0, 31);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 32, 0, 32);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 33, 0, 33);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 34, 0, 34);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 35, 0, 35);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 36, 0, 36);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 37, 0, 37);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 38, 0, 38);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 39, 0, 39);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 40, 0, 40);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 41, 0, 41);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 42, 0, 42);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 43, 0, 43);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 44, 0, 44);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 45, 0, 45);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 46, 0, 46);
-INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 47, 0, 47);
-
-INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 1, '午前');
-INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 2, '午後');
-
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '元日(1月1日)', 1, 1, 100, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '成人の日(1月第2月曜日)', 1, 14, 99, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '建国記念の日(2月11日)', 2, 11, 98, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '春分の日(3月21日)', 3, 21, 97, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '昭和の日(4月29日)', 4, 29, 96, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (6, '憲法記念日(5月3日)', 5, 3, 95, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (7, 'みどりの日(5月4日)', 5, 4, 94, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (8, 'こどもの日(5月5日)', 5, 5, 93, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (9, '海の日(7月第3月曜日)', 7, 21, 92, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '敬老の日(9月第3月曜日)', 9, 15, 91, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (11, '秋分の日(9月23日)', 9, 23, 90, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (12, '体育の日(10月第2月曜日)', 10, 13, 89, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (13, '文化の日(11月3日)', 11, 3, 88, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (14, '勤労感謝の日(11月23日)', 11, 23, 87, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (15, '天皇誕生日(12月23日)', 12, 23, 86, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '第1条 (会員)', '1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
-2. 「会員情報」とは、会員が当社に開示した会員の属性に関する情報および会員の取引に関する履歴等の情報をいいます。
-3. 本規約は、全ての会員に適用され、登録手続時および登録後にお守りいただく規約です。', 12, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '第2条 (登録)', '1. 会員資格
-本規約に同意の上、所定の入会申込みをされたお客様は、所定の登録手続完了後に会員としての資格を有します。会員登録手続は、会員となるご本人が行ってください。代理による登録は一切認められません。なお、過去に会員資格が取り消された方やその他当社が相応しくないと判断した方からの会員申込はお断りする場合があります。
-
-2. 会員情報の入力
-会員登録手続の際には、入力上の注意をよく読み、所定の入力フォームに必要事項を正確に入力してください。会員情報の登録において、特殊記号・旧漢字・ローマ数字などはご使用になれません。これらの文字が登録された場合は当社にて変更致します。
-
-3. パスワードの管理
-(1)パスワードは会員本人のみが利用できるものとし、第三者に譲渡・貸与できないものとします。
-(2)パスワードは、他人に知られることがないよう定期的に変更する等、会員本人が責任をもって管理してください。
-(3)パスワードを用いて当社に対して行われた意思表示は、会員本人の意思表示とみなし、そのために生じる支払等は全て会員の責任となります。', 11, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '第3条 (変更)', '1. 会員は、氏名、住所など当社に届け出た事項に変更があった場合には、速やかに当社に連絡するものとします。
-2. 変更登録がなされなかったことにより生じた損害について、当社は一切責任を負いません。また、変更登録がなされた場合でも、変更登録前にすでに手続がなされた取引は、変更登録前の情報に基づいて行われますのでご注意ください。', 10, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '第4条 (退会)', '会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。', 9, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '第5条 (会員資格の喪失及び賠償義務)', '1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
-2. 会員が、以下の各号に定める行為をしたときは、これにより当社が被った損害を賠償する責任を負います。
-(1)会員番号、パスワードを不正に使用すること
-(2)当ホームページにアクセスして情報を改ざんしたり、当ホームページに有害なコンピュータープログラムを送信するなどして、当社の営業を妨害すること
-(3)当社が扱う商品の知的所有権を侵害する行為をすること
-(4)その他、この利用規約に反する行為をすること', 8, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (6, '第6条 (会員情報の取扱い)', '1. 当社は、原則として会員情報を会員の事前の同意なく第三者に対して開示することはありません。ただし、次の各号の場合には、会員の事前の同意なく、当社は会員情報その他のお客様情報を開示できるものとします。
-(1)法令に基づき開示を求められた場合
-(2)当社の権利、利益、名誉等を保護するために必要であると当社が判断した場合
-2. 会員情報につきましては、当社の「個人情報保護への取組み」に従い、当社が管理します。当社は、会員情報を、会員へのサービス提供、サービス内容の向上、サービスの利用促進、およびサービスの健全かつ円滑な運営の確保を図る目的のために、当社おいて利用することができるものとします。
-3. 当社は、会員に対して、メールマガジンその他の方法による情報提供(広告を含みます)を行うことができるものとします。会員が情報提供を希望しない場合は、当社所定の方法に従い、その旨を通知して頂ければ、情報提供を停止します。ただし、本サービス運営に必要な情報提供につきましては、会員の希望により停止をすることはできません。', 7, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (7, '第7条 (禁止事項)', '本サービスの利用に際して、会員に対し次の各号の行為を行うことを禁止します。
-
-1. 法令または本規約、本サービスご利用上のご注意、本サービスでのお買い物上のご注意その他の本規約等に違反すること
-2. 当社、およびその他の第三者の権利、利益、名誉等を損ねること
-3. 青少年の心身に悪影響を及ぼす恐れがある行為、その他公序良俗に反する行為を行うこと
-4. 他の利用者その他の第三者に迷惑となる行為や不快感を抱かせる行為を行うこと
-5. 虚偽の情報を入力すること
-6. 有害なコンピュータープログラム、メール等を送信または書き込むこと
-7. 当社のサーバーその他のコンピューターに不正にアクセスすること
-8. パスワードを第三者に貸与・譲渡すること、または第三者と共用すること
-9. その他当社が不適切と判断すること', 6, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (8, '第8条 (サービスの中断・停止等)', '1. 当社は、本サービスの稼動状態を良好に保つために、次の各号の一に該当する場合、予告なしに、本サービスの提供全てあるいは一部を停止することがあります。
-(1)システムの定期保守および緊急保守のために必要な場合
-(2)システムに負荷が集中した場合
-(3)火災、停電、第三者による妨害行為などによりシステムの運用が困難になった場合
-(4)その他、止むを得ずシステムの停止が必要と当社が判断した場合', 5, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (9, '第9条 (サービスの変更・廃止)', '当社は、その判断によりサービスの全部または一部を事前の通知なく、適宜変更・廃止できるものとします。', 4, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '第10条 (免責)', '1. 通信回線やコンピューターなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
-2. 当社は、当社のウェブページ・サーバー・ドメインなどから送られるメール・コンテンツに、コンピューター・ウィルスなどの有害なものが含まれていないことを保証いたしません。
-3. 会員が本規約等に違反したことによって生じた損害については、当社は一切責任を負いません。', 3, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (11, '第11条 (本規約の改定)', '当社は、本規約を任意に改定できるものとし、また、当社において本規約を補充する規約(以下「補充規約」といいます)を定めることができます。本規約の改定または補充は、改定後の本規約または補充規約を当社所定のサイトに掲示したときにその効力を生じるものとします。この場合、会員は、改定後の規約および補充規約に従うものと致します。', 2, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (12, '第12条 (準拠法、管轄裁判所)', '本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
-INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (1, 'ご注文ありがとうございます', 'この度はご注文いただき誠にありがとうございます。
-下記ご注文内容にお間違えがないかご確認下さい。
-
-', '
-============================================
-
-
-このメッセージはお客様へのお知らせ専用ですので、
-このメッセージへの返信としてご質問をお送りいただいても回答できません。
-ご了承ください。
-
-ご質問やご不明な点がございましたら、こちらからお願いいたします。
-
-', 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (5, 'お問い合わせを受け付けました', NULL, NULL, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-INSERT INTO dtb_member (member_id, name, department, login_id, password, salt, authority, rank, work, del_flg, creator_id, update_date, create_date, login_date) VALUES (1, 'dummy', NULL, 'dummy', 'dummy', 'dummy', 0, 0, 1, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-
-INSERT INTO dtb_module (module_id, module_code, module_name, sub_data, auto_update_flg, del_flg, create_date, update_date) VALUES (0, '0', 'patch', NULL, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 0, 'プレビューデータ', 'preview', NULL, 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 2, '商品一覧ページ', 'products/list.php', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 3, '商品詳細ページ', 'products/detail.php', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 4, 'MYページ', 'mypage/index.php', 'mypage/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 5, 'MYページ/会員登録内容変更(入力ページ)', 'mypage/change.php', 'mypage/change', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 6, 'MYページ/会員登録内容変更(完了ページ)', 'mypage/change_complete.php', 'mypage/change_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 7, 'MYページ/お届け先追加･変更', 'mypage/delivery.php', 'mypage/delivery', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 8, 'MYページ/お気に入り一覧', 'mypage/favorite.php', 'mypage/favorite', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 9, 'MYページ/購入履歴詳細', 'mypage/history.php', 'mypage/history', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 10, 'MYページ/ログイン', 'mypage/login.php', 'mypage/login', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 11, 'MYページ/退会手続き(入力ページ)', 'mypage/refusal.php', 'mypage/refusal', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 12, 'MYページ/退会手続き(完了ページ)', 'mypage/refusal_complete.php', 'mypage/refusal_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 13, '当サイトについて', 'abouts/index.php', 'abouts/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 14, '現在のカゴの中', 'cart/index.php', 'cart/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 15, 'お問い合わせ(入力ページ)', 'contact/index.php', 'contact/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 16, 'お問い合わせ(完了ページ)', 'contact/complete.php', 'contact/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 17, '会員登録(入力ページ)', 'entry/index.php', 'entry/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 18, 'ご利用規約', 'entry/kiyaku.php', 'entry/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 19, '会員登録(完了ページ)', 'entry/complete.php', 'entry/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 20, '特定商取引に関する法律に基づく表記', 'order/index.php', 'order/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 21, '本会員登録(完了ページ)', 'regist/complete.php', 'regist/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 22, '商品購入/ログイン', 'shopping/index.php', 'shopping/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 23, '商品購入/お届け先の指定', 'shopping/deliv.php', 'shopping/deliv', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 24, '商品購入/お届け先の複数指定', 'shopping/multiple.php', 'shopping/multiple', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 25, '商品購入/お支払方法・お届け時間等の指定', 'shopping/payment.php', 'shopping/payment', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 26, '商品購入/ご入力内容のご確認', 'shopping/confirm.php', 'shopping/confirm', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 27, '商品購入/ご注文完了', 'shopping/complete.php', 'shopping/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 28, 'プライバシーポリシー', 'guide/privacy.php', 'guide/privacy', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 0, NULL, 'preview', 'preview', 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 2, '商品一覧ページ', 'products/list.php', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 3, '商品詳細ページ', 'products/detail.php', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 4, 'MYページ', 'mypage/index.php', 'mypage/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 5, 'MYページ/会員登録内容変更(入力ページ)', 'mypage/change.php', 'mypage/change', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 6, 'MYページ/会員登録内容変更(完了ページ)', 'mypage/change_complete.php', 'mypage/change_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 7, 'MYページ/お届け先追加･変更', 'mypage/delivery.php', 'mypage/delivery', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 8, 'MYページ/お気に入り一覧', 'mypage/favorite.php', 'mypage/favorite', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 9, 'MYページ/購入履歴詳細', 'mypage/history.php', 'mypage/history', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 10, 'MYページ/ログイン', 'mypage/login.php', 'mypage/login', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 11, 'MYページ/退会手続き(入力ページ)', 'mypage/refusal.php', 'mypage/refusal', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 12, 'MYページ/退会手続き(完了ページ)', 'mypage/refusal_complete.php', 'mypage/refusal_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 13, '当サイトについて', 'abouts/index.php', 'abouts/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 14, '現在のカゴの中', 'cart/index.php', 'cart/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 15, 'お問い合わせ(入力ページ)', 'contact/index.php', 'contact/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 16, 'お問い合わせ(完了ページ)', 'contact/complete.php', 'contact/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 17, '会員登録(入力ページ)', 'entry/index.php', 'entry/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 18, 'ご利用規約', 'entry/kiyaku.php', 'entry/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 19, '会員登録(完了ページ)', 'entry/complete.php', 'entry/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 20, '特定商取引に関する法律に基づく表記', 'order/index.php', 'order/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 21, '本会員登録(完了ページ)', 'regist/complete.php', 'regist/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 22, '商品購入/ログイン', 'shopping/index.php', 'shopping/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 23, '商品購入/お届け先の指定', 'shopping/deliv.php', 'shopping/deliv', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 24, '商品購入/お届け先の複数指定', 'shopping/multiple.php', 'shopping/multiple', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 25, '商品購入/お支払方法・お届け時間等の指定', 'shopping/payment.php', 'shopping/payment', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 26, '商品購入/ご入力内容のご確認', 'shopping/confirm.php', 'shopping/confirm', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 27, '商品購入/ご注文完了', 'shopping/complete.php', 'shopping/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 28, 'プライバシーポリシー', 'guide/privacy.php', 'guide/privacy', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 29, 'パスワードを忘れた方', 'forgot/index.php', 'forgot/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 0, NULL, 'preview', 'preview', 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 2, '商品一覧ページ', 'products/list.php', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 3, '商品検索ページ', 'products/search.php', 'products/search', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 4, '商品カテゴリページ', 'products/category_list.php', 'products/category_list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 5, '商品詳細ページ', 'products/detail.php', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 6, 'MYページ', 'mypage/index.php', 'mypage/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 7, 'MYページ/会員登録内容変更(入力ページ)', 'mypage/change.php', 'mypage/change', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 8, 'MYページ/会員登録内容変更(完了ページ)', 'mypage/change_complete.php', 'mypage/change_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 9, 'MYページ/お届け先追加･変更', 'mypage/delivery.php', 'mypage/delivery', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 10, 'MYページ/お気に入り一覧', 'mypage/favorite.php', 'mypage/favorite', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 11, 'MYページ/購入履歴詳細', 'mypage/history.php', 'mypage/history', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 12, 'MYページ/ログイン', 'mypage/login.php', 'mypage/login', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 13, 'MYページ/退会手続き(入力ページ)', 'mypage/refusal.php', 'mypage/refusal', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 14, 'MYページ/退会手続き(完了ページ)', 'mypage/refusal_complete.php', 'mypage/refusal_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 16, '現在のカゴの中', 'cart/index.php', 'cart/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 17, 'お問い合わせ(入力ページ)', 'contact/index.php', 'contact/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 18, 'お問い合わせ(完了ページ)', 'contact/complete.php', 'contact/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 19, '会員登録(入力ページ)', 'entry/index.php', 'entry/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 20, 'ご利用規約', 'entry/kiyaku.php', 'entry/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 21, '会員登録(完了ページ)', 'entry/complete.php', 'entry/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 22, '携帯メール登録', 'entry/email_mobile.php', 'entry/email_mobile', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 23, '特定商取引に関する法律に基づく表記', 'order/index.php', 'order/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 24, '本会員登録(完了ページ)', 'regist/complete.php', 'regist/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 25, '商品購入/ログイン', 'shopping/index.php', 'shopping/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 26, '商品購入/お届け先の指定', 'shopping/deliv.php', 'shopping/deliv', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 27, '商品購入/お届け先の複数指定', 'shopping/multiple.php', 'shopping/multiple', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 28, '商品購入/お支払方法・お届け時間等の指定', 'shopping/payment.php', 'shopping/payment', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 29, '商品購入/ご入力内容のご確認', 'shopping/confirm.php', 'shopping/confirm', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 30, '商品購入/ご注文完了', 'shopping/complete.php', 'shopping/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 31, '非対応デバイス', 'unsupported/index.php', 'unsupported/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 32, 'ご利用ガイド', 'guide/index.php', 'guide/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 33, 'ご利用ガイド/ご利用方法', 'guide/usage.php', 'guide/usage', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 34, 'ご利用ガイド/プライバシーポリシー', 'guide/privacy.php', 'guide/privacy', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 35, 'ご利用ガイド/通信料について', 'guide/charge.php', 'guide/charge', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 36, 'ご利用ガイド/ご利用規約', 'guide/kiyaku.php', 'guide/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 37, 'ご利用ガイド/運営会社紹介', 'guide/about.php', 'guide/about', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (1, '郵便振替', 0, NULL, 4, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (2, '現金書留', 0, NULL, 3, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (3, '銀行振込', 0, NULL, 2, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (4, '代金引換', 0, NULL, 1, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (1, 5, 1);
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (2, 4, 2);
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (3, 4, 1);
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (3, 6, 1);
-
-INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (1, 'アイスクリーム', NULL, 1, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', 'ice130.jpg', '冷たいものはいかがですか?', 'ice260.jpg', 'ice500.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
-INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, '一人用からあります。', 'nabe130.jpg', 'たまには鍋でもどうでしょう。', 'nabe260.jpg', 'nabe500.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
-INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, NULL, '鍋,なべ,ナベ,レシピ,作り方', NULL, NULL, NULL, NULL, 'あの、秘伝のお鍋レシピです。', 'recipe130.jpg', '<b>この商品はダウンロード商品です</b><br />自分でチャレンジしてみたい方に。', 'recipe260.jpg', 'recipe500.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
-
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(0, 1, 0, 0, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(1, 1, 3, 6, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(2, 1, 3, 5, 'ice-02', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(3, 1, 3, 4, 'ice-03', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(4, 1, 2, 6, 'ice-04', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(5, 1, 2, 5, 'ice-05', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(6, 1, 2, 4, 'ice-06', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(7, 1, 1, 6, 'ice-07', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(8, 1, 1, 5, 'ice-08', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(9, 1, 1, 4, 'ice-09', NULL, 1, NULL, 1000, 933, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(10, 2, 0, 0, 'nabe-01', 100, 0, 5, 1700, 1650, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
-INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(11, 3, 0, 0, 'recipe-01', NULL, 1, NULL, NULL, 100, NULL, 10, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 2, 'おなべレシピ.pdf', 'recipe_onabe.pdf');
-
-INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (1, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
-INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (1, 0, 1, 2, NULL, 'たまには鍋でもどうでしょう。', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (2, 0, 2, 1, NULL, 'お口直しに。', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (0, 'table', 0);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (1, 'tr', 1);
 INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (2, 'td', 2);
@@ -1295,7 +565,7 @@ INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_co
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product_categories', 'category_id', 2, 'カテゴリが多いときに試してみてください。');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('mtb_zip', 'zipcode', 2, '郵便番号検索が遅いときに試してみてください。郵便番号データの更新時には無効にしていることをおすすめします。');
 
-INSERT INTO dtb_tax_rule (tax_rule_id, apply_date, member_id, del_flg, create_date, update_date) VALUES (0, CURRENT_TIMESTAMP, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_tax_rule (tax_rule_id, apply_date, calc_rule, tax_rate, tax_adjust, member_id, del_flg, create_date, update_date) VALUES (1, CURRENT_TIMESTAMP, 1, 8, 0, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO mtb_country (id, name, rank) VALUES (352,'アイスランド',1);
 INSERT INTO mtb_country (id, name, rank) VALUES (372,'アイルランド',2);
@@ -1546,3 +816,734 @@ INSERT INTO mtb_country (id, name, rank) VALUES (426,'レソト',246);
 INSERT INTO mtb_country (id, name, rank) VALUES (422,'レバノン',247);
 INSERT INTO mtb_country (id, name, rank) VALUES (638,'レユニオン',248);
 INSERT INTO mtb_country (id, name, rank) VALUES (643,'ロシア|ロシア連邦',249);
+
+
+INSERT INTO dtb_member (member_id, name, department, login_id, password, salt, authority, rank, work, del_flg, creator_id, update_date, create_date, login_date) VALUES (1, 'dummy', NULL, 'dummy', 'dummy', 'dummy', 0, 0, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 1, 'カテゴリ', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 2, '利用ガイド', 'guide.tpl', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 3, 'カゴの中', 'cart.tpl', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 4, '商品検索', 'search_products.tpl', 'search_products', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/search_products.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 5, '新着情報', 'news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 6, 'ログイン', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 7, 'おすすめ商品', 'recommend.tpl', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 8, 'カレンダー', 'calendar.tpl', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/calendar.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 9, '【ヘッダー】ログイン', 'login_header.tpl', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 1, 'サイトロゴ', 'site_logo.tpl', 'site_logo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 2, '新着情報', 'news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 3, 'おすすめ商品', 'recommend.tpl', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 4, 'カテゴリ', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 5, 'ログイン', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (1, 6, '【ヘッダー】ログイン', 'login_header.tpl', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 1, '新着情報', 'news.tpl', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 2, 'ログイン', 'login.tpl', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 3, 'おすすめ商品', 'recommend.tpl', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 4, 'カテゴリ', 'category.tpl', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 5, '【ヘッダー】ログイン', 'login_header.tpl', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 6, '【ヘッダー】ナビ', 'navi_header.tpl', 'navi_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/navi_header.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 7, '【フッター】ログイン', 'login_footer.tpl', 'login_footer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_footer.php', 0);
+INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (2, 8, '【フッター】ナビ', 'navi_footer.tpl', 'navi_footer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/navi_footer.php', 0);
+
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 0, 'プレビューデータ', 'preview', NULL, 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 2, '商品一覧ページ', 'products/list.php', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 3, '商品詳細ページ', 'products/detail.php', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 4, 'MYページ', 'mypage/index.php', 'mypage/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 5, 'MYページ/会員登録内容変更(入力ページ)', 'mypage/change.php', 'mypage/change', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 6, 'MYページ/会員登録内容変更(完了ページ)', 'mypage/change_complete.php', 'mypage/change_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 7, 'MYページ/お届け先追加･変更', 'mypage/delivery.php', 'mypage/delivery', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 8, 'MYページ/お気に入り一覧', 'mypage/favorite.php', 'mypage/favorite', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 9, 'MYページ/購入履歴詳細', 'mypage/history.php', 'mypage/history', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 10, 'MYページ/ログイン', 'mypage/login.php', 'mypage/login', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 11, 'MYページ/退会手続き(入力ページ)', 'mypage/refusal.php', 'mypage/refusal', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 12, 'MYページ/退会手続き(完了ページ)', 'mypage/refusal_complete.php', 'mypage/refusal_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 13, '当サイトについて', 'abouts/index.php', 'abouts/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 14, '現在のカゴの中', 'cart/index.php', 'cart/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 15, 'お問い合わせ(入力ページ)', 'contact/index.php', 'contact/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 16, 'お問い合わせ(完了ページ)', 'contact/complete.php', 'contact/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 17, '会員登録(入力ページ)', 'entry/index.php', 'entry/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 18, 'ご利用規約', 'entry/kiyaku.php', 'entry/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 19, '会員登録(完了ページ)', 'entry/complete.php', 'entry/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 20, '特定商取引に関する法律に基づく表記', 'order/index.php', 'order/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 21, '本会員登録(完了ページ)', 'regist/complete.php', 'regist/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 22, '商品購入/ログイン', 'shopping/index.php', 'shopping/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 23, '商品購入/お届け先の指定', 'shopping/deliv.php', 'shopping/deliv', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 24, '商品購入/お届け先の複数指定', 'shopping/multiple.php', 'shopping/multiple', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 25, '商品購入/お支払方法・お届け時間等の指定', 'shopping/payment.php', 'shopping/payment', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 26, '商品購入/ご入力内容のご確認', 'shopping/confirm.php', 'shopping/confirm', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 27, '商品購入/ご注文完了', 'shopping/complete.php', 'shopping/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 28, 'プライバシーポリシー', 'guide/privacy.php', 'guide/privacy', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 0, NULL, 'preview', 'preview', 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 2, '商品一覧ページ', 'products/list.php', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 3, '商品詳細ページ', 'products/detail.php', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 4, 'MYページ', 'mypage/index.php', 'mypage/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 5, 'MYページ/会員登録内容変更(入力ページ)', 'mypage/change.php', 'mypage/change', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 6, 'MYページ/会員登録内容変更(完了ページ)', 'mypage/change_complete.php', 'mypage/change_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 7, 'MYページ/お届け先追加･変更', 'mypage/delivery.php', 'mypage/delivery', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 8, 'MYページ/お気に入り一覧', 'mypage/favorite.php', 'mypage/favorite', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 9, 'MYページ/購入履歴詳細', 'mypage/history.php', 'mypage/history', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 10, 'MYページ/ログイン', 'mypage/login.php', 'mypage/login', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 11, 'MYページ/退会手続き(入力ページ)', 'mypage/refusal.php', 'mypage/refusal', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 12, 'MYページ/退会手続き(完了ページ)', 'mypage/refusal_complete.php', 'mypage/refusal_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 13, '当サイトについて', 'abouts/index.php', 'abouts/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 14, '現在のカゴの中', 'cart/index.php', 'cart/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 15, 'お問い合わせ(入力ページ)', 'contact/index.php', 'contact/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 16, 'お問い合わせ(完了ページ)', 'contact/complete.php', 'contact/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 17, '会員登録(入力ページ)', 'entry/index.php', 'entry/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 18, 'ご利用規約', 'entry/kiyaku.php', 'entry/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 19, '会員登録(完了ページ)', 'entry/complete.php', 'entry/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 20, '特定商取引に関する法律に基づく表記', 'order/index.php', 'order/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 21, '本会員登録(完了ページ)', 'regist/complete.php', 'regist/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 22, '商品購入/ログイン', 'shopping/index.php', 'shopping/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 23, '商品購入/お届け先の指定', 'shopping/deliv.php', 'shopping/deliv', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 24, '商品購入/お届け先の複数指定', 'shopping/multiple.php', 'shopping/multiple', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 25, '商品購入/お支払方法・お届け時間等の指定', 'shopping/payment.php', 'shopping/payment', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 26, '商品購入/ご入力内容のご確認', 'shopping/confirm.php', 'shopping/confirm', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 27, '商品購入/ご注文完了', 'shopping/complete.php', 'shopping/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 28, 'プライバシーポリシー', 'guide/privacy.php', 'guide/privacy', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (2, 29, 'パスワードを忘れた方', 'forgot/index.php', 'forgot/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 0, NULL, 'preview', 'preview', 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 2, '商品一覧ページ', 'products/list.php', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 3, '商品検索ページ', 'products/search.php', 'products/search', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 4, '商品カテゴリページ', 'products/category_list.php', 'products/category_list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 5, '商品詳細ページ', 'products/detail.php', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 6, 'MYページ', 'mypage/index.php', 'mypage/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 7, 'MYページ/会員登録内容変更(入力ページ)', 'mypage/change.php', 'mypage/change', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 8, 'MYページ/会員登録内容変更(完了ページ)', 'mypage/change_complete.php', 'mypage/change_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 9, 'MYページ/お届け先追加･変更', 'mypage/delivery.php', 'mypage/delivery', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 10, 'MYページ/お気に入り一覧', 'mypage/favorite.php', 'mypage/favorite', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 11, 'MYページ/購入履歴詳細', 'mypage/history.php', 'mypage/history', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 12, 'MYページ/ログイン', 'mypage/login.php', 'mypage/login', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 13, 'MYページ/退会手続き(入力ページ)', 'mypage/refusal.php', 'mypage/refusal', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 14, 'MYページ/退会手続き(完了ページ)', 'mypage/refusal_complete.php', 'mypage/refusal_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 16, '現在のカゴの中', 'cart/index.php', 'cart/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 17, 'お問い合わせ(入力ページ)', 'contact/index.php', 'contact/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 18, 'お問い合わせ(完了ページ)', 'contact/complete.php', 'contact/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 19, '会員登録(入力ページ)', 'entry/index.php', 'entry/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 20, 'ご利用規約', 'entry/kiyaku.php', 'entry/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 21, '会員登録(完了ページ)', 'entry/complete.php', 'entry/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 22, '携帯メール登録', 'entry/email_mobile.php', 'entry/email_mobile', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 23, '特定商取引に関する法律に基づく表記', 'order/index.php', 'order/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 24, '本会員登録(完了ページ)', 'regist/complete.php', 'regist/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 25, '商品購入/ログイン', 'shopping/index.php', 'shopping/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 26, '商品購入/お届け先の指定', 'shopping/deliv.php', 'shopping/deliv', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 27, '商品購入/お届け先の複数指定', 'shopping/multiple.php', 'shopping/multiple', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 28, '商品購入/お支払方法・お届け時間等の指定', 'shopping/payment.php', 'shopping/payment', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 29, '商品購入/ご入力内容のご確認', 'shopping/confirm.php', 'shopping/confirm', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 30, '商品購入/ご注文完了', 'shopping/complete.php', 'shopping/complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 31, '非対応デバイス', 'unsupported/index.php', 'unsupported/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 32, 'ご利用ガイド', 'guide/index.php', 'guide/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 33, 'ご利用ガイド/ご利用方法', 'guide/usage.php', 'guide/usage', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 34, 'ご利用ガイド/プライバシーポリシー', 'guide/privacy.php', 'guide/privacy', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 35, 'ご利用ガイド/通信料について', 'guide/charge.php', 'guide/charge', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 36, 'ご利用ガイド/ご利用規約', 'guide/kiyaku.php', 'guide/kiyaku', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (1, 37, 'ご利用ガイド/運営会社紹介', 'guide/about.php', 'guide/about', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 4, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 8, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 7, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 5, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 10, 9, 1, 1);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 5, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 5, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 5, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 6, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 6, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 6, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 7, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 7, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 7, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 8, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 8, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 8, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 9, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 9, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 9, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 10, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 10, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 10, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 11, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 11, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 11, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 12, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 12, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 12, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 13, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 13, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 13, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 14, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 14, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 14, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 15, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 15, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 15, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 16, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 16, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 16, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 17, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 17, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 17, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 18, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 18, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 18, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 19, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 19, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 19, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 20, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 20, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 20, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 21, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 21, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 21, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 22, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 22, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 22, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 23, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 23, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 23, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 24, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 24, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 24, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 25, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 25, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 25, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 26, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 26, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 26, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 27, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 27, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 27, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 28, 1, 1, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 28, 1, 2, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 28, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 10, 1, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 2, 2, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 2, 3, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (1, 1, 2, 4, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 1, 4, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 2, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 3, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 4, 4, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 1, 10, 5, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 2, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 2, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 2, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 3, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 3, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 3, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 4, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 4, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 4, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 5, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 5, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 5, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 6, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 6, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 6, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 7, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 7, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 7, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 8, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 8, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 8, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 9, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 9, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 9, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 10, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 10, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 10, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 11, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 11, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 11, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 12, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 12, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 12, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 13, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 13, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 13, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 14, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 14, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 14, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 15, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 15, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 15, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 16, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 16, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 16, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 17, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 17, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 17, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 18, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 18, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 18, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 19, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 19, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 19, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 20, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 20, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 20, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 21, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 21, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 21, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 22, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 22, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 22, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 23, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 23, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 23, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 24, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 24, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 24, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 25, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 25, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 25, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 26, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 26, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 26, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 27, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 27, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 27, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 28, 10, 6, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 6, 7, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 6, 8, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (2, 29, 10, 6, 1, 0);
+
+INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '食品', NULL, 1, 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '雑貨', NULL, 1, 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (3, 'お菓子', 1, 2, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (4, 'なべ', 1, 2, 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (5, 'アイス', 3, 3, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (6, 'レシピ', NULL, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_category_count (category_id, product_count, create_date) VALUES (4, 2, CURRENT_TIMESTAMP);
+INSERT INTO dtb_category_count (category_id, product_count, create_date) VALUES (5, 1, CURRENT_TIMESTAMP);
+INSERT INTO dtb_category_count (category_id, product_count, create_date) VALUES (6, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (3, 1, CURRENT_TIMESTAMP);
+INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (1, 3, CURRENT_TIMESTAMP);
+INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (2, NULL, CURRENT_TIMESTAMP);
+INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (5, 1, CURRENT_TIMESTAMP);
+INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (4, 2, CURRENT_TIMESTAMP);
+INSERT INTO dtb_category_total_count (category_id, product_count, create_date) VALUES (6, 1, CURRENT_TIMESTAMP);
+
+INSERT INTO dtb_class (class_id, name, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '味', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_class (class_id, name, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '大きさ', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (1, 'バニラ', 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (2, 'チョコ', 1, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '抹茶', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (4, 'L', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (5, 'M', 2, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (6, 'S', 2, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+-- INSERT INTO dtb_classcategory (classcategory_id, name, class_id, rank, creator_id, create_date, update_date, del_flg) VALUES (0, NULL, 0, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (1, 1, 'product_id', '商品ID', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (2, 1, 'product_class_id', '商品規格ID', 2, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (3, 1, 'parent_classcategory_id', '親規格分類ID', 3, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (4, 1, 'classcategory_id', '規格分類ID', 4, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (5, 1, 'parent_classcategory_name', '親規格分類名', 5, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (6, 1, 'classcategory_name', '規格分類名', 6, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (7, 1, 'maker_id', 'メーカーID', 7, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (8, 1, '(SELECT name as maker_name FROM dtb_maker WHERE prdcls.maker_id = dtb_maker.maker_id) as maker_name', 'メーカー名', 8, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (9, 1, 'name', '商品名', 9, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (10, 1, 'status', '表示ステータス(公開・非公開)', 10, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (11, 1, 'comment1', 'メーカーURL(コメント1)', 11, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'URL_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,URL_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (12, 1, 'comment2', 'コメント2', 12, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (13, 1, 'comment3', '検索ワード(コメント3)', 13, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (14, 1, 'comment4', 'コメント4', 14, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (15, 1, 'comment5', 'コメント5', 15, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (16, 1, 'comment6', 'コメント6', 16, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (17, 1, 'note', '備考欄(SHOP専用)', 17, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (18, 1, 'main_list_comment', '一覧-メインコメント', 18, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (19, 1, 'main_list_image', '一覧-メイン画像', 19, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (20, 1, 'main_comment', '詳細-メインコメント', 20, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK,HTML_TAG_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (21, 1, 'main_image', '詳細-メイン画像', 21, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (22, 1, 'main_large_image', '詳細-メイン拡大画像 ', 22, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (23, 1, 'sub_title1', '詳細-サブタイトル(1)', 23, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (24, 1, 'sub_comment1', '詳細-サブコメント(1)', 24, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,HTML_TAG_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (25, 1, 'sub_image1', '詳細-サブ画像(1)', 25, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (26, 1, 'sub_large_image1', '詳細-サブ拡大画像(1)', 26, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (27, 1, 'sub_title2', '詳細-サブタイトル(2)', 27, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (28, 1, 'sub_comment2', '詳細-サブコメント(2)', 28, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (29, 1, 'sub_image2', '詳細-サブ画像(2)', 29, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (30, 1, 'sub_large_image2', '詳細-サブ拡大画像(2)', 30, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (31, 1, 'sub_title3', '詳細-サブタイトル(3)', 31, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (32, 1, 'sub_comment3', '詳細-サブコメント(3)', 32, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (33, 1, 'sub_image3', '詳細-サブ画像(3)', 33, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (34, 1, 'sub_large_image3', '詳細-サブ拡大画像(3)', 34, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (35, 1, 'sub_title4', '詳細-サブタイトル(4)', 35, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (36, 1, 'sub_comment4', '詳細-サブコメント(4)', 36, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (37, 1, 'sub_image4', '詳細-サブ画像(4)', 37, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (38, 1, 'sub_large_image4', '詳細-サブ拡大画像(4)', 38, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (39, 1, 'sub_title5', '詳細-サブタイトル(5)', 39, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (40, 1, 'sub_comment5', '詳細-サブコメント(5)', 40, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (41, 1, 'sub_image5', '詳細-サブ画像(5)', 41, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (42, 1, 'sub_large_image5', '詳細-サブ拡大画像(5)', 42, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (43, 1, 'deliv_date_id', '発送日目安ID', 43, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (44, 1, 'del_flg', '削除フラグ', 44, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (45, 1, 'product_type_id', '商品種別ID', 45, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (46, 1, 'product_code', '商品コード', 46, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'EXIST_CHECK,SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (47, 1, 'stock', '在庫数', 47, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'AMOUNT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (48, 1, 'stock_unlimited', '在庫無制限フラグ', 48, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (49, 1, 'sale_limit', '販売制限数', 49, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'AMOUNT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (50, 1, 'price01', '通常価格', 50, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (51, 1, 'price02', '販売価格', 51, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (52, 1, 'deliv_fee', '送料', 52, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (53, 1, 'point_rate', 'ポイント付与率', 53, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PERCENTAGE_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (54, 1, 'down_filename', 'ダウンロードファイル名', 54, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (55, 1, 'down_realfilename', 'ダウンロード実ファイル', 55, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,DOWN_FILE_EXISTS');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (56, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 0) AS recommend_product_id1', '関連商品ID(1)', 56, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (57, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 0) AS recommend_comment1', '関連商品コメント(1)', 57, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (58, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 1) AS recommend_product_id2', '関連商品ID(2)', 58, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (59, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 1) AS recommend_comment2', '関連商品コメント(2)', 59, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (60, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 2) AS recommend_product_id3', '関連商品ID(3)', 60, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (61, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 2) AS recommend_comment3', '関連商品コメント(3)', 61, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (62, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 3) AS recommend_product_id4', '関連商品ID(4)', 62, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (63, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 3) AS recommend_comment4', '関連商品コメント(4)', 63, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (64, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 4) AS recommend_product_id5', '関連商品ID(5)', 64, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (65, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 4) AS recommend_comment5', '関連商品コメント(5)', 65, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (66, 1, '(SELECT recommend_product_id FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 5) AS recommend_product_id6', '関連商品ID(6)', 66, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (67, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 5) AS recommend_comment6', '関連商品コメント(6)', 67, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (68, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT product_status_id FROM dtb_product_status WHERE dtb_product_status.product_id = prdcls.product_id and del_flg = 0 ORDER BY dtb_product_status.product_status_id), '','')) as product_statuses', '商品ステータス', 68, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (69, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT name FROM dtb_product_status LEFT JOIN mtb_status ON  dtb_product_status.product_status_id = mtb_status.id  WHERE dtb_product_status.product_id = prdcls.product_id and del_flg = 0 ORDER BY dtb_product_status.product_status_id), '','')) as product_status_names', '商品ステータス名', 69, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (70, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_id FROM dtb_product_categories WHERE dtb_product_categories.product_id = prdcls.product_id ORDER BY dtb_product_categories.rank), '','')) as category_ids', 'カテゴリID', 70, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (71, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_name FROM dtb_product_categories LEFT JOIN dtb_category ON dtb_product_categories.category_id = dtb_category.category_id WHERE dtb_product_categories.product_id = prdcls.product_id ORDER BY dtb_product_categories.rank), '','')) as category_names', 'カテゴリ名', 71, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (72, 2, 'customer_id', '会員ID', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (73, 2, 'name01', 'お名前(姓)', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (74, 2, 'name02', 'お名前(名)', 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (75, 2, 'kana01', 'お名前(フリガナ・姓)', 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (76, 2, 'kana02', 'お名前(フリガナ・名)', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date, mb_convert_kana_option) VALUES (77, 2, 'company_name', '会社名', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (78, 2, 'zip01', '郵便番号1', 7, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (79, 2, 'zip02', '郵便番号2', 8, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (80, 2, 'zipcode', 'ZIP CODE', 9, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (81, 2, '(SELECT name FROM mtb_country WHERE mtb_country.id = dtb_customer.country_id) as country', '国', 10, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (82, 2, '(SELECT name FROM mtb_pref WHERE mtb_pref.id = dtb_customer.pref) as pref', '都道府県', 11, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (83, 2, 'addr01', '住所1', 12, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (84, 2, 'addr02', '住所2', 13, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (85, 2, 'email', 'E-MAIL', 14, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (86, 2, 'tel01', 'TEL1', 15, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (87, 2, 'tel02', 'TEL2', 16, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (88, 2, 'tel03', 'TEL3', 17, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (89, 2, 'fax01', 'FAX1', 18, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (90, 2, 'fax02', 'FAX2', 19, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (91, 2, 'fax03', 'FAX3', 20, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (92, 2, '(SELECT name FROM mtb_sex WHERE mtb_sex.id = dtb_customer.sex) as sex', '性別', 21, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (93, 2, '(SELECT name FROM mtb_job WHERE mtb_job.id = dtb_customer.job) as job', '職業', 22, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (94, 2, 'birth', '誕生日', 23, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (95, 2, 'first_buy_date', '初回購入日', 24, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (96, 2, 'last_buy_date', '最終購入日', 25, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (97, 2, 'buy_times', '購入回数', 26, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (98, 2, 'point', 'ポイント残高', 27, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (99, 2, 'note', '備考', 28, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (100, 2, 'create_date', '登録日', 29, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (101, 2, 'update_date', '更新日', 30, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (102, 3, 'order_id', '注文番号', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (103, 3, 'customer_id', '会員ID', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (104, 3, 'message', '要望等', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (105, 3, 'order_name01', 'お名前(姓)', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (106, 3, 'order_name02', 'お名前(名)', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (107, 3, 'order_kana01', 'お名前(フリガナ・姓)', 6, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVCa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (108, 3, 'order_kana02', 'お名前(フリガナ名)', 7, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVCa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option) VALUES (109, 3, 'order_company_name', '会社名', 8, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (110, 3, 'order_email', 'メールアドレス', 9, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', 'null', 'NO_SPTAB,EMAIL_CHECK,EMAIL_CHAR_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (111, 3, 'order_tel01', '電話番号1', 10, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (112, 3, 'order_tel02', '電話番号2', 11, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (113, 3, 'order_tel03', '電話番号3', 12, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (114, 3, 'order_fax01', 'FAX1', 13, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (115, 3, 'order_fax02', 'FAX2', 14, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (116, 3, 'order_fax03', 'FAX3', 15, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'TEL_ITEM_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (117, 3, 'order_zip01', '郵便番号1', 16, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'ZIP01_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK,NUM_COUNT_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (118, 3, 'order_zip02', '郵便番号2', 17, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'ZIP02_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK,NUM_COUNT_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (119, 3, 'order_zipcode', 'ZIP CODE', 18, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'STEXT_LEN', 'GRAPH_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (120, 3, '(SELECT name FROM mtb_country WHERE mtb_country.id = dtb_order.order_country_id) as country', '国', 19, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (121, 3, '(SELECT name FROM mtb_pref WHERE mtb_pref.id = dtb_order.order_pref) as pref', '都道府県', 20, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (122, 3, 'order_addr01', '住所1', 21, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (123, 3, 'order_addr02', '住所2', 23, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'MTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (124, 3, 'order_sex', '性別', 23, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (125, 3, 'order_birth', '生年月日', 24, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (126, 3, 'order_job', '職種', 25, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (127, 3, 'subtotal', '小計', 38, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (128, 3, 'discount', '値引き', 39, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (129, 3, 'deliv_fee', '送料', 40, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (130, 3, 'charge', '手数料', 41, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (131, 3, 'use_point', '使用ポイント', 42, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (132, 3, 'add_point', '加算ポイント', 43, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (133, 3, 'tax', '税金', 44, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (134, 3, 'total', '合計', 45, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (135, 3, 'payment_total', 'お支払い合計', 46, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'PRICE_LEN', 'MAX_LENGTH_CHECK,NUM_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (136, 3, 'deliv_id', '配送業者ID', 47, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (137, 3, 'payment_method', '支払い方法', 48, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (138, 3, 'note', 'SHOPメモ', 50, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (139, 3, 'status', '対応状況', 51, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (140, 3, 'create_date', '注文日時', 52, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (141, 3, 'update_date', '更新日時', 53, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (142, 3, 'commit_date', '発送完了日時', 54, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (143, 3, 'device_type_id', '端末種別ID', 55, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (144, 3, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT shipping_id FROM dtb_shipping WHERE dtb_shipping.order_id = dtb_order.order_id), '','')) as shipping_ids', '配送情報ID', 57, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (145, 4, 'B.name', '商品名', 1, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (146, 4, '(SELECT name FROM mtb_disp WHERE mtb_disp.id = A.status) as status', 'レビュー表示', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (147, 4, 'A.create_date', '投稿日', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'a', '', 'CHECK_DATE,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (148, 4, 'A.reviewer_name', '投稿者名', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (149, 4, 'A.reviewer_url', '投稿者URL', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVas', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (150, 4, '(SELECT name FROM mtb_sex WHERE mtb_sex.id = A.sex) as sex', '性別', 6, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (151, 4, '(SELECT name FROM mtb_recommend WHERE mtb_recommend.id = A.recommend_level) as recommend_level', 'おすすめレベル', 7, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (152, 4, 'A.title', 'タイトル', 8, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (153, 4, 'A.comment', 'コメント', 9, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (154, 5, 'category_id', 'カテゴリID', 1, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (155, 5, 'category_name', 'カテゴリ名', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (156, 5, 'parent_category_id', '親カテゴリID', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (157, 5, 'level', '階層', NULL, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (158, 5, 'rank', '表示ランク', NULL, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (159, 5, 'del_flg', '削除フラグ', NULL, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'n', 'INT_LEN', 'NUM_CHECK,MAX_LENGTH_CHECK');
+
+INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (1, 1, 'サンプル業者', 'サンプル業者', NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_deliv (deliv_id, product_type_id, name, service_name, confirm_url, rank, status, del_flg, creator_id, create_date, update_date) VALUES (2, 2, '配送無し(ダウンロード商品用)', 'なし', NULL, 1, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (1, '郵便振替', 0, NULL, 4, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (2, '現金書留', 0, NULL, 3, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (3, '銀行振込', 0, NULL, 2, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO dtb_payment (payment_id, payment_method, charge, rule_max, rank, note, fix, status, del_flg, creator_id, create_date, update_date, payment_image, upper_rule, charge_flg, rule_min, upper_rule_max, module_id, module_path, memo01, memo02, memo03, memo04, memo05, memo06, memo07, memo08, memo09, memo10) VALUES (4, '代金引換', 0, NULL, 1, NULL, 2, 1, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 1, 1);
+INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 2, 2);
+INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 3, 3);
+INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (1, 4, 4);
+INSERT INTO dtb_payment_options (deliv_id, payment_id, rank) VALUES (2, 3, 1);
+
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 1, 1000, 1);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 2, 1000, 2);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 3, 1000, 3);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 4, 1000, 4);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 5, 1000, 5);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 6, 1000, 6);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 7, 1000, 7);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 8, 1000, 8);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 9, 1000, 9);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 10, 1000, 10);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 11, 1000, 11);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 12, 1000, 12);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 13, 1000, 13);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 14, 1000, 14);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 15, 1000, 15);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 16, 1000, 16);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 17, 1000, 17);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 18, 1000, 18);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 19, 1000, 19);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 20, 1000, 20);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 21, 1000, 21);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 22, 1000, 22);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 23, 1000, 23);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 24, 1000, 24);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 25, 1000, 25);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 26, 1000, 26);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 27, 1000, 27);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 28, 1000, 28);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 29, 1000, 29);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 30, 1000, 30);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 31, 1000, 31);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 32, 1000, 32);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 33, 1000, 33);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 34, 1000, 34);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 35, 1000, 35);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 36, 1000, 36);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 37, 1000, 37);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 38, 1000, 38);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 39, 1000, 39);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 40, 1000, 40);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 41, 1000, 41);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 42, 1000, 42);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 43, 1000, 43);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 44, 1000, 44);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 45, 1000, 45);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 46, 1000, 46);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (1, 47, 1000, 47);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 1, 0, 1);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 2, 0, 2);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 3, 0, 3);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 4, 0, 4);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 5, 0, 5);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 6, 0, 6);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 7, 0, 7);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 8, 0, 8);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 9, 0, 9);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 10, 0, 10);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 11, 0, 11);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 12, 0, 12);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 13, 0, 13);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 14, 0, 14);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 15, 0, 15);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 16, 0, 16);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 17, 0, 17);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 18, 0, 18);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 19, 0, 19);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 20, 0, 20);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 21, 0, 21);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 22, 0, 22);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 23, 0, 23);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 24, 0, 24);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 25, 0, 25);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 26, 0, 26);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 27, 0, 27);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 28, 0, 28);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 29, 0, 29);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 30, 0, 30);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 31, 0, 31);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 32, 0, 32);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 33, 0, 33);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 34, 0, 34);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 35, 0, 35);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 36, 0, 36);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 37, 0, 37);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 38, 0, 38);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 39, 0, 39);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 40, 0, 40);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 41, 0, 41);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 42, 0, 42);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 43, 0, 43);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 44, 0, 44);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 45, 0, 45);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 46, 0, 46);
+INSERT INTO dtb_delivfee (deliv_id, fee_id, fee, pref) VALUES (2, 47, 0, 47);
+
+INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 1, '午前');
+INSERT INTO dtb_delivtime (deliv_id, time_id, deliv_time) VALUES (1, 2, '午後');
+
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '元日(1月1日)', 1, 1, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '成人の日(1月第2月曜日)', 1, 14, 99, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '建国記念の日(2月11日)', 2, 11, 98, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '春分の日(3月21日)', 3, 21, 97, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '昭和の日(4月29日)', 4, 29, 96, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (6, '憲法記念日(5月3日)', 5, 3, 95, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (7, 'みどりの日(5月4日)', 5, 4, 94, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (8, 'こどもの日(5月5日)', 5, 5, 93, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (9, '海の日(7月第3月曜日)', 7, 21, 92, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '敬老の日(9月第3月曜日)', 9, 15, 91, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (11, '秋分の日(9月23日)', 9, 23, 90, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (12, '体育の日(10月第2月曜日)', 10, 13, 89, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (13, '文化の日(11月3日)', 11, 3, 88, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (14, '勤労感謝の日(11月23日)', 11, 23, 87, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (15, '天皇誕生日(12月23日)', 12, 23, 86, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '第1条 (会員)', '1. 「会員」とは、当社が定める手続に従い本規約に同意の上、入会の申し込みを行う個人をいいます。
+2. 「会員情報」とは、会員が当社に開示した会員の属性に関する情報および会員の取引に関する履歴等の情報をいいます。
+3. 本規約は、全ての会員に適用され、登録手続時および登録後にお守りいただく規約です。', 12, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '第2条 (登録)', '1. 会員資格
+本規約に同意の上、所定の入会申込みをされたお客様は、所定の登録手続完了後に会員としての資格を有します。会員登録手続は、会員となるご本人が行ってください。代理による登録は一切認められません。なお、過去に会員資格が取り消された方やその他当社が相応しくないと判断した方からの会員申込はお断りする場合があります。
+
+2. 会員情報の入力
+会員登録手続の際には、入力上の注意をよく読み、所定の入力フォームに必要事項を正確に入力してください。会員情報の登録において、特殊記号・旧漢字・ローマ数字などはご使用になれません。これらの文字が登録された場合は当社にて変更致します。
+
+3. パスワードの管理
+(1)パスワードは会員本人のみが利用できるものとし、第三者に譲渡・貸与できないものとします。
+(2)パスワードは、他人に知られることがないよう定期的に変更する等、会員本人が責任をもって管理してください。
+(3)パスワードを用いて当社に対して行われた意思表示は、会員本人の意思表示とみなし、そのために生じる支払等は全て会員の責任となります。', 11, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (3, '第3条 (変更)', '1. 会員は、氏名、住所など当社に届け出た事項に変更があった場合には、速やかに当社に連絡するものとします。
+2. 変更登録がなされなかったことにより生じた損害について、当社は一切責任を負いません。また、変更登録がなされた場合でも、変更登録前にすでに手続がなされた取引は、変更登録前の情報に基づいて行われますのでご注意ください。', 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (4, '第4条 (退会)', '会員が退会を希望する場合には、会員本人が退会手続きを行ってください。所定の退会手続の終了後に、退会となります。', 9, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (5, '第5条 (会員資格の喪失及び賠償義務)', '1. 会員が、会員資格取得申込の際に虚偽の申告をしたとき、通信販売による代金支払債務を怠ったとき、その他当社が会員として不適当と認める事由があるときは、当社は、会員資格を取り消すことができることとします。
+2. 会員が、以下の各号に定める行為をしたときは、これにより当社が被った損害を賠償する責任を負います。
+(1)会員番号、パスワードを不正に使用すること
+(2)当ホームページにアクセスして情報を改ざんしたり、当ホームページに有害なコンピュータープログラムを送信するなどして、当社の営業を妨害すること
+(3)当社が扱う商品の知的所有権を侵害する行為をすること
+(4)その他、この利用規約に反する行為をすること', 8, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (6, '第6条 (会員情報の取扱い)', '1. 当社は、原則として会員情報を会員の事前の同意なく第三者に対して開示することはありません。ただし、次の各号の場合には、会員の事前の同意なく、当社は会員情報その他のお客様情報を開示できるものとします。
+(1)法令に基づき開示を求められた場合
+(2)当社の権利、利益、名誉等を保護するために必要であると当社が判断した場合
+2. 会員情報につきましては、当社の「個人情報保護への取組み」に従い、当社が管理します。当社は、会員情報を、会員へのサービス提供、サービス内容の向上、サービスの利用促進、およびサービスの健全かつ円滑な運営の確保を図る目的のために、当社おいて利用することができるものとします。
+3. 当社は、会員に対して、メールマガジンその他の方法による情報提供(広告を含みます)を行うことができるものとします。会員が情報提供を希望しない場合は、当社所定の方法に従い、その旨を通知して頂ければ、情報提供を停止します。ただし、本サービス運営に必要な情報提供につきましては、会員の希望により停止をすることはできません。', 7, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (7, '第7条 (禁止事項)', '本サービスの利用に際して、会員に対し次の各号の行為を行うことを禁止します。
+
+1. 法令または本規約、本サービスご利用上のご注意、本サービスでのお買い物上のご注意その他の本規約等に違反すること
+2. 当社、およびその他の第三者の権利、利益、名誉等を損ねること
+3. 青少年の心身に悪影響を及ぼす恐れがある行為、その他公序良俗に反する行為を行うこと
+4. 他の利用者その他の第三者に迷惑となる行為や不快感を抱かせる行為を行うこと
+5. 虚偽の情報を入力すること
+6. 有害なコンピュータープログラム、メール等を送信または書き込むこと
+7. 当社のサーバーその他のコンピューターに不正にアクセスすること
+8. パスワードを第三者に貸与・譲渡すること、または第三者と共用すること
+9. その他当社が不適切と判断すること', 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (8, '第8条 (サービスの中断・停止等)', '1. 当社は、本サービスの稼動状態を良好に保つために、次の各号の一に該当する場合、予告なしに、本サービスの提供全てあるいは一部を停止することがあります。
+(1)システムの定期保守および緊急保守のために必要な場合
+(2)システムに負荷が集中した場合
+(3)火災、停電、第三者による妨害行為などによりシステムの運用が困難になった場合
+(4)その他、止むを得ずシステムの停止が必要と当社が判断した場合', 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (9, '第9条 (サービスの変更・廃止)', '当社は、その判断によりサービスの全部または一部を事前の通知なく、適宜変更・廃止できるものとします。', 4, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (10, '第10条 (免責)', '1. 通信回線やコンピューターなどの障害によるシステムの中断・遅滞・中止・データの消失、データへの不正アクセスにより生じた損害、その他当社のサービスに関して会員に生じた損害について、当社は一切責任を負わないものとします。
+2. 当社は、当社のウェブページ・サーバー・ドメインなどから送られるメール・コンテンツに、コンピューター・ウィルスなどの有害なものが含まれていないことを保証いたしません。
+3. 会員が本規約等に違反したことによって生じた損害については、当社は一切責任を負いません。', 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (11, '第11条 (本規約の改定)', '当社は、本規約を任意に改定できるものとし、また、当社において本規約を補充する規約(以下「補充規約」といいます)を定めることができます。本規約の改定または補充は、改定後の本規約または補充規約を当社所定のサイトに掲示したときにその効力を生じるものとします。この場合、会員は、改定後の規約および補充規約に従うものと致します。', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_kiyaku (kiyaku_id, kiyaku_title, kiyaku_text, rank, creator_id, create_date, update_date, del_flg) VALUES (12, '第12条 (準拠法、管轄裁判所)', '本規約に関して紛争が生じた場合、当社本店所在地を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。 ', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (1, 'ご注文ありがとうございます', 'この度はご注文いただき誠にありがとうございます。
+下記ご注文内容にお間違えがないかご確認下さい。
+
+', '
+============================================
+
+
+このメッセージはお客様へのお知らせ専用ですので、
+このメッセージへの返信としてご質問をお送りいただいても回答できません。
+ご了承ください。
+
+ご質問やご不明な点がございましたら、こちらからお願いいたします。
+
+', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (5, 'お問い合わせを受け付けました', NULL, NULL, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO dtb_module (module_id, module_code, module_name, sub_data, auto_update_flg, del_flg, create_date, update_date) VALUES (0, '0', 'patch', NULL, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (1, 'アイスクリーム', NULL, 1, NULL, NULL, 'アイス,バニラ,チョコ,抹茶', NULL, NULL, NULL, NULL, '暑い夏にどうぞ。', 'ice130.jpg', '冷たいものはいかがですか?', 'ice260.jpg', 'ice500.jpg', NULL, '<b>おいしいよ<b>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
+INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, NULL, '鍋,なべ,ナベ', NULL, NULL, NULL, NULL, '一人用からあります。', 'nabe130.jpg', 'たまには鍋でもどうでしょう。', 'nabe260.jpg', 'nabe500.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
+INSERT INTO dtb_products (product_id, name, maker_id, status, comment1, comment2, comment3, comment4, comment5, comment6, note, main_list_comment, main_list_image, main_comment, main_image, main_large_image, sub_title1, sub_comment1, sub_image1, sub_large_image1, sub_title2, sub_comment2, sub_image2, sub_large_image2, sub_title3, sub_comment3, sub_image3, sub_large_image3, sub_title4, sub_comment4, sub_image4, sub_large_image4, sub_title5, sub_comment5, sub_image5, sub_large_image5, sub_title6, sub_comment6, sub_image6, sub_large_image6, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, NULL, '鍋,なべ,ナベ,レシピ,作り方', NULL, NULL, NULL, NULL, 'あの、秘伝のお鍋レシピです。', 'recipe130.jpg', '<b>この商品はダウンロード商品です</b><br />自分でチャレンジしてみたい方に。', 'recipe260.jpg', 'recipe500.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
+
+INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (1, 5, 1);
+INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (2, 4, 2);
+INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (3, 4, 1);
+INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (3, 6, 1);
+
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(0, 1, NULL, NULL, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(1, 1, 3, 6, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(2, 1, 3, 5, 'ice-02', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(3, 1, 3, 4, 'ice-03', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(4, 1, 2, 6, 'ice-04', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(5, 1, 2, 5, 'ice-05', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(6, 1, 2, 4, 'ice-06', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(7, 1, 1, 6, 'ice-07', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(8, 1, 1, 5, 'ice-08', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(9, 1, 1, 4, 'ice-09', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(10, 2, NULL, NULL, 'nabe-01', 100, 0, 5, 1700, 1650, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1, NULL, NULL);
+INSERT INTO dtb_products_class (product_class_id, product_id, classcategory_id1, classcategory_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id, down_filename, down_realfilename) VALUES(11, 3, NULL, NULL, 'recipe-01', NULL, 1, NULL, NULL, 100, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 2, 'おなべレシピ.pdf', 'recipe_onabe.pdf');
+
+INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (1, 0, 1, 2, NULL, 'たまには鍋でもどうでしょう。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (2, 0, 2, 1, NULL, 'お口直しに。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
