@@ -69,7 +69,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\PointType($app);
             $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
-
+            $types[] = new \Eccube\Form\Type\OrderType();
+            $types[] = new \Eccube\Form\Type\OrderDetailType();
+            $types[] = new \Eccube\Form\Type\ShippingType();
+            $types[] = new \Eccube\Form\Type\ShipmentItemType();
             return $types;
         }));
 

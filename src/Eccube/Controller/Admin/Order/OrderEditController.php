@@ -21,7 +21,7 @@ class OrderEditController {
             ->find($orderId);
 
         $form = $app['form.factory']
-            ->createBuilder()
+            ->createBuilder('order', $Order)
             ->getForm();
 
         if (is_null($Order)) {
