@@ -250,7 +250,7 @@ echo "get composer..."
 curl -sS https://getcomposer.org/installer | php
 
 echo "install composer..."
-php composer.phar install
+php ./composer.phar install --dev --no-interaction
 
 
 
