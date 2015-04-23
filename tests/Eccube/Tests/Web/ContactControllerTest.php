@@ -5,7 +5,7 @@ namespace Eccube\Tests\Web;
 use Silex\WebTestCase;
 use Eccube\Application;
 
-class ProductControllerTest extends WebTestCase
+class RoutingTest extends WebTestCase
 {
     /**
      * {@inheritdoc}
@@ -19,17 +19,17 @@ class ProductControllerTest extends WebTestCase
         return $app;
     }
 
-    public function testRoutingList()
+    public function testRoutingIndex()
     {
         $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('product_list'));
+        $client->request('GET', $this->app['url_generator']->generate('contact'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
-    public function testRoutingDetail()
+    public function testRoutingComplete()
     {
         $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('product_detail', array('productId' => '1')));
+        $client->request('GET', $this->app['url_generator']->generate('contact_complete'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 }
