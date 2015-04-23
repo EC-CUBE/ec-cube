@@ -94,10 +94,18 @@ class InstallController
         $sql = fread($fp, filesize($sqlFile));
         fclose($fp);
 
+        $pass = "f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c";
+        $magic = "droucliuijeanamiundpnoufrouphudrastiokec";
+
         $sqls = explode(';', $sql);
+        $sqls[] = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank,create_date, update_date) VALUES (2, 'admin', '{$pass}', '{$magic}', '1',  '0', '0', '0', '1', now(), now());";
+        $sqls[] = "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date, point_rate, welcome_point) VALUES (1, 'eccube3dev', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'default1', 'default1', 'default1', 'default1', now(), 0, 0);";
+
         foreach ($sqls as $sql) {
             $this->PDO->query(trim($sql));
         }
+
+
 
         return $this;
     }
@@ -143,7 +151,7 @@ define('DB_PORT', '{$data['db_port']}');
 define('ADMIN_DIR', 'admin/');
 define('ADMIN_FORCE_SSL', FALSE);
 define('ADMIN_ALLOW_HOSTS', 'a:0:{}');
-define('AUTH_MAGIC', 'eccube300beta');
+define('AUTH_MAGIC', 'droucliuijeanamiundpnoufrouphudrastiokec');
 define('PASSWORD_HASH_ALGOS', 'sha256');
 define('MAIL_BACKEND', 'mail');
 define('SMTP_HOST', '');
@@ -185,7 +193,7 @@ mail:
     encryption: 
     auth_mode: 
 auth_type: HMAC
-auth_magic: eccube300beta
+auth_magic: droucliuijeanamiundpnoufrouphudrastiokec
 password_hash_algos: sha256
 use_point: true
 option_favorite_product: true
