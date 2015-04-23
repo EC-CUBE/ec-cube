@@ -229,6 +229,7 @@ stext_len: 50
 sample_address1: 市区町村名 (例：千代田区神田神保町)
 sample_address2: 番地・ビル名 (例：1-3-5)
 ECCUBE_VERSION: 3.0.0-dev
+customer_confirm_mail: false
 __EOF__
 }
 
@@ -269,7 +270,7 @@ case "${DBTYPE}" in
     echo "dropdb..."
     ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database \`${DBNAME}\`"
     echo "createdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\`"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
     #echo "grant user..."
     #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
     echo "create table..."
@@ -277,7 +278,7 @@ case "${DBTYPE}" in
         cat - ${SQL_DIR}/create_table_mysql.sql |
         ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
     echo "insert data..."
-    ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} < ${SQL_DIR}/insert_data.sql
+    ${MYSQL} -u ${DBUSER} ${PASSOPT} --default-character-set=utf8  ${DBNAME} < ${SQL_DIR}/insert_data.sql
     echo "create sequence table..."
     create_sequence_tables
     echo "execute optional SQL..."

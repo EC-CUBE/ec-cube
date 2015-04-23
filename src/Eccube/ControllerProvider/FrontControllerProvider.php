@@ -21,6 +21,11 @@ class FrontControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        // installer
+        $controllers->match('/install/', "\\Eccube\\Controller\\InstallController::index")->bind('install');
+        $controllers->match('/install/complete', "\\Eccube\\Controller\\InstallController::complete")->bind('install_complete');
+
+
         // root
         $controllers->match('/', "\\Eccube\\Page\\Index")->bind('index');
         $controllers->match('/', "\\Eccube\\Page\\Index")->bind('homepage');
@@ -63,9 +68,8 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // entry
         $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::index')->bind('entry');
-        $controllers->match('/entry/kiyaku.php', '\\Eccube\\Controller\\EntryController::kiyaku')->bind('entry_kiyaku');
-        $controllers->match('/entry/confirm.php', '\\Eccube\\Controller\\EntryController::confirm')->bind('entry_confirm');
-        $controllers->match('/entry/complete.php', '\\Eccube\\Controller\\EntryController::complete')->bind('entry_complete');
+        $controllers->match('/entry/complete', '\\Eccube\\Controller\\EntryController::complete')->bind('entry_complete');
+        $controllers->match('/entry/activate', '\\Eccube\\Controller\\EntryController::activate')->bind('entry_activate');
 
         // forgot
         $controllers->match('/forgot/', '\\Eccube\\Page\\Forgot\\Index')->bind('forgot');
@@ -93,10 +97,10 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/guide/usage.php', '\\Eccube\\Page\\Guide\\Usage')->bind('guide_usage');
 
         // mypage
-        $controllers->match('/mypage/', '\\Eccube\\Controller\\MypageController::index')->bind('mypage');
-        $controllers->match('/mypage/login.php', '\\Eccube\\Controller\\MypageController::login')->bind('mypage_login');
-        $controllers->match('/mypage/change.php', '\\Eccube\\Page\\Mypage\\Change')->bind('mypage_change');
-        $controllers->match('/mypage/change_complete.php', '\\Eccube\\Page\\Mypage\\ChangeComplete')->bind('mypage_change_complete');
+        $controllers->match('/mypage/', '\\Eccube\\Controller\\MyPage\\MyPageController::index')->bind('mypage');
+        $controllers->match('/mypage/login.php', '\\Eccube\\Controller\\MyPage\\MyPageController::login')->bind('mypage_login');
+        $controllers->match('/mypage/change', '\\Eccube\\Controller\\MyPage\\ChangeController::index')->bind('mypage_change');
+        $controllers->match('/mypage/change_complete', '\\Eccube\\Controller\\MyPage\\ChangeController::Complete')->bind('mypage_change_complete');
         $controllers->match('/mypage/delivery.php', '\\Eccube\\Page\\Mypage\\Delivery')->bind('mypage_delivery');
         $controllers->match('/mypage/delivery_addr.php', '\\Eccube\\Page\\Mypage\\DeliveryAddr')->bind('mypage_delivery_addr');
         $controllers->match('/mypage/download.php', '\\Eccube\\Page\\Mypage\\Download')->bind('mypage_download');

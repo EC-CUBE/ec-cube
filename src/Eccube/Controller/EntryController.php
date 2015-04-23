@@ -3,7 +3,9 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use Eccube\Framework\Util\Utils;
+use Symfony\Component\Security\Core\Util\SecureRandom;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class EntryController extends AbstractController
 {
@@ -17,18 +19,83 @@ class EntryController extends AbstractController
 
     }
 
-    public function kiyaku(Application $app)
+    /**
+     * Index
+     *
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function index(Application $app)
     {
-        $app['session']->remove('entry');
-        $kiyaku = '規約内容を取得して表示';
-        // TODO: 規約内容を取得
-        // $kiyaku = $app['orm.em']
-        //     ->getRepository('Eccube\Entity\Kiyaku')
-        //     ->findAll();
+        $customer = $app['eccube.repository.customer']->newCustomer();
 
-        $form = $app['form.factory']->createBuilder()->getForm();
+        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+        $builder = $app['form.factory']->createBuilder('customer', $customer);
 
-        return $app['twig']->render('Entry/kiyaku.twig', array(
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $form = $builder->getForm();
+        if ($app['request']->getMethod() === 'POST') {
+            $form->handleRequest($app['request']);
+            if ($form->isValid()) {
+                switch ($app['request']->get('mode')) {
+                    case 'confirm' :
+                        $builder->setAttribute('freeze', true);
+                        $form = $builder->getForm();
+                        $form->handleRequest($app['request']);
+
+                        return $app['twig']->render('Entry/confirm.twig', array(
+                            'title' => $this->title,
+                            'form' => $form->createView(),
+                        ));
+                        break;
+                    case 'complete':
+
+                        // create Secretkey
+                        $customer->setSecretKey($this->getUniqueSecretKey($app));
+
+                        // secure password
+                        $generator = new SecureRandom();
+                        $salt = bin2hex($generator->nextBytes(5));
+                        $customer->setSalt($salt);
+                        $encoder = $app['security.encoder_factory']->getEncoder($customer);
+                        $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
+                        $customer->setPassword($encoded_password);
+
+                        $activateUrl = $app['url_generator']
+                            ->generate('entry_activate',
+                                array('id' => $customer->getSecretKey()),
+                                true
+                            );
+
+                        $app['orm.em']->persist($customer);
+                        $app['orm.em']->flush();
+
+                        if ($app['config']['customer_confirm_mail']) {
+
+                            $message = $app['mail.message']
+                                ->setSubject('[EC-CUBE3] 会員登録のご確認')
+                                ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
+                                        'customer' => $customer,
+                                        'activateUrl' => $activateUrl,
+                                    )));
+
+                            $this->sendMail($app, $customer, $message);
+
+                            return $app->redirect($app['url_generator']->generate('entry_complete'));
+
+                        } else {
+                            return $app->redirect($activateUrl);
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        $kiyaku = $app['orm.em']
+            ->getRepository('Eccube\Entity\Kiyaku')
+            ->findAll();
+        return $app['view']->render('Entry/index.twig', array(
             'title' => $this->title,
             'kiyaku' => $kiyaku,
             'form' => $form->createView(),
@@ -36,114 +103,81 @@ class EntryController extends AbstractController
     }
 
 
-    public function index(Application $app)
+    /**
+     * Complete
+     *
+     * @param Application $app
+     * @return mixed
+     */
+    public function complete(Application $app)
     {
-        if (!$this->hasCorrectReferer($app)) {
-            return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
-        }
 
-        $customer = $app['eccube.repository.customer']->newCustomer();
-        $form = $app['form.factory']
-            ->createBuilder('customer', $customer)
-            ->getForm();
-        $form->handleRequest($app['request']);
-
-        if ($app['request']->getMethod() === 'POST') {
-            if ($form->isValid()) {
-                $app['session']->set('entry', $form->getData());
-
-                return $app->redirect($app['url_generator']->generate('entry_confirm'));
-            }
-
-        } elseif ($app['session']->has('entry')) {
-
-            $sessionData = $app['session']->get('entry');
-            $form = $app['form.factory']
-                ->createBuilder('customer', $sessionData)
-                ->getForm();
-        }
-
-        return $app['twig']->render('Entry/index.twig', array(
+        return $app['view']->render('Entry/complete.twig', array(
             'title' => $this->title,
-            'form' => $form->createView(),
         ));
     }
 
+    /**
+     * 会員のアクティベート（本会員化）を行う
+     *
+     * @param Application $app
+     * @return mixed
+     */
+    public function activate(Application $app)
+    {
 
-    public function confirm(Application $app) {
-        if (!$app['session']->has('entry')) {
-            return $app->redirect($app['url_generator']->generate('entry_kiyaku'));
-        }
+        $secret_key = $app['request']->get('id');
+        $errors = $app['validator']->validateValue($secret_key, array(
+                new Assert\NotBlank(),
+                new Assert\Regex(array(
+                    'pattern' => '/^[a-zA-Z0-9]+$/',
+                ))
+            )
+        );
 
-        if ($app['request']->request->get('back')) {
-            return $app->redirect($app['url_generator']->generate('entry'));
-        }
+        if ($app['request']->getMethod() === 'GET' && count($errors) <= 0) {
 
-        /* @var $customer \Eccube\Entity\Customer */
-        $customer = $app['session']->get('entry');
-        if ($app['request']->request->get('send') && $app['validator']->validate($customer)) {
+            $customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
+                ->findOneBy(array(
+                        'secret_key' => $secret_key,
+                        'status' => 1,
+                        'del_flg' => 0,
+                    )
+                );
 
-            $customer->setSecretKey($this->getUniqueSecretKey($app));
+            if (!$customer) {
+                throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
+            }
 
-            // password
-            $salt = Utils::sfGetRandomString(10);
-            $customer->setSalt($salt);
-            $encoder = $app['security.encoder_factory']->getEncoder($customer);
-            $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
-            $customer->setPassword($encoded_password);
-
+            $customer->setStatus(2);
             $app['orm.em']->persist($customer);
             $app['orm.em']->flush();
 
-            // TODO: 後でEventとして実装する
-            // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
             $message = $app['mail.message']
                 ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                ->setFrom(array('sample@example.com'))
-                ->setCc($app['config']['mail_cc'])
-                ->setTo(array($customer->getEmail()))
-                ->setBody('会員登録が完了しました。');
-            $app['mailer']->send($message);
+                ->setBody($app['view']->render('Mail/entry_complete.twig', array(
+                    'customer' => $customer,
+                )));
 
-            // リダイレクト対策
-            $app['session']->remove('entry');
+            $this->sendMail($app, $customer, $message);
 
-            return $app->redirect($app['url_generator']->generate('entry_complete'));
+            return $app['view']->render('Entry/activate.twig', array(
+                'title' => $this->title,
+            ));
+        } else {
+            throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }
-
-        return $app['twig']->render('Entry/confirm.twig', array(
-            'title' => $this->title,
-            'form' => $app['session']->get('entry'),
-        ));
     }
 
-
-    public function complete(Application $app) {
-
-        return $app['twig']->render('Entry/complete.twig', array(
-            'title' => $this->title,
-        ));
-    }
-
-
-    // 規約画面からの遷移でない場合、規約ページへリダイレクト
-    private function hasCorrectReferer($app)
+    /**
+     * 認証用の会員毎にユニークなキーを生成・取得する
+     *
+     * @param $app
+     * @return string
+     */
+    private function getUniqueSecretKey($app)
     {
-        // 規約確認
-        $referer = parse_url($app['request']->server->get('HTTP_REFERER'));
-        $kiyakuUrl = $app['url_generator']->generate('entry_kiyaku');
-        $indexUrl = $app['url_generator']->generate('entry');
-        $confirmUrl = $app['url_generator']->generate('entry_confirm');
-        if ($referer['path'] == '' || !in_array($referer['path'], array($kiyakuUrl, $indexUrl, $confirmUrl))) {
-            return false;
-        }
-        return true;
-    }
-
-
-    // ユニークなキーを取得する
-    private function getUniqueSecretKey($app) {
-        $unique = md5(uniqid(rand(),1));
+        $unique = md5(uniqid(rand(), 1));
         $customer = $app['eccube.repository.customer']->findBy(array(
             'secret_key' => $unique,
         ));
@@ -152,6 +186,23 @@ class EntryController extends AbstractController
         } else {
             return $this->getUniqueSecretKey($app);
         }
+    }
+
+    /**
+     * 顧客に確認メールを送信する
+     *
+     * @param Application $app
+     * @param $customer
+     * @param $message
+     */
+    private function sendMail(Application $app, $customer, $message)
+    {
+        // TODO: 後でEventとして実装する、送信元アドレス、BCCを調整する
+        // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
+        $message->setFrom(array('sample@example.com'))
+            ->setBcc($app['config']['mail_cc'])
+            ->setTo(array($customer->getEmail()));
+        $app['mailer']->send($message);
     }
 
 }

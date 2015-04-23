@@ -96,6 +96,17 @@
     {%- endif -%}
 {%- endblock choice_widget_collapsed -%}
 
+
+{%- block choice_widget_expanded -%}
+    {% if freeze %}
+        {{ form.vars.data.name }}
+        <input type="hidden" value="{{ form.vars.data.id }}" {{ block('widget_attributes') }}>
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock choice_widget_expanded -%}
+
+
 {%- block checkbox_widget -%}
     {%- if freeze -%}
         {%- if checked -%}
@@ -119,6 +130,14 @@
 {%- endblock radio_widget -%}
 
 
+{%- block password_widget -%}
+    {%- if freeze -%}
+        <input type="hidden" {{ block('widget_attributes') }} value="{{ form.vars.data }}" />
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock password_widget -%}
+
 
 {# EC-CUBE Widget #}
 
@@ -127,7 +146,11 @@
         {{- form_errors(child) -}}
     {% endfor -%}
     {%- for child in form %}
-        {{- form_label(child) }}&nbsp;{{ form_widget(child, {'attr': {'class': 'box120', 'style': 'ime-mode: active;'}}) -}}
+        {%- if freeze -%}
+            {{ form_widget(child) }}
+        {%- else -%}
+            {{ form_label(child) }}&nbsp;{{ form_widget(child, {'attr': {'class': 'box120', 'style': 'ime-mode: active;'}}) -}}
+        {%- endif -%}
         {%- if loop.last == false%}　{% endif -%}
     {% endfor -%}
 {%- endblock name_widget -%}
