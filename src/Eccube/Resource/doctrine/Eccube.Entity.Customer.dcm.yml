@@ -206,8 +206,12 @@ Eccube\Entity\Customer:
             joinColumn:
                 name: mailmaga_flg
                 referencedColumnName: id
+
     oneToMany:
         CustomerFavoriteProducts:
             targetEntity: Eccube\Entity\CustomerFavoriteProduct
+            mappedBy: Customer
+        Orders:
+            targetEntity: Eccube\Entity\Order
             mappedBy: Customer
     lifecycleCallbacks: {  }
