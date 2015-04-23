@@ -26,16 +26,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\ViewService($app);
         });
         $app['eccube.service.cart'] = $app->share(function() use ($app) {
-            return new \Eccube\Service\CartService($app);
+            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
         });
         $app['eccube.service.tax_rule'] = $app->share(function() use ($app) {
             return new \Eccube\Service\TaxRuleService($app);
         });
-
-        // Entity
-        $app['eccube.entity.cart'] = function() use ($app) {
-            return new \Eccube\Entity\Cart($app);
-        };
 
         // Repository
         $app['eccube.repository.master.constant'] = $app->share(function() use ($app) {
