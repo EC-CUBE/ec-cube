@@ -26,7 +26,7 @@
 
 {% block main %}
 
-    {% for message in app.session.flashbag.get('basis.complete')  %}
+    {% for message in app.session.flashbag.get('shop_master.complete')  %}
         {{ message|trans|raw }}<br />
     {% endfor %}
 
