@@ -26,16 +26,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\ViewService($app);
         });
         $app['eccube.service.cart'] = $app->share(function() use ($app) {
-            return new \Eccube\Service\CartService($app);
+            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
         });
         $app['eccube.service.tax_rule'] = $app->share(function() use ($app) {
             return new \Eccube\Service\TaxRuleService($app);
         });
-
-        // Entity
-        $app['eccube.entity.cart'] = function() use ($app) {
-            return new \Eccube\Entity\Cart($app);
-        };
 
         // Repository
         $app['eccube.repository.master.constant'] = $app->share(function() use ($app) {
@@ -120,6 +115,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ReminderType();
             $types[] = new \Eccube\Form\Type\MailMagazineType();
             $types[] = new \Eccube\Form\Type\CustomerStatusType();
+            $types[] = new \Eccube\Form\Type\OrderStatusType();
+            $types[] = new \Eccube\Form\Type\PaymentType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
             $types[] = new \Eccube\Form\Type\CustomerType($app);
@@ -132,6 +129,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShopMasterType($app);
             $types[] = new \Eccube\Form\Type\PointType($app);
             $types[] = new \Eccube\Form\Type\InstallType($app);
+            $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
 
             return $types;

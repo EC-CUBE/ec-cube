@@ -81,9 +81,14 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/mail/template_input.php', '\\Eccube\\Page\\Admin\\Mail\\TemplateInput')->bind('admin_mail_template_input');
 
         // order
-        $controllers->match('/order/', '\\Eccube\\Page\\Admin\\Order\\Index')->bind('admin_order');
+        $controllers->match('/order/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::index')->bind('admin_order');
+        $controllers->match('/order/edit/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::edit')
+            ->assert('orderId', '\d+')
+            ->bind('admin_order_edit');
+        $controllers->match('/order/delete/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::delete')
+            ->assert('orderId', '\d+')
+            ->bind('admin_order_delete');
         $controllers->match('/order/disp.php', '\\Eccube\\Page\\Admin\\Order\\Disp')->bind('admin_order_disp');
-        $controllers->match('/order/edit.php', '\\Eccube\\Page\\Admin\\Order\\Edit')->bind('admin_order_edit');
         $controllers->match('/order/mail.php', '\\Eccube\\Page\\Admin\\Order\\Mail')->bind('admin_order_mail');
         $controllers->match('/order/mail_view.php', '\\Eccube\\Page\\Admin\\Order\\MailView')->bind('admin_order_mail_view');
         $controllers->match('/order/multiple.php', '\\Eccube\\Page\\Admin\\Order\\Multiple')->bind('admin_order_multiple');

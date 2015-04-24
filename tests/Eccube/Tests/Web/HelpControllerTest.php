@@ -7,7 +7,6 @@ use Eccube\Application;
 
 class HelpControllerTest extends WebTestCase
 {
-
     /**
      * {@inheritdoc}
      */
@@ -26,7 +25,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpTradelaw()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/tradelaw');
+        $client->request('GET', $this->app['url_generator']->generate('help_tradelaw'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -36,7 +35,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpAbout()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/about');
+        $client->request('GET', $this->app['url_generator']->generate('help_about'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -46,7 +45,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpGuide()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/guide');
+        $client->request('GET', $this->app['url_generator']->generate('help_guide'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -56,8 +55,7 @@ class HelpControllerTest extends WebTestCase
     public function testRoutingHelpPrivacy()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/help/privacy');
+        $client->request('GET', $this->app['url_generator']->generate('help_privacy'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
-
 }

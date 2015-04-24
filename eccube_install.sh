@@ -31,7 +31,7 @@ CONFIG_PHP="app/config/eccube/config.php"
 CONFIG_YML="app/config/eccube/config.yml"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-HTTP_URL=${HTTP_URL:-"http://test.local"}
+HTTP_URL=${HTTP_URL:-"http://test.local/"}
 HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
 ROOT_URLPATH=${ROOT_URLPATH:-"/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
@@ -79,7 +79,7 @@ adjust_directory_permissions()
 {
     chmod -R go+w "./html"
     chmod go+w "./app"
-    chmod -R go+w "./app/templates"
+    chmod -R go+w "./app/template"
     chmod -R go+w "./app/cache"
     chmod go+w "./app/config"
     chmod -R go+w "./app/download"
@@ -160,8 +160,8 @@ dtb_tax_rule_tax_rule_id_seq
 
 get_optional_sql()
 {
-    echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', '1', '0', '0', '0', '1', current_timestamp);"
-    echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1', current_timestamp);"
+    echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', '1', '0', '0', '0', '1', current_timestamp, current_timestamp);"
+    echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date, point_rate, welcome_point) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1', current_timestamp, 0, 0);"
 }
 
 create_config_php()
@@ -270,7 +270,7 @@ case "${DBTYPE}" in
     sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
 
     echo "create table..."
-    ./vendor/bin/doctrine orm:schema-tool:create
+    php ./vendor/bin/doctrine orm:schema-tool:create
 
     echo "insert data..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data_pgsql.sql ${DBNAME}
