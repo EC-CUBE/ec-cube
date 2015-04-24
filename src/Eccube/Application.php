@@ -50,8 +50,18 @@ class Application extends \Silex\Application
 
         // load config
         $this['config'] = $app->share(function () {
-            $config = Yaml::parse(__DIR__ . '/../../app/config/eccube/config.yml');
-            $config_constant = Yaml::parse(__DIR__ . '/../../app/config/eccube/constant.yml.dist');
+            $config_file = __DIR__ . '/../../app/config/eccube/config.yml';
+            if (file_exists($config_file)) {
+                $config = Yaml::parse($config_file);
+            } else {
+                $config = array();
+            }
+            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
+            if (file_exists($constant_file)) {
+                $config_constant = Yaml::parse($constant_file);
+            } else {
+                $config_constant = array();
+            }
 
             return array_merge($config_constant, $config);
         });
@@ -88,9 +98,19 @@ class Application extends \Silex\Application
 
         // インストールされてなければこれこまで読み込む
         if (!file_exists(__DIR__ . '/../../app/config/eccube/config.yml')) {
-            $this->mount('', new ControllerProvider\FrontControllerProvider());
-            $this->register(new ServiceProvider\EccubeServiceProvider());
-            return ;
+            $app->mount('', new ControllerProvider\InstallControllerProvider());
+            $app->register(new ServiceProvider\EccubeServiceProvider());
+            $app->error(function (\Exception $e, $code) use ($app) {
+                if ($code === 404) {
+                    return $app->redirect($app['url_generator']->generate('install'));
+                } elseif ($app['debug']) {
+                    return;
+                }
+
+                return new Response('エラーが発生しました.');
+            });
+
+            return;
         }
 
 
@@ -256,8 +276,22 @@ class Application extends \Silex\Application
             $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
         }
 
-        $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/admin', new ControllerProvider\AdminControllerProvider());
+        $app->mount('', new ControllerProvider\FrontControllerProvider());
+        $app->mount('/admin', new ControllerProvider\AdminControllerProvider());
+        $app->error(function (\Exception $e, $code) use ($app) {
+            if ($app['debug']) {
+                return;
+            }
+
+            switch ($code) {
+                case 404:
+                    break;
+                default:
+                    break;
+            }
+
+            return new Response('エラーが発生しました.');
+        });
 
         $this['callback_resolver'] = $this->share(function () use ($app) {
             return new CallbackResolver($app);
