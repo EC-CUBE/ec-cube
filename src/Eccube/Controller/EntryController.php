@@ -3,6 +3,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 
@@ -24,7 +25,7 @@ class EntryController extends AbstractController
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $Customer = $app['eccube.repository.customer']->newCustomer();
 
@@ -33,32 +34,30 @@ class EntryController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
+
             if ($form->isValid()) {
-                switch ($app['request']->get('mode')) {
+                switch ($request->get('mode')) {
                     case 'confirm' :
                         $builder->setAttribute('freeze', true);
                         $form = $builder->getForm();
-                        $form->handleRequest($app['request']);
+                        $form->handleRequest($request);
 
                         return $app['twig']->render('Entry/confirm.twig', array(
                             'title' => $this->title,
                             'form' => $form->createView(),
                         ));
                         break;
+
                     case 'complete':
-
-
                         $Customer->setSalt(
-                            $app['orm.em']
-                                ->getRepository('Eccube\Entity\Customer')
+                            $app['eccube.repository.customer']
                                 ->createSalt(5)
                         );
 
                         $Customer->setPassword(
-                            $app['orm.em']
-                                ->getRepository('Eccube\Entity\Customer')
+                            $app['eccube.repository.customer']
                                 ->encryptPassword($app, $Customer)
                         );
 
@@ -67,7 +66,6 @@ class EntryController extends AbstractController
                                 ->getRepository('Eccube\Entity\Customer')
                                 ->getUniqueSecretKey($app)
                         );
-
 
                         $app['orm.em']->persist($Customer);
                         $app['orm.em']->flush();
@@ -78,7 +76,6 @@ class EntryController extends AbstractController
                             ), true);
 
                         if ($app['config']['customer_confirm_mail']) {
-
                             $message = $app['mail.message']
                                 ->setSubject('[EC-CUBE3] 会員登録のご確認')
                                 ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
@@ -89,7 +86,6 @@ class EntryController extends AbstractController
                             $this->sendMail($app, $Customer, $message);
 
                             return $app->redirect($app['url_generator']->generate('entry_complete'));
-
                         } else {
                             return $app->redirect($activateUrl);
                         }
@@ -119,7 +115,6 @@ class EntryController extends AbstractController
      */
     public function complete(Application $app)
     {
-
         return $app['view']->render('Entry/complete.twig', array(
             'title' => $this->title,
         ));
@@ -131,10 +126,9 @@ class EntryController extends AbstractController
      * @param Application $app
      * @return mixed
      */
-    public function activate(Application $app)
+    public function activate(Application $app, Request $request)
     {
-
-        $secret_key = $app['request']->get('id');
+        $secret_key = $request->get('id');
         $errors = $app['validator']->validateValue($secret_key, array(
                 new Assert\NotBlank(),
                 new Assert\Regex(array(
@@ -143,20 +137,19 @@ class EntryController extends AbstractController
             )
         );
 
-        if ($app['request']->getMethod() === 'GET' && count($errors) <= 0) {
-
-            $Customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
-                ->getNonActiveCustomerBySecretKey($secret_key);
-
-            if (!$Customer) {
+        if ($request->getMethod() === 'GET' && count($errors) === 0) {
+            try {
+                $Customer = $app['eccube.repository.customer']
+                    ->getNonActiveCustomerBySecretKey($secret_key);
+            } catch (\Exception $e) {
                 throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
             }
 
-            $Customer->setStatus(
-                $app['orm.em']
-                    ->getRepository('Eccube\Entity\Master\CustomerStatus')
-                    ->find(2)
-            );
+            $CustomerStatus = $app['orm.em']
+                ->getRepository('Eccube\Entity\Master\CustomerStatus')
+                ->find(2);
+            $Customer->setStatus($CustomerStatus);
+
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
 
