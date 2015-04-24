@@ -69,7 +69,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $taxRuleRepository;
         });
-
+        $app['eccube.repository.order'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Order');
+        });
         // 
         $app['paginator'] = $app->protect(function() {
             return new \Knp\Component\Pager\Paginator();
@@ -131,7 +133,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
-
+            $types[] = new \Eccube\Form\Type\ShoppingType($app);
+            $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
             return $types;
         }));
 

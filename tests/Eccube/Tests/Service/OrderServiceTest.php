@@ -2,6 +2,7 @@
 
 namespace Eccube\Tests\Service;
 
+use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 
 class OrderServiceTest extends \PHPUnit_Framework_TestCase
@@ -48,6 +49,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($Customer->getName01(), $Order->getName01());
         $this->assertEquals($Customer->getName02(), $Order->getName02());
     }
+    
     public function testRegisterPreOrderFromCart()
     {
         $this->app['orm.em']->getConnection()->beginTransaction();
@@ -61,15 +63,16 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
         $ProductClass = $this->app['orm.em']
             ->getRepository('Eccube\Entity\ProductClass')
             ->find(1);
-        $cartItems = array();
-        $cartItems[] = array(
-            'Product' => $ProductClass->getProduct(),
-            'ProductClass' => $ProductClass,
-            'quantity' => 1
-        );
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->clear();
+        $cartService->addProduct($ProductClass->getId());
+        $cartService->addProduct($ProductClass->getId());
+        $cartService->lock();
 
+        $CarItems = $cartService->getCart()->getCartItems();
         // 受注データ登録
-        $Order = $this->app['eccube.service.order']->registerPreOrderFromCart($cartItems, $Customer);
+        $Order = $this->app['eccube.service.order']->convertToOrderFromCartItems($CarItems, $Customer);
+        $Order = $this->app['eccube.service.order']->registerPreOrderFromCart($Order);
 
         // 登録内容確認
         $this->assertNotNull($Order);

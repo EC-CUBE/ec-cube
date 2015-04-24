@@ -48,69 +48,46 @@ class ShoppingController extends AbstractController
             ->getForm();
     }
 
-    // todo カート変更チェック
-    protected function verifyCartAndAbort()
-    {
-        if (!$this->cartService->isLocked()) {
-            // エラー処理
-        }
-    }
-
-    // todo ログインチェック
-    protected function verifyCustomerAndAbort()
-    {
-        if (!$this->app['security']->isGranted('ROLE_USER')) {
-            // 非会員購入対応
-        }
-    }
-
     public function index(Application $app)
     {
-        $this->init($app);
+        //$this->test($app);
 
-        // ログインチェック
-        $this->verifyCustomerAndAbort();
-        // カート変更チェック
-        $this->verifyCartAndAbort();
+        if (!$app['security']->isGranted('ROLE_USER')) {
+            // 非会員購入
+        }
+        if (!$app['eccube.service.cart']->isLocked()) {
+            // カートチェック
+        }
+
+        $form = $app['form.factory']
+            ->createBuilder('shopping')
+            ->getForm();
 
         // 受注関連情報を取得
-        $preOrderId = $this->cartService->getPreOrderId();
+        $preOrderId = $app['eccube.service.cart']->getPreOrderId();
         $order = null;
         if (!is_null($preOrderId)) {
-            $order = $this->orderRepository->find($preOrderId);
+            $order = $app['eccube.repository.order']->find($preOrderId);
         }
         // 初回アクセスの場合は受注データを作成
         if (is_null($order)) {
-            $order = $this->orderService
-                          ->registerPreOrderFromCart(
-                              $this->cartService->getProducts(),
-                              $this->app['user']);
-            $this->cartService->setPreOrderId($order->getId());
+            $order = $app['eccube.service.order']->convertToOrderFromCartItems(
+                $app['eccube.service.cart']->getCart()->getCartItems(),
+                $app['user']);
+            $order = $app['eccube.service.order']->registerPreOrderFromCart($order);
+            $app['eccube.service.cart']->setPreOrderId($order->getId());
         }
 
         // 受注関連情報を最新状態に更新
-        $this->app['orm.em']->refresh($order);
-
-        // todo 複数配送設定の対応
-        $shipping = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Shipping')
-            ->findOneBy(array("order_id" => $order->getId()));
-        $shipmentItems = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\ShipmentItem')
-            ->findBy(array("order_id" => $order->getId()));
-
-        // todo 受注情報の金額計算
-        //$this->orderService->calcurate($order);
-        //$deliveries = $this->orderService->findDeliveriesByOrder($order);
-        //$payments = $this->orderService->findPaymentByOrder($order);
+        $app['orm.em']->refresh($order);
 
         // 配送業者選択
-        $deliveries = $this->findDeliveriesFromOrderDetails($order->getOrderDetails());
-        $this->form->add('delivery', 'entity', array(
-                    'class' => 'Eccube\Entity\Deliv',
-                    'property' => 'name',
-                    'choices' => $deliveries,
-                    'data' => $order->getDeliv()));
+        $deliveries = $this->findDeliveriesFromOrderDetails($app, $order->getOrderDetails());
+        $form->add('delivery', 'entity', array(
+                'class' => 'Eccube\Entity\Deliv',
+                'property' => 'name',
+                'choices' => $deliveries,
+                'data' => $order->getDeliv()));
 
         // 支払い方法選択
         $paymentOptions = $order->getDeliv()->getPaymentOptions();
@@ -118,7 +95,7 @@ class ShoppingController extends AbstractController
         foreach ($paymentOptions as $paymentOption) {
             $payments[] = $paymentOption->getPayment();
         }
-        $this->form->add('payment', 'entity', array(
+        $form->add('payment', 'entity', array(
                 'class' => 'Eccube\Entity\Payment',
                 'property' => 'method',
                 'choices' => $payments,
@@ -128,11 +105,9 @@ class ShoppingController extends AbstractController
         return $app['twig']->render(
                 'shopping/index.twig',
                 array(
-                    'form' => $this->form->createView(),
+                    'form' => $form->createView(),
                     'title' => $title,
-                    'order' => $order,
-                    'shipping' => $shipping,
-                    'shipmentItems' => $shipmentItems)
+                    'order' => $order)
         );
     }
 
@@ -205,7 +180,6 @@ class ShoppingController extends AbstractController
     public function payment(Application $app)
     {
         $this->init($app);
-        $this->verifyCartAndAbort();
 
         if ('POST' === $app['request']->getMethod()) {
             $this->form->handleRequest($app['request']);
@@ -229,7 +203,6 @@ class ShoppingController extends AbstractController
     public function point(Application $app)
     {
         $this->init($app);
-        $this->verifyCartAndAbort();
 
         /** @var $order \Eccube\Entity\Order */
         $order = $this->orderRepository->find($this->cartService->getPreOrderId());
@@ -275,7 +248,6 @@ class ShoppingController extends AbstractController
     public function shipping(Application $app)
     {
         $this->init($app);
-        $this->verifyCartAndAbort();
 
         $customer = $app['user'];
         $addresses = array();
@@ -361,7 +333,6 @@ class ShoppingController extends AbstractController
     public function shipping_multiple(Application $app)
     {
         $this->init($app);
-        $this->verifyCartAndAbort();
 
         $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
 
@@ -488,14 +459,14 @@ class ShoppingController extends AbstractController
     }
 
     // todo リファクタ
-    public function findDeliveriesFromOrderDetails($details)
+    private function findDeliveriesFromOrderDetails($app, $details)
     {
         $productTypeIds = array();
         foreach ($details as $detail) {
             $productTypeIds[] = $detail->getProductClass()->getProductTypeId();
         }
         $productTypeIds = array_unique($productTypeIds);
-        $qb = $this->app['orm.em']->createQueryBuilder();
+        $qb = $app['orm.em']->createQueryBuilder();
         $deliveries = $qb->select("d")
             ->from("\\Eccube\\Entity\\Deliv", "d")
             ->where($qb->expr()->in('d.product_type_id', $productTypeIds))

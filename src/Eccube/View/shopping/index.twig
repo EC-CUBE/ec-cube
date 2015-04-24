@@ -143,6 +143,7 @@ $(document).ready(function(){
         <a href="{{ path('shopping_shipping_multiple') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_several_address.jpg" alt="お届け先を複数指定する" /></a>
     </h3>
 
+{% for shipping in order.Shippings %}
     <h2>お届け先</h2>
     <table summary="ご注文内容確認">
         <col width="10%" />
@@ -153,10 +154,10 @@ $(document).ready(function(){
             <th scope="col">商品名</th>
             <th scope="col">数量</th>
         </tr>
-        {% for item in shipmentItems %}
+        {% for item in shipping.ShipmentItems %}
         <tr>
             <td class="alignC">
-                <img src="{{ app.config.image_path }}{# item.ProductClass.Product.main_list_image #}" style="max-width: 65px;max-height: 65px;" alt="{{ item.product_name }}" />
+                <img src="{{ app.config.image_path }}{{ item.ProductClass.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ item.product_name }}" />
             </td>
             <td><strong>{{ item.product_name }}</strong><br />{# 商品規格 #}</td>
             <td class="alignC">{{ item.quantity }}</td>
@@ -189,7 +190,7 @@ $(document).ready(function(){
         </tr>
         </tbody>
     </table>
-
+{% endfor %}
     <div class="pay_area01">
         <h3>お問い合わせ</h3>
         <table summary="お問い合わせ">
