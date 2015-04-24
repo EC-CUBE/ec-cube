@@ -115,7 +115,7 @@ class CustomerEditController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Customer/Edit.twig', array(
+        return $app['view']->render('Admin/Customer/edit.twig', array(
             'title' => $this->tpl_maintitle,
             'subtitle'  => $this->tpl_subtitle,
             'customerId' => $customerId,
