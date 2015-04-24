@@ -22,3 +22,6 @@ mail_cc:
     - eccube@example.com
 ECCUBE_VERSION: 3.0.0-dev
 customer_confirm_mail: false
+
+form_country_enable: false
+default_password: '******'

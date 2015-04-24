@@ -3,7 +3,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 
@@ -27,10 +26,10 @@ class EntryController extends AbstractController
      */
     public function index(Application $app)
     {
-        $customer = $app['eccube.repository.customer']->newCustomer();
+        $Customer = $app['eccube.repository.customer']->newCustomer();
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('customer', $customer);
+        $builder = $app['form.factory']->createBuilder('entry', $Customer);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -50,36 +49,44 @@ class EntryController extends AbstractController
                         break;
                     case 'complete':
 
-                        // create Secretkey
-                        $customer->setSecretKey($this->getUniqueSecretKey($app));
 
-                        // secure password
-                        $generator = new SecureRandom();
-                        $salt = bin2hex($generator->nextBytes(5));
-                        $customer->setSalt($salt);
-                        $encoder = $app['security.encoder_factory']->getEncoder($customer);
-                        $encoded_password = $encoder->encodePassword($customer->getPassword(), $customer->getSalt());
-                        $customer->setPassword($encoded_password);
+                        $Customer->setSalt(
+                            $app['orm.em']
+                                ->getRepository('Eccube\Entity\Customer')
+                                ->createSalt(5)
+                        );
+
+                        $Customer->setPassword(
+                            $app['orm.em']
+                                ->getRepository('Eccube\Entity\Customer')
+                                ->encryptPassword($app, $Customer)
+                        );
+
+                        $Customer->setSecretKey(
+                            $app['orm.em']
+                                ->getRepository('Eccube\Entity\Customer')
+                                ->getUniqueSecretKey($app)
+                        );
+
+
+                        $app['orm.em']->persist($Customer);
+                        $app['orm.em']->flush();
 
                         $activateUrl = $app['url_generator']
-                            ->generate('entry_activate',
-                                array('id' => $customer->getSecretKey()),
-                                true
-                            );
-
-                        $app['orm.em']->persist($customer);
-                        $app['orm.em']->flush();
+                            ->generate('entry_activate', array(
+                                'id' => $Customer->getSecretKey()
+                            ), true);
 
                         if ($app['config']['customer_confirm_mail']) {
 
                             $message = $app['mail.message']
                                 ->setSubject('[EC-CUBE3] 会員登録のご確認')
                                 ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
-                                        'customer' => $customer,
-                                        'activateUrl' => $activateUrl,
-                                    )));
+                                    'Customer' => $Customer,
+                                    'activateUrl' => $activateUrl,
+                                )));
 
-                            $this->sendMail($app, $customer, $message);
+                            $this->sendMail($app, $Customer, $message);
 
                             return $app->redirect($app['url_generator']->generate('entry_complete'));
 
@@ -95,6 +102,7 @@ class EntryController extends AbstractController
         $kiyaku = $app['orm.em']
             ->getRepository('Eccube\Entity\Kiyaku')
             ->findAll();
+
         return $app['view']->render('Entry/index.twig', array(
             'title' => $this->title,
             'kiyaku' => $kiyaku,
@@ -137,54 +145,34 @@ class EntryController extends AbstractController
 
         if ($app['request']->getMethod() === 'GET' && count($errors) <= 0) {
 
-            $customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
-                ->findOneBy(array(
-                        'secret_key' => $secret_key,
-                        'status' => 1,
-                        'del_flg' => 0,
-                    )
-                );
+            $Customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
+                ->getNonActiveCustomerBySecretKey($secret_key);
 
-            if (!$customer) {
+            if (!$Customer) {
                 throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
             }
 
-            $customer->setStatus(2);
-            $app['orm.em']->persist($customer);
+            $Customer->setStatus(
+                $app['orm.em']
+                    ->getRepository('Eccube\Entity\Master\CustomerStatus')
+                    ->find(2)
+            );
+            $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
 
             $message = $app['mail.message']
                 ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
                 ->setBody($app['view']->render('Mail/entry_complete.twig', array(
-                    'customer' => $customer,
+                    'customer' => $Customer,
                 )));
 
-            $this->sendMail($app, $customer, $message);
+            $this->sendMail($app, $Customer, $message);
 
             return $app['view']->render('Entry/activate.twig', array(
                 'title' => $this->title,
             ));
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
-        }
-    }
-
-    /**
-     * 認証用の会員毎にユニークなキーを生成・取得する
-     *
-     * @param $app
-     * @return string
-     */
-    private function getUniqueSecretKey($app)
-    {
-        $unique = md5(uniqid(rand(), 1));
-        $customer = $app['eccube.repository.customer']->findBy(array(
-            'secret_key' => $unique,
-        ));
-        if (count($customer) == 0) {
-            return $unique;
-        } else {
-            return $this->getUniqueSecretKey($app);
         }
     }
 

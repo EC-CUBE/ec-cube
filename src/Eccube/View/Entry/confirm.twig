@@ -86,9 +86,8 @@
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
-                        {{ form_widget(form.password.first) }}
-                        {{ form_widget(form.password.second) }}
-                        ********
+                        {{ form_widget(form.password.first, {type: "password"}) }}
+                        {{ form_widget(form.password.second, {type: "password"}) }}
                     </td>
                 </tr>
                 <tr>
