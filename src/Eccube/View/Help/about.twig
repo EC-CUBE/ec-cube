@@ -1,7 +1,7 @@
 {% extends 'site_main.twig' %}
 
 {% block main %}
-    {% if baseInfo.latitude is not empty and baseInfo.longitude is not empty %}
+    {% if baseInfo.latitude is defined and baseInfo.longitude is defined %}
         <script type="text/javascript">//<![CDATA[
             $(function() {
                 $("#maps").css({
@@ -36,21 +36,21 @@
             <table summary="当サイトについて">
                 <col width="20%" />
                 <col width="80%" />
-                {% if baseInfo.shop_name is not empty %}
+                {% if baseInfo.shop_name is defined %}
                     <tr>
                         <th>店名</th>
                         <td>{{ baseInfo.shop_name }}</td>
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.company_name is not empty %}
+                {% if baseInfo.company_name is defined %}
                     <tr>
                         <th>会社名</th>
                         <td>{{ baseInfo.company_name }}</td>
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.zip01 is not empty %}
+                {% if baseInfo.zip01 is defined %}
                     <tr>
                         <th>所在地</th>
                         <td>
@@ -60,42 +60,42 @@
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.tel01 is not empty %}
+                {% if baseInfo.tel01 is defined %}
                     <tr>
                         <th>電話番号</th>
                         <td>{{ baseInfo.tel01 }}-{{ baseInfo.tel02 }}-{{ baseInfo.tel03 }}</td>
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.fax01 is not empty %}
+                {% if baseInfo.fax01 is defined %}
                     <tr>
                         <th>FAX番号</th>
                         <td>{{ baseInfo.fax01 }}-{{ baseInfo.fax02 }}-{{ baseInfo.fax03 }}</td>
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.email02 is not empty %}
+                {% if baseInfo.email02 is defined %}
                     <tr>
                         <th>メールアドレス</th>
                         <td><a href="mailto:{{ baseInfo.email02 }}">{{ baseInfo.email02 }}</a></td>
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.business_hour is not empty %}
+                {% if baseInfo.business_hour is defined %}
                     <tr>
                         <th>営業時間</th>
                         <td>{{ baseInfo.business_hour }}</td>
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.good_traded is not empty %}
+                {% if baseInfo.good_traded is defined %}
                     <tr>
                         <th>取扱商品</th>
                         <td>{{ baseInfo.good_traded|nl2br }}</td>
                     </tr>
                 {% endif %}
 
-                {% if baseInfo.message is not empty %}
+                {% if baseInfo.message is defined %}
                     <tr>
                         <th>メッセージ</th>
                         <td>{{ baseInfo.message|nl2br }}</td>

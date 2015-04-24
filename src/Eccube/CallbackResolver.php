@@ -23,6 +23,15 @@ class CallbackResolver extends \Silex\CallbackResolver
 {
     const PAGE_PATTERN = '/\A\\\\Eccube(\\\\Plugin\\\\\w+)?\\\\Page\\\\/';
 
+    private $app2;
+
+    public function __construct(\Pimple $app)
+    {
+        $this->app2 = $app;
+
+        parent::__construct($app);
+    }
+
     /**
      * Returns true if the string is a valid service method representation.
      *

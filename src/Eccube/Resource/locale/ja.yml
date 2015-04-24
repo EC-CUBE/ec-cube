@@ -27,3 +27,5 @@ admin.register.complete: ※ 登録が完了しました。
 admin.order.delete.complete: ※ 登録が完了しました。
 admin.customer.delete.complete: ※ 会員を削除しました。
 admin.customer.resend.complete: ※ メールを送信しました。
+
+Quantity: 数量

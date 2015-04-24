@@ -136,4 +136,17 @@ class Template extends \Eccube\Entity\AbstractEntity
     {
         return $this->update_date;
     }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Template
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
 }

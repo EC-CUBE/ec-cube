@@ -31,7 +31,7 @@ CONFIG_PHP="app/config/eccube/config.php"
 CONFIG_YML="app/config/eccube/config.yml"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-HTTP_URL=${HTTP_URL:-"http://test.local"}
+HTTP_URL=${HTTP_URL:-"http://test.local/"}
 HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
 ROOT_URLPATH=${ROOT_URLPATH:-"/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
@@ -79,7 +79,7 @@ adjust_directory_permissions()
 {
     chmod -R go+w "./html"
     chmod go+w "./app"
-    chmod -R go+w "./app/templates"
+    chmod -R go+w "./app/template"
     chmod -R go+w "./app/cache"
     chmod go+w "./app/config"
     chmod -R go+w "./app/download"
@@ -160,8 +160,8 @@ dtb_tax_rule_tax_rule_id_seq
 
 get_optional_sql()
 {
-    echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', '1', '0', '0', '0', '1', current_timestamp);"
-    echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1', current_timestamp);"
+    echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', '1', '0', '0', '0', '1', current_timestamp, current_timestamp);"
+    echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date, point_rate, welcome_point) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', 'default1', 'default1', 'default1', 'default1', current_timestamp, 0, 0);"
 }
 
 create_config_php()
@@ -211,12 +211,8 @@ mail:
     password: 
     encryption: 
     auth_mode: 
-auth_type: HMAC
 auth_magic: ${AUTH_MAGIC}
 password_hash_algos: sha256
-use_point: true
-option_favorite_product: true
-mypage_order_status_disp_flag: true
 root: ${ROOT_URLPATH}
 tpl: ${ROOT_URLPATH}user_data/packages/default/
 admin_tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}
@@ -225,9 +221,6 @@ shop_name: ${SHOP_NAME}
 release_year: 2015
 mail_cc:
     - ${ADMIN_MAIL}
-stext_len: 50
-sample_address1: 市区町村名 (例：千代田区神田神保町)
-sample_address2: 番地・ビル名 (例：1-3-5)
 ECCUBE_VERSION: 3.0.0-dev
 customer_confirm_mail: false
 __EOF__
@@ -241,53 +234,9 @@ __EOF__
 echo "update permissions..."
 adjust_directory_permissions
 
-#-- Setup Database
-SQL_DIR="./html/install/sql"
 
-case "${DBTYPE}" in
-"pgsql" )
-    # PostgreSQL
-    echo "dropdb..."
-    sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
-    echo "createdb..."
-    sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
-    echo "create table..."
-    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
-    echo "insert data..."
-    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}
-    echo "create sequence table..."
-    create_sequence_tables
-    echo "execute optional SQL..."
-    get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
-;;
-"mysql" )
-    DBPASS=`echo $DBPASS | tr -d " "`
-    if [ -n ${DBPASS} ]; then
-	PASSOPT="--password=$DBPASS"
-	CONFIGPASS=$DBPASS
-    fi
-    # MySQL
-    echo "dropdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database \`${DBNAME}\`"
-    echo "createdb..."
-    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
-    #echo "grant user..."
-    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
-    echo "create table..."
-    echo "SET SESSION storage_engine = InnoDB;" |
-        cat - ${SQL_DIR}/create_table_mysql.sql |
-        ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
-    echo "insert data..."
-    ${MYSQL} -u ${DBUSER} ${PASSOPT} --default-character-set=utf8  ${DBNAME} < ${SQL_DIR}/insert_data.sql
-    echo "create sequence table..."
-    create_sequence_tables
-    echo "execute optional SQL..."
-    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
-;;
-esac
 
 #-- Setup Initial Data
-
 echo "copy images..."
 cp -rv "./html/install/save_image" "./html/upload/"
 
@@ -301,6 +250,57 @@ echo "get composer..."
 curl -sS https://getcomposer.org/installer | php
 
 echo "install composer..."
-php composer.phar install
+php ./composer.phar install --dev --no-interaction
+
+
+
+#-- Setup Database
+SQL_DIR="./html/install/sql"
+
+case "${DBTYPE}" in
+"pgsql" )
+    # PostgreSQL
+    echo "dropdb..."
+    sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
+
+    echo "createdb..."
+    sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
+
+    echo "create table..."
+    php ./vendor/bin/doctrine orm:schema-tool:create
+
+    echo "insert data..."
+    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data_pgsql.sql ${DBNAME}
+
+    echo "execute optional SQL..."
+    get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
+;;
+"mysql" )
+    DBPASS=`echo $DBPASS | tr -d " "`
+    if [ -n ${DBPASS} ]; then
+        PASSOPT="--password=$DBPASS"
+        CONFIGPASS=$DBPASS
+    fi
+
+    # MySQL
+    echo "dropdb..."
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "drop database \`${DBNAME}\`"
+
+    echo "createdb..."
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+
+    #echo "grant user..."
+    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
+
+    echo "create table..."
+    ./vendor/bin/doctrine orm:schema-tool:create
+
+    echo "insert data..."
+    ${MYSQL} -u ${DBUSER} ${PASSOPT} --default-character-set=utf8  ${DBNAME} < ${SQL_DIR}/insert_data_mysql.sql
+
+    echo "execute optional SQL..."
+    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+;;
+esac
 
 echo "Finished Successful!"
