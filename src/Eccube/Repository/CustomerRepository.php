@@ -32,8 +32,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->getRepository('Eccube\Entity\Master\CustomerStatus')
             ->find(1);
 
-        $Customer->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime())
+        $Customer
             ->setPoint(0)
             ->setStatus($Status)
             ->setDelFlg(0);
@@ -326,7 +325,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      * @param $byte
      * @return string
      */
-    public function createSalt($byte){
+    public function createSalt($byte)
+    {
         $generator = new SecureRandom();
         return bin2hex($generator->nextBytes($byte));
     }
@@ -344,19 +344,17 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         return $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
     }
 
-    public function getNonActiveCustomerBySecretKey($secret_key){
-
+    public function getNonActiveCustomerBySecretKey($secret_key)
+    {
         $qb = $this->createQueryBuilder('c')
-            ->select('c')
-            ->andWhere('c.del_flg = 0')
-            ->andWhere('c.secret_key = :secret_key')
-            ->setParameter('secret_key', $secret_key)
+            ->where('c.del_flg = 0 AND c.secret_key = :secret_key')
             ->leftJoin('c.Status', 's')
             ->andWhere('s.id = :status')
+            ->setParameter('secret_key', $secret_key)
             ->setParameter('status', 1);
         $query = $qb->getQuery();
-        return $query->getResult();
 
+        return $query->getSingleResult();
     }
 
 }
