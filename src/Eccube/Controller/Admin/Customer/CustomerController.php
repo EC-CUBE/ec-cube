@@ -61,8 +61,8 @@ class CustomerController
                 ->setFrom(array('sample@example.com'))
                 ->setTo(array($Customer->getEmail()))
                 ->setBcc($app['config']['mail_cc'])
-                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                ->setBody($app['view']->render('Mail/entry_complete.twig', array(
+                ->setSubject('[EC-CUBE3] 会員登録のご確認')
+                ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
                     'customer' => $Customer
                 )));
             $app['mailer']->send($message);

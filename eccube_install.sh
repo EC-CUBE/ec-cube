@@ -223,6 +223,9 @@ mail_cc:
     - ${ADMIN_MAIL}
 ECCUBE_VERSION: 3.0.0-dev
 customer_confirm_mail: false
+
+form_country_enable: false
+default_password: '******'
 __EOF__
 }
 
