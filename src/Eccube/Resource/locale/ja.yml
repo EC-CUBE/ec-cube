@@ -20,10 +20,15 @@ form.reminder.empty_value: 選択してください
 form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
 form.contact.contents.help: ※ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 
-cart.over.stock: ※ 選択された商品の在庫が不足しております。<br />一度に在庫数を超える購入はできません。
-cart.over.sale_limit: ※ 選択された商品は販売制限しております。<br />一度に販売制限数を超える購入はできません。
+cart.over.stock: |-
+    ※ 選択された商品の在庫が不足しております。
+    一度に在庫数を超える購入はできません。
+cart.over.sale_limit: |-
+    ※ 選択された商品は販売制限しております。
+    一度に販売制限数を超える購入はできません。
 
 admin.register.complete: ※ 登録が完了しました。
+admin.order.delete.complete: ※ 登録が完了しました。
 admin.customer.delete.complete: ※ 会員を削除しました。
 admin.customer.resend.complete: ※ メールを送信しました。
 

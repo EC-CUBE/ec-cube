@@ -126,7 +126,7 @@ class ProductController
 
                     return $app->redirect($app['url_generator']->generate('product_detail', array('productId' => $Product->getId())));
                 } else {
-                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
 
                     return $app->redirect($app['url_generator']->generate('cart'));
                 }

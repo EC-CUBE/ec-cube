@@ -26,18 +26,14 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\ViewService($app);
         });
         $app['eccube.service.cart'] = $app->share(function() use ($app) {
-            return new \Eccube\Service\CartService($app);
-        });
-        $app['eccube.service.tax_rule'] = $app->share(function() use ($app) {
-            return new \Eccube\Service\TaxRuleService($app);
+            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
         });
         $app['eccube.service.order'] = $app->share(function() use ($app) {
             return new \Eccube\Service\OrderService($app);
         });
-        // Entity
-        $app['eccube.entity.cart'] = function() use ($app) {
-            return new \Eccube\Entity\Cart($app);
-        };
+        $app['eccube.service.tax_rule'] = $app->share(function() use ($app) {
+            return new \Eccube\Service\TaxRuleService($app);
+        });
 
         // Repository
         $app['eccube.repository.master.constant'] = $app->share(function() use ($app) {
@@ -51,9 +47,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.member'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Member');
-        });
-        $app['eccube.repository.order'] = $app->share(function() use ($app) {
-            return $app['orm.em']->getRepository('\\Eccube\\Entity\\Order');
         });
         $app['eccube.repository.product'] = $app->share(function() use ($app) {
             $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
@@ -124,6 +117,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\JobType();
             $types[] = new \Eccube\Form\Type\ReminderType();
             $types[] = new \Eccube\Form\Type\MailMagazineType();
+            $types[] = new \Eccube\Form\Type\OrderStatusType();
+            $types[] = new \Eccube\Form\Type\PaymentType();
 
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
@@ -134,9 +129,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\PointType($app);
             $types[] = new \Eccube\Form\Type\InstallType($app);
+            $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
-            $types[] = new \Eccube\Form\Type\ShoppingType($app);
-            $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
 
             return $types;
         }));
