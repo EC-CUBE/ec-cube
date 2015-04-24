@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BlocPosition
  */
-class BlocPosition
+class BlocPosition extends \Eccube\Entity\AbstractEntity
 {
 
     const UNUSED = 0;

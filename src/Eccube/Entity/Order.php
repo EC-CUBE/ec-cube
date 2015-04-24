@@ -255,14 +255,14 @@ class Order extends \Eccube\Entity\AbstractEntity
     private $OrderDetails;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $Shippings;
-
-    /**
      * @var \Eccube\Entity\OrderTemp
      */
     private $OrderTemp;
+
+    /**
+     * @var \Eccube\Entity\Shipping
+     */
+    private $Shipping;
 
     /**
      * @var \Eccube\Entity\Customer
@@ -1642,6 +1642,34 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getDeviceType()
     {
         return $this->DeviceType;
+    }
+    /**
+     * @var string
+     */
+    private $order_temp_id;
+
+
+    /**
+     * Set order_temp_id
+     *
+     * @param string $orderTempId
+     * @return Order
+     */
+    public function setOrderTempId($orderTempId)
+    {
+        $this->order_temp_id = $orderTempId;
+
+        return $this;
+    }
+
+    /**
+     * Get order_temp_id
+     *
+     * @return string 
+     */
+    public function getOrderTempId()
+    {
+        return $this->order_temp_id;
     }
 
     /**

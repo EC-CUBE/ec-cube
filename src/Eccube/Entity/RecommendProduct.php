@@ -45,6 +45,16 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var \Eccube\Entity\Product
+     */
+    private $RecommendedProduct;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
+
+    /**
      * @var \Eccube\Entity\Member
      */
     private $Creator;
@@ -209,6 +219,52 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set RecommendedProduct
+     *
+     * @param \Eccube\Entity\Product $recommendedProduct
+     * @return RecommendProduct
+     */
+    public function setRecommendedProduct(\Eccube\Entity\Product $recommendedProduct)
+    {
+        $this->RecommendedProduct = $recommendedProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get RecommendedProduct
+     *
+     * @return \Eccube\Entity\Product 
+     */
+    public function getRecommendedProduct()
+    {
+        return $this->RecommendedProduct;
+    }
+
+    /**
+     * Set Product
+     *
+     * @param \Eccube\Entity\Product $product
+     * @return RecommendProduct
+     */
+    public function setProduct(\Eccube\Entity\Product $product)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->Product;
     }
 
     /**

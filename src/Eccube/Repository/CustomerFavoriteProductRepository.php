@@ -3,6 +3,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Security\Core\SecurityContext;
 
 /**
  * CustomerFavoriteProductRepository
@@ -12,4 +13,67 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomerFavoriteProductRepository extends EntityRepository
 {
+    /**
+     * @var SecurityContext
+     */
+    private $security;
+
+    /**
+     * setSecurity
+     * 
+     * @param SecurityContext $config
+     */
+    public function setSecurity(SecurityContext $security)
+    {
+        $this->security = $security;
+    }
+
+    /**
+     * addFavorite
+     * 
+     * @param \Eccube\Entity\Product $Product
+     */
+    public function addFavorite(\Eccube\Entity\Product $Product)
+    {
+        if ($this->isFavorite($Product)) {
+            return false;
+        } else {
+            $Customer = $this->security->getToken()->getUser();
+            $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
+            $CustomerFavoriteProduct->setCustomer($Customer);
+            $CustomerFavoriteProduct->setProduct($Product);
+
+            $em = $this->getEntityManager();
+            $em->persist($CustomerFavoriteProduct);
+            $em->flush();
+        }
+    }
+
+
+    /**
+     * addFavorite
+     * 
+     * @param \Eccube\Entity\Product $Product
+     * @return boolean
+     */
+    public function isFavorite(\Eccube\Entity\Product $Product)
+    {
+        if (!$this->security->isGranted('ROLE_USER')) {
+            return false;
+        } else {
+            $Customer = $this->security->getToken()->getUser();
+            $qb = $this->createQueryBuilder('cf')
+                ->select('COUNT(cf.Product)')
+                ->andWhere('cf.Customer = :Customer AND cf.Product = :Product');
+            $count = $qb
+                ->getQuery()
+                ->setParameters(array(
+                    'Customer' => $Customer,
+                    'Product' => $Product,
+                ))
+                ->getSingleScalarResult();
+
+            return $count > 0;
+        }
+    }
 }

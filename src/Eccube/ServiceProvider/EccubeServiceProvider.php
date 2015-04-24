@@ -19,36 +19,93 @@ class EccubeServiceProvider implements ServiceProviderInterface
     public function register(BaseApplication $app)
     {
         // Service
-        $app['eccube.service.system'] = function() use ($app) {
+        $app['eccube.service.system'] = $app->share(function() use ($app) {
             return new \Eccube\Service\SystemService($app);
-        };
-        $app['view'] = function() use ($app) {
+        });
+        $app['view'] = $app->share(function() use ($app) {
             return new \Eccube\Service\ViewService($app);
-        };
-        $app['eccube.service.cart'] = function() use ($app) {
+        });
+        $app['eccube.service.cart'] = $app->share(function() use ($app) {
             return new \Eccube\Service\CartService($app);
-        };
-        $app['eccube.service.order'] = function() use ($app) {
+        });
+        $app['eccube.service.tax_rule'] = $app->share(function() use ($app) {
+            return new \Eccube\Service\TaxRuleService($app);
+        });
+        $app['eccube.service.order'] = $app->share(function() use ($app) {
             return new \Eccube\Service\OrderService($app);
-        };
+        });
         // Entity
         $app['eccube.entity.cart'] = function() use ($app) {
             return new \Eccube\Entity\Cart($app);
         };
 
         // Repository
-        $app['eccube.repository.customer'] = function() use ($app) {
-            return $app['orm.em']->getRepository('\\Eccube\\Entity\\Customer');
-        };
-        $app['eccube.repository.member'] = function() use ($app) {
-            return $app['orm.em']->getRepository('\\Eccube\\Entity\\Member');
-        };
-        $app['eccube.repository.base_info'] = function() use ($app) {
-            return $app['orm.em']->getRepository('\\Eccube\\Entity\\BaseInfo');
-        };
-        $app['eccube.repository.order'] = function() use ($app) {
+        $app['eccube.repository.master.constant'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Constant');
+        });
+        $app['eccube.repository.category'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Category');
+        });
+        $app['eccube.repository.customer'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Customer');
+        });
+        $app['eccube.repository.member'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Member');
+        });
+        $app['eccube.repository.order'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('\\Eccube\\Entity\\Order');
-        };
+        });
+        $app['eccube.repository.product'] = $app->share(function() use ($app) {
+            $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
+            $productRepository->setConfig($app['config']);
+
+            return $productRepository;
+        });
+        $app['eccube.repository.customer_favorite_product'] = $app->share(function() use ($app) {
+            $customerFavoriteProductRepository = $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
+            $customerFavoriteProductRepository->setSecurity($app['security']);
+
+            return $customerFavoriteProductRepository;
+        });
+        $app['eccube.repository.base_info'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
+        });
+        $app['eccube.repository.tax_rule'] = $app->share(function() use ($app) {
+            $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');
+            $taxRuleRepository->setApp($app);
+
+            return $taxRuleRepository;
+        });
+
+        // 
+        $app['paginator'] = $app->protect(function() {
+            return new \Knp\Component\Pager\Paginator();
+        });
+
+        // em
+        if (isset($app['orm.em'])) {
+            $point_rule = $app['config']['point_rule'];
+            $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) use($point_rule) {
+                // tax_rule
+                $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
+                $taxRuleRepository->setApp($app);
+                $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
+                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
+                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\PointEventSubscriber($point_rule, $taxRuleService));
+
+                // save
+                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber());
+
+                // 
+                $config = $em->getConfiguration();
+                $config->addFilter("soft_delete", "\Eccube\Doctrine\Filter\SoftDeleteFilter");
+                $config->addFilter("nostock_hidden", "\Eccube\Doctrine\Filter\NoStockHiddenFilter");
+                $em->getFilters()->enable('soft_delete');
+
+                return $em;
+            }));
+        }
+
         // Form\Type
         $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
@@ -63,11 +120,16 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ZipType();
             $types[] = new \Eccube\Form\Type\AddressType();
             $types[] = new \Eccube\Form\Type\SexType();
+            $types[] = new \Eccube\Form\Type\ProductListMaxType();
             $types[] = new \Eccube\Form\Type\JobType();
             $types[] = new \Eccube\Form\Type\ReminderType();
             $types[] = new \Eccube\Form\Type\MailMagazineType();
 
             $types[] = new \Eccube\Form\Type\CustomerType($app);
+            if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
+                $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
+            }
+            $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\PointType($app);
@@ -75,6 +137,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
+
             return $types;
         }));
 
