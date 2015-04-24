@@ -94,14 +94,12 @@ class CartService
         return array();    
     }
 
-    public function addProduct($productClassId)
+    public function addProduct($productClassId, $quantity = 1)
     {
-        $quantity = 1;
-
         $products = $this->cart->getProducts();
 
         if (isset($products[$productClassId])) {
-            $quantity = $products[$productClassId]['quantity'] + 1;
+            $quantity += $products[$productClassId]['quantity'];
         }
 
         return $this->setProductQuantity($productClassId, $quantity);

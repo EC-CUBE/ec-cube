@@ -37,8 +37,9 @@ Eccube\Entity\ProductClass:
             nullable: false
             unsigned: false
             default: '0'
-        product_code:
+        code:
             type: text
+            column: product_code
             nullable: true
             fixed: false
         stock:
@@ -110,13 +111,13 @@ Eccube\Entity\ProductClass:
                 nullable: false
         ClassCategory1:
             targetEntity: Eccube\Entity\ClassCategory
-            inversedBy: ProductClasses
+            inversedBy: ProductClasses1
             joinColumn:
                 name: classcategory_id1
                 referencedColumnName: classcategory_id
         ClassCategory2:
             targetEntity: Eccube\Entity\ClassCategory
-            inversedBy: ProductClasses
+            inversedBy: ProductClasses2
             joinColumn:
                 name: classcategory_id2
                 referencedColumnName: classcategory_id

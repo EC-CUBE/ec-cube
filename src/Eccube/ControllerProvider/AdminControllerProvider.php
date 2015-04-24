@@ -51,7 +51,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/content/recommend_search.php', '\\Eccube\\Page\\Admin\\Content\\RecommendSearch')->bind('admin_content_recommend_search');
 
         // customer
-        $controllers->match('/customer/', '\\Eccube\\Page\\Admin\\Customer\\Index')->bind('admin_customer');
+        $controllers->match('/customer/', '\\Eccube\\Controller\\Admin\\Customer\\CustomerController::index')->bind('admin_customer');
+        $controllers->match('/customer/resend/{customerId}', '\\Eccube\\Controller\\Admin\\Customer\\CustomerController::resend')
+            ->assert('customerId', '\d+')
+            ->bind('admin_customer_resend');
+        $controllers->match('/customer/delete/{customerId}', '\\Eccube\\Controller\\Admin\\Customer\\CustomerController::delete')
+            ->assert('customerId', '\d+')
+            ->bind('admin_customer_delete');
         $controllers->match('/customer/edit.php', '\\Eccube\\Page\\Admin\\Customer\\Edit')->bind('admin_customer_edit');
         $controllers->match('/customer/search_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
 
@@ -122,7 +128,6 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // total
         $controllers->match('/total/', '\\Eccube\\Page\\Admin\\Total\\Index')->bind('admin_total');
-
         return $controllers;
     }
 }

@@ -177,4 +177,88 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     {
         return $this->Creator;
     }
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
+
+    /**
+     * @var \Eccube\Entity\Master\Status
+     */
+    private $Status;
+
+    /**
+     * @var \Eccube\Entity\Master\StatusImage
+     */
+    private $StatusImage;
+
+
+    /**
+     * Set Product
+     *
+     * @param \Eccube\Entity\Product $product
+     * @return ProductStatus
+     */
+    public function setProduct(\Eccube\Entity\Product $product)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->Product;
+    }
+
+    /**
+     * Set Status
+     *
+     * @param \Eccube\Entity\Master\Status $status
+     * @return ProductStatus
+     */
+    public function setStatus(\Eccube\Entity\Master\Status $status)
+    {
+        $this->Status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get Status
+     *
+     * @return \Eccube\Entity\Master\Status 
+     */
+    public function getStatus()
+    {
+        return $this->Status;
+    }
+
+    /**
+     * Set StatusImage
+     *
+     * @param \Eccube\Entity\Master\StatusImage $statusImage
+     * @return ProductStatus
+     */
+    public function setStatusImage(\Eccube\Entity\Master\StatusImage $statusImage)
+    {
+        $this->StatusImage = $statusImage;
+
+        return $this;
+    }
+
+    /**
+     * Get StatusImage
+     *
+     * @return \Eccube\Entity\Master\StatusImage 
+     */
+    public function getStatusImage()
+    {
+        return $this->StatusImage;
+    }
 }

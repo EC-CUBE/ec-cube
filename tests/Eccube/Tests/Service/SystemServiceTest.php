@@ -16,6 +16,7 @@ class SystemServiceTest extends \PHPUnit_Framework_TestCase
         $this->app = new Application(array(
             'env' => 'test'
         ));
+        $this->app->boot();
     }
 
     public function testgetDbversion()
@@ -26,5 +27,3 @@ class SystemServiceTest extends \PHPUnit_Framework_TestCase
         
     }
 }
-
-
