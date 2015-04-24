@@ -2,120 +2,182 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Application;
+use Eccube\Entity\CartItem;
 
-class Cart
+class Cart extends \Eccube\Entity\AbstractEntity
 {
+    /**
+     * @var bool 
+     */
+    private $lock = false;
 
-    private $app;
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $CartItems;
 
-    private $lock;
+    /**
+     * @var string 
+     */
+    private $pre_order_id = null;
 
-    private $products;
-
-    private $preOrderId;
-
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $this->app = $app;
-        $this->initCartSession();
+        $this->CartItems = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    private function initCartSession()
-    {
-        $cart = $this->getCartSession();
-
-        if (isset($cart['lock'])) {
-            $this->lock = $cart['lock'];
-        }
-        if (isset($cart['products'])) {
-            $this->products = $cart['products'];
-        }
-        if (isset($cart['pre_order_id'])) {
-            $this->preOrderId = $cart['pre_order_id'];
-        }
-    }    
-
-    private function setCartSession()
-    {
-        $cart = array(
-            'lock' => $this->lock,
-            'products' => $this->products,
-            'pre_order_id' => $this->preOrderId,
-        );
-        $this->app['session']->set('cart', $cart);
-
-        return $this;
-    }
-
-    public function getCartSession()
-    {
-        return $this->app['session']->get('cart');
-    }
-
+    /**
+     * @param bool $lock
+     * @return \Eccube\Entity\Cart
+     */
     public function setLock($lock)
     {
         $this->lock = $lock;
-        $this->setCartSession();
 
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function getLock()
     {
         return $this->lock;
     }
 
-    public function setPreOrderId($id)
+    /**
+     * @param integer $pre_order_id
+     * @return \Eccube\Entity\Cart
+     */
+    public function setPreOrderId($pre_order_id)
     {
-        $this->preOrderId = $id;
-        $this->setCartSession();
+        $this->pre_order_id = $pre_order_id;
 
         return $this;
     }
 
+    /**
+     * @return integer
+     */
     public function getPreOrderId()
     {
-        return $this->preOrderId;
+        return $this->pre_order_id;
     }
 
-    public function setProductQuantity($productClassId, $quantity)
+    /**
+     * @param \Eccube\Entity\CartItem $AddCartItem
+     * @return \Eccube\Entity\Cart
+     */
+    public function setCartItem(\Eccube\Entity\CartItem $AddCartItem)
     {
-        $product = $this->app['orm.em']
-            ->getRepository('Eccube\Entity\ProductClass')
-            ->find($productClassId);
-        
-        $this->products[$productClassId] = array(
-            'price' => $product->getPrice02(),
-            // 'tax_rate' => $product->getTaxRate(),
-            'quantity' => $quantity,
-        );
-        $this->setCartSession();
-
-        return $this;
-    }
-
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    public function removeProduct($productClassId)
-    {
-        if (isset($this->products[$productClassId])) {
-            unset($this->products[$productClassId]);
+        $find = false;
+        foreach ($this->CartItems as $CartItem) {
+            if ($CartItem->getClassName() === $AddCartItem->getClassName() && $CartItem->getClassId() === $AddCartItem->getClassId()) {
+                $find = true;
+                $CartItem
+                    ->setPrice($AddCartItem->getPrice())
+                    ->setQuantity($AddCartItem->getQuantity());
+            }
         }
-        $this->setCartSession();
+
+        if (!$find) {
+            $this->addCartItem($AddCartItem);
+        }
 
         return $this;
     }
 
-    public function clearProducts()
+    /**
+     * @param string $class_name
+     * @param string $class_id
+     * @return \Eccube\Entity\CartItem
+     */
+    public function getCartItemByIdentifier($class_name, $class_id)
     {
-        $this->products = array();
-        $this->setCartSession();
+        foreach ($this->CartItems as $CartItem) {
+            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() === $class_id) {
+                return $CartItem;
+            }
+        }
+
+        return null;
+    }
+
+    public function removeCartItemByIdentifier($class_name, $class_id)
+    {
+        foreach ($this->CartItems as $CartItem) {
+            if ($CartItem->getClassName() === $class_name && $CartItem->getClassId() === $class_id) {
+                $this->CartItems->removeElement($CartItem);
+            }
+        }
 
         return $this;
+    }
+
+    /**
+     * @return \Eccube\Entity\Cart
+     */
+    public function clearCartItems()
+    {
+        $this->CartItems->clear();
+
+        return $this;
+    }
+
+    /**
+     * @param CartItem[] $CartItems
+     * @return \Eccube\Entity\Cart
+     */
+    public function setCartItems($CartItems)
+    {
+        $this->CartItems = $CartItems;
+
+        return $this;
+    }
+
+    /**
+     * @param CartItem $CartItem
+     * @return \Eccube\Entity\Cart
+     */
+    public function addCartItem(CartItem $CartItem)
+    {
+        $this->CartItems[] = $CartItem;
+
+        return $this;
+    }
+
+    /**
+     * @return CartItem[]
+     */
+    public function getCartItems()
+    {
+        return $this->CartItems;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTotalPrice()
+    {
+        $totalPrice = 0;
+        foreach ($this->CartItems as $CartItem) {
+            $totalPrice += $CartItem->getTotalPrice();
+        }
+
+        return $totalPrice;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTotalQuantity()
+    {
+        $totalQuantity = 0;
+        foreach ($this->CartItems as $CartItem) {
+            $totalQuantity += $CartItem->getQuantity();
+        }
+
+        return $totalQuantity;
     }
 
 }
