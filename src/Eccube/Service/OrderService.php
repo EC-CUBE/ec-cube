@@ -6,49 +6,14 @@ use Eccube\Application;
 
 class OrderService
 {
-    
     /** @var \Eccube\Application */
     public $app;
-    
+
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
-    public function newOrder()
-    {
-        $order = new \Eccube\Entity\Order();
-        $order->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime())
-            ->setDiscount(0)
-            ->setUsePoint(0)
-            ->setAddPoint(0)
-            ->setBirthPoint(0)
-            ->setSubtotal(0)
-            ->setTotal(0)
-            ->setPaymentTotal(0)
-            ->setCharge(0)
-            ->setTax(0)
-            ->setDelivFee(0)
-            ->setStatus(1) // todo
-            ->setDelFlg(1); // todo
-        return $order;
-    }
-    public function newOrderDetail($product, $productClass, $quantity)
-    {
-        $orderDetail = new \Eccube\Entity\OrderDetail();
-        $orderDetail->setProduct($product)
-            ->setProductClass($productClass)
-            ->setProductName($product->getName())
-            ->setProductCode($productClass->getProductCode())
-            ->setClasscategoryName1($productClass->getClassCategory1()->getName())
-            ->setClasscategoryName2($productClass->getClassCategory2()->getName())
-            ->setPrice($productClass->getPrice02())
-            ->setQuantity($quantity)
-            ->setPointRate(0) // todo
-            ->setTaxRule(0) // todo
-            ->setTaxRate(0); // todo
-        return $orderDetail;
-    }
+
     public function copyToOrderFromCustomer(\Eccube\Entity\Order $order, \Eccube\Entity\Customer $customer = null)
     {
         if (is_null($customer)) {
@@ -56,26 +21,26 @@ class OrderService
         }
 
         $order->setCustomer($customer)
-              ->setName01($customer->getName01())
-              ->setName02($customer->getName02())
-              ->setKana01($customer->getKana02())
-              ->setKana02($customer->getKana02())
-              ->setCompanyName($customer->getCompanyName())
-              ->setEmail($customer->getEmail())
-              ->setTel01($customer->getTel01())
-              ->setTel02($customer->getTel02())
-              ->setTel03($customer->getTel03())
-              ->setFax01($customer->getFax01())
-              ->setFax02($customer->getFax02())
-              ->setFax03($customer->getFax03())
-              ->setZip01($customer->getZip01())
-              ->setZip02($customer->getZip02())
-              ->setPref($customer->getPref())
-              ->setAddr01($customer->getAddr01())
-              ->setAddr02($customer->getAddr02())
-              ->setSex($customer->getSex())
-              ->setBirth($customer->getBirth())
-              ->setJob($customer->getJob());
+            ->setName01($customer->getName01())
+            ->setName02($customer->getName02())
+            ->setKana01($customer->getKana02())
+            ->setKana02($customer->getKana02())
+            ->setCompanyName($customer->getCompanyName())
+            ->setEmail($customer->getEmail())
+            ->setTel01($customer->getTel01())
+            ->setTel02($customer->getTel02())
+            ->setTel03($customer->getTel03())
+            ->setFax01($customer->getFax01())
+            ->setFax02($customer->getFax02())
+            ->setFax03($customer->getFax03())
+            ->setZip01($customer->getZip01())
+            ->setZip02($customer->getZip02())
+            ->setPref($customer->getPref())
+            ->setAddr01($customer->getAddr01())
+            ->setAddr02($customer->getAddr02())
+            ->setSex($customer->getSex())
+            ->setBirth($customer->getBirth())
+            ->setJob($customer->getJob());
 
         return $order;
     }
@@ -105,31 +70,6 @@ class OrderService
             ->setAddr02($customer->getAddr02());
 
         return $shipping;
-    }
-
-    public function convertToOrderFromCartItems(array $cartItems, \Eccube\Entity\Customer $customer = null)
-    {
-        $order = $this->newOrder();
-        $this->copyToOrderFromCustomer($order, $customer);
-        foreach ($cartItems as $item) {
-            $product = $item['Product'];
-            $productClass = $item['ProductClass'];
-            $quantity = $item['quantity'];
-            $orderDetail = $this->newOrderDetail($product, $productClass, $quantity);
-            $orderDetail->setOrder($order);
-            $order->addOrderDetail($orderDetail);
-        }
-        return $order;
-    }
-
-    public function persistOrder($order)
-    {
-        $this->app['orm.em']->persist($order);
-        $orderDetails = $order->getOrderDetails();
-        foreach ($orderDetails as $detail) {
-            $this->app['orm.em']->persist($detail);
-        }
-        $this->app['orm.em']->flush();
     }
 
     public function registerPreOrderFromCart(array $products, \Eccube\Entity\Customer $customer = null)
@@ -176,7 +116,7 @@ class OrderService
                         ->setProduct($product)
                         ->setProductClass($productClass)
                         ->setProductName($product->getName())
-                        ->setProductCode($productClass->getProductCode())
+                        ->setProductCode($productClass->getCode())
                         ->setClasscategoryName1($productClass->getClassCategory1()->getName())
                         ->setClasscategoryName2($productClass->getClassCategory2()->getName())
                         ->setPrice($productClass->getPrice02())
@@ -194,7 +134,7 @@ class OrderService
                          ->setProductClassId($productClass->getId())
                          ->setProductClass($productClass)
                          ->setProductName($product->getName())
-                         ->setProductCode($productClass->getProductCode())
+                         ->setProductCode($productClass->getCode())
                          ->setClasscategoryName1($productClass->getClassCategory1()->getName())
                          ->setClasscategoryName2($productClass->getClassCategory2()->getName())
                          ->setPrice($productClass->getPrice02())

@@ -262,7 +262,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Eccube\Entity\Shipping
      */
-    private $Shipping;
+    private $Shippings;
 
     /**
      * @var \Eccube\Entity\Customer
