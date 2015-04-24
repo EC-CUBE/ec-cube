@@ -24,8 +24,9 @@ class BasisController extends AbstractController
     public function Index(Application $app)
     {
         $BaseInfo = $app['eccube.repository.base_info']->get();
-        // FIXME: ArrayにしたりStringにしたりやめたい
+        // FIXME: ArrayにしたりStringにしたり, booleanにしたりやめたい
         $BaseInfo->setRegularHolidayIds(explode('|', $BaseInfo->getRegularHolidayIds()));
+        $BaseInfo->setDownloadableDaysUnlimited($BaseInfo->getDownloadableDaysUnlimited() == 1 ? true : false);
 
         $form = $app['form.factory']
             ->createBuilder('shop_master', $BaseInfo)
@@ -34,7 +35,7 @@ class BasisController extends AbstractController
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                // FIXME: ArrayにしたりStringにしたりやめたい
+                // FIXME: ArrayにしたりStringにしたり, booleanにしたりやめたい
                 $BaseInfo->setRegularHolidayIds(implode('|', $BaseInfo->getRegularHolidayIds()));
                 $app['orm.em']->persist($BaseInfo);
                 $app['orm.em']->flush();
@@ -45,8 +46,8 @@ class BasisController extends AbstractController
 
         return $app['twig']->render('Admin/Basis/shop_master.twig', array(
             'tpl_maintitle' => $this->main_title,
-            'tpl_subtitle'  => $this->sub_title,
-            'form'       => $form->createView(),
+            'tpl_subtitle' => $this->sub_title,
+            'form' => $form->createView(),
         ));
     }
 }

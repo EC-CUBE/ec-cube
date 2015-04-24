@@ -129,8 +129,8 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'empty_value' => false,
-                'choices'   => array(
-                    '日','月','火','水','木','金','土',
+                'choices' => array(
+                    '日', '月', '火', '水', '木', '金', '土',
                 ),
             ))
             ->add('free_rule', 'money', array(
@@ -153,12 +153,9 @@ class ShopMasterType extends AbstractType
                     ))
                 )
             ))
-            ->add('downloadable_days_unlimited', 'choice', array(
+            ->add('downloadable_days_unlimited', 'checkbox', array(
                 'label' => 'ダウンロード無制限',
                 'required' => false,
-                'empty_value' => false,
-                'expanded' => true,
-                'choices' => array('1' => '無制限'),
             ))
             ->add('latitude', 'number', array(
                 'label' => '緯度',
