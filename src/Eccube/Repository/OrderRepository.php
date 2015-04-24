@@ -12,4 +12,191 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderRepository extends EntityRepository
 {
+
+
+    public function getQueryBuilderBySearchData($searchData)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select('o')
+            ->andWhere('o.del_flg = 0');
+
+        $joinedCustomer = false;
+
+        // order_id_start
+        if (!empty($searchData['order_id_start']) && $searchData['order_id_start']) {
+            $qb
+                ->andWhere('o.id >= :order_id_start')
+                ->setParameter('order_id_start', $searchData['order_id_start']);
+        }
+
+        // order_id_end
+        if (!empty($searchData['order_id_end']) && $searchData['order_id_end']) {
+            $qb
+                ->andWhere('o.id <= :order_id_end')
+                ->setParameter('order_id_end', $searchData['order_id_end']);
+        }
+
+        // status
+        if (!empty($searchData['status']) && $searchData['status']) {
+            $qb
+                ->leftJoin('o.Status', 's')
+                ->andWhere('s.id <= :status') 
+                ->setParameter('status', $searchData['status']);
+        }
+
+        // name
+        if (!empty($searchData['name']) && $searchData['name']) {
+            $qb
+                ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
+                ->setParameter('name', '%' . $searchData['name'] . '%');
+        }
+
+        // kana
+        if (!empty($searchData['kana']) && $searchData['kana']) {
+            $qb
+                ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
+                ->setParameter('kana', '%' . $searchData['kana'] . '%');
+        }
+
+        // email
+        if (!empty($searchData['email']) && $searchData['email']) {
+            $qb
+                ->andWhere('o.email = :email')
+                ->setParameter('email', $searchData['email']);
+        }
+
+        // tel
+        if (!empty($searchData['tel01']) && $searchData['tel01']) {
+            $qb
+                ->andWhere('o.tel01 = :tel01')
+                ->setParameter('tel01', $searchData['tel01']);
+        }
+        if (!empty($searchData['tel02']) && $searchData['tel02']) {
+            $qb
+                ->andWhere('o.tel02 = :tel02')
+                ->setParameter('tel02', $searchData['tel02']);
+        }
+        if (!empty($searchData['tel03']) && $searchData['tel03']) {
+            $qb
+                ->andWhere('o.tel03 = :tel03')
+                ->setParameter('tel03', $searchData['tel03']);
+        }
+
+        // birth
+        if (!empty($searchData['birth_start']) && $searchData['birth_start']) {
+            if (!$joinedCustomer) {
+                $qb->leftJoin('o.Customer', 'c');
+                $joinedCustomer = true;
+            }
+
+            $date = $searchData['birth_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.birth >= :birth_start')
+                ->setParameter('birth_start', $date);
+        }
+        if (!empty($searchData['birth_end']) && $searchData['birth_end']) {
+            if (!$joinedCustomer) {
+                $qb->leftJoin('o.Customer', 'c');
+                $joinedCustomer = true;
+            }
+
+            $date = $searchData['birth_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.birth < :birth_end')
+                ->setParameter('birth_end', $date);
+        }
+
+        // sex
+        if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
+            if (!$joinedCustomer) {
+                $qb->leftJoin('o.Customer', 'c');
+                $joinedCustomer = true;
+            }
+
+            $sexs = array();
+            foreach ($searchData['sex'] as $sex) {
+                $sexs[] = $sex->getId();
+            }
+
+            $qb
+                ->andWhere($qb->expr()->in('c.sex', ':sexs'))
+                ->setParameter('sexs', $sexs);
+        }
+
+        // payment
+        if (!empty($searchData['payment']) && count($searchData['payment'])) {
+            $payments = array();
+            foreach ($searchData['payment'] as $payment) {
+                $payments[] = $payment->getId();
+            }
+            $qb
+                ->leftJoin('o.Payment', 'p')
+                ->andWhere($qb->expr()->in('p.id', ':payments'))
+                ->setParameter('payments', $payments);
+        }
+
+        // oreder_date
+        if (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
+            $date = $searchData['order_date_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.create_date >= :order_date_start')
+                ->setParameter('order_date_start', $date);
+        }
+        if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
+            $date = $searchData['order_date_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.create_date < :order_date_end')
+                ->setParameter('order_date_end', $date);
+        }
+
+        // create_date
+        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+            $date = $searchData['update_date_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        }
+        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+            $date = $searchData['update_date_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        }
+
+        // payment_total
+        if (!empty($searchData['payment_total_start']) && $searchData['payment_total_start']) {
+            $qb
+                ->andWhere('o.payment_total >= :payment_total_start')
+                ->setParameter('payment_total_start', $searchData['payment_total_start']);
+        }
+        if (!empty($searchData['payment_total_end']) && $searchData['payment_total_end']) {
+            $qb
+                ->andWhere('o.payment_total <= :payment_total_end')
+                ->setParameter('payment_total_end', $searchData['payment_total_end']);
+        }
+
+        // buy_product_name
+        if (!empty($searchData['buy_product_name']) && $searchData['buy_product_name']) {
+            $qb
+                ->leftJoin('o.OrderDetails', 'od')
+                ->andWhere('od.product_name LIKE :buy_product_name')
+                ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
+        }
+
+
+        // Order By
+        $qb->addOrderBy('o.update_date', 'DESC');
+
+        return $qb;
+    }
+
 }
