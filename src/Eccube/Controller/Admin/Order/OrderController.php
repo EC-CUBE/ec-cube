@@ -12,7 +12,7 @@ class OrderController
 
     public function __construct()
     {
-        $this->title = '商品マスター';
+        $this->title = '受注マスター';
     }
 
     public function index(Application $app)
