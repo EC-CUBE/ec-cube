@@ -27,7 +27,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/logout.php', '\\Eccube\\Page\\Admin\\Logout')->bind('admin_logout');
 
         // basis
-        $controllers->match('/basis/', '\\Eccube\\Page\\Admin\\Basis\\Index')->bind('admin_basis');
+        $controllers->match('/basis/', '\\Eccube\\Controller\\Admin\\Basis\\BasisController::index')->bind('admin_basis');
         $controllers->match('/basis/delivery.php', '\\Eccube\\Page\\Admin\\Basis\\Delivery')->bind('admin_basis_delivery');
         $controllers->match('/basis/delivery_input.php', '\\Eccube\\Page\\Admin\\Basis\\DeliveryInput')->bind('admin_basis_delivery_input');
         $controllers->match('/basis/holiday.php', '\\Eccube\\Page\\Admin\\Basis\\Holiday')->bind('admin_basis_holiday');
@@ -35,7 +35,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/mail.php', '\\Eccube\\Page\\Admin\\Basis\\Mail')->bind('admin_basis_mail');
         $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
         $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
-        // $controllers->match('/basis/point.php', '\\Eccube\\Page\\Admin\\Basis\\Point')->bind('admin_basis_point');
         $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::Index')->bind('admin_basis_point');
         $controllers->match('/basis/tax.php', '\\Eccube\\Page\\Admin\\Basis\\Tax')->bind('admin_basis_tax');
         $controllers->match('/basis/tradelaw.php', '\\Eccube\\Page\\Admin\\Basis\\Tradelaw')->bind('admin_basis_tradelaw');
@@ -63,7 +62,6 @@ class AdminControllerProvider implements ControllerProviderInterface
             ->bind('admin_customer_edit');
         $controllers->match('/customer/edit/', '\\Eccube\\Controller\\Admin\\Customer\\CustomerEditController::index')
             ->bind('admin_customer_new');
-        //$controllers->match('/customer/edit.php', '\\Eccube\\Page\\Admin\\Customer\\Edit')->bind('admin_customer_edit');
         $controllers->match('/customer/search_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
 
         // design
