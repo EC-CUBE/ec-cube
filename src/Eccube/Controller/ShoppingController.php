@@ -71,10 +71,9 @@ class ShoppingController extends AbstractController
         }
         // 初回アクセスの場合は受注データを作成
         if (is_null($order)) {
-            $order = $app['eccube.service.order']->convertToOrderFromCartItems(
+            $order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                 $app['eccube.service.cart']->getCart()->getCartItems(),
                 $app['user']);
-            $order = $app['eccube.service.order']->registerPreOrderFromCart($order);
             $app['eccube.service.cart']->setPreOrderId($order->getId());
         }
 

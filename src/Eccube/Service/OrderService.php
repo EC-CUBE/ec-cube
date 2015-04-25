@@ -56,22 +56,7 @@ class OrderService
         return $OrderDetail;
     }
 
-    public function convertToOrderFromCartItems($cartItems, \Eccube\Entity\Customer $Customer = null)
-    {
-        $Order = $this->newOrder();
-        $this->copyToOrderFromCustomer($Order, $Customer);
-        foreach ($cartItems as $item) {
-            $ProductClass = $item->getObject();
-            $Product  = $ProductClass->getProduct();
-            $quantity = $item->getQuantity();
-            $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
-            $OrderDetail->setOrder($Order);
-            $Order->addOrderDetail($OrderDetail);
-        }
-        return $Order;
-    }
-
-    public function copyToOrderFromCustomer(\Eccube\Entity\Order $Order, \Eccube\Entity\Customer $Customer = null)
+     public function copyToOrderFromCustomer(\Eccube\Entity\Order $Order, \Eccube\Entity\Customer $Customer = null)
     {
         if (is_null($Customer)) {
             return $Order;
@@ -129,10 +114,14 @@ class OrderService
         return $shipping;
     }
 
-    public function registerPreOrderFromCart($Order)
+    public function registerPreOrderFromCartItems($cartItems, \Eccube\Entity\Customer $Customer = null)
     {
         // 受注
+        $Order = $this->newOrder();
+        $this->copyToOrderFromCustomer($Order, $Customer);
+
         $this->app['orm.em']->persist($Order);
+        $this->app['orm.em']->flush();
 
         // 配送先
         $Shipping = new \Eccube\Entity\Shipping();
@@ -154,14 +143,17 @@ class OrderService
         $productTypeIds = array();
 
         // 受注詳細, 配送商品
-        foreach ($OrderDetails as $OrderDetail) {
-            // 受注詳細
-            $this->app['orm.em']->persist($OrderDetail);
+        foreach ($cartItems as $item) {
 
-            $Product = $OrderDetail->getProduct();
-            $ProductClass = $OrderDetail->getProductClass();
-            $quantity = $OrderDetail->getQuantity();
-            $productTypeIds[] = $OrderDetail->getProductClass()->getProductTypeId();
+            $ProductClass = $item->getObject();
+            $Product = $ProductClass->getProduct();
+            $quantity = $item->getQuantity();
+            $productTypeIds[] = $ProductClass->getProductTypeId();
+
+            // 受注詳細
+            $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
+            $OrderDetail->setOrder($Order);
+            $this->app['orm.em']->persist($OrderDetail);
 
             // 小計
             $subTotal += $ProductClass->getPrice02IncTax();

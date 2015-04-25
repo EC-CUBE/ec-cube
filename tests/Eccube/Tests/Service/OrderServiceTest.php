@@ -88,8 +88,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
         $CarItems = $cartService->getCart()->getCartItems();
 
         // 受注データ登録
-        $Order = $this->app['eccube.service.order']->convertToOrderFromCartItems($CarItems, $Customer);
-        $Order = $this->app['eccube.service.order']->registerPreOrderFromCart($Order);
+        $Order = $this->app['eccube.service.order']->registerPreOrderFromCartItems($CarItems, $Customer);
 
         // 登録内容確認
         $this->assertNotEmpty($Order);
