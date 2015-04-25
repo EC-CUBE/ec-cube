@@ -76,6 +76,21 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/design/css.php', '\\Eccube\\Page\\Admin\\Design\\Css')->bind('admin_design_css');
         $controllers->match('/design/header.php', '\\Eccube\\Page\\Admin\\Design\\Header')->bind('admin_design_header');
         $controllers->match('/design/main_edit.php', '\\Eccube\\Page\\Admin\\Design\\MainEdit')->bind('admin_design_main_edit');
+        $controllers->match('/content/page/', '\\Eccube\\Controller\\Admin\\Content\\PageController::index')->bind('admin_content_page');
+        $controllers->match('/content/page/{page_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::index')
+            ->assert('page_id', '\d+')
+            ->bind('admin_content_page_edit');
+        $controllers->match('/content/page/{page_id}/{device_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::index')
+            ->assert('page_id', '\d+')
+            ->assert('device_id', '\d+')
+            ->bind('admin_content_page_edit_withDevice');
+        $controllers->match('/content/page/delete/{page_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::delete')
+            ->assert('page_id', '\d+')
+            ->bind('admin_content_page_delete');
+        $controllers->match('/content/page/delete/{page_id}/{device_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::delete')
+            ->assert('page_id', '\d+')
+            ->assert('device_id', '\d+')
+            ->bind('admin_content_page_delete_withDevice');
         $controllers->match('/design/template.php', '\\Eccube\\Page\\Admin\\Design\\Template')->bind('admin_design_template');
         $controllers->match('/design/up_down.php', '\\Eccube\\Page\\Admin\\Design\\UpDown')->bind('admin_design_up_down');
 
