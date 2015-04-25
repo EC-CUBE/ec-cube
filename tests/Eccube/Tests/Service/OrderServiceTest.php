@@ -17,13 +17,29 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
         $this->app->boot();
     }
 
+    public function testNewOrder()
+    {
+        $Order = $this->app['eccube.service.order']->newOrder();
+        $this->assertNotEmpty($Order);
+    }
+
+    public function testNewOrderDetail()
+    {
+        $ProductClass = $this->app['orm.em']
+            ->getRepository('Eccube\Entity\ProductClass')
+            ->find(1);
+        $Product = $ProductClass->getProduct();
+        $OrderDetail = $this->app['eccube.service.order']->newOrderDetail($Product, $ProductClass, 3);
+        $this->assertNotEmpty($OrderDetail);
+    }
+
     public function testCopyToOrderFromCustomer()
     {
         $orderService = $this->app['eccube.service.order'];
 
         $Order = new \Eccube\Entity\Order();
         $Order = $orderService->copyToOrderFromCustomer($Order, null);
-        $this->assertTrue(null === $Order->getCustomer());
+        $this->assertNull($Order->getCustomer());
 
         $Customer = new \Eccube\Entity\Customer();
         $Customer->setName01('last name');
@@ -49,7 +65,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($Customer->getName01(), $Order->getName01());
         $this->assertEquals($Customer->getName02(), $Order->getName02());
     }
-    
+
     public function testRegisterPreOrderFromCart()
     {
         $this->app['orm.em']->getConnection()->beginTransaction();
@@ -70,24 +86,25 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
         $cartService->lock();
 
         $CarItems = $cartService->getCart()->getCartItems();
+        
         // 受注データ登録
         $Order = $this->app['eccube.service.order']->convertToOrderFromCartItems($CarItems, $Customer);
         $Order = $this->app['eccube.service.order']->registerPreOrderFromCart($Order);
 
         // 登録内容確認
-        $this->assertNotNull($Order);
+        $this->assertNotEmpty($Order);
         $OrderDetails = $Order->getOrderDetails();
         foreach ($OrderDetails as $detail) {
-            $this->assertNotNull($detail);
+            $this->assertNotEmpty($detail);
         }
 
         $Shippings = $Order->getShippings();
-        $this->assertNotNull($Shippings);
+        $this->assertNotEmpty($Shippings);
         foreach ($Shippings as $Shipping) {
-            $this->assertNotNull($Shipping);
+            $this->assertNotEmpty($Shipping);
             $ShipmentItems = $Shipping->getShipmentItems();
             foreach ($ShipmentItems as $item) {
-                $this->assertNotNull($item);
+                $this->assertNotEmpty($item);
             }
         }
 
@@ -100,13 +117,16 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
 
     public function newCustomer()
     {
+        $CustomerStatus = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\CustomerStatus')
+            ->find(1);
         $Customer = new \Eccube\Entity\Customer();
         $Customer->setName01('last name')
             ->setName02('first name')
             ->setEmail('example@lockon.co.jp')
-            ->setSecretKey('dummy')
+            ->setSecretKey('dummy' + uniqid())
             ->setPoint(0)
-            ->setStatus(1)
+            ->setStatus($CustomerStatus)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())
             ->setDelFlg(1);
