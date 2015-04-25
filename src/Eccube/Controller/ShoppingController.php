@@ -150,7 +150,6 @@ class ShoppingController extends AbstractController
     public function delivery(Application $app)
     {
         $this->init($app);
-        $this->verifyCartAndAbort();
 
         if ('POST' === $app['request']->getMethod()) {
             $this->form->handleRequest($app['request']);
