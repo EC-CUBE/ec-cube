@@ -34,7 +34,7 @@ class TaxRuleService
         /* @var $TaxRule \Eccube\Entity\TaxRule */
         $TaxRule = $this->taxRuleRepository->getByRule($product, $productClass, $pref, $country);
 
-        return $this->calcTax($price, $TaxRule->getTaxRate(), $TaxRule->getCalcRule(), $TaxRule->getTaxAdjust());
+        return $this->calcTax($price, $TaxRule->getTaxRate(), $TaxRule->getCalcRule()->getId(), $TaxRule->getTaxAdjust());
     }
 
     /**
