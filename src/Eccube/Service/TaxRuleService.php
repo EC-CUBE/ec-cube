@@ -34,7 +34,7 @@ class TaxRuleService
         /* @var $TaxRule \Eccube\Entity\TaxRule */
         $TaxRule = $this->taxRuleRepository->getByRule($product, $productClass, $pref, $country);
 
-        return $this->calcTax($price, $TaxRule->getTaxRate(), $TaxRule->getCalcRule(), $TaxRule->getTaxAdjust());
+        return $this->calcTax($price, $TaxRule->getTaxRate(), $TaxRule->getCalcRule()->getId(), $TaxRule->getTaxAdjust());
     }
 
     /**
@@ -45,6 +45,7 @@ class TaxRuleService
      * @param int|null|\Eccube\Entity\ProductClass $productClass 商品規格
      * @param int|null|\Eccube\Entity\Master\Pref $pref 都道府県
      * @param int|null|\Eccube\Entity\Master\Country $country 国
+     * @return int
      */
     public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null)
     {
