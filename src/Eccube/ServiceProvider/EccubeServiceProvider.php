@@ -116,6 +116,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\MailMagazineType();
             $types[] = new \Eccube\Form\Type\OrderStatusType();
             $types[] = new \Eccube\Form\Type\PaymentType();
+            $types[] = new \Eccube\Form\Type\DelivType();
+            $types[] = new \Eccube\Form\Type\DelivFeeType();
+            $types[] = new \Eccube\Form\Type\DelivTimeType();
+            $types[] = new \Eccube\Form\Type\ProductTypeType();
 
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
