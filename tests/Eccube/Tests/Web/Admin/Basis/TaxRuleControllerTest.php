@@ -37,18 +37,11 @@ class TaxRuleControllerTest extends WebTestCase
 
     public function test_routeing_AdminBasisTax_delete()
     {
-        $TaxRule = $this->app['eccube.repository.tax_rule']->newTaxRule();
-        $TaxRule->setMemberId(1);
-        $TaxRule->setTaxRate(10);
-        $TaxRule->setApplyDate(new \DateTime());
-        $this->app['orm.em']->persist($TaxRule);
-        $this->app['orm.em']->flush();
-
         $redirectUrl = $this->app['url_generator']->generate('admin_basis_tax_rule');
 
         $client = $this->createClient();
         $client->request('GET', $this->app['url_generator']
-            ->generate('admin_basis_tax_rule_delete', array('tax_rule_id' => $TaxRule->getId()))
+            ->generate('admin_basis_tax_rule_delete', array('tax_rule_id' => 0))
         );
 
         $actual = $client->getResponse()->isRedirect($redirectUrl);
