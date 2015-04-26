@@ -12,4 +12,59 @@ use Doctrine\ORM\EntityRepository;
  */
 class PageLayoutRepository extends EntityRepository
 {
+    public function setApp($app)
+    {
+        $this->app = $app;
+    }
+
+    public function newPageLayout($device_type_id)
+    {
+        $PageLayout = new \Eccube\Entity\PageLayout();
+        $PageLayout
+            ->setDeviceTypeId($device_type_id);
+
+        return $PageLayout;
+    }
+
+    /**
+     * ページの属性を取得する.
+     *
+     * この関数は, dtb_pagelayout の情報を検索する.
+     * $device_type_id は必須. デフォルト値は DEVICE_TYPE_PC.
+     * $page_id が null の場合は, $page_id が 0 以外のものを検索する.
+     *
+     * @access public
+     * @param  integer $device_type_id 端末種別ID
+     * @param  integer $page_id ページID; null の場合は, 0 以外を検索する.
+     * @param  string $where 追加の検索条件
+     * @param  string[] $parameters 追加の検索パラメーター
+     * @return array   ページ属性の配列
+     */
+    public function getPageProperties($device_type_id, $page_id = null, $where = '', $parameters = array())
+    {
+
+        $qb = $this->createQueryBuilder('l')
+            ->orderBy('l.page_id', 'DESC')
+            ->where('l.device_type_id = :device_type_id')
+            ->setParameter('device_type_id', $device_type_id);
+
+        if ($page_id == null) {
+            $qb->andWhere('l.page_id <> 0');
+        } else {
+            $qb->andWhere('l.page_id = :page_id')
+                ->setParameter('page_id', $page_id);
+        }
+        if ($where != '') {
+            $qb->andWhere($where);
+            foreach ($parameters as $key => $val) {
+                $qb->setParameter($key, $val);
+            }
+        }
+
+        $PageLayouts = $qb
+            ->getQuery()
+            ->getResult();
+
+        return $PageLayouts;
+    }
 }
