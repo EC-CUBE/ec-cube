@@ -2,11 +2,12 @@
 
 namespace Eccube\Form\Type;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
-use \Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class DelivType extends AbstractType
 {
@@ -18,12 +19,14 @@ class DelivType extends AbstractType
         $builder
             ->add('name', 'text', array(
                 'label' => '配送業者名',
+                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank,
                 ),
             ))
             ->add('service_name', 'text', array(
                 'label' => '名称',
+                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
@@ -53,9 +56,11 @@ class DelivType extends AbstractType
                     return $er->createQueryBuilder('p')
                         ->orderBy('p.rank', 'ASC');
                 },
+                'mapped' => false,
             ))
             ->add('deliv_times', 'collection', array(
                 'label' => 'お届け時間',
+                'required' => false,
                 'type' => 'deliv_time',
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -63,12 +68,23 @@ class DelivType extends AbstractType
             ))
             ->add('deliv_fees', 'collection', array(
                 'label' => '都道府県別設定',
+                'required' => true,
                 'type' => 'deliv_fee',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Eccube\Entity\Deliv',
+        ));
     }
 
     /**

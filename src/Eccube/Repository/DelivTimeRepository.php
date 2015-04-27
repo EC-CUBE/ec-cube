@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class DelivTimeRepository extends EntityRepository
 {
+    public function findOrCreate(array $conditions)
+    {
+        $DelivTime = $this->findOneBy($conditions);
+
+        if ($DelivTime instanceof \Eccube\Entity\DelivTime) {
+            return $DelivTime;
+        }
+
+        $DelivTime = new \Eccube\Entity\DelivTime();
+        $DelivTime
+            ->setDelivId($conditions['deliv_id'])
+            ->setDeliv($conditions['Deliv'])
+            ->setTimeId($conditions['time_id']);
+        ;
+
+        return $DelivTime;
+    }
 }

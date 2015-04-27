@@ -2,6 +2,7 @@
 
 namespace Eccube\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,11 +20,7 @@ class DelivTimeType extends AbstractType
         $builder
             ->add('deliv_id', 'hidden')
             ->add('time_id', 'hidden')
-            ->add('deliv_time', 'text', array(
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
+            ->add('deliv_time', 'text')
         ;
     }
 
@@ -34,6 +31,11 @@ class DelivTimeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\DelivTime',
+            'query_builder' => function(EntityRepository $er) {
+                return $er
+                    ->createQueryBuilder('dt')
+                    ->orderBy('dt.time_id', 'ASC');
+            },
         ));
     }
 

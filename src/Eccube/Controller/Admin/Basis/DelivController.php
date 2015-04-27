@@ -53,11 +53,49 @@ class DelivController extends AbstractController
             }
         }
 
+        $DelivFees = $Deliv->getDelivFees();
+        $DelivFeesIndex = array();
+        foreach ($DelivFees as $DelivFee) {
+            $Deliv->removeDelivFee($DelivFee);
+            $DelivFeesIndex[$DelivFee->getPref()->getId()] = $DelivFee;
+        }
+        ksort($DelivFeesIndex);
+        foreach ($DelivFeesIndex as $timeId => $DelivFee) {
+            $Deliv->addDelivFee($DelivFee);
+        }
+
+        // FormType: DelivTimeの生成
+        for ($timeId = 1; $timeId <= 16; $timeId++) {
+            $DelivTime = $app['orm.em']
+                ->getRepository('\Eccube\Entity\DelivTime')
+                ->findOrCreate(array(
+                    'Deliv' => $Deliv,
+                    'deliv_id' => $delivId,
+                    'time_id' => $timeId,
+                ));
+            if (!$DelivTime->getDelivTime()) {
+                $Deliv->addDelivTime($DelivTime);
+            }
+        }
+
+
         // 商品種別をセット
         $productTypeId = $Deliv->getProductTypeId();
         $ProductType = $app['orm.em']->getRepository('\Eccube\Entity\Master\ProductType')
             ->find($productTypeId);
         $Deliv->setProductType($ProductType);
+
+        // 配送方法を順番に並び替え
+        $DelivTimes = $Deliv->getDelivTimes();
+        $DelivTimesIndex = array();
+        foreach ($DelivTimes as $DelivTime) {
+            $Deliv->removeDelivTime($DelivTime);
+            $DelivTimesIndex[$DelivTime->getTimeId()] = $DelivTime;
+        }
+        ksort($DelivTimesIndex);
+        foreach ($DelivTimesIndex as $timeId => $DelivTime) {
+            $Deliv->addDelivTime($DelivTime);
+        }
 
         $builder = $app['form.factory']
             ->createBuilder('deliv');
@@ -86,39 +124,43 @@ class DelivController extends AbstractController
                 $ProductType = $DelivData->getProductType();
                 $DelivData->setProductTypeId($ProductType->getId());
 
-                // 複合主キーのため、一回消して、再度連番をふりなおす
-                // FIXME :順番がラリってる
-                $DelivTimesData = $DelivData->getDelivTimes();
-                $timeId = 1;
-                foreach ($DelivTimesData as $DelivTimeData) {
-                    $DelivData->removeDelivTime($DelivTimeData);
-
-                    $DelivTimeData
-                        ->setDeliv($DelivData)
-                        // ->setDelivId($delivId)
-                        // ->setTimeId($timeId)
-                    ;
-
-                    $DelivData->addDelivTime($DelivTimeData);
-                    $timeId ++;
+                // 配送時間の登録
+                $DelivTimes = $form->get('deliv_times')->getData();
+                foreach ($DelivTimes as $DelivTime) {
+                    if (is_null($DelivTime->getDelivTime())) {
+                        $Deliv->removeDelivTime($DelivTime);
+                    }
                 }
 
-                $PaymentOptionsOld = $DelivData->getPaymentOptions();
+
+                // お支払いの登録
+                $PaymentOptions = $app['orm.em']->getRepository('\Eccube\Entity\PaymentOption')
+                    ->findBy(array('deliv_id' => $delivId));
                 // 消す
-                foreach ($PaymentOptionsOld as $PaymentOptionOld) {
-                    $DelivData->removePaymentOption($PaymentOptionOld);
-                    $app['orm.em']->remove($PaymentOptionOld);
-
+                foreach ($PaymentOptions as $PaymentOption) {
+                    $DelivData->removePaymentOption($PaymentOption);
+                    $app['orm.em']->remove($PaymentOption);
                 }
+                $app['orm.em']->persist($DelivData);
+                $app['orm.em']->flush();
+
+                // 新しく今登録したIDを取得する必要がある
+                $delivId = $Deliv->getId();
+
                 // いれる
+                $rank = 1;
                 $PaymentsData = $form->get('payments')->getData();
                 foreach ($PaymentsData as $PaymentData) {
+                    $PaymentOption = new \Eccube\Entity\PaymentOption();
                     $PaymentOption
-                        ->setPayment($PaymentData)
+                        ->setDelivId($delivId)
+                        ->setPaymentId($PaymentData->getId())
                         ->setDeliv($DelivData)
+                        ->setPayment($PaymentData)
+                        ->setRank($rank)
                     ;
-
                     $DelivData->addPaymentOption($PaymentOption);
+                    $rank ++;
                 }
 
                 $app['orm.em']->persist($DelivData);

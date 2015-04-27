@@ -19,8 +19,12 @@ class DelivFeeType extends AbstractType
         $builder
             ->add('deliv_id', 'hidden')
             ->add('fee_id', 'hidden')
-            ->add('fee', 'integer')
-        ;
+            ->add('fee', 'integer', array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
+            ;
     }
 
     /**
@@ -29,7 +33,7 @@ class DelivFeeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\DelivFee',
+            'data_class' => 'Eccube\Entity\DelivFee',
         ));
     }
 

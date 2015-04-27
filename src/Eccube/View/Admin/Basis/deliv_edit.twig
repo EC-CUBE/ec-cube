@@ -2,40 +2,18 @@
 
 {% block main %}
 
-<script type="text/javascript">
-    var timeCount = '{{ form.deliv_times | length }}'
-        delivId = '{{ deliv_id }}';
-
-    $(function() {
-        $('#add-another-time').on("click", function() {
-            var timeList = $('#time-fields-list');
-
-            var newWidget = timeList.attr('data-prototype');
-            newWidget = newWidget.replace(/__name__/g, timeCount);
-
-            var newLi = $('<li></li>').html(newWidget);
-            newLi.appendTo($('#time-fields-list'));
-
-            $("#deliv_deliv_times_" + String(timeCount) + "_deliv_id").val(delivId);
-            $("#deliv_deliv_times_" + String(timeCount) + "_time_id").val(timeCount + 1);
-
-            timeCount++;
-
-            return false;
-        });
-
-        $("#set_fee_all").on("click", function() {
-            var fee = $("#fee_all").val();
-            $("input[name$='[fee]']").val(fee);
-        });
-    })
-</script>
-
-
 {% for message in app.session.flashbag.get('deliv.complete')  %}
     {{ message|trans|raw }}<br />
 {% endfor %}
 
+<script>
+    $(function(){
+        $("#set_fee_all").on("click", function() {
+            var fee = $("#fee_all").val();
+            $("input[name$='[fee]']").val(fee);
+        });
+    });
+</script>
 <form name="form1" id="form1" method="post" action="">
     {{ form_widget(form._token) }}
     <div id="basis" class="contents-main">
@@ -66,19 +44,7 @@
                 <th>{{ form_label(form.payments) }}</th>
                 <th>{{ form_widget(form.payments) }}</th>
             </tr>
-
-            <tr>
-                <th><a href="#" id="add-another-time">＞お届け時間を追加</a></th>
-                <td>
-                    <ul id="time-fields-list" data-prototype="{{ form_widget(form.deliv_times.vars.prototype) | e }}">
-                    {% for timeField in form.deliv_times %}
-                        <li>
-                            {{ form_widget(timeField) }}
-                        </li>
-                    {% endfor %}
-                    </ul>
-                </td>
-            </tr>
+            {{ form_widget(form.deliv_times) }}
         </table>
 
         <table>
