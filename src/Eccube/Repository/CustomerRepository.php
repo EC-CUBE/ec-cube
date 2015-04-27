@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 use Eccube\Entity\Customer;
 
 /**
@@ -26,15 +27,17 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
     public function newCustomer()
     {
-        $customer = new \Eccube\Entity\Customer();
+        $Customer = new \Eccube\Entity\Customer();
+        $Status = $this->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\CustomerStatus')
+            ->find(1);
 
-        $customer->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime())
+        $Customer
             ->setPoint(0)
-            ->setStatus(1)
+            ->setStatus($Status)
             ->setDelFlg(0);
 
-        return $customer;
+        return $Customer;
     }
 
     /**
@@ -263,7 +266,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         // status
         if (!empty($searchData['customer_status']) && $searchData['customer_status']) {
             $qb
-                ->andWhere('c.status < :status')
+                ->leftJoin('c.Status', 's')
+                ->andWhere('s.id = :status')
                 ->setParameter('status', $searchData['customer_status']);
         }
 
@@ -296,4 +300,61 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         return $qb;
     }
+
+    /**
+     * ユニークなシークレットキーを返す
+     * @param $app
+     * @return string
+     */
+    public function getUniqueSecretKey($app)
+    {
+        $unique = md5(uniqid(rand(), 1));
+        $Customer = $app['eccube.repository.customer']->findBy(array(
+            'secret_key' => $unique,
+        ));
+        if (count($Customer) == 0) {
+            return $unique;
+        } else {
+            return $this->getUniqueSecretKey($app);
+        }
+    }
+
+    /**
+     * saltを生成する
+     *
+     * @param $byte
+     * @return string
+     */
+    public function createSalt($byte)
+    {
+        $generator = new SecureRandom();
+        return bin2hex($generator->nextBytes($byte));
+    }
+
+    /**
+     * 入力されたパスワードをSaltと暗号化する
+     *
+     * @param $app
+     * @param Customer $Customer
+     * @return mixed
+     */
+    public function encryptPassword($app, \Eccube\Entity\Customer $Customer)
+    {
+        $encoder = $app['security.encoder_factory']->getEncoder($Customer);
+        return $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
+    }
+
+    public function getNonActiveCustomerBySecretKey($secret_key)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.del_flg = 0 AND c.secret_key = :secret_key')
+            ->leftJoin('c.Status', 's')
+            ->andWhere('s.id = :status')
+            ->setParameter('secret_key', $secret_key)
+            ->setParameter('status', 1);
+        $query = $qb->getQuery();
+
+        return $query->getSingleResult();
+    }
+
 }

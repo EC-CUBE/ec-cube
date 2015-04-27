@@ -1,0 +1,43 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+
+    <div id="undercolumn">
+        <div id="undercolumn_shopping">
+            <p class="flow_area"><img src="{{ app.config.tpl }}img/picture/img_flow_01.jpg" alt="購入手続きの流れ" /></p>
+            <h2 class="title">{{ title }}</h2>
+
+            <div id="address_area" class="clearfix">
+                <div class="information">
+                    <p>利用するポイントを設定してください。</p>
+                    <span class="user_name">{{ app.user.name01 }}{{ app.user.name02 }}様</span>の、現在の所持ポイントは「<span class="point">{{ app.user.point }}Pt</span>」です。1ポイントを{{ app.config.point_value }}円</span>として使用する事ができます。<br />
+                </div>
+            </div>
+
+            <form name="form1" id="form1" method="post" action="{{ path('shopping_point') }}">
+                {{ form_widget(form._token) }}
+                <table summary="ポイント利用">
+                    <col width="100%" />
+                    <tr>
+                        <td>
+                            {{ form_widget(form.point_flg) }} {{ form_widget(form.point) }}Ptを使用する
+                         </td>
+                    </tr>
+
+                </table>
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                            <a href="{{ path('shopping') }}" ><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
+                        </li>
+                        <li>
+                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_next.jpg" alt="ポイントを設定する" name="send_button" id="send_button" />
+                        </li>
+                    </ul>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

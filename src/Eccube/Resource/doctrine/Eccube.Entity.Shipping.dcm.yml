@@ -131,4 +131,14 @@ Eccube\Entity\Shipping:
             joinColumn:
                 name: shipping_pref
                 referencedColumnName: id
+        Order:
+            targetEntity: Eccube\Entity\Order
+            inversedBy: Shippings
+            joinColumn:
+                name: order_id
+                referencedColumnName: order_id
+    oneToMany:
+        ShipmentItems:
+            targetEntity: Eccube\Entity\ShipmentItem
+            mappedBy: Shipping
     lifecycleCallbacks: {  }

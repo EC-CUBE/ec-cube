@@ -45,6 +45,9 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/delivery/down/{delivId}', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::down')
             ->assert('delivId', '\d+')
             ->bind('admin_basis_delivery_down');
+        $controllers->match('/basis/', '\\Eccube\\Controller\\Admin\\Basis\\BasisController::index')->bind('admin_basis');
+        $controllers->match('/basis/delivery.php', '\\Eccube\\Page\\Admin\\Basis\\Delivery')->bind('admin_basis_delivery');
+        $controllers->match('/basis/delivery_input.php', '\\Eccube\\Page\\Admin\\Basis\\DeliveryInput')->bind('admin_basis_delivery_input');
         $controllers->match('/basis/holiday.php', '\\Eccube\\Page\\Admin\\Basis\\Holiday')->bind('admin_basis_holiday');
         $controllers->match('/basis/kiyaku.php', '\\Eccube\\Page\\Admin\\Basis\\Kiyaku')->bind('admin_basis_kiyaku');
         $controllers->match('/basis/mail.php', '\\Eccube\\Page\\Admin\\Basis\\Mail')->bind('admin_basis_mail');
@@ -52,6 +55,14 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
         $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::index')->bind('admin_basis_point');
         $controllers->match('/basis/tax.php', '\\Eccube\\Page\\Admin\\Basis\\Tax')->bind('admin_basis_tax');
+        $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::Index')->bind('admin_basis_point');
+        $controllers->match('/basis/tax/', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')->bind('admin_basis_tax_rule');
+        $controllers->match('/basis/tax/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')
+            ->assert('tax_rule_id', '\d+')
+            ->bind('admin_basis_tax_rule_edit');
+        $controllers->match('/basis/tax/delete/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::delete')
+            ->assert('tax_rule_id', '\d+')
+            ->bind('admin_basis_tax_rule_delete');
         $controllers->match('/basis/tradelaw.php', '\\Eccube\\Page\\Admin\\Basis\\Tradelaw')->bind('admin_basis_tradelaw');
         $controllers->match('/basis/zip_install.php', '\\Eccube\\Page\\Admin\\Basis\\ZipInstall')->bind('admin_basis_zip_install');
 
@@ -63,6 +74,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/content/file_view.php', '\\Eccube\\Controller\\Admin\\Content\\FileController::view')->bind('admin_content_file_view');
         $controllers->match('/content/recommend.php', '\\Eccube\\Page\\Admin\\Content\\Recommend')->bind('admin_content_recommend');
         $controllers->match('/content/recommend_search.php', '\\Eccube\\Page\\Admin\\Content\\RecommendSearch')->bind('admin_content_recommend_search');
+        $controllers->match('/content/css/', '\\Eccube\\Controller\\Admin\\Content\\CssController::index')->bind('admin_content_css');
+        $controllers->match('/content/css/delete', '\\Eccube\\Controller\\Admin\\Content\\CssController::delete')->bind('admin_content_css_delete');
 
         // customer
         $controllers->match('/customer/', '\\Eccube\\Controller\\Admin\\Customer\\CustomerController::index')->bind('admin_customer');
@@ -72,7 +85,11 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/customer/delete/{customerId}', '\\Eccube\\Controller\\Admin\\Customer\\CustomerController::delete')
             ->assert('customerId', '\d+')
             ->bind('admin_customer_delete');
-        $controllers->match('/customer/edit.php', '\\Eccube\\Page\\Admin\\Customer\\Edit')->bind('admin_customer_edit');
+        $controllers->match('/customer/edit/{customerId}', '\\Eccube\\Controller\\Admin\\Customer\\CustomerEditController::index')
+            ->assert('customerId', '\d+')
+            ->bind('admin_customer_edit');
+        $controllers->match('/customer/edit/', '\\Eccube\\Controller\\Admin\\Customer\\CustomerEditController::index')
+            ->bind('admin_customer_new');
         $controllers->match('/customer/search_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
 
         // design

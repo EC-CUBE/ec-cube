@@ -22,6 +22,19 @@ class TaxRuleRepository extends EntityRepository
         $this->app = $app;
     }
 
+    public function newTaxRule()
+    {
+        $TaxRule = new \Eccube\Entity\TaxRule();
+        $CalcRule = $this->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\Taxrule')
+            ->find(1);
+        $TaxRule->setCalcRule($CalcRule);
+        $TaxRule->setTaxAdjust(0);
+        $TaxRule->setDelFlg(0);
+
+        return $TaxRule;
+    }
+
     /**
      * 現在有効な税率設定情報を返す
      *
@@ -30,7 +43,7 @@ class TaxRuleRepository extends EntityRepository
      * @param int|null|\Eccube\Entity\Master\Pref $Pref 都道府県
      * @param int|null|\Eccube\Entity\Master\Country $Country 国
      * @return \Eccube\Entity\TaxRule 税設定情報
-     * 
+     *
      * @throws NoResultException
      */
     public function getByRule($Product = null, $ProductClass = null, $Pref = null, $Country = null)
@@ -126,7 +139,7 @@ class TaxRuleRepository extends EntityRepository
             $qb->andWhere('t.ProductClass IS NULL');
         }
 
-        $TaxRules = (array) $qb
+        $TaxRules = (array)$qb
             ->getQuery()
             ->setParameters($parameters)
             ->getResult();
@@ -150,12 +163,13 @@ class TaxRuleRepository extends EntityRepository
             $TaxRule->setRank($rank);
         }
 
-        usort($TaxRules, function($a, $b) {
+        usort($TaxRules, function ($a, $b) {
             return strcmp($a->getRank(), $b->getRank());
         });
 
         if ($TaxRules) {
             $this->rules[$cacheKey] = $TaxRules[0];
+
             return $TaxRules[0];
         } else {
             throw new NoResultException();
@@ -164,14 +178,14 @@ class TaxRuleRepository extends EntityRepository
 
     /**
      * getList
-     * 
+     *
      * @return array|null
      */
     public function getList()
     {
         $qb = $this->createQueryBuilder('t')
             ->orderBy('t.apply_date', 'DESC')
-            ->where('.Product IS NULL AND t.ProductClass IS NULL');
+            ->where('t.Product IS NULL AND t.ProductClass IS NULL');
         $TaxRules = $qb
             ->getQuery()
             ->getResult();
@@ -181,7 +195,7 @@ class TaxRuleRepository extends EntityRepository
 
     /**
      * getById
-     * 
+     *
      * @param int $id
      * @return array
      */
@@ -196,7 +210,7 @@ class TaxRuleRepository extends EntityRepository
 
     /**
      * getByTime
-     * 
+     *
      * @param string $applyDate
      * @return mixed
      */
@@ -219,13 +233,15 @@ class TaxRuleRepository extends EntityRepository
     public function delete($TaxRule)
     {
         if (!$TaxRule instanceof \Eccube\Entity\TaxRule) {
-            $TaxRule = $this->find($taxRule);
+            $TaxRule = $this->find($TaxRule);
         }
         if (!$TaxRule) {
             throw new NoResultException;
         }
         $TaxRule->setDelFlg(1);
-        $this->getEntityManager()->persist($TaxRule);
-        $this->getEntityManager()->flust();
+        $em = $this->getEntityManager();
+        $em->persist($TaxRule);
+        $em->flush();
     }
+
 }

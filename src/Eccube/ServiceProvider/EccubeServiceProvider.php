@@ -28,6 +28,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.cart'] = $app->share(function() use ($app) {
             return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
         });
+        $app['eccube.service.order'] = $app->share(function() use ($app) {
+            return new \Eccube\Service\OrderService($app);
+        });
         $app['eccube.service.tax_rule'] = $app->share(function() use ($app) {
             return new \Eccube\Service\TaxRuleService($app);
         });
@@ -66,7 +69,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $taxRuleRepository;
         });
-
+        $app['eccube.repository.order'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Order');
+        });
         // 
         $app['paginator'] = $app->protect(function() {
             return new \Knp\Component\Pager\Paginator();
@@ -114,13 +119,16 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\JobType();
             $types[] = new \Eccube\Form\Type\ReminderType();
             $types[] = new \Eccube\Form\Type\MailMagazineType();
+            $types[] = new \Eccube\Form\Type\CustomerStatusType();
             $types[] = new \Eccube\Form\Type\OrderStatusType();
             $types[] = new \Eccube\Form\Type\PaymentType();
             $types[] = new \Eccube\Form\Type\DelivType();
             $types[] = new \Eccube\Form\Type\DelivFeeType();
             $types[] = new \Eccube\Form\Type\DelivTimeType();
             $types[] = new \Eccube\Form\Type\ProductTypeType();
+            $types[] = new \Eccube\Form\Type\CalcRuleType();
 
+            $types[] = new \Eccube\Form\Type\EntryType($app);
             $types[] = new \Eccube\Form\Type\CustomerType($app);
             if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
                 $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
@@ -128,11 +136,14 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
+            $types[] = new \Eccube\Form\Type\ShopMasterType($app);
             $types[] = new \Eccube\Form\Type\PointType($app);
+            $types[] = new \Eccube\Form\Type\TaxRuleType($app);
             $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
-
+            $types[] = new \Eccube\Form\Type\ShoppingType($app);
+            $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
             return $types;
         }));
 

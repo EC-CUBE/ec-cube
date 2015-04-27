@@ -44,9 +44,9 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
-     * @var integer
+     * @var \Eccube\Entity\Master\Taxrule
      */
-    private $calc_rule;
+    private $Calc_rule;
 
     /**
      * @var string
@@ -115,26 +115,26 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set calc_rule
+     * Set Calc_rule
      *
-     * @param integer $calcRule
+     * @param \Eccube\Entity\Master\Taxrule $calcRule
      * @return TaxRule
      */
     public function setCalcRule($calcRule)
     {
-        $this->calc_rule = $calcRule;
+        $this->Calc_rule = $calcRule;
 
         return $this;
     }
 
     /**
-     * Get calc_rule
+     * Get Calc_rule
      *
      * @return integer 
      */
     public function getCalcRule()
     {
-        return $this->calc_rule;
+        return $this->Calc_rule;
     }
 
     /**
