@@ -28,6 +28,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.cart'] = $app->share(function() use ($app) {
             return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
         });
+        $app['eccube.service.order'] = $app->share(function() use ($app) {
+            return new \Eccube\Service\OrderService($app);
+        });
         $app['eccube.service.tax_rule'] = $app->share(function() use ($app) {
             return new \Eccube\Service\TaxRuleService($app);
         });
@@ -72,7 +75,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $taxRuleRepository;
         });
-
+        $app['eccube.repository.order'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Order');
+        });
 
         // 
         $app['paginator'] = $app->protect(function() {
@@ -141,7 +146,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
-
+            $types[] = new \Eccube\Form\Type\ShoppingType($app);
+            $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
             return $types;
         }));
 

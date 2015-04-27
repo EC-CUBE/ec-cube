@@ -260,6 +260,11 @@ class Order extends \Eccube\Entity\AbstractEntity
     private $OrderTemp;
 
     /**
+     * @var \Eccube\Entity\Shipping
+     */
+    private $Shippings;
+
+    /**
      * @var \Eccube\Entity\Customer
      */
     private $Customer;
@@ -305,6 +310,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function __construct()
     {
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1664,5 +1670,38 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getOrderTempId()
     {
         return $this->order_temp_id;
+    }
+
+    /**
+     * Add Shippings
+     *
+     * @param \Eccube\Entity\Shipping $shippings
+     * @return Order
+     */
+    public function addShipping(\Eccube\Entity\Shipping $shippings)
+    {
+        $this->Shippings[] = $shippings;
+
+        return $this;
+    }
+
+    /**
+     * Remove Shippings
+     *
+     * @param \Eccube\Entity\Shipping $shippings
+     */
+    public function removeShipping(\Eccube\Entity\Shipping $shippings)
+    {
+        $this->Shippings->removeElement($shippings);
+    }
+
+    /**
+     * Get Shippings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShippings()
+    {
+        return $this->Shippings;
     }
 }
