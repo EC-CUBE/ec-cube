@@ -27,6 +27,22 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/logout.php', '\\Eccube\\Page\\Admin\\Logout')->bind('admin_logout');
 
         // basis
+        $controllers->match('/basis/', '\\Eccube\\Page\\Admin\\Basis\\Index')->bind('admin_basis');
+        $controllers->match('/basis/delivery', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::index')->bind('admin_basis_delivery');
+        $controllers->match('/basis/delivery/edit', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::edit')
+            ->bind('admin_basis_delivery_edit_new');
+        $controllers->match('/basis/delivery/edit/{delivId}', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::edit')
+            ->assert('delivId', '\d+')
+            ->bind('admin_basis_delivery_edit');
+        $controllers->match('/basis/delivery/delete/{delivId}', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::delete')
+            ->assert('delivId', '\d+')
+            ->bind('admin_basis_delivery_delete');
+        $controllers->match('/basis/delivery/up/{delivId}', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::up')
+            ->assert('delivId', '\d+')
+            ->bind('admin_basis_delivery_up');
+        $controllers->match('/basis/delivery/down/{delivId}', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::down')
+            ->assert('delivId', '\d+')
+            ->bind('admin_basis_delivery_down');
         $controllers->match('/basis/', '\\Eccube\\Controller\\Admin\\Basis\\BasisController::index')->bind('admin_basis');
         $controllers->match('/basis/delivery.php', '\\Eccube\\Page\\Admin\\Basis\\Delivery')->bind('admin_basis_delivery');
         $controllers->match('/basis/delivery_input.php', '\\Eccube\\Page\\Admin\\Basis\\DeliveryInput')->bind('admin_basis_delivery_input');
@@ -35,7 +51,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/mail.php', '\\Eccube\\Page\\Admin\\Basis\\Mail')->bind('admin_basis_mail');
         $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
         $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
-        $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::Index')->bind('admin_basis_point');
+        $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::index')->bind('admin_basis_point');
         $controllers->match('/basis/tax/', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')->bind('admin_basis_tax_rule');
         $controllers->match('/basis/tax/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')
             ->assert('tax_rule_id', '\d+')
