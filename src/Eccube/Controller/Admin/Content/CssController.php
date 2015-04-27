@@ -14,7 +14,7 @@ class CssController {
     protected $subtitle = 'CSS管理';
 
     // todo
-    protected $cssDir = '/vagrant/ec-cube/html/user_data/packages/default/css/';
+    protected $cssDir = 'css';
 
     public function index(Application $app)
     {
@@ -30,7 +30,7 @@ class CssController {
             if ($form->isValid()) {
                 $data = $form->getData();
                 $fs = new Filesystem();
-                $fs->dumpFile($this->cssDir . $data['file_name'], $data['content']);
+                $fs->dumpFile($this->getCssDir($app) . $data['file_name'], $data['content']);
                 $app['session']->getFlashBag()->add('admin.content.css.complete', 'admin.register.complete');
                 return $app->redirect($app['url_generator']->generate('admin_content_css'));
             }
@@ -40,7 +40,7 @@ class CssController {
         $target = $app['request']->get('target');
         if ($target) {
             $finder = Finder::create();
-            $finder->in($this->cssDir)->name($target);
+            $finder->in($this->getCssDir($app))->name($target);
             if ($finder->count() === 1) {
                 $data = null;
                 foreach ($finder as $file) {
@@ -56,7 +56,7 @@ class CssController {
             'form' => $form->createView(),
             'title' => $this->title,
             'subtitle' => $this->subtitle,
-            'filenames' => $this->getFileNames(),
+            'filenames' => $this->getFileNames($app),
         ));
     }
 
@@ -65,7 +65,7 @@ class CssController {
         $target = $app['request']->get('target');
 
         $finder = Finder::create();
-        $finder->in($this->cssDir)->name($target);
+        $finder->in($this->getCssDir($app))->name($target);
 
         if ($finder->count() == 1) {
             foreach ($finder->files() as $file) {
@@ -77,11 +77,11 @@ class CssController {
         return $app->redirect($app['url_generator']->generate('admin_content_css'));
     }
 
-    protected function getFileNames()
+    protected function getFileNames($app)
     {
         $finder = Finder::create();
         $finder
-            ->in($this->cssDir)
+            ->in($this->getCssDir($app))
             ->files()
             ->sortByName()
             ->depth(0);
@@ -92,5 +92,9 @@ class CssController {
         }
 
         return $fileNames;
+    }
+
+    protected function getCssDir($app) {
+        return $app['congig']['user_realdir'] . $this->cssDir;
     }
 }
