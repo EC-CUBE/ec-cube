@@ -188,7 +188,7 @@ class DelivController extends AbstractController
         $app['orm.em']->persist($Deliv->setDelFlg(1));
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('deliv.complete', 'admin.deliv.delete.complete') ;
+        $app['session']->getFlashBag()->add('deliv.complete', 'admin.delete.complete') ;
 
         return $app->redirect($app['url_generator']->generate('admin_basis_deliv'));
     }
@@ -207,7 +207,7 @@ class DelivController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('deliv.complete', 'admin.deliv.up.complete');
+        $app['session']->getFlashBag()->add('deliv.complete', 'admin.rank.move.complete');
 
         return $app->redirect($app['url_generator']->generate('admin_basis_deliv'));
     }
@@ -226,7 +226,7 @@ class DelivController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('deliv.complete', 'admin.deliv.up.complete');
+        $app['session']->getFlashBag()->add('deliv.complete', 'admin.rank.move.complete');
 
         return $app->redirect($app['url_generator']->generate('admin_basis_deliv'));
     }
