@@ -139,7 +139,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
         return $this;
     }
 
-    public function getProductTYpe()
+    public function getProductType()
     {
         return $this->ProductType;
     }

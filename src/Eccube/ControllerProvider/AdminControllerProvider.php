@@ -28,8 +28,6 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // basis
         $controllers->match('/basis/', '\\Eccube\\Page\\Admin\\Basis\\Index')->bind('admin_basis');
-        $controllers->match('/basis/delivery.php', '\\Eccube\\Page\\Admin\\Basis\\Delivery')->bind('admin_basis_delivery_old');
-        $controllers->match('/basis/delivery_input.php', '\\Eccube\\Page\\Admin\\Basis\\DeliveryInput')->bind('admin_basis_delivery_input_old');
         $controllers->match('/basis/delivery', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::index')->bind('admin_basis_delivery');
         $controllers->match('/basis/delivery/edit', '\\Eccube\\Controller\\Admin\\Basis\\DelivController::edit')
             ->bind('admin_basis_delivery_edit_new');
@@ -54,8 +52,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
         $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
         $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::index')->bind('admin_basis_point');
-        $controllers->match('/basis/tax.php', '\\Eccube\\Page\\Admin\\Basis\\Tax')->bind('admin_basis_tax');
-        $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::Index')->bind('admin_basis_point');
         $controllers->match('/basis/tax/', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')->bind('admin_basis_tax_rule');
         $controllers->match('/basis/tax/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')
             ->assert('tax_rule_id', '\d+')
