@@ -1,0 +1,73 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+{% for message in app.session.flashbag.get('deliv.complete')  %}
+    {{ message|trans|raw }}<br />
+{% endfor %}
+
+<script>
+    $(function(){
+        $("#set_fee_all").on("click", function() {
+            var fee = $("#fee_all").val();
+            $("input[name$='[fee]']").val(fee);
+        });
+    });
+</script>
+<form name="form1" id="form1" method="post" action="">
+    {{ form_widget(form._token) }}
+    <div id="basis" class="contents-main">
+        <h2>配送方法登録</h2>
+        <table>
+
+            <tr>
+                <th>{{ form_label(form.name) }}</th>
+                <td>{{ form_widget(form.name) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.service_name) }}</th>
+                <td>{{ form_widget(form.service_name) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.remark) }}</th>
+                <td>{{ form_widget(form.remark) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.confirm_url) }}</th>
+                <td>{{ form_widget(form.confirm_url) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.product_type) }}</th>
+                <th>{{ form_widget(form.product_type) }}</th>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.payments) }}</th>
+                <th>{{ form_widget(form.payments) }}</th>
+            </tr>
+            {{ form_widget(form.deliv_times) }}
+        </table>
+
+        <table>
+            <tr>
+                <td colspan="2">
+                    <div class="btn">
+                        ※全国一律送料 <input type="text" id="fee_all" name="fee_all" class="box10" /> 円に
+                        <a class="btn-normal" href="javascript:;" id="set_fee_all">
+                            <span>設定する</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {{ form_widget(form.deliv_fees) }}
+        </table>
+
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="{{ url('admin_basis_delivery') }}"><span class="btn-prev">前のページに戻る</span></a></li>
+                <li><a class="btn-action" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            </ul>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

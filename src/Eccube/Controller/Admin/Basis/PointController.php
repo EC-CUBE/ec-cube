@@ -18,7 +18,7 @@ class PointController extends AbstractController
         $this->sub_title = 'ポイント設定';
     }
 
-    public function Index(Application $app)
+    public function index(Application $app)
     {
         $baseInfo = $app['eccube.repository.base_info']->get();
 
