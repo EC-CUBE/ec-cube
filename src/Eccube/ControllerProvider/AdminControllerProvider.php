@@ -49,8 +49,25 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/holiday.php', '\\Eccube\\Page\\Admin\\Basis\\Holiday')->bind('admin_basis_holiday');
         $controllers->match('/basis/kiyaku.php', '\\Eccube\\Page\\Admin\\Basis\\Kiyaku')->bind('admin_basis_kiyaku');
         $controllers->match('/basis/mail.php', '\\Eccube\\Page\\Admin\\Basis\\Mail')->bind('admin_basis_mail');
-        $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
-        $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
+
+        $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment_old');
+        $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input_old');
+
+        $controllers->match('/basis/payment', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::index')->bind('admin_basis_payment');
+        $controllers->match('/basis/payment/edit', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::edit')->bind('admin_basis_payment_edit_new');
+        $controllers->match('/basis/payment/edit/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::edit')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_edit');
+        $controllers->match('/basis/payment/delete/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::delete')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_delete');
+        $controllers->match('/basis/payment/up/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::up')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_up');
+        $controllers->match('/basis/payment/down/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::down')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_down');
+
         $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::index')->bind('admin_basis_point');
         $controllers->match('/basis/tax/', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')->bind('admin_basis_tax_rule');
         $controllers->match('/basis/tax/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')
