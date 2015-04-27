@@ -25,7 +25,6 @@ class DelivTimeRepository extends EntityRepository
             ->setDelivId($conditions['deliv_id'])
             ->setDeliv($conditions['Deliv'])
             ->setTimeId($conditions['time_id']);
-        ;
 
         return $DelivTime;
     }
