@@ -54,6 +54,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/content/file_view.php', '\\Eccube\\Controller\\Admin\\Content\\FileController::view')->bind('admin_content_file_view');
         $controllers->match('/content/recommend.php', '\\Eccube\\Page\\Admin\\Content\\Recommend')->bind('admin_content_recommend');
         $controllers->match('/content/recommend_search.php', '\\Eccube\\Page\\Admin\\Content\\RecommendSearch')->bind('admin_content_recommend_search');
+        $controllers->match('/content/css/', '\\Eccube\\Controller\\Admin\\Content\\CssController::index')->bind('admin_content_css');
+        $controllers->match('/content/css/delete', '\\Eccube\\Controller\\Admin\\Content\\CssController::delete')->bind('admin_content_css_delete');
 
         // customer
         $controllers->match('/customer/', '\\Eccube\\Controller\\Admin\\Customer\\CustomerController::index')->bind('admin_customer');
