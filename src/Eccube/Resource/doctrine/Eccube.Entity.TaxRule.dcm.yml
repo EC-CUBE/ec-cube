@@ -32,11 +32,11 @@ Eccube\Entity\TaxRule:
 #            nullable: false
 #            unsigned: false
 #            default: '0'
-        calc_rule:
-            type: smallint
-            nullable: false
-            unsigned: false
-            default: '1'
+#        calc_rule:
+#            type: smallint
+#            nullable: false
+#            unsigned: false
+#            default: '1'
         tax_rate:
             type: decimal
             nullable: false
@@ -95,4 +95,10 @@ Eccube\Entity\TaxRule:
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id
+        Calc_rule:
+            targetEntity: Eccube\Entity\Master\Taxrule
+            inversedBy: TaxRules
+            joinColumn:
+                name: calc_rule
+                referencedColumnName: id
     lifecycleCallbacks: {  }

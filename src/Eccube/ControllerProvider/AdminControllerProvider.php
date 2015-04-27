@@ -36,7 +36,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
         $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
         $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::Index')->bind('admin_basis_point');
-        $controllers->match('/basis/tax.php', '\\Eccube\\Page\\Admin\\Basis\\Tax')->bind('admin_basis_tax');
+        $controllers->match('/basis/tax/', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')->bind('admin_basis_tax_rule');
+        $controllers->match('/basis/tax/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')
+            ->assert('tax_rule_id', '\d+')
+            ->bind('admin_basis_tax_rule_edit');
+        $controllers->match('/basis/tax/delete/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::delete')
+            ->assert('tax_rule_id', '\d+')
+            ->bind('admin_basis_tax_rule_delete');
         $controllers->match('/basis/tradelaw.php', '\\Eccube\\Page\\Admin\\Basis\\Tradelaw')->bind('admin_basis_tradelaw');
         $controllers->match('/basis/zip_install.php', '\\Eccube\\Page\\Admin\\Basis\\ZipInstall')->bind('admin_basis_zip_install');
 
