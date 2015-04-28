@@ -275,6 +275,9 @@ class Application extends \Silex\Application
                 'Eccube\Entity\Member' => $app['eccube.password_encoder'],
             ));
         });
+        $app['eccube.event_listner.security'] = $app->share(function ($app) {
+            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
+        });
         $app['user'] = $app->share(function($app) {
             $token = $app['security']->getToken();
 
@@ -381,5 +384,7 @@ class Application extends \Silex\Application
 
             return array_merge($config_constant, $config);
         }));
+
+        $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 }
