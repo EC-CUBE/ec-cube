@@ -28,7 +28,7 @@ class OrderService
             ->setCharge(0)
             ->setTax(0)
             ->setDelivFee(0)
-            ->setOrderStatus($app['eccube.repository.order_status']->find(1)) // todo
+            ->setOrderStatus($this->app['eccube.repository.order_status']->find(1)) // todo
             ->setDelFlg(0); // todo
         return $Order;
     }
