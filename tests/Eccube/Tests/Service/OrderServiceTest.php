@@ -131,4 +131,9 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
             ->setDelFlg(1);
         return $Customer;
     }
+
+    public function tearDown(){
+        $this->app['orm.em']->getConnection()->close();
+        parent::tearDown();
+    }
 }

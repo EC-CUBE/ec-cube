@@ -25,5 +25,8 @@ class ShoppingControllerTest extends WebTestCase
         $client->request('GET', '/shopping/login/');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
-
+    public function tearDown(){
+        $this->app['orm.em']->getConnection()->close();
+        parent::tearDown();
+    }
 }
