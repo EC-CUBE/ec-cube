@@ -10,9 +10,32 @@ use Doctrine\ORM\Mapping as ORM;
 class Order extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return bool
+     */
+    public function isMultiple()
+    {
+        return count($this->getShippings()) > 1 ? true : false;
+    }
+
+    public function isPriceChange()
+    {
+        foreach ($this->getOrderDetails() as $OrderDetail) {
+            if ($OrderDetail->isPriceChange()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var string
+     */
+    private $order_temp_id;
 
     /**
      * @var string
@@ -170,11 +193,6 @@ class Order extends \Eccube\Entity\AbstractEntity
     private $note;
 
     /**
-     * @var integer
-     */
-    private $status;
-
-    /**
      * @var \DateTime
      */
     private $create_date;
@@ -255,14 +273,14 @@ class Order extends \Eccube\Entity\AbstractEntity
     private $OrderDetails;
 
     /**
-     * @var \Eccube\Entity\OrderTemp
-     */
-    private $OrderTemp;
-
-    /**
-     * @var \Eccube\Entity\Shipping
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $Shippings;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $MailHistories;
 
     /**
      * @var \Eccube\Entity\Customer
@@ -305,12 +323,28 @@ class Order extends \Eccube\Entity\AbstractEntity
     private $DeviceType;
 
     /**
+     * @var \Eccube\Entity\Master\CustomerOrderStatus
+     */
+    private $CustomerOrderStatus;
+
+    /**
+     * @var \Eccube\Entity\Master\OrderStatus
+     */
+    private $OrderStatus;
+
+    /**
+     * @var \Eccube\Entity\Master\OrderStatusColor
+     */
+    private $OrderStatusColor;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -321,6 +355,29 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set order_temp_id
+     *
+     * @param string $orderTempId
+     * @return Order
+     */
+    public function setOrderTempId($orderTempId)
+    {
+        $this->order_temp_id = $orderTempId;
+
+        return $this;
+    }
+
+    /**
+     * Get order_temp_id
+     *
+     * @return string 
+     */
+    public function getOrderTempId()
+    {
+        return $this->order_temp_id;
     }
 
     /**
@@ -1037,29 +1094,6 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set status
-     *
-     * @param integer $status
-     * @return Order
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * Set create_date
      *
      * @param \DateTime $createDate
@@ -1438,26 +1472,69 @@ class Order extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set OrderTemp
+     * Add Shippings
      *
-     * @param \Eccube\Entity\OrderTemp $orderTemp
+     * @param \Eccube\Entity\Shipping $shippings
      * @return Order
      */
-    public function setOrderTemp(\Eccube\Entity\OrderTemp $orderTemp = null)
+    public function addShipping(\Eccube\Entity\Shipping $shippings)
     {
-        $this->OrderTemp = $orderTemp;
+        $this->Shippings[] = $shippings;
 
         return $this;
     }
 
     /**
-     * Get OrderTemp
+     * Remove Shippings
      *
-     * @return \Eccube\Entity\OrderTemp 
+     * @param \Eccube\Entity\Shipping $shippings
      */
-    public function getOrderTemp()
+    public function removeShipping(\Eccube\Entity\Shipping $shippings)
     {
-        return $this->OrderTemp;
+        $this->Shippings->removeElement($shippings);
+    }
+
+    /**
+     * Get Shippings
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShippings()
+    {
+        return $this->Shippings;
+    }
+
+    /**
+     * Add MailHistories
+     *
+     * @param \Eccube\Entity\MailHistory $mailHistories
+     * @return Order
+     */
+    public function addMailHistory(\Eccube\Entity\MailHistory $mailHistories)
+    {
+        $this->MailHistories[] = $mailHistories;
+
+        return $this;
+    }
+
+    /**
+     * Remove MailHistories
+     *
+     * @param \Eccube\Entity\MailHistory $mailHistories
+     */
+    public function removeMailHistory(\Eccube\Entity\MailHistory $mailHistories)
+    {
+        $this->MailHistories->removeElement($mailHistories);
+    }
+
+    /**
+     * Get MailHistories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMailHistories()
+    {
+        return $this->MailHistories;
     }
 
     /**
@@ -1643,65 +1720,73 @@ class Order extends \Eccube\Entity\AbstractEntity
     {
         return $this->DeviceType;
     }
-    /**
-     * @var string
-     */
-    private $order_temp_id;
-
 
     /**
-     * Set order_temp_id
+     * Set CustomerOrderStatus
      *
-     * @param string $orderTempId
+     * @param \Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus
      * @return Order
      */
-    public function setOrderTempId($orderTempId)
+    public function setCustomerOrderStatus(\Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus = null)
     {
-        $this->order_temp_id = $orderTempId;
+        $this->CustomerOrderStatus = $customerOrderStatus;
 
         return $this;
     }
 
     /**
-     * Get order_temp_id
+     * Get CustomerOrderStatus
      *
-     * @return string 
+     * @return \Eccube\Entity\Master\CustomerOrderStatus 
      */
-    public function getOrderTempId()
+    public function getCustomerOrderStatus()
     {
-        return $this->order_temp_id;
+        return $this->CustomerOrderStatus;
     }
 
     /**
-     * Add Shippings
+     * Set OrderStatus
      *
-     * @param \Eccube\Entity\Shipping $shippings
+     * @param \Eccube\Entity\Master\OrderStatus $orderStatus
      * @return Order
      */
-    public function addShipping(\Eccube\Entity\Shipping $shippings)
+    public function setOrderStatus(\Eccube\Entity\Master\OrderStatus $orderStatus = null)
     {
-        $this->Shippings[] = $shippings;
+        $this->OrderStatus = $orderStatus;
 
         return $this;
     }
 
     /**
-     * Remove Shippings
+     * Get OrderStatus
      *
-     * @param \Eccube\Entity\Shipping $shippings
+     * @return \Eccube\Entity\Master\OrderStatus 
      */
-    public function removeShipping(\Eccube\Entity\Shipping $shippings)
+    public function getOrderStatus()
     {
-        $this->Shippings->removeElement($shippings);
+        return $this->OrderStatus;
     }
 
     /**
-     * Get Shippings
+     * Set OrderStatusColor
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param \Eccube\Entity\Master\OrderStatusColor $orderStatusColor
+     * @return Order
      */
-    public function getShippings()
+    public function setOrderStatusColor(\Eccube\Entity\Master\OrderStatusColor $orderStatusColor = null)
     {
-        return $this->Shippings;
+        $this->OrderStatusColor = $orderStatusColor;
+
+        return $this;
+    }
+
+    /**
+     * Get OrderStatusColor
+     *
+     * @return \Eccube\Entity\Master\OrderStatusColor 
+     */
+    public function getOrderStatusColor()
+    {
+        return $this->OrderStatusColor;
     }
 }

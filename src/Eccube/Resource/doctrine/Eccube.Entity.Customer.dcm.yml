@@ -206,11 +206,15 @@ Eccube\Entity\Customer:
             joinColumn:
                 name: mailmaga_flg
                 referencedColumnName: id
-
     oneToMany:
         CustomerFavoriteProducts:
             targetEntity: Eccube\Entity\CustomerFavoriteProduct
             mappedBy: Customer
+        OtherDelivs:
+            targetEntity: Eccube\Entity\OtherDeliv
+            mappedBy: Customer
+            orderBy:
+                id: ASC
         Orders:
             targetEntity: Eccube\Entity\Order
             mappedBy: Customer

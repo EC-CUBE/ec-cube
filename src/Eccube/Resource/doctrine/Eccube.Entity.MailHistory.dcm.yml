@@ -12,17 +12,17 @@ Eccube\Entity\MailHistory:
             generator:
                 strategy: AUTO
     fields:
-        order_id:
-            type: integer
-            nullable: false
-            unsigned: false
+#        order_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
         send_date:
             type: datetime
             nullable: true
-        template_id:
-            type: integer
-            nullable: true
-            unsigned: false
+#        template_id:
+#            type: integer
+#            nullable: true
+#            unsigned: false
 #        creator_id:
 #            type: integer
 #            nullable: false
@@ -34,6 +34,19 @@ Eccube\Entity\MailHistory:
             type: text
             nullable: true
     manyToOne:
+        Order:
+            targetEntity: Eccube\Entity\Order
+            inversedBy: MailHistories
+            joinColumn:
+                name: order_id
+                referencedColumnName: order_id
+                nullable: false
+        MailTemplate:
+            targetEntity: Eccube\Entity\Master\MailTemplate
+            inversedBy: MailHistories
+            joinColumn:
+                name: template_id
+                referencedColumnName: id
         Creator:
             targetEntity: Eccube\Entity\Member
             inversedBy: MailHistories
