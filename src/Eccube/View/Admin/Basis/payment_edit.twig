@@ -2,12 +2,13 @@
 
 {% block main %}
 
-{% for message in app.session.flashbag.get('deliv.complete')  %}
+{% for message in app.session.flashbag.get('payment.complete')  %}
     {{ message|trans|raw }}<br />
 {% endfor %}
 
 
-<form name="form1" id="form1" method="post" action="{{ url('admin_basis_payment_edit', {paymentId: payment_id}) }}" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="{{ url('admin_basis_payment_edit', {paymentId: payment_id}) }}" {{ form_enctype(form) }} >
+    {{ form_widget(form._token) }}
     <div id="basis" class="contents-main">
         <h2>支払方法登録・編集</h2>
 
@@ -33,8 +34,13 @@
                     <td>{{ form_widget(form.upper_rule) }}</td>
                 </tr>
                 <tr>
-                    <th>{{ form_label(form.payment_image) }}</th>
-                    <td>{{ form_widget(form.payment_image) }}</td>
+                    <th>{{ form_label(form.payment_image_file) }}</th>
+                    <td>
+                        {% if image is not null %}
+                            <img src="{{ image }}" /><a href="{{ url('admin_basis_payment_delete_image', {paymentId: payment_id}) }}">[画像を削除]</a>
+                        {% endif %}
+                        {{ form_widget(form.payment_image_file) }}
+                    </td>
                 </tr>
             </table>
 

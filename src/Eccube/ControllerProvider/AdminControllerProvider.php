@@ -61,6 +61,9 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/payment/delete/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::delete')
             ->assert('paymentId', '\d+')
             ->bind('admin_basis_payment_delete');
+        $controllers->match('/basis/payment/image/delete/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::deleteImage')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_delete_image');
         $controllers->match('/basis/payment/up/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::up')
             ->assert('paymentId', '\d+')
             ->bind('admin_basis_payment_up');

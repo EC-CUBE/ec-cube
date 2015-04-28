@@ -30,7 +30,7 @@ class PaymentController extends AbstractController
         ));
     }
 
-    public function edit(Application $app, $paymentId = 0)
+    public function edit(Application $app, $paymentId = 0, $deleteImage = false)
     {
         $Payment = $app['orm.em']->getRepository('\Eccube\Entity\Payment')
             ->findOrCreate($paymentId);
@@ -38,6 +38,14 @@ class PaymentController extends AbstractController
         $form = $app['form.factory']
             ->createBuilder('payment_register')
             ->getForm();
+        $form->setData($Payment);
+        
+        $image = null;
+        $filename = $Payment->getPaymentImage();
+        if (!$deleteImage && $filename !== null) {
+            $image = $app['config']['image_save_urlpath'] . $filename;
+        }
+
         // 登録ボタン押下
         if ($app['request']->getMethod() === 'POST') {
 
@@ -48,8 +56,24 @@ class PaymentController extends AbstractController
                 $PaymentData = $form->getData();
 
                 // 手数料を設定できない場合には、手数料を0にする
-                if ($PaymentData->getChargeFlg == 2) {
+                if ($PaymentData->getChargeFlg() == 2) {
                     $PaymentData->setCharge(0);
+                }
+
+                // ファイルアップロード
+                $file = $form['payment_image_file']->getData();
+                if (!$deleteImage && $file !== null) {
+                    $extension = $file->guessExtension();
+                    if (!$extension) {
+                        // 拡張子が推測できなかった場合
+                        $extension = 'jpg';
+                    }
+                    $filename = date('mdHi') . '_' . uniqid('') . '.' . $extension;
+                    $file->move($app['config']['image_save_realdir'], $filename);
+                    $PaymentData->setPaymentImage($filename);
+                }
+                if ($deleteImage) {
+                    $PaymentData->setPaymentImage(null);
                 }
 
                 $app['orm.em']->persist($PaymentData);
@@ -67,7 +91,13 @@ class PaymentController extends AbstractController
             'form' => $form->createView(),
             'payment_id' => $paymentId,
             'Payment' => $Payment,
+            'image' => $image,
         ));
+    }
+
+    public function deleteImage(Application $app, $paymentId)
+    {
+        return $this->edit($app, $paymentId, true);
     }
 
     public function delete(Application $app, $paymentId)
