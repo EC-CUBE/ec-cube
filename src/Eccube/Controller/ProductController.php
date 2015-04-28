@@ -64,7 +64,7 @@ class ProductController
 
                 if ($addCartForm->isValid()) {
                     $addCartData = $addCartForm->getData();
-                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity']);
+                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
 
                     return $app->redirect($app['url_generator']->generate('cart'));
                 }
@@ -121,8 +121,11 @@ class ProductController
             if ($form->isValid()) {
                 $addCartData = $form->getData();
                 if ($addCartData['mode'] === 'add_favorite') {
-                    $app['eccube.repository.customer_favorite_product']->addFavorite($Product);
-                    $app['session']->getFlashBag()->set('just_added_favorite', $Product->getId());
+                    if ($app['security']->isGranted('ROLE_USER')) {
+                        $Customer = $app['security']->getToken()->getUser();
+                        $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
+                        $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+                    }
 
                     return $app->redirect($app['url_generator']->generate('product_detail', array('productId' => $Product->getId())));
                 } else {
@@ -133,11 +136,18 @@ class ProductController
             }
         }
 
+        if ($app['security']->isGranted('ROLE_USER')) {
+            $Customer = $app['security']->getToken()->getUser();
+            $is_favorite = $app['eccube.repository.customer_favorite_product']->isFavorite($Customer, $Product);
+        } else {
+            $is_favorite = false;
+        }
+
         return $app['twig']->render('Product/detail.twig', array(
             'title' => $this->title,
             'form' => $form->createView(),
             'Product' => $Product,
-            'is_favorite' => $app['eccube.repository.customer_favorite_product']->isFavorite($Product),
+            'is_favorite' => $is_favorite,
         ));
     }
 

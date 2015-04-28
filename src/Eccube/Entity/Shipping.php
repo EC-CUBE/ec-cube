@@ -140,6 +140,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $del_flg;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ShipmentItems;
+
+    /**
      * @var \Eccube\Entity\Master\Country
      */
     private $Country;
@@ -155,46 +160,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $Order;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * Constructor
      */
-    private $ShipmentItems;
-
     public function __construct()
     {
         $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add ShipmentItem
-     *
-     * @param \Eccube\Entity\ShipmentItem $ShipmentItem
-     * @return Shipping
-     */
-    public function addShipmentItems(\Eccube\Entity\ShipmentItem $ShipmentItem)
-    {
-        $this->ShipmentItems[] = $ShipmentItem;
-
-        return $this;
-    }
-
-    /**
-     * Remove ShipmentItem
-     *
-     * @param \Eccube\Entity\ShipmentItem $ShipmentItem
-     */
-    public function removeShipmentItems(\Eccube\Entity\ShipmentItem $ShipmentItem)
-    {
-        $this->ShipmentItems->removeElement($ShipmentItem);
-    }
-
-    /**
-     * Get ShipmentItem
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getShipmentItems()
-    {
-        return $this->ShipmentItems;
     }
 
     /**
@@ -796,6 +766,39 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Add ShipmentItems
+     *
+     * @param \Eccube\Entity\ShipmentItem $shipmentItems
+     * @return Shipping
+     */
+    public function addShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItems)
+    {
+        $this->ShipmentItems[] = $shipmentItems;
+
+        return $this;
+    }
+
+    /**
+     * Remove ShipmentItems
+     *
+     * @param \Eccube\Entity\ShipmentItem $shipmentItems
+     */
+    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItems)
+    {
+        $this->ShipmentItems->removeElement($shipmentItems);
+    }
+
+    /**
+     * Get ShipmentItems
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShipmentItems()
+    {
+        return $this->ShipmentItems;
+    }
+
+    /**
      * Set Country
      *
      * @param \Eccube\Entity\Master\Country $country
@@ -834,21 +837,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref
+     * @return \Eccube\Entity\Master\Pref 
      */
     public function getPref()
     {
         return $this->Pref;
-    }
-
-    /**
-     * Get Order
-     *
-     * @return \Eccube\Entity\Order
-     */
-    public function getOrder()
-    {
-        return $this->Order;
     }
 
     /**
@@ -862,5 +855,15 @@ class Shipping extends \Eccube\Entity\AbstractEntity
         $this->Order = $order;
 
         return $this;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order 
+     */
+    public function getOrder()
+    {
+        return $this->Order;
     }
 }

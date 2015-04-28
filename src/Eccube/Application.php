@@ -243,6 +243,7 @@ class Application extends \Silex\Application
         ));
         $app['security.access_rules'] = array(
             array('^/mypage/login.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/refusal_complete.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/', 'ROLE_USER'),
         );
         $app['eccube.encoder.customer'] = $app->share(function ($app) {

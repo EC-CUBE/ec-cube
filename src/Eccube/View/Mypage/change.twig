@@ -23,13 +23,9 @@
 {% extends 'site_main.twig' %}
 
 {% block main %}
-    <div id="mypagecolumn">
+<div id="mypagecolumn">
     <h2 class="title">{{ title }}</h2>
-    {% if tpl_navi is defined and tpl_navi %}
-        {% include tpl_navi %}
-    {% else %}
-        {% include 'MyPage/navi.twig' %}
-    {% endif %}
+    {% include 'Mypage/navi.twig' %}
     <div id="mycontents_area">
         <h3 class="title">{{ subtitle }}</h3>
         <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />

@@ -152,4 +152,30 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     {
         return $this->Product;
     }
+
+    /**
+     * Set customer_id
+     *
+     * @param integer $customerId
+     * @return CustomerFavoriteProduct
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customer_id = $customerId;
+
+        return $this;
+    }
+
+    /**
+     * Set product_id
+     *
+     * @param integer $productId
+     * @return CustomerFavoriteProduct
+     */
+    public function setProductId($productId)
+    {
+        $this->product_id = $productId;
+
+        return $this;
+    }
 }
