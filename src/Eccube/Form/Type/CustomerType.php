@@ -6,7 +6,6 @@ use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
-use \Symfony\Component\Validator\ExecutionContextInterface;
 
 class CustomerType extends AbstractType
 {
@@ -85,14 +84,12 @@ class CustomerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('password', 'repeated', array(
-                'type' => 'password',
-            ))
+            ->add('password', 'repeated')
             ->add('reminder', 'reminder', array(
-                'required' => 'true',
+                'required' => true,
             ))
             ->add('reminder_answer', 'text', array(
-                'required' => 'true',
+                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -101,8 +98,18 @@ class CustomerType extends AbstractType
                 )
             ))
             ->add('mailmaga_flg', 'mailmagazinetype', array(
-                'required' => 'false',
-            ));
+                'required' => false,
+            ))
+            ->add('status', 'customer_status', array(
+                'required' => false,
+            ))
+            ->add('note', 'textarea', array(
+                'required' => false,
+            ))
+            ->add('point', 'text', array(
+                'required' => false,
+            ))
+            ->add('save', 'submit', array('label' => 'この内容で登録する'));
     }
 
     /**

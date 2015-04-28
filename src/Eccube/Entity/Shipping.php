@@ -149,6 +149,53 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     private $Pref;
 
+    /**
+     * @var \Eccube\Entity\Order
+     */
+    private $Order;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ShipmentItems;
+
+    public function __construct()
+    {
+        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ShipmentItem
+     *
+     * @param \Eccube\Entity\ShipmentItem $ShipmentItem
+     * @return Shipping
+     */
+    public function addShipmentItems(\Eccube\Entity\ShipmentItem $ShipmentItem)
+    {
+        $this->ShipmentItems[] = $ShipmentItem;
+
+        return $this;
+    }
+
+    /**
+     * Remove ShipmentItem
+     *
+     * @param \Eccube\Entity\ShipmentItem $ShipmentItem
+     */
+    public function removeShipmentItems(\Eccube\Entity\ShipmentItem $ShipmentItem)
+    {
+        $this->ShipmentItems->removeElement($ShipmentItem);
+    }
+
+    /**
+     * Get ShipmentItem
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShipmentItems()
+    {
+        return $this->ShipmentItems;
+    }
 
     /**
      * Set shipping_id
@@ -787,10 +834,33 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {
         return $this->Pref;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
+    }
+
+    /**
+     * Set Order
+     *
+     * @param \Eccube\Entity\Order $order
+     * @return Shipping
+     */
+    public function setOrder(\Eccube\Entity\Order $order = null)
+    {
+        $this->Order = $order;
+
+        return $this;
     }
 }

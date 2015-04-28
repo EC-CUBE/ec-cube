@@ -7,7 +7,6 @@ use Eccube\Application;
 
 class ProductControllerTest extends WebTestCase
 {
-
     /**
      * {@inheritdoc}
      */
@@ -33,5 +32,4 @@ class ProductControllerTest extends WebTestCase
         $client->request('GET', $this->app['url_generator']->generate('product_detail', array('productId' => '1')));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
-
 }

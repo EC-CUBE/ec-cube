@@ -65,11 +65,14 @@ Eccube\Entity\Deliv:
     oneToMany:
         PaymentOptions:
             targetEntity: Eccube\Entity\PaymentOption
+            cascade: ["persist", "remove"]
             mappedBy: Deliv
         DelivFees:
             targetEntity: Eccube\Entity\DelivFee
+            cascade: ["persist", "remove"]
             mappedBy: Deliv
         DelivTimes:
             targetEntity: Eccube\Entity\DelivTime
+            cascade: ["persist", "remove"]
             mappedBy: Deliv
     lifecycleCallbacks: {  }

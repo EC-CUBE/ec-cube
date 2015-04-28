@@ -298,4 +298,7 @@ Eccube\Entity\Order:
         OrderDetails:
             targetEntity: Eccube\Entity\OrderDetail
             mappedBy: Order
+        Shippings:
+            targetEntity: Eccube\Entity\Shipping
+            mappedBy: Order
     lifecycleCallbacks: {  }
