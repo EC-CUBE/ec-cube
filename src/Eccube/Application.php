@@ -56,7 +56,7 @@ class Application extends \Silex\Application
             } else {
                 $config = array();
             }
-            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
+            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
             if (file_exists($constant_file)) {
                 $config_constant = Yaml::parse($constant_file);
             } else {

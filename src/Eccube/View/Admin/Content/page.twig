@@ -31,6 +31,77 @@
         {{ message|trans|raw }}<br/>
     {% endfor %}
 
+<form name="tax_rule_form" id="tax_rule_form" method="post" action="
+{%- if page_id is not null %}{{ url('admin_content_page_edit', {'page_id':page_id}) }}{% else %}{{ url('admin_content_page')}}{% endif -%}">
+    {{ form_widget(form._token) }}
+
+    <table>
+        <tr>
+            <th>{{ form_label(form.name) }}</th>
+            <td>
+                {{ form_widget(form.name) }}
+                <div class="message">
+                    <span class="attention">{{ form_errors(form.name) }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.filename) }}</th>
+            <td>
+                {{ form_widget(form.filename) }}
+                <div class="attention">
+                    <span class="attention">{{ form_errors(form.filename) }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                    {{ form_widget(form.header_chk) }}共通のヘッダーを使用する
+                    {{ form_widget(form.footer_chk) }}共通のフッターを使用する
+                <div>
+                    {{ form_widget(form.tpl_data) }}
+                    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.author) }}</th>
+            <td>
+                {{ form_widget(form.author) }}
+                <div class="attention">{{ form_errors(form.author) }}</div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.description) }}</th>
+            <td>
+                {{ form_widget(form.description) }}
+                <div class="attention">{{ form_errors(form.description) }}</div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.keyword) }}</th>
+            <td>
+                {{ form_widget(form.keyword) }}
+                <div class="attention">{{ form_errors(form.keyword) }}</div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.meta_robots) }}</th>
+            <td>
+                {{ form_widget(form.meta_robots) }}
+                <div class="attention">{{ form_errors(form.meta_robots) }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="btn-area">
+        <ul>
+            <li>{{ form_widget(form.save)}}</li>
+        </ul>
+    </div>
+
+
     <h2>編集可能ページ一覧</h2>
     <div class="btn addnew">
         <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span>ページを新規入力</span></a>

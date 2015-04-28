@@ -79,7 +79,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\Order');
         });
 
-        // 
+        //
         $app['paginator'] = $app->protect(function() {
             return new \Knp\Component\Pager\Paginator();
         });

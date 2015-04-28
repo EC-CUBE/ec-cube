@@ -3,6 +3,8 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Silex\Application;
+use Symfony\Component\Finder\Finder;
 
 /**
  * PageLayoutRepository
@@ -31,29 +33,21 @@ class PageLayoutRepository extends EntityRepository
      *
      * この関数は, dtb_pagelayout の情報を検索する.
      * $device_type_id は必須. デフォルト値は DEVICE_TYPE_PC.
-     * $page_id が null の場合は, $page_id が 0 以外のものを検索する.
      *
      * @access public
      * @param  integer $device_type_id 端末種別ID
-     * @param  integer $page_id ページID; null の場合は, 0 以外を検索する.
      * @param  string $where 追加の検索条件
      * @param  string[] $parameters 追加の検索パラメーター
      * @return array   ページ属性の配列
      */
-    public function getPageProperties($device_type_id, $page_id = null, $where = '', $parameters = array())
+    public function getPageList($device_type_id, $where = '', $parameters = array())
     {
 
         $qb = $this->createQueryBuilder('l')
             ->orderBy('l.page_id', 'DESC')
             ->where('l.device_type_id = :device_type_id')
-            ->setParameter('device_type_id', $device_type_id);
-
-        if ($page_id == null) {
-            $qb->andWhere('l.page_id <> 0');
-        } else {
-            $qb->andWhere('l.page_id = :page_id')
-                ->setParameter('page_id', $page_id);
-        }
+            ->setParameter('device_type_id', $device_type_id)
+            ->andWhere('l.page_id <> 0');
         if ($where != '') {
             $qb->andWhere($where);
             foreach ($parameters as $key => $val) {
@@ -67,4 +61,97 @@ class PageLayoutRepository extends EntityRepository
 
         return $PageLayouts;
     }
+
+    public function getPageProperties($page_id, $device_type_id, $where = '', $parameters = array())
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->orderBy('l.page_id', 'DESC')
+            ->where('l.page_id = :page_id')
+            ->setParameter('page_id', $page_id)
+            ->andWhere('l.device_type_id = :device_type_id')
+            ->setParameter('device_type_id', $device_type_id);
+
+        if ($where != '') {
+            $qb->andWhere($where);
+            foreach ($parameters as $key => $val) {
+                $qb->setParameter($key, $val);
+            }
+        }
+
+        $PageLayout = $qb
+            ->getQuery()
+            ->getSingleResult();
+
+        return $PageLayout;
+    }
+
+    /**
+     * テンプレートのパスを取得する.
+     *
+     * @access public
+     * @param  integer $device_type_id 端末種別ID
+     * @param  boolean $isUser         USER_REALDIR 以下のパスを返す場合 true
+     * @return string  テンプレートのパス
+     */
+    public function getTemplatePath($device_type_id, $isUser = false)
+    {
+        $app = $this->app;
+        $templateName = '';
+        switch ($device_type_id) {
+            case $app['config']['device_type_mobile']:
+                $dir = $app['config']['mobile_template_realdir'];
+                $templateName =  $app['config']['mobile_template_name'];
+                break;
+
+            case $app['config']['device_type_smartphone']:
+                $dir = $app['config']['smartphone_template_realdir'];
+                $templateName =  $app['config']['smartphone_template_name'];
+                break;
+            case $app['config']['device_type_pc'];
+                $dir = $app['config']['template_realdir'];
+                $templateName =  $app['config']['template_name'];
+                break;
+        }
+        $userPath = $app['config']['user_realdir'];
+        if ($isUser) {
+            $dir = $userPath . $app['config']['user_package_dir'] . $templateName . '/';
+        }
+
+        return $dir;
+    }
+
+    /**
+     * ページデータを取得する.
+     * @param  integer              $filename       ファイル名
+     * @param  integer              $device_type_id 端末種別ID
+     * @return mixed
+     */
+    public function getTemplateFile($filename, $device_type_id)
+    {
+        $templatePath = $this->getTemplatePath($device_type_id);
+
+        $finder = Finder::create();
+        $finder->followLinks();
+        // TODO: ファイル名にディレクトリのパスが一部含まれるので/ディレクトと分ける処理。イケてない・・・
+        $arrDir = explode('/', $filename);
+        for ( $index =0; $index < count($arrDir)-1; $index++ ) {
+            $templatePath .= $arrDir[$index] . '/';
+        }
+        // TODO: .tpl, .twig が混在するためひとまず*。元の$filenameから拡張子込で持ちたい。
+        $finder->in($templatePath)->name($arrDir[$index].'.*');
+
+        if ($finder->count() === 1) {
+            $data = null;
+            foreach ($finder as $file) {
+                $data = array(
+                    'file_name' => $file->getFileName(),
+                    'tpl_data' => file_get_contents($file->getPathName())
+                );
+            }
+        }
+
+        return $data;
+    }
+
+
 }
