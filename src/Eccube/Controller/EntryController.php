@@ -76,14 +76,18 @@ class EntryController extends AbstractController
                             ), true);
 
                         if ($app['config']['customer_confirm_mail']) {
-                            $message = $app['mail.message']
+                            // TODO: 後でEventとして実装する、送信元アドレス、BCCを調整する
+                            // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
+                            $message = $app['mailer']->createMessage()
                                 ->setSubject('[EC-CUBE3] 会員登録のご確認')
                                 ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
                                     'Customer' => $Customer,
                                     'activateUrl' => $activateUrl,
-                                )));
-
-                            $this->sendMail($app, $Customer, $message);
+                                )))
+                                ->setFrom(array('sample@example.com'))
+                                ->setBcc($app['config']['mail_cc'])
+                                ->setTo(array($Customer->getEmail()));
+                            $app['mailer']->send($message);;
 
                             return $app->redirect($app['url_generator']->generate('entry_complete'));
                         } else {
@@ -167,23 +171,6 @@ class EntryController extends AbstractController
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }
-    }
-
-    /**
-     * 顧客に確認メールを送信する
-     *
-     * @param Application $app
-     * @param $customer
-     * @param $message
-     */
-    private function sendMail(Application $app, $customer, $message)
-    {
-        // TODO: 後でEventとして実装する、送信元アドレス、BCCを調整する
-        // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
-        $message->setFrom(array('sample@example.com'))
-            ->setBcc($app['config']['mail_cc'])
-            ->setTo(array($customer->getEmail()));
-        $app['mailer']->send($message);
     }
 
 }

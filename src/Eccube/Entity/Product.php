@@ -59,10 +59,10 @@ class Product extends \Eccube\Entity\AbstractEntity
                 $this->pointRates[] = $ProductClass->getPointRate();
 
                 if ($i === 0) {
-                    if ($ProductClass->getClassCategory1()) {
+                    if ($ProductClass->getClassCategory1() && $ProductClass->getClassCategory1()->getId()) {
                         $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getName();
                     }
-                    if ($ProductClass->getClassCategory2()) {
+                    if ($ProductClass->getClassCategory2() && $ProductClass->getClassCategory2()->getId()) {
                         $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getName();
                     }
                 }
@@ -76,6 +76,16 @@ class Product extends \Eccube\Entity\AbstractEntity
             }
             $this->_calc = true;
         }
+    }
+
+    /**
+     * Is Enable
+     *
+     * @return bool 
+     */
+    public function isEnable()
+    {
+        return $this->getStatus() === 1 ? true : false;
     }
 
     /**
@@ -331,7 +341,7 @@ class Product extends \Eccube\Entity\AbstractEntity
                 'point'             => number_format($ProductClass->getPoint()),
                 'product_class_id'  => (string) $ProductClass->getId(),
                 'product_code'      => $ProductClass->getCode(),
-                'product_type'      => (string) $ProductClass->getProductTypeId(),
+                'product_type'      => (string) $ProductClass->getProductType()->getId(),
             );
         }
 

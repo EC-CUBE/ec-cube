@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta charset="{{ app.config.char_code }}">
+<link rel="stylesheet" href="{{ app.config.tpl }}css/import.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ app.config.root }}js/jquery.colorbox/colorbox.css" type="text/css" media="all" />
+<!--[if lt IE 9]>
+<script src="{{ app.config.root }}js/jquery-1.11.1.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script src="{{ app.config.root }}js/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="{{ app.config.root }}js/eccube.js"></script>
+<!-- #2342 次期メジャーバージョン(2.14)にてeccube.legacy.jsは削除予定.モジュール、プラグインの互換性を考慮して2.13では残します. -->
+<script type="text/javascript" src="{{ app.config.root }}js/eccube.legacy.js"></script>
+<script type="text/javascript" src="{{ app.config.root }}js/jquery.colorbox/jquery.colorbox-min.js"></script>
+<title>{{ BaseInfo.shop_name }}{% if subtitle is defined %}/{{ subtitle }}{% endif %}</title>
+<link rel="shortcut icon" href="{{ app.config.tpl }}img/common/favicon.ico" />
+<link rel="icon" type="image/vnd.microsoft.icon" href="{{ app.config.tpl }}img/common/favicon.ico" />
+<script type="text/javascript">//<![CDATA[
+    {{ block('javascript') }}
+    $(function(){
+        {{ block('onload') }}
+    });
+//]]></script>
+</head>
+
+<body>
+    <noscript>
+        <p><em>JavaScriptを有効にしてご利用下さい.</em></p>
+    </noscript>
+    <a name="top" id="top"></a>
+    <div id="windowcolumn">
+        {% block main %}{% endblock %}
+    </div>
+</body>
+</html>

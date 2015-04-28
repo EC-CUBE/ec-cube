@@ -1,0 +1,14 @@
+{% extends 'popup.twig' %}
+
+{% block main %}
+<div id="window_area">
+    <table class="form">
+        <tr>
+            <td>{{ MailHistory.subject }}</td>
+        </tr>
+        <tr>
+            <td>{{ MailHistory.mail_body|nl2br }}</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

@@ -179,14 +179,14 @@
                     #}
                 </tr>
                 {% for Order in Orders %}
-                    <tr style="background:{{ orderStatusColors[Order.status] }}">
+                    <tr style="background:{{ Order.OrderStatusColor }}">
                         <td class="center">{{ Order.create_date|date("Y/m/d") }}</td>
                         <td class="center">{{ Order.id}}</td>
                         <td class="center">{{ Order.name01}} {{ Order.name02 }}</td>
                         <td class="center">{{ Order.payment_method }}</td>
                         <td class="right">{{ Order.total }}</td>
                         <td class="center">{{ Order.commit_date|date("Y/m/d")|default('未発送') }}</td>
-                        <td class="center">{{ Order.status }}</td>
+                        <td class="center">{{ Order.OrderStatus }}</td>
                         <td class="center">
                            {% set edit_action = url('admin_order_edit', {orderId: Order.id}) %}
                            {% set delete_action = url('admin_order_delete', {orderId: Order.id}) %}

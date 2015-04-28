@@ -123,4 +123,17 @@ class ProductRepository extends EntityRepository
 
         return $qb;
     }
+
+    public function getFavoriteProductQueryBuilderByCustomer($Customer)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.CustomerFavoriteProducts', 'cfp')
+            ->where('cfp.Customer = :Customer AND p.status = 1')
+            ->setParameter('Customer', $Customer);
+
+        // Order By
+        $qb->addOrderBy('cfp.create_date', 'DESC');
+
+        return $qb;
+    }
 }

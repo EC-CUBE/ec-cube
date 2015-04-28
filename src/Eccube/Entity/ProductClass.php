@@ -14,6 +14,16 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $point = null;
 
     /**
+     * Is Enable
+     *
+     * @return bool 
+     */
+    public function isEnable()
+    {
+        return $this->getProduct()->isEnable();
+    }
+
+    /**
      * Set price01 IncTax
      *
      * @param string $price01
@@ -103,11 +113,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
-     * @var integer
-     */
-    private $product_type_id;
-
-    /**
      * @var string
      */
     private $code;
@@ -178,6 +183,11 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $Product;
 
     /**
+     * @var \Eccube\Entity\Master\ProductType
+     */
+    private $ProductType;
+
+    /**
      * @var \Eccube\Entity\ClassCategory
      */
     private $ClassCategory1;
@@ -201,29 +211,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set product_type_id
-     *
-     * @param integer $productTypeId
-     * @return ProductClass
-     */
-    public function setProductTypeId($productTypeId)
-    {
-        $this->product_type_id = $productTypeId;
-
-        return $this;
-    }
-
-    /**
-     * Get product_type_id
-     *
-     * @return integer 
-     */
-    public function getProductTypeId()
-    {
-        return $this->product_type_id;
     }
 
     /**
@@ -546,6 +533,29 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getProduct()
     {
         return $this->Product;
+    }
+
+    /**
+     * Set ProductType
+     *
+     * @param \Eccube\Entity\Master\ProductType $productType
+     * @return ProductClass
+     */
+    public function setProductType(\Eccube\Entity\Master\ProductType $productType)
+    {
+        $this->ProductType = $productType;
+
+        return $this;
+    }
+
+    /**
+     * Get ProductType
+     *
+     * @return \Eccube\Entity\Master\ProductType 
+     */
+    public function getProductType()
+    {
+        return $this->ProductType;
     }
 
     /**

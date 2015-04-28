@@ -3,6 +3,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * OrderRepository
@@ -12,8 +13,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderRepository extends EntityRepository
 {
-
-
+    /**
+     * 
+     * @param array $searchData
+     * @return QueryBuilder
+     */
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('o')
@@ -39,8 +43,7 @@ class OrderRepository extends EntityRepository
         // status
         if (!empty($searchData['status']) && $searchData['status']) {
             $qb
-                ->leftJoin('o.Status', 's')
-                ->andWhere('s.id <= :status') 
+                ->andWhere('o.OrderStatus = :status') 
                 ->setParameter('status', $searchData['status']);
         }
 
@@ -192,11 +195,25 @@ class OrderRepository extends EntityRepository
                 ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
         }
 
-
         // Order By
         $qb->addOrderBy('o.update_date', 'DESC');
 
         return $qb;
     }
 
+    /**
+     * @param \Eccube\Entity\Customer $Customer
+     * @return QueryBuilder
+     */
+    public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->where('o.Customer = :Customer')
+            ->setParameter('Customer', $Customer);
+
+        // Order By
+        $qb->addOrderBy('o.id', 'DESC');
+
+        return $qb;
+    }
 }

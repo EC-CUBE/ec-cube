@@ -111,7 +111,7 @@
         <!--▲検索条件-->
     {% endif %}
 
-    {% if pagination|length > 0 %}
+    {% if pagination.totalItemCount > 0 %}
         <!--▼件数-->
         <div>
             <span class="attention">{{ pagination.totalItemCount }}件</span>の商品がございます。

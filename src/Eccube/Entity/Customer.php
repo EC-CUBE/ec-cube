@@ -224,11 +224,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $Mailmaga_flg;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $CustomerFavoriteProducts;
-
-    /**
      * @var \Eccube\Entity\Master\Sex
      */
     private $Sex;
@@ -251,6 +246,16 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
+    private $CustomerFavoriteProducts;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $OtherDelivs;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
     private $Orders;
 
     /**
@@ -259,6 +264,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function __construct()
     {
         $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->OtherDelivs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -1133,8 +1139,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
         return $this->CustomerFavoriteProducts;
     }
 
-
-
     /**
      * Add Orders
      *
@@ -1151,7 +1155,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Remove Orders
      *
-     * @param \Eccube\Entity\Orders $customerFavoriteProducts
+     * @param \Eccube\Entity\Orders $order
      */
     public function removeOrder(\Eccube\Entity\Order $order)
     {
@@ -1168,6 +1172,38 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
         return $this->Orders;
     }
 
+    /**
+     * Add OtherDelivs
+     *
+     * @param \Eccube\Entity\Orders $order
+     * @return Customer
+     */
+    public function addOtherDeliv(\Eccube\Entity\OtherDeliv $otherDeliv)
+    {
+        $this->OtherDelivs[] = $otherDeliv;
+
+        return $this;
+    }
+
+    /**
+     * Remove OtherDelivs
+     *
+     * @param \Eccube\Entity\OtherDelivs $otherDeliv
+     */
+    public function removeOtherDeliv(\Eccube\Entity\OtherDeliv $otherDeliv)
+    {
+        $this->OtherDelivs->removeElement($otherDeliv);
+    }
+
+    /**
+     * Get OtherDelivs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOtherDelivs()
+    {
+        return $this->OtherDelivs;
+    }
 
     /**
      * Set Sex
@@ -1259,5 +1295,15 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getPref()
     {
         return $this->Pref;
+    }
+
+    /**
+     * Get zipcode
+     *
+     * @return string 
+     */
+    public function getZipcode()
+    {
+        return $this->zipcode;
     }
 }

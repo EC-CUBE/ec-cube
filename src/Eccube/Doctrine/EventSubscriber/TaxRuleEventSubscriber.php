@@ -35,6 +35,9 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
+        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
+        }
     }
 
     public function postPersist(LifecycleEventArgs $args)
@@ -45,6 +48,9 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
+        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
+        }
     }
 
     public function postUpdate(LifecycleEventArgs $args)
@@ -54,6 +60,9 @@ class TaxRuleEventSubscriber implements EventSubscriber
         if ($entity instanceof \Eccube\Entity\ProductClass) {
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
+        }
+        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
     }
 }
