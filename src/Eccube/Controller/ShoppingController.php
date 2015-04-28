@@ -24,16 +24,16 @@ class ShoppingController extends AbstractController
 
     public function test(Application $app)
     {
-        /** @var $cartService \Eccube\Service\CartService */
-        $cartService = $app['eccube.service.cart'];
         // カートに商品追加(テスト用)
-        $cartService->clear();
-        $cartService->addProduct(9);
-        $cartService->addProduct(9);
-        $cartService->addProduct(10);
-        $cartService->addProduct(10);
-        $cartService->addProduct(2);
-        $cartService->lock();
+        $app['eccube.service.cart']->clear();
+        $app['eccube.service.cart']->addProduct(9);
+        $app['eccube.service.cart']->addProduct(9);
+        $app['eccube.service.cart']->addProduct(10);
+        $app['eccube.service.cart']->addProduct(10);
+        $app['eccube.service.cart']->addProduct(2);
+        $app['eccube.service.cart']->lock();
+        $app['eccube.service.cart']->save();
+        $this->setNonCustomer($app, false);
         return $app->redirect($app['url_generator']->generate('shopping'));
     }
 
@@ -46,19 +46,23 @@ class ShoppingController extends AbstractController
         $this->form = $app['form.factory']
             ->createBuilder('shopping')
             ->getForm();
+        // todo
+        $app['orm.em']->getFilters()->disable('soft_delete');
     }
 
     public function index(Application $app)
     {
-        //$this->test($app);
+        // todo
+        $app['orm.em']->getFilters()->disable('soft_delete');
 
-        if (!$app['security']->isGranted('ROLE_USER')) {
-            // 非会員購入
+        // ログイン済 or 非会員購入ではない場合
+        if (!($this->isLoggedIn($app) || $this->isNonCustomer($app))) {
+            return $app->redirect($app['url_generator']->generate('shopping_login'));
         }
-        if (!$app['eccube.service.cart']->isLocked()) {
-            // カートチェック
+        // カートの変更チェック
+        if ($this->cartChanged($app)) {
+            return $app->redirect($app['url_generator']->generate('cart'));
         }
-
         $form = $app['form.factory']
             ->createBuilder('shopping')
             ->getForm();
@@ -73,8 +77,9 @@ class ShoppingController extends AbstractController
         if (is_null($order)) {
             $order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                 $app['eccube.service.cart']->getCart()->getCartItems(),
-                $app['user']);
+                $app['user'] == 'anon.' ? null : $app['user']);
             $app['eccube.service.cart']->setPreOrderId($order->getId());
+            $app['eccube.service.cart']->save();
         }
 
         // 受注関連情報を最新状態に更新
@@ -102,7 +107,7 @@ class ShoppingController extends AbstractController
 
         $title = "ご注文内容の確認";
         return $app['twig']->render(
-                'shopping/index.twig',
+                'Shopping/index.twig',
                 array(
                     'form' => $form->createView(),
                     'title' => $title,
@@ -123,7 +128,8 @@ class ShoppingController extends AbstractController
                 $order = $this->orderRepository->find($this->cartService->getPreOrderId());
                 $order->setMessage($data['message']);
                 $this->orderService->commit($order);
-                $this->cartService->clear();
+                $this->cartService->clear()->save();
+                $this->setNonCustomer($app, false);
                 return $app->redirect($app['url_generator']->generate('shopping_complete'));
             }
         }
@@ -138,7 +144,7 @@ class ShoppingController extends AbstractController
         $title = "ご購入完了";
         $baseInfo = $app['eccube.repository.base_info']->find(1);
         return $app['twig']->render(
-            'shopping/complete.twig', array(
+            'Shopping/complete.twig', array(
                 'title' => $title,
                 'baseInfo' => $baseInfo
             )
@@ -234,7 +240,7 @@ class ShoppingController extends AbstractController
             }
         }
         return $app['twig']->render(
-            'shopping/point.twig', array(
+            'Shopping/point.twig', array(
                 'title' => 'ポイント設定',
                 'order' => $order,
                 'form' => $form->createView()
@@ -320,7 +326,7 @@ class ShoppingController extends AbstractController
         }
 
         return $app['twig']->render(
-            'shopping/shipping.twig', array(
+            'Shopping/shipping.twig', array(
                 'form'  => $form->createView(),
                 'title' => 'お届け先設定',
             )
@@ -420,13 +426,128 @@ class ShoppingController extends AbstractController
         }
 
         return $app['twig']->render(
-            'shopping/shipping_multiple.twig', array(
+            'Shopping/shipping_multiple.twig', array(
                 'form'  => $form->createView(),
                 'Products' => $Products,
                 'ProductClassess' => $ProductClasses,
                 'title' => 'お届け先設定(複数配送)',
             )
         );
+    }
+
+    public function login(Application $app)
+    {
+        if (!$app['eccube.service.cart']->isLocked()) {
+            //return $app->redirect($app['url_generator']->generate('cart'));
+        }
+
+        if ($app['security']->isGranted('ROLE_USER')) {
+            return $app->redirect($app['url_generator']->generate('shopping'));
+        }
+
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $form = $app['form.factory']
+            ->createNamedBuilder('', 'customer_login')
+            ->getForm();
+
+        return $app['twig']->render('Shopping/login.twig', array(
+            'title' => 'ログイン',
+            'error' => $app['security.last_error']($app['request']),
+            'form'  => $form->createView(),
+        ));
+    }
+
+    public function nonmember(Application $app)
+    {
+        if ($this->cartChanged($app)) {
+            $app->redirect($app['url_generator']->generate('shopping_error'));
+        }
+
+        $builder = $app['form.factory']->createBuilder('nonmember');
+        $form = $builder->getForm();
+
+        if ('POST' === $app['request']->getMethod()) {
+            $form->handleRequest($app['request']);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $Customer = new \Eccube\Entity\Customer();
+                $Customer->setName01($data['name01'])
+                    ->setName02($data['name02'])
+                    ->setKana01($data['kana01'])
+                    ->setKana02($data['kana02'])
+                    ->setCompanyName($data['company_name'])
+                    ->setEmail($data['email'])
+                    ->setTel01($data['tel01'])
+                    ->setTel02($data['tel02'])
+                    ->setTel03($data['tel03'])
+                    ->setFax01($data['fax01'])
+                    ->setFax02($data['fax02'])
+                    ->setFax03($data['fax03'])
+                    ->setZip01($data['zip01'])
+                    ->setZip02($data['zip02'])
+                    ->setPref($data['pref'])
+                    ->setAddr01($data['addr01'])
+                    ->setAddr02($data['addr02'])
+                    ->setSex($data['sex'])
+                    ->setBirth($data['birth'])
+                    ->setJob($data['job']);
+                // 受注関連情報を取得
+                $preOrderId = $app['eccube.service.cart']->getPreOrderId();
+                $order = null;
+                if (!is_null($preOrderId)) {
+                    $order = $app['eccube.repository.order']->find($preOrderId);
+                }
+                // 初回アクセスの場合は受注データを作成
+                if (is_null($order)) {
+                    $order = $app['eccube.service.order']->registerPreOrderFromCartItems(
+                        $app['eccube.service.cart']->getCart()->getCartItems(),
+                        $Customer);
+                    $app['eccube.service.cart']->setPreOrderId($order->getId());
+                    $app['eccube.service.cart']->save();
+                }
+                $this->setNonCustomer($app);
+                Debug::dump($preOrderId);
+                Debug::dump($order->getId());
+                Debug::dump($app['eccube.service.cart']->getPreOrderId());
+                exit();
+                return $app->redirect($app['url_generator']->generate('shopping'));
+            }
+        }
+        return $app['view']->render('Shopping/nonmember.twig', array(
+            'form'  => $form->createView(),
+            'title' => '非会員購入',
+        ));
+    }
+
+
+    public function sorry(Application $app)
+    {
+        $form = $app['form.factory']->createBuilder()->getForm();
+        return $app['view']->render('Shopping/sorry.twig', array(
+            'form'  => $form->createView(),
+            'title' => 'エラー'
+        ));
+    }
+
+    protected function isLoggedIn($app)
+    {
+        return $app['security']->isGranted('ROLE_USER');
+    }
+
+    protected function isNonCustomer($app)
+    {
+        $nonCustomer = $app['session']->get('shopping.noncustomer');
+        return ($nonCustomer === true) ? true : false;
+    }
+
+    protected function setNonCustomer($app, $bool = true)
+    {
+        $app['session']->set('shopping.noncustomer', $bool);
+    }
+
+    protected function cartChanged($app)
+    {
+        return ($app['eccube.service.cart']->isLocked() === true) ? false : true;
     }
 
     // todo リファクタ

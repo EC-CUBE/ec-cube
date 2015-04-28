@@ -62,7 +62,10 @@ class OrderService
             return $Order;
         }
 
-        $Order->setCustomer($Customer)
+        if ($Customer->getId()) {
+            $Order->setCustomer($Customer);
+        }
+        $Order
             ->setName01($Customer->getName01())
             ->setName02($Customer->getName02())
             ->setKana01($Customer->getKana02())
@@ -92,7 +95,6 @@ class OrderService
         if (is_null($Customer)) {
             return $shipping;
         }
-
         $shipping
             ->setName01($Customer->getName01())
             ->setName02($Customer->getName02())
@@ -126,7 +128,7 @@ class OrderService
         // 配送先
         $Shipping = new \Eccube\Entity\Shipping();
 
-        $this->copyToShippingFromCustomer($Shipping, $Order->getCustomer())
+        $this->copyToShippingFromCustomer($Shipping, $Customer)
             ->setShippingId(1)
             ->setOrderId($Order->getId())
             ->setOrder($Order)
@@ -136,7 +138,6 @@ class OrderService
         $this->app['orm.em']->persist($Shipping);
 
         $Order->addShipping($Shipping);
-        $OrderDetails = $Order->getOrderDetails();
 
         $point = 0;
         $subTotal = 0;
@@ -153,6 +154,8 @@ class OrderService
             // 受注詳細
             $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
             $OrderDetail->setOrder($Order);
+
+            $Order->addOrderDetail($OrderDetail);
             $this->app['orm.em']->persist($OrderDetail);
 
             // 小計
