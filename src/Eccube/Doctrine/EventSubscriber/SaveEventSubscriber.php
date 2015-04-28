@@ -5,9 +5,25 @@ namespace Eccube\Doctrine\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SaveEventSubscriber implements EventSubscriber
 {
+    /**
+     * @var SecurityContext
+     */
+    private $security;
+
+    /**
+     * setSecurity
+     * 
+     * @param SecurityContext $config
+     */
+    public function setSecurity(SecurityContextInterface $security)
+    {
+        $this->security = $security;
+    }
+
     public function getSubscribedEvents()
     {
         return array(
@@ -25,6 +41,11 @@ class SaveEventSubscriber implements EventSubscriber
         }
         if (method_exists($entity, 'setUpdateDate')) {
             $entity->setUpdateDate(new \DateTime());
+        }
+
+        if ($this->security->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
+            $Member = $this->security->getToken()->getUser();
+            $entity->setCreator($Member);
         }
     }
 

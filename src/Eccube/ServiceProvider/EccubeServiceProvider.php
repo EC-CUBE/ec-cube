@@ -46,10 +46,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\Customer');
         });
         $app['eccube.repository.mail_history'] = $app->share(function() use ($app) {
-            $mailHistoryRepository = $app['orm.em']->getRepository('Eccube\Entity\MailHistory');
-            $mailHistoryRepository->setSecurity($app['security']);
-
-            return $mailHistoryRepository;
+            return $app['orm.em']->getRepository('Eccube\Entity\MailHistory');
         });
         $app['eccube.repository.member'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Member');
@@ -105,7 +102,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\PointEventSubscriber($point_rule, $taxRuleService));
 
                 // save
-                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber());
+                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app['security']));
 
                 // 
                 $config = $em->getConfiguration();
