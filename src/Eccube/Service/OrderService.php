@@ -68,7 +68,7 @@ class OrderService
         $Order
             ->setName01($Customer->getName01())
             ->setName02($Customer->getName02())
-            ->setKana01($Customer->getKana02())
+            ->setKana01($Customer->getKana01())
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
             ->setEmail($Customer->getEmail())
@@ -90,15 +90,15 @@ class OrderService
         return $Order;
     }
 
-    public function copyToShippingFromCustomer(\Eccube\Entity\Shipping $shipping, \Eccube\Entity\Customer $Customer = null)
+    public function copyToShippingFromCustomer(\Eccube\Entity\Shipping $Shipping, \Eccube\Entity\Customer $Customer = null)
     {
         if (is_null($Customer)) {
-            return $shipping;
+            return $Shipping;
         }
-        $shipping
+        $Shipping
             ->setName01($Customer->getName01())
             ->setName02($Customer->getName02())
-            ->setKana01($Customer->getKana02())
+            ->setKana01($Customer->getKana01())
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
             ->setTel01($Customer->getTel01())
@@ -113,7 +113,7 @@ class OrderService
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
 
-        return $shipping;
+        return $Shipping;
     }
 
     public function registerPreOrderFromCartItems($cartItems, \Eccube\Entity\Customer $Customer = null)

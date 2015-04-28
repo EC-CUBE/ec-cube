@@ -2,11 +2,8 @@
 
 namespace Eccube\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use \Doctrine\Common\Util\Debug;
-use Eccube\Entity\ShipmentItemVirtual;
-use Eccube\Form\Type\HogeType;
 use Eccube\Form\Type\ShippingMultiType;
 
 class ShoppingController extends AbstractController
@@ -69,49 +66,49 @@ class ShoppingController extends AbstractController
 
         // 受注関連情報を取得
         $preOrderId = $app['eccube.service.cart']->getPreOrderId();
-        $order = null;
+        $Order = null;
         if (!is_null($preOrderId)) {
-            $order = $app['eccube.repository.order']->find($preOrderId);
+            $Order = $app['eccube.repository.order']->find($preOrderId);
         }
         // 初回アクセスの場合は受注データを作成
-        if (is_null($order)) {
-            $order = $app['eccube.service.order']->registerPreOrderFromCartItems(
+        if (is_null($Order)) {
+            $Order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                 $app['eccube.service.cart']->getCart()->getCartItems(),
-                $app['user'] == 'anon.' ? null : $app['user']);
-            $app['eccube.service.cart']->setPreOrderId($order->getId());
+                $app['security']->isGranted('ROLE_USER') ? $app['user'] : null);
+            $app['eccube.service.cart']->setPreOrderId($Order->getId());
             $app['eccube.service.cart']->save();
         }
 
         // 受注関連情報を最新状態に更新
-        $app['orm.em']->refresh($order);
+        $app['orm.em']->refresh($Order);
 
         // 配送業者選択
-        $deliveries = $this->findDeliveriesFromOrderDetails($app, $order->getOrderDetails());
+        $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
         $form->add('delivery', 'entity', array(
-                'class' => 'Eccube\Entity\Deliv',
-                'property' => 'name',
-                'choices' => $deliveries,
-                'data' => $order->getDeliv()));
+            'class' => 'Eccube\Entity\Deliv',
+            'property' => 'name',
+            'choices' => $deliveries,
+            'data' => $Order->getDeliv()));
 
         // 支払い方法選択
-        $paymentOptions = $order->getDeliv()->getPaymentOptions();
+        $paymentOptions = $Order->getDeliv()->getPaymentOptions();
         $payments = array();
         foreach ($paymentOptions as $paymentOption) {
             $payments[] = $paymentOption->getPayment();
         }
         $form->add('payment', 'entity', array(
-                'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
-                'choices' => $payments,
-                'data' => $order->getPayment()));
+            'class' => 'Eccube\Entity\Payment',
+            'property' => 'method',
+            'choices' => $payments,
+            'data' => $Order->getPayment()));
 
         $title = "ご注文内容の確認";
-        return $app['twig']->render(
-                'Shopping/index.twig',
-                array(
-                    'form' => $form->createView(),
-                    'title' => $title,
-                    'order' => $order)
+        return $app['view']->render(
+            'Shopping/index.twig',
+            array(
+                'form' => $form->createView(),
+                'title' => $title,
+                'order' => $Order)
         );
     }
 
@@ -124,10 +121,10 @@ class ShoppingController extends AbstractController
             $this->form->handleRequest($app['request']);
             if ($this->form->isValid()) {
                 $data = $this->form->getData();
-                /** @var $order \Eccube\Entity\Order */
-                $order = $this->orderRepository->find($this->cartService->getPreOrderId());
-                $order->setMessage($data['message']);
-                $this->orderService->commit($order);
+                /** @var $Order \Eccube\Entity\Order */
+                $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
+                $Order->setMessage($data['message']);
+                $this->orderService->commit($Order);
                 $this->cartService->clear()->save();
                 $this->setNonCustomer($app, false);
                 return $app->redirect($app['url_generator']->generate('shopping_complete'));
@@ -143,7 +140,7 @@ class ShoppingController extends AbstractController
     {
         $title = "ご購入完了";
         $baseInfo = $app['eccube.repository.base_info']->find(1);
-        return $app['twig']->render(
+        return $app['view']->render(
             'Shopping/complete.twig', array(
                 'title' => $title,
                 'baseInfo' => $baseInfo
@@ -160,20 +157,20 @@ class ShoppingController extends AbstractController
             $this->form->handleRequest($app['request']);
             if ($this->form->isValid()) {
                 $data = $this->form->getData();
-                /** @var $order \Eccube\Entity\Order */
-                $order = $this->orderRepository->find($this->cartService->getPreOrderId());
+                /** @var $Order \Eccube\Entity\Order */
+                $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
                 // 配送業者をセット
                 $delivery = $data['delivery'];
                 $deliveryFees = $delivery->getDelivFees();
-                $order->setDeliv($delivery);
-                $order->setDelivFee($deliveryFees[0]->getFee());
+                $Order->setDeliv($delivery);
+                $Order->setDelivFee($deliveryFees[0]->getFee());
                 // 支払い情報をセット
                 $paymentOptions = $delivery->getPaymentOptions();
                 $payment = $paymentOptions[0]->getPayment();;
-                $order->setPayment($payment);
-                $order->setPaymentMethod($payment->getMethod());
-                $order->setCharge($payment->getCharge());
-                $app['orm.em']->persist($order);
+                $Order->setPayment($payment);
+                $Order->setPaymentMethod($payment->getMethod());
+                $Order->setCharge($payment->getCharge());
+                $app['orm.em']->persist($Order);
                 $app['orm.em']->flush();
             }
         }
@@ -189,14 +186,14 @@ class ShoppingController extends AbstractController
             $this->form->handleRequest($app['request']);
             if ($this->form->isValid()) {
                 $data = $this->form->getData();
-                /** @var $order \Eccube\Entity\Order */
-                $order = $this->orderRepository->find($this->cartService->getPreOrderId());
+                /** @var $Order \Eccube\Entity\Order */
+                $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
                 // 支払い情報をセット
                 $payment = $data['payment'];
-                $order->setPayment($payment);
-                $order->setPaymentMethod($payment->getMethod());
-                $order->setCharge($payment->getCharge());
-                $app['orm.em']->persist($order);
+                $Order->setPayment($payment);
+                $Order->setPaymentMethod($payment->getMethod());
+                $Order->setCharge($payment->getCharge());
+                $app['orm.em']->persist($Order);
                 $app['orm.em']->flush();
             }
         }
@@ -208,20 +205,20 @@ class ShoppingController extends AbstractController
     {
         $this->init($app);
 
-        /** @var $order \Eccube\Entity\Order */
-        $order = $this->orderRepository->find($this->cartService->getPreOrderId());
-        $point = $order->getUsePoint();
+        /** @var $Order \Eccube\Entity\Order */
+        $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
+        $point = $Order->getUsePoint();
         $pointFlg = $point > 0 ? 1 : 0;
 
         $form = $app['form.factory']->createBuilder()
             ->add('point_flg', 'choice', array(
-                    'required' => true,
-                    'choices'  => array(0 => '使用しない', 1 => '使用する'),
-                    'expanded' => true,
-                    'data' => $pointFlg))
+                'required' => true,
+                'choices'  => array(0 => '使用しない', 1 => '使用する'),
+                'expanded' => true,
+                'data' => $pointFlg))
             ->add('point', 'integer', array(
-                    'required' => true,
-                    'data' => $point))
+                'required' => true,
+                'data' => $point))
             ->getForm();
 
         if ('POST' === $app['request']->getMethod()) {
@@ -233,16 +230,16 @@ class ShoppingController extends AbstractController
                 if ($pointFlg == 0) {
                     $point = 0;
                 }
-                $order->setUsePoint($point);
-                $app['orm.em']->persist($order);
+                $Order->setUsePoint($point);
+                $app['orm.em']->persist($Order);
                 $app['orm.em']->flush();
                 return $app->redirect($app['url_generator']->generate('shopping'));
             }
         }
-        return $app['twig']->render(
+        return $app['view']->render(
             'Shopping/point.twig', array(
                 'title' => 'ポイント設定',
-                'order' => $order,
+                'order' => $Order,
                 'form' => $form->createView()
             )
         );
@@ -280,12 +277,12 @@ class ShoppingController extends AbstractController
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $data = $form->getData();
-                /** @var $order \Eccube\Entity\Order */
-                $order = $this->orderRepository->find($this->cartService->getPreOrderId());
+                /** @var $Order \Eccube\Entity\Order */
+                $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
                 /** @var $shipping \Eccube\Entity\Shipping */
                 $shipping = $this->app['orm.em']
                     ->getRepository('\Eccube\Entity\Shipping')
-                    ->findOneBy(array("order_id" => $order->getId()));
+                    ->findOneBy(array("order_id" => $Order->getId()));
                 $addressId = $data['addresses'];
                 $address = null;
                 if ($addressId == 0) {
@@ -325,7 +322,7 @@ class ShoppingController extends AbstractController
             }
         }
 
-        return $app['twig']->render(
+        return $app['view']->render(
             'Shopping/shipping.twig', array(
                 'form'  => $form->createView(),
                 'title' => 'お届け先設定',
@@ -357,9 +354,9 @@ class ShoppingController extends AbstractController
 
         $builder = $app['form.factory']->createBuilder();
         $builder->add('shipping_multi', 'collection', array(
-                'type' => new ShippingMultiType($app),
-                'options' => array(),
-                'data' => $data
+            'type' => new ShippingMultiType($app),
+            'options' => array(),
+            'data' => $data
         ));
 
         $form = $builder->getForm();
@@ -425,7 +422,7 @@ class ShoppingController extends AbstractController
             }
         }
 
-        return $app['twig']->render(
+        return $app['view']->render(
             'Shopping/shipping_multiple.twig', array(
                 'form'  => $form->createView(),
                 'Products' => $Products,
@@ -450,7 +447,7 @@ class ShoppingController extends AbstractController
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
-        return $app['twig']->render('Shopping/login.twig', array(
+        return $app['view']->render('Shopping/login.twig', array(
             'title' => 'ログイン',
             'error' => $app['security.last_error']($app['request']),
             'form'  => $form->createView(),
@@ -493,16 +490,16 @@ class ShoppingController extends AbstractController
                     ->setJob($data['job']);
                 // 受注関連情報を取得
                 $preOrderId = $app['eccube.service.cart']->getPreOrderId();
-                $order = null;
+                $Order = null;
                 if (!is_null($preOrderId)) {
-                    $order = $app['eccube.repository.order']->find($preOrderId);
+                    $Order = $app['eccube.repository.order']->find($preOrderId);
                 }
                 // 初回アクセスの場合は受注データを作成
                 if (is_null($order)) {
-                    $order = $app['eccube.service.order']->registerPreOrderFromCartItems(
+                    $Order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                         $app['eccube.service.cart']->getCart()->getCartItems(),
                         $Customer);
-                    $app['eccube.service.cart']->setPreOrderId($order->getId());
+                    $app['eccube.service.cart']->setPreOrderId($Order->getId());
                     $app['eccube.service.cart']->save();
                 }
                 $this->setNonCustomer($app);
@@ -515,18 +512,14 @@ class ShoppingController extends AbstractController
         ));
     }
 
-
-    public function sorry(Application $app)
-    {
-        $form = $app['form.factory']->createBuilder()->getForm();
-        return $app['view']->render('Shopping/sorry.twig', array(
-            'form'  => $form->createView(),
-            'title' => 'エラー'
-        ));
-    }
-
     protected function isLoggedIn($app)
     {
+        if ($app['security']->isGranted('ROLE_USER')) {
+            if ($this->isNonCustomer($app)){
+                $app['eccube.service.cart']->setPreOrderId(null)->save();
+                $this->setNonCustomer($app, false);
+            }
+        }
         return $app['security']->isGranted('ROLE_USER');
     }
 
@@ -543,7 +536,7 @@ class ShoppingController extends AbstractController
 
     protected function cartChanged($app)
     {
-        return ($app['eccube.service.cart']->isLocked() === true) ? false : true;
+        return !$app['eccube.service.cart']->isLocked() === true;
     }
 
     // todo リファクタ
