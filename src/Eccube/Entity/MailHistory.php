@@ -10,24 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
 class MailHistory extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getSubject();
+    }
+
+    /**
      * @var integer
      */
     private $id;
 
     /**
-     * @var integer
-     */
-    private $order_id;
-
-    /**
      * @var \DateTime
      */
     private $send_date;
-
-    /**
-     * @var integer
-     */
-    private $template_id;
 
     /**
      * @var string
@@ -38,6 +36,16 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $mail_body;
+
+    /**
+     * @var \Eccube\Entity\Order
+     */
+    private $Order;
+
+    /**
+     * @var \Eccube\Entity\Master\MailTemplate
+     */
+    private $MailTemplate;
 
     /**
      * @var \Eccube\Entity\Member
@@ -53,29 +61,6 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set order_id
-     *
-     * @param integer $orderId
-     * @return MailHistory
-     */
-    public function setOrderId($orderId)
-    {
-        $this->order_id = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get order_id
-     *
-     * @return integer 
-     */
-    public function getOrderId()
-    {
-        return $this->order_id;
     }
 
     /**
@@ -99,29 +84,6 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     public function getSendDate()
     {
         return $this->send_date;
-    }
-
-    /**
-     * Set template_id
-     *
-     * @param integer $templateId
-     * @return MailHistory
-     */
-    public function setTemplateId($templateId)
-    {
-        $this->template_id = $templateId;
-
-        return $this;
-    }
-
-    /**
-     * Get template_id
-     *
-     * @return integer 
-     */
-    public function getTemplateId()
-    {
-        return $this->template_id;
     }
 
     /**
@@ -168,6 +130,52 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     public function getMailBody()
     {
         return $this->mail_body;
+    }
+
+    /**
+     * Set Order
+     *
+     * @param \Eccube\Entity\Order $order
+     * @return MailHistory
+     */
+    public function setOrder(\Eccube\Entity\Order $order)
+    {
+        $this->Order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order 
+     */
+    public function getOrder()
+    {
+        return $this->Order;
+    }
+
+    /**
+     * Set MailTemplate
+     *
+     * @param \Eccube\Entity\Master\MailTemplate $mailTemplate
+     * @return MailHistory
+     */
+    public function setMailTemplate(\Eccube\Entity\Master\MailTemplate $mailTemplate = null)
+    {
+        $this->MailTemplate = $mailTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get MailTemplate
+     *
+     * @return \Eccube\Entity\Master\MailTemplate 
+     */
+    public function getMailTemplate()
+    {
+        return $this->MailTemplate;
     }
 
     /**

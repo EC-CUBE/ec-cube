@@ -21,11 +21,6 @@ class FrontControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        // installer
-        $controllers->match('/install/', "\\Eccube\\Controller\\InstallController::index")->bind('install');
-        $controllers->match('/install/complete', "\\Eccube\\Controller\\InstallController::complete")->bind('install_complete');
-
-
         // root
         $controllers->match('/', "\\Eccube\\Page\\Index")->bind('index');
         $controllers->match('/', "\\Eccube\\Page\\Index")->bind('homepage');
@@ -97,19 +92,23 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/guide/usage.php', '\\Eccube\\Page\\Guide\\Usage')->bind('guide_usage');
 
         // mypage
-        $controllers->match('/mypage/', '\\Eccube\\Controller\\MyPage\\MyPageController::index')->bind('mypage');
-        $controllers->match('/mypage/login.php', '\\Eccube\\Controller\\MyPage\\MyPageController::login')->bind('mypage_login');
-        $controllers->match('/mypage/change', '\\Eccube\\Controller\\MyPage\\ChangeController::index')->bind('mypage_change');
-        $controllers->match('/mypage/change_complete', '\\Eccube\\Controller\\MyPage\\ChangeController::Complete')->bind('mypage_change_complete');
-        $controllers->match('/mypage/delivery.php', '\\Eccube\\Page\\Mypage\\Delivery')->bind('mypage_delivery');
-        $controllers->match('/mypage/delivery_addr.php', '\\Eccube\\Page\\Mypage\\DeliveryAddr')->bind('mypage_delivery_addr');
-        $controllers->match('/mypage/download.php', '\\Eccube\\Page\\Mypage\\Download')->bind('mypage_download');
-        $controllers->match('/mypage/favorite.php', '\\Eccube\\Page\\Mypage\\Favorite')->bind('mypage_favorite');
-        $controllers->match('/mypage/history.php', '\\Eccube\\Page\\Mypage\\History')->bind('mypage_history');
-        $controllers->match('/mypage/mail_view.php', '\\Eccube\\Page\\Mypage\\MailView')->bind('mypage_mail_view');
-        $controllers->match('/mypage/order.php', '\\Eccube\\Page\\Mypage\\Order')->bind('mypage_order');
-        $controllers->match('/mypage/refusal.php', '\\Eccube\\Page\\Mypage\\Refusal')->bind('mypage_refusal');
-        $controllers->match('/mypage/refusal_complete.php', '\\Eccube\\Page\\Mypage\\RefusalComplete')->bind('mypage_refusal_complete');
+        $controllers->match('/mypage/', '\Eccube\Controller\Mypage\MypageController::index')->bind('mypage');
+        $controllers->match('/mypage/login.php', '\Eccube\Controller\Mypage\MypageController::login')->bind('mypage_login');
+        $controllers->match('/mypage/change', '\Eccube\Controller\Mypage\ChangeController::index')->bind('mypage_change');
+        $controllers->match('/mypage/change_complete', '\Eccube\Controller\Mypage\ChangeController::complete')->bind('mypage_change_complete');
+        $controllers->match('/mypage/delivery.php', '\Eccube\Controller\Mypage\DeliveryController::index')->bind('mypage_delivery');
+        $controllers->match('/mypage/delivery_addr.php', '\Eccube\Controller\Mypage\DeliveryController::address')->bind('mypage_delivery_address');
+        $controllers->match('/mypage/download.php', '\Eccube\Page\Mypage\Download')->bind('mypage_download');
+        $controllers->match('/mypage/favorite.php', '\Eccube\Controller\Mypage\MypageController::favorite')->bind('mypage_favorite');
+        $controllers->match('/mypage/history/{orderId}', '\Eccube\Controller\Mypage\MypageController::history')
+            ->bind('mypage_history')
+            ->assert('orderId', '\d+');
+        $controllers->match('/mypage/mail_view/{sendId}', '\Eccube\Controller\Mypage\MypageController::mail_view')
+            ->bind('mypage_mail_view')
+            ->assert('sendId', '\d+');
+        $controllers->match('/mypage/order.php', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
+        $controllers->match('/mypage/refusal.php', '\Eccube\Controller\Mypage\RefusalController::index')->bind('mypage_refusal');
+        $controllers->match('/mypage/refusal_complete.php', '\Eccube\Controller\Mypage\RefusalController::complete')->bind('mypage_refusal_complete');
 
         // 特定商取引 order -> help/traderaw
         $controllers->match('/help/about', '\\Eccube\\Controller\\HelpController::about')->bind('help_about');

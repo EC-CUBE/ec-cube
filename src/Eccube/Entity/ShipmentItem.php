@@ -55,11 +55,6 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     private $quantity;
 
     /**
-     * @var \Eccube\Entity\Order
-     */
-    private $Order;
-
-    /**
      * @var \Eccube\Entity\Shipping
      */
     private $Shipping;
@@ -69,74 +64,6 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      */
     private $ProductClass;
 
-    /**
-     * Set Order
-     *
-     * @param Shipping $Order
-     * @return ShipmentItem
-     */
-    public function setOrder($Order)
-    {
-        $this->Order = $Order;
-
-        return $this;
-    }
-
-    /**
-     * Get Order
-     *
-     * @return Order
-     */
-    public function getOrder()
-    {
-        return $this->Order;
-    }
-
-    /**
-     * Set Shipping
-     *
-     * @param Shipping $Shipping
-     * @return ShipmentItem
-     */
-    public function setShipping($Shipping)
-    {
-        $this->Shipping = $Shipping;
-
-        return $this;
-    }
-
-    /**
-     * Get Shipping
-     *
-     * @return Shipping
-     */
-    public function getShipping()
-    {
-        return $this->Shipping;
-    }
-
-    /**
-     * Set ProductClass
-     *
-     * @param ProductClass $ProductClass
-     * @return ShipmentItem
-     */
-    public function setProductClass($ProductClass)
-    {
-        $this->ProductClass = $ProductClass;
-
-        return $this;
-    }
-
-    /**
-     * Get ProductClass
-     *
-     * @return ProductClass
-     */
-    public function getProductClass()
-    {
-        return $this->ProductClass;
-    }
 
     /**
      * Set shipping_id
@@ -154,7 +81,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get shipping_id
      *
-     * @return integer
+     * @return integer 
      */
     public function getShippingId()
     {
@@ -343,5 +270,51 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * Set Shipping
+     *
+     * @param \Eccube\Entity\Shipping $shipping
+     * @return ShipmentItem
+     */
+    public function setShipping(\Eccube\Entity\Shipping $shipping)
+    {
+        $this->Shipping = $shipping;
+
+        return $this;
+    }
+
+    /**
+     * Get Shipping
+     *
+     * @return \Eccube\Entity\Shipping 
+     */
+    public function getShipping()
+    {
+        return $this->Shipping;
+    }
+
+    /**
+     * Set ProductClass
+     *
+     * @param \Eccube\Entity\ProductClass $productClass
+     * @return ShipmentItem
+     */
+    public function setProductClass(\Eccube\Entity\ProductClass $productClass)
+    {
+        $this->ProductClass = $productClass;
+
+        return $this;
+    }
+
+    /**
+     * Get ProductClass
+     *
+     * @return \Eccube\Entity\ProductClass 
+     */
+    public function getProductClass()
+    {
+        return $this->ProductClass;
     }
 }
