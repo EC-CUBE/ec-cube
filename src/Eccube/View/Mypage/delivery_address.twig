@@ -18,7 +18,7 @@
     <form name="form1" id="form1" method="post" action="?">
         <input type="hidden" name="other_deliv_id" value="{{ app.request.get('other_deliv_id') }}" />
         <input type="hidden" name="parent_page" value="{{ parentPage }}" />
-        {{ form(form) }}
+        {{ form_widget(form) }}
         <div class="btn_area">
             <ul>
                 <li>
