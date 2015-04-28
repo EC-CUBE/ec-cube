@@ -20,6 +20,11 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     private $product_type_id;
 
     /**
+     * @var \Eccube\Entity\Master\ProductType
+     */
+    private $ProductType;
+
+    /**
      * @var string
      */
     private $name;
@@ -80,12 +85,18 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     private $Creator;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $PaymentOptions;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->DelivFees = new \Doctrine\Common\Collections\ArrayCollection();
         $this->DelivTimes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->PaymentOptions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -119,6 +130,18 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     public function getProductTypeId()
     {
         return $this->product_type_id;
+    }
+
+    public function setProductType(\Eccube\Entity\Master\ProductType $ProductType)
+    {
+        $this->ProductType = $ProductType;
+
+        return $this;
+    }
+
+    public function getProductType()
+    {
+        return $this->ProductType;
     }
 
     /**
@@ -416,11 +439,6 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     {
         return $this->Creator;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $PaymentOptions;
-
 
     /**
      * Add PaymentOptions
@@ -434,6 +452,8 @@ class Deliv extends \Eccube\Entity\AbstractEntity
 
         return $this;
     }
+
+
 
     /**
      * Remove PaymentOptions
@@ -454,4 +474,6 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     {
         return $this->PaymentOptions;
     }
+
+
 }

@@ -1,0 +1,53 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+<script type="text/javascript">
+$(function(){
+    $("#mail_template").on("change", function(){
+        if ($(this).val()) {
+            location.href= '{{ url('admin_basis_mail') }}/' + $(this).val();
+        } else {
+            location.href= '{{ url('admin_basis_mail') }}';
+        }
+    });
+});
+</script>
+
+{% for message in app.session.flashbag.get('tax_rule.complete') %}
+    {{ message|trans|raw }}<br/>
+{% endfor %}
+
+<form name="form1" id="form1" method="post" action="{{ url('admin_basis_mail_edit', {mailId: mail_id}) }}">
+    {{ form_widget(form._token) }}
+    <div id="basis" class="contents-main">
+        <table>
+            <tr>
+                <th>{{ form_label(form.template) }}</th>
+                <td>{{ form_widget(form.template) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.subject) }}</th>
+                <td>{{ form_widget(form.subject) }}</td>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.header) }}</th>
+                <td>{{ form_widget(form.header) }}</td>
+            </tr>
+            <tr>
+                <th colspan="2" align="center">動的データ挿入部分</th>
+            </tr>
+            <tr>
+                <th>{{ form_label(form.footer) }}</th>
+                <td>{{ form_widget(form.footer) }}</td>
+            </tr>
+        </table>
+
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            </ul>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
