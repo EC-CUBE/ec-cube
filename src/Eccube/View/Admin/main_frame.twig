@@ -37,7 +37,7 @@
 <script type="text/javascript" src="{{ app.config.root }}js/eccube.js"></script>
 <script type="text/javascript" src="{{ app.config.admin_tpl }}js/eccube.admin.js"></script>
 <script type="text/javascript" src="{{ app.config.root }}js/jquery.colorbox/jquery.colorbox-min.js"></script>
-<title>{{ title|default('') }}</title>
+<title>EC-CUBE 管理機能{% if maintitle|default('') is not empty %} {{ maintitle|default('') }}{% endif %}</title>
 <link rel="shortcut icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
 <script type="text/javascript">//<![CDATA[
@@ -59,14 +59,14 @@
 {# ▼HEADER #}
 <div id="header">
     <div id="header-contents">
-        <div id="logo"><a href="{{ url('admin_index') }}"><img src="{{ app.config.admin_tpl }}img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
+        <div id="logo"><a href="{{ url('admin_homepage') }}"><img src="{{ app.config.admin_tpl }}img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
         <div id="site-check">
             <p class="info">
-                <span><strong>ログイン&nbsp;:&nbsp;</strong>DUMMY</span>&nbsp;様,&nbsp;&nbsp;
-                <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong>DUMMY</span>
+                <span><strong>ログイン&nbsp;:&nbsp;</strong>{{ app.user.name }}</span>&nbsp;様,&nbsp;&nbsp;
+                <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong>{{ app.user.login_date.format('Y/m/d H:i') }}</span>
             </p>
             <ul>
-                <li><a href="{{ url('admin_index') }}" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>
+                <li><a href="{{ url('homepage') }}" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>
                 <li><a href="{{ url('admin_logout') }}" class="btn-tool-format">LOGOUT</a></li>
             </ul>
         </div>
@@ -121,11 +121,10 @@
 </div>
 {# ▲NAVI #}
 
-<h1><span class="title">{{ tpl_maintitle|default('') }}{{ tpl_subtitle|default('') }}</span></h1>
+<h1><span class="title">{{ maintitle|default('') }}{{ subtitle|default('') }}</span></h1>
 
 <div id="contents" class="clearfix">
-    {% block main %}
-    {% endblock %}
+    {% block main %}{% endblock %}
 </div>
 {# ▼FOOTER #}
 <div id="footer">

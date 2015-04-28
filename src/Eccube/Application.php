@@ -145,6 +145,7 @@ class Application extends \Silex\Application
         ));
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
+        $this->register(new ServiceProvider\LegacyServiceProvider());
 
        // EventDispatcher
         $app['eccube.event.dispatcher'] = $app->share(function() {
@@ -222,6 +223,23 @@ class Application extends \Silex\Application
         // Security
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
              'security.firewalls' => array(
+                'admin' => array(
+                    'pattern' => '^/admin',
+                    'form' => array(
+                        'login_path' => '/admin/login.php',
+                        'check_path' => '/admin/login_check',
+                        'username_parameter' =>  'login_id',
+                        'password_parameter' => 'password',
+                        'with_csrf' => true,
+                        'use_forward' => true,
+                    ),
+                    'logout' => array(
+                        'logout_path' => '/admin/logout',
+                        'target_url' => '/admin/',
+                    ),
+                    'users' => $app['eccube.repository.member'],
+                    'anonymous' => true,
+                ),
                 'customer' => array(
                     'pattern' => '^/',
                     'form' => array(
@@ -242,16 +260,19 @@ class Application extends \Silex\Application
             ),
         ));
         $app['security.access_rules'] = array(
+            array('^/admin/login.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/admin/', 'ROLE_ADMIN'),
             array('^/mypage/login.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/refusal_complete.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/', 'ROLE_USER'),
         );
-        $app['eccube.encoder.customer'] = $app->share(function ($app) {
-            return new \Eccube\Security\Core\Encoder\CustomerPasswordEncoder($app['config']);
+        $app['eccube.password_encoder'] = $app->share(function ($app) {
+            return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
         });
         $app['security.encoder_factory'] = $app->share(function ($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
-                'Eccube\Entity\Customer' => $app['eccube.encoder.customer'],
+                'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
+                'Eccube\Entity\Member' => $app['eccube.password_encoder'],
             ));
         });
         $app['user'] = $app->share(function($app) {
@@ -295,7 +316,7 @@ class Application extends \Silex\Application
         });
 
         $this['callback_resolver'] = $this->share(function () use ($app) {
-            return new CallbackResolver($app);
+            return new LegacyCallbackResolver($app);
         });
 
 

@@ -23,6 +23,14 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $className1;
     private $className2;
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function _calc()
     {
         if (!$this->_calc) {
