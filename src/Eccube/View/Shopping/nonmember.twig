@@ -1,35 +1,6 @@
 {% extends 'site_main.twig' %}
 
 {% block main %}
-    <script>
-        $(document).ready(function() {
-            $('#hogehoge').on('click', function () {
-                $('#nonmember_name_name01').val('ほげ');
-                $('#nonmember_name_name02').val('ふが');
-                $('#nonmember_kana_kana01').val('アダチ');
-                $('#nonmember_kana_kana02').val('チヒロ');
-                $('#nonmember_company_name').val('ロックオン');
-                $('#nonmember_zip_zip01').val('111');
-                $('#nonmember_zip_zip02').val('1111');
-                $('#nonmember_address_addr01').val('大阪市');
-                $('#nonmember_address_addr02').val('北区');
-                $('#nonmember_tel_tel01').val('22');
-                $('#nonmember_tel_tel02').val('2222');
-                $('#nonmember_tel_tel03').val('2222');
-                $('#nonmember_fax_fax01').val('33');
-                $('#nonmember_fax_fax02').val('3333');
-                $('#nonmember_fax_fax03').val('3333');
-                $('#nonmember_email').val('chihiro_adachi+002@lockon.co.jp');
-                $('#nonmember_sex_1').attr("checked", "checked");
-                $('#nonmember_address_pref').val(3);
-                $('#nonmember_job').val(3);
-                $('nonmember_birth_year').val(2000);
-                $('nonmember_birth_month').val(12);
-                $('nonmember_birth_day').val(11);
-            })
-        });
-
-    </script>
     <div id="undercolumn">
         <div id="undercolumn_customer">
             <p class="flow_area"><img src="{{ app.config.tpl }}img/picture/img_flow_01.jpg" alt="購入手続きの流れ" /></p>

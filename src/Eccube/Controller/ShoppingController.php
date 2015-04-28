@@ -506,10 +506,6 @@ class ShoppingController extends AbstractController
                     $app['eccube.service.cart']->save();
                 }
                 $this->setNonCustomer($app);
-                Debug::dump($preOrderId);
-                Debug::dump($order->getId());
-                Debug::dump($app['eccube.service.cart']->getPreOrderId());
-                exit();
                 return $app->redirect($app['url_generator']->generate('shopping'));
             }
         }
