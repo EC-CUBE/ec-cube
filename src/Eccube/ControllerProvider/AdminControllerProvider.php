@@ -110,9 +110,11 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // order
         $controllers->match('/order/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::index')->bind('admin_order');
-        $controllers->match('/order/edit/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::edit')
+        $controllers->match('/order/edit/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderEditController::index')
             ->assert('orderId', '\d+')
             ->bind('admin_order_edit');
+        $controllers->match('/order/edit/', '\\Eccube\\Controller\\Admin\\Order\\OrderEditController::index')
+            ->bind('admin_order_new');
         $controllers->match('/order/delete/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::delete')
             ->assert('orderId', '\d+')
             ->bind('admin_order_delete');
