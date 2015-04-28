@@ -15,11 +15,9 @@ class SaveEventSubscriber implements EventSubscriber
     private $security;
 
     /**
-     * setSecurity
-     * 
      * @param SecurityContext $config
      */
-    public function setSecurity(SecurityContextInterface $security)
+    public function __construct(SecurityContextInterface $security)
     {
         $this->security = $security;
     }
