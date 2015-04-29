@@ -21,6 +21,8 @@ class TaxRuleControllerTest extends WebTestCase
 
     public function test_routeing_AdminBasisTax_index()
     {
+        self::markTestSkipped();
+
         $client = $this->createClient();
         $client->request('GET', $this->app['url_generator']->generate('admin_basis_tax_rule'));
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -28,6 +30,8 @@ class TaxRuleControllerTest extends WebTestCase
 
     public function test_routeing_AdminBasisTax_edit()
     {
+        self::markTestSkipped();
+
         $client = $this->createClient();
         $client->request('GET', $this->app['url_generator']
             ->generate('admin_basis_tax_rule_edit', array('tax_rule_id' => 0))
@@ -37,6 +41,8 @@ class TaxRuleControllerTest extends WebTestCase
 
     public function test_routeing_AdminBasisTax_delete()
     {
+        self::markTestSkipped();
+
         $redirectUrl = $this->app['url_generator']->generate('admin_basis_tax_rule');
 
         $client = $this->createClient();

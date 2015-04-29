@@ -14,16 +14,33 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName01() . ' ' . $this->getName02();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRoles()
     {
         return array('ROLE_USER');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUsername()
     {
         return $this->email;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function eraseCredentials()
     {
     }

@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Template extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTemplateName();
+    }
+
+    /**
      * @var string
      */
     private $code;

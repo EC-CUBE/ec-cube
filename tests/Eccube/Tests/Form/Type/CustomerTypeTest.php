@@ -133,7 +133,7 @@ class CustomerTypeTest extends TypeTestCase
 
     public function testInvalidEmail_Duplicate()
     {
-        $testVal = 'sample@example.com';
+        $testVal = 'sampleexample.com';
         $customer = $this->app['eccube.repository.customer']->newCustomer()
             ->setName01($this->formData['name']['name01'])
             ->setName02($this->formData['name']['name02'])
@@ -147,7 +147,6 @@ class CustomerTypeTest extends TypeTestCase
                 'csrf_protection' => false,
             ))
             ->getForm();
-        $this->app['orm.em']->persist($customer);
 
         $this->formData['email'] = $testVal;
         $form->submit($this->formData);

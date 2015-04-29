@@ -4,7 +4,7 @@ namespace Eccube\Security\Core\Encoder;
 
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
-class CustomerPasswordEncoder implements PasswordEncoderInterface
+class PasswordEncoder implements PasswordEncoderInterface
 {
 
     /* @var $config array */
