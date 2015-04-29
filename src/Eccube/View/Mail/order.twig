@@ -90,7 +90,7 @@ FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
 {%  for ShipmentItem in Shipping.ShipmentItems %}
 商品コード: {{ ShipmentItem.product_code }}
 商品名: {{ ShipmentItem.product_name }}  {{ ShipmentItem.classcategory_name1 }}  {{ ShipmentItem.classcategory_name2 }}
-数量：{{ ShipmentItem|number_format }}
+数量：{{ ShipmentItem.quantity|number_format }}
 
 {% endfor %}
 {% endfor %}
