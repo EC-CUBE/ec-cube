@@ -85,11 +85,14 @@ class MailController
 
                         // 送信履歴を保存.
                         $MailTemplate = $form->get('template')->getData();
+                        $MailTemplateMaster = $app['orm.em']
+                            ->getRepository('\Eccube\Entity\Master\MailTemplate')
+                            ->find($MailTemplate->getId());
                         $MailHistory = new MailHistory();
                         $MailHistory
                             ->setSubject($data['subject'])
                             ->setMailBody($body)
-                            ->setMailTemplate($MailTemplate)
+                            ->setMailTemplate($MailTemplateMaster) // fixme mtb/dtb
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
                         $app['orm.em']->persist($MailHistory);
@@ -114,7 +117,18 @@ class MailController
 
     public function view(Application $app, $sendId)
     {
+        $MailHistory = $app['orm.em']
+            ->getRepository('\Eccube\Entity\MailHistory')
+            ->find($sendId);
 
+        if (is_null($MailHistory)) {
+            throw new HttpException('history not found.');
+        }
+
+        return $app['view']->render('Admin/Order/mail_view.twig', array(
+            'subject' => $MailHistory->getSubject(),
+            'body' => $MailHistory->getMailBody()
+        ));
     }
 
     protected function createBody($app, $header, $footer, $Order)

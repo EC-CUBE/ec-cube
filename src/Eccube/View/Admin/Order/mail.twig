@@ -17,7 +17,7 @@
             <tr class="center">
                 <td>{{ MailHistory.send_date|date('Y/m/d H:i:s') }}</td>
                 <td>{{ MailHistory.MailTemplate }}</td>
-                <td><a href="{{ path('admin_order_mail', {'orderId' : Order.id}) }}">{{ MailHistory.subject }}</a></td>
+                <td><a href="{{ path('admin_order_mail_view', {'sendId' : MailHistory.id}) }}" target="_blank">{{ MailHistory.subject }}</a></td>
             </tr>
             {% endfor %}
         </table>
