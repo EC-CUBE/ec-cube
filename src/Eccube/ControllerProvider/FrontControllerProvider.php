@@ -55,6 +55,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/cart/remove/{productClassId}', '\\Eccube\\Controller\\CartController::remove')
             ->bind('cart_remove')
             ->assert('productClassId', '\d+');
+        $controllers->match('/cart/buystep', '\\Eccube\\Controller\\CartController::buystep')->bind('cart_buystep');
 
         // contact
         $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::index')->bind('contact');

@@ -124,7 +124,8 @@
                             </li>
                             <li>
                                 <!--{if strlen($tpl_error) == 0}-->
-                                    <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_buystep.jpg" alt="購入手続きへ" name="confirm" />
+                                <a href="{{ path('cart_buystep') }}">
+                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_buystep.jpg" alt="購入手続きへ" name="buystep" />
                                 <!--{/if}-->
                             </li>
                         </ul>
