@@ -183,9 +183,22 @@ class DelivController extends AbstractController
 
     public function delete(Application $app, $delivId)
     {
-        $Deliv = $app['orm.em']->getRepository('Eccube\Entity\Deliv')->find($delivId);
+        $repo = $app['orm.em']->getRepository('Eccube\Entity\Deliv');
+        $Deliv = $repo->find($delivId);
 
-        $app['orm.em']->persist($Deliv->setDelFlg(1));
+        $Deliv
+            ->setDelFlg(1)
+            ->setRank(0);
+        $app['orm.em']->persist($Deliv);
+
+        $rank = 1;
+        $Delivs = $repo->findBy(array('del_flg' => 0), array('rank' => 'ASC'));
+        foreach ($Delivs as $Deliv) {
+            if ($Deliv->getId() != $delivId) {
+                $Deliv->setRank($rank);
+                $rank ++;
+            }
+        }
         $app['orm.em']->flush();
 
         $app['session']->getFlashBag()->add('deliv.complete', 'admin.delete.complete') ;
@@ -201,7 +214,7 @@ class DelivController extends AbstractController
         $currentRank = $current->getRank();
 
         $targetRank = $currentRank + 1;
-        $target = $repo->findOneBy(array('rank' => $currentRank));
+        $target = $repo->findOneBy(array('rank' => $targetRank));
 
         $app['orm.em']->persist($target->setRank($currentRank));
         $app['orm.em']->persist($current->setRank($targetRank));
@@ -220,7 +233,7 @@ class DelivController extends AbstractController
         $currentRank = $current->getRank();
 
         $targetRank = $currentRank - 1;
-        $target = $repo->findOneBy(array('rank' => $currentRank));
+        $target = $repo->findOneBy(array('rank' => $targetRank));
 
         $app['orm.em']->persist($target->setRank($currentRank));
         $app['orm.em']->persist($current->setRank($targetRank));
