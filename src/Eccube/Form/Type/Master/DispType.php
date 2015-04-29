@@ -1,15 +1,16 @@
 <?php
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
-class MailMagazineType extends AbstractType
+class DispType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
@@ -23,8 +24,7 @@ class MailMagazineType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\MailMagazineType',
-            'property' => 'name',
+            'class' => 'Eccube\Entity\Master\Disp',
             'label' => false,
             'multiple'=> false,
             'expanded' => true,
@@ -36,17 +36,17 @@ class MailMagazineType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getParent()
     {
-        return 'mailmagazinetype';
+        return 'entity';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getName()
     {
-        return 'entity';
+        return 'disp';
     }
 
 }

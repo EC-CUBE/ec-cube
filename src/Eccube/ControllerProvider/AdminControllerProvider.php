@@ -212,17 +212,17 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/ownersstore/settings.php', '\\Eccube\\Page\\Admin\\OwnersStore\\Settings')->bind('admin_ownersstore_settings');
 
         // products
-        $controllers->match('/products/', '\\Eccube\\Page\\Admin\\Products\\Index')->bind('admin_products');
-        $controllers->match('/products/category.php', '\\Eccube\\Page\\Admin\\Products\\Category')->bind('admin_products_category');
-        $controllers->match('/products/class.php', '\\Eccube\\Page\\Admin\\Products\\ClassList')->bind('admin_products_class');
-        $controllers->match('/products/classcategory.php', '\\Eccube\\Page\\Admin\\Products\\ClassCategory')->bind('admin_products_classcategory');
-        $controllers->match('/products/maker.php', '\\Eccube\\Page\\Admin\\Products\\Maker')->bind('admin_products_maker');
-        $controllers->match('/products/product.php', '\\Eccube\\Page\\Admin\\Products\\ProductEdit')->bind('admin_products_product');
-        $controllers->match('/products/product_class.php', '\\Eccube\\Page\\Admin\\Products\\ProductClass')->bind('admin_products_product_class');
-        $controllers->match('/products/product_rank.php', '\\Eccube\\Page\\Admin\\Products\\ProductRank')->bind('admin_products_product_rank');
-        $controllers->match('/products/product_select.php', '\\Eccube\\Page\\Admin\\Products\\ProductSelect')->bind('admin_products_product_select');
-        $controllers->match('/products/upload_csv.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSV')->bind('admin_products_upload_csv');
-        $controllers->match('/products/upload_csv_category.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSVCategory')->bind('admin_products_upload_csv_category');
+        $controllers->match('/products/', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
+        $controllers->match('/products/product.php', '\Eccube\Controller\Admin\Product\ProductController::edit')->bind('admin_product_product');
+        $controllers->match('/products/category.php', '\\Eccube\\Page\\Admin\\Products\\Category')->bind('admin_product_category');
+        $controllers->match('/products/class.php', '\\Eccube\\Page\\Admin\\Products\\ClassList')->bind('admin_product_class');
+        $controllers->match('/products/classcategory.php', '\\Eccube\\Page\\Admin\\Products\\ClassCategory')->bind('admin_product_classcategory');
+        $controllers->match('/products/maker.php', '\\Eccube\\Page\\Admin\\Products\\Maker')->bind('admin_product_maker');
+        $controllers->match('/products/product_class.php', '\\Eccube\\Page\\Admin\\Products\\ProductClass')->bind('admin_product_product_class');
+        $controllers->match('/products/product_rank.php', '\\Eccube\\Page\\Admin\\Products\\ProductRank')->bind('admin_product_product_rank');
+        $controllers->match('/products/product_select.php', '\\Eccube\\Page\\Admin\\Products\\ProductSelect')->bind('admin_product_product_select');
+        $controllers->match('/products/upload_csv.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSV')->bind('admin_product_upload_csv');
+        $controllers->match('/products/upload_csv_category.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSVCategory')->bind('admin_product_upload_csv_category');
 
         // system
         $controllers->match('/system/', '\\Eccube\\Page\\Admin\\System\\Index')->bind('admin_system');

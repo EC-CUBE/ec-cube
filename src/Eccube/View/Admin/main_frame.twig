@@ -41,9 +41,9 @@
 <link rel="shortcut icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
 <script type="text/javascript">//<![CDATA[
-    {{ tpl_javascript|default('')|raw }}
+    {{ block('javascript') }}
     $(function(){
-        {{ tpl_onload|default('')|raw }}
+        {{ block('onload') }}
     });
 //]]></script>
 </head>
@@ -121,7 +121,7 @@
 </div>
 {# ▲NAVI #}
 
-<h1><span class="title">{{ maintitle|default('') }}{{ subtitle|default('') }}</span></h1>
+<h1><span class="title">{{ maintitle|default('') }}{% if maintitle|default('') is not empty and subtitle|default('') is not empty %}＞{% endif %}{{ subtitle|default('') }}</span></h1>
 
 <div id="contents" class="clearfix">
     {% block main %}{% endblock %}

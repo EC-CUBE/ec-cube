@@ -137,25 +137,32 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\NameType();
             $types[] = new \Eccube\Form\Type\TelType();
             $types[] = new \Eccube\Form\Type\FaxType();
-            $types[] = new \Eccube\Form\Type\PrefType();
-            $types[] = new \Eccube\Form\Type\ZipType();
             $types[] = new \Eccube\Form\Type\AddressType();
-            $types[] = new \Eccube\Form\Type\SexType();
-            $types[] = new \Eccube\Form\Type\ProductListMaxType();
-            $types[] = new \Eccube\Form\Type\JobType();
-            $types[] = new \Eccube\Form\Type\ReminderType();
-            $types[] = new \Eccube\Form\Type\MailMagazineType();
-            $types[] = new \Eccube\Form\Type\CustomerStatusType();
-            $types[] = new \Eccube\Form\Type\OrderStatusType();
             $types[] = new \Eccube\Form\Type\PaymentType();
             $types[] = new \Eccube\Form\Type\DelivType();
             $types[] = new \Eccube\Form\Type\DelivFeeType();
             $types[] = new \Eccube\Form\Type\DelivTimeType();
             $types[] = new \Eccube\Form\Type\ProductTypeType();
-            $types[] = new \Eccube\Form\Type\CalcRuleType();
             $types[] = new \Eccube\Form\Type\PaymentRegisterType();
             $types[] = new \Eccube\Form\Type\MailType();
             $types[] = new \Eccube\Form\Type\MailTemplateType();
+            $types[] = new \Eccube\Form\Type\CategoryType();
+            $types[] = new \Eccube\Form\Type\MakerType();
+
+            $types[] = new \Eccube\Form\Type\Master\JobType();
+            $types[] = new \Eccube\Form\Type\Master\ReminderType();
+            $types[] = new \Eccube\Form\Type\Master\MailMagazineType();
+            $types[] = new \Eccube\Form\Type\Master\CustomerStatusType();
+            $types[] = new \Eccube\Form\Type\Master\OrderStatusType();
+            $types[] = new \Eccube\Form\Type\Master\CalcRuleType();
+            $types[] = new \Eccube\Form\Type\Master\SexType();
+            $types[] = new \Eccube\Form\Type\Master\DispType();
+            $types[] = new \Eccube\Form\Type\Master\StatusType();
+            $types[] = new \Eccube\Form\Type\Master\PrefType();
+            $types[] = new \Eccube\Form\Type\Master\ZipType();
+            $types[] = new \Eccube\Form\Type\Master\ProductTypeType();
+            $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
+            $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
             $types[] = new \Eccube\Form\Type\CustomerType($app);
@@ -172,7 +179,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\BlockType($app);
             $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
-            $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\NonMemberType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
@@ -183,7 +189,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShipmentItemType();
 
             // admin
-            $types[] = new \Eccube\Form\Type\AdminLoginType($app['session']);
+            $types[] = new \Eccube\Form\Type\Admin\LoginType($app['session']);
+            $types[] = new \Eccube\Form\Type\Admin\ProductType($app);
+            $types[] = new \Eccube\Form\Type\Admin\ProductClassType($app);
+            $types[] = new \Eccube\Form\Type\Admin\SearchProductType($app);
+            $types[] = new \Eccube\Form\Type\Admin\SearchCustomerType($app);
 
             return $types;
         }));

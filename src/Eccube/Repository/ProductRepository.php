@@ -42,8 +42,6 @@ class ProductRepository extends EntityRepository
         // Product
         try {
             $qb = $this->createQueryBuilder('p')
-                ->select('p, pc')
-                ->innerJoin('p.ProductClasses', 'pc')
                 ->andWhere('p.id = :id');
 
             $product = $qb
@@ -68,8 +66,6 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('p, pc')
-            ->innerJoin('p.ProductClasses', 'pc')
             ->andWhere('p.status = 1');
 
         // category
@@ -85,7 +81,7 @@ class ProductRepository extends EntityRepository
                 $categoryJoin = true;
             }
         }
-        
+
         // maker_id
         if (!empty($searchData['maker_id']) && $searchData['maker_id']) {
             $qb
@@ -105,8 +101,10 @@ class ProductRepository extends EntityRepository
 
         // Order By
         if (!empty($searchData['orderby']) && $searchData['orderby'] === 'price') {
+            $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.price02', 'ASC');
         } elseif (!empty($searchData['orderby']) && $searchData['orderby'] === 'date') {
+            $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.create_date', 'DESC');
         } else {
             if ($categoryJoin == false) {
@@ -120,6 +118,82 @@ class ProductRepository extends EntityRepository
                 ->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
         }
+
+        return $qb;
+    }
+
+    /**
+     * get
+     * 
+     * @param array $searchData
+     * @return Eccube\Entity\Product[]
+     */
+    public function getQueryBuilderBySearchDataForAdmin($searchData)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        // id
+        if (!empty($searchData['id']) && $searchData['id']) {
+            $qb
+                ->andWhere('p.id LIKE :id')
+                ->setParameter('id', $searchData['id']);
+        }
+
+        // code
+        if (!empty($searchData['code']) && $searchData['code']) {
+            $qb
+                ->innerJoin('p.ProductClasses', 'pc')
+                ->andWhere('pc.code LIKE :code')
+                ->setParameter('code', '%'.$searchData['code'].'%');
+        }
+
+        // name
+        if (!empty($searchData['name']) && $searchData['name']) {
+            $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
+            foreach ($keywords as $keyword) {
+                $qb
+                    ->andWhere('p.name LIKE :name')
+                    ->setParameter('name', '%'.$keyword.'%');
+            }
+        }
+
+        // category
+        if (!empty($searchData['category_id']) && $searchData['category_id']) {
+            $Categories = $searchData['category_id']->getSelfAndDescendants();
+            if ($Categories) {
+                $qb
+                    ->innerJoin('p.ProductCategories', 'pct')
+                    ->innerJoin('pct.Category', 'c')
+                    ->andWhere($qb->expr()->in('pct.Category', ':Categories'))
+                    ->setParameter('Categories', $Categories);
+            }
+        }
+
+        // status
+        if (!empty($searchData['status']) && $searchData['status']->toArray()) {
+            $qb
+                ->andWhere($qb->expr()->in('p.Status', ':Status'))
+                ->setParameter('Status', $searchData['status']->toArray());
+        }
+
+        // product_status
+        if (!empty($searchData['product_status']) && $searchData['product_status']->toArray()) {
+            $qb
+                ->innerJoin('p.ProductStatuses', 'ps')
+                ->andWhere($qb->expr()->in('ps.Status', ':ProductStatues'))
+                ->setParameter('ProductStatues', $searchData['product_status']->toArray());
+        }
+
+        // maker_id
+        if (!empty($searchData['maker_id']) && $searchData['maker_id']->toArray()) {
+            $qb
+                ->andWhere('p.Maker = :Maker')
+                ->setParameter('Maker', $searchData['maker_id']->toArray());
+        }
+
+        // Order By
+        $qb
+            ->orderBy('p.update_date', 'DESC');
 
         return $qb;
     }

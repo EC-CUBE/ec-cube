@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class OrderStatusType extends AbstractType
+class MakerType extends AbstractType
 {
 
     /**
@@ -23,13 +23,13 @@ class OrderStatusType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\OrderStatus',
+            'class' => 'Eccube\Entity\Maker',
             'property' => 'name',
             'label' => false,
             'multiple'=> false,
             'expanded' => false,
             'required' => false,
-            'empty_value' => '-',
+            'empty_value' => 'form.maker.empty_value',
         ));
     }
 
@@ -38,7 +38,7 @@ class OrderStatusType extends AbstractType
      */
     public function getName()
     {
-        return 'order_status';
+        return 'maker';
     }
 
     /**

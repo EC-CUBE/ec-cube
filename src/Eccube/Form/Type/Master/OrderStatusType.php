@@ -1,13 +1,13 @@
 <?php
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PrefType extends AbstractType
+class OrderStatusType extends AbstractType
 {
 
     /**
@@ -23,13 +23,13 @@ class PrefType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Pref',
+            'class' => 'Eccube\Entity\Master\OrderStatus',
             'property' => 'name',
             'label' => false,
             'multiple'=> false,
             'expanded' => false,
             'required' => false,
-            'empty_value' => 'form.pref.empty_value',
+            'empty_value' => '-',
         ));
     }
 
@@ -38,7 +38,7 @@ class PrefType extends AbstractType
      */
     public function getName()
     {
-        return 'pref';
+        return 'order_status';
     }
 
     /**

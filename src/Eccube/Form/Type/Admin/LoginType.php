@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AdminLoginType extends AbstractType
+class LoginType extends AbstractType
 {
     public $session;
 

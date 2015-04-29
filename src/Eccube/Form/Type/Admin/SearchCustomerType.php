@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
@@ -8,7 +8,7 @@ use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 use \Symfony\Component\Validator\ExecutionContextInterface;
 
-class CustomerSearchType extends AbstractType
+class SearchCustomerType extends AbstractType
 {
     public $app;
 
@@ -156,7 +156,7 @@ class CustomerSearchType extends AbstractType
      */
     public function getName()
     {
-        return 'customer_search';
+        return 'admin_search_customer';
     }
 
 }

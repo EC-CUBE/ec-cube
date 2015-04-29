@@ -53,11 +53,7 @@ class SearchProductType extends AbstractType
                 'maxlength' => 50,
             ),
         ));
-        $builder->add('pageno', 'integer', array(
-            'required' => false,
-            'attr' => array(
-                'min' => 1,
-            ),
+        $builder->add('pageno', 'hidden', array(
         ));
         $builder->add('disp_number', 'product_list_max', array(
             'label' => '表示件数',

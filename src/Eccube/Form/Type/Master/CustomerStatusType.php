@@ -1,13 +1,13 @@
 <?php
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ReminderType extends AbstractType
+class CustomerStatusType extends AbstractType
 {
 
     /**
@@ -15,38 +15,27 @@ class ReminderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $options['sex_options']['required'] = $options['required'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Reminder',
+            'class' => 'Eccube\Entity\Master\CustomerStatus',
             'property' => 'name',
             'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
-            'empty_value' => 'form.reminder.empty_value',
+            'expanded' => true,
+            'empty_value' => false,
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'reminder';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return 'entity';
     }
 
+    public function getName()
+    {
+        return 'customer_status';
+    }
 }

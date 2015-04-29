@@ -103,7 +103,7 @@ class ProductController
 
         /* @var $product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->get($productId);
-        if ($Product->getStatus() !== 1) {
+        if ($Product->getStatus()->getId() !== 1) {
             throw new NotFoundHttpException();
         }
 
