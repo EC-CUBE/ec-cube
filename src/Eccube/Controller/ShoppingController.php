@@ -495,7 +495,7 @@ class ShoppingController extends AbstractController
                     $Order = $app['eccube.repository.order']->find($preOrderId);
                 }
                 // 初回アクセスの場合は受注データを作成
-                if (is_null($order)) {
+                if (is_null($Order)) {
                     $Order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                         $app['eccube.service.cart']->getCart()->getCartItems(),
                         $Customer);
@@ -571,7 +571,7 @@ class ShoppingController extends AbstractController
     {
         $productTypeIds = array();
         foreach ($details as $detail) {
-            $productTypeIds[] = $detail->getProductClass()->getProductTypeId();
+            $productTypeIds[] = $detail->getProductClass()->getProductType()->getId();
         }
         $productTypeIds = array_unique($productTypeIds);
         $qb = $app['orm.em']->createQueryBuilder();
