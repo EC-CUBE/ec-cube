@@ -15,23 +15,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class MailHistoryRepository extends EntityRepository
 {
     /**
-     * @var SecurityContext
-     */
-    private $security;
-
-    /**
-     * setSecurity
-     * 
-     * @param SecurityContext $config
-     */
-    public function setSecurity(SecurityContextInterface $security)
-    {
-        $this->security = $security;
-    }
-
-    /**
-     * addFavorite
-     * 
      * @param \Eccube\Entity\Customer
      * @param integer $id
      * @expectedException \Exception|NoResultException|NonUniqueResultException
