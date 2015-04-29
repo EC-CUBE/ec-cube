@@ -10,7 +10,7 @@
                     <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
                     <div class="inputbox">
                         {% if error %}
-                        <span class="attention">{{ error }}</span>
+                            <span class="attention">{{ error }}</span>
                         {% endif %}
                         <dl class="formlist clearfix">
                             <dt>{{ form_label(form.login_email) }}&nbsp;：</dt>

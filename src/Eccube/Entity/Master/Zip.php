@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Zip extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getState() . $this->getCity() . $this->getTown();
+    }
+
+    /**
      * @var integer
      */
     private $id;
