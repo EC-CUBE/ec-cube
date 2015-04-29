@@ -73,10 +73,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $taxRuleRepository;
         });
         $app['eccube.repository.page_layout'] = $app->share(function() use ($app) {
-            $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\PageLayout');
-            $taxRuleRepository->setApp($app);
+            $pageLayoutRepository = $app['orm.em']->getRepository('Eccube\Entity\PageLayout');
+            $pageLayoutRepository->setApp($app);
 
-            return $taxRuleRepository;
+            return $pageLayoutRepository;
         });
         $app['eccube.repository.order'] = $app->share(function() use ($app) {
             $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
