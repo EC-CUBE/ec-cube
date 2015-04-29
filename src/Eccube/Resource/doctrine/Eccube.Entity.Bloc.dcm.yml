@@ -60,5 +60,6 @@ Eccube\Entity\Bloc:
     oneToMany:
         BlocPositions:
             targetEntity: Eccube\Entity\BlocPosition
+            cascade: ["persist", "remove"]
             mappedBy: Bloc
     lifecycleCallbacks: {  }
