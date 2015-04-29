@@ -28,8 +28,8 @@ class OrderService
             ->setCharge(0)
             ->setTax(0)
             ->setDelivFee(0)
-            ->setStatus(1) // todo
-            ->setDelFlg(1); // todo
+            ->setOrderStatus($this->app['eccube.repository.order_status']->find(1)) // todo
+            ->setDelFlg(0); // todo
         return $Order;
     }
 
@@ -144,11 +144,13 @@ class OrderService
 
         // 受注詳細, 配送商品
         foreach ($cartItems as $item) {
-
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
             $ProductClass = $item->getObject();
+            /* @var $Product \Eccube\Entity\Product */
             $Product = $ProductClass->getProduct();
+
             $quantity = $item->getQuantity();
-            $productTypeIds[] = $ProductClass->getProductTypeId();
+            $productTypeIds[] = $ProductClass->getProductType()->getId();
 
             // 受注詳細
             $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
@@ -181,7 +183,7 @@ class OrderService
             if (!is_null($ClassCategory2)) {
                 $ShipmentItem->setClasscategoryName1($ClassCategory2->getName());
             }
-            $Shipping->addShipmentItems($ShipmentItem);
+            $Shipping->addShipmentItem($ShipmentItem);
             $this->app['orm.em']->persist($ShipmentItem);
         }
 

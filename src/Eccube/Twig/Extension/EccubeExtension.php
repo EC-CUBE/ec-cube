@@ -22,6 +22,7 @@ class EccubeExtension extends \Twig_Extension
     {
         return array(
             'image_info' => new \Twig_Function_Method($this, 'getImageInfo'),
+            'calc_inc_tax' => new \Twig_Function_Method($this, 'getCalcIncTax'),
         );
     }
 
@@ -101,5 +102,15 @@ class EccubeExtension extends \Twig_Extension
     public function getNoImageMain($image)
     {
         return empty($image) ? 'noimage_main.jpg' : $image;
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getCalcIncTax($price, $tax_rate, $tax_rule)
+    {
+        return $price + $this->app['eccube.service.tax_rule']->calcTax($price, $tax_rate, $tax_rule);
     }
 }

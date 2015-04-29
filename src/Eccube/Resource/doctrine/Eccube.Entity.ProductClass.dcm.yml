@@ -32,11 +32,11 @@ Eccube\Entity\ProductClass:
 #            nullable: false
 #            unsigned: false
 #            default: '0'
-        product_type_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            default: '0'
+#        product_type_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+#            default: '0'
         code:
             type: text
             column: product_code
@@ -108,6 +108,13 @@ Eccube\Entity\ProductClass:
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
+                nullable: false
+        ProductType:
+            targetEntity: Eccube\Entity\Master\ProductType
+            inversedBy: ProductClasses
+            joinColumn:
+                name: product_type_id
+                referencedColumnName: id
                 nullable: false
         ClassCategory1:
             targetEntity: Eccube\Entity\ClassCategory

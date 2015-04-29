@@ -10,7 +10,7 @@
             <!--★ポイント案内★-->
             <div class="point_announce">
                 {% if is_granted('ROLE_USER') %}
-                    <span class="user_name">{{ app.user.last_name }} 様</span>の、現在の所持ポイントは「<span class="point">{{ app.user.point|number_format }} pt</span>」です。<br />
+                    <span class="user_name">{{ app.user.name01 }} 様</span>の、現在の所持ポイントは「<span class="point">{{ app.user.point|number_format }} pt</span>」です。<br />
                 {% else %}
                     ポイント制度をご利用になられる場合は、会員登録後ログインしてくださいますようお願い致します。<br />
                 {% endif %}
@@ -80,11 +80,11 @@
                                 <td>
                                     {# 商品名 #}
                                     <strong>{{ Product.name }}</strong>
-                                    {% if ProductClass.ClassCategory1 %}
-                                        <div>{{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1.name }}</div>
+                                    {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
+                                        <div>{{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}</div>
                                     {% endif %}
-                                    {% if ProductClass.ClassCategory2 %}
-                                        <div>{{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2.name }}</div>
+                                    {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
+                                        <div>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}</div>
                                     {% endif %}
                                 </td>
                                 <td class="alignR">

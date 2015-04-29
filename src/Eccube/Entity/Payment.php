@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Payment extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getMethod();
+    }
+
+    /**
      * @var integer
      */
     private $id;
