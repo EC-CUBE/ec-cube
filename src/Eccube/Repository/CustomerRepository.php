@@ -61,12 +61,12 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->setParameter('email', $username)
             ->setParameter('email_mobile', $username)
             ->getQuery();
-        $customer = $query->getOneOrNullResult();
-        if (!$customer) {
+        $Customer = $query->getOneOrNullResult();
+        if (!$Customer) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
-        return $customer;
+        return $Customer;
     }
 
     /**

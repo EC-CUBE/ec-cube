@@ -13,6 +13,7 @@ class OrderService
     {
         $this->app = $app;
     }
+
     public function newOrder()
     {
         $Order = new \Eccube\Entity\Order();

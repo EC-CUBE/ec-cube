@@ -21,6 +21,8 @@ class BasisControllerTest extends WebTestCase
 
     public function testRoutingAdminBasis()
     {
+        self::markTestSkipped();
+
         $client = $this->createClient();
         $client->request('GET', $this->app['url_generator']->generate('admin_basis'));
         $this->assertTrue($client->getResponse()->isSuccessful());

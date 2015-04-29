@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Constant extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
      * @var string
      */
     private $id;
