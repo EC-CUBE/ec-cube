@@ -15,9 +15,9 @@ class SaveEventSubscriber implements EventSubscriber
     private $security;
 
     /**
-     * @param SecurityContext $config
+     * @param SecurityContext $security
      */
-    public function __construct(SecurityContextInterface $security)
+    public function setSecurity(SecurityContextInterface $security)
     {
         $this->security = $security;
     }
@@ -41,7 +41,7 @@ class SaveEventSubscriber implements EventSubscriber
             $entity->setUpdateDate(new \DateTime());
         }
 
-        if ($this->security->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
+        if ($this->security && $this->security->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
             $Member = $this->security->getToken()->getUser();
             $entity->setCreator($Member);
         }

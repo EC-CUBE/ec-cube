@@ -283,6 +283,14 @@ class Application extends \Silex\Application
 
             return ($token !== null) ? $token->getUser() : null;
         });
+        $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
+            // save
+            $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber();
+            $saveEventSubscriber->setSecurity($app['security']);
+            $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+
+            return $em;
+        }));
 
         $app['filesystem'] = function() {
             return new \Symfony\Component\Filesystem\Filesystem();
