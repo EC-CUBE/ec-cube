@@ -18,6 +18,88 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
         return $app;
     }
 
+/* privateなMethodにしたのでテストは別途考える
+    public function test_getNewPageId(){
+
+        $app = $this->createApplication();
+
+        $actual = $app['eccube.repository.page_layout']
+            ->getNewPageId($app['config']['device_type_pc']);
+        $expected = 29;
+        $this->assertSame($actual, $expected);
+
+    }
+*/
+
+    public function test_findOrCreate_pageIdNullisCreate(){
+        $app = $this->createApplication();
+
+        $expected = null;
+
+        $PageLayout = $app['eccube.repository.page_layout']
+            ->findOrCreate(null, $app['config']['device_type_pc']);
+        $actual = $PageLayout->getUrl();
+
+        $this->assertSame($actual, $expected);
+    }
+
+
+    public function test_findOrCreate_findTopPage()
+    {
+        $app = $this->createApplication();
+
+        $expected = array(
+            'url' => 'index.php',
+            'device_type_id' => $app['config']['device_type_pc'],
+        );
+
+        $PageLayout = $app['eccube.repository.page_layout']
+            ->findOrCreate(1, $app['config']['device_type_pc']);
+        $actual = array(
+            'url' => $PageLayout->getUrl(),
+            'device_type_id' => $PageLayout->getDeviceTypeId(),
+        );
+
+        $this->assertSame($actual, $expected);
+    }
+
+
+    public function test_findOrCreate_findMobileMyPage(){
+        $app = $this->createApplication();
+
+        $expected = array(
+            'url' => 'mypage/index.php',
+            'device_type_id' => $app['config']['device_type_mobile'],
+        );
+
+        $PageLayout = $app['eccube.repository.page_layout']
+            ->findOrCreate(6, $app['config']['device_type_mobile']);
+        $actual = array(
+            'url' => $PageLayout->getUrl(),
+            'device_type_id' => $PageLayout->getDeviceTypeId(),
+        );
+
+        $this->assertSame($actual, $expected);
+    }
+
+    public function test_findOrCreate_findSmartphoneProduct(){
+        $app = $this->createApplication();
+
+        $expected = array(
+            'url' => 'products/list.php',
+            'device_type_id' => $app['config']['device_type_smartphone'],
+        );
+
+        $PageLayout = $app['eccube.repository.page_layout']
+            ->findOrCreate(2,  $app['config']['device_type_smartphone']);
+        $actual = array(
+            'url' => $PageLayout->getUrl(),
+            'device_type_id' => $PageLayout->getDeviceTypeId(),
+        );
+
+        $this->assertSame($actual, $expected);
+    }
+
     public function test_getTemplateFile_DefaultTemplateFile_isValid(){
         $app = $this->createApplication();
 

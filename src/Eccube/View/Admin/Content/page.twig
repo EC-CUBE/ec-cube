@@ -33,13 +33,15 @@
 
 <form name="tax_rule_form" id="tax_rule_form" method="post" action="
 {%- if page_id is not null %}{{ url('admin_content_page_edit', {'page_id':page_id}) }}{% else %}{{ url('admin_content_page')}}{% endif -%}">
-    {{ form_widget(form._token) }}
 
+    {{ form_widget(form._token) }}
+    {{ form_widget(form.page_id) }}
+    {{ form_widget(form.device_type_id) }}
     <table>
         <tr>
             <th>{{ form_label(form.name) }}</th>
             <td>
-                {{ form_widget(form.name) }}
+                {{ form_widget(form.name) }} {# TODO：デフォルトページなら変更できないようにしたい #}
                 <div class="message">
                     <span class="attention">{{ form_errors(form.name) }}</span>
                 </div>
@@ -48,7 +50,7 @@
         <tr>
             <th>{{ form_label(form.filename) }}</th>
             <td>
-                {{ form_widget(form.filename) }}
+                {{ form_widget(form.filename) }} {# TODO：デフォルトページなら変更できないようにしたい #}
                 <div class="attention">
                     <span class="attention">{{ form_errors(form.filename) }}</span>
                 </div>
@@ -100,6 +102,7 @@
             <li>{{ form_widget(form.save)}}</li>
         </ul>
     </div>
+</form>
 
 
     <h2>編集可能ページ一覧</h2>
@@ -131,7 +134,7 @@
                     {% endif %}
                 </td>
                 <td class="center">
-                    {% if Page.edit_flg == 1 %}
+                    {% if Page.edit_flg != 2 %}
                         <a href="{{ url('admin_content_page_delete', {'page_id':Page.page_id}) }}">削除</a>
                     {% endif %}
                 </td>

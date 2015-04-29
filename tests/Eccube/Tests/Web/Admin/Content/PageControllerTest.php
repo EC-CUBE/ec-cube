@@ -26,7 +26,7 @@ class PageControllerTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
-/*    public function test_routeing_AdminContentPage_edit()
+    public function test_routeing_AdminContentPage_edit()
     {
         $client = $this->createClient();
         $client->request('GET',
@@ -74,6 +74,6 @@ class PageControllerTest extends WebTestCase
         $actual = $client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertSame(true, $actual);
-    }*/
+    }
 
 }

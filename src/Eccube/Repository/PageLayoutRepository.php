@@ -24,10 +24,34 @@ class PageLayoutRepository extends EntityRepository
         $PageLayout = new \Eccube\Entity\PageLayout();
         $PageLayout
             ->setDeviceTypeId($device_type_id);
+        $page_id = $this->getNewPageId($device_type_id);
+        $PageLayout->setPageId($page_id);
 
         return $PageLayout;
     }
 
+    public function findOrCreate($page_id, $device_type_id)
+    {
+
+        if ($page_id == null ) {
+            return $this->newPageLayout($device_type_id);
+        } else {
+            return $this->getPageProperties($page_id, $device_type_id);
+        }
+
+    }
+
+    private function getNewPageId($device_type_id){
+
+        $qb = $this->createQueryBuilder('l')
+            ->select('max(l.page_id) +1 as page_id')
+            ->where('l.device_type_id = :device_type_id')
+            ->setParameter('device_type_id', $device_type_id);
+        $result = $qb->getQuery()->getSingleResult();
+
+        return $result['page_id'];
+
+    }
     /**
      * ページの属性を取得する.
      *
@@ -124,11 +148,12 @@ class PageLayoutRepository extends EntityRepository
      * ページデータを取得する.
      * @param  integer              $filename       ファイル名
      * @param  integer              $device_type_id 端末種別ID
+     * @param boolean $isUser
      * @return mixed
      */
-    public function getTemplateFile($filename, $device_type_id)
+    public function getTemplateFile($filename, $device_type_id, $isUser = false)
     {
-        $templatePath = $this->getTemplatePath($device_type_id);
+        $templatePath = $this->getTemplatePath($device_type_id, $isUser);
 
         $finder = Finder::create();
         $finder->followLinks();
@@ -140,8 +165,8 @@ class PageLayoutRepository extends EntityRepository
         // TODO: .tpl, .twig が混在するためひとまず*。元の$filenameから拡張子込で持ちたい。
         $finder->in($templatePath)->name($arrDir[$index].'.*');
 
+        $data = null;
         if ($finder->count() === 1) {
-            $data = null;
             foreach ($finder as $file) {
                 $data = array(
                     'file_name' => $file->getFileName(),
@@ -152,6 +177,5 @@ class PageLayoutRepository extends EntityRepository
 
         return $data;
     }
-
 
 }
