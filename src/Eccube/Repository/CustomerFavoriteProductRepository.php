@@ -4,6 +4,7 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\SecurityContext;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * CustomerFavoriteProductRepository
@@ -14,31 +15,14 @@ use Symfony\Component\Security\Core\SecurityContext;
 class CustomerFavoriteProductRepository extends EntityRepository
 {
     /**
-     * @var SecurityContext
-     */
-    private $security;
-
-    /**
-     * setSecurity
-     * 
-     * @param SecurityContext $config
-     */
-    public function setSecurity(SecurityContext $security)
-    {
-        $this->security = $security;
-    }
-
-    /**
-     * addFavorite
-     * 
+     * @param \Eccube\Entity\Customer $Customer
      * @param \Eccube\Entity\Product $Product
      */
-    public function addFavorite(\Eccube\Entity\Product $Product)
+    public function addFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
     {
-        if ($this->isFavorite($Product)) {
-            return false;
+        if ($this->isFavorite($Customer, $Product)) {
+            return;
         } else {
-            $Customer = $this->security->getToken()->getUser();
             $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
             $CustomerFavoriteProduct->setCustomer($Customer);
             $CustomerFavoriteProduct->setProduct($Product);
@@ -51,29 +35,70 @@ class CustomerFavoriteProductRepository extends EntityRepository
 
 
     /**
-     * addFavorite
-     * 
+     * @param \Eccube\Entity\Customer $Customer
      * @param \Eccube\Entity\Product $Product
-     * @return boolean
+     * @return bool
      */
-    public function isFavorite(\Eccube\Entity\Product $Product)
+    public function isFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
     {
-        if (!$this->security->isGranted('ROLE_USER')) {
-            return false;
-        } else {
-            $Customer = $this->security->getToken()->getUser();
-            $qb = $this->createQueryBuilder('cf')
-                ->select('COUNT(cf.Product)')
-                ->andWhere('cf.Customer = :Customer AND cf.Product = :Product');
-            $count = $qb
-                ->getQuery()
-                ->setParameters(array(
-                    'Customer' => $Customer,
-                    'Product' => $Product,
-                ))
-                ->getSingleScalarResult();
+        $qb = $this->createQueryBuilder('cf')
+            ->select('COUNT(cf.Product)')
+            ->andWhere('cf.Customer = :Customer AND cf.Product = :Product')
+            ->setParameters(array(
+                'Customer' => $Customer,
+                'Product' => $Product,
+            ));
+        $count = $qb
+            ->getQuery()
+            ->getSingleScalarResult();
 
-            return $count > 0;
+        return $count > 0;
+    }
+
+    /**
+     * @param \Eccube\Entity\Customer $Customer
+     * @param \Eccube\Entity\Product $Product
+     * @return bool
+     */
+    public function deleteFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
+    {
+        $qb = $this->createQueryBuilder('cf')
+            ->andWhere('cf.Customer = :Customer AND cf.Product = :Product')
+            ->setParameters(array(
+                'Customer' => $Customer,
+                'Product' => $Product,
+            ));
+
+        try {
+            $CustomerFavoriteProduct = $qb
+                ->getQuery()
+                ->getSingleResult();
+        } catch (\Exception $e) {
+            return false;
         }
+
+        $em = $this->getEntityManager();
+        $em->remove($CustomerFavoriteProduct);
+        $em->flush();
+
+        return true;
+    }
+
+    /**
+     * @param \Eccube\Entity\Customer $Customer
+     * @return QueryBuilder
+     */
+    public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)
+    {
+        $qb = $this->createQueryBuilder('cfp')
+            ->select('cfp, p')
+            ->innerJoin('cfp.Product', 'p')
+            ->where('cfp.Customer = :Customer AND p.status = 1')
+            ->setParameter('Customer', $Customer);
+
+        // Order By
+        $qb->addOrderBy('cfp.create_date', 'DESC');
+
+        return $qb;
     }
 }

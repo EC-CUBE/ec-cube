@@ -17,7 +17,6 @@ class OrderController
 
     public function index(Application $app)
     {
-
         $Orders = array();
 
         $form = $app['form.factory']
@@ -41,16 +40,10 @@ class OrderController
 
         }
 
-        $OrderStatusColors = $app['orm.em']
-            ->getRepository('Eccube\Entity\Master\OrderStatusColor')
-            ->findAll();
-        $orderStatusColors = $this->convertToArray($OrderStatusColors);
-
         return $app['view']->render('Admin/Order/index.twig', array(
             'form' => $form->createView(),
             'showResult' => $showResult,
             'Orders' => $Orders,
-            'orderStatusColors' => $orderStatusColors,
             'title' => $this->title,
             'tpl_maintitle' => '受注管理＞受注一覧',
         ));
@@ -71,17 +64,5 @@ class OrderController
 
         return $this->index($app);
     }
-
-    private function convertToArray(array $array)
-    {
-        $ret = array();
-        foreach ($array as $OrderStatusColor)
-        {
-            $ret[$OrderStatusColor->getId()] = $OrderStatusColor->getName();
-        }
-
-        return $ret;
-    }
-
 
 }

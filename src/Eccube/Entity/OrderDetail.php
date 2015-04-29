@@ -9,6 +9,97 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderDetail extends \Eccube\Entity\AbstractEntity
 {
+    private $price_inc_tax = null;
+
+
+    public function isPriceChange()
+    {
+        if (!$this->getProductClass()) {
+            return true;
+        } elseif ($this->getProductClass()->getPrice02IncTax() === $this->getPriceIncTax()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function isEnable()
+    {
+        if ($this->getProductClass() && $this->getProductClass()->isEnable()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param \Eccube\Entity\BaseInfo
+     * @return bool
+     */
+    public function isEffective(\Eccube\Entity\BaseInfo $BaseInfo)
+    {
+        $downloable = clone $this->getOrder()->getPaymentDate();
+        if ($BaseInfo->getDownloadableDays()) {
+            $downloable->add(new \DateInterval("P" . $BaseInfo->getDownloadableDays() . "D"));
+        }
+
+        if ($BaseInfo->getDownloadableDaysUnlimited() === 1 && $this->getOrder()->getPaymentDate()) {
+            return true;
+        } elseif (new \DateTime() <= $downloable) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDownloadable()
+    {
+        // 販売価格が 0 円
+        if ($this->getPrice() === 0) {
+            return true;
+        }
+        // ダウンロード期限内かつ, 入金日あり
+        elseif ($this->isEffective()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Set price IncTax
+     *
+     * @param string $price_inc_tax
+     * @return ProductClass
+     */
+    public function setPriceIncTax($price_inc_tax)
+    {
+        $this->price_inc_tax = $price_inc_tax;
+
+        return $this;
+    }
+
+    /**
+     * Get price IncTax
+     *
+     * @return string 
+     */
+    public function getPriceIncTax()
+    {
+        return $this->price_inc_tax;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTotalPrice()
+    {
+        return $this->getPriceIncTax() * $this->getQuantity();
+    }
+
     /**
      * @var integer
      */

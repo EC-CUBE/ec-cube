@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Controller\MyPage;
+namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -10,12 +10,9 @@ class ChangeController extends AbstractController
 {
     private $title;
 
-    public $form;
-
     public function __construct()
     {
         $this->title = 'MYページ';
-
     }
 
     /**
@@ -24,13 +21,9 @@ class ChangeController extends AbstractController
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
-       $Customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
-            ->findOneBy(array(
-                    'id' => $app['user']->getId(),
-                )
-            );
+        $Customer = $app['user'];
 
         $previous_password = $Customer->getPassword();
         $Customer->setPassword($app['config']['default_password']);
@@ -41,13 +34,12 @@ class ChangeController extends AbstractController
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
             if ($form->isValid()) {
-                switch ($app['request']->get('mode')) {
+                switch ($request->get('mode')) {
                     case 'complete':
-
-                        if ( $Customer->getPassword() === $app['config']['default_password']) {
+                        if ($Customer->getPassword() === $app['config']['default_password']) {
                             $Customer->setPassword($previous_password);
                         } else {
                             $Customer->setPassword(
@@ -66,7 +58,7 @@ class ChangeController extends AbstractController
             }
         }
 
-        return $app['twig']->render('MyPage/change.twig', array(
+        return $app['twig']->render('Mypage/change.twig', array(
             'title' => $this->title,
             'subtitle' => '会員登録内容変更(入力ページ)',
             'mypageno' => 'change',
@@ -80,10 +72,9 @@ class ChangeController extends AbstractController
      * @param Application $app
      * @return mixed
      */
-    public function complete(Application $app)
+    public function complete(Application $app, Request $request)
     {
-
-        return $app['view']->render('MyPage/change_complete.twig', array(
+        return $app['view']->render('Mypage/change_complete.twig', array(
             'title' => $this->title,
             'subtitle' => '会員登録内容変更(完了ページ)',
             'mypageno' => 'change',

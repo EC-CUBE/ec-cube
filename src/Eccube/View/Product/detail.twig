@@ -232,7 +232,7 @@
                                     var favoriteButton = $("#add_favorite_product");
                                     favoriteButton.tooltip();
 
-                                    {% if app.session.getFlashBag.get('just_added_favorite') %}
+                                    {% if app.session.getFlashBag.get('product_detail.just_added_favorite') %}
                                         favoriteButton.load(function(){ $(this).tooltip("open") });
                                         $(function(){
                                             var tid = setTimeout('favoriteButton.tooltip("close")',5000);
