@@ -2,8 +2,9 @@
 
 namespace Eccube\Controller\Admin\Order;
 
-use Doctrine\Common\Util\Debug;
 use Eccube\Application;
+use Eccube\Entity\MailHistory;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MailController
 {
@@ -22,6 +23,10 @@ class MailController
             ->getRepository('\Eccube\Entity\Order')
             ->find($orderId);
 
+        if (is_null($Order)) {
+            throw new HttpException('order not found.');
+        }
+
         $MailHistories = $app['orm.em']
             ->getRepository('\Eccube\Entity\MailHistory')
             ->findBy(array('Order' => $orderId));
@@ -33,7 +38,7 @@ class MailController
             $form->handleRequest($app['request']);
             $mode = $app['request']->get('mode');
 
-            // テンプレート変更の場合は、全体のバリデーション前に、テンプレート内容に差し替える。
+            // テンプレート変更の場合は. バリデーション前に内容差し替え.
             if ('change' === $mode) {
                 if ($form->get('template')->isValid()) {
                     /** @var $data \Eccube\Entity\MailTemplate */
@@ -49,7 +54,7 @@ class MailController
             if ($form->isValid()) {
                 switch ($mode) {
                     case 'confirm':
-                        // フォームをFreezeして再生成
+                        // フォームをFreezeして再生成.
                         $builder->setAttribute('freeze', true);
                         $form = $builder->getForm();
                         $form->handleRequest($app['request']);
@@ -66,18 +71,29 @@ class MailController
                         ));
                         break;
                     case 'send':
-                        $MailTemplate = $form->get('template')->getData();
                         $data = $form->getData();
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
                         // TODO: 後でEventとして実装する
                         $message = $app['mail.message']
-                            ->setSubject($MailTemplate->getSubject())
+                            ->setSubject($data['subject'])
                             ->setFrom(array('sample@example.com'))
                             ->setCc($app['config']['mail_cc'])
                             ->setTo(array($Order->getEmail()))
                             ->setBody($body);
                         $app['mailer']->send($message);
+
+                        // 送信履歴を保存.
+                        $MailTemplate = $form->get('template')->getData();
+                        $MailHistory = new MailHistory();
+                        $MailHistory
+                            ->setSubject($data['subject'])
+                            ->setMailBody($body)
+                            ->setMailTemplate($MailTemplate)
+                            ->setSendDate(new \DateTime())
+                            ->setOrder($Order);
+                        $app['orm.em']->persist($MailHistory);
+                        $app['orm.em']->flush($MailHistory);
 
                         return $app->redirect($app['url_generator']->generate('admin_order'));
                         break;
