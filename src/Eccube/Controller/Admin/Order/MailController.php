@@ -1,0 +1,112 @@
+<?php
+
+namespace Eccube\Controller\Admin\Order;
+
+use Doctrine\Common\Util\Debug;
+use Eccube\Application;
+
+class MailController
+{
+    protected $title;
+    protected $subtitle;
+
+    public function __construct()
+    {
+        $this->title = '受注管理';
+        $this->subtitle = 'メール配信';
+    }
+
+    public function index(Application $app, $orderId)
+    {
+        $Order =  $app['orm.em']
+            ->getRepository('\Eccube\Entity\Order')
+            ->find($orderId);
+
+        $MailHistories = $app['orm.em']
+            ->getRepository('\Eccube\Entity\MailHistory')
+            ->findBy(array('Order' => $orderId));
+
+        $builder = $app['form.factory']->createBuilder('mail');
+        $form = $builder->getForm();
+
+        if ('POST' === $app['request']->getMethod()) {
+            $form->handleRequest($app['request']);
+            $mode = $app['request']->get('mode');
+
+            // テンプレート変更の場合は、全体のバリデーション前に、テンプレート内容に差し替える。
+            if ('change' === $mode) {
+                if ($form->get('template')->isValid()) {
+                    /** @var $data \Eccube\Entity\MailTemplate */
+                    $MailTemplate = $form->get('template')->getData();
+                    $form = $builder->getForm();
+                    $form->get('template')->setData($MailTemplate);
+                    $form->get('subject')->setData($MailTemplate->getSubject());
+                    $form->get('header')->setData($MailTemplate->getHeader());
+                    $form->get('footer')->setData($MailTemplate->getFooter());
+                }
+            }
+
+            if ($form->isValid()) {
+                switch ($mode) {
+                    case 'confirm':
+                        // フォームをFreezeして再生成
+                        $builder->setAttribute('freeze', true);
+                        $form = $builder->getForm();
+                        $form->handleRequest($app['request']);
+
+                        $data = $form->getData();
+                        $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+
+                        return $app['view']->render('Admin/Order/mail_confirm.twig', array(
+                            'form' => $form->createView(),
+                            'title' => $this->title,
+                            'subtitle' => $this->subtitle,
+                            'body' => $body,
+                            'Order' => $Order,
+                        ));
+                        break;
+                    case 'send':
+                        $MailTemplate = $form->get('template')->getData();
+                        $data = $form->getData();
+                        $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+
+                        // TODO: 後でEventとして実装する
+                        $message = $app['mail.message']
+                            ->setSubject($MailTemplate->getSubject())
+                            ->setFrom(array('sample@example.com'))
+                            ->setCc($app['config']['mail_cc'])
+                            ->setTo(array($Order->getEmail()))
+                            ->setBody($body);
+                        $app['mailer']->send($message);
+
+                        return $app->redirect($app['url_generator']->generate('admin_order'));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return $app['view']->render('Admin/Order/mail.twig', array(
+            'form' => $form->createView(),
+            'title' => $this->title,
+            'subtitle' => $this->subtitle,
+            'Order' => $Order,
+            'MailHistories' => $MailHistories
+        ));
+    }
+
+    public function view(Application $app, $sendId)
+    {
+
+    }
+
+    protected function createBody($app, $header, $footer, $Order)
+    {
+        return $app['twig']->render('Mail/order.twig', array(
+            'header' => $header,
+            'footer' => $footer,
+            'Order' => $Order,
+        ));
+    }
+}

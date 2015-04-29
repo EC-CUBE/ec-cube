@@ -1,0 +1,104 @@
+{{ Order.name01 }}{{ Order.name02 }} 様
+
+{{ header }}
+
+************************************************
+　ご請求金額
+************************************************
+
+ご注文番号：{{ Order.id }}
+お支払い合計：￥{{ Order.payment_total|number_format}}
+お支払い方法：{{ Order.payment_method }}
+メッセージ：{{ Order.message }}
+
+{#<!--{if $arrOther.title.value}-->
+************************************************
+　<!--{$arrOther.title.name}-->情報
+************************************************
+
+<!--{foreach key=key item=item from=$arrOther}-->
+<!--{if $key != "title"}-->
+<!--{if $item.name != ""}--><!--{$item.name}-->：<!--{/if}--><!--{$item.value}-->
+<!--{/if}-->
+<!--{/foreach}-->
+<!--{/if}-->#}
+
+************************************************
+　ご注文商品明細
+************************************************
+
+{% for OrderDetail in Order.OrderDetails %}
+商品コード: {{ OrderDetail.product_code }}
+商品名: {{ OrderDetail.product_name }}  {{ OrderDetail.classcategory_name1 }}  {{ OrderDetail.classcategory_name2 }}
+単価：￥{{ calc_inc_tax(OrderDetail.price, OrderDetail.tax_rate, OrderDetail.tax_rule)|number_format }}
+数量： {{ OrderDetail.quantity|number_format }}
+
+{% endfor %}
+
+-------------------------------------------------
+小　計 ￥{{ Order.subtotal|number_format }}{% if Order.tax > 0 %}(うち消費税 ￥{{ Order.tax|number_format }}){% endif %}
+
+{% if Order.use_point > 0 %}
+値引き ￥{{ Order.use_point * app.config.point_value + Order.discount | number_format }}
+{% endif %}
+送　料 ￥{{ Order.deliv_fee|number_format}}
+手数料 ￥{{ Order.charge|number_format }}
+============================================
+合　計 ￥{{ Order.payment_total|number_format }}
+
+************************************************
+　ご注文者情報
+************************************************
+お名前　：{{ Order.name01 }}{{ Order.name02 }}　様
+{% if Order.company_name %}
+会社名　：{{ Order.company_name }}
+{% endif %}
+{% if app.config.form_country_enable %}
+国　　　：{{ Order.Country }}
+ZIPCODE ：{{ Order.zip_code }}
+{% endif %}
+郵便番号：〒{{ Order.zip01 }}-{{ Order.zip02 }}
+住所　　：{{ Order.Pref }}{{ Order.addr01 }}{{ Order.addr02 }}
+電話番号：{{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}
+FAX番号 ：{{ Order.fax01 }}-{{ Order.fax02 }}-{{ Order.fax03 }}
+
+メールアドレス：{{ Order.email }}
+
+************************************************
+　配送情報
+************************************************
+
+{%  for Shipping in Order.Shippings %}
+◎お届け先{% if Order.multiple %}{{ loop.index }}{% endif %}
+
+お名前　：{{ Shipping.name01 }}{{ Shipping.name02 }}　様
+{% if Shipping.company_name %}
+会社名　：{{ Shipping.company_name }}
+{% endif %}
+{% if app.config.form_country_enable %}
+    　国　　　：{{ Shipping.Country }}
+    　ZIPCODE ：{{ Shipping.zip_code }}
+{% endif %}
+郵便番号：〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}
+住所　　：{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}
+電話番号：{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
+FAX番号 ：{{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+
+お届け日：{{ Shipping.shipping_date is empty ? '指定なし' : Shipping.shipping_date|date('Y/m/d') }}
+お届け時間：{{ Shipping.shipping_time|default('指定なし') }}
+
+{%  for ShipmentItem in Shipping.ShipmentItems %}
+商品コード: {{ ShipmentItem.product_code }}
+商品名: {{ ShipmentItem.product_name }}  {{ ShipmentItem.classcategory_name1 }}  {{ ShipmentItem.classcategory_name2 }}
+数量：{{ ShipmentItem|number_format }}
+
+{% endfor %}
+{% endfor %}
+
+{% if Order.Customer and app.config.use_point %}
+============================================
+ご使用ポイント{{ Order.use_point|number_format }} pt
+今回加算される予定のポイント {{ Order.add_point|number_format }} pt
+現在の所持ポイント {{ Order.Customer.point }} pt
+{% endif %}
+{{ footer }}
