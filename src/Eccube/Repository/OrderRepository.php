@@ -13,6 +13,14 @@ use Doctrine\ORM\QueryBuilder;
  */
 class OrderRepository extends EntityRepository
 {
+    /** @var array */
+    public $config;
+
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * 
      * @param array $searchData
@@ -20,9 +28,7 @@ class OrderRepository extends EntityRepository
      */
     public function getQueryBuilderBySearchData($searchData)
     {
-        $qb = $this->createQueryBuilder('o')
-            ->select('o')
-            ->andWhere('o.del_flg = 0');
+        $qb = $this->createQueryBuilder('o');
 
         $joinedCustomer = false;
 
@@ -215,5 +221,24 @@ class OrderRepository extends EntityRepository
         $qb->addOrderBy('o.id', 'DESC');
 
         return $qb;
+    }
+
+    /**
+     * 新規受付一覧の取得
+     *
+     * @return \Eccube\Entity\Order[]
+     */
+    public function getNew()
+    {
+        $qb = $this->createQueryBuilder('o');
+        $qb
+            ->where('o.OrderStatus <> :OrderStatus')
+            ->setParameter('OrderStatus', $this->config['order_cancel'])
+            ->setMaxResults(10)
+            ->orderBy('o.create_date', 'DESC');
+
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 }

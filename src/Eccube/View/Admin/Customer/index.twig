@@ -38,11 +38,7 @@
 
         <!--検索条件設定テーブルここから-->
         <table class="form">
-
-
             {{ form_widget(form) }}
-
-
         </table>
         <div class="btn">
             <p class="page_rows">検索結果表示件数
@@ -90,7 +86,7 @@
                 {% for Customer in Customers %}
                     <tr>
                         <td class="center">
-                            {% if Customer.status == 1 %}
+                            {% if Customer.Status.id == 1 %}
                                 仮
                             {% else %}
                                 本
@@ -114,7 +110,7 @@
                             <span class="icon_delete">
                                 <a href="#" onclick="return fnDelete('{{ delete_action }}');">削除</a>
                             </span>
-                            {% if Customer.status == 1 %}
+                            {% if Customer.Status.id == 1 %}
                                 | <a href="#" onclick="return fnReSendMail('{{ resend_action }}');">仮登録メール再送</a>
                             {% endif %}
                         </td>
@@ -128,10 +124,8 @@
                 {% endfor %}
             </table>
             <!-- 検索結果表示テーブル -->
-
         </form>
         <!-- ★★検索結果一覧★★ -->
-
     {% endif %}
 </div>
 

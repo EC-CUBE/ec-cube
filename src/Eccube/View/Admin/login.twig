@@ -1,0 +1,36 @@
+{% extends 'Admin/login_frame.twig' %}
+
+{% block main %}
+<div id="login-wrap">
+    <div id="login-form" class="clearfix">
+        <h1><img src="{{ app.config.admin_tpl }}img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
+        <div id="input-form">
+            <form name="form1" id="form1" method="post" action="{{ path('admin_login_check') }}">
+                {% if error %}
+                    <span class="attention">{{ error }}</span>
+                {% endif %}
+
+                <p><label for="login_id">ID</label></p>
+                {{ form_widget(form.login_id, {'attr': {'size': 20, 'class': "box25"}}) }}
+                <p><label for="password">PASSWORD</label></p>
+                {{ form_widget(form.password, {'attr': {'size': 20, 'class': "box25"}}) }}
+
+                <p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit(); return false;"><span>LOGIN</span></a></p>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+</div>
+<div id="copyright">Copyright &copy; 2000-{{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</div>
+
+<script type="text/javascript">//<![CDATA[
+document.form1.login_id.focus();
+$(function() {
+    $('<input type="submit" />')
+        .css({'position' : 'absolute',
+            'top' : '-1000px'})
+        .appendTo('form');
+});
+//]]></script>
+{% endblock %}

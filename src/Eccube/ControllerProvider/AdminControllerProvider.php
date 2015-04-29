@@ -21,10 +21,11 @@ class AdminControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        // login
+        $controllers->match('/login.php', '\\Eccube\\Controller\\Admin\\AdminController::login')->bind('admin_login');
+
         // root
-        $controllers->match('/', '\\Eccube\\Page\\Admin\\Index')->bind('admin_index');
-        $controllers->match('/home.php', '\\Eccube\\Page\\Admin\\Home')->bind('admin_home');
-        $controllers->match('/logout.php', '\\Eccube\\Page\\Admin\\Logout')->bind('admin_logout');
+        $controllers->match('/', '\\Eccube\\Controller\\Admin\\AdminController::index')->bind('admin_homepage');
 
         // basis
         $controllers->match('/basis/', '\\Eccube\\Page\\Admin\\Basis\\Index')->bind('admin_basis');

@@ -19,7 +19,7 @@ use Eccube\Framework\Util\GcUtils;
 use Eccube\Framework\Util\Utils;
 use Symfony\Component\HttpFoundation\Request;
 
-class CallbackResolver extends \Silex\CallbackResolver
+class LegacyCallbackResolver extends \Silex\CallbackResolver
 {
     const PAGE_PATTERN = '/\A\\\\Eccube(\\\\Plugin\\\\\w+)?\\\\Page\\\\/';
 

@@ -10,13 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Category extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * __toString
-     * 
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
     /**

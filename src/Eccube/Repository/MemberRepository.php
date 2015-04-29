@@ -34,7 +34,16 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        
+        $query = $this->createQueryBuilder('m')
+            ->where('m.login_id = :login_id')
+            ->setParameter('login_id', $username)
+            ->getQuery();
+        $Member = $query->getOneOrNullResult();
+        if (!$Member) {
+            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+        }
+
+        return $Member;
     }
 
     /**
