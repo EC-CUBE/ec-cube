@@ -37,40 +37,10 @@ class PaymentRegisterType extends AbstractType
             ->add('rule_max', 'integer', array(
                 'label' => '利用条件（円）',
                 'required' => true,
-                // 'constraints' => array(
-                //     new Assert\CallBack(function($ruleMax, ExecutionContext $context) {
-                //         // 利用条件(下限)チェック
-                //         $ruleMin = $this->getRuleMin();
-                //         if ($ruleMin != '' && $ruleMax() < $ruleMin) {
-                //             $context->addViolation('利用条件(下限)は' . $ruleMin .'円以下にしてください。');
-
-                //             return;
-                //         }
-                //     }),
-                // ),
             ))
             ->add('upper_rule', 'integer', array(
                 'label' => '〜利用条件（円）',
                 'required' => true,
-                // 'constraints' => array(
-                //     new Assert\CallBack(function($upperRule, ExecutionContext $context){
-                //         // 利用条件(上限)チェック
-                //         $upperRuleMax = $this->getUpperRuleMax();
-                //         if ($upperRuleMax != '' && $upperRule > $upperRuleMax) {
-                //             $context->addViolation('利用条件(上限)は' . $upperRuleMax .'円以下にしてください。');
-
-                //             return;
-                //         }
-                //     }),
-                //     new Assert\CallBack(function($upperRule, ExecutionContext $context){
-                //         // 妥当性チェック
-                //         if ($this->getRuleMax() > $upperRule()) {
-                //             $context->addViolation('利用条件(上限)は利用条件（下限）以上にしてください。');
-
-                //             return;
-                //         }
-                //     }),
-                // ),
             ))
             // カード会社などの上限
             ->add('upper_rule_max', 'hidden')
