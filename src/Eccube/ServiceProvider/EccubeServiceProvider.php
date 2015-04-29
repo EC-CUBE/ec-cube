@@ -101,6 +101,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
                 $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\PointEventSubscriber($point_rule, $taxRuleService));
 
+                // save
+                $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
+                $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+
                 // 
                 $config = $em->getConfiguration();
                 $config->addFilter("soft_delete", "\Eccube\Doctrine\Filter\SoftDeleteFilter");
