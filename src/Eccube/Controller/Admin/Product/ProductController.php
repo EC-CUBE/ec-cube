@@ -39,6 +39,12 @@ class ProductController
 
     public function edit(Application $app, Request $request)
     {
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass'
+        ));
+
         if ($request->get('product_id')) {
             $Product = $app['eccube.repository.product']->find($request->get('product_id'));
             if (!$Product) {
