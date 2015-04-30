@@ -1608,3 +1608,22 @@ body#popup {
 }
 
 /*以上インストールページと共通■触るべからず*/
+
+/* alert
+----------------------------------------------- */
+.alert {
+    padding: 10px 20px;
+    border-bottom: 1px solid transparent;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
