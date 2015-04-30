@@ -63,10 +63,13 @@ class OrderService
             return $Order;
         }
 
-        $Order->setCustomer($Customer)
+        if ($Customer->getId()) {
+            $Order->setCustomer($Customer);
+        }
+        $Order
             ->setName01($Customer->getName01())
             ->setName02($Customer->getName02())
-            ->setKana01($Customer->getKana02())
+            ->setKana01($Customer->getKana01())
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
             ->setEmail($Customer->getEmail())
@@ -88,16 +91,15 @@ class OrderService
         return $Order;
     }
 
-    public function copyToShippingFromCustomer(\Eccube\Entity\Shipping $shipping, \Eccube\Entity\Customer $Customer = null)
+    public function copyToShippingFromCustomer(\Eccube\Entity\Shipping $Shipping, \Eccube\Entity\Customer $Customer = null)
     {
         if (is_null($Customer)) {
-            return $shipping;
+            return $Shipping;
         }
-
-        $shipping
+        $Shipping
             ->setName01($Customer->getName01())
             ->setName02($Customer->getName02())
-            ->setKana01($Customer->getKana02())
+            ->setKana01($Customer->getKana01())
             ->setKana02($Customer->getKana02())
             ->setCompanyName($Customer->getCompanyName())
             ->setTel01($Customer->getTel01())
@@ -112,7 +114,7 @@ class OrderService
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
 
-        return $shipping;
+        return $Shipping;
     }
 
     public function registerPreOrderFromCartItems($cartItems, \Eccube\Entity\Customer $Customer = null)
@@ -127,7 +129,7 @@ class OrderService
         // 配送先
         $Shipping = new \Eccube\Entity\Shipping();
 
-        $this->copyToShippingFromCustomer($Shipping, $Order->getCustomer())
+        $this->copyToShippingFromCustomer($Shipping, $Customer)
             ->setShippingId(1)
             ->setOrderId($Order->getId())
             ->setOrder($Order)
@@ -137,7 +139,6 @@ class OrderService
         $this->app['orm.em']->persist($Shipping);
 
         $Order->addShipping($Shipping);
-        $OrderDetails = $Order->getOrderDetails();
 
         $point = 0;
         $subTotal = 0;
@@ -156,6 +157,8 @@ class OrderService
             // 受注詳細
             $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
             $OrderDetail->setOrder($Order);
+
+            $Order->addOrderDetail($OrderDetail);
             $this->app['orm.em']->persist($OrderDetail);
 
             // 小計
