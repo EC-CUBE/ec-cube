@@ -8,6 +8,6 @@ class CartController
 {
 	function index(Application $app)
 	{
-		return 'block_cart';
+		return '';
 	}
 }

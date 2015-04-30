@@ -8,6 +8,6 @@ class CategoryController
 {
 	function index(Application $app)
 	{
-		return 'block_category';
+		return '';
 	}
 }

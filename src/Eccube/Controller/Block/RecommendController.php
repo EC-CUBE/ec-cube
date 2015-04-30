@@ -8,6 +8,6 @@ class RecommendController
 {
 	function index(Application $app)
 	{
-		return 'block_recommend';
+		return '';
 	}
 }

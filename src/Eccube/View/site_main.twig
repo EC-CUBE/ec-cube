@@ -109,7 +109,9 @@
                 {# ▲LEFT COLUMN #}
 
                 {# ▼CENTER COLUMN #}
-                <div id="main_column" class="colnum2 left">
+
+
+                <div id="main_column" class="colnum{{ app.colnum }} {% if app.colnum == 2 and app.hasLeftNavi is defined %}left{% endif %}">
                     {# ▼メイン上部 #}
                     {{ render(path('block', {'position': 'MAIN_HEAD'})) }}
                     {# ▲メイン上部 #}

@@ -8,6 +8,6 @@ class CalendarController
 {
 	function index(Application $app)
 	{
-		return 'block_calendar';
+		return '';
 	}
 }

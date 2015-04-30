@@ -8,6 +8,10 @@ class NewsController
 {
 	function index(Application $app)
 	{
-		return 'block_news';
+        $NewsList = $app['orm.em']->getRepository('\Eccube\Entity\News')
+            ->findAll();
+		return $app['view']->render('Block/news.twig', array(
+            'NewsList' => $NewsList,
+        ));
 	}
 }
