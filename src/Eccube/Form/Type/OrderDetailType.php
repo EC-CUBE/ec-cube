@@ -23,15 +23,23 @@ class OrderDetailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('product_name');
-        $builder->add('product_code');
-        $builder->add('classcategory_name1');
-        $builder->add('classcategory_name2');
-        $builder->add('price');
-        $builder->add('quantity');
-        $builder->add('point_rate');
-        $builder->add('tax_rate');
-        $builder->add('tax_rule');
+        $builder
+            ->add('id')
+            // ->add('ProductClass', 'entity', array(
+            //     'label' => '原因',
+            //     'class' => 'Eccube\Entity\ProductClass',
+            //     'property' => 'code',
+            // ))
+            ->add('product_name')
+            ->add('product_code')
+            ->add('classcategory_name1')
+            ->add('classcategory_name2')
+            ->add('price')
+            ->add('quantity')
+            ->add('point_rate')
+            ->add('tax_rate')
+            ->add('tax_rule')
+            ->add('total_price');
     }
 
     /**

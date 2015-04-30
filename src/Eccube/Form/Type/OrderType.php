@@ -23,52 +23,62 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden');
-        $builder->add('Customer');
-        $builder->add('Country');
-        $builder->add('Pref');
-        $builder->add('Sex');
-        $builder->add('Job');
-//        $builder->add('Deliv');
-//        $builder->add('Payment');
-        $builder->add('DeviceType');
-        $builder->add('message', 'text');
-        $builder->add('name01', 'text');
-        $builder->add('name02', 'text');
-        $builder->add('kana01', 'text');
-        $builder->add('kana02', 'text');
-        $builder->add('company_name', 'text');
-        $builder->add('email', 'text');
-        $builder->add('tel01', 'text');
-        $builder->add('tel02', 'text');
-        $builder->add('tel03', 'text');
-        $builder->add('fax01', 'text');
-        $builder->add('fax02', 'text');
-        $builder->add('fax03', 'text');
-        $builder->add('zip01', 'text');
-        $builder->add('zip02', 'text');
-        $builder->add('zipcode', 'text');
-        $builder->add('addr01', 'text');
-        $builder->add('addr02', 'text');
-        $builder->add('birth');
-        $builder->add('subtotal');
-        $builder->add('discount');
-        $builder->add('deliv_fee');
-        $builder->add('charge');
-        $builder->add('use_point');
-        $builder->add('add_point');
-        $builder->add('birth_point');
-        $builder->add('tax');
-        $builder->add('total');
-        $builder->add('payment_total');
-        $builder->add('payment_method');
-        $builder->add('note');
-        $builder->add('OrderStatus');
-        $builder->add('commit_date');
-        $builder->add('payment_date');
-        $builder->add('create_date');
-        $builder->add('OrderDetails', 'collection', array('type' => new OrderDetailType()));
-        $builder->add('Shippings', 'collection', array('type' => new ShippingType()));
+        $builder->add('id', 'hidden')
+            // ->add('Country')
+            // ->add('zipcode', 'text')
+            ->add('Deliv', 'entity', array(
+                'class' => 'Eccube\Entity\Deliv',
+                'property' => 'name',
+                'expanded' => false,
+                'multiple' => false,
+                'empty_value' => '-',
+            ))
+            ->add('Payment', 'entity', array(
+                'class' => 'Eccube\Entity\Payment',
+                'property' => 'method',
+                'expanded' => false,
+                'multiple' => false,
+                'empty_value' => '-',
+            ))
+            ->add('Customer')
+            ->add('Sex', 'sex', array(
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add('Job')
+            ->add('DeviceType')
+            ->add('message')
+            ->add('name', 'name')
+            ->add('kana01', 'text')
+            ->add('kana02', 'text')
+            ->add('company_name', 'text')
+            ->add('email', 'text')
+            ->add('tel', 'tel')
+            ->add('fax', 'fax')
+            ->add('zip', 'zip')
+            ->add('address', 'address')
+            ->add('birth', 'birthday', array(
+                'format' => 'yyyy-MM-dd',
+            ))
+            ->add('subtotal')
+            ->add('discount')
+            ->add('deliv_fee')
+            ->add('charge')
+            ->add('use_point')
+            ->add('add_point')
+            ->add('birth_point')
+            ->add('tax')
+            ->add('total')
+            ->add('payment_total')
+            ->add('payment_method')
+            ->add('note', 'textarea')
+            ->add('OrderStatus')
+            ->add('commit_date')
+            ->add('payment_date')
+            ->add('create_date')
+            ->add('OrderDetails', 'collection', array('type' => new OrderDetailType()))
+            ->add('Shippings', 'collection', array('type' => new ShippingType()))
+        ;
     }
 
     /**

@@ -112,7 +112,7 @@ class TaxRuleRepository extends EntityRepository
             $qb->andWhere('t.Pref IS NULL OR t.Pref = :Pref');
             $parameters['Pref'] = $Pref;
         } else {
-            $qb->andWhere('t.Pref IS NULL');
+            $qb->andWhere('t.Pref = 0');
         }
 
         // Country
@@ -120,7 +120,7 @@ class TaxRuleRepository extends EntityRepository
             $qb->andWhere('t.Country IS NULL OR t.Country = :Country');
             $parameters['Country'] = $Country;
         } else {
-            $qb->andWhere('t.Country IS NULL');
+            $qb->andWhere('t.Country = 0');
         }
 
         // Product
@@ -128,7 +128,7 @@ class TaxRuleRepository extends EntityRepository
             $qb->andWhere('t.Product IS NULL OR t.Product = :Product');
             $parameters['Product'] = $Product;
         } else {
-            $qb->andWhere('t.Product IS NULL');
+            $qb->andWhere('t.Product = 0');
         }
 
         // ProductClass
@@ -136,7 +136,7 @@ class TaxRuleRepository extends EntityRepository
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $parameters['ProductClass'] = $ProductClass;
         } else {
-            $qb->andWhere('t.ProductClass IS NULL');
+            $qb->andWhere('t.ProductClass = 0');
         }
 
         $TaxRules = (array)$qb
