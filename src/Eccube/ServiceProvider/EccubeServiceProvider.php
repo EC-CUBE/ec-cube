@@ -130,6 +130,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\NameType();
             $types[] = new \Eccube\Form\Type\TelType();
+            $types[] = new \Eccube\Form\Type\FaxType();
             $types[] = new \Eccube\Form\Type\PrefType();
             $types[] = new \Eccube\Form\Type\ZipType();
             $types[] = new \Eccube\Form\Type\AddressType();
