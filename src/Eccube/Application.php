@@ -326,7 +326,7 @@ class Application extends \Silex\Application
         $app['eccube.layout'] = null;
         $this->before(function (Request $request, \Silex\Application $app) {
             $url = str_replace($app['config']['root'], '', $app['request']->server->get('REDIRECT_URL'));
-            if (substr($url, -1) === '/') {
+            if (substr($url, -1) === '/' || $url === '') {
                 $url .= 'index.php';
             }
 
@@ -345,6 +345,29 @@ class Application extends \Silex\Application
                         'url'               => $url,
                     ))
                     ->getSingleResult();
+
+                // TODO: 無理やり計算して無理やりいれている
+                $BlocPositions = $result->getBlocPositions();
+                $hasLeftNavi = false;
+                $hasRightNavi = false;
+                foreach ($BlocPositions as $BlocPosition) {
+                    if ($BlocPosition->getTargetId() == 1) {
+                        $hasLeftNavi = true;
+                    }
+                    if ($BlocPosition->getTargetId() == 3) {
+                        $hasRightNavi = true;
+                    }
+                }
+                $colnum = 1;
+                if ($hasLeftNavi) {
+                    $colnum ++;
+                    $app['hasLeftNavi'] = true;
+                }
+                if ($hasRightNavi) {
+                    $colnum ++;
+                }
+                $app['colnum'] = $colnum;
+
             } catch (\Doctrine\ORM\NoResultException $e) {
                 $result = null;
             }

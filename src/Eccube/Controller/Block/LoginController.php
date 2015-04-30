@@ -8,6 +8,6 @@ class LoginController
 {
 	function index(Application $app)
 	{
-		return 'block_login';
+		return '';
 	}
 }

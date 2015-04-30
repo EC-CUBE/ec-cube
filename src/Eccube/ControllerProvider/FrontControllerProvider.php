@@ -22,8 +22,11 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // root
-        $controllers->match('/', "\\Eccube\\Page\\Index")->bind('index');
-        $controllers->match('/', "\\Eccube\\Page\\Index")->bind('homepage');
+        // $controllers->match('/', "\\Eccube\\Page\\Index")->bind('index');
+        // $controllers->match('/', "\\Eccube\\Page\\Index")->bind('homepage');
+        $controllers->match('/', "\\Eccube\\Controller\\TopController::index")->bind('top');
+        $controllers->match('/', "\\Eccube\\Controller\\TopController::index")->bind('index');
+        $controllers->match('/', "\\Eccube\\Controller\\TopController::index")->bind('homepage');
         $controllers->match('/input_zip.php', '\\Eccube\\Page\\InputZip')->bind('input_zip');
         $controllers->match('/sitemap.php', '\\Eccube\\Page\\Sitemap')->bind('sitemap');
         $controllers->match('/error.php', '\\Eccube\\Page\\Error\\SystemError')->bind('error');
@@ -77,9 +80,9 @@ class FrontControllerProvider implements ControllerProviderInterface
         // block
         $controllers->match('/frontparts/block/category.php', '\\Eccube\\Controller\\Block\\CategoryController::index')->bind('block_category');
         $controllers->match('/frontparts/block/cart.php', '\\Eccube\\Controller\\Block\\CartController::index')->bind('block_cart');
-        $controllers->match('/frontparts/block/search_product.php', '\\Eccube\\Controller\\Block\\SearchProductController::index')->bind('block_search_product');
+        $controllers->match('/frontparts/block/search_product.php', '\\Eccube\\Controller\\Block\\SearchProductController::index')->bind('block_search_products');
         $controllers->match('/frontparts/block/news.php', '\\Eccube\\Controller\\Block\\NewsController::index')->bind('block_news');
-        $controllers->match('/frontparts/block/login.php', '\\Eccube\\Controller\\Block\\LoginController::index')->bind('bloc_login');
+        $controllers->match('/frontparts/block/login.php', '\\Eccube\\Controller\\Block\\LoginController::index')->bind('block_login');
         $controllers->match('/frontparts/block/recommend.php', '\\Eccube\\Controller\\Block\\RecommendController::index')->bind('block_recommend');
         $controllers->match('/frontparts/block/calendar.php', '\\Eccube\\Controller\\Block\\CalendarController::index')->bind('block_calendar');
         $controllers->match('/frontparts/block/login_header.php', '\\Eccube\\Controller\\Block\\LoginHeaderController::index')->bind('block_login_header');
