@@ -38,9 +38,7 @@ class EditController {
                 $Order = $form->getData();
                 $OrderDetails = $Order->getOrderDetails();
                 $Shippings = $Order->getShippings();
-                $Customer = $Order->getCustomer();
 
-                $app['orm.em']->persist($Customer);
                 $app['orm.em']->persist($Order);
                 $app['orm.em']->flush();
                 // TODO: リダイレクトすると検索条件が消える
@@ -48,7 +46,6 @@ class EditController {
             }
         }
 
-var_dump($form->getErrorsAsString());
         return $app['view']->render('Admin/Order/edit.twig', array(
                 'form' => $form->createView(),
                 'title' => '受注管理',

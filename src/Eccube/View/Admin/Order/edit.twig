@@ -194,7 +194,7 @@
     <a name="order_products"></a>
     <h2 id="order_products">
         受注商品情報
-        <a class="btn-normal" href="{{ path('admin_order_recalc', {orderId: Order.id}) }}">計算結果の確認</a>
+        <a class="btn-normal" href="{{ path('admin_order_recalc') }}">計算結果の確認</a>
         <!--{if $tpl_shipping_quantity <= 1}-->
         {% if Order.multiple %}
             <a class="btn-normal" href="{{ path('admin_order_product_add', {orderId: Order.id, shippingId: Order.Shippings.0.id}) }}">商品の追加</a>

@@ -157,7 +157,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/order/delete/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::delete')
             ->assert('orderId', '\d+')
             ->bind('admin_order_delete');
-        $controllers->match('/order/recalc/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::recalculate')
+        $controllers->match('/order/recalc/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::recalculate')
             ->assert('orderId', '\d+')
             ->bind('admin_order_recalc');
         $controllers->match('/order/product/add/{orderId}/{shippingId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::addProduct')
@@ -172,8 +172,7 @@ class AdminControllerProvider implements ControllerProviderInterface
             ->assert('orderId', '\d+')
             ->assert('shippingId', '\d+')
             ->bind('admin_order_product_delete');
-        $controllers->match('/order/shipping/add/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::addShipping')
-            ->assert('orderId', '\d+')
+        $controllers->match('/order/shipping/add/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::addShipping')
             ->bind('admin_order_shipping_add');
 
 
