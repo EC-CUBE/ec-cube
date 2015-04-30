@@ -60,6 +60,15 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $productRepository;
         });
+        $app['eccube.repository.maker'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Maker');
+        });
+        $app['eccube.repository.class_name'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ClassName');
+        });
+        $app['eccube.repository.class_category'] = $app->share(function() use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ClassCategory');
+        });
         $app['eccube.repository.customer_favorite_product'] = $app->share(function() use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
         });
@@ -194,6 +203,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ProductClassType($app);
             $types[] = new \Eccube\Form\Type\Admin\SearchProductType($app);
             $types[] = new \Eccube\Form\Type\Admin\SearchCustomerType($app);
+            $types[] = new \Eccube\Form\Type\Admin\MakerType($app);
+            $types[] = new \Eccube\Form\Type\Admin\ClassNameType($app);
+            $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app);
 
             return $types;
         }));

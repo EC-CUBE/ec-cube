@@ -228,4 +228,49 @@ class Maker extends \Eccube\Entity\AbstractEntity
     {
         return $this->Creator;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Products;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Products = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add Products
+     *
+     * @param \Eccube\Entity\Product $products
+     * @return Maker
+     */
+    public function addProduct(\Eccube\Entity\Product $products)
+    {
+        $this->Products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove Products
+     *
+     * @param \Eccube\Entity\Product $products
+     */
+    public function removeProduct(\Eccube\Entity\Product $products)
+    {
+        $this->Products->removeElement($products);
+    }
+
+    /**
+     * Get Products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->Products;
+    }
 }

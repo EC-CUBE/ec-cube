@@ -12,4 +12,148 @@ use Doctrine\ORM\EntityRepository;
  */
 class MakerRepository extends EntityRepository
 {
+    public function getList()
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->orderBy('m.rank', 'DESC');
+        $Makers = $qb->getQuery()
+            ->getResult();
+
+        return $Makers;
+    }
+
+    /**
+     * @param  \Eccube\Entity\Maker $Maker
+     * @return void
+     */
+    public function up(\Eccube\Entity\Maker $Maker)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            $rank = $Maker->getRank();
+
+            // 
+            $Maker2 = $this->findOneBy(array('rank' => $rank + 1));
+            if (!$Maker2) {
+                throw new \Exception();
+            }
+            $Maker2->setRank($rank);
+            $em->persist($Maker);
+
+            // Maker更新
+            $Maker->setRank($rank + 1);
+
+            $em->persist($Maker);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\Maker $Maker
+     * @return bool
+     */
+    public function down(\Eccube\Entity\Maker $Maker)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            $rank = $Maker->getRank();
+
+            // 
+            $Maker2 = $this->findOneBy(array('rank' => $rank - 1));
+            if (!$Maker2) {
+                throw new \Exception();
+            }
+            $Maker2->setRank($rank);
+            $em->persist($Maker);
+
+            // Maker更新
+            $Maker->setRank($rank - 1);
+
+            $em->persist($Maker);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\Maker $Maker
+     * @return bool
+     */
+    public function save(\Eccube\Entity\Maker $Maker)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            if (!$Maker->getId()) {
+                $rank = $this->createQueryBuilder('m')
+                    ->select('MAX(m.rank)')
+                    ->getQuery()
+                    ->getSingleScalarResult();
+                if (!$rank) {
+                    $rank = 0;
+                }
+                $Maker->setRank($rank + 1);
+                $Maker->setDelFlg(0);
+            }
+
+            $em->persist($Maker);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\Maker $Maker
+     * @return bool
+     */
+    public function delete(\Eccube\Entity\Maker $Maker)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            if ($Maker->getProducts()->count() > 0) {
+                throw new \Exception();
+            }
+
+            $rank = $Maker->getRank();
+            $em->createQueryBuilder()
+                ->update('Eccube\Entity\Maker', 'm')
+                ->set('m.rank', 'm.rank - 1')
+                ->where('m.rank > :rank')->setParameter('rank', $rank)
+                ->getQuery()
+                ->execute();
+
+            $Maker->setDelFlg(1);
+            $em->persist($Maker);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            return false;
+        }
+
+        return true;
+    }
 }
