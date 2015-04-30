@@ -203,6 +203,16 @@
     {% endfor -%}
 {%- endblock tel_widget -%}
 
+{%- block fax_widget -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_widget(child, {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) -}}
+        {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+    {% endfor -%}
+{%- endblock fax_widget -%}
+
 {%- block zip_widget -%}
     {%- for child in form %}
         {{- form_errors(child) -}}

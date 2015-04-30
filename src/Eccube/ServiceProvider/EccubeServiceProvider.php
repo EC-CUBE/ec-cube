@@ -130,6 +130,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\NameType();
             $types[] = new \Eccube\Form\Type\TelType();
+            $types[] = new \Eccube\Form\Type\FaxType();
             $types[] = new \Eccube\Form\Type\PrefType();
             $types[] = new \Eccube\Form\Type\ZipType();
             $types[] = new \Eccube\Form\Type\AddressType();
@@ -169,6 +170,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\NonMemberType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
             $types[] = new \Eccube\Form\Type\OtherDelivType($app['config']);
+            $types[] = new \Eccube\Form\Type\OrderType();
+            $types[] = new \Eccube\Form\Type\OrderDetailType();
+            $types[] = new \Eccube\Form\Type\ShippingType();
+            $types[] = new \Eccube\Form\Type\ShipmentItemType();
 
             // admin
             $types[] = new \Eccube\Form\Type\AdminLoginType($app['session']);

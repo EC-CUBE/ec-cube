@@ -149,12 +149,34 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // order
         $controllers->match('/order/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::index')->bind('admin_order');
-        $controllers->match('/order/edit/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::edit')
+        $controllers->match('/order/edit/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\EditController::index')
             ->assert('orderId', '\d+')
             ->bind('admin_order_edit');
+        $controllers->match('/order/edit/', '\\Eccube\\Controller\\Admin\\Order\\EditController::index')
+            ->bind('admin_order_new');
         $controllers->match('/order/delete/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::delete')
             ->assert('orderId', '\d+')
             ->bind('admin_order_delete');
+        $controllers->match('/order/recalc/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::recalculate')
+            ->assert('orderId', '\d+')
+            ->bind('admin_order_recalc');
+        $controllers->match('/order/product/add/{orderId}/{shippingId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::addProduct')
+            ->assert('orderId', '\d+')
+            ->assert('shippingId', '\d+')
+            ->bind('admin_order_product_add');
+        $controllers->match('/order/product/select/{orderId}/{shippingId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::selectProduct')
+            ->assert('orderId', '\d+')
+            ->assert('shippingId', '\d+')
+            ->bind('admin_order_product_select');
+        $controllers->match('/order/product/delete/{orderId}/{shippingId}', '\\Eccube\\Controller\\Admin\\Order\\OrderController::deleteProduct')
+            ->assert('orderId', '\d+')
+            ->assert('shippingId', '\d+')
+            ->bind('admin_order_product_delete');
+        $controllers->match('/order/shipping/add/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::addShipping')
+            ->bind('admin_order_shipping_add');
+
+
+
         $controllers->match('/order/disp.php', '\\Eccube\\Page\\Admin\\Order\\Disp')->bind('admin_order_disp');
         $controllers->match('/order/mail/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\MailController::index')
             ->assert('orderId', '\d+')
