@@ -48,10 +48,10 @@ Eccube\Entity\ProductClass:
             precision: 10
             scale: 0
         stock_unlimited:
-            type: smallint
+            type: boolean
             nullable: false
             unsigned: false
-            default: '0'
+            default: false
         sale_limit:
             type: decimal
             nullable: true

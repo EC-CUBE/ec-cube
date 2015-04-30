@@ -66,7 +66,7 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.status = 1');
+            ->andWhere('p.Status = 1');
 
         // category
         $categoryJoin = false;
@@ -202,7 +202,7 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->innerJoin('p.CustomerFavoriteProducts', 'cfp')
-            ->where('cfp.Customer = :Customer AND p.status = 1')
+            ->where('cfp.Customer = :Customer AND p.Status = 1')
             ->setParameter('Customer', $Customer);
 
         // Order By

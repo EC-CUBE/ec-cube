@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\DataTransformer\BooleanToStringTransformer;
 
 class ProductClassType extends AbstractType
 {
@@ -32,8 +31,7 @@ class ProductClassType extends AbstractType
                 'required' => false,
             ))
             ->add('stock_unlimited', 'checkbox', array(
-                'value' => 1,
-                'empty_data' => 0,
+                'value' => '1',
                 'required' => false,
             ))
             ->add('price01', 'money', array(
