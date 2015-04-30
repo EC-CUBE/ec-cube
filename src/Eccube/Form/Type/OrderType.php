@@ -26,7 +26,7 @@ class OrderType extends AbstractType
         $builder->add('id', 'hidden');
         $builder->add('name01');
         $builder->add('OrderDetails', 'collection', array('type' => new OrderDetailType()));
-        //$builder->add('Shippings', 'collection', array('type' => new ShippingType()));
+        $builder->add('Shippings', 'collection', array('type' => new ShippingType()));
     }
 
     /**
