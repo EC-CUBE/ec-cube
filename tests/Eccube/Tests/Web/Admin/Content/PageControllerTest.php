@@ -1,89 +1,74 @@
 <?php
-namespace Eccube\Tests\Web;
+namespace Eccube\Tests\Web\Admin;
 
-use Silex\WebTestCase;
-use Eccube\Application;
-
-class PageControllerTest extends WebTestCase
+class PageControllerTest extends AbstractAdminWebTestCase
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
     public function test_routeing_AdminContentPage_index()
     {
-        self::markTestSkipped();
+        $this->logIn();
 
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('admin_content_page'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->client->request('GET', $this->app['url_generator']->generate('admin_content_page'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routeing_AdminContentPage_edit()
     {
+        // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
         self::markTestSkipped();
 
-        $client = $this->createClient();
-        $client->request('GET',
+        $this->logIn();
+
+        $this->client->request('GET',
             $this->app['url_generator']
                 ->generate('admin_content_page_edit',
                     array('page_id' => 1)));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routeing_AdminContentPage_editWithDevice()
     {
+        // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
         self::markTestSkipped();
 
-        $client = $this->createClient();
-        $client->request('GET',
+        $this->logIn();
+
+        $this->client->request('GET',
             $this->app['url_generator']
                 ->generate('admin_content_page_edit_withDevice',
                     array('page_id' => 1, 'device_id' => 10)));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routeing_AdminContentPage_delete()
     {
-        self::markTestSkipped();
+        $this->logIn();
 
         $redirectUrl = $this->app['url_generator']->generate('admin_content_page');
 
-        $client = $this->createClient();
-        $client->request('GET',
+        $this->client->request('GET',
             $this->app['url_generator']
                 ->generate('admin_content_page_delete',
                     array('page_id' => 1)));
 
-        $actual = $client->getResponse()->isRedirect($redirectUrl);
+        $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertSame(true, $actual);
     }
 
     public function test_routeing_AdminContentPage_deleteWithDevice()
     {
-        self::markTestSkipped();
+        $this->logIn();
 
         $redirectUrl = $this->app['url_generator']->generate('admin_content_page');
 
-        $client = $this->createClient();
-        $client->request('GET',
+        $this->client->request('GET',
             $this->app['url_generator']
                 ->generate('admin_content_page_delete_withDevice',
                     array('page_id' => 1, 'device_id' => 10)));
 
-        $actual = $client->getResponse()->isRedirect($redirectUrl);
+        $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertSame(true, $actual);
     }
-
 }

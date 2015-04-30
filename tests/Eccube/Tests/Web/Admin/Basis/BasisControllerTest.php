@@ -1,30 +1,15 @@
 <?php
-namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
+namespace Eccube\Tests\Web\Admin;
 
-class BasisControllerTest extends WebTestCase
+class BasisControllerTest extends AbstractAdminWebTestCase
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
     public function testRoutingAdminBasis()
     {
-        self::markTestSkipped();
+        $this->logIn();
 
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('admin_basis'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->client->request('GET', $this->app['url_generator']->generate('admin_basis'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }
