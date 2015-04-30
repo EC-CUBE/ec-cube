@@ -1,7 +1,6 @@
 {% extends 'Admin/main_frame.twig' %}
 
 {% block main %}
-    {{ form_widget(form) }}
     <script type="text/javascript">
         <!--
         function fnEdit(customer_id) {
@@ -109,6 +108,7 @@
 
     <!--▼お客様情報ここから-->
     <table class="form">
+        {# todo 帳票の実装#}
         <!--{if $tpl_mode != 'add'}-->
         <tr>
             <th>帳票出力</th>
@@ -117,37 +117,31 @@
         <!--{/if}-->
         <tr>
             <th>注文番号</th>
-            <td><!--{$arrForm.order_id.value|h}--></td>
+            <td>{{ form.vars.value.id }}</td>
         </tr>
         <tr>
             <th>受注日</th>
-            <td><!--{$arrForm.create_date.value|sfDispDBDate|h}--><input type="hidden" name="create_date" value="<!--{$arrForm.create_date.value|h}-->" /></td>
+            <td>{{ form.vars.value.create_date|date('Y/m/d H:i:s') }}</td>
         </tr>
         <tr>
             <th>対応状況<span class="attention"> *</span></th>
             <td>
-                <!--{assign var=key value="status"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="">選択してください</option>
-                    <!--{html_options options=$arrORDERSTATUS selected=$arrForm[$key].value}-->
-                </select><br />
-                <!--{if $smarty.get.mode != 'add'}-->
-                <span class="attention">※ <!--{$arrORDERSTATUS[$smarty.const.ORDER_CANCEL]}-->に変更時には、在庫数を手動で戻してください。</span>
-                <!--{/if}-->
+                {{ form_errors(form.OrderStatus) }}
+                {{ form_widget(form.OrderStatus) }}
             </td>
         </tr>
         <tr>
             <th>入金日</th>
-            <td><!--{$arrForm.payment_date.value|sfDispDBDate|default:"未入金"|h}--></td>
+            <td>{{ form.vars.value.payment_date is empty ? '未入金' : form.vars.value.payment_date|date('Y/m/d H:i:s') }}</td>
         </tr>
         <tr>
             <th>発送日</th>
-            <td><!--{$arrForm.commit_date.value|sfDispDBDate|default:"未発送"|h}--></td>
+            <td>{{ form.vars.value.commit_date is empty ? '未発送' : form.vars.value.commit_date|date('Y/m/d H:i:s') }}</td>
         </tr>
     </table>
 
     <h2>注文者情報
+        {# todo 会員検索の実装 #}
         <!--{if $tpl_mode == 'add'}-->
         <a class="btn-normal" href="javascript:;" name="address_input" onclick="eccube.openWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650',{resizable:'no',focus:false}); return false;">会員検索</a>
         <!--{/if}-->
@@ -156,190 +150,146 @@
         <tr>
             <th>会員ID</th>
             <td>
-                <!--{if $arrForm.customer_id.value > 0}-->
-                <!--{$arrForm.customer_id.value|h}-->
-                <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id.value|h}-->" />
-                <!--{else}-->
-                (非会員)
-                <!--{/if}-->
+                {% if form.vars.value.Customer is empty %}
+                    (非会員)
+                {% else %}
+                    {{ form_widget(form.Customer) }}
+                    {{ form_errors(form.Customer) }}
+                {% endif %}
             </td>
         </tr>
         <tr>
             <th>お名前<span class="attention"> *</span></th>
             <td>
-                <!--{assign var=key1 value="order_name01"}-->
-                <!--{assign var=key2 value="order_name02"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
-                <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
+                {{ form_widget(form.name01) }}
+                {{ form_widget(form.name02) }}
+                {{ form_errors(form.name02) }}
+                {{ form_errors(form.name01) }}
             </td>
         </tr>
         <tr>
             <th>お名前(フリガナ)</th>
             <td>
-                <!--{assign var=key1 value="order_kana01"}-->
-                <!--{assign var=key2 value="order_kana02"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="15" class="box15" />
-                <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="15" class="box15" />
+                {{ form_widget(form.kana02) }}
+                {{ form_widget(form.kana01) }}
+                {{ form_errors(form.kana01) }}
+                {{ form_errors(form.kana02) }}
             </td>
         </tr>
         <tr>
             <th>会社名</th>
             <td>
-                <!--{assign var=key1 value="order_company_name"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--></span>
-                <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="30" class="box30" />
+                {{ form_widget(form.company_name) }}
+                {{ form_errors(form.company_name) }}
             </td>
         </tr>
         <tr>
             <th>メールアドレス</th>
             <td>
-                <!--{assign var=key1 value="order_email"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--></span>
-                <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="30" class="box30" />
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
             </td>
         </tr>
         <tr>
             <th>TEL</th>
             <td>
-                <!--{assign var=key1 value="order_tel01"}-->
-                <!--{assign var=key2 value="order_tel02"}-->
-                <!--{assign var=key3 value="order_tel03"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--></span>
-                <span class="attention"><!--{$arrErr[$key2]}--></span>
-                <span class="attention"><!--{$arrErr[$key3]}--></span>
-                <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
-                <input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" /> -
-                <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
+                {{ form_widget(form.tel01) }}
+                {{ form_widget(form.tel02) }}
+                {{ form_widget(form.tel03) }}
+                {{ form_errors(form.tel01) }}
+                {{ form_errors(form.tel02) }}
+                {{ form_errors(form.tel03) }}
             </td>
         </tr>
         <tr>
             <th>FAX</th>
             <td>
-                <!--{assign var=key1 value="order_fax01"}-->
-                <!--{assign var=key2 value="order_fax02"}-->
-                <!--{assign var=key3 value="order_fax03"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--></span>
-                <span class="attention"><!--{$arrErr[$key2]}--></span>
-                <span class="attention"><!--{$arrErr[$key3]}--></span>
-                <input type="text" name="<!--{$arrForm[$key1].keyname}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" /> -
-                <input type="text" name="<!--{$arrForm[$key2].keyname}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" /> -
-                <input type="text" name="<!--{$arrForm[$key3].keyname}-->" value="<!--{$arrForm[$key3].value|h}-->" maxlength="<!--{$arrForm[$key3].length}-->" style="<!--{$arrErr[$key3]|sfGetErrorColor}-->" size="6" class="box6" />
+                {{ form_widget(form.fax01) }}
+                {{ form_widget(form.fax02) }}
+                {{ form_widget(form.fax03) }}
+                {{ form_errors(form.fax01) }}
+                {{ form_errors(form.fax02) }}
+                {{ form_errors(form.fax03) }}
             </td>
         </tr>
         <tr>
             <th>性別</th>
             <td>
-                <!--{assign var=key1 value="order_sex"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--></span>
-                    <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
-                    <!--{html_radios name=$key1 options=$arrSex selected=$arrForm[$key1].value}-->
-                    </span>
+                {{ form_widget(form.Sex) }}
+                {{ form_errors(form.Sex) }}
             </td>
         </tr>
         <tr>
             <th>職業</th>
             <td>
-                <!--{assign var=key1 value="order_job"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--></span>
-                    <span style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
-                    <select name="<!--{$key1}-->">
-                        <option value="" selected="selected">選択してください</option>
-                        <!--{html_options options=$arrJob selected=$arrForm[$key1].value}-->
-                    </select>
-                    </span>
+                {{ form_widget(form.Job) }}
+                {{ form_errors(form.Job) }}
             </td>
         </tr>
         <tr>
             <th>生年月日</th>
             <td>
-                <!--{assign var=key1 value="order_birth_year"}-->
-                <!--{assign var=key2 value="order_birth_month"}-->
-                <!--{assign var=key3 value="order_birth_day"}-->
-                <!--{assign var=errBirth value="`$arrErr.$key1``$arrErr.$key2``$arrErr.$key3`"}-->
-                <!--{if $errBirth}-->
-                <div class="attention"><!--{$errBirth}--></div>
-                <!--{/if}-->
-                <select name="<!--{$key1}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrBirthYear selected=$arrForm[$key1].value|default:""}-->
-                </select>年
-                <select name="<!--{$key2}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrBirthMonth selected=$arrForm[$key2].value|default:""}-->
-                </select>月
-                <select name="<!--{$key3}-->" style="<!--{$errBirth|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrBirthDay selected=$arrForm[$key3].value|default:""}-->
-                </select>日
+                {{ form_widget(form.birth) }}
             </td>
         </tr>
-
-        <!--{assign var=key1 value="order_country_id"}-->
-        <!--{assign var=key2 value="order_zipcode"}-->
-        <!--{if !$smarty.const.FORM_COUNTRY_ENABLE}-->
+        {# todo hiddenでpostさせず, insert時にデフォルト値を設定する
         <input type="hidden" name="<!--{$key1}-->" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
-        <!--{else}-->
+        #}
+        {% if app.config.form_country_enable %}
         <tr>
             <th>国</th>
             <td>
-                <span class="attention"><!--{$arrErr[$key1]}--></span>
-                <select name="<!--{$key1}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->">
-                    <option value="" selected="selected">国を選択</option>
-                    <!--{html_options options=$arrCountry selected=$arrForm[$key1].value|default:$smarty.const.DEFAULT_COUNTRY_ID}-->
-                </select>
+                {{ form_widget(form.Country) }}
+                {{ form_errors(form.Country) }}
             </td>
         </tr>
+
         <tr>
             <th>ZIP CODE</th>
             <td>
-                <span class="attention"><!--{$arrErr[$key2]}--></span>
-                <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->;" size="15" class="box15"/>
+                {{ form_widget(form.zip_code) }}
+                {{ form_errors(form.zip_code) }}
             </td>
         </tr>
-        <!--{/if}-->
+        {% endif %}
 
         <tr>
             <th>住所</th>
             <td>
-                <!--{assign var=key1 value="order_zip01"}-->
-                <!--{assign var=key2 value="order_zip02"}-->
-                <span class="attention"><!--{$arrErr[$key1]}--><!--{$arrErr[$key2]}--></span>
-                〒
-                <input type="text" name="<!--{$key1}-->" value="<!--{$arrForm[$key1].value|h}-->" maxlength="<!--{$arrForm[$key1].length}-->" style="<!--{$arrErr[$key1]|sfGetErrorColor}-->" size="6" class="box6" />
-                -
-                <input type="text" name="<!--{$key2}-->" value="<!--{$arrForm[$key2].value|h}-->" maxlength="<!--{$arrForm[$key2].length}-->" style="<!--{$arrErr[$key2]|sfGetErrorColor}-->" size="6" class="box6" />
-                <a class="btn-normal" href="javascript:;" name="address_input" onclick="eccube.getAddress('<!--{$smarty.const.INPUT_ZIP_URLPATH}-->', 'order_zip01', 'order_zip02', 'order_pref', 'order_addr01'); return false;">住所入力</a><br />
-                <!--{assign var=key value="order_pref"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <select class="top" name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <option value="" selected="">都道府県を選択</option>
-                    <!--{html_options options=$arrPref selected=$arrForm[$key].value}-->
-                </select><br />
-                <!--{assign var=key value="order_addr01"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60 top" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-                <!--{assign var=key value="order_addr02"}-->
-                <span class="attention"><!--{$arrErr[$key]}--></span>
-                <input type="text" name="<!--{$key}-->" value="<!--{$arrForm[$key].value|h}-->" size="60" class="box60" maxlength="<!--{$arrForm[$key].length}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" />
+                〒{{ form_widget(form.zip01) }}-{{ form_widget(form.zip02) }}</br>
+                {{ form_widget(form.Pref) }}</br>
+                {{ form_widget(form.addr01) }}</br>
+                {{ form_widget(form.addr02) }}
+                {{ form_errors(form.zip01) }}
+                {{ form_errors(form.zip02) }}
+                {{ form_errors(form.Pref) }}
+                {{ form_errors(form.addr01) }}
+                {{ form_errors(form.addr02) }}
             </td>
         </tr>
         <tr>
             <th>備考</th>
-            <td><!--{$arrForm.message.value|h|nl2br}--></td>
+            <td>{{ form.vars.value.message|nl2br }}</td>
         </tr>
         <tr>
             <th>現在ポイント</th>
             <td>
-                <!--{if $arrForm.customer_id.value > 0}-->
-                <!--{$arrForm.customer_point.value|n2s}-->
-                pt
-                <!--{else}-->
-                (非会員)
-                <!--{/if}-->
+                {% if form.vars.value.Customer is empty %}
+                    (非会員)
+                {% else %}
+                    {{ form.vars.value.Customer.point|number_format }} Pt
+                {% endif %}
             </td>
         </tr>
         <tr>
             <th>端末種別</th>
-            <td><!--{$arrDeviceType[$arrForm.device_type_id.value]|h}--></td>
+            <td>
+                {% if form.vars.value.DeviceType is empty %}
+                    --
+                {% else %}
+                    {{ form.vars.value.DeviceType.name }}
+                {% endif %}
+            </td>
         </tr>
 
     </table>
