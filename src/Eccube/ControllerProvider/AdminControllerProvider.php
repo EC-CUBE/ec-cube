@@ -111,7 +111,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/customer/search_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
 
         // design
-        $controllers->match('/design/', '\\Eccube\\Page\\Admin\\Design\\Index')->bind('admin_design');
+        // $controllers->match('/design/', '\\Eccube\\Page\\Admin\\Design\\Index')->bind('admin_design_old');
+        $controllers->match('/design', '\\Eccube\\Controller\\Admin\\Design\\DesignController::index')->bind('admin_design');
+        $controllers->match('/design/{pageId}', '\\Eccube\\Controller\\Admin\\Design\\DesignController::index')
+            ->assert('pageId', '\d+')
+            ->bind('admin_design_edit');
+        $controllers->match('/design/preview', '\\Eccube\\Controller\\Admin\\Design\\DesignController::preview')->bind('admin_design_preview');
+
         $controllers->match('/design/bloc.php', '\\Eccube\\Page\\Admin\\Design\\Bloc')->bind('admin_design_bloc');
         $controllers->match('/design/css.php', '\\Eccube\\Page\\Admin\\Design\\Css')->bind('admin_design_css');
         $controllers->match('/design/header.php', '\\Eccube\\Page\\Admin\\Design\\Header')->bind('admin_design_header');
