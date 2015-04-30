@@ -214,7 +214,25 @@ class AdminControllerProvider implements ControllerProviderInterface
         // products
         $controllers->match('/products/', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
         $controllers->match('/products/product.php', '\Eccube\Controller\Admin\Product\ProductController::edit')->bind('admin_product_product');
-        $controllers->match('/products/category.php', '\\Eccube\\Page\\Admin\\Products\\Category')->bind('admin_product_category');
+
+        // category
+        $controllers->match('/category/', '\Eccube\Controller\Admin\Product\CategoryController::index')->bind('admin_category');
+        $controllers->match('/category/{parentId}/', '\Eccube\Controller\Admin\Product\CategoryController::index')
+            ->assert('parentId', '\d+')
+            ->bind('admin_category_show');
+        $controllers->match('/category/{categoryId}/edit', '\Eccube\Controller\Admin\Product\CategoryController::index')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_edit');
+        $controllers->post('/category/{categoryId}/up', '\Eccube\Controller\Admin\Product\CategoryController::up')
+            ->assert('parentCategoryId', '\d+')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_up');
+        $controllers->post('/category/{categoryId}/down', '\Eccube\Controller\Admin\Product\CategoryController::down')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_down');
+        $controllers->post('/category/{categoryId}/delete', '\Eccube\Controller\Admin\Product\CategoryController::delete')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_delete');
 
         // class_name
         $controllers->match('/class_name/', '\Eccube\Controller\Admin\Product\ClassNameController::index')->bind('admin_class_name');
@@ -224,7 +242,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->post('/class_name/{classNameId}/up', '\Eccube\Controller\Admin\Product\ClassNameController::up')
             ->assert('classNameId', '\d+')
             ->bind('admin_class_name_up');
-        $controllers->post('/class1_name/{classNameId}/down', '\Eccube\Controller\Admin\Product\ClassNameController::down')
+        $controllers->post('/class_name/{classNameId}/down', '\Eccube\Controller\Admin\Product\ClassNameController::down')
             ->assert('classNameId', '\d+')
             ->bind('admin_class_name_down');
         $controllers->post('/class_name/{classNameId}/delete', '\Eccube\Controller\Admin\Product\ClassNameController::delete')

@@ -33,7 +33,7 @@ class ClassNameController
 
                     return $app->redirect($app['url_generator']->generate('admin_class_name'));
                 } else {
-                    $app['session']->getFlashBag()->add('admin.success', 'admin.class_name.save.error');
+                    $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.save.error');
                 }
             }
         }

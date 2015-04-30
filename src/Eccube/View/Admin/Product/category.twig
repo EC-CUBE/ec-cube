@@ -1,0 +1,102 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+<form name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_category_edit', {'categoryId': TargetCategory.id}) }}{% elseif Parent %}{{ path('admin_category_show', {'parentId': Parent.id}) }}{% else %}{{ path('admin_category') }}{% endif %}" enctype="multipart/form-data">
+    <div id="products" class="contents-main">
+        {#
+        <div class="btn">
+            <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
+            <a class="btn-normal" href='../contents/csv.php?tpl_subno_csv=category'>CSV 出力項目設定</a>
+        </div>
+        #}
+
+        {% if Parent %}
+            {% set Path = Parent.path %}
+        {% else %}
+            {% set Path = [] %}
+        {% endif %}
+
+        {# ▼画面左 #}
+        <div id="products-category-left">
+            <ul>
+                <li>
+                    <a href="{{ path('admin_category') }}"><img src="{{ app.config.admin_tpl }}img/contents/folder_close.gif" alt="フォルダ" />&nbsp;ホーム</a>
+                    {{ include('Admin/product/category_tree_fork.twig', {'Children': Children, 'treeId': 'f0', 'disp_child': true}) }}
+                </li>
+            </ul>
+        </div>
+        {# ▲画面左 #}
+
+        {# ▼画面右 #}
+        <div id="products-category-right">
+            <table>
+                {{ form_rest(form)}}
+            </table>
+
+            <div class="btn-area">
+                <ul>
+                    <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+                </ul>
+            </div>
+
+            <h2><a href="{{ path('admin_category') }}">ホーム</a>{% for Cat in Path %}{{ app.config.sepa_catnavi }}<a href="{{ path('admin_category_show', {'parentId': Cat.id}) }}">{{ Cat.name }}</a>{% endfor %}</h2>
+
+            {% if Categories|length > 0 %}
+                <table class="list" id="categoryTable">
+                    <col width="5%" />
+                    <col width="60%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="25%" />
+                    <tr class="nodrop nodrag">
+                        <th>ID</th>
+                        <th>カテゴリ名</th>
+                        <th class="edit">編集</th>
+                        <th class="delete">削除</th>
+                        <th>移動</th>
+                    </tr>
+                    {% for Category in Categories %}
+                        <tr id="{{ Category.id }}" style="background:{% if Category.id != TargetCategory.id %}#ffffff{% else %}{{ app.config.select_rgb }}{% endif %};" align="left">
+                            <td class="center">{{ Category.id }}</td>
+                            <td>
+                                {% if Category.level < app.config.level_max %}
+                                    <a href="{{ path('admin_category_show', {'parentId': Category.id}) }}">{{ Category.name }}</a>
+                                {% else %}
+                                    {{ Category.name }}
+                                {% endif %}
+                            </td>
+                            <td class="center">
+                                {% if Category.id != TargetCategory.id %}
+                                    <a href="{{ path('admin_category_edit', {'categoryId': Category.id}) }}">編集</a>
+                                {% else %}
+                                    編集中
+                                {% endif %}
+                            </td>
+                            <td class="center">
+                                {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
+                                    -
+                                {% else %}
+                                    <a href="?" onclick="eccube.changeAction('{{ path('admin_category_delete', {'categoryId': Category.id}) }}'); document.form1.submit(); return false;">削除</a>
+                                {% endif %}
+                            </td>
+                            <td class="center">
+                                {# 移動 #}
+                                {% if loop.first == false %}
+                                    <a href="?" onclick="eccube.changeAction('{{ path('admin_category_up', {'categoryId': Category.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                {% endif %}
+                                {% if loop.last == false %}
+                                    <a href="?" onclick="eccube.changeAction('{{ path('admin_category_down', {'categoryId': Category.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>この階層には、カテゴリが登録されていません。</p>
+            {% endif %}
+        </div>
+        {# ▲画面右 #}
+
+    </div>
+</form>
+{% endblock %}

@@ -48,4 +48,6 @@ Eccube\Entity\ClassName:
         ClassCategories:
             targetEntity: Eccube\Entity\ClassCategory
             mappedBy: ClassName
+            orderBy:
+                rank: DESC
     lifecycleCallbacks: {  }

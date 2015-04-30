@@ -33,7 +33,7 @@ class MakerController
 
                     return $app->redirect($app['url_generator']->generate('admin_maker'));
                 } else {
-                    $app['session']->getFlashBag()->add('admin.success', 'admin.maker.save.error');
+                    $app['session']->getFlashBag()->add('admin.error', 'admin.maker.save.error');
                 }
             }
         }

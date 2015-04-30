@@ -18,9 +18,16 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set category_name
-     *
-     * @param text $categoryName
+     */
+    public function getParents()
+    {
+        $path = $this->getPath();
+        array_pop($path);
+
+        return $path;
+    }
+
+    /**
      */
     public function getPath()
     {
@@ -39,7 +46,7 @@ class Category extends \Eccube\Entity\AbstractEntity
 
         return array_reverse($path);
     }
-    
+
     public function getNameWithLevel()
     {
         return str_repeat('　', $this->getLevel() - 1) . $this->getName();

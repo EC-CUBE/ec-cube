@@ -3,7 +3,9 @@
 {% block main %}
 <form name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_class_name_edit', {'classNameId': TargetClassName.id}) }}{% else %}{{ path('admin_class_name') }}{% endif %}">
     <div id="products" class="contents-main">
-        {{ form_widget(form) }}
+        <table>
+            {{ form_rest(form)}}
+        </table>
 
         <div class="btn-area">
             <ul>

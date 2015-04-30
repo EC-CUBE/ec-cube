@@ -206,6 +206,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\MakerType($app);
             $types[] = new \Eccube\Form\Type\Admin\ClassNameType($app);
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app);
+            $types[] = new \Eccube\Form\Type\Admin\CategoryType($app);
 
             return $types;
         }));

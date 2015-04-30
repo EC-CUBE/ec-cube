@@ -40,7 +40,7 @@ class ClassCategoryController
 
                     return $app->redirect($app['url_generator']->generate('admin_class_category', array('classNameId' => $ClassName->getId())));
                 } else {
-                    $app['session']->getFlashBag()->add('admin.success', 'admin.class_category.save.error');
+                    $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.save.error');
                 }
             }
         }
