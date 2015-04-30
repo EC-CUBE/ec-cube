@@ -23,6 +23,28 @@ class ShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('Country');
+        $builder->add('Pref');
+        $builder->add('name01');
+        $builder->add('name02');
+        $builder->add('kana01');
+        $builder->add('kana02');
+        $builder->add('company_name');
+        $builder->add('tel01');
+        $builder->add('tel02');
+        $builder->add('tel03');
+        $builder->add('fax01');
+        $builder->add('fax02');
+        $builder->add('fax03');
+        $builder->add('zip01');
+        $builder->add('zip02');
+        $builder->add('zipcode');
+        $builder->add('addr01');
+        $builder->add('addr02');
+        $builder->add('time_id');
+        $builder->add('shipping_time');
+        $builder->add('shipping_date');
+        $builder->add('shipping_commit_date');
         $builder->add('ShipmentItems', 'collection', array('type' => new ShipmentItemType()));
     }
 

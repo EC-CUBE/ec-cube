@@ -23,6 +23,14 @@ class ShipmentItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('shipping_id');
+        $builder->add('order_id');
+        $builder->add('product_class_id');
+        $builder->add('product_name');
+        $builder->add('product_code');
+        $builder->add('classcategory_name1');
+        $builder->add('classcategory_name2');
+        $builder->add('price');
         $builder->add('quantity');
     }
 
