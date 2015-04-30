@@ -72,6 +72,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $taxRuleRepository;
         });
+        $app['eccube.repository.page_layout'] = $app->share(function() use ($app) {
+            $pageLayoutRepository = $app['orm.em']->getRepository('Eccube\Entity\PageLayout');
+            $pageLayoutRepository->setApp($app);
+
+            return $pageLayoutRepository;
+        });
         $app['eccube.repository.order'] = $app->share(function() use ($app) {
             $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
             $orderRepository->setConfig($app['config']);
@@ -85,7 +91,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         });
 
-        // 
         $app['paginator'] = $app->protect(function() {
             return new \Knp\Component\Pager\Paginator();
         });
@@ -156,6 +161,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShopMasterType($app);
             $types[] = new \Eccube\Form\Type\PointType($app);
             $types[] = new \Eccube\Form\Type\TaxRuleType($app);
+            $types[] = new \Eccube\Form\Type\MainEditType($app);
             $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
