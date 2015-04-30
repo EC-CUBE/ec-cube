@@ -41,18 +41,22 @@ class CategoryRepository extends EntityRepository
         $em->getConnection()->beginTransaction();
         try {
             $rank = $Category->getRank();
-            $ClassName = $Category->getClassName();
-
+            $Parent = $Category->getParent();
+throw new \Exception();
             // 
-            $Category2 = $this->findOneBy(array('rank' => $rank + 1, 'ClassName' => $ClassName));
-            if (!$Category2) {
-                throw new \Exception();
-            }
-            $Category2->setRank($rank);
+            $CategoryBefore = $this->createQueryBuilder('c')
+                ->where('c.rank > :rank AND c.Parent = :Parent')
+                ->setParameter('rank', $rank)
+                ->setParameter('Parent', $Parent)
+                ->orderBy('c.rank', 'ASC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleResult();
+            $CategoryBefore->setRank($rank);
             $em->persist($Category);
 
             // Category更新
-            $Category->setRank($rank + 1);
+            $Category->setRank($CategoryBefore->getRank());
 
             $em->persist($Category);
             $em->flush();
@@ -77,6 +81,7 @@ class CategoryRepository extends EntityRepository
         try {
             $rank = $Category->getRank();
             $Parent = $Category->getParent();
+throw new \Exception();
 
             // 
             $Category2 = $this->findOneBy(array('rank' => $rank - 1, 'Parent' => $Parent));
