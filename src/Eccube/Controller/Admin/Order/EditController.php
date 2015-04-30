@@ -32,22 +32,29 @@ class EditController {
             ->getForm();
 
         if ('POST' === $app['request']->getMethod()) {
+
+            $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                $form->handleRequest($app['request']);
+                $Order = $form->getData();
+                $OrderDetails = $Order->getOrderDetails();
+                $Shippings = $Order->getShippings();
+                $Customer = $Order->getCustomer();
 
-
-
-
+                $app['orm.em']->persist($Customer);
+                $app['orm.em']->persist($Order);
+                $app['orm.em']->flush();
                 // TODO: リダイレクトすると検索条件が消える
-                return $app->redirect($app['url_generator']->generate('admin_order'));
+                // return $app->redirect($app['url_generator']->generate('admin_order'));
             }
         }
 
+var_dump($form->getErrorsAsString());
         return $app['view']->render('Admin/Order/edit.twig', array(
                 'form' => $form->createView(),
                 'title' => '受注管理',
                 'sub_title' => '受注編集',
                 'Order' => $Order,
+                'orderId' => $orderId,
         ));
     }
 } 

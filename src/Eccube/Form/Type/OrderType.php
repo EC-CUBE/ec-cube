@@ -23,7 +23,10 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden')
+        $builder
+            ->add('id', 'hidden', array(
+                'mapped' => false,
+            ))
             // ->add('Country')
             // ->add('zipcode', 'text')
             ->add('Deliv', 'entity', array(
@@ -40,7 +43,9 @@ class OrderType extends AbstractType
                 'multiple' => false,
                 'empty_value' => '-',
             ))
-            ->add('Customer')
+            ->add('Customer', 'hidden', array(
+                'mapped' => false,
+            ))
             ->add('Sex', 'sex', array(
                 'expanded' => true,
                 'multiple' => false,
@@ -75,7 +80,9 @@ class OrderType extends AbstractType
             ->add('OrderStatus')
             ->add('commit_date')
             ->add('payment_date')
-            ->add('create_date')
+            ->add('create_date', 'date', array(
+                'mapped' => false,
+            ))
             ->add('OrderDetails', 'collection', array('type' => new OrderDetailType()))
             ->add('Shippings', 'collection', array('type' => new ShippingType()))
         ;

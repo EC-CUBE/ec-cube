@@ -30,16 +30,22 @@ class OrderDetailType extends AbstractType
             //     'class' => 'Eccube\Entity\ProductClass',
             //     'property' => 'code',
             // ))
-            ->add('product_name')
+            ->add('product_name', 'form', array(
+                'mapped' => false,
+            ))
             ->add('product_code')
             ->add('classcategory_name1')
             ->add('classcategory_name2')
             ->add('price')
             ->add('quantity')
-            ->add('point_rate')
+            ->add('point_rate', 'form', array(
+                'mapped' => false,
+            ))
             ->add('tax_rate')
             ->add('tax_rule')
-            ->add('total_price');
+            ->add('total_price', 'integer', array(
+                'mapped' => false,
+            ));
     }
 
     /**
