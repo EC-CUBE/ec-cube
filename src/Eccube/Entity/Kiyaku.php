@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Kiyaku extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    /**
      * @var integer
      */
     private $id;

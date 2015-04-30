@@ -55,6 +55,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/cart/remove/{productClassId}', '\\Eccube\\Controller\\CartController::remove')
             ->bind('cart_remove')
             ->assert('productClassId', '\d+');
+        $controllers->match('/cart/buystep', '\\Eccube\\Controller\\CartController::buystep')->bind('cart_buystep');
 
         // contact
         $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::index')->bind('contact');
@@ -145,14 +146,9 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/shopping/shipping/', '\\Eccube\\Controller\\ShoppingController::shipping')->bind('shopping_shipping');
         $controllers->match('/shopping/shipping_multiple/', '\\Eccube\\Controller\\ShoppingController::shipping_multiple')->bind('shopping_shipping_multiple');
         $controllers->match('/shopping/complete/', '\\Eccube\\Controller\\ShoppingController::complete')->bind('shopping_complete');
-        $controllers->match('/shopping/test/', '\\Eccube\\Controller\\ShoppingController::test')->bind('shopping_test');
-        //$controllers->match('/shopping/', '\\Eccube\\Page\\Shopping\\Index')->bind('shopping');
-        //$controllers->match('/shopping/deliv.php', '\\Eccube\\Page\\Shopping\\Deliv')->bind('shopping_deliv');
-        //$controllers->match('/shopping/multiple.php', '\\Eccube\\Page\\Shopping\\Multiple')->bind('shopping_multiple');
-        //$controllers->match('/shopping/payment.php', '\\Eccube\\Page\\Shopping\\Payment')->bind('shopping_payment');
-        //$controllers->match('/shopping/confirm.php', '\\Eccube\\Page\\Shopping\\Confirm')->bind('shopping_confirm');
-        //$controllers->match('/shopping/load_payment_module.php', '\\Eccube\\Page\\Shopping\\LoadPaymentModule')->bind('shopping_load_payment_module');
-        //$controllers->match('/shopping/complete.php', '\\Eccube\\Page\\Shopping\\Complete')->bind('shopping_complete');
+        $controllers->match('/shopping/login/', '\\Eccube\\Controller\\ShoppingController::login')->bind('shopping_login');
+        $controllers->match('/shopping/nonmember/', '\\Eccube\\Controller\\ShoppingController::nonmember')->bind('shopping_nonmember');
+        $controllers->match('/shopping/test/', '\\Eccube\\Controller\\ShoppingController::test')->bind('shopping_test'); // todo テスト用
 
         // order
         $controllers->match('/unsupported/', '\\Eccube\\Page\\Unsupported\\Index')->bind('unsupported');

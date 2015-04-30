@@ -98,7 +98,7 @@ $(document).ready(function(){
             </table>
 
             {# ポイント todo 画面遷移へ変更する #}
-            {% if app.config.use_point %}
+            {% if app.config.use_point and is_granted('ROLE_USER') %}
             <table summary="ポイント利用">
                 <col width="20%" />
                 <col width="80%" />

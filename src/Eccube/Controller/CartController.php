@@ -54,4 +54,11 @@ class CartController
         return $app->redirect($app['url_generator']->generate('cart'));
     }
 
+    public function buystep(Application $app)
+    {
+        $app['eccube.service.cart']->lock();
+        $app['eccube.service.cart']->save();
+
+        return $app->redirect($app['url_generator']->generate('shopping'));
+    }
 }

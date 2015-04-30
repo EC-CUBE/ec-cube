@@ -21,10 +21,11 @@ class AdminControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        // login
+        $controllers->match('/login.php', '\\Eccube\\Controller\\Admin\\AdminController::login')->bind('admin_login');
+
         // root
-        $controllers->match('/', '\\Eccube\\Page\\Admin\\Index')->bind('admin_index');
-        $controllers->match('/home.php', '\\Eccube\\Page\\Admin\\Home')->bind('admin_home');
-        $controllers->match('/logout.php', '\\Eccube\\Page\\Admin\\Logout')->bind('admin_logout');
+        $controllers->match('/', '\\Eccube\\Controller\\Admin\\AdminController::index')->bind('admin_homepage');
 
         // basis
         $controllers->match('/basis/', '\\Eccube\\Page\\Admin\\Basis\\Index')->bind('admin_basis');
@@ -48,13 +49,30 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/delivery_input.php', '\\Eccube\\Page\\Admin\\Basis\\DeliveryInput')->bind('admin_basis_delivery_input');
         $controllers->match('/basis/holiday.php', '\\Eccube\\Page\\Admin\\Basis\\Holiday')->bind('admin_basis_holiday');
         $controllers->match('/basis/kiyaku.php', '\\Eccube\\Page\\Admin\\Basis\\Kiyaku')->bind('admin_basis_kiyaku');
-        $controllers->match('/basis/mail.php', '\\Eccube\\Page\\Admin\\Basis\\Mail')->bind('admin_basis_mail_old');
+
         $controllers->match('/basis/mail', '\\Eccube\\Controller\\Admin\\Basis\\MailController::index')->bind('admin_basis_mail');
         $controllers->match('/basis/mail/{mailId}', '\\Eccube\\Controller\\Admin\\Basis\\MailController::index')
             ->assert('mailId', '\d+')
             ->bind('admin_basis_mail_edit');
-        $controllers->match('/basis/payment.php', '\\Eccube\\Page\\Admin\\Basis\\Payment')->bind('admin_basis_payment');
-        $controllers->match('/basis/payment_input.php', '\\Eccube\\Page\\Admin\\Basis\\PaymentInput')->bind('admin_basis_payment_input');
+
+        $controllers->match('/basis/payment', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::index')->bind('admin_basis_payment');
+        $controllers->match('/basis/payment/edit', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::edit')->bind('admin_basis_payment_edit_new');
+        $controllers->match('/basis/payment/edit/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::edit')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_edit');
+        $controllers->match('/basis/payment/delete/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::delete')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_delete');
+        $controllers->match('/basis/payment/image/delete/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::deleteImage')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_delete_image');
+        $controllers->match('/basis/payment/up/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::up')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_up');
+        $controllers->match('/basis/payment/down/{paymentId}', '\\Eccube\\Controller\\Admin\\Basis\\PaymentController::down')
+            ->assert('paymentId', '\d+')
+            ->bind('admin_basis_payment_down');
+
         $controllers->match('/basis/point', '\\Eccube\Controller\Admin\Basis\PointController::index')->bind('admin_basis_point');
         $controllers->match('/basis/tax/', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')->bind('admin_basis_tax_rule');
         $controllers->match('/basis/tax/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::index')
@@ -93,11 +111,32 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/customer/search_customer.php', '\\Eccube\\Page\\Admin\\Customer\\SearchCustomer')->bind('admin_customer_seaech_customer');
 
         // design
-        $controllers->match('/design/', '\\Eccube\\Page\\Admin\\Design\\Index')->bind('admin_design');
+        // $controllers->match('/design/', '\\Eccube\\Page\\Admin\\Design\\Index')->bind('admin_design_old');
+        $controllers->match('/design', '\\Eccube\\Controller\\Admin\\Design\\DesignController::index')->bind('admin_design');
+        $controllers->match('/design/{pageId}', '\\Eccube\\Controller\\Admin\\Design\\DesignController::index')
+            ->assert('pageId', '\d+')
+            ->bind('admin_design_edit');
+        $controllers->match('/design/preview', '\\Eccube\\Controller\\Admin\\Design\\DesignController::preview')->bind('admin_design_preview');
+
         $controllers->match('/design/bloc.php', '\\Eccube\\Page\\Admin\\Design\\Bloc')->bind('admin_design_bloc');
         $controllers->match('/design/css.php', '\\Eccube\\Page\\Admin\\Design\\Css')->bind('admin_design_css');
         $controllers->match('/design/header.php', '\\Eccube\\Page\\Admin\\Design\\Header')->bind('admin_design_header');
         $controllers->match('/design/main_edit.php', '\\Eccube\\Page\\Admin\\Design\\MainEdit')->bind('admin_design_main_edit');
+        $controllers->match('/content/page/', '\\Eccube\\Controller\\Admin\\Content\\PageController::index')->bind('admin_content_page');
+        $controllers->match('/content/page/{page_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::index')
+            ->assert('page_id', '\d+')
+            ->bind('admin_content_page_edit');
+        $controllers->match('/content/page/{page_id}/{device_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::index')
+            ->assert('page_id', '\d+')
+            ->assert('device_id', '\d+')
+            ->bind('admin_content_page_edit_withDevice');
+        $controllers->match('/content/page/delete/{page_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::delete')
+            ->assert('page_id', '\d+')
+            ->bind('admin_content_page_delete');
+        $controllers->match('/content/page/delete/{page_id}/{device_id}', '\\Eccube\\Controller\\Admin\\Content\\PageController::delete')
+            ->assert('page_id', '\d+')
+            ->assert('device_id', '\d+')
+            ->bind('admin_content_page_delete_withDevice');
         $controllers->match('/design/template.php', '\\Eccube\\Page\\Admin\\Design\\Template')->bind('admin_design_template');
         $controllers->match('/design/up_down.php', '\\Eccube\\Page\\Admin\\Design\\UpDown')->bind('admin_design_up_down');
 
@@ -119,8 +158,12 @@ class AdminControllerProvider implements ControllerProviderInterface
             ->assert('orderId', '\d+')
             ->bind('admin_order_delete');
         $controllers->match('/order/disp.php', '\\Eccube\\Page\\Admin\\Order\\Disp')->bind('admin_order_disp');
-        $controllers->match('/order/mail.php', '\\Eccube\\Page\\Admin\\Order\\Mail')->bind('admin_order_mail');
-        $controllers->match('/order/mail_view.php', '\\Eccube\\Page\\Admin\\Order\\MailView')->bind('admin_order_mail_view');
+        $controllers->match('/order/mail/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\MailController::index')
+            ->assert('orderId', '\d+')
+            ->bind('admin_order_mail');
+        $controllers->match('/order/mail/view/{sendId}', '\\Eccube\\Controller\\Admin\\Order\\MailController::view')
+            ->assert('sendId', '\d+')
+            ->bind('admin_order_mail_view');
         $controllers->match('/order/multiple.php', '\\Eccube\\Page\\Admin\\Order\\Multiple')->bind('admin_order_multiple');
         $controllers->match('/order/pdf.php', '\\Eccube\\Page\\Admin\\Order\\Pdf')->bind('admin_order_pdf');
         $controllers->match('/order/product_select.php', '\\Eccube\\Page\\Admin\\Order\\ProductSelect')->bind('admin_order_product_select');
