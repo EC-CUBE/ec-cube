@@ -83,6 +83,16 @@ class ProductClassType extends AbstractType
                 'mapped' => false,
             ))
             ->add('down_real_filename', 'hidden')
+            ->add('class_category1', null, array(
+                'required' => false,
+                'read_only' => true,
+                'disabled' => true,
+            ))
+            ->add('class_category2', null, array(
+                'required' => false,
+                'read_only' => true,
+                'disabled' => true,
+            ))
         ;
     }
 
