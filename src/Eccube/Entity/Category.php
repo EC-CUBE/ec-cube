@@ -18,7 +18,36 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * @return integer
      */
+    public function countBranches()
+    {
+        $count = 1;
+
+        foreach ($this->getChildren() as $Child) {
+            $count += $Child->countBranches();
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $em
+     * @param integer $rank
+     * @return \Eccube\Entity\Category
+     */
+    public function calcChildrenRank(\Doctrine\ORM\EntityManager $em, $rank)
+    {
+        $this->setRank($this->getRank() + $rank);
+        $em->persist($this);
+
+        foreach ($this->getChildren() as $Child) {
+            $Child->calcChildrenRank($em, $rank);
+        }
+
+        return $this;
+    }
+
     public function getParents()
     {
         $path = $this->getPath();
@@ -27,8 +56,6 @@ class Category extends \Eccube\Entity\AbstractEntity
         return $path;
     }
 
-    /**
-     */
     public function getPath()
     {
         $path = array();

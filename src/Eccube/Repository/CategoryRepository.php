@@ -42,23 +42,31 @@ class CategoryRepository extends EntityRepository
         try {
             $rank = $Category->getRank();
             $Parent = $Category->getParent();
-throw new \Exception();
-            // 
-            $CategoryBefore = $this->createQueryBuilder('c')
-                ->where('c.rank > :rank AND c.Parent = :Parent')
-                ->setParameter('rank', $rank)
-                ->setParameter('Parent', $Parent)
-                ->orderBy('c.rank', 'ASC')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getSingleResult();
-            $CategoryBefore->setRank($rank);
-            $em->persist($Category);
 
-            // Category更新
-            $Category->setRank($CategoryBefore->getRank());
+            if ($Parent) {
+                $CategoryUp = $this->createQueryBuilder('c')
+                    ->where('c.rank > :rank AND c.Parent = :Parent')
+                    ->setParameter('rank', $rank)
+                    ->setParameter('Parent', $Parent)
+                    ->orderBy('c.rank', 'ASC')
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getSingleResult();
+            } else {
+                $CategoryUp = $this->createQueryBuilder('c')
+                    ->where('c.rank > :rank AND c.Parent IS NULL')
+                    ->setParameter('rank', $rank)
+                    ->orderBy('c.rank', 'ASC')
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getSingleResult();
+            }
 
-            $em->persist($Category);
+            $this_count = $Category->countBranches();
+            $up_count = $CategoryUp->countBranches();
+
+            $Category->calcChildrenRank($em, $up_count);
+            $CategoryUp->calcChildrenRank($em, $this_count * -1);
             $em->flush();
 
             $em->getConnection()->commit();
@@ -81,20 +89,31 @@ throw new \Exception();
         try {
             $rank = $Category->getRank();
             $Parent = $Category->getParent();
-throw new \Exception();
 
-            // 
-            $Category2 = $this->findOneBy(array('rank' => $rank - 1, 'Parent' => $Parent));
-            if (!$Category2) {
-                throw new \Exception();
+            if ($Parent) {
+                $CategoryDown = $this->createQueryBuilder('c')
+                    ->where('c.rank < :rank AND c.Parent = :Parent')
+                    ->setParameter('rank', $rank)
+                    ->setParameter('Parent', $Parent)
+                    ->orderBy('c.rank', 'DESC')
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getSingleResult();
+            } else {
+                $CategoryDown = $this->createQueryBuilder('c')
+                    ->where('c.rank < :rank AND c.Parent IS NULL')
+                    ->setParameter('rank', $rank)
+                    ->orderBy('c.rank', 'DESC')
+                    ->setMaxResults(1)
+                    ->getQuery()
+                    ->getSingleResult();
             }
-            $Category2->setRank($rank);
-            $em->persist($Category);
 
-            // Category更新
-            $Category->setRank($rank - 1);
+            $this_count = $Category->countBranches();
+            $down_count = $CategoryDown->countBranches();
 
-            $em->persist($Category);
+            $Category->calcChildrenRank($em, $down_count * -1);
+            $CategoryDown->calcChildrenRank($em, $this_count);
             $em->flush();
 
             $em->getConnection()->commit();
