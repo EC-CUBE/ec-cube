@@ -226,6 +226,7 @@ Eccube\Entity\Product:
     oneToMany:
         ProductCategories:
             targetEntity: Eccube\Entity\ProductCategory
+            cascade: ["persist", "remove"]
             mappedBy: Product
         ProductClasses:
             targetEntity: Eccube\Entity\ProductClass
