@@ -18,15 +18,12 @@ class ConstantRepository extends EntityRepository
      * 
      * @return array
      */
-    public function getAll()
+    public function getAll($config)
     {
         $return = array();
 
         if (!defined('HTML_REALDIR')) {
-            $GLOBALS['_realdir'] = rtrim(realpath(rtrim(realpath(dirname(__FILE__)), '/\\') . '/'), '/\\') . '/';
-            $GLOBALS['_realdir'] = str_replace('\\', '/', $GLOBALS['_realdir']);
-            $GLOBALS['_realdir'] = str_replace('//', '/', $GLOBALS['_realdir']);
-            define('HTML_REALDIR', $GLOBALS['_realdir']);
+            define('HTML_REALDIR', $_SERVER['DOCUMENT_ROOT'] . $config['root']);
         }
         if (!defined('HTML2DATA_DIR')) {
             define('HTML2DATA_DIR', '../data/');

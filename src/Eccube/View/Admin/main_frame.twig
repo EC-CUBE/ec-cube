@@ -62,8 +62,10 @@
             <div id="logo"><a href="{{ url('admin_homepage') }}"><img src="{{ app.config.admin_tpl }}img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
             <div id="site-check">
                 <p class="info">
-                    <span><strong>ログイン&nbsp;:&nbsp;</strong>{{ app.user.name }}</span>&nbsp;様,&nbsp;&nbsp;
-                    <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong>{{ app.user.login_date.format('Y/m/d H:i')|default('') }}</span>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <span><strong>ログイン&nbsp;:&nbsp;</strong>{{ app.user.name }}</span>&nbsp;様,&nbsp;&nbsp;
+                        <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong>{{ app.user.login_date.format('Y/m/d H:i')|default('') }}</span>
+                    {% endif %}
                 </p>
                 <ul>
                     <li><a href="{{ url('homepage') }}" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>

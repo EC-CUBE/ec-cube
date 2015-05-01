@@ -329,6 +329,9 @@ class Application extends \Silex\Application
             if (substr($url, -1) === '/' || $url === '') {
                 $url .= 'index.php';
             }
+            if ($url === '/index.php') {
+                $url = 'index.php';
+            }
 
             $qb = $app['orm.em']->createQueryBuilder()
                 ->select('p, bp, b')
@@ -370,6 +373,7 @@ class Application extends \Silex\Application
 
             } catch (\Doctrine\ORM\NoResultException $e) {
                 $result = null;
+                $app['colnum'] = 1;
             }
 
             $app['eccube.layout'] = $result;
@@ -399,7 +403,7 @@ class Application extends \Silex\Application
             if (is_readable($constant_file)) {
                 $config_constant = Yaml::parse($constant_file);
             } else {
-                $config_constant = $app['eccube.repository.master.constant']->getAll();
+                $config_constant = $app['eccube.repository.master.constant']->getAll($config);
                 if ($config_constant) {
                     file_put_contents($constant_file, Yaml::dump($config_constant));
                 }
