@@ -150,6 +150,7 @@
                 {% if app.config.option_product_tax_rule %}
                 <th>消費税率(%)<span class="attention">*</span></th>
                 {% endif %}
+                <th>ポイント付与率<span class="attention">*</span></th>
                 <th>商品種別<span class="attention">*</span></th>
                 <th>ダウンロード<br />ファイル名<span class="red"><br />上限{{ app.config.stext_len }}文字</span></th>
                 <th>ダウンロード商品用<br />ファイル</th>
@@ -204,6 +205,10 @@
                     {# form_errors(product_class_form. tax_rate) #}
                 </td>
                 {% endif %}
+                <td class="center">
+                    {{ form_widget(product_class_form. point_rate) }}
+                    {{ form_errors(product_class_form. point_rate) }}
+                </td>
                 <td class="class-product-type">
                     {{ form_widget(product_class_form. product_type) }}
                     {{ form_errors(product_class_form. product_type) }}
