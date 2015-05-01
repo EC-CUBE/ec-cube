@@ -49,4 +49,10 @@ abstract class AbstractAdminWebTestCase extends WebTestCase
         $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());
         $this->client->getCookieJar()->set($cookie);
     }
+
+    public function tearDown()
+    {
+        $this->app['orm.em']->getConnection()->close();
+        parent::tearDown();
+    }
 }

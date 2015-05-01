@@ -119,6 +119,21 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/design/preview', '\\Eccube\\Controller\\Admin\\Design\\DesignController::preview')->bind('admin_design_preview');
 
         $controllers->match('/design/bloc.php', '\\Eccube\\Page\\Admin\\Design\\Bloc')->bind('admin_design_bloc');
+        $controllers->match('/content/block/', '\\Eccube\\Controller\\Admin\\Content\\BlockController::index')->bind('admin_content_block');
+        $controllers->match('/content/block/{block_id}', '\\Eccube\\Controller\\Admin\\Content\\BlockController::index')
+            ->assert('block_id', '\d+')
+            ->bind('admin_content_block_edit');
+        $controllers->match('/content/block/{block_id}/{device_id}', '\\Eccube\\Controller\\Admin\\Content\\BlockController::index')
+            ->assert('block_id', '\d+')
+            ->assert('device_type_id', '\d+')
+            ->bind('admin_content_block_edit_withDevice');
+        $controllers->match('/content/block/delete/{block_id}', '\\Eccube\\Controller\\Admin\\Content\\BlockController::delete')
+            ->assert('block_id', '\d+')
+            ->bind('admin_content_block_delete');
+        $controllers->match('/content/block/delete/{block_id}/{device_type_id}', '\\Eccube\\Controller\\Admin\\Content\\BlockController::delete')
+            ->assert('block_id', '\d+')
+            ->assert('device_type_id', '\d+')
+            ->bind('admin_content_block_delete_withDevice');
         $controllers->match('/design/css.php', '\\Eccube\\Page\\Admin\\Design\\Css')->bind('admin_design_css');
         $controllers->match('/design/header.php', '\\Eccube\\Page\\Admin\\Design\\Header')->bind('admin_design_header');
         $controllers->match('/design/main_edit.php', '\\Eccube\\Page\\Admin\\Design\\MainEdit')->bind('admin_design_main_edit');

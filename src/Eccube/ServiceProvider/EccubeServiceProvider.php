@@ -78,6 +78,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $pageLayoutRepository;
         });
+        $app['eccube.repository.block'] = $app->share(function() use ($app) {
+            $blockRepository = $app['orm.em']->getRepository('Eccube\Entity\Bloc');
+            $blockRepository->setApp($app);
+
+            return $blockRepository;
+        });
         $app['eccube.repository.order'] = $app->share(function() use ($app) {
             $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
             $orderRepository->setConfig($app['config']);
@@ -163,6 +169,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\PointType($app);
             $types[] = new \Eccube\Form\Type\TaxRuleType($app);
             $types[] = new \Eccube\Form\Type\MainEditType($app);
+            $types[] = new \Eccube\Form\Type\BlockType($app);
             $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\CustomerSearchType($app);
