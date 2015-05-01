@@ -52,6 +52,19 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
+            ->add('ClassCategory1', null, array(
+                'required' => false,
+                'read_only' => true,
+                'disabled' => true,
+            ))
+            ->add('ClassCategory2', null, array(
+                'required' => false,
+                'read_only' => true,
+                'disabled' => true,
+            ))
+            ->add('down_filename', 'text', array(
+                'required' => false,
+            ))
         ;
     }
 
