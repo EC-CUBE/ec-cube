@@ -24,6 +24,7 @@ class CategoryController
             if (!$TargetCategory) {
                 throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
             }
+            $Parent = $TargetCategory->getParent();
         } else {
             $TargetCategory = new \Eccube\Entity\Category();
             $TargetCategory->setParent($Parent);
@@ -33,6 +34,7 @@ class CategoryController
                 $TargetCategory->setLevel(1);
             }
         }
+        
 
         //
         $form = $app['form.factory']
