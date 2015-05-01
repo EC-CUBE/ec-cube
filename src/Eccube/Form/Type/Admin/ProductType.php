@@ -25,24 +25,36 @@ class ProductType extends AbstractType
         $app = $this->app;
 
         $builder
+            ->add('id', 'hidden', array(
+                'mapped' => false,
+            ))
             ->add('name', 'text', array(
                 'label' => '商品名',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-//            ->add('Category', 'category', array(
-//                'label' => '商品カテゴリ',
-//                'constraints' => array(
-//                    new Assert\NotBlank(),
-//                ),
-//            ))
+           ->add('Category', 'category', array(
+               'label' => '商品カテゴリ',
+               'constraints' => array(
+                   new Assert\NotBlank(),
+               ),
+               'multiple' => 'multiple',
+               'expanded' => true,
+               'mapped' => false,
+           ))
             ->add('status', 'disp', array(
                 'label' => '公開・非公開',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
+            ->add('ProductClasses', 'collection', array(
+                'type' => 'admin_product_class',
+                'options'  => array(
+                ),
+            ))
+
 //            ->add('ProductStatuses', 'status', array(
 //                'label' => '商品ステータス',
 //                'multiple'=> true,
@@ -84,17 +96,20 @@ class ProductType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('main_list_image', 'text', array(
+            ->add('main_list_image', 'file', array(
                 'label' => '一覧-メイン画像',
                 'required' => false,
+                'mapped' => false,
             ))
-            ->add('main_image', 'text', array(
+            ->add('main_image', 'file', array(
                 'label' => '詳細-メイン画像',
                 'required' => false,
+                'mapped' => false,
             ))
-            ->add('main_large_image', 'text', array(
+            ->add('main_large_image', 'file', array(
                 'label' => '詳細-メイン拡大画像',
                 'required' => false,
+                'mapped' => false,
             ))
         ;
         for ($i = 1; $i <= $app['config']['productsub_max']; $i++) {
@@ -117,11 +132,6 @@ class ProductType extends AbstractType
                 ))
             ;
         }
-        $builder->add('ProductClasses', 'collection', array(
-            'type' => 'admin_product_class',
-            'options'  => array(
-            ),
-        ));
     }
 
     /**
