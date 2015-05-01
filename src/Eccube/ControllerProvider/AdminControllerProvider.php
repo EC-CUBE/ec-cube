@@ -214,6 +214,9 @@ class AdminControllerProvider implements ControllerProviderInterface
         // products
         $controllers->match('/products/', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
         $controllers->match('/products/product.php', '\Eccube\Controller\Admin\Product\ProductController::edit')->bind('admin_product_product');
+        $controllers->match('/products/product/class/{product_id}', '\Eccube\Controller\Admin\Product\ProductClassController::index')
+            ->assert('product_id', '\d+') // todo 変数名調整
+            ->bind('admin_product_product_class');
 
         // category
         $controllers->match('/category/', '\Eccube\Controller\Admin\Product\CategoryController::index')->bind('admin_category');
@@ -270,7 +273,7 @@ class AdminControllerProvider implements ControllerProviderInterface
             ->assert('classCategoryId', '\d+')
             ->bind('admin_class_category_delete');
 
-        $controllers->match('/products/product_class.php', '\\Eccube\\Page\\Admin\\Products\\ProductClass')->bind('admin_product_product_class');
+        //$controllers->match('/products/product_class.php', '\\Eccube\\Page\\Admin\\Products\\ProductClass')->bind('admin_product_product_class');
         $controllers->match('/products/product_rank.php', '\\Eccube\\Page\\Admin\\Products\\ProductRank')->bind('admin_product_product_rank');
         $controllers->match('/products/product_select.php', '\\Eccube\\Page\\Admin\\Products\\ProductSelect')->bind('admin_product_product_select');
         $controllers->match('/products/upload_csv.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSV')->bind('admin_product_upload_csv');
