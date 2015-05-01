@@ -41,9 +41,9 @@
 <link rel="shortcut icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
 <script type="text/javascript">//<![CDATA[
-    {{ tpl_javascript|default('')|raw }}
+    {{ block('javascript') }}
     $(function(){
-        {{ tpl_onload|default('')|raw }}
+        {{ block('onload') }}
     });
 //]]></script>
 </head>
@@ -54,91 +54,93 @@
 </noscript>
 
 <div id="container">
-<a name="top"></a>
+    <a name="top"></a>
 
-{# ▼HEADER #}
-<div id="header">
-    <div id="header-contents">
-        <div id="logo"><a href="{{ url('admin_homepage') }}"><img src="{{ app.config.admin_tpl }}img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
-        <div id="site-check">
-            <p class="info">
-                <span><strong>ログイン&nbsp;:&nbsp;</strong>{{ app.user.name }}</span>&nbsp;様,&nbsp;&nbsp;
-                <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong>{{ app.user.login_date.format('Y/m/d H:i')|default()}}</span>
-            </p>
-            <ul>
-                <li><a href="{{ url('homepage') }}" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>
-                <li><a href="{{ url('admin_logout') }}" class="btn-tool-format">LOGOUT</a></li>
-            </ul>
+    {# ▼HEADER #}
+    <div id="header">
+        <div id="header-contents">
+            <div id="logo"><a href="{{ url('admin_homepage') }}"><img src="{{ app.config.admin_tpl }}img/header/logo.jpg" width="172" height="25" alt="EC-CUBE" /></a></div>
+            <div id="site-check">
+                <p class="info">
+                    <span><strong>ログイン&nbsp;:&nbsp;</strong>{{ app.user.name }}</span>&nbsp;様,&nbsp;&nbsp;
+                    <span><strong>最終ログイン日時&nbsp;:&nbsp;</strong>{{ app.user.login_date.format('Y/m/d H:i')|default('') }}</span>
+                </p>
+                <ul>
+                    <li><a href="{{ url('homepage') }}" class="btn-tool-format" target="_blank"><span>SITE CHECK</span></a></li>
+                    <li><a href="{{ url('admin_logout') }}" class="btn-tool-format">LOGOUT</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-{# ▲HEADER #}
+    {# ▲HEADER #}
 
-{# ▼NAVI #}
-<div id="navi-wrap">
-    <ul id="navi" class="clearfix">
-        <li id="navi-basis" class="on_level1">
-            <div><span>基本情報管理</span></div>
-            {{ include('Admin/Basis/subnavi.twig') }}
-        </li>
-        <li id="navi-products" class="on_level1">
-            <div><span>商品管理</span></div>
-            {{ include('Admin/Product/subnavi.twig') }}
-        </li>
-        <li id="navi-customer" class="on_level1">
-            <div><span>会員管理</span></div>
-            {{ include('Admin/Customer/subnavi.twig') }}
-        </li>
-        <li id="navi-order" class="on_level1">
-            <div><span>受注管理</span></div>
-            {{ include('Admin/Order/subnavi.twig') }}
-        </li>
-        <li id="navi-total" class="on_level1">
-            <div><span>売上集計</span></div>
-            {{ include('Admin/Total/subnavi.twig') }}
-        </li>
-        <li id="navi-mail" class="on_level1">
-            <div><span>メルマガ管理</span></div>
-            {{ include('Admin/Mail/subnavi.twig') }}
-        </li>
-        <li id="navi-content" class="on_level1">
-            <div><span>コンテンツ管理</span></div>
-            {{ include('Admin/Content/subnavi.twig') }}
-        </li>
-        <li id="navi-design" class="on_level1">
-            <div><span>デザイン管理</span></div>
-            {{ include('Admin/Design/subnavi.twig') }}
-        </li>
-        <li id="navi-system" class="on_level1">
-            <div><span>システム設定</span></div>
-            {{ include('Admin/System/subnavi.twig') }}
-        </li>
-        <li id="navi-ownersstore" class="on_level1">
-            <div><span>オーナーズストア</span></div>
-            {{ include('Admin/Ownersstore/subnavi.twig') }}
-        </li>
-    </ul>
-</div>
-{# ▲NAVI #}
+    {# ▼NAVI #}
+    <div id="navi-wrap">
+        <ul id="navi" class="clearfix">
+            <li id="navi-basis" class="on_level1">
+                <div><span>基本情報管理</span></div>
+                {{ include('Admin/Basis/subnavi.twig') }}
+            </li>
+            <li id="navi-products" class="on_level1">
+                <div><span>商品管理</span></div>
+                {{ include('Admin/Product/subnavi.twig') }}
+            </li>
+            <li id="navi-customer" class="on_level1">
+                <div><span>会員管理</span></div>
+                {{ include('Admin/Customer/subnavi.twig') }}
+            </li>
+            <li id="navi-order" class="on_level1">
+                <div><span>受注管理</span></div>
+                {{ include('Admin/Order/subnavi.twig') }}
+            </li>
+            <li id="navi-total" class="on_level1">
+                <div><span>売上集計</span></div>
+                {{ include('Admin/Total/subnavi.twig') }}
+            </li>
+            <li id="navi-mail" class="on_level1">
+                <div><span>メルマガ管理</span></div>
+                {{ include('Admin/Mail/subnavi.twig') }}
+            </li>
+            <li id="navi-content" class="on_level1">
+                <div><span>コンテンツ管理</span></div>
+                {{ include('Admin/Content/subnavi.twig') }}
+            </li>
+            <li id="navi-design" class="on_level1">
+                <div><span>デザイン管理</span></div>
+                {{ include('Admin/Design/subnavi.twig') }}
+            </li>
+            <li id="navi-system" class="on_level1">
+                <div><span>システム設定</span></div>
+                {{ include('Admin/System/subnavi.twig') }}
+            </li>
+            <li id="navi-ownersstore" class="on_level1">
+                <div><span>オーナーズストア</span></div>
+                {{ include('Admin/Ownersstore/subnavi.twig') }}
+            </li>
+        </ul>
+    </div>
+    {# ▲NAVI #}
 
-<h1><span class="title">{{ maintitle|default('') }}{{ subtitle|default('') }}</span></h1>
+    <h1><span class="title">{{ maintitle|default('') }}{% if maintitle|default('') is not empty and subtitle|default('') is not empty %}＞{% endif %}{{ subtitle|default('') }}</span></h1>
 
-<div id="contents" class="clearfix">
-    {% block main %}{% endblock %}
-</div>
-{# ▼FOOTER #}
-<div id="footer">
-    <div id="footer-contents">
-        <div id="copyright">Copyright &copy; 2000- {{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</div>
-        <div id="topagetop">
-            <ul class="sites">
-                <li><a href="#top" class="btn-tool-format">PAGE TOP</a></li>
-            </ul>
+    {{ include('Admin/alert.twig') }}
+
+    <div id="contents" class="clearfix">
+        {% block main %}{% endblock %}
+    </div>
+
+    {# ▼FOOTER #}
+    <div id="footer">
+        <div id="footer-contents">
+            <div id="copyright">Copyright &copy; 2000- {{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</div>
+            <div id="topagetop">
+                <ul class="sites">
+                    <li><a href="#top" class="btn-tool-format">PAGE TOP</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-{# ▲FOOTER #}
-
+    {# ▲FOOTER #}
 </div>
 </body>
 </html>

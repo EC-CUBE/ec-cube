@@ -27,7 +27,7 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
     {
         $ProductClass = $this->app['orm.em']
             ->getRepository('Eccube\Entity\ProductClass')
-            ->find(1);
+            ->find(2);
         $Product = $ProductClass->getProduct();
         $OrderDetail = $this->app['eccube.service.order']->newOrderDetail($Product, $ProductClass, 3);
         $this->assertNotEmpty($OrderDetail);

@@ -188,7 +188,7 @@ class CartService
                 ->getRepository('Eccube\Entity\ProductClass')
                 ->find($ProductClass);
         }
-        if (!$ProductClass || $ProductClass->getProduct()->getStatus() !== 1) {
+        if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== 1) {
             throw new \Exception();
         }
 

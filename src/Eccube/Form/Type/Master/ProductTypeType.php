@@ -1,41 +1,52 @@
 <?php
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
-class SexType extends AbstractType
+class ProductTypeType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $options['sex_options']['required'] = $options['required'];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Sex',
-            'property' => 'name',
+            'class' => 'Eccube\Entity\Master\ProductType',
             'label' => false,
+            'multiple'=> false,
             'expanded' => true,
+            'required' => false,
             'empty_value' => false,
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return 'entity';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
-        return 'sex';
+        return 'product_type';
     }
+
 }

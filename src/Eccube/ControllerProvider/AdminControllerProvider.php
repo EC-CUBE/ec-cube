@@ -212,17 +212,84 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/ownersstore/settings.php', '\\Eccube\\Page\\Admin\\OwnersStore\\Settings')->bind('admin_ownersstore_settings');
 
         // products
-        $controllers->match('/products/', '\\Eccube\\Page\\Admin\\Products\\Index')->bind('admin_products');
-        $controllers->match('/products/category.php', '\\Eccube\\Page\\Admin\\Products\\Category')->bind('admin_products_category');
-        $controllers->match('/products/class.php', '\\Eccube\\Page\\Admin\\Products\\ClassList')->bind('admin_products_class');
-        $controllers->match('/products/classcategory.php', '\\Eccube\\Page\\Admin\\Products\\ClassCategory')->bind('admin_products_classcategory');
-        $controllers->match('/products/maker.php', '\\Eccube\\Page\\Admin\\Products\\Maker')->bind('admin_products_maker');
-        $controllers->match('/products/product.php', '\\Eccube\\Page\\Admin\\Products\\ProductEdit')->bind('admin_products_product');
-        $controllers->match('/products/product_class.php', '\\Eccube\\Page\\Admin\\Products\\ProductClass')->bind('admin_products_product_class');
-        $controllers->match('/products/product_rank.php', '\\Eccube\\Page\\Admin\\Products\\ProductRank')->bind('admin_products_product_rank');
-        $controllers->match('/products/product_select.php', '\\Eccube\\Page\\Admin\\Products\\ProductSelect')->bind('admin_products_product_select');
-        $controllers->match('/products/upload_csv.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSV')->bind('admin_products_upload_csv');
-        $controllers->match('/products/upload_csv_category.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSVCategory')->bind('admin_products_upload_csv_category');
+        $controllers->match('/products/', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
+        $controllers->match('/products/product.php', '\Eccube\Controller\Admin\Product\ProductController::edit')->bind('admin_product_product');
+
+        // category
+        $controllers->match('/category/', '\Eccube\Controller\Admin\Product\CategoryController::index')->bind('admin_category');
+        $controllers->match('/category/{parentId}/', '\Eccube\Controller\Admin\Product\CategoryController::index')
+            ->assert('parentId', '\d+')
+            ->bind('admin_category_show');
+        $controllers->match('/category/{categoryId}/edit', '\Eccube\Controller\Admin\Product\CategoryController::index')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_edit');
+        $controllers->post('/category/{categoryId}/up', '\Eccube\Controller\Admin\Product\CategoryController::up')
+            ->assert('parentCategoryId', '\d+')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_up');
+        $controllers->post('/category/{categoryId}/down', '\Eccube\Controller\Admin\Product\CategoryController::down')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_down');
+        $controllers->post('/category/{categoryId}/delete', '\Eccube\Controller\Admin\Product\CategoryController::delete')
+            ->assert('categoryId', '\d+')
+            ->bind('admin_category_delete');
+
+        // class_name
+        $controllers->match('/class_name/', '\Eccube\Controller\Admin\Product\ClassNameController::index')->bind('admin_class_name');
+        $controllers->match('/class_name/{classNameId}/edit', '\Eccube\Controller\Admin\Product\ClassNameController::index')
+            ->assert('classNameId', '\d+')
+            ->bind('admin_class_name_edit');
+        $controllers->post('/class_name/{classNameId}/up', '\Eccube\Controller\Admin\Product\ClassNameController::up')
+            ->assert('classNameId', '\d+')
+            ->bind('admin_class_name_up');
+        $controllers->post('/class_name/{classNameId}/down', '\Eccube\Controller\Admin\Product\ClassNameController::down')
+            ->assert('classNameId', '\d+')
+            ->bind('admin_class_name_down');
+        $controllers->post('/class_name/{classNameId}/delete', '\Eccube\Controller\Admin\Product\ClassNameController::delete')
+            ->assert('classNameId', '\d+')
+            ->bind('admin_class_name_delete');
+
+        // class_category
+        $controllers->match('/class_category/{classNameId}/', '\Eccube\Controller\Admin\Product\ClassCategoryController::index')
+            ->assert('classNameId', '\d+')
+            ->bind('admin_class_category');
+        $controllers->match('/class_category/{classNameId}/{classCategoryId}/edit', '\Eccube\Controller\Admin\Product\ClassCategoryController::index')
+            ->assert('classNameId', '\d+')
+            ->assert('classCategoryId', '\d+')
+            ->bind('admin_class_category_edit');
+        $controllers->post('/class_category/{classNameId}/{classCategoryId}/up', '\Eccube\Controller\Admin\Product\ClassCategoryController::up')
+            ->assert('classNameId', '\d+')
+            ->assert('classCategoryId', '\d+')
+            ->bind('admin_class_category_up');
+        $controllers->post('/class_category/{classNameId}/{classCategoryId}/down', '\Eccube\Controller\Admin\Product\ClassCategoryController::down')
+            ->assert('classNameId', '\d+')
+            ->assert('classCategoryId', '\d+')
+            ->bind('admin_class_category_down');
+        $controllers->post('/class_category/{classNameId}/{classCategoryId}/delete', '\Eccube\Controller\Admin\Product\ClassCategoryController::delete')
+            ->assert('classNameId', '\d+')
+            ->assert('classCategoryId', '\d+')
+            ->bind('admin_class_category_delete');
+
+        $controllers->match('/products/product_class.php', '\\Eccube\\Page\\Admin\\Products\\ProductClass')->bind('admin_product_product_class');
+        $controllers->match('/products/product_rank.php', '\\Eccube\\Page\\Admin\\Products\\ProductRank')->bind('admin_product_product_rank');
+        $controllers->match('/products/product_select.php', '\\Eccube\\Page\\Admin\\Products\\ProductSelect')->bind('admin_product_product_select');
+        $controllers->match('/products/upload_csv.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSV')->bind('admin_product_upload_csv');
+        $controllers->match('/products/upload_csv_category.php', '\\Eccube\\Page\\Admin\\Products\\UploadCSVCategory')->bind('admin_product_upload_csv_category');
+
+        // Maker (plugin化予定)
+        $controllers->match('/maker/', '\Eccube\Controller\Admin\MakerController::index')->bind('admin_maker');
+        $controllers->match('/maker/{makerId}/edit', '\Eccube\Controller\Admin\MakerController::index')
+            ->assert('makerId', '\d+')
+            ->bind('admin_maker_edit');
+        $controllers->post('/maker/{makerId}/up', '\Eccube\Controller\Admin\MakerController::up')
+            ->assert('makerId', '\d+')
+            ->bind('admin_maker_up');
+        $controllers->post('/maker/{makerId}/down', '\Eccube\Controller\Admin\MakerController::down')
+            ->assert('makerId', '\d+')
+            ->bind('admin_maker_down');
+        $controllers->post('/maker/{makerId}/delete', '\Eccube\Controller\Admin\MakerController::delete')
+            ->assert('makerId', '\d+')
+            ->bind('admin_maker_delete');
 
         // system
         $controllers->match('/system/', '\\Eccube\\Page\\Admin\\System\\Index')->bind('admin_system');

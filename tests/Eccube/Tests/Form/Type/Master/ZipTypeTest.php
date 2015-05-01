@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Tests\Form\Type;
+namespace Eccube\Tests\Form\Type\Master;
 
 use Symfony\Component\Form\Test\TypeTestCase;
 

@@ -1,0 +1,9 @@
+{# ★ ページャここから ★ #}
+<div class="pager">
+    <ul>
+    {% for page in pages.pagesInRange %}
+        <li{% if page == pages.current %} class="on"{% endif %}><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"><span>{{ page }}</span></a></li>
+    {% endfor %}
+    </ul>
+</div>
+{# ★ ページャここまで ★ #}

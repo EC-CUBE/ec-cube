@@ -11,11 +11,13 @@ class Product extends \Eccube\Entity\AbstractEntity
 {
     private $_calc = false;
     private $stockFinds = array();
+    private $stocks = array();
+    private $stockUnlimiteds = array();
     private $price01s = array();
     private $price02s = array();
     private $price01IncTaxs = array();
     private $price02IncTaxs = array();
-    private $productCodes = array();
+    private $codes = array();
     private $pointRates = array();
     private $points = array();
     private $classCategories1 = array();
@@ -44,6 +46,12 @@ class Product extends \Eccube\Entity\AbstractEntity
 
                 // stock_find
                 $this->stockFinds[] = $ProductClass->getStockFind();
+
+                // stock
+                $this->stocks[] = $ProductClass->getStock();
+
+                // stock_unlimited
+                $this->stockUnlimiteds[] = $ProductClass->getStockUnlimited();
 
                 // price01
                 $this->price01s[] = $ProductClass->getPrice01();
@@ -154,6 +162,54 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->_calc();
 
         return max($this->stockFinds);
+    }
+
+    /**
+     * Get Stock min
+     *
+     * @return integer 
+     */
+    public function getStockMin()
+    {
+        $this->_calc();
+
+        return min($this->stocks);
+    }
+
+    /**
+     * Get Stock max
+     *
+     * @return integer 
+     */
+    public function getStockMax()
+    {
+        $this->_calc();
+
+        return max($this->stocks);
+    }
+
+    /**
+     * Get StockUnlimited min
+     *
+     * @return integer 
+     */
+    public function getStockUnlimitedMin()
+    {
+        $this->_calc();
+
+        return min($this->stockUnlimiteds);
+    }
+
+    /**
+     * Get StockUnlimited max
+     *
+     * @return integer 
+     */
+    public function getStockUnlimitedMax()
+    {
+        $this->_calc();
+
+        return max($this->stockUnlimiteds);
     }
 
     /**
@@ -366,11 +422,6 @@ class Product extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $name;
-
-    /**
-     * @var integer
-     */
-    private $status;
 
     /**
      * @var string
@@ -623,6 +674,16 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $DeliveryDate;
 
     /**
+     * @var \Eccube\Entity\Master\Disp
+     */
+    private $Status;
+
+    /**
+     * @var \Eccube\Entity\Master\ProductStatusColor
+     */
+    private $ProductStatusColor;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -668,29 +729,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set status
-     *
-     * @param integer $status
-     * @return Product
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer 
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -1921,5 +1959,51 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getDeliveryDate()
     {
         return $this->DeliveryDate;
+    }
+
+    /**
+     * Set Status
+     *
+     * @param \Eccube\Entity\Master\Disp $status
+     * @return Product
+     */
+    public function setStatus(\Eccube\Entity\Master\Disp $status = null)
+    {
+        $this->Status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get Status
+     *
+     * @return \Eccube\Entity\Master\Disp 
+     */
+    public function getStatus()
+    {
+        return $this->Status;
+    }
+
+    /**
+     * Set ProductStatusColor
+     *
+     * @param \Eccube\Entity\Master\ProductStatusColor $productStatusColor
+     * @return Product
+     */
+    public function setProductStatusColor(\Eccube\Entity\Master\ProductStatusColor $productStatusColor = null)
+    {
+        $this->ProductStatusColor = $productStatusColor;
+
+        return $this;
+    }
+
+    /**
+     * Get ProductStatusColor
+     *
+     * @return \Eccube\Entity\Master\ProductStatusColor 
+     */
+    public function getProductStatusColor()
+    {
+        return $this->ProductStatusColor;
     }
 }

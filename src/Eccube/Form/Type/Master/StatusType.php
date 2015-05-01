@@ -1,15 +1,16 @@
 <?php
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
-class ReminderType extends AbstractType
+class StatusType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
@@ -23,22 +24,13 @@ class ReminderType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Reminder',
-            'property' => 'name',
+            'class' => 'Eccube\Entity\Master\Status',
             'label' => false,
             'multiple'=> false,
-            'expanded' => false,
+            'expanded' => true,
             'required' => false,
-            'empty_value' => 'form.reminder.empty_value',
+            'empty_value' => false,
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'reminder';
     }
 
     /**
@@ -47,6 +39,14 @@ class ReminderType extends AbstractType
     public function getParent()
     {
         return 'entity';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'status';
     }
 
 }

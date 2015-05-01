@@ -21,7 +21,7 @@ class CustomerController
         $Customers = array();
 
         $form = $app['form.factory']
-            ->createBuilder('customer_search')
+            ->createBuilder('admin_search_customer')
             ->getForm();
 
         $showResult = false;

@@ -66,6 +66,8 @@ Eccube\Entity\Category:
         Children:
             targetEntity: Eccube\Entity\Category
             mappedBy: Parent
+            orderBy:
+                rank: DESC
     oneToOne:
         CategoryCount:
             targetEntity: CategoryCount

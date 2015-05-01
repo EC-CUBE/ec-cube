@@ -36,3 +36,39 @@ admin.customer.delete.complete: ※ 会員を削除しました。
 admin.customer.resend.complete: ※ メールを送信しました。
 
 Quantity: 数量
+
+admin.maker.up.complete: メーカーを上へ移動しました。
+admin.maker.up.error: メーカーを上へ移動できませんでした。
+admin.maker.down.complete: メーカーを下へ移動しました。
+admin.maker.down.error: メーカーを下へ移動できませんでした。
+admin.maker.save.complete: メーカーを保存しました。
+admin.maker.save.error: メーカーを保存できませんでした。
+admin.maker.delete.complete: メーカーを削除しました。
+admin.maker.delete.error: メーカーを削除できませんでした。
+
+admin.class_name.up.complete: 規格を上へ移動しました。
+admin.class_name.up.error: 規格を上へ移動できませんでした。
+admin.class_name.down.complete: 規格を下へ移動しました。
+admin.class_name.down.error: 規格を下へ移動できませんでした。
+admin.class_name.save.complete: 規格を保存しました。
+admin.class_name.save.error: 規格を保存できませんでした。
+admin.class_name.delete.complete: 規格を削除しました。
+admin.class_name.delete.error: 規格を削除できませんでした。
+
+admin.class_category.up.complete: 分類を上へ移動しました。
+admin.class_category.up.error: 分類を上へ移動できませんでした。
+admin.class_category.down.complete: 分類を下へ移動しました。
+admin.class_category.down.error: 分類を下へ移動できませんでした。
+admin.class_category.save.complete: 分類を保存しました。
+admin.class_category.save.error: 分類を保存できませんでした。
+admin.class_category.delete.complete: 分類を削除しました。
+admin.class_category.delete.error: 分類を削除できませんでした。
+
+admin.category.up.complete: カテゴリを上へ移動しました。
+admin.category.up.error: カテゴリを上へ移動できませんでした。
+admin.category.down.complete: カテゴリを下へ移動しました。
+admin.category.down.error: カテゴリを下へ移動できませんでした。
+admin.category.save.complete: カテゴリを保存しました。
+admin.category.save.error: カテゴリを保存できませんでした。
+admin.category.delete.complete: カテゴリを削除しました。
+admin.category.delete.error: カテゴリを削除できませんでした。

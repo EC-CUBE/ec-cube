@@ -1,0 +1,19 @@
+{% if app.session.flashBag.has('admin.success') %}
+    <div class="alert alert-success" role="alert">
+        <ul>
+        {% for success in app.session.flashBag.get('admin.success') %}
+            <li>{{ success|trans }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% if app.session.flashBag.has('admin.error') %}
+    <div class="alert alert-error" role="alert">
+        <ul>
+        {% for error in app.session.flashBag.get('admin.error') %}
+            <li>{{ error|trans }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
