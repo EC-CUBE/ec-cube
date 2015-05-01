@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ClassCategory
  */
@@ -57,11 +55,10 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +68,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string        $name
      * @return ClassCategory
      */
     public function setName($name)
@@ -84,7 +81,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -94,7 +91,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer       $rank
      * @return ClassCategory
      */
     public function setRank($rank)
@@ -107,7 +104,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -117,7 +114,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime     $createDate
      * @return ClassCategory
      */
     public function setCreateDate($createDate)
@@ -130,7 +127,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -140,7 +137,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime     $updateDate
      * @return ClassCategory
      */
     public function setUpdateDate($updateDate)
@@ -153,7 +150,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -163,7 +160,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer       $delFlg
      * @return ClassCategory
      */
     public function setDelFlg($delFlg)
@@ -176,7 +173,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -186,7 +183,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Set ClassName
      *
-     * @param \Eccube\Entity\ClassName $className
+     * @param  \Eccube\Entity\ClassName $className
      * @return ClassCategory
      */
     public function setClassName(\Eccube\Entity\ClassName $className)
@@ -199,7 +196,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Get ClassName
      *
-     * @return \Eccube\Entity\ClassName 
+     * @return \Eccube\Entity\ClassName
      */
     public function getClassName()
     {
@@ -209,7 +206,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return ClassCategory
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -222,7 +219,7 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

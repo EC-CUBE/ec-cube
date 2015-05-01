@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Kiyaku
  */
@@ -57,11 +55,10 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +68,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string $title
      * @return Kiyaku
      */
     public function setTitle($title)
@@ -84,7 +81,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -94,7 +91,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Set text
      *
-     * @param string $text
+     * @param  string $text
      * @return Kiyaku
      */
     public function setText($text)
@@ -107,7 +104,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -117,7 +114,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer $rank
      * @return Kiyaku
      */
     public function setRank($rank)
@@ -130,7 +127,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -140,7 +137,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Kiyaku
      */
     public function setCreateDate($createDate)
@@ -153,7 +150,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -163,7 +160,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Kiyaku
      */
     public function setUpdateDate($updateDate)
@@ -176,7 +173,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -186,7 +183,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Kiyaku
      */
     public function setDelFlg($delFlg)
@@ -199,7 +196,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -209,7 +206,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return Kiyaku
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -222,7 +219,7 @@ class Kiyaku extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

@@ -294,7 +294,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('buy_product_code', '%' . $searchData['buy_product_code'] . '%');
         }
 
-
         // Order By
         $qb->addOrderBy('c.update_date', 'DESC');
 
@@ -328,6 +327,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     public function createSalt($byte)
     {
         $generator = new SecureRandom();
+
         return bin2hex($generator->nextBytes($byte));
     }
 
@@ -335,12 +335,13 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      * 入力されたパスワードをSaltと暗号化する
      *
      * @param $app
-     * @param Customer $Customer
+     * @param  Customer $Customer
      * @return mixed
      */
     public function encryptPassword($app, \Eccube\Entity\Customer $Customer)
     {
         $encoder = $app['security.encoder_factory']->getEncoder($Customer);
+
         return $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
     }
 

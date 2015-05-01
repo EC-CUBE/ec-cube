@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity\Master;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Permission
  */
@@ -32,11 +30,10 @@ class Permission extends \Eccube\Entity\AbstractEntity
      */
     private $rank;
 
-
     /**
      * Get id
      *
-     * @return string 
+     * @return string
      */
     public function getId()
     {
@@ -46,7 +43,7 @@ class Permission extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string     $name
      * @return Permission
      */
     public function setName($name)
@@ -59,7 +56,7 @@ class Permission extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -69,7 +66,7 @@ class Permission extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer    $rank
      * @return Permission
      */
     public function setRank($rank)
@@ -82,7 +79,7 @@ class Permission extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -92,7 +89,7 @@ class Permission extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @param string $id
+     * @param  string     $id
      * @return Permission
      */
     public function setId($id)

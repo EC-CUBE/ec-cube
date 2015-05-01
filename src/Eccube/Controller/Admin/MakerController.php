@@ -4,8 +4,7 @@ namespace Eccube\Controller\Admin;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class MakerController
 {
     public function index(Application $app, Request $request, $makerId = null)

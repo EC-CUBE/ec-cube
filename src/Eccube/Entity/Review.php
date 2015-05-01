@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Review
  */
@@ -79,11 +77,10 @@ class Review extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -93,7 +90,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set reviewer_name
      *
-     * @param string $reviewerName
+     * @param  string $reviewerName
      * @return Review
      */
     public function setReviewerName($reviewerName)
@@ -106,7 +103,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get reviewer_name
      *
-     * @return string 
+     * @return string
      */
     public function getReviewerName()
     {
@@ -116,7 +113,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set reviewer_url
      *
-     * @param string $reviewerUrl
+     * @param  string $reviewerUrl
      * @return Review
      */
     public function setReviewerUrl($reviewerUrl)
@@ -129,7 +126,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get reviewer_url
      *
-     * @return string 
+     * @return string
      */
     public function getReviewerUrl()
     {
@@ -139,7 +136,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set recommend_level
      *
-     * @param integer $recommendLevel
+     * @param  integer $recommendLevel
      * @return Review
      */
     public function setRecommendLevel($recommendLevel)
@@ -152,7 +149,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get recommend_level
      *
-     * @return integer 
+     * @return integer
      */
     public function getRecommendLevel()
     {
@@ -162,7 +159,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string $title
      * @return Review
      */
     public function setTitle($title)
@@ -175,7 +172,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -185,7 +182,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment
      *
-     * @param string $comment
+     * @param  string $comment
      * @return Review
      */
     public function setComment($comment)
@@ -198,7 +195,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -208,7 +205,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set status
      *
-     * @param integer $status
+     * @param  integer $status
      * @return Review
      */
     public function setStatus($status)
@@ -221,7 +218,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -231,7 +228,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Review
      */
     public function setCreateDate($createDate)
@@ -244,7 +241,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -254,7 +251,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Review
      */
     public function setUpdateDate($updateDate)
@@ -267,7 +264,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -277,7 +274,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Review
      */
     public function setDelFlg($delFlg)
@@ -290,7 +287,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -300,7 +297,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set Product
      *
-     * @param \Eccube\Entity\Product $product
+     * @param  \Eccube\Entity\Product $product
      * @return Review
      */
     public function setProduct(\Eccube\Entity\Product $product)
@@ -313,7 +310,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {
@@ -323,7 +320,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set Sex
      *
-     * @param \Eccube\Entity\Master\Sex $sex
+     * @param  \Eccube\Entity\Master\Sex $sex
      * @return Review
      */
     public function setSex(\Eccube\Entity\Master\Sex $sex = null)
@@ -336,7 +333,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get Sex
      *
-     * @return \Eccube\Entity\Master\Sex 
+     * @return \Eccube\Entity\Master\Sex
      */
     public function getSex()
     {
@@ -346,7 +343,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set Customer
      *
-     * @param \Eccube\Entity\Customer $customer
+     * @param  \Eccube\Entity\Customer $customer
      * @return Review
      */
     public function setCustomer(\Eccube\Entity\Customer $customer = null)
@@ -359,7 +356,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get Customer
      *
-     * @return \Eccube\Entity\Customer 
+     * @return \Eccube\Entity\Customer
      */
     public function getCustomer()
     {
@@ -369,7 +366,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return Review
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
@@ -382,7 +379,7 @@ class Review extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

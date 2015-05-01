@@ -1,7 +1,6 @@
 <?php
 namespace Eccube\Service;
 
-use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 
 class OrderService
@@ -31,6 +30,7 @@ class OrderService
             ->setDelivFee(0)
             ->setOrderStatus($this->app['eccube.repository.order_status']->find(1)) // todo
             ->setDelFlg(0); // todo
+
         return $Order;
     }
 
@@ -54,6 +54,7 @@ class OrderService
         if (!is_null($ClassCategory2)) {
             $OrderDetail->setClasscategoryName1($ClassCategory2->getName());
         }
+
         return $OrderDetail;
     }
 
@@ -220,6 +221,7 @@ class OrderService
         $Order->setSubTotal($subTotal);
         $Order->setPaymentTotal($paymentTotal);
         $this->app['orm.em']->flush();
+
         return $Order;
     }
 

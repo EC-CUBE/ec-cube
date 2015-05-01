@@ -298,7 +298,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set name01
      *
-     * @param string $name01
+     * @param  string   $name01
      * @return Customer
      */
     public function setName01($name01)
@@ -321,7 +321,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set name02
      *
-     * @param string $name02
+     * @param  string   $name02
      * @return Customer
      */
     public function setName02($name02)
@@ -344,7 +344,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set kana01
      *
-     * @param string $kana01
+     * @param  string   $kana01
      * @return Customer
      */
     public function setKana01($kana01)
@@ -367,7 +367,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set kana02
      *
-     * @param string $kana02
+     * @param  string   $kana02
      * @return Customer
      */
     public function setKana02($kana02)
@@ -390,7 +390,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set company_name
      *
-     * @param string $companyName
+     * @param  string   $companyName
      * @return Customer
      */
     public function setCompanyName($companyName)
@@ -413,7 +413,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set zip01
      *
-     * @param string $zip01
+     * @param  string   $zip01
      * @return Customer
      */
     public function setZip01($zip01)
@@ -436,7 +436,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set zip02
      *
-     * @param string $zip02
+     * @param  string   $zip02
      * @return Customer
      */
     public function setZip02($zip02)
@@ -459,7 +459,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set zipcode
      *
-     * @param string $zipcode
+     * @param  string   $zipcode
      * @return Customer
      */
     public function setZipcode($zipcode)
@@ -482,7 +482,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set addr01
      *
-     * @param string $addr01
+     * @param  string   $addr01
      * @return Customer
      */
     public function setAddr01($addr01)
@@ -505,7 +505,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set addr02
      *
-     * @param string $addr02
+     * @param  string   $addr02
      * @return Customer
      */
     public function setAddr02($addr02)
@@ -528,7 +528,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string   $email
      * @return Customer
      */
     public function setEmail($email)
@@ -551,7 +551,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set email_mobile
      *
-     * @param string $emailMobile
+     * @param  string   $emailMobile
      * @return Customer
      */
     public function setEmailMobile($emailMobile)
@@ -574,7 +574,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set tel01
      *
-     * @param string $tel01
+     * @param  string   $tel01
      * @return Customer
      */
     public function setTel01($tel01)
@@ -597,7 +597,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set tel02
      *
-     * @param string $tel02
+     * @param  string   $tel02
      * @return Customer
      */
     public function setTel02($tel02)
@@ -620,7 +620,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set tel03
      *
-     * @param string $tel03
+     * @param  string   $tel03
      * @return Customer
      */
     public function setTel03($tel03)
@@ -643,7 +643,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set fax01
      *
-     * @param string $fax01
+     * @param  string   $fax01
      * @return Customer
      */
     public function setFax01($fax01)
@@ -666,7 +666,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set fax02
      *
-     * @param string $fax02
+     * @param  string   $fax02
      * @return Customer
      */
     public function setFax02($fax02)
@@ -689,7 +689,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set fax03
      *
-     * @param string $fax03
+     * @param  string   $fax03
      * @return Customer
      */
     public function setFax03($fax03)
@@ -712,7 +712,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set birth
      *
-     * @param \DateTime $birth
+     * @param  \DateTime $birth
      * @return Customer
      */
     public function setBirth($birth)
@@ -735,7 +735,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set password
      *
-     * @param string $password
+     * @param  string   $password
      * @return Customer
      */
     public function setPassword($password)
@@ -758,7 +758,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set reminder
      *
-     * @param \Eccube\Entity\Master\Reminder $reminder
+     * @param  \Eccube\Entity\Master\Reminder $reminder
      * @return Customer
      */
     public function setReminder(\Eccube\Entity\Master\Reminder $Reminder = null)
@@ -781,7 +781,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set reminder_answer
      *
-     * @param string $reminderAnswer
+     * @param  string   $reminderAnswer
      * @return Customer
      */
     public function setReminderAnswer($reminderAnswer)
@@ -804,7 +804,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set salt
      *
-     * @param string $salt
+     * @param  string   $salt
      * @return Customer
      */
     public function setSalt($salt)
@@ -827,7 +827,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set secret_key
      *
-     * @param string $secretKey
+     * @param  string   $secretKey
      * @return Customer
      */
     public function setSecretKey($secretKey)
@@ -850,7 +850,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set first_buy_date
      *
-     * @param \DateTime $firstBuyDate
+     * @param  \DateTime $firstBuyDate
      * @return Customer
      */
     public function setFirstBuyDate($firstBuyDate)
@@ -873,7 +873,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set last_buy_date
      *
-     * @param \DateTime $lastBuyDate
+     * @param  \DateTime $lastBuyDate
      * @return Customer
      */
     public function setLastBuyDate($lastBuyDate)
@@ -896,7 +896,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set buy_times
      *
-     * @param string $buyTimes
+     * @param  string   $buyTimes
      * @return Customer
      */
     public function setBuyTimes($buyTimes)
@@ -919,7 +919,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set buy_total
      *
-     * @param string $buyTotal
+     * @param  string   $buyTotal
      * @return Customer
      */
     public function setBuyTotal($buyTotal)
@@ -942,7 +942,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set point
      *
-     * @param string $point
+     * @param  string   $point
      * @return Customer
      */
     public function setPoint($point)
@@ -965,7 +965,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set note
      *
-     * @param string $note
+     * @param  string   $note
      * @return Customer
      */
     public function setNote($note)
@@ -988,7 +988,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set Status
      *
-     * @param \Eccube\Entity\Master\CustomerStatus $status
+     * @param  \Eccube\Entity\Master\CustomerStatus $status
      * @return Customer
      */
     public function setStatus(\Eccube\Entity\Master\CustomerStatus $status = null)
@@ -1011,7 +1011,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Customer
      */
     public function setCreateDate($createDate)
@@ -1034,7 +1034,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Customer
      */
     public function setUpdateDate($updateDate)
@@ -1057,7 +1057,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer  $delFlg
      * @return Customer
      */
     public function setDelFlg($delFlg)
@@ -1080,7 +1080,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set mobile_phone_id
      *
-     * @param string $mobilePhoneId
+     * @param  string   $mobilePhoneId
      * @return Customer
      */
     public function setMobilePhoneId($mobilePhoneId)
@@ -1103,7 +1103,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set mailmaga_flg
      *
-     * @param \Eccube\Entity\Master\MailMagazinType $MailmagaFlg
+     * @param  \Eccube\Entity\Master\MailMagazinType $MailmagaFlg
      * @return Customer
      */
     public function setMailmagaFlg($MailmagaFlg)
@@ -1126,7 +1126,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Add CustomerFavoriteProducts
      *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
+     * @param  \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
      * @return Customer
      */
     public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
@@ -1159,7 +1159,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Add Orders
      *
-     * @param \Eccube\Entity\Orders $order
+     * @param  \Eccube\Entity\Orders $order
      * @return Customer
      */
     public function addOrder(\Eccube\Entity\Order $order)
@@ -1192,7 +1192,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Add OtherDelivs
      *
-     * @param \Eccube\Entity\Orders $order
+     * @param  \Eccube\Entity\Orders $order
      * @return Customer
      */
     public function addOtherDeliv(\Eccube\Entity\OtherDeliv $otherDeliv)
@@ -1225,7 +1225,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set Sex
      *
-     * @param \Eccube\Entity\Master\Sex $sex
+     * @param  \Eccube\Entity\Master\Sex $sex
      * @return Customer
      */
     public function setSex(\Eccube\Entity\Master\Sex $sex = null)
@@ -1248,7 +1248,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set Job
      *
-     * @param \Eccube\Entity\Master\Job $job
+     * @param  \Eccube\Entity\Master\Job $job
      * @return Customer
      */
     public function setJob(\Eccube\Entity\Master\Job $job = null)
@@ -1271,7 +1271,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set Country
      *
-     * @param \Eccube\Entity\Master\Country $country
+     * @param  \Eccube\Entity\Master\Country $country
      * @return Customer
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1294,7 +1294,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set Pref
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param  \Eccube\Entity\Master\Pref $pref
      * @return Customer
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -1317,7 +1317,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get zipcode
      *
-     * @return string 
+     * @return string
      */
     public function getZipcode()
     {

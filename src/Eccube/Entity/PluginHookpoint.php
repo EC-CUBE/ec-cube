@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * PluginHookpoint
  */
@@ -44,11 +42,10 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
      */
     private $update_date;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -58,7 +55,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Set plugin_id
      *
-     * @param integer $pluginId
+     * @param  integer         $pluginId
      * @return PluginHookpoint
      */
     public function setPluginId($pluginId)
@@ -71,7 +68,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Get plugin_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getPluginId()
     {
@@ -81,7 +78,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Set hook_point
      *
-     * @param string $hookPoint
+     * @param  string          $hookPoint
      * @return PluginHookpoint
      */
     public function setHookPoint($hookPoint)
@@ -94,7 +91,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Get hook_point
      *
-     * @return string 
+     * @return string
      */
     public function getHookPoint()
     {
@@ -104,7 +101,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Set callback
      *
-     * @param string $callback
+     * @param  string          $callback
      * @return PluginHookpoint
      */
     public function setCallback($callback)
@@ -117,7 +114,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Get callback
      *
-     * @return string 
+     * @return string
      */
     public function getCallback()
     {
@@ -127,7 +124,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Set use_flg
      *
-     * @param integer $useFlg
+     * @param  integer         $useFlg
      * @return PluginHookpoint
      */
     public function setUseFlg($useFlg)
@@ -140,7 +137,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Get use_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getUseFlg()
     {
@@ -150,7 +147,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime       $createDate
      * @return PluginHookpoint
      */
     public function setCreateDate($createDate)
@@ -163,7 +160,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -173,7 +170,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime       $updateDate
      * @return PluginHookpoint
      */
     public function setUpdateDate($updateDate)
@@ -186,7 +183,7 @@ class PluginHookpoint extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {

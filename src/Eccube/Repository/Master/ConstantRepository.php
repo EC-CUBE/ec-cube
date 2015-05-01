@@ -15,7 +15,7 @@ class ConstantRepository extends EntityRepository
     /**
      * getAll
      * configにEC-CUBE2の設定を入れる。暫定メソッド。
-     * 
+     *
      * @return array
      */
     public function getAll($config)

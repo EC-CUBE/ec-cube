@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Module
  */
@@ -73,7 +71,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,7 +81,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Set code
      *
-     * @param string $code
+     * @param  string $code
      * @return Module
      */
     public function setCode($code)
@@ -96,7 +94,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -106,7 +104,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Module
      */
     public function setName($name)
@@ -119,7 +117,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -129,7 +127,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_data
      *
-     * @param string $subData
+     * @param  string $subData
      * @return Module
      */
     public function setSubData($subData)
@@ -142,7 +140,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_data
      *
-     * @return string 
+     * @return string
      */
     public function getSubData()
     {
@@ -152,7 +150,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Set auto_update_flg
      *
-     * @param integer $autoUpdateFlg
+     * @param  integer $autoUpdateFlg
      * @return Module
      */
     public function setAutoUpdateFlg($autoUpdateFlg)
@@ -165,7 +163,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get auto_update_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getAutoUpdateFlg()
     {
@@ -175,7 +173,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Module
      */
     public function setDelFlg($delFlg)
@@ -188,7 +186,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -198,7 +196,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Module
      */
     public function setCreateDate($createDate)
@@ -211,7 +209,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -221,7 +219,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Module
      */
     public function setUpdateDate($updateDate)
@@ -234,7 +232,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -244,7 +242,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Add ModuleUpdateLogs
      *
-     * @param \Eccube\Entity\ModuleUpdateLog $moduleUpdateLogs
+     * @param  \Eccube\Entity\ModuleUpdateLog $moduleUpdateLogs
      * @return Module
      */
     public function addModuleUpdateLog(\Eccube\Entity\ModuleUpdateLog $moduleUpdateLogs)
@@ -267,7 +265,7 @@ class Module extends \Eccube\Entity\AbstractEntity
     /**
      * Get ModuleUpdateLogs
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getModuleUpdateLogs()
     {

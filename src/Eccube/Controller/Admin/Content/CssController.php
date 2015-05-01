@@ -5,10 +5,9 @@ namespace Eccube\Controller\Admin\Content;
 use Eccube\Application;
 use \Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use \Symfony\Component\HttpKernel\Exception;
 
-class CssController {
-
+class CssController
+{
     protected $title = 'コンテンツ管理';
 
     protected $subtitle = 'CSS管理';
@@ -32,6 +31,7 @@ class CssController {
                 $fs = new Filesystem();
                 $fs->dumpFile($this->getCssDir($app) . $data['file_name'], $data['content']);
                 $app['session']->getFlashBag()->add('admin.content.css.complete', 'admin.register.complete');
+
                 return $app->redirect($app['url_generator']->generate('admin_content_css'));
             }
         }
@@ -74,6 +74,7 @@ class CssController {
             }
             $app['session']->getFlashBag()->add('admin.content.css.complete', 'admin.register.complete');
         }
+
         return $app->redirect($app['url_generator']->generate('admin_content_css'));
     }
 
@@ -94,7 +95,8 @@ class CssController {
         return $fileNames;
     }
 
-    protected function getCssDir($app) {
+    protected function getCssDir($app)
+    {
         return $app['congig']['user_realdir'] . $this->cssDir;
     }
 }

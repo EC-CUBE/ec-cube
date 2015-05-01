@@ -7,7 +7,6 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContextInterface;
 
 class DelivType extends AbstractType
 {
@@ -52,7 +51,7 @@ class DelivType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-                'query_builder' => function($er) {
+                'query_builder' => function ($er) {
                     return $er->createQueryBuilder('p')
                         ->orderBy('p.rank', 'ASC');
                 },

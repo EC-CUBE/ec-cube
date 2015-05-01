@@ -99,7 +99,7 @@ class MainEditType extends AbstractType
             ->add('device_type_id', 'hidden')
             ->add('page_id', 'hidden')
             ->add('save', 'submit', array('label' => 'この内容で登録する'))
-            ->addEventListener(FormEvents::POST_SUBMIT, function($event){
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $filename = $form['filename']->getData();
                 $device_type_id = $form['device_type_id']->getData();

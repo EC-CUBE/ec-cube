@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Order
  */
@@ -350,7 +348,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -360,7 +358,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set order_temp_id
      *
-     * @param string $orderTempId
+     * @param  string $orderTempId
      * @return Order
      */
     public function setOrderTempId($orderTempId)
@@ -373,7 +371,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get order_temp_id
      *
-     * @return string 
+     * @return string
      */
     public function getOrderTempId()
     {
@@ -383,7 +381,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set message
      *
-     * @param string $message
+     * @param  string $message
      * @return Order
      */
     public function setMessage($message)
@@ -396,7 +394,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get message
      *
-     * @return string 
+     * @return string
      */
     public function getMessage()
     {
@@ -406,7 +404,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set name01
      *
-     * @param string $name01
+     * @param  string $name01
      * @return Order
      */
     public function setName01($name01)
@@ -419,7 +417,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get name01
      *
-     * @return string 
+     * @return string
      */
     public function getName01()
     {
@@ -429,7 +427,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set name02
      *
-     * @param string $name02
+     * @param  string $name02
      * @return Order
      */
     public function setName02($name02)
@@ -442,7 +440,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get name02
      *
-     * @return string 
+     * @return string
      */
     public function getName02()
     {
@@ -452,7 +450,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana01
      *
-     * @param string $kana01
+     * @param  string $kana01
      * @return Order
      */
     public function setKana01($kana01)
@@ -465,7 +463,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get kana01
      *
-     * @return string 
+     * @return string
      */
     public function getKana01()
     {
@@ -475,7 +473,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana02
      *
-     * @param string $kana02
+     * @param  string $kana02
      * @return Order
      */
     public function setKana02($kana02)
@@ -488,7 +486,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get kana02
      *
-     * @return string 
+     * @return string
      */
     public function getKana02()
     {
@@ -498,7 +496,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set company_name
      *
-     * @param string $companyName
+     * @param  string $companyName
      * @return Order
      */
     public function setCompanyName($companyName)
@@ -511,7 +509,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get company_name
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -521,7 +519,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string $email
      * @return Order
      */
     public function setEmail($email)
@@ -534,7 +532,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -544,7 +542,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel01
      *
-     * @param string $tel01
+     * @param  string $tel01
      * @return Order
      */
     public function setTel01($tel01)
@@ -557,7 +555,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel01
      *
-     * @return string 
+     * @return string
      */
     public function getTel01()
     {
@@ -567,7 +565,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel02
      *
-     * @param string $tel02
+     * @param  string $tel02
      * @return Order
      */
     public function setTel02($tel02)
@@ -580,7 +578,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel02
      *
-     * @return string 
+     * @return string
      */
     public function getTel02()
     {
@@ -590,7 +588,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel03
      *
-     * @param string $tel03
+     * @param  string $tel03
      * @return Order
      */
     public function setTel03($tel03)
@@ -603,7 +601,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel03
      *
-     * @return string 
+     * @return string
      */
     public function getTel03()
     {
@@ -613,7 +611,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax01
      *
-     * @param string $fax01
+     * @param  string $fax01
      * @return Order
      */
     public function setFax01($fax01)
@@ -626,7 +624,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax01
      *
-     * @return string 
+     * @return string
      */
     public function getFax01()
     {
@@ -636,7 +634,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax02
      *
-     * @param string $fax02
+     * @param  string $fax02
      * @return Order
      */
     public function setFax02($fax02)
@@ -649,7 +647,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax02
      *
-     * @return string 
+     * @return string
      */
     public function getFax02()
     {
@@ -659,7 +657,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax03
      *
-     * @param string $fax03
+     * @param  string $fax03
      * @return Order
      */
     public function setFax03($fax03)
@@ -672,7 +670,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax03
      *
-     * @return string 
+     * @return string
      */
     public function getFax03()
     {
@@ -682,7 +680,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip01
      *
-     * @param string $zip01
+     * @param  string $zip01
      * @return Order
      */
     public function setZip01($zip01)
@@ -695,7 +693,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip01
      *
-     * @return string 
+     * @return string
      */
     public function getZip01()
     {
@@ -705,7 +703,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip02
      *
-     * @param string $zip02
+     * @param  string $zip02
      * @return Order
      */
     public function setZip02($zip02)
@@ -718,7 +716,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip02
      *
-     * @return string 
+     * @return string
      */
     public function getZip02()
     {
@@ -728,7 +726,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set zipcode
      *
-     * @param string $zipcode
+     * @param  string $zipcode
      * @return Order
      */
     public function setZipcode($zipcode)
@@ -741,7 +739,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get zipcode
      *
-     * @return string 
+     * @return string
      */
     public function getZipcode()
     {
@@ -751,7 +749,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr01
      *
-     * @param string $addr01
+     * @param  string $addr01
      * @return Order
      */
     public function setAddr01($addr01)
@@ -764,7 +762,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr01
      *
-     * @return string 
+     * @return string
      */
     public function getAddr01()
     {
@@ -774,7 +772,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr02
      *
-     * @param string $addr02
+     * @param  string $addr02
      * @return Order
      */
     public function setAddr02($addr02)
@@ -787,7 +785,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr02
      *
-     * @return string 
+     * @return string
      */
     public function getAddr02()
     {
@@ -797,7 +795,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set birth
      *
-     * @param \DateTime $birth
+     * @param  \DateTime $birth
      * @return Order
      */
     public function setBirth($birth)
@@ -810,7 +808,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get birth
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirth()
     {
@@ -820,7 +818,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set subtotal
      *
-     * @param string $subtotal
+     * @param  string $subtotal
      * @return Order
      */
     public function setSubtotal($subtotal)
@@ -833,7 +831,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get subtotal
      *
-     * @return string 
+     * @return string
      */
     public function getSubtotal()
     {
@@ -843,7 +841,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set discount
      *
-     * @param string $discount
+     * @param  string $discount
      * @return Order
      */
     public function setDiscount($discount)
@@ -856,7 +854,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get discount
      *
-     * @return string 
+     * @return string
      */
     public function getDiscount()
     {
@@ -866,7 +864,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set deliv_fee
      *
-     * @param string $delivFee
+     * @param  string $delivFee
      * @return Order
      */
     public function setDelivFee($delivFee)
@@ -879,7 +877,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get deliv_fee
      *
-     * @return string 
+     * @return string
      */
     public function getDelivFee()
     {
@@ -889,7 +887,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set charge
      *
-     * @param string $charge
+     * @param  string $charge
      * @return Order
      */
     public function setCharge($charge)
@@ -902,7 +900,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get charge
      *
-     * @return string 
+     * @return string
      */
     public function getCharge()
     {
@@ -912,7 +910,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set use_point
      *
-     * @param string $usePoint
+     * @param  string $usePoint
      * @return Order
      */
     public function setUsePoint($usePoint)
@@ -925,7 +923,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get use_point
      *
-     * @return string 
+     * @return string
      */
     public function getUsePoint()
     {
@@ -935,7 +933,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set add_point
      *
-     * @param string $addPoint
+     * @param  string $addPoint
      * @return Order
      */
     public function setAddPoint($addPoint)
@@ -948,7 +946,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get add_point
      *
-     * @return string 
+     * @return string
      */
     public function getAddPoint()
     {
@@ -958,7 +956,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set birth_point
      *
-     * @param string $birthPoint
+     * @param  string $birthPoint
      * @return Order
      */
     public function setBirthPoint($birthPoint)
@@ -971,7 +969,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get birth_point
      *
-     * @return string 
+     * @return string
      */
     public function getBirthPoint()
     {
@@ -981,7 +979,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set tax
      *
-     * @param string $tax
+     * @param  string $tax
      * @return Order
      */
     public function setTax($tax)
@@ -994,7 +992,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax
      *
-     * @return string 
+     * @return string
      */
     public function getTax()
     {
@@ -1004,7 +1002,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set total
      *
-     * @param string $total
+     * @param  string $total
      * @return Order
      */
     public function setTotal($total)
@@ -1017,7 +1015,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get total
      *
-     * @return string 
+     * @return string
      */
     public function getTotal()
     {
@@ -1027,7 +1025,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set payment_total
      *
-     * @param string $paymentTotal
+     * @param  string $paymentTotal
      * @return Order
      */
     public function setPaymentTotal($paymentTotal)
@@ -1040,7 +1038,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get payment_total
      *
-     * @return string 
+     * @return string
      */
     public function getPaymentTotal()
     {
@@ -1050,7 +1048,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set payment_method
      *
-     * @param string $paymentMethod
+     * @param  string $paymentMethod
      * @return Order
      */
     public function setPaymentMethod($paymentMethod)
@@ -1063,7 +1061,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get payment_method
      *
-     * @return string 
+     * @return string
      */
     public function getPaymentMethod()
     {
@@ -1073,7 +1071,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set note
      *
-     * @param string $note
+     * @param  string $note
      * @return Order
      */
     public function setNote($note)
@@ -1086,7 +1084,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get note
      *
-     * @return string 
+     * @return string
      */
     public function getNote()
     {
@@ -1096,7 +1094,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Order
      */
     public function setCreateDate($createDate)
@@ -1109,7 +1107,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -1119,7 +1117,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Order
      */
     public function setUpdateDate($updateDate)
@@ -1132,7 +1130,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -1142,7 +1140,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set commit_date
      *
-     * @param \DateTime $commitDate
+     * @param  \DateTime $commitDate
      * @return Order
      */
     public function setCommitDate($commitDate)
@@ -1155,7 +1153,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get commit_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCommitDate()
     {
@@ -1165,7 +1163,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set payment_date
      *
-     * @param \DateTime $paymentDate
+     * @param  \DateTime $paymentDate
      * @return Order
      */
     public function setPaymentDate($paymentDate)
@@ -1178,7 +1176,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get payment_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getPaymentDate()
     {
@@ -1188,7 +1186,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Order
      */
     public function setDelFlg($delFlg)
@@ -1201,7 +1199,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -1211,7 +1209,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo01
      *
-     * @param string $memo01
+     * @param  string $memo01
      * @return Order
      */
     public function setMemo01($memo01)
@@ -1224,7 +1222,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo01
      *
-     * @return string 
+     * @return string
      */
     public function getMemo01()
     {
@@ -1234,7 +1232,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo02
      *
-     * @param string $memo02
+     * @param  string $memo02
      * @return Order
      */
     public function setMemo02($memo02)
@@ -1247,7 +1245,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo02
      *
-     * @return string 
+     * @return string
      */
     public function getMemo02()
     {
@@ -1257,7 +1255,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo03
      *
-     * @param string $memo03
+     * @param  string $memo03
      * @return Order
      */
     public function setMemo03($memo03)
@@ -1270,7 +1268,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo03
      *
-     * @return string 
+     * @return string
      */
     public function getMemo03()
     {
@@ -1280,7 +1278,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo04
      *
-     * @param string $memo04
+     * @param  string $memo04
      * @return Order
      */
     public function setMemo04($memo04)
@@ -1293,7 +1291,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo04
      *
-     * @return string 
+     * @return string
      */
     public function getMemo04()
     {
@@ -1303,7 +1301,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo05
      *
-     * @param string $memo05
+     * @param  string $memo05
      * @return Order
      */
     public function setMemo05($memo05)
@@ -1316,7 +1314,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo05
      *
-     * @return string 
+     * @return string
      */
     public function getMemo05()
     {
@@ -1326,7 +1324,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo06
      *
-     * @param string $memo06
+     * @param  string $memo06
      * @return Order
      */
     public function setMemo06($memo06)
@@ -1339,7 +1337,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo06
      *
-     * @return string 
+     * @return string
      */
     public function getMemo06()
     {
@@ -1349,7 +1347,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo07
      *
-     * @param string $memo07
+     * @param  string $memo07
      * @return Order
      */
     public function setMemo07($memo07)
@@ -1362,7 +1360,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo07
      *
-     * @return string 
+     * @return string
      */
     public function getMemo07()
     {
@@ -1372,7 +1370,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo08
      *
-     * @param string $memo08
+     * @param  string $memo08
      * @return Order
      */
     public function setMemo08($memo08)
@@ -1385,7 +1383,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo08
      *
-     * @return string 
+     * @return string
      */
     public function getMemo08()
     {
@@ -1395,7 +1393,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo09
      *
-     * @param string $memo09
+     * @param  string $memo09
      * @return Order
      */
     public function setMemo09($memo09)
@@ -1408,7 +1406,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo09
      *
-     * @return string 
+     * @return string
      */
     public function getMemo09()
     {
@@ -1418,7 +1416,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo10
      *
-     * @param string $memo10
+     * @param  string $memo10
      * @return Order
      */
     public function setMemo10($memo10)
@@ -1431,7 +1429,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo10
      *
-     * @return string 
+     * @return string
      */
     public function getMemo10()
     {
@@ -1441,7 +1439,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Add OrderDetails
      *
-     * @param \Eccube\Entity\OrderDetail $orderDetails
+     * @param  \Eccube\Entity\OrderDetail $orderDetails
      * @return Order
      */
     public function addOrderDetail(\Eccube\Entity\OrderDetail $orderDetails)
@@ -1464,7 +1462,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get OrderDetails
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrderDetails()
     {
@@ -1474,7 +1472,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Add Shippings
      *
-     * @param \Eccube\Entity\Shipping $shippings
+     * @param  \Eccube\Entity\Shipping $shippings
      * @return Order
      */
     public function addShipping(\Eccube\Entity\Shipping $shippings)
@@ -1497,7 +1495,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Shippings
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getShippings()
     {
@@ -1507,7 +1505,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Add MailHistories
      *
-     * @param \Eccube\Entity\MailHistory $mailHistories
+     * @param  \Eccube\Entity\MailHistory $mailHistories
      * @return Order
      */
     public function addMailHistory(\Eccube\Entity\MailHistory $mailHistories)
@@ -1530,7 +1528,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get MailHistories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMailHistories()
     {
@@ -1540,7 +1538,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set Customer
      *
-     * @param \Eccube\Entity\Customer $customer
+     * @param  \Eccube\Entity\Customer $customer
      * @return Order
      */
     public function setCustomer(\Eccube\Entity\Customer $customer = null)
@@ -1553,7 +1551,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Customer
      *
-     * @return \Eccube\Entity\Customer 
+     * @return \Eccube\Entity\Customer
      */
     public function getCustomer()
     {
@@ -1563,7 +1561,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set Country
      *
-     * @param \Eccube\Entity\Master\Country $country
+     * @param  \Eccube\Entity\Master\Country $country
      * @return Order
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1576,7 +1574,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Country
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country
      */
     public function getCountry()
     {
@@ -1586,7 +1584,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set Pref
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param  \Eccube\Entity\Master\Pref $pref
      * @return Order
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -1599,7 +1597,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {
@@ -1609,7 +1607,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set Sex
      *
-     * @param \Eccube\Entity\Master\Sex $sex
+     * @param  \Eccube\Entity\Master\Sex $sex
      * @return Order
      */
     public function setSex(\Eccube\Entity\Master\Sex $sex = null)
@@ -1622,7 +1620,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Sex
      *
-     * @return \Eccube\Entity\Master\Sex 
+     * @return \Eccube\Entity\Master\Sex
      */
     public function getSex()
     {
@@ -1632,7 +1630,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set Job
      *
-     * @param \Eccube\Entity\Master\Job $job
+     * @param  \Eccube\Entity\Master\Job $job
      * @return Order
      */
     public function setJob(\Eccube\Entity\Master\Job $job = null)
@@ -1645,7 +1643,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Job
      *
-     * @return \Eccube\Entity\Master\Job 
+     * @return \Eccube\Entity\Master\Job
      */
     public function getJob()
     {
@@ -1655,7 +1653,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set Deliv
      *
-     * @param \Eccube\Entity\Deliv $deliv
+     * @param  \Eccube\Entity\Deliv $deliv
      * @return Order
      */
     public function setDeliv(\Eccube\Entity\Deliv $deliv = null)
@@ -1668,7 +1666,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Deliv
      *
-     * @return \Eccube\Entity\Deliv 
+     * @return \Eccube\Entity\Deliv
      */
     public function getDeliv()
     {
@@ -1678,7 +1676,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set Payment
      *
-     * @param \Eccube\Entity\Payment $payment
+     * @param  \Eccube\Entity\Payment $payment
      * @return Order
      */
     public function setPayment(\Eccube\Entity\Payment $payment = null)
@@ -1691,7 +1689,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get Payment
      *
-     * @return \Eccube\Entity\Payment 
+     * @return \Eccube\Entity\Payment
      */
     public function getPayment()
     {
@@ -1701,7 +1699,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set DeviceType
      *
-     * @param \Eccube\Entity\Master\DeviceType $deviceType
+     * @param  \Eccube\Entity\Master\DeviceType $deviceType
      * @return Order
      */
     public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
@@ -1714,7 +1712,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get DeviceType
      *
-     * @return \Eccube\Entity\Master\DeviceType 
+     * @return \Eccube\Entity\Master\DeviceType
      */
     public function getDeviceType()
     {
@@ -1724,7 +1722,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set CustomerOrderStatus
      *
-     * @param \Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus
+     * @param  \Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus
      * @return Order
      */
     public function setCustomerOrderStatus(\Eccube\Entity\Master\CustomerOrderStatus $customerOrderStatus = null)
@@ -1737,7 +1735,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get CustomerOrderStatus
      *
-     * @return \Eccube\Entity\Master\CustomerOrderStatus 
+     * @return \Eccube\Entity\Master\CustomerOrderStatus
      */
     public function getCustomerOrderStatus()
     {
@@ -1747,7 +1745,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set OrderStatus
      *
-     * @param \Eccube\Entity\Master\OrderStatus $orderStatus
+     * @param  \Eccube\Entity\Master\OrderStatus $orderStatus
      * @return Order
      */
     public function setOrderStatus(\Eccube\Entity\Master\OrderStatus $orderStatus = null)
@@ -1760,7 +1758,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get OrderStatus
      *
-     * @return \Eccube\Entity\Master\OrderStatus 
+     * @return \Eccube\Entity\Master\OrderStatus
      */
     public function getOrderStatus()
     {
@@ -1770,7 +1768,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Set OrderStatusColor
      *
-     * @param \Eccube\Entity\Master\OrderStatusColor $orderStatusColor
+     * @param  \Eccube\Entity\Master\OrderStatusColor $orderStatusColor
      * @return Order
      */
     public function setOrderStatusColor(\Eccube\Entity\Master\OrderStatusColor $orderStatusColor = null)
@@ -1783,7 +1781,7 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Get OrderStatusColor
      *
-     * @return \Eccube\Entity\Master\OrderStatusColor 
+     * @return \Eccube\Entity\Master\OrderStatusColor
      */
     public function getOrderStatusColor()
     {

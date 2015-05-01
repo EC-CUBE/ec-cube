@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * IndexList
  */
@@ -29,11 +27,10 @@ class IndexList extends \Eccube\Entity\AbstractEntity
      */
     private $recommend_comment;
 
-
     /**
      * Set table_name
      *
-     * @param string $tableName
+     * @param  string    $tableName
      * @return IndexList
      */
     public function setTableName($tableName)
@@ -46,7 +43,7 @@ class IndexList extends \Eccube\Entity\AbstractEntity
     /**
      * Get table_name
      *
-     * @return string 
+     * @return string
      */
     public function getTableName()
     {
@@ -56,7 +53,7 @@ class IndexList extends \Eccube\Entity\AbstractEntity
     /**
      * Set column_name
      *
-     * @param string $columnName
+     * @param  string    $columnName
      * @return IndexList
      */
     public function setColumnName($columnName)
@@ -69,7 +66,7 @@ class IndexList extends \Eccube\Entity\AbstractEntity
     /**
      * Get column_name
      *
-     * @return string 
+     * @return string
      */
     public function getColumnName()
     {
@@ -79,7 +76,7 @@ class IndexList extends \Eccube\Entity\AbstractEntity
     /**
      * Set recommend_flg
      *
-     * @param integer $recommendFlg
+     * @param  integer   $recommendFlg
      * @return IndexList
      */
     public function setRecommendFlg($recommendFlg)
@@ -92,7 +89,7 @@ class IndexList extends \Eccube\Entity\AbstractEntity
     /**
      * Get recommend_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getRecommendFlg()
     {
@@ -102,7 +99,7 @@ class IndexList extends \Eccube\Entity\AbstractEntity
     /**
      * Set recommend_comment
      *
-     * @param string $recommendComment
+     * @param  string    $recommendComment
      * @return IndexList
      */
     public function setRecommendComment($recommendComment)
@@ -115,7 +112,7 @@ class IndexList extends \Eccube\Entity\AbstractEntity
     /**
      * Get recommend_comment
      *
-     * @return string 
+     * @return string
      */
     public function getRecommendComment()
     {

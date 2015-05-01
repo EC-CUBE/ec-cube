@@ -78,7 +78,6 @@ class DelivController extends AbstractController
             }
         }
 
-
         // 商品種別をセット
         $productTypeId = $Deliv->getProductTypeId();
         $ProductType = $app['orm.em']->getRepository('\Eccube\Entity\Master\ProductType')
@@ -132,7 +131,6 @@ class DelivController extends AbstractController
                     }
                 }
 
-
                 // お支払いの登録
                 $PaymentOptions = $app['orm.em']->getRepository('\Eccube\Entity\PaymentOption')
                     ->findBy(array('deliv_id' => $delivId));
@@ -171,7 +169,6 @@ class DelivController extends AbstractController
                 return $app->redirect($app['url_generator']->generate('admin_basis_delivery'));
             }
         }
-
 
         return $app['view']->render('Admin/Basis/deliv_edit.twig', array(
             'tpl_maintitle' => $this->main_title,

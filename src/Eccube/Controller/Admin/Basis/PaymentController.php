@@ -39,7 +39,7 @@ class PaymentController extends AbstractController
             ->createBuilder('payment_register')
             ->getForm();
         $form->setData($Payment);
-        
+
         $image = null;
         $filename = $Payment->getPaymentImage();
         if (!$deleteImage && $filename !== null) {

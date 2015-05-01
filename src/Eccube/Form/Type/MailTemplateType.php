@@ -5,7 +5,6 @@ namespace Eccube\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\EntityRepository;
 
 class MailTemplateType extends AbstractType
@@ -31,7 +30,7 @@ class MailTemplateType extends AbstractType
             'expanded' => false,
             'required' => false,
             'empty_value' => '-',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('mt')
                     ->orderBy('mt.id', 'ASC');
             },

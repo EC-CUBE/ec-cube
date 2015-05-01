@@ -21,7 +21,7 @@ class ProductRepository extends EntityRepository
 
     /**
      * setConfig
-     * 
+     *
      * @param array $config
      */
     public function setConfig(array $config)
@@ -31,10 +31,10 @@ class ProductRepository extends EntityRepository
 
     /**
      * get
-     * 
-     * @param integer $productId
+     *
+     * @param  integer               $productId
      * @return Eccube\Entity\Product
-     * 
+     *
      * @throws NotFoundHttpException
      */
     public function get($productId)
@@ -59,8 +59,8 @@ class ProductRepository extends EntityRepository
 
     /**
      * get
-     * 
-     * @param array $searchData
+     *
+     * @param  array                   $searchData
      * @return Eccube\Entity\Product[]
      */
     public function getQueryBuilderBySearchData($searchData)
@@ -124,8 +124,8 @@ class ProductRepository extends EntityRepository
 
     /**
      * get
-     * 
-     * @param array $searchData
+     *
+     * @param  array                   $searchData
      * @return Eccube\Entity\Product[]
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)

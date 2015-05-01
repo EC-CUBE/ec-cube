@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Holiday
  */
@@ -62,11 +60,10 @@ class Holiday extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,7 +73,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string  $title
      * @return Holiday
      */
     public function setTitle($title)
@@ -89,7 +86,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -99,7 +96,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set month
      *
-     * @param integer $month
+     * @param  integer $month
      * @return Holiday
      */
     public function setMonth($month)
@@ -112,7 +109,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get month
      *
-     * @return integer 
+     * @return integer
      */
     public function getMonth()
     {
@@ -122,7 +119,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set day
      *
-     * @param integer $day
+     * @param  integer $day
      * @return Holiday
      */
     public function setDay($day)
@@ -135,7 +132,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get day
      *
-     * @return integer 
+     * @return integer
      */
     public function getDay()
     {
@@ -145,7 +142,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer $rank
      * @return Holiday
      */
     public function setRank($rank)
@@ -158,7 +155,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -168,7 +165,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Holiday
      */
     public function setCreateDate($createDate)
@@ -181,7 +178,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -191,7 +188,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Holiday
      */
     public function setUpdateDate($updateDate)
@@ -204,7 +201,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -214,7 +211,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Holiday
      */
     public function setDelFlg($delFlg)
@@ -227,7 +224,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -237,7 +234,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return Holiday
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -250,7 +247,7 @@ class Holiday extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

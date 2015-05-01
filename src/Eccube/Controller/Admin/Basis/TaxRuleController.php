@@ -25,8 +25,8 @@ class TaxRuleController extends AbstractController
     /**
      * 税率設定の初期表示・登録
      *
-     * @param Application $app
-     * @param null $tax_rule_id
+     * @param  Application                                        $app
+     * @param  null                                               $tax_rule_id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, $tax_rule_id = null)
@@ -73,14 +73,14 @@ class TaxRuleController extends AbstractController
     /**
      * 特定の共通税率の削除
      *
-     * @param Application $app
+     * @param  Application                                        $app
      * @param $tax_rule_id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Application $app, $tax_rule_id)
     {
 
-        if ($tax_rule_id != self::DEFAULT_TAX_RULE_ID ) {
+        if ($tax_rule_id != self::DEFAULT_TAX_RULE_ID) {
             $TaxRule = $app['eccube.repository.tax_rule']->getById($tax_rule_id);
             $app['eccube.repository.tax_rule']->delete($TaxRule);
         }

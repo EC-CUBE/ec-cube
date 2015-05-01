@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * MailHistory
  */
@@ -52,11 +50,10 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,7 +63,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set send_date
      *
-     * @param \DateTime $sendDate
+     * @param  \DateTime   $sendDate
      * @return MailHistory
      */
     public function setSendDate($sendDate)
@@ -79,7 +76,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get send_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSendDate()
     {
@@ -89,7 +86,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set subject
      *
-     * @param string $subject
+     * @param  string      $subject
      * @return MailHistory
      */
     public function setSubject($subject)
@@ -102,7 +99,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -112,7 +109,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set mail_body
      *
-     * @param string $mailBody
+     * @param  string      $mailBody
      * @return MailHistory
      */
     public function setMailBody($mailBody)
@@ -125,7 +122,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get mail_body
      *
-     * @return string 
+     * @return string
      */
     public function getMailBody()
     {
@@ -135,7 +132,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set Order
      *
-     * @param \Eccube\Entity\Order $order
+     * @param  \Eccube\Entity\Order $order
      * @return MailHistory
      */
     public function setOrder(\Eccube\Entity\Order $order)
@@ -148,7 +145,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get Order
      *
-     * @return \Eccube\Entity\Order 
+     * @return \Eccube\Entity\Order
      */
     public function getOrder()
     {
@@ -158,7 +155,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set MailTemplate
      *
-     * @param \Eccube\Entity\Master\MailTemplate $mailTemplate
+     * @param  \Eccube\Entity\Master\MailTemplate $mailTemplate
      * @return MailHistory
      */
     public function setMailTemplate(\Eccube\Entity\Master\MailTemplate $mailTemplate = null)
@@ -171,7 +168,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get MailTemplate
      *
-     * @return \Eccube\Entity\Master\MailTemplate 
+     * @return \Eccube\Entity\Master\MailTemplate
      */
     public function getMailTemplate()
     {
@@ -181,7 +178,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return MailHistory
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -194,7 +191,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

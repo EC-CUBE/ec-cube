@@ -33,7 +33,7 @@ class ClassNameRepository extends EntityRepository
         try {
             $rank = $ClassName->getRank();
 
-            // 
+            //
             $ClassName2 = $this->findOneBy(array('rank' => $rank + 1));
             if (!$ClassName2) {
                 throw new \Exception();
@@ -50,6 +50,7 @@ class ClassNameRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+
             return false;
         }
 
@@ -67,7 +68,7 @@ class ClassNameRepository extends EntityRepository
         try {
             $rank = $ClassName->getRank();
 
-            // 
+            //
             $ClassName2 = $this->findOneBy(array('rank' => $rank - 1));
             if (!$ClassName2) {
                 throw new \Exception();
@@ -84,6 +85,7 @@ class ClassNameRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+
             return false;
         }
 
@@ -117,6 +119,7 @@ class ClassNameRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+
             return false;
         }
 
@@ -151,6 +154,7 @@ class ClassNameRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+
             return false;
         }
 

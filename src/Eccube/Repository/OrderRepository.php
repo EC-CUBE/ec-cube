@@ -22,8 +22,8 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * 
-     * @param array $searchData
+     *
+     * @param  array        $searchData
      * @return QueryBuilder
      */
     public function getQueryBuilderBySearchData($searchData)
@@ -49,7 +49,7 @@ class OrderRepository extends EntityRepository
         // status
         if (!empty($searchData['status']) && $searchData['status']) {
             $qb
-                ->andWhere('o.OrderStatus = :status') 
+                ->andWhere('o.OrderStatus = :status')
                 ->setParameter('status', $searchData['status']);
         }
 
@@ -208,7 +208,7 @@ class OrderRepository extends EntityRepository
     }
 
     /**
-     * @param \Eccube\Entity\Customer $Customer
+     * @param  \Eccube\Entity\Customer $Customer
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)

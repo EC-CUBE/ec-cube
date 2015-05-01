@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * MailmagaTemplate
  */
@@ -57,11 +55,10 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +68,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set subject
      *
-     * @param string $subject
+     * @param  string           $subject
      * @return MailmagaTemplate
      */
     public function setSubject($subject)
@@ -84,7 +81,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -94,7 +91,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set mail_method
      *
-     * @param integer $mailMethod
+     * @param  integer          $mailMethod
      * @return MailmagaTemplate
      */
     public function setMailMethod($mailMethod)
@@ -107,7 +104,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get mail_method
      *
-     * @return integer 
+     * @return integer
      */
     public function getMailMethod()
     {
@@ -117,7 +114,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set body
      *
-     * @param string $body
+     * @param  string           $body
      * @return MailmagaTemplate
      */
     public function setBody($body)
@@ -130,7 +127,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get body
      *
-     * @return string 
+     * @return string
      */
     public function getBody()
     {
@@ -140,7 +137,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer          $delFlg
      * @return MailmagaTemplate
      */
     public function setDelFlg($delFlg)
@@ -153,7 +150,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -163,7 +160,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime        $createDate
      * @return MailmagaTemplate
      */
     public function setCreateDate($createDate)
@@ -176,7 +173,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -186,7 +183,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime        $updateDate
      * @return MailmagaTemplate
      */
     public function setUpdateDate($updateDate)
@@ -199,7 +196,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -209,7 +206,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return MailmagaTemplate
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -222,7 +219,7 @@ class MailmagaTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

@@ -4,13 +4,12 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class CategoryController
 {
     public function index(Application $app, Request $request, $parentId = null, $categoryId = null)
     {
-        // 
+        //
         if ($parentId) {
             $Parent = $app['eccube.repository.category']->find($parentId);
             if (!$Parent) {
@@ -34,7 +33,6 @@ class CategoryController
                 $TargetCategory->setLevel(1);
             }
         }
-        
 
         //
         $form = $app['form.factory']

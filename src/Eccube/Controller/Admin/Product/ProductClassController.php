@@ -2,12 +2,10 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class ProductClassController
 {
     public function index(Application $app, Request $request, $product_id)
@@ -68,6 +66,7 @@ class ProductClassController
                 }
                 $app['orm.em']->flush();
                 $app['session']->getFlashBag()->add('admin.success', 'admin.product.product_class.save.complete');
+
                 return $app->redirect($app['url_generator']->generate('admin_product_product_class', array('product_id' => $product_id)));
             }
         }

@@ -179,6 +179,7 @@ class LegacyServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.helper.plugin'] = function () {
             $plugin_activate_flg = PLUGIN_ACTIVATE_FLAG;
+
             return \Eccube\Framework\Helper\PluginHelper::getSingletonInstance($plugin_activate_flg);
         };
         $app['eccube.helper.purchase'] = $app->share(function () {

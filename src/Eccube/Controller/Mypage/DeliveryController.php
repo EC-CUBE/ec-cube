@@ -18,7 +18,7 @@ class DeliveryController extends AbstractController
     /**
      * Index
      *
-     * @param Application $app
+     * @param  Application $app
      * @return string
      */
     public function index(Application $app, Request $request)
@@ -58,7 +58,7 @@ class DeliveryController extends AbstractController
     /**
      * Complete
      *
-     * @param Application $app
+     * @param  Application $app
      * @return mixed
      */
     public function address(Application $app, Request $request)

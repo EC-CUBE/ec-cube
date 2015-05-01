@@ -3,7 +3,6 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Silex\Application;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -33,7 +32,7 @@ class PageLayoutRepository extends EntityRepository
     public function findOrCreate($page_id, $device_type_id)
     {
 
-        if ($page_id == null ) {
+        if ($page_id == null) {
             return $this->newPageLayout($device_type_id);
         } else {
             return $this->getPageProperties($page_id, $device_type_id);
@@ -41,8 +40,8 @@ class PageLayoutRepository extends EntityRepository
 
     }
 
-    private function getNewPageId($device_type_id){
-
+    private function getNewPageId($device_type_id)
+    {
         $qb = $this->createQueryBuilder('l')
             ->select('max(l.page_id) +1 as page_id')
             ->where('l.device_type_id = :device_type_id')
@@ -59,10 +58,10 @@ class PageLayoutRepository extends EntityRepository
      * $device_type_id は必須. デフォルト値は DEVICE_TYPE_PC.
      *
      * @access public
-     * @param  integer $device_type_id 端末種別ID
-     * @param  string $where 追加の検索条件
-     * @param  string[] $parameters 追加の検索パラメーター
-     * @return array   ページ属性の配列
+     * @param  integer  $device_type_id 端末種別ID
+     * @param  string   $where          追加の検索条件
+     * @param  string[] $parameters     追加の検索パラメーター
+     * @return array    ページ属性の配列
      */
     public function getPageList($device_type_id, $where = '', $parameters = array())
     {
@@ -146,9 +145,9 @@ class PageLayoutRepository extends EntityRepository
 
     /**
      * ページデータを取得する.
-     * @param  integer              $filename       ファイル名
-     * @param  integer              $device_type_id 端末種別ID
-     * @param boolean $isUser
+     * @param  integer $filename       ファイル名
+     * @param  integer $device_type_id 端末種別ID
+     * @param  boolean $isUser
      * @return mixed
      */
     public function getTemplateFile($filename, $device_type_id, $isUser = false)

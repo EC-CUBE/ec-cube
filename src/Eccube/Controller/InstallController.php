@@ -3,8 +3,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use Eccube\Entity\BlocPosition;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 
 class InstallController
@@ -70,9 +68,9 @@ class InstallController
         $data = $this->data;
         $this->PDO = new \PDO(
             $data['db_type']
-            . ':host=' . $data['db_server'] 
+            . ':host=' . $data['db_server']
             . ';dbname=' . $data['db_name'] ,
-            $this->data['db_user'], 
+            $this->data['db_user'],
             $this->data['db_pass']
         );
 
@@ -154,7 +152,7 @@ EOF;
 
         $fs = new Filesystem();
         $filePath = __DIR__ . '/../../../app/config/eccube/config.php';
-        
+
         $fs = new Filesystem();
         if ($fs->exists($filePath)) {
             $fs->remove($filePath);
@@ -180,10 +178,10 @@ database:
 mail:
     host: localhost
     port: 25
-    username: 
-    password: 
-    encryption: 
-    auth_mode: 
+    username:
+    password:
+    encryption:
+    auth_mode:
 auth_type: HMAC
 auth_magic: eccube300beta
 password_hash_algos: sha256
@@ -206,7 +204,7 @@ customer_confirm_mail: false
 EOF;
 
         $filePath = __DIR__ . '/../../../app/config/eccube/config.yml';
-        
+
         $fs = new Filesystem();
         if ($fs->exists($filePath)) {
             $fs->remove($filePath);

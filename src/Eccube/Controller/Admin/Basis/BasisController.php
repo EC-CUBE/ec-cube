@@ -40,6 +40,7 @@ class BasisController extends AbstractController
                 $app['orm.em']->persist($BaseInfo);
                 $app['orm.em']->flush();
                 $app['session']->getFlashBag()->add('shop_master.complete', 'admin.register.complete');
+
                 return $app->redirect($app['url_generator']->generate('admin_basis'));
             }
         }

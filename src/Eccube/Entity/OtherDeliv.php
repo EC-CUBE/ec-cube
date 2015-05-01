@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * OtherDeliv
  */
@@ -109,11 +107,10 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
      */
     private $Pref;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -123,7 +120,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set name01
      *
-     * @param string $name01
+     * @param  string     $name01
      * @return OtherDeliv
      */
     public function setName01($name01)
@@ -136,7 +133,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get name01
      *
-     * @return string 
+     * @return string
      */
     public function getName01()
     {
@@ -146,7 +143,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set name02
      *
-     * @param string $name02
+     * @param  string     $name02
      * @return OtherDeliv
      */
     public function setName02($name02)
@@ -159,7 +156,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get name02
      *
-     * @return string 
+     * @return string
      */
     public function getName02()
     {
@@ -169,7 +166,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana01
      *
-     * @param string $kana01
+     * @param  string     $kana01
      * @return OtherDeliv
      */
     public function setKana01($kana01)
@@ -182,7 +179,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get kana01
      *
-     * @return string 
+     * @return string
      */
     public function getKana01()
     {
@@ -192,7 +189,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana02
      *
-     * @param string $kana02
+     * @param  string     $kana02
      * @return OtherDeliv
      */
     public function setKana02($kana02)
@@ -205,7 +202,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get kana02
      *
-     * @return string 
+     * @return string
      */
     public function getKana02()
     {
@@ -215,7 +212,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set company_name
      *
-     * @param string $companyName
+     * @param  string     $companyName
      * @return OtherDeliv
      */
     public function setCompanyName($companyName)
@@ -228,7 +225,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get company_name
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -238,7 +235,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip01
      *
-     * @param string $zip01
+     * @param  string     $zip01
      * @return OtherDeliv
      */
     public function setZip01($zip01)
@@ -251,7 +248,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip01
      *
-     * @return string 
+     * @return string
      */
     public function getZip01()
     {
@@ -261,7 +258,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip02
      *
-     * @param string $zip02
+     * @param  string     $zip02
      * @return OtherDeliv
      */
     public function setZip02($zip02)
@@ -274,7 +271,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip02
      *
-     * @return string 
+     * @return string
      */
     public function getZip02()
     {
@@ -284,7 +281,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set zipcode
      *
-     * @param string $zipcode
+     * @param  string     $zipcode
      * @return OtherDeliv
      */
     public function setZipcode($zipcode)
@@ -297,7 +294,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get zipcode
      *
-     * @return string 
+     * @return string
      */
     public function getZipcode()
     {
@@ -307,7 +304,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr01
      *
-     * @param string $addr01
+     * @param  string     $addr01
      * @return OtherDeliv
      */
     public function setAddr01($addr01)
@@ -320,7 +317,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr01
      *
-     * @return string 
+     * @return string
      */
     public function getAddr01()
     {
@@ -330,7 +327,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr02
      *
-     * @param string $addr02
+     * @param  string     $addr02
      * @return OtherDeliv
      */
     public function setAddr02($addr02)
@@ -343,7 +340,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr02
      *
-     * @return string 
+     * @return string
      */
     public function getAddr02()
     {
@@ -353,7 +350,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel01
      *
-     * @param string $tel01
+     * @param  string     $tel01
      * @return OtherDeliv
      */
     public function setTel01($tel01)
@@ -366,7 +363,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel01
      *
-     * @return string 
+     * @return string
      */
     public function getTel01()
     {
@@ -376,7 +373,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel02
      *
-     * @param string $tel02
+     * @param  string     $tel02
      * @return OtherDeliv
      */
     public function setTel02($tel02)
@@ -389,7 +386,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel02
      *
-     * @return string 
+     * @return string
      */
     public function getTel02()
     {
@@ -399,7 +396,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel03
      *
-     * @param string $tel03
+     * @param  string     $tel03
      * @return OtherDeliv
      */
     public function setTel03($tel03)
@@ -412,7 +409,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel03
      *
-     * @return string 
+     * @return string
      */
     public function getTel03()
     {
@@ -422,7 +419,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax01
      *
-     * @param string $fax01
+     * @param  string     $fax01
      * @return OtherDeliv
      */
     public function setFax01($fax01)
@@ -435,7 +432,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax01
      *
-     * @return string 
+     * @return string
      */
     public function getFax01()
     {
@@ -445,7 +442,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax02
      *
-     * @param string $fax02
+     * @param  string     $fax02
      * @return OtherDeliv
      */
     public function setFax02($fax02)
@@ -458,7 +455,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax02
      *
-     * @return string 
+     * @return string
      */
     public function getFax02()
     {
@@ -468,7 +465,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax03
      *
-     * @param string $fax03
+     * @param  string     $fax03
      * @return OtherDeliv
      */
     public function setFax03($fax03)
@@ -481,7 +478,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax03
      *
-     * @return string 
+     * @return string
      */
     public function getFax03()
     {
@@ -491,7 +488,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set Customer
      *
-     * @param \Eccube\Entity\Customer $customer
+     * @param  \Eccube\Entity\Customer $customer
      * @return OtherDeliv
      */
     public function setCustomer(\Eccube\Entity\Customer $customer)
@@ -504,7 +501,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get Customer
      *
-     * @return \Eccube\Entity\Customer 
+     * @return \Eccube\Entity\Customer
      */
     public function getCustomer()
     {
@@ -514,7 +511,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set Country
      *
-     * @param \Eccube\Entity\Master\Country $country
+     * @param  \Eccube\Entity\Master\Country $country
      * @return OtherDeliv
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -527,7 +524,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get Country
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country
      */
     public function getCountry()
     {
@@ -537,7 +534,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set Pref
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param  \Eccube\Entity\Master\Pref $pref
      * @return OtherDeliv
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -550,7 +547,7 @@ class OtherDeliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {

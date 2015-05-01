@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * SendCustomer
  */
@@ -34,11 +32,10 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
      */
     private $send_flag;
 
-
     /**
      * Set send_id
      *
-     * @param integer $sendId
+     * @param  integer      $sendId
      * @return SendCustomer
      */
     public function setSendId($sendId)
@@ -51,7 +48,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Get send_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getSendId()
     {
@@ -61,7 +58,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Set customer_id
      *
-     * @param integer $customerId
+     * @param  integer      $customerId
      * @return SendCustomer
      */
     public function setCustomerId($customerId)
@@ -74,7 +71,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Get customer_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCustomerId()
     {
@@ -84,7 +81,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string       $email
      * @return SendCustomer
      */
     public function setEmail($email)
@@ -97,7 +94,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -107,7 +104,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string       $name
      * @return SendCustomer
      */
     public function setName($name)
@@ -120,7 +117,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -130,7 +127,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Set send_flag
      *
-     * @param integer $sendFlag
+     * @param  integer      $sendFlag
      * @return SendCustomer
      */
     public function setSendFlag($sendFlag)
@@ -143,7 +140,7 @@ class SendCustomer extends \Eccube\Entity\AbstractEntity
     /**
      * Get send_flag
      *
-     * @return integer 
+     * @return integer
      */
     public function getSendFlag()
     {

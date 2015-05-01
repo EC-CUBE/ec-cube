@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-
 class Application extends \Silex\Application
 {
     /** @var Application app */
@@ -89,7 +88,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
-        $app['translator'] = $app->share($app->extend('translator', function($translator, \Silex\Application $app) {
+        $app['translator'] = $app->share($app->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
             $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', 'ja');
 
@@ -113,11 +112,10 @@ class Application extends \Silex\Application
             return;
         }
 
-
         // Mail
         $this['swiftmailer.option'] = $this['config']['mail'];
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
-        $this['mail.message'] = function() {
+        $this['mail.message'] = function () {
             return \Swift_Message::newInstance();
         };
 
@@ -148,7 +146,7 @@ class Application extends \Silex\Application
         $this->register(new ServiceProvider\LegacyServiceProvider());
 
        // EventDispatcher
-        $app['eccube.event.dispatcher'] = $app->share(function() {
+        $app['eccube.event.dispatcher'] = $app->share(function () {
             return new EventDispatcher();
         });
 
@@ -162,7 +160,7 @@ class Application extends \Silex\Application
         // Plugin events / service
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
-            
+
             if ($config['enable'] === true) {
                 // Type: Event
                 if (isset($config['event'])) {
@@ -182,7 +180,7 @@ class Application extends \Silex\Application
                 // Doctrine Extend
                 if (isset($config['orm.path'])) {
                     $pathes = array();
-                    foreach($config['orm.path'] as $path) {
+                    foreach ($config['orm.path'] as $path) {
                         $pathes[] = $basePath . '/' . $config['name'] . $path;
                     }
                     $app['orm.em.options'] = $app->extend('orm.em.options', function ($options) use ($config, $pathes) {
@@ -201,12 +199,12 @@ class Application extends \Silex\Application
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
         }, \Silex\Application::EARLY_EVENT);
 
-        $this->before(function(Request $request, \Silex\Application $app) {
+        $this->before(function (Request $request, \Silex\Application $app) {
             $event = $app->parseController($request) . '.before';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
-        $this->after(function(Request $request, Response $response) use ($app) {
+        $this->after(function (Request $request, Response $response) use ($app) {
             $event = $app->parseController($request) . '.after';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
@@ -215,7 +213,7 @@ class Application extends \Silex\Application
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
         }, \Silex\Application::LATE_EVENT);
 
-        $this->finish(function(Request $request, Response $response) use ($app) {
+        $this->finish(function (Request $request, Response $response) use ($app) {
             $event = $app->parseController($request) . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
@@ -278,13 +276,13 @@ class Application extends \Silex\Application
         $app['eccube.event_listner.security'] = $app->share(function ($app) {
             return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
         });
-        $app['user'] = $app->share(function($app) {
+        $app['user'] = $app->share(function ($app) {
             $token = $app['security']->getToken();
 
             return ($token !== null) ? $token->getUser() : null;
         });
 
-        $app['filesystem'] = function() {
+        $app['filesystem'] = function () {
             return new \Symfony\Component\Filesystem\Filesystem();
         };
 
@@ -321,7 +319,6 @@ class Application extends \Silex\Application
         $this['callback_resolver'] = $this->share(function () use ($app) {
             return new LegacyCallbackResolver($app);
         });
-
 
         $app['eccube.layout'] = null;
         $this->before(function (Request $request, \Silex\Application $app) {
@@ -388,6 +385,7 @@ class Application extends \Silex\Application
     public function parseController(Request $request)
     {
         $route = str_replace('_', '.', $request->attributes->get('_route'));
+
         return 'eccube.event.controller.' . $route;
     }
 

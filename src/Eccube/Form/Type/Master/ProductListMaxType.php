@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\EntityRepository;
 
 class ProductListMaxType extends AbstractType
@@ -41,7 +40,7 @@ class ProductListMaxType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\ProductListMax',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('pn')
                     ->orderBy('pn.rank', 'ASC');

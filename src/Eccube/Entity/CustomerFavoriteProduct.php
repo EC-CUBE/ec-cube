@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * CustomerFavoriteProduct
  */
@@ -42,7 +40,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get customer_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCustomerId()
     {
@@ -52,7 +50,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductId()
     {
@@ -62,7 +60,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime               $createDate
      * @return CustomerFavoriteProduct
      */
     public function setCreateDate($createDate)
@@ -75,7 +73,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -85,7 +83,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime               $updateDate
      * @return CustomerFavoriteProduct
      */
     public function setUpdateDate($updateDate)
@@ -98,7 +96,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -108,7 +106,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set Customer
      *
-     * @param \Eccube\Entity\Customer $customer
+     * @param  \Eccube\Entity\Customer $customer
      * @return CustomerFavoriteProduct
      */
     public function setCustomer(\Eccube\Entity\Customer $customer = null)
@@ -122,7 +120,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get Customer
      *
-     * @return \Eccube\Entity\Customer 
+     * @return \Eccube\Entity\Customer
      */
     public function getCustomer()
     {
@@ -132,7 +130,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set Product
      *
-     * @param \Eccube\Entity\Product $product
+     * @param  \Eccube\Entity\Product  $product
      * @return CustomerFavoriteProduct
      */
     public function setProduct(\Eccube\Entity\Product $product = null)
@@ -146,7 +144,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {
@@ -156,7 +154,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set customer_id
      *
-     * @param integer $customerId
+     * @param  integer                 $customerId
      * @return CustomerFavoriteProduct
      */
     public function setCustomerId($customerId)
@@ -169,7 +167,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_id
      *
-     * @param integer $productId
+     * @param  integer                 $productId
      * @return CustomerFavoriteProduct
      */
     public function setProductId($productId)

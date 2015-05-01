@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductType extends AbstractType
 {
@@ -21,7 +20,7 @@ class SearchProductType extends AbstractType
         $builder->add('category_id', 'entity', array(
             'class' => 'Eccube\Entity\Category',
             'property' => 'NameWithLevel',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('c')
                     ->orderBy('c.rank', 'DESC');
@@ -35,7 +34,7 @@ class SearchProductType extends AbstractType
             'data_class' => 'Eccube\Entity\Maker',
             'class' => 'Eccube\Entity\Maker',
             'property' => 'name',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('m')
                     ->orderBy('m.rank', 'ASC');

@@ -8,13 +8,9 @@
 
 namespace Eccube\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingType extends AbstractType
 {
@@ -72,4 +68,4 @@ class ShippingType extends AbstractType
     {
         return 'shipping';
     }
-} 
+}

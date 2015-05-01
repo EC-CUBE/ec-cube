@@ -2,12 +2,10 @@
 
 namespace Eccube\Entity;
 
-use Eccube\Entity\CartItem;
-
 class Cart extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @var bool 
+     * @var bool
      */
     private $lock = false;
 
@@ -17,7 +15,7 @@ class Cart extends \Eccube\Entity\AbstractEntity
     private $CartItems;
 
     /**
-     * @var string 
+     * @var string
      */
     private $pre_order_id = null;
 
@@ -27,7 +25,7 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param bool $lock
+     * @param  bool                $lock
      * @return \Eccube\Entity\Cart
      */
     public function setLock($lock)
@@ -46,7 +44,7 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param integer $pre_order_id
+     * @param  integer             $pre_order_id
      * @return \Eccube\Entity\Cart
      */
     public function setPreOrderId($pre_order_id)
@@ -65,7 +63,7 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param \Eccube\Entity\CartItem $AddCartItem
+     * @param  \Eccube\Entity\CartItem $AddCartItem
      * @return \Eccube\Entity\Cart
      */
     public function setCartItem(\Eccube\Entity\CartItem $AddCartItem)
@@ -88,8 +86,8 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param string $class_name
-     * @param string $class_id
+     * @param  string                  $class_name
+     * @param  string                  $class_id
      * @return \Eccube\Entity\CartItem
      */
     public function getCartItemByIdentifier($class_name, $class_id)
@@ -125,7 +123,7 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param CartItem[] $CartItems
+     * @param  CartItem[]          $CartItems
      * @return \Eccube\Entity\Cart
      */
     public function setCartItems($CartItems)
@@ -136,7 +134,7 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param CartItem $CartItem
+     * @param  CartItem            $CartItem
      * @return \Eccube\Entity\Cart
      */
     public function addCartItem(CartItem $CartItem)
