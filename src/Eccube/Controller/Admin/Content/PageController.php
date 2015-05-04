@@ -4,7 +4,6 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class PageController
 {
@@ -24,7 +23,7 @@ class PageController
         $tpl_data = '';
         $editable = true;
         // 更新時
-        if ( $page_id ) {
+        if ($page_id) {
             // TODO: こういう余計な変換なくしたい
             $PageLayout->setHeaderChk($PageLayout->getHeaderChk() == 1 ? true : false);
             $PageLayout->setFooterChk($PageLayout->getFooterChk() == 1 ? true : false);
@@ -101,10 +100,8 @@ class PageController
             $app['orm.em']->remove($PageLayout);
             $app['orm.em']->flush();
         }
+
         return $app->redirect($app['url_generator']->generate('admin_content_page'));
     }
-
-
-
 
 }

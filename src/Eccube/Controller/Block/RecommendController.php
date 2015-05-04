@@ -6,8 +6,8 @@ use Eccube\Application;
 
 class RecommendController
 {
-	function index(Application $app)
-	{
-		return '';
-	}
+    public function index(Application $app)
+    {
+        return '';
+    }
 }

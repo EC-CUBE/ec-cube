@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ApiAccount
  */
@@ -44,11 +42,10 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
      */
     private $update_date;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -58,7 +55,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Set api_access_key
      *
-     * @param string $apiAccessKey
+     * @param  string     $apiAccessKey
      * @return ApiAccount
      */
     public function setApiAccessKey($apiAccessKey)
@@ -71,7 +68,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Get api_access_key
      *
-     * @return string 
+     * @return string
      */
     public function getApiAccessKey()
     {
@@ -81,7 +78,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Set api_secret_key
      *
-     * @param string $apiSecretKey
+     * @param  string     $apiSecretKey
      * @return ApiAccount
      */
     public function setApiSecretKey($apiSecretKey)
@@ -94,7 +91,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Get api_secret_key
      *
-     * @return string 
+     * @return string
      */
     public function getApiSecretKey()
     {
@@ -104,7 +101,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Set enable
      *
-     * @param integer $enable
+     * @param  integer    $enable
      * @return ApiAccount
      */
     public function setEnable($enable)
@@ -117,7 +114,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Get enable
      *
-     * @return integer 
+     * @return integer
      */
     public function getEnable()
     {
@@ -127,7 +124,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer    $delFlg
      * @return ApiAccount
      */
     public function setDelFlg($delFlg)
@@ -140,7 +137,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -150,7 +147,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime  $createDate
      * @return ApiAccount
      */
     public function setCreateDate($createDate)
@@ -163,7 +160,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -173,7 +170,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime  $updateDate
      * @return ApiAccount
      */
     public function setUpdateDate($updateDate)
@@ -186,7 +183,7 @@ class ApiAccount extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {

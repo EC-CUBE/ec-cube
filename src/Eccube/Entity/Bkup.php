@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Bkup
  */
@@ -24,11 +22,10 @@ class Bkup extends \Eccube\Entity\AbstractEntity
      */
     private $create_date;
 
-
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -38,7 +35,7 @@ class Bkup extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo
      *
-     * @param string $memo
+     * @param  string $memo
      * @return Bkup
      */
     public function setMemo($memo)
@@ -51,7 +48,7 @@ class Bkup extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo
      *
-     * @return string 
+     * @return string
      */
     public function getMemo()
     {
@@ -61,7 +58,7 @@ class Bkup extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Bkup
      */
     public function setCreateDate($createDate)
@@ -74,7 +71,7 @@ class Bkup extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -84,7 +81,7 @@ class Bkup extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Bkup
      */
     public function setName($name)

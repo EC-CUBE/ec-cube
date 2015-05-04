@@ -190,8 +190,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/order/shipping/add/', '\\Eccube\\Controller\\Admin\\Order\\OrderController::addShipping')
             ->bind('admin_order_shipping_add');
 
-
-
         $controllers->match('/order/disp.php', '\\Eccube\\Page\\Admin\\Order\\Disp')->bind('admin_order_disp');
         $controllers->match('/order/mail/{orderId}', '\\Eccube\\Controller\\Admin\\Order\\MailController::index')
             ->assert('orderId', '\d+')
@@ -309,6 +307,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // total
         $controllers->match('/total/', '\\Eccube\\Page\\Admin\\Total\\Index')->bind('admin_total');
+
         return $controllers;
     }
 }

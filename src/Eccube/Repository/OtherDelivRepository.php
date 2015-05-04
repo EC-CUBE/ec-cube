@@ -13,8 +13,8 @@ use Doctrine\ORM\EntityRepository;
 class OtherDelivRepository extends EntityRepository
 {
     /**
-     * @param \Eccube\Entity\Customer $Customer
-     * @param integer|null $id
+     * @param  \Eccube\Entity\Customer   $Customer
+     * @param  integer|null              $id
      * @return \Eccube\Entity\OtherDeliv
      * @throws Exception
      */
@@ -40,8 +40,8 @@ class OtherDelivRepository extends EntityRepository
     }
 
     /**
-     * @param \Eccube\Entity\Customer $Customer
-     * @param integer $id
+     * @param  \Eccube\Entity\Customer $Customer
+     * @param  integer                 $id
      * @return bool
      */
     public function deleteByCustomerAndId(\Eccube\Entity\Customer $Customer, $id)

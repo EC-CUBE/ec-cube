@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Deliv
  */
@@ -102,7 +100,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -112,7 +110,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_type_id
      *
-     * @param integer $productTypeId
+     * @param  integer $productTypeId
      * @return Deliv
      */
     public function setProductTypeId($productTypeId)
@@ -125,7 +123,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_type_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductTypeId()
     {
@@ -147,7 +145,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Deliv
      */
     public function setName($name)
@@ -160,7 +158,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -170,7 +168,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set service_name
      *
-     * @param string $serviceName
+     * @param  string $serviceName
      * @return Deliv
      */
     public function setServiceName($serviceName)
@@ -183,7 +181,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get service_name
      *
-     * @return string 
+     * @return string
      */
     public function getServiceName()
     {
@@ -193,7 +191,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set remark
      *
-     * @param string $remark
+     * @param  string $remark
      * @return Deliv
      */
     public function setRemark($remark)
@@ -206,7 +204,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get remark
      *
-     * @return string 
+     * @return string
      */
     public function getRemark()
     {
@@ -216,7 +214,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set confirm_url
      *
-     * @param string $confirmUrl
+     * @param  string $confirmUrl
      * @return Deliv
      */
     public function setConfirmUrl($confirmUrl)
@@ -229,7 +227,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get confirm_url
      *
-     * @return string 
+     * @return string
      */
     public function getConfirmUrl()
     {
@@ -239,7 +237,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer $rank
      * @return Deliv
      */
     public function setRank($rank)
@@ -252,7 +250,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -262,7 +260,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set status
      *
-     * @param integer $status
+     * @param  integer $status
      * @return Deliv
      */
     public function setStatus($status)
@@ -275,7 +273,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -285,7 +283,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Deliv
      */
     public function setDelFlg($delFlg)
@@ -298,7 +296,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -308,7 +306,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Deliv
      */
     public function setCreateDate($createDate)
@@ -321,7 +319,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -331,7 +329,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Deliv
      */
     public function setUpdateDate($updateDate)
@@ -344,7 +342,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -354,7 +352,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Add DelivFees
      *
-     * @param \Eccube\Entity\DelivFee $delivFees
+     * @param  \Eccube\Entity\DelivFee $delivFees
      * @return Deliv
      */
     public function addDelivFee(\Eccube\Entity\DelivFee $delivFees)
@@ -377,7 +375,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get DelivFees
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDelivFees()
     {
@@ -387,7 +385,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Add DelivTimes
      *
-     * @param \Eccube\Entity\DelivTime $delivTimes
+     * @param  \Eccube\Entity\DelivTime $delivTimes
      * @return Deliv
      */
     public function addDelivTime(\Eccube\Entity\DelivTime $delivTimes)
@@ -410,7 +408,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get DelivTimes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDelivTimes()
     {
@@ -420,7 +418,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return Deliv
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -433,7 +431,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {
@@ -443,7 +441,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Add PaymentOptions
      *
-     * @param \Eccube\Entity\PaymentOption $paymentOptions
+     * @param  \Eccube\Entity\PaymentOption $paymentOptions
      * @return Deliv
      */
     public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
@@ -452,8 +450,6 @@ class Deliv extends \Eccube\Entity\AbstractEntity
 
         return $this;
     }
-
-
 
     /**
      * Remove PaymentOptions
@@ -468,12 +464,11 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Get PaymentOptions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPaymentOptions()
     {
         return $this->PaymentOptions;
     }
-
 
 }

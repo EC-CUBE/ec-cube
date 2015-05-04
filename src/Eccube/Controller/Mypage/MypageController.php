@@ -37,8 +37,8 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
+     * @param  Application $app
+     * @param  Request     $request
      * @return string
      */
     public function index(Application $app, Request $request)
@@ -62,8 +62,8 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
+     * @param  Application $app
+     * @param  Request     $request
      * @return string
      */
     public function history(Application $app, Request $request, $orderId)
@@ -90,8 +90,8 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
+     * @param  Application $app
+     * @param  Request     $request
      * @return string
      */
     public function order(Application $app, Request $request)
@@ -101,7 +101,7 @@ class MypageController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $orderId = $request->get('order_id');
         } else {
-            
+
         }
 
         /* @var $Order \Eccube\Entity\Order */
@@ -122,8 +122,8 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
+     * @param  Application $app
+     * @param  Request     $request
      * @return string
      */
     public function mail_view(Application $app, Request $request, $sendId)
@@ -148,8 +148,8 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
+     * @param  Application $app
+     * @param  Request     $request
      * @return string
      */
     public function favorite(Application $app, Request $request)
@@ -161,6 +161,7 @@ class MypageController extends AbstractController
             if ($Product) {
                 $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
             }
+
             return $app->redirect($app['url_generator']->generate('mypage_favorite', array('page' => $request->get('pageno', 1))));
         }
 

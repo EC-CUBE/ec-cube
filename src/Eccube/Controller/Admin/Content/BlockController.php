@@ -5,7 +5,6 @@ namespace Eccube\Controller\Admin\Content;
 use Eccube\Application;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BlockController
 {
@@ -23,7 +22,7 @@ class BlockController
         $builder = $app['form.factory']->createBuilder('block');
         $bloc_html = '';
         $previous_filename = null;
-        if ( $block_id ) {
+        if ($block_id) {
             // テンプレートファイルの取得
             $previous_filename = $Block->getTplPath();
             $file = $this->getTplFile($app, $previous_filename, $device_type_id);
@@ -65,7 +64,6 @@ class BlockController
             }
         }
 
-
         // 登録されているページ一覧の取得
         $Blocks = $app['eccube.repository.block']->getList($device_type_id);
 
@@ -96,6 +94,7 @@ class BlockController
             $app['orm.em']->remove($Block);
             $app['orm.em']->flush();
         }
+
         return $app->redirect($app['url_generator']->generate('admin_content_block'));
     }
 
@@ -119,6 +118,7 @@ class BlockController
                 );
             }
         }
+
         return $data;
 
     }

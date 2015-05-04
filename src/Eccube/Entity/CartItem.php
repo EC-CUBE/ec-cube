@@ -21,7 +21,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param string $class_name
+     * @param  string   $class_name
      * @return CartItem
      */
     public function setClassName($class_name)
@@ -40,7 +40,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param string $class_id
+     * @param  string   $class_id
      * @return CartItem
      */
     public function setClassId($class_id)
@@ -59,7 +59,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param integer $price
+     * @param  integer  $price
      * @return CartItem
      */
     public function setPrice($price)
@@ -78,7 +78,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param integer $quantity
+     * @param  integer  $quantity
      * @return CartItem
      */
     public function setQuantity($quantity)
@@ -105,7 +105,7 @@ class CartItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param object $object
+     * @param  object   $object
      * @return CartItem
      */
     public function setObject($object)

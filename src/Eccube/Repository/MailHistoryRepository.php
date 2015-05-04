@@ -5,7 +5,6 @@ namespace Eccube\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * MailHistoryRepository
  *
@@ -24,6 +23,7 @@ class MailHistoryRepository extends EntityRepository
         $qb = $this->createQueryBuilder('mh')
             ->leftJoin('mh.Order', 'o')
             ->where('mh.id = :id AND o.Customer = :Customer');
+
         return $qb
             ->getQuery()
             ->setParameters(array(

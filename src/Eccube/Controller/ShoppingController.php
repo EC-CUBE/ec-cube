@@ -3,7 +3,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use \Doctrine\Common\Util\Debug;
 use Eccube\Form\Type\ShippingMultiType;
 
 class ShoppingController extends AbstractController
@@ -31,6 +30,7 @@ class ShoppingController extends AbstractController
         $app['eccube.service.cart']->lock();
         $app['eccube.service.cart']->save();
         $this->setNonCustomer($app, false);
+
         return $app->redirect($app['url_generator']->generate('shopping'));
     }
 
@@ -103,6 +103,7 @@ class ShoppingController extends AbstractController
             'data' => $Order->getPayment()));
 
         $title = "ご注文内容の確認";
+
         return $app['view']->render(
             'Shopping/index.twig',
             array(
@@ -127,6 +128,7 @@ class ShoppingController extends AbstractController
                 $this->orderService->commit($Order);
                 $this->cartService->clear()->save();
                 $this->setNonCustomer($app, false);
+
                 return $app->redirect($app['url_generator']->generate('shopping_complete'));
             }
         }
@@ -140,6 +142,7 @@ class ShoppingController extends AbstractController
     {
         $title = "ご購入完了";
         $baseInfo = $app['eccube.repository.base_info']->find(1);
+
         return $app['view']->render(
             'Shopping/complete.twig', array(
                 'title' => $title,
@@ -174,6 +177,7 @@ class ShoppingController extends AbstractController
                 $app['orm.em']->flush();
             }
         }
+
         return $app->redirect($app['url_generator']->generate('shopping'));
     }
 
@@ -197,6 +201,7 @@ class ShoppingController extends AbstractController
                 $app['orm.em']->flush();
             }
         }
+
         return $app->redirect($app['url_generator']->generate('shopping'));
     }
 
@@ -233,9 +238,11 @@ class ShoppingController extends AbstractController
                 $Order->setUsePoint($point);
                 $app['orm.em']->persist($Order);
                 $app['orm.em']->flush();
+
                 return $app->redirect($app['url_generator']->generate('shopping'));
             }
         }
+
         return $app['view']->render(
             'Shopping/point.twig', array(
                 'title' => 'ポイント設定',
@@ -318,6 +325,7 @@ class ShoppingController extends AbstractController
                 // 配送先を更新
                 $app['orm.em']->persist($shipping);
                 $app['orm.em']->flush();
+
                 return $app->redirect($app['url_generator']->generate('shopping'));
             }
         }
@@ -418,6 +426,7 @@ class ShoppingController extends AbstractController
                     }
                 }
                 $app['orm.em']->flush();
+
                 return $app->redirect($app['url_generator']->generate('shopping'));
             }
         }
@@ -503,9 +512,11 @@ class ShoppingController extends AbstractController
                     $app['eccube.service.cart']->save();
                 }
                 $this->setNonCustomer($app);
+
                 return $app->redirect($app['url_generator']->generate('shopping'));
             }
         }
+
         return $app['view']->render('Shopping/nonmember.twig', array(
             'form'  => $form->createView(),
             'title' => '非会員購入',
@@ -515,17 +526,19 @@ class ShoppingController extends AbstractController
     protected function isLoggedIn($app)
     {
         if ($app['security']->isGranted('ROLE_USER')) {
-            if ($this->isNonCustomer($app)){
+            if ($this->isNonCustomer($app)) {
                 $app['eccube.service.cart']->setPreOrderId(null)->save();
                 $this->setNonCustomer($app, false);
             }
         }
+
         return $app['security']->isGranted('ROLE_USER');
     }
 
     protected function isNonCustomer($app)
     {
         $nonCustomer = $app['session']->get('shopping.noncustomer');
+
         return ($nonCustomer === true) ? true : false;
     }
 
@@ -563,6 +576,7 @@ class ShoppingController extends AbstractController
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())
             ->setDelFlg(0);
+
         return $Shipping;
     }
 
@@ -583,6 +597,7 @@ class ShoppingController extends AbstractController
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
+
         return $deliveries;
     }
 }

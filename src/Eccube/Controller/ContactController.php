@@ -17,7 +17,7 @@ class ContactController
 
     public function index(Application $app, Request $request)
     {
-        
+
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createBuilder('contact');
 

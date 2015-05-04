@@ -5,7 +5,6 @@ namespace Eccube\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\EntityRepository;
 
 class CategoryType extends AbstractType
@@ -26,7 +25,7 @@ class CategoryType extends AbstractType
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Category',
             'property' => 'NameWithLevel',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('c')
                     ->orderBy('c.rank', 'DESC');
             },

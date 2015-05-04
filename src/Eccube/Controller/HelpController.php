@@ -19,14 +19,12 @@ class HelpController extends AbstractController
         return $app['twig']->render('Help/tradelaw.twig', compact('title', 'baseInfo'));
     }
 
-
     public function guide(Application $app)
     {
         $title = 'ご利用ガイド';
 
         return $app['twig']->render('Help/guide.twig', compact('title'));
     }
-
 
     public function about(Application $app)
     {
@@ -36,7 +34,6 @@ class HelpController extends AbstractController
 
         return $app['twig']->render('Help/about.twig', compact('title', 'baseInfo'));
     }
-
 
     public function privacy(Application $app)
     {

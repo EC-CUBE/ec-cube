@@ -18,7 +18,7 @@ class RefusalController extends AbstractController
     /**
      * Index
      *
-     * @param Application $app
+     * @param  Application                                        $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, Request $request)
@@ -85,7 +85,7 @@ class RefusalController extends AbstractController
     /**
      * Complete
      *
-     * @param Application $app
+     * @param  Application $app
      * @return mixed
      */
     public function complete(Application $app, Request $request)

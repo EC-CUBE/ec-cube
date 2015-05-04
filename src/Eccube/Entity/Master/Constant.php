@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity\Master;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Constant
  */
@@ -37,11 +35,10 @@ class Constant extends \Eccube\Entity\AbstractEntity
      */
     private $remarks;
 
-
     /**
      * Get id
      *
-     * @return string 
+     * @return string
      */
     public function getId()
     {
@@ -51,7 +48,7 @@ class Constant extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string   $name
      * @return Constant
      */
     public function setName($name)
@@ -64,7 +61,7 @@ class Constant extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -74,7 +71,7 @@ class Constant extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer  $rank
      * @return Constant
      */
     public function setRank($rank)
@@ -87,7 +84,7 @@ class Constant extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -97,7 +94,7 @@ class Constant extends \Eccube\Entity\AbstractEntity
     /**
      * Set remarks
      *
-     * @param string $remarks
+     * @param  string   $remarks
      * @return Constant
      */
     public function setRemarks($remarks)
@@ -110,7 +107,7 @@ class Constant extends \Eccube\Entity\AbstractEntity
     /**
      * Get remarks
      *
-     * @return string 
+     * @return string
      */
     public function getRemarks()
     {
@@ -120,7 +117,7 @@ class Constant extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @param string $id
+     * @param  string   $id
      * @return Constant
      */
     public function setId($id)

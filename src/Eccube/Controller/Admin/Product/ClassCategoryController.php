@@ -4,13 +4,12 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class ClassCategoryController
 {
     public function index(Application $app, Request $request, $classNameId, $classCategoryId = null)
     {
-        // 
+        //
         $ClassName = $app['eccube.repository.class_name']->find($classNameId);
         if (!$ClassName) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -59,7 +58,7 @@ class ClassCategoryController
 
     public function up(Application $app, Request $request, $classNameId, $classCategoryId)
     {
-        // 
+        //
         $ClassName = $app['eccube.repository.class_name']->find($classNameId);
         if (!$ClassName) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -96,7 +95,7 @@ class ClassCategoryController
 
     public function down(Application $app, Request $request, $classNameId, $classCategoryId)
     {
-        // 
+        //
         $ClassName = $app['eccube.repository.class_name']->find($classNameId);
         if (!$ClassName) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -133,7 +132,7 @@ class ClassCategoryController
 
     public function delete(Application $app, Request $request, $classNameId, $classCategoryId)
     {
-        // 
+        //
         $ClassName = $app['eccube.repository.class_name']->find($classNameId);
         if (!$ClassName) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

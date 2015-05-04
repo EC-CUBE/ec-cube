@@ -4,8 +4,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class ProductController
 {
     public function index(Application $app, Request $request)
@@ -70,7 +69,7 @@ class ProductController
         }
 
         $form = $builder->getForm();
-        
+
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
 

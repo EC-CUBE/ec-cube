@@ -10,7 +10,7 @@ class PasswordEncoder implements PasswordEncoderInterface
     /* @var $config array */
     public $config;
 
-    public function __construct (array $config)
+    public function __construct(array $config)
     {
         $this->config = $config;
     }

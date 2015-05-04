@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BlocPosition
  */
@@ -62,11 +60,10 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
      */
     private $PageLayout;
 
-
     /**
      * Set device_type_id
      *
-     * @param integer $deviceTypeId
+     * @param  integer      $deviceTypeId
      * @return BlocPosition
      */
     public function setDeviceTypeId($deviceTypeId)
@@ -79,7 +76,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get device_type_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getDeviceTypeId()
     {
@@ -89,7 +86,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set page_id
      *
-     * @param integer $pageId
+     * @param  integer      $pageId
      * @return BlocPosition
      */
     public function setPageId($pageId)
@@ -102,7 +99,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get page_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getPageId()
     {
@@ -112,7 +109,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set target_id
      *
-     * @param integer $targetId
+     * @param  integer      $targetId
      * @return BlocPosition
      */
     public function setTargetId($targetId)
@@ -125,7 +122,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get target_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getTargetId()
     {
@@ -135,7 +132,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set bloc_id
      *
-     * @param integer $blocId
+     * @param  integer      $blocId
      * @return BlocPosition
      */
     public function setBlocId($blocId)
@@ -148,7 +145,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get bloc_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getBlocId()
     {
@@ -158,7 +155,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set bloc_row
      *
-     * @param integer $blocRow
+     * @param  integer      $blocRow
      * @return BlocPosition
      */
     public function setBlocRow($blocRow)
@@ -171,7 +168,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get bloc_row
      *
-     * @return integer 
+     * @return integer
      */
     public function getBlocRow()
     {
@@ -181,7 +178,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set anywhere
      *
-     * @param integer $anywhere
+     * @param  integer      $anywhere
      * @return BlocPosition
      */
     public function setAnywhere($anywhere)
@@ -194,7 +191,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get anywhere
      *
-     * @return integer 
+     * @return integer
      */
     public function getAnywhere()
     {
@@ -204,7 +201,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set Bloc
      *
-     * @param \Eccube\Entity\Bloc $bloc
+     * @param  \Eccube\Entity\Bloc $bloc
      * @return BlocPosition
      */
     public function setBloc(\Eccube\Entity\Bloc $bloc = null)
@@ -217,7 +214,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get Bloc
      *
-     * @return \Eccube\Entity\Bloc 
+     * @return \Eccube\Entity\Bloc
      */
     public function getBloc()
     {
@@ -227,7 +224,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Set PageLayout
      *
-     * @param \Eccube\Entity\PageLayout $pageLayout
+     * @param  \Eccube\Entity\PageLayout $pageLayout
      * @return BlocPosition
      */
     public function setPageLayout(\Eccube\Entity\PageLayout $pageLayout = null)
@@ -240,7 +237,7 @@ class BlocPosition extends \Eccube\Entity\AbstractEntity
     /**
      * Get PageLayout
      *
-     * @return \Eccube\Entity\PageLayout 
+     * @return \Eccube\Entity\PageLayout
      */
     public function getPageLayout()
     {

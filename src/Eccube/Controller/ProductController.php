@@ -73,7 +73,7 @@ class ProductController
             $forms[$Product->getId()] = $addCartForm->createView();
         }
 
-        // 
+        //
         $builder = $app['form.factory']->createNamedBuilder('disp_number', 'product_list_max', null, array(
             'empty_data' => null,
             'required' => false,
@@ -154,7 +154,7 @@ class ProductController
     /**
      * ページタイトルの設定
      *
-     * @param null|array $searchData
+     * @param  null|array $searchData
      * @return str
      */
     private function getPageTitle($searchData)

@@ -38,11 +38,11 @@ class TaxRuleRepository extends EntityRepository
     /**
      * 現在有効な税率設定情報を返す
      *
-     * @param int|null|\Eccube\Entity\Product $Product 商品
-     * @param int|null|\Eccube\Entity\ProductClass $ProductClass 商品規格
-     * @param int|null|\Eccube\Entity\Master\Pref $Pref 都道府県
-     * @param int|null|\Eccube\Entity\Master\Country $Country 国
-     * @return \Eccube\Entity\TaxRule 税設定情報
+     * @param  int|null|\Eccube\Entity\Product        $Product      商品
+     * @param  int|null|\Eccube\Entity\ProductClass   $ProductClass 商品規格
+     * @param  int|null|\Eccube\Entity\Master\Pref    $Pref         都道府県
+     * @param  int|null|\Eccube\Entity\Master\Country $Country      国
+     * @return \Eccube\Entity\TaxRule                 税設定情報
      *
      * @throws NoResultException
      */
@@ -139,7 +139,7 @@ class TaxRuleRepository extends EntityRepository
             $qb->andWhere('t.ProductClass IS NULL');
         }
 
-        $TaxRules = (array)$qb
+        $TaxRules = (array) $qb
             ->getQuery()
             ->setParameters($parameters)
             ->getResult();
@@ -196,7 +196,7 @@ class TaxRuleRepository extends EntityRepository
     /**
      * getById
      *
-     * @param int $id
+     * @param  int   $id
      * @return array
      */
     public function getById($id)
@@ -211,7 +211,7 @@ class TaxRuleRepository extends EntityRepository
     /**
      * getByTime
      *
-     * @param string $applyDate
+     * @param  string $applyDate
      * @return mixed
      */
     public function getByTime($applyDate)

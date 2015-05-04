@@ -44,7 +44,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         // cart
         $controllers->match('/cart/', '\\Eccube\\Controller\\CartController::index')->bind('cart');
         $controllers->post('/cart/add/', '\\Eccube\\Controller\\CartController::add')
-            ->bind('cart_add'); 
+            ->bind('cart_add');
         $controllers->match('/cart/up/{productClassId}', '\\Eccube\\Controller\\CartController::up')
             ->bind('cart_up')
             ->assert('productClassId', '\d+');
@@ -63,7 +63,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         // contact
         $controllers->match('/contact/', '\\Eccube\\Controller\\ContactController::index')->bind('contact');
         $controllers->match('/contact/complete.php', '\\Eccube\\Controller\\ContactController::complete')->bind('contact_complete');
-
 
         // entry
         $controllers->match('/entry/', '\\Eccube\\Controller\\EntryController::index')->bind('entry');

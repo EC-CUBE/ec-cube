@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ShipmentItem
  */
@@ -64,11 +62,10 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
      */
     private $ProductClass;
 
-
     /**
      * Set shipping_id
      *
-     * @param integer $shippingId
+     * @param  integer      $shippingId
      * @return ShipmentItem
      */
     public function setShippingId($shippingId)
@@ -81,7 +78,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get shipping_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getShippingId()
     {
@@ -91,7 +88,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_class_id
      *
-     * @param integer $productClassId
+     * @param  integer      $productClassId
      * @return ShipmentItem
      */
     public function setProductClassId($productClassId)
@@ -104,7 +101,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_class_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductClassId()
     {
@@ -114,7 +111,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set order_id
      *
-     * @param integer $orderId
+     * @param  integer      $orderId
      * @return ShipmentItem
      */
     public function setOrderId($orderId)
@@ -127,7 +124,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get order_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrderId()
     {
@@ -137,7 +134,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_name
      *
-     * @param string $productName
+     * @param  string       $productName
      * @return ShipmentItem
      */
     public function setProductName($productName)
@@ -150,7 +147,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_name
      *
-     * @return string 
+     * @return string
      */
     public function getProductName()
     {
@@ -160,7 +157,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_code
      *
-     * @param string $productCode
+     * @param  string       $productCode
      * @return ShipmentItem
      */
     public function setProductCode($productCode)
@@ -173,7 +170,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_code
      *
-     * @return string 
+     * @return string
      */
     public function getProductCode()
     {
@@ -183,7 +180,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set classcategory_name1
      *
-     * @param string $classcategoryName1
+     * @param  string       $classcategoryName1
      * @return ShipmentItem
      */
     public function setClasscategoryName1($classcategoryName1)
@@ -196,7 +193,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get classcategory_name1
      *
-     * @return string 
+     * @return string
      */
     public function getClasscategoryName1()
     {
@@ -206,7 +203,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set classcategory_name2
      *
-     * @param string $classcategoryName2
+     * @param  string       $classcategoryName2
      * @return ShipmentItem
      */
     public function setClasscategoryName2($classcategoryName2)
@@ -219,7 +216,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get classcategory_name2
      *
-     * @return string 
+     * @return string
      */
     public function getClasscategoryName2()
     {
@@ -229,7 +226,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set price
      *
-     * @param string $price
+     * @param  string       $price
      * @return ShipmentItem
      */
     public function setPrice($price)
@@ -242,7 +239,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get price
      *
-     * @return string 
+     * @return string
      */
     public function getPrice()
     {
@@ -252,7 +249,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set quantity
      *
-     * @param string $quantity
+     * @param  string       $quantity
      * @return ShipmentItem
      */
     public function setQuantity($quantity)
@@ -265,7 +262,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get quantity
      *
-     * @return string 
+     * @return string
      */
     public function getQuantity()
     {
@@ -275,7 +272,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set Shipping
      *
-     * @param \Eccube\Entity\Shipping $shipping
+     * @param  \Eccube\Entity\Shipping $shipping
      * @return ShipmentItem
      */
     public function setShipping(\Eccube\Entity\Shipping $shipping)
@@ -288,7 +285,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get Shipping
      *
-     * @return \Eccube\Entity\Shipping 
+     * @return \Eccube\Entity\Shipping
      */
     public function getShipping()
     {
@@ -298,7 +295,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set ProductClass
      *
-     * @param \Eccube\Entity\ProductClass $productClass
+     * @param  \Eccube\Entity\ProductClass $productClass
      * @return ShipmentItem
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass)
@@ -311,7 +308,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductClass
      *
-     * @return \Eccube\Entity\ProductClass 
+     * @return \Eccube\Entity\ProductClass
      */
     public function getProductClass()
     {

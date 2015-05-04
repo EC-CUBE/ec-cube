@@ -4,8 +4,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class ClassNameController
 {
     public function index(Application $app, Request $request, $classNameId = null)

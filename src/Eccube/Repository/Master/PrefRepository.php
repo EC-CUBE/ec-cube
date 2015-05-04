@@ -20,7 +20,7 @@ class PrefRepository extends EntityRepository
 
         $pref[''] = null;
 
-        foreach($results as $res) {
+        foreach ($results as $res) {
             $pref[$res->getId()] = $res->getName();
         }
 

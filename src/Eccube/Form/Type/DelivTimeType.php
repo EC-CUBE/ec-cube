@@ -7,8 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContextInterface;
 
 class DelivTimeType extends AbstractType
 {
@@ -31,7 +29,7 @@ class DelivTimeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\DelivTime',
-            'query_builder' => function(EntityRepository $er) {
+            'query_builder' => function (EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('dt')
                     ->orderBy('dt.time_id', 'ASC');

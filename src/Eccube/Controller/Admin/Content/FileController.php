@@ -25,7 +25,7 @@ class FileController
         $htmlDir = $app['request']->server->get('DOCUMENT_ROOT') . $app['config']['root'];
         $topDir = $htmlDir . 'user_data';
         $nowDir = $app['request']->get('tree_select_file') ?: $topDir;
-        
+
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
 
         $isTopDir = ($topDir === $nowDir);
@@ -51,7 +51,6 @@ class FileController
                 break;
         }
 
-
         $tree = $this->getTree($topDir);
         $arrFileList = $this->getFileList($nowDir);
 
@@ -73,7 +72,6 @@ class FileController
             'arrFileList' => $arrFileList,
         ));
     }
-
 
     public function view(Application $app)
     {
@@ -100,6 +98,7 @@ class FileController
                     ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
             }
         }
+
         return;
     }
 
@@ -124,6 +123,7 @@ class FileController
                 $str .= "false);\n";
             }
         }
+
         return $str;
     }
 
@@ -148,7 +148,7 @@ class FileController
             $openDirs = explode('|', $this->app['request']->get('tree_status'));
         }
 
-        foreach ($finder as $dirs ) {
+        foreach ($finder as $dirs) {
             $path = $dirs->getRealPath();
             $type = (iterator_count(Finder::create()->in($path)->directories())) ? '_parent' : '_child';
             $rank = count(explode('/',$path)) - $defaultRank;
@@ -178,7 +178,7 @@ class FileController
             ->depth(0);
         $dirs = iterator_to_array($dirFinder);
         $files = iterator_to_array($fileFinder);
-        
+
         $arrFileList = array();
         foreach ($dirs as $dir) {
             $arrFileList[] = array(
@@ -198,6 +198,7 @@ class FileController
                 'is_dir' => false,
             );
         }
+
         return $arrFileList;
     }
 

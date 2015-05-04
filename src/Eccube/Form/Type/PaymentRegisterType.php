@@ -3,14 +3,11 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackValidator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContext;
 
 class PaymentRegisterType extends AbstractType
 {
@@ -51,8 +48,8 @@ class PaymentRegisterType extends AbstractType
                 'label' => 'ロゴ画像',
                 'mapped' => false,
             ))
-            
-            ->addEventListener(FormEvents::POST_BIND, function($event){
+
+            ->addEventListener(FormEvents::POST_BIND, function ($event) {
                 $form = $event->getForm();
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
@@ -60,7 +57,7 @@ class PaymentRegisterType extends AbstractType
                     $form['rule_max']->addError(new FormError('利用条件(下限)は' . $ruleMin .'円以下にしてください。'));
                 }
             })
-            ->addEventListener(FormEvents::POST_BIND, function($event){
+            ->addEventListener(FormEvents::POST_BIND, function ($event) {
                 $form = $event->getForm();
                 $upperRule = $form['upper_rule']->getData();
                 $upperRuleMax = $form['upper_rule_max']->getData();
@@ -68,7 +65,7 @@ class PaymentRegisterType extends AbstractType
                     $form['upper_rule']->addError(new FormError('利用条件(上限)は' . $upperRuleMax .'円以下にしてください。'));
                 }
             })
-            ->addEventListener(FormEvents::POST_BIND, function($event){
+            ->addEventListener(FormEvents::POST_BIND, function ($event) {
                 $form = $event->getForm();
                 $upperRule = $form['upper_rule']->getData();
                 $ruleMax = $form['rule_max']->getData();

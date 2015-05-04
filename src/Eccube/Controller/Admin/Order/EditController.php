@@ -8,12 +8,11 @@
 
 namespace Eccube\Controller\Admin\Order;
 
-
 use Eccube\Application;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 
-class EditController {
-
+class EditController
+{
     public function index(Application $app, $orderId = 0)
     {
         if ($orderId == 0) {
@@ -54,4 +53,4 @@ class EditController {
                 'orderId' => $orderId,
         ));
     }
-} 
+}

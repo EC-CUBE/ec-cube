@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LoginHeaderController
 {
-	function index(Application $app, Request $request)
-	{
+    public function index(Application $app, Request $request)
+    {
         $email = $request->cookies->get('email');
 
         /* @var $form \Symfony\Component\Form\FormInterface */
@@ -24,7 +24,7 @@ class LoginHeaderController
             'email' => $email,
             'form' => $form->createView(),
         ));
-	}
+    }
 
     public function isDisableLogoutPage(Application $app)
     {

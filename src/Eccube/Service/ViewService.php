@@ -2,7 +2,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Application;
 use Eccube\Event\RenderEvent;
 
 class ViewService

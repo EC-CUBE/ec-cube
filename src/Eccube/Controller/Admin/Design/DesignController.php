@@ -4,8 +4,7 @@ namespace Eccube\Controller\Admin\Design;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class DesignController
 {
     public $title;
@@ -85,7 +84,6 @@ class DesignController
             }
         }
 
-
         $form = $app['form.factory']
             ->createBuilder()
             ->getForm();
@@ -132,7 +130,6 @@ class DesignController
                             continue;
                         }
                     }
-
 
                     $BlocPosition = new \Eccube\Entity\BlocPosition();
                     $Bloc = $app['orm.em']->getRepository('\Eccube\Entity\Bloc')
@@ -181,6 +178,7 @@ class DesignController
         foreach ($Targets as $key => $Target) {
             $TargetHash[$Target->getName()] = $key;
         }
+
         return $TargetHash;
     }
 

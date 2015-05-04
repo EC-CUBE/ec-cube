@@ -3,7 +3,6 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -16,7 +15,7 @@ class CustomerFavoriteProductRepository extends EntityRepository
 {
     /**
      * @param \Eccube\Entity\Customer $Customer
-     * @param \Eccube\Entity\Product $Product
+     * @param \Eccube\Entity\Product  $Product
      */
     public function addFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
     {
@@ -33,10 +32,9 @@ class CustomerFavoriteProductRepository extends EntityRepository
         }
     }
 
-
     /**
-     * @param \Eccube\Entity\Customer $Customer
-     * @param \Eccube\Entity\Product $Product
+     * @param  \Eccube\Entity\Customer $Customer
+     * @param  \Eccube\Entity\Product  $Product
      * @return bool
      */
     public function isFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
@@ -56,8 +54,8 @@ class CustomerFavoriteProductRepository extends EntityRepository
     }
 
     /**
-     * @param \Eccube\Entity\Customer $Customer
-     * @param \Eccube\Entity\Product $Product
+     * @param  \Eccube\Entity\Customer $Customer
+     * @param  \Eccube\Entity\Product  $Product
      * @return bool
      */
     public function deleteFavorite(\Eccube\Entity\Customer $Customer, \Eccube\Entity\Product $Product)
@@ -85,7 +83,7 @@ class CustomerFavoriteProductRepository extends EntityRepository
     }
 
     /**
-     * @param \Eccube\Entity\Customer $Customer
+     * @param  \Eccube\Entity\Customer $Customer
      * @return QueryBuilder
      */
     public function getQueryBuilderByCustomer(\Eccube\Entity\Customer $Customer)

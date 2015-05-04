@@ -4,8 +4,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class OrderController
 {
     public $title;

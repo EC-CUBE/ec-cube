@@ -4,8 +4,7 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
- 
+
 class CustomerController
 {
     public $title;
@@ -49,7 +48,6 @@ class CustomerController
             'tpl_maintitle' => '会員管理＞会員マスター',
         ));
     }
-
 
     public function resend(Application $app, $customerId)
     {

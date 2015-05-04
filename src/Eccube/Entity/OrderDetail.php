@@ -2,15 +2,12 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * OrderDetail
  */
 class OrderDetail extends \Eccube\Entity\AbstractEntity
 {
     private $price_inc_tax = null;
-
 
     public function isPriceChange()
     {
@@ -72,7 +69,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set price IncTax
      *
-     * @param string $price_inc_tax
+     * @param  string       $price_inc_tax
      * @return ProductClass
      */
     public function setPriceIncTax($price_inc_tax)
@@ -85,7 +82,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get price IncTax
      *
-     * @return string 
+     * @return string
      */
     public function getPriceIncTax()
     {
@@ -165,11 +162,10 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     private $ProductClass;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -179,7 +175,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_name
      *
-     * @param string $productName
+     * @param  string      $productName
      * @return OrderDetail
      */
     public function setProductName($productName)
@@ -192,7 +188,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_name
      *
-     * @return string 
+     * @return string
      */
     public function getProductName()
     {
@@ -202,7 +198,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_code
      *
-     * @param string $productCode
+     * @param  string      $productCode
      * @return OrderDetail
      */
     public function setProductCode($productCode)
@@ -215,7 +211,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_code
      *
-     * @return string 
+     * @return string
      */
     public function getProductCode()
     {
@@ -225,7 +221,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set classcategory_name1
      *
-     * @param string $classcategoryName1
+     * @param  string      $classcategoryName1
      * @return OrderDetail
      */
     public function setClasscategoryName1($classcategoryName1)
@@ -238,7 +234,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get classcategory_name1
      *
-     * @return string 
+     * @return string
      */
     public function getClasscategoryName1()
     {
@@ -248,7 +244,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set classcategory_name2
      *
-     * @param string $classcategoryName2
+     * @param  string      $classcategoryName2
      * @return OrderDetail
      */
     public function setClasscategoryName2($classcategoryName2)
@@ -261,7 +257,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get classcategory_name2
      *
-     * @return string 
+     * @return string
      */
     public function getClasscategoryName2()
     {
@@ -271,7 +267,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set price
      *
-     * @param string $price
+     * @param  string      $price
      * @return OrderDetail
      */
     public function setPrice($price)
@@ -284,7 +280,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get price
      *
-     * @return string 
+     * @return string
      */
     public function getPrice()
     {
@@ -294,7 +290,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set quantity
      *
-     * @param string $quantity
+     * @param  string      $quantity
      * @return OrderDetail
      */
     public function setQuantity($quantity)
@@ -307,7 +303,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get quantity
      *
-     * @return string 
+     * @return string
      */
     public function getQuantity()
     {
@@ -317,7 +313,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set point_rate
      *
-     * @param string $pointRate
+     * @param  string      $pointRate
      * @return OrderDetail
      */
     public function setPointRate($pointRate)
@@ -330,7 +326,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get point_rate
      *
-     * @return string 
+     * @return string
      */
     public function getPointRate()
     {
@@ -340,7 +336,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set tax_rate
      *
-     * @param string $taxRate
+     * @param  string      $taxRate
      * @return OrderDetail
      */
     public function setTaxRate($taxRate)
@@ -353,7 +349,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_rate
      *
-     * @return string 
+     * @return string
      */
     public function getTaxRate()
     {
@@ -363,7 +359,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set tax_rule
      *
-     * @param integer $taxRule
+     * @param  integer     $taxRule
      * @return OrderDetail
      */
     public function setTaxRule($taxRule)
@@ -376,7 +372,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_rule
      *
-     * @return integer 
+     * @return integer
      */
     public function getTaxRule()
     {
@@ -386,7 +382,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set Order
      *
-     * @param \Eccube\Entity\Order $order
+     * @param  \Eccube\Entity\Order $order
      * @return OrderDetail
      */
     public function setOrder(\Eccube\Entity\Order $order)
@@ -399,7 +395,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get Order
      *
-     * @return \Eccube\Entity\Order 
+     * @return \Eccube\Entity\Order
      */
     public function getOrder()
     {
@@ -409,7 +405,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set Product
      *
-     * @param \Eccube\Entity\Product $product
+     * @param  \Eccube\Entity\Product $product
      * @return OrderDetail
      */
     public function setProduct(\Eccube\Entity\Product $product)
@@ -422,7 +418,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {
@@ -432,7 +428,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Set ProductClass
      *
-     * @param \Eccube\Entity\ProductClass $productClass
+     * @param  \Eccube\Entity\ProductClass $productClass
      * @return OrderDetail
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass)
@@ -445,7 +441,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductClass
      *
-     * @return \Eccube\Entity\ProductClass 
+     * @return \Eccube\Entity\ProductClass
      */
     public function getProductClass()
     {

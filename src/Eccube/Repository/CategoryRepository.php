@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class CategoryRepository extends EntityRepository
 {
     /**
-     * @param \Eccube\Entity\Category|null $Parent
+     * @param  \Eccube\Entity\Category|null $Parent
      * @return \Eccube\Entity\Category[]
      */
     public function getList($Parent = null)
@@ -72,6 +72,7 @@ class CategoryRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+
             return false;
         }
 
@@ -119,6 +120,7 @@ class CategoryRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+
             return false;
         }
 
@@ -165,6 +167,7 @@ class CategoryRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();var_dump($e);
+
             return false;
         }
 
@@ -201,6 +204,7 @@ class CategoryRepository extends EntityRepository
             $em->getConnection()->commit();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
+
             return false;
         }
 

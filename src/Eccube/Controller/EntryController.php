@@ -22,7 +22,7 @@ class EntryController extends AbstractController
     /**
      * Index
      *
-     * @param Application $app
+     * @param  Application                                        $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, Request $request)
@@ -110,11 +110,10 @@ class EntryController extends AbstractController
         ));
     }
 
-
     /**
      * Complete
      *
-     * @param Application $app
+     * @param  Application $app
      * @return mixed
      */
     public function complete(Application $app)
@@ -127,7 +126,7 @@ class EntryController extends AbstractController
     /**
      * 会員のアクティベート（本会員化）を行う
      *
-     * @param Application $app
+     * @param  Application $app
      * @return mixed
      */
     public function activate(Application $app, Request $request)

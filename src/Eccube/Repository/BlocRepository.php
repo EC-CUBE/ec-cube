@@ -3,7 +3,6 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Silex\Application;
 
 /**
  * BlocRepository
@@ -58,7 +57,7 @@ class BlocRepository extends EntityRepository
     /**
      * ブロックの情報を取得.
      *
-     * @param  integer $block_id ブロックID
+     * @param  integer $block_id       ブロックID
      * @param  integer $device_type_id
      * @return array
      */
@@ -75,7 +74,7 @@ class BlocRepository extends EntityRepository
     /**
      * ブロック一覧の取得.
      *
-     * @param integer $device_type_id
+     * @param  integer $device_type_id
      * @return array
      */
     public function getList($device_type_id)

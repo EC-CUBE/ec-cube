@@ -32,8 +32,8 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $em
-     * @param integer $rank
+     * @param  \Doctrine\ORM\EntityManager $em
+     * @param  integer                     $rank
      * @return \Eccube\Entity\Category
      */
     public function calcChildrenRank(\Doctrine\ORM\EntityManager $em, $rank)
@@ -99,7 +99,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     public function getSelfAndDescendants()
     {
         return array_merge(array($this), $this->getDescendants());
-    
+
     }
 
     /**
@@ -179,7 +179,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -189,7 +189,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string   $name
      * @return Category
      */
     public function setName($name)
@@ -202,7 +202,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -212,7 +212,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set level
      *
-     * @param integer $level
+     * @param  integer  $level
      * @return Category
      */
     public function setLevel($level)
@@ -225,7 +225,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get level
      *
-     * @return integer 
+     * @return integer
      */
     public function getLevel()
     {
@@ -235,7 +235,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer  $rank
      * @return Category
      */
     public function setRank($rank)
@@ -248,7 +248,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -258,7 +258,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Category
      */
     public function setCreateDate($createDate)
@@ -271,7 +271,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -281,7 +281,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Category
      */
     public function setUpdateDate($updateDate)
@@ -294,7 +294,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -304,7 +304,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer  $delFlg
      * @return Category
      */
     public function setDelFlg($delFlg)
@@ -317,7 +317,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -327,7 +327,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set CategoryCount
      *
-     * @param \Eccube\Entity\CategoryCount $categoryCount
+     * @param  \Eccube\Entity\CategoryCount $categoryCount
      * @return Category
      */
     public function setCategoryCount(\Eccube\Entity\CategoryCount $categoryCount = null)
@@ -340,7 +340,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get CategoryCount
      *
-     * @return \Eccube\Entity\CategoryCount 
+     * @return \Eccube\Entity\CategoryCount
      */
     public function getCategoryCount()
     {
@@ -350,7 +350,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set CategoryTotalCount
      *
-     * @param \Eccube\Entity\CategoryTotalCount $categoryTotalCount
+     * @param  \Eccube\Entity\CategoryTotalCount $categoryTotalCount
      * @return Category
      */
     public function setCategoryTotalCount(\Eccube\Entity\CategoryTotalCount $categoryTotalCount = null)
@@ -363,7 +363,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get CategoryTotalCount
      *
-     * @return \Eccube\Entity\CategoryTotalCount 
+     * @return \Eccube\Entity\CategoryTotalCount
      */
     public function getCategoryTotalCount()
     {
@@ -373,7 +373,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Add ProductCategories
      *
-     * @param \Eccube\Entity\ProductCategory $productCategories
+     * @param  \Eccube\Entity\ProductCategory $productCategories
      * @return Category
      */
     public function addProductCategory(\Eccube\Entity\ProductCategory $productCategories)
@@ -396,7 +396,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductCategories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductCategories()
     {
@@ -406,7 +406,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Add Children
      *
-     * @param \Eccube\Entity\Category $children
+     * @param  \Eccube\Entity\Category $children
      * @return Category
      */
     public function addChild(\Eccube\Entity\Category $children)
@@ -429,7 +429,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get Children
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChildren()
     {
@@ -439,7 +439,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set Parent
      *
-     * @param \Eccube\Entity\Category $parent
+     * @param  \Eccube\Entity\Category $parent
      * @return Category
      */
     public function setParent(\Eccube\Entity\Category $parent = null)
@@ -452,7 +452,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get Parent
      *
-     * @return \Eccube\Entity\Category 
+     * @return \Eccube\Entity\Category
      */
     public function getParent()
     {
@@ -462,7 +462,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return Category
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
@@ -475,7 +475,7 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

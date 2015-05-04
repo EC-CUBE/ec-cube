@@ -28,8 +28,8 @@ class UserDataController
      * @param $app
      * @return integer
      */
-    public function getDeviceTypeId($app){
-
+    public function getDeviceTypeId($app)
+    {
         return $app['config']['device_type_pc'];
     }
 

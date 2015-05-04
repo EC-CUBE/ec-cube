@@ -44,7 +44,7 @@ class CustomerEditController extends AbstractController
     public function index(Application $app, $customerId = null)
     {
 
-        if ( $customerId ) {
+        if ($customerId) {
             $Customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
                 ->findOneBy(array(
                         'id' => $customerId,
@@ -52,7 +52,7 @@ class CustomerEditController extends AbstractController
                     )
                 );
 
-            if ( $Customer === null ) {
+            if ($Customer === null) {
                 throw new HttpException\NotFoundHttpException("※ 会員ID：$customerId が見つかりません。");
             }
 
@@ -67,7 +67,6 @@ class CustomerEditController extends AbstractController
         } else {
             $Customer =  $app['eccube.repository.customer']->newCustomer();
         }
-
 
         //TODO: 購入処理ができてからちゃんと実装する
         $Order = $this->getOrder($app, $Customer);
@@ -129,25 +128,24 @@ class CustomerEditController extends AbstractController
      *
      * 新規か編集かにあわせてCustomerObjectを返す
      *
-     * @param Application $app
+     * @param  Application $app
      * @param $customerId
      * @return mixed
      */
-    private function getCustomer(Application $app, $customerId) {
-
-
+    private function getCustomer(Application $app, $customerId)
+    {
     }
 
     /**
      * 購入履歴を取得する
      * TODO: 購入が実装できてからちゃんと実装する
      *
-     * @param Application $app
-     * @param \Eccube\Entity\Customer $Customer
+     * @param  Application             $app
+     * @param  \Eccube\Entity\Customer $Customer
      * @return mixed
      */
-    private function getOrder(Application $app, \Eccube\Entity\Customer $Customer) {
-
+    private function getOrder(Application $app, \Eccube\Entity\Customer $Customer)
+    {
         if ($Customer->getId() > 0 ) {
 
             $Order = $app['orm.em']->getRepository('Eccube\\Entity\\Order')
@@ -156,6 +154,7 @@ class CustomerEditController extends AbstractController
                         'del_flg' => 0,
                     )
                 );
+
             return $Order;
         } else {
             return null;

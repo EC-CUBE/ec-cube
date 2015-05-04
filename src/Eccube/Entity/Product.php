@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Product
  */
@@ -97,7 +95,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Is Enable
      *
-     * @return bool 
+     * @return bool
      */
     public function isEnable()
     {
@@ -107,7 +105,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ClassName1
      *
-     * @return bool 
+     * @return bool
      */
     public function getClassName1()
     {
@@ -119,7 +117,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ClassName1
      *
-     * @return bool 
+     * @return bool
      */
     public function getClassName2()
     {
@@ -131,7 +129,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get getClassCategories1
      *
-     * @return bool 
+     * @return bool
      */
     public function getClassCategories1()
     {
@@ -143,7 +141,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get getClassCategories2
      *
-     * @return bool 
+     * @return bool
      */
     public function getClassCategories2($class_category1)
     {
@@ -155,7 +153,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get StockFind
      *
-     * @return bool 
+     * @return bool
      */
     public function getStockFind()
     {
@@ -167,7 +165,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Stock min
      *
-     * @return integer 
+     * @return integer
      */
     public function getStockMin()
     {
@@ -179,7 +177,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Stock max
      *
-     * @return integer 
+     * @return integer
      */
     public function getStockMax()
     {
@@ -191,7 +189,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get StockUnlimited min
      *
-     * @return integer 
+     * @return integer
      */
     public function getStockUnlimitedMin()
     {
@@ -203,7 +201,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get StockUnlimited max
      *
-     * @return integer 
+     * @return integer
      */
     public function getStockUnlimitedMax()
     {
@@ -215,7 +213,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price01 min
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice01Min()
     {
@@ -227,7 +225,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price01 max
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice01Max()
     {
@@ -239,7 +237,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price02 min
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice02Min()
     {
@@ -251,7 +249,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price02 max
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice02Max()
     {
@@ -263,7 +261,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price01IncTax min
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice01IncTaxMin()
     {
@@ -275,7 +273,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price01IncTax max
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice01IncTaxMax()
     {
@@ -287,7 +285,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price02IncTax min
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice02IncTaxMin()
     {
@@ -299,7 +297,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Price02IncTax max
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrice02IncTaxMax()
     {
@@ -311,7 +309,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Point min
      *
-     * @return integer 
+     * @return integer
      */
     public function getPointMin()
     {
@@ -321,7 +319,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Point max
      *
-     * @return integer 
+     * @return integer
      */
     public function getPointMax()
     {
@@ -331,7 +329,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product_code min
      *
-     * @return integer 
+     * @return integer
      */
     public function getCodeMin()
     {
@@ -343,7 +341,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product_code max
      *
-     * @return integer 
+     * @return integer
      */
     public function getCodeMax()
     {
@@ -355,7 +353,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get getPointRate
      *
-     * @return integer 
+     * @return integer
      */
     public function getPointRate()
     {
@@ -390,7 +388,7 @@ class Product extends \Eccube\Entity\AbstractEntity
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
             $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
             $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
-            
+
             $class_categories[$class_category_id1]['#'] = array(
                 'classcategory_id2' => '',
                 'name'              => '選択してください',
@@ -411,7 +409,6 @@ class Product extends \Eccube\Entity\AbstractEntity
 
         return $class_categories;
     }
-
 
     /**
      * @var integer
@@ -701,7 +698,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -711,7 +708,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string  $name
      * @return Product
      */
     public function setName($name)
@@ -724,7 +721,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -734,7 +731,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment1
      *
-     * @param string $comment1
+     * @param  string  $comment1
      * @return Product
      */
     public function setComment1($comment1)
@@ -747,7 +744,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment1
      *
-     * @return string 
+     * @return string
      */
     public function getComment1()
     {
@@ -757,7 +754,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment2
      *
-     * @param string $comment2
+     * @param  string  $comment2
      * @return Product
      */
     public function setComment2($comment2)
@@ -770,7 +767,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment2
      *
-     * @return string 
+     * @return string
      */
     public function getComment2()
     {
@@ -780,7 +777,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment3
      *
-     * @param string $comment3
+     * @param  string  $comment3
      * @return Product
      */
     public function setComment3($comment3)
@@ -793,7 +790,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment3
      *
-     * @return string 
+     * @return string
      */
     public function getComment3()
     {
@@ -803,7 +800,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment4
      *
-     * @param string $comment4
+     * @param  string  $comment4
      * @return Product
      */
     public function setComment4($comment4)
@@ -816,7 +813,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment4
      *
-     * @return string 
+     * @return string
      */
     public function getComment4()
     {
@@ -826,7 +823,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment5
      *
-     * @param string $comment5
+     * @param  string  $comment5
      * @return Product
      */
     public function setComment5($comment5)
@@ -839,7 +836,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment5
      *
-     * @return string 
+     * @return string
      */
     public function getComment5()
     {
@@ -849,7 +846,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment6
      *
-     * @param string $comment6
+     * @param  string  $comment6
      * @return Product
      */
     public function setComment6($comment6)
@@ -862,7 +859,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment6
      *
-     * @return string 
+     * @return string
      */
     public function getComment6()
     {
@@ -872,7 +869,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set note
      *
-     * @param string $note
+     * @param  string  $note
      * @return Product
      */
     public function setNote($note)
@@ -885,7 +882,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get note
      *
-     * @return string 
+     * @return string
      */
     public function getNote()
     {
@@ -895,7 +892,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set main_list_comment
      *
-     * @param string $mainListComment
+     * @param  string  $mainListComment
      * @return Product
      */
     public function setMainListComment($mainListComment)
@@ -908,7 +905,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get main_list_comment
      *
-     * @return string 
+     * @return string
      */
     public function getMainListComment()
     {
@@ -918,7 +915,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set main_list_image
      *
-     * @param string $mainListImage
+     * @param  string  $mainListImage
      * @return Product
      */
     public function setMainListImage($mainListImage)
@@ -931,7 +928,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get main_list_image
      *
-     * @return string 
+     * @return string
      */
     public function getMainListImage()
     {
@@ -941,7 +938,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set main_comment
      *
-     * @param string $mainComment
+     * @param  string  $mainComment
      * @return Product
      */
     public function setMainComment($mainComment)
@@ -954,7 +951,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get main_comment
      *
-     * @return string 
+     * @return string
      */
     public function getMainComment()
     {
@@ -964,7 +961,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set main_image
      *
-     * @param string $mainImage
+     * @param  string  $mainImage
      * @return Product
      */
     public function setMainImage($mainImage)
@@ -977,7 +974,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get main_image
      *
-     * @return string 
+     * @return string
      */
     public function getMainImage()
     {
@@ -987,7 +984,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set main_large_image
      *
-     * @param string $mainLargeImage
+     * @param  string  $mainLargeImage
      * @return Product
      */
     public function setMainLargeImage($mainLargeImage)
@@ -1000,7 +997,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get main_large_image
      *
-     * @return string 
+     * @return string
      */
     public function getMainLargeImage()
     {
@@ -1010,7 +1007,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_title1
      *
-     * @param string $subTitle1
+     * @param  string  $subTitle1
      * @return Product
      */
     public function setSubTitle1($subTitle1)
@@ -1023,7 +1020,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_title1
      *
-     * @return string 
+     * @return string
      */
     public function getSubTitle1()
     {
@@ -1033,7 +1030,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_comment1
      *
-     * @param string $subComment1
+     * @param  string  $subComment1
      * @return Product
      */
     public function setSubComment1($subComment1)
@@ -1046,7 +1043,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_comment1
      *
-     * @return string 
+     * @return string
      */
     public function getSubComment1()
     {
@@ -1056,7 +1053,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_image1
      *
-     * @param string $subImage1
+     * @param  string  $subImage1
      * @return Product
      */
     public function setSubImage1($subImage1)
@@ -1069,7 +1066,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_image1
      *
-     * @return string 
+     * @return string
      */
     public function getSubImage1()
     {
@@ -1079,7 +1076,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_large_image1
      *
-     * @param string $subLargeImage1
+     * @param  string  $subLargeImage1
      * @return Product
      */
     public function setSubLargeImage1($subLargeImage1)
@@ -1092,7 +1089,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_large_image1
      *
-     * @return string 
+     * @return string
      */
     public function getSubLargeImage1()
     {
@@ -1102,7 +1099,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_title2
      *
-     * @param string $subTitle2
+     * @param  string  $subTitle2
      * @return Product
      */
     public function setSubTitle2($subTitle2)
@@ -1115,7 +1112,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_title2
      *
-     * @return string 
+     * @return string
      */
     public function getSubTitle2()
     {
@@ -1125,7 +1122,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_comment2
      *
-     * @param string $subComment2
+     * @param  string  $subComment2
      * @return Product
      */
     public function setSubComment2($subComment2)
@@ -1138,7 +1135,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_comment2
      *
-     * @return string 
+     * @return string
      */
     public function getSubComment2()
     {
@@ -1148,7 +1145,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_image2
      *
-     * @param string $subImage2
+     * @param  string  $subImage2
      * @return Product
      */
     public function setSubImage2($subImage2)
@@ -1161,7 +1158,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_image2
      *
-     * @return string 
+     * @return string
      */
     public function getSubImage2()
     {
@@ -1171,7 +1168,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_large_image2
      *
-     * @param string $subLargeImage2
+     * @param  string  $subLargeImage2
      * @return Product
      */
     public function setSubLargeImage2($subLargeImage2)
@@ -1184,7 +1181,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_large_image2
      *
-     * @return string 
+     * @return string
      */
     public function getSubLargeImage2()
     {
@@ -1194,7 +1191,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_title3
      *
-     * @param string $subTitle3
+     * @param  string  $subTitle3
      * @return Product
      */
     public function setSubTitle3($subTitle3)
@@ -1207,7 +1204,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_title3
      *
-     * @return string 
+     * @return string
      */
     public function getSubTitle3()
     {
@@ -1217,7 +1214,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_comment3
      *
-     * @param string $subComment3
+     * @param  string  $subComment3
      * @return Product
      */
     public function setSubComment3($subComment3)
@@ -1230,7 +1227,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_comment3
      *
-     * @return string 
+     * @return string
      */
     public function getSubComment3()
     {
@@ -1240,7 +1237,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_image3
      *
-     * @param string $subImage3
+     * @param  string  $subImage3
      * @return Product
      */
     public function setSubImage3($subImage3)
@@ -1253,7 +1250,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_image3
      *
-     * @return string 
+     * @return string
      */
     public function getSubImage3()
     {
@@ -1263,7 +1260,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_large_image3
      *
-     * @param string $subLargeImage3
+     * @param  string  $subLargeImage3
      * @return Product
      */
     public function setSubLargeImage3($subLargeImage3)
@@ -1276,7 +1273,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_large_image3
      *
-     * @return string 
+     * @return string
      */
     public function getSubLargeImage3()
     {
@@ -1286,7 +1283,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_title4
      *
-     * @param string $subTitle4
+     * @param  string  $subTitle4
      * @return Product
      */
     public function setSubTitle4($subTitle4)
@@ -1299,7 +1296,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_title4
      *
-     * @return string 
+     * @return string
      */
     public function getSubTitle4()
     {
@@ -1309,7 +1306,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_comment4
      *
-     * @param string $subComment4
+     * @param  string  $subComment4
      * @return Product
      */
     public function setSubComment4($subComment4)
@@ -1322,7 +1319,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_comment4
      *
-     * @return string 
+     * @return string
      */
     public function getSubComment4()
     {
@@ -1332,7 +1329,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_image4
      *
-     * @param string $subImage4
+     * @param  string  $subImage4
      * @return Product
      */
     public function setSubImage4($subImage4)
@@ -1345,7 +1342,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_image4
      *
-     * @return string 
+     * @return string
      */
     public function getSubImage4()
     {
@@ -1355,7 +1352,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_large_image4
      *
-     * @param string $subLargeImage4
+     * @param  string  $subLargeImage4
      * @return Product
      */
     public function setSubLargeImage4($subLargeImage4)
@@ -1368,7 +1365,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_large_image4
      *
-     * @return string 
+     * @return string
      */
     public function getSubLargeImage4()
     {
@@ -1378,7 +1375,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_title5
      *
-     * @param string $subTitle5
+     * @param  string  $subTitle5
      * @return Product
      */
     public function setSubTitle5($subTitle5)
@@ -1391,7 +1388,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_title5
      *
-     * @return string 
+     * @return string
      */
     public function getSubTitle5()
     {
@@ -1401,7 +1398,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_comment5
      *
-     * @param string $subComment5
+     * @param  string  $subComment5
      * @return Product
      */
     public function setSubComment5($subComment5)
@@ -1414,7 +1411,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_comment5
      *
-     * @return string 
+     * @return string
      */
     public function getSubComment5()
     {
@@ -1424,7 +1421,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_image5
      *
-     * @param string $subImage5
+     * @param  string  $subImage5
      * @return Product
      */
     public function setSubImage5($subImage5)
@@ -1437,7 +1434,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_image5
      *
-     * @return string 
+     * @return string
      */
     public function getSubImage5()
     {
@@ -1447,7 +1444,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_large_image5
      *
-     * @param string $subLargeImage5
+     * @param  string  $subLargeImage5
      * @return Product
      */
     public function setSubLargeImage5($subLargeImage5)
@@ -1460,7 +1457,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_large_image5
      *
-     * @return string 
+     * @return string
      */
     public function getSubLargeImage5()
     {
@@ -1470,7 +1467,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_title6
      *
-     * @param string $subTitle6
+     * @param  string  $subTitle6
      * @return Product
      */
     public function setSubTitle6($subTitle6)
@@ -1483,7 +1480,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_title6
      *
-     * @return string 
+     * @return string
      */
     public function getSubTitle6()
     {
@@ -1493,7 +1490,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_comment6
      *
-     * @param string $subComment6
+     * @param  string  $subComment6
      * @return Product
      */
     public function setSubComment6($subComment6)
@@ -1506,7 +1503,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_comment6
      *
-     * @return string 
+     * @return string
      */
     public function getSubComment6()
     {
@@ -1516,7 +1513,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_image6
      *
-     * @param string $subImage6
+     * @param  string  $subImage6
      * @return Product
      */
     public function setSubImage6($subImage6)
@@ -1529,7 +1526,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_image6
      *
-     * @return string 
+     * @return string
      */
     public function getSubImage6()
     {
@@ -1539,7 +1536,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_large_image6
      *
-     * @param string $subLargeImage6
+     * @param  string  $subLargeImage6
      * @return Product
      */
     public function setSubLargeImage6($subLargeImage6)
@@ -1552,7 +1549,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_large_image6
      *
-     * @return string 
+     * @return string
      */
     public function getSubLargeImage6()
     {
@@ -1562,7 +1559,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Product
      */
     public function setDelFlg($delFlg)
@@ -1575,7 +1572,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -1585,7 +1582,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Product
      */
     public function setCreateDate($createDate)
@@ -1598,7 +1595,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -1608,7 +1605,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Product
      */
     public function setUpdateDate($updateDate)
@@ -1621,7 +1618,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -1631,7 +1628,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add ProductCategories
      *
-     * @param \Eccube\Entity\ProductCategory $productCategories
+     * @param  \Eccube\Entity\ProductCategory $productCategories
      * @return Product
      */
     public function addProductCategory(\Eccube\Entity\ProductCategory $productCategories)
@@ -1654,7 +1651,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductCategories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductCategories()
     {
@@ -1664,7 +1661,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add ProductClasses
      *
-     * @param \Eccube\Entity\ProductClass $productClasses
+     * @param  \Eccube\Entity\ProductClass $productClasses
      * @return Product
      */
     public function addProductClass(\Eccube\Entity\ProductClass $productClasses)
@@ -1687,7 +1684,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductClasses
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductClasses()
     {
@@ -1697,7 +1694,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add ProductStatuses
      *
-     * @param \Eccube\Entity\ProductStatus $productStatuses
+     * @param  \Eccube\Entity\ProductStatus $productStatuses
      * @return Product
      */
     public function addProductStatus(\Eccube\Entity\ProductStatus $productStatuses)
@@ -1720,7 +1717,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductStatuses
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductStatuses()
     {
@@ -1730,7 +1727,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add RecommendProducts
      *
-     * @param \Eccube\Entity\RecommendProduct $recommendProducts
+     * @param  \Eccube\Entity\RecommendProduct $recommendProducts
      * @return Product
      */
     public function addRecommendProduct(\Eccube\Entity\RecommendProduct $recommendProducts)
@@ -1753,7 +1750,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get RecommendProducts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRecommendProducts()
     {
@@ -1763,7 +1760,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add RecommendedProducts
      *
-     * @param \Eccube\Entity\RecommendProduct $recommendedProducts
+     * @param  \Eccube\Entity\RecommendProduct $recommendedProducts
      * @return Product
      */
     public function addRecommendedProduct(\Eccube\Entity\RecommendProduct $recommendedProducts)
@@ -1786,7 +1783,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get RecommendedProducts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRecommendedProducts()
     {
@@ -1796,7 +1793,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add Reviews
      *
-     * @param \Eccube\Entity\Review $reviews
+     * @param  \Eccube\Entity\Review $reviews
      * @return Product
      */
     public function addReview(\Eccube\Entity\Review $reviews)
@@ -1819,7 +1816,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Reviews
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getReviews()
     {
@@ -1829,7 +1826,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add BestProducts
      *
-     * @param \Eccube\Entity\BestProduct $bestProducts
+     * @param  \Eccube\Entity\BestProduct $bestProducts
      * @return Product
      */
     public function addBestProduct(\Eccube\Entity\BestProduct $bestProducts)
@@ -1852,7 +1849,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get BestProducts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBestProducts()
     {
@@ -1862,7 +1859,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Add CustomerFavoriteProducts
      *
-     * @param \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
+     * @param  \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
      * @return Product
      */
     public function addCustomerFavoriteProduct(\Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts)
@@ -1885,7 +1882,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get CustomerFavoriteProducts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCustomerFavoriteProducts()
     {
@@ -1895,7 +1892,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set Maker
      *
-     * @param \Eccube\Entity\Maker $maker
+     * @param  \Eccube\Entity\Maker $maker
      * @return Product
      */
     public function setMaker(\Eccube\Entity\Maker $maker = null)
@@ -1908,7 +1905,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Maker
      *
-     * @return \Eccube\Entity\Maker 
+     * @return \Eccube\Entity\Maker
      */
     public function getMaker()
     {
@@ -1918,7 +1915,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return Product
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -1931,7 +1928,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {
@@ -1941,7 +1938,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set DeliveryDate
      *
-     * @param \Eccube\Entity\Master\DeliveryDate $deliveryDate
+     * @param  \Eccube\Entity\Master\DeliveryDate $deliveryDate
      * @return Product
      */
     public function setDeliveryDate(\Eccube\Entity\Master\DeliveryDate $deliveryDate = null)
@@ -1954,7 +1951,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get DeliveryDate
      *
-     * @return \Eccube\Entity\Master\DeliveryDate 
+     * @return \Eccube\Entity\Master\DeliveryDate
      */
     public function getDeliveryDate()
     {
@@ -1964,7 +1961,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set Status
      *
-     * @param \Eccube\Entity\Master\Disp $status
+     * @param  \Eccube\Entity\Master\Disp $status
      * @return Product
      */
     public function setStatus(\Eccube\Entity\Master\Disp $status = null)
@@ -1977,7 +1974,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get Status
      *
-     * @return \Eccube\Entity\Master\Disp 
+     * @return \Eccube\Entity\Master\Disp
      */
     public function getStatus()
     {
@@ -1987,7 +1984,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set ProductStatusColor
      *
-     * @param \Eccube\Entity\Master\ProductStatusColor $productStatusColor
+     * @param  \Eccube\Entity\Master\ProductStatusColor $productStatusColor
      * @return Product
      */
     public function setProductStatusColor(\Eccube\Entity\Master\ProductStatusColor $productStatusColor = null)
@@ -2000,7 +1997,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductStatusColor
      *
-     * @return \Eccube\Entity\Master\ProductStatusColor 
+     * @return \Eccube\Entity\Master\ProductStatusColor
      */
     public function getProductStatusColor()
     {
