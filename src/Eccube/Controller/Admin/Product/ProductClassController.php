@@ -2,7 +2,12 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\Common\Util\Debug;
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
+use Eccube\Entity\ClassName;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -20,10 +25,11 @@ class ProductClassController
         }
 
         /** @var $ProductClasses \Eccube\Entity\ProductClass[] */
-        $ProductClasses = $Product->getProductClasses();
+        $ProductClasses = $this->getProductClasses($Product);
         $ClassName1 = null;
         $ClassName2 = null;
-        // 規格名を取得
+
+        // 規格を取得
         if (isset($ProductClasses[0])) {
             $ClassCategory1 = $ProductClasses[0]->getClassCategory1();
             if ($ClassCategory1) {
@@ -41,33 +47,53 @@ class ProductClassController
                 'class' => 'Eccube\Entity\ClassName',
                 'property' => 'name',
                 'empty_value' => '--',
-                'data' => $ClassName1,
             ))
             ->add('class2', 'entity', array(
                 'class' => 'Eccube\Entity\ClassName',
                 'property' => 'name',
                 'empty_value' => '--',
-                'data' => $ClassName2,
             ))
             ->add('product_classess', 'collection', array(
                 'type' => 'admin_product_class',
-                'data' => $ProductClasses,
+                'allow_add' => true,
+                'allow_delete' => true,
             ))
         ;
 
         $form = $builder->getForm();
+        $form->get('class1')->setData($ClassName1);
+        $form->get('class2')->setData($ClassName2);
+        $form->get('product_classess')->setData($ProductClasses);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                foreach ($data['product_classess'] as $ProdcutClass) {
-                    $app['orm.em']->persist($ProdcutClass);
-                }
-                $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('admin.success', 'admin.product.product_class.save.complete');
+            switch ($request->get('mode')) {
+                case 'edit':
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        foreach ($data['product_classess'] as $ProductClass) {
+                            $ProductClass->setDelFlg(0);
+                            $ProductClass->setProduct($Product);
+                            $app['orm.em']->persist($ProductClass);
+                        }
+                        $app['orm.em']->flush();
+                        $app['session']->getFlashBag()->add('admin.success', 'admin.product.product_class.save.complete');
+                        return $app->redirect($app['url_generator']->generate('admin_product_product_class', array('product_id' => $product_id)));
+                    }
+                    break;
+                case 'disp':
+                    $ClassName1 = $form->get('class1')->getData();
+                    $ClassName2 = $form->get('class2')->getData();
+                    $ProductClasses = $this->createProductClasses($app['orm.em'], $Product, $ClassName1, $ClassName2);
 
-                return $app->redirect($app['url_generator']->generate('admin_product_product_class', array('product_id' => $product_id)));
+                    $form = $builder->getForm();
+                    $form->get('class1')->setData($ClassName1);
+                    $form->get('class2')->setData($ClassName2);
+                    $form->get('product_classess')->setData($ProductClasses);
+                case 'delete':
+
+                default:
+                    break;
             }
         }
 
@@ -79,43 +105,63 @@ class ProductClassController
         ));
     }
 
-    public function edit(Application $app, Request $request)
+    protected function createProductClasses(EntityManagerInterface $em, Product $Product, ClassName $ClassName1 = null, ClassName $ClassName2 = null)
     {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
-        ));
+        $ClassCategories1 = array();
+        if ($ClassName1) {
+            $ClassCategories1 = $em->getRepository('\Eccube\Entity\ClassCategory')
+                ->findBy(array('ClassName' => $ClassName1));
+        }
 
-        if ($request->get('product_id')) {
-            $Product = $app['eccube.repository.product']->find($request->get('product_id'));
-            if (!$Product) {
-                throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        $ClassCategories2 = array();
+        if ($ClassName2) {
+            $ClassCategories2 = $em->getRepository('\Eccube\Entity\ClassCategory')
+                ->findBy(array('ClassName' => $ClassName2));
+        }
+
+        $ProductClassess = array();
+        foreach ($ClassCategories1 as $ClassCategory1) {
+            if ($ClassCategories2) {
+                foreach ($ClassCategories2 as $ClassCategory2) {
+                    $ProductClass = $this->newProductClass($em);
+                    $ProductClass->setClassCategory1($ClassCategory1);
+                    $ProductClass->setClassCategory2($ClassCategory2);
+                    $ProductClassess[] = $ProductClass;
+                }
+            } else {
+                $ProductClass = $this->newProductClass($em);
+                $ProductClass->setClassCategory1($ClassCategory1);
+                $ProductClassess[] = $ProductClass;
             }
-        } else {
-            $Product = new \Eccube\Entity\Product();
-        }
 
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_product')
-            ->getForm();
-        if ($request->getMethod() === 'POST') {
-            $searchForm->handleRequest($request);
         }
-
-        $form = $app['form.factory']
-            ->createBuilder('admin_product', $Product)
-            ->getForm();
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-        }
-
-        return $app['view']->render('Admin/Product/product.twig', array(
-            'maintitle' => '商品管理',
-            'subtitle' => '商品登録',
-            'form' => $form->createView(),
-            'searchForm' => $searchForm->createView(),
-        ));
+        return $ProductClassess;
     }
 
+    protected function newProductClass(EntityManagerInterface $em)
+    {
+        $ProductType = $em
+            ->getRepository('\Eccube\Entity\Master\ProductType')
+            ->find(1)
+        ;
+        $ProductClass = new ProductClass();
+        $ProductClass
+            ->setProductType($ProductType)
+        ;
+        return $ProductClass;
+    }
+
+    protected function getProductClasses(Product $Product)
+    {
+        /** @var $ProductClasses \Eccube\Entity\ProductClass[] */
+        $ProductClasses = $Product->getProductClasses();
+        foreach ($ProductClasses as $ProductClass) {
+            $ClassCategory1 = $ProductClass->getClassCategory1();
+            $ClassCategory2 = $ProductClass->getClassCategory2();
+            if ( !$ClassCategory1 && !$ClassCategory2 ) {
+                $ProductClasses->removeElement($ProductClass);
+            }
+        }
+        return $ProductClasses;
+    }
 }

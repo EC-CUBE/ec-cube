@@ -87,6 +87,7 @@
 //]]></script>
 <h2>商品規格登録</h2>
 <form name="form1" id="form1" method="post" action="{{ path('admin_product_product_class', { 'product_id' : Product.id}) }}" enctype="multipart/form-data">
+    <input type="hidden" name="mode" value=""/>
     {{ form_widget(form._token) }}
     <div id="products" class="contents-main">
         <table>
@@ -110,16 +111,15 @@
             </tr>
         </table>
         <div class="btn-area">
-            {#
-            todo 削除
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
-
-            <!--{if $arrForm.total.value > 0}-->
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
-            <!--{/if}-->
-            #}
+                {#
+                todo 削除
+                <!--{if $arrForm.total.value > 0}-->
+                    <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
+                <!--{/if}-->
+                #}
             </ul>
         </div>
 
@@ -173,10 +173,12 @@
                 </td>
                 #}
                 <td class="center">
-                    {{ form_widget(product_class_form. class_category1) }}
+                    {{ product_class_form.vars.value.ClassCategory1 is empty ? '' : product_class_form.vars.value.ClassCategory1.name }}
+                    {{ form_widget(product_class_form.ClassCategory1) }}
                 </td>
                 <td class="center">
-                    {{ form_widget(product_class_form. class_category2) }}
+                    {{ product_class_form.vars.value.ClassCategory2 is empty ? '' : product_class_form.vars.value.ClassCategory2.name }}
+                    {{ form_widget(product_class_form.ClassCategory2) }}
                 </td>
                 <td class="center">
                     {{ form_widget(product_class_form. code) }}

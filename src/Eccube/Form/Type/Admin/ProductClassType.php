@@ -2,6 +2,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -83,16 +84,16 @@ class ProductClassType extends AbstractType
                 'mapped' => false,
             ))
             ->add('down_real_filename', 'hidden')
-            ->add('class_category1', null, array(
-                'required' => false,
-                'read_only' => true,
-                'disabled' => true,
-            ))
-            ->add('class_category2', null, array(
-                'required' => false,
-                'read_only' => true,
-                'disabled' => true,
-            ))
+        ;
+
+        $transformer = new DataTransformer\ClassCategoryTransformer($app['orm.em']);
+        $builder
+            ->add($builder->create('ClassCategory1', 'hidden')
+                          ->addModelTransformer($transformer)
+            )
+            ->add($builder->create('ClassCategory2', 'hidden')
+                          ->addModelTransformer($transformer)
+            )
         ;
     }
 
