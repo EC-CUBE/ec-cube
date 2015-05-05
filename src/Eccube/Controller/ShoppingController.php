@@ -344,7 +344,7 @@ class ShoppingController extends AbstractController
     }
 
     // 複数配送
-    public function shipping_multiple(Application $app)
+    public function shippingMultiple(Application $app)
     {
         $this->init($app);
 
