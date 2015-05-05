@@ -1,5 +1,13 @@
 {% extends 'Admin/main_frame.twig' %}
 
+{% block javascript %}
+{{ tpl_javascript|raw }}
+{% endblock %}
+
+{% block onload %}
+{{ tpl_onload|raw }}
+{% endblock %}
+
 {% block main %}
 
 <script type="text/javascript">//<![CDATA[
