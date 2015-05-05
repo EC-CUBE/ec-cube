@@ -1,6 +1,8 @@
 <?php
 
-namespace Eccube\Tests\Web\Admin;
+namespace Eccube\Tests\Web\Admin\Basis;
+
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {

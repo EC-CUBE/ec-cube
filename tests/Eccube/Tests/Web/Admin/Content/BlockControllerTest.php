@@ -1,6 +1,8 @@
 <?php
 
-namespace Eccube\Tests\Web\Admin;
+namespace Eccube\Tests\Web\Admin\Content;
+
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class BlockControllerTest extends AbstractAdminWebTestCase
 {

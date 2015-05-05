@@ -1,5 +1,5 @@
 <?php
-namespace Eccube\Tests\Web;
+namespace Eccube\Tests\Web\Order;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
