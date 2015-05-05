@@ -83,7 +83,7 @@ class ReviewHelper
             $ret = $objQuery->update('dtb_review', $data, $where, array($review_id));
         }
 
-        return ($ret) ? $data['review_id'] : FALSE;
+        return ($ret) ? $data['review_id'] : false;
     }
 
     /**
@@ -164,8 +164,10 @@ class ReviewHelper
         $where = 'A.del_flg = 0 AND B.del_flg = 0';
         $values = array();
 
-        foreach ($query AS $key => $val) {
-            if (empty($val)) continue;
+        foreach ($query as $key => $val) {
+            if (empty($val)) {
+                continue;
+            }
 
             switch ($key) {
                 case 'product_id':

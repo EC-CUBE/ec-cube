@@ -27,6 +27,9 @@ filter:
         - html/js/jquery*.js
         - html/js/**/jquery*.js 
         - html/user_data/packages/**/**/jquery*.js
+        - src/fpdf/*
+        - src/fpdi/*
+        - src/gdthumb/*
         - src/Eccube/Framework/*
         - src/Eccube/Page/*
 
