@@ -25,8 +25,8 @@ class ProductClassController
             throw new NotFoundHttpException();
         }
 
-        /** @var $ProductClasses \Eccube\Entity\ProductClass[] */
-        $ProductClasses = $this->getProductClasses($Product);
+        $ProductClassesOriginal = $this->getProductClassesOriginal($Product);
+        $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
         $ClassName1 = null;
         $ClassName2 = null;
 
@@ -44,12 +44,12 @@ class ProductClassController
 
         $builder = $app['form.factory']->createBuilder();
         $builder
-            ->add('class1', 'entity', array(
+            ->add('class_name1', 'entity', array(
                 'class' => 'Eccube\Entity\ClassName',
                 'property' => 'name',
                 'empty_value' => '--',
             ))
-            ->add('class2', 'entity', array(
+            ->add('class_name2', 'entity', array(
                 'class' => 'Eccube\Entity\ClassName',
                 'property' => 'name',
                 'empty_value' => '--',
@@ -62,14 +62,9 @@ class ProductClassController
         ;
 
         $form = $builder->getForm();
-        $form->get('class1')->setData($ClassName1);
-        $form->get('class2')->setData($ClassName2);
+        $form->get('class_name1')->setData($ClassName1);
+        $form->get('class_name2')->setData($ClassName2);
         $form->get('product_classes')->setData($ProductClasses);
-
-        $ProductClassesOriginal = new ArrayCollection();
-        foreach ($ProductClasses as $ProductClass) {
-            $ProductClassesOriginal->add($ProductClass);
-        }
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -95,14 +90,15 @@ class ProductClassController
                     }
                     break;
                 case 'disp':
-                    $ClassName1 = $form->get('class1')->getData();
-                    $ClassName2 = $form->get('class2')->getData();
+                    $ClassName1 = $form->get('class_name1')->getData();
+                    $ClassName2 = $form->get('class_name2')->getData();
                     $ProductClasses = $this->createProductClasses($app['orm.em'], $Product, $ClassName1, $ClassName2);
 
                     $form = $builder->getForm();
-                    $form->get('class1')->setData($ClassName1);
-                    $form->get('class2')->setData($ClassName2);
+                    $form->get('class_name1')->setData($ClassName1);
+                    $form->get('class_name2')->setData($ClassName2);
                     $form->get('product_classes')->setData($ProductClasses);
+                    break;
                 case 'delete':
 
                 default:
@@ -132,23 +128,23 @@ class ProductClassController
                 ->findBy(array('ClassName' => $ClassName2));
         }
 
-        $ProductClassess = array();
+        $ProductClasses = array();
         foreach ($ClassCategories1 as $ClassCategory1) {
             if ($ClassCategories2) {
                 foreach ($ClassCategories2 as $ClassCategory2) {
                     $ProductClass = $this->newProductClass($em);
                     $ProductClass->setClassCategory1($ClassCategory1);
                     $ProductClass->setClassCategory2($ClassCategory2);
-                    $ProductClassess[] = $ProductClass;
+                    $ProductClasses[] = $ProductClass;
                 }
             } else {
                 $ProductClass = $this->newProductClass($em);
                 $ProductClass->setClassCategory1($ClassCategory1);
-                $ProductClassess[] = $ProductClass;
+                $ProductClasses[] = $ProductClass;
             }
 
         }
-        return $ProductClassess;
+        return $ProductClasses;
     }
 
     protected function newProductClass(EntityManagerInterface $em)
@@ -164,17 +160,34 @@ class ProductClassController
         return $ProductClass;
     }
 
-    protected function getProductClasses(Product $Product)
+    /**
+     * 商品規格のコピーを取得.
+     *
+     * @see http://symfony.com/doc/current/cookbook/form/form_collections.html
+     * @param Product $Product
+     * @return \Eccube\Entity\ProductClass[]
+     */
+    protected function getProductClassesOriginal(Product $Product)
     {
-        /** @var $ProductClasses \Eccube\Entity\ProductClass[] */
         $ProductClasses = $Product->getProductClasses();
-        foreach ($ProductClasses as $ProductClass) {
+        return $ProductClasses->filter(function($ProductClass) {
+            return true;
+        });
+    }
+
+    /**
+     * 規格なし商品を除いて商品規格を取得.
+     *
+     * @param Product $Product
+     * @return \Eccube\Entity\ProductClass[]
+     */
+    protected function getProductClassesExcludeNonClass(Product $Product)
+    {
+        $ProductClasses = $Product->getProductClasses();
+        return $ProductClasses->filter(function($ProductClass) {
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
-            if ( !$ClassCategory1 && !$ClassCategory2 ) {
-                $ProductClasses->removeElement($ProductClass);
-            }
-        }
-        return $ProductClasses;
+            return ($ClassCategory1 || $ClassCategory2);
+        });
     }
 }

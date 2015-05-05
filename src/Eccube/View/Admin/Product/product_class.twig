@@ -98,15 +98,15 @@
             <tr>
                 <th>規格1<span class="attention">*</span></th>
                 <td>
-                    {{ form_widget(form.class1) }}
-                    {{ form_errors(form.class1) }}
+                    {{ form_widget(form.class_name1) }}
+                    {{ form_errors(form.class_name1) }}
                 </td>
             </tr>
             <tr>
                 <th>規格2</th>
                 <td>
-                    {{ form_widget(form.class2) }}
-                    {{ form_errors(form.class2) }}
+                    {{ form_widget(form.class_name2) }}
+                    {{ form_errors(form.class_name2) }}
                 </td>
             </tr>
         </table>
@@ -141,8 +141,8 @@
             <col width="8%" />
             <tr>
                 {#<th><input type="checkbox" onclick="eccube.checkAllBox(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br />登録</label></th>#}
-                <th>規格1<br />({#form.vars.value.class1.name #})</th>  {# TODO 選択された規格名を表示 #}
-                <th>規格2<br />({# form.vars.value.class2.name #})</th> {# TODO 選択された規格名を表示 #}
+                <th>規格1<br />({#form.vars.value.class_name1.name #})</th>  {# TODO 選択された規格名を表示 #}
+                <th>規格2<br />({# form.vars.value.class_name2.name #})</th> {# TODO 選択された規格名を表示 #}
                 <th>商品コード</th>
                 <th>在庫数<span class="attention">*</span></th>
                 <th>{{ app.config.normal_price_title }}(円)</th>
