@@ -200,7 +200,9 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/order/multiple.php', '\\Eccube\\Page\\Admin\\Order\\Multiple')->bind('admin_order_multiple');
         $controllers->match('/order/pdf.php', '\\Eccube\\Page\\Admin\\Order\\Pdf')->bind('admin_order_pdf');
         $controllers->match('/order/product_select.php', '\\Eccube\\Page\\Admin\\Order\\ProductSelect')->bind('admin_order_product_select');
-        $controllers->match('/order/status.php', '\\Eccube\\Page\\Admin\\Order\\Status')->bind('admin_order_status');
+        
+        $controllers->match('/order/status', '\\Eccube\\Controller\\Admin\\Order\\StatusController::index')->bind('admin_order_status_default');
+        $controllers->match('/order/status/{statusId}', '\\Eccube\\Controller\\Admin\\Order\\StatusController::index')->bind('admin_order_status');
 
         // ownersstore
         $controllers->match('/ownersstore/', '\\Eccube\\Page\\Admin\\OwnersStore\\Index')->bind('admin_ownersstore');
