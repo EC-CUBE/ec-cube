@@ -86,7 +86,10 @@ class ProductClassType extends AbstractType
             ->add('down_real_filename', 'hidden')
         ;
 
-        $transformer = new DataTransformer\ClassCategoryTransformer($app['orm.em']);
+        $transformer = new DataTransformer\EntityToIdTransformer(
+            $app['orm.em'],
+            '\Eccube\Entity\ClassCategory'
+        );
         $builder
             ->add($builder->create('ClassCategory1', 'hidden')
                           ->addModelTransformer($transformer)
