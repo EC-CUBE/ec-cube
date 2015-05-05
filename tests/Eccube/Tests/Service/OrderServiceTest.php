@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Service;
 
-use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 
 class OrderServiceTest extends \PHPUnit_Framework_TestCase
@@ -129,10 +128,12 @@ class OrderServiceTest extends \PHPUnit_Framework_TestCase
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())
             ->setDelFlg(1);
+
         return $Customer;
     }
 
-    public function tearDown(){
+    public function tearDown()
+    {
         $this->app['orm.em']->getConnection()->close();
         parent::tearDown();
     }

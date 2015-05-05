@@ -2,7 +2,7 @@
 
 namespace Eccube\Tests\Web\Admin;
 
-class PointControllerTest extends AbstractAdminWebTestCase
+class PointController extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminBasisPoint()
     {

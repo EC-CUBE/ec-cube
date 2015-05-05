@@ -2,7 +2,7 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class ClacRuleTypeTest extends AbstractTypeTestCase
+class CalcRuleTypeTest extends AbstractTypeTestCase
 {
 
     /** @var \Eccube\Application */

@@ -2,10 +2,6 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Acme\TestBundle\Form\Type\TestedType;
-use Acme\TestBundle\Model\TestObject;
-use Symfony\Component\Validator\Constraints\DateTime;
-
 class TaxRuleTypeTest extends AbstractTypeTestCase
 {
 

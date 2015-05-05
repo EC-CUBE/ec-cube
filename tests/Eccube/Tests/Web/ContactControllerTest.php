@@ -2,10 +2,7 @@
 
 namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
-
-class RoutingTest extends AbstractWebTestCase
+class ContactControllerTest extends AbstractWebTestCase
 {
 
     public function testRoutingIndex()
