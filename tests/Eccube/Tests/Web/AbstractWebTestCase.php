@@ -8,8 +8,8 @@ use Eccube\Application;
 abstract class AbstractWebTestCase extends WebTestCase
 {
 
-    protected $client = null;
-    static protected $server = null;
+    protected $client = NULL;
+    static protected $server = NULL;
 
     public function setUp()
     {
