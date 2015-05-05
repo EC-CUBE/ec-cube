@@ -62,5 +62,4 @@ class InstallType extends AbstractType
     {
         return 'install';
     }
-
 }

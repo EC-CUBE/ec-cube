@@ -46,5 +46,4 @@ class StatusType extends AbstractType
     {
         return 'status';
     }
-
 }

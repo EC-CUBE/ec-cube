@@ -74,7 +74,8 @@ class ShoppingController extends AbstractController
         if (is_null($Order)) {
             $Order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                 $app['eccube.service.cart']->getCart()->getCartItems(),
-                $app['security']->isGranted('ROLE_USER') ? $app['user'] : null);
+            $app['security']->isGranted('ROLE_USER') ? $app['user'] : null
+            );
             $app['eccube.service.cart']->setPreOrderId($Order->getId());
             $app['eccube.service.cart']->save();
         }
@@ -144,7 +145,8 @@ class ShoppingController extends AbstractController
         $baseInfo = $app['eccube.repository.base_info']->find(1);
 
         return $app['view']->render(
-            'Shopping/complete.twig', array(
+            'Shopping/complete.twig',
+            array(
                 'title' => $title,
                 'baseInfo' => $baseInfo
             )
@@ -169,7 +171,8 @@ class ShoppingController extends AbstractController
                 $Order->setDelivFee($deliveryFees[0]->getFee());
                 // 支払い情報をセット
                 $paymentOptions = $delivery->getPaymentOptions();
-                $payment = $paymentOptions[0]->getPayment();;
+                $payment = $paymentOptions[0]->getPayment();
+                ;
                 $Order->setPayment($payment);
                 $Order->setPaymentMethod($payment->getMethod());
                 $Order->setCharge($payment->getCharge());
@@ -244,7 +247,8 @@ class ShoppingController extends AbstractController
         }
 
         return $app['view']->render(
-            'Shopping/point.twig', array(
+            'Shopping/point.twig',
+            array(
                 'title' => 'ポイント設定',
                 'order' => $Order,
                 'form' => $form->createView()
@@ -331,7 +335,8 @@ class ShoppingController extends AbstractController
         }
 
         return $app['view']->render(
-            'Shopping/shipping.twig', array(
+            'Shopping/shipping.twig',
+            array(
                 'form'  => $form->createView(),
                 'title' => 'お届け先設定',
             )
@@ -432,7 +437,8 @@ class ShoppingController extends AbstractController
         }
 
         return $app['view']->render(
-            'Shopping/shipping_multiple.twig', array(
+            'Shopping/shipping_multiple.twig',
+            array(
                 'form'  => $form->createView(),
                 'Products' => $Products,
                 'ProductClassess' => $ProductClasses,
@@ -507,7 +513,8 @@ class ShoppingController extends AbstractController
                 if (is_null($Order)) {
                     $Order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                         $app['eccube.service.cart']->getCart()->getCartItems(),
-                        $Customer);
+                        $Customer
+                    );
                     $app['eccube.service.cart']->setPreOrderId($Order->getId());
                     $app['eccube.service.cart']->save();
                 }

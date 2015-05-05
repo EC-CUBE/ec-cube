@@ -74,5 +74,4 @@ class OtherDelivType extends AbstractType
     {
         return 'other_deliv';
     }
-
 }

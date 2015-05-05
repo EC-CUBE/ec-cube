@@ -65,5 +65,4 @@ class FreezeTypeExtension extends AbstractTypeExtension
     {
         return 'form';
     }
-
 }

@@ -1,5 +1,6 @@
 <?php
 namespace Eccube\Service;
+
 use Eccube\Application;
 
 class SystemService
@@ -29,5 +30,4 @@ class SystemService
             return $version;
         }
     }
-
 }

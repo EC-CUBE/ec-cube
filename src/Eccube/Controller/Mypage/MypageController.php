@@ -101,7 +101,6 @@ class MypageController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $orderId = $request->get('order_id');
         } else {
-
         }
 
         /* @var $Order \Eccube\Entity\Order */

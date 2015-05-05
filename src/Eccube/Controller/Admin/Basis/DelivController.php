@@ -112,11 +112,9 @@ class DelivController extends AbstractController
 
         // 登録ボタン押下
         if ($app['request']->getMethod() === 'POST') {
-
             $form->handleRequest($app['request']);
 
             if ($form->isValid()) {
-
                 $DelivData = $form->getData();
 
                 // 商品種別をEntityからIDに変換してセット
@@ -240,5 +238,4 @@ class DelivController extends AbstractController
 
         return $app->redirect($app['url_generator']->generate('admin_basis_deliv'));
     }
-
 }

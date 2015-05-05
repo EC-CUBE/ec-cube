@@ -24,8 +24,7 @@ class AddCartType extends AbstractType
         $config,
         \Symfony\Component\Security\Core\SecurityContext $security,
         \Eccube\Repository\CustomerFavoriteProductRepository $customerFavoriteProductRepository
-    )
-    {
+    ) {
         $this->config = $config;
         $this->security = $security;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;

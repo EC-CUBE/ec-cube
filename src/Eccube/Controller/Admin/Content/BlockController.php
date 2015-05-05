@@ -82,7 +82,7 @@ class BlockController
         $Block = $app['eccube.repository.block']->findOrCreate($block_id, $device_type_id);
 
         // ユーザーが作ったブロックのみ削除する
-        if ($Block->getDeletableFlg() > 0 ) {
+        if ($Block->getDeletableFlg() > 0) {
             $tplDir = $app['eccube.repository.page_layout']
                 ->getTemplatePath($device_type_id);
             $tplDir .= $app['config']['bloc_dir'];
@@ -122,5 +122,4 @@ class BlockController
         return $data;
 
     }
-
 }

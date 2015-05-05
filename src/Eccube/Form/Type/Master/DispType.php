@@ -46,5 +46,4 @@ class DispType extends AbstractType
     {
         return 'disp';
     }
-
 }

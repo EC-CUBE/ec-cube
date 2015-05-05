@@ -41,5 +41,4 @@ class MakerType extends AbstractType
     {
         return 'admin_maker';
     }
-
 }

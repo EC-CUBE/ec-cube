@@ -47,5 +47,4 @@ class MailMagazineType extends AbstractType
     {
         return 'entity';
     }
-
 }
