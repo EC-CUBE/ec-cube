@@ -87,6 +87,7 @@
 //]]></script>
 <h2>商品規格登録</h2>
 <form name="form1" id="form1" method="post" action="{{ path('admin_product_product_class', { 'product_id' : Product.id}) }}" enctype="multipart/form-data">
+    <input type="hidden" name="mode" value=""/>
     {{ form_widget(form._token) }}
     <div id="products" class="contents-main">
         <table>
@@ -97,39 +98,35 @@
             <tr>
                 <th>規格1<span class="attention">*</span></th>
                 <td>
-                    {{ form_widget(form.class1) }}
-                    {{ form_errors(form.class1) }}
+                    {{ form_widget(form.class_name1) }}
+                    {{ form_errors(form.class_name1) }}
                 </td>
             </tr>
             <tr>
                 <th>規格2</th>
                 <td>
-                    {{ form_widget(form.class2) }}
-                    {{ form_errors(form.class2) }}
+                    {{ form_widget(form.class_name2) }}
+                    {{ form_errors(form.class_name2) }}
                 </td>
             </tr>
         </table>
         <div class="btn-area">
-            {#
-            todo 削除
             <ul>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
-
-            <!--{if $arrForm.total.value > 0}-->
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
-            <!--{/if}-->
-            #}
+                {% if form.product_classes|length > 0 %}
+                    <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
+                {% endif %}
             </ul>
         </div>
-
+        {% if form.product_classes|length > 0 %}
         <div class="list-info clearfix">
             <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span>一行目のデータをコピーする</span></a></div>
             <p><span class="bold">アップロード可能な拡張子：</span>{{ app.config.download_extension }}(パラメーター DOWNLOAD_EXTENSION)</p>
         </div>
 
         <table class="list">
-            {#<col width="5%" />#}
+            <col width="5%" />
             <col width="15%" />
             <col width="15%" />
             <col width="9%" />
@@ -140,9 +137,9 @@
             <col width="8%" />
             <col width="8%" />
             <tr>
-                {#<th><input type="checkbox" onclick="eccube.checkAllBox(this, 'input[name^=check]')" id="allCheck" /> <label for="allCheck"><br />登録</label></th>#}
-                <th>規格1<br />({#form.vars.value.class1.name #})</th>  {# TODO 選択された規格名を表示 #}
-                <th>規格2<br />({# form.vars.value.class2.name #})</th> {# TODO 選択された規格名を表示 #}
+                <th>登録</th>
+                <th>規格1<br />({{ form.class_name1.vars.data is empty ? '--' : form.class_name1.vars.data}})</th>
+                <th>規格2<br />({{ form.class_name2.vars.data is empty ? '--' : form.class_name2.vars.data}})</th>
                 <th>商品コード</th>
                 <th>在庫数<span class="attention">*</span></th>
                 <th>{{ app.config.normal_price_title }}(円)</th>
@@ -155,28 +152,18 @@
                 <th>ダウンロード<br />ファイル名<span class="red"><br />上限{{ app.config.stext_len }}文字</span></th>
                 <th>ダウンロード商品用<br />ファイル</th>
             </tr>
-            {% for product_class_form in form.product_classess %}
+            {% for product_class_form in form.product_classes %}
             <tr>
-            {#
                 <td class="center">
-                    <!--{assign var=key value="classcategory_id1"}-->
-                    <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                    <!--{assign var=key value="classcategory_id2"}-->
-                    <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                    <!--{assign var=key value="product_class_id"}-->
-                    <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                    <!--{assign var=key value="check"}-->
-                    <!--{if $arrErr[$key][$index]}-->
-                        <span class="attention"><!--{$arrErr[$key][$index]}--></span>
-                    <!--{/if}-->
-                    <input type="checkbox" name="<!--{$key}-->[<!--{$index}-->]" value="1" <!--{if $arrForm[$key].value[$index] == 1}-->checked="checked"<!--{/if}--> id="<!--{$key}-->_<!--{$index}-->" />
-                </td>
-                #}
-                <td class="center">
-                    {{ form_widget(product_class_form. class_category1) }}
+                    <p onclick="$(this).parent().parent().remove()">x</p>
                 </td>
                 <td class="center">
-                    {{ form_widget(product_class_form. class_category2) }}
+                    {{ product_class_form.vars.value.ClassCategory1 is empty ? '' : product_class_form.vars.value.ClassCategory1.name }}
+                    {{ form_widget(product_class_form.ClassCategory1) }}
+                </td>
+                <td class="center">
+                    {{ product_class_form.vars.value.ClassCategory2 is empty ? '' : product_class_form.vars.value.ClassCategory2.name }}
+                    {{ form_widget(product_class_form.ClassCategory2) }}
                 </td>
                 <td class="center">
                     {{ form_widget(product_class_form. code) }}
@@ -241,6 +228,7 @@
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">確認ページへ</span></a></li>
             </ul>
         </div>
+        {% endif%}
     </div>
 </form>
 {% endblock %}

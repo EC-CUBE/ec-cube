@@ -74,3 +74,4 @@ admin.category.delete.complete: カテゴリを削除しました。
 admin.category.delete.error: カテゴリを削除できませんでした。
 
 admin.product.product_class.save.complete: 商品規格を登録しました。
+admin.product.product_class.delete.complete: 商品規格を削除しました。
