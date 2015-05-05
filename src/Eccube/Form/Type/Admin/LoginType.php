@@ -58,5 +58,4 @@ class LoginType extends AbstractType
     {
         return 'admin_login';
     }
-
 }

@@ -84,5 +84,4 @@ class SearchProductType extends AbstractType
     {
         return 'admin_search_product';
     }
-
 }

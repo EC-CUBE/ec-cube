@@ -81,7 +81,6 @@ class ProductController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $Product = $form->getData();
 
                 // 画像の登録
@@ -113,7 +112,7 @@ class ProductController
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
 
-var_dump($Product->getId());
+                var_dump($Product->getId());
 
                 // ProductClassがひとつの場合、ここでファイル登録を行う
                 if (!$hasManyProductClasses) {
@@ -180,5 +179,4 @@ var_dump($Product->getId());
             'searchForm' => $searchForm->createView(),
         ));
     }
-
 }

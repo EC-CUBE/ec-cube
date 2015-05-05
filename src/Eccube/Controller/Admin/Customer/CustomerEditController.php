@@ -49,8 +49,7 @@ class CustomerEditController extends AbstractController
                 ->findOneBy(array(
                         'id' => $customerId,
                         'del_flg' => 0,
-                    )
-                );
+                    ));
 
             if ($Customer === null) {
                 throw new HttpException\NotFoundHttpException("※ 会員ID：$customerId が見つかりません。");
@@ -80,8 +79,7 @@ class CustomerEditController extends AbstractController
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-
-                if ($Customer->getId() === null ) {
+                if ($Customer->getId() === null) {
                     $Customer->setSalt(
                         $app['orm.em']
                             ->getRepository('Eccube\Entity\Customer')
@@ -94,7 +92,7 @@ class CustomerEditController extends AbstractController
                     );
                 }
 
-                if ( $Customer->getPassword() === $app['config']['default_password']) {
+                if ($Customer->getPassword() === $app['config']['default_password']) {
                     $Customer->setPassword($previous_password);
                 } else {
                     $Customer->setPassword(
@@ -146,14 +144,12 @@ class CustomerEditController extends AbstractController
      */
     private function getOrder(Application $app, \Eccube\Entity\Customer $Customer)
     {
-        if ($Customer->getId() > 0 ) {
-
+        if ($Customer->getId() > 0) {
             $Order = $app['orm.em']->getRepository('Eccube\\Entity\\Order')
                 ->findBy(array(
                         'Customer' => $Customer,
                         'del_flg' => 0,
-                    )
-                );
+                    ));
 
             return $Order;
         } else {

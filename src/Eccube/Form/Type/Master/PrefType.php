@@ -47,5 +47,4 @@ class PrefType extends AbstractType
     {
         return 'entity';
     }
-
 }

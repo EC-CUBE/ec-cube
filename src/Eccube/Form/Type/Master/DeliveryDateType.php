@@ -46,5 +46,4 @@ class DeliveryDateType extends AbstractType
     {
         return 'entity';
     }
-
 }

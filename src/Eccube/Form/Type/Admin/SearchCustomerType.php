@@ -157,5 +157,4 @@ class SearchCustomerType extends AbstractType
     {
         return 'admin_search_customer';
     }
-
 }

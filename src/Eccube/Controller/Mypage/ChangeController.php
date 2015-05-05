@@ -80,5 +80,4 @@ class ChangeController extends AbstractController
             'mypageno' => 'change',
         ));
     }
-
 }

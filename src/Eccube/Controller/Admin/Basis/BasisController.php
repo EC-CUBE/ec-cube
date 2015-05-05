@@ -21,7 +21,7 @@ class BasisController extends AbstractController
         $this->tpl_mainno = 'basis';
     }
 
-    public function Index(Application $app)
+    public function index(Application $app)
     {
         $BaseInfo = $app['eccube.repository.base_info']->get();
         // FIXME: ArrayにしたりStringにしたり, booleanにしたりやめたい

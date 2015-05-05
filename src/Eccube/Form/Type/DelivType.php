@@ -93,5 +93,4 @@ class DelivType extends AbstractType
     {
         return 'deliv';
     }
-
 }

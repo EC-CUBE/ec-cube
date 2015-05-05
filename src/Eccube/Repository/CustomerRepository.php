@@ -357,5 +357,4 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         return $query->getSingleResult();
     }
-
 }

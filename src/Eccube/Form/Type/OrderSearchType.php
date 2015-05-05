@@ -139,5 +139,4 @@ class OrderSearchType extends AbstractType
     {
         return 'order_search';
     }
-
 }

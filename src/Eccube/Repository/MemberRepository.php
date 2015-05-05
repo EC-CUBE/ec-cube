@@ -80,5 +80,4 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
     {
         return $class === 'Eccube\Entity\Member';
     }
-
 }

@@ -48,11 +48,9 @@ class PaymentController extends AbstractController
 
         // 登録ボタン押下
         if ($app['request']->getMethod() === 'POST') {
-
             $form->handleRequest($app['request']);
 
             if ($form->isValid()) {
-
                 $PaymentData = $form->getData();
 
                 // 手数料を設定できない場合には、手数料を0にする
@@ -162,5 +160,4 @@ class PaymentController extends AbstractController
 
         return $app->redirect($app['url_generator']->generate('admin_basis_payment'));
     }
-
 }
