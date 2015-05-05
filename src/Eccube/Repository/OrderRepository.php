@@ -21,6 +21,27 @@ class OrderRepository extends EntityRepository
         $this->config = $config;
     }
 
+    public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
+    {
+        $Order = $this
+            ->find($orderId)
+            ->setOrderStatus($Status)
+        ;
+
+        switch($Status->getId()) {
+            case '5': // 発送済へ
+                $Order->setCommitDate(new \DateTime());
+                break;
+            case '6': // 入金済へ
+                $Order->setPaymentDate(new \DateTime());
+                break;
+        }
+
+        $em = $this->getEntityManager();
+        $em->persist($Order);
+        $em->flush();
+    }
+
     /**
      *
      * @param  array        $searchData
