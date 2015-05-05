@@ -2,30 +2,25 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
-use Symfony\Component\Form\Test\TypeTestCase;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-class PrefTypeTest extends TypeTestCase
+class PrefTypeTest extends AbstractTypeTestCase
 {
 
     /** @var \Eccube\Application */
-    private $app;
+    protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
-    private $form;
+    protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    private $formData = array(
+    protected $formData = array(
         'pref' => '5',
     );
 
     public function setUp()
     {
         parent::setUp();
-
-        $this->app = new \Eccube\Application(array(
-            'env' => 'test',
-        ));
-        $this->app->boot();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']

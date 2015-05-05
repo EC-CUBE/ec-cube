@@ -2,22 +2,8 @@
 
 namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
-
-class HelpControllerTest extends WebTestCase
+class HelpControllerTest extends AbstractWebTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
     /**
      * 特定商取引法のテスト

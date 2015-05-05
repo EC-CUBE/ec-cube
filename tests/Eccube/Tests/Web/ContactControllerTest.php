@@ -2,22 +2,8 @@
 
 namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
-
-class RoutingTest extends WebTestCase
+class ContactControllerTest extends AbstractWebTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
     public function testRoutingIndex()
     {

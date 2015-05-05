@@ -2,22 +2,8 @@
 
 namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
-
-class ProductControllerTest extends WebTestCase
+class ProductControllerTest extends AbstractWebTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
     public function testRoutingList()
     {

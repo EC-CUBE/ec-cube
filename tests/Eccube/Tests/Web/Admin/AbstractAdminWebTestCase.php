@@ -2,38 +2,21 @@
 
 namespace Eccube\Tests\Web\Admin;
 
-use Silex\WebTestCase;
-use Eccube\Application;
+use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-abstract class AbstractAdminWebTestCase extends WebTestCase
+abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
-
-    public $client = null;
-
     public function setUp()
     {
         parent::setUp();
-        $this->client = static::createClient();
+        $this->logIn();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-        $app['session.test'] = true;
-
-        return $app;
-    }
-
+    // Mockを使うべき
     public function logIn()
     {
-
         $firewall = 'admin';
 
         $user = $this->app['eccube.repository.member']
@@ -50,9 +33,4 @@ abstract class AbstractAdminWebTestCase extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    public function tearDown()
-    {
-        $this->app['orm.em']->getConnection()->close();
-        parent::tearDown();
-    }
 }

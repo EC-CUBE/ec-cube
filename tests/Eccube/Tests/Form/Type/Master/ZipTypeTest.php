@@ -2,19 +2,19 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
-use Symfony\Component\Form\Test\TypeTestCase;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-class ZipTypeTest extends TypeTestCase
+class ZipTypeTest extends AbstractTypeTestCase
 {
 
     /** @var \Eccube\Application */
-    private $app;
+    protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
-    private $form;
+    protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    private $formData = array(
+    protected $formData = array(
         'zip' => array(
             'zip01' => '530',
             'zip02' => '0001',
@@ -24,11 +24,6 @@ class ZipTypeTest extends TypeTestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->app = new \Eccube\Application(array(
-            'env' => 'test',
-        ));
-        $this->app->boot();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']

@@ -19,8 +19,8 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
 /* privateなMethodにしたのでテストは別途考える
-    public function test_getNewPageId(){
-
+    public function test_getNewPageId()
+    {
         $app = $this->createApplication();
 
         $actual = $app['eccube.repository.page_layout']
@@ -31,7 +31,8 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 */
 
-    public function test_findOrCreate_pageIdNullisCreate(){
+    public function test_findOrCreate_pageIdNullisCreate()
+    {
         $app = $this->createApplication();
 
         $expected = null;
@@ -42,7 +43,6 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($actual, $expected);
     }
-
 
     public function test_findOrCreate_findTopPage()
     {
@@ -63,8 +63,8 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($actual, $expected);
     }
 
-
-    public function test_findOrCreate_findMobileMyPage(){
+    public function test_findOrCreate_findMobileMyPage()
+    {
         $app = $this->createApplication();
 
         $expected = array(
@@ -82,7 +82,8 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($actual, $expected);
     }
 
-    public function test_findOrCreate_findSmartphoneProduct(){
+    public function test_findOrCreate_findSmartphoneProduct()
+    {
         $app = $this->createApplication();
 
         $expected = array(
@@ -101,7 +102,8 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /* FIXME: CI環境で定数が整っていないのでコケるひとまずコメントアウト
-    public function test_getTemplateFile_DefaultTemplateFile_isValid(){
+    public function test_getTemplateFile_DefaultTemplateFile_isValid()
+    {
         $app = $this->createApplication();
 
         $actual = $app['eccube.repository.page_layout']
