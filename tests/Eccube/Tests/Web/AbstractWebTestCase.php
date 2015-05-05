@@ -8,8 +8,8 @@ use Eccube\Application;
 abstract class AbstractWebTestCase extends WebTestCase
 {
 
-    protected $client = NULL;
-    static protected $server = NULL;
+    protected $client = null;
+    protected static $server = null;
 
     public function setUp()
     {
@@ -33,7 +33,7 @@ abstract class AbstractWebTestCase extends WebTestCase
 
     public static function tearDownAfterClass()
     {
-        self::$server = NULL;
+        self::$server = null;
     }
 
     /**

@@ -10,7 +10,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     public function test_routeing_AdminContentBlock_index()
     {
 
-
         $this->client->request('GET', $this->app['url_generator']->generate('admin_content_block'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -19,8 +18,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     {
         // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
         self::markTestSkipped();
-
-
 
         $this->client->request('GET',
             $this->app['url_generator']
@@ -34,8 +31,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
         self::markTestSkipped();
 
-
-
         $this->client->request('GET',
             $this->app['url_generator']
                 ->generate('admin_content_block_edit_withDevice',
@@ -45,7 +40,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routeing_AdminContentBlock_delete()
     {
-
 
         $redirectUrl = $this->app['url_generator']->generate('admin_content_block');
 
@@ -61,7 +55,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routeing_AdminContentBlock_deleteWithDevice()
     {
-
 
         $redirectUrl = $this->app['url_generator']->generate('admin_content_block');
 

@@ -10,7 +10,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
     public function test_routeing_AdminContentPage_index()
     {
 
-
         $this->client->request('GET', $this->app['url_generator']->generate('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -19,8 +18,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
         self::markTestSkipped();
-
-
 
         $this->client->request('GET',
             $this->app['url_generator']
@@ -34,8 +31,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
         // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
         self::markTestSkipped();
 
-
-
         $this->client->request('GET',
             $this->app['url_generator']
                 ->generate('admin_content_page_edit_withDevice',
@@ -45,7 +40,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
     public function test_routeing_AdminContentPage_delete()
     {
-
 
         $redirectUrl = $this->app['url_generator']->generate('admin_content_page');
 
@@ -61,7 +55,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
     public function test_routeing_AdminContentPage_deleteWithDevice()
     {
-
 
         $redirectUrl = $this->app['url_generator']->generate('admin_content_page');
 
