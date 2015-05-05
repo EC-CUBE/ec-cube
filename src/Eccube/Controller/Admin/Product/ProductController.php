@@ -51,6 +51,13 @@ class ProductController
             }
         } else {
             $Product = new \Eccube\Entity\Product();
+            $ProductClass = new \Eccube\Entity\ProductClass();
+            $Product
+                ->setDelFlg(0)
+                ->addProductClass($ProductClass);
+            $ProductClass
+                ->setDelFlg(0)
+                ->setProduct($Product);
         }
 
         $searchForm = $app['form.factory']
@@ -102,6 +109,12 @@ class ProductController
                     }
                 }
 
+                // ID取得のため、一度登録
+                $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+var_dump($Product->getId());
+
                 // ProductClassがひとつの場合、ここでファイル登録を行う
                 if (!$hasManyProductClasses) {
                     $ProductClassesForm = $form->get('ProductClasses');
@@ -125,11 +138,11 @@ class ProductController
                         } else {
                             $ProductClass
                                 ->setDownRealFilename(null)
-                                ->setFilename(null);
+                                ->setDownFilename(null);
                         }
+                        $Product->addProductClass($ProductClass);
                     }
                 }
-
                 // カテゴリ登録
                 // TODO FormEventで実装？
                 $ProductCateogriesOld = $app['orm.em']->getRepository('\Eccube\Entity\ProductCategory')
@@ -137,7 +150,6 @@ class ProductController
                 foreach ($ProductCateogriesOld as $ProductCateogryOld) {
                     $app['orm.em']->remove($ProductCateogryOld);
                 }
-                $app['orm.em']->flush();
 
                 $Categories = $form->get('Category')->getData();
 

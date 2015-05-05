@@ -230,6 +230,7 @@ Eccube\Entity\Product:
             mappedBy: Product
         ProductClasses:
             targetEntity: Eccube\Entity\ProductClass
+            cascade: ["persist"]
             mappedBy: Product
         ProductStatuses:
             targetEntity: Eccube\Entity\ProductStatus
