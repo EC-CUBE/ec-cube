@@ -8,7 +8,13 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->logIn();
+    }
 
+    // Mockを使うべき
     public function logIn()
     {
         $firewall = 'admin';
