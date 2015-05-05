@@ -2,31 +2,13 @@
 
 namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
-
-class ShoppingControllerTest extends WebTestCase
+class ShoppingControllerTest extends AbstractWebTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
     public function testRoutingShoppingLogin()
     {
         $client = $this->createClient();
         $client->request('GET', '/shopping/login/');
         $this->assertTrue($client->getResponse()->isSuccessful());
-    }
-    public function tearDown(){
-        $this->app['orm.em']->getConnection()->close();
-        parent::tearDown();
     }
 }

@@ -40,6 +40,13 @@ class TelTypeTest extends TypeTestCase
             ->getForm();
     }
 
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->app = null;
+        $this->form = null;
+    }
+
     public function testValidData()
     {
         $this->form->submit($this->formData);
