@@ -59,6 +59,8 @@ class StatusController
                 foreach ($data['move'] as $orderId) {
                     $app['eccube.repository.order']->changeStatus($orderId, $data['status']);
                 }
+                
+                $app->redirect($app['url_generator']->generate('admin_order_status', array('statusId' => $statusId)));
             }
         }
 
