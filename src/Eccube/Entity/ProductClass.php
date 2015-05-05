@@ -578,6 +578,16 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Has ClassCategory1
+     *
+     * @return boolean
+     */
+    public function hasClassCategory1()
+    {
+        return isset($this->ClassCategory1);
+    }
+
+    /**
      * Set ClassCategory2
      *
      * @param  \Eccube\Entity\ClassCategory $classCategory2
@@ -598,6 +608,16 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getClassCategory2()
     {
         return $this->ClassCategory2;
+    }
+
+    /**
+     * Has ClassCategory2
+     *
+     * @return boolean
+     */
+    public function hasClassCategory2()
+    {
+        return isset($this->ClassCategory2);
     }
 
     /**
