@@ -2,21 +2,56 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Application;
-
 class AbstractController
 {
-    public function __construct()
+    /**
+     * @var \Eccube\Application
+     */
+    protected $app;
+
+    /**
+     * set application.
+     *
+     * @param \Eccube\Application $app
+     */
+    public function setApp(\Eccube\Application $app)
     {
+        $this->app = $app;
     }
 
-    protected function getBoundForm(Application $app, $type)
+    /**
+     * shortcut method "$app->redirect($app['url_generator']->generate(...))"
+     *
+     * @param $name
+     * @param array $parameters
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirect($name, $parameters = array())
     {
-        $form = $app['form.factory']
-            ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
-            ->getForm();
-        $form->handleRequest($app['request']);
+        return $this->app->redirect($this->url($name, $parameters));
+    }
 
-        return $form;
+    /**
+     * shortcut method "$app['url_generator']->generate(...)"
+     *
+     * @param $name
+     * @param array $parameters
+     * @return mixed
+     */
+    protected function url($name, $parameters = array())
+    {
+        return $this->app['url_generator']->generate($name, $parameters);
+    }
+
+    /**
+     * shortcut method "$app['view']->render(...)"
+     *
+     * @param $name
+     * @param array $parameters
+     * @return mixed
+     */
+    protected function render($name, $parameters = array())
+    {
+        return $this->app['view']->render($name, $parameters);
     }
 }
