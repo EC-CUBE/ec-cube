@@ -92,7 +92,6 @@ class DesignController
             $form->handleRequest($app['request']);
 
             if ($form->isValid()) {
-
                 // 消す
                 $blocCount = count($BlocPositions);
 
@@ -181,5 +180,4 @@ class DesignController
 
         return $TargetHash;
     }
-
 }

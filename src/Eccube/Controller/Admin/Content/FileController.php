@@ -134,6 +134,7 @@ class FileController
             ->sortByName();
         $dirs = iterator_to_array($finder);
 
+        $tree = array();
         $tree[] = array(
             'path' => $topDir,
             'type' => '_parent',
@@ -151,7 +152,7 @@ class FileController
         foreach ($finder as $dirs) {
             $path = $dirs->getRealPath();
             $type = (iterator_count(Finder::create()->in($path)->directories())) ? '_parent' : '_child';
-            $rank = count(explode('/',$path)) - $defaultRank;
+            $rank = count(explode('/', $path)) - $defaultRank;
 
             $tree[] = array(
                 'path' => $path,
@@ -201,5 +202,4 @@ class FileController
 
         return $arrFileList;
     }
-
 }

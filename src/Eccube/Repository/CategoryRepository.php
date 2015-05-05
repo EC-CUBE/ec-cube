@@ -166,7 +166,8 @@ class CategoryRepository extends EntityRepository
 
             $em->getConnection()->commit();
         } catch (\Exception $e) {
-            $em->getConnection()->rollback();var_dump($e);
+            $em->getConnection()->rollback();
+            var_dump($e);
 
             return false;
         }

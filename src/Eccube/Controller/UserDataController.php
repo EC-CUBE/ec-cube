@@ -32,5 +32,4 @@ class UserDataController
     {
         return $app['config']['device_type_pc'];
     }
-
 }

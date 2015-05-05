@@ -21,7 +21,6 @@ class InstallController
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-
                 $data = $form->getData();
                 switch ($data['db_type']) {
                     case 'pgsql':
@@ -69,7 +68,7 @@ class InstallController
         $this->PDO = new \PDO(
             $data['db_type']
             . ':host=' . $data['db_server']
-            . ';dbname=' . $data['db_name'] ,
+            . ';dbname=' . $data['db_name'],
             $this->data['db_user'],
             $this->data['db_pass']
         );

@@ -243,5 +243,4 @@ class TaxRuleRepository extends EntityRepository
         $em->persist($TaxRule);
         $em->flush();
     }
-
 }

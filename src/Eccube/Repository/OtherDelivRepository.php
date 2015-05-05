@@ -19,7 +19,7 @@ class OtherDelivRepository extends EntityRepository
      * @throws Exception
      */
     public function findOrCreateByCustomerAndId(\Eccube\Entity\Customer $Customer, $id = null)
-{
+    {
         if (!$id) {
             $OtherDeliv = new \Eccube\Entity\OtherDeliv();
             $OtherDeliv->setCustomer($Customer);

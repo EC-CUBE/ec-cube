@@ -118,7 +118,7 @@ class MainEditType extends AbstractType
                 $PageLayout = $qb
                     ->getQuery()
                     ->getResult();
-                if (count($PageLayout) > 0 ) {
+                if (count($PageLayout) > 0) {
                     $form['filename']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
             });

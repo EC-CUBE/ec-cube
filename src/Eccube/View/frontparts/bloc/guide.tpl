@@ -25,16 +25,13 @@
         <div id="guide_area" class="block_body">
             <ul class="button_like">
                 <li>
-                    <a href="{{ url('guide_about') }}" class="">当サイトについて</a>
+                    <a href="{{ url('help_about') }}" class="">当サイトについて</a>
                 </li>
                 <li>
                     <a href="{{ url('contact') }}" class="">お問い合わせ</a>
                 </li>
                 <li>
                     <a href="{{ url('help_tradelaw') }}" class="">特定商取引法に基づく表記</a>
-                </li>
-                <li>
-                    <a href="{{ url('guide_privacy') }}" class="">プライバシーポリシー</a>
                 </li>
             </ul>
         </div>

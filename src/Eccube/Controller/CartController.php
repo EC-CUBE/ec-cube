@@ -12,7 +12,8 @@ class CartController
         $title = 'カゴの中';
         $Cart = $app['eccube.service.cart']->getCart();
 
-        return $app['view']->render('Cart/index.twig',
+        return $app['view']->render(
+            'Cart/index.twig',
             compact('title', 'Cart')
         );
     }

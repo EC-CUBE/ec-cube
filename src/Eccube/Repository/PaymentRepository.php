@@ -16,7 +16,6 @@ class PaymentRepository extends EntityRepository
     public function findOrCreate($id)
     {
         if ($id == 0) {
-
             $Creator = $this
                 ->getEntityManager()
                 ->getRepository('\Eccube\Entity\Member')
@@ -38,7 +37,6 @@ class PaymentRepository extends EntityRepository
             ;
 
         } else {
-
             $Payment = $this->find($id);
 
         }

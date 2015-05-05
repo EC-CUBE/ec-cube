@@ -49,7 +49,7 @@ class ContactController
 
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
-                    case 'confirm' :
+                    case 'confirm':
                         $builder->setAttribute('freeze', true);
                         $form = $builder->getForm();
                         $form->handleRequest($request);
@@ -89,5 +89,4 @@ class ContactController
             'title' => $this->title,
         ));
     }
-
 }

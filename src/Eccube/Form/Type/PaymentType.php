@@ -47,5 +47,4 @@ class PaymentType extends AbstractType
     {
         return 'entity';
     }
-
 }

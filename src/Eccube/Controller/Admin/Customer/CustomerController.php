@@ -88,5 +88,4 @@ class CustomerController
 
         return $this->index($app);
     }
-
 }

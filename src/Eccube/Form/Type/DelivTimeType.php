@@ -44,5 +44,4 @@ class DelivTimeType extends AbstractType
     {
         return 'deliv_time';
     }
-
 }

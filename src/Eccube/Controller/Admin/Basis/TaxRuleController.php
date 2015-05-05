@@ -93,5 +93,4 @@ class TaxRuleController extends AbstractController
         //TODO: 商品別税率設定のパラメーター設定の更新、更新後indexへリダイレクト
         return new \Symfony\Component\HttpFoundation\Response('parameterEdit');
     }
-
 }

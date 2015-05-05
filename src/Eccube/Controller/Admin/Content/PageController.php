@@ -28,7 +28,7 @@ class PageController
             $PageLayout->setHeaderChk($PageLayout->getHeaderChk() == 1 ? true : false);
             $PageLayout->setFooterChk($PageLayout->getFooterChk() == 1 ? true : false);
             // 編集不可ページはURL、ページ名、ファイル名を保持
-            if ($PageLayout->getEditFlg() == 2 ) {
+            if ($PageLayout->getEditFlg() == 2) {
                 $editable = false;
                 $previous_url = $PageLayout->getUrl();
                 $previous_filename = $PageLayout->getFilename();
@@ -89,7 +89,7 @@ class PageController
         $PageLayout = $app['eccube.repository.page_layout']->findOrCreate($page_id, $device_type_id);
 
         // ユーザーが作ったページのみ削除する
-        if ($PageLayout->getEditFlg() == null ) {
+        if ($PageLayout->getEditFlg() == null) {
             $templatePath = $app['eccube.repository.page_layout']
                 ->getTemplatePath($device_type_id, true);
             $file = $templatePath . $PageLayout->getFileName() . '.twig';
@@ -103,5 +103,4 @@ class PageController
 
         return $app->redirect($app['url_generator']->generate('admin_content_page'));
     }
-
 }

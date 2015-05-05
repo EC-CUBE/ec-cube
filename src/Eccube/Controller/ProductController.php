@@ -167,5 +167,4 @@ class ProductController
             return '全商品';
         }
     }
-
 }

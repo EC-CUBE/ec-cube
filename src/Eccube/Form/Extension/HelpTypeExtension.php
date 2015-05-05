@@ -44,5 +44,4 @@ class HelpTypeExtension extends AbstractTypeExtension
     {
         return 'form';
     }
-
 }

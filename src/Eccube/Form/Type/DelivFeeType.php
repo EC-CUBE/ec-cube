@@ -43,5 +43,4 @@ class DelivFeeType extends AbstractType
     {
         return 'deliv_fee';
     }
-
 }

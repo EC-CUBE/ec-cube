@@ -110,5 +110,4 @@ class EntryType extends AbstractType
     {
         return 'entry';
     }
-
 }

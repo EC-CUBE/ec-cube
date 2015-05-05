@@ -47,5 +47,4 @@ class ReminderType extends AbstractType
     {
         return 'entity';
     }
-
 }

@@ -15,7 +15,6 @@ class MailtemplateRepository extends EntityRepository
     public function findOrCreate($id)
     {
         if ($id == 0) {
-
             $Creator = $this
                 ->getEntityManager()
                 ->getRepository('\Eccube\Entity\Member')
@@ -28,7 +27,6 @@ class MailtemplateRepository extends EntityRepository
             ;
 
         } else {
-
             $Mailtemplate = $this->find($id);
 
         }
