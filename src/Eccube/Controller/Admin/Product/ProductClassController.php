@@ -2,6 +2,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Application;
@@ -53,7 +54,7 @@ class ProductClassController
                 'property' => 'name',
                 'empty_value' => '--',
             ))
-            ->add('product_classess', 'collection', array(
+            ->add('product_classes', 'collection', array(
                 'type' => 'admin_product_class',
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -63,7 +64,12 @@ class ProductClassController
         $form = $builder->getForm();
         $form->get('class1')->setData($ClassName1);
         $form->get('class2')->setData($ClassName2);
-        $form->get('product_classess')->setData($ProductClasses);
+        $form->get('product_classes')->setData($ProductClasses);
+
+        $ProductClassesOriginal = new ArrayCollection();
+        foreach ($ProductClasses as $ProductClass) {
+            $ProductClassesOriginal->add($ProductClass);
+        }
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -71,7 +77,14 @@ class ProductClassController
                 case 'edit':
                     if ($form->isValid()) {
                         $data = $form->getData();
-                        foreach ($data['product_classess'] as $ProductClass) {
+                        // delete before insert
+                        foreach ($ProductClassesOriginal as $ProductClass) {
+                            if (!$data['product_classes']->contains($ProductClass)) {
+                                $app['orm.em']->remove($ProductClass);
+                            }
+                        }
+                        // persist
+                        foreach ($data['product_classes'] as $ProductClass) {
                             $ProductClass->setDelFlg(0);
                             $ProductClass->setProduct($Product);
                             $app['orm.em']->persist($ProductClass);
@@ -89,7 +102,7 @@ class ProductClassController
                     $form = $builder->getForm();
                     $form->get('class1')->setData($ClassName1);
                     $form->get('class2')->setData($ClassName2);
-                    $form->get('product_classess')->setData($ProductClasses);
+                    $form->get('product_classes')->setData($ProductClasses);
                 case 'delete':
 
                 default:
