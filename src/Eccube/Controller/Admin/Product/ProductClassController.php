@@ -75,7 +75,12 @@ class ProductClassController
                         // delete before insert
                         foreach ($ProductClassesOriginal as $ProductClass) {
                             if (!$data['product_classes']->contains($ProductClass)) {
-                                $app['orm.em']->remove($ProductClass);
+                                if (!$ProductClass->hasClassCategory1() && !$ProductClass->hasClassCategory2()) {
+                                    $ProductClass->setDelFlg(1);
+                                    $app['orm.em']->persist($ProductClass);
+                                } else {
+                                    $app['orm.em']->remove($ProductClass);
+                                }
                             }
                         }
                         // persist
@@ -100,7 +105,30 @@ class ProductClassController
                     $form->get('product_classes')->setData($ProductClasses);
                     break;
                 case 'delete':
+                    foreach ($ProductClassesOriginal as $ProductClass) {
+                        $app['orm.em']->remove($ProductClass);
+                    }
+                    /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+                    $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+                    $softDeleteFilter->setExcludes(array(
+                        'Eccube\Entity\ProductClass'
+                    ));
 
+                    $ProductClassessDeleted = $app['orm.em']
+                        ->getRepository('Eccube\Entity\ProductClass')
+                        ->findBy(array(
+                            'Product' => $Product,
+                            'del_flg'  => 1
+                        ))
+                    ;
+                    foreach ($ProductClassessDeleted as $ProductClass) {
+                        $ProductClass->setDelFlg(0);
+                        $app['orm.em']->persist($ProductClass);
+                    }
+                    $app['orm.em']->flush();
+                    $app['session']->getFlashBag()->add('admin.success', 'admin.product.product_class.delete.complete');
+                    return $app->redirect($app['url_generator']->generate('admin_product_product_class', array('product_id' => $product_id)));
+                    break;
                 default:
                     break;
             }
