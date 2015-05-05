@@ -112,8 +112,6 @@ class ProductController
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
 
-                var_dump($Product->getId());
-
                 // ProductClassがひとつの場合、ここでファイル登録を行う
                 if (!$hasManyProductClasses) {
                     $ProductClassesForm = $form->get('ProductClasses');
