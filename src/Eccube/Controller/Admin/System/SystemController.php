@@ -19,7 +19,7 @@ class SystemController
 
     public function index(Application $app)
     {
-         switch ($app['request']->get('mode')) {
+        switch ($app['request']->get('mode')) {
             case 'info':
                 ob_start();
                 phpinfo();
@@ -28,7 +28,7 @@ class SystemController
 
                 return $phpinfo;
 
-                break;
+               break;
             default:
                 break;
         }
@@ -43,11 +43,11 @@ class SystemController
     }
 
      public function getSystemInfo(Application $app)
-    {
-       $system = $app['eccube.service.system'];
-       $server = $app['request'];
+     {
+        $system = $app['eccube.service.system'];
+        $server = $app['request'];
 
-       $arrSystemInfo = array(
+        $arrSystemInfo = array(
             array('title' => 'EC-CUBE',     'value' => $app['config']['ECCUBE_VERSION']),
             array('title' => 'サーバーOS',    'value' => php_uname()),
             array('title' => 'DBサーバー',    'value' => $system->getDbversion()),
@@ -70,6 +70,5 @@ class SystemController
         $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $server->headers->get('User-Agent'));
 
         return $arrSystemInfo;
-    }
-
+     }
 }

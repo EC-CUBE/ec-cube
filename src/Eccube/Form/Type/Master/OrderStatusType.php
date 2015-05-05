@@ -47,5 +47,4 @@ class OrderStatusType extends AbstractType
     {
         return 'entity';
     }
-
 }

@@ -99,5 +99,4 @@ class RefusalController extends AbstractController
             'BaseInfo' => $BaseInfo,
         ));
     }
-
 }

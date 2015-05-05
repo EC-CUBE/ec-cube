@@ -107,5 +107,4 @@ class DeliveryController extends AbstractController
             'BaseInfo' => $BaseInfo,
         ));
     }
-
 }

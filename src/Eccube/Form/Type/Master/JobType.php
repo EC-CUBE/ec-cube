@@ -47,5 +47,4 @@ class JobType extends AbstractType
     {
         return 'entity';
     }
-
 }

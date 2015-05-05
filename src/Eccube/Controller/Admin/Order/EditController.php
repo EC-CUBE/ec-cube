@@ -31,7 +31,6 @@ class EditController
             ->getForm();
 
         if ('POST' === $app['request']->getMethod()) {
-
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $Order = $form->getData();

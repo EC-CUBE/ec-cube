@@ -119,5 +119,4 @@ class CustomerType extends AbstractType
     {
         return 'customer';
     }
-
 }

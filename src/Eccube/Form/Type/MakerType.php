@@ -47,5 +47,4 @@ class MakerType extends AbstractType
     {
         return 'entity';
     }
-
 }

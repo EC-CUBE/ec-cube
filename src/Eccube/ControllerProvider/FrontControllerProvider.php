@@ -38,9 +38,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/api/php.php', '\\Eccube\\Page\\Api\\Php')->bind('api_php');
         $controllers->match('/api/xml.php', '\\Eccube\\Page\\Api\\Xml')->bind('api_xml');
 
-        // abouts
-        $controllers->match('/abouts/', '\\Eccube\\Page\\Abouts\\Index')->bind('abouts');
-
         // cart
         $controllers->match('/cart/', '\\Eccube\\Controller\\CartController::index')->bind('cart');
         $controllers->post('/cart/add/', '\\Eccube\\Controller\\CartController::add')
@@ -86,14 +83,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/frontparts/block/calendar.php', '\\Eccube\\Controller\\Block\\CalendarController::index')->bind('block_calendar');
         $controllers->match('/frontparts/block/login_header.php', '\\Eccube\\Controller\\Block\\LoginHeaderController::index')->bind('block_login_header');
 
-        // guide
-        $controllers->match('/guide/', '\\Eccube\\Page\\Guide\\Index')->bind('guide');
-        $controllers->match('/guide/about.php', '\\Eccube\\Page\\Guide\\About')->bind('guide_about');
-        $controllers->match('/guide/charge.php', '\\Eccube\\Page\\Guide\\Charge')->bind('guide_charge');
-        $controllers->match('/guide/kiyaku.php', '\\Eccube\\Page\\Guide\\Kiyaku')->bind('guide_kiyaku');
-        $controllers->match('/guide/privacy.php', '\\Eccube\\Page\\Guide\\Privacy')->bind('guide_privacy');
-        $controllers->match('/guide/usage.php', '\\Eccube\\Page\\Guide\\Usage')->bind('guide_usage');
-
         // mypage
         $controllers->match('/mypage/', '\Eccube\Controller\Mypage\MypageController::index')->bind('mypage');
         $controllers->match('/mypage/login.php', '\Eccube\Controller\Mypage\MypageController::login')->bind('mypage_login');
@@ -106,7 +95,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/mypage/history/{orderId}', '\Eccube\Controller\Mypage\MypageController::history')
             ->bind('mypage_history')
             ->assert('orderId', '\d+');
-        $controllers->match('/mypage/mail_view/{sendId}', '\Eccube\Controller\Mypage\MypageController::mail_view')
+        $controllers->match('/mypage/mail_view/{sendId}', '\Eccube\Controller\Mypage\MypageController::mailView')
             ->bind('mypage_mail_view')
             ->assert('sendId', '\d+');
         $controllers->match('/mypage/order.php', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
@@ -146,7 +135,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/shopping/delivery/', '\\Eccube\\Controller\\ShoppingController::delivery')->bind('shopping_delivery');
         $controllers->match('/shopping/payment/', '\\Eccube\\Controller\\ShoppingController::payment')->bind('shopping_payment');
         $controllers->match('/shopping/shipping/', '\\Eccube\\Controller\\ShoppingController::shipping')->bind('shopping_shipping');
-        $controllers->match('/shopping/shipping_multiple/', '\\Eccube\\Controller\\ShoppingController::shipping_multiple')->bind('shopping_shipping_multiple');
+        $controllers->match('/shopping/shipping_multiple/', '\\Eccube\\Controller\\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
         $controllers->match('/shopping/complete/', '\\Eccube\\Controller\\ShoppingController::complete')->bind('shopping_complete');
         $controllers->match('/shopping/login/', '\\Eccube\\Controller\\ShoppingController::login')->bind('shopping_login');
         $controllers->match('/shopping/nonmember/', '\\Eccube\\Controller\\ShoppingController::nonmember')->bind('shopping_nonmember');

@@ -117,5 +117,4 @@ class ProductClassType extends AbstractType
     {
         return 'admin_product_class';
     }
-
 }

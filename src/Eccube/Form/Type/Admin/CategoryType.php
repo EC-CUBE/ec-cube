@@ -41,5 +41,4 @@ class CategoryType extends AbstractType
     {
         return 'admin_category';
     }
-
 }

@@ -259,7 +259,7 @@ class Application extends \Silex\Application
                     'users' => $app['eccube.repository.customer'],
                     'anonymous' => true,
                 ),
-            ),
+             ),
         ));
         $app['security.access_rules'] = array(
             array('^/admin/login.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),

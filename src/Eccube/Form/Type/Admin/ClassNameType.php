@@ -41,5 +41,4 @@ class ClassNameType extends AbstractType
     {
         return 'admin_class_name';
     }
-
 }

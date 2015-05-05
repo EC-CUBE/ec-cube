@@ -52,5 +52,4 @@ class MailTemplateType extends AbstractType
     {
         return 'entity';
     }
-
 }

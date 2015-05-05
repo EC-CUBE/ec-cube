@@ -39,7 +39,7 @@ class EntryController extends AbstractController
 
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
-                    case 'confirm' :
+                    case 'confirm':
                         $builder->setAttribute('freeze', true);
                         $form = $builder->getForm();
                         $form->handleRequest($request);
@@ -87,7 +87,8 @@ class EntryController extends AbstractController
                                 ->setFrom(array('sample@example.com'))
                                 ->setBcc($app['config']['mail_cc'])
                                 ->setTo(array($Customer->getEmail()));
-                            $app['mailer']->send($message);;
+                            $app['mailer']->send($message);
+                            ;
 
                             return $app->redirect($app['url_generator']->generate('entry_complete'));
                         } else {
@@ -137,8 +138,7 @@ class EntryController extends AbstractController
                 new Assert\Regex(array(
                     'pattern' => '/^[a-zA-Z0-9]+$/',
                 ))
-            )
-        );
+            )        );
 
         if ($request->getMethod() === 'GET' && count($errors) === 0) {
             try {
@@ -171,5 +171,4 @@ class EntryController extends AbstractController
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }
     }
-
 }

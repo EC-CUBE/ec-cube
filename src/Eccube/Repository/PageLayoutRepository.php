@@ -158,7 +158,7 @@ class PageLayoutRepository extends EntityRepository
         $finder->followLinks();
         // TODO: ファイル名にディレクトリのパスが一部含まれるので/ディレクトと分ける処理。イケてない・・・
         $arrDir = explode('/', $filename);
-        for ( $index =0; $index < count($arrDir)-1; $index++ ) {
+        for ($index =0; $index < count($arrDir)-1; $index++) {
             $templatePath .= $arrDir[$index] . '/';
         }
         // TODO: .tpl, .twig が混在するためひとまず*。元の$filenameから拡張子込で持ちたい。
@@ -176,5 +176,4 @@ class PageLayoutRepository extends EntityRepository
 
         return $data;
     }
-
 }

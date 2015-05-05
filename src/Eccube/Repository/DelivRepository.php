@@ -15,7 +15,6 @@ class DelivRepository extends EntityRepository
     public function findOrCreate($id)
     {
         if ($id == 0) {
-
             $Creator = $this
                 ->getEntityManager()
                 ->getRepository('\Eccube\Entity\Member')
@@ -35,7 +34,6 @@ class DelivRepository extends EntityRepository
             ;
 
         } else {
-
             $Deliv = $this->find($id);
 
         }

@@ -46,5 +46,4 @@ class ProductTypeType extends AbstractType
     {
         return 'product_type';
     }
-
 }
