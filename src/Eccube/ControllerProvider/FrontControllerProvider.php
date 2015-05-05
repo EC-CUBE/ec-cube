@@ -38,9 +38,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/api/php.php', '\\Eccube\\Page\\Api\\Php')->bind('api_php');
         $controllers->match('/api/xml.php', '\\Eccube\\Page\\Api\\Xml')->bind('api_xml');
 
-        // abouts
-        $controllers->match('/abouts/', '\\Eccube\\Page\\Abouts\\Index')->bind('abouts');
-
         // cart
         $controllers->match('/cart/', '\\Eccube\\Controller\\CartController::index')->bind('cart');
         $controllers->post('/cart/add/', '\\Eccube\\Controller\\CartController::add')
