@@ -98,7 +98,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $controllers->match('/mypage/history/{orderId}', '\Eccube\Controller\Mypage\MypageController::history')
             ->bind('mypage_history')
             ->assert('orderId', '\d+');
-        $controllers->match('/mypage/mail_view/{sendId}', '\Eccube\Controller\Mypage\MypageController::mail_view')
+        $controllers->match('/mypage/mail_view/{sendId}', '\Eccube\Controller\Mypage\MypageController::mailView')
             ->bind('mypage_mail_view')
             ->assert('sendId', '\d+');
         $controllers->match('/mypage/order.php', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');

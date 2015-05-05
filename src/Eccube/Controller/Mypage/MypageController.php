@@ -125,7 +125,7 @@ class MypageController extends AbstractController
      * @param  Request     $request
      * @return string
      */
-    public function mail_view(Application $app, Request $request, $sendId)
+    public function mailView(Application $app, Request $request, $sendId)
     {
         $Customer = $app['user'];
 
