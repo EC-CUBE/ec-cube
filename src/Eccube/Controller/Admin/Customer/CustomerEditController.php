@@ -55,12 +55,11 @@ class CustomerEditController extends AbstractController
                 throw new HttpException\NotFoundHttpException("※ 会員ID：$customerId が見つかりません。");
             }
 
-            if ($app['request']->getMethod() != 'POST') {
+            if ($app['request']->getMethod() === 'POST') {
+                $previous_password = $Customer->getPassword();
+            } else {
                 // 編集用にデフォルトパスワードをセット
                 $Customer->setPassword($app['config']['default_password']);
-            } else {
-                $previous_password = $Customer->getPassword();
-
             }
 
         } else {
