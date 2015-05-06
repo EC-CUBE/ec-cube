@@ -102,9 +102,8 @@
                         <td class="center">
                             {% set delete_action = url('admin_customer_delete', {customerId: Customer.id}) %}
                             {% set resend_action = url('admin_customer_resend', {customerId: Customer.id}) %}
-                            {% set edit_action = url('admin_customer_edit', {customerId: Customer.id}) %}
                             <span class="icon_edit">
-                                <a href="#" onclick="return fnEdit('{{ edit_action }}');">編集</a>
+                                <a href="{{ url('admin_customer_edit', { customerId : Customer.id }) }}");">編集</a>
                             </span>
                              | 
                             <span class="icon_delete">

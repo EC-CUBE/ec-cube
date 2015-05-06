@@ -63,7 +63,7 @@
     {%- if freeze -%}
         {%- set type = 'hidden' -%}
         {%- if freeze_display_text -%}
-            {{- value|nl2br|default('') -}}
+            {{- value|default('')|nl2br -}}
         {%- endif -%}
     {%- endif -%}
     {{- parent() -}}

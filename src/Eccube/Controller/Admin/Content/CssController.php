@@ -97,6 +97,6 @@ class CssController
 
     protected function getCssDir($app)
     {
-        return $app['congig']['user_realdir'] . $this->cssDir;
+        return $app['config']['user_realdir'] . $this->cssDir;
     }
 }

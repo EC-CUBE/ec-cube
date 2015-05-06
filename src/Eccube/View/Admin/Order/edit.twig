@@ -296,6 +296,8 @@
                         {{ form_errors(form.birth_point) }}
                     </td>
                 </tr>
+            {% else %}
+                {{ form_widget(form.birth_point, { type: 'hidden' }) }}
             {% endif %}
             <tr>
                 <th colspan="5" class="column right">加算ポイント</th>
