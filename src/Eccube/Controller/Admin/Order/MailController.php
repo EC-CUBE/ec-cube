@@ -4,7 +4,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Application;
 use Eccube\Entity\MailHistory;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MailController
 {
@@ -24,7 +24,7 @@ class MailController
             ->find($orderId);
 
         if (is_null($Order)) {
-            throw new HttpException('order not found.');
+            throw new NotFoundHttpException('order not found.');
         }
 
         $MailHistories = $app['orm.em']
@@ -56,6 +56,7 @@ class MailController
                     case 'confirm':
                         // フォームをFreezeして再生成.
                         $builder->setAttribute('freeze', true);
+                        $builder->setAttribute('freeze_display_text', false);
                         $form = $builder->getForm();
                         $form->handleRequest($app['request']);
 
