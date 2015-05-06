@@ -30,10 +30,10 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * get
+     * get Product.
      *
-     * @param  integer               $productId
-     * @return Eccube\Entity\Product
+     * @param  integer $productId
+     * @return \Eccube\Entity\Product
      *
      * @throws NotFoundHttpException
      */
@@ -58,10 +58,10 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * get
+     * get query builder.
      *
-     * @param  array                   $searchData
-     * @return Eccube\Entity\Product[]
+     * @param  array $searchData
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getQueryBuilderBySearchData($searchData)
     {
@@ -95,7 +95,7 @@ class ProductRepository extends EntityRepository
             foreach ($keywords as $keyword) {
                 $qb
                     ->andWhere('p.name LIKE :keyword OR p.comment3 LIKE :keyword')
-                    ->setParameter('keyword', '%'.$keyword.'%');
+                    ->setParameter('keyword', '%' . $keyword . '%');
             }
         }
 
@@ -110,8 +110,7 @@ class ProductRepository extends EntityRepository
             if ($categoryJoin == false) {
                 $qb
                     ->innerJoin('p.ProductCategories', 'pct')
-                    ->innerJoin('pct.Category', 'c')
-                ;
+                    ->innerJoin('pct.Category', 'c');
             }
             $qb
                 ->orderBy('c.rank', 'DESC')
@@ -123,10 +122,10 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * get
+     * get query builder.
      *
-     * @param  array                   $searchData
-     * @return Eccube\Entity\Product[]
+     * @param  array $searchData
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
@@ -144,7 +143,7 @@ class ProductRepository extends EntityRepository
             $qb
                 ->innerJoin('p.ProductClasses', 'pc')
                 ->andWhere('pc.code LIKE :code')
-                ->setParameter('code', '%'.$searchData['code'].'%');
+                ->setParameter('code', '%' . $searchData['code'] . '%');
         }
 
         // name
@@ -153,7 +152,7 @@ class ProductRepository extends EntityRepository
             foreach ($keywords as $keyword) {
                 $qb
                     ->andWhere('p.name LIKE :name')
-                    ->setParameter('name', '%'.$keyword.'%');
+                    ->setParameter('name', '%' . $keyword . '%');
             }
         }
 
@@ -191,6 +190,25 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Maker', $searchData['maker_id']->toArray());
         }
 
+        // create date start
+        if (!empty($searchData['register_start'])) {
+            $qb
+                ->andWhere('p.create_date >= :create_date_start')
+                ->setParameter('create_date_start', $searchData['register_start']);
+        }
+
+        // create date end
+        if (!empty($searchData['register_end'])) {
+            // 日付のみ保持しているため, 時刻を設定.
+            $endDate = clone $searchData['register_end'];
+            $endDate->setTime(23, 59, 59);
+            $qb
+                ->andWhere('p.create_date <= :create_date_end')
+                ->setParameter('create_date_end', $endDate);
+        }
+
+        // TODO 更新日の検索を実装
+
         // Order By
         $qb
             ->orderBy('p.update_date', 'DESC');
@@ -198,6 +216,12 @@ class ProductRepository extends EntityRepository
         return $qb;
     }
 
+    /**
+     * get query builder.
+     *
+     * @param $Customer
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function getFavoriteProductQueryBuilderByCustomer($Customer)
     {
         $qb = $this->createQueryBuilder('p')
