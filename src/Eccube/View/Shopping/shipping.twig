@@ -18,13 +18,15 @@
         </div>
 
         <p class="addbtn">
-            <a href="{{ path('mypage_delivery_addr') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_addr') }}?page={{ path('shopping_shipping') }}','new_deiv','600','640'); return false;">
+            <a href="{{ path('mypage_delivery_address') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_address') }}?page={{ path('shopping_shipping') }}','new_deiv','600','640'); return false;">
                 <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" />
             </a>
         </p>
 
         <form name="form1" id="form1" method="post" action="{{ path('shopping_shipping') }}">
+            <input type="hidden" name="mode" value=""/>
             {{ form_widget(form._token) }}
+            {% if is_granted('ROLE_USER') %}
             <table summary="お届け先の指定">
                 <col width="10%" />
                 <col width="20%" />
@@ -58,8 +60,8 @@
                         {% if loop.first %}
                             -
                         {% else %}
-                            <a href="{{ path('mypage_delivery_addr') }}"
-                               onclick="eccube.openWindow('{{ path('mypage_delivery_addr') }}?page={{ path('shopping_shipping') }}>&amp;other_deliv_id={{ entity.id }}','new_deiv','600','640'); return false;">変更</a>
+                            <a href="{{ path('mypage_delivery_address') }}"
+                               onclick="eccube.openWindow('{{ path('mypage_delivery_address') }}?page={{ path('shopping_shipping') }}>&amp;other_deliv_id={{ entity.id }}','new_deiv','600','640'); return false;">変更</a>
                         {% endif %}
                     </td>
                     <td class="alignC">
@@ -72,6 +74,19 @@
                 </tr>
                 {% endfor %}
             </table>
+            <div class="btn_area">
+                <ul>
+                    <li>
+                        <a href="{{ path('shopping') }}" ><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
+                    </li>
+                    <li>
+                        <input type="image" onclick="eccube.setModeAndSubmit('select_address');return false;" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_next.jpg" alt="選択したお届け先に送る" name="send_button" id="send_button" />
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+
+            {{ form_widget(form.address) }}
 
             <div class="btn_area">
                 <ul>
