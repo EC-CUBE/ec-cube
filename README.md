@@ -57,6 +57,7 @@ eccube-3.0.0-betaブランチにてβ版の開発を行っております。
 pull requestを送信する際は、EC-CUBEのコピーライトポリシーに同意したものとみなします。
 
 * * * * * * * * * * * * * * * * * * * *
+
 ### インストール方法
 * Composerのインストール  
   `curl -sS https://getcomposer.org/installer | php`
@@ -67,7 +68,33 @@ pull requestを送信する際は、EC-CUBEのコピーライトポリシーに�
 
 * * * * * * * * * * * * * * * * * * * *
 
+### デバッグモードの有効化
+html/index.phpを書き換えて、Applicationに設定を渡してあげれば、デバッグモードで開発ができます。
+設定は、 array('env' => 'dev') です。
 
+#### before
+```
+<?php
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+$app = new Eccube\Application();
+$app->run();
+```
+
+#### after
+```
+<?php
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+$app = new Eccube\Application(array(
+    'env' => 'dev',
+));
+$app->run();
+```
+
+* * * * * * * * * * * * * * * * * * * *
 
 ### 開発方針
 
