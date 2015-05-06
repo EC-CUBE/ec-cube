@@ -191,6 +191,25 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Maker', $searchData['maker_id']->toArray());
         }
 
+        // create date start
+        if (!empty($searchData['register_start'])) {
+            $qb
+                ->andWhere('p.create_date >= :create_date_start')
+                ->setParameter('create_date_start', $searchData['register_start']);
+        }
+
+        // create date end
+        if (!empty($searchData['register_end'])) {
+            // 日付のみ保持しているため, 時刻を設定.
+            $endDate = clone $searchData['register_end'];
+            $endDate->setTime(23, 59, 59);
+            $qb
+                ->andWhere('p.create_date <= :create_date_end')
+                ->setParameter('create_date_end', $endDate);
+        }
+
+        // TODO 更新日の検索を実装
+
         // Order By
         $qb
             ->orderBy('p.update_date', 'DESC');
