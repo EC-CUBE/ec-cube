@@ -4,6 +4,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Form\Type\ShippingMultiType;
+use Symfony\Component\HttpFoundation\Request;
 
 class ShoppingController extends AbstractController
 {
@@ -257,77 +258,66 @@ class ShoppingController extends AbstractController
     }
 
     // お届け先設定
-    public function shipping(Application $app)
+    public function shipping(Application $app, Request $request)
     {
         $this->init($app);
 
-        $customer = $app['user'];
-        $addresses = array();
-        $addresses[0] = $customer;
+        $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
+        $Shipping = $app['orm.em']
+            ->getRepository('Eccube\Entity\Shipping')
+            ->findOneBy(array('Order' => $Order));
 
-        $qb = $this->app['orm.em']->createQueryBuilder();
-        $otherAddrs = $qb->select("od")
-            ->from("\\Eccube\\Entity\\OtherDeliv", "od")
-            ->where('od.Customer = :customer')
-            ->orderBy("od.id", "ASC")
-            ->setParameter('customer', $customer)
-            ->getQuery()
-            ->getResult();
-        foreach ($otherAddrs as $otherAddr) {
-            $addresses[$otherAddr->getId()] = $otherAddr;
+        $addresses = array();
+        if ($app['security']->isGranted('ROLE_USER')) {
+            $OtherDelivs = $app['user']->getOtherDelivs();
+            foreach ($OtherDelivs as $OtherDeliv) {
+                $addresses[$OtherDeliv->getId()] = $OtherDeliv;
+            }
         }
 
         $form = $app['form.factory']->createBuilder()
             ->add('addresses', 'choice', array(
-                'choices'  => $addresses,
+                'choices' => $addresses,
                 'expanded' => true,
-                'data' => 0))
+                'data' => 0
+            ))
+            ->add('address', 'other_deliv', array(
+                'data_class' => 'Eccube\Entity\Shipping'
+            ))
             ->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
+        $form->get('address')->setData($Shipping);
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                /** @var $Order \Eccube\Entity\Order */
-                $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
-                /** @var $shipping \Eccube\Entity\Shipping */
-                $shipping = $this->app['orm.em']
-                    ->getRepository('\Eccube\Entity\Shipping')
-                    ->findOneBy(array("order_id" => $Order->getId()));
-                $addressId = $data['addresses'];
-                $address = null;
-                if ($addressId == 0) {
-                    $address = $customer;
-                } else {
-                    $qb = $this->app['orm.em']->createQueryBuilder();
-                    $address = $qb->select("od")
-                        ->from("\\Eccube\\Entity\\OtherDeliv", "od")
-                        ->where('od.id = :id')
-                        ->andWhere('od.Customer = :customer')
-                        ->setParameter('id', $addressId)
-                        ->setParameter('customer', $customer)
-                        ->getQuery()
-                        ->getSingleResult();
+                if ('select_address' === $request->get('mode')) {
+                    $otherDelivId = $data['addresses'];
+                    $OtherDeliv = $app['orm.em']
+                        ->getRepository('Eccube\Entity\OtherDeliv')
+                        ->find($otherDelivId);
+                    $Shipping
+                        ->setName01($OtherDeliv->getName01())
+                        ->setName02($OtherDeliv->getName02())
+                        ->setKana01($OtherDeliv->getKana02())
+                        ->setKana02($OtherDeliv->getKana02())
+                        ->setCompanyName($OtherDeliv->getCompanyName())
+                        ->setTel01($OtherDeliv->getTel01())
+                        ->setTel02($OtherDeliv->getTel02())
+                        ->setTel03($OtherDeliv->getTel03())
+                        ->setFax01($OtherDeliv->getFax01())
+                        ->setFax02($OtherDeliv->getFax02())
+                        ->setFax03($OtherDeliv->getFax03())
+                        ->setZip01($OtherDeliv->getZip01())
+                        ->setZip02($OtherDeliv->getZip02())
+                        ->setPref($OtherDeliv->getPref())
+                        ->setAddr01($OtherDeliv->getAddr01())
+                        ->setAddr02($OtherDeliv->getAddr02());
                 }
-                $shipping
-                    ->setName01($address->getName01())
-                    ->setName02($address->getName02())
-                    ->setKana01($address->getKana02())
-                    ->setKana02($address->getKana02())
-                    ->setCompanyName($address->getCompanyName())
-                    ->setTel01($address->getTel01())
-                    ->setTel02($address->getTel02())
-                    ->setTel03($address->getTel03())
-                    ->setFax01($address->getFax01())
-                    ->setFax02($address->getFax02())
-                    ->setFax03($address->getFax03())
-                    ->setZip01($address->getZip01())
-                    ->setZip02($address->getZip02())
-                    ->setPref($address->getPref())
-                    ->setAddr01($address->getAddr01())
-                    ->setAddr02($address->getAddr02());
+
                 // 配送先を更新
-                $app['orm.em']->persist($shipping);
+                $app['orm.em']->persist($Shipping);
                 $app['orm.em']->flush();
 
                 return $app->redirect($app['url_generator']->generate('shopping'));
@@ -337,8 +327,9 @@ class ShoppingController extends AbstractController
         return $app['view']->render(
             'Shopping/shipping.twig',
             array(
-                'form'  => $form->createView(),
+                'form' => $form->createView(),
                 'title' => 'お届け先設定',
+                'Order' => $Order,
             )
         );
     }

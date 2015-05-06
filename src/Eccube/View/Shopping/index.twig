@@ -174,7 +174,7 @@ $(document).ready(function(){
             <td>
                 {% if shipping.company_name %}{{ shipping.company_name }}<br />{% endif %}
                 {{ shipping.name01 }} {{ shipping.name02 }} {% if shipping.kana01 %}({{ shipping.kana01 }}{{ shipping.kana02 }}){% endif %}<br />
-                〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.Pref.name }} {{ shipping.addr01 }}{{ shipping.addr02 }}<br />
+                〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.Pref }} {{ shipping.addr01 }}{{ shipping.addr02 }}<br />
                 TEL:{{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}<br />
                 FAX:{{ shipping.fax01 }}-{{ shipping.fax02 }}-{{ shipping.fax03 }}
             </td>
