@@ -264,11 +264,11 @@ class Application extends \Silex\Application
              ),
         ));
         $app['security.access_rules'] = array(
-            array('^/admin/login.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/admin/', 'ROLE_ADMIN'),
-            array('^/mypage/login.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/refusal_complete.php', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/', 'ROLE_USER'),
+            array('^/admin/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/admin', 'ROLE_ADMIN'),
+            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/refusal_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage', 'ROLE_USER'),
         );
         $app['eccube.password_encoder'] = $app->share(function ($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);

@@ -87,6 +87,10 @@
                     </th>
                     <td>
                         {{ app.config.default_password }}
+                        <p style="display:none;">
+                            {{ form_widget(form.password.first) }}
+                            {{ form_widget(form.password.second) }}
+                        </p>
                     </td>
                 </tr>
                 <tr>
