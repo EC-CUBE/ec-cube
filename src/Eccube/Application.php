@@ -335,12 +335,13 @@ class Application extends \Silex\Application
                 $url = 'index.php';
             }
 
+            // anywhere指定のもの以外を取得
             $qb = $app['orm.em']->createQueryBuilder()
                 ->select('p, bp, b')
                 ->from('Eccube\Entity\PageLayout', 'p')
-                ->leftJoin('p.BlocPositions', 'bp', \Doctrine\ORM\Query\Expr\Join::WITH, 'p.page_id = bp.page_id OR bp.anywhere = 1')
+                ->leftJoin('p.BlocPositions', 'bp', \Doctrine\ORM\Query\Expr\Join::WITH, 'p.page_id = bp.page_id')
                 ->innerJoin('bp.Bloc', 'b')
-                ->andWhere('p.device_type_id = :device_type_id AND p.url = :url')
+                ->andWhere('p.device_type_id = :device_type_id AND p.url = :url AND bp.anywhere != 1')
                 ->addOrderBy('bp.target_id', 'ASC')
                 ->addOrderBy('bp.bloc_row', 'ASC');
             try {
@@ -349,10 +350,21 @@ class Application extends \Silex\Application
                         'device_type_id'    => 10,
                         'url'               => $url,
                     ))
-                    ->getSingleResult();
-
+                    ->getSingleResult()
+                ;
+                // anywhere指定のものをマージ
+                $AnywhereBlocPositions = $app['orm.em']
+                    ->getRepository('Eccube\Entity\BlocPosition')
+                    ->findBy(array(
+                        'device_type_id' => 10,
+                        'anywhere' => 1,
+                    ))
+                ;
                 // TODO: 無理やり計算して無理やりいれている
                 $BlocPositions = $result->getBlocPositions();
+                foreach ($AnywhereBlocPositions as $AnywhereBlocPosition) {
+                    $result->addBlocPosition($AnywhereBlocPosition);
+                }
                 $hasLeftNavi = false;
                 $hasRightNavi = false;
                 foreach ($BlocPositions as $BlocPosition) {
