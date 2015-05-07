@@ -15,7 +15,7 @@
 
         {# todo DELIV_ADDR_MAXを移植 #}
         <p class="addbtn">
-            <a href="{{ path('mypage_delivery_addr') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_addr') }}?page={{ path('shopping_shipping_multiple') }}','new_deiv','600','640'); return false;"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" /></a>
+            <a href="{{ path('mypage_delivery_address') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_address') }}?page={{ path('shopping_shipping_multiple') }}','new_deiv','600','640'); return false;"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" /></a>
         </p>
         <form name="form1" id="form1" method="post" action="{{ path('shopping_shipping_multiple') }}">
             {{ form_widget(form._token) }}
@@ -42,10 +42,10 @@
                         </td>
                         <td class="alignC">
                             <strong>{{ Product.name }}</strong><br />
-                            {% if ProductClass.ClassCategory1.name %}
+                            {% if ProductClass.ClassCategory1 %}
                                 {{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1.name }}<br />
                             {% endif %}
-                            {% if ProductClass.ClassCategory2.name %}
+                            {% if ProductClass.ClassCategory2 %}
                                 {{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2.name }}<br />
                             {% endif %}
                         </td>
