@@ -88,7 +88,6 @@ class EntryController extends AbstractController
                                 ->setBcc($app['config']['mail_cc'])
                                 ->setTo(array($Customer->getEmail()));
                             $app['mailer']->send($message);
-                            ;
 
                             return $app->redirect($app['url_generator']->generate('entry_complete'));
                         } else {
@@ -160,9 +159,11 @@ class EntryController extends AbstractController
                 ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
                 ->setBody($app['view']->render('Mail/entry_complete.twig', array(
                     'customer' => $Customer,
-                )));
-
-            $this->sendMail($app, $Customer, $message);
+                )))
+                ->setFrom(array('sample@example.com'))
+                ->setBcc($app['config']['mail_cc'])
+                ->setTo(array($Customer->getEmail()));
+            $app['mailer']->send($message);
 
             return $app['view']->render('Entry/activate.twig', array(
                 'title' => $this->title,
