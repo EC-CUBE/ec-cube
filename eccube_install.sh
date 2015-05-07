@@ -272,7 +272,7 @@ case "${DBTYPE}" in
     sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
 
     echo "create table..."
-    php ./vendor/bin/doctrine orm:schema-tool:create
+    ./vendor/bin/doctrine orm:schema-tool:create
 
     echo "insert data..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data_pgsql.sql ${DBNAME}
