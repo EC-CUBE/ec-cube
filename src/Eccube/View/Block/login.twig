@@ -16,7 +16,9 @@
                         </p>
                         {% if disableLogout %}
                             <p class="btn">
-                                <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_logout.jpg" onclick="eccube.fnFormModeSubmit('login_form', 'logout', '', ''); return false;" alt="ログアウト" />
+                                <a href="{{ path('logout') }}">
+                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_logout.jpg" alt="ログアウト" />
+                                </a>
                             </p>
                         {% endif %}
                     {% else %}

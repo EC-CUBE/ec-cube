@@ -53,7 +53,9 @@
                                 / 所持ポイント: <span class="point"> {{ app.user.point|default(0) }} pt</span>&nbsp;&nbsp;
                             {% endif %}
                             {% if disableLogout %}
-                                <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/common/btn_header_logout.jpg" onclick="eccube.fnFormModeSubmit('header_login_form', 'logout', '', ''); return false;" alt="ログアウト" />
+                                <a href="{{ path('logout') }}">
+                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/common/btn_header_logout.jpg" alt="ログアウト" />
+                                </a>
                             {% endif %}
                         </p>
                     {% else %}
