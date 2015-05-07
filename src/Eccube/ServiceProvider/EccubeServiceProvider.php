@@ -183,6 +183,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\ShopMasterType($app);
             $types[] = new \Eccube\Form\Type\PointType($app);
+            $types[] = new \Eccube\Form\Type\TradelawType($app);
             $types[] = new \Eccube\Form\Type\TaxRuleType($app);
             $types[] = new \Eccube\Form\Type\MainEditType($app);
             $types[] = new \Eccube\Form\Type\BlockType($app);
