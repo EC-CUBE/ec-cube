@@ -8,6 +8,9 @@ class RecommendController
 {
     public function index(Application $app)
     {
-        return '';
+        $BestProducts = $app['eccube.repository.recommend_product']
+            ->getList()
+        ;
+        return $app['view']->render('Block/recommend.twig', compact('BestProducts'));
     }
 }

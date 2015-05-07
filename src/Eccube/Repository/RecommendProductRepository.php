@@ -12,4 +12,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class RecommendProductRepository extends EntityRepository
 {
+
+    protected $app;
+
+    public function setApp($app)
+    {
+        $this->app = $app;
+    }
+
+    public function getList()
+    {
+        $Products = $this
+            ->findBy(
+                array(),
+                array('rank' => 'ASC'),
+                $this->app['config']['recommend_num'],
+                0
+            )
+        ;
+        return $Products;
+    }
 }
