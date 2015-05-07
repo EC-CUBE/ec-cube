@@ -277,6 +277,9 @@ case "${DBTYPE}" in
     echo "insert data..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data_pgsql.sql ${DBNAME}
 
+    echo "create sequence..."
+    create_sequence_tables
+
     echo "execute optional SQL..."
     get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
 ;;
