@@ -38,16 +38,6 @@ class TradelawController extends AbstractController
                 return $app->redirect($app['url_generator']->generate('admin_basis_tradelaw'));
             }
         }
-
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $app['orm.em']->persist($data);
-                $app['orm.em']->flush();
-                return $app->redirect($app['url_generator']->generate('admin_basis_tradelaw'));
-            }
-        }
         
         return $app['twig']->render('Admin/Basis/tradelaw.twig', array(
             'main_title' => $this->main_title,
