@@ -13,7 +13,7 @@ class CssController
     protected $subtitle = 'CSS管理';
 
     // todo
-    protected $cssDir = 'css';
+    protected $cssDir = 'default/css/';
 
     public function index(Application $app)
     {
@@ -70,7 +70,7 @@ class CssController
         if ($finder->count() == 1) {
             foreach ($finder->files() as $file) {
                 $fs = new Filesystem();
-                //$fs->remove($file->getPathName());
+                $fs->remove($file->getPathName());
             }
             $app['session']->getFlashBag()->add('admin.content.css.complete', 'admin.register.complete');
         }
@@ -97,6 +97,6 @@ class CssController
 
     protected function getCssDir($app)
     {
-        return $app['config']['user_realdir'] . $this->cssDir;
+        return $app['config']['user_template_realdir'] . $this->cssDir;
     }
 }
