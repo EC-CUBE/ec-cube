@@ -8,14 +8,14 @@ class CartControllerTest extends AbstractWebTestCase
     public function testRoutingCart()
     {
         $client = $this->createClient();
-        $client->request('GET', '/cart/');
+        $client->request('GET', '/cart');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testRoutingCartAdd()
     {
         $client = $this->createClient();
-        $client->request('POST', '/cart/add/', array('product_class_id' => 1));
+        $client->request('POST', '/cart/add', array('product_class_id' => 1));
 
         $this->assertTrue($client->getResponse()->isRedirection());
     }

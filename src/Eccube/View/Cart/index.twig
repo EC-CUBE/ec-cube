@@ -116,17 +116,17 @@
                         <p class="alignC">上記内容でよろしければ「購入手続きへ」ボタンをクリックしてください。</p>
                     <div class="btn_area">
                         <ul>
+                            {# TODO: リファラが取得できないため一旦見送り
                             <li>
-                                <!--{if $tpl_prev_url != ""}-->
-                                    <a href="<!--{$tpl_prev_url|h}-->">
-                                        <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="back<!--{$key|h}-->" /></a>
-                                <!--{/if}-->
+                                <a href="<!--{$tpl_prev_url|h}-->">
+                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="back" />
+                                </a>
                             </li>
+                            #}
                             <li>
-                                <!--{if strlen($tpl_error) == 0}-->
                                 <a href="{{ path('cart_buystep') }}">
                                     <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_buystep.jpg" alt="購入手続きへ" name="buystep" />
-                                <!--{/if}-->
+                                </a>
                             </li>
                         </ul>
                     </div>
