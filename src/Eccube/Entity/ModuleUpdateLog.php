@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ModuleUpdateLog
  */
@@ -49,11 +47,10 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
      */
     private $Module;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -63,7 +60,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Set buckup_path
      *
-     * @param string $buckupPath
+     * @param  string          $buckupPath
      * @return ModuleUpdateLog
      */
     public function setBuckupPath($buckupPath)
@@ -76,7 +73,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Get buckup_path
      *
-     * @return string 
+     * @return string
      */
     public function getBuckupPath()
     {
@@ -86,7 +83,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Set error_flg
      *
-     * @param integer $errorFlg
+     * @param  integer         $errorFlg
      * @return ModuleUpdateLog
      */
     public function setErrorFlg($errorFlg)
@@ -99,7 +96,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Get error_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getErrorFlg()
     {
@@ -109,7 +106,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Set error
      *
-     * @param string $error
+     * @param  string          $error
      * @return ModuleUpdateLog
      */
     public function setError($error)
@@ -122,7 +119,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Get error
      *
-     * @return string 
+     * @return string
      */
     public function getError()
     {
@@ -132,7 +129,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Set ok
      *
-     * @param string $ok
+     * @param  string          $ok
      * @return ModuleUpdateLog
      */
     public function setOk($ok)
@@ -145,7 +142,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Get ok
      *
-     * @return string 
+     * @return string
      */
     public function getOk()
     {
@@ -155,7 +152,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime       $createDate
      * @return ModuleUpdateLog
      */
     public function setCreateDate($createDate)
@@ -168,7 +165,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -178,7 +175,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime       $updateDate
      * @return ModuleUpdateLog
      */
     public function setUpdateDate($updateDate)
@@ -191,7 +188,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -201,7 +198,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Set Module
      *
-     * @param \Eccube\Entity\Module $module
+     * @param  \Eccube\Entity\Module $module
      * @return ModuleUpdateLog
      */
     public function setModule(\Eccube\Entity\Module $module)
@@ -214,7 +211,7 @@ class ModuleUpdateLog extends \Eccube\Entity\AbstractEntity
     /**
      * Get Module
      *
-     * @return \Eccube\Entity\Module 
+     * @return \Eccube\Entity\Module
      */
     public function getModule()
     {

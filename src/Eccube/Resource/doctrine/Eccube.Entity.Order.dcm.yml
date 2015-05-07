@@ -12,9 +12,9 @@ Eccube\Entity\Order:
             generator:
                 strategy: AUTO
     fields:
-#        order_temp_id:
-#            type: text
-#            nullable: true
+        order_temp_id:
+            type: text
+            nullable: true
 #        customer_id:
 #            type: integer
 #            nullable: false
@@ -182,10 +182,10 @@ Eccube\Entity\Order:
         note:
             type: text
             nullable: true
-        status:
-            type: smallint
-            nullable: true
-            unsigned: false
+#        status:
+#            type: smallint
+#            nullable: true
+#            unsigned: false
         create_date:
             type: datetime
             nullable: false
@@ -240,12 +240,12 @@ Eccube\Entity\Order:
             type: text
             nullable: true
     manyToOne:
-        OrderTemp:
-            targetEntity: Eccube\Entity\OrderTemp
-            inversedBy: Orders
-            joinColumn:
-                name: order_temp_id
-                referencedColumnName: order_temp_id
+#        OrderTemp:
+#            targetEntity: Eccube\Entity\OrderTemp
+#            inversedBy: Orders
+#            joinColumn:
+#                name: order_temp_id
+#                referencedColumnName: order_temp_id
         Customer:
             targetEntity: Eccube\Entity\Customer
             inversedBy: Orders
@@ -294,8 +294,38 @@ Eccube\Entity\Order:
             joinColumn:
                 name: device_type_id
                 referencedColumnName: id
+        CustomerOrderStatus:
+            targetEntity: Eccube\Entity\Master\CustomerOrderStatus
+            inversedBy: Orders
+            joinColumn:
+                name: status
+                referencedColumnName: id
+        OrderStatusColor:
+            targetEntity: Eccube\Entity\Master\OrderStatusColor
+            inversedBy: Orders
+            joinColumn:
+                name: status
+                referencedColumnName: id
+        OrderStatus:
+            targetEntity: Eccube\Entity\Master\OrderStatus
+            inversedBy: Orders
+            joinColumn:
+                name: status
+                referencedColumnName: id
     oneToMany:
         OrderDetails:
             targetEntity: Eccube\Entity\OrderDetail
             mappedBy: Order
+            orderBy:
+                id: ASC
+        Shippings:
+            targetEntity: Eccube\Entity\Shipping
+            mappedBy: Order
+            orderBy:
+                shipping_id: ASC
+        MailHistories:
+            targetEntity: Eccube\Entity\MailHistory
+            mappedBy: Order
+            orderBy:
+                send_date: DESC
     lifecycleCallbacks: {  }

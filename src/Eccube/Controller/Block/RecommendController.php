@@ -6,8 +6,8 @@ use Eccube\Application;
 
 class RecommendController
 {
-	function index(Application $app)
-	{
-		return 'block_recommend';
-	}
+    public function index(Application $app)
+    {
+        return '';
+    }
 }

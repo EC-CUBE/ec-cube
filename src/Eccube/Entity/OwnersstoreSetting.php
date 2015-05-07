@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * OwnersstoreSetting
  */
@@ -14,11 +12,10 @@ class OwnersstoreSetting extends \Eccube\Entity\AbstractEntity
      */
     private $public_key;
 
-
     /**
      * Get public_key
      *
-     * @return string 
+     * @return string
      */
     public function getPublicKey()
     {
@@ -28,7 +25,7 @@ class OwnersstoreSetting extends \Eccube\Entity\AbstractEntity
     /**
      * Set public_key
      *
-     * @param string $publicKey
+     * @param  string             $publicKey
      * @return OwnersstoreSetting
      */
     public function setPublicKey($publicKey)

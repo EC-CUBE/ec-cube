@@ -2,13 +2,19 @@
 
 namespace Eccube\Entity\Master;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * AllowedTag
  */
 class AllowedTag extends \Eccube\Entity\AbstractEntity
 {
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * @var integer
      */
@@ -24,11 +30,10 @@ class AllowedTag extends \Eccube\Entity\AbstractEntity
      */
     private $rank;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -38,7 +43,7 @@ class AllowedTag extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string     $name
      * @return AllowedTag
      */
     public function setName($name)
@@ -51,7 +56,7 @@ class AllowedTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -61,7 +66,7 @@ class AllowedTag extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer    $rank
      * @return AllowedTag
      */
     public function setRank($rank)
@@ -74,7 +79,7 @@ class AllowedTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {

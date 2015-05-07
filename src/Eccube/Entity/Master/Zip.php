@@ -2,13 +2,19 @@
 
 namespace Eccube\Entity\Master;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Zip
  */
 class Zip extends \Eccube\Entity\AbstractEntity
 {
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getState() . $this->getCity() . $this->getTown();
+    }
+
     /**
      * @var integer
      */
@@ -34,11 +40,10 @@ class Zip extends \Eccube\Entity\AbstractEntity
      */
     private $town;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -48,7 +53,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Set zipcode
      *
-     * @param string $zipcode
+     * @param  string $zipcode
      * @return Zip
      */
     public function setZipcode($zipcode)
@@ -61,7 +66,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Get zipcode
      *
-     * @return string 
+     * @return string
      */
     public function getZipcode()
     {
@@ -71,7 +76,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Set state
      *
-     * @param string $state
+     * @param  string $state
      * @return Zip
      */
     public function setState($state)
@@ -84,7 +89,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -94,7 +99,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Set city
      *
-     * @param string $city
+     * @param  string $city
      * @return Zip
      */
     public function setCity($city)
@@ -107,7 +112,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -117,7 +122,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Set town
      *
-     * @param string $town
+     * @param  string $town
      * @return Zip
      */
     public function setTown($town)
@@ -130,7 +135,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * Get town
      *
-     * @return string 
+     * @return string
      */
     public function getTown()
     {

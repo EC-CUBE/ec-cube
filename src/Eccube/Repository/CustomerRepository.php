@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 use Eccube\Entity\Customer;
 
 /**
@@ -26,15 +27,17 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
     public function newCustomer()
     {
-        $customer = new \Eccube\Entity\Customer();
+        $Customer = new \Eccube\Entity\Customer();
+        $Status = $this->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\CustomerStatus')
+            ->find(1);
 
-        $customer->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime())
+        $Customer
             ->setPoint(0)
-            ->setStatus(1)
+            ->setStatus($Status)
             ->setDelFlg(0);
 
-        return $customer;
+        return $Customer;
     }
 
     /**
@@ -55,16 +58,15 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email OR c.email_mobile = :email_mobile')
-            ->andWhere('c.del_flg = 0')
             ->setParameter('email', $username)
             ->setParameter('email_mobile', $username)
             ->getQuery();
-        $customer = $query->getOneOrNullResult();
-        if (!$customer) {
+        $Customer = $query->getOneOrNullResult();
+        if (!$Customer) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
-        return $customer;
+        return $Customer;
     }
 
     /**
@@ -102,4 +104,257 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         return $class === 'Eccube\Entity\Customer';
     }
 
+    public function getQueryBuilderBySearchData($searchData)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->andWhere('c.del_flg = 0');
+
+        // customer_id
+        if (!empty($searchData['customer_id']) && $searchData['customer_id']) {
+            $qb
+                ->andWhere('c.id = :customer_id')
+                ->setParameter('customer_id', $searchData['customer_id']);
+        }
+
+        // Pref
+        if (!empty($searchData['pref']) && $searchData['pref']) {
+            $qb
+                ->andWhere('c.Pref = :pref')
+                ->setParameter('pref', $searchData['pref']->getId());
+        }
+
+        // name
+        if (!empty($searchData['name']) && $searchData['name']) {
+            $qb
+                ->andWhere('CONCAT(c.name01, c.name02) LIKE :name')
+                ->setParameter('name', '%' . $searchData['name'] . '%');
+        }
+
+        // kana
+        if (!empty($searchData['kana']) && $searchData['kana']) {
+            $qb
+                ->andWhere('CONCAT(c.kana01, c.kana02) LIKE :kana')
+                ->setParameter('kana', '%' . $searchData['kana'] . '%');
+        }
+
+        // sex
+        if (!empty($searchData['sex']) && $searchData['sex']) {
+            $qb
+                ->andWhere('c.Sex = :sex')
+                ->setParameter('sex', $searchData['sex']);
+        }
+
+        // birth_month
+        if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
+            $qb
+                ->andWhere('EXTRACT(month from c.birth) = :sex')
+                ->setParameter('birth_month', $searchData['birth_month']);
+        }
+
+        // birth
+        if (!empty($searchData['birth_start']) && $searchData['birth_start']) {
+            $date = $searchData['birth_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.birth >= :birth_start')
+                ->setParameter('birth_start', $date);
+        }
+        if (!empty($searchData['birth_end']) && $searchData['birth_end']) {
+            $date = $searchData['birth_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.birth < :birth_end')
+                ->setParameter('birth_end', $date);
+        }
+
+        // email
+        if (!empty($searchData['email']) && $searchData['email']) {
+            $qb
+                ->andWhere('c.email = :email')
+                ->setParameter('email', $searchData['email']);
+        }
+
+        // tel
+        if (!empty($searchData['tel01']) && $searchData['tel01']) {
+            $qb
+                ->andWhere('c.tel01 = :tel01')
+                ->setParameter('tel01', $searchData['tel01']);
+        }
+        if (!empty($searchData['tel02']) && $searchData['tel02']) {
+            $qb
+                ->andWhere('c.tel02 = :tel02')
+                ->setParameter('tel02', $searchData['tel02']);
+        }
+        if (!empty($searchData['tel03']) && $searchData['tel03']) {
+            $qb
+                ->andWhere('c.tel03 = :tel03')
+                ->setParameter('tel03', $searchData['tel03']);
+        }
+
+        // job
+        if (!empty($searchData['job']) && count($searchData['job']) > 0) {
+            $jobs = array();
+            foreach ($searchData['job'] as $job) {
+                $jobs[] = $job->getId();
+            }
+
+            $qb
+                ->andWhere($qb->expr()->in('c.Job', ':jobs'))
+                ->setParameter('jobs', $jobs);
+        }
+
+        // buy_total
+        if (!empty($searchData['buy_total_start']) && $searchData['buy_total_start']) {
+            $qb
+                ->andWhere('c.buy_total >= :buy_total_start')
+                ->setParameter('buy_total_start', $searchData['buy_total_start']);
+        }
+        if (!empty($searchData['buy_total_end']) && $searchData['buy_total_end']) {
+            $qb
+                ->andWhere('c.buy_total <= :buy_total_end')
+                ->setParameter('buy_total_end', $searchData['buy_total_end']);
+        }
+
+        // buy_times
+        if (!empty($searchData['buy_times_start']) && $searchData['buy_times_start']) {
+            $qb
+                ->andWhere('c.buy_times >= :buy_times_start')
+                ->setParameter('buy_times_start', $searchData['buy_times_start']);
+        }
+        if (!empty($searchData['buy_times_end']) && $searchData['buy_times_end']) {
+            $qb
+                ->andWhere('c.buy_times <= :buy_times_end')
+                ->setParameter('buy_times_end', $searchData['buy_times_end']);
+        }
+
+        // register
+        if (!empty($searchData['register_start']) && $searchData['register_start']) {
+            $date = $searchData['register_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.update_date >= :register_start')
+                ->setParameter('register_start', $date);
+        }
+        if (!empty($searchData['register_end']) && $searchData['register_end']) {
+            $date = $searchData['register_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.update_date < :register_end')
+                ->setParameter('register_end', $date);
+        }
+
+        // last_buy
+        if (!empty($searchData['last_buy_start']) && $searchData['last_buy_start']) {
+            $date = $searchData['last_buy_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.last_buy_date >= :last_buy_start')
+                ->setParameter('last_buy_start', $date);
+        }
+        if (!empty($searchData['last_buy_end']) && $searchData['last_buy_end']) {
+            $date = $searchData['last_buy_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.last_buy_date < :last_buy_end')
+                ->setParameter('last_buy_end', $date);
+        }
+
+        // status
+        if (!empty($searchData['customer_status']) && $searchData['customer_status']) {
+            $qb
+                ->leftJoin('c.Status', 's')
+                ->andWhere('s.id = :status')
+                ->setParameter('status', $searchData['customer_status']);
+        }
+
+        $joinedOrder = false;
+        // buy_product_name
+        if (!empty($searchData['buy_product_name']) && $searchData['buy_product_name']) {
+            $qb
+                ->leftJoin('c.Orders', 'o')
+                ->leftJoin('o.OrderDetails', 'od')
+                ->andWhere('od.product_name LIKE :buy_product_name')
+                ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
+            $joinedOrder = true;
+        }
+
+        // buy_product_code
+        if (!empty($searchData['buy_product_code']) && $searchData['buy_product_code']) {
+            if (!$joinedOrder) {
+                $qb
+                    ->leftJoin('c.Orders', 'o')
+                    ->leftJoin('o.OrderDetails', 'od');
+            }
+            $qb
+                ->andWhere('od.product_code LIKE :buy_product_code')
+                ->setParameter('buy_product_code', '%' . $searchData['buy_product_code'] . '%');
+        }
+
+        // Order By
+        $qb->addOrderBy('c.update_date', 'DESC');
+
+        return $qb;
+    }
+
+    /**
+     * ユニークなシークレットキーを返す
+     * @param $app
+     * @return string
+     */
+    public function getUniqueSecretKey($app)
+    {
+        $unique = md5(uniqid(rand(), 1));
+        $Customer = $app['eccube.repository.customer']->findBy(array(
+            'secret_key' => $unique,
+        ));
+        if (count($Customer) == 0) {
+            return $unique;
+        } else {
+            return $this->getUniqueSecretKey($app);
+        }
+    }
+
+    /**
+     * saltを生成する
+     *
+     * @param $byte
+     * @return string
+     */
+    public function createSalt($byte)
+    {
+        $generator = new SecureRandom();
+
+        return bin2hex($generator->nextBytes($byte));
+    }
+
+    /**
+     * 入力されたパスワードをSaltと暗号化する
+     *
+     * @param $app
+     * @param  Customer $Customer
+     * @return mixed
+     */
+    public function encryptPassword($app, \Eccube\Entity\Customer $Customer)
+    {
+        $encoder = $app['security.encoder_factory']->getEncoder($Customer);
+
+        return $encoder->encodePassword($Customer->getPassword(), $Customer->getSalt());
+    }
+
+    public function getNonActiveCustomerBySecretKey($secret_key)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.del_flg = 0 AND c.secret_key = :secret_key')
+            ->leftJoin('c.Status', 's')
+            ->andWhere('s.id = :status')
+            ->setParameter('secret_key', $secret_key)
+            ->setParameter('status', 1);
+        $query = $qb->getQuery();
+
+        return $query->getSingleResult();
+    }
 }

@@ -1,0 +1,156 @@
+{#
+ This file is part of EC-CUBE
+
+ Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+ http://www.lockon.co.jp/
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ #}
+
+{% extends 'site_main.twig' %}
+
+{% block main %}
+<div id="mypagecolumn">
+    <h2 class="title">{{ title }}</h2>
+    {% include 'Mypage/navi.twig' %}
+    <div id="mycontents_area">
+        <h3 class="title">{{ subtitle }}</h3>
+        <p>下記項目にご入力ください。「<span class="attention">※</span>」印は入力必須項目です。<br />
+            入力後、一番下の「完了ページへ」ボタンをクリックしてください。</p>
+
+        <form name="form1" id="form1" method="post" action="{{ url('mypage_change') }}">
+            {{ form_widget(form._token) }}
+            <table summary="会員登録内容変更">
+
+                <col width="30%" />
+                <col width="70%" />
+                <tr>
+                    <th>お名前<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.name) }}
+                        {{ form_errors(form.name) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>お名前(フリガナ)<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.kana) }}
+                        {{ form_errors(form.kana) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>会社名</th>
+                    <td>
+                        {{ form_widget(form.company_name) }}
+                        {{ form_errors(form.company_name) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>郵便番号<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.zip) }}<br />
+                        {{ form_errors(form.zip) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>住所<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.address) }}<br />
+                        {{ form_errors(form.address) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>電話番号</th>
+                    <td>
+                        {{ form_widget(form.tel) }}<br />
+                        {{ form_errors(form.tel) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>FAX</th>
+                    <td>
+                        {{ form_widget(form.fax) }}<br />
+                        {{ form_errors(form.fax) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールアドレス<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.email) }}<br />
+                        {{ form_errors(form.email) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>性別</th>
+                    <td>
+                        {{ form_widget(form.sex) }}<br />
+                        {{ form_errors(form.sex) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>職業</th>
+                    <td>
+                        {{ form_widget(form.job) }}<br />
+                        {{ form_errors(form.job) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>生年月日</th>
+                    <td>
+                        {{ form_widget(form.birth) }}<br />
+                        {{ form_errors(form.birth) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>希望するパスワード<span class="attention">※</span><br />
+                    </th>
+                    <td>
+                        {{ form_widget(form.password.first, {type: "password"}) }}<br />
+                        {{ form_widget(form.password.second, {type: "password"}) }}
+                        {{ form_errors(form.password.first) }}
+                        <p><span class="attention mini">半角英数字8〜16文字でお願いします。（記号可）</span></p>
+                        <p><span class="attention mini">確認のために2度入力してください。</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>パスワードを忘れた時のヒント<span class="attention">※</span></th>
+                    <td>
+                        質問：{{ form_widget(form.reminder) }}<br />
+                        {{ form_errors(form.reminder) }}<br />
+                        答え：{{ form_widget(form.reminder_answer) }}<br />
+                        {{ form_errors(form.reminder_answer) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>メールマガジンの送付について<span class="attention">※</span></th>
+                    <td>
+                        {{ form_widget(form.mailmaga_flg) }}<br />
+                        {{ form_errors(form.mailmaga_flg) }}<br />
+                    </td>
+                </tr>
+            </table>
+
+            <div class="btn_area">
+                <ul>
+                    <li>
+                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_complete.jpg" alt="完了ページへ" name="mode" value="complete" />
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

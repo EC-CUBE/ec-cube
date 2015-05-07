@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * PaymentOption
  */
@@ -34,11 +32,10 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
      */
     private $Payment;
 
-
     /**
      * Set deliv_id
      *
-     * @param integer $delivId
+     * @param  integer       $delivId
      * @return PaymentOption
      */
     public function setDelivId($delivId)
@@ -51,7 +48,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Get deliv_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelivId()
     {
@@ -61,7 +58,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Set payment_id
      *
-     * @param integer $paymentId
+     * @param  integer       $paymentId
      * @return PaymentOption
      */
     public function setPaymentId($paymentId)
@@ -74,7 +71,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Get payment_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getPaymentId()
     {
@@ -84,7 +81,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer       $rank
      * @return PaymentOption
      */
     public function setRank($rank)
@@ -97,7 +94,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -107,7 +104,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Set Deliv
      *
-     * @param \Eccube\Entity\Deliv $deliv
+     * @param  \Eccube\Entity\Deliv $deliv
      * @return PaymentOption
      */
     public function setDeliv(\Eccube\Entity\Deliv $deliv)
@@ -120,7 +117,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Get Deliv
      *
-     * @return \Eccube\Entity\Deliv 
+     * @return \Eccube\Entity\Deliv
      */
     public function getDeliv()
     {
@@ -130,7 +127,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Set Payment
      *
-     * @param \Eccube\Entity\Payment $payment
+     * @param  \Eccube\Entity\Payment $payment
      * @return PaymentOption
      */
     public function setPayment(\Eccube\Entity\Payment $payment)
@@ -143,7 +140,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Get Payment
      *
-     * @return \Eccube\Entity\Payment 
+     * @return \Eccube\Entity\Payment
      */
     public function getPayment()
     {

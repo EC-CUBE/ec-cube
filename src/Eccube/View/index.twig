@@ -1,0 +1,9 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+    <div id="main_image">
+        <a href="{{ path('product_detail', { productId : 1 }) }}">
+            <img class="hover_change_image" src="{{ app.config.tpl }}img/banner/bnr_top_main.jpg" alt="詳細はこちら" />
+        </a>
+    </div>
+{% endblock %}

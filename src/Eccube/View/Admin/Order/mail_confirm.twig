@@ -1,0 +1,34 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+<form name="form1" id="form1" method="post" action="{{ path('admin_order_mail', {'orderId' : Order.id}) }}">
+    <input type="hidden" name="mode" value=""/>
+    {{ form_widget(form._token) }}
+    {{ form_widget(form.template) }}
+    {{ form_widget(form.header) }}
+    {{ form_widget(form.footer) }}
+
+    <div id="order" class="contents-main">
+        <h2>メール配信</h2>
+
+        <table class="form">
+            <tr>
+                <th>件名</th>
+                <td>{{ form_widget(form.subject) }}</td>
+            </tr>
+            <tr>
+                <th>本文</th>
+                <td>{{ body|raw|nl2br }}</td>
+            </tr>
+        </table>
+
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('return', '', ''); return false;"><span class="btn-prev">前のページへ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'send', '', ''); return false;"><span class="btn-next">メール送信</span></a></li>
+            </ul>
+        </div>
+    </div>
+</form>
+{% endblock %}

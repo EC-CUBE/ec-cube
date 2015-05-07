@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * RecommendProduct
  */
@@ -45,15 +43,24 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var \Eccube\Entity\Product
+     */
+    private $RecommendedProduct;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
+
+    /**
      * @var \Eccube\Entity\Member
      */
     private $Creator;
 
-
     /**
      * Set product_id
      *
-     * @param integer $productId
+     * @param  integer          $productId
      * @return RecommendProduct
      */
     public function setProductId($productId)
@@ -66,7 +73,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductId()
     {
@@ -76,7 +83,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set recommend_product_id
      *
-     * @param integer $recommendProductId
+     * @param  integer          $recommendProductId
      * @return RecommendProduct
      */
     public function setRecommendProductId($recommendProductId)
@@ -89,7 +96,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get recommend_product_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getRecommendProductId()
     {
@@ -99,7 +106,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer          $rank
      * @return RecommendProduct
      */
     public function setRank($rank)
@@ -112,7 +119,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -122,7 +129,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment
      *
-     * @param string $comment
+     * @param  string           $comment
      * @return RecommendProduct
      */
     public function setComment($comment)
@@ -135,7 +142,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -145,7 +152,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set status
      *
-     * @param integer $status
+     * @param  integer          $status
      * @return RecommendProduct
      */
     public function setStatus($status)
@@ -158,7 +165,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -168,7 +175,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime        $createDate
      * @return RecommendProduct
      */
     public function setCreateDate($createDate)
@@ -181,7 +188,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -191,7 +198,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime        $updateDate
      * @return RecommendProduct
      */
     public function setUpdateDate($updateDate)
@@ -204,7 +211,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -212,9 +219,55 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set RecommendedProduct
+     *
+     * @param  \Eccube\Entity\Product $recommendedProduct
+     * @return RecommendProduct
+     */
+    public function setRecommendedProduct(\Eccube\Entity\Product $recommendedProduct)
+    {
+        $this->RecommendedProduct = $recommendedProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get RecommendedProduct
+     *
+     * @return \Eccube\Entity\Product
+     */
+    public function getRecommendedProduct()
+    {
+        return $this->RecommendedProduct;
+    }
+
+    /**
+     * Set Product
+     *
+     * @param  \Eccube\Entity\Product $product
+     * @return RecommendProduct
+     */
+    public function setProduct(\Eccube\Entity\Product $product)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->Product;
+    }
+
+    /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return RecommendProduct
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
@@ -227,7 +280,7 @@ class RecommendProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

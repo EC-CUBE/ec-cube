@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Csv
  */
@@ -69,11 +67,10 @@ class Csv extends \Eccube\Entity\AbstractEntity
      */
     private $error_check_types;
 
-
     /**
      * Get no
      *
-     * @return integer 
+     * @return integer
      */
     public function getNo()
     {
@@ -83,7 +80,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set csv_id
      *
-     * @param integer $csvId
+     * @param  integer $csvId
      * @return Csv
      */
     public function setCsvId($csvId)
@@ -96,7 +93,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get csv_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCsvId()
     {
@@ -106,7 +103,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set col
      *
-     * @param string $col
+     * @param  string $col
      * @return Csv
      */
     public function setCol($col)
@@ -119,7 +116,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get col
      *
-     * @return string 
+     * @return string
      */
     public function getCol()
     {
@@ -129,7 +126,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set disp_name
      *
-     * @param string $dispName
+     * @param  string $dispName
      * @return Csv
      */
     public function setDispName($dispName)
@@ -142,7 +139,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get disp_name
      *
-     * @return string 
+     * @return string
      */
     public function getDispName()
     {
@@ -152,7 +149,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer $rank
      * @return Csv
      */
     public function setRank($rank)
@@ -165,7 +162,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -175,7 +172,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set rw_flg
      *
-     * @param integer $rwFlg
+     * @param  integer $rwFlg
      * @return Csv
      */
     public function setRwFlg($rwFlg)
@@ -188,7 +185,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get rw_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getRwFlg()
     {
@@ -198,7 +195,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set status
      *
-     * @param integer $status
+     * @param  integer $status
      * @return Csv
      */
     public function setStatus($status)
@@ -211,7 +208,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -221,7 +218,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Csv
      */
     public function setCreateDate($createDate)
@@ -234,7 +231,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -244,7 +241,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Csv
      */
     public function setUpdateDate($updateDate)
@@ -257,7 +254,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -267,7 +264,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set mb_convert_kana_option
      *
-     * @param string $mbConvertKanaOption
+     * @param  string $mbConvertKanaOption
      * @return Csv
      */
     public function setMbConvertKanaOption($mbConvertKanaOption)
@@ -280,7 +277,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get mb_convert_kana_option
      *
-     * @return string 
+     * @return string
      */
     public function getMbConvertKanaOption()
     {
@@ -290,7 +287,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set size_const_type
      *
-     * @param string $sizeConstType
+     * @param  string $sizeConstType
      * @return Csv
      */
     public function setSizeConstType($sizeConstType)
@@ -303,7 +300,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get size_const_type
      *
-     * @return string 
+     * @return string
      */
     public function getSizeConstType()
     {
@@ -313,7 +310,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Set error_check_types
      *
-     * @param string $errorCheckTypes
+     * @param  string $errorCheckTypes
      * @return Csv
      */
     public function setErrorCheckTypes($errorCheckTypes)
@@ -326,7 +323,7 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * Get error_check_types
      *
-     * @return string 
+     * @return string
      */
     public function getErrorCheckTypes()
     {

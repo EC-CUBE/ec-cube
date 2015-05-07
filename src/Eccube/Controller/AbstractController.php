@@ -6,9 +6,9 @@ use Eccube\Application;
 
 class AbstractController
 {
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 
     protected function getBoundForm(Application $app, $type)
     {

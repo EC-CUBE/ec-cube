@@ -43,36 +43,43 @@
         "pear-pear.php.net/XML_Serializer" : "*",
         "pear-pear.php.net/XML_Util" : "*",
         "silex/web-profiler": "~1.0",
-        "symfony/monolog-bridge": "~2.4",
-        "symfony/twig-bridge": "~2.4",
-        "symfony/finder": "~2.4",
-        "symfony/yaml": "~2.4",
-        "symfony/form": "~2.4",
-        "symfony/validator": "~2.4",
-        "symfony/translation": "~2.4",
-        "symfony/config": "~2.4",
-        "symfony/security": "~2.4",
+        "symfony/monolog-bridge": "~2.3",
+        "symfony/twig-bridge": "~2.3",
+        "symfony/finder": "~2.3",
+        "symfony/yaml": "~2.3",
+        "symfony/form": "~2.3",
+        "symfony/validator": "~2.3",
+        "symfony/translation": "~2.3",
+        "symfony/config": "~2.3",
+        "symfony/security": "~2.3",
+        "symfony/doctrine-bridge": "~2.3",
         "dflydev/doctrine-orm-service-provider": "*",
         "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
-        "symfony/doctrine-bridge": "~2.3",
-        "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
+        "saxulum/saxulum-webprofiler-provider": "*",
+        "swiftmailer/swiftmailer": "5.*",
+        "knplabs/knp-components": "*"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
-        "phpunit/phpunit": "3.7.*",
+        "phpunit/phpunit": "4.6.*",
         "phing/phing": "2.*",
-        "symfony/browser-kit": ">=2.3,<2.4-dev",
-        "symfony/css-selector": ">=2.3,<2.4-dev"
+        "symfony/browser-kit": "~2.3",
+        "symfony/css-selector": "~2.3"
     },
     "autoload": {
-        "psr-0": {
-            "Eccube": "src/",
-            "Plugin": "app/"
+        "psr-4": {
+            "Eccube\\": "src/Eccube",
+            "Plugin\\": "app/Plugin"
         },
         "classmap": [
             "src/fpdf/fpdf.php",
             "src/fpdi",
             "src/gdthumb"
         ]
+    },
+    "autoload-dev" : {
+        "psr-4": {
+            "Eccube\\Tests\\" : "tests/Eccube/Tests"
+        }
     }
 }

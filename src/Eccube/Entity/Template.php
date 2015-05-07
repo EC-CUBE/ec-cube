@@ -2,13 +2,19 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Template
  */
 class Template extends \Eccube\Entity\AbstractEntity
 {
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTemplateName();
+    }
+
     /**
      * @var string
      */
@@ -34,11 +40,10 @@ class Template extends \Eccube\Entity\AbstractEntity
      */
     private $update_date;
 
-
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -48,7 +53,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Set device_type_id
      *
-     * @param integer $deviceTypeId
+     * @param  integer  $deviceTypeId
      * @return Template
      */
     public function setDeviceTypeId($deviceTypeId)
@@ -61,7 +66,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Get device_type_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getDeviceTypeId()
     {
@@ -71,7 +76,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Set template_name
      *
-     * @param string $templateName
+     * @param  string   $templateName
      * @return Template
      */
     public function setTemplateName($templateName)
@@ -84,7 +89,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Get template_name
      *
-     * @return string 
+     * @return string
      */
     public function getTemplateName()
     {
@@ -94,7 +99,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Template
      */
     public function setCreateDate($createDate)
@@ -107,7 +112,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -117,7 +122,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Template
      */
     public function setUpdateDate($updateDate)
@@ -130,10 +135,23 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set code
+     *
+     * @param  string   $code
+     * @return Template
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
     }
 }

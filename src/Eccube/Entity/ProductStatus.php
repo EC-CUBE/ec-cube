@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProductStatus
  */
@@ -39,11 +37,10 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Set product_status_id
      *
-     * @param integer $productStatusId
+     * @param  integer       $productStatusId
      * @return ProductStatus
      */
     public function setProductStatusId($productStatusId)
@@ -56,7 +53,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_status_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductStatusId()
     {
@@ -66,7 +63,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_id
      *
-     * @param integer $productId
+     * @param  integer       $productId
      * @return ProductStatus
      */
     public function setProductId($productId)
@@ -79,7 +76,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductId()
     {
@@ -89,7 +86,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime     $createDate
      * @return ProductStatus
      */
     public function setCreateDate($createDate)
@@ -102,7 +99,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -112,7 +109,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime     $updateDate
      * @return ProductStatus
      */
     public function setUpdateDate($updateDate)
@@ -125,7 +122,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -135,7 +132,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer       $delFlg
      * @return ProductStatus
      */
     public function setDelFlg($delFlg)
@@ -148,7 +145,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -158,7 +155,7 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return ProductStatus
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
@@ -171,10 +168,93 @@ class ProductStatus extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
+
+    /**
+     * @var \Eccube\Entity\Master\Status
+     */
+    private $Status;
+
+    /**
+     * @var \Eccube\Entity\Master\StatusImage
+     */
+    private $StatusImage;
+
+    /**
+     * Set Product
+     *
+     * @param  \Eccube\Entity\Product $product
+     * @return ProductStatus
+     */
+    public function setProduct(\Eccube\Entity\Product $product)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->Product;
+    }
+
+    /**
+     * Set Status
+     *
+     * @param  \Eccube\Entity\Master\Status $status
+     * @return ProductStatus
+     */
+    public function setStatus(\Eccube\Entity\Master\Status $status)
+    {
+        $this->Status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get Status
+     *
+     * @return \Eccube\Entity\Master\Status
+     */
+    public function getStatus()
+    {
+        return $this->Status;
+    }
+
+    /**
+     * Set StatusImage
+     *
+     * @param  \Eccube\Entity\Master\StatusImage $statusImage
+     * @return ProductStatus
+     */
+    public function setStatusImage(\Eccube\Entity\Master\StatusImage $statusImage)
+    {
+        $this->StatusImage = $statusImage;
+
+        return $this;
+    }
+
+    /**
+     * Get StatusImage
+     *
+     * @return \Eccube\Entity\Master\StatusImage
+     */
+    public function getStatusImage()
+    {
+        return $this->StatusImage;
     }
 }

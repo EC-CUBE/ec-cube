@@ -2,16 +2,14 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Test\TypeTestCase;
-
-class PointTypeTest extends TypeTestCase
+class PointTypeTest extends AbstractTypeTestCase
 {
 
     /** @var \Eccube\Application */
-    private $app;
+    protected $app;
 
     /** @var array デフォルト値（正常系）を設定 */
-    private $formData = array(
+    protected $formData = array(
         'point_rate' => 10,
         'welcome_point' => 10,
     );
@@ -19,10 +17,6 @@ class PointTypeTest extends TypeTestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->app = new \Eccube\Application(array(
-            'env' => 'test',
-        ));
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
@@ -44,35 +38,35 @@ class PointTypeTest extends TypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    
+
     public function testInvalidPointRate_Min()
     {
         $this->formData['point_rate'] = -1;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    
+
     public function testInvalidPointRate_Max()
     {
         $this->formData['point_rate'] = 101;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    
+
     public function testInvalidWelcomePoint_NotBlank()
     {
         $this->formData['welcome_point'] = '';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    
+
     public function testInvalidWelcomePoint_Min()
     {
         $this->formData['welcome_point'] = -1;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    
+
     public function testInvalidWelcomePoint_Max()
     {
         $this->formData['point_rate'] = 1000000000;

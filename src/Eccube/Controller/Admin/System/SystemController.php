@@ -6,7 +6,7 @@ use Eccube\Application;
 
 class SystemController
 {
-    
+
     private $maintitle;
 
     private $subtitle;
@@ -16,10 +16,10 @@ class SystemController
         $this->maintitle = 'システム設定';
         $this->subtitle = 'システム情報';
     }
-    
+
     public function index(Application $app)
-    { 
-         switch ($app['request']->get('mode')) {
+    {
+        switch ($app['request']->get('mode')) {
             case 'info':
                 ob_start();
                 phpinfo();
@@ -27,33 +27,33 @@ class SystemController
                 ob_end_clean();
 
                 return $phpinfo;
-               
-                break;
+
+               break;
             default:
                 break;
         }
-        
+
         $this->arrSystemInfo = $this->getSystemInfo($app);
-        
+
         return $app['twig']->render('Admin/System/system.twig', array(
             'tpl_maintitle' => $this->maintitle,
             'tpl_subtitle'  => $this->subtitle,
             'arrSystemInfo' => $this->arrSystemInfo,
         ));
     }
-    
+
      public function getSystemInfo(Application $app)
-    {
-       $system = $app['eccube.service.system'];
-       $server = $app['request'];
-      
-       $arrSystemInfo = array(
+     {
+        $system = $app['eccube.service.system'];
+        $server = $app['request'];
+
+        $arrSystemInfo = array(
             array('title' => 'EC-CUBE',     'value' => $app['config']['ECCUBE_VERSION']),
             array('title' => 'サーバーOS',    'value' => php_uname()),
             array('title' => 'DBサーバー',    'value' => $system->getDbversion()),
             array('title' => 'WEBサーバー',   'value' => $server->server->get("SERVER_SOFTWARE")),
         );
-        
+
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
         $arrSystemInfo[] = array('title' => 'PHP', 'value' => $value);
 
@@ -70,6 +70,5 @@ class SystemController
         $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $server->headers->get('User-Agent'));
 
         return $arrSystemInfo;
-    }
-
+     }
 }

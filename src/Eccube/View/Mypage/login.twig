@@ -10,7 +10,7 @@
                     <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
                     <div class="inputbox">
                         {% if error %}
-                        <span class="attention">{{ error }}</span>
+                            <span class="attention">{{ error }}</span>
                         {% endif %}
                         <dl class="formlist clearfix">
                             <dt>{{ form_label(form.login_email) }}&nbsp;：</dt>
@@ -57,7 +57,7 @@
                         <div class="btn_area">
                             <ul>
                                 <li>
-                                    <a href="{{ path('entry_kiyaku') }}">
+                                    <a href="{{ path('entry') }}">
                                         <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry.jpg" alt="会員登録をする" />
                                     </a>
                                 </li>

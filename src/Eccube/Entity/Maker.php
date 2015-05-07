@@ -2,13 +2,19 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Maker
  */
 class Maker extends \Eccube\Entity\AbstractEntity
 {
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getName();
+    }
+
     /**
      * @var integer
      */
@@ -49,11 +55,10 @@ class Maker extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -63,7 +68,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Maker
      */
     public function setName($name)
@@ -76,7 +81,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -86,7 +91,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer $rank
      * @return Maker
      */
     public function setRank($rank)
@@ -99,7 +104,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -109,7 +114,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Maker
      */
     public function setCreateDate($createDate)
@@ -122,7 +127,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -132,7 +137,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Maker
      */
     public function setUpdateDate($updateDate)
@@ -145,7 +150,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -155,7 +160,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Maker
      */
     public function setDelFlg($delFlg)
@@ -168,7 +173,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -178,7 +183,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Set MakerCount
      *
-     * @param \Eccube\Entity\MakerCount $makerCount
+     * @param  \Eccube\Entity\MakerCount $makerCount
      * @return Maker
      */
     public function setMakerCount(\Eccube\Entity\MakerCount $makerCount = null)
@@ -191,7 +196,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Get MakerCount
      *
-     * @return \Eccube\Entity\MakerCount 
+     * @return \Eccube\Entity\MakerCount
      */
     public function getMakerCount()
     {
@@ -201,7 +206,7 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return Maker
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -214,10 +219,55 @@ class Maker extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {
         return $this->Creator;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $Products;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->Products = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add Products
+     *
+     * @param  \Eccube\Entity\Product $products
+     * @return Maker
+     */
+    public function addProduct(\Eccube\Entity\Product $products)
+    {
+        $this->Products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove Products
+     *
+     * @param \Eccube\Entity\Product $products
+     */
+    public function removeProduct(\Eccube\Entity\Product $products)
+    {
+        $this->Products->removeElement($products);
+    }
+
+    /**
+     * Get Products
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProducts()
+    {
+        return $this->Products;
     }
 }

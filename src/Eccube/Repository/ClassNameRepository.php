@@ -12,4 +12,152 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClassNameRepository extends EntityRepository
 {
+    public function getList()
+    {
+        $qb = $this->createQueryBuilder('cn')
+            ->orderBy('cn.rank', 'DESC');
+        $ClassNames = $qb->getQuery()
+            ->getResult();
+
+        return $ClassNames;
+    }
+
+    /**
+     * @param  \Eccube\Entity\ClassName $ClassName
+     * @return void
+     */
+    public function up(\Eccube\Entity\ClassName $ClassName)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            $rank = $ClassName->getRank();
+
+            //
+            $ClassName2 = $this->findOneBy(array('rank' => $rank + 1));
+            if (!$ClassName2) {
+                throw new \Exception();
+            }
+            $ClassName2->setRank($rank);
+            $em->persist($ClassName);
+
+            // ClassName更新
+            $ClassName->setRank($rank + 1);
+
+            $em->persist($ClassName);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\ClassName $ClassName
+     * @return bool
+     */
+    public function down(\Eccube\Entity\ClassName $ClassName)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            $rank = $ClassName->getRank();
+
+            //
+            $ClassName2 = $this->findOneBy(array('rank' => $rank - 1));
+            if (!$ClassName2) {
+                throw new \Exception();
+            }
+            $ClassName2->setRank($rank);
+            $em->persist($ClassName);
+
+            // ClassName更新
+            $ClassName->setRank($rank - 1);
+
+            $em->persist($ClassName);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\ClassName $ClassName
+     * @return bool
+     */
+    public function save(\Eccube\Entity\ClassName $ClassName)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            if (!$ClassName->getId()) {
+                $rank = $this->createQueryBuilder('cn')
+                    ->select('MAX(cn.rank)')
+                    ->getQuery()
+                    ->getSingleScalarResult();
+                if (!$rank) {
+                    $rank = 0;
+                }
+                $ClassName->setRank($rank + 1);
+                $ClassName->setDelFlg(0);
+            }
+
+            $em->persist($ClassName);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\ClassName $ClassName
+     * @return bool
+     */
+    public function delete(\Eccube\Entity\ClassName $ClassName)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            if ($ClassName->getClassCategories()->count() > 0) {
+                throw new \Exception();
+            }
+
+            $rank = $ClassName->getRank();
+            $em->createQueryBuilder()
+                ->update('Eccube\Entity\ClassName', 'cn')
+                ->set('cn.rank', 'cn.rank - 1')
+                ->where('cn.rank > :rank')->setParameter('rank', $rank)
+                ->getQuery()
+                ->execute();
+
+            $ClassName->setDelFlg(1);
+            $em->persist($ClassName);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+
+            return false;
+        }
+
+        return true;
+    }
 }

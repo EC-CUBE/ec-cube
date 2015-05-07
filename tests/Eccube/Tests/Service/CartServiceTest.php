@@ -9,143 +9,142 @@ class CartServiceTest extends \PHPUnit_Framework_TestCase
 {
     private $app;
 
-    private $cart;
-
     public function setUp()
     {
         $this->app = new Application(array(
             'env' => 'test'
         ));
+        $this->app->boot();
     }
 
     public function testUnlock()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $cart->unlock();
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->unlock();
 
-        $this->assertFalse($cart->isLocked());
+        $this->assertFalse($cartService->isLocked());
     }
 
     public function testLock()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $cart->lock();
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->lock();
 
-        $this->assertTrue($cart->isLocked());
+        $this->assertTrue($cartService->isLocked());
     }
 
     public function testClear_PreOrderId()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $cart->clear();
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->clear();
 
-        $this->assertNull($cart->getPreOrderId());
+        $this->assertNull($cartService->getPreOrderId());
     }
 
     public function testClear_Lock()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $cart->clear();
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->clear();
 
-        $this->assertFalse($cart->isLocked());
+        $this->assertFalse($cartService->isLocked());
+        $this->assertCount(0, $cartService->getCart()->getCartItems());
     }
 
     public function testClear_Products()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $cart->clear();
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->addProduct(1);
+        $cartService->clear();
 
-        $this->assertCount(0, $cart->getProducts());
+        $this->assertCount(0, $cartService->getCart()->getCartItems());
     }
 
     public function testAddProducts_ProductClassEntity()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $cart->addProduct(1);
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->addProduct(1);
 
-        $products = $cart->getProducts();
-        $productClassId = $products[1]['ProductClass']->getId();
+        $CartItems = $cartService->getCart()->getCartItems();
 
-        $this->assertEquals(1, $productClassId);
+        $this->assertEquals('Eccube\Entity\ProductClass', $CartItems[0]->getClassName());
+        $this->assertEquals(1, $CartItems[0]->getClassId());
     }
 
     public function testAddProducts_Quantity()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $this->assertCount(0, $cart->getProducts());
+        $cartService = $this->app['eccube.service.cart'];
+        $this->assertCount(0, $cartService->getCart()->getCartItems());
 
-        $cart->addProduct(1);
-        $this->assertEquals(1, $cart->getProductQuantity(1));
+        $cartService->addProduct(1);
+        $this->assertEquals(1, $cartService->getProductQuantity(1));
     }
 
     public function testUpProductQuantity()
     {
-        $cart = $this->app['eccube.service.cart'];
-        $cart->setProductQuantity(1, 1);
-        $cart->upProductQuantity(1);
+        $cartService = $this->app['eccube.service.cart'];
+        $cartService->setProductQuantity(1, 1);
+        $cartService->upProductQuantity(1);
 
-        $quantity = $cart->getProductQuantity(1);
+        $quantity = $cartService->getProductQuantity(1);
 
         $this->assertEquals(2, $quantity);
     }
 
     public function testDownProductQuantity()
     {
-        $cart = $this->app['eccube.service.cart'];
+        $cartService = $this->app['eccube.service.cart'];
 
-        $cart->setProductQuantity(1, 2);
-        $cart->downProductQuantity(1);
+        $cartService->setProductQuantity(1, 2);
+        $cartService->downProductQuantity(1);
 
-        $quantity = $cart->getProductQuantity(1);
+        $quantity = $cartService->getProductQuantity(1);
 
         $this->assertEquals(1, $quantity);
     }
 
     public function testDownProductQuantity_Remove()
     {
-        $cart = $this->app['eccube.service.cart'];
+        $cartService = $this->app['eccube.service.cart'];
 
-        $cart->setProductQuantity(1, 1);
-        $cart->downProductQuantity(1);
+        $cartService->setProductQuantity(1, 1);
+        $cartService->downProductQuantity(1);
 
-        $quantity = $cart->getProductQuantity(1);
-
-        $this->assertCount(0, $cart->getProducts());
+        $quantity = $cartService->getProductQuantity(1);
+        $this->assertEquals(0, $quantity);
+        $this->assertCount(0, $cartService->getCart()->getCartItems());
     }
 
     public function testRemoveProduct()
     {
-        $cart = $this->app['eccube.service.cart'];
+        $cartService = $this->app['eccube.service.cart'];
 
-        $cart->setProductQuantity(1, 2);
-        $cart->removeProduct(1);
+        $cartService->setProductQuantity(1, 2);
+        $cartService->removeProduct(1);
 
-        $this->assertCount(0, $cart->getProducts());
+        $this->assertCount(0, $cartService->getCart()->getCartItems());
     }
 
     public function testGetErrors()
     {
-        $cart = $this->app['eccube.service.cart'];
+        $cartService = $this->app['eccube.service.cart'];
 
-        $this->assertCount(0, $cart->getErrors());
-        
-        $cart->setError('foo');
-        $cart->setError('bar');
-        
-        $this->assertCount(2, $cart->getErrors());
+        $this->assertCount(0, $cartService->getErrors());
+
+        $cartService->addError('foo');
+        $cartService->addError('bar');
+
+        $this->assertCount(2, $cartService->getErrors());
     }
 
     public function testGetMessages()
     {
-        $cart = $this->app['eccube.service.cart'];
+        $cartService = $this->app['eccube.service.cart'];
+        $this->assertCount(0, $cartService->getMessages());
 
-        $cart = $this->app['eccube.service.cart'];
-        $this->assertCount(0, $cart->getMessages());
-        
-        $cart->setMessage('foo');
-        $cart->setMessage('bar');
-        
-        $this->assertCount(2, $cart->getMessages());
+        $cartService->setMessage('foo');
+        $cartService->setMessage('bar');
+
+        $this->assertCount(2, $cartService->getMessages());
     }
 
 }

@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class MailtemplateRepository extends EntityRepository
 {
+    public function findOrCreate($id)
+    {
+        if ($id == 0) {
+            $Creator = $this
+                ->getEntityManager()
+                ->getRepository('\Eccube\Entity\Member')
+                ->find(2);
+
+            $Mailtemplate = new \Eccube\Entity\Mailtemplate();
+            $Mailtemplate
+                ->setDelFlg(0)
+                ->setCreator($Creator)
+            ;
+
+        } else {
+            $Mailtemplate = $this->find($id);
+
+        }
+
+        return $Mailtemplate;
+    }
 }

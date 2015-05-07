@@ -12,4 +12,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class DelivRepository extends EntityRepository
 {
+    public function findOrCreate($id)
+    {
+        if ($id == 0) {
+            $Creator = $this
+                ->getEntityManager()
+                ->getRepository('\Eccube\Entity\Member')
+                ->find(2);
+
+            $rank = $this
+                ->findOneBy(array(), array('rank' => 'DESC'))
+                ->getRank() + 1;
+
+            $Deliv = new \Eccube\Entity\Deliv();
+            $Deliv
+                ->setRank($rank)
+                ->setStatus(1)
+                ->setDelFlg(0)
+                ->setCreator($Creator)
+                ->setProductTypeId(1)
+            ;
+
+        } else {
+            $Deliv = $this->find($id);
+
+        }
+
+        return $Deliv;
+    }
 }

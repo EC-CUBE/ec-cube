@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * DelivTime
  */
@@ -29,11 +27,10 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
      */
     private $Deliv;
 
-
     /**
      * Set deliv_id
      *
-     * @param integer $delivId
+     * @param  integer   $delivId
      * @return DelivTime
      */
     public function setDelivId($delivId)
@@ -46,7 +43,7 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
     /**
      * Get deliv_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelivId()
     {
@@ -56,7 +53,7 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
     /**
      * Set time_id
      *
-     * @param integer $timeId
+     * @param  integer   $timeId
      * @return DelivTime
      */
     public function setTimeId($timeId)
@@ -69,7 +66,7 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
     /**
      * Get time_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getTimeId()
     {
@@ -79,7 +76,7 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
     /**
      * Set deliv_time
      *
-     * @param string $delivTime
+     * @param  string    $delivTime
      * @return DelivTime
      */
     public function setDelivTime($delivTime)
@@ -92,7 +89,7 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
     /**
      * Get deliv_time
      *
-     * @return string 
+     * @return string
      */
     public function getDelivTime()
     {
@@ -102,7 +99,7 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
     /**
      * Set Deliv
      *
-     * @param \Eccube\Entity\Deliv $deliv
+     * @param  \Eccube\Entity\Deliv $deliv
      * @return DelivTime
      */
     public function setDeliv(\Eccube\Entity\Deliv $deliv = null)
@@ -115,7 +112,7 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
     /**
      * Get Deliv
      *
-     * @return \Eccube\Entity\Deliv 
+     * @return \Eccube\Entity\Deliv
      */
     public function getDeliv()
     {

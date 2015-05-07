@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * DelivFee
  */
@@ -34,11 +32,10 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
      */
     private $Pref;
 
-
     /**
      * Set deliv_id
      *
-     * @param integer $delivId
+     * @param  integer  $delivId
      * @return DelivFee
      */
     public function setDelivId($delivId)
@@ -51,7 +48,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Get deliv_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelivId()
     {
@@ -61,7 +58,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Set fee_id
      *
-     * @param integer $feeId
+     * @param  integer  $feeId
      * @return DelivFee
      */
     public function setFeeId($feeId)
@@ -74,7 +71,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Get fee_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getFeeId()
     {
@@ -84,7 +81,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Set fee
      *
-     * @param string $fee
+     * @param  string   $fee
      * @return DelivFee
      */
     public function setFee($fee)
@@ -97,7 +94,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Get fee
      *
-     * @return string 
+     * @return string
      */
     public function getFee()
     {
@@ -107,7 +104,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Set Deliv
      *
-     * @param \Eccube\Entity\Deliv $deliv
+     * @param  \Eccube\Entity\Deliv $deliv
      * @return DelivFee
      */
     public function setDeliv(\Eccube\Entity\Deliv $deliv = null)
@@ -120,7 +117,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Get Deliv
      *
-     * @return \Eccube\Entity\Deliv 
+     * @return \Eccube\Entity\Deliv
      */
     public function getDeliv()
     {
@@ -130,7 +127,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Set Pref
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param  \Eccube\Entity\Master\Pref $pref
      * @return DelivFee
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref)
@@ -143,7 +140,7 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {

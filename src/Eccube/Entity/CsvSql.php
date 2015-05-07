@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * CsvSql
  */
@@ -34,11 +32,10 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
      */
     private $update_date;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -48,7 +45,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Set sql_name
      *
-     * @param string $sqlName
+     * @param  string $sqlName
      * @return CsvSql
      */
     public function setSqlName($sqlName)
@@ -61,7 +58,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Get sql_name
      *
-     * @return string 
+     * @return string
      */
     public function getSqlName()
     {
@@ -71,7 +68,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Set csv_sql
      *
-     * @param string $csvSql
+     * @param  string $csvSql
      * @return CsvSql
      */
     public function setCsvSql($csvSql)
@@ -84,7 +81,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Get csv_sql
      *
-     * @return string 
+     * @return string
      */
     public function getCsvSql()
     {
@@ -94,7 +91,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return CsvSql
      */
     public function setCreateDate($createDate)
@@ -107,7 +104,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -117,7 +114,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return CsvSql
      */
     public function setUpdateDate($updateDate)
@@ -130,7 +127,7 @@ class CsvSql extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {

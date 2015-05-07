@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * CategoryCount
  */
@@ -29,11 +27,10 @@ class CategoryCount extends \Eccube\Entity\AbstractEntity
      */
     private $Category;
 
-
     /**
      * Get category_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCategoryId()
     {
@@ -43,7 +40,7 @@ class CategoryCount extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_count
      *
-     * @param integer $productCount
+     * @param  integer       $productCount
      * @return CategoryCount
      */
     public function setProductCount($productCount)
@@ -56,7 +53,7 @@ class CategoryCount extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_count
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductCount()
     {
@@ -66,7 +63,7 @@ class CategoryCount extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime     $createDate
      * @return CategoryCount
      */
     public function setCreateDate($createDate)
@@ -79,7 +76,7 @@ class CategoryCount extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -89,7 +86,7 @@ class CategoryCount extends \Eccube\Entity\AbstractEntity
     /**
      * Set Category
      *
-     * @param \Eccube\Entity\Category $category
+     * @param  \Eccube\Entity\Category $category
      * @return CategoryCount
      */
     public function setCategory(\Eccube\Entity\Category $category = null)
@@ -102,7 +99,7 @@ class CategoryCount extends \Eccube\Entity\AbstractEntity
     /**
      * Get Category
      *
-     * @return \Eccube\Entity\Category 
+     * @return \Eccube\Entity\Category
      */
     public function getCategory()
     {

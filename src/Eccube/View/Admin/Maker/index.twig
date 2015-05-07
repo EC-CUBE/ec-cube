@@ -1,0 +1,62 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+<form name="form1" id="form1" method="post" action="{% if TargetMaker.id %}{{ path('admin_maker_edit', {'makerId': TargetMaker.id}) }}{% else %}{{ path('admin_maker') }}{% endif %}">
+    <div id="products" class="contents-main">
+        <table>
+            {{ form_rest(form)}}
+        </table>
+
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            </ul>
+        </div>
+
+        {% if Makers|length > 0 %}
+        <table class="list">
+            <col width="10%" />
+            <col width="50%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="20%" />
+            <tr>
+                <th>ID</th>
+                <th>メーカー</th>
+                <th class="edit">編集</th>
+                <th class="delete">削除</th>
+                <th>移動</th>
+            </tr>
+            {% for Maker in Makers %}
+                <tr style="background:{% if Maker.id != TargetMaker.id %}#ffffff{% else %}{{ app.config.select_rgb }}{% endif %};">
+                    <td>{{ Maker.id }}</td>
+                    <td>{{ Maker.name }}</td>
+                    <td class="center">
+                        {% if Maker.id != TargetMaker.id %}
+                            <a href="{{ path('admin_maker_edit', {'makerId': Maker.id}) }}">編集</a>
+                        {% else %}
+                            編集中
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {% if Maker.Products|length > 0 %}
+                            -
+                        {% else %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_maker_delete', {'makerId': Maker.id}) }}'); document.form1.submit(); return false;">削除</a>
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {% if loop.first == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_maker_up', {'makerId': Maker.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                        {% endif %}
+                        {% if loop.last == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_maker_down', {'makerId': Maker.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}

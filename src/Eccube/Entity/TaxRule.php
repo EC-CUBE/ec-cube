@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * TaxRule
  */
@@ -12,32 +10,40 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
+    private $rank;
+
+    /**
+     * Set rank
+     *
+     * @param  integer $rank
+     * @return TaxRule
+     */
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
+     * Get rank
+     *
+     * @return integer
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
+
+    /**
+     * @var integer
+     */
     private $id;
 
     /**
-     * @var integer
+     * @var \Eccube\Entity\Master\Taxrule
      */
-    private $country_id;
-
-    /**
-     * @var integer
-     */
-    private $pref_id;
-
-    /**
-     * @var integer
-     */
-    private $product_id;
-
-    /**
-     * @var integer
-     */
-    private $product_class_id;
-
-    /**
-     * @var integer
-     */
-    private $calc_rule;
+    private $Calc_rule;
 
     /**
      * @var string
@@ -74,11 +80,30 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      */
     private $update_date;
 
+    /**
+     * @var \Eccube\Entity\Master\Country
+     */
+    private $Country;
+
+    /**
+     * @var \Eccube\Entity\Master\Pref
+     */
+    private $Pref;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
+
+    /**
+     * @var \Eccube\Entity\ProductClass
+     */
+    private $ProductClass;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -86,124 +111,32 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set country_id
+     * Set Calc_rule
      *
-     * @param integer $countryId
-     * @return TaxRule
-     */
-    public function setCountryId($countryId)
-    {
-        $this->country_id = $countryId;
-
-        return $this;
-    }
-
-    /**
-     * Get country_id
-     *
-     * @return integer 
-     */
-    public function getCountryId()
-    {
-        return $this->country_id;
-    }
-
-    /**
-     * Set pref_id
-     *
-     * @param integer $prefId
-     * @return TaxRule
-     */
-    public function setPrefId($prefId)
-    {
-        $this->pref_id = $prefId;
-
-        return $this;
-    }
-
-    /**
-     * Get pref_id
-     *
-     * @return integer 
-     */
-    public function getPrefId()
-    {
-        return $this->pref_id;
-    }
-
-    /**
-     * Set product_id
-     *
-     * @param integer $productId
-     * @return TaxRule
-     */
-    public function setProductId($productId)
-    {
-        $this->product_id = $productId;
-
-        return $this;
-    }
-
-    /**
-     * Get product_id
-     *
-     * @return integer 
-     */
-    public function getProductId()
-    {
-        return $this->product_id;
-    }
-
-    /**
-     * Set product_class_id
-     *
-     * @param integer $productClassId
-     * @return TaxRule
-     */
-    public function setProductClassId($productClassId)
-    {
-        $this->product_class_id = $productClassId;
-
-        return $this;
-    }
-
-    /**
-     * Get product_class_id
-     *
-     * @return integer 
-     */
-    public function getProductClassId()
-    {
-        return $this->product_class_id;
-    }
-
-    /**
-     * Set calc_rule
-     *
-     * @param integer $calcRule
+     * @param  \Eccube\Entity\Master\Taxrule $calcRule
      * @return TaxRule
      */
     public function setCalcRule($calcRule)
     {
-        $this->calc_rule = $calcRule;
+        $this->Calc_rule = $calcRule;
 
         return $this;
     }
 
     /**
-     * Get calc_rule
+     * Get Calc_rule
      *
-     * @return integer 
+     * @return integer
      */
     public function getCalcRule()
     {
-        return $this->calc_rule;
+        return $this->Calc_rule;
     }
 
     /**
      * Set tax_rate
      *
-     * @param string $taxRate
+     * @param  string  $taxRate
      * @return TaxRule
      */
     public function setTaxRate($taxRate)
@@ -216,7 +149,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_rate
      *
-     * @return string 
+     * @return string
      */
     public function getTaxRate()
     {
@@ -226,7 +159,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set tax_adjust
      *
-     * @param string $taxAdjust
+     * @param  string  $taxAdjust
      * @return TaxRule
      */
     public function setTaxAdjust($taxAdjust)
@@ -239,7 +172,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_adjust
      *
-     * @return string 
+     * @return string
      */
     public function getTaxAdjust()
     {
@@ -249,7 +182,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set apply_date
      *
-     * @param \DateTime $applyDate
+     * @param  \DateTime $applyDate
      * @return TaxRule
      */
     public function setApplyDate($applyDate)
@@ -262,7 +195,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get apply_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getApplyDate()
     {
@@ -272,7 +205,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set member_id
      *
-     * @param integer $memberId
+     * @param  integer $memberId
      * @return TaxRule
      */
     public function setMemberId($memberId)
@@ -285,7 +218,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get member_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getMemberId()
     {
@@ -295,7 +228,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return TaxRule
      */
     public function setDelFlg($delFlg)
@@ -308,7 +241,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -318,7 +251,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return TaxRule
      */
     public function setCreateDate($createDate)
@@ -331,7 +264,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -341,7 +274,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return TaxRule
      */
     public function setUpdateDate($updateDate)
@@ -354,10 +287,102 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set Country
+     *
+     * @param  \Eccube\Entity\Master\Country $country
+     * @return TaxRule
+     */
+    public function setCountry(\Eccube\Entity\Master\Country $country = null)
+    {
+        $this->Country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get Country
+     *
+     * @return \Eccube\Entity\Master\Country
+     */
+    public function getCountry()
+    {
+        return $this->Country;
+    }
+
+    /**
+     * Set Pref
+     *
+     * @param  \Eccube\Entity\Master\Pref $pref
+     * @return TaxRule
+     */
+    public function setPref(\Eccube\Entity\Master\Pref $pref = null)
+    {
+        $this->Pref = $pref;
+
+        return $this;
+    }
+
+    /**
+     * Get Pref
+     *
+     * @return \Eccube\Entity\Master\Pref
+     */
+    public function getPref()
+    {
+        return $this->Pref;
+    }
+
+    /**
+     * Set Product
+     *
+     * @param  \Eccube\Entity\Product $product
+     * @return TaxRule
+     */
+    public function setProduct(\Eccube\Entity\Product $product = null)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->Product;
+    }
+
+    /**
+     * Set ProductClass
+     *
+     * @param  \Eccube\Entity\ProductClass $productClass
+     * @return TaxRule
+     */
+    public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
+    {
+        $this->ProductClass = $productClass;
+
+        return $this;
+    }
+
+    /**
+     * Get ProductClass
+     *
+     * @return \Eccube\Entity\ProductClass
+     */
+    public function getProductClass()
+    {
+        return $this->ProductClass;
     }
 }

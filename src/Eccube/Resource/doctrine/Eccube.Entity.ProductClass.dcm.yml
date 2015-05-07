@@ -32,13 +32,14 @@ Eccube\Entity\ProductClass:
 #            nullable: false
 #            unsigned: false
 #            default: '0'
-        product_type_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            default: '0'
-        product_code:
+#        product_type_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
+#            default: '0'
+        code:
             type: text
+            column: product_code
             nullable: true
             fixed: false
         stock:
@@ -47,10 +48,10 @@ Eccube\Entity\ProductClass:
             precision: 10
             scale: 0
         stock_unlimited:
-            type: smallint
+            type: boolean
             nullable: false
             unsigned: false
-            default: '0'
+            default: false
         sale_limit:
             type: decimal
             nullable: true
@@ -108,15 +109,22 @@ Eccube\Entity\ProductClass:
                 name: product_id
                 referencedColumnName: product_id
                 nullable: false
+        ProductType:
+            targetEntity: Eccube\Entity\Master\ProductType
+            inversedBy: ProductClasses
+            joinColumn:
+                name: product_type_id
+                referencedColumnName: id
+                nullable: false
         ClassCategory1:
             targetEntity: Eccube\Entity\ClassCategory
-            inversedBy: ProductClasses
+            inversedBy: ProductClasses1
             joinColumn:
                 name: classcategory_id1
                 referencedColumnName: classcategory_id
         ClassCategory2:
             targetEntity: Eccube\Entity\ClassCategory
-            inversedBy: ProductClasses
+            inversedBy: ProductClasses2
             joinColumn:
                 name: classcategory_id2
                 referencedColumnName: classcategory_id

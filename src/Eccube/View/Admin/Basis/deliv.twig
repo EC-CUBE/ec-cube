@@ -1,0 +1,63 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+{% for message in app.session.flashbag.get('deliv.complete')  %}
+    {{ message|trans|raw }}<br />
+{% endfor %}
+
+<div id="basis" class="contents-main">
+    <div class="btn">
+        <ul>
+            <li>
+                <a href="{{ url('admin_basis_delivery_edit', {delivId: 0} ) }}">
+                    <span class="btn-next">配送方法{% if app.config.input_deliv_fee %}・配送料{% endif %}を新規入力</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <table class="list">
+        <col width="35%" />
+        <col width="30%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
+
+        <tr>
+            <th>配送業者</th>
+            <th>名称</th>
+            <th>編集</th>
+            <th>削除</th>
+            <th>移動</th>
+        </tr>
+
+        {% for Deliv in Delivs %}
+            <tr>
+                <td>{{ Deliv.name }}</td>
+                <td>{{ Deliv.service_name }}</td>
+                <td align="center">
+                    <a href="{{ url('admin_basis_delivery_edit', {delivId: Deliv.id} ) }}">編集</a>
+                </td>
+                <td align="center">
+                    <a href="{{ url('admin_basis_delivery_delete', {delivId: Deliv.Id} ) }}">削除</a></td>
+                <td align="center">
+                {% if loop.first == false %}
+                    <a href="{{ url('admin_basis_delivery_up', {delivId: Deliv.id} ) }}">上へ</a>
+                {% endif %}
+                {% if loop.last == false %}
+                    <a href="{{ url('admin_basis_delivery_down', {delivId: Deliv.id} ) }}">下へ</a>
+                {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" align="center">
+                    配送方法がありません。
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

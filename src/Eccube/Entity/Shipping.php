@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Shipping
  */
@@ -140,6 +138,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $del_flg;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ShipmentItems;
+
+    /**
      * @var \Eccube\Entity\Master\Country
      */
     private $Country;
@@ -149,11 +152,23 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     private $Pref;
 
+    /**
+     * @var \Eccube\Entity\Order
+     */
+    private $Order;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Set shipping_id
      *
-     * @param integer $shippingId
+     * @param  integer  $shippingId
      * @return Shipping
      */
     public function setShippingId($shippingId)
@@ -166,7 +181,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get shipping_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getShippingId()
     {
@@ -176,7 +191,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set order_id
      *
-     * @param integer $orderId
+     * @param  integer  $orderId
      * @return Shipping
      */
     public function setOrderId($orderId)
@@ -189,7 +204,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get order_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrderId()
     {
@@ -199,7 +214,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set name01
      *
-     * @param string $name01
+     * @param  string   $name01
      * @return Shipping
      */
     public function setName01($name01)
@@ -212,7 +227,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get name01
      *
-     * @return string 
+     * @return string
      */
     public function getName01()
     {
@@ -222,7 +237,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set name02
      *
-     * @param string $name02
+     * @param  string   $name02
      * @return Shipping
      */
     public function setName02($name02)
@@ -235,7 +250,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get name02
      *
-     * @return string 
+     * @return string
      */
     public function getName02()
     {
@@ -245,7 +260,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana01
      *
-     * @param string $kana01
+     * @param  string   $kana01
      * @return Shipping
      */
     public function setKana01($kana01)
@@ -258,7 +273,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get kana01
      *
-     * @return string 
+     * @return string
      */
     public function getKana01()
     {
@@ -268,7 +283,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana02
      *
-     * @param string $kana02
+     * @param  string   $kana02
      * @return Shipping
      */
     public function setKana02($kana02)
@@ -281,7 +296,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get kana02
      *
-     * @return string 
+     * @return string
      */
     public function getKana02()
     {
@@ -291,7 +306,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set company_name
      *
-     * @param string $companyName
+     * @param  string   $companyName
      * @return Shipping
      */
     public function setCompanyName($companyName)
@@ -304,7 +319,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get company_name
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -314,7 +329,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel01
      *
-     * @param string $tel01
+     * @param  string   $tel01
      * @return Shipping
      */
     public function setTel01($tel01)
@@ -327,7 +342,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel01
      *
-     * @return string 
+     * @return string
      */
     public function getTel01()
     {
@@ -337,7 +352,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel02
      *
-     * @param string $tel02
+     * @param  string   $tel02
      * @return Shipping
      */
     public function setTel02($tel02)
@@ -350,7 +365,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel02
      *
-     * @return string 
+     * @return string
      */
     public function getTel02()
     {
@@ -360,7 +375,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel03
      *
-     * @param string $tel03
+     * @param  string   $tel03
      * @return Shipping
      */
     public function setTel03($tel03)
@@ -373,7 +388,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel03
      *
-     * @return string 
+     * @return string
      */
     public function getTel03()
     {
@@ -383,7 +398,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax01
      *
-     * @param string $fax01
+     * @param  string   $fax01
      * @return Shipping
      */
     public function setFax01($fax01)
@@ -396,7 +411,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax01
      *
-     * @return string 
+     * @return string
      */
     public function getFax01()
     {
@@ -406,7 +421,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax02
      *
-     * @param string $fax02
+     * @param  string   $fax02
      * @return Shipping
      */
     public function setFax02($fax02)
@@ -419,7 +434,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax02
      *
-     * @return string 
+     * @return string
      */
     public function getFax02()
     {
@@ -429,7 +444,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax03
      *
-     * @param string $fax03
+     * @param  string   $fax03
      * @return Shipping
      */
     public function setFax03($fax03)
@@ -442,7 +457,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax03
      *
-     * @return string 
+     * @return string
      */
     public function getFax03()
     {
@@ -452,7 +467,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip01
      *
-     * @param string $zip01
+     * @param  string   $zip01
      * @return Shipping
      */
     public function setZip01($zip01)
@@ -465,7 +480,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip01
      *
-     * @return string 
+     * @return string
      */
     public function getZip01()
     {
@@ -475,7 +490,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip02
      *
-     * @param string $zip02
+     * @param  string   $zip02
      * @return Shipping
      */
     public function setZip02($zip02)
@@ -488,7 +503,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip02
      *
-     * @return string 
+     * @return string
      */
     public function getZip02()
     {
@@ -498,7 +513,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set zipcode
      *
-     * @param string $zipcode
+     * @param  string   $zipcode
      * @return Shipping
      */
     public function setZipcode($zipcode)
@@ -511,7 +526,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get zipcode
      *
-     * @return string 
+     * @return string
      */
     public function getZipcode()
     {
@@ -521,7 +536,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr01
      *
-     * @param string $addr01
+     * @param  string   $addr01
      * @return Shipping
      */
     public function setAddr01($addr01)
@@ -534,7 +549,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr01
      *
-     * @return string 
+     * @return string
      */
     public function getAddr01()
     {
@@ -544,7 +559,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr02
      *
-     * @param string $addr02
+     * @param  string   $addr02
      * @return Shipping
      */
     public function setAddr02($addr02)
@@ -557,7 +572,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr02
      *
-     * @return string 
+     * @return string
      */
     public function getAddr02()
     {
@@ -567,7 +582,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set time_id
      *
-     * @param integer $timeId
+     * @param  integer  $timeId
      * @return Shipping
      */
     public function setTimeId($timeId)
@@ -580,7 +595,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get time_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getTimeId()
     {
@@ -590,7 +605,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set shipping_time
      *
-     * @param string $shippingTime
+     * @param  string   $shippingTime
      * @return Shipping
      */
     public function setShippingTime($shippingTime)
@@ -603,7 +618,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get shipping_time
      *
-     * @return string 
+     * @return string
      */
     public function getShippingTime()
     {
@@ -613,7 +628,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set shipping_date
      *
-     * @param \DateTime $shippingDate
+     * @param  \DateTime $shippingDate
      * @return Shipping
      */
     public function setShippingDate($shippingDate)
@@ -626,7 +641,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get shipping_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getShippingDate()
     {
@@ -636,7 +651,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set shipping_commit_date
      *
-     * @param \DateTime $shippingCommitDate
+     * @param  \DateTime $shippingCommitDate
      * @return Shipping
      */
     public function setShippingCommitDate($shippingCommitDate)
@@ -649,7 +664,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get shipping_commit_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getShippingCommitDate()
     {
@@ -659,7 +674,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer  $rank
      * @return Shipping
      */
     public function setRank($rank)
@@ -672,7 +687,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -682,7 +697,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Shipping
      */
     public function setCreateDate($createDate)
@@ -695,7 +710,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -705,7 +720,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Shipping
      */
     public function setUpdateDate($updateDate)
@@ -718,7 +733,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -728,7 +743,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer  $delFlg
      * @return Shipping
      */
     public function setDelFlg($delFlg)
@@ -741,7 +756,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -749,9 +764,42 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Add ShipmentItems
+     *
+     * @param  \Eccube\Entity\ShipmentItem $shipmentItems
+     * @return Shipping
+     */
+    public function addShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItems)
+    {
+        $this->ShipmentItems[] = $shipmentItems;
+
+        return $this;
+    }
+
+    /**
+     * Remove ShipmentItems
+     *
+     * @param \Eccube\Entity\ShipmentItem $shipmentItems
+     */
+    public function removeShipmentItem(\Eccube\Entity\ShipmentItem $shipmentItems)
+    {
+        $this->ShipmentItems->removeElement($shipmentItems);
+    }
+
+    /**
+     * Get ShipmentItems
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShipmentItems()
+    {
+        return $this->ShipmentItems;
+    }
+
+    /**
      * Set Country
      *
-     * @param \Eccube\Entity\Master\Country $country
+     * @param  \Eccube\Entity\Master\Country $country
      * @return Shipping
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -764,7 +812,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get Country
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country
      */
     public function getCountry()
     {
@@ -774,7 +822,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Set Pref
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param  \Eccube\Entity\Master\Pref $pref
      * @return Shipping
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -787,10 +835,33 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {
         return $this->Pref;
+    }
+
+    /**
+     * Set Order
+     *
+     * @param  \Eccube\Entity\Order $order
+     * @return Shipping
+     */
+    public function setOrder(\Eccube\Entity\Order $order = null)
+    {
+        $this->Order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
     }
 }

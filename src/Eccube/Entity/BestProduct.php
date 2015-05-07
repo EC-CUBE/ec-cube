@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BestProduct
  */
@@ -59,11 +57,10 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -73,7 +70,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set category_id
      *
-     * @param integer $categoryId
+     * @param  integer     $categoryId
      * @return BestProduct
      */
     public function setCategoryId($categoryId)
@@ -86,7 +83,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get category_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCategoryId()
     {
@@ -96,7 +93,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer     $rank
      * @return BestProduct
      */
     public function setRank($rank)
@@ -109,7 +106,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -119,7 +116,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string      $title
      * @return BestProduct
      */
     public function setTitle($title)
@@ -132,7 +129,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -142,7 +139,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set comment
      *
-     * @param string $comment
+     * @param  string      $comment
      * @return BestProduct
      */
     public function setComment($comment)
@@ -155,7 +152,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -165,7 +162,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime   $createDate
      * @return BestProduct
      */
     public function setCreateDate($createDate)
@@ -178,7 +175,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -188,7 +185,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime   $updateDate
      * @return BestProduct
      */
     public function setUpdateDate($updateDate)
@@ -201,7 +198,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -211,7 +208,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer     $delFlg
      * @return BestProduct
      */
     public function setDelFlg($delFlg)
@@ -224,7 +221,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -234,7 +231,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set Product
      *
-     * @param \Eccube\Entity\Product $product
+     * @param  \Eccube\Entity\Product $product
      * @return BestProduct
      */
     public function setProduct(\Eccube\Entity\Product $product = null)
@@ -247,7 +244,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {
@@ -257,7 +254,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return BestProduct
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
@@ -270,7 +267,7 @@ class BestProduct extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

@@ -26,6 +26,4 @@ class BlockController
             'blocks' => $blocks,
         ));
     }
-
-
 }

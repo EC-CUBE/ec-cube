@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ApiConfig
  */
@@ -59,11 +57,10 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
      */
     private $update_date;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -73,7 +70,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set operation_name
      *
-     * @param string $operationName
+     * @param  string    $operationName
      * @return ApiConfig
      */
     public function setOperationName($operationName)
@@ -86,7 +83,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get operation_name
      *
-     * @return string 
+     * @return string
      */
     public function getOperationName()
     {
@@ -96,7 +93,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set operation_description
      *
-     * @param string $operationDescription
+     * @param  string    $operationDescription
      * @return ApiConfig
      */
     public function setOperationDescription($operationDescription)
@@ -109,7 +106,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get operation_description
      *
-     * @return string 
+     * @return string
      */
     public function getOperationDescription()
     {
@@ -119,7 +116,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set auth_types
      *
-     * @param string $authTypes
+     * @param  string    $authTypes
      * @return ApiConfig
      */
     public function setAuthTypes($authTypes)
@@ -132,7 +129,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get auth_types
      *
-     * @return string 
+     * @return string
      */
     public function getAuthTypes()
     {
@@ -142,7 +139,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set enable
      *
-     * @param integer $enable
+     * @param  integer   $enable
      * @return ApiConfig
      */
     public function setEnable($enable)
@@ -155,7 +152,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get enable
      *
-     * @return integer 
+     * @return integer
      */
     public function getEnable()
     {
@@ -165,7 +162,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set is_log
      *
-     * @param integer $isLog
+     * @param  integer   $isLog
      * @return ApiConfig
      */
     public function setIsLog($isLog)
@@ -178,7 +175,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get is_log
      *
-     * @return integer 
+     * @return integer
      */
     public function getIsLog()
     {
@@ -188,7 +185,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set sub_data
      *
-     * @param string $subData
+     * @param  string    $subData
      * @return ApiConfig
      */
     public function setSubData($subData)
@@ -201,7 +198,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get sub_data
      *
-     * @return string 
+     * @return string
      */
     public function getSubData()
     {
@@ -211,7 +208,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer   $delFlg
      * @return ApiConfig
      */
     public function setDelFlg($delFlg)
@@ -224,7 +221,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -234,7 +231,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return ApiConfig
      */
     public function setCreateDate($createDate)
@@ -247,7 +244,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -257,7 +254,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return ApiConfig
      */
     public function setUpdateDate($updateDate)
@@ -270,7 +267,7 @@ class ApiConfig extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
