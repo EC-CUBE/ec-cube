@@ -22,7 +22,7 @@ class TradelawController extends AbstractController
     public function index(Application $app)
     {
 
-        $baseinfo = $app['eccube.repository.baseinfo']->findAll();
+        $baseinfo = $app['eccube.repository.base_info']->findAll();
         $baseinfo = $baseinfo[0];
    
         $form = $app['form.factory']

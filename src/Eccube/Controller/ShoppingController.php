@@ -410,7 +410,7 @@ class ShoppingController extends AbstractController
                             ->setProductClassId($ProductClass->getId())
                             ->setProductClass($ProductClass)
                             ->setProductName($Product->getName())
-                            ->setProductCode($ProductClass->getProductCode())
+                            ->setProductCode($ProductClass->getCode())
                             ->setClasscategoryName1($ProductClass->getClassCategory1()->getName())
                             ->setClasscategoryName2($ProductClass->getClassCategory2()->getName())
                             ->setPrice($ProductClass->getPrice02())

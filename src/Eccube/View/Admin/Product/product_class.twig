@@ -112,7 +112,7 @@
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_PRODUCTS_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;" ><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="{{ path('admin_product') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
                 {% if form.product_classes|length > 0 %}
                     <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
