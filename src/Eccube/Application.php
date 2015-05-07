@@ -222,7 +222,7 @@ class Application extends \Silex\Application
             $event = $app->parseController($request) . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
-
+        $app['colnum'] = 1;
         // Security
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
              'security.firewalls' => array(
