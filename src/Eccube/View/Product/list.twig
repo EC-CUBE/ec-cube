@@ -133,7 +133,7 @@
                     <div class="listphoto">
                         <!--★画像★-->
                         <a href="{{ path('product_detail', {'productId': Product.id}) }}">
-                            <img src="{{ app.config.image_path }}{{ Product.main_list_image|no_image_main_list }}" alt="{{ Product.name }}" class="picture" /></a>
+                            <img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_main_list }}" alt="{{ Product.name }}" class="picture" /></a>
                     </div>
 
                     <div class="listrightbloc">
