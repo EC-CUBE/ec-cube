@@ -30,7 +30,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     public function testRoutingShoppingLogin()
     {
         $client = $this->createClient();
-        $client->request('GET', '/shopping/login/');
+        $client->request('GET', '/shopping/login');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 }
