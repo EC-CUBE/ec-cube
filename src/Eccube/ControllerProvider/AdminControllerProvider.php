@@ -81,7 +81,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->match('/basis/tax/delete/{tax_rule_id}', '\\Eccube\\Controller\\Admin\\Basis\\TaxRuleController::delete')
             ->assert('tax_rule_id', '\d+')
             ->bind('admin_basis_tax_rule_delete');
-        $controllers->match('/basis/tradelaw.php', '\\Eccube\\Page\\Admin\\Basis\\Tradelaw')->bind('admin_basis_tradelaw');
+        $controllers->match('/basis/tradelaw', '\\Eccube\\Controller\\Admin\\Basis\\TradelawController::index')->bind('admin_basis_tradelaw');
         $controllers->match('/basis/zip_install.php', '\\Eccube\\Page\\Admin\\Basis\\ZipInstall')->bind('admin_basis_zip_install');
 
         // contents
