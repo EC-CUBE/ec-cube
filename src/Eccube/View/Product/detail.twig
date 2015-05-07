@@ -39,9 +39,9 @@
                     {% set main_image = image_info(app.config.image_path~Product.main_image) %}
                     <!--★画像★-->
                     {% if Product.main_large_image is not empty %}
-                        <a href="{{ app.config.image_path }}{{ Product.main_large_image }}" class="expansion" target="_blank">
+                        <a href="{{ app.config.image_save_urlpath }}{{ Product.main_large_image }}" class="expansion" target="_blank">
                     {% endif %}
-                        <img src="{{ main_image.path }}" width="{{ main_image.width }}" height="{{ main_image.height }}" alt="{{ Product.name }}" class="picture" />
+                        <img src="{{ app.config.root }}{{ main_image.path }}" width="{{ main_image.width }}" height="{{ main_image.height }}" alt="{{ Product.name }}" class="picture" />
                     {% if Product.main_large_image is not empty %}
                         </a>
                     {% endif %}
@@ -49,7 +49,7 @@
                     {% if Product.main_large_image is not empty %}
                     <span class="mini">
                         <!--★拡大する★-->
-                        <a href="{{ app.config.image_path }}{{ Product.main_large_image }}" class="expansion" target="_blank">画像を拡大する</a>
+                        <a href="{{ app.config.image_save_urlpath }}{{ Product.main_large_image }}" class="expansion" target="_blank">画像を拡大する</a>
                     </span>
                     {% endif %}
             </div>
@@ -264,14 +264,14 @@
                     <div class="subtext"><!--★サブテキスト★-->{{ Product[ckey]|raw|nl2br }}</div>
                     <div class="subphotoimg">
                         {% if Product[lkey] is not empty %}
-                            <a href="{{ app.config.image_path }}{{ Product[lkey] }}" class="expansion" target="_blank" >
+                            <a href="{{ app.config.image_save_urlpath }}{{ Product[lkey] }}" class="expansion" target="_blank" >
                         {% endif %}
-                        {% set image = image_info(app.config.image_path~Product[ikey]) %}
+                        {% set image = image_info(app.config.image_save_urlpath~Product[ikey]) %}
                         <img src="{{ image.path }}" alt="{{ Product.name }}" width="{{ image.width }}" height="{{ image.height }}" />
                         {% if Product[lkey] is not empty %}
                             </a>
                             <span class="mini">
-                                <a href="{{ app.config.image_path }}{{ Product[lkey] }}" class="expansion" target="_blank">画像を拡大する</a>
+                                <a href="{{ app.config.image_save_urlpath }}{{ Product[lkey] }}" class="expansion" target="_blank">画像を拡大する</a>
                             </span>
                         {% endif %}
                     </div>
@@ -326,7 +326,7 @@
                 <div class="product_item">
                     <div class="productImage">
                         <a href="{{ path('product_detail', {'productId': RecommendProduct.Product.id}) }}">
-                            <img src="{{ app.config.image_path }}{{ RecommendProduct.Product.main_list_image|no_image_main_list }}" style="max-width: 65px;max-height: 65px;" alt="{{ RecommendProduct.Product.name }}" /></a>
+                            <img src="{{ app.config.image_save_urlpath }}{{ RecommendProduct.Product.main_list_image|no_image_main_list }}" style="max-width: 65px;max-height: 65px;" alt="{{ RecommendProduct.Product.name }}" /></a>
                     </div>
                     <div class="productContents">
                         <h3><a href="{{ path('product_detail', {'productId': RecommendProduct.Product.id}) }}">{{ RecommendProduct.Product.name }}</a></h3>

@@ -134,7 +134,7 @@ class ProductRepository extends EntityRepository
         // id
         if (!empty($searchData['id']) && $searchData['id']) {
             $qb
-                ->andWhere('p.id LIKE :id')
+                ->andWhere('p.id = :id')
                 ->setParameter('id', $searchData['id']);
         }
 
