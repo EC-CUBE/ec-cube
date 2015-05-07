@@ -60,7 +60,7 @@ $(document).ready(function(){
                 {% for detail in order.OrderDetails %}
                 <tr>
                     <td class="alignC">
-                        <img src="{{ app.config.image_path }}{{ detail.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ detail.Product.name }}" />
+                        <img src="{{ app.config.image_save_urlpath }}{{ detail.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ detail.Product.name }}" />
                     </td>
                     <td>
                         <ul>
@@ -157,7 +157,7 @@ $(document).ready(function(){
         {% for item in shipping.ShipmentItems %}
         <tr>
             <td class="alignC">
-                <img src="{{ app.config.image_path }}{{ item.ProductClass.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ item.product_name }}" />
+                <img src="{{ app.config.image_save_urlpath }}{{ item.ProductClass.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ item.product_name }}" />
             </td>
             <td><strong>{{ item.product_name }}</strong><br />{# 商品規格 #}</td>
             <td class="alignC">{{ item.quantity }}</td>

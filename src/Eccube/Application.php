@@ -224,12 +224,13 @@ class Application extends \Silex\Application
         });
 
         // Security
+        $app['colnum'] = 1;
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
              'security.firewalls' => array(
                 'admin' => array(
                     'pattern' => '^/admin',
                     'form' => array(
-                        'login_path' => '/admin/login.php',
+                        'login_path' => '/admin/login',
                         'check_path' => '/admin/login_check',
                         'username_parameter' =>  'login_id',
                         'password_parameter' => 'password',
@@ -246,7 +247,7 @@ class Application extends \Silex\Application
                 'customer' => array(
                     'pattern' => '^/',
                     'form' => array(
-                        'login_path' => '/mypage/login.php',
+                        'login_path' => '/mypage/login',
                         'check_path' => '/login_check',
                         'username_parameter' =>  'login_email',
                         'password_parameter' => 'login_pass',
