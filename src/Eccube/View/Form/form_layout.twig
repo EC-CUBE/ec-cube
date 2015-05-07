@@ -1,32 +1,43 @@
 {%- extends 'form_table_layout.html.twig' -%}
 
 {%- block form_widget_compound -%}
-    <table {{ block('widget_container_attributes') }}>
-        <col width="30%" />
-        <col width="70%" />
-        {%- if form.parent is empty and errors|length > 0 -%}
-        <tr>
-            <td colspan="2">
-                {{- form_errors(form) -}}
-            </td>
-        </tr>
-        {%- endif -%}
+    {%- if form.vars.freeze_display_text -%}
+        <table {{ block('widget_container_attributes') }}>
+            <col width="30%" />
+            <col width="70%" />
+            {%- if form.parent is empty and errors|length > 0 -%}
+            <tr>
+                <td colspan="2">
+                    {{- form_errors(form) -}}
+                </td>
+            </tr>
+            {%- endif -%}
+            {{- block('form_rows') -}}
+            {{- form_rest(form) -}}
+        </table>
+    {%- else -%}
+        {{- form_errors(form) -}}
         {{- block('form_rows') -}}
         {{- form_rest(form) -}}
-    </table>
+    {%- endif -%}
 {%- endblock form_widget_compound -%}
 
 {%- block form_row -%}
-    <tr>
-        <th>
-            {{- form_label(form) -}}
-            {% if form.vars.required %}<span class="attention">※</span>{% endif %}
-        </th>
-        <td>
-            {{- form_errors(form) -}}
-            {{- form_widget(form) -}}
-        </td>
-    </tr>
+    {%- if form.vars.freeze_display_text -%}
+        <tr>
+            <th>
+                {{- form_label(form) -}}
+                {% if form.vars.required %}<span class="attention">※</span>{% endif %}
+            </th>
+            <td>
+                {{- form_errors(form) -}}
+                {{- form_widget(form) -}}
+            </td>
+        </tr>
+    {%- else -%}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    {%- endif -%}
 {%- endblock form_row -%}
 
 {%- block form_errors -%}
@@ -51,7 +62,9 @@
 {%- block form_widget_simple -%}
     {%- if freeze -%}
         {%- set type = 'hidden' -%}
-        {{- value|nl2br|default('') -}}
+        {%- if freeze_display_text -%}
+            {{- value|default('')|nl2br -}}
+        {%- endif -%}
     {%- endif -%}
     {{- parent() -}}
 {%- endblock form_widget_simple -%}
@@ -68,9 +81,23 @@
             {%- set attr = {'style': style} -%}
         {%- endif -%}
     {%- endif -%}
-    id="{{ id }}" name="{{ full_name }}"{%- if read_only -%} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif -%}
-    {%- for attrname,attrvalue in attr %}{{attrname}}="{{attrvalue}}" {% endfor -%}
+    id="{{ id }}" name="{{ full_name }}"{%- if read_only -%} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif -%}
+    {%- if freeze == false -%}
+        {%- for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}" {% endfor -%}
+    {%- endif -%}
 {%- endblock widget_attributes -%}
+
+{%- block hidden_row -%}
+    {%- if freeze_display_text -%}
+        <tr style="display: none">
+            <td colspan="2">
+                {{- form_widget(form) -}}
+            </td>
+        </tr>
+    {%- else -%}
+        {{- form_widget(form) -}}
+    {%- endif -%}
+{%- endblock hidden_row -%}
 
 {%- block textarea_widget -%}
     {%- if freeze -%}
@@ -85,12 +112,17 @@
 
 {%- block choice_widget_collapsed -%}
     {% if freeze %}
+        {% set flag = false %}
         {% for choice in choices %}
             {% if choice is selectedchoice(value) %}
-                {{ choice.label|trans({}, translation_domain) }}
+                {%- if freeze_display_text -%}
+                    {{ choice.label|trans({}, translation_domain) }}
+                {% endif %}
                 <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }}>
+                {% set flag = true %}
             {% endif %}
         {% endfor %}
+        {% if flag == false %}<input type="hidden" value="" {{ block('widget_attributes') }}>{% endif %}
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}
@@ -99,7 +131,9 @@
 
 {%- block choice_widget_expanded -%}
     {% if freeze %}
-        {{ form.vars.data.name }}
+        {%- if freeze_display_text -%}
+            {{ form.vars.data.name }}
+        {%- endif -%}
         <input type="hidden" value="{{ form.vars.data.id }}" {{ block('widget_attributes') }}>
     {%- else -%}
         {{- parent() -}}
@@ -110,7 +144,9 @@
 {%- block checkbox_widget -%}
     {%- if freeze -%}
         {%- if checked -%}
-            {{ block('form_label') }}
+            {%- if freeze_display_text -%}
+                {{ block('form_label') }}
+            {%- endif -%}
             <input type="hidden" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} />
         {%- endif -%}
     {%- else -%}
@@ -121,7 +157,9 @@
 {%- block radio_widget -%}
     {%- if freeze -%}
         {%- if checked -%}
-            {{ block('form_label') }}
+            {%- if freeze_display_text -%}
+                {{ block('form_label') }}
+            {%- endif -%}
             <input type="hidden" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} />
         {%- endif -%}
     {%- else -%}
@@ -164,6 +202,16 @@
         {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
     {% endfor -%}
 {%- endblock tel_widget -%}
+
+{%- block fax_widget -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_widget(child, {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) -}}
+        {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+    {% endfor -%}
+{%- endblock fax_widget -%}
 
 {%- block zip_widget -%}
     {%- for child in form %}

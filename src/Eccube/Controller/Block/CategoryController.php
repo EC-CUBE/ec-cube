@@ -6,8 +6,8 @@ use Eccube\Application;
 
 class CategoryController
 {
-	function index(Application $app)
-	{
-		return 'block_category';
-	}
+    public function index(Application $app)
+    {
+        return '';
+    }
 }

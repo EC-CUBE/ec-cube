@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Bloc
  */
@@ -75,7 +73,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set device_type_id
      *
-     * @param integer $deviceTypeId
+     * @param  integer $deviceTypeId
      * @return Bloc
      */
     public function setDeviceTypeId($deviceTypeId)
@@ -88,7 +86,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get device_type_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getDeviceTypeId()
     {
@@ -98,7 +96,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set bloc_id
      *
-     * @param integer $blocId
+     * @param  integer $blocId
      * @return Bloc
      */
     public function setBlocId($blocId)
@@ -111,7 +109,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get bloc_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getBlocId()
     {
@@ -121,7 +119,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Bloc
      */
     public function setName($name)
@@ -134,7 +132,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -144,7 +142,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set tpl_path
      *
-     * @param string $tplPath
+     * @param  string $tplPath
      * @return Bloc
      */
     public function setTplPath($tplPath)
@@ -157,7 +155,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get tpl_path
      *
-     * @return string 
+     * @return string
      */
     public function getTplPath()
     {
@@ -167,7 +165,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set filename
      *
-     * @param string $filename
+     * @param  string $filename
      * @return Bloc
      */
     public function setFilename($filename)
@@ -180,7 +178,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get filename
      *
-     * @return string 
+     * @return string
      */
     public function getFilename()
     {
@@ -190,7 +188,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Bloc
      */
     public function setCreateDate($createDate)
@@ -203,7 +201,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -213,7 +211,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Bloc
      */
     public function setUpdateDate($updateDate)
@@ -226,7 +224,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -236,7 +234,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set php_path
      *
-     * @param string $phpPath
+     * @param  string $phpPath
      * @return Bloc
      */
     public function setPhpPath($phpPath)
@@ -249,7 +247,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get php_path
      *
-     * @return string 
+     * @return string
      */
     public function getPhpPath()
     {
@@ -259,7 +257,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set deletable_flg
      *
-     * @param integer $deletableFlg
+     * @param  integer $deletableFlg
      * @return Bloc
      */
     public function setDeletableFlg($deletableFlg)
@@ -272,7 +270,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get deletable_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDeletableFlg()
     {
@@ -282,7 +280,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Add BlocPositions
      *
-     * @param \Eccube\Entity\BlocPosition $blocPositions
+     * @param  \Eccube\Entity\BlocPosition $blocPositions
      * @return Bloc
      */
     public function addBlocPosition(\Eccube\Entity\BlocPosition $blocPositions)
@@ -305,7 +303,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get BlocPositions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBlocPositions()
     {
@@ -315,7 +313,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Set Plugin
      *
-     * @param \Eccube\Entity\Plugin $plugin
+     * @param  \Eccube\Entity\Plugin $plugin
      * @return Bloc
      */
     public function setPlugin(\Eccube\Entity\Plugin $plugin = null)
@@ -328,7 +326,7 @@ class Bloc extends \Eccube\Entity\AbstractEntity
     /**
      * Get Plugin
      *
-     * @return \Eccube\Entity\Plugin 
+     * @return \Eccube\Entity\Plugin
      */
     public function getPlugin()
     {

@@ -1,0 +1,13 @@
+{% extends 'popup.twig' %}
+
+{% set subtitle='エラー' %}
+
+{% block main %}
+<div id="compbox">
+    <span class="red">{{ error }}</span><br />
+</div>
+
+<div class="button">
+    <a href="javascript:window.close()"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_close.gif" alt="閉じる" /></a>
+</div>
+{% endblock %}

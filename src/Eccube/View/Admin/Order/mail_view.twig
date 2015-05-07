@@ -1,0 +1,18 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+    <table class="form">
+        <tr>
+            <td>{{ subject }}</td>
+        </tr>
+        <tr>
+            <td>{{ body|nl2br }}</td>
+        </tr>
+    </table>
+
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next">ウインドウを閉じる</span></a></li>
+        </ul>
+    </div>
+{% endblock %}

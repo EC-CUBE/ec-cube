@@ -3,6 +3,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 /**
  * PaymentRepository
@@ -12,4 +13,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class PaymentRepository extends EntityRepository
 {
+    public function findOrCreate($id)
+    {
+        if ($id == 0) {
+            $Creator = $this
+                ->getEntityManager()
+                ->getRepository('\Eccube\Entity\Member')
+                ->find(2)
+            ;
+
+            $rank = $this
+                ->findOneBy(array(), array('rank' => 'DESC'))
+                ->getRank() + 1
+            ;
+
+            $Payment = new \Eccube\Entity\Payment();
+            $Payment
+                ->setRank($rank)
+                ->setStatus(1)
+                ->setDelFlg(0)
+                ->setFix(2)
+                ->setCreatorId($Creator->getId())
+            ;
+
+        } else {
+            $Payment = $this->find($id);
+
+        }
+
+        return $Payment;
+    }
+
+    public function findAllArray()
+    {
+
+        $query = $this
+            ->getEntityManager()
+            ->createQuery('SELECT p FROM Eccube\Entity\Payment p INDEX BY p.id')
+        ;
+        $result = $query
+            ->getResult(Query::HYDRATE_ARRAY)
+        ;
+
+        return $result;
+
+    }
 }

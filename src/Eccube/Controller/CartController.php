@@ -7,57 +7,59 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CartController
 {
-    public function __construct()
-    {
-    }
-
     public function index(Application $app)
     {
-        $cart = $app['eccube.service.cart'];
-        $products = $cart->getProducts();
         $title = 'カゴの中';
+        $Cart = $app['eccube.service.cart']->getCart();
 
         return $app['view']->render(
             'Cart/index.twig',
-            compact('title', 'products')
+            compact('title', 'Cart')
         );
     }
 
     public function add(Application $app, Request $request)
     {
         $productClassId = $request->get('product_class_id');
-        $quantity = $request->request->has('quantity') ? $request->get('quantity'): 1;
-        $app['eccube.service.cart']->addProduct($productClassId, $quantity);
+        $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
+        $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
 
         return $app->redirect($app['url_generator']->generate('cart'));
     }
 
     public function up(Application $app, $productClassId)
     {
-        $app['eccube.service.cart']->upProductQuantity($productClassId);
+        $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
 
         return $app->redirect($app['url_generator']->generate('cart'));
     }
 
     public function down(Application $app, $productClassId)
     {
-        $app['eccube.service.cart']->downProductQuantity($productClassId);
+        $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
 
         return $app->redirect($app['url_generator']->generate('cart'));
     }
 
     public function remove(Application $app, $productClassId)
     {
-        $app['eccube.service.cart']->removeProduct($productClassId);
+        $app['eccube.service.cart']->removeProduct($productClassId)->save();
 
         return $app->redirect($app['url_generator']->generate('cart'));
     }
 
     public function setQuantity(Application $app, $productClassId, $quantity)
     {
-        $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity);
+        $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity)->save();
 
         return $app->redirect($app['url_generator']->generate('cart'));
     }
 
+    public function buystep(Application $app)
+    {
+        $app['eccube.service.cart']->lock();
+        $app['eccube.service.cart']->save();
+
+        return $app->redirect($app['url_generator']->generate('shopping'));
+    }
 }

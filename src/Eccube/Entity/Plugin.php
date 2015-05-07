@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Plugin
  */
@@ -99,11 +97,10 @@ class Plugin extends \Eccube\Entity\AbstractEntity
      */
     private $update_date;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -113,7 +110,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Plugin
      */
     public function setName($name)
@@ -126,7 +123,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -136,7 +133,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set code
      *
-     * @param string $code
+     * @param  string $code
      * @return Plugin
      */
     public function setCode($code)
@@ -149,7 +146,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -159,7 +156,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set class_name
      *
-     * @param string $className
+     * @param  string $className
      * @return Plugin
      */
     public function setClassName($className)
@@ -172,7 +169,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_name
      *
-     * @return string 
+     * @return string
      */
     public function getClassName()
     {
@@ -182,7 +179,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set author
      *
-     * @param string $author
+     * @param  string $author
      * @return Plugin
      */
     public function setAuthor($author)
@@ -195,7 +192,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get author
      *
-     * @return string 
+     * @return string
      */
     public function getAuthor()
     {
@@ -205,7 +202,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set author_site_url
      *
-     * @param string $authorSiteUrl
+     * @param  string $authorSiteUrl
      * @return Plugin
      */
     public function setAuthorSiteUrl($authorSiteUrl)
@@ -218,7 +215,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get author_site_url
      *
-     * @return string 
+     * @return string
      */
     public function getAuthorSiteUrl()
     {
@@ -228,7 +225,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set plugin_site_url
      *
-     * @param string $pluginSiteUrl
+     * @param  string $pluginSiteUrl
      * @return Plugin
      */
     public function setPluginSiteUrl($pluginSiteUrl)
@@ -241,7 +238,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get plugin_site_url
      *
-     * @return string 
+     * @return string
      */
     public function getPluginSiteUrl()
     {
@@ -251,7 +248,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set plugin_version
      *
-     * @param string $pluginVersion
+     * @param  string $pluginVersion
      * @return Plugin
      */
     public function setPluginVersion($pluginVersion)
@@ -264,7 +261,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get plugin_version
      *
-     * @return string 
+     * @return string
      */
     public function getPluginVersion()
     {
@@ -274,7 +271,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set compliant_version
      *
-     * @param string $compliantVersion
+     * @param  string $compliantVersion
      * @return Plugin
      */
     public function setCompliantVersion($compliantVersion)
@@ -287,7 +284,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get compliant_version
      *
-     * @return string 
+     * @return string
      */
     public function getCompliantVersion()
     {
@@ -297,7 +294,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set plugin_description
      *
-     * @param string $pluginDescription
+     * @param  string $pluginDescription
      * @return Plugin
      */
     public function setPluginDescription($pluginDescription)
@@ -310,7 +307,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get plugin_description
      *
-     * @return string 
+     * @return string
      */
     public function getPluginDescription()
     {
@@ -320,7 +317,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set priority
      *
-     * @param integer $priority
+     * @param  integer $priority
      * @return Plugin
      */
     public function setPriority($priority)
@@ -333,7 +330,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get priority
      *
-     * @return integer 
+     * @return integer
      */
     public function getPriority()
     {
@@ -343,7 +340,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set enable
      *
-     * @param integer $enable
+     * @param  integer $enable
      * @return Plugin
      */
     public function setEnable($enable)
@@ -356,7 +353,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get enable
      *
-     * @return integer 
+     * @return integer
      */
     public function getEnable()
     {
@@ -366,7 +363,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set free_field1
      *
-     * @param string $freeField1
+     * @param  string $freeField1
      * @return Plugin
      */
     public function setFreeField1($freeField1)
@@ -379,7 +376,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get free_field1
      *
-     * @return string 
+     * @return string
      */
     public function getFreeField1()
     {
@@ -389,7 +386,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set free_field2
      *
-     * @param string $freeField2
+     * @param  string $freeField2
      * @return Plugin
      */
     public function setFreeField2($freeField2)
@@ -402,7 +399,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get free_field2
      *
-     * @return string 
+     * @return string
      */
     public function getFreeField2()
     {
@@ -412,7 +409,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set free_field3
      *
-     * @param string $freeField3
+     * @param  string $freeField3
      * @return Plugin
      */
     public function setFreeField3($freeField3)
@@ -425,7 +422,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get free_field3
      *
-     * @return string 
+     * @return string
      */
     public function getFreeField3()
     {
@@ -435,7 +432,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set free_field4
      *
-     * @param string $freeField4
+     * @param  string $freeField4
      * @return Plugin
      */
     public function setFreeField4($freeField4)
@@ -448,7 +445,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get free_field4
      *
-     * @return string 
+     * @return string
      */
     public function getFreeField4()
     {
@@ -458,7 +455,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Plugin
      */
     public function setCreateDate($createDate)
@@ -471,7 +468,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -481,7 +478,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Plugin
      */
     public function setUpdateDate($updateDate)
@@ -494,7 +491,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {

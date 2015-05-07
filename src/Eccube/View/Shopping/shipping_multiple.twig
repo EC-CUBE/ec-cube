@@ -1,0 +1,77 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+
+<div id="undercolumn">
+    <div id="undercolumn_shopping">
+        <p class="flow_area">
+            <img src="{{ app.config.tpl }}img/picture/img_flow_01.jpg" alt="購入手続きの流れ" />
+        </p>
+        <h2 class="title">{{ title }}</h2>
+        <p class="information">各商品のお届け先を選択してください。<br />（※数量の合計は、カゴの中の数量と合わせてください。）</p>
+        {# todo DELIV_ADDR_MAXを移植 #}
+        <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
+        <p class="mini attention">※最大{# #}件まで登録できます。</p>
+
+        {# todo DELIV_ADDR_MAXを移植 #}
+        <p class="addbtn">
+            <a href="{{ path('mypage_delivery_addr') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_addr') }}?page={{ path('shopping_shipping_multiple') }}','new_deiv','600','640'); return false;"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" /></a>
+        </p>
+        <form name="form1" id="form1" method="post" action="{{ path('shopping_shipping_multiple') }}">
+            {{ form_widget(form._token) }}
+            <table summary="商品情報">
+                <col width="10%" />
+                <col width="60%" />
+                <col width="15%" />
+                <col width="15%" />
+                <tr>
+                    <th class="alignC">商品写真</th>
+                    <th class="alignC">商品名</th>
+                    <th class="alignC">数量</th>
+                    <th class="alignC">お届け先</th>
+                </tr>
+                {% for line in form.shipping_multi %}
+                {{ form_widget(line.product_class_id) }}
+                {{ form_errors(line.product_class_id) }}
+                {% set product_class_id = line.product_class_id.vars.value %}
+                {% set Product = Products[product_class_id] %}
+                {% set ProductClass = ProductClassess[product_class_id] %}
+                    <tr>
+                        <td class="alignC">
+                            <img src="{{ app.config.image_path }}{{ Product.main_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ Product.name }}" /></a>
+                        </td>
+                        <td class="alignC">
+                            <strong>{{ Product.name }}</strong><br />
+                            {% if ProductClass.ClassCategory1.name %}
+                                {{ ProductClass.ClassCategory1.ClassName.name }}：{{ ProductClass.ClassCategory1.name }}<br />
+                            {% endif %}
+                            {% if ProductClass.ClassCategory2.name %}
+                                {{ ProductClass.ClassCategory2.ClassName.name }}：{{ ProductClass.ClassCategory2.name }}<br />
+                            {% endif %}
+                        </td>
+                        <td class="alignC">
+                            {{ form_widget(line.quantity) }}
+                            {{ form_errors(line.quantity) }}
+                        </td>
+                        <td class="alignC">
+                            {{ form_widget(line.other_deliv) }}
+                            {{ form_errors(line.other_deliv) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="btn_area">
+                <ul>
+                    <li>
+                        <a href="{{ path('shopping') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="back03" id="back03" /></a>
+                    </li>
+                    <li>
+                        <input type="image" class="hover_change_image box190" src="{{ app.config.tpl }}img/button/btn_address_select.jpg" alt="選択したお届け先に送る" name="send_button" id="send_button" />
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

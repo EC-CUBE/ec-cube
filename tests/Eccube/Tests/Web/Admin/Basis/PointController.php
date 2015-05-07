@@ -1,28 +1,14 @@
 <?php
-namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
+namespace Eccube\Tests\Web\Admin\Basis;
 
-class PointControllerTest extends WebTestCase
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+
+class PointController extends AbstractAdminWebTestCase
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
-
     public function testRoutingAdminBasisPoint()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', '/admin/basis/point');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->client->request('GET', '/admin/basis/point');
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

@@ -2,19 +2,17 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Test\TypeTestCase;
-
-class CustomerTypeTest extends TypeTestCase
+class CustomerTypeTest extends AbstractTypeTestCase
 {
 
     /** @var \Eccube\Application */
-    private $app;
+    protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
-    private $form;
+    protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    private $formData = array(
+    protected $formData = array(
         'name' => array(
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -63,10 +61,6 @@ class CustomerTypeTest extends TypeTestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->app = new \Eccube\Application(array(
-            'env' => 'test',
-        ));
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
@@ -132,7 +126,7 @@ class CustomerTypeTest extends TypeTestCase
 
     public function testInvalidEmail_Duplicate()
     {
-        $testVal = 'sample@example.com';
+        $testVal = 'sampleexample.com';
         $customer = $this->app['eccube.repository.customer']->newCustomer()
             ->setName01($this->formData['name']['name01'])
             ->setName02($this->formData['name']['name02'])
@@ -146,7 +140,6 @@ class CustomerTypeTest extends TypeTestCase
                 'csrf_protection' => false,
             ))
             ->getForm();
-        $this->app['orm.em']->persist($customer);
 
         $this->formData['email'] = $testVal;
         $form->submit($this->formData);

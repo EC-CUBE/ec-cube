@@ -2,16 +2,14 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Test\TypeTestCase;
-
-class CustomerLoginTypeTest extends TypeTestCase
+class CustomerLoginTypeTest extends AbstractTypeTestCase
 {
 
     /** @var \Eccube\Application */
-    private $app;
+    protected $app;
 
     /** @var array デフォルト値（正常系）を設定 */
-    private $formData = array(
+    protected $formData = array(
         'login_email' => 'default@example.com',
         'login_pass' => 'dummypass',
     );
@@ -19,10 +17,6 @@ class CustomerLoginTypeTest extends TypeTestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->app = new \Eccube\Application(array(
-            'env' => 'test',
-        ));
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']

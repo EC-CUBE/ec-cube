@@ -1,0 +1,60 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+<form name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_class_name_edit', {'classNameId': TargetClassName.id}) }}{% else %}{{ path('admin_class_name') }}{% endif %}">
+    <div id="products" class="contents-main">
+        <table>
+            {{ form_rest(form)}}
+        </table>
+
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            </ul>
+        </div>
+
+        <table class="list">
+            <col />
+            <col width="15%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="15%" />
+            <tr>
+                <th>規格名 (登録数)</th>
+                <th>分類登録</th>
+                <th class="edit">編集</th>
+                <th class="delete">削除</th>
+                <th>移動</th>
+            </tr>
+            {% for ClassName in ClassNames %}
+                <tr style="background:{% if ClassName.id != TargetClassName.id %}#ffffff{% else %}{{ app.config.select_rgb }}{% endif %};">
+                    <td>{# 規格名 #}{{ ClassName.name }} ({{ ClassName.ClassCategories|length }})</td>
+                    <td align="center"><a href="{{ path('admin_class_category', {'classNameId': ClassName.id}) }}">分類登録</a></td>
+                    <td align="center">
+                        {% if ClassName.id != TargetClassName.id %}
+                            <a href="{{ path('admin_class_name_edit', {'classNameId': ClassName.id}) }}">編集</a>
+                        {% else %}
+                            編集中
+                        {% endif %}
+                    </td>
+                    <td align="center">
+                        {% if ClassName.ClassCategories|length > 0 %}
+                            -
+                        {% else %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_class_name_delete', {'classNameId': ClassName.id}) }}'); document.form1.submit(); return false;">削除</a>
+                        {% endif %}
+                    </td>
+                    <td align="center">
+                        {% if loop.first == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_class_name_up', {'classNameId': ClassName.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                        {% endif %}
+                        {% if loop.last == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_class_name_down', {'classNameId': ClassName.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</form>
+{% endblock %}

@@ -6,8 +6,8 @@ use Eccube\Application;
 
 class CartController
 {
-	function index(Application $app)
-	{
-		return 'block_cart';
-	}
+    public function index(Application $app)
+    {
+        return '';
+    }
 }

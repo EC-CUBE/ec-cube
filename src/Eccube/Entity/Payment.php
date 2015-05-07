@@ -2,13 +2,19 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Payment
  */
 class Payment extends \Eccube\Entity\AbstractEntity
 {
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getMethod();
+    }
+
     /**
      * @var integer
      */
@@ -170,7 +176,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -180,7 +186,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set method
      *
-     * @param string $method
+     * @param  string  $method
      * @return Payment
      */
     public function setMethod($method)
@@ -193,7 +199,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get method
      *
-     * @return string 
+     * @return string
      */
     public function getMethod()
     {
@@ -203,7 +209,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set charge
      *
-     * @param string $charge
+     * @param  string  $charge
      * @return Payment
      */
     public function setCharge($charge)
@@ -216,7 +222,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get charge
      *
-     * @return string 
+     * @return string
      */
     public function getCharge()
     {
@@ -226,7 +232,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set rule_max
      *
-     * @param string $ruleMax
+     * @param  string  $ruleMax
      * @return Payment
      */
     public function setRuleMax($ruleMax)
@@ -239,7 +245,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get rule_max
      *
-     * @return string 
+     * @return string
      */
     public function getRuleMax()
     {
@@ -249,7 +255,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer $rank
      * @return Payment
      */
     public function setRank($rank)
@@ -262,7 +268,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -272,7 +278,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set note
      *
-     * @param string $note
+     * @param  string  $note
      * @return Payment
      */
     public function setNote($note)
@@ -285,7 +291,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get note
      *
-     * @return string 
+     * @return string
      */
     public function getNote()
     {
@@ -295,7 +301,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set fix
      *
-     * @param integer $fix
+     * @param  integer $fix
      * @return Payment
      */
     public function setFix($fix)
@@ -308,7 +314,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get fix
      *
-     * @return integer 
+     * @return integer
      */
     public function getFix()
     {
@@ -318,7 +324,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set status
      *
-     * @param integer $status
+     * @param  integer $status
      * @return Payment
      */
     public function setStatus($status)
@@ -331,7 +337,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get status
      *
-     * @return integer 
+     * @return integer
      */
     public function getStatus()
     {
@@ -341,7 +347,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Payment
      */
     public function setDelFlg($delFlg)
@@ -354,7 +360,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -364,7 +370,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set creator_id
      *
-     * @param integer $creatorId
+     * @param  integer $creatorId
      * @return Payment
      */
     public function setCreatorId($creatorId)
@@ -377,7 +383,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get creator_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCreatorId()
     {
@@ -387,7 +393,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Payment
      */
     public function setCreateDate($createDate)
@@ -400,7 +406,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -410,7 +416,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Payment
      */
     public function setUpdateDate($updateDate)
@@ -423,7 +429,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -433,7 +439,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set payment_image
      *
-     * @param string $paymentImage
+     * @param  string  $paymentImage
      * @return Payment
      */
     public function setPaymentImage($paymentImage)
@@ -446,7 +452,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get payment_image
      *
-     * @return string 
+     * @return string
      */
     public function getPaymentImage()
     {
@@ -456,7 +462,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set upper_rule
      *
-     * @param string $upperRule
+     * @param  string  $upperRule
      * @return Payment
      */
     public function setUpperRule($upperRule)
@@ -469,7 +475,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get upper_rule
      *
-     * @return string 
+     * @return string
      */
     public function getUpperRule()
     {
@@ -479,7 +485,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set charge_flg
      *
-     * @param integer $chargeFlg
+     * @param  integer $chargeFlg
      * @return Payment
      */
     public function setChargeFlg($chargeFlg)
@@ -492,7 +498,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get charge_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getChargeFlg()
     {
@@ -502,7 +508,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set rule_min
      *
-     * @param string $ruleMin
+     * @param  string  $ruleMin
      * @return Payment
      */
     public function setRuleMin($ruleMin)
@@ -515,7 +521,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get rule_min
      *
-     * @return string 
+     * @return string
      */
     public function getRuleMin()
     {
@@ -525,7 +531,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set upper_rule_max
      *
-     * @param string $upperRuleMax
+     * @param  string  $upperRuleMax
      * @return Payment
      */
     public function setUpperRuleMax($upperRuleMax)
@@ -538,7 +544,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get upper_rule_max
      *
-     * @return string 
+     * @return string
      */
     public function getUpperRuleMax()
     {
@@ -548,7 +554,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set module_id
      *
-     * @param integer $moduleId
+     * @param  integer $moduleId
      * @return Payment
      */
     public function setModuleId($moduleId)
@@ -561,7 +567,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get module_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getModuleId()
     {
@@ -571,7 +577,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set module_path
      *
-     * @param string $modulePath
+     * @param  string  $modulePath
      * @return Payment
      */
     public function setModulePath($modulePath)
@@ -584,7 +590,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get module_path
      *
-     * @return string 
+     * @return string
      */
     public function getModulePath()
     {
@@ -594,7 +600,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo01
      *
-     * @param string $memo01
+     * @param  string  $memo01
      * @return Payment
      */
     public function setMemo01($memo01)
@@ -607,7 +613,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo01
      *
-     * @return string 
+     * @return string
      */
     public function getMemo01()
     {
@@ -617,7 +623,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo02
      *
-     * @param string $memo02
+     * @param  string  $memo02
      * @return Payment
      */
     public function setMemo02($memo02)
@@ -630,7 +636,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo02
      *
-     * @return string 
+     * @return string
      */
     public function getMemo02()
     {
@@ -640,7 +646,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo03
      *
-     * @param string $memo03
+     * @param  string  $memo03
      * @return Payment
      */
     public function setMemo03($memo03)
@@ -653,7 +659,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo03
      *
-     * @return string 
+     * @return string
      */
     public function getMemo03()
     {
@@ -663,7 +669,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo04
      *
-     * @param string $memo04
+     * @param  string  $memo04
      * @return Payment
      */
     public function setMemo04($memo04)
@@ -676,7 +682,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo04
      *
-     * @return string 
+     * @return string
      */
     public function getMemo04()
     {
@@ -686,7 +692,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo05
      *
-     * @param string $memo05
+     * @param  string  $memo05
      * @return Payment
      */
     public function setMemo05($memo05)
@@ -699,7 +705,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo05
      *
-     * @return string 
+     * @return string
      */
     public function getMemo05()
     {
@@ -709,7 +715,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo06
      *
-     * @param string $memo06
+     * @param  string  $memo06
      * @return Payment
      */
     public function setMemo06($memo06)
@@ -722,7 +728,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo06
      *
-     * @return string 
+     * @return string
      */
     public function getMemo06()
     {
@@ -732,7 +738,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo07
      *
-     * @param string $memo07
+     * @param  string  $memo07
      * @return Payment
      */
     public function setMemo07($memo07)
@@ -745,7 +751,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo07
      *
-     * @return string 
+     * @return string
      */
     public function getMemo07()
     {
@@ -755,7 +761,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo08
      *
-     * @param string $memo08
+     * @param  string  $memo08
      * @return Payment
      */
     public function setMemo08($memo08)
@@ -768,7 +774,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo08
      *
-     * @return string 
+     * @return string
      */
     public function getMemo08()
     {
@@ -778,7 +784,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo09
      *
-     * @param string $memo09
+     * @param  string  $memo09
      * @return Payment
      */
     public function setMemo09($memo09)
@@ -791,7 +797,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo09
      *
-     * @return string 
+     * @return string
      */
     public function getMemo09()
     {
@@ -801,7 +807,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Set memo10
      *
-     * @param string $memo10
+     * @param  string  $memo10
      * @return Payment
      */
     public function setMemo10($memo10)
@@ -814,7 +820,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get memo10
      *
-     * @return string 
+     * @return string
      */
     public function getMemo10()
     {
@@ -824,7 +830,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Add PaymentOptions
      *
-     * @param \Eccube\Entity\PaymentOption $paymentOptions
+     * @param  \Eccube\Entity\PaymentOption $paymentOptions
      * @return Payment
      */
     public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
@@ -847,7 +853,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * Get PaymentOptions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPaymentOptions()
     {

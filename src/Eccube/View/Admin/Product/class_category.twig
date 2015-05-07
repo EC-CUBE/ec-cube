@@ -1,0 +1,59 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+<form name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ path('admin_class_category_edit', {'classNameId': ClassName.id, 'classCategoryId': TargetClassCategory.id}) }}{% else %}{{ path('admin_class_category', {'classNameId': ClassName.id}) }}{% endif %}">
+    <div id="products" class="contents-main">
+        <table>
+            <tr>
+                <th>規格名</th>
+                <td>{{ ClassName.name }}</td>
+            </tr>
+            {{ form_rest(form)}}
+        </table>
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            </ul>
+        </div>
+
+        <table class="list">
+            <col />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="15%" />
+            <tr>
+                <th>分類名</th>
+                <th class="edit">編集</th>
+                <th class="delete">削除</th>
+                <th>移動</th>
+            </tr>
+            {% for ClassCategory in ClassCategories %}
+                <tr style="background:{% if ClassCategory.id != TargetClassCategory.id %}#ffffff{% else %}{{ app.config.select_rgb }}{% endif %};">
+                    <td>{# 分類名 #}{{ ClassCategory.name }}</td>
+                    <td align="center" >
+                        {% if ClassCategory.id != TargetClassCategory.id %}
+                            <a href="{{ path('admin_class_category_edit', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}">編集</a>
+                        {% else %}
+                            編集中
+                        {% endif %}
+                    </td>
+                    <td align="center">
+                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ eccube.changeAction('{{ path('admin_class_category_delete', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}'); document.form1.submit(); } return false;">削除</a>
+                    </td>
+                    <td align="center">
+                        {% if loop.first == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_class_category_up', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                        {% endif %}
+                        {% if loop.last == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ path('admin_class_category_down', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div class="btn">
+            <a class="btn-action" href="{{ path('admin_class_name') }}"><span class="btn-prev">規格一覧に戻る</span></a>
+        </div>
+    </div>
+</form>
+{% endblock %}

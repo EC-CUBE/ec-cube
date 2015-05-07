@@ -29,6 +29,7 @@ class TelTypeTest extends TypeTestCase
         $this->app = new \Eccube\Application(array(
             'env' => 'test',
         ));
+        $this->app->boot();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
@@ -37,6 +38,13 @@ class TelTypeTest extends TypeTestCase
             ))
             ->add('tel', 'tel')
             ->getForm();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->app = null;
+        $this->form = null;
     }
 
     public function testValidData()

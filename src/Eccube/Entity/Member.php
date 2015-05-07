@@ -2,13 +2,44 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Member
  */
-class Member extends \Eccube\Entity\AbstractEntity
+class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        return array('ROLE_ADMIN');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsername()
+    {
+        return $this->login_id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseCredentials()
+    {
+    }
+
     /**
      * @var integer
      */
@@ -79,11 +110,10 @@ class Member extends \Eccube\Entity\AbstractEntity
      */
     private $login_date;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -93,7 +123,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Member
      */
     public function setName($name)
@@ -106,7 +136,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -116,7 +146,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set department
      *
-     * @param string $department
+     * @param  string $department
      * @return Member
      */
     public function setDepartment($department)
@@ -129,7 +159,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get department
      *
-     * @return string 
+     * @return string
      */
     public function getDepartment()
     {
@@ -139,7 +169,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set login_id
      *
-     * @param string $loginId
+     * @param  string $loginId
      * @return Member
      */
     public function setLoginId($loginId)
@@ -152,7 +182,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get login_id
      *
-     * @return string 
+     * @return string
      */
     public function getLoginId()
     {
@@ -162,7 +192,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set password
      *
-     * @param string $password
+     * @param  string $password
      * @return Member
      */
     public function setPassword($password)
@@ -175,7 +205,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -185,7 +215,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set salt
      *
-     * @param string $salt
+     * @param  string $salt
      * @return Member
      */
     public function setSalt($salt)
@@ -198,7 +228,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get salt
      *
-     * @return string 
+     * @return string
      */
     public function getSalt()
     {
@@ -208,7 +238,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set authority
      *
-     * @param integer $authority
+     * @param  integer $authority
      * @return Member
      */
     public function setAuthority($authority)
@@ -221,7 +251,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get authority
      *
-     * @return integer 
+     * @return integer
      */
     public function getAuthority()
     {
@@ -231,7 +261,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer $rank
      * @return Member
      */
     public function setRank($rank)
@@ -244,7 +274,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -254,7 +284,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set work
      *
-     * @param integer $work
+     * @param  integer $work
      * @return Member
      */
     public function setWork($work)
@@ -267,7 +297,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get work
      *
-     * @return integer 
+     * @return integer
      */
     public function getWork()
     {
@@ -277,7 +307,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Member
      */
     public function setDelFlg($delFlg)
@@ -290,7 +320,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -300,7 +330,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set creator_id
      *
-     * @param integer $creatorId
+     * @param  integer $creatorId
      * @return Member
      */
     public function setCreatorId($creatorId)
@@ -313,7 +343,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get creator_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCreatorId()
     {
@@ -323,7 +353,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Member
      */
     public function setCreateDate($createDate)
@@ -336,7 +366,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -346,7 +376,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Member
      */
     public function setUpdateDate($updateDate)
@@ -359,7 +389,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -369,7 +399,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Set login_date
      *
-     * @param \DateTime $loginDate
+     * @param  \DateTime $loginDate
      * @return Member
      */
     public function setLoginDate($loginDate)
@@ -382,7 +412,7 @@ class Member extends \Eccube\Entity\AbstractEntity
     /**
      * Get login_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLoginDate()
     {

@@ -1,0 +1,69 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+<form name="form1" id="form1" method="post" action="{{ path('admin_order_mail', {'orderId' : Order.id}) }}">
+    <input type="hidden" name="mode" value="" />
+    {{ form_widget(form._token) }}
+    <div id="order" class="contents-main">
+        <h2>メール配信</h2>
+        <table class="list">
+            <tr>
+                <th>処理日</th>
+                <th>通知メール</th>
+                <th>件名</th>
+            </tr>
+            {% for MailHistory in MailHistories %}
+            <tr class="center">
+                <td>{{ MailHistory.send_date|date('Y/m/d H:i:s') }}</td>
+                <td>{{ MailHistory.MailTemplate }}</td>
+                <td><a href="{{ path('admin_order_mail_view', {'sendId' : MailHistory.id}) }}" target="_blank">{{ MailHistory.subject }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <table class="form">
+            <tr>
+                <th>テンプレート<span class="attention"> *</span></th>
+                <td>
+                    {{ form_errors(form.template) }}
+                    {{ form_widget(form.template, { 'attr': {'onchange': "eccube.setModeAndSubmit('change', '', '')"}}) }}
+                </td>
+            </tr>
+            <tr>
+                <th>メールタイトル<span class="attention"> *</span></th>
+                <td>
+                    {{ form_errors(form.subject) }}
+                    {{ form_widget(form.subject) }}
+                </td>
+            </tr>
+            <tr>
+                <th>ヘッダー</th>
+                <td>
+                    {{ form_errors(form.header) }}
+                    {{ form_widget(form.header) }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center">動的データ挿入部分</td>
+            </tr>
+            <tr>
+                <th>フッター</th>
+                <td>
+                    {{ form_errors(form.footer) }}
+                    {{ form_widget(form.footer) }}
+                </td>
+            </tr>
+        </table>
+        <div class="btn-area">
+            <ul>{#
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
+                #}
+                <li><a class="btn-action" href="{{ path('admin_order') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
+            </ul>
+        </div>
+    </div>
+</form>
+{% endblock %}

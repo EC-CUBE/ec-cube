@@ -3,6 +3,8 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * MailHistoryRepository
@@ -12,4 +14,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class MailHistoryRepository extends EntityRepository
 {
+    /**
+     * @param \Eccube\Entity\Customer
+     * @param integer $id
+     * @expectedException \Exception|NoResultException|NonUniqueResultException
+     */
+    public function getByCustomerAndId(\Eccube\Entity\Customer $Customer, $id)
+    {
+        $qb = $this->createQueryBuilder('mh')
+            ->leftJoin('mh.Order', 'o')
+            ->where('mh.id = :id AND o.Customer = :Customer');
+
+        return $qb
+            ->getQuery()
+            ->setParameters(array(
+                'id' => $id,
+                'Customer' => $Customer,
+            ))
+            ->getSingleResult();
+    }
 }

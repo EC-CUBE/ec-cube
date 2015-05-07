@@ -2,32 +2,28 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * MailHistory
  */
 class MailHistory extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getSubject();
+    }
+
+    /**
      * @var integer
      */
     private $id;
 
     /**
-     * @var integer
-     */
-    private $order_id;
-
-    /**
      * @var \DateTime
      */
     private $send_date;
-
-    /**
-     * @var integer
-     */
-    private $template_id;
 
     /**
      * @var string
@@ -40,15 +36,24 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     private $mail_body;
 
     /**
+     * @var \Eccube\Entity\Order
+     */
+    private $Order;
+
+    /**
+     * @var \Eccube\Entity\Master\MailTemplate
+     */
+    private $MailTemplate;
+
+    /**
      * @var \Eccube\Entity\Member
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -56,32 +61,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set order_id
-     *
-     * @param integer $orderId
-     * @return MailHistory
-     */
-    public function setOrderId($orderId)
-    {
-        $this->order_id = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get order_id
-     *
-     * @return integer 
-     */
-    public function getOrderId()
-    {
-        return $this->order_id;
-    }
-
-    /**
      * Set send_date
      *
-     * @param \DateTime $sendDate
+     * @param  \DateTime   $sendDate
      * @return MailHistory
      */
     public function setSendDate($sendDate)
@@ -94,7 +76,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get send_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSendDate()
     {
@@ -102,32 +84,9 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set template_id
-     *
-     * @param integer $templateId
-     * @return MailHistory
-     */
-    public function setTemplateId($templateId)
-    {
-        $this->template_id = $templateId;
-
-        return $this;
-    }
-
-    /**
-     * Get template_id
-     *
-     * @return integer 
-     */
-    public function getTemplateId()
-    {
-        return $this->template_id;
-    }
-
-    /**
      * Set subject
      *
-     * @param string $subject
+     * @param  string      $subject
      * @return MailHistory
      */
     public function setSubject($subject)
@@ -140,7 +99,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -150,7 +109,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set mail_body
      *
-     * @param string $mailBody
+     * @param  string      $mailBody
      * @return MailHistory
      */
     public function setMailBody($mailBody)
@@ -163,7 +122,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get mail_body
      *
-     * @return string 
+     * @return string
      */
     public function getMailBody()
     {
@@ -171,9 +130,55 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set Order
+     *
+     * @param  \Eccube\Entity\Order $order
+     * @return MailHistory
+     */
+    public function setOrder(\Eccube\Entity\Order $order)
+    {
+        $this->Order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get Order
+     *
+     * @return \Eccube\Entity\Order
+     */
+    public function getOrder()
+    {
+        return $this->Order;
+    }
+
+    /**
+     * Set MailTemplate
+     *
+     * @param  \Eccube\Entity\Master\MailTemplate $mailTemplate
+     * @return MailHistory
+     */
+    public function setMailTemplate(\Eccube\Entity\Master\MailTemplate $mailTemplate = null)
+    {
+        $this->MailTemplate = $mailTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get MailTemplate
+     *
+     * @return \Eccube\Entity\Master\MailTemplate
+     */
+    public function getMailTemplate()
+    {
+        return $this->MailTemplate;
+    }
+
+    /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return MailHistory
      */
     public function setCreator(\Eccube\Entity\Member $creator)
@@ -186,7 +191,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

@@ -12,4 +12,83 @@ use Doctrine\ORM\EntityRepository;
  */
 class BlocRepository extends EntityRepository
 {
+
+    public function setApp($app)
+    {
+        $this->app = $app;
+    }
+
+    public function findOrCreate($block_id, $device_type_id)
+    {
+
+        if ($block_id == null) {
+            return $this->newBlock($device_type_id);
+        } else {
+            return $this->getBlock($block_id, $device_type_id);
+        }
+
+    }
+
+    public function newBlock($device_type_id)
+    {
+        $Block = new \Eccube\Entity\Bloc();
+        $Block
+            ->setDeviceTypeId($device_type_id);
+        $block_id = $this->getNewBlockId($device_type_id);
+        $Block->setBlocId($block_id);
+        $Block->setDeletableFlg(1);
+
+        return $Block;
+    }
+
+    private function getNewBlockId($device_type_id)
+    {
+
+        $qb = $this->createQueryBuilder('b')
+            ->select('max(b.bloc_id) +1 as block_id')
+            ->where('b.device_type_id = :device_type_id')
+            ->setParameter('device_type_id', $device_type_id);
+        $result = $qb->getQuery()->getSingleResult();
+
+        return $result['block_id'];
+
+    }
+
+    /**
+     * ブロックの情報を取得.
+     *
+     * @param  integer $block_id       ブロックID
+     * @param  integer $device_type_id
+     * @return array
+     */
+    public function getBlock($block_id, $device_type_id)
+    {
+        $Block = $this->findOneBy(array(
+            'bloc_id' => $block_id,
+            'device_type_id' => $device_type_id,
+        ));
+
+        return $Block;
+    }
+
+    /**
+     * ブロック一覧の取得.
+     *
+     * @param  integer $device_type_id
+     * @return array
+     */
+    public function getList($device_type_id)
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->orderBy('b.bloc_id', 'DESC')
+            ->where('b.device_type_id = :device_type_id')
+            ->setParameter('device_type_id', $device_type_id)
+        ;
+
+        $Blocks = $qb
+            ->getQuery()
+            ->getResult();
+
+        return $Blocks;
+    }
 }

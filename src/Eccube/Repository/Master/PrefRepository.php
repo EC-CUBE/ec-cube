@@ -12,18 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class PrefRepository extends EntityRepository
 {
-    public function findMasterData()
-    {
-        $results = $this->getEntityManager()
-            ->createQuery('SELECT p FROM Eccube\Entity\Master\Pref p ORDER BY p.rank ASC')
-            ->getResult();
-
-        $pref[''] = null;
-
-        foreach($results as $res) {
-            $pref[$res->getId()] = $res->getName();
-        }
-
-        return $pref;
-    }
 }

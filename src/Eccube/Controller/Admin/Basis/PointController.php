@@ -18,7 +18,7 @@ class PointController extends AbstractController
         $this->sub_title = 'ポイント設定';
     }
 
-    public function Index(Application $app)
+    public function index(Application $app)
     {
         $baseInfo = $app['eccube.repository.base_info']->get();
 
@@ -32,6 +32,7 @@ class PointController extends AbstractController
                 $app['orm.em']->persist($baseInfo);
                 $app['orm.em']->flush();
                 $app['session']->getFlashBag()->add('point.complete', 'admin.register.complete');
+
                 return $app->redirect($app['url_generator']->generate('admin_basis_point'));
             }
         }

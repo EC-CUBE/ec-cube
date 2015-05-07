@@ -22,11 +22,11 @@ class ProductReview implements ServiceProviderInterface
 {
     public function register(BaseApplication $app)
     {
-        $app->match('/products/review.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Products\\Review')->bind('products_review');
-        $app->match('/products/review_complete.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Products\\ReviewComplete')->bind('products_review_complete');
+        $app->match('/products/review.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Products\\Review')->bind('product_review');
+        $app->match('/products/review_complete.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Products\\ReviewComplete')->bind('product_review_complete');
 
-        $app->match('/admin/products/review.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Admin\\Products\\Review')->bind('admin_products_review');
-        $app->match('/admin/products/review_edit.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Admin\\Products\\ReviewEdit')->bind('admin_products_review_edit');
+        $app->match('/admin/products/review.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Admin\\Products\\Review')->bind('admin_product_review');
+        $app->match('/admin/products/review_edit.php', '\\Eccube\\Plugin\\ProductReview\\Page\\Admin\\Products\\ReviewEdit')->bind('admin_product_review_edit');
 
         $app['eccube.helper.review'] = $app->share(function () use ($app) {
             return new ReviewHelper();

@@ -7,9 +7,8 @@
 <div id="undercolumn">
     <div id="undercolumn_entry">
         <h2 class="title">{{ title }}</h2>
-        <p>
-            ご登録されますと、まずは仮会員となります。<br />
-            入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
+        <p>下記の内容で送信してもよろしいでしょうか？<br />
+            よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
         </p>
         <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
             {{ form_widget(form._token) }}
@@ -87,9 +86,8 @@
                     <th>希望するパスワード<span class="attention">※</span><br />
                     </th>
                     <td>
-                        {{ form_widget(form.password.first) }}
-                        {{ form_widget(form.password.second) }}
-                        ********
+                        {{ form_widget(form.password.first, {type: "password"}) }}
+                        {{ form_widget(form.password.second, {type: "password"}) }}
                     </td>
                 </tr>
                 <tr>

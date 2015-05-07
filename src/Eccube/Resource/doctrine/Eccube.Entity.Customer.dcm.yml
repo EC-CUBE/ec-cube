@@ -137,11 +137,11 @@ Eccube\Entity\Customer:
         note:
             type: text
             nullable: true
-        status:
-            type: smallint
-            nullable: false
-            unsigned: false
-            default: '1'
+#        status:
+#            type: smallint
+#            nullable: false
+#            unsigned: false
+#            default: '1'
         create_date:
             type: datetime
             nullable: false
@@ -169,6 +169,12 @@ Eccube\Entity\Customer:
             inversedBy: Customers
             joinColumn:
                 name: reminder
+                referencedColumnName: id
+        Status:
+            targetEntity: Eccube\Entity\Master\CustomerStatus
+            inversedBy: Customers
+            joinColumn:
+                name: status
                 referencedColumnName: id
         Sex:
             targetEntity: Eccube\Entity\Master\Sex
@@ -203,5 +209,13 @@ Eccube\Entity\Customer:
     oneToMany:
         CustomerFavoriteProducts:
             targetEntity: Eccube\Entity\CustomerFavoriteProduct
+            mappedBy: Customer
+        OtherDelivs:
+            targetEntity: Eccube\Entity\OtherDeliv
+            mappedBy: Customer
+            orderBy:
+                id: ASC
+        Orders:
+            targetEntity: Eccube\Entity\Order
             mappedBy: Customer
     lifecycleCallbacks: {  }

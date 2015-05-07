@@ -17,7 +17,7 @@ class ContactController
 
     public function index(Application $app, Request $request)
     {
-        
+
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createBuilder('contact');
 
@@ -34,7 +34,7 @@ class ContactController
                 'kana02' => $user->getKana02(),
                 'zip01' => $user->getZip01(),
                 'zip02' => $user->getZip02(),
-                'pref' => $user->getPrefId(),
+                'pref' => $user->getPref(),
                 'addr01' => $user->getAddr01(),
                 'addr02' => $user->getAddr02(),
                 'tel01' => $user->getTel01(),
@@ -49,7 +49,7 @@ class ContactController
 
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
-                    case 'confirm' :
+                    case 'confirm':
                         $builder->setAttribute('freeze', true);
                         $form = $builder->getForm();
                         $form->handleRequest($request);
@@ -89,5 +89,4 @@ class ContactController
             'title' => $this->title,
         ));
     }
-
 }

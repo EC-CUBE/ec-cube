@@ -156,7 +156,6 @@ table tr.last {
 #form_edit .btn-area {
     margin : 0 0 60px 0;
     padding: 20px 0;
-    clear: both;
     width: 100%;
     background: #f5f5f5;
     text-align: center;
@@ -1608,3 +1607,22 @@ body#popup {
 }
 
 /*以上インストールページと共通■触るべからず*/
+
+/* alert
+----------------------------------------------- */
+.alert {
+    padding: 10px 20px;
+    border-bottom: 1px solid transparent;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}

@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * SendHistory
  */
@@ -74,11 +72,10 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -88,7 +85,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set mail_method
      *
-     * @param integer $mailMethod
+     * @param  integer     $mailMethod
      * @return SendHistory
      */
     public function setMailMethod($mailMethod)
@@ -101,7 +98,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get mail_method
      *
-     * @return integer 
+     * @return integer
      */
     public function getMailMethod()
     {
@@ -111,7 +108,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set subject
      *
-     * @param string $subject
+     * @param  string      $subject
      * @return SendHistory
      */
     public function setSubject($subject)
@@ -124,7 +121,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -134,7 +131,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set body
      *
-     * @param string $body
+     * @param  string      $body
      * @return SendHistory
      */
     public function setBody($body)
@@ -147,7 +144,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get body
      *
-     * @return string 
+     * @return string
      */
     public function getBody()
     {
@@ -157,7 +154,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set send_count
      *
-     * @param integer $sendCount
+     * @param  integer     $sendCount
      * @return SendHistory
      */
     public function setSendCount($sendCount)
@@ -170,7 +167,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get send_count
      *
-     * @return integer 
+     * @return integer
      */
     public function getSendCount()
     {
@@ -180,7 +177,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set complete_count
      *
-     * @param integer $completeCount
+     * @param  integer     $completeCount
      * @return SendHistory
      */
     public function setCompleteCount($completeCount)
@@ -193,7 +190,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get complete_count
      *
-     * @return integer 
+     * @return integer
      */
     public function getCompleteCount()
     {
@@ -203,7 +200,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set start_date
      *
-     * @param \DateTime $startDate
+     * @param  \DateTime   $startDate
      * @return SendHistory
      */
     public function setStartDate($startDate)
@@ -216,7 +213,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get start_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartDate()
     {
@@ -226,7 +223,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set end_date
      *
-     * @param \DateTime $endDate
+     * @param  \DateTime   $endDate
      * @return SendHistory
      */
     public function setEndDate($endDate)
@@ -239,7 +236,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get end_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEndDate()
     {
@@ -249,7 +246,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set search_data
      *
-     * @param string $searchData
+     * @param  string      $searchData
      * @return SendHistory
      */
     public function setSearchData($searchData)
@@ -262,7 +259,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get search_data
      *
-     * @return string 
+     * @return string
      */
     public function getSearchData()
     {
@@ -272,7 +269,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer     $delFlg
      * @return SendHistory
      */
     public function setDelFlg($delFlg)
@@ -285,7 +282,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -295,7 +292,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime   $createDate
      * @return SendHistory
      */
     public function setCreateDate($createDate)
@@ -308,7 +305,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -318,7 +315,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime   $updateDate
      * @return SendHistory
      */
     public function setUpdateDate($updateDate)
@@ -331,7 +328,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -341,7 +338,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param \Eccube\Entity\Member $creator
+     * @param  \Eccube\Entity\Member $creator
      * @return SendHistory
      */
     public function setCreator(\Eccube\Entity\Member $creator = null)
@@ -354,7 +351,7 @@ class SendHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {

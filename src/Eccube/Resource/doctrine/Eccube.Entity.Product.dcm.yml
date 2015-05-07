@@ -20,11 +20,11 @@ Eccube\Entity\Product:
 #            type: integer
 #            nullable: true
 #            unsigned: false
-        status:
-            type: smallint
-            nullable: false
-            unsigned: false
-            default: '2'
+#        status:
+#            type: smallint
+#            nullable: false
+#            unsigned: false
+#            default: '2'
         comment1:
             type: text
             nullable: true
@@ -210,19 +210,36 @@ Eccube\Entity\Product:
             joinColumn:
                 name: deliv_date_id
                 referencedColumnName: id
+        Status:
+            targetEntity: Eccube\Entity\Master\Disp
+            inversedBy: Products
+            joinColumn:
+                name: status
+                referencedColumnName: id
+                default: 2
+        ProductStatusColor:
+            targetEntity: Eccube\Entity\Master\ProductStatusColor
+            inversedBy: Products
+            joinColumn:
+                name: status
+                referencedColumnName: id
     oneToMany:
         ProductCategories:
             targetEntity: Eccube\Entity\ProductCategory
+            cascade: ["persist", "remove"]
             mappedBy: Product
         ProductClasses:
             targetEntity: Eccube\Entity\ProductClass
+            cascade: ["persist"]
             mappedBy: Product
         ProductStatuses:
             targetEntity: Eccube\Entity\ProductStatus
             mappedBy: Product
         RecommendProducts:
             targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: Product
+            mappedBy: RecommendedProduct
+            orderBy:
+                rank: ASC
         RecommendedProducts:
             targetEntity: Eccube\Entity\RecommendProduct
             mappedBy: Product

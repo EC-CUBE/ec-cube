@@ -118,17 +118,27 @@ Eccube\Entity\Shipping:
             nullable: false
             unsigned: false
             default: '0'
+    oneToMany:
+        ShipmentItems:
+            targetEntity: Eccube\Entity\ShipmentItem
+            mappedBy: Shipping
     manyToOne:
         Country:
             targetEntity: Eccube\Entity\Master\Country
-            inversedBy: Orders
+            inversedBy: Shippings
             joinColumn:
                 name: shipping_country_id
                 referencedColumnName: id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: Orders
+            inversedBy: Shippings
             joinColumn:
                 name: shipping_pref
                 referencedColumnName: id
+        Order:
+            targetEntity: Eccube\Entity\Order
+            inversedBy: Shippings
+            joinColumn:
+                name: order_id
+                referencedColumnName: order_id
     lifecycleCallbacks: {  }

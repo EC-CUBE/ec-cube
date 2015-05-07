@@ -1,0 +1,34 @@
+{% extends 'site_main.twig' %}
+
+{% block main %}
+<div id="mypagecolumn">
+    <h2 class="title">{{ title }}</h2>
+    {% include 'Mypage/navi.twig' %}
+    <form name="form1" id="form1" method="post" action="?">
+        <input type="hidden" name="refusal_transactionid" value="<!--{$refusal_transactionid}-->" />
+        <input type="hidden" name="mode" value="complete" />
+        {{ form_widget(form) }}
+
+        <div id="mycontents_area">
+            <h3>{{ subtitle }}</h3>
+            <div id="complete_area">
+                <div class="message">退会手続きを実行してもよろしいでしょうか？</div>
+                <div class="message_area">
+                    <div class="btn_area">
+                        <p>退会手続きが完了した時点で、現在保存されている購入履歴や、<br />
+                        お届け先等の情報は全てなくなりますのでご注意ください。</p>
+                        <ul>
+                            <li>
+                                <a href="{{ path('mypage') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_refuse_not.jpg" alt="いいえ、退会しません" /></a>
+                            </li>
+                            <li>
+                                <input type="image" src="{{ app.config.tpl }}img/button/btn_refuse_do.jpg" alt="はい、退会します" class="hover_change_image" name="refuse_do" id="refuse_do" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

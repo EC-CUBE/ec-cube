@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BaseInfo
  */
@@ -11,8 +9,8 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
 {
     /**
      * getLawPrefName
-     * 
-     * @param string $default デフォルト
+     *
+     * @param  string $default デフォルト
      * @return string
      */
     public function getLawPrefName($default = '')
@@ -354,11 +352,10 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
      */
     private $LawPref;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -368,7 +365,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set company_name
      *
-     * @param string $companyName
+     * @param  string   $companyName
      * @return BaseInfo
      */
     public function setCompanyName($companyName)
@@ -381,7 +378,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get company_name
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -391,7 +388,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set company_kana
      *
-     * @param string $companyKana
+     * @param  string   $companyKana
      * @return BaseInfo
      */
     public function setCompanyKana($companyKana)
@@ -404,7 +401,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get company_kana
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyKana()
     {
@@ -414,7 +411,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip01
      *
-     * @param string $zip01
+     * @param  string   $zip01
      * @return BaseInfo
      */
     public function setZip01($zip01)
@@ -427,7 +424,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip01
      *
-     * @return string 
+     * @return string
      */
     public function getZip01()
     {
@@ -437,7 +434,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip02
      *
-     * @param string $zip02
+     * @param  string   $zip02
      * @return BaseInfo
      */
     public function setZip02($zip02)
@@ -450,7 +447,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get zip02
      *
-     * @return string 
+     * @return string
      */
     public function getZip02()
     {
@@ -460,7 +457,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set zipcode
      *
-     * @param string $zipcode
+     * @param  string   $zipcode
      * @return BaseInfo
      */
     public function setZipcode($zipcode)
@@ -473,7 +470,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get zipcode
      *
-     * @return string 
+     * @return string
      */
     public function getZipcode()
     {
@@ -483,7 +480,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr01
      *
-     * @param string $addr01
+     * @param  string   $addr01
      * @return BaseInfo
      */
     public function setAddr01($addr01)
@@ -496,7 +493,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr01
      *
-     * @return string 
+     * @return string
      */
     public function getAddr01()
     {
@@ -506,7 +503,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr02
      *
-     * @param string $addr02
+     * @param  string   $addr02
      * @return BaseInfo
      */
     public function setAddr02($addr02)
@@ -519,7 +516,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get addr02
      *
-     * @return string 
+     * @return string
      */
     public function getAddr02()
     {
@@ -529,7 +526,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel01
      *
-     * @param string $tel01
+     * @param  string   $tel01
      * @return BaseInfo
      */
     public function setTel01($tel01)
@@ -542,7 +539,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel01
      *
-     * @return string 
+     * @return string
      */
     public function getTel01()
     {
@@ -552,7 +549,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel02
      *
-     * @param string $tel02
+     * @param  string   $tel02
      * @return BaseInfo
      */
     public function setTel02($tel02)
@@ -565,7 +562,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel02
      *
-     * @return string 
+     * @return string
      */
     public function getTel02()
     {
@@ -575,7 +572,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel03
      *
-     * @param string $tel03
+     * @param  string   $tel03
      * @return BaseInfo
      */
     public function setTel03($tel03)
@@ -588,7 +585,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get tel03
      *
-     * @return string 
+     * @return string
      */
     public function getTel03()
     {
@@ -598,7 +595,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax01
      *
-     * @param string $fax01
+     * @param  string   $fax01
      * @return BaseInfo
      */
     public function setFax01($fax01)
@@ -611,7 +608,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax01
      *
-     * @return string 
+     * @return string
      */
     public function getFax01()
     {
@@ -621,7 +618,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax02
      *
-     * @param string $fax02
+     * @param  string   $fax02
      * @return BaseInfo
      */
     public function setFax02($fax02)
@@ -634,7 +631,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax02
      *
-     * @return string 
+     * @return string
      */
     public function getFax02()
     {
@@ -644,7 +641,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax03
      *
-     * @param string $fax03
+     * @param  string   $fax03
      * @return BaseInfo
      */
     public function setFax03($fax03)
@@ -657,7 +654,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get fax03
      *
-     * @return string 
+     * @return string
      */
     public function getFax03()
     {
@@ -667,7 +664,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set business_hour
      *
-     * @param string $businessHour
+     * @param  string   $businessHour
      * @return BaseInfo
      */
     public function setBusinessHour($businessHour)
@@ -680,7 +677,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get business_hour
      *
-     * @return string 
+     * @return string
      */
     public function getBusinessHour()
     {
@@ -690,7 +687,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_company
      *
-     * @param string $lawCompany
+     * @param  string   $lawCompany
      * @return BaseInfo
      */
     public function setLawCompany($lawCompany)
@@ -703,7 +700,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_company
      *
-     * @return string 
+     * @return string
      */
     public function getLawCompany()
     {
@@ -713,7 +710,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_manager
      *
-     * @param string $lawManager
+     * @param  string   $lawManager
      * @return BaseInfo
      */
     public function setLawManager($lawManager)
@@ -726,7 +723,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_manager
      *
-     * @return string 
+     * @return string
      */
     public function getLawManager()
     {
@@ -736,7 +733,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_zip01
      *
-     * @param string $lawZip01
+     * @param  string   $lawZip01
      * @return BaseInfo
      */
     public function setLawZip01($lawZip01)
@@ -749,7 +746,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_zip01
      *
-     * @return string 
+     * @return string
      */
     public function getLawZip01()
     {
@@ -759,7 +756,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_zip02
      *
-     * @param string $lawZip02
+     * @param  string   $lawZip02
      * @return BaseInfo
      */
     public function setLawZip02($lawZip02)
@@ -772,7 +769,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_zip02
      *
-     * @return string 
+     * @return string
      */
     public function getLawZip02()
     {
@@ -782,7 +779,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_zipcode
      *
-     * @param string $lawZipcode
+     * @param  string   $lawZipcode
      * @return BaseInfo
      */
     public function setLawZipcode($lawZipcode)
@@ -795,7 +792,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_zipcode
      *
-     * @return string 
+     * @return string
      */
     public function getLawZipcode()
     {
@@ -805,7 +802,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_addr01
      *
-     * @param string $lawAddr01
+     * @param  string   $lawAddr01
      * @return BaseInfo
      */
     public function setLawAddr01($lawAddr01)
@@ -818,7 +815,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_addr01
      *
-     * @return string 
+     * @return string
      */
     public function getLawAddr01()
     {
@@ -828,7 +825,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_addr02
      *
-     * @param string $lawAddr02
+     * @param  string   $lawAddr02
      * @return BaseInfo
      */
     public function setLawAddr02($lawAddr02)
@@ -841,7 +838,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_addr02
      *
-     * @return string 
+     * @return string
      */
     public function getLawAddr02()
     {
@@ -851,7 +848,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_tel01
      *
-     * @param string $lawTel01
+     * @param  string   $lawTel01
      * @return BaseInfo
      */
     public function setLawTel01($lawTel01)
@@ -864,7 +861,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_tel01
      *
-     * @return string 
+     * @return string
      */
     public function getLawTel01()
     {
@@ -874,7 +871,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_tel02
      *
-     * @param string $lawTel02
+     * @param  string   $lawTel02
      * @return BaseInfo
      */
     public function setLawTel02($lawTel02)
@@ -887,7 +884,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_tel02
      *
-     * @return string 
+     * @return string
      */
     public function getLawTel02()
     {
@@ -897,7 +894,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_tel03
      *
-     * @param string $lawTel03
+     * @param  string   $lawTel03
      * @return BaseInfo
      */
     public function setLawTel03($lawTel03)
@@ -910,7 +907,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_tel03
      *
-     * @return string 
+     * @return string
      */
     public function getLawTel03()
     {
@@ -920,7 +917,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_fax01
      *
-     * @param string $lawFax01
+     * @param  string   $lawFax01
      * @return BaseInfo
      */
     public function setLawFax01($lawFax01)
@@ -933,7 +930,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_fax01
      *
-     * @return string 
+     * @return string
      */
     public function getLawFax01()
     {
@@ -943,7 +940,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_fax02
      *
-     * @param string $lawFax02
+     * @param  string   $lawFax02
      * @return BaseInfo
      */
     public function setLawFax02($lawFax02)
@@ -956,7 +953,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_fax02
      *
-     * @return string 
+     * @return string
      */
     public function getLawFax02()
     {
@@ -966,7 +963,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_fax03
      *
-     * @param string $lawFax03
+     * @param  string   $lawFax03
      * @return BaseInfo
      */
     public function setLawFax03($lawFax03)
@@ -979,7 +976,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_fax03
      *
-     * @return string 
+     * @return string
      */
     public function getLawFax03()
     {
@@ -989,7 +986,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_email
      *
-     * @param string $lawEmail
+     * @param  string   $lawEmail
      * @return BaseInfo
      */
     public function setLawEmail($lawEmail)
@@ -1002,7 +999,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_email
      *
-     * @return string 
+     * @return string
      */
     public function getLawEmail()
     {
@@ -1012,7 +1009,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_url
      *
-     * @param string $lawUrl
+     * @param  string   $lawUrl
      * @return BaseInfo
      */
     public function setLawUrl($lawUrl)
@@ -1025,7 +1022,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_url
      *
-     * @return string 
+     * @return string
      */
     public function getLawUrl()
     {
@@ -1035,7 +1032,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term01
      *
-     * @param string $lawTerm01
+     * @param  string   $lawTerm01
      * @return BaseInfo
      */
     public function setLawTerm01($lawTerm01)
@@ -1048,7 +1045,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term01
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm01()
     {
@@ -1058,7 +1055,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term02
      *
-     * @param string $lawTerm02
+     * @param  string   $lawTerm02
      * @return BaseInfo
      */
     public function setLawTerm02($lawTerm02)
@@ -1071,7 +1068,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term02
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm02()
     {
@@ -1081,7 +1078,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term03
      *
-     * @param string $lawTerm03
+     * @param  string   $lawTerm03
      * @return BaseInfo
      */
     public function setLawTerm03($lawTerm03)
@@ -1094,7 +1091,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term03
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm03()
     {
@@ -1104,7 +1101,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term04
      *
-     * @param string $lawTerm04
+     * @param  string   $lawTerm04
      * @return BaseInfo
      */
     public function setLawTerm04($lawTerm04)
@@ -1117,7 +1114,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term04
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm04()
     {
@@ -1127,7 +1124,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term05
      *
-     * @param string $lawTerm05
+     * @param  string   $lawTerm05
      * @return BaseInfo
      */
     public function setLawTerm05($lawTerm05)
@@ -1140,7 +1137,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term05
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm05()
     {
@@ -1150,7 +1147,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term06
      *
-     * @param string $lawTerm06
+     * @param  string   $lawTerm06
      * @return BaseInfo
      */
     public function setLawTerm06($lawTerm06)
@@ -1163,7 +1160,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term06
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm06()
     {
@@ -1173,7 +1170,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term07
      *
-     * @param string $lawTerm07
+     * @param  string   $lawTerm07
      * @return BaseInfo
      */
     public function setLawTerm07($lawTerm07)
@@ -1186,7 +1183,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term07
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm07()
     {
@@ -1196,7 +1193,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term08
      *
-     * @param string $lawTerm08
+     * @param  string   $lawTerm08
      * @return BaseInfo
      */
     public function setLawTerm08($lawTerm08)
@@ -1209,7 +1206,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term08
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm08()
     {
@@ -1219,7 +1216,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term09
      *
-     * @param string $lawTerm09
+     * @param  string   $lawTerm09
      * @return BaseInfo
      */
     public function setLawTerm09($lawTerm09)
@@ -1232,7 +1229,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term09
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm09()
     {
@@ -1242,7 +1239,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set law_term10
      *
-     * @param string $lawTerm10
+     * @param  string   $lawTerm10
      * @return BaseInfo
      */
     public function setLawTerm10($lawTerm10)
@@ -1255,7 +1252,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get law_term10
      *
-     * @return string 
+     * @return string
      */
     public function getLawTerm10()
     {
@@ -1265,7 +1262,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set email01
      *
-     * @param string $email01
+     * @param  string   $email01
      * @return BaseInfo
      */
     public function setEmail01($email01)
@@ -1278,7 +1275,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get email01
      *
-     * @return string 
+     * @return string
      */
     public function getEmail01()
     {
@@ -1288,7 +1285,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set email02
      *
-     * @param string $email02
+     * @param  string   $email02
      * @return BaseInfo
      */
     public function setEmail02($email02)
@@ -1301,7 +1298,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get email02
      *
-     * @return string 
+     * @return string
      */
     public function getEmail02()
     {
@@ -1311,7 +1308,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set email03
      *
-     * @param string $email03
+     * @param  string   $email03
      * @return BaseInfo
      */
     public function setEmail03($email03)
@@ -1324,7 +1321,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get email03
      *
-     * @return string 
+     * @return string
      */
     public function getEmail03()
     {
@@ -1334,7 +1331,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set email04
      *
-     * @param string $email04
+     * @param  string   $email04
      * @return BaseInfo
      */
     public function setEmail04($email04)
@@ -1347,7 +1344,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get email04
      *
-     * @return string 
+     * @return string
      */
     public function getEmail04()
     {
@@ -1357,7 +1354,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set free_rule
      *
-     * @param string $freeRule
+     * @param  string   $freeRule
      * @return BaseInfo
      */
     public function setFreeRule($freeRule)
@@ -1370,7 +1367,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get free_rule
      *
-     * @return string 
+     * @return string
      */
     public function getFreeRule()
     {
@@ -1380,7 +1377,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set shop_name
      *
-     * @param string $shopName
+     * @param  string   $shopName
      * @return BaseInfo
      */
     public function setShopName($shopName)
@@ -1393,7 +1390,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get shop_name
      *
-     * @return string 
+     * @return string
      */
     public function getShopName()
     {
@@ -1403,7 +1400,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set shop_kana
      *
-     * @param string $shopKana
+     * @param  string   $shopKana
      * @return BaseInfo
      */
     public function setShopKana($shopKana)
@@ -1416,7 +1413,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get shop_kana
      *
-     * @return string 
+     * @return string
      */
     public function getShopKana()
     {
@@ -1426,7 +1423,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set shop_name_eng
      *
-     * @param string $shopNameEng
+     * @param  string   $shopNameEng
      * @return BaseInfo
      */
     public function setShopNameEng($shopNameEng)
@@ -1439,7 +1436,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get shop_name_eng
      *
-     * @return string 
+     * @return string
      */
     public function getShopNameEng()
     {
@@ -1449,7 +1446,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set point_rate
      *
-     * @param string $pointRate
+     * @param  string   $pointRate
      * @return BaseInfo
      */
     public function setPointRate($pointRate)
@@ -1462,7 +1459,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get point_rate
      *
-     * @return string 
+     * @return string
      */
     public function getPointRate()
     {
@@ -1472,7 +1469,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set welcome_point
      *
-     * @param string $welcomePoint
+     * @param  string   $welcomePoint
      * @return BaseInfo
      */
     public function setWelcomePoint($welcomePoint)
@@ -1485,7 +1482,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get welcome_point
      *
-     * @return string 
+     * @return string
      */
     public function getWelcomePoint()
     {
@@ -1495,7 +1492,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return BaseInfo
      */
     public function setUpdateDate($updateDate)
@@ -1508,7 +1505,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -1518,7 +1515,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set top_tpl
      *
-     * @param string $topTpl
+     * @param  string   $topTpl
      * @return BaseInfo
      */
     public function setTopTpl($topTpl)
@@ -1531,7 +1528,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get top_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getTopTpl()
     {
@@ -1541,7 +1538,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_tpl
      *
-     * @param string $productTpl
+     * @param  string   $productTpl
      * @return BaseInfo
      */
     public function setProductTpl($productTpl)
@@ -1554,7 +1551,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getProductTpl()
     {
@@ -1564,7 +1561,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set detail_tpl
      *
-     * @param string $detailTpl
+     * @param  string   $detailTpl
      * @return BaseInfo
      */
     public function setDetailTpl($detailTpl)
@@ -1577,7 +1574,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get detail_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getDetailTpl()
     {
@@ -1587,7 +1584,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set mypage_tpl
      *
-     * @param string $mypageTpl
+     * @param  string   $mypageTpl
      * @return BaseInfo
      */
     public function setMypageTpl($mypageTpl)
@@ -1600,7 +1597,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get mypage_tpl
      *
-     * @return string 
+     * @return string
      */
     public function getMypageTpl()
     {
@@ -1610,7 +1607,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set good_traded
      *
-     * @param string $goodTraded
+     * @param  string   $goodTraded
      * @return BaseInfo
      */
     public function setGoodTraded($goodTraded)
@@ -1623,7 +1620,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get good_traded
      *
-     * @return string 
+     * @return string
      */
     public function getGoodTraded()
     {
@@ -1633,7 +1630,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set message
      *
-     * @param string $message
+     * @param  string   $message
      * @return BaseInfo
      */
     public function setMessage($message)
@@ -1646,7 +1643,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get message
      *
-     * @return string 
+     * @return string
      */
     public function getMessage()
     {
@@ -1656,7 +1653,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set regular_holiday_ids
      *
-     * @param string $regularHolidayIds
+     * @param  string   $regularHolidayIds
      * @return BaseInfo
      */
     public function setRegularHolidayIds($regularHolidayIds)
@@ -1669,7 +1666,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get regular_holiday_ids
      *
-     * @return string 
+     * @return string
      */
     public function getRegularHolidayIds()
     {
@@ -1679,7 +1676,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set latitude
      *
-     * @param string $latitude
+     * @param  string   $latitude
      * @return BaseInfo
      */
     public function setLatitude($latitude)
@@ -1692,7 +1689,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get latitude
      *
-     * @return string 
+     * @return string
      */
     public function getLatitude()
     {
@@ -1702,7 +1699,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set longitude
      *
-     * @param string $longitude
+     * @param  string   $longitude
      * @return BaseInfo
      */
     public function setLongitude($longitude)
@@ -1715,7 +1712,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get longitude
      *
-     * @return string 
+     * @return string
      */
     public function getLongitude()
     {
@@ -1725,7 +1722,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set downloadable_days
      *
-     * @param string $downloadableDays
+     * @param  string   $downloadableDays
      * @return BaseInfo
      */
     public function setDownloadableDays($downloadableDays)
@@ -1738,7 +1735,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get downloadable_days
      *
-     * @return string 
+     * @return string
      */
     public function getDownloadableDays()
     {
@@ -1748,7 +1745,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set downloadable_days_unlimited
      *
-     * @param integer $downloadableDaysUnlimited
+     * @param  integer  $downloadableDaysUnlimited
      * @return BaseInfo
      */
     public function setDownloadableDaysUnlimited($downloadableDaysUnlimited)
@@ -1761,7 +1758,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get downloadable_days_unlimited
      *
-     * @return integer 
+     * @return integer
      */
     public function getDownloadableDaysUnlimited()
     {
@@ -1771,7 +1768,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set Country
      *
-     * @param \Eccube\Entity\Master\Country $country
+     * @param  \Eccube\Entity\Master\Country $country
      * @return BaseInfo
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -1784,7 +1781,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get Country
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country
      */
     public function getCountry()
     {
@@ -1794,7 +1791,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set Pref
      *
-     * @param \Eccube\Entity\Master\Pref $pref
+     * @param  \Eccube\Entity\Master\Pref $pref
      * @return BaseInfo
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -1807,7 +1804,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {
@@ -1817,7 +1814,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set LawCountry
      *
-     * @param \Eccube\Entity\Master\Country $lawCountry
+     * @param  \Eccube\Entity\Master\Country $lawCountry
      * @return BaseInfo
      */
     public function setLawCountry(\Eccube\Entity\Master\Country $lawCountry = null)
@@ -1830,7 +1827,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get LawCountry
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country
      */
     public function getLawCountry()
     {
@@ -1840,7 +1837,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Set LawPref
      *
-     * @param \Eccube\Entity\Master\Pref $lawPref
+     * @param  \Eccube\Entity\Master\Pref $lawPref
      * @return BaseInfo
      */
     public function setLawPref(\Eccube\Entity\Master\Pref $lawPref = null)
@@ -1853,7 +1850,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * Get LawPref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getLawPref()
     {

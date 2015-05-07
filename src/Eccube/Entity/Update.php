@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Update
  */
@@ -79,11 +77,10 @@ class Update extends \Eccube\Entity\AbstractEntity
      */
     private $release_date;
 
-
     /**
      * Get module_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getModuleId()
     {
@@ -93,7 +90,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set module_name
      *
-     * @param string $moduleName
+     * @param  string $moduleName
      * @return Update
      */
     public function setModuleName($moduleName)
@@ -106,7 +103,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get module_name
      *
-     * @return string 
+     * @return string
      */
     public function getModuleName()
     {
@@ -116,7 +113,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set now_version
      *
-     * @param string $nowVersion
+     * @param  string $nowVersion
      * @return Update
      */
     public function setNowVersion($nowVersion)
@@ -129,7 +126,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get now_version
      *
-     * @return string 
+     * @return string
      */
     public function getNowVersion()
     {
@@ -139,7 +136,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set latest_version
      *
-     * @param string $latestVersion
+     * @param  string $latestVersion
      * @return Update
      */
     public function setLatestVersion($latestVersion)
@@ -152,7 +149,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get latest_version
      *
-     * @return string 
+     * @return string
      */
     public function getLatestVersion()
     {
@@ -162,7 +159,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set module_explain
      *
-     * @param string $moduleExplain
+     * @param  string $moduleExplain
      * @return Update
      */
     public function setModuleExplain($moduleExplain)
@@ -175,7 +172,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get module_explain
      *
-     * @return string 
+     * @return string
      */
     public function getModuleExplain()
     {
@@ -185,7 +182,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set main_php
      *
-     * @param string $mainPhp
+     * @param  string $mainPhp
      * @return Update
      */
     public function setMainPhp($mainPhp)
@@ -198,7 +195,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get main_php
      *
-     * @return string 
+     * @return string
      */
     public function getMainPhp()
     {
@@ -208,7 +205,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set extern_php
      *
-     * @param string $externPhp
+     * @param  string $externPhp
      * @return Update
      */
     public function setExternPhp($externPhp)
@@ -221,7 +218,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get extern_php
      *
-     * @return string 
+     * @return string
      */
     public function getExternPhp()
     {
@@ -231,7 +228,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set install_sql
      *
-     * @param string $installSql
+     * @param  string $installSql
      * @return Update
      */
     public function setInstallSql($installSql)
@@ -244,7 +241,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get install_sql
      *
-     * @return string 
+     * @return string
      */
     public function getInstallSql()
     {
@@ -254,7 +251,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set uninstall_sql
      *
-     * @param string $uninstallSql
+     * @param  string $uninstallSql
      * @return Update
      */
     public function setUninstallSql($uninstallSql)
@@ -267,7 +264,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get uninstall_sql
      *
-     * @return string 
+     * @return string
      */
     public function getUninstallSql()
     {
@@ -277,7 +274,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set other_files
      *
-     * @param string $otherFiles
+     * @param  string $otherFiles
      * @return Update
      */
     public function setOtherFiles($otherFiles)
@@ -290,7 +287,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get other_files
      *
-     * @return string 
+     * @return string
      */
     public function getOtherFiles()
     {
@@ -300,7 +297,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param integer $delFlg
+     * @param  integer $delFlg
      * @return Update
      */
     public function setDelFlg($delFlg)
@@ -313,7 +310,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -323,7 +320,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime $createDate
      * @return Update
      */
     public function setCreateDate($createDate)
@@ -336,7 +333,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -346,7 +343,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param \DateTime $updateDate
+     * @param  \DateTime $updateDate
      * @return Update
      */
     public function setUpdateDate($updateDate)
@@ -359,7 +356,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -369,7 +366,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Set release_date
      *
-     * @param \DateTime $releaseDate
+     * @param  \DateTime $releaseDate
      * @return Update
      */
     public function setReleaseDate($releaseDate)
@@ -382,7 +379,7 @@ class Update extends \Eccube\Entity\AbstractEntity
     /**
      * Get release_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getReleaseDate()
     {

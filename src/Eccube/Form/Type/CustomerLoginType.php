@@ -61,5 +61,4 @@ class CustomerLoginType extends AbstractType
     {
         return 'customer_login';
     }
-
 }

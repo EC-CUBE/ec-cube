@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * MakerCount
  */
@@ -29,11 +27,10 @@ class MakerCount extends \Eccube\Entity\AbstractEntity
      */
     private $Maker;
 
-
     /**
      * Get maker_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getMakerId()
     {
@@ -43,7 +40,7 @@ class MakerCount extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_count
      *
-     * @param integer $productCount
+     * @param  integer    $productCount
      * @return MakerCount
      */
     public function setProductCount($productCount)
@@ -56,7 +53,7 @@ class MakerCount extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_count
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductCount()
     {
@@ -66,7 +63,7 @@ class MakerCount extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime  $createDate
      * @return MakerCount
      */
     public function setCreateDate($createDate)
@@ -79,7 +76,7 @@ class MakerCount extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -89,7 +86,7 @@ class MakerCount extends \Eccube\Entity\AbstractEntity
     /**
      * Set Maker
      *
-     * @param \Eccube\Entity\Maker $maker
+     * @param  \Eccube\Entity\Maker $maker
      * @return MakerCount
      */
     public function setMaker(\Eccube\Entity\Maker $maker = null)
@@ -102,7 +99,7 @@ class MakerCount extends \Eccube\Entity\AbstractEntity
     /**
      * Get Maker
      *
-     * @return \Eccube\Entity\Maker 
+     * @return \Eccube\Entity\Maker
      */
     public function getMaker()
     {

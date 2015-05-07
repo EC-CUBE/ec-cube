@@ -172,7 +172,7 @@ class Review extends AbstractAdminPage
     public function lfSetHidden($arrForm)
     {
         $arrHidden = array();
-        foreach ($arrForm AS $key=>$val) {
+        foreach ($arrForm as $key => $val) {
             if (preg_match('/^search_/', $key)) {
                 switch ($key) {
                     case 'search_sex':
@@ -242,8 +242,10 @@ class Review extends AbstractAdminPage
         $where = 'A.del_flg = 0 AND B.del_flg = 0';
         $arrWhereVal = array();
 
-        foreach ($arrForm AS $key=>$val) {
-            if (empty($val)) continue;
+        foreach ($arrForm as $key => $val) {
+            if (empty($val)) {
+                continue;
+            }
 
             switch ($key) {
                 case 'search_reviewer_name':
@@ -343,8 +345,11 @@ class Review extends AbstractAdminPage
         /* @var $objNavi PageNavi */
         $objNavi = Application::alias(
             'eccube.page_navi',
-            $this->tpl_pageno, $linemax, $page_max,
-            'eccube.moveNaviPage', NAVI_PMAX
+            $this->tpl_pageno,
+            $linemax,
+            $page_max,
+            'eccube.moveNaviPage',
+            NAVI_PMAX
         );
         $this->arrPagenavi = $objNavi->arrPagenavi;
         $startno = $objNavi->start_row;
@@ -366,11 +371,14 @@ class Review extends AbstractAdminPage
      * @param array $data
      * @return array
      */
-    private function makeQuery($data = array()) {
+    private function makeQuery($data = array())
+    {
         $query = array();
 
-        foreach ($data AS $key => $val) {
-            if (empty($val)) continue;
+        foreach ($data as $key => $val) {
+            if (empty($val)) {
+                continue;
+            }
 
             switch ($key) {
                 case 'search_reviewer_name':

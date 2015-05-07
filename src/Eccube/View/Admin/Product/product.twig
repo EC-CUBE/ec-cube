@@ -1,0 +1,85 @@
+{% extends 'Admin/main_frame.twig' %}
+
+{% block javascript %}
+    // 表示非表示切り替え
+    function lfDispSwitch(id){
+        var obj = document.getElementById(id);
+        if (obj.style.display == 'none') {
+            obj.style.display = '';
+        } else {
+            obj.style.display = 'none';
+        }
+    }
+
+    // セレクトボックスのリストを初期化
+    // ※キャッシュ対策
+    // (移動元セレクトボックス)
+    function fnInitSelect(select) {
+        var selectedOptions = <!--{$tpl_json_category_id}-->;
+        $('#' + select + ' option').attr('selected', false);
+        for(var i=0; i < selectedOptions.length; i++){
+            $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
+                .prop('selected', 'selected');
+        }
+    }
+
+    // セレクトボックスのリストを移動
+    // (移動元セレクトボックスID, 移動先セレクトボックスID)
+    function fnMoveSelect(select, target) {
+        $('#' + select).children().each(function() {
+            if (this.selected) {
+                $('#' + target).append(this);
+                $(this).attr({selected: false});
+            }
+        });
+        // IE7再描画不具合対策
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf("msie") != -1 && ua.indexOf('msie 6') == -1) {
+            $('#' + select).hide();
+            $('#' + select).show();
+            $('#' + target).hide();
+            $('#' + target).show();
+        }
+    }
+
+    // target の子要素を選択状態にする
+    function selectAll(target) {
+        $('#' + target).children().prop('selected', 'selected');
+    }
+
+    // 商品種別によってダウンロード商品のフォームの表示非表示を切り替える
+    function toggleDownloadFileForms(value) {
+        if (value == '2') {
+            $('.type-download').show('fast');
+        } else {
+            $('.type-download').hide('fast');
+        }
+    }
+
+    $(function(){
+        var form_product_type = $('input[name=product_type_id]');
+        form_product_type.click(function(){
+            toggleDownloadFileForms(form_product_type.filter(':checked').val());
+        });
+        toggleDownloadFileForms(form_product_type.filter(':checked').val());
+    })
+{% endblock %}
+
+{% block main %}
+    <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+    <div id="products" class="contents-main">
+        <h2>基本情報</h2>
+
+        {{ form_widget(form) }}
+        {% if app.config.option_product_tax_rule %}
+            {{ form_widget(form.tax_rule) }}
+        {% endif %}
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="path('admin_products')"><span class="btn-prev">検索画面に戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">確認ページへ</span></a></li>
+            </ul>
+        </div>
+    </div>
+    </form>
+{% endblock %}

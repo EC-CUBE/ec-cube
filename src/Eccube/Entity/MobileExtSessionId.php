@@ -2,8 +2,6 @@
 
 namespace Eccube\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * MobileExtSessionId
  */
@@ -34,11 +32,10 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
      */
     private $create_date;
 
-
     /**
      * Get id
      *
-     * @return string 
+     * @return string
      */
     public function getId()
     {
@@ -48,7 +45,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Set param_key
      *
-     * @param string $paramKey
+     * @param  string             $paramKey
      * @return MobileExtSessionId
      */
     public function setParamKey($paramKey)
@@ -61,7 +58,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Get param_key
      *
-     * @return string 
+     * @return string
      */
     public function getParamKey()
     {
@@ -71,7 +68,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Set param_value
      *
-     * @param string $paramValue
+     * @param  string             $paramValue
      * @return MobileExtSessionId
      */
     public function setParamValue($paramValue)
@@ -84,7 +81,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Get param_value
      *
-     * @return string 
+     * @return string
      */
     public function getParamValue()
     {
@@ -94,7 +91,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Set url
      *
-     * @param string $url
+     * @param  string             $url
      * @return MobileExtSessionId
      */
     public function setUrl($url)
@@ -107,7 +104,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -117,7 +114,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param \DateTime $createDate
+     * @param  \DateTime          $createDate
      * @return MobileExtSessionId
      */
     public function setCreateDate($createDate)
@@ -130,7 +127,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -140,7 +137,7 @@ class MobileExtSessionId extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @param string $id
+     * @param  string             $id
      * @return MobileExtSessionId
      */
     public function setId($id)

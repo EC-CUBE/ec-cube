@@ -6,8 +6,8 @@ use Eccube\Application;
 
 class LoginController
 {
-	function index(Application $app)
-	{
-		return 'block_login';
-	}
+    public function index(Application $app)
+    {
+        return '';
+    }
 }

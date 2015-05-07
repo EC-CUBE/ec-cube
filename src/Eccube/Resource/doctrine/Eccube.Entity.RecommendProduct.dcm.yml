@@ -39,6 +39,21 @@ Eccube\Entity\RecommendProduct:
             nullable: false
             default: '0000-00-00 00:00:00'
     manyToOne:
+        RecommendedProduct:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: RecommendProducts
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+                nullable: false
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: RecommendedProducts
+            fetch: EAGER
+            joinColumn:
+                name: recommend_product_id
+                referencedColumnName: product_id
+                nullable: false
         Creator:
             targetEntity: Eccube\Entity\Member
             inversedBy: RecommendProducts

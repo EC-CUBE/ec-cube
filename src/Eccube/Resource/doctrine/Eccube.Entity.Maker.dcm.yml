@@ -45,8 +45,12 @@ Eccube\Entity\Maker:
                 name: creator_id
                 referencedColumnName: member_id
                 nullable: false
+    oneToMany:
+        Products:
+            targetEntity: Eccube\Entity\Product
+            mappedBy: Maker
     oneToOne:
         MakerCount:
-            targetEntity: MakerCount
+            targetEntity: Eccube\Entity\MakerCount
             mappedBy: Maker
     lifecycleCallbacks: {  }
