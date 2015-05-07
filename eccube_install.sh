@@ -134,7 +134,7 @@ dtb_tax_rule_tax_rule_id_seq
     for S in $SEQUENCES; do
         case ${DBTYPE} in
             pgsql)
-                sql=$(echo "CREATE SEQUENCE ${S} START 10000;")
+                sql=$(echo "SELECT SETVAL ('${S}', 10000);")
             ;;
             mysql)
                 sql=$(echo "CREATE TABLE ${S} (
@@ -228,6 +228,18 @@ customer_confirm_mail: false
 
 form_country_enable: false
 default_password: '******'
+
+target_id_unused: 0
+target_id_left: 1
+target_id_main_head: 2
+target_id_right: 3
+target_id_main_foot: 4
+target_id_top: 5
+target_id_bottom: 6
+target_id_head: 7
+target_id_head_top: 8
+target_id_footer_bottom: 9
+target_id_header_internal: 10
 __EOF__
 }
 
