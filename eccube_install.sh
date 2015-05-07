@@ -81,7 +81,7 @@ adjust_directory_permissions()
     chmod go+w "./app"
     chmod -R go+w "./app/template"
     chmod -R go+w "./app/cache"
-    chmod go+w "./app/config"
+    chmod -R go+w "./app/config"
     chmod -R go+w "./app/download"
     chmod -R go+w "./app/downloads"
     chmod go+w "./app/font"
