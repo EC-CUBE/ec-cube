@@ -300,14 +300,14 @@ Eccube\Entity\Order:
             joinColumn:
                 name: status
                 referencedColumnName: id
-        OrderStatus:
-            targetEntity: Eccube\Entity\Master\OrderStatus
+        OrderStatusColor:
+            targetEntity: Eccube\Entity\Master\OrderStatusColor
             inversedBy: Orders
             joinColumn:
                 name: status
                 referencedColumnName: id
-        OrderStatusColor:
-            targetEntity: Eccube\Entity\Master\OrderStatusColor
+        OrderStatus:
+            targetEntity: Eccube\Entity\Master\OrderStatus
             inversedBy: Orders
             joinColumn:
                 name: status
