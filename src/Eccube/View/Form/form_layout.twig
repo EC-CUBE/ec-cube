@@ -132,9 +132,9 @@
 {%- block choice_widget_expanded -%}
     {% if freeze %}
         {%- if freeze_display_text -%}
-            {{ form.vars.data.name }}
+            {{ form.vars.data.name|default(form.vars.data) }}
         {%- endif -%}
-        <input type="hidden" value="{{ form.vars.data.id }}" {{ block('widget_attributes') }}>
+        <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }}>
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}
