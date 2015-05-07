@@ -64,7 +64,9 @@ class CartService
 
     public function lock()
     {
-        $this->cart->setLock(true);
+        $this->cart
+            ->setLock(true)
+            ->setPreOrderId(null);
     }
 
     /**

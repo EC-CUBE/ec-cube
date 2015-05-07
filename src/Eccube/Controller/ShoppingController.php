@@ -30,7 +30,6 @@ class ShoppingController extends AbstractController
         $app['eccube.service.cart']->addProduct(2);
         $app['eccube.service.cart']->lock();
         $app['eccube.service.cart']->save();
-        $this->setNonCustomer($app, false);
 
         return $app->redirect($app['url_generator']->generate('shopping'));
     }
@@ -50,32 +49,27 @@ class ShoppingController extends AbstractController
 
     public function index(Application $app)
     {
-        // todo
+        // TODO delete_flagではなく, 注文の確定フラグをみるようにする.
         $app['orm.em']->getFilters()->disable('soft_delete');
 
-        // ログイン済 or 非会員購入ではない場合
-        if (!($this->isLoggedIn($app) || $this->isNonCustomer($app))) {
-            return $app->redirect($app['url_generator']->generate('shopping_login'));
-        }
         // カートの変更チェック
-        if ($this->cartChanged($app)) {
+        if (!$app['eccube.service.cart']->isLocked()) {
             return $app->redirect($app['url_generator']->generate('cart'));
         }
-        $form = $app['form.factory']
-            ->createBuilder('shopping')
-            ->getForm();
 
-        // 受注関連情報を取得
+        // 受注データを取得.
         $preOrderId = $app['eccube.service.cart']->getPreOrderId();
-        $Order = null;
-        if (!is_null($preOrderId)) {
-            $Order = $app['eccube.repository.order']->find($preOrderId);
-        }
-        // 初回アクセスの場合は受注データを作成
+        $Order = $app['eccube.repository.order']->findOneBy(array('id' => $preOrderId)); // TODO order_temp_idにする.
+
+        // 初回アクセス(受注データがない)の場合は, 受注データを生成
         if (is_null($Order)) {
+            // 未ログインの場合は, ログイン画面へリダイレクト.
+            if (!$app['security']->isGranted('ROLE_USER')) {
+                return $app->redirect($app['url_generator']->generate('shopping_login'));
+            }
             $Order = $app['eccube.service.order']->registerPreOrderFromCartItems(
                 $app['eccube.service.cart']->getCart()->getCartItems(),
-            $app['security']->isGranted('ROLE_USER') ? $app['user'] : null
+                $app['user']
             );
             $app['eccube.service.cart']->setPreOrderId($Order->getId());
             $app['eccube.service.cart']->save();
@@ -83,6 +77,10 @@ class ShoppingController extends AbstractController
 
         // 受注関連情報を最新状態に更新
         $app['orm.em']->refresh($Order);
+
+        $form = $app['form.factory']
+            ->createBuilder('shopping')
+            ->getForm();
 
         // 配送業者選択
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
@@ -129,7 +127,6 @@ class ShoppingController extends AbstractController
                 $Order->setMessage($data['message']);
                 $this->orderService->commit($Order);
                 $this->cartService->clear()->save();
-                $this->setNonCustomer($app, false);
 
                 return $app->redirect($app['url_generator']->generate('shopping_complete'));
             }
@@ -509,7 +506,6 @@ class ShoppingController extends AbstractController
                     $app['eccube.service.cart']->setPreOrderId($Order->getId());
                     $app['eccube.service.cart']->save();
                 }
-                $this->setNonCustomer($app);
 
                 return $app->redirect($app['url_generator']->generate('shopping'));
             }
@@ -523,26 +519,7 @@ class ShoppingController extends AbstractController
 
     protected function isLoggedIn($app)
     {
-        if ($app['security']->isGranted('ROLE_USER')) {
-            if ($this->isNonCustomer($app)) {
-                $app['eccube.service.cart']->setPreOrderId(null)->save();
-                $this->setNonCustomer($app, false);
-            }
-        }
-
         return $app['security']->isGranted('ROLE_USER');
-    }
-
-    protected function isNonCustomer($app)
-    {
-        $nonCustomer = $app['session']->get('shopping.noncustomer');
-
-        return ($nonCustomer === true) ? true : false;
-    }
-
-    protected function setNonCustomer($app, $bool = true)
-    {
-        $app['session']->set('shopping.noncustomer', $bool);
     }
 
     protected function cartChanged($app)
