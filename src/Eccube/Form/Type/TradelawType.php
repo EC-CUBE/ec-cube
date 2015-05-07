@@ -39,7 +39,7 @@ class TradelawType extends AbstractType
                 new Assert\Length(array('min' => 4, 'max' => 4)),
                 new Assert\Regex(array('pattern' => '/\A\d+\z/')),
              )))
-            ->add('law_pref', 'integer', array(
+            ->add('law_pref', 'pref', array(
                 'required' => true
             ))
             ->add('law_addr01', 'text', array(
