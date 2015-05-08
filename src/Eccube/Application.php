@@ -460,6 +460,14 @@ class Application extends \Silex\Application
         $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
+    /*
+     * 以下のコードの著作権について
+     *
+     * (c) Fabien Potencier <fabien@symfony.com>
+     *
+     * For the full copyright and license information, please view the silex
+     * LICENSE file that was distributed with this source code.
+     */
     /** FormTrait */
     /**
      * Creates and returns a form builder instance
