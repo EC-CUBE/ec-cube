@@ -33,7 +33,7 @@ $(function(){
 });
 </script>
 
-<form name="form1" id="form1" method="post" action="{{ path('admin_order_status', { statusId: CurrentStatus.id }) }}" >
+<form name="form1" id="form1" method="post" action="{{ url('admin_order_status', { id: CurrentStatus.id }) }}" >
 {{ form_widget(form._token) }}
     <div id="order" class="contents-main">
         <h2>抽出条件</h2>
@@ -43,7 +43,7 @@ $(function(){
                     class="btn-normal"
                     style="padding-right: 1em;"
                     {% if OrderStatus.id != CurrentStatus.id %}
-                        href="{{ path('admin_order_status', { statusId: OrderStatus.id }) }}"
+                        href="{{ url('admin_order_status', { id: OrderStatus.id }) }}"
                     {% endif %}
                 >{{ OrderStatus.name }}</a>
             {% endfor %}
@@ -86,7 +86,7 @@ $(function(){
                 <tr style="background:{{ Order.OrderStatusColor }}">
                     <td class="center move" data-order-id="{{ Order.id }}"></td>
                     <td class="center">{{ OrderStatuses[Order.OrderStatus.id].name }}</td>
-                    <td class="center"><a href="{{ path('admin_order_edit', { orderId: Order.id }) }}">{{ Order.id }}</a></td>
+                    <td class="center"><a href="{{ url('admin_order_edit', { id: Order.id }) }}">{{ Order.id }}</a></td>
                     <td class="center">{{ Order.create_date|date("Y/m/d H:i:s") }}</td>
                     <td>{{ Order.name01 }} {{ Order.name02 }}</td>
                     <td class="center">{{ Order.PaymentMethod }}</td>

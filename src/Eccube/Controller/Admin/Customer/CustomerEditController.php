@@ -37,22 +37,20 @@ class CustomerEditController extends AbstractController
 
     public function __construct()
     {
-        $this->tpl_maintitle = '会員管理';
-        $this->tpl_subtitle = '会員登録';
     }
 
-    public function index(Application $app, $customerId = null)
+    public function index(Application $app, $id = null)
     {
 
-        if ($customerId) {
+        if ($id) {
             $Customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
                 ->findOneBy(array(
-                        'id' => $customerId,
+                        'id' => $id,
                         'del_flg' => 0,
                     ));
 
             if ($Customer === null) {
-                throw new HttpException\NotFoundHttpException("※ 会員ID：$customerId が見つかりません。");
+                throw new HttpException\NotFoundHttpException("※ 会員ID：$id が見つかりません。");
             }
 
             if ($app['request']->getMethod() === 'POST') {
@@ -106,15 +104,13 @@ class CustomerEditController extends AbstractController
                 $app['session']->getFlashBag()->add('customer.complete', 'admin.register.complete');
 
                 return $app->redirect($app['url_generator']->generate('admin_customer_edit', array(
-                    'customerId' => $Customer->getId(),
-                    )));
+                    'id' => $Customer->getId(),
+                )));
             }
         }
 
         return $app['view']->render('Admin/Customer/edit.twig', array(
-            'title' => $this->tpl_maintitle,
-            'subtitle'  => $this->tpl_subtitle,
-            'customerId' => $customerId,
+            'customerId' => $id,
             'Order' => $Order,
             'form' => $form->createView(),
         ));
@@ -126,10 +122,10 @@ class CustomerEditController extends AbstractController
      * 新規か編集かにあわせてCustomerObjectを返す
      *
      * @param  Application $app
-     * @param $customerId
+     * @param $id
      * @return mixed
      */
-    private function getCustomer(Application $app, $customerId)
+    private function getCustomer(Application $app, $id)
     {
     }
 

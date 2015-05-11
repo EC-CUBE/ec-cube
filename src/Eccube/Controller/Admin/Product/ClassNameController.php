@@ -29,10 +29,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ClassNameController
 {
-    public function index(Application $app, Request $request, $classNameId = null)
+    public function index(Application $app, Request $request, $id = null)
     {
-        if ($classNameId) {
-            $TargetClassName = $app['eccube.repository.class_name']->find($classNameId);
+        if ($id) {
+            $TargetClassName = $app['eccube.repository.class_name']->find($id);
             if (!$TargetClassName) {
                 throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
             }
@@ -52,7 +52,7 @@ class ClassNameController
                 if ($status) {
                     $app['session']->getFlashBag()->add('admin.success', 'admin.class_name.save.complete');
 
-                    return $app->redirect($app['url_generator']->generate('admin_class_name'));
+                    return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
                 } else {
                     $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.save.error');
                 }
@@ -62,17 +62,15 @@ class ClassNameController
         $ClassNames = $app['eccube.repository.class_name']->getList();
 
         return $app['view']->render('Admin/Product/class_name.twig', array(
-            'maintitle' => '商品管理',
-            'subtitle' => '規格管理',
             'form' => $form->createView(),
             'ClassNames' => $ClassNames,
             'TargetClassName' => $TargetClassName,
         ));
     }
 
-    public function up(Application $app, Request $request, $classNameId)
+    public function up(Application $app, Request $request, $id)
     {
-        $TargetClassName = $app['eccube.repository.class_name']->find($classNameId);
+        $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
         }
@@ -97,10 +95,10 @@ class ClassNameController
             $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.up.error');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_class_name'));
+        return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
     }
 
-    public function down(Application $app, Request $request, $classNameId)
+    public function down(Application $app, Request $request, $id)
     {
         $TargetClassName = $app['eccube.repository.class_name']->find($classNameId);
         if (!$TargetClassName) {
@@ -127,7 +125,7 @@ class ClassNameController
             $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.down.error');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_class_name'));
+        return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
     }
 
     public function delete(Application $app, Request $request, $classNameId)
@@ -157,6 +155,6 @@ class ClassNameController
             $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.delete.error');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_class_name'));
+        return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
     }
 }

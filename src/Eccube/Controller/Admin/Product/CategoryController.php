@@ -29,19 +29,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CategoryController
 {
-    public function index(Application $app, Request $request, $parentId = null, $categoryId = null)
+    public function index(Application $app, Request $request, $parent_id = null, $id = null)
     {
         //
-        if ($parentId) {
-            $Parent = $app['eccube.repository.category']->find($parentId);
+        if ($parent_id) {
+            $Parent = $app['eccube.repository.category']->find($parent_id);
             if (!$Parent) {
                 throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
             }
         } else {
             $Parent = null;
         }
-        if ($categoryId) {
-            $TargetCategory = $app['eccube.repository.category']->find($categoryId);
+        if ($id) {
+            $TargetCategory = $app['eccube.repository.category']->find($id);
             if (!$TargetCategory) {
                 throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
             }
@@ -71,9 +71,9 @@ class CategoryController
                     $app['session']->getFlashBag()->add('admin.success', 'admin.category.save.complete');
 
                     if ($Parent) {
-                        return $app->redirect($app['url_generator']->generate('admin_category_show', array('parentId' => $Parent->getId())));
+                        return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
                     } else {
-                        return $app->redirect($app['url_generator']->generate('admin_category'));
+                        return $app->redirect($app['url_generator']->generate('admin_product_category'));
                     }
                 } else {
                     $app['session']->getFlashBag()->add('admin.error', 'admin.category.save.error');
@@ -85,8 +85,6 @@ class CategoryController
         $Categories = $app['eccube.repository.category']->getList($Parent);
 
         return $app['view']->render('Admin/Product/category.twig', array(
-            'maintitle' => '商品管理',
-            'subtitle' => 'カテゴリ登録',
             'form' => $form->createView(),
             'Children' => $Children,
             'Parent' => $Parent,
@@ -95,9 +93,9 @@ class CategoryController
         ));
     }
 
-    public function up(Application $app, Request $request, $categoryId)
+    public function up(Application $app, Request $request, $id)
     {
-        $TargetCategory = $app['eccube.repository.category']->find($categoryId);
+        $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
         }
@@ -124,15 +122,15 @@ class CategoryController
         }
 
         if ($Parent) {
-            return $app->redirect($app['url_generator']->generate('admin_category_show', array('parentId' => $Parent->getId())));
+            return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
         } else {
-            return $app->redirect($app['url_generator']->generate('admin_category'));
+            return $app->redirect($app['url_generator']->generate('admin_product_category'));
         }
     }
 
-    public function down(Application $app, Request $request, $categoryId)
+    public function down(Application $app, Request $request, $id)
     {
-        $TargetCategory = $app['eccube.repository.category']->find($categoryId);
+        $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
         }
@@ -159,15 +157,15 @@ class CategoryController
         }
 
         if ($Parent) {
-            return $app->redirect($app['url_generator']->generate('admin_category_show', array('parentId' => $Parent->getId())));
+            return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
         } else {
-            return $app->redirect($app['url_generator']->generate('admin_category'));
+            return $app->redirect($app['url_generator']->generate('admin_product_category'));
         }
     }
 
-    public function delete(Application $app, Request $request, $categoryId)
+    public function delete(Application $app, Request $request, $id)
     {
-        $TargetCategory = $app['eccube.repository.category']->find($categoryId);
+        $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
         }
@@ -194,9 +192,9 @@ class CategoryController
         }
 
         if ($Parent) {
-            return $app->redirect($app['url_generator']->generate('admin_category_show', array('parentId' => $Parent->getId())));
+            return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
         } else {
-            return $app->redirect($app['url_generator']->generate('admin_category'));
+            return $app->redirect($app['url_generator']->generate('admin_product_category'));
         }
     }
 }

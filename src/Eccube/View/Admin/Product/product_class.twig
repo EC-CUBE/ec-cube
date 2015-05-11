@@ -107,7 +107,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     });
 //]]></script>
 <h2>商品規格登録</h2>
-<form name="form1" id="form1" method="post" action="{{ path('admin_product_product_class', { 'product_id' : Product.id}) }}" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}" enctype="multipart/form-data">
     <input type="hidden" name="mode" value=""/>
     {{ form_widget(form._token) }}
     <div id="products" class="contents-main">
@@ -133,7 +133,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </table>
         <div class="btn-area">
             <ul>
-                <li><a class="btn-action" href="{{ path('admin_product') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="{{ url('admin_product') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
                 {% if form.product_classes|length > 0 %}
                     <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>

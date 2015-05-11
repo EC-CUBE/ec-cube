@@ -33,7 +33,6 @@ class OrderController
 
     public function __construct()
     {
-        $this->title = '受注マスター';
     }
 
     public function index(Application $app)
@@ -65,15 +64,13 @@ class OrderController
             'form' => $form->createView(),
             'showResult' => $showResult,
             'Orders' => $Orders,
-            'title' => $this->title,
-            'tpl_maintitle' => '受注管理＞受注一覧',
         ));
     }
 
-    public function delete(Application $app, $orderId)
+    public function delete(Application $app, $id)
     {
         $Order = $app['orm.em']->getRepository('Eccube\Entity\Order')
-            ->find($orderId);
+            ->find($id);
 
         if ($Order) {
             $Order->setDelFlg(1);

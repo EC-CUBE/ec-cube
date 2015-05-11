@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'Admin/main_frame.twig' %}
 
 {% block main %}
-<form name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_category_edit', {'categoryId': TargetCategory.id}) }}{% elseif Parent %}{{ path('admin_category_show', {'parentId': Parent.id}) }}{% else %}{{ path('admin_category') }}{% endif %}" enctype="multipart/form-data">
+<form name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
     <div id="products" class="contents-main">
         {#
         <div class="btn">
@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div id="products-category-left">
             <ul>
                 <li>
-                    <a href="{{ path('admin_category') }}"><img src="{{ app.config.admin_tpl }}img/contents/folder_close.gif" alt="フォルダ" />&nbsp;ホーム</a>
+                    <a href="{{ url('admin_product_category') }}"><img src="{{ app.config.admin_tpl }}img/contents/folder_close.gif" alt="フォルダ" />&nbsp;ホーム</a>
                     {{ include('Admin/Product/category_tree_fork.twig', {'Children': Children, 'treeId': 'f0', 'disp_child': true}) }}
                 </li>
             </ul>
@@ -60,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </ul>
             </div>
 
-            <h2><a href="{{ path('admin_category') }}">ホーム</a>{% for Cat in Path %}{{ app.config.sepa_catnavi }}<a href="{{ path('admin_category_show', {'parentId': Cat.id}) }}">{{ Cat.name }}</a>{% endfor %}</h2>
+            <h2><a href="{{ url('admin_product_category') }}">ホーム</a>{% for Cat in Path %}{{ app.config.sepa_catnavi }}<a href="{{ url('admin_product_category_show', {parent_id: Cat.id}) }}">{{ Cat.name }}</a>{% endfor %}</h2>
 
             {% if Categories|length > 0 %}
                 <table class="list" id="categoryTable">
@@ -81,14 +81,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <td class="center">{{ Category.id }}</td>
                             <td>
                                 {% if Category.level < app.config.level_max %}
-                                    <a href="{{ path('admin_category_show', {'parentId': Category.id}) }}">{{ Category.name }}</a>
+                                    <a href="{{ url('admin_product_category_show', {parent_id: Category.id}) }}">{{ Category.name }}</a>
                                 {% else %}
                                     {{ Category.name }}
                                 {% endif %}
                             </td>
                             <td class="center">
                                 {% if Category.id != TargetCategory.id %}
-                                    <a href="{{ path('admin_category_edit', {'categoryId': Category.id}) }}">編集</a>
+                                    <a href="{{ url('admin_product_category_edit', {id: Category.id}) }}">編集</a>
                                 {% else %}
                                     編集中
                                 {% endif %}
@@ -97,16 +97,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
                                     -
                                 {% else %}
-                                    <a href="?" onclick="eccube.changeAction('{{ path('admin_category_delete', {'categoryId': Category.id}) }}'); document.form1.submit(); return false;">削除</a>
+                                    <a href="?" onclick="eccube.changeAction('{{ url('admin_product_category_delete', {id: Category.id}) }}'); document.form1.submit(); return false;">削除</a>
                                 {% endif %}
                             </td>
                             <td class="center">
                                 {# 移動 #}
                                 {% if loop.first == false %}
-                                    <a href="?" onclick="eccube.changeAction('{{ path('admin_category_up', {'categoryId': Category.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                    <a href="?" onclick="eccube.changeAction('{{ url('admin_product_category_up', {id: Category.id}) }}'); document.form1.submit(); return false;">上へ</a>
                                 {% endif %}
                                 {% if loop.last == false %}
-                                    <a href="?" onclick="eccube.changeAction('{{ path('admin_category_down', {'categoryId': Category.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                    <a href="?" onclick="eccube.changeAction('{{ url('admin_product_category_down', {id: Category.id}) }}'); document.form1.submit(); return false;">下へ</a>
                                 {% endif %}
                             </td>
                         </tr>

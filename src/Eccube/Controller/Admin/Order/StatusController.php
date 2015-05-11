@@ -34,11 +34,9 @@ class StatusController
 
     public function __construct()
     {
-        $this->title = '受注管理';
-        $this->subtitle = '対応状況管理';
     }
 
-    public function index(Application $app, $statusId = 1)
+    public function index(Application $app, $id = 1)
     {
         $OrderStatuses = $app['orm.em']
             ->getRepository('\Eccube\Entity\Master\OrderStatus')
@@ -46,7 +44,7 @@ class StatusController
         ;
         $CurrentStatus =  $app['orm.em']
             ->getRepository('\Eccube\Entity\Master\OrderStatus')
-            ->find($statusId)
+            ->find($id)
         ;
         $Orders = $app['orm.em']
             ->getRepository('\Eccube\Entity\Order')
@@ -82,14 +80,12 @@ class StatusController
                     $app['eccube.repository.order']->changeStatus($orderId, $data['status']);
                 }
                 
-                $app->redirect($app['url_generator']->generate('admin_order_status', array('statusId' => $statusId)));
+                $app->redirect($app['url_generator']->generate('admin_order_status', array('id' => $id)));
             }
         }
 
         return $app['view']->render('Admin/Order/status.twig', array(
             'form' => $form->createView(),
-            'title' => $this->title,
-            'subtitle' => $this->subtitle,
             'Payment' => $Payment,
             'Orders' => $Orders,
             'OrderStatuses' => $OrderStatuses,

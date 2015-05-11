@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'Admin/main_frame.twig' %}
 
 {% block main %}
-<form name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ path('admin_class_category_edit', {'classNameId': ClassName.id, 'classCategoryId': TargetClassCategory.id}) }}{% else %}{{ path('admin_class_category', {'classNameId': ClassName.id}) }}{% endif %}">
+<form name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {'class_name_id': ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
     <div id="products" class="contents-main">
         <table>
             <tr>
@@ -53,27 +53,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <td>{# 分類名 #}{{ ClassCategory.name }}</td>
                     <td align="center" >
                         {% if ClassCategory.id != TargetClassCategory.id %}
-                            <a href="{{ path('admin_class_category_edit', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}">編集</a>
+                            <a href="{{ url('admin_product_class_category_edit', {class_name_id': ClassName.id, id: ClassCategory.id}) }}">編集</a>
                         {% else %}
                             編集中
                         {% endif %}
                     </td>
                     <td align="center">
-                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ eccube.changeAction('{{ path('admin_class_category_delete', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}'); document.form1.submit(); } return false;">削除</a>
+                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ eccube.changeAction('{{ url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id}) }}'); document.form1.submit(); } return false;">削除</a>
                     </td>
                     <td align="center">
                         {% if loop.first == false %}
-                            <a href="?" onclick="eccube.changeAction('{{ path('admin_class_category_up', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_category_up', {class_name_id': ClassName.id, id: ClassCategory.id}) }}'); document.form1.submit(); return false;">上へ</a>
                         {% endif %}
                         {% if loop.last == false %}
-                            <a href="?" onclick="eccube.changeAction('{{ path('admin_class_category_down', {'classNameId': ClassName.id, 'classCategoryId': ClassCategory.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_category_down', {class_name_id: ClassName.id, id: ClassCategory.id}) }}'); document.form1.submit(); return false;">下へ</a>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
         </table>
         <div class="btn">
-            <a class="btn-action" href="{{ path('admin_class_name') }}"><span class="btn-prev">規格一覧に戻る</span></a>
+            <a class="btn-action" href="{{ url('admin_product_class_name') }}"><span class="btn-prev">規格一覧に戻る</span></a>
         </div>
     </div>
 </form>

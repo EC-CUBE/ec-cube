@@ -121,10 +121,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ Customer.tel01 }} - {{ Customer.tel02 }} - {{ Customer.tel03 }}
                         </td>
                         <td class="center">
-                            {% set delete_action = url('admin_customer_delete', {customerId: Customer.id}) %}
-                            {% set resend_action = url('admin_customer_resend', {customerId: Customer.id}) %}
+                            {% set delete_action = url('admin_customer_delete', {id: Customer.id}) %}
+                            {% set resend_action = url('admin_customer_resend', {id: Customer.id}) %}
                             <span class="icon_edit">
-                                <a href="{{ url('admin_customer_edit', { customerId : Customer.id }) }}");">編集</a>
+                                <a href="{{ url('admin_customer_edit', { id : Customer.id }) }}");">編集</a>
                             </span>
                              | 
                             <span class="icon_delete">

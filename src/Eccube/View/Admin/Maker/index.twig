@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'Admin/main_frame.twig' %}
 
 {% block main %}
-<form name="form1" id="form1" method="post" action="{% if TargetMaker.id %}{{ path('admin_maker_edit', {'makerId': TargetMaker.id}) }}{% else %}{{ path('admin_maker') }}{% endif %}">
+<form name="form1" id="form1" method="post" action="{% if TargetMaker.id %}{{ url('admin_product_maker_edit', {id: TargetMaker.id}) }}{% else %}{{ url('admin_product_maker') }}{% endif %}">
     <div id="products" class="contents-main">
         <table>
             {{ form_rest(form)}}
@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <td>{{ Maker.name }}</td>
                     <td class="center">
                         {% if Maker.id != TargetMaker.id %}
-                            <a href="{{ path('admin_maker_edit', {'makerId': Maker.id}) }}">編集</a>
+                            <a href="{{ url('admin_product_maker_edit', {id: Maker.id}) }}">編集</a>
                         {% else %}
                             編集中
                         {% endif %}
@@ -63,15 +63,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% if Maker.Products|length > 0 %}
                             -
                         {% else %}
-                            <a href="?" onclick="eccube.changeAction('{{ path('admin_maker_delete', {'makerId': Maker.id}) }}'); document.form1.submit(); return false;">削除</a>
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_maker_delete', {id: Maker.id}) }}'); document.form1.submit(); return false;">削除</a>
                         {% endif %}
                     </td>
                     <td class="center">
                         {% if loop.first == false %}
-                            <a href="?" onclick="eccube.changeAction('{{ path('admin_maker_up', {'makerId': Maker.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_maker_up', {id: Maker.id}) }}'); document.form1.submit(); return false;">上へ</a>
                         {% endif %}
                         {% if loop.last == false %}
-                            <a href="?" onclick="eccube.changeAction('{{ path('admin_maker_down', {'makerId': Maker.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_maker_down', {id: Maker.id}) }}'); document.form1.submit(); return false;">下へ</a>
                         {% endif %}
                     </td>
                 </tr>

@@ -51,8 +51,6 @@ class ProductController
         );
 
         return $app['view']->render('Admin/Product/index.twig', array(
-            'maintitle' => '商品管理',
-            'subtitle' => '商品マスター',
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
         ));
@@ -193,8 +191,6 @@ class ProductController
         }
 
         return $app['view']->render('Admin/Product/product.twig', array(
-            'maintitle' => '商品管理',
-            'subtitle' => '商品登録',
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
         ));

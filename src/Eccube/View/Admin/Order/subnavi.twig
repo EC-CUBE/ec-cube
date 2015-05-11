@@ -19,8 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<ul class="level1">
-    <li id="navi-order-index"><a href="{{ url('admin_order') }}"><span>受注管理</span></a></li>
-    <li id="navi-order-add"><a href="{{ url('admin_order_new') }}"><span>受注登録</span></a></li>
-    <li id="navi-order-status"><a href="{{ url('admin_order_status_default') }}"><span>対応状況管理</span></a></li>
-</ul>
+            <li><a class="toggle"><span class="fa fa-tag"></span>受注管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li id="navi-order-index"><a href="{{ url('admin_order') }}">受注管理</a></li>
+                    <li id="navi-order-add"><a href="{{ url('admin_order_new') }}">受注登録</a></li>
+                    <li id="navi-order-status"><a href="{{ url('admin_order_status_default') }}">対応状況管理</a></li>
+                </ul>
+            </li>
