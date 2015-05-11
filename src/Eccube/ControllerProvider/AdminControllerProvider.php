@@ -305,6 +305,10 @@ class AdminControllerProvider implements ControllerProviderInterface
             ->assert('makerId', '\d+')
             ->bind('admin_maker_delete');
 
+        // setting
+        $controllers->match('/setting/shop/customer_agreement/', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\CustomerAgreementController::index')
+            ->bind('admin_setting_shop_customer_agreement');
+
         // system
         $controllers->match('/system/', '\\Eccube\\Page\\Admin\\System\\Index')->bind('admin_system');
         $controllers->match('/system/adminarea.php', '\\Eccube\\Page\\Admin\\System\\AdminArea')->bind('admin_system_adminarea');
