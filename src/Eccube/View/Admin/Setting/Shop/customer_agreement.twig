@@ -21,11 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'Admin/main_frame.twig' %}
 
-{% block main %}
+{% block title %}ショップ設定{% endblock %}
+{% block sub_title %}会員規約管理{% endblock %}
 
-    {% for message in app.session.flashbag.get('customer_agreement.complete')  %}
-        {{ message|trans|raw }}<br />
-    {% endfor %}
+{% block main %}
 
 <form name="customer_agreement_form" id="customer_agreement_form" method="post" action="{{ url('admin_setting_shop_customer_agreement') }}">
     {{ form_widget(form._token) }}

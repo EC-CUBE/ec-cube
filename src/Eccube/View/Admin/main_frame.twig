@@ -31,7 +31,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="favicon.ico">
-<title>EC-CUBE管理画面</title>
+<title>{{ app.config.shop_name }} - EC-CUBE管理画面</title>
 
 <!-- Bootstrap core CSS -->
 <link href="{{ app.config.root }}admin/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -57,7 +57,7 @@
             <div class="logo" href="./"><img src="{{ app.config.root }}admin/assets/img/logo.png" width="172"></div>
             <!-- Sidebar toggle button-->
             <div class="bt_toggle"> <a role="button" data-toggle="offcanvas" class="bt_drawermenu" href="#"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> </div>
-            <a href="{{ url('homepage') }}" id="sitename">EC-CUBE STORE ミンナデイッショニイーシーキューブ<span class="fa fa-external-link"></span></a> 
+            <a href="{{ url('homepage') }}" id="sitename">{{ app.config.shop_name }}<span class="fa fa-external-link"></span></a> 
             <!-- Navbar Right Menu -->
             <div class="navbar-menu">
                 <dl class="dropdown">
@@ -95,7 +95,7 @@
     <!-- ▲ #side ▲ --> 
     <!-- ▼ #main ▼ -->
     <div id="main">
-        <h1 class="page-header">Dashboard<span>商品ヘッダー</span></h1>
+        <h1 class="page-header">{{ block('title') }}<span>{{ block('sub_title') }}</span></h1>
         <div class="container-fluid">
 
             {{ include('Admin/alert.twig') }}
