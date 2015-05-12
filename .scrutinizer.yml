@@ -57,7 +57,7 @@ tools:
 
     external_code_coverage: 
         runs: 1
-        timeout: 1200
+        timeout: 60000
 
     php_code_sniffer:
         enabled: true
