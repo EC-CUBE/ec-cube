@@ -138,6 +138,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Knp\Component\Pager\Paginator();
         });
 
+        $app['eccube.repository.help'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Help');
+        });
+
         // em
         if (isset($app['orm.em'])) {
             $point_rule = $app['config']['point_rule'];
@@ -225,6 +229,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\OrderDetailType();
             $types[] = new \Eccube\Form\Type\ShippingType();
             $types[] = new \Eccube\Form\Type\ShipmentItemType();
+            $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
 
             // admin
             $types[] = new \Eccube\Form\Type\Admin\LoginType($app['session']);
@@ -236,7 +241,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ClassNameType($app);
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app);
             $types[] = new \Eccube\Form\Type\Admin\CategoryType($app);
-
             return $types;
         }));
     }
