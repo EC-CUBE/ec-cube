@@ -1,0 +1,25 @@
+Eccube\Entity\Help:
+    type: entity
+    table: dtb_help
+    repositoryClass: Eccube\Repository\HelpRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        customer_agreement:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
