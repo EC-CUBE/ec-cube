@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Controller\Admin;
+namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
