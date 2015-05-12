@@ -213,6 +213,7 @@ mail:
     password: 
     encryption: 
     auth_mode: 
+delivery_address: 
 auth_magic: ${AUTH_MAGIC}
 password_hash_algos: sha256
 root: ${ROOT_URLPATH}
