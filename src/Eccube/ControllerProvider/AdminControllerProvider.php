@@ -162,9 +162,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/mail/new', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_edit');
         $c->match('/setting/shop/mail/{id}/edit', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_edit');
 
-        // setting
-        $controllers->match('/setting/shop/customer_agreement/', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\CustomerAgreementController::index')
-            ->bind('admin_setting_shop_customer_agreement');
+        // customer_agreement
+        $c->match('/setting/shop/customer_agreement/', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
         // system
         $c->match('/setting/system/system', '\\Eccube\\Controller\\Admin\\System\\SystemController::index')->bind('admin_setting_system_system');
@@ -193,8 +192,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/header', '\\Eccube\\Page\\Admin\\Design\\Header')->bind('admin_design_header');
         $c->match('/content/main_edit', '\\Eccube\\Page\\Admin\\Design\\MainEdit')->bind('admin_design_main_edit');
         $c->match('/content/up_down', '\\Eccube\\Page\\Admin\\Design\\UpDown')->bind('admin_design_up_down');
-
-        $c->match('/setting/shop/agreement', '\\Eccube\\Page\\Admin\\Basis\\Kiyaku')->bind('admin_setting_shop_agreement');
 
         $c->match('/setting/system', '\\Eccube\\Page\\Admin\\System\\Index')->bind('admin_setting_system_member');
         $c->match('/setting/system/adminarea', '\\Eccube\\Page\\Admin\\System\\AdminArea')->bind('admin_setting_system_adminarea');
