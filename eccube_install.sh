@@ -62,7 +62,7 @@ case "${DBTYPE}" in
     MYSQL=mysql
     ROOTUSER=root
     ROOTPASS=$DBPASS
-    DBSERVER="127.0.0.1"
+    DBSERVER=$DBSERVER
     DBPORT=3306
     DBDRIVER=pdo_mysql
 ;;
