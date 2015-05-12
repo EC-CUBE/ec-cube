@@ -132,8 +132,6 @@ class PageLayoutRepository extends EntityRepository
         $PageLayout = new \Eccube\Entity\PageLayout();
         $PageLayout
             ->setDeviceTypeId($deviceTypeId);
-        $page_id = $this->getNewPageId($deviceTypeId);
-        $PageLayout->setPageId($page_id);
 
         return $PageLayout;
     }
@@ -142,9 +140,13 @@ class PageLayoutRepository extends EntityRepository
     {
 
         if ($page_id == null) {
-            return $this->newPageLayout($deviceTypeId);
+            $PageLayout = $this->newPageLayout($deviceTypeId);
+            $page_id = $this->getNewPageId($deviceTypeId);
+            $PageLayout->setPageId($page_id);
+
+            return $PageLayout;
         } else {
-            return $this->getPageProperties($page_id, $deviceTypeId);
+            return $this->get($deviceTypeId, $page_id);
         }
 
     }
@@ -192,29 +194,6 @@ class PageLayoutRepository extends EntityRepository
             ->getResult();
 
         return $PageLayouts;
-    }
-
-    public function getPageProperties($page_id, $deviceTypeId, $where = '', $parameters = array())
-    {
-        $qb = $this->createQueryBuilder('l')
-            ->orderBy('l.page_id', 'DESC')
-            ->where('l.page_id = :page_id')
-            ->setParameter('page_id', $page_id)
-            ->andWhere('l.device_type_id = :device_type_id')
-            ->setParameter('device_type_id', $deviceTypeId);
-
-        if ($where != '') {
-            $qb->andWhere($where);
-            foreach ($parameters as $key => $val) {
-                $qb->setParameter($key, $val);
-            }
-        }
-
-        $PageLayout = $qb
-            ->getQuery()
-            ->getSingleResult();
-
-        return $PageLayout;
     }
 
     /**

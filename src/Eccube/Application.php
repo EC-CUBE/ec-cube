@@ -134,8 +134,13 @@ class Application extends \Silex\Application
         }, self::EARLY_EVENT);
 
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+
+            $request = $event->getRequest();
             try {
-                $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $app['request']->attributes->get('_route'));
+                $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $request->attributes->get('_route'));
             } catch (\Doctrine\ORM\NoResultException $e) {
                 $PageLayout = $app['eccube.repository.page_layout']->newPageLayout(10);
             }
