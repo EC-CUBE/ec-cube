@@ -97,7 +97,6 @@ class Application extends \Silex\Application
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
-            'twig.options' => array('cache' => __DIR__ . '/../../app/cache/twig'),
         ));
         $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
@@ -114,13 +113,16 @@ class Application extends \Silex\Application
                     }
                     $paths[] = __DIR__ . '/Resource/template/admin';
                     $paths[] = __DIR__ . '/../../app/plugin';
+                    $cache = __DIR__ . '/../../app/cache/twig/admin';
                 } else {
                     if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_name'])) {
                         $paths[] = __DIR__ . '/../../template/' . $app['config']['template_name'];
                     }
                     $paths[] = __DIR__ . '/Resource/template/default';
                     $paths[] = __DIR__ . '/../../app/plugin';
+                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_name'];
                 }
+                $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
                 return $twig;
