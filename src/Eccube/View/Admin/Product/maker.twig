@@ -21,6 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'Admin/main_frame.twig' %}
 
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}メーカー管理{% endblock %}
+
 {% block main %}
 <form name="form1" id="form1" method="post" action="{% if TargetMaker.id %}{{ url('admin_product_maker_edit', {id: TargetMaker.id}) }}{% else %}{{ url('admin_product_maker') }}{% endif %}">
     <div id="products" class="contents-main">

@@ -19,8 +19,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-            <li><a class="toggle"><span class="fa fa-tag"></span>コンテンツ管理<span class="fa fa-chevron-down"></span></a>
+            <li><a class="toggle"><span class="fa fa-file-text-o"></span>コンテンツ管理<span class="fa fa-chevron-down"></span></a>
                 <ul>
+                    <li id="navi-contents-block"><a href="{{ url('admin_content_block') }}">ブロック管理</a></li>
+                    <li id="navi-contents-css"><a href="{{ url('admin_content_css') }}">CSS管理</a></li>
+                    <li id="navi-contents-page"><a href="{{ url('admin_content_page') }}">ページ管理</a></li>
                     <li id="navi-contents-index"><a href="{{ url('admin_content') }}">新着情報管理</a></li>
                     <li id="navi-contents-recommend"><a href="{{ url('admin_content_recommend') }}">おすすめ商品管理</a></li>
                     <li id="navi-contents-file"><a href="{{ url('admin_content_file') }}">ファイル管理</a></li>

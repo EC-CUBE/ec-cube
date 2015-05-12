@@ -21,9 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'Admin/main_frame.twig' %}
 
+{% block title %}システム設定{% endblock %}
+{% block sub_title %}システム情報{% endblock %}
+
 {% block main %}
-
-
 <table border="0" cellspacing="1" cellpadding="8" summary=" ">
    {% for key, item in arrSystemInfo %}
   
