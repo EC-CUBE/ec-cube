@@ -141,7 +141,14 @@ class Application extends \Silex\Application
 
         // Mail
         $this['swiftmailer.option'] = $this['config']['mail'];
-        $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
+        // $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
+        if ($app['env'] === 'dev' || $app['env'] === 'test') {
+            if (isset($this['config']['delivery_address'])) {
+                $this['delivery_address'] = $this['config']['delivery_address'];
+            }
+        }
+        $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
+
         $this['mail.message'] = function () {
             return \Swift_Message::newInstance();
         };
@@ -244,7 +251,7 @@ class Application extends \Silex\Application
             $event = $app->parseController($request) . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
-        
+
         // Security
         $app['colnum'] = 1;
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
