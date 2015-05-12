@@ -33,7 +33,6 @@ class CustomerController
 
     public function __construct()
     {
-        $this->title = '会員マスター';
     }
 
     public function index(Application $app)
@@ -66,15 +65,13 @@ class CustomerController
             'form' => $form->createView(),
             'showResult' => $showResult,
             'Customers' => $Customers,
-            'title' => $this->title,
-            'tpl_maintitle' => '会員管理＞会員マスター',
         ));
     }
 
-    public function resend(Application $app, $customerId)
+    public function resend(Application $app, $id)
     {
         $Customer = $app['orm.em']->getRepository('Eccube\Entity\Customer')
-            ->find($customerId);
+            ->find($id);
 
         if ($Customer) {
             $message = $app['mail.message']
@@ -93,10 +90,10 @@ class CustomerController
         return $this->index($app);
     }
 
-    public function delete(Application $app, $customerId)
+    public function delete(Application $app, $id)
     {
         $Customer = $app['orm.em']->getRepository('Eccube\Entity\Customer')
-            ->find($customerId);
+            ->find($id);
 
         if ($Customer) {
             $Customer->setDelFlg(1);

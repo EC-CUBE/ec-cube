@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 
-    <form name="form1" id="form1" method="post" action="{{ path('admin_order_edit', {orderId: orderId}) }}">
+    <form name="form1" id="form1" method="post" action="{{ url('admin_order_edit', {id: orderId}) }}">
     {{ form_widget(form._token) }}
 
     <div id="order" class="contents-main">
@@ -215,10 +215,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <a name="order_products"></a>
     <h2 id="order_products">
         受注商品情報
-        <a class="btn-normal" href="{{ path('admin_order_recalc') }}">計算結果の確認</a>
+        <a class="btn-normal" href="{{ url('admin_order_recalc', { id: orderId }) }}">計算結果の確認</a>
         <!--{if $tpl_shipping_quantity <= 1}-->
         {% if Order.multiple %}
-            <a class="btn-normal" href="{{ path('admin_order_product_add', {orderId: Order.id, shippingId: Order.Shippings.0.id}) }}">商品の追加</a>
+            <a class="btn-normal" href="{{ url('admin_order_product_add', {id: Order.id, shippingId: Order.Shippings.0.id}) }}">商品の追加</a>
         {% endif %}
     </h2>
 
@@ -244,8 +244,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     / {{ order_detail_form.class_name2|default('(なし)') }}
 
                     {% if Order.multiple %}
-                        <a class="btn-normal" target="_blank" href="{{ path('admin_order_product_select', { no: loop.index, orderId: Order.id, shippingId: Order.Shippings.0.id }) }}">変更</a>
-                        <a class="btn-normal" target="_blank" href="{{ path('admin_order_product_delete', { no: loop.index, orderId: Order.id, shippingId: Order.Shippings.0.id }) }}">削除</a>
+                        <a class="btn-normal" target="_blank" href="{{ url('admin_order_product_select', { no: loop.index, id: Order.id, shipping_id: Order.Shippings.0.id }) }}">変更</a>
+                        <a class="btn-normal" target="_blank" href="{{ url('admin_order_product_delete', { no: loop.index, id: Order.id, shipping_id: Order.Shippings.0.id }) }}">削除</a>
                     {% endif %}
                 </td>
                 <td class="center">
@@ -337,7 +337,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
         {% endif %}
         {% if app.config.use_multiple_shipping %}
-            <a class="btn-normal" href="{{ path('admin_order_shipping_add', {orderId: Order.id}) }}">お届け先を新規追加</a>
+            <a class="btn-normal" href="{{ url('admin_order_shipping_add', {id: Order.id}) }}">お届け先を新規追加</a>
             
             {# TODO 個数が増えた際のUIが使いづらいのと、代替手段があるため、一旦実装しない
             <a class="btn-normal" href="javascript:;" onclick="fnMultiple();">複数のお届け先を指定する</a>
@@ -370,9 +370,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 / {{ shipment_item_form.vars.value.classcategory_name1|default('(なし)') }}
                                 / {{ shipment_item_form.vars.value.classcategory_name2|default('(なし)') }}<br />
 
-                                <a class="btn-normal" href="{{ path('admin_order_product_select', { orderId: Order.id, shippingId: shipping_form.shipping_id}) }}">変更</a>
+                                <a class="btn-normal" href="{{ url('admin_order_product_select', { id: Order.id, shipping_id: shipping_form.shipping_id}) }}">変更</a>
                                 {% if shipping_form.ShipmentItems|length > 1 %}
-                                    <a class="btn-normal" href="{{ path('admin_order_product_delete', {orderId: Order.id, shippingId: shipping_form.shipping_id }) }}">削除</a>
+                                    <a class="btn-normal" href="{{ url('admin_order_product_delete', {id: Order.id, shipping_id: shipping_form.shipping_id }) }}">削除</a>
                                 {% endif %}
                             </td>
                             <td class="right">
@@ -500,7 +500,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div class="btn-area">
         <ul>
-            <li><a class="btn-action" href="{{ path('admin_order') }}"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <li><a class="btn-action" href="{{ url('admin_order') }}"><span class="btn-prev">検索画面に戻る</span></a></li>
             <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
         </ul>
     </div>

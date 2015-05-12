@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="favicon.ico">
+<title>EC-CUBE管理画面</title>
+
+<!-- Bootstrap core CSS -->
+<link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="assets/css/dashboard.css" rel="stylesheet">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body data-target="#scrollspy" data-spy="scroll">
+<div id="wrapper"> 
+    <!-- ▼ #header ▼ -->
+    <header id="header" role="navigation">
+        <div class="navbar navbar-static-top">
+            <div class="logo" href="./"><img src="assets/img/logo.png" width="172"></div>
+            <!-- Sidebar toggle button-->
+            <div class="bt_toggle"> <a role="button" data-toggle="offcanvas" class="bt_drawermenu" href="#"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> </div>
+            <a href="#" id="sitename">EC-CUBE STORE ミンナデイッショニイーシーキューブ<span class="fa fa-external-link"></span></a> 
+            <!-- Navbar Right Menu -->
+            <div class="navbar-menu">
+                <dl class="dropdown">
+                    <dt class="dropdown-toggle" data-toggle="dropdown"><span class="fa-stack fa-lg"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-user fa-stack-1x fa-inverse"></span> </span> <span class="hidden-xs">管理者 様</span><span class="fa fa-chevron-down icon_down"></span></dt>
+                    <dd class="dropdown-menu">最終ログイン<br>
+                    2014/11/29 15:01 <a class="btn btn-info btn-xs" href="#">ログアウト</a> </dd>
+                </dl>
+            </div>
+        </div>
+    </header>
+    <!-- ▲ #header ▲ --> 
+    <!-- ▼ #side ▼ -->
+    <aside id="side">
+        <ul class="nav nav-sidebar">
+            <li><a href="./" class="active"><span class="fa fa-home"></span>ホーム<span class="fa fa-chevron-down"></span></a></li>
+            <li><a class="toggle"><span class="fa fa-tag"></span>商品管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li><a href="#">基本情報設定</a></li>
+                    <li><a href="#">デザイン設定</a></li>
+                    <li><a href="#">システム設定</a></li>
+                    <li><a href="#">機能拡張</a></li>
+                    <li><a href="#">環境情報</a></li>
+                </ul>
+            </li>
+            <li><a class="toggle"><span class="fa fa-shopping-cart"></span>受注管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li><a href="#">基本情報設定</a></li>
+                    <li><a href="#">デザイン設定</a></li>
+                    <li><a href="#">システム設定</a></li>
+                    <li><a href="#">機能拡張</a></li>
+                    <li><a href="#">環境情報</a></li>
+                </ul>
+            </li>
+            <li><a class="toggle"><span class="fa fa-bar-chart"></span>売上管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li><a href="#">基本情報設定</a></li>
+                    <li><a href="#">デザイン設定</a></li>
+                    <li><a href="#">システム設定</a></li>
+                    <li><a href="#">機能拡張</a></li>
+                    <li><a href="#">環境情報</a></li>
+                </ul>
+            </li>
+            <li><a class="toggle"><span class="fa fa-users"></span>会員管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li><a href="#">基本情報設定</a></li>
+                    <li><a href="#">デザイン設定</a></li>
+                    <li><a href="#">システム設定</a></li>
+                    <li><a href="#">機能拡張</a></li>
+                    <li><a href="#">環境情報</a></li>
+                </ul>
+            </li>
+            <li><a class="toggle"><span class="fa fa-file-text-o"></span>コンテンツ管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li><a href="#">基本情報設定</a></li>
+                    <li><a href="#">デザイン設定</a></li>
+                    <li><a href="#">システム設定</a></li>
+                    <li><a href="#">機能拡張</a></li>
+                    <li><a href="#">環境情報</a></li>
+                </ul>
+            </li>
+            <li><a class="toggle"><span class="fa fa-cog"></span>設定<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li><a class="toggle">基本情報設定<span class="fa fa-chevron-down"></span></a>
+                        <ul>
+                            <li><a href="#">基本情報設定</a></li>
+                            <li><a href="#">デザイン設定</a></li>
+                            <li><a href="#">システム設定</a></li>
+                            <li><a href="#">機能拡張</a></li>
+                            <li><a href="#">環境情報</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">デザイン設定</a></li>
+                    <li><a href="#">システム設定</a></li>
+                    <li><a href="#">機能拡張</a></li>
+                    <li><a href="#">環境情報</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+    <!-- ▲ #side ▲ --> 
+    <!-- ▼ #main ▼ -->
+    <div id="main">
+        <h1 class="page-header">Dashboard<span>商品ヘッダー</span></h1>
+        <div class="container-fluid">
+        	<div class="row">
+                <div class="alert alert-info alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <span class="fa fa-info-circle"></span> 商品登録が完了しました。info </div>
+            </div>
+        	<div class="row">
+                <div class="alert alert-success alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <span class="fa fa-info-circle"></span> 商品登録が完了しました。success </div>
+            </div>
+        	<div class="row">
+                <div class="alert alert-warning alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <span class="fa fa-info-circle"></span> 商品登録が完了しました。warning </div>
+            </div>
+        	<div class="row">
+                <div class="alert alert-danger alert-dismissable">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <span class="fa fa-info-circle"></span> 商品登録が完了しました。danger </div>
+            </div>
+        
+        
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Alerts</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="alert alert-danger alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                                Danger alert preview. This alert is dismissable. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. </div>
+                            <div class="alert alert-info alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                <h4><i class="icon fa fa-info"></i> Alert!</h4>
+                                Info alert preview. This alert is dismissable. </div>
+                            <div class="alert alert-warning alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                                Warning alert preview. This alert is dismissable. </div>
+                            <div class="alert alert-success alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                <h4> <i class="icon fa fa-check"></i> Alert!</h4>
+                                Success alert preview. This alert is dismissable. </div>
+                        </div><!-- /.box-body --> 
+                    </div><!-- /.box --> 
+                </div><!-- /.col -->
+                
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Text Emphasis</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                            <p class="text-primary">Text Primary Text Primary <a href="#" class="text-primary">Text Primary</a></p>
+                            <p class="text-success">Text Success Text Success <a href="#" class="text-success">Text Success</a></p>
+                            <p class="text-info">Text Info Text Info <a href="#" class="text-info">Text Info</a></p>
+                            <p class="text-danger">Text Danger Text Danger <a href="#" class="text-danger">Text Danger</a></p>
+                            <p class="text-warning">Text Warning Text Warning  <a href="#" class="text-warning">Text Warning</a></p>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box --> 
+                </div><!-- /.col --> 
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box dropdown">
+                        <div class="box-header dropdown-toggle" data-toggle="dropdown">
+                            <h3 class="box-title">ドロップダウン<span class="fa fa-chevron-down icon_down"></span></h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body dropdown-menu">
+                        	<p>ああああ</p>
+                        </div><!-- /.box-body --> 
+                    </div><!-- /.box --> 
+                </div><!-- /.col --> 
+                <div class="col-md-6">
+                    <div class="box accordion">
+                        <div class="box-header toggle">
+                            <h3 class="box-title">アコーディオン<span class="fa fa-chevron-down icon_down"></span></h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body accpanel">
+                        	<p>ああああ</p>
+                        </div><!-- /.box-body --> 
+                    </div><!-- /.box --> 
+                </div><!-- /.col --> 
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">ボタン</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body pad table-responsive">
+                            <p>Various types of buttons. Using the base class <code>.btn</code></p>
+                            <table class="table table-bordered text-center">
+                            <tbody><tr>
+                            <th>Normal</th>
+                            <th>Large <code>.btn-lg</code></th>
+                            <th>Small <code>.btn-sm</code></th>
+                            <th>X-Small <code>.btn-xs</code></th>
+                            <th>Disabled <code>.disabled</code></th>
+                            </tr>
+                            <tr>
+                            <td><button class="btn btn-block btn-default">Default</button></td>
+                            <td><button class="btn btn-block btn-default btn-lg">Default</button></td>
+                            <td><button class="btn btn-block btn-default btn-sm">Default</button></td>
+                            <td><button class="btn btn-block btn-default btn-xs">Default</button></td>
+                            <td><button class="btn btn-block btn-default disabled">Default</button></td>
+                            </tr>
+                            <tr>
+                            <td><button class="btn btn-block btn-primary">Primary</button></td>
+                            <td><button class="btn btn-block btn-primary btn-lg">Primary</button></td>
+                            <td><button class="btn btn-block btn-primary btn-sm">Primary</button></td>
+                            <td><button class="btn btn-block btn-primary btn-xs">Primary</button></td>
+                            <td><button class="btn btn-block btn-primary disabled">Primary</button></td>
+                            </tr>
+                            <tr>
+                            <td><button class="btn btn-block btn-success">Success</button></td>
+                            <td><button class="btn btn-block btn-success btn-lg">Success</button></td>
+                            <td><button class="btn btn-block btn-success btn-sm">Success</button></td>
+                            <td><button class="btn btn-block btn-success btn-xs">Success</button></td>
+                            <td><button class="btn btn-block btn-success disabled">Success</button></td>
+                            </tr>
+                            <tr>
+                            <td><button class="btn btn-block btn-info">Info</button></td>
+                            <td><button class="btn btn-block btn-info btn-lg">Info</button></td>
+                            <td><button class="btn btn-block btn-info btn-sm">Info</button></td>
+                            <td><button class="btn btn-block btn-info btn-xs">Info</button></td>
+                            <td><button class="btn btn-block btn-info disabled">Info</button></td>
+                            </tr>
+                            <tr>
+                            <td><button class="btn btn-block btn-danger">Danger</button></td>
+                            <td><button class="btn btn-block btn-danger btn-lg">Danger</button></td>
+                            <td><button class="btn btn-block btn-danger btn-sm">Danger</button></td>
+                            <td><button class="btn btn-block btn-danger btn-xs">Danger</button></td>
+                            <td><button class="btn btn-block btn-danger disabled">Danger</button></td>
+                            </tr>
+                            <tr>
+                            <td><button class="btn btn-block btn-warning">Warning</button></td>
+                            <td><button class="btn btn-block btn-warning btn-lg">Warning</button></td>
+                            <td><button class="btn btn-block btn-warning btn-sm">Warning</button></td>
+                            <td><button class="btn btn-block btn-warning btn-xs">Warning</button></td>
+                            <td><button class="btn btn-block btn-warning disabled">Warning</button></td>
+                            </tr>
+                            </tbody></table>
+                        </div><!-- /.box-body --> 
+                    </div><!-- /.box --> 
+                </div><!-- /.col --> 
+            </div>
+            
+            <div class="row">
+            	<div class="col-md-12">
+                    <div class="box box-warning">
+                        <div class="box-header">
+                            <h3 class="box-title">General Elements</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <form role="form">
+                                <dl class="dl-horizontal">
+                                <!-- text input -->
+                                <dt>Text</dt>
+                                <dd class="form-group">
+                                    <input type="text" placeholder="Enter ..." class="form-control">
+                                </dd>
+                                <dt>Text Disabled</dt>
+                                <dd class="form-group">
+                                    <label></label>
+                                    <input type="text" disabled="" placeholder="Enter ..." class="form-control">
+                                </dd>
+                                
+                                <!-- textarea -->
+                                <dt>Textarea</dt>
+                                <dd class="form-group">
+                                    <textarea placeholder="Enter ..." rows="3" class="form-control"></textarea>
+                                </dd>
+                                <dt>Textarea Disabled</dt>
+                                <dd class="form-group">
+                                    <textarea disabled="" placeholder="Enter ..." rows="3" class="form-control"></textarea>
+                                </dd>
+                                
+                                <!-- input states -->
+                                <dt>Input with success</dt>
+                                <dd class="form-group has-success">
+                                    <input type="text" placeholder="Enter ..." class="form-control">
+                                </dd>
+                                <dt>Input with warning</dt>
+                                <dd class="form-group has-warning">
+                                    <input type="text" placeholder="Enter ..." class="form-control">
+                                </dd>
+                                <dt>Input with error</dt>
+                                <dd class="form-group has-error">
+                                    <input type="text" placeholder="Enter ..." class="form-control">
+                                    <p class="errormsg text-danger">入力されていません</p>
+                                </dd>
+                                
+                                <!-- checkbox -->
+                                <dt>checkbox</dt>
+                                <dd class="form-group">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox"> Checkbox 1 </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox">Checkbox 2 </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" disabled="">Checkbox disabled </label>
+                                    </div>
+                                </dd>
+                                
+                                <!-- radio -->
+                                <dt>radio</dt>
+                                <dd class="form-group">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">
+                                            Option one is this and that&mdash;be sure to include why it's great </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" value="option2" id="optionsRadios2" name="optionsRadios">
+                                            Option two can be something else and selecting it will deselect option one </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" disabled="" value="option3" id="optionsRadios3" name="optionsRadios">
+                                            Option three is disabled </label>
+                                    </div>
+                                </dd>
+                                
+                                <!-- select -->
+                                <dt>select</dt>
+                                <dd class="form-group">
+                                    <select class="form-control">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </dd>
+                                <dt>Select Disabled</dt>
+                                <dd class="form-group">
+                                    <select disabled="" class="form-control">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </dd>
+                                
+                                <!-- Select multiple-->
+                                <dt>Select Multiple</dt>
+                                <dd class="form-group">
+                                    <select class="form-control" multiple="">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </dd>
+                                <dt>Select Multiple Disabled</dt>
+                                <dd class="form-group">
+                                    <select disabled="" class="form-control" multiple="">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </dd>
+                                </dl>
+                            </form>
+                        </div><!-- /.box-body --> 
+                    </div><!-- /.box --> 
+                </div><!-- /.col -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-arrow">
+                            <h3 class="box-title">table<a href="#" class="icon_wrap"><span class="icon fa fa-chevron-right"></span></a></h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Header</th>
+                                            <th>Header</th>
+                                            <th>Header</th>
+                                            <th>Header</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1,001</td>
+                                            <td>Lorem</td>
+                                            <td>ipsum</td>
+                                            <td>dolor</td>
+                                            <td>sit</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1,002</td>
+                                            <td>amet</td>
+                                            <td>consectetur</td>
+                                            <td>adipiscing</td>
+                                            <td>elit</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1,003</td>
+                                            <td>Integer</td>
+                                            <td>nec</td>
+                                            <td>odio</td>
+                                            <td>Praesent</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1,003</td>
+                                            <td>libero</td>
+                                            <td>Sed</td>
+                                            <td>cursus</td>
+                                            <td>ante</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1,004</td>
+                                            <td>dapibus</td>
+                                            <td>diam</td>
+                                            <td>Sed</td>
+                                            <td>nisi</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1,005</td>
+                                            <td>Nulla</td>
+                                            <td>quis</td>
+                                            <td>sem</td>
+                                            <td>at</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1,006</td>
+                                            <td>nibh</td>
+                                            <td>elementum</td>
+                                            <td>imperdiet</td>
+                                            <td>Duis</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1,007</td>
+                                            <td>sagittis</td>
+                                            <td>ipsum</td>
+                                            <td>Praesent</td>
+                                            <td>mauris</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!-- /.box-body --> 
+                    </div><!-- /.box --> 
+                </div><!-- /.col --> 
+            </div>
+
+        </div>
+    </div>
+    <!-- ▲ #main ▲ --> 
+    
+    <!-- ▼ #footer ▼ --> 
+    <footer id="footer">
+        <small class="copyright">Copyright &copy; 2000-2015 <a href="http://www.ec-cube.net">EC-CUBE</a>. All rights reserved.</small>
+    </footer>
+    <!-- ▲ #footer ▲ --> 
+    
+</div>
+
+<!-- Bootstrap core JavaScript
+    ================================================== --> 
+<!-- Placed at the end of the document so the pages load faster --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script src="dist/js/bootstrap.min.js"></script> 
+<script src="assets/js/function.js"></script>
+</body>
+</html>

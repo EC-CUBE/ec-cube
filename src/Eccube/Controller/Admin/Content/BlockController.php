@@ -30,21 +30,19 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class BlockController
 {
-    protected $title = 'コンテンツ管理';
-
-    protected $subtitle = 'ブロック設定';
-
-    public function index(Application $app, $block_id = null, $device_type_id = 10)
+    public function index(Application $app, $id = null)
     {
+        // TODO: 消したい
+        $device_type_id = 10;
 
         // TODO: block_idをUniqにしてblock_idだけの検索にしたい。
         $Block = $app['eccube.repository.block']
-            ->findOrCreate($block_id, $device_type_id);
+            ->findOrCreate($id, $device_type_id);
 
         $builder = $app['form.factory']->createBuilder('block');
         $bloc_html = '';
         $previous_filename = null;
-        if ($block_id) {
+        if ($id) {
             // テンプレートファイルの取得
             $previous_filename = $Block->getTplPath();
             $file = $this->getTplFile($app, $previous_filename, $device_type_id);
@@ -90,18 +88,18 @@ class BlockController
         $Blocks = $app['eccube.repository.block']->getList($device_type_id);
 
         return $app['view']->render('Admin/Content/block.twig', array(
-            'tpl_maintitle' => $this->title,
-            'tpl_subtitle' => $this->subtitle,
             'Blocks' => $Blocks,
-            'block_id' => $block_id,
+            'block_id' => $id,
             'form' => $form->createView(),
         ));
     }
 
-    public function delete(Application $app, $block_id, $device_type_id = 10)
+    public function delete(Application $app, $id)
     {
+        // TODO: 消したい
+        $device_type_id = 10;
 
-        $Block = $app['eccube.repository.block']->findOrCreate($block_id, $device_type_id);
+        $Block = $app['eccube.repository.block']->findOrCreate($id, $device_type_id);
 
         // ユーザーが作ったブロックのみ削除する
         if ($Block->getDeletableFlg() > 0) {

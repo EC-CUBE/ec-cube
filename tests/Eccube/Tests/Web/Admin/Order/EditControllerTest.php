@@ -31,7 +31,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(
             'GET',
-            $this->app['url_generator']->generate('admin_order_edit', array('orderId' => 0)));
+            $this->app['url_generator']->generate('admin_order_edit', array('id' => 0)));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

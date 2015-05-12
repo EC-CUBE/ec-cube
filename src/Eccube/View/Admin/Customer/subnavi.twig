@@ -19,7 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<ul class="level1">
-    <li id="navi-customer-index"><a href="{{ url('admin_customer') }}"><span>会員マスター</span></a></li>
-    <li id="navi-customer-customer"><a href="{{ url('admin_customer_new') }}"><span>会員登録</span></a></li>
-</ul>
+            <li><a class="toggle"><span class="fa fa-tag"></span>会員管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li id="navi-customer-index"><a href="{{ url('admin_customer') }}">会員マスター</a></li>
+                    <li id="navi-customer-customer"><a href="{{ url('admin_customer_new') }}">会員登録</a></li>
+                </ul>
+            </li>

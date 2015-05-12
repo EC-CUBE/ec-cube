@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 
-<form name="form1" id="form1" method="post" action="{{ path('admin_order_mail', {'orderId' : Order.id}) }}">
+<form name="form1" id="form1" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
     <input type="hidden" name="mode" value="" />
     {{ form_widget(form._token) }}
     <div id="order" class="contents-main">
@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <tr class="center">
                 <td>{{ MailHistory.send_date|date('Y/m/d H:i:s') }}</td>
                 <td>{{ MailHistory.MailTemplate }}</td>
-                <td><a href="{{ path('admin_order_mail_view', {'sendId' : MailHistory.id}) }}" target="_blank">{{ MailHistory.subject }}</a></td>
+                <td><a href="{{ url('admin_order_mail_view', {id : MailHistory.id}) }}" target="_blank">{{ MailHistory.subject }}</a></td>
             </tr>
             {% endfor %}
         </table>
@@ -81,7 +81,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
                 #}
-                <li><a class="btn-action" href="{{ path('admin_order') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="{{ url('admin_order') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
                 <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
             </ul>
         </div>

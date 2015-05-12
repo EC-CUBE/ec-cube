@@ -30,11 +30,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CssController
 {
-    protected $title = 'コンテンツ管理';
-
-    protected $subtitle = 'CSS管理';
-
-    // todo
+    // TODO: 定数化
     protected $cssDir = 'default/css/';
 
     public function index(Application $app)
@@ -74,10 +70,8 @@ class CssController
             }
         }
 
-        return $app['twig']->render('Admin/Content/css.twig', array(
+        return $app['view']->render('Admin/Content/css.twig', array(
             'form' => $form->createView(),
-            'title' => $this->title,
-            'subtitle' => $this->subtitle,
             'filenames' => $this->getFileNames($app),
         ));
     }
