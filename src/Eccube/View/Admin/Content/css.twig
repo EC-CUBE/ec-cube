@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 
-<form name="form_css" id="form_css" method="post" action="{{ path('admin_content_css') }}" >
+<form name="form_css" id="form_css" method="post" action="{{ url('admin_content_css') }}" >
     {{ form_widget(form._token) }}
     <div id="design" class="contents-main">
 
@@ -58,7 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <!--▼CSSファイル一覧　ここから-->
         <h2>編集可能CSSファイル</h2>
         <div class="btn addnew">
-            <a class="btn-normal" href="{{ path('admin_content_css') }}"><span>CSSを新規入力</span></a>
+            <a class="btn-normal" href="{{ url('admin_content_css') }}"><span>CSSを新規入力</span></a>
         </div>
         <table class="list" id="design-css-list">
             <tr>
@@ -70,10 +70,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <tr>
                 <td>{{ name }}</td>
                 <td class="center">
-                    <a href="{{ path('admin_content_css') }}?target={{ name }}">編集</a>
+                    <a href="{{ url('admin_content_css') }}?target={{ name }}">編集</a>
                 </td>
                 <td class="center">
-                    <a href="{{ path('admin_content_css_delete') }}?target={{ name }}">削除</a>
+                    <a href="{{ url('admin_content_css_delete') }}?target={{ name }}">削除</a>
                 </td>
             </tr>
             {% endfor %}

@@ -29,23 +29,21 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PageController
 {
-    protected $title = 'コンテンツ管理';
-
-    protected $subtitle = 'ページ詳細設定';
-
-    public function index(Application $app, $page_id = null, $device_type_id = 10)
+    public function index(Application $app, $id = null)
     {
+        // TODO: 消したい
+        $device_type_id = 10;
 
         // TODO: page_idをUniqにしてpage_idだけの検索にしたい。
         $PageLayout = $app['eccube.repository.page_layout']
-            ->findOrCreate($page_id, $device_type_id);
+            ->findOrCreate($id, $device_type_id);
 
         $builder = $app['form.factory']->createBuilder('main_edit');
 
         $tpl_data = '';
         $editable = true;
         // 更新時
-        if ($page_id) {
+        if ($id) {
             // TODO: こういう余計な変換なくしたい
             $PageLayout->setHeaderChk($PageLayout->getHeaderChk() == 1 ? true : false);
             $PageLayout->setFooterChk($PageLayout->getFooterChk() == 1 ? true : false);
@@ -96,19 +94,18 @@ class PageController
         $PageLayouts = $app['eccube.repository.page_layout']->getPageList($device_type_id);
 
         return $app['view']->render('Admin/Content/page.twig', array(
-            'tpl_maintitle' => $this->title,
-            'tpl_subtitle' => $this->subtitle,
             'PageLayouts' => $PageLayouts,
-            'page_id' => $page_id,
+            'page_id' => $id,
             'editable' => $editable,
             'form' => $form->createView(),
         ));
     }
 
-    public function delete(Application $app, $page_id = null, $device_type_id = 10)
+    public function delete(Application $app, $id = null)
     {
-
-        $PageLayout = $app['eccube.repository.page_layout']->findOrCreate($page_id, $device_type_id);
+        // TODO: 消したい
+        $device_type_id = 10;
+        $PageLayout = $app['eccube.repository.page_layout']->findOrCreate($id, $device_type_id);
 
         // ユーザーが作ったページのみ削除する
         if ($PageLayout->getEditFlg() == null) {

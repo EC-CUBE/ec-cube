@@ -1,0 +1,152 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'Admin/main_frame.twig' %}
+
+{% block main %}
+
+{{ main_title }} {{ title }}
+
+<form name="tradelaw_form" id="tradelaw_form" method="post" action="{{ url('admin_setting_shop_tradelaw') }}">
+    {{ form_widget(form._token) }}
+    <div id="basis" class="contents-main">
+        <table>
+            <tr>
+                <th>販売業者<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_company) }}
+                    {{ form_errors(form.law_company) }}
+                </td>
+            </tr>
+            <tr>
+                <th>運営責任者<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_manager) }}
+                    {{ form_errors(form.law_manager) }}
+                </td>
+            </tr>
+            <tr>
+                <th>郵便番号<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_zip01) }}
+                    {{ form_errors(form.law_zip01) }}
+                    {{ form_widget(form.law_zip02) }}
+                    {{ form_errors(form.law_zip02) }}
+                </td>
+            </tr>
+            <tr>
+                <th>所在地<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_pref) }}
+                    {{ form_errors(form.law_pref) }}
+                    {{ form_widget(form.law_addr01) }}
+                    {{ form_errors(form.law_addr01) }}
+                    {{ form_widget(form.law_addr02) }}
+                    {{ form_errors(form.law_addr02) }}
+                </td>
+            </tr>
+            <tr>
+                <th>TEL<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_tel01) }}
+                    {{ form_errors(form.law_tel01) }}
+                    {{ form_widget(form.law_tel02) }}
+                    {{ form_errors(form.law_tel02) }}
+                    {{ form_widget(form.law_tel03) }}
+                    {{ form_errors(form.law_tel03) }}
+                </td>
+            </tr>
+            <tr>
+                <th>FAX</th>
+                <td>
+                    {{ form_widget(form.law_fax01) }}
+                    {{ form_errors(form.law_fax01) }}
+                    {{ form_widget(form.law_fax02) }}
+                    {{ form_errors(form.law_fax02) }}
+                    {{ form_widget(form.law_fax03) }}
+                    {{ form_errors(form.law_fax03) }}
+                </td>
+            </tr>
+            <tr>
+                <th>メールアドレス<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_email) }}
+                    {{ form_errors(form.law_email) }}
+                </td>
+            </tr>
+            <tr>
+                <th>URL<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_url) }}
+                    {{ form_errors(form.law_url) }}
+                </td>
+            </tr>
+            <tr>
+                <th>商品代金以外の必要料金<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_term01) }}
+                    {{ form_errors(form.law_term01) }}
+                </td>
+            </tr>
+            <tr>
+                <th>注文方法<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_term02) }}
+                    {{ form_errors(form.law_term02) }}
+                </td>
+            </tr>
+            <tr>
+                <th>支払方法<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_term03) }}
+                    {{ form_errors(form.law_term03) }}
+                </td>
+            </tr>
+            <tr>
+                <th>支払期限<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_term04) }}
+                    {{ form_errors(form.law_term04) }}
+                </td>
+            </tr>
+            <tr>
+                <th>引き渡し時期<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_term05) }}
+                    {{ form_errors(form.law_term05) }}
+                </td>
+            </tr>
+            <tr>
+                <th>返品・交換について<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.law_term06) }}
+                    {{ form_errors(form.law_term06) }}
+                </td>
+            </tr>
+        </table>
+
+        <div class="btn-area">
+            {{ form_widget(form.save) }}
+        </div>
+    </div>
+</form>
+
+{% endblock %}

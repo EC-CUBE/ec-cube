@@ -209,9 +209,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <td class="center">{{ Order.commit_date|date("Y/m/d")|default('未発送') }}</td>
                         <td class="center">{{ Order.OrderStatus }}</td>
                         <td class="center">
-                           {% set edit_action = url('admin_order_edit', {orderId: Order.id}) %}
-                           {% set delete_action = url('admin_order_delete', {orderId: Order.id}) %}
-                           {% set mail_action = url('admin_order_mail', {orderId: Order.id}) %}
+                           {% set edit_action = url('admin_order_edit', {id: Order.id}) %}
+                           {% set delete_action = url('admin_order_delete', {id: Order.id}) %}
+                           {% set mail_action = url('admin_order_mail', {id: Order.id}) %}
                             <a href="#" onclick="fnEdit('{{ edit_action }}');"><span class="icon_edit">編集</span></a>
                              | 
                             <a href="#" onclick="fnDelete('{{ delete_action }}');"><span class="icon_delete">削除</span></a>

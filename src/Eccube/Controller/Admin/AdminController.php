@@ -33,7 +33,7 @@ class AdminController extends AbstractController
     public function login(Application $app, Request $request)
     {
         if ($app['security']->isGranted('ROLE_ADMIN')) {
-            return $app->redirect($app['url_generator']->generate('admin'));
+            return $app->redirect($app['url_generator']->generate('admin_login'));
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
@@ -41,7 +41,7 @@ class AdminController extends AbstractController
             ->createNamedBuilder('', 'admin_login')
             ->getForm();
 
-        return $app['twig']->render('Admin/login.twig', array(
+        return $app['view']->render('Admin/login.twig', array(
             'maintitle' => '',
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
@@ -52,8 +52,7 @@ class AdminController extends AbstractController
     {
         $Orders = $app['eccube.repository.order']->getNew();
 
-        return $app['twig']->render('Admin/index.twig', array(
-            'maintitle' => 'ホーム',
+        return $app['view']->render('Admin/index.twig', array(
             'mypageno' => 'index',
             'Orders' => $Orders
         ));

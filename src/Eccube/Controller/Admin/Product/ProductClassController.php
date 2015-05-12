@@ -36,12 +36,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductClassController
 {
-    public function index(Application $app, Request $request, $product_id)
+    public function index(Application $app, Request $request, $id)
     {
         /** @var $Product \Eccube\Entity\Product */
         $Product = $app['orm.em']
             ->getRepository('\Eccube\Entity\Product')
-            ->find($product_id);
+            ->find($id);
 
         if (!$Product) {
             throw new NotFoundHttpException();
@@ -113,7 +113,7 @@ class ProductClassController
                         }
                         $app['orm.em']->flush();
                         $app['session']->getFlashBag()->add('admin.success', 'admin.product.product_class.save.complete');
-                        return $app->redirect($app['url_generator']->generate('admin_product_product_class', array('product_id' => $product_id)));
+                        return $app->redirect($app['url_generator']->generate('admin_product_product_class_edit', array('id' => $id)));
                     }
                     break;
                 case 'disp':
@@ -149,7 +149,7 @@ class ProductClassController
                     }
                     $app['orm.em']->flush();
                     $app['session']->getFlashBag()->add('admin.success', 'admin.product.product_class.delete.complete');
-                    return $app->redirect($app['url_generator']->generate('admin_product_product_class', array('product_id' => $product_id)));
+                    return $app->redirect($app['url_generator']->generate('admin_product_product_class_edit', array('id' => $id)));
                     break;
                 default:
                     break;
@@ -157,8 +157,6 @@ class ProductClassController
         }
 
         return $app['view']->render('Admin/Product/product_class.twig', array(
-            'maintitle' => '商品管理',
-            'subtitle' => '商品マスター',
             'form' => $form->createView(),
             'Product' => $Product
         ));

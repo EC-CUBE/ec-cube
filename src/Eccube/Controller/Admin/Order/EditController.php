@@ -35,14 +35,14 @@ use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class EditController
 {
-    public function index(Application $app, $orderId = 0)
+    public function index(Application $app, $id = 0)
     {
-        if ($orderId == 0) {
+        if ($id == 0) {
             $Order = $app['eccube.service.order']->newOrder();
         } else {
             $Order = $app['orm.em']
                 ->getRepository('Eccube\Entity\Order')
-                ->find($orderId);
+                ->find($id);
         }
         if (is_null($Order)) {
             throw new HttpException\NotFoundHttpException('order is not found.');
@@ -68,10 +68,8 @@ class EditController
 
         return $app['view']->render('Admin/Order/edit.twig', array(
                 'form' => $form->createView(),
-                'title' => '受注管理',
-                'sub_title' => '受注編集',
                 'Order' => $Order,
-                'orderId' => $orderId,
+                'orderId' => $id,
         ));
     }
 }

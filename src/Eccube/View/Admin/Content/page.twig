@@ -27,12 +27,8 @@
 
 {% block main %}
 
-    {% for message in app.session.flashbag.get('page.complete') %}
-        {{ message|trans|raw }}<br/>
-    {% endfor %}
-
 <form name="tax_rule_form" id="tax_rule_form" method="post" action="
-{%- if page_id is not null %}{{ url('admin_content_page_edit', {'page_id':page_id}) }}{% else %}{{ url('admin_content_page')}}{% endif -%}">
+{%- if page_id is not null %}{{ url('admin_content_page_edit', {id: page_id}) }}{% else %}{{ url('admin_content_page')}}{% endif -%}">
 
     {{ form_widget(form._token) }}
     {{ form_widget(form.page_id) }}
@@ -126,11 +122,11 @@
                     {{ Page.name }}
                 </td>
                 <td class="center">
-                    <a href="{{ url('admin_design') }}?page_id={{ Page.page_id }}&device_type_id={{ Page.device_type_id }}">編集</a>
+                    <a href="{{ url('admin_content_layout') }}?page_id={{ Page.page_id }}&device_type_id={{ Page.device_type_id }}">編集</a>
                 </td>
                 <td class="center">
                     {% if Page.filename|length > 1 %}
-                        <a href="{{ url('admin_content_page_edit', {'page_id':Page.page_id}) }}">編集</a>
+                        <a href="{{ url('admin_content_page_edit', {id: Page.page_id}) }}">編集</a>
                     {% endif %}
                 </td>
                 <td class="center">

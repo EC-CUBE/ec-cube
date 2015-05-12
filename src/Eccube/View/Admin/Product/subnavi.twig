@@ -19,13 +19,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<ul class="level1">
-    <li id="navi-products-index"><a href="{{ url('admin_product') }}"><span>商品マスター</span></a></li>
-    <li id="navi-products-product"><a href="{{ url('admin_product_product') }}"><span>商品登録</span></a></li>
-{#    <li id="navi-products-uploadcsv"><a href="{{ url('admin_product_upload_csv') }}"><span>商品登録CSV</span></a></li>#}
-    <li id="navi-products-class"><a href="{{ url('admin_class_name') }}"><span>規格管理</span></a></li>
-    <li id="navi-products-category"><a href="{{ url('admin_category') }}"><span>カテゴリ登録</span></a></li>
-{#    <li id="navi-products-upload-csv-category"><a href="{{ url('admin_product_upload_csv_category') }}"><span>カテゴリ登録CSV</span></a></li>#}
-    <li id="navi-products-maker"><a href="{{ url('admin_maker') }}"><span>メーカー登録</span></a></li>
-{#    <li id="navi-products-rank"><a href="{{ url('admin_product_product_rank') }}'"><span>商品並び替え</span></a></li>#}
-</ul>
+            <li><a class="toggle"><span class="fa fa-tag"></span>商品管理<span class="fa fa-chevron-down"></span></a>
+                <ul>
+                    <li id="navi-products-index"><a href="{{ url('admin_product') }}">商品マスター</a></li>
+                    <li id="navi-products-product"><a href="{{ url('admin_product_product_new') }}">商品登録</a></li>
+                    <li id="navi-products-class"><a href="{{ url('admin_product_class_name') }}">規格管理</a></li>
+                    <li id="navi-products-category"><a href="{{ url('admin_product_category') }}">カテゴリ登録</a></li>
+                    <li id="navi-products-maker"><a href="{{ url('admin_product_maker') }}">メーカー登録</a></li>
+                </ul>
+            </li>

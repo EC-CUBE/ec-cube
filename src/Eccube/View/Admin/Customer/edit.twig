@@ -26,15 +26,6 @@
 
 {% block main %}
 
-    {% for message in app.session.flashbag.get('customer.complete')  %}
-        {{ message|trans|raw }}<br />
-    {% endfor %}
-
-    <form name="form1" id="form1" method="post" action="?" autocomplete="off">
-    <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-    <input type="hidden" name="mode" value="confirm" />
-    <input type="hidden" name="customer_id" value="<!--{$arrForm.customer_id|h}-->" />
-
 <form name="point_form" id="point_form" method="post" action="
 {%- if customerId %}url('admin_customer_edit', customerId) }}{% else %}url('admin_customer_new'){% endif -%}">
     {{ form_widget(form._token) }}
