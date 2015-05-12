@@ -107,7 +107,7 @@ class Application extends \Silex\Application
             //
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
-                if (strpos($app['request']->getRequestUri(), '/admin') === 0) {
+                if (strpos($app['request']->getPathInfo(), '/admin') === 0) {
                     if (file_exists(__DIR__ . '/../../template/admin')) {
                         $paths[] = __DIR__ . '/../../template/admin';
                     }
