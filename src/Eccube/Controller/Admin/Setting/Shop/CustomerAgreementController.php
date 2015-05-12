@@ -28,15 +28,10 @@ use Eccube\Controller\AbstractController;
 
 class CustomerAgreementController extends AbstractController
 {
-    private $main_title;
-    private $sub_title;
-
     public $form;
 
     public function __construct()
     {
-        $this->main_title = 'ショップ設定';
-        $this->sub_title = '会員規約設定';
     }
 
     public function index(Application $app)
@@ -58,9 +53,7 @@ class CustomerAgreementController extends AbstractController
             }
         }
 
-        return $app['twig']->render('Admin/Setting/Shop/customer_agreement.twig', array(
-            'tpl_maintitle' => $this->main_title,
-            'tpl_subtitle'  => $this->sub_title,
+        return $app['view']->render('Admin/Setting/Shop/customer_agreement.twig', array(
             'form'       => $form->createView(),
         ));
     }
