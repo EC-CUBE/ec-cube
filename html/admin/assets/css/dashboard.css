@@ -1101,6 +1101,9 @@ dd.form-group .errormsg {
   padding-bottom: 0;
   padding-right: 60px;
 }
+.item_box .item_photo img {
+  max-width: 100px;
+}
 .item_box .icon_edit {
   position: absolute;
   top: 8px; right: 16px;
@@ -1769,6 +1772,9 @@ dl.accordion {
 }
 .search-box .toggle.active span:last-child {
     transform: rotate(0deg);
+}
+.search-box .search-box-inner label {
+  font-size: 86%;
 }
 
 

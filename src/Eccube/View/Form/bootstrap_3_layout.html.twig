@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
 
                         {{ form_widget(child) }}
+
                     </div>
 
             {% if loop_index is even %}
@@ -54,3 +55,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{- parent() -}}
     </div>
 {%- endblock form_widget -%}
+
+{% block form_widget_simple -%}
+    {% set type = type|default('text') %}
+    {% if type == 'text' %}
+    <label>{{ form_label(form) }}</label>
+    {% endif %}
+    {{- parent() -}}
+{%- endblock form_widget_simple %}
