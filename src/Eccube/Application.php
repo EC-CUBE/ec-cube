@@ -92,6 +92,10 @@ class Application extends \Silex\Application
             return array_merge($config_constant, $config);
         });
 
+        $this['resolver'] = $this->share(function () use ($app) {
+            return new ControllerResolver($app, $app['logger']);
+        });
+
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
