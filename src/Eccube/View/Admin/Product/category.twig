@@ -21,6 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'Admin/main_frame.twig' %}
 
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}カテゴリ編集{% endblock %}
+
 {% block main %}
 <form name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
     <div id="products" class="contents-main">
