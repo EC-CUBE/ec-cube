@@ -68,7 +68,7 @@ class ClassCategoryController
 
         $ClassCategories = $app['eccube.repository.class_category']->getList($ClassName);
 
-        return $app['view']->render('Admin/Product/class_category.twig', array(
+        return $app['view']->render('Product/class_category.twig', array(
             'form' => $form->createView(),
             'ClassName' => $ClassName,
             'ClassCategories' => $ClassCategories,

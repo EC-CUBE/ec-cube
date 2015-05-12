@@ -55,7 +55,7 @@ class SystemController
 
         $this->arrSystemInfo = $this->getSystemInfo($app);
 
-        return $app['view']->render('Admin/Setting/System/system.twig', array(
+        return $app['view']->render('Setting/System/system.twig', array(
             'arrSystemInfo' => $this->arrSystemInfo,
         ));
     }

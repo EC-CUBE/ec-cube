@@ -70,7 +70,7 @@ class CssController
             }
         }
 
-        return $app['view']->render('Admin/Content/css.twig', array(
+        return $app['view']->render('Content/css.twig', array(
             'form' => $form->createView(),
             'filenames' => $this->getFileNames($app),
         ));

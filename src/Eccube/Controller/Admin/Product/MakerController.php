@@ -61,7 +61,7 @@ class MakerController
 
         $Makers = $app['eccube.repository.maker']->getList();
 
-        return $app['view']->render('Admin/Product/maker.twig', array(
+        return $app['view']->render('Product/maker.twig', array(
             'maintitle' => '商品管理',
             'subtitle' => 'メーカー登録',
             'form' => $form->createView(),

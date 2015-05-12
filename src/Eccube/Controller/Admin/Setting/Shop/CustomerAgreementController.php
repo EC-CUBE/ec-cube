@@ -53,7 +53,7 @@ class CustomerAgreementController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Setting/Shop/customer_agreement.twig', array(
+        return $app['view']->render('Setting/Shop/customer_agreement.twig', array(
             'form' => $form->createView(),
         ));
     }

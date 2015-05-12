@@ -1,0 +1,72 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+    <div class="block_outer">
+        <div id="login_area">
+            <h2><img src="{{ app.config.tpl }}img/title/tit_bloc_login.gif" alt="ログイン" /></h2>
+            <form name="login_form" id="login_form" method="post" action="{{ path('login_check') }}" 
+                {% if is_granted('ROLE_USER') %}
+                    onsubmit="return eccube.checkLoginFormInputted('login_form')"
+                {% endif %}
+            >
+                <div class="block_body">
+                    {% if is_granted('ROLE_USER') %}
+                        <p>ようこそ<br />
+                            <span class="user_name">{{ app.user.name01 }} {{ app.user.name02 }} 様</span><br />
+                            {% if app.config.use_point %}
+                                所持ポイント：<span class="point"> {{ app.user.point|number_format }} pt</span>
+                            {% endif %}
+                        </p>
+                        {% if disableLogout %}
+                            <p class="btn">
+                                <a href="{{ path('logout') }}">
+                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_logout.jpg" alt="ログアウト" />
+                                </a>
+                            </p>
+                        {% endif %}
+                    {% else %}
+                        <dl class="formlist">
+                            <dt>{{ form_label(form.login_email) }}</dt>
+                            <dd>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                {{ form_widget(form.login_email, {'attr': {'class': "box150", 'style': 'ime-mode: disabled;'}}) }}
+                            </dd>
+                            <dd class="mini">
+                                {{ form_widget(form.login_memory) }}
+                            </dd>
+                        </dl>
+                        <dl class="formlist">
+                            <dt class="password">{{ form_label(form.login_pass) }}</dt>
+                            <dd>
+                                {{ form_widget(form.login_pass, {'attr': {'class': 'box100'}}) }}
+                            </dd>
+                            <dd class="mini">
+                                <a href="{{ path('forgot') }}" onclick="eccube.openWindow('{{ path('forgot') }}','forget','600','400',{scrollbars:'no',resizable:'no'}); return false;" target="_blank">パスワードを忘れた方はこちら</a>
+                            </dd>
+                        </dl>
+                        <p class="btn">
+                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_login.jpg" alt="ログイン" />
+                        </p>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>

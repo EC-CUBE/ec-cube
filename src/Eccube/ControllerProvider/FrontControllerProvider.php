@@ -34,9 +34,9 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c = $app['controllers_factory'];
 
         // root
+        $c->match('/', "\Eccube\Controller\TopController::index")->bind('homepage');
         $c->match('/', "\Eccube\Controller\TopController::index")->bind('top');
         $c->match('/', "\Eccube\Controller\TopController::index")->bind('index');
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('homepage');
         $c->match('/input_zip', '\Eccube\Page\InputZip')->bind('input_zip');
         $c->match('/sitemap', '\Eccube\Page\Sitemap')->bind('sitemap');
         $c->match('/error', '\Eccube\Page\Error\SystemError')->bind('error');
@@ -135,7 +135,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/nonmember', '\Eccube\Controller\ShoppingController::nonmember')->bind('shopping_nonmember');
         $c->match('/shopping/test', '\Eccube\Controller\ShoppingController::test')->bind('shopping_test'); // todo テスト用
 
-        // order
+        // unsupported
         $c->match('/unsupported', '\Eccube\Page\Unsupported\Index')->bind('unsupported');
 
         return $c;

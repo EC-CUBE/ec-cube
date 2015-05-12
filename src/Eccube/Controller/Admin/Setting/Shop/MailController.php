@@ -63,7 +63,7 @@ class MailController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Setting/Shop/mail.twig', array(
+        return $app['view']->render('Setting/Shop/mail.twig', array(
             'Mail' => $Mail,
             'mail_id' => $id,
             'form' => $form->createView(),

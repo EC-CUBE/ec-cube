@@ -34,4 +34,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class TargetRepository extends EntityRepository
 {
+    public function getAll()
+    {
+        return $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('t')
+            ->from('Eccube\Entity\Master\Target', 't', 't.id')
+            ->getQuery()
+            ->getResult();
+    }
 }

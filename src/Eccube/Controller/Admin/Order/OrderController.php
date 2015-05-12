@@ -60,7 +60,7 @@ class OrderController
 
         }
 
-        return $app['view']->render('Admin/Order/index.twig', array(
+        return $app['view']->render('Order/index.twig', array(
             'form' => $form->createView(),
             'showResult' => $showResult,
             'Orders' => $Orders,

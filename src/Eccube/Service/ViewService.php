@@ -37,8 +37,7 @@ class ViewService
 
     public function render($name, array $context = array())
     {
-        $template = $this->app['twig']->loadTemplate($name);
-        $compiledSource = $template->render($context);
+        $compiledSource = $this->app['twig']->render($name, $context);
 
         $event = new RenderEvent($compiledSource);
 

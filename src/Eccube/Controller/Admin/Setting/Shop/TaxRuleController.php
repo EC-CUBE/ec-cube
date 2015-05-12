@@ -76,7 +76,7 @@ class TaxRuleController extends AbstractController
         // 共通税率一覧
         $TaxRules = $app['eccube.repository.tax_rule']->getList();
 
-        return $app['view']->render('Admin/Setting/Shop/tax_rule.twig', array(
+        return $app['view']->render('Setting/Shop/tax_rule.twig', array(
             'tax_rule_id' => $id,
             'TaxRules' => $TaxRules,
             'form' => $form->createView(),

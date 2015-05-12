@@ -87,7 +87,7 @@ class BlockController
         // 登録されているページ一覧の取得
         $Blocks = $app['eccube.repository.block']->getList($device_type_id);
 
-        return $app['view']->render('Admin/Content/block.twig', array(
+        return $app['view']->render('Content/block.twig', array(
             'Blocks' => $Blocks,
             'block_id' => $id,
             'form' => $form->createView(),

@@ -57,7 +57,7 @@ class PointController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Setting/Shop/point.twig', array(
+        return $app['view']->render('Setting/Shop/point.twig', array(
             'form'       => $form->createView(),
         ));
     }

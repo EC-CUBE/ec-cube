@@ -84,7 +84,7 @@ class CategoryController
         $Children = $app['eccube.repository.category']->getList(null);
         $Categories = $app['eccube.repository.category']->getList($Parent);
 
-        return $app['view']->render('Admin/Product/category.twig', array(
+        return $app['view']->render('Product/category.twig', array(
             'form' => $form->createView(),
             'Children' => $Children,
             'Parent' => $Parent,

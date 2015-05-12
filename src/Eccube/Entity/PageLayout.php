@@ -29,6 +29,158 @@ namespace Eccube\Entity;
  */
 class PageLayout extends \Eccube\Entity\AbstractEntity
 {
+    // 配置ID
+    /** 配置ID: 未使用 */
+    const TARGET_ID_UNUSED = 0;
+    /** 配置ID: LeftNavi */
+    const TARGET_ID_LEFT = 1;
+    /** 配置ID: MainHead */
+    const TARGET_ID_MAIN_HEAD = 2;
+    /** 配置ID: RightNavi */
+    const TARGET_ID_RIGHT = 3;
+    /** 配置ID: MainFoot */
+    const TARGET_ID_MAIN_FOOT = 4;
+    /** 配置ID: TopNavi */
+    const TARGET_ID_TOP = 5;
+    /** 配置ID: BottomNavi */
+    const TARGET_ID_BOTTOM = 6;
+    /** 配置ID: HeadNavi */
+    const TARGET_ID_HEAD = 7;
+    /** 配置ID: HeadTopNavi */
+    const TARGET_ID_HEAD_TOP = 8;
+    /** 配置ID: FooterBottomNavi */
+    const TARGET_ID_FOOTER_BOTTOM = 9;
+    /** 配置ID: HeaderInternalNavi */
+    const TARGET_ID_HEADER_INTERNAL = 10;
+
+    /**
+     * Get ColumnNum
+     *
+     * @return integer
+     */
+    public function getColumnNum()
+    {
+        return 1 + ($this->getLeftNavi() ? 1 : 0) + ($this->getRightNavi() ? 1 : 0);
+    }
+
+    /**
+     * Get LeftNavi
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getLeftNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_LEFT);
+    }
+
+    /**
+     * Get MainHead
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getMainHead()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_MAIN_HEAD);
+    }
+
+    /**
+     * Get RightNavi
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getRightNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_RIGHT);
+    }
+
+    /**
+     * Get MainFoot
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getMainFoot()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_MAIN_FOOT);
+    }
+
+    /**
+     * Get TopNavi
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getTopNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_TOP);
+    }
+
+    /**
+     * Get BottomNavi
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getBottomNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_BOTTOM);
+    }
+
+    /**
+     * Get 
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getHeadNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_HEAD);
+    }
+
+    /**
+     * Get HeaderTopNavi
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getHeaderTopNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_HEAD_TOP);
+    }
+
+    /**
+     * Get FooterBottomNavi
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getFooterBottomNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_FOOTER_BOTTOM);
+    }
+
+    /**
+     * Get HeaderInternalNavi
+     *
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getHeaderInternalNavi()
+    {
+        return $this->getBlocsByTargetId(self::TARGET_ID_HEADER_INTERNAL);
+    }
+
+    /**
+     * Get BlocsByTargetId
+     *
+     * @param integer $target_id
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getBlocsByTargetId($target_id)
+    {
+        $Blocs = array();
+        foreach ($this->getBlocPositions() as $BlocPositions) {
+            if ($BlocPositions->getTargetId() === $target_id) {
+                $Blocs[] = $BlocPositions->getBloc();
+            }
+        }
+        return $Blocs;
+    }
+
+
     /**
      * @var integer
      */
