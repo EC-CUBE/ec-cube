@@ -455,27 +455,27 @@ class Application extends \Silex\Application
 
     public function success($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add($namespace . '.success', $message);
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
     }
 
     public function error($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add($namespace . '.error', $message);
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
     }
 
     public function danger($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add($namespace . '.danger', $message);
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
     }
 
     public function warning($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add($namespace . '.warning', $message);
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
     }
 
     public function info($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add($namespace . '.info', $message);
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
     }
 
 }
