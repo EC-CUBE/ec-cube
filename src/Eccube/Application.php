@@ -98,6 +98,29 @@ class Application extends \Silex\Application
             return array_merge($config_constant, $config);
         });
 
+        // load config dev
+        if ($app['env'] === 'dev' || $app['env'] === 'test') {
+            $conf = $this['config'];
+            $this['config'] = $app->share(function () use($conf) {
+                $confarray = array();
+                $config_dev_file = __DIR__ . '/../../app/config/eccube/config_dev.yml';
+                if (file_exists($config_dev_file)) {
+                    $config_dev = Yaml::parse($config_dev_file);
+                    if (isset($config_dev)) {
+                        $confarray = array_merge($confarray, $config_dev);
+                    }
+                }
+                $constant_dev_file = __DIR__ . '/../../app/config/eccube/constant_dev.yml';
+                if (file_exists($constant_dev_file)) {
+                    $constant_dev = Yaml::parse($constant_dev_file);
+                    if (isset($constant_dev)) {
+                        $confarray = array_merge($confarray, $constant_dev);
+                    }
+                }
+                return array_merge($conf, $confarray);
+            });
+        }
+
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
