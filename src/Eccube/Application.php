@@ -453,27 +453,27 @@ class Application extends \Silex\Application
         $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
-    public function success($message, $namespace = 'front')
+    public function addSuccess($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
     }
 
-    public function error($message, $namespace = 'front')
+    public function addError($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
     }
 
-    public function danger($message, $namespace = 'front')
+    public function addDanger($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
     }
 
-    public function warning($message, $namespace = 'front')
+    public function addWarning($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
     }
 
-    public function info($message, $namespace = 'front')
+    public function addInfo($message, $namespace = 'front')
     {
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
     }
