@@ -105,7 +105,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/mail/view/{sendId}', '\\Eccube\\Controller\\Admin\\Order\\MailController::view')->assert('sendId', '\d+')->bind('admin_order_mail_view');
 
         $c->match('/order/status', '\\Eccube\\Controller\\Admin\\Order\\StatusController::index')->bind('admin_order_status_default');
-        $c->match('/order/status/{statusId}', '\\Eccube\\Controller\\Admin\\Order\\StatusController::index')->bind('admin_order_status');
+        $c->match('/order/status/{id}', '\\Eccube\\Controller\\Admin\\Order\\StatusController::index')->assert('id', '\d+')->bind('admin_order_status');
 
         // content
         $c->match('/content/file_manager', '\\Eccube\\Controller\\Admin\\Content\\FileController::index')->bind('admin_content_file');

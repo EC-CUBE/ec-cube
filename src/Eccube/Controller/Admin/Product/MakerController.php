@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Controller\Admin;
+namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -157,6 +157,6 @@ class MakerController
             $app['session']->getFlashBag()->add('admin.error', 'admin.maker.delete.error');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin__product_maker'));
+        return $app->redirect($app['url_generator']->generate('admin_product_maker'));
     }
 }
