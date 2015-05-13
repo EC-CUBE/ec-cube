@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品登録{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_layout.html.twig' %}
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
     // 表示非表示切り替え
@@ -98,16 +98,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="box-header">
                             <h3 class="box-title">基本情報</h3>
                         </div><!-- /.box-header -->
+                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
                         <div class="box-body">
-
-                            <form role="form" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
 
                                 {{ form_widget(form) }}
 
-                            </form>
                         </div><!-- /.box-body --> 
+                        </form>
                     </div><!-- /.box -->
-                    
+
                     <div class="box accordion">
                         <div class="box-header toggle">
                             <h3 class="box-title">詳細な設定<span class="fa fa-chevron-down icon_down"></span></h3>
@@ -136,7 +135,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <p><a href="{{ url('admin_product') }}">検索画面に戻る</a></p>
                         </div>
                     </div>
-                    
+
                 </div><!-- /.col -->
                 
                 <div class="col-md-3">

@@ -22,30 +22,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- extends 'bootstrap_3_layout.html.twig' -%}
 
 {%- block form_rest -%}
-    {% set loop_index = 0 %}
-    {% for child in form %}
-        {% if not child.rendered %}
-            {% set loop_index = loop_index + 1 %}
+    {% set attr = attr|merge({class: attr.class|default('')}) %}
+    {% if attr.class == 'search' %}
+        {% set loop_index = 0 %}
+        {% for child in form %}
+            {% if not child.rendered %}
+                {% set loop_index = loop_index + 1 %}
 
-            {% if loop_index is odd %}
-                <div class="row">
-                    <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
-            {% else %}
-                    <div class="col-sm-6 col-md-5 col-lg-4">
-            {% endif %}
+                {% if loop_index is odd %}
+                    <div class="row">
+                        <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
+                {% else %}
+                        <div class="col-sm-6 col-md-5 col-lg-4">
+                {% endif %}
 
-                        {{ form_widget(child) }}
+                            {{ form_widget(child) }}
 
+                        </div>
+
+                {% if loop_index is even %}
                     </div>
-
-            {% if loop_index is even %}
-                </div>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    {% endfor %}
+        {% endfor %}
 
-    {% if loop_index is odd %}
-        </div>
+        {% if loop_index is odd %}
+            </div>
+        {% endif %}
+    {% else %}
+        {{ parent() }}
     {% endif %}
 {%- endblock form_rest -%}
 
@@ -56,6 +61,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
 {%- endblock form_widget -%}
 
+{#
 {% block form_widget_simple -%}
     {% set type = type|default('text') %}
     {% if type == 'text' %}
@@ -63,3 +69,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% endif %}
     {{- parent() -}}
 {%- endblock form_widget_simple %}
+#}
