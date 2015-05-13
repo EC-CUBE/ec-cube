@@ -48,7 +48,7 @@ class Application extends \Silex\Application
      */
     public static function alias($name)
     {
-        $args = func_get_args();
+        $args = func_get_args();    
         array_shift($args);
         $obj = static::$app[$name];
 
@@ -464,6 +464,31 @@ class Application extends \Silex\Application
         }));
 
         $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
+    }
+
+    public function addSuccess($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
+    }
+
+    public function addError($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
+    }
+
+    public function addDanger($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
+    }
+
+    public function addWarning($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
+    }
+
+    public function addInfo($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
     }
 
     /*
