@@ -55,167 +55,122 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     }
 {% endblock %}
 
+{% form_theme searchForm 'Form/bootstrap_3_layout.html.twig' %}
+
 {% block main %}
-    <div id="products" class="contents-main">
-        <form name="search_form" id="search_form" method="post" action="?">
-            <h2>検索条件設定</h2>
-
             <!--検索条件設定テーブルここから-->
-            {{ form_widget(searchForm) }}
-            <div class="btn">
-                {#
-                <p class="page_rows">検索結果表示件数
-                <!--{assign var=key value="search_page_max"}-->
-                <!--{if $arrErr[$key]}-->
-                    <span class="attention"><!--{$arrErr[$key]}--></span>
-                <!--{/if}-->
-                <select name="<!--{$key}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
-                    <!--{html_options options=$arrPageMax selected=$arrForm.search_page_max.value}-->
-                </select> 件</p>
-                #}
+            <div class="search-box">
+                <form name="search_form" id="search_form" method="post" action="">
+                    <div class="row">
+                        <div class="col-md-12 accordion">
 
-                <div class="btn-area">
-                    <ul>
-                        <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;"><span class="btn-next">この条件で検索する</span></a></li>
-                    </ul>
-                </div>
+                            {{ form_widget(searchForm.id, { attr: { placeholder: '商品ID', class : 'input_search' } } ) }}
 
+                            <a class="toggle fa-stack" href="#"><span class="fa fa-minus fa-stack-1x"></span> <span class="fa fa-minus fa-stack-1x"></span></a>
+                            <div class="search-box-inner accpanel">
+
+                                {{ form_rest(searchForm) }}
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                    </div>
+                                </div><!-- /.row --> 
+                            </div>
+                        </div>
+                        <!-- /.col --> 
+                    </div>
+                    <div class="row btn_area">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+                            <button class="btn btn-primary btn-block btn-lg" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;">
+                                検索する <span class="fa fa-chevron-right"></span>
+                            </button>
+                        </div>
+                        <!-- /.col --> 
+                    </div>
+                </form>
             </div>
             <!--検索条件設定テーブルここまで-->
-        </form>
-
 
         {% if pagination.totalItemCount > 0 %}
-            <!--★★検索結果一覧★★-->
-            <form name="form1" id="form1" method="post" action="?">
-                <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
-                <input type="hidden" name="mode" value="search" />
-                <input type="hidden" name="product_id" value="" />
-                <input type="hidden" name="category_id" value="" />
-                <!--{foreach key=key item=item from=$arrHidden}-->
-                    <!--{if is_array($item)}-->
-                        <!--{foreach item=c_item from=$item}-->
-                        <input type="hidden" name="<!--{$key|h}-->[]" value="<!--{$c_item|h}-->" />
-                        <!--{/foreach}-->
-                    <!--{else}-->
-                        <input type="hidden" name="<!--{$key|h}-->" value="<!--{$item|h}-->" />
-                    <!--{/if}-->
-                <!--{/foreach}-->
-                <h2>検索結果一覧</h2>
-                <div class="btn">
-                    <span class="attention"><!--検索結果数-->{{  pagination.totalItemCount }}件</span>&nbsp;が該当しました。
-                    <!--検索結果-->
-                    {% if app.config.admin_mode %}
-                        <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('delete_all','',''); return false;">検索結果を全て削除</a>
-                    {% endif %}
-                    {#
-                    <a class="btn-tool" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
-                    <a class="btn-tool" href="../contents/csv.php?tpl_subno_csv=product">CSV 出力項目設定</a>
-                    #}
-                </div>
-
-                {% if pagination.totalItemCount > 0 %}
-                    {% include "Admin/pager.twig" with { 'pages' : pagination.paginationData } %}
-
-                    <!--検索結果表示テーブル-->
-                    <table class="list" id="products-search-result">
-                        <col width="8%" />
-                        <col width="9%" />
-                        <col width="9%" />
-                        <col width="8%" />
-                        <col width="25%" />
-                        <col width="8%" />
-                        <col width="8%" />
-                        <col width="5%" />
-                        <col width="5%" />
-                        <col width="5%" />
-                        <col width="5%" />
-                        <col width="5%" />
-                        <tr>
-                            <th rowspan="2">商品ID</th>
-                            <th rowspan="2">商品画像</th>
-                            <th rowspan="2">商品コード</th>
-                            <th rowspan="2">価格(円)</th>
-                            <th>商品名</th>
-                            <th rowspan="2">在庫</th>
-                            <th rowspan="2">種別</th>
-                            <th rowspan="2">編集</th>
-                            <th rowspan="2">確認</th>
-                            {% if app.config.option_class_regist %}
-                                <th rowspan="2">規格</th>
-                            {% endif %}
-                            <th rowspan="2">削除</th>
-                            <th rowspan="2">複製</th>
-                        </tr>
-                        <tr>
-                            <th nowrap="nowrap"><a href="#" onclick="lfnDispChange(); return false;">カテゴリ ⇔ URL</a></th>
-                        </tr>
-
-                        {% for Product in pagination %}
-                            <!--▼商品{{ loop.index }}-->
-                            <tr style="background:{{ Product.ProductStatusColor }};">
-                                <td class="id" rowspan="2">{{ Product.id }}</td>
-                                <td class="thumbnail" rowspan="2">
-                                <img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_main_list }}" style="max-width: 65px;max-height: 65;" alt="" />
-                                </td>
-                                <td rowspan="2">
-                                    {{ Product.code_min }}
-                                    {% if Product.code_min != Product.code_max %}
-                                        <br />～ {{ Product.code_max }}
-                                    {% endif %}
-                                </td>
-                                {# 価格 #}
-                                <td rowspan="2" class="right">
-                                    {{ Product.price02_min|number_format }}
-                                    {% if Product.price02_min|number_format != Product.price02_max|number_format %}
-                                        <br />～ {{ Product.price02_max|number_format }}
-                                    {% endif %}
-                                </td>
-                                <td>{{ Product.name }}</td>
-                                {# 在庫 #}
-                                {# XXX 複数規格でかつ、全ての在庫数量が等しい場合は先頭に「各」と入れたれたら良いと思う。 #}
-                                <td class="menu" rowspan="2">
-                                    {% if Product.stock_unlimited_min %}無制限{% else %}{{ Product.stock_min|number_format }}{% endif %}
-                                    {% if Product.stock_unlimited_min != Product.stock_unlimited_max or Product.stock_min != Product.stock_max %}
-                                        <br />～ {% if Product.stock_unlimited_max %}無制限{% else %}{{ Product.stock_max|number_format }}{% endif %}
-                                    {% endif %}
-                                </td>
-                                {# 表示 #}
-                                <td class="menu" rowspan="2">{{ Product.Status }}</td>
-                                <td class="menu" rowspan="2"><span class="icon_edit"><a href="javascript:;" onclick="eccube.changeAction('{{ url('admin_product_product_edit', {id: Product.id}) }}'); eccube.setModeAndSubmit('pre_edit', 'product_id', {{ Product.id }}); return false;" >編集</a></span></td>
-                                <td class="menu" rowspan="2"><span class="icon_confirm"><a href="{{ url('product_detail', {'productId': Product.id, 'admin': 'on'}) }}" target="_blank">確認</a></span></td>
-                                {% if app.config.option_class_regist %}
-                                    <td class="menu" rowspan="2"><span class="icon_class"><a href="javascript:;" onclick="eccube.changeAction('{{ url('admin_product_product_class_edit', {id: Product.id}) }}'); eccube.setModeAndSubmit('pre_edit', 'product_id', {{ Product.id }}); return false;" >規格</a></span></td>
-                                {% endif %}
-                                <td class="menu" rowspan="2"><span class="icon_delete"><a href="javascript:;" onclick="eccube.setModeAndSubmit('delete', 'product_id', {{ Product.id }}); return false;">削除</a></span></td>
-                                <td class="menu" rowspan="2"><span class="icon_copy"><a href="javascript:;" onclick="eccube.changeAction('{{ url('admin_product_product_edit', {id: Product.id}) }}'); eccube.setModeAndSubmit('copy', 'product_id', {{ Product.id }}); return false;" >複製</a></span></td>
-                            </tr>
-                            <tr style="background:{{ Product.ProductStatusColor }};">
-                                <td>
-                                    {# カテゴリ名 #}
-                                    <div id="disp_cat{{ loop.index }}" style="display:<!--{$cat_flg}-->">
-                                        {% for ProductCategory in Product.ProductCategories%}
-                                            {% for Category in ProductCategory.Category.path %}
-                                                {{ app.config.category_head|escape }}{{ Category.name }}
-                                            {% endfor %}
-                                            {%if loop.last == false %}<br />{% endif %}
-                                        {% endfor %}
-                                    </div>
-
-                                    {# URL #}
-                                    <div id="disp_url{{ loop.index }}" style="display:none">
-                                        {{ url('product_detail', {'productId': Product.id}) }}
-                                    </div>
-                                </td>
-                            </tr>
-                            <!--▲商品{{ loop.index }}-->
-                        {% endfor %}
-                    </table>
-                    <input type="hidden" name="item_cnt" value="{{ pagination.count }}" />
-                    <!--検索結果表示テーブル-->
-                {% endif %}
-            </form>
-            <!--★★検索結果一覧★★-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-arrow">
+                            <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="link-with-bar">
+                                    <li><a>すべて</a></li>
+                                    <li><a href="#">公開</a></li>
+                                    <li><a href="#">非公開</a></li>
+                                    <li><a href="#">在庫なし</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="sort-dd">
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown">20件<span class="fa fa-chevron-down icon_down"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a>50件</a></li>
+                                            <li><a>100件</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a>ダウンロード</a></li>
+                                            <li><a>出力項目設定</a></li>
+                                        </ul>
+                                    </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="item_list">
+                                <div class="tableish tableish-striped">
+                                
+                                    {% for Product in pagination %}
+                                        <div class="item_box tr">
+                                            <div class="item_photo td">
+                                                <img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_main_list }}" />
+                                                {#
+                                                    <span class="fa fa-picture-o fa-4x"></span>
+                                                #}
+                                            </div>
+                                            <div class="item_detail td">
+                                                <a href="#">
+                                                    {{ Product.name }}
+                                                </a><br>
+                                                <span>
+                                                    {{ Product.code_min }}
+                                                    {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="icon_edit td">
+                                                <div class="dropdown">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-pencil"></span></a>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a>規格</a></li>
+                                                    <li><a>確認</a></li>
+                                                    <li><a>複製</a></li>
+                                                    <li><a>削除</a></li>
+                                                    </ul>
+                                                </div>                                        
+                                            </div>
+                                        </div><!-- /.item_box --> 
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div><!-- /.box-body --> 
+                        {% if pagination.totalItemCount > 0 %}
+                            {% include "Admin/pager.twig" with { 'pages' : pagination.paginationData } %}
+                        {% endif %}
+                    </div><!-- /.box --> 
+                </div><!-- /.col --> 
+            </div>
         {% endif %}
     </div>
 {% endblock %}
