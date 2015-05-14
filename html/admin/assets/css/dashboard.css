@@ -808,8 +808,12 @@ dd.form-group .errormsg {
 .has-warning .form-control { border-color: #E99133; background: #fdf7ed; }
 .has-error .form-control { border-color: #CF3F34; background: #FDF1F0; }
 
-.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
+.has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
     color: inherit;  background: #FDF1F0;
+}
+
+.has-error .control-label {
+  color: inherit;
 }
 
 .form-inline .radio input[type="radio"], .form-inline .checkbox input[type="checkbox"] {

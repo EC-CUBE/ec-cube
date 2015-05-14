@@ -68,8 +68,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                             <a class="toggle fa-stack" href="#"><span class="fa fa-minus fa-stack-1x"></span> <span class="fa fa-minus fa-stack-1x"></span></a>
                             <div class="search-box-inner accpanel">
-
-                                {{ form_rest(searchForm) }}
+                                {{ form_rest(searchForm, { attr : { class : 'search' } }) }}
 
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -140,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 #}
                                             </div>
                                             <div class="item_detail td">
-                                                <a href="#">
+                                                <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                                     {{ Product.name }}
                                                 </a><br>
                                                 <span>
@@ -153,10 +152,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <div class="dropdown">
                                                     <a class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-pencil"></span></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a>規格</a></li>
-                                                    <li><a>確認</a></li>
-                                                    <li><a>複製</a></li>
-                                                    <li><a>削除</a></li>
+                                                    <li><a href="{{ url('admin_product_product_class_edit', { id : Product.id }) }}">規格</a></li>
+                                                    <li><a href="">確認</a></li>
+                                                    <li><a href="">複製</a></li>
+                                                    <li><a href="">削除</a></li>
                                                     </ul>
                                                 </div>                                        
                                             </div>
