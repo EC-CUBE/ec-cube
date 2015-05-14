@@ -950,7 +950,7 @@ INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 4, 2, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 8, 3, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 7, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 4, 5, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 6, 5, 2, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 3, 6, 1, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 10, 9, 1, 1);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 1, 2, 0);
