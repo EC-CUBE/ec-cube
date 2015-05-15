@@ -24,32 +24,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}ポイント管理{% endblock %}
 
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
 {% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">ポイント管理</h3>
+            </div><!-- /.box-header -->
+            <form name="point_form" role="form" class="form-horizontal" id="point_form" method="post" action="">
+            <div class="box-body">
 
-<form name="point_form" id="point_form" method="post" action="{{ url('admin_setting_shop_point') }}">
-    {{ form_widget(form._token) }}
-    <div id="basis" class="contents-main">
-        <table>
-            <tr>
-                <th>ポイント付与率（初期値）<span class="attention"> *</span></th>
-                <td>
-                    {{ form_widget(form.point_rate) }} ％　小数点以下切り捨て
-                    {{ form_errors(form.point_rate) }}
-                </td>
-            </tr>
-            <tr>
-                <th>会員登録時付与ポイント<span class="attention"> *</span></th>
-                <td>
-                    {{ form_widget(form.welcome_point) }} pt
-                    {{ form_errors(form.welcome_point) }}
-                </td>
-            </tr>
-        </table>
+                {{ form_widget(form) }}
 
-        <div class="btn-area">
-            {{ form_widget(form.save) }}
-        </div>
+                <div class="row hidden-xs hidden-sm">
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                        <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">商品を登録</button>
+                    </div>
+                </div>
+            </div><!-- /.box-body --> 
+            </form>
+        </div><!-- /.box -->
     </div>
-</form>
+</div>
 
 {% endblock %}
