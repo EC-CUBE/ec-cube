@@ -113,7 +113,7 @@ class Application extends \Silex\Application
             //
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
-                if (strpos($app['request']->getPathInfo(), '/admin') === 0) {
+                if (strpos($app['request']->getPathInfo(), $app['config']['admin_dir']) === 0) {
                     if (file_exists(__DIR__ . '/../../template/admin')) {
                         $paths[] = __DIR__ . '/../../template/admin';
                     }
@@ -381,7 +381,7 @@ class Application extends \Silex\Application
         }
 
         $app->mount('', new ControllerProvider\FrontControllerProvider());
-        $app->mount('/admin', new ControllerProvider\AdminControllerProvider());
+        $app->mount($app['config']['admin_dir'], new ControllerProvider\AdminControllerProvider());
         $app->error(function (\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;
