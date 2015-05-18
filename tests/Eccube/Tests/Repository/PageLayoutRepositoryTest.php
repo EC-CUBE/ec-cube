@@ -87,6 +87,9 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_findOrCreate_findMobileMyPage()
     {
+        // 非対応予定のためスキップ
+        self::markTestSkipped();
+
         $app = $this->createApplication();
 
         $expected = array(
@@ -106,6 +109,9 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_findOrCreate_findSmartphoneProduct()
     {
+        // 非対応予定のためスキップ
+        self::markTestSkipped();
+
         $app = $this->createApplication();
 
         $expected = array(
