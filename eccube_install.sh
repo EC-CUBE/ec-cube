@@ -217,7 +217,7 @@ delivery_address:
 auth_magic: ${AUTH_MAGIC}
 password_hash_algos: sha256
 root: ${ROOT_URLPATH}
-admin: /${ADMIN_DIR}
+admin_dir: /${ADMIN_DIR}
 tpl: ${ROOT_URLPATH}user_data/packages/default/
 admin_tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}
 image_path: /upload/save_image/
