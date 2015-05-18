@@ -48,7 +48,7 @@ class Application extends \Silex\Application
      */
     public static function alias($name)
     {
-        $args = func_get_args();    
+        $args = func_get_args();
         array_shift($args);
         $obj = static::$app[$name];
 
@@ -183,7 +183,6 @@ class Application extends \Silex\Application
         ));
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
-        $this->register(new ServiceProvider\LegacyServiceProvider());
 
        // EventDispatcher
         $app['eccube.event.dispatcher'] = $app->share(function () {
@@ -357,10 +356,6 @@ class Application extends \Silex\Application
             return new Response('エラーが発生しました.');
         });
 
-        $this['callback_resolver'] = $this->share(function () use ($app) {
-            return new LegacyCallbackResolver($app);
-        });
-
         $app['eccube.layout'] = null;
         $this->before(function (Request $request, \Silex\Application $app) {
             $url = str_replace($app['config']['root'], '', $app['request']->server->get('REDIRECT_URL'));
@@ -447,21 +442,6 @@ class Application extends \Silex\Application
         parent::boot();
 
         $app = $this;
-
-        // constant 上書き
-        $app['config'] = $app->share($app->extend("config", function ($config, \Silex\Application $app) {
-            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
-            if (is_readable($constant_file)) {
-                $config_constant = Yaml::parse($constant_file);
-            } else {
-                $config_constant = $app['eccube.repository.master.constant']->getAll($config);
-                if ($config_constant) {
-                    file_put_contents($constant_file, Yaml::dump($config_constant));
-                }
-            }
-
-            return array_merge($config_constant, $config);
-        }));
 
         $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
