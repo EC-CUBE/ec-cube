@@ -66,7 +66,7 @@ class EditController
             }
         }
 
-        return $app['view']->render('Admin/Order/edit.twig', array(
+        return $app['view']->render('Order/edit.twig', array(
                 'form' => $form->createView(),
                 'Order' => $Order,
                 'orderId' => $id,

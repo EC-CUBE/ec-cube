@@ -62,7 +62,7 @@ class ShopController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Setting/Shop/shop_master.twig', array(
+        return $app['view']->render('Setting/Shop/shop_master.twig', array(
             'form' => $form->createView(),
         ));
     }

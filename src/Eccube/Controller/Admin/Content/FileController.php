@@ -79,7 +79,7 @@ class FileController
         $javascript = $this->getJsArrayList($tree);
         $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
 
-        return $app['view']->render('Admin/Content/index.twig', array(
+        return $app['view']->render('Content/index.twig', array(
             'form' => $this->form->createView(),
             'tpl_maintitle' => $mainTitle,
             'tpl_subtitle' => $subTitle,

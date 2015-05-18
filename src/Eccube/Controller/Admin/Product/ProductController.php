@@ -50,7 +50,7 @@ class ProductController
             10 // TODO
         );
 
-        return $app['view']->render('Admin/Product/index.twig', array(
+        return $app['view']->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
         ));
@@ -190,7 +190,7 @@ class ProductController
             }
         }
 
-        return $app['view']->render('Admin/Product/product.twig', array(
+        return $app['view']->render('Product/product.twig', array(
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
         ));

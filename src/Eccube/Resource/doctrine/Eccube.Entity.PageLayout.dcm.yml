@@ -65,6 +65,7 @@ Eccube\Entity\PageLayout:
     oneToMany:
         BlocPositions:
             targetEntity: Eccube\Entity\BlocPosition
-            cascade: ["persist", "remove"]
+#            cascade: ["persist", "remove"]
             mappedBy: PageLayout
+            indexBy: bloc_id
     lifecycleCallbacks: {  }

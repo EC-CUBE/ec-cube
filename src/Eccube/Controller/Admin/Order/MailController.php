@@ -80,7 +80,7 @@ class MailController
                         $data = $form->getData();
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
-                        return $app['view']->render('Admin/Order/mail_confirm.twig', array(
+                        return $app['view']->render('Order/mail_confirm.twig', array(
                             'form' => $form->createView(),
                             'title' => $this->title,
                             'subtitle' => $this->subtitle,
@@ -124,7 +124,7 @@ class MailController
             }
         }
 
-        return $app['view']->render('Admin/Order/mail.twig', array(
+        return $app['view']->render('Order/mail.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories
@@ -141,7 +141,7 @@ class MailController
             throw new HttpException('history not found.');
         }
 
-        return $app['view']->render('Admin/Order/mail_view.twig', array(
+        return $app['view']->render('Order/mail_view.twig', array(
             'subject' => $MailHistory->getSubject(),
             'body' => $MailHistory->getMailBody()
         ));

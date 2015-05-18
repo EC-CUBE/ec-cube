@@ -52,6 +52,7 @@
     padding: 5px 0;
     vertical-align: middle;
 }
+#header_login_area p.btn img,
 #header_login_area p.btn input[type=image] {
     vertical-align: middle;
 }

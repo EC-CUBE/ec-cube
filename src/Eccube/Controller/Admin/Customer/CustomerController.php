@@ -61,7 +61,7 @@ class CustomerController
 
         }
 
-        return $app['view']->render('Admin/Customer/index.twig', array(
+        return $app['view']->render('Customer/index.twig', array(
             'form' => $form->createView(),
             'showResult' => $showResult,
             'Customers' => $Customers,

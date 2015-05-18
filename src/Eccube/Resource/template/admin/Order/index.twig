@@ -1,0 +1,251 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}受注管理{% endblock %}
+{% block sub_title %}受注マスター{% endblock %}
+
+{% block main %}
+
+<script type="text/javascript">
+<!--
+
+    function fnDelete(action) {
+        if (confirm('この受注情報を削除しても宜しいですか？')) {
+            document.search_form.action = action;
+            document.search_form.submit();
+        }
+    }
+
+    function fnEdit(action) {
+        document.search_form.action = action;
+        document.search_form.submit();
+    }
+
+    function fnSelectCheckSubmit(action){
+
+        var fm = document.form1;
+
+        if (!fm["pdf_order_id[]"]) {
+            return false;
+        }
+
+        var checkflag = false;
+        var max = fm["pdf_order_id[]"].length;
+
+        if (max) {
+            for (var i=0; i<max; i++) {
+                if(fm["pdf_order_id[]"][i].checked == true){
+                    checkflag = true;
+                }
+            }
+        } else {
+            if(fm["pdf_order_id[]"].checked == true) {
+                checkflag = true;
+            }
+        }
+
+        if(!checkflag){
+            alert('チェックボックスが選択されていません');
+            return false;
+        }
+
+        fnOpenPdfSettingPage(action);
+    }
+
+    function fnOpenPdfSettingPage(action){
+        var fm = document.form1;
+        eccube.openWindow("about:blank", "pdf_input", "620","650");
+
+        // 退避
+        tmpTarget = fm.target;
+        tmpMode = fm.mode.value;
+        tmpAction = fm.action;
+
+        fm.target = "pdf_input";
+        fm.mode.value = 'pdf';
+        fm.action = action;
+        fm.submit();
+
+        // 復元
+        fm.target = tmpTarget;
+        fm.mode.value = tmpMode;
+        fm.action = tmpAction;
+    }
+
+
+    function fnSelectMailCheckSubmit(action){
+
+        var fm = document.form1;
+
+        if (!fm["mail_order_id[]"]) {
+            return false;
+        }
+
+        var checkflag = false;
+        var max = fm["mail_order_id[]"].length;
+
+        if (max) {
+            for (var i=0; i<max; i++) {
+                if(fm["mail_order_id[]"][i].checked == true){
+                    checkflag = true;
+                }
+            }
+        } else {
+            if(fm["mail_order_id[]"].checked == true) {
+                checkflag = true;
+            }
+        }
+
+        if(!checkflag){
+            alert('チェックボックスが選択されていません');
+            return false;
+        }
+
+        fm.mode.value="mail_select";
+        fm.action=action;
+        fm.submit();
+    }
+
+
+//-->
+</script>
+
+    {% for message in app.session.flashbag.get('admin.order.complete')  %}
+        {{ message|trans|raw }}<br />
+    {% endfor %}
+
+<div id="order" class="contents-main">
+    <form name="search_form" id="search_form" method="post" action="?">
+        <h2>検索条件設定</h2>
+        <!--{* 検索条件設定テーブルここから *}-->
+        <table>
+
+
+            {{ form_widget(form) }}
+
+
+        </table>
+
+        <div class="btn">
+            <p class="page_rows">検索結果表示件数
+            {#
+                <select name="<!--{$arrForm[$key].keyname}-->" style="<!--{$arrErr[$key]|sfGetErrorColor}-->">
+                </select> 件</p>
+            #}
+            <div class="btn-area">
+                <input type="submit" value="この条件で検索する" />
+            </div>
+        </div>
+        <!--検索条件設定テーブルここまで-->
+    </form>
+    {% if showResult %}
+
+        <!--★★検索結果一覧★★-->
+        <form name="form1" id="form1" method="post" action="?">
+            <h2>検索結果一覧</h2>
+                <div class="btn">
+                <span class="attention"><!-- 検索結果数 -->{{ Orders|length }}件</span>&nbsp;が該当しました。
+                {#
+                <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('delete_all','',''); return false;"><span>検索結果を全て削除</span></a>
+                <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
+                <a class="btn-normal" href="../contents/csv.php?tpl_subno_csv=order">CSV 出力項目設定</a>
+                <a class="btn-normal" href="javascript:;" onclick="fnSelectCheckSubmit('pdf.php'); return false;"><span>PDF一括出力</span></a>
+                <a class="btn-normal" href="javascript:;" onclick="fnSelectMailCheckSubmit('mail.php'); return false;"><span>メール一括通知</span></a>
+                #}
+            </div>
+
+
+            <!--{* 検索結果表示テーブル *}-->
+            <table class="list">
+                <col width="10%" />
+                <col width="8%" />
+                <col width="15%" />
+                <col width="8%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="5%" />
+                <col width="9%" />
+                <col width="5%" />
+                <tr>
+                    <th>受注日</th>
+                    <th>注文番号</th>
+                    <th>お名前</th>
+                    <th>支払方法</th>
+                    <th>購入金額(円)</th>
+                    <th>全商品発送日</th>
+                    <th>対応状況</th>
+                    <th>操作</th>
+                    {#
+                        <th><label for="pdf_check">帳票</label> <input type="checkbox" name="pdf_check" id="pdf_check" onclick="eccube.checkAllBox(this, 'input[name=pdf_order_id[]]')" /></th>
+                        <th>メール <input type="checkbox" name="mail_check" id="mail_check" onclick="eccube.checkAllBox(this, 'input[name=mail_order_id[]]')" /></th>
+                    #}
+                </tr>
+                {% for Order in Orders %}
+                    <tr style="background:{{ Order.OrderStatusColor }}">
+                        <td class="center">{{ Order.create_date|date("Y/m/d") }}</td>
+                        <td class="center">{{ Order.id}}</td>
+                        <td class="center">{{ Order.name01}} {{ Order.name02 }}</td>
+                        <td class="center">{{ Order.payment_method }}</td>
+                        <td class="right">{{ Order.total }}</td>
+                        <td class="center">{{ Order.commit_date|date("Y/m/d")|default('未発送') }}</td>
+                        <td class="center">{{ Order.OrderStatus }}</td>
+                        <td class="center">
+                           {% set edit_action = url('admin_order_edit', {id: Order.id}) %}
+                           {% set delete_action = url('admin_order_delete', {id: Order.id}) %}
+                           {% set mail_action = url('admin_order_mail', {id: Order.id}) %}
+                            <a href="#" onclick="fnEdit('{{ edit_action }}');"><span class="icon_edit">編集</span></a>
+                             | 
+                            <a href="#" onclick="fnDelete('{{ delete_action }}');"><span class="icon_delete">削除</span></a>
+                             | 
+                            <a href="#" onclick="fnEdit('{{ mail_action }}');"><span class="icon_mail">個別通知</span></a>
+
+                        </td>
+                        {#
+                            <td class="center">
+                                <input type="checkbox" name="pdf_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="pdf_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="pdf_order_id_<!--{$arrResults[cnt].order_id}-->">一括出力</label><br />
+                                <a href="./" onClick="eccube.openWindow('pdf.php?order_id=<!--{$arrResults[cnt].order_id}-->','pdf_input','620','650'); return false;"><span class="icon_class">個別出力</span></a>
+                            </td>
+                            <td class="center">
+                                <input type="checkbox" name="mail_order_id[]" value="<!--{$arrResults[cnt].order_id}-->" id="mail_order_id_<!--{$arrResults[cnt].order_id}-->"/><label for="mail_order_id_<!--{$arrResults[cnt].order_id}-->">一括通知</label><br />
+                            </td>
+                        #}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="center">
+                            検索条件に該当するデータがありませんでした。
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <!--{* 検索結果表示テーブル *}-->
+
+
+        </form>
+    {% endif %}
+</div>
+
+
+{% endblock %}

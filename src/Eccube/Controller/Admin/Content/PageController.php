@@ -93,7 +93,7 @@ class PageController
         // 登録されているページ一覧の取得
         $PageLayouts = $app['eccube.repository.page_layout']->getPageList($device_type_id);
 
-        return $app['view']->render('Admin/Content/page.twig', array(
+        return $app['view']->render('Content/page.twig', array(
             'PageLayouts' => $PageLayouts,
             'page_id' => $id,
             'editable' => $editable,

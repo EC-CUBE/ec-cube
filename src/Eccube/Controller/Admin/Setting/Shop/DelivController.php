@@ -43,7 +43,7 @@ class DelivController extends AbstractController
         $Delivs = $app['orm.em']->getRepository('Eccube\Entity\Deliv')
             ->findBy(array('del_flg' => 0), array('rank' => 'DESC'));
 
-        return $app['view']->render('Admin/Setting/Shop/deliv.twig', array(
+        return $app['view']->render('Setting/Shop/deliv.twig', array(
             'Delivs' => $Delivs,
         ));
     }
@@ -186,7 +186,7 @@ class DelivController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Setting/Shop/deliv_edit.twig', array(
+        return $app['view']->render('Setting/Shop/deliv_edit.twig', array(
             'form' => $form->createView(),
             'deliv_id' => $id,
         ));

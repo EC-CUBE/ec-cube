@@ -85,7 +85,7 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($actual, $expected);
     }
 
-    public function test_findOrCreate_findMobileMyPage()
+    /*public function test_findOrCreate_findMobileMyPage()
     {
         // 非対応予定のためスキップ
         self::markTestSkipped();
@@ -105,7 +105,7 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame($actual, $expected);
-    }
+    }*/
 
     public function test_findOrCreate_findSmartphoneProduct()
     {

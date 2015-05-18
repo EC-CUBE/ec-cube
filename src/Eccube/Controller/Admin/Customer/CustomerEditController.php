@@ -109,7 +109,7 @@ class CustomerEditController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Customer/edit.twig', array(
+        return $app['view']->render('Customer/edit.twig', array(
             'customerId' => $id,
             'Order' => $Order,
             'form' => $form->createView(),

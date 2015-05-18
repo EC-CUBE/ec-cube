@@ -156,7 +156,7 @@ class ProductClassController
             }
         }
 
-        return $app['view']->render('Admin/Product/product_class.twig', array(
+        return $app['view']->render('Product/product_class.twig', array(
             'form' => $form->createView(),
             'Product' => $Product
         ));

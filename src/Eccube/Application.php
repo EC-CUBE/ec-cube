@@ -102,18 +102,58 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.path' => array(
-                __DIR__ . '/View',
-                __DIR__ . '/../../app/plugin/',
-            ),
             'twig.form.templates' => array('Form/form_layout.twig'),
-            'twig.options' => array('cache' => __DIR__ . '/../../app/cache/twig'),
         ));
         $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
 
             return $twig;
         }));
+        $this->before(function (Request $request, \Silex\Application $app) {
+            //
+            $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+                $paths = array();
+                if (strpos($app['request']->getPathInfo(), $app['config']['admin_dir']) === 0) {
+                    if (file_exists(__DIR__ . '/../../template/admin')) {
+                        $paths[] = __DIR__ . '/../../template/admin';
+                    }
+                    $paths[] = __DIR__ . '/Resource/template/admin';
+                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $cache = __DIR__ . '/../../app/cache/twig/admin';
+                } else {
+                    if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_name'])) {
+                        $paths[] = __DIR__ . '/../../template/' . $app['config']['template_name'];
+                    }
+                    $paths[] = __DIR__ . '/Resource/template/default';
+                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_name'];
+                }
+                $twig->setCache($cache);
+                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+
+                return $twig;
+            }));
+
+            //
+            $BaseInfo = $app['eccube.repository.base_info']->get();
+            $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
+        }, self::EARLY_EVENT);
+
+        $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+
+            $request = $event->getRequest();
+            try {
+                $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $request->attributes->get('_route'));
+            } catch (\Doctrine\ORM\NoResultException $e) {
+                $PageLayout = $app['eccube.repository.page_layout']->newPageLayout(10);
+            }
+            $app["twig"]->addGlobal("PageLayout", $PageLayout);
+            $app["twig"]->addGlobal("title", $PageLayout->getName());
+        });
+
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
@@ -139,7 +179,9 @@ class Application extends \Silex\Application
                     return;
                 }
 
-                return new Response('エラーが発生しました.');
+                return $app['view']->render('error.twig', array(
+                    'error' => 'エラーが発生しました.',
+                ));
             });
 
             return;
@@ -236,7 +278,7 @@ class Application extends \Silex\Application
         // hook point
         $this->before(function (Request $request, Application $app) {
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
-        }, \Silex\Application::EARLY_EVENT);
+        }, self::EARLY_EVENT);
 
         $this->before(function (Request $request, \Silex\Application $app) {
             $event = $app->parseController($request) . '.before';
@@ -258,7 +300,6 @@ class Application extends \Silex\Application
         });
 
         // Security
-        $app['colnum'] = 1;
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
              'security.firewalls' => array(
                 'admin' => array(
@@ -340,7 +381,7 @@ class Application extends \Silex\Application
         }
 
         $app->mount('', new ControllerProvider\FrontControllerProvider());
-        $app->mount('/admin', new ControllerProvider\AdminControllerProvider());
+        $app->mount($app['config']['admin_dir'], new ControllerProvider\AdminControllerProvider());
         $app->error(function (\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;
@@ -353,75 +394,9 @@ class Application extends \Silex\Application
                     break;
             }
 
-            return new Response('エラーが発生しました.');
-        });
-
-        $app['eccube.layout'] = null;
-        $this->before(function (Request $request, \Silex\Application $app) {
-            $url = str_replace($app['config']['root'], '', $app['request']->server->get('REDIRECT_URL'));
-            if (substr($url, -1) === '/' || $url === '') {
-                $url .= 'index.php';
-            }
-            if ($url === '/index.php') {
-                $url = 'index.php';
-            }
-
-            // anywhere指定のもの以外を取得
-            $qb = $app['orm.em']->createQueryBuilder()
-                ->select('p, bp, b')
-                ->from('Eccube\Entity\PageLayout', 'p')
-                ->leftJoin('p.BlocPositions', 'bp', \Doctrine\ORM\Query\Expr\Join::WITH, 'p.page_id = bp.page_id')
-                ->innerJoin('bp.Bloc', 'b')
-                ->andWhere('p.device_type_id = :device_type_id AND p.url = :url AND bp.anywhere != 1')
-                ->addOrderBy('bp.target_id', 'ASC')
-                ->addOrderBy('bp.bloc_row', 'ASC');
-            try {
-                $result = $qb->getQuery()
-                    ->setParameters(array(
-                        'device_type_id'    => 10,
-                        'url'               => $url,
-                    ))
-                    ->getSingleResult()
-                ;
-                // anywhere指定のものをマージ
-                $AnywhereBlocPositions = $app['orm.em']
-                    ->getRepository('Eccube\Entity\BlocPosition')
-                    ->findBy(array(
-                        'device_type_id' => 10,
-                        'anywhere' => 1,
-                    ))
-                ;
-                // TODO: 無理やり計算して無理やりいれている
-                $BlocPositions = $result->getBlocPositions();
-                foreach ($AnywhereBlocPositions as $AnywhereBlocPosition) {
-                    $result->addBlocPosition($AnywhereBlocPosition);
-                }
-                $hasLeftNavi = false;
-                $hasRightNavi = false;
-                foreach ($BlocPositions as $BlocPosition) {
-                    if ($BlocPosition->getTargetId() == 1) {
-                        $hasLeftNavi = true;
-                    }
-                    if ($BlocPosition->getTargetId() == 3) {
-                        $hasRightNavi = true;
-                    }
-                }
-                $colnum = 1;
-                if ($hasLeftNavi) {
-                    $colnum ++;
-                    $app['hasLeftNavi'] = true;
-                }
-                if ($hasRightNavi) {
-                    $colnum ++;
-                }
-                $app['colnum'] = $colnum;
-
-            } catch (\Doctrine\ORM\NoResultException $e) {
-                $result = null;
-                $app['colnum'] = 1;
-            }
-
-            $app['eccube.layout'] = $result;
+            return $app['view']->render('error.twig', array(
+                'error' => 'エラーが発生しました.',
+            ));
         });
 
         if ($app['env'] === 'test') {
@@ -443,6 +418,7 @@ class Application extends \Silex\Application
 
         $app = $this;
 
+        // ログイン時のイベント
         $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 

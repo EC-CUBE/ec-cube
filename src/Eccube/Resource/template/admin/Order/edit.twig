@@ -1,0 +1,513 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}受注管理{% endblock %}
+{% block sub_title %}受注編集{% endblock %}
+
+{% block main %}
+
+    <form name="form1" id="form1" method="post" action="{{ url('admin_order_edit', {id: orderId}) }}">
+    {{ form_widget(form._token) }}
+
+    <div id="order" class="contents-main">
+
+    <!--▼お客様情報ここから-->
+    <table class="form">
+        {# 
+        TODO 帳票の実装
+        
+        <!--{if $tpl_mode != 'add'}-->
+        <tr>
+            <th>帳票出力</th>
+            <td><a class="btn-normal" href="javascript:;" onclick="eccube.openWindow('pdf.php?order_id=<!--{$arrForm.order_id.value|h}-->','pdf_input','615','650'); return false;">帳票出力</a></td>
+        </tr>
+        <!--{/if}-->
+         #}
+
+        <tr>
+            <th>注文番号</th>
+            <td>{{ form.vars.value.id }}</td>
+        </tr>
+        <tr>
+            <th>受注日時</th>
+            <td>{{ form.vars.value.create_date|date('Y/m/d H:i:s') }}</td>
+        </tr>
+        <tr>
+            <th>対応状況<span class="attention"> *</span></th>
+            <td>
+                {{ form_errors(form.OrderStatus) }}
+                {{ form_widget(form.OrderStatus) }}
+            </td>
+        </tr>
+        <tr>
+            <th>入金日</th>
+            <td>{{ form.vars.value.payment_date is empty ? '未入金' : form.vars.value.payment_date|date('Y/m/d H:i:s') }}</td>
+        </tr>
+        <tr>
+            <th>発送日</th>
+            <td>{{ form.vars.value.commit_date is empty ? '未発送' : form.vars.value.commit_date|date('Y/m/d H:i:s') }}</td>
+        </tr>
+    </table>
+
+    <h2>注文者情報
+        {# 
+
+        TODO 会員検索の実装
+        <!--{if $tpl_mode == 'add'}-->
+        <a class="btn-normal" href="javascript:;" name="address_input" onclick="eccube.openWindow('<!--{$smarty.const.ROOT_URLPATH}--><!--{$smarty.const.ADMIN_DIR}-->customer/search_customer.php','search','600','650',{resizable:'no',focus:false}); return false;">会員検索</a>
+        <!--{/if}-->
+
+        #}
+    </h2>
+    <table class="form">
+        <tr>
+            <th>会員ID</th>
+            <td>
+                {% if form.vars.value.Customer is empty %}
+                    (非会員)
+                {% else %}
+                    {{ form.vars.value.Customer.id }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>お名前<span class="attention"> *</span></th>
+            <td>
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </td>
+        </tr>
+        <tr>
+            <th>お名前(フリガナ)</th>
+            <td>
+                {{ form_widget(form.kana02) }}
+                {{ form_widget(form.kana01) }}
+                {{ form_errors(form.kana01) }}
+                {{ form_errors(form.kana02) }}
+            </td>
+        </tr>
+        <tr>
+            <th>会社名</th>
+            <td>
+                {{ form_widget(form.company_name) }}
+                {{ form_errors(form.company_name) }}
+            </td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
+            <td>
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </td>
+        </tr>
+        <tr>
+            <th>TEL</th>
+            <td>
+                {{ form_widget(form.tel) }}
+                {{ form_errors(form.tel) }}
+            </td>
+        </tr>
+        <tr>
+            <th>FAX</th>
+            <td>
+                {{ form_widget(form.fax) }}
+                {{ form_errors(form.fax) }}
+            </td>
+        </tr>
+        <tr>
+            <th>性別</th>
+            <td>
+                {{ form_widget(form.Sex) }}
+                {{ form_errors(form.Sex) }}
+            </td>
+        </tr>
+        <tr>
+            <th>職業</th>
+            <td>
+                {{ form_widget(form.Job) }}
+                {{ form_errors(form.Job) }}
+            </td>
+        </tr>
+        <tr>
+            <th>生年月日</th>
+            <td>
+                {{ form_widget(form.birth) }}
+            </td>
+        </tr>
+        
+        {# TODO hiddenでpostさせず, insert時にデフォルト値を設定する
+        <input type="hidden" name="<!--{$key1}-->" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+        #}
+        
+        {% if app.config.form_country_enable %}
+            <tr>
+                <th>国</th>
+                <td>
+                    {{ form_widget(form.Country) }}
+                    {{ form_errors(form.Country) }}
+                </td>
+            </tr>
+
+            <tr>
+                <th>ZIP CODE</th>
+                <td>
+                    {{ form_widget(form.zip_code) }}
+                    {{ form_errors(form.zip_code) }}
+                </td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <th>住所</th>
+            <td>
+                {{ form_widget(form.zip) }}</br>
+                {{ form_widget(form.address) }}</br>
+                {{ form_errors(form.zip) }}
+                {{ form_errors(form.address) }}
+            </td>
+        </tr>
+        <tr>
+            <th>備考</th>
+            <td>{{ form.vars.value.message|nl2br }}</td>
+        </tr>
+        <tr>
+            <th>現在ポイント</th>
+            <td>
+                {% if form.vars.value.Customer is empty %}
+                    (非会員)
+                {% else %}
+                    {{ form.vars.value.Customer.point|number_format }} Pt
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>端末種別</th>
+            <td>
+                {% if form.vars.value.DeviceType is empty %}
+                    --
+                {% else %}
+                    {{ form.vars.value.DeviceType.name }}
+                {% endif %}
+            </td>
+        </tr>
+
+    </table>
+    <!--▲お客様情報ここまで-->
+
+    <!--▼受注商品情報ここから-->
+    <a name="order_products"></a>
+    <h2 id="order_products">
+        受注商品情報
+        <a class="btn-normal" href="{{ url('admin_order_recalc', { id: orderId }) }}">計算結果の確認</a>
+        <!--{if $tpl_shipping_quantity <= 1}-->
+        {% if Order.multiple %}
+            <a class="btn-normal" href="{{ url('admin_order_product_add', {id: Order.id, shippingId: Order.Shippings.0.id}) }}">商品の追加</a>
+        {% endif %}
+    </h2>
+
+    <table class="list order-edit-products">
+        <tr>
+            <th class="id">商品コード</th>
+            <th class="name">商品名/規格1/規格2</th>
+            <th class="price">単価</th>
+            <th class="qty">数量</th>
+            <th class="price">税込み価格</th>
+            <th class="price">小計</th>
+        </tr>
+
+        {% for order_detail_form in form.OrderDetails %}
+            <tr>
+                <td class="center">
+                    {{ form_widget( order_detail_form.id, {type : 'hidden'} ) }}
+                    {{ order_detail_form.vars.value.product_code }}
+                </td>
+                <td class="center">
+                    {{ order_detail_form.vars.value.product_name }}
+                    / {{ order_detail_form.class_name1|default('(なし)') }}
+                    / {{ order_detail_form.class_name2|default('(なし)') }}
+
+                    {% if Order.multiple %}
+                        <a class="btn-normal" target="_blank" href="{{ url('admin_order_product_select', { no: loop.index, id: Order.id, shipping_id: Order.Shippings.0.id }) }}">変更</a>
+                        <a class="btn-normal" target="_blank" href="{{ url('admin_order_product_delete', { no: loop.index, id: Order.id, shipping_id: Order.Shippings.0.id }) }}">削除</a>
+                    {% endif %}
+                </td>
+                <td class="center">
+                    {{ order_detail_form.vars.value.price }}
+                </td>
+                <td class="center">
+                    {{ form_widget(order_detail_form.quantity) }}
+                </td>
+                <td class="right">
+                    {{ order_detail_form.vars.value.price * order_detail_form.vars.value.quantity }} 円<br />
+                    税率{{ form_widget(order_detail_form.tax_rate) }}%
+                </td>
+                <td class="right">
+                    {{ order_detail_form.vars.value.total_price }}円
+                </td>
+            </tr>
+        {% endfor %}
+
+        <tr>
+            <th colspan="5" class="column right">小計</th>
+            <td class="right">{{ Order.subtotal|number_format }}円</td>
+        </tr>
+        <tr>
+            <th colspan="5" class="column right">値引き</th>
+            <td class="right">
+                {{ form_widget(form.discount) }}円
+                {{ form_errors(form.discount) }}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="5" class="column right">送料</th>
+            <td class="right">
+                {{ form_widget(form.deliv_fee) }}円
+                {{ form_errors(form.deliv_fee) }}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="5" class="column right">手数料</th>
+            <td class="right">
+                {{ form_widget(form.charge) }}円
+                {{ form_errors(form.charge) }}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="5" class="column right">合計</th>
+            <td class="right">
+                {{ form.vars.value.total|number_format }}円
+            </td>
+        </tr>
+        <tr>
+            <th colspan="5" class="column right">お支払い合計</th>
+            <td class="right">
+                {{ form.vars.value.payment_total|number_format }}円
+            </td>
+        </tr>
+        {% if app.config.use_point %}
+            <tr>
+                <th colspan="5" class="column right">使用ポイント</th>
+                <td class="right">
+                    {{ form_widget(form.use_point) }}pt
+                    {{ form_errors(form.use_point) }}
+                </td>
+            </tr>
+            {% if Order.birth_point > 0 %}
+                <tr>
+                    <th colspan="5" class="column right">お誕生日ポイント</th>
+                    <td class="right">
+                        {{ form_widget(form.birth_point) }}pt
+                        {{ form_errors(form.birth_point) }}
+                    </td>
+                </tr>
+            {% else %}
+                {{ form_widget(form.birth_point, { type: 'hidden' }) }}
+            {% endif %}
+            <tr>
+                <th colspan="5" class="column right">加算ポイント</th>
+                <td class="right">
+                    {{ form_widget(form.add_point) }}pt
+                    {{ form_errors(form.add_point) }}
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+
+    <!--▼お届け先情報ここから-->
+    <a name="shipping"></a>
+    <h2>お届け先情報
+        {% if Order.multiple == false %}
+            <a class="btn-normal" href="javascript:;" onclick="fnCopyFromOrderData();">お客様情報へお届けする</a>
+        {% endif %}
+        {% if app.config.use_multiple_shipping %}
+            <a class="btn-normal" href="{{ url('admin_order_shipping_add', {id: Order.id}) }}">お届け先を新規追加</a>
+            
+            {# TODO 個数が増えた際のUIが使いづらいのと、代替手段があるため、一旦実装しない
+            <a class="btn-normal" href="javascript:;" onclick="fnMultiple();">複数のお届け先を指定する</a>
+            #}
+        {% endif %}
+    </h2>
+
+    {% for shipping_form in form.Shippings %}
+        {% if Order.multiple %}
+            <h3>お届け先{{ loop.index }}</h3>
+            <h2>
+                届け先商品情報&nbsp;<a class="btn-normal" href="{{ url('admin_order_product_select', { orderId: Order.id, shippingId: shipping_form.vars.value.shipping_id }) }}">商品の追加</a>
+            </h2>
+
+            {% if shipping_form.ShipmentItems|length > 0 %}
+                <table class="list order-edit-products">
+                    <tr>
+                        <th class="id">商品コード</th>
+                        <th class="name">商品名/規格1/規格2</th>
+                        <th class="price">単価</th>
+                        <th class="qty">数量</th>
+                    </tr>
+                    {% for shipment_item_form in shipping_form.ShipmentItems %}
+                        <tr>
+                            <td class="center">
+                                {{ shipment_item_form.vars.value.product_code }}
+                            </td>
+                            <td class="center">
+                                {{ shipment_item_form.vars.value.product_name }}
+                                / {{ shipment_item_form.vars.value.classcategory_name1|default('(なし)') }}
+                                / {{ shipment_item_form.vars.value.classcategory_name2|default('(なし)') }}<br />
+
+                                <a class="btn-normal" href="{{ url('admin_order_product_select', { id: Order.id, shipping_id: shipping_form.shipping_id}) }}">変更</a>
+                                {% if shipping_form.ShipmentItems|length > 1 %}
+                                    <a class="btn-normal" href="{{ url('admin_order_product_delete', {id: Order.id, shipping_id: shipping_form.shipping_id }) }}">削除</a>
+                                {% endif %}
+                            </td>
+                            <td class="right">
+                                {{ shipment_item_form.vars.value.price|number_format }}円
+                            </td>
+                            <td class="center">
+                                {{ form_widget(shipment_item_form.quantity) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        {% endif %}
+
+        <table class="form">
+            <tr>
+                <th>お名前</th>
+                <td>
+                    {{ form_widget(shipping_form.name) }}
+                    {{ form_errors(shipping_form.name) }}
+                </td>
+            </tr>
+            <tr>
+                <th>お名前(フリガナ)</th>
+                <td>
+                    {{ form_widget(shipping_form.kana01) }}
+                    {{ form_errors(shipping_form.kana01) }}
+                    {{ form_widget(shipping_form.kana02) }}
+                    {{ form_errors(shipping_form.kana02) }}
+                </td>
+            </tr>
+            <tr>
+                <th>会社名</th>
+                <td>
+                    {{ form_widget(shipping_form.company_name) }}
+                    {{ form_errors(shipping_form.company_name) }}
+                </td>
+            </tr>
+            <tr>
+                <th>TEL</th>
+                <td>
+                    {{ form_widget(shipping_form.tel) }}
+                    {{ form_errors(shipping_form.tel) }}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ form_label(shipping_form.fax) }}</th>
+                <td>
+                    {{ form_widget(shipping_form.fax) }}
+                    {{ form_errors(shipping_form.fax) }}
+                </td>
+            </tr>
+            {% if app.config.form_country_enable %}
+                <tr>
+                    <th>{{ form_label(shipping_form.Country) }}</th>
+                    <td>
+                        {{ form_widget(shipping_form.Country) }}
+                        {{ form_errors(shipping_form.Country) }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{ form_label(shipping_form.zip_code) }}</th>
+                    <td>
+                        {{ form_widget(shipping_form.zip_code) }}
+                        {{ form_errors(shipping_form.zip_code) }}
+                    </td>
+                </tr>
+            {% endif %}
+
+            <tr>
+                <th>住所</th>
+                <td>
+                    {{ form_widget(shipping_form.zip) }}
+                    {{ form_errors(shipping_form.zip) }}
+
+                    <a class="btn-normal" href="">住所入力</a><br />
+                    {{ form_widget(shipping_form.address) }}
+                    {{ form_errors(shipping_form.address) }}
+                </td>
+            </tr>
+            <tr>
+                <th>お届け時間</th>
+                <td>
+                    {{ form_widget(shipping_form.time) }}
+                    {{ form_errors(shipping_form.time) }}
+                </td>
+            </tr>
+            <tr>
+                <th>お届け日</th>
+                <td>
+                    {{ form_widget(shipping_form.shipping_date) }}
+                    {{ form_errors(shipping_form.shipping_date) }}
+                </td>
+            </tr>
+        </table>
+
+    {% endfor %}
+    <!--▲お届け先情報ここまで-->
+
+    <a name="deliv"></a>
+    <table class="form">
+        <tr>
+            <th>配送業者<span class="attention"> *</span><br /><span class="attention">(配送業者の変更に伴う送料の変更は手動にてお願いします。)</span></th>
+            <td>
+                {{ form_widget(form.Deliv) }}
+                {{ form_errors(form.Deliv) }}
+            </td>
+        </tr>
+        <tr>
+            <th>お支払方法<span class="attention"> *</span><br /><span class="attention">(お支払方法の変更に伴う手数料の変更は手動にてお願いします。)</span></th>
+            <td>
+                {{ form_widget(form.Payment) }}
+                {{ form_errors(form.Payment) }}
+            </td>
+        </tr>
+        <tr>
+            <th>メモ</th>
+            <td>
+                {{ form_widget(form.note) }}
+                {{ form_errors(form.note) }}
+            </td>
+        </tr>
+    </table>
+    <!--▲受注商品情報ここまで-->
+
+    <div class="btn-area">
+        <ul>
+            <li><a class="btn-action" href="{{ url('admin_order') }}"><span class="btn-prev">検索画面に戻る</span></a></li>
+            <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+        </ul>
+    </div>
+    </div>
+    <div id="multiple"></div>
+    </form>
+{% endblock %}

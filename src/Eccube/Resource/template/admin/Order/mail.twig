@@ -1,0 +1,93 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}受注管理{% endblock %}
+{% block sub_title %}メール通知{% endblock %}
+
+{% block main %}
+
+<form name="form1" id="form1" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
+    <input type="hidden" name="mode" value="" />
+    {{ form_widget(form._token) }}
+    <div id="order" class="contents-main">
+        <h2>メール配信</h2>
+        <table class="list">
+            <tr>
+                <th>処理日</th>
+                <th>通知メール</th>
+                <th>件名</th>
+            </tr>
+            {% for MailHistory in MailHistories %}
+            <tr class="center">
+                <td>{{ MailHistory.send_date|date('Y/m/d H:i:s') }}</td>
+                <td>{{ MailHistory.MailTemplate }}</td>
+                <td><a href="{{ url('admin_order_mail_view', {id : MailHistory.id}) }}" target="_blank">{{ MailHistory.subject }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <table class="form">
+            <tr>
+                <th>テンプレート<span class="attention"> *</span></th>
+                <td>
+                    {{ form_errors(form.template) }}
+                    {{ form_widget(form.template, { 'attr': {'onchange': "eccube.setModeAndSubmit('change', '', '')"}}) }}
+                </td>
+            </tr>
+            <tr>
+                <th>メールタイトル<span class="attention"> *</span></th>
+                <td>
+                    {{ form_errors(form.subject) }}
+                    {{ form_widget(form.subject) }}
+                </td>
+            </tr>
+            <tr>
+                <th>ヘッダー</th>
+                <td>
+                    {{ form_errors(form.header) }}
+                    {{ form_widget(form.header) }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center">動的データ挿入部分</td>
+            </tr>
+            <tr>
+                <th>フッター</th>
+                <td>
+                    {{ form_errors(form.footer) }}
+                    {{ form_widget(form.footer) }}
+                </td>
+            </tr>
+        </table>
+        <div class="btn-area">
+            <ul>{#
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
+                #}
+                <li><a class="btn-action" href="{{ url('admin_order') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
+                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
+            </ul>
+        </div>
+    </div>
+</form>
+{% endblock %}

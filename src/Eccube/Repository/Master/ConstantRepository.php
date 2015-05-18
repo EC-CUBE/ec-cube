@@ -34,4 +34,39 @@ use Doctrine\ORM\EntityRepository;
  */
 class ConstantRepository extends EntityRepository
 {
+    /**
+     * getAll
+     * configにEC-CUBE2の設定を入れる。暫定メソッド。
+     *
+     * @param array $config 設定
+     * @return array
+     */
+    public function getAll($config)
+    {
+        $return = array();
+
+        if (!defined('HTML_REALDIR')) {
+            define('HTML_REALDIR', $_SERVER['DOCUMENT_ROOT'] . $config['root']);
+        }
+        if (!defined('HTML2DATA_DIR')) {
+            define('HTML2DATA_DIR', '../data/');
+        }
+        if (!defined('DATA_REALDIR')) {
+            define('DATA_REALDIR', HTML_REALDIR . HTML2DATA_DIR);
+        }
+        if (!defined('DIR_INDEX_PATH')) {
+            define('DIR_INDEX_PATH', '');
+        }
+
+        require_once __DIR__ . '/../../../../app/config/eccube/config.php';
+        require_once __DIR__ . '/../../../../app/mtb_constants_init.php';
+
+        /* @var $Constants \Eccube\Entity\Master\Constant[] */
+        $Constants = $this->findAll();
+        foreach ($Constants as $Constant) {
+            $return[strtolower($Constant->getId())] = eval('return ' . $Constant->getName() . ';');
+        }
+
+        return $return;
+    }
 }

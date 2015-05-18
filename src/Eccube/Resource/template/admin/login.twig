@@ -1,0 +1,57 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'login_frame.twig' %}
+
+{% block main %}
+<div id="login-wrap">
+    <div id="login-form" class="clearfix">
+        <h1><img src="{{ app.config.admin_tpl }}img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
+        <div id="input-form">
+            <form name="form1" id="form1" method="post" action="{{ path('admin_login_check') }}">
+                {% if error %}
+                    <span class="attention">{{ error }}</span>
+                {% endif %}
+
+                <p><label for="login_id">ID</label></p>
+                {{ form_widget(form.login_id, {'attr': {'size': 20, 'class': "box25"}}) }}
+                <p><label for="password">PASSWORD</label></p>
+                {{ form_widget(form.password, {'attr': {'size': 20, 'class': "box25"}}) }}
+
+                <p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit(); return false;"><span>LOGIN</span></a></p>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+</div>
+<div id="copyright">Copyright &copy; 2000-{{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</div>
+
+<script type="text/javascript">//<![CDATA[
+document.form1.login_id.focus();
+$(function() {
+    $('<input type="submit" />')
+        .css({'position' : 'absolute',
+            'top' : '-1000px'})
+        .appendTo('form');
+});
+//]]></script>
+{% endblock %}

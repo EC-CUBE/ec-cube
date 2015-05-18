@@ -61,7 +61,7 @@ class ClassNameController
 
         $ClassNames = $app['eccube.repository.class_name']->getList();
 
-        return $app['view']->render('Admin/Product/class_name.twig', array(
+        return $app['view']->render('Product/class_name.twig', array(
             'form' => $form->createView(),
             'ClassNames' => $ClassNames,
             'TargetClassName' => $TargetClassName,

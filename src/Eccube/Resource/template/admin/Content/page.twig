@@ -1,0 +1,142 @@
+{#
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}コンテンツ管理{% endblock %}
+{% block sub_title %}ページ管理{% endblock %}
+
+{% block main %}
+
+<form name="tax_rule_form" id="tax_rule_form" method="post" action="
+{%- if page_id is not null %}{{ url('admin_content_page_edit', {id: page_id}) }}{% else %}{{ url('admin_content_page')}}{% endif -%}">
+
+    {{ form_widget(form._token) }}
+    {{ form_widget(form.page_id) }}
+    {{ form_widget(form.device_type_id) }}
+    <table>
+        <tr>
+            <th>{{ form_label(form.name) }}</th>
+            <td>
+                {{ form_widget(form.name) }} {# TODO：デフォルトページなら変更できないようにしたい #}
+                <div class="message">
+                    <span class="attention">{{ form_errors(form.name) }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.filename) }}</th>
+            <td>
+                {{ form_widget(form.filename) }} {# TODO：デフォルトページなら変更できないようにしたい #}
+                <div class="attention">
+                    <span class="attention">{{ form_errors(form.filename) }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                    {{ form_widget(form.header_chk) }}共通のヘッダーを使用する
+                    {{ form_widget(form.footer_chk) }}共通のフッターを使用する
+                <div>
+                    {{ form_widget(form.tpl_data) }}
+                    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
+                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.author) }}</th>
+            <td>
+                {{ form_widget(form.author) }}
+                <div class="attention">{{ form_errors(form.author) }}</div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.description) }}</th>
+            <td>
+                {{ form_widget(form.description) }}
+                <div class="attention">{{ form_errors(form.description) }}</div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.keyword) }}</th>
+            <td>
+                {{ form_widget(form.keyword) }}
+                <div class="attention">{{ form_errors(form.keyword) }}</div>
+            </td>
+        </tr>
+        <tr>
+            <th>{{ form_label(form.meta_robots) }}</th>
+            <td>
+                {{ form_widget(form.meta_robots) }}
+                <div class="attention">{{ form_errors(form.meta_robots) }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="btn-area">
+        <ul>
+            <li>{{ form_widget(form.save)}}</li>
+        </ul>
+    </div>
+</form>
+
+
+    <h2>編集可能ページ一覧</h2>
+    <div class="btn addnew">
+        <a class="btn-normal" href="?device_type_id=<!--{$device_type_id|u}-->"><span>ページを新規入力</span></a>
+    </div>
+    <table class="list">
+        <col width="70%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <col width="10%"/>
+        <tr>
+            <th>名称</th>
+            <th>レイアウト</th>
+            <th>ページ詳細</th>
+            <th>削除</th>
+        </tr>
+        {% for Page in PageLayouts %}
+            <tr style="{%  if Page.page_id == page_id %}background-color: {{ app.config.select_rgb }};{% endif %}">
+                <td>
+                    {{ Page.name }}
+                </td>
+                <td class="center">
+                    <a href="{{ url('admin_content_layout') }}?page_id={{ Page.page_id }}&device_type_id={{ Page.device_type_id }}">編集</a>
+                </td>
+                <td class="center">
+                    {% if Page.filename|length > 1 %}
+                        <a href="{{ url('admin_content_page_edit', {id: Page.page_id}) }}">編集</a>
+                    {% endif %}
+                </td>
+                <td class="center">
+                    {% if Page.edit_flg != 2 %}
+                        <a href="{{ url('admin_content_page_delete', {'page_id':Page.page_id}) }}">削除</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

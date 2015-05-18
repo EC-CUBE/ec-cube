@@ -1,0 +1,86 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}メーカー管理{% endblock %}
+
+{% block main %}
+<form name="form1" id="form1" method="post" action="{% if TargetMaker.id %}{{ url('admin_product_maker_edit', {id: TargetMaker.id}) }}{% else %}{{ url('admin_product_maker') }}{% endif %}">
+    <div id="products" class="contents-main">
+        <table>
+            {{ form_rest(form)}}
+        </table>
+
+        <div class="btn-area">
+            <ul>
+                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
+            </ul>
+        </div>
+
+        {% if Makers|length > 0 %}
+        <table class="list">
+            <col width="10%" />
+            <col width="50%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="20%" />
+            <tr>
+                <th>ID</th>
+                <th>メーカー</th>
+                <th class="edit">編集</th>
+                <th class="delete">削除</th>
+                <th>移動</th>
+            </tr>
+            {% for Maker in Makers %}
+                <tr style="background:{% if Maker.id != TargetMaker.id %}#ffffff{% else %}{{ app.config.select_rgb }}{% endif %};">
+                    <td>{{ Maker.id }}</td>
+                    <td>{{ Maker.name }}</td>
+                    <td class="center">
+                        {% if Maker.id != TargetMaker.id %}
+                            <a href="{{ url('admin_product_maker_edit', {id: Maker.id}) }}">編集</a>
+                        {% else %}
+                            編集中
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {% if Maker.Products|length > 0 %}
+                            -
+                        {% else %}
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_maker_delete', {id: Maker.id}) }}'); document.form1.submit(); return false;">削除</a>
+                        {% endif %}
+                    </td>
+                    <td class="center">
+                        {% if loop.first == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_maker_up', {id: Maker.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                        {% endif %}
+                        {% if loop.last == false %}
+                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_maker_down', {id: Maker.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}

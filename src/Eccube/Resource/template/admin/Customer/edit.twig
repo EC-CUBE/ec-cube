@@ -1,0 +1,243 @@
+{#
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+#}
+
+{% extends 'main_frame.twig' %}
+
+{% block title %}会員管理{% endblock %}
+{% block sub_title %}会員編集{% endblock %}
+
+{% block main %}
+
+<form name="point_form" id="point_form" method="post" action="
+{%- if customerId %}url('admin_customer_edit', customerId) }}{% else %}url('admin_customer_new'){% endif -%}">
+    {{ form_widget(form._token) }}
+    <div id="customer" class="contents-main">
+        <table>
+            {% if customerId %}
+            <tr>
+                <th>会員ID<span class="attention"> *</span></th>
+                <td>{{ customerId }}</td>
+            </tr>
+            {%  endif %}
+            <tr>
+                <th>会員状態<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.status) }}<br />
+                    <span class="attention">{{ form_errors(form.status) }}</span>
+                </td>
+            </tr>
+             <tr>
+                <th>お名前<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.name) }}<br />
+                    <span class="attention">{{ form_errors(form.name) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>お名前(フリガナ)<!--{if !$smarty.const.FORM_COUNTRY_ENABLE}--><span class="attention"> *</span><!--{/if}--></th>
+                <td>
+                    {{ form_widget(form.kana) }}<br />
+                    <span class="attention">{{ form_errors(form.kana) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>会社名</th>
+                <td>
+                    {{ form_widget(form.company_name) }}<br />
+                    <span class="attention">{{ form_errors(form.company_name) }}</span>
+                </td>
+            </tr>
+{#            {% if not app.config.form_country_enable %}
+            <input type="hidden" name="country_id" value="<!--{$smarty.const.DEFAULT_COUNTRY_ID}-->" />
+            {% else %}
+            <tr>
+                <th>国<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.country_id) }}<br />
+                    <span class="attention">{{ form_errors(form.country_id) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>ZIP CODE</th>
+                <td>
+                    <span class="attention"><!--{$arrErr.zipcode}--></span>
+                    <input type="text" name="zipcode" value="<!--{$arrForm.zipcode|h}-->" maxlength="<!--{$smarty.const.STEXT_LEN}-->" size="30" class="box30" <!--{if $arrErr.zipcode != ""}--><!--{sfSetErrorStyle}--><!--{/if}--> />
+                </td>
+            </tr>
+            {%  endif %}
+#}
+            <tr>
+                <th>郵便番号{% if not app.config.form_country_enable %}<span class="attention"> *</span>{% endif %}</th>
+                <td>
+                    {{ form_widget(form.zip) }}<br />
+                    <span class="attention">{{ form_errors(form.zip) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>住所<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.address) }}<br />
+                    <span class="attention">{{ form_errors(form.address) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>メールアドレス<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.email) }}<br />
+                    <span class="attention">{{ form_errors(form.email) }}</span>
+                </td>
+            </tr>
+{#
+            <tr>
+                <th>携帯メールアドレス</th>
+                <td>
+                    {{ form_widget(form.mobile_email) }}<br />
+                    <span class="attention">{{ form_errors(form.mobile_email) }}</span>
+                </td>
+            </tr>
+#}
+            <tr>
+                <th>電話番号</th>
+                <td>
+                    {{ form_widget(form.tel) }}<br />
+                    <span class="attention">{{ form_errors(form.tel) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>FAX</th>
+                <td>
+                    {{ form_widget(form.fax) }}<br />
+                    <span class="attention">{{ form_errors(form.fax) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>性別</th>
+                <td>
+                    {{ form_widget(form.sex) }}<br />
+                    <span class="attention">{{ form_errors(form.sex) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>ご職業</th>
+                <td>
+                    {{ form_widget(form.job) }}<br />
+                    <span class="attention">{{ form_errors(form.job) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>生年月日</th>
+                <td>
+                    {{ form_widget(form.birth) }}<br />
+                    <span class="attention">{{ form_errors(form.birth) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>パスワード<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.password.first, {type: "password"}) }}<br />
+                    {{ form_widget(form.password.second, {type: "password"}) }}
+                    <span class="attention">{{ form_errors(form.password.first) }}</span>
+                    <p><span class="attention mini">半角英数字8〜16文字でお願いします。（記号可）</span></p>
+                    <p><span class="attention mini">確認のために2度入力してください。</span></p>
+                </td>
+            </tr>
+            <tr>
+                <th>パスワードを忘れたときのヒント<span class="attention"> *</span></th>
+                <td>
+                    質問：
+                    {{ form_widget(form.reminder) }}<br />
+                    <span class="attention">{{ form_errors(form.reminder) }}</span>
+                    答え：
+                    {{ form_widget(form.reminder_answer) }}<br />
+                    <span class="attention">{{ form_errors(form.reminder_answer) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>メールマガジン<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.mailmaga_flg) }}<br />
+                    <span class="attention">{{ form_errors(form.mailmaga_flg) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>SHOP用メモ</th>
+                <td>
+                    {{ form_widget(form.note) }}<br />
+                    <span class="attention">{{ form_errors(form.note) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>所持ポイント<span class="attention"> *</span></th>
+                <td>
+                    {{ form_widget(form.point) }}<br />
+                    <span class="attention">{{ form_errors(form.point) }}</span>
+                </td>
+            </tr>
+        </table>
+
+        <div class="btn-area">
+            {{ form_widget(form.save) }}
+        </div>
+
+        {% if customerId %}
+{# TODO: 購入処理が完成するまで保留
+        <input type="hidden" name="order_id" value="" />
+        <input type="hidden" name="search_pageno" value="" />
+        <input type="hidden" name="edit_customer_id" value="" />
+
+        <h2>購入履歴一覧</h2>
+        {% if tpl_linemax > 0 %}
+        <p><span class="attention"><!--{{tpl_linemax }}件</span>&nbsp;が該当しました。</p>
+
+        {{ include( pager ) }}
+
+
+        <!-- 購入履歴一覧表示テーブル -->
+        <table class="list">
+            <tr>
+                <th>日付</th>
+                <th>注文番号</th>
+                <th>購入金額</th>
+                <th>発送日</th>
+                <th>支払方法</th>
+            </tr>
+            {%  for Purchase in Order %}
+            <tr>
+                <td>{{ Purchase.create_date }}</td>
+                <td class="center"><a href="../order/edit.php?order_id=<!--{$Purchase.order_id}-->" >{{ Purchase.order_id }}</a></td>
+                <td class="center">{{ Purchase.payment_total}}円</td>
+                <td class="center">{% if Purchase.status == 5 %} {{ Purchase.commit_date}}{% else %}未発送{% endif %}</td>
+                <td class="center">{{ Purchase.payment_method }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {%  else %}
+        <div class="message">購入履歴はありません。</div>
+        {% endif %}
+#}
+        {% endif %}
+    </div>
+</form>
+
+{% endblock %}

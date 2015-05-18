@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Controller\Admin;
+namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +61,7 @@ class MakerController
 
         $Makers = $app['eccube.repository.maker']->getList();
 
-        return $app['view']->render('Admin/Product/maker.twig', array(
+        return $app['view']->render('Product/maker.twig', array(
             'maintitle' => '商品管理',
             'subtitle' => 'メーカー登録',
             'form' => $form->createView(),

@@ -41,7 +41,7 @@ class AdminController extends AbstractController
             ->createNamedBuilder('', 'admin_login')
             ->getForm();
 
-        return $app['view']->render('Admin/login.twig', array(
+        return $app['view']->render('login.twig', array(
             'maintitle' => '',
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
@@ -52,7 +52,7 @@ class AdminController extends AbstractController
     {
         $Orders = $app['eccube.repository.order']->getNew();
 
-        return $app['view']->render('Admin/index.twig', array(
+        return $app['view']->render('index.twig', array(
             'mypageno' => 'index',
             'Orders' => $Orders
         ));

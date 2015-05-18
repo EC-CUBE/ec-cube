@@ -1,0 +1,83 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}ショップ設定{% endblock %}
+{% block sub_title %}配送先管理{% endblock %}
+
+{% block main %}
+
+<div id="basis" class="contents-main">
+    <div class="btn">
+        <ul>
+            <li>
+                <a href="{{ url('admin_setting_shop_delivery_new') }}">
+                    <span class="btn-next">配送方法{% if app.config.input_deliv_fee %}・配送料{% endif %}を新規入力</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <table class="list">
+        <col width="35%" />
+        <col width="30%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
+
+        <tr>
+            <th>配送業者</th>
+            <th>名称</th>
+            <th>編集</th>
+            <th>削除</th>
+            <th>移動</th>
+        </tr>
+
+        {% for Deliv in Delivs %}
+            <tr>
+                <td>{{ Deliv.name }}</td>
+                <td>{{ Deliv.service_name }}</td>
+                <td align="center">
+                    <a href="{{ url('admin_setting_shop_delivery_edit', {id: Deliv.id} ) }}">編集</a>
+                </td>
+                <td align="center">
+                    <a href="{{ url('admin_setting_shop_delivery_delete', {id: Deliv.Id} ) }}">削除</a></td>
+                <td align="center">
+                {% if loop.first == false %}
+                    <a href="{{ url('admin_setting_shop_delivery_up', {id: Deliv.id} ) }}">上へ</a>
+                {% endif %}
+                {% if loop.last == false %}
+                    <a href="{{ url('admin_setting_shop_delivery_down', {id: Deliv.id} ) }}">下へ</a>
+                {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" align="center">
+                    配送方法がありません。
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

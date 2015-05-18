@@ -61,7 +61,7 @@ class TradelawController extends AbstractController
             }
         }
         
-        return $app['view']->render('Admin/Setting/Shop/tradelaw.twig', array(
+        return $app['view']->render('Setting/Shop/tradelaw.twig', array(
             'main_title' => $this->main_title,
             'title'      => $this->title,
             'form'       => $form->createView(),

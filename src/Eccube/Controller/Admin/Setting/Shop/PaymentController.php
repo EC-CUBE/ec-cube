@@ -40,7 +40,7 @@ class PaymentController extends AbstractController
         $payments = $app['orm.em']->getRepository('Eccube\Entity\Payment')
             ->findBy(array('del_flg' => 0), array('rank' => 'DESC'));
 
-        return $app['view']->render('Admin/Basis/payment.twig', array(
+        return $app['view']->render('Basis/payment.twig', array(
             'Payments' => $payments,
         ));
     }
@@ -98,7 +98,7 @@ class PaymentController extends AbstractController
             }
         }
 
-        return $app['view']->render('Admin/Setting/Shop/payment_edit.twig', array(
+        return $app['view']->render('Setting/Shop/payment_edit.twig', array(
             'form' => $form->createView(),
             'payment_id' => $id,
             'Payment' => $Payment,

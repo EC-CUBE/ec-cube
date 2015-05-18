@@ -40,58 +40,147 @@ class PageLayoutRepository extends EntityRepository
         $this->app = $app;
     }
 
-    public function newPageLayout($device_type_id)
+    public function get($deviceTypeId, $pageId)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, bp, b')
+            ->leftJoin('p.BlocPositions', 'bp', 'WITH', 'p.page_id = bp.page_id OR bp.anywhere = 1')
+            ->innerJoin('bp.Bloc', 'b')
+            ->andWhere('p.device_type_id = :deviceTypeId AND p.page_id = :pageId')
+            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.bloc_row', 'ASC');
+
+        return $qb
+            ->getQuery()
+            ->setParameters(array(
+                'deviceTypeId'  => $deviceTypeId,
+                'pageId'        => $pageId,
+            ))
+            ->getSingleResult();
+    }
+
+    public function getByUrl($deviceTypeId, $url)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, bp, b')
+            ->leftJoin('p.BlocPositions', 'bp', 'WITH', 'p.page_id = bp.page_id OR bp.anywhere = 1')
+            ->innerJoin('bp.Bloc', 'b')
+            ->andWhere('p.device_type_id = :deviceTypeId AND p.url = :url')
+            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.bloc_row', 'ASC');
+
+        return $qb
+            ->getQuery()
+            ->setParameters(array(
+                'deviceTypeId'  => $deviceTypeId,
+                'url'           => $url,
+            ))
+            ->getSingleResult();
+    }
+
+    public function getByRoutingName($deviceTypeId, $routingName)
+    {
+        $legacyUrls = array(
+            'preview' => 'preview',
+            'homepage' => 'index.php',
+
+            'product_list' => 'products/list.php',
+            'product_detail' => 'products/detail.php',
+
+            'mypage' => 'mypage/index.php',
+            'mypage_change' => 'mypage/change.php',
+            'mypage_change_complete' => 'mypage/change_complete.php',
+            'mypage_delivery' => 'mypage/delivery.php',
+            'mypage_favorite' => 'mypage/favorite.php',
+            'mypage_history' => 'mypage/history.php',
+            'mypage_login' => 'mypage/login.php',
+            'mypage_refusal' => 'mypage/refusal.php',
+            'mypage_refusal_complete' => 'mypage/refusal_complete.php',
+
+            'help_about' => 'abouts/index.php',
+            'cart' => 'cart/index.php',
+
+            'contact' => 'contact/index.php',
+            'contact_complete' => 'contact/complete.php',
+
+            'entry' => 'entry/index.php',
+//            'entry_kiyaku' => 'entry/kiyaku.php',
+            'entry_complete' => 'entry/complete.php',
+
+            'help_tradelaw' => 'order/index.php',
+            'regist_complete' => 'regist/complete.php',
+
+            'shopping' => 'shopping/index.php',
+            'shopping_delivery' => 'shopping/deliv.php',
+            'shopping_shipping_multiple' => 'shopping/multiple.php',
+            'shopping_payment' => 'shopping/payment.php',
+            'shopping_confirm' => 'shopping/confirm.php',
+            'shopping_complete' => 'shopping/complete.php',
+
+            'help_privacy' => 'guide/privacy.php',
+        );
+
+        if (!array_key_exists($routingName, $legacyUrls)) {
+            throw new \Doctrine\ORM\NoResultException();
+        }
+
+        return $this->getByUrl($deviceTypeId, $legacyUrls[$routingName]);
+    }
+
+    public function newPageLayout($deviceTypeId)
     {
         $PageLayout = new \Eccube\Entity\PageLayout();
         $PageLayout
-            ->setDeviceTypeId($device_type_id);
-        $page_id = $this->getNewPageId($device_type_id);
-        $PageLayout->setPageId($page_id);
+            ->setDeviceTypeId($deviceTypeId);
 
         return $PageLayout;
     }
 
-    public function findOrCreate($page_id, $device_type_id)
+    public function findOrCreate($page_id, $deviceTypeId)
     {
 
         if ($page_id == null) {
-            return $this->newPageLayout($device_type_id);
+            $PageLayout = $this->newPageLayout($deviceTypeId);
+            $page_id = $this->getNewPageId($deviceTypeId);
+            $PageLayout->setPageId($page_id);
+
+            return $PageLayout;
         } else {
-            return $this->getPageProperties($page_id, $device_type_id);
+            return $this->get($deviceTypeId, $page_id);
         }
 
     }
 
-    private function getNewPageId($device_type_id)
+    private function getNewPageId($deviceTypeId)
     {
         $qb = $this->createQueryBuilder('l')
             ->select('max(l.page_id) +1 as page_id')
             ->where('l.device_type_id = :device_type_id')
-            ->setParameter('device_type_id', $device_type_id);
+            ->setParameter('device_type_id', $deviceTypeId);
         $result = $qb->getQuery()->getSingleResult();
 
         return $result['page_id'];
-
     }
+
     /**
      * ページの属性を取得する.
      *
      * この関数は, dtb_pagelayout の情報を検索する.
-     * $device_type_id は必須. デフォルト値は DEVICE_TYPE_PC.
+     * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
      *
      * @access public
-     * @param  integer  $device_type_id 端末種別ID
+     * @param  integer  $deviceTypeId 端末種別ID
      * @param  string   $where          追加の検索条件
      * @param  string[] $parameters     追加の検索パラメーター
      * @return array    ページ属性の配列
      */
-    public function getPageList($device_type_id, $where = '', $parameters = array())
+    public function getPageList($deviceTypeId, $where = '', $parameters = array())
     {
 
         $qb = $this->createQueryBuilder('l')
             ->orderBy('l.page_id', 'DESC')
             ->where('l.device_type_id = :device_type_id')
-            ->setParameter('device_type_id', $device_type_id)
+            ->setParameter('device_type_id', $deviceTypeId)
             ->andWhere('l.page_id <> 0');
         if ($where != '') {
             $qb->andWhere($where);
@@ -107,42 +196,19 @@ class PageLayoutRepository extends EntityRepository
         return $PageLayouts;
     }
 
-    public function getPageProperties($page_id, $device_type_id, $where = '', $parameters = array())
-    {
-        $qb = $this->createQueryBuilder('l')
-            ->orderBy('l.page_id', 'DESC')
-            ->where('l.page_id = :page_id')
-            ->setParameter('page_id', $page_id)
-            ->andWhere('l.device_type_id = :device_type_id')
-            ->setParameter('device_type_id', $device_type_id);
-
-        if ($where != '') {
-            $qb->andWhere($where);
-            foreach ($parameters as $key => $val) {
-                $qb->setParameter($key, $val);
-            }
-        }
-
-        $PageLayout = $qb
-            ->getQuery()
-            ->getSingleResult();
-
-        return $PageLayout;
-    }
-
     /**
      * テンプレートのパスを取得する.
      *
      * @access public
-     * @param  integer $device_type_id 端末種別ID
+     * @param  integer $deviceTypeId 端末種別ID
      * @param  boolean $isUser         USER_REALDIR 以下のパスを返す場合 true
      * @return string  テンプレートのパス
      */
-    public function getTemplatePath($device_type_id, $isUser = false)
+    public function getTemplatePath($deviceTypeId, $isUser = false)
     {
         $app = $this->app;
         $templateName = '';
-        switch ($device_type_id) {
+        switch ($deviceTypeId) {
             case $app['config']['device_type_mobile']:
                 $dir = $app['config']['mobile_template_realdir'];
                 $templateName =  $app['config']['mobile_template_name'];
@@ -152,6 +218,7 @@ class PageLayoutRepository extends EntityRepository
                 $dir = $app['config']['smartphone_template_realdir'];
                 $templateName =  $app['config']['smartphone_template_name'];
                 break;
+
             case $app['config']['device_type_pc'];
                 $dir = $app['config']['template_realdir'];
                 $templateName =  $app['config']['template_name'];
@@ -168,13 +235,13 @@ class PageLayoutRepository extends EntityRepository
     /**
      * ページデータを取得する.
      * @param  integer $filename       ファイル名
-     * @param  integer $device_type_id 端末種別ID
+     * @param  integer $deviceTypeId 端末種別ID
      * @param  boolean $isUser
      * @return mixed
      */
-    public function getTemplateFile($filename, $device_type_id, $isUser = false)
+    public function getTemplateFile($filename, $deviceTypeId, $isUser = false)
     {
-        $templatePath = $this->getTemplatePath($device_type_id, $isUser);
+        $templatePath = $this->getTemplatePath($deviceTypeId, $isUser);
 
         $finder = Finder::create();
         $finder->followLinks();

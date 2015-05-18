@@ -2,7 +2,7 @@
 !.gitmodule
 composer.phar
 /vendor/
-/app/cache/*/*
+/app/cache/*
 /app/config/eccube/config.php
 /app/config/eccube/config.yml
 /app/config/eccube/constant.yml
