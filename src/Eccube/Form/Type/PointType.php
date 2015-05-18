@@ -44,18 +44,20 @@ class PointType extends AbstractType
     {
         $builder
             ->add('point_rate', 'integer', array(
+                'label' => 'ポイント付与率（初期値）',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Range(array('min' => 0, 'max' => 100))),
             ))
             ->add('welcome_point', 'integer', array(
+                'label' => '会員登録時付与ポイント',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Range(array('min' => 0, 'max' => 999999999))),
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+        ;
     }
 
     /**
