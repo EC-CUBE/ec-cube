@@ -66,7 +66,7 @@ class SearchProductType extends AbstractType
             'required' => false,
             'label' => 'メーカーから選ぶ',
         ));
-        $builder->add('name', 'text', array(
+        $builder->add('name', 'search', array(
             'required' => false,
             'label' => '商品名を入力',
             'empty_data' => null,

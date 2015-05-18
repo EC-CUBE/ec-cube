@@ -1,0 +1,20 @@
+                {% macro tree(Categories) %}
+                    {% for Category in Categories %}
+                        <li>
+                            <a class="has-toggle" href="{{ url('product_search') }}?mode=search&category_id={{ Category.id }}">{{ Category.name }}<span class="toggle"><span class="fa fa-chevron-down "></span></span></a>
+                            {% if Category.children|length > 0 %}
+                                {% for ChildCategory in Category.children %}
+                                    <ul>
+                                        {{ _self.tree(ChildCategory.children) }}
+                                    </ul>
+                                {% endfor %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                {% endmacro %}
+
+                <nav id="category">
+                    <ul class="category-nav">
+                        {{ _self.tree(Categories) }}
+                    </ul> <!-- category-nav -->
+                </nav> 

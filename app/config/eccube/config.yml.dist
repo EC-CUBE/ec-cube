@@ -14,6 +14,7 @@ mail:
 auth_magic: droucliuijeanamiundpnoufrouphudrastiokec
 password_hash_algos: sha256
 root: /
+admin_dir: /admin
 tpl: /user_data/packages/default/
 admin_tpl: /user_data/packages/admin/
 image_path: /upload/save_image/

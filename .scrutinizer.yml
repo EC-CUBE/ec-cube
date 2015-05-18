@@ -33,6 +33,7 @@ filter:
         - src/gdthumb/*
         - src/Eccube/Framework/*
         - src/Eccube/Page/*
+        - src/Eccube/Entity/*
 
 tools:
     # Runs the JSHint static analysis tool (https://scrutinizer-ci.com/docs/tools/javascript/jshint/)
@@ -55,8 +56,8 @@ tools:
             globals: { _: false, Backbone: false, jQuery: false, eccube: false }
 
     external_code_coverage: 
-        runs: 2
-        timeout: 600
+        runs: 1
+        timeout: 36000 #The timeout must be in the interval [60,36000].
 
     php_code_sniffer:
         enabled: true

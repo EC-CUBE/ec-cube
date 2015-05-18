@@ -35,7 +35,7 @@ HTTP_URL=${HTTP_URL:-"http://test.local/"}
 HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
 ROOT_URLPATH=${ROOT_URLPATH:-"/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
-ADMIN_DIR=${ADMIN_DIR:-"admin/"}
+ADMIN_DIR=${ADMIN_DIR:-"admin"}
 
 DBSERVER=${DBSERVER-"127.0.0.1"}
 DBNAME=${DBNAME:-"cube3_dev"}
@@ -181,7 +181,7 @@ define('DB_PASSWORD', '${CONFIGPASS:-$DBPASS}');
 define('DB_SERVER', '${DBSERVER}');
 define('DB_NAME', '${DBNAME}');
 define('DB_PORT', '${DBPORT}');
-define('ADMIN_DIR', '${ADMIN_DIR}');
+define('ADMIN_DIR', '${ADMIN_DIR}/');
 define('ADMIN_FORCE_SSL', FALSE);
 define('ADMIN_ALLOW_HOSTS', 'a:0:{}');
 define('AUTH_MAGIC', '${AUTH_MAGIC}');
@@ -213,9 +213,11 @@ mail:
     password: 
     encryption: 
     auth_mode: 
+delivery_address: 
 auth_magic: ${AUTH_MAGIC}
 password_hash_algos: sha256
 root: ${ROOT_URLPATH}
+admin_dir: /${ADMIN_DIR}
 tpl: ${ROOT_URLPATH}user_data/packages/default/
 admin_tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}
 image_path: /upload/save_image/

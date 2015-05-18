@@ -19,35 +19,52 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<div class="block_outer">
-    <div id="search_area">
-    <h2><span class="title"><img src="{{ app.config.tpl }}img/title/tit_bloc_search.gif" alt="検索条件" /></span></h2>
-        <div class="block_body">
-            <!--検索フォーム-->
-            <form name="search_form" id="search_form" method="get" action="{{ path('product_list') }}">
-                <input type="hidden" name="mode" value="search" />
-                <dl class="formlist">
-                    <dt>{{ form_label(form.category_id) }}</dt>
-                    <dd>
-                        {{ form_widget(form.category_id, {'attr': {'class': "box145"}}) }}
-                    </dd>
-                </dl>
-                {% if form.maker_id.vars.choices %}
-                <dl class="formlist">
-                    <dt>{{ form_label(form.maker_id) }}</dt>
-                    <dd>
-                        {{ form_widget(form.maker_id, {'attr': {'class': "box145"}}) }}
-                    </dd>
-                </dl>
-                {% endif %}
-                <dl class="formlist">
-                    <dt>{{ form_label(form.name) }}</dt>
-                    <dd>{{ form_widget(form.name, {'attr': {'class': "box140"}}) }}</dd>
-                </dl>
-                <p class="btn">
-                    <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_search.jpg" alt="検索" name="search" />
-                </p>
-            </form>
-        </div>
-    </div>
-</div>
+            <div id="drawer_pc" class="drawer header_bottom_area pc">
+                <div id="search" class="search">
+                    <form method="get" id="searchform" action="{{ path('product_list') }}">
+                        <div class="search_inner">
+                            {{ form_widget(form.category_id) }}
+                            <div class="input_search clearfix">
+                                {{ form_widget(form.name, {'attr': { 'placeholder' : "キーワードを入力" }} ) }}
+                                <button type="submit" class="bt_search"></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="member" class="member">
+                    <ul class="member_link">
+                    {% if is_granted('ROLE_USER') %}
+
+                        <li>
+                            <a href="{{ url('mypage') }}">
+                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-user fa-stack-1x fa-inverse"></span> </span>マイページ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('mypage_favorite') }}">
+                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-heart-o fa-stack-1x fa-inverse"></span> </span>お気に入り
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('mypage_login') }}">
+                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-sign-in fa-stack-1x fa-inverse"></span> </span>ログイン
+                            </a>
+                        </li>
+
+                    {% else %}
+
+                        <li>
+                            <a href="{{ url('mypage_favorite') }}">
+                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-heart-o fa-stack-1x fa-inverse"></span> </span>お気に入り
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('forgot') }}">
+                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-sign-in fa-stack-1x fa-inverse"></span> </span>ログイン
+                            </a>
+                        </li>
+
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>

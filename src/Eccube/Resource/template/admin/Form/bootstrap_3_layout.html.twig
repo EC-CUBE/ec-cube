@@ -19,14 +19,29 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{# ★ ページャここから ★ #}
-<div class="box-footer">
-    <div class="text-center">
-        <ul class="pagination">
-            {% for page in pages.pagesInRange %}
-                <li{% if page == pages.current %} class="active"{% endif %}><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"><span>{{ page }}</span></a></li>
-            {% endfor %}
-        </ul>
+{%- extends 'bootstrap_3_layout.html.twig' -%}
+
+{%- block form_rest -%}
+    {% set attr = attr|merge({class: attr.class|default('')}) %}
+    {% if attr.class == 'search' %}
+        <div class="col-md-offset-1 col-lg-offset-2 search clearfix">
+        {% for child in form %}
+            {% if not child.rendered %}
+                <div class="col-sm-6 col-md-5 col-lg-5">
+                    {{ form_row(child) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock form_rest -%}
+
+
+{%- block form_widget -%}
+    <div class="form-group">
+        {{- parent() -}}
     </div>
-</div>
-{# ★ ページャここまで ★ #}
+{%- endblock form_widget -%}
+
