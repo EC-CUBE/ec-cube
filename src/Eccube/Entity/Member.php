@@ -93,9 +93,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $salt;
 
     /**
-     * @var integer
+     * @var \Eccube\Entity\Master\Authority
      */
-    private $authority;
+    private $Authority;
 
     /**
      * @var integer
@@ -103,9 +103,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $rank;
 
     /**
-     * @var integer
+     * @var \Eccube\Entity\Master\Work
      */
-    private $work;
+    private $Work;
 
     /**
      * @var integer
@@ -113,9 +113,9 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $del_flg;
 
     /**
-     * @var integer
+     * @var \Eccube\Entity\Member
      */
-    private $creator_id;
+    private $Creator;
 
     /**
      * @var \DateTime
@@ -260,12 +260,12 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set authority
      *
-     * @param  integer $authority
+     * @param \Eccube\Entity\Master\Authority $authority
      * @return Member
      */
-    public function setAuthority($authority)
+    public function setAuthority(\Eccube\Entity\Master\Authority $Authority)
     {
-        $this->authority = $authority;
+        $this->Authority = $Authority;
 
         return $this;
     }
@@ -273,11 +273,11 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get authority
      *
-     * @return integer
+     * @return \Eccube\Entity\Master\Authority
      */
     public function getAuthority()
     {
-        return $this->authority;
+        return $this->Authority;
     }
 
     /**
@@ -306,12 +306,12 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Set work
      *
-     * @param  integer $work
+     * @param  \Eccube\Entity\Master\Work $Work
      * @return Member
      */
-    public function setWork($work)
+    public function setWork(\Eccube\Entity\Master\Work $Work)
     {
-        $this->work = $work;
+        $this->Work = $Work;
 
         return $this;
     }
@@ -319,11 +319,11 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get work
      *
-     * @return integer
+     * @return \Eccube\Entity\Master\Work
      */
     public function getWork()
     {
-        return $this->work;
+        return $this->Work;
     }
 
     /**
@@ -342,7 +342,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * Get del_flg
      *
-     * @return integer
+     * @return boolean
      */
     public function getDelFlg()
     {
@@ -350,26 +350,26 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set creator_id
+     * Set Creator
      *
-     * @param  integer $creatorId
-     * @return Member
+     * @param  \Eccube\Entity\Member $Creator
+     * @return Maker
      */
-    public function setCreatorId($creatorId)
+    public function setCreator(\Eccube\Entity\Member $Creator)
     {
-        $this->creator_id = $creatorId;
+        $this->Creator = $Creator;
 
         return $this;
     }
 
     /**
-     * Get creator_id
+     * Get Creator
      *
-     * @return integer
+     * @return \Eccube\Entity\Member
      */
-    public function getCreatorId()
+    public function getCreator()
     {
-        return $this->creator_id;
+        return $this->Creator;
     }
 
     /**
