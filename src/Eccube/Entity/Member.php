@@ -24,13 +24,23 @@
 
 namespace Eccube\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Member
  */
 class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint(new UniqueEntity(array(
+            'fields'  => 'login_id',
+            'message' => '既に利用されているログインIDです'
+        )));
+    }
+
     /**
      * @return string
      */

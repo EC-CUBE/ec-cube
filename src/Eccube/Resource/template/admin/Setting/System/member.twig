@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
                     <div class="table-responsive">
+                        <form name="form1" id="form1" method="post" action="">
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -55,12 +56,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <td>{{ Member.department }}</td>
                                 <td>{{ Member.Work.name }}</td>
                                 <td><a href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}" >編集</a></td>
-                                <td><a href="{{ url('admin_setting_system_member_delete', { 'id' : Member.id }) }}" >削除</a></td>
-                                <td>{ Member }</td>
+                                <td>
+                                    {% if Member.id == app.user.id %}
+                                        -
+                                    {% else %}
+                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_delete', {id: Member.id}) }}'); document.form1.submit(); return false;">削除</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if loop.first == false %}
+                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_up', {id: Member.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                    {% endif %}
+                                    {% if loop.last == false %}
+                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_down', {id: Member.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% endfor %}
                             </tbody>
                         </table>
+                        </form>
                     </div>
                 </div>
             </div><!-- /.box -->

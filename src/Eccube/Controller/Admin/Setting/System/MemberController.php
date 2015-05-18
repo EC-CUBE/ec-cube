@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MemberController extends AbstractController
 {
@@ -35,10 +37,7 @@ class MemberController extends AbstractController
 
     public function index(Application $app)
     {
-        $Members = $app['orm.em']
-            ->getRepository('Eccube\Entity\Member')
-            ->findAll();
-
+        $Members = $app['eccube.repository.member']->findBy(array(), array('rank' => 'DESC'));
 
         $form = $app->form()
             ->getForm();
@@ -49,23 +48,110 @@ class MemberController extends AbstractController
         ));
     }
 
-    public function edit(Application $app, $id)
+    public function edit(Application $app, Request $request, $id = null)
     {
+        if ($id) {
+            $Member = $app['eccube.repository.member']->find($id);
+            if (!$Member) {
+                throw new NotFoundHttpException();
+            }
+        } else {
+            $Member = new \Eccube\Entity\Member();
+        }
+
+        $form = $app['form.factory']
+            ->createBuilder('admin_member', $Member)
+            ->getForm();
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $status = $app['eccube.repository.member']->save($Member);
+
+                if ($status) {
+                    $app['session']->getFlashBag()->add('admin.success', 'admin.member.save.complete');
+                    return $app->redirect($app->url('admin_setting_system_member'));
+                } else {
+                    $app['session']->getFlashBag()->add('admin.error', 'admin.member.save.error');
+                }
+            }
+        }
+
+        return $app->render('Setting/System/member_edit.twig', array(
+            'form' => $form->createView(),
+            'Member' => $Member,
+        ));
+
+    }
+
+    public function up(Application $app, Request $request, $id)
+    {
+        $TargetMember = $app['eccube.repository.member']->find($id);
+
+        if (!$TargetMember) {
+            throw new NotFoundHttpException();
+        }
+
+        $status = false;
+        if ('POST' === $request->getMethod()) {
+            $status = $app['eccube.repository.member']->up($TargetMember);
+        }
+
+        if ($status) {
+            // fixme : キー名を英語にする
+            $app['session']->getFlashBag()->add('admin.success', 'admin.member.up.complete');
+        } else {
+            // fixme : キー名を英語にする
+            $app['session']->getFlashBag()->add('admin.error', 'admin.member.up.error');
+        }
+
         return $app->redirect($app->url('admin_setting_system_member'));
     }
 
-    public function up(Application $app, $id)
+    public function down(Application $app, Request $request, $id)
     {
+        $TargetMember = $app['eccube.repository.member']->find($id);
+
+        if (!$TargetMember) {
+            throw new NotFoundHttpException();
+        }
+
+        $status = false;
+        if ('POST' === $request->getMethod()) {
+            $status = $app['eccube.repository.member']->down($TargetMember);
+        }
+
+        if ($status) {
+            // fixme : キー名を英語にする
+            $app['session']->getFlashBag()->add('admin.success', 'admin.member.down.complete');
+        } else {
+            // fixme : キー名を英語にする
+            $app['session']->getFlashBag()->add('admin.error', 'admin.member.down.error');
+        }
+
         return $app->redirect($app->url('admin_setting_system_member'));
     }
 
-    public function down(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
-        return $app->redirect($app->url('admin_setting_system_member'));
-    }
+        $TargetMember = $app['eccube.repository.member']->find($id);
+        if (!$TargetMember) {
+            throw new NotFoundHttpException();
+        }
 
-    public function delete(Application $app, $id)
-    {
+        $status = false;
+        if ('POST' === $request->getMethod()) {
+            $status = $app['eccube.repository.member']->delete($TargetMember);
+        }
+
+        if ($status) {
+            // fixme : キー名を英語にする
+            $app['session']->getFlashBag()->add('admin.success', 'admin.member.delete.complete');
+        } else {
+            // fixme : キー名を英語にする
+            $app['session']->getFlashBag()->add('admin.error', 'admin.member.delete.error');
+        }
+
         return $app->redirect($app->url('admin_setting_system_member'));
     }
 }
