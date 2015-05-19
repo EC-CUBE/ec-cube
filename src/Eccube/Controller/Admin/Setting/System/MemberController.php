@@ -50,11 +50,14 @@ class MemberController extends AbstractController
 
     public function edit(Application $app, Request $request, $id = null)
     {
+        $previous_password = null;
         if ($id) {
             $Member = $app['eccube.repository.member']->find($id);
             if (!$Member) {
                 throw new NotFoundHttpException();
             }
+            $previous_password = $Member->getPassword();
+            $Member->setPassword($app['config']['default_password']);
         } else {
             $Member = new \Eccube\Entity\Member();
         }
@@ -66,6 +69,16 @@ class MemberController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                if (!is_null($previous_password) 
+                    && $Member->getpassword() === $app['config']['default_password']) {
+                    // 編集時にPWを変更していなければ
+                    // 変更前のパスワード(暗号化済み)をセット
+                    $Member->setPassword($previous_password);
+                } else {
+                    // 入力されたPWを暗号化してセット
+                    $password = $app['eccube.repository.member']->encryptPassword($Member);
+                    $Member->setPassword($password);
+                }
                 $status = $app['eccube.repository.member']->save($Member);
 
                 if ($status) {

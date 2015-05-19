@@ -206,10 +206,7 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
                 $Member
                     ->setRank($rank + 1)
                     ->setDelFlg(0)
-                    ->setSalt($this->createSalt(5))
-                    ->setPassword($this->encryptPassword($Member));
-            } else {
-                $Member->setPassword($this->encryptPassword($Member));
+                    ->setSalt($this->createSalt(5));
             }
 
             $em->persist($Member);

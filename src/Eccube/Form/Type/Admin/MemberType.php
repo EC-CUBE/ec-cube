@@ -71,7 +71,7 @@ class MemberType extends AbstractType
                 ),
             ))
             ->add('password', 'repeated', array(
-                'type' => 'password',
+                // 'type' => 'password',
                 'first_options'  => array(
                     'label' => 'パスワード',
                 ),
