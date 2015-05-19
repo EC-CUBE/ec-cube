@@ -42,10 +42,10 @@ Eccube\Entity\Member:
 #            unsigned: false
 #            default: 0
         del_flg:
-            type: boolean
+            type: smallint
             nullable: false
             unsigned: false
-            default: false
+            default: '0'
 #        creator_id:
 #            type: integer
 #            nullable: false
