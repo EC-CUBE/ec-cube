@@ -22,9 +22,10 @@
  */
 
 
-namespace Eccube\Tests\Form\Type;
+namespace Eccube\Tests\Form\Type\Admin;
 
-class ContactTypeTest extends AbstractTypeTestCase
+
+class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
 
     /** @var \Eccube\Application */
@@ -166,9 +167,9 @@ class ContactTypeTest extends AbstractTypeTestCase
 
     public function testInvalidAuthority_Invalid()
     {
-        $Member = $this->app['orm.em']->getRepository('Eccube\Entity\Member')
+        $Authority = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Authority')
             ->findOneBy(array(), array('id' => 'DESC'));
-        $id = $Member->getId() + 1;
+        $id = $Authority->getId() + 1;
         
         $this->formData['Authority'] = $id;
         $this->form->submit($this->formData);
