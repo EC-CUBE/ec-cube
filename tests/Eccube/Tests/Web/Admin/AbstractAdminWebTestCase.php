@@ -41,7 +41,7 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
     {
         $firewall = 'admin';
 
-        $user = $this->app['eccube.repository.member']
+        $user = $this->app['orm.em']->getRepository('Eccube\Entity\Member')
             ->findOneBy(array(
                 'login_id' => 'admin',
             ));
