@@ -48,12 +48,12 @@ class ClassCategoryType extends AbstractType
                 'label' => '分類名',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(
+                    new Assert\Length(array(
                         'max' => $this->config['stext_len'],
-                    ),
+                    )),
                 ),
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 
