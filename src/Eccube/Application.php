@@ -303,13 +303,11 @@ class Application extends \Silex\Application
         $app->register(
             new ConsoleServiceProvider(),
             array(
-                'console.name' => 'MyConsoleApp',
-                'console.version' => '0.1.0',
+                'console.name' => 'EC-CUBE',
+                'console.version' => '3.0.0',
                 'console.project_directory' => __DIR__ . "/.."
             )
         );
-
-
         $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
             'db.migrations.path' => __DIR__ . '/Resource/doctrine/migration',
         ));
