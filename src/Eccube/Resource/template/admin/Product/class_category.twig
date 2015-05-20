@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col-md-12 search-box">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">規格編集 {{ ClassName.name }}</h3>
+                            <h3 class="box-title">規格編集： {{ ClassName.name }}</h3>
                         </div><!-- /.box-header -->
 
                         <form name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
