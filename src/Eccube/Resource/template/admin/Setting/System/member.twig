@@ -1,0 +1,97 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}システム設定{% endblock %}
+{% block sub_title %}メンバー管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">メンバー管理</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="table-responsive">
+                        <form name="form1" id="form1" method="post" action="">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>権限</th>
+                                <th>名前</th>
+                                <th>所属</th>
+                                <th>稼働</th>
+                                <th>&nbsp;</th>
+                                <th>移動</th>
+                            </tr>
+                            </thead>
+                            {% for Member in Members %}
+                            <tbody>
+                            <tr>
+                                <td>{{ Member.Authority.name }}</td>
+                                <td>{{ Member.name }}</td>
+                                <td>{{ Member.department }}</td>
+                                <td>{{ Member.Work.name }}</td>
+                                <td class="icon_edit">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="fa fa-pencil"></span></a>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}" >編集</a></li>
+                                            {% if Member.id == app.user.id %}
+                                                <li><a>削除</a></li>
+                                            {% else %}
+                                                <li><a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_delete', {id: Member.id}) }}'); document.form1.submit(); return false;">削除</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>                                        
+                                </td>
+                                <td>
+                                    {% if loop.first == false %}
+                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_up', {id: Member.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                    {% endif %}
+                                    {% if loop.last == false %}
+                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_down', {id: Member.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.box -->
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                    <a href="{{ url('admin_setting_system_member_new') }}" class="btn btn-primary btn-block btn-lg">
+                            新規登録
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

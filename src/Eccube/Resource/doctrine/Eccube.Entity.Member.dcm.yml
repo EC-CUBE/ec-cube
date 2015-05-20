@@ -27,29 +27,29 @@ Eccube\Entity\Member:
         salt:
             type: text
             nullable: false
-        authority:
-            type: smallint
-            nullable: false
-            unsigned: false
+#        authority:
+#            type: smallint
+#            nullable: false
+#            unsigned: false
         rank:
             type: integer
             nullable: false
             unsigned: false
             default: '0'
-        work:
-            type: smallint
-            nullable: false
-            unsigned: false
-            default: '1'
+#        work:
+#            type: smallint
+#            nullable: false
+#            unsigned: false
+#            default: 0
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
             default: '0'
-        creator_id:
-            type: integer
-            nullable: false
-            unsigned: false
+#        creator_id:
+#            type: integer
+#            nullable: false
+#            unsigned: false
         create_date:
             type: datetime
             nullable: false
@@ -61,4 +61,20 @@ Eccube\Entity\Member:
         login_date:
             type: datetime
             nullable: true
+    manyToOne:
+        Work:
+            targetEntity: Eccube\Entity\Master\Work
+            joinColumn:
+                name: work
+                referencedColumnName: id
+        Authority:
+            targetEntity: Eccube\Entity\Master\Authority
+            joinColumn:
+                name: authority
+                referencedColumnName: id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
     lifecycleCallbacks: {  }

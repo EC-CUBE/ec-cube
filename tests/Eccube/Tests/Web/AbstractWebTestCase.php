@@ -67,6 +67,7 @@ abstract class AbstractWebTestCase extends WebTestCase
             'env' => 'test',
         ));
         $app['session.test'] = true;
+        $app->boot();
 
         return $app;
     }

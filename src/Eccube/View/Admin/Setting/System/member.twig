@@ -1,0 +1,70 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'Admin/main_frame.twig' %}
+
+{% block title %}システム設定{% endblock %}
+{% block sub_title %}メンバー管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">メンバー管理</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>権限</th>
+                                <th>名前</th>
+                                <th>所属</th>
+                                <th>稼働</th>
+                                <th>編集</th>
+                                <th>削除</th>
+                                <th>移動</th>
+                            </tr>
+                            </thead>
+                            {% for Member in Members %}
+                            <tbody>
+                            <tr>
+                                <td>{{ Member.Authority.name }}</td>
+                                <td>{{ Member.name }}</td>
+                                <td>{{ Member.department }}</td>
+                                <td>{{ Member.Work.name }}</td>
+                                <td><a href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}" >編集</a></td>
+                                <td><a href="{{ url('admin_setting_system_member_delete', { 'id' : Member.id }) }}" >削除</a></td>
+                                <td>{ Member }</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </div>
+
+{% endblock %}
