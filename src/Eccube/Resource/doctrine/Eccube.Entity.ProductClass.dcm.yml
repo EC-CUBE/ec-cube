@@ -1,13 +1,13 @@
 Eccube\Entity\ProductClass:
     type: entity
-    table: dtb_products_class
+    table: dtb_product_class
     repositoryClass: Eccube\Repository\ProductClassRepository
     uniqueConstraints:
         dtb_products_class_unique_key:
             columns:
                 - product_id
-                - classcategory_id1
-                - classcategory_id2
+                - class_category_id1
+                - class_category_id2
     id:
         id:
             type: integer
@@ -120,14 +120,14 @@ Eccube\Entity\ProductClass:
             targetEntity: Eccube\Entity\ClassCategory
             inversedBy: ProductClasses1
             joinColumn:
-                name: classcategory_id1
-                referencedColumnName: classcategory_id
+                name: class_category_id1
+                referencedColumnName: class_category_id
         ClassCategory2:
             targetEntity: Eccube\Entity\ClassCategory
             inversedBy: ProductClasses2
             joinColumn:
-                name: classcategory_id2
-                referencedColumnName: classcategory_id
+                name: class_category_id2
+                referencedColumnName: class_category_id
         Creator:
             targetEntity: Eccube\Entity\Member
             inversedBy: ProductClasses

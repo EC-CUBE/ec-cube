@@ -1,6 +1,6 @@
 Eccube\Entity\ClassCategory:
     type: entity
-    table: dtb_classcategory
+    table: dtb_class_category
     repositoryClass: Eccube\Repository\ClassCategoryRepository
     id:
         id:
@@ -8,7 +8,7 @@ Eccube\Entity\ClassCategory:
             nullable: false
             unsigned: false
             id: true
-            column: classcategory_id
+            column: class_category_id
             generator:
                 strategy: AUTO
     fields:
@@ -45,8 +45,8 @@ Eccube\Entity\ClassCategory:
             targetEntity: Eccube\Entity\ClassName
             inversedBy: ClassCategories
             joinColumn:
-                name: class_id
-                referencedColumnName: class_id
+                name: class_name_id
+                referencedColumnName: class_name_id
                 nullable: false
         Creator:
             targetEntity: Eccube\Entity\Member
