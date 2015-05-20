@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube;
 
 use Symfony\Component\Finder\Finder;
@@ -35,6 +34,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Monolog\Logger;
+use Knp\Provider\ConsoleServiceProvider;
 
 class Application extends \Silex\Application
 {
@@ -299,6 +299,22 @@ class Application extends \Silex\Application
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
+        // Migration
+        $app->register(
+            new ConsoleServiceProvider(),
+            array(
+                'console.name' => 'MyConsoleApp',
+                'console.version' => '0.1.0',
+                'console.project_directory' => __DIR__ . "/.."
+            )
+        );
+
+
+        $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
+            'db.migrations.path' => __DIR__ . '/Resource/doctrine/migration',
+        ));
+
+
         // Security
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
              'security.firewalls' => array(
@@ -370,6 +386,7 @@ class Application extends \Silex\Application
         $app->register(new \Silex\Provider\MonologServiceProvider(), array(
             'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
         ));
+
 
         // Silex Web Profiler
         if ($app['env'] === 'dev') {

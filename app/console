@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+require_once("vendor/autoload.php");
+
+set_time_limit(0);
+
+$app = new Eccube\Application();
+
+$console = &$app["console"];
+
+$console->run();
+?>
