@@ -100,7 +100,7 @@ class ClassNameController
 
     public function down(Application $app, Request $request, $id)
     {
-        $TargetClassName = $app['eccube.repository.class_name']->find($classNameId);
+        $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
         }
@@ -128,9 +128,9 @@ class ClassNameController
         return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
     }
 
-    public function delete(Application $app, Request $request, $classNameId)
+    public function delete(Application $app, Request $request, $id)
     {
-        $TargetClassName = $app['eccube.repository.class_name']->find($classNameId);
+        $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
         }
