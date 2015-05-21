@@ -181,7 +181,7 @@ class ShopMasterType extends AbstractType
                 )
             ))
             ->add('longitude', 'number', array(
-                'label' => '軽度',
+                'label' => '経度',
                 'required' => false,
                 'precision' => 6,
                 'constraints' => array(
@@ -202,15 +202,6 @@ class ShopMasterType extends AbstractType
                         'max' => $config['download_days_len'],
                     )),
                 )
-            ))
-            ->add('free_rule', 'choice', array(
-                'label' => '送料無料条件(価格)',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
             ))
             ->add('deliv_free_amount', 'integer', array(
                 'label' => '送料無料条件(数量)',

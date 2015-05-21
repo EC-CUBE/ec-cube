@@ -115,10 +115,6 @@ Eccube\Entity\BaseInfo:
             type: smallint
             nullable: true
             unsigned: false
-        free_rule:
-            type: smallint
-            nullable: true
-            default: 0
         deliv_free_amount:
             type: integer
             nullable: true
