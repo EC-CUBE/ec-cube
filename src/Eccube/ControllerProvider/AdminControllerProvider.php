@@ -165,8 +165,16 @@ class AdminControllerProvider implements ControllerProviderInterface
         // customer_agreement
         $c->match('/setting/shop/customer_agreement/', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
-        // system
+        // system/system
         $c->match('/setting/system/system', '\Eccube\Controller\Admin\System\SystemController::index')->bind('admin_setting_system_system');
+
+        // system/member
+        $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');
+        $c->match('/setting/system/member/new', '\Eccube\Controller\Admin\Setting\System\MemberController::edit')->bind('admin_setting_system_member_new');
+        $c->match('/setting/system/member/{id}/edit', 'Eccube\Controller\Admin\Setting\System\MemberController::edit')->assert('id', '\d+')->bind('admin_setting_system_member_edit');
+        $c->match('/setting/system/member/{id}/delete', '\Eccube\Controller\Admin\Setting\System\MemberController::delete')->assert('id', '\d+')->bind('admin_setting_system_member_delete');
+        $c->match('/setting/system/member/{id}/up', '\Eccube\Controller\Admin\Setting\System\MemberController::up')->assert('id', '\d+')->bind('admin_setting_system_member_up');
+        $c->match('/setting/system/member/{id}/down', '\Eccube\Controller\Admin\Setting\System\MemberController::down')->assert('id', '\d+')->bind('admin_setting_system_member_down');
 
         // 未実装
         $c->match('/product/rank', '\Eccube\Page\Admin\Products\ProductRank')->bind('admin_product_product_rank');
@@ -193,14 +201,10 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/main_edit', '\Eccube\Page\Admin\Design\MainEdit')->bind('admin_design_main_edit');
         $c->match('/content/up_down', '\Eccube\Page\Admin\Design\UpDown')->bind('admin_design_up_down');
 
-        $c->match('/setting/system', '\Eccube\Page\Admin\System\Index')->bind('admin_setting_system_member');
         $c->match('/setting/system/adminarea', '\Eccube\Page\Admin\System\AdminArea')->bind('admin_setting_system_adminarea');
-        $c->match('/setting/system/delete', '\Eccube\Page\Admin\System\Delete')->bind('admin_setting_system_delete');
-        $c->match('/setting/system/input', '\Eccube\Page\Admin\System\Input')->bind('admin_setting_system_input');
         $c->match('/setting/system/log', '\Eccube\Page\Admin\System\Log')->bind('admin_setting_system_log');
         $c->match('/setting/system/masterdata', '\Eccube\Page\Admin\System\Masterdata')->bind('admin_setting_system_masterdata');
         $c->match('/setting/system/parameter', '\Eccube\Page\Admin\System\Parameter')->bind('admin_setting_system_parameter');
-        $c->match('/setting/system/rank', '\Eccube\Page\Admin\System\Rank')->bind('admin_setting__system_rank');
         $c->match('/setting/system/csv', '\Eccube\Page\Admin\Content\Csv')->bind('admin_setting_system_csv');
         $c->match('/setting/system/csv_sql', '\Eccube\Page\Admin\Content\CsvSql')->bind('admin_setting_system_csv_sql');
 

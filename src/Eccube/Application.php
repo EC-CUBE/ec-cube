@@ -224,8 +224,6 @@ class Application extends \Silex\Application
             ),
         ));
 
-        $this->register(new ServiceProvider\EccubeServiceProvider());
-
        // EventDispatcher
         $app['eccube.event.dispatcher'] = $app->share(function () {
             return new EventDispatcher();
@@ -316,7 +314,7 @@ class Application extends \Silex\Application
                         'logout_path' => '/admin/logout',
                         'target_url' => '/admin/',
                     ),
-                    'users' => $app['eccube.repository.member'],
+                    'users' => $app['orm.em']->getRepository('Eccube\Entity\Member'),
                     'anonymous' => true,
                 ),
                 'customer' => array(
@@ -333,7 +331,7 @@ class Application extends \Silex\Application
                         'logout_path' => '/logout',
                         'target_url' => '/',
                     ),
-                    'users' => $app['eccube.repository.customer'],
+                    'users' => $app['orm.em']->getRepository('Eccube\Entity\Customer'),
                     'anonymous' => true,
                 ),
              ),
@@ -362,6 +360,8 @@ class Application extends \Silex\Application
 
             return ($token !== null) ? $token->getUser() : null;
         });
+
+        $this->register(new ServiceProvider\EccubeServiceProvider());
 
         $app['filesystem'] = function () {
             return new \Symfony\Component\Filesystem\Filesystem();

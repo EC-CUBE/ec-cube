@@ -1248,6 +1248,12 @@ dl.accordion {
   border-radius: 0;
   margin: 0;
 }
+.dropdown-menu>li>a:not([href]) {
+  color: #999;
+}
+.dropdown-menu>li>a:not([href]):hover {
+  background-color: inherit;
+}
 .dropdown .dropdown-toggle {
   cursor: pointer;
 }

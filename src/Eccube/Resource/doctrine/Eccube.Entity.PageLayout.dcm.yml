@@ -7,12 +7,10 @@ Eccube\Entity\PageLayout:
             type: integer
             nullable: false
             unsigned: false
-            id: true
         page_id:
             type: integer
             nullable: false
             unsigned: false
-            id: true
     fields:
         name:
             type: text

@@ -71,7 +71,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\MailHistory');
         });
         $app['eccube.repository.member'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Member');
+            $memberRepository = $app['orm.em']->getRepository('Eccube\Entity\Member');
+            $memberRepository->setEncoderFactorty($app['security.encoder_factory']);
+            return $memberRepository;
         });
         $app['eccube.repository.order'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Order');
@@ -136,7 +138,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $recommendRepository;
         });
-
         $app['paginator'] = $app->protect(function () {
             return new \Knp\Component\Pager\Paginator();
         });
@@ -244,6 +245,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ClassNameType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\CategoryType($app);
+            $types[] = new \Eccube\Form\Type\Admin\MemberType($app['config']);
 
             return $types;
         }));

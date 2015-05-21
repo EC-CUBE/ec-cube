@@ -13,6 +13,7 @@ Address: 住所
 Tel: 電話番号
 Email: メールアドレス
 Contents: お問い合わせ内容
+form.empty_value: 選択してください
 form.pref.empty_value: 都道府県を選択
 form.job.empty_value: 選択してください
 form.reminder.empty_value: 選択してください
@@ -75,3 +76,12 @@ admin.category.delete.error: カテゴリを削除できませんでした。
 
 admin.product.product_class.save.complete: 商品規格を登録しました。
 admin.product.product_class.delete.complete: 商品規格を削除しました。
+
+admin.member.up.complete: メンバーを上へ移動しました。
+admin.member.up.error: メンバーを上へ移動できませんでした。
+admin.member.down.complete: メンバーを下へ移動しました。
+admin.member.down.error: メンバーを下へ移動できませんでした。
+admin.member.save.complete: メンバーを保存しました。
+admin.member.save.error: メンバーを保存できませんでした。
+admin.member.delete.complete: メンバーを削除しました。
+admin.member.delete.error: メンバーを削除できませんでした。

@@ -1,0 +1,62 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'main_frame.twig' %}
+
+{% block title %}システム設定{% endblock %}
+{% block sub_title %}メンバー管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">メンバー登録・編集</h3>
+                </div><!-- /.box-header -->
+                <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+                    <div class="box-body">
+
+                        {{ form_row(form._token) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.department) }}
+                        {{ form_row(form.login_id) }}
+                        {{ form_row(form.password.first, { type : 'password' }) }}
+                        {{ form_row(form.password.second, { type : 'password' }) }}
+                        {{ form_row(form.Authority) }}
+                        {{ form_row(form.Work) }}
+
+                    </div><!-- /.box-body -->
+                </form>
+            </div><!-- /.box -->
+
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
+                    <p><a href="{{ url('admin_setting_system_member') }}">戻る</a></p>
+                </div>
+            </div>
+
+        </div><!-- /.col -->
+    </div>
+
+{% endblock %}
