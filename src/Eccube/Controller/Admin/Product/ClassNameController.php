@@ -35,7 +35,7 @@ class ClassNameController
         if ($id) {
             $TargetClassName = $app['eccube.repository.class_name']->find($id);
             if (!$TargetClassName) {
-                throw new NotFoundHttpException;
+                throw new NotFoundHttpException();
             }
         } else {
             $TargetClassName = new \Eccube\Entity\ClassName();
@@ -103,7 +103,7 @@ class ClassNameController
     {
         $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
-            throw new NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         $form = $app['form.factory']
@@ -133,7 +133,7 @@ class ClassNameController
     {
         $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         $form = $app['form.factory']
