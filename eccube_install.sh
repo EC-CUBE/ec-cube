@@ -326,6 +326,6 @@ case "${DBTYPE}" in
 esac
 
 # DB migrator
-php app/console migrations:migrate
+php app/console migrations:migrate  --no-interaction
 
 echo "Finished Successful!"
