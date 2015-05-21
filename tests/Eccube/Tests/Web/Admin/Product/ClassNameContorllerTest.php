@@ -43,52 +43,119 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductClassNameEdit()
     {
+        // before
+        $TestCreator = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Member')
+            ->find(1);
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->app['orm.em']->persist($TestClassName);
+        $this->app['orm.em']->flush();
+        $test_class_name_id = $this->app['eccube.repository.class_name']
+            ->findOneBy(array(
+                'name' => $TestClassName->getName()
+            ))
+            ->getId();
+
+        // main
         $this->client->request('GET',
-            $this->app->url('admin_product_class_name_edit', array('id' => 1))
+            $this->app->url('admin_product_class_name_edit', array('id' => $test_class_name_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // after
+        $this->app['orm.em']->remove($TestClassName);
+        $this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminProductClassNameUp()
     {
-        $redirectUrl = $this->app->url('admin_product_class_name');
+        // before
+        $TestCreator = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Member')
+            ->find(1);
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->app['orm.em']->persist($TestClassName);
+        $this->app['orm.em']->flush();
+        $test_class_name_id = $this->app['eccube.repository.class_name']
+            ->findOneBy(array(
+                'name' => $TestClassName->getName()
+            ))
+            ->getId();
 
+        // main
+        $redirectUrl = $this->app->url('admin_product_class_name');
         $this->client->request('POST',
-            $this->app->url('admin_product_class_name_up', array('id' => 1))
+            $this->app->url('admin_product_class_name_up', array('id' => $test_class_name_id))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // after
+        $this->app['orm.em']->remove($TestClassName);
+        $this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminProductClassNameDown()
     {
-        $redirectUrl = $this->app->url('admin_product_class_name');
+        // before
+        $TestCreator = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Member')
+            ->find(1);
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->app['orm.em']->persist($TestClassName);
+        $this->app['orm.em']->flush();
+        $test_class_name_id = $this->app['eccube.repository.class_name']
+            ->findOneBy(array(
+                'name' => $TestClassName->getName()
+            ))
+            ->getId();
 
+        // main
+        $redirectUrl = $this->app->url('admin_product_class_name');
         $this->client->request('POST',
-            $this->app->url('admin_product_class_name_down', array('id' => 1))
+            $this->app->url('admin_product_class_name_down', array('id' => $test_class_name_id))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // after
+        $this->app['orm.em']->remove($TestClassName);
+        $this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminProductClassNameDelete()
     {
+        // before
+        $TestCreator = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Member')
+            ->find(1);
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->app['orm.em']->persist($TestClassName);
+        $this->app['orm.em']->flush();
+        $test_class_name_id = $this->app['eccube.repository.class_name']
+            ->findOneBy(array(
+                'name' => $TestClassName->getName()
+            ))
+            ->getId();
+
+        // main
         $redirectUrl = $this->app->url('admin_product_class_name');
-
         $this->client->request('POST',
-            $this->app->url('admin_product_class_name_delete', array('id' => 1))
+            $this->app->url('admin_product_class_name_delete', array('id' => $test_class_name_id))
         );
-
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // after
+        $this->app['orm.em']->remove($TestClassName);
+        $this->app['orm.em']->flush();
     }
 
-// TODO: テストデータの作成用メソッドを利用
-//    private function newTestClassName()
-//    {
-//        $TestClassName = new \Eccube\Entity\ClassName();
-//        $TestClassName->setName('形状')
-//            ->setRank(100)
-//            ->setDelFlg(false);
-//
-//        return $TestClassName;
-//    }
-//
+    private function newTestClassName($TestCreator)
+    {
+        $TestClassName = new \Eccube\Entity\ClassName();
+        $TestClassName->setName('形状')
+            ->setRank(100)
+            ->setDelFlg(false)
+            ->setCreator($TestCreator);
+
+        return $TestClassName;
+    }
 }
