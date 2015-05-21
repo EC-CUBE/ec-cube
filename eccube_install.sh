@@ -99,8 +99,8 @@ create_sequence_tables()
     SEQUENCES="
 dtb_best_products_best_id_seq
 dtb_category_category_id_seq
-dtb_class_class_id_seq
-dtb_classcategory_classcategory_id_seq
+dtb_class_name_class_name_id_seq
+dtb_class_category_class_category_id_seq
 dtb_csv_no_seq
 dtb_csv_sql_sql_id_seq
 dtb_customer_customer_id_seq
