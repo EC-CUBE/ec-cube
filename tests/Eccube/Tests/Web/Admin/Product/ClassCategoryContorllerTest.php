@@ -33,7 +33,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
     }
 
-    public function testRoutingAdminProductClassCategoryCategory()
+    public function testRoutingAdminProductClassCategory()
     {
         // before
         $TestCreator = $this->app['orm.em']
