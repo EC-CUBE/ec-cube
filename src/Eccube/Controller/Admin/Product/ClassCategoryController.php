@@ -110,7 +110,7 @@ class ClassCategoryController
             $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.up.error');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
 
     public function down(Application $app, Request $request, $class_name_id, $id)
@@ -147,7 +147,7 @@ class ClassCategoryController
             $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.down.error');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
 
     public function delete(Application $app, Request $request, $class_name_id, $id)
@@ -184,6 +184,6 @@ class ClassCategoryController
             $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.delete.error');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
 }
