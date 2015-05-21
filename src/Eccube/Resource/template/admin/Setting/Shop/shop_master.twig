@@ -23,19 +23,33 @@
 #}
 {% extends 'main_frame.twig' %}
 
-{% block title %}ショップ設定{% endblock %}
-{% block sub_title %}ショップ情報管理{% endblock %}
+{% block title %}基本情報設定{% endblock %}
+{% block sub_title %}SHOPマスター{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
 
-<h2>基本情報</h2>
-<form name="basis_form" id="point_form" method="post" action="{{ url('admin_setting_shop') }}">
-    {{ form_widget(form._token) }}
-    <div id="basis" class="contents-main">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">基本情報編集</h3>
+                </div><!-- /.box-header -->
+                <form name="form1" role="form" class="form-horizontal" id="point_form" method="post" action="">
+                    <div class="box-body">
 
-        {{ form_widget(form) }}
+                        {{ form_widget(form) }}
 
+                        <div class="row hidden-xs hidden-sm">
+                            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                                <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">商品を登録</button>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </form>
+            </div><!-- /.box -->
+        </div>
     </div>
-</form>
 
 {% endblock %}
