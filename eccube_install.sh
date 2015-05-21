@@ -325,10 +325,7 @@ case "${DBTYPE}" in
 ;;
 esac
 
-<<<<<<< HEAD
 # DB migrator
 php app/console migrations:migrate  --no-interaction
 
-=======
->>>>>>> parent of d602d78... インストーラの末尾でマイグレータを呼ぶ処理を追加
 echo "Finished Successful!"
