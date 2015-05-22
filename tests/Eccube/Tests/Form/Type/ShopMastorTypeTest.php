@@ -68,8 +68,8 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'good_traded' => 'インテリグッズ',
         'message' => '立方隊長が集めた\nワールドワイドなインテリグッズ',
         'free_rule' => '1000',
-        'latitude' => '135.3008',
-        'longitude' => '34.4138',
+        'latitude' => '34.4138',
+        'longitude' => '135.3008',
         'downloadable_days_unlimited' => false,
         'downloadable_days' => 10,
         'deliv_free_amount' => 100,
@@ -723,9 +723,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLatitude_MaxLengthInvalid()
     {
-        $num = str_repeat('1', $this->app['config']['stext_len']) . '1';
-
-        $this->formData['latitude'] = $num;
+        $this->formData['latitude'] = '90.000001';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -733,9 +731,23 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLatitude_MaxLengthValid()
     {
-        $num = str_repeat('1', $this->app['config']['stext_len']);
+        $this->formData['latitude'] = '90.000000';
+        $this->form->submit($this->formData);
 
-        $this->formData['latitude'] = $num;
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidLatitude_MinLengthInvalid()
+    {
+        $this->formData['latitude'] = '-90.000001';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLatitude_MinLengthValid()
+    {
+        $this->formData['latitude'] = '-90.000000';
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
@@ -751,9 +763,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLongitude_MaxLengthInvalid()
     {
-        $num = str_repeat('1', $this->app['config']['stext_len']) . '1';
-
-        $this->formData['longitude'] = $num;
+        $this->formData['longitude'] = '180.000001';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -761,9 +771,23 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidLongitude_MaxLengthValid()
     {
-        $num = str_repeat('1', $this->app['config']['stext_len']);
+        $this->formData['longitude'] = '180.000000';
+        $this->form->submit($this->formData);
 
-        $this->formData['longitude'] = $num;
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidLongitude_MinLengthInvalid()
+    {
+        $this->formData['longitude'] = '-180.000001';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLongitude_MinLengthValid()
+    {
+        $this->formData['longitude'] = '-180.000000';
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());

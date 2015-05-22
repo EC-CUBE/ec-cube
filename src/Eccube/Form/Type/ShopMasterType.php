@@ -218,9 +218,9 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'precision' => 6,
                 'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^-?([0-8]?[0-9]\.?[0-9]{0,6}|90\.?0{0,6})$/',
+                        'message' => 'admin.shop.latitude.invalid'))
                 )
             ))
             ->add('longitude', 'number', array(
@@ -228,9 +228,9 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'precision' => 6,
                 'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^-?((1?[0-7]?|[0-9]?)[0-9]\.?[0-9]{0,6}|180\.?0{0,6})$/',
+                        'message' => 'admin.shop.longitude.invalid'))
                 ),
             ))
             ->add('downloadable_days_unlimited', 'checkbox', array(
