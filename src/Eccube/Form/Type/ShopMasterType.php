@@ -105,7 +105,12 @@ class ShopMasterType extends AbstractType
             ))
             ->add('zip', 'zip', array(
                 'required' => false,
-                'options' => array(
+                'zip01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+                'zip02_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
                     ),
@@ -113,13 +118,9 @@ class ShopMasterType extends AbstractType
             ))
             ->add('address', 'address', array(
                 'required' => false,
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
                 'addr01_options' => array(
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['lltext_len'],
                         )),
@@ -127,6 +128,7 @@ class ShopMasterType extends AbstractType
                 ),
                 'addr02_options' => array(
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['lltext_len'],
                         )),
