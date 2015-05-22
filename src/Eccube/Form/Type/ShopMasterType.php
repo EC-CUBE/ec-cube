@@ -108,11 +108,13 @@ class ShopMasterType extends AbstractType
                 'zip01_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Regex(array('pattern' => '/^\d{3}$/'))
                     ),
                 ),
                 'zip02_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Regex(array('pattern' => '/^\d{4}$/'))
                     ),
                 ),
             ))
@@ -122,7 +124,7 @@ class ShopMasterType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $config['lltext_len'],
+                            'max' => $config['mtext_len'],
                         )),
                     ),
                 ),
@@ -130,7 +132,7 @@ class ShopMasterType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array(
-                            'max' => $config['lltext_len'],
+                            'max' => $config['mtext_len'],
                         )),
                     ),
                 ),
