@@ -96,6 +96,9 @@ Eccube\Entity\BaseInfo:
             type: datetime
             nullable: false
             default: CURRENT_TIMESTAMP
+        good_traded:
+            type: text
+            nullable: true
         message:
             type: text
             nullable: true

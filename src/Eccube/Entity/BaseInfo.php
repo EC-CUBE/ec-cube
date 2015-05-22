@@ -162,6 +162,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
+    private $good_traded;
+
+    /**
+     * @var string
+     */
     private $message;
 
     /**
@@ -832,6 +837,29 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set good_traded
+     *
+     * @param  string   $good_traded
+     * @return BaseInfo
+     */
+    public function setGoodTraded($good_traded)
+    {
+        $this->good_traded = $good_traded;
+
+        return $this;
+    }
+
+    /**
+     * Get good_traded
+     *
+     * @return string
+     */
+    public function getGoodTraded()
+    {
+        return $this->good_traded;
     }
 
     /**

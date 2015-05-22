@@ -64,6 +64,9 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['stext_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                    )),
                 )
             ))
             ->add('shop_name', 'text', array(
@@ -83,6 +86,9 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['stext_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                    )),
                 )
             ))
             ->add('shop_name_eng', 'text', array(
@@ -99,9 +105,33 @@ class ShopMasterType extends AbstractType
             ))
             ->add('zip', 'zip', array(
                 'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('address', 'address', array(
                 'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+                'addr01_options' => array(
+                    'constraints' => array(
+                        new Assert\Length(array(
+                            'max' => $config['lltext_len'],
+                        )),
+                    ),
+                ),
+                'addr02_options' => array(
+                    'constraints' => array(
+                        new Assert\Length(array(
+                            'max' => $config['lltext_len'],
+                        )),
+                    ),
+                ),
             ))
             ->add('tel', 'tel', array(
                 'required' => false,
@@ -150,6 +180,15 @@ class ShopMasterType extends AbstractType
                     new Assert\Email(),
                 ),
             ))
+            ->add('good_traded', 'textarea', array(
+                'label' => '取り扱い商品',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['lltext_len'],
+                    )),
+                ),
+            ))
             ->add('message', 'textarea', array(
                 'label' => 'メッセージ',
                 'required' => false,
@@ -157,7 +196,7 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['lltext_len'],
                     )),
-                )
+                ),
             ))
             ->add('free_rule', 'money', array(
                 'label' => '送料無料条件',
@@ -168,7 +207,7 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['price_len'],
                     )),
-                )
+                ),
             ))
             ->add('latitude', 'number', array(
                 'label' => '緯度',
@@ -188,7 +227,7 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['stext_len'],
                     )),
-                )
+                ),
             ))
             ->add('downloadable_days_unlimited', 'checkbox', array(
                 'label' => 'ダウンロード無制限',
@@ -201,7 +240,7 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['download_days_len'],
                     )),
-                )
+                ),
             ))
             ->add('deliv_free_amount', 'integer', array(
                 'label' => '送料無料条件(数量)',
