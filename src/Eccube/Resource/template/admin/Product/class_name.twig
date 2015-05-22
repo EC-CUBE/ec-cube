@@ -24,61 +24,92 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}規格編集{% endblock %}
 
+{% form_theme form 'Form/bootstrap_3_layout.html.twig' %}
+
 {% block main %}
-<form name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_product_class_name_edit', {id: TargetClassName.id}) }}{% else %}{{ url('admin_product_class_name') }}{% endif %}">
-    <div id="products" class="contents-main">
-        <table>
-            {{ form_rest(form)}}
-        </table>
+            <div class="row">
+                <div class="col-md-12 search-box">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">規格編集</h3>
+                        </div><!-- /.box-header -->
 
-        <div class="btn-area">
-            <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-            </ul>
-        </div>
+                        <form name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_product_class_name_edit', {id: TargetClassName.id}) }}{% else %}{{ url('admin_product_class_name') }}{% endif %}">
+                        <div class="box-body">
 
-        <table class="list">
-            <col />
-            <col width="15%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="15%" />
-            <tr>
-                <th>規格名 (登録数)</th>
-                <th>分類登録</th>
-                <th class="edit">編集</th>
-                <th class="delete">削除</th>
-                <th>移動</th>
-            </tr>
-            {% for ClassName in ClassNames %}
-                <tr style="background:{% if ClassName.id != TargetClassName.id %}#ffffff{% else %}{{ app.config.select_rgb }}{% endif %};">
-                    <td>{# 規格名 #}{{ ClassName.name }} ({{ ClassName.ClassCategories|length }})</td>
-                    <td align="center"><a href="{{ url('admin_product_class_category', {class_name_id: ClassName.id}) }}">分類登録</a></td>
-                    <td align="center">
-                        {% if ClassName.id != TargetClassName.id %}
-                            <a href="{{ url('admin_product_class_name_edit', {id: ClassName.id}) }}">編集</a>
-                        {% else %}
-                            編集中
-                        {% endif %}
-                    </td>
-                    <td align="center">
-                        {% if ClassName.ClassCategories|length > 0 %}
-                            -
-                        {% else %}
-                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_name_delete', {class_name_id': ClassName.id}) }}'); document.form1.submit(); return false;">削除</a>
-                        {% endif %}
-                    </td>
-                    <td align="center">
-                        {% if loop.first == false %}
-                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_name_up', {class_name_id': ClassName.id}) }}'); document.form1.submit(); return false;">上へ</a>
-                        {% endif %}
-                        {% if loop.last == false %}
-                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_name_down', {class_name_id: ClassName.id}) }}'); document.form1.submit(); return false;">下へ</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-</form>
+                                {{ form_widget(form) }}
+
+                        </div><!-- /.box-body --> 
+                        </form>
+                    </div><!-- /.box -->
+
+                    <div class="row">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                            <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
+                        </div>
+                    </div>
+
+                </div><!-- /.col -->
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-body no-padding">
+                            <div class="table_list">
+                                <div class="table-responsive with-border">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>規格名 (登録数)</th>
+                                                <th>分類登録</th>
+                                                <th>&nbsp;</th>
+                                                <th>移動</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for ClassName in ClassNames %}
+                                                <tr>
+                                                    <td>{{ ClassName.name }} ({{ ClassName.ClassCategories|length }})</td>
+                                                    <td><a href="{{ url('admin_product_class_category', {class_name_id: ClassName.id}) }}">分類登録</a></td>
+                                                    <td class="icon_edit">
+                                                        <div class="dropdown">
+                                                            <a class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-pencil"></span></a>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                {% if ClassName.id != TargetClassName.id %}
+                                                                    <li>
+                                                                        <a href="{{ url('admin_product_class_name_edit', {id: ClassName.id}) }}">編集</a>
+                                                                    </li>
+                                                                {% else %}
+                                                                    <li><a>編集中</a></li>
+                                                                {% endif %}
+                                                                {% if ClassName.ClassCategories|length > 0 %}
+                                                                    <li><a>削除</a></li>
+                                                                {% else %}
+                                                                    <li>
+                                                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_name_delete', {id: ClassName.id}) }}'); document.form1.submit(); return false;">削除</a>
+                                                                    </li>
+                                                                {% endif %}
+                                                            </ul>
+                                                        </div>                                        
+                                                    </td>
+                                                    <td>
+                                                        {% if loop.first == false %}
+                                                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_name_up', {id: ClassName.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                                        {% endif %}
+                                                        {% if loop.last == false %}
+                                                            <a href="?" onclick="eccube.changeAction('{{ url('admin_product_class_name_down', {id: ClassName.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body --> 
+                    </div><!-- /.box --> 
+                </div><!-- /.col --> 
+            </div>
+
 {% endblock %}

@@ -98,10 +98,9 @@ create_sequence_tables()
 {
     SEQUENCES="
 dtb_best_products_best_id_seq
-dtb_bloc_bloc_id_seq
 dtb_category_category_id_seq
-dtb_class_class_id_seq
-dtb_classcategory_classcategory_id_seq
+dtb_class_name_class_name_id_seq
+dtb_class_category_class_category_id_seq
 dtb_csv_no_seq
 dtb_csv_sql_sql_id_seq
 dtb_customer_customer_id_seq
@@ -116,7 +115,6 @@ dtb_news_news_id_seq
 dtb_order_order_id_seq
 dtb_order_detail_order_detail_id_seq
 dtb_other_deliv_other_deliv_id_seq
-dtb_pagelayout_page_id_seq
 dtb_payment_payment_id_seq
 dtb_products_class_product_class_id_seq
 dtb_products_product_id_seq

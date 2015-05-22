@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ClassNameController
 {
@@ -34,7 +35,7 @@ class ClassNameController
         if ($id) {
             $TargetClassName = $app['eccube.repository.class_name']->find($id);
             if (!$TargetClassName) {
-                throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+                throw new NotFoundHttpException();
             }
         } else {
             $TargetClassName = new \Eccube\Entity\ClassName();
@@ -50,18 +51,18 @@ class ClassNameController
                 $status = $app['eccube.repository.class_name']->save($TargetClassName);
 
                 if ($status) {
-                    $app['session']->getFlashBag()->add('admin.success', 'admin.class_name.save.complete');
+                    $app->addSuccess('admin.class_name.save.complete', 'admin');
 
-                    return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
+                    return $app->redirect($app->url('admin_product_class_name'));
                 } else {
-                    $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.save.error');
+                    $app->addError('admin.class_name.save.error', 'admin');
                 }
             }
         }
 
         $ClassNames = $app['eccube.repository.class_name']->getList();
 
-        return $app['view']->render('Product/class_name.twig', array(
+        return $app->render('Product/class_name.twig', array(
             'form' => $form->createView(),
             'ClassNames' => $ClassNames,
             'TargetClassName' => $TargetClassName,
@@ -72,7 +73,7 @@ class ClassNameController
     {
         $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException;
         }
 
         $form = $app['form.factory']
@@ -90,19 +91,19 @@ class ClassNameController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.class_name.up.complete');
+            $app->addSuccess('admin.class_name.up.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.up.error');
+            $app->addError('admin.class_name.up.error', 'admin');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
+        return $app->redirect($app->url('admin_product_class_name'));
     }
 
     public function down(Application $app, Request $request, $id)
     {
-        $TargetClassName = $app['eccube.repository.class_name']->find($classNameId);
+        $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         $form = $app['form.factory']
@@ -120,19 +121,19 @@ class ClassNameController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.class_name.down.complete');
+            $app->addSuccess('admin.class_name.down.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.down.error');
+            $app->addError('admin.class_name.down.error', 'admin');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
+        return $app->redirect($app->url('admin_product_class_name'));
     }
 
-    public function delete(Application $app, Request $request, $classNameId)
+    public function delete(Application $app, Request $request, $id)
     {
-        $TargetClassName = $app['eccube.repository.class_name']->find($classNameId);
+        $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         $form = $app['form.factory']
@@ -150,11 +151,11 @@ class ClassNameController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.class_name.delete.complete');
+            $app->addSuccess('admin.class_name.delete.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.class_name.delete.error');
+            $app->addError('admin.class_name.delete.error', 'admin');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_name'));
+        return $app->redirect($app->url('admin_product_class_name'));
     }
 }

@@ -31,6 +31,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ClassCategoryType extends AbstractType
 {
+    private $config;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -41,8 +48,12 @@ class ClassCategoryType extends AbstractType
                 'label' => '分類名',
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->config['stext_len'],
+                    )),
                 ),
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

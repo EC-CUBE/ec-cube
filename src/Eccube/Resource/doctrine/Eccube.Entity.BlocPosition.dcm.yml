@@ -48,6 +48,6 @@ Eccube\Entity\BlocPosition:
             joinColumns:
                 device_type_id:
                     referencedColumnName: device_type_id
-#                page_id:
-#                    referencedColumnName: page_id
+                page_id:
+                    referencedColumnName: page_id
     lifecycleCallbacks: {  }

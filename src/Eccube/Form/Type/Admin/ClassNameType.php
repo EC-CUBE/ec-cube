@@ -31,6 +31,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ClassNameType extends AbstractType
 {
+    private $config;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -41,8 +48,12 @@ class ClassNameType extends AbstractType
                 'label' => '規格名',
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->config['stext_len'],
+                    )),
                 ),
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

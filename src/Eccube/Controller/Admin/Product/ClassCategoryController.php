@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ClassCategoryController
 {
@@ -34,12 +35,12 @@ class ClassCategoryController
         //
         $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
         if (!$ClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
         if ($id) {
             $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
             if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-                throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+                throw new NotFoundHttpException();
             }
         } else {
             $TargetClassCategory = new \Eccube\Entity\ClassCategory();
@@ -57,18 +58,18 @@ class ClassCategoryController
                 $status = $app['eccube.repository.class_category']->save($TargetClassCategory);
 
                 if ($status) {
-                    $app['session']->getFlashBag()->add('admin.success', 'admin.class_category.save.complete');
+                    $app->addSuccess('admin.class_category.save.complete', 'admin');
 
-                    return $app->redirect($app['url_generator']->generate('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+                    return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
                 } else {
-                    $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.save.error');
+                    $app->addError('admin.class_category.save.error', 'admin');
                 }
             }
         }
 
         $ClassCategories = $app['eccube.repository.class_category']->getList($ClassName);
 
-        return $app['view']->render('Product/class_category.twig', array(
+        return $app->render('Product/class_category.twig', array(
             'form' => $form->createView(),
             'ClassName' => $ClassName,
             'ClassCategories' => $ClassCategories,
@@ -81,11 +82,11 @@ class ClassCategoryController
         //
         $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
         if (!$ClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
         $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         //
@@ -105,12 +106,12 @@ class ClassCategoryController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.class_category.up.complete');
+            $app->addSuccess('admin.class_category.up.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.up.error');
+            $app->addError('admin.class_category.up.error', 'admin');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
 
     public function down(Application $app, Request $request, $class_name_id, $id)
@@ -118,11 +119,11 @@ class ClassCategoryController
         //
         $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
         if (!$ClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
         $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         //
@@ -142,12 +143,12 @@ class ClassCategoryController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.class_category.down.complete');
+            $app->addSuccess('admin.class_category.down.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.down.error');
+            $app->addError('admin.class_category.down.error', 'admin');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
 
     public function delete(Application $app, Request $request, $class_name_id, $id)
@@ -155,11 +156,11 @@ class ClassCategoryController
         //
         $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
         if (!$ClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
         $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         //
@@ -179,11 +180,11 @@ class ClassCategoryController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.class_category.delete.complete');
+            $app->addSuccess('admin.class_category.delete.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.class_category.delete.error');
+            $app->addError('admin.class_category.delete.error', 'admin');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
+        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
 }

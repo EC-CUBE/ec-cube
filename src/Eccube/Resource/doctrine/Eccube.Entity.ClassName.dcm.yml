@@ -1,6 +1,6 @@
 Eccube\Entity\ClassName:
     type: entity
-    table: dtb_class
+    table: dtb_class_name
     repositoryClass: Eccube\Repository\ClassNameRepository
     id:
         id:
@@ -8,7 +8,7 @@ Eccube\Entity\ClassName:
             nullable: false
             unsigned: false
             id: true
-            column: class_id
+            column: class_name_id
             generator:
                 strategy: AUTO
     fields:
