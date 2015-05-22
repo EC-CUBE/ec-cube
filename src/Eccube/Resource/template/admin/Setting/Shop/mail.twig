@@ -24,50 +24,49 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}メール管理{% endblock %}
 
-{% block main %}
-<script type="text/javascript">
-$(function(){
-    $("#mail_template").on("change", function(){
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block onload %}
+    $("#{{ form.template.vars.id }}").on("change", function(){
         if ($(this).val()) {
-            location.href= '{{ url('admin_setting_shop_mail') }}/' + $(this).val();
+            location.href=  '{{ url('admin_setting_shop_mail') }}/' + $(this).val() + '/edit';
         } else {
-            location.href= '{{ url('admin_setting_shop_mail') }}';
+            location.href= '{{ url('admin_setting_shop_mail_new') }}';
         }
     });
-});
-</script>
+{% endblock %}
 
-<form name="form1" id="form1" method="post" action="{{ url('admin_setting_shop_mail_edit', {id: mail_id}) }}">
-    {{ form_widget(form._token) }}
-    <div id="basis" class="contents-main">
-        <table>
-            <tr>
-                <th>{{ form_label(form.template) }}</th>
-                <td>{{ form_widget(form.template) }}</td>
-            </tr>
-            <tr>
-                <th>{{ form_label(form.subject) }}</th>
-                <td>{{ form_widget(form.subject) }}</td>
-            </tr>
-            <tr>
-                <th>{{ form_label(form.header) }}</th>
-                <td>{{ form_widget(form.header) }}</td>
-            </tr>
-            <tr>
-                <th colspan="2" align="center">動的データ挿入部分</th>
-            </tr>
-            <tr>
-                <th>{{ form_label(form.footer) }}</th>
-                <td>{{ form_widget(form.footer) }}</td>
-            </tr>
-        </table>
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
 
-        <div class="btn-area">
-            <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="document.form1.submit(); return false;"><span class="btn-next">この内容で登録する</span></a></li>
-            </ul>
-        </div>
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">基本情報</h3>
+                </div><!-- /.box-header -->
+                <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{{ url('admin_setting_shop_mail_edit', {id: mail_id}) }}">
+                    {{ form_widget(form._token) }}
+                    <div class="box-body">
+                        {{ form_row(form.template) }}
+                        {{ form_row(form.subject) }}
+                        {{ form_row(form.header) }}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-block btn-lg btn-default disabled">動的データ挿入部分</button>
+                            </div>
+                        </div>
+                        {{ form_row(form.footer) }}
+                    </div><!-- /.box-body -->
+                </form>
+            </div><!-- /.box -->
+
+            <div class="row hidden-xs hidden-sm">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
+                </div>
+            </div>
+
+        </div><!-- /.col -->
     </div>
-</form>
 
 {% endblock %}

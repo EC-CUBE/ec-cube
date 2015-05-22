@@ -30,6 +30,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MailType extends AbstractType
 {
+    private $config;
+
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
     /**
      * {@inheritdoc}
      */
@@ -46,6 +52,9 @@ class MailType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->config['mtext_len'],
+                    )),
                 ),
             ))
             ->add('header', 'textarea', array(
@@ -53,6 +62,9 @@ class MailType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->config['ltext_len'],
+                    )),
                 ),
             ))
             ->add('footer', 'textarea', array(
@@ -60,6 +72,9 @@ class MailType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->config['ltext_len'],
+                    )),
                 ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());

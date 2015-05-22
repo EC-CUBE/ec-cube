@@ -29,6 +29,7 @@ cart.over.sale_limit: |-
     一度に販売制限数を超える購入はできません。
 
 admin.register.complete: ※ 登録が完了しました。
+admin.register.failed: ※ 登録に失敗しました。
 admin.delete.complete: ※ 削除が完了しました。
 admin.rank.move.complete: ※ ランクの移動が完了しました。
 

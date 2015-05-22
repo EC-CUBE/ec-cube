@@ -67,6 +67,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.customer'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Customer');
         });
+        $app['eccube.repository.mail_template'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('\Eccube\Entity\MailTemplate');
+        });
+
         $app['eccube.repository.mail_history'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\MailHistory');
         });
@@ -189,7 +193,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\DelivTimeType();
             $types[] = new \Eccube\Form\Type\ProductTypeType();
             $types[] = new \Eccube\Form\Type\PaymentRegisterType();
-            $types[] = new \Eccube\Form\Type\MailType();
+            $types[] = new \Eccube\Form\Type\MailType($app['config']);
             $types[] = new \Eccube\Form\Type\MailTemplateType();
             $types[] = new \Eccube\Form\Type\CategoryType();
             $types[] = new \Eccube\Form\Type\MakerType();

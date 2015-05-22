@@ -38,10 +38,9 @@ class MailController extends AbstractController
     {
     }
 
-    public function index(Application $app, $id = 0)
+    public function index(Application $app, $id = null)
     {
-        $Mail = $app['orm.em']
-            ->getRepository('\Eccube\Entity\Mailtemplate')
+        $Mail = $app['eccube.repository.mail_template']
             ->findOrCreate($id);
         $form = $app['form.factory']
             ->createBuilder('mail', $Mail)
@@ -57,13 +56,15 @@ class MailController extends AbstractController
                 $app['orm.em']->persist($Mail);
                 $app['orm.em']->flush();
 
-                $app['session']->getFlashBag()->add('admin.mail.complete', 'admin.register.complete');
+                $app->addSuccess('admin.register.complete' , 'admin');
 
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop_mail'));
+                return $app->redirect($app->url('admin_setting_shop_mail'));
+            } else {
+                $app->addError('admin.register.failed', 'admin');
             }
         }
 
-        return $app['view']->render('Setting/Shop/mail.twig', array(
+        return $app->render('Setting/Shop/mail.twig', array(
             'Mail' => $Mail,
             'mail_id' => $id,
             'form' => $form->createView(),

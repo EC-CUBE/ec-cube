@@ -25,9 +25,9 @@
 namespace Eccube\Entity;
 
 /**
- * Mailtemplate
+ * MailTemplate
  */
-class Mailtemplate extends \Eccube\Entity\AbstractEntity
+class MailTemplate extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @return string

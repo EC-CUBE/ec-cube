@@ -159,7 +159,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // mail
         $c->match('/setting/shop/mail', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->bind('admin_setting_shop_mail');
-        $c->match('/setting/shop/mail/new', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_edit');
+        $c->match('/setting/shop/mail/new', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_new');
         $c->match('/setting/shop/mail/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_edit');
 
         // customer_agreement
