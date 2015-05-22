@@ -33,7 +33,7 @@ ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 HTTP_URL=${HTTP_URL:-"http://test.local/"}
 HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
-ROOT_URLPATH=${ROOT_URLPATH:-"/"}
+ROOT_URLPATH=${ROOT_URLPATH:-"//"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
 ADMIN_DIR=${ADMIN_DIR:-"admin"}
 

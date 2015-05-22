@@ -26,16 +26,16 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController
 {
     public function index(Application $app, Request $request, $parent_id = null, $id = null)
     {
-        //
         if ($parent_id) {
             $Parent = $app['eccube.repository.category']->find($parent_id);
             if (!$Parent) {
-                throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+                throw new NotFoundHttpException();
             }
         } else {
             $Parent = null;
@@ -43,7 +43,7 @@ class CategoryController
         if ($id) {
             $TargetCategory = $app['eccube.repository.category']->find($id);
             if (!$TargetCategory) {
-                throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+                throw new NotFoundHttpException();
             }
             $Parent = $TargetCategory->getParent();
         } else {
@@ -68,15 +68,15 @@ class CategoryController
                 $status = $app['eccube.repository.category']->save($TargetCategory);
 
                 if ($status) {
-                    $app['session']->getFlashBag()->add('admin.success', 'admin.category.save.complete');
+                    $app->addSuccess('admin.category.save.complete', 'admin');
 
                     if ($Parent) {
-                        return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
+                        return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
                     } else {
-                        return $app->redirect($app['url_generator']->generate('admin_product_category'));
+                        return $app->redirect($app->url('admin_product_category'));
                     }
                 } else {
-                    $app['session']->getFlashBag()->add('admin.error', 'admin.category.save.error');
+                    $app->addError('admin.category.save.error', 'admin');
                 }
             }
         }
@@ -97,7 +97,7 @@ class CategoryController
     {
         $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
         $Parent = $TargetCategory->getParent();
 
@@ -116,15 +116,15 @@ class CategoryController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.category.up.complete');
+            $app->addSuccess('admin.category.up.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.category.up.error');
+            $app->addError('admin.category.up.error', 'admin');
         }
 
         if ($Parent) {
-            return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
+            return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
         } else {
-            return $app->redirect($app['url_generator']->generate('admin_product_category'));
+            return $app->redirect($app->url('admin_product_category'));
         }
     }
 
@@ -132,7 +132,7 @@ class CategoryController
     {
         $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
         $Parent = $TargetCategory->getParent();
 
@@ -151,15 +151,15 @@ class CategoryController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.category.down.complete');
+            $app->addSuccess('admin.category.down.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.category.down.error');
+            $app->addError('admin.category.down.error', 'admin');
         }
 
         if ($Parent) {
-            return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
+            return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
         } else {
-            return $app->redirect($app['url_generator']->generate('admin_product_category'));
+            return $app->redirect($app->url('admin_product_category'));
         }
     }
 
@@ -167,7 +167,7 @@ class CategoryController
     {
         $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
         $Parent = $TargetCategory->getParent();
 
@@ -186,15 +186,15 @@ class CategoryController
         }
 
         if ($status === true) {
-            $app['session']->getFlashBag()->add('admin.success', 'admin.category.delete.complete');
+            $app->addSuccess('admin.category.delete.complete', 'admin');
         } else {
-            $app['session']->getFlashBag()->add('admin.error', 'admin.category.delete.error');
+            $app->addError('admin.category.delete.error', 'admin');
         }
 
         if ($Parent) {
-            return $app->redirect($app['url_generator']->generate('admin_product_category_show', array('parent_id' => $Parent->getId())));
+            return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
         } else {
-            return $app->redirect($app['url_generator']->generate('admin_product_category'));
+            return $app->redirect($app->url('admin_product_category'));
         }
     }
 }
