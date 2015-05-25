@@ -255,6 +255,10 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $use_point;
 
     /**
+     * @var integer
+     */
+    private $option_deliv_fee;
+    /**
      * Get id
      *
      * @return integer
@@ -1156,4 +1160,15 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
         return $this->use_point;
     }
 
+    public function setOptionDelivFee($fee)
+    {
+        $this->option_deliv_fee = $fee;
+
+        return $this;
+    }
+
+    public function getOptionDelivFee()
+    {
+        return $this->option_deliv_fee;
+    }
 }

@@ -149,7 +149,7 @@ Eccube\Entity\BaseInfo:
         option_product_tax_rule:
             type: smallint
             nullable: true
-            default: 1
+            default: 0
         point_rule:
             type: smallint
             nullable: true

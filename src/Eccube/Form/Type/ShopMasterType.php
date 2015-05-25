@@ -259,6 +259,15 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
+            ->add('option_deliv_fee', 'choice', array(
+                'label' => '配送業者ごとの配送料を加算するか',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
             ->add('forgot_mail', 'choice', array(
                 'label' => 'パスワードリマインダ利用時にメールを送信する',
                 'choices' => array(
@@ -316,20 +325,27 @@ class ShopMasterType extends AbstractType
             ->add('point_rule', 'choice', array(
                 'label' => 'ポイントの計算ルール(1:四捨五入、2:切り捨て、3:切り上げ )',
                 'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
+                    '1' => '四捨五入',
+                    '2' => '切り捨て',
+                    '3' => '切り上げ',
                 ),
                 'expanded' => true,
                 'multiple' => false,
             ))
             ->add('use_point', 'choice', array(
-                'label' => '1ポイント当たりの値段(円)',
+                'label' => 'ポイントを利用するか',
                 'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
+                    '0' => '利用しない',
+                    '1' => '利用する',
                 ),
                 'expanded' => true,
                 'multiple' => false,
+            ))
+            ->add('point_value', 'integer', array(
+                'label' => '1ポイント当たりの値段(円)',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
