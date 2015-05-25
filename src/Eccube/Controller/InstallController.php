@@ -47,11 +47,15 @@ class InstallController
                 $data = $form->getData();
                 switch ($data['db_type']) {
                     case 'pgsql':
-                        $data['db_port'] = '5432';
+                        if(empty($data['db_port'])){
+                            $data['db_port'] = '5432';
+                        }
                         $data['db_driver'] = 'pdo_pgsql';
                         break;
                     case 'mysql':
-                        $data['db_port'] = '3306';
+                        if(empty($data['db_port'])){
+                            $data['db_port'] = '3306';
+                        }
                         $data['db_driver'] = 'pdo_mysql';
                         break;
                 }
@@ -76,14 +80,16 @@ class InstallController
     private function install()
     {
         $this
+            ->checkDirPermission()
+            ->setPDO()
             ->createConfigPhpFile()
             ->createConfigYmlFile()
-            ->modifyFilePermissions()
             ->createTable()
-            ->setPDO()
             ->insert()
         ;
     }
+
+    // TODO:このへん サービスに分離する
 
     private function setPDO()
     {
@@ -102,55 +108,114 @@ class InstallController
     private function createTable()
     {
         $doctrine = __DIR__ . '/../../../vendor/bin/doctrine';
-        exec(' php ' . $doctrine . ' orm:schema-tool:create ', $output,$state);
+        exec(' php ' . $doctrine . ' orm:schema-tool:create 2>&1', $output,$state);
 
+        // NATの無通信タイマ対策（仮）
         echo str_repeat(" ",4*1024); 
         ob_flush();
         flush();
 
-        if($state!=0) // non-0 exit
+        if($state!=0) // スキーマ作成の失敗時
         {
-            throw new \Exception($output);
+            throw new \Exception( join("\n",$output) );
         }
         return $this;
     }
 
     private function insert()
     {
-        $sqlFile = __DIR__ . '/../../../html/install/sql/insert_data.sql';
+        $data = $this->data;
+
+        if($data['db_type']=='pgsql'){
+            $sqlFile = __DIR__ . '/../../../html/install/sql/insert_data_pgsql.sql';
+        }elseif($data['db_type']=='mysql'){
+            $sqlFile = __DIR__ . '/../../../html/install/sql/insert_data_mysql.sql';
+        }else{
+            $sqlFile = __DIR__ . '/../../../html/install/sql/insert_data.sql';
+        }
+
         $fp = fopen($sqlFile, 'r');
         $sql = fread($fp, filesize($sqlFile));
         fclose($fp);
-
         $sqls = explode(';', $sql);
+
+        $this->PDO->beginTransaction();
         foreach ($sqls as $sql) {
             $this->PDO->query(trim($sql));
         }
 
+        $sth=$this->PDO->prepare( "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date, point_rate, welcome_point) VALUES (1, :shop_name, :admin_mail, :admin_mail, :admin_mail, :admin_mail, 'default1', 'default1', 'default1', 'default1', current_timestamp, 0, 0);");
+        $sth->execute(array(':shop_name' => $data['shop_name'], ':admin_mail'=>$data['admin_mail']));
+
+        $sth=$this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date) VALUES (2, 'admin', :admin_pass , :auth_magic , '1', '0', '0', '1', '1', current_timestamp, current_timestamp);");
+        $sth->execute(array(':admin_pass' => $data['admin_pass'], ':auth_magic'=>$data['auth_magic']));
+
+        $this->setSequenceVal();
+
+        $this->PDO->commit();
+
         return $this;
     }
 
-    private function modifyFilePermissions()
-    {
-/*
-        $fs = new Filesystem();
-        $base = __DIR__ . '/../../..';
-        $fs->chmod($base . '/html', 0777, 0000, true);
-        $fs->chmod($base . '/app', 0777);
-        $fs->chmod($base . '/app/template', 0777, 0000, true);
-        $fs->chmod($base . '/app/cache', 0777, 0000, true);
-        $fs->chmod($base . '/app/config', 0777);
-        $fs->chmod($base . '/app/download', 0777, 0000, true);
-        $fs->chmod($base . '/app/downloads', 0777, 0000, true);
-        $fs->chmod($base . '/app/font', 0777);
-        $fs->chmod($base . '/app/log', 0777);
-        $fs->chmod($base . '/src/Eccube/page', 0777, 0000, true);
-        $fs->chmod($base . '/src/smarty_extends', 0777);
-        $fs->chmod($base . '/app/upload', 0777);
-        $fs->chmod($base . '/app/upload/csv', 0777);
-*/
-        return $this;
+    private function setSequenceVal(){
+        $seqs=array(
+            'dtb_best_products_best_id_seq',
+            'dtb_category_category_id_seq',
+            'dtb_class_name_class_name_id_seq',
+            'dtb_class_category_class_category_id_seq',
+            'dtb_csv_no_seq',
+            'dtb_csv_sql_sql_id_seq',
+            'dtb_customer_customer_id_seq',
+            'dtb_deliv_deliv_id_seq',
+            'dtb_holiday_holiday_id_seq',
+            'dtb_kiyaku_kiyaku_id_seq',
+            'dtb_mail_history_send_id_seq',
+            'dtb_maker_maker_id_seq',
+            'dtb_member_member_id_seq',
+            'dtb_module_update_logs_log_id_seq',
+            'dtb_news_news_id_seq',
+            'dtb_order_order_id_seq',
+            'dtb_order_detail_order_detail_id_seq',
+            'dtb_other_deliv_other_deliv_id_seq',
+            'dtb_payment_payment_id_seq',
+            'dtb_products_class_product_class_id_seq',
+            'dtb_products_product_id_seq',
+            'dtb_review_review_id_seq',
+            'dtb_send_history_send_id_seq',
+            'dtb_mailmaga_template_template_id_seq',
+            'dtb_plugin_plugin_id_seq',
+            'dtb_plugin_hookpoint_plugin_hookpoint_id_seq',
+            'dtb_api_config_api_config_id_seq',
+            'dtb_api_account_api_account_id_seq',
+            'dtb_tax_rule_tax_rule_id_seq',
+        );
+        $data = $this->data;
+        foreach($seqs as $seq){
+            if($data['db_type']=='pgsql'){
+                $sql="SELECT SETVAL('$seq', 10000);";
+                $this->PDO->query(trim($sql));
+            }
+        }
     }
+
+    private function checkDirPermission()
+    {
+        
+        $protectedDirs=array(); 
+        $base = __DIR__ . '/../../..';
+        $dirs=array('/html' ,'/app', '/app/template', '/app/cache', '/app/config', '/app/download', '/app/downloads', '/app/font', '/app/fonts','/app/log' ,'/app/upload', '/app/upload/csv');
+        foreach($dirs as $dir) {
+            if(!is_writable($base.$dir)) {
+                $protectedDirs[]=$base.$dir;
+            }
+        }
+        if(count($protectedDirs)>0) {
+            throw new \Exception("directory not writable ".implode($protectedDirs,","));
+        }
+        return $this;
+
+    }
+
 
     private function createConfigPhpFile()
     {
@@ -215,23 +280,20 @@ mail:
     auth_mode:
 auth_type: HMAC
 auth_magic: eccube300beta
+admin_dir: /admin
 password_hash_algos: sha256
-use_point: true
-option_favorite_product: true
-mypage_order_status_disp_flag: true
 root: {$data['path']}
 tpl: {$data['path']}user_data/packages/default/
-admin_tpl: {$data['path']}user_data/packages/admin/
+admin_tpl: {$data['path']}user_data/packages/admin 
 image_path: /upload/save_image/
-shop_name: EC-CUBE_3.0.0-beta
 release_year: 2015
+shop_name: ec-cube shop 20150525
 mail_cc:
     - admin@example.com
 stext_len: 50
 sample_address1: 市区町村名 (例：千代田区神田神保町)
 sample_address2: 番地・ビル名 (例：1-3-5)
-ECCUBE_VERSION: 3.0.0-dev
-customer_confirm_mail: false
+ECCUBE_VERSION: 3.0.0-beta
 EOF;
 
         $filePath = __DIR__ . '/../../../app/config/eccube/config.yml';

@@ -22,13 +22,11 @@
  */
 
 require_once __DIR__.'/../vendor/autoload.php';
-if(preg_match('/^\/install\//',$_SERVER["REQUEST_URI"]))
-{
-    $app = new Eccube\InstallApplication(array("env"=>"dev"));
+if(preg_match('/^\/install\//',$_SERVER["REQUEST_URI"])){
+    $app = new Eccube\InstallApplication();
 }
-else
-{
-    $app = new Eccube\Application(array("env"=>"dev")  );
+else{
+    $app = new Eccube\Application();
 }
 
 $app->run();

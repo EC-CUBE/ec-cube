@@ -41,7 +41,6 @@ class ShippingMultiType extends AbstractType
     private $app;
     private $config;
 
-    #public function __construct(Application $app)
     public function __construct(\Silex\Application $app)
     {
         $this->app = $app;

@@ -33,7 +33,6 @@ class ShopMasterType extends AbstractType
     public $app;
 
     public function __construct(\Silex\Application $app)
-    #public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
     }

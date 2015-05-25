@@ -77,23 +77,10 @@ class InstallApplication extends \Silex\Application
 
         // load config
         $this['config'] = $app->share(function () {
-#            $config_file = __DIR__ . '/../../app/config/eccube/config.yml';
-#            if (file_exists($config_file)) {
-#                $config = Yaml::parse($config_file);
-#            } else {
-                $config = array();
-#            }
-
-#           $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
+            $config = array();
             $constant_dist = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
 
-#           if (file_exists($constant_file)) {
-#               $config_constant = Yaml::parse($constant_file);
-#           } elseif (file_exists($constant_dist)) {
                $config_constant = Yaml::parse($constant_dist);
-#           } else {
-#               $config_constant = array();
-#           }
 
             return array_merge($config_constant, $config);
         });
@@ -102,7 +89,6 @@ class InstallApplication extends \Silex\Application
             'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
         ));
 
-#        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
@@ -134,20 +120,6 @@ class InstallApplication extends \Silex\Application
             //
         }, self::EARLY_EVENT);
 
-
-        $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-            if (!$event->isMasterRequest()) {
-                return;
-            }
-
-            $request = $event->getRequest();
-            try {
-#                $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $request->attributes->get('_route'));
-            } catch (\Doctrine\ORM\NoResultException $e) {
-                $PageLayout = $app['eccube.repository.page_layout']->newPageLayout(10);
-            }
-        });
-
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
@@ -162,35 +134,10 @@ class InstallApplication extends \Silex\Application
             return $translator;
         }));
 
-/*
-        //Doctrine ORM
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/Resource/doctrine',
-                            __DIR__ . '/Resource/doctrine/master',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-*/
-
-#        $app['eccube.event_listner.security'] = $app->share(function ($app) {
-#            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
-#        });
 
         // インストールされてなければこれこまで読み込む
         if (!file_exists(__DIR__ . '/../../app/config/eccube/config.yml')) {
 
-#           $app['eccube.event.dispatcher'] = $app->share(function () {
-#               return new EventDispatcher();
-#           });
 
             $app->mount('', new ControllerProvider\InstallControllerProvider());
             $app->register(new ServiceProvider\EccubeServiceProvider());
@@ -243,9 +190,6 @@ class InstallApplication extends \Silex\Application
         parent::boot();
 
         $app = $this;
-
-        // ログイン時のイベント
-        #$app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
     public function addSuccess($message, $namespace = 'front')
