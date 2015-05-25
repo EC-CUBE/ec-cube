@@ -83,12 +83,14 @@ class CategoryController
 
         $Children = $app['eccube.repository.category']->getList(null);
         $Categories = $app['eccube.repository.category']->getList($Parent);
+        $TopCategories = $app['eccube.repository.category']->findBy(array('Parent' => null), array('rank' => 'DESC'));
 
-        return $app['view']->render('Product/category.twig', array(
+        return $app->render('Product/category.twig', array(
             'form' => $form->createView(),
             'Children' => $Children,
             'Parent' => $Parent,
             'Categories' => $Categories,
+            'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
         ));
     }

@@ -31,104 +31,125 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-9">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">{{ TargetCategory.name }}</h3>
-                </div><!-- /.box-header -->
-                <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
-                    {{ form_widget(form._token) }}
-
-                    <div class="box-body no-padding">
-
-                        {{ form_widget(form.name) }}
-
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <tbody>
-                                {% if Categories|length > 0 %}
-                                    {% for Category in Categories %}
-                                        <tr>
-                                            <td>{{ Category.name }}</td>
-                                            <td class="icon_edit">
-                                                <div class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="fa fa-pencil"></span></a>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        {% if Category.id != TargetCategory.id %}
-                                                            <li><a href="{{ url('admin_product_category_edit', {id: Category.id}) }}">編集</a></li>
-                                                        {% else %}
-                                                            <li><a>編集中</a></li>
-                                                        {% endif %}
-
-                                                        {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
-                                                        {% else %}
-                                                            {% set delete_action = url('admin_product_category_delete', {id: Category.id}) %}
-                                                            <li>
-                                                                <a href="?" onclick="eccube.changeAction('{{ delete_action }}'); document.form1.submit(); return false;">
-                                                                    削除
-                                                                </a>
-                                                            </li>
-                                                        {% endif %}
-
-                                                        {% if loop.first == false %}
-                                                            {% set up_action = url('admin_product_category_up', {id: Category.id}) %}
-                                                            <li>
-                                                                <a href="?" onclick="eccube.changeAction('{{ up_action }}'); document.form1.submit(); return false;">
-                                                                    上へ
-                                                                </a>
-                                                            </li>
-                                                        {% endif %}
-
-                                                        {% if loop.last == false %}
-                                                            {% set down_action = url('admin_product_category_down', {id: Category.id}) %}
-                                                            <li>
-                                                                <a href="?" onclick="eccube.changeAction('{{ down_action }}'); document.form1.submit(); return false;">
-                                                                    下へ
-                                                                </a>
-                                                            </li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                {% else %}
-                                    <tr><td>この階層には、カテゴリが登録されていません。</td></tr>
-                                {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- /.box-body -->
-                </form>
-            </div><!-- /.box -->
-
-            <div class="row hidden-xs hidden-sm">
-                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">フォルダを作成</button>
+                    <div class="form-inline">
+                        全カテゴリー
+                        {% for ParentCategory in TargetCategory.path %}
+                            {% if ParentCategory.id is not null %}
+                            &nbsp;>&nbsp;<a href="{{ url('admin_product_category_show', { parent_id : ParentCategory.id }) }}">{{ ParentCategory.name }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
+                <div class="box-body">
+                    <div class="form-inline">
+                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
+                            {{ form_widget(form._token) }}
+                            {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
+                            <button class="btn btn-default btn-sm" type="submit" onclick="document.form1.submit(); return false;">規格作成</button>
+                        </form>
+                    </div>
+                </div><!-- /.box-header -->
+                {% if Categories|length > 0 %}
+                    <div class="box-body no-padding no-border">
+                        <div class="sortable_list">
+                            <div class="tableish">
 
-        </div><!-- /.col -->
+                                {% for Category in Categories %}
 
+                                <div class="item_box tr">
+                                    <div class="icon_sortable td">
+                                        <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
+                                    </div>
+                                    <div class="item_pattern td">
+                                        <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
+                                    </div>
+                                    <div class="icon_edit td">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                {% if Category.id != TargetCategory.id %}
+                                                    <li><a href="{{ url('admin_product_category_edit', {id: Category.id}) }}">編集</a></li>
+                                                {% else %}
+                                                    <li><a>編集中</a></li>
+                                                {% endif %}
 
+                                                {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
+                                                {% else %}
+                                                    {% set delete_action = url('admin_product_category_delete', {id: Category.id}) %}
+                                                    <li>
+                                                        <a href="?" onclick="eccube.changeAction('{{ delete_action }}'); document.form1.submit(); return false;">
+                                                            削除
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
 
-        {% if Parent %}
-            {% set Path = Parent.path %}
-        {% else %}
-            {% set Path = [] %}
-        {% endif %}
+                                                {% if loop.first == false %}
+                                                    {% set up_action = url('admin_product_category_up', {id: Category.id}) %}
+                                                    <li>
+                                                        <a href="?" onclick="eccube.changeAction('{{ up_action }}'); document.form1.submit(); return false;">
+                                                            上へ
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
 
-        <div class="col-md-3">
-            <div class="col_inner" id="aside_column">
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="box">
-                                <div class="box-header">
-                                    <a href="{{ url('admin_product_category') }}">+&nbsp;ホーム</a>
-                                    {{ include('Product/category_tree_fork.twig', {'Children': Children, 'treeId': 'f0', 'disp_child': true}) }}
-                                </div><!-- /.box-header -->
+                                                {% if loop.last == false %}
+                                                    {% set down_action = url('admin_product_category_down', {id: Category.id}) %}
+                                                    <li>
+                                                        <a href="?" onclick="eccube.changeAction('{{ down_action }}'); document.form1.submit(); return false;">
+                                                            下へ
+                                                        </a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- /.item_box -->
+                                {% endfor %}
+
                             </div>
                         </div>
                     </div><!-- /.box-body -->
+            {% else %}
+                <div class="box-body no-padding">
+                    <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
+                </div><!-- /.box-body -->
+            {% endif %}
+            <!-- ▲ データがある時 ▲ -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+
+        {% macro tree(Category, TargetId) %}
+            <li {% if Category.id == TargetId %}class="active"{% endif %}>
+                <svg class="cb cb-plus-square"> <use xlink:href="{% if Category.children|length > 0 %}#cb-plus-square{% else %}#cb-minus-square{% endif %}" /></svg>
+                <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">
+                    {{ Category.name }} ({{ Category.children|length }})
+                </a>
+                {% if Category.children|length > 0 %}
+                    {% for ChildCategory in Category.children %}
+                        <ul>
+                            {{ _self.tree(ChildCategory, TargetId) }}
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+            </li>
+        {% endmacro %}
+
+        <div class="col-md-3" id="aside_column">
+            <div class="col_inner">
+
+                <div class="box no-header">
+                    <div class="box-body">
+                        <div class="tree">
+                            <p><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
+                            <ul>
+                                {% for TopCategory in TopCategories %}
+                                    {{ _self.tree(TopCategory, TargetCategory.Parent.id) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
                 </div><!-- /.box -->
+
             </div>
         </div><!-- /.col -->
 

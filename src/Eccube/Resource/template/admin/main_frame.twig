@@ -127,6 +127,20 @@
 <script type="text/javascript">//<![CDATA[
     {{ block('javascript') }}
     $(function(){
+        /*
+         * for svg icon
+         */
+        $.ajax({
+            type: 'GET',
+            url: '{{ app.config.root }}admin/assets/img/svg.html',
+            dataType: 'html',
+            success: function(data){
+                $('body').prepend(data);
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
         {{ block('onload') }}
     });
 //]]></script>
