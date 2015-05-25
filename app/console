@@ -9,4 +9,3 @@ $app = new Eccube\Application();
 $console = &$app["console"];
 
 $console->run();
-?>
