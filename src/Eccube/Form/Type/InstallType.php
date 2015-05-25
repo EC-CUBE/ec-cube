@@ -33,7 +33,8 @@ class InstallType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    #public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }

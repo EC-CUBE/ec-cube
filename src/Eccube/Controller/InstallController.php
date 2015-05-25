@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\InstallApplication;
 use Symfony\Component\Filesystem\Filesystem;
 
 class InstallController
@@ -34,12 +35,12 @@ class InstallController
 
     private $PDO;
 
-    public function index(Application $app)
+    public function index(InstallApplication $app)
     {
+
         $form = $app['form.factory']
             ->createBuilder('install')
             ->getForm();
-
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
@@ -52,13 +53,13 @@ class InstallController
                     case 'mysql':
                         $data['db_port'] = '3306';
                         $data['db_driver'] = 'pdo_mysql';
-                        $data['db_server'] = '127.0.0.1';
                         break;
                 }
                 $this->data = $data;
                 $this->install();
 
-                return $app->redirect($app['url_generator']->generate('install_complete'));
+    #            return $app->redirect($app['url_generator']->generate('install_complete'));
+                 return 'Install completed!!<br />EC-CUBE 3.0.0 beta ';
             }
         }
 
@@ -67,7 +68,7 @@ class InstallController
         ));
     }
 
-    public function complete(Application $app)
+    public function complete(InstallApplication $app)
     {
         return 'Install completed!!<br />EC-CUBE 3.0.0 beta ';
     }
@@ -101,8 +102,16 @@ class InstallController
     private function createTable()
     {
         $doctrine = __DIR__ . '/../../../vendor/bin/doctrine';
-        exec('php ' . $doctrine . ' orm:schema-tool:create', $output);
+        exec(' php ' . $doctrine . ' orm:schema-tool:create ', $output,$state);
 
+        echo str_repeat(" ",4*1024); 
+        ob_flush();
+        flush();
+
+        if($state!=0) // non-0 exit
+        {
+            throw new \Exception($output);
+        }
         return $this;
     }
 
@@ -123,6 +132,7 @@ class InstallController
 
     private function modifyFilePermissions()
     {
+/*
         $fs = new Filesystem();
         $base = __DIR__ . '/../../..';
         $fs->chmod($base . '/html', 0777, 0000, true);
@@ -138,7 +148,7 @@ class InstallController
         $fs->chmod($base . '/src/smarty_extends', 0777);
         $fs->chmod($base . '/app/upload', 0777);
         $fs->chmod($base . '/app/upload/csv', 0777);
-
+*/
         return $this;
     }
 
