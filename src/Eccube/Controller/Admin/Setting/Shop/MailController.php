@@ -56,7 +56,7 @@ class MailController extends AbstractController
                 $app['orm.em']->persist($Mail);
                 $app['orm.em']->flush();
 
-                $app->addSuccess('admin.register.complete' , 'admin');
+                $app->addSuccess('admin.register.complete', 'admin');
 
                 return $app->redirect($app->url('admin_setting_shop_mail'));
             } else {
