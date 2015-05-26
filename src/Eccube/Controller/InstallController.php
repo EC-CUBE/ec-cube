@@ -70,7 +70,7 @@ class InstallController
                 }
                 return $app['twig']->render('Install/complete.twig', array(
                     'progress' => $this->progress,
-                    'error' => $this->error->getMessage(),
+                    'error' => ($this->error ? $this->error->getMessage() : ""),
                 ));
             }
         }
@@ -125,7 +125,7 @@ class InstallController
         $this->progress[] = "Migrating database...."; 
 
         $console = __DIR__ . '/../../../app/console';
-        exec(' php ' . $console . ' migrations:migrate --no-interaction 2>&1', $output,$state);
+        exec('( php ' . $console . ' migrations:migrate --no-interaction 2>&1 ) ', $output,$state);
         if($state!=0) // 失敗時
         {
             throw new \Exception( join("\n",$output) );
