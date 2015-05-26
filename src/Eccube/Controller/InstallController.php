@@ -35,6 +35,9 @@ class InstallController
 
     private $PDO;
 
+    private $progress;
+    private $error;
+
     public function index(InstallApplication $app)
     {
 
@@ -60,9 +63,15 @@ class InstallController
                         break;
                 }
                 $this->data = $data;
-                $this->install();
-
-                return $app->redirect($app['url_generator']->generate('install_complete'));
+                try{
+                    $this->install();
+                }catch(\Exception $e){
+                    $this->error = $e; 
+                }
+                return $app['twig']->render('Install/complete.twig', array(
+                    'progress' => $this->progress,
+                    'error' => $this->error,
+                ));
             }
         }
 
@@ -71,10 +80,6 @@ class InstallController
         ));
     }
 
-    public function complete(InstallApplication $app)
-    {
-        return 'Install completed!!<br />EC-CUBE 3.0.0 beta ';
-    }
 
     private function install()
     {
@@ -93,6 +98,7 @@ class InstallController
 
     private function setPDO()
     {
+        $this->progress[] = "Checking database connection...."; 
         $data = $this->data;
         $this->PDO = new \PDO(
             $data['db_type']
@@ -106,10 +112,15 @@ class InstallController
     }
     private function doMigrate()
     {
-#        return $this;
+
+        $this->progress[] = "Migrating database...."; 
+
         $console = __DIR__ . '/../../../app/console';
+        // NATの無通信タイマ対策（仮）
+        echo str_repeat(" ",4*1024); 
+        ob_flush();
+        flush();
         exec(' php ' . $console . ' migrations:migrate --no-interaction 2>&1', $output,$state);
-var_dump($output);
         if($state!=0) // スキーマ作成の失敗時
         {
             throw new \Exception( join("\n",$output) );
@@ -119,6 +130,8 @@ var_dump($output);
 
     private function createTable()
     {
+        $this->progress[] = "Creating schema...."; 
+
         $doctrine = __DIR__ . '/../../../vendor/bin/doctrine';
         exec(' php ' . $doctrine . ' orm:schema-tool:create 2>&1', $output,$state);
 
@@ -136,6 +149,8 @@ var_dump($output);
 
     private function insert()
     {
+        $this->progress[] = "Inserting initial data...."; 
+
         $data = $this->data;
 
         if($data['db_type']=='pgsql'){
@@ -170,6 +185,9 @@ var_dump($output);
     }
 
     private function setSequenceVal(){
+
+        $this->progress[] = "Setting sequence...."; 
+
         $seqs=array(
             'dtb_best_products_best_id_seq',
             'dtb_category_category_id_seq',
@@ -212,7 +230,8 @@ var_dump($output);
 
     private function checkDirPermission()
     {
-        
+        $this->progress[] = "Cheking directory permission...."; 
+
         $protectedDirs=array(); 
         $base = __DIR__ . '/../../..';
         $dirs=array('/html' ,'/app', '/app/template', '/app/cache', '/app/config', '/app/download', '/app/downloads', '/app/font', '/app/fonts','/app/log' ,'/app/upload', '/app/upload/csv');
@@ -231,6 +250,8 @@ var_dump($output);
 
     private function createConfigPhpFile()
     {
+        $this->progress[] = "Creating config.php...."; 
+
         $data = $this->data;
         $url = "http://".$data['http_url'] . $data['path'];
         $https_url ="https://".$data['http_url'] . $data['path']; 
@@ -273,6 +294,7 @@ EOF;
 
     private function createConfigYmlFile()
     {
+        $this->progress[] = "Creating config.yml...."; 
         $data = $this->data;
 
         $content = <<<EOF
