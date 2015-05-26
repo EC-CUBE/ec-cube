@@ -90,12 +90,6 @@ Eccube\Entity\ProductClass:
             type: datetime
             nullable: false
             default: '0000-00-00 00:00:00'
-        down_filename:
-            type: text
-            nullable: true
-        down_realfilename:
-            type: text
-            nullable: true
         del_flg:
             type: smallint
             nullable: false
@@ -122,12 +116,20 @@ Eccube\Entity\ProductClass:
             joinColumn:
                 name: class_category_id1
                 referencedColumnName: class_category_id
+                nullable: false
         ClassCategory2:
             targetEntity: Eccube\Entity\ClassCategory
             inversedBy: ProductClasses2
             joinColumn:
                 name: class_category_id2
                 referencedColumnName: class_category_id
+                nullable: false
+        DeliveryDate:
+            targetEntity: Eccube\Entity\Master\DeliveryDate
+            inversedBy: ProductClasses
+            joinColumn:
+                name: delivery_date_id
+                referencedColumnName: id
         Creator:
             targetEntity: Eccube\Entity\Member
             inversedBy: ProductClasses

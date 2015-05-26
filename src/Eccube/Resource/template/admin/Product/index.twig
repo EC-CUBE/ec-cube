@@ -142,11 +142,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                                     {{ Product.name }}
                                                 </a><br>
+                                                {#
                                                 <span>
                                                     {{ Product.code_min }}
                                                     {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}
                                                     {% endif %}
                                                 </span>
+                                                #}
                                             </div>
                                             <div class="icon_edit td">
                                                 <div class="dropdown">
