@@ -70,7 +70,7 @@ class InstallController
                 }
                 return $app['twig']->render('Install/complete.twig', array(
                     'progress' => $this->progress,
-                    'error' => $this->error,
+                    'error' => $this->error->getMessage(),
                 ));
             }
         }
@@ -110,18 +110,23 @@ class InstallController
 
         return $this;
     }
-    private function doMigrate()
+
+    private function resetNatTimer()
     {
-
-        $this->progress[] = "Migrating database...."; 
-
-        $console = __DIR__ . '/../../../app/console';
         // NATの無通信タイマ対策（仮）
         echo str_repeat(" ",4*1024); 
         ob_flush();
         flush();
+    }
+
+    private function doMigrate()
+    {
+        $this->resetNatTimer();
+        $this->progress[] = "Migrating database...."; 
+
+        $console = __DIR__ . '/../../../app/console';
         exec(' php ' . $console . ' migrations:migrate --no-interaction 2>&1', $output,$state);
-        if($state!=0) // スキーマ作成の失敗時
+        if($state!=0) // 失敗時
         {
             throw new \Exception( join("\n",$output) );
         }
@@ -130,15 +135,11 @@ class InstallController
 
     private function createTable()
     {
+        $this->resetNatTimer();
         $this->progress[] = "Creating schema...."; 
 
         $doctrine = __DIR__ . '/../../../vendor/bin/doctrine';
         exec(' php ' . $doctrine . ' orm:schema-tool:create 2>&1', $output,$state);
-
-        // NATの無通信タイマ対策（仮）
-        echo str_repeat(" ",4*1024); 
-        ob_flush();
-        flush();
 
         if($state!=0) // スキーマ作成の失敗時
         {
@@ -149,6 +150,7 @@ class InstallController
 
     private function insert()
     {
+        $this->resetNatTimer();
         $this->progress[] = "Inserting initial data...."; 
 
         $data = $this->data;
