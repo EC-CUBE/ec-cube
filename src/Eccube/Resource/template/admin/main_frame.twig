@@ -83,7 +83,11 @@
     <!-- ▼ #side ▼ -->
     <aside id="side">
         <ul class="nav nav-sidebar">
-            <li><a href="./" class="active"><span class="fa fa-home"></span>ホーム<span class="fa fa-chevron-down"></span></a></li>
+            <li>
+                <a href="{{ url('admin_homepage') }}">
+                    <svg class="cb cb-home"> <use xlink:href="#cb-home" /></svg>ホーム<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
+                </a>
+            </li>
             {{ include('Product/subnavi.twig') }}
             {{ include('Order/subnavi.twig') }}
             {{ include('Report/subnavi.twig') }}
