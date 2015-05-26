@@ -315,40 +315,6 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
-            ->add('option_product_tax_rule', 'choice', array(
-                'label' => '商品ごとの税率設定',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('point_rule', 'choice', array(
-                'label' => 'ポイントの計算ルール(1:四捨五入、2:切り捨て、3:切り上げ )',
-                'choices' => array(
-                    '1' => '四捨五入',
-                    '2' => '切り捨て',
-                    '3' => '切り上げ',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('use_point', 'choice', array(
-                'label' => 'ポイントを利用するか',
-                'choices' => array(
-                    '0' => '利用しない',
-                    '1' => '利用する',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('point_value', 'integer', array(
-                'label' => '1ポイント当たりの値段(円)',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $downloadable_days_unlimited = $form['downloadable_days_unlimited']->getData();

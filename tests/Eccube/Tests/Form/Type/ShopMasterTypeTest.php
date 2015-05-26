@@ -80,9 +80,6 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'option_favorite_product' => 1,
         'option_product_deliv_fee' => 1,
         'option_deliv_fee' => 1,
-        'point_value' => 1,
-        'point_rule' => 1,
-        'use_point' => 1,
     );
 
     public function setUp()
