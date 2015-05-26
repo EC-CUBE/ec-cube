@@ -299,19 +299,6 @@ class Application extends \Silex\Application
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
-        // Migration
-        $app->register(
-            new ConsoleServiceProvider(),
-            array(
-                'console.name' => 'EC-CUBE',
-                'console.version' => '3.0.0',
-                'console.project_directory' => __DIR__ . "/.."
-            )
-        );
-        $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
-            'db.migrations.path' => __DIR__ . '/Resource/doctrine/migration',
-        ));
-
 
         // Security
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
