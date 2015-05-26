@@ -800,4 +800,297 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testInvalidDelivFreeAmount_Number()
+    {
+        $this->formData['deliv_free_amount'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionProductDelivFee_Number()
+    {
+        $this->formData['option_product_deliv_fee'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+
+    public function testInvalidOptionProductDelivFee_MaxInvalid()
+    {
+        $this->formData['option_product_deliv_fee'] = 1 + 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionProductDelivFee_MaxValid()
+    {
+        $this->formData['option_product_deliv_fee'] = 1;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidOptionProductDelivFee_MinInvalid()
+    {
+        $this->formData['option_product_deliv_fee'] = 0 - 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionProductDelivFee_MinValid()
+    {
+        $this->formData['option_product_deliv_fee'] = 0;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidOptionDelivFee_Number()
+    {
+        $this->formData['option_deliv_fee'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionDelivFee_MaxInvalid()
+    {
+        $this->formData['option_deliv_fee'] = 1 + 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionDelivFee_MaxValid()
+    {
+        $this->formData['option_deliv_fee'] = 1;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidOptionDelivFee_MinInvalid()
+    {
+        $this->formData['option_deliv_fee'] = 0 - 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionDelivFee_MinValid()
+    {
+        $this->formData['option_deliv_fee'] = 0;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidUseMultipleShipping_Number()
+    {
+        $this->formData['use_multiple_shipping'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+
+    public function testInvalidUseMultipleShipping_MaxInvalid()
+    {
+        $this->formData['use_multiple_shipping'] = 1 + 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidUseMultipleShipping_MaxValid()
+    {
+        $this->formData['use_multiple_shipping'] = 1;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidUseMultipleShipping_MinInvalid()
+    {
+        $this->formData['use_multiple_shipping'] = 0 - 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidUseMultipleShipping_MinValid()
+    {
+        $this->formData['use_multiple_shipping'] = 0;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidForgotMail_Number()
+    {
+        $this->formData['forgot_mail'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+
+    public function testInvalidForgotMail_MaxInvalid()
+    {
+        $this->formData['forgot_mail'] = 1 + 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidForgotMail_MaxValid()
+    {
+        $this->formData['forgot_mail'] = 1;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidForgotMail_MinInvalid()
+    {
+        $this->formData['forgot_mail'] = 0 - 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidForgotMail_MinValid()
+    {
+        $this->formData['forgot_mail'] = 0;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidMypageOrderStatusDispFlg_Number()
+    {
+        $this->formData['mypage_order_status_disp_flg'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+
+    public function testInvalidMypageOrderStatusDispFlg_MaxInvalid()
+    {
+        $this->formData['mypage_order_status_disp_flg'] = 1 + 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidMypageOrderStatusDispFlg_MaxValid()
+    {
+        $this->formData['mypage_order_status_disp_flg'] = 1;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidMypageOrderStatusDispFlg_MinInvalid()
+    {
+        $this->formData['mypage_order_status_disp_flg'] = 0 - 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidMypageOrderStatusDispFlg_MinValid()
+    {
+        $this->formData['mypage_order_status_disp_flg'] = 0;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidOptionFavoriteProduct_Number()
+    {
+        $this->formData['option_favorite_product'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+
+    public function testInvalidOptionFavoriteProduct_MaxInvalid()
+    {
+        $this->formData['option_favorite_product'] = 1 + 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionFavoriteProduct_MaxValid()
+    {
+        $this->formData['option_favorite_product'] = 1;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidOptionFavoriteProduct_MinInvalid()
+    {
+        $this->formData['option_favorite_product'] = 0 - 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidOptionFavoriteProduct_MinValid()
+    {
+        $this->formData['option_favorite_product'] = 0;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+
+    public function testInvalidNostockHidden_Number()
+    {
+        $this->formData['nostock_hidden'] = 'e1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidNostockHidden_MaxInvalid()
+    {
+        $this->formData['nostock_hidden'] = 1 + 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidNostockHidden_MaxValid()
+    {
+        $this->formData['nostock_hidden'] = 1;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidNostockHidden_MinInvalid()
+    {
+        $this->formData['nostock_hidden'] = 0 - 1;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidNostockHidden_MinValid()
+    {
+        $this->formData['nostock_hidden'] = 0;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
 }
