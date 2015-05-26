@@ -61,6 +61,14 @@ class MailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+public function testInvalidTemplate_Blank()
+{
+    $this->formData['template'] = null;
+    $this->form->submit($this->formData);
+
+    $this->assertTrue($this->form->isValid());
+}
+
     public function testInvalidSubject_NotBlank()
     {
         $this->formData['subject'] = '';
@@ -69,13 +77,30 @@ class MailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidSubject_MaxLengthInvalid()
+    public function testInvalidSubject_MaxLengthValid()
     {
-        $subject = str_repeat('S', $this->app['config']['mtext_len']) . 'S';
+        $subject = str_repeat('S', $this->app['config']['stext_len']);
 
         $this->formData['subject'] = $subject;
         $this->form->submit($this->formData);
 
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidSubject_MaxLengthInvalid()
+    {
+        $subject = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+
+        $this->formData['subject'] = $subject;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidSubject_SptabCheck()
+    {
+        $this->formData['name'] = '     ';
+        $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
@@ -97,6 +122,16 @@ class MailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testInvalidHeader_MaxLengthInvalid()
+    {
+        $header = str_repeat('S', $this->app['config']['ltext_len']) . 'S';
+
+        $this->formData['header'] = $header;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testInvalidFooter_NotBlank()
     {
         $this->formData['footer'] = '';
@@ -115,4 +150,13 @@ class MailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testInvalidFooter_MaxLengthInvalid()
+    {
+        $footer = str_repeat('S', $this->app['config']['ltext_len']) . 'S';
+
+        $this->formData['footer'] = $footer;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
 }

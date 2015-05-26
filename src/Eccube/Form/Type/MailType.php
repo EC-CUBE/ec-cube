@@ -53,7 +53,7 @@ class MailType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $this->config['mtext_len'],
+                        'max' => $this->config['stext_len'],
                     )),
                 ),
             ))
