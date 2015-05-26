@@ -79,9 +79,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     public function loadUserByUsername($username)
     {
         $query = $this->createQueryBuilder('c')
-            ->where('c.email = :email OR c.email_mobile = :email_mobile')
+            ->where('c.email = :email')
             ->setParameter('email', $username)
-            ->setParameter('email_mobile', $username)
             ->getQuery();
         $Customer = $query->getOneOrNullResult();
         if (!$Customer) {
@@ -132,11 +131,13 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->select('c')
             ->andWhere('c.del_flg = 0');
 
-        // customer_id
-        if (!empty($searchData['customer_id']) && $searchData['customer_id']) {
+        if ($searchData['multi']) {
             $qb
-                ->andWhere('c.id = :customer_id')
-                ->setParameter('customer_id', $searchData['customer_id']);
+                ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
+                ->setParameter('customer_id', $searchData['multi'])
+                ->setParameter('name', '%' . $searchData['multi'] . '%')
+                ->setParameter('kana', '%' . $searchData['multi'] . '%')
+                ->setParameter('email', '%' . $searchData['multi'] . '%');
         }
 
         // Pref
@@ -144,20 +145,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             $qb
                 ->andWhere('c.Pref = :pref')
                 ->setParameter('pref', $searchData['pref']->getId());
-        }
-
-        // name
-        if (!empty($searchData['name']) && $searchData['name']) {
-            $qb
-                ->andWhere('CONCAT(c.name01, c.name02) LIKE :name')
-                ->setParameter('name', '%' . $searchData['name'] . '%');
-        }
-
-        // kana
-        if (!empty($searchData['kana']) && $searchData['kana']) {
-            $qb
-                ->andWhere('CONCAT(c.kana01, c.kana02) LIKE :kana')
-                ->setParameter('kana', '%' . $searchData['kana'] . '%');
         }
 
         // sex
@@ -189,13 +176,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             $qb
                 ->andWhere('c.birth < :birth_end')
                 ->setParameter('birth_end', $date);
-        }
-
-        // email
-        if (!empty($searchData['email']) && $searchData['email']) {
-            $qb
-                ->andWhere('c.email = :email')
-                ->setParameter('email', $searchData['email']);
         }
 
         // tel
@@ -251,21 +231,38 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('buy_times_end', $searchData['buy_times_end']);
         }
 
-        // register
-        if (!empty($searchData['register_start']) && $searchData['register_start']) {
-            $date = $searchData['register_start']
+        // create_date
+        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+            $date = $searchData['create_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
-                ->andWhere('c.update_date >= :register_start')
-                ->setParameter('register_start', $date);
+                ->andWhere('c.create_date >= :create_date_start')
+                ->setParameter('create_date_start', $date);
         }
-        if (!empty($searchData['register_end']) && $searchData['register_end']) {
-            $date = $searchData['register_end']
+        if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+            $date = $searchData['create_date_end']
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
-                ->andWhere('c.update_date < :register_end')
-                ->setParameter('register_end', $date);
+                ->andWhere('c.create_date < :create_date_end')
+                ->setParameter('create_date_end', $date);
+        }
+
+        // update_date
+        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+            $date = $searchData['update_date_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        }
+        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+            $date = $searchData['update_date_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('c.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
         }
 
         // last_buy
@@ -284,7 +281,12 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->andWhere('c.last_buy_date < :last_buy_end')
                 ->setParameter('last_buy_end', $date);
         }
-
+        // mailmaga_flg
+        if (!empty($searchData['mailmaga_flg']) && $searchData['mailmaga_flg']) {
+            $qb
+                ->andWhere('c.mailmaga_flg = :mailmaga_flg')
+                ->setParameter('mailmaga_flg', $searchData['mailmaga_flg']);
+        }
         // status
         if (!empty($searchData['customer_status']) && $searchData['customer_status']) {
             $qb

@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
+use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -35,36 +36,35 @@ class CustomerController
     {
     }
 
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
-
-        $Customers = array();
-
-        $form = $app['form.factory']
+        $pagination = null;
+        $searchForm = $app['form.factory']
             ->createBuilder('admin_search_customer')
             ->getForm();
 
-        $showResult = false;
+        if ('POST' === $request->getMethod()) {
+            $searchForm->handleRequest($request);
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-
-            if ($form->isValid()) {
-                $showResult = true;
-
+            if ($searchForm->isValid()) {
+                $searchData = $searchForm->getData();
                 $qb = $app['orm.em']
                     ->getRepository('Eccube\Entity\Customer')
-                    ->getQueryBuilderBySearchData($form->getData());
-                $query = $qb->getQuery();
-                $Customers = $query->getResult();
+                    ->getQueryBuilderBySearchData($searchData);
+
+                // paginator
+                $pagination = $app['paginator']()->paginate(
+                    $qb,
+                    empty($searchData['pageno']) ? 1 : $searchData['pageno'],
+                    empty($searchData['pagemax']) ? 10 : $searchData['pagemax']->getId()
+                );
             }
 
         }
 
-        return $app['view']->render('Customer/index.twig', array(
-            'form' => $form->createView(),
-            'showResult' => $showResult,
-            'Customers' => $Customers,
+        return $app->render('Customer/index.twig', array(
+            'searchForm' => $searchForm->createView(),
+            'pagination' => $pagination,
         ));
     }
 

@@ -24,132 +24,111 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}会員マスター{% endblock %}
 
+{% form_theme searchForm 'Form/bootstrap_3_layout.html.twig' %}
+
 {% block main %}
+    <!--検索条件設定テーブルここから-->
+    <div class="search-box">
+        <form name="search_form" id="search_form" method="post" action="">
+            <div class="row">
+                <div class="col-md-12 accordion">
 
-<script type="text/javascript">
-<!--
+                    {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前・お名前(フリガナ)', class : 'input_search' } } ) }}
 
-    function fnDelete(action) {
-        if (confirm('この会員情報を削除しても宜しいですか？')) {
-            document.search_form.action = action;
-            document.search_form.submit();
-        }
-    }
+                    <a class="toggle fa-stack" href="#"><span class="fa fa-minus fa-stack-1x"></span> <span class="fa fa-minus fa-stack-1x"></span></a>
+                    <div class="search-box-inner accpanel">
+                        {{ form_rest(searchForm, { attr : { class : 'search' } }) }}
 
-    function fnEdit(action) {
-        document.search_form.action = action;
-        document.search_form.submit();
-    }
-
-    function fnReSendMail(action) {
-        if (confirm('仮登録メールを再送しても宜しいですか？')) {
-            document.search_form.action = action;
-            document.search_form.submit();
-        }
-    }
-//-->
-</script>
-
-    {% for message in app.session.flashbag.get('admin.customer.complete')  %}
-        {{ message|trans|raw }}<br />
-    {% endfor %}
-
-
-<div id="customer" class="contents-main">
-    <form name="search_form" id="search_form" method="post" action="{{ url('admin_customer') }}">
-
-        <h2>検索条件設定</h2>
-
-        <!--検索条件設定テーブルここから-->
-        <table class="form">
-            {{ form_widget(form) }}
-        </table>
-        <div class="btn">
-            <p class="page_rows">検索結果表示件数
-            {#
-            <select name="search_page_max">
-                <option>10<option>
-            </select> 件</p>
-            #}
-            <div class="btn-area">
-                <ul>
-                    <li>
-                        <input type="submit" value="この条件で検索する" />
-                    </li>
-                </ul>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                            </div>
+                        </div><!-- /.row -->
+                    </div>
+                </div>
+                <!-- /.col -->
             </div>
-        </div>
-    </form>
-    {% if showResult %}
-
-        <!-- ★★検索結果一覧★★ -->
-        <form name="form1" id="form1" method="post" action="?">
-            <h2>検索結果一覧</h2>
-            <div class="btn">
-                <span class="attention">{{ Customers|length }}件</span>&nbsp;が該当しました。
-                <!-- 検索結果 -->
-                {#
-                <a class="btn-normal" href="javascript:;" onclick="eccube.setModeAndSubmit('csv','',''); return false;">CSV ダウンロード</a>
-                <a class="btn-normal" href="javascript:;" onclick="location.href='../contents/csv.php?tpl_subno_csv=customer'">CSV 出力項目設定</a>
-                #}
+            <div class="row btn_area">
+                <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+                    <button class="btn btn-primary btn-block btn-lg" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;">
+                        検索する <span class="fa fa-chevron-right"></span>
+                    </button>
+                </div>
+                <!-- /.col -->
             </div>
-
-            <!-- 検索結果表示テーブル -->
-            <table class="list" id="customer-search-result">
-                <col width="10%" />
-                <col width="10%" />
-                <col width="50%" />
-                <col width="30%" />
-
-                <tr>
-                    <th>種別</th>
-                    <th>会員ID</th>
-                    <th>会員情報</th>
-                    <th>操作</th>
-                </tr>
-                {% for Customer in Customers %}
-                    <tr>
-                        <td class="center">
-                            {% if Customer.Status.id == 1 %}
-                                仮
-                            {% else %}
-                                本
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ Customer.id }}
-                        </td>
-                        <td>
-                            {{ Customer.name01 }} {{Customer.name02}}<br />
-                            {{ Customer.tel01 }} - {{ Customer.tel02 }} - {{ Customer.tel03 }}
-                        </td>
-                        <td class="center">
-                            {% set delete_action = url('admin_customer_delete', {id: Customer.id}) %}
-                            {% set resend_action = url('admin_customer_resend', {id: Customer.id}) %}
-                            <span class="icon_edit">
-                                <a href="{{ url('admin_customer_edit', { id : Customer.id }) }}");">編集</a>
-                            </span>
-                             | 
-                            <span class="icon_delete">
-                                <a href="#" onclick="return fnDelete('{{ delete_action }}');">削除</a>
-                            </span>
-                            {% if Customer.Status.id == 1 %}
-                                | <a href="#" onclick="return fnReSendMail('{{ resend_action }}');">仮登録メール再送</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4" class="center">
-                            検索条件に該当するデータがありませんでした。
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-            <!-- 検索結果表示テーブル -->
         </form>
-        <!-- ★★検索結果一覧★★ -->
-    {% endif %}
-</div>
+    </div>
+    <!--検索条件設定テーブルここまで-->
 
+{% if pagination and pagination.totalItemCount > 0 %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-arrow">
+                    <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="sort-dd">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown">20件<span class="fa fa-chevron-down icon_down"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a>50件</a></li>
+                                        <li><a>100件</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a>ダウンロード</a></li>
+                                        <li><a>出力項目設定</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="table_list">
+                        <div class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>会員ID</th>
+                                    <th>会員名</th>
+                                    <th>電話番号</th>
+                                    <th>メールアドレス</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for Customer in pagination %}
+                                <tr>
+                                    <td class="member_id">{{ Customer.id }}</td>
+                                    <td class="member_name"><a href="#">{{ Customer.name01 }}{{ Customer.name02 }}</a></td>
+                                    <td class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                                    <td class="member_mail">{{ Customer.email }}</td>
+                                    <td class="icon_edit">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a>編集</a></li>
+                                                <li><a>削除</a></li>
+                                                <li><a>仮会員メール再送</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+                {% if pagination.totalItemCount > 0 %}
+                    {% include "pager.twig" with { 'pages' : pagination.paginationData } %}
+                {% endif %}
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div>
+{% endif %}
 {% endblock %}
