@@ -92,7 +92,7 @@ Eccube\Entity\Product:
             mappedBy: Product
         RecommendProducts:
             targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: RecommendedProduct
+            mappedBy: Product
             orderBy:
                 rank: ASC
         RecommendedProducts:
@@ -105,6 +105,14 @@ Eccube\Entity\Product:
                 create_date: DESC
         BestProducts:
             targetEntity: Eccube\Entity\BestProduct
+            mappedBy: Product
+        ProductImage:
+            targetEntity: Eccube\Entity\ProductImage
+            mappedBy: Product
+            orderBy:
+                rank: ASC
+        ProductTag:
+            targetEntity: Eccube\Entity\ProductTag
             mappedBy: Product
         CustomerFavoriteProducts:
             targetEntity: Eccube\Entity\CustomerFavoriteProduct

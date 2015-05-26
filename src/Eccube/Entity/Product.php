@@ -555,6 +555,8 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->Reviews = new \Doctrine\Common\Collections\ArrayCollection();
         $this->BestProducts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductImage = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1131,8 +1133,80 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $this->ProductStatusColor;
     }
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ProductImage;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ProductTag;
 
 
+    /**
+     * Add ProductImage
+     *
+     * @param \Eccube\Entity\ProductImage $productImage
+     * @return Product
+     */
+    public function addProductImage(\Eccube\Entity\ProductImage $productImage)
+    {
+        $this->ProductImage[] = $productImage;
 
+        return $this;
+    }
 
+    /**
+     * Remove ProductImage
+     *
+     * @param \Eccube\Entity\ProductImage $productImage
+     */
+    public function removeProductImage(\Eccube\Entity\ProductImage $productImage)
+    {
+        $this->ProductImage->removeElement($productImage);
+    }
+
+    /**
+     * Get ProductImage
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductImage()
+    {
+        return $this->ProductImage;
+    }
+
+    /**
+     * Add ProductTag
+     *
+     * @param \Eccube\Entity\ProductTag $productTag
+     * @return Product
+     */
+    public function addProductTag(\Eccube\Entity\ProductTag $productTag)
+    {
+        $this->ProductTag[] = $productTag;
+
+        return $this;
+    }
+
+    /**
+     * Remove ProductTag
+     *
+     * @param \Eccube\Entity\ProductTag $productTag
+     */
+    public function removeProductTag(\Eccube\Entity\ProductTag $productTag)
+    {
+        $this->ProductTag->removeElement($productTag);
+    }
+
+    /**
+     * Get ProductTag
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductTag()
+    {
+        return $this->ProductTag;
+    }
 }
