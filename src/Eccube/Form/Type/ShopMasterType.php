@@ -202,8 +202,10 @@ class ShopMasterType extends AbstractType
                     )),
                 ),
             ))
+
+            // 送料設定
             ->add('free_rule', 'money', array(
-                'label' => '送料無料条件',
+                'label' => '送料無料条件(金額)',
                 'required' => false,
                 'currency' => 'JPY',
                 'precision' => '0',
@@ -213,6 +215,94 @@ class ShopMasterType extends AbstractType
                     )),
                 ),
             ))
+            ->add('deliv_free_amount', 'integer', array(
+                'label' => '送料無料条件(数量)',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
+            ->add('option_product_deliv_fee', 'choice', array(
+                'label' => '商品ごとの送料設定を有効にする',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add('option_deliv_fee', 'choice', array(
+                'label' => '配送業者ごとの配送料を加算するか',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add('use_multiple_shipping', 'choice', array(
+                'label' => '複数配送を有効にする',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+
+            // 会員設定
+            ->add('forgot_mail', 'choice', array(
+                'label' => 'パスワードリマインダ利用時にメールを送信する',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add('mypage_order_status_disp_flg', 'choice', array(
+                'label' => 'マイページに注文状況を表示する',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add('option_favorite_product', 'choice', array(
+                'label' => 'お気に入り商品機能を利用する',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+
+            // 商品設定
+            ->add('nostock_hidden', 'choice', array(
+                'label' => '在庫切れ商品を非表示にする',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
+            ->add('downloadable_days_unlimited', 'checkbox', array(
+                'label' => 'ダウンロード無制限',
+                'required' => false,
+            ))
+            ->add('downloadable_days', 'integer', array(
+                'label' => 'ダウンロード可能日数',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['download_days_len'],
+                    )),
+                ),
+            ))
+
+            // 地図設定
             ->add('latitude', 'number', array(
                 'label' => '緯度',
                 'required' => false,
@@ -233,88 +323,7 @@ class ShopMasterType extends AbstractType
                         'message' => 'admin.shop.longitude.invalid'))
                 ),
             ))
-            ->add('downloadable_days_unlimited', 'checkbox', array(
-                'label' => 'ダウンロード無制限',
-                'required' => false,
-            ))
-            ->add('downloadable_days', 'integer', array(
-                'label' => 'ダウンロード可能日数',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['download_days_len'],
-                    )),
-                ),
-            ))
-            ->add('deliv_free_amount', 'integer', array(
-                'label' => '送料無料条件(数量)',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
-            ->add('use_multiple_shipping', 'choice', array(
-                'label' => '複数配送を有効にする',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('option_deliv_fee', 'choice', array(
-                'label' => '配送業者ごとの配送料を加算するか',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('forgot_mail', 'choice', array(
-                'label' => 'パスワードリマインダ利用時にメールを送信する',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('mypage_order_status_disp_flg', 'choice', array(
-                'label' => 'マイページに注文状況を表示する',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('nostock_hidden', 'choice', array(
-                'label' => '在庫切れ商品を非表示にする',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('option_favorite_product', 'choice', array(
-                'label' => 'お気に入り商品機能を利用する',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('option_product_deliv_fee', 'choice', array(
-                'label' => '商品ごとの送料設定を有効にする',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
+
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $downloadable_days_unlimited = $form['downloadable_days_unlimited']->getData();
