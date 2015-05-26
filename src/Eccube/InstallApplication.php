@@ -99,6 +99,12 @@ class InstallApplication extends \Silex\Application
 
             return $twig;
         }));
+       // EventDispatcher
+        $app['eccube.event.dispatcher'] = $app->share(function () {
+            return new EventDispatcher();
+        });
+
+
 
 
         $this->before(function (Request $request, \Silex\Application $app) {
@@ -134,27 +140,20 @@ class InstallApplication extends \Silex\Application
             return $translator;
         }));
 
+        $app->mount('', new ControllerProvider\InstallControllerProvider());
+        $app->register(new ServiceProvider\EccubeServiceProvider());
+        $app->error(function (\Exception $e, $code) use ($app) {
+            if ($code === 404) {
+                return $app->redirect($app['url_generator']->generate('install'));
+            } elseif ($app['debug']) {
+                return;
+            }
 
-        // インストールされてなければこれこまで読み込む
-        if (!file_exists(__DIR__ . '/../../app/config/eccube/config.yml')) {
+            return $app['view']->render('error.twig', array(
+                'error' => 'エラーが発生しました.',
+            ));
+        });
 
-
-            $app->mount('', new ControllerProvider\InstallControllerProvider());
-            $app->register(new ServiceProvider\EccubeServiceProvider());
-            $app->error(function (\Exception $e, $code) use ($app) {
-                if ($code === 404) {
-                    return $app->redirect($app['url_generator']->generate('install'));
-                } elseif ($app['debug']) {
-                    return;
-                }
-
-                return $app['view']->render('error.twig', array(
-                    'error' => 'エラーが発生しました.',
-                ));
-            });
-
-            return;
-        }
         $app->error(function (\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;

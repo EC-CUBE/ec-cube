@@ -63,7 +63,7 @@ class InstallType extends AbstractType
                 'data' =>  'droucliuijeanamiundpnoufrouphudrastiokec',
             ))
             ->add('http_url', 'text', array(
-                'label' => '設置URL',
+                'label' => 'ドメイン',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

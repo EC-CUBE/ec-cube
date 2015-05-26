@@ -62,8 +62,7 @@ class InstallController
                 $this->data = $data;
                 $this->install();
 
-    #            return $app->redirect($app['url_generator']->generate('install_complete'));
-                 return 'Install completed!!<br />EC-CUBE 3.0.0 beta ';
+                return $app->redirect($app['url_generator']->generate('install_complete'));
             }
         }
 
@@ -81,11 +80,12 @@ class InstallController
     {
         $this
             ->checkDirPermission()
-            ->setPDO()
+            ->setPDO() 
             ->createConfigPhpFile()
             ->createConfigYmlFile()
             ->createTable()
             ->insert()
+            ->doMigrate()
         ;
     }
 
@@ -102,6 +102,18 @@ class InstallController
             $this->data['db_pass']
         );
 
+        return $this;
+    }
+    private function doMigrate()
+    {
+#        return $this;
+        $console = __DIR__ . '/../../../app/console';
+        exec(' php ' . $console . ' migrations:migrate --no-interaction 2>&1', $output,$state);
+var_dump($output);
+        if($state!=0) // スキーマ作成の失敗時
+        {
+            throw new \Exception( join("\n",$output) );
+        }
         return $this;
     }
 
@@ -220,12 +232,13 @@ class InstallController
     private function createConfigPhpFile()
     {
         $data = $this->data;
-        $url = $data['http_url'] . $data['path'];
+        $url = "http://".$data['http_url'] . $data['path'];
+        $https_url ="https://".$data['http_url'] . $data['path']; 
         $content = <<<EOF
 <?php
 define('ECCUBE_INSTALL', 'ON');
 define('HTTP_URL', '{$url}');
-define('HTTPS_URL', '{$url}');
+define('HTTPS_URL', '{$https_url}');
 define('ROOT_URLPATH', '{$data['path']}');
 define('DOMAIN_NAME', '');
 define('DB_TYPE', '{$data['db_type']}');
