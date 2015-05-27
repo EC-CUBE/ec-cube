@@ -92,44 +92,85 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
+            <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-9">
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">基本情報</h3>
                         </div><!-- /.box-header -->
-                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
                         <div class="box-body">
 
                             {{ form_row(form.name) }}
-                            {{ form_row(form.type) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
-                            {{ form_row(form.) }}
+                            {{ form_row(form.product_type, { attr : { class : 'form-inline' } } ) }}
+                            {{ form_row(form.product_image) }}
 
-                        </div><!-- /.box-body --> 
-                        </form>
+                            <div class="form-group">
+                                {{ form_label(form.description_detail) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.description_detail) }}
+                                    <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
+                                        <div class="accpanel form-group">
+                                            {{ form_widget(form.description_list) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_label(form.price02) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.price02) }}
+                                    <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
+                                        <div class="accpanel form-group">
+                                            {{ form_widget(form.price01) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_label(form.stock) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    <div class="row">
+                                        <div class="col-xs-12 form-inline">
+                                            {{ form_widget(form.stock) }}
+                                            {{ form_errors(form.stock) }}
+                                            {{ form_widget(form.stock_unlimited) }}
+                                            {{ form_errors(form.stock_unlimited) }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {{ form_row(form.Category) }}
+
+                        </div><!-- /.box-body -->
                     </div><!-- /.box -->
 
                     <div class="box accordion">
                         <div class="box-header toggle">
                             <h3 class="box-title">詳細な設定<span class="fa fa-chevron-down icon_down"></span></h3>
                         </div><!-- /.box-header -->
-                        <div class="box-body accpanel"> ああああ </div>
+                        <div class="box-body accpanel">
+
+                            {{ form_row(form.code) }}
+                            {{ form_row(form.sale_limit) }}
+                            {{ form_row(form.tag) }}
+                            {{ form_row(form.search_word) }}
+                            {{ form_row(form.DeliveryDate) }}
+                            {{ form_row(form.point_rate) }}
+
+                        </div>
                     </div>
                     
                     <div class="box accordion">
                         <div class="box-header toggle">
                             <h3 class="box-title">サブ情報<span class="fa fa-chevron-down icon_down"></span></h3>
                         </div><!-- /.box-header -->
-                        <div class="box-body accpanel"> ああああ </div>
+                        <div class="box-body accpanel">
+                            {{ form_widget(form.free_area) }}
+                        </div>
                     </div>
                     
                     <div class="box accordion">
@@ -137,6 +178,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <h3 class="box-title">関連商品<span class="fa fa-chevron-down icon_down"></span></h3>
                         </div><!-- /.box-header -->
                         <div class="box-body accpanel"> ああああ </div>
+
                     </div>
                     
                     <div class="row hidden-xs hidden-sm">
@@ -156,8 +198,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
-                                            <div class="radio"><label class="radio-inline"><input type="radio" value="1" name="status">公開</label>
-                                            <label class="radio-inline"><input type="radio" checked="checked" value="2" name="status">非公開</label></div>
+                                            <div class="radio">
+                                                {{ form_widget(form.status, { attr : { class : 'form-inline' } }) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -186,11 +229,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="box-header">
                                 <h3 class="box-title">ショップ用メモ欄</h3>
                             </div><!-- /.box-header -->
-                            <div class="box-body"><textarea class="form-control" rows="3"></textarea></div>
+                            <div class="box-body">
+                                {{ form_widget(form.note) }}
+                            </div>
                         </div>
                     </div>
                 </div><!-- /.col --> 
-                
+
             </div>
+            </form>
 
 {% endblock %}

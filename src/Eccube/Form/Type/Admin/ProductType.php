@@ -146,11 +146,16 @@ class ProductType extends AbstractType
             ))
 
             // 右ブロック
-            ->add('status', 'disp', array(
-                'label' => '公開・非公開',
+            ->add('status', 'choice', array(
+                'choices' => array(
+                    '0' => '公開',
+                    '1' => '非公開',
+                ),
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
+                'expanded' => true,
+                'multiple' => false,
             ))
             ->add('note', 'textarea', array(
                 'label' => 'ショップ用メモ帳',
