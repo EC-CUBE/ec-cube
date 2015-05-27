@@ -27,6 +27,7 @@ namespace Eccube\Controller\Admin\Product;
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CategoryController
 {
@@ -65,6 +66,10 @@ class CategoryController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                if ($app['config']['level_max'] < $TargetCategory->getLevel()
+                    || $app['config']['category_max'] <= count($Parent->getChildren()) ) {
+                    throw new BadRequestHttpException();
+                }
                 $status = $app['eccube.repository.category']->save($TargetCategory);
 
                 if ($status) {
