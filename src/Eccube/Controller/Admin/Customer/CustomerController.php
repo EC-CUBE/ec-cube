@@ -108,7 +108,8 @@ class CustomerController
             throw new NotFoundHttpException();
         }
 
-        $app['orm.em']->remove($Customer);
+        $Customer->setDelFlg(1);
+        $app['orm.em']->persist($Customer);
         $app['orm.em']->flush();
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
