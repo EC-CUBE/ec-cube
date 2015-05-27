@@ -29,20 +29,9 @@ use Eccube\Controller\AbstractController;
 
 class ShopController extends AbstractController
 {
-    private $main_title;
-    private $sub_title;
-
-    public $form;
-
-    public function __construct()
-    {
-    }
-
     public function index(Application $app)
     {
         $BaseInfo = $app['eccube.repository.base_info']->get();
-        // FIXME: ArrayにしたりStringにしたり, booleanにしたりやめたい
-        $BaseInfo->setRegularHolidayIds(explode('|', $BaseInfo->getRegularHolidayIds()));
         $BaseInfo->setDownloadableDaysUnlimited($BaseInfo->getDownloadableDaysUnlimited() == 1 ? true : false);
 
         $form = $app['form.factory']
@@ -52,17 +41,16 @@ class ShopController extends AbstractController
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                // FIXME: ArrayにしたりStringにしたり, booleanにしたりやめたい
-                $BaseInfo->setRegularHolidayIds(implode('|', $BaseInfo->getRegularHolidayIds()));
                 $app['orm.em']->persist($BaseInfo);
                 $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('shop_master.complete', 'admin.register.complete');
+                $app->addSuccess('admin.shop.save.complete', 'admin');
 
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop'));
+                return $app->redirect($app->url('admin_setting_shop'));
             }
+            $app->addError('admin.shop.save.error', 'admin');
         }
 
-        return $app['view']->render('Setting/Shop/shop_master.twig', array(
+        return $app->render('Setting/Shop/shop_master.twig', array(
             'form' => $form->createView(),
         ));
     }
