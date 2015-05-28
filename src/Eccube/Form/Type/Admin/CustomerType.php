@@ -47,13 +47,14 @@ class CustomerType extends AbstractType
 
         $builder
             ->add('name', 'name', array(
+                'required' => true,
                 'options' => array(
                     'attr' => array(
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
@@ -64,7 +65,7 @@ class CustomerType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
@@ -111,6 +112,7 @@ class CustomerType extends AbstractType
             ))
             ->add('tel', 'tel', array())
             ->add('fax', 'tel', array(
+                'label' => 'FAX番号',
                 'required' => false,
             ))
             ->add('email', 'email', array(
@@ -121,40 +123,37 @@ class CustomerType extends AbstractType
                 ),
             ))
             ->add('sex', 'sex', array(
+                'label' => '性別',
                 'required' => false,
             ))
             ->add('job', 'job', array(
+                'label' => '職業',
                 'required' => false,
             ))
             ->add('birth', 'birthday', array(
+                'label' => '生年月日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('password', 'repeated', array(
-                // 'type' => 'password',
-                'first_options' => array(
-                    'label' => 'パスワード',
-                ),
-                'second_options' => array(
-                    'label' => 'パスワード(確認)',
-                ),
+            ->add('password', 'text', array(
+                'label' => 'パスワード',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $this->config['id_min_len'],
-                        'max' => $this->config['id_max_len'],
+                        'min' => $config['id_min_len'],
+                        'max' => $config['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
             ))
             ->add('mailmaga_flg', 'choice', array(
-                'label' => 'メルマガ',
+                'label' => 'メールマガジン',
                 'choices' => array(
-                    '0' => '購読しない',
-                    '1' => '購読する',
+                    '1' => '受け取る',
+                    '0' => '受け取らない',
                 ),
                 'expanded' => true,
                 'multiple' => false,
@@ -165,8 +164,8 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'min' => $this->config['ltext_len'],
-                        'max' => $this->config['ltext_len'],
+                        'min' => $config['ltext_len'],
+                        'max' => $config['ltext_len'],
                     )),
                 ),
             ))

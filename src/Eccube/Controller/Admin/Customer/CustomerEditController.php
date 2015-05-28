@@ -54,11 +54,11 @@ class CustomerEditController extends AbstractController
         }
 
         // 検索フォーム
-        $searchFormBuilder = $app['form.factory']->createBuilder('admin_search_customer');
-        $searchFormBuilder->setAttribute('freeze', true);
-        $searchFormBuilder->setAttribute('freeze_display_text', false);
-        $searchForm = $searchFormBuilder->getForm();
-        $searchForm->handleRequest($request);
+//        $searchFormBuilder = $app['form.factory']->createBuilder('admin_search_customer');
+//        $searchFormBuilder->setAttribute('freeze', true);
+//        $searchFormBuilder->setAttribute('freeze_display_text', false);
+//        $searchForm = $searchFormBuilder->getForm();
+//        $searchForm->handleRequest($request);
 
         // 会員登録フォーム
         $form = $app['form.factory']
@@ -66,7 +66,7 @@ class CustomerEditController extends AbstractController
             ->getForm();
 
         if ('POST' === $request->getMethod()) {
-            $form->handleRequest($app['request']);
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($Customer->getId() === null) {
                     $Customer->setSalt(
@@ -103,7 +103,6 @@ class CustomerEditController extends AbstractController
 
         return $app->render('Customer/edit.twig', array(
             'form' => $form->createView(),
-            'searchForm' => $searchForm->createView(),
             'Customer' => $Customer,
         ));
     }
