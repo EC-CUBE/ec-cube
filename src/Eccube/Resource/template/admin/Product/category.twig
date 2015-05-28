@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 <div class="box-body">
                     <div class="form-inline">
-                        {% if TargetCategory.level < app.config.level_max and Parent.children|length < app.config.category_max %}
+                        {% if TargetCategory.level < app.config.category_nest_level  < app.config.category_max %}
                         <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
                             {{ form_widget(form._token) }}
                             {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}

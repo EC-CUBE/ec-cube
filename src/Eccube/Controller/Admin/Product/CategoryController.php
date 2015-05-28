@@ -66,8 +66,7 @@ class CategoryController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($app['config']['level_max'] < $TargetCategory->getLevel()
-                    || $app['config']['category_max'] <= count($Parent->getChildren()) ) {
+                if ($app['config']['category_nest_level'] < $TargetCategory->getLevel()) {
                     throw new BadRequestHttpException();
                 }
                 $status = $app['eccube.repository.category']->save($TargetCategory);
@@ -89,6 +88,7 @@ class CategoryController
         $Children = $app['eccube.repository.category']->getList(null);
         $Categories = $app['eccube.repository.category']->getList($Parent);
         $TopCategories = $app['eccube.repository.category']->findBy(array('Parent' => null), array('rank' => 'DESC'));
+        $category_count = $app['eccube.repository.category']->getTotalCount();
 
         return $app->render('Product/category.twig', array(
             'form' => $form->createView(),
@@ -97,6 +97,7 @@ class CategoryController
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
+            'category_count' => $category_count,
         ));
     }
 
