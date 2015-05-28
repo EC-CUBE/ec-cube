@@ -2,11 +2,13 @@
  * function.js for EC-CUBE admin
  */
 
+jQuery(document).ready(function($){
+	
+
 /*
  * Brake point Check
  */
 
-jQuery(document).ready(function($){
 	
 	$(window).on('load , resize', function(){
 		if(window.innerWidth < 768){		
@@ -29,14 +31,6 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
-//function fix_scroll() {
-//	var s = $(window).scrollTop();
-//	var fixedcolumn = $('.pc_view #aside_column');
-//	fixedcolumn.css('position','absolute');
-//	fixedcolumn.css('top',s + 'px');
-//}fix_scroll();
-
-
 
 /*
  * Drawer menu
@@ -52,7 +46,7 @@ jQuery(document).ready(function($){
 	});
 		
 
-// SideBar accordion
+/////////// SideBar accordion
 
 	$("#side li .toggle").click(function(){
 		if($("+ul",this).css("display")=="none"){
@@ -65,7 +59,7 @@ jQuery(document).ready(function($){
         return false;
 	});
 
-// accordion
+/////////// accordion
 
 	$(".accordion .toggle").click(function(){
 		if($("+.accpanel",this).css("display")=="none"){
@@ -79,14 +73,46 @@ jQuery(document).ready(function($){
 	});
 
 
-// dropdownの中をクリックしても閉じないようにする
+/////////// dropdownの中をクリックしても閉じないようにする
 
     $(".dropdown-menu").click(function(e) {
         e.stopPropagation();
     });
 
 
-// サイドのナビゲーションを固定に
+
+/////////// 追従サイドバー
+	
+	// スクロールした時に以下の処理        
+	$(window).on("scroll", function() {
+		//PC表示の時のみに適用
+		if (window.innerWidth > 993){
+			
+			if ($('#aside_wrap').length) {
+			
+				var	side = $("#aside_column"),
+					wrap = $("#aside_wrap"),
+					heightH = $("#header").outerHeight(),
+					min_move = wrap.offset().top,
+					max_move = wrap.offset().top + wrap.height() - side.height() - 2*parseInt(side.css("top") ),
+					margin_bottom = max_move - min_move;
+				 
+					var scrollTop =  $(window).scrollTop();
+					if( scrollTop > min_move && scrollTop < max_move ){
+						var margin_top = scrollTop - min_move ;
+						side.css({"margin-top": margin_top + heightH + 10});
+					} else if( scrollTop < min_move ){
+						side.css({"margin-top":0});
+					}else if( scrollTop > max_move ){
+						side.css({"margin-top":margin_bottom});
+					}
+			}
+			
+		}
+			
+		return false;
+	});
+
 
 //	var fixedcolumn = $('#aside_column'),
 //	offset = fixedcolumn.offset();

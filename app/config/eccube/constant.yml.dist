@@ -96,7 +96,7 @@ large_image_height: 500
 large_image_width: 500
 large_subimage_height: 500
 large_subimage_width: 500
-level_max: 5
+category_nest_level: 5
 lltext_len: 99999
 locale: ja_JP.UTF-8
 log_realfile: /PATH/TO/WEB_ROOT/data/logs/site.log
