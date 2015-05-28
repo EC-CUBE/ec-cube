@@ -32,7 +32,8 @@
 {% block main %}
 
 <div class="row" id="aside_wrap">
-    <form name="customer_form" role="form" id="customer_form" method="post" action="">
+    <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}">
+    {{ form_widget(form._token) }}
     <div class="col-md-9">
         <div class="box accordion">
             <div class="box-header toggle active">
@@ -40,6 +41,11 @@
             </div><!-- /.box-header -->
             <div class="box-body accpanel" style="display: block;">
                 <div class="form-horizontal">
+                    {# 会員ID #}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">会員ID</label>
+                        <div class="col-sm-9 col-lg-10">{{ Customer.id }}</div>
+                    </div>
                     {# 名前 #}
                     <div class="form-group">
                         {{ form_label(form.name) }}
@@ -152,6 +158,14 @@
                                 {{ form_widget(form.birth) }}
                                 {{ form_errors(form.birth) }}
                             </div>
+                        </div>
+                    </div>
+                    {# ポイント #}
+                    <div class="form-group">
+                        {{ form_label(form.point) }}
+                        <div class="col-sm-9 col-lg-10">
+                            {{ form_widget(form.point) }}
+                            {{ form_errors(form.point) }}
                         </div>
                     </div>
                 </div>

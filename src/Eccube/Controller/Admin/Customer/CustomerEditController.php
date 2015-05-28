@@ -23,6 +23,7 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
+use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,13 +53,6 @@ class CustomerEditController extends AbstractController
         } else {
             $Customer =  $app['eccube.repository.customer']->newCustomer();
         }
-
-        // 検索フォーム
-//        $searchFormBuilder = $app['form.factory']->createBuilder('admin_search_customer');
-//        $searchFormBuilder->setAttribute('freeze', true);
-//        $searchFormBuilder->setAttribute('freeze_display_text', false);
-//        $searchForm = $searchFormBuilder->getForm();
-//        $searchForm->handleRequest($request);
 
         // 会員登録フォーム
         $form = $app['form.factory']
@@ -93,11 +87,13 @@ class CustomerEditController extends AbstractController
 
                 $app['orm.em']->persist($Customer);
                 $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('customer.complete', 'admin.register.complete');
+                $app['session']->getFlashBag()->add('admin.success', 'admin.customer.save.complete');
 
                 return $app->redirect($app->url('admin_customer_edit', array(
                     'id' => $Customer->getId(),
                 )));
+            } else {
+                Debug::dump($form->getErrorsAsString());
             }
         }
 
