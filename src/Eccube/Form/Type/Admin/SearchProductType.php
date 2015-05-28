@@ -46,15 +46,11 @@ class SearchProductType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('id', 'integer', array(
+            ->add('id', 'text', array(
                 'label' => '商品ID',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Type(array(
-                        'type' => 'integer',
-                    )),
-                ),
             ))
+            /*
             ->add('code', 'text', array(
                 'label' => '商品コード',
                 'required' => false,
@@ -63,6 +59,7 @@ class SearchProductType extends AbstractType
                 'label' => '商品名',
                 'required' => false,
             ))
+             */
             ->add('category_id', 'category', array(
                 'label' => 'カテゴリ',
                 'empty_value' => '選択してください',
@@ -94,7 +91,7 @@ class SearchProductType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('pageno', 'hidden', array(
+            ->add('page_no', 'hidden', array(
             ))
         ;
     }

@@ -116,14 +116,14 @@ Eccube\Entity\ProductClass:
             joinColumn:
                 name: class_category_id1
                 referencedColumnName: class_category_id
-                nullable: false
+                nullable: true
         ClassCategory2:
             targetEntity: Eccube\Entity\ClassCategory
             inversedBy: ProductClasses2
             joinColumn:
                 name: class_category_id2
                 referencedColumnName: class_category_id
-                nullable: false
+                nullable: true
         DeliveryDate:
             targetEntity: Eccube\Entity\Master\DeliveryDate
             inversedBy: ProductClasses

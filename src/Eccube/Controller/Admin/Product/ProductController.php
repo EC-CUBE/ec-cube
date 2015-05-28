@@ -29,30 +29,67 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProductController
 {
-    public function index(Application $app, Request $request)
+    public function index(Application $app, Request $request, $page_no = null)
     {
+
+        $session = $request->getSession();
+
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
 
-        $searchForm->handleRequest($request);
-        if ($searchForm->isValid()) {
-            $searchData = $searchForm->getData();
-        } else {
-            $searchData = array();
-        }
+        $pagination = array();
 
-        // paginator
-        $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
-        $pagination = $app['paginator']()->paginate(
-            $qb,
-            !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            10 // TODO
-        );
+        $default_page_count = $app['config']['default_page_count'];
+        $showResult = true;
+        $disps = $app['orm.em']->getRepository('Eccube\Entity\Master\Disp')->findAll();
+
+        if ('POST' === $request->getMethod()) {
+
+            $searchForm->handleRequest($request);
+
+            if ($searchForm->isValid()) {
+                $searchData = $searchForm->getData();
+
+                $page_count = empty($searchData['page_count']) ? $default_page_count : $searchData['page_count'];
+
+                // paginator
+                $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+                $pagination = $app['paginator']()->paginate(
+                    $qb,
+                    1,
+                    $page_count
+                );
+
+                // sessionのデータ保持
+                $session->set('searchData', $searchData);
+            }
+        } else {
+            if (is_null($page_no)) {
+                // sessionを削除
+                $session->remove('searchData');
+                $showResult = false;
+            } else {
+                $searchData = $session->get('searchData');
+                if (!is_null($searchData)) {
+
+                    $page_count = empty($searchData['page_count']) ? $default_page_count : $searchData['page_count'];
+
+                    $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+                    $pagination = $app['paginator']()->paginate(
+                        $qb,
+                        $page_no,
+                        $page_count
+                    );
+                }
+            }
+        }
 
         return $app['view']->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
+            'showResult' => $showResult,
             'pagination' => $pagination,
+            'disps' => $disps,
         ));
     }
 

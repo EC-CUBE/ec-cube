@@ -151,16 +151,21 @@ class ProductRepository extends EntityRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p')
+                ->select(array('p', 'pi'))
+                ->innerJoin('p.ProductImage', 'pi');
 
         // id
         if (!empty($searchData['id']) && $searchData['id']) {
             $qb
-                ->andWhere('p.id = :id')
-                ->setParameter('id', $searchData['id']);
+                ->innerJoin('p.ProductClasses', 'pc')
+                ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
+                ->setParameter('id', $searchData['id'])
+                ->setParameter('likeid', '%' . $searchData['id'] . '%');
         }
 
         // code
+        /*
         if (!empty($searchData['code']) && $searchData['code']) {
             $qb
                 ->innerJoin('p.ProductClasses', 'pc')
@@ -177,6 +182,7 @@ class ProductRepository extends EntityRepository
                     ->setParameter('name', '%' . $keyword . '%');
             }
         }
+       */
 
         // category
         if (!empty($searchData['category_id']) && $searchData['category_id']) {
@@ -233,7 +239,8 @@ class ProductRepository extends EntityRepository
 
         // Order By
         $qb
-            ->orderBy('p.update_date', 'DESC');
+            ->orderBy('p.update_date', 'DESC')
+            ->orderBy('pi.rank', 'DESC');
 
         return $qb;
     }
