@@ -72,7 +72,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                        <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
                                     </div>
                                 </div><!-- /.row --> 
                             </div>
@@ -91,7 +91,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <!--検索条件設定テーブルここまで-->
 
-        {% if showResult %}
+        {% if pagination %}
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
@@ -103,23 +103,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row">
                                 <div class="col-md-6">
                                     <ul class="link-with-bar">
-                                    <li><a>すべて</a></li>
+                                    <li>
+                                        {% if page_status is null %}
+                                        <a>すべて</a>
+                                        {% else %}
+                                        <a href="{{ path('admin_product', {'page_no': page_no} ) }}">すべて</a>
+                                        {% endif %}
+                                    </li>
                                     {% for disp in disps %}
-                                    <li><a href=""></a>{{ disp.name|e }}</a></li>
+                                      <li>
+                                      {% if page_status == disp.id %}
+                                      <a>{{ disp.name|e }}</a>
+                                      {% else %}
+                                      <a href="{{ path('admin_product', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                      {% endif %}
+                                      </li>
                                     {% endfor %}
-                                    <li><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status': 'status'})) }}">公開</a></li>
-                                    <li><a href="#">非公開</a></li>
-                                    <li><a href="#">在庫なし</a></li>
+                                      <li>
+                                      {% if page_status == app.config.admin_product_stock_status %}
+                                          <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                      {% else %}
+                                          <a href="{{ path('admin_product', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                      {% endif %}
+                                      </li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">
                                     <ul class="sort-dd">
                                     <li class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown">20件<span class="fa fa-chevron-down icon_down"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a>50件</a></li>
-                                            <li><a>100件</a></li>
-                                        </ul>
+                                        {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                                            <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<span class="fa fa-chevron-down icon_down"></span></a>
+                                            <ul class="dropdown-menu">
+                                        {% endfor %}
+                                        {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                                                <li><a href="{{ path('admin_product', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                        {% endfor %}
+                                            </ul>
                                     </li>
                                     <li class="dropdown">
                                         <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
@@ -161,7 +180,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <li><a href="">複製</a></li>
                                                     <li><a href="">削除</a></li>
                                                     </ul>
-                                                </div>                                        
+                                                </div>
                                             </div>
                                         </div><!-- /.item_box --> 
                                     {% endfor %}
@@ -181,5 +200,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
 
         {% endif %}
-    </div>
 {% endblock %}

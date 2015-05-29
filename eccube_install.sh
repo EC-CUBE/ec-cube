@@ -217,7 +217,7 @@ password_hash_algos: sha256
 root: ${ROOT_URLPATH}
 admin_dir: /${ADMIN_DIR}
 tpl: ${ROOT_URLPATH}user_data/packages/default/
-admin_tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}
+admin_tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}/
 image_path: /upload/save_image/
 shop_name: ${SHOP_NAME}
 release_year: 2015

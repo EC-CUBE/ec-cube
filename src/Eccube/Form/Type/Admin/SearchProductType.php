@@ -75,16 +75,32 @@ class SearchProductType extends AbstractType
                 'multiple'=> true,
                 'required' => false,
             ))
-            ->add('register_start', 'date', array(
-                'label' => '登録・更新日',
+            ->add('create_date_start', 'date', array(
+                'label' => '登録日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('register_end', 'date', array(
-                'label' => '登録・更新日',
+            ->add('create_date_end', 'date', array(
+                'label' => '登録日(TO)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('update_date_start', 'date', array(
+                'label' => '更新日(FROM)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('update_date_end', 'date', array(
+                'label' => '更新日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',

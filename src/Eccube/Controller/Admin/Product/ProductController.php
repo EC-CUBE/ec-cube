@@ -40,9 +40,11 @@ class ProductController
 
         $pagination = array();
 
-        $default_page_count = $app['config']['default_page_count'];
-        $showResult = true;
-        $disps = $app['orm.em']->getRepository('Eccube\Entity\Master\Disp')->findAll();
+        $em = $app['orm.em'];
+        $disps = $em->getRepository('Eccube\Entity\Master\Disp')->findAll();
+        $pageMaxis = $em->getRepository('Eccube\Entity\Master\PageMax')->findAll();
+        $page_count = $app['config']['default_page_count'];
+        $page_status = null;
 
         if ('POST' === $request->getMethod()) {
 
@@ -51,29 +53,43 @@ class ProductController
             if ($searchForm->isValid()) {
                 $searchData = $searchForm->getData();
 
-                $page_count = empty($searchData['page_count']) ? $default_page_count : $searchData['page_count'];
-
                 // paginator
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+                $page_no = 1;
                 $pagination = $app['paginator']()->paginate(
                     $qb,
-                    1,
+                    $page_no,
                     $page_count
                 );
 
                 // sessionのデータ保持
-                $session->set('searchData', $searchData);
+                $session->set('eccube.admin.product.search', $searchData);
             }
         } else {
             if (is_null($page_no)) {
                 // sessionを削除
-                $session->remove('searchData');
-                $showResult = false;
+                $session->remove('eccube.admin.product.search');
             } else {
-                $searchData = $session->get('searchData');
+                // pagingなどの処理
+                $searchData = $session->get('eccube.admin.product.search');
                 if (!is_null($searchData)) {
 
-                    $page_count = empty($searchData['page_count']) ? $default_page_count : $searchData['page_count'];
+                    // 公開ステータス
+                    $status = $request->get('status');
+                    if (!empty($status)) {
+                        if ($status != $app['config']['admin_product_stock_status']) {
+                            $searchData['status']->clear();
+                            $searchData['status']->add($status);
+                            $session->set('eccube.admin.product.search', $searchData);
+                        } else {
+                            $searchData['stock_status'] = $app['config']['disabled'];
+                        }
+                        $page_status = $status;
+                    }
+                    // 表示件数
+                    $pcount = $request->get('page_count');
+
+                    $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                     $pagination = $app['paginator']()->paginate(
@@ -81,15 +97,20 @@ class ProductController
                         $page_no,
                         $page_count
                     );
+
+//                    $searchForm = $app['form.factory']->createBuilder('admin_search_product', $searchData)->getForm();
                 }
             }
         }
 
         return $app['view']->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
-            'showResult' => $showResult,
             'pagination' => $pagination,
             'disps' => $disps,
+            'pageMaxis' => $pageMaxis,
+            'page_no' => $page_no,
+            'page_status' => $page_status,
+            'page_count' => $page_count,
         ));
     }
 

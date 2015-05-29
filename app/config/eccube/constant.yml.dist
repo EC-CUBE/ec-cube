@@ -242,3 +242,7 @@ user_url: 'http://ec-cube.eccube.localhost/user_data/'
 zip_download_url: 'http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip'
 zip01_len: 3
 zip02_len: 4
+default_page_count: 10
+admin_product_stock_status: 3
+enabled: 1
+disabled: 0
