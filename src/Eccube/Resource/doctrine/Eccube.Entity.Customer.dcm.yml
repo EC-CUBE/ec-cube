@@ -2,10 +2,6 @@ Eccube\Entity\Customer:
     type: entity
     table: dtb_customer
     repositoryClass: Eccube\Repository\CustomerRepository
-    indexes:
-        dtb_customer_mobile_phone_id_key:
-            columns:
-                - mobile_phone_id
     uniqueConstraints:
         secret_key:
             columns:
@@ -44,14 +40,6 @@ Eccube\Entity\Customer:
         zipcode:
             type: text
             nullable: true
-#        country_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-#        pref:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
         addr01:
             type: text
             nullable: true
@@ -61,9 +49,6 @@ Eccube\Entity\Customer:
         email:
             type: text
             nullable: false
-        email_mobile:
-            type: text
-            nullable: true
         tel01:
             type: text
             nullable: true
@@ -82,25 +67,10 @@ Eccube\Entity\Customer:
         fax03:
             type: text
             nullable: true
-#        sex:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
-#        job:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
         birth:
             type: datetime
             nullable: true
         password:
-            type: text
-            nullable: true
-#        reminder:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
-        reminder_answer:
             type: text
             nullable: true
         salt:
@@ -128,20 +98,9 @@ Eccube\Entity\Customer:
             precision: 10
             scale: 0
             default: '0'
-        point:
-            type: decimal
-            nullable: false
-            precision: 10
-            scale: 0
-            default: '0'
         note:
             type: text
             nullable: true
-#        status:
-#            type: smallint
-#            nullable: false
-#            unsigned: false
-#            default: '1'
         create_date:
             type: datetime
             nullable: false
@@ -149,69 +108,44 @@ Eccube\Entity\Customer:
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
+            default: CURRENT_TIMESTAMP
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
             default: '0'
-        mobile_phone_id:
-            type: string
-            length: 200
-            nullable: true
-#        mailmaga_flg:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
     manyToOne:
-        Reminder:
-            targetEntity: Eccube\Entity\Master\Reminder
-            inversedBy: Customers
-            joinColumn:
-                name: reminder
-                referencedColumnName: id
         Status:
             targetEntity: Eccube\Entity\Master\CustomerStatus
-            inversedBy: Customers
             joinColumn:
                 name: status
                 referencedColumnName: id
         Sex:
             targetEntity: Eccube\Entity\Master\Sex
-            inversedBy: Customers
             joinColumn:
                 name: sex
                 referencedColumnName: id
         Job:
             targetEntity: Eccube\Entity\Master\Job
-            inversedBy: Customers
             joinColumn:
                 name: job
                 referencedColumnName: id
         Country:
             targetEntity: Eccube\Entity\Master\Country
-            inversedBy: Customers
             joinColumn:
                 name: country_id
                 referencedColumnName: id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: Customers
             joinColumn:
                 name: pref
-                referencedColumnName: id
-        Mailmaga_flg:
-            targetEntity: Eccube\Entity\Master\MailMagazineType
-            inversedBy: Customers
-            joinColumn:
-                name: mailmaga_flg
                 referencedColumnName: id
     oneToMany:
         CustomerFavoriteProducts:
             targetEntity: Eccube\Entity\CustomerFavoriteProduct
             mappedBy: Customer
-        OtherDelivs:
-            targetEntity: Eccube\Entity\OtherDeliv
+        CustomerAddresses:
+            targetEntity: Eccube\Entity\CustomerAddress
             mappedBy: Customer
             orderBy:
                 id: ASC

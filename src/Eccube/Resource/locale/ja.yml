@@ -33,8 +33,6 @@ admin.delete.complete: ※ 削除が完了しました。
 admin.rank.move.complete: ※ ランクの移動が完了しました。
 
 admin.order.delete.complete: ※ 登録が完了しました。
-admin.customer.delete.complete: ※ 会員を削除しました。
-admin.customer.resend.complete: ※ メールを送信しました。
 
 Quantity: 数量
 
@@ -76,6 +74,10 @@ admin.category.delete.error: カテゴリを削除できませんでした。
 
 admin.product.product_class.save.complete: 商品規格を登録しました。
 admin.product.product_class.delete.complete: 商品規格を削除しました。
+
+admin.customer.save.complete: 会員情報を保存しました。
+admin.customer.delete.complete: 会員情報を削除しました。
+admin.customer.resend.complete: 仮会員登録メールを送信しました。
 
 admin.member.up.complete: メンバーを上へ移動しました。
 admin.member.up.error: メンバーを上へ移動できませんでした。

@@ -75,9 +75,6 @@ class CustomerTypeTest extends AbstractTypeTestCase
             'first' => 'password',
             'second' => 'password',
         ),
-        'reminder' => 1,
-        'reminder_answer' => 'なし',
-        'mailmaga_flg' => 1,
     );
 
     public function setUp()

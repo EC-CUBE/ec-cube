@@ -40,9 +40,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 {%- block form_widget -%}
-    <div class="form-group">
+    {% set attr = attr|merge({class: attr.class|default('')}) %}
+    {% if attr.class == 'input_search' %}
         {{- parent() -}}
-    </div>
+    {% else %}
+        <div class="form-group">
+            {{- parent() -}}
+        </div>
+    {% endif %}
 {%- endblock form_widget -%}
 
 

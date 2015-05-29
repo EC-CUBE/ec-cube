@@ -1,0 +1,94 @@
+Eccube\Entity\CustomerAddress:
+    type: entity
+    table: dtb_customer_address
+    repositoryClass: Eccube\Repository\CustomerAddressRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: customer_address_id
+            generator:
+                strategy: AUTO
+    fields:
+        name01:
+            type: text
+            nullable: true
+        name02:
+            type: text
+            nullable: true
+        kana01:
+            type: text
+            nullable: true
+        kana02:
+            type: text
+            nullable: true
+        company_name:
+            type: text
+            nullable: true
+        zip01:
+            type: text
+            nullable: true
+        zip02:
+            type: text
+            nullable: true
+        zipcode:
+            type: text
+            nullable: true
+        addr01:
+            type: text
+            nullable: true
+        addr02:
+            type: text
+            nullable: true
+        tel01:
+            type: text
+            nullable: true
+        tel02:
+            type: text
+            nullable: true
+        tel03:
+            type: text
+            nullable: true
+        fax01:
+            type: text
+            nullable: true
+        fax02:
+            type: text
+            nullable: true
+        fax03:
+            type: text
+            nullable: true
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: 0
+    manyToOne:
+        Customer:
+            targetEntity: Eccube\Entity\Customer
+            inversedBy: CustomerAddresses
+            joinColumn:
+                name: customer_id
+                referencedColumnName: customer_id
+                nullable: false
+        Country:
+            targetEntity: Eccube\Entity\Master\Country
+            joinColumn:
+                name: country_id
+                referencedColumnName: id
+        Pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            joinColumn:
+                name: pref
+                referencedColumnName: id
+    lifecycleCallbacks: {  }
