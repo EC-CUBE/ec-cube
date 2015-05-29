@@ -57,6 +57,31 @@ class ProductController
         ));
     }
 
+    public function addImage(Application $app, Request $request)
+    {
+        $images = $request->files->get('admin_product');
+        error_log(json_encode($images));
+
+        $files = array();
+        if (count($images) > 0) {
+            foreach ($images as $img) {
+                foreach ($img as $image) {
+                    $extension = $image->guessExtension();
+                    $filename = date('mdHisu') . '.' . $extension;
+                    $image->move($app['config']['image_temp_realdir'], $filename);
+                    $files[] = str_replace(
+                            $request->server->get('DOCUMENT_ROOT'),
+                            '',
+                            $app['config']['image_temp_realdir']
+                        ) . $filename;
+                }
+            }
+        }
+
+
+        return $app->json(array('files' => $files), 200);
+    }
+
     public function edit(Application $app, Request $request, $id = null)
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
@@ -100,6 +125,16 @@ class ProductController
         if (!$has_class) {
             $form['class']->setData($ProductClass);
         }
+
+        // ファイルの登録
+        $images = array();
+        $Images = $Product->getProductImage();
+        foreach ($Images as $Image) {
+            $images[] = $Image->getFileName();
+        }
+        $form['images']->setData($images);
+
+        // タグの登録
         $tags = array();
         $Tags = $Product->getProductTag();
         foreach ($Tags as $Tag) {
@@ -117,21 +152,16 @@ class ProductController
                 }
 
                 // 画像の登録
-//                $file = $form->get('main_list_image')->getData();
-//                if ($file !== null) {
-//                    $extension = $file->guessExtension();
-//                    if (!$extension) {
-//                        $extension = 'jpg';
-//                    }
-//                    $filename = date('mdHi_' . uniqid('')) . '.' . $extension;
-//                    $file->move($app['config']['image_save_realdir'], $filename);
-//                    $Product->setMainListImage($filename);
-//                }
+                $files = $form->get('images')->getData();
+                foreach ($files as $file) {
+
+                }
 
                 // タグの登録
                 $Tags = $Product->getProductTag();
                 foreach ($Tags as $Tag) {
                     $Product->removeProductTag($Tag);
+                    $app['orm.em']->remove($Tag);
                 }
 
                 $tags = $form['tags']->getData();
