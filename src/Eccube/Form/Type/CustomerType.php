@@ -107,16 +107,10 @@ class CustomerType extends AbstractType
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('password', 'repeated')
-            ->add('mailmaga_flg', 'mailmagazinetype', array(
-                'required' => false,
-            ))
             ->add('status', 'customer_status', array(
                 'required' => false,
             ))
             ->add('note', 'textarea', array(
-                'required' => false,
-            ))
-            ->add('point', 'text', array(
                 'required' => false,
             ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'));
