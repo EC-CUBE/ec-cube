@@ -98,12 +98,6 @@ Eccube\Entity\Customer:
             precision: 10
             scale: 0
             default: '0'
-        point:
-            type: decimal
-            nullable: false
-            precision: 10
-            scale: 0
-            default: '0'
         note:
             type: text
             nullable: true
@@ -120,10 +114,6 @@ Eccube\Entity\Customer:
             nullable: false
             unsigned: false
             default: '0'
-        mailmaga_flg:
-            type: smallint
-            nullable: true
-            unsigned: false
     manyToOne:
         Status:
             targetEntity: Eccube\Entity\Master\CustomerStatus

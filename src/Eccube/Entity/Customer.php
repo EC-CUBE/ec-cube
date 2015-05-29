@@ -209,11 +209,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var string
      */
-    private $point;
-
-    /**
-     * @var string
-     */
     private $note;
 
     /**
@@ -235,11 +230,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      * @var integer
      */
     private $del_flg;
-
-    /**
-     * @var integer
-     */
-    private $mailmaga_flg;
 
     /**
      * @var \Eccube\Entity\Master\Sex
@@ -863,29 +853,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set point
-     *
-     * @param  string   $point
-     * @return Customer
-     */
-    public function setPoint($point)
-    {
-        $this->point = $point;
-
-        return $this;
-    }
-
-    /**
-     * Get point
-     *
-     * @return string
-     */
-    public function getPoint()
-    {
-        return $this->point;
-    }
-
-    /**
      * Set note
      *
      * @param  string   $note
@@ -998,29 +965,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getDelFlg()
     {
         return $this->del_flg;
-    }
-
-    /**
-     * Set mailmaga_flg
-     *
-     * @param  integer $mailmaga_flg
-     * @return Customer
-     */
-    public function setMailmagaFlg($mailmaga_flg)
-    {
-        $this->mailmaga_flg = $mailmaga_flg;
-
-        return $this;
-    }
-
-    /**
-     * Get mailmaga_flg
-     *
-     * @return integer
-     */
-    public function getMailmagaFlg()
-    {
-        return $this->mailmaga_flg;
     }
 
     /**

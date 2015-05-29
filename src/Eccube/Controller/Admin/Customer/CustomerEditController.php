@@ -87,13 +87,12 @@ class CustomerEditController extends AbstractController
 
                 $app['orm.em']->persist($Customer);
                 $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('admin.success', 'admin.customer.save.complete');
+
+                $app->addSuccess('admin.customer.save.complete', 'admin');
 
                 return $app->redirect($app->url('admin_customer_edit', array(
                     'id' => $Customer->getId(),
                 )));
-            } else {
-                Debug::dump($form->getErrorsAsString());
             }
         }
 

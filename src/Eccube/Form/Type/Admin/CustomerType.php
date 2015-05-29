@@ -149,15 +149,6 @@ class CustomerType extends AbstractType
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),
             ))
-            ->add('mailmaga_flg', 'choice', array(
-                'label' => 'メールマガジン',
-                'choices' => array(
-                    '1' => '受け取る',
-                    '0' => '受け取らない',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
             ->add('status', 'customer_status', array())
             ->add('note', 'textarea', array(
                 'label' => 'SHOP用メモ',
@@ -168,14 +159,6 @@ class CustomerType extends AbstractType
                         'max' => $config['ltext_len'],
                     )),
                 ),
-            ))
-            ->add('point', 'integer', array(
-                'label' => '所持ポイント',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Regex(array('pattern' => '/^\d+$/'))
-                ),
-                'data' => 0
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }

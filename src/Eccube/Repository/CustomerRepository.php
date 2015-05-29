@@ -55,7 +55,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->find(1);
 
         $Customer
-            ->setPoint(0)
             ->setStatus($Status)
             ->setDelFlg(0);
 
@@ -131,7 +130,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->select('c')
             ->andWhere('c.del_flg = 0');
 
-        if ($searchData['multi']) {
+        if (!empty($searchData['multi']) && $searchData['multi']) {
             $qb
                 ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
                 ->setParameter('customer_id', $searchData['multi'])
@@ -280,12 +279,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             $qb
                 ->andWhere('c.last_buy_date < :last_buy_end')
                 ->setParameter('last_buy_end', $date);
-        }
-        // mailmaga_flg
-        if (!empty($searchData['mailmaga_flg']) && $searchData['mailmaga_flg']) {
-            $qb
-                ->andWhere('c.mailmaga_flg = :mailmaga_flg')
-                ->setParameter('mailmaga_flg', $searchData['mailmaga_flg']);
         }
         // status
         if (!empty($searchData['customer_status']) && $searchData['customer_status']) {
