@@ -47,6 +47,10 @@ class ProductType extends AbstractType
         $app = $this->app;
 
         $builder
+            // 商品規格情報
+            ->add('class', 'admin_product_class', array(
+                'mapped' => false,
+            ))
             // 基本情報
             ->add('name', 'text', array(
                 'label' => '商品名',
@@ -54,19 +58,10 @@ class ProductType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('product_type', 'product_type', array(
-                'label' => '商品種別',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-                'mapped' => false,
-            ))
-            ->add('product_image', 'collection', array(
+            ->add('product_image', 'file', array(
                 'label' => '商品画像',
-                'type' => 'file',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
+                'multiple' => true,
+                'required' => false,
                 'mapped' => false,
             ))
             ->add('description_detail', 'textarea', array(
@@ -74,32 +69,7 @@ class ProductType extends AbstractType
             ))
             ->add('description_list', 'textarea', array(
                 'label' => '商品説明(一覧)',
-            ))
-            ->add('price02', 'money', array(
-                'label' => '販売価格',
-                'currency' => 'JPY',
-                'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-                'mapped' => false,
-            ))
-            ->add('price01', 'money', array(
-                'label' => '通常価格',
-                'currency' => 'JPY',
-                'precision' => 0,
-                'mapped' => false,
-            ))
-            ->add('stock', 'integer', array(
-                'label' => '在庫数',
                 'required' => false,
-                'mapped' => false,
-            ))
-            ->add('stock_unlimited', 'checkbox', array(
-                'label' => '無制限',
-                'value' => '1',
-                'required' => false,
-                'mapped' => false,
             ))
             ->add('Category', 'category', array(
                'label' => '商品カテゴリ',
@@ -112,17 +82,9 @@ class ProductType extends AbstractType
             ))
 
             // 詳細な説明
-            ->add('code', 'text', array(
-                'label' => '商品コード',
-                'required' => false,
-                'mapped' => false,
-            ))
-            ->add('sale_limit', 'integer', array(
-                'label' => '販売制限数',
-                'mapped' => false,
-            ))
             ->add('tag', 'text', array(
                 'label' => 'タグ',
+                'required' => false,
                 'mapped' => false,
             ))
             ->add('search_word', 'textarea', array(
@@ -135,31 +97,31 @@ class ProductType extends AbstractType
                 'empty_value' => '選択してください',
                 'required' => false,
             ))
-            ->add('point_rate', 'integer', array(
-                'label' => 'ポイント(%)',
-                'mapped' => false,
-            ))
 
             // サブ情報
             ->add('free_area', 'textarea', array(
                 'label' => 'サブ情報',
+                'required' => false,
             ))
 
             // 右ブロック
-            ->add('status', 'choice', array(
-                'choices' => array(
-                    '0' => '公開',
-                    '1' => '非公開',
-                ),
+            ->add('Status', 'disp', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
-                'expanded' => true,
-                'multiple' => false,
             ))
             ->add('note', 'textarea', array(
                 'label' => 'ショップ用メモ帳',
                 'required' => false,
+            ))
+
+            // タグ
+            ->add('tags', 'collection', array(
+                'type' => 'hidden',
+                'prototype' => true,
+                'mapped' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
             ))
         ;
 

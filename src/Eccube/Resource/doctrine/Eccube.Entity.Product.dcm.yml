@@ -72,12 +72,6 @@ Eccube\Entity\Product:
                 name: status
                 referencedColumnName: id
                 default: 2
-        ProductStatusColor:
-            targetEntity: Eccube\Entity\Master\ProductStatusColor
-            inversedBy: Products
-            joinColumn:
-                name: status
-                referencedColumnName: id
     oneToMany:
         ProductCategories:
             targetEntity: Eccube\Entity\ProductCategory

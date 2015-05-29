@@ -27,72 +27,94 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-    // 表示非表示切り替え
-    function lfDispSwitch(id){
-        var obj = document.getElementById(id);
-        if (obj.style.display == 'none') {
-            obj.style.display = '';
-        } else {
-            obj.style.display = 'none';
-        }
-    }
+$(function(){
 
-    // セレクトボックスのリストを初期化
-    // ※キャッシュ対策
-    // (移動元セレクトボックス)
-    function fnInitSelect(select) {
-        var selectedOptions = <!--{$tpl_json_category_id}-->;
-        $('#' + select + ' option').attr('selected', false);
-        for(var i=0; i < selectedOptions.length; i++){
-            $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
-                .prop('selected', 'selected');
-        }
-    }
+    // タグの削除
+    $(".alert-dismissible").on('click', function(){
+        $(this).remove();
+    });
 
-    // セレクトボックスのリストを移動
-    // (移動元セレクトボックスID, 移動先セレクトボックスID)
-    function fnMoveSelect(select, target) {
-        $('#' + select).children().each(function() {
-            if (this.selected) {
-                $('#' + target).append(this);
-                $(this).attr({selected: false});
-            }
-        });
-        // IE7再描画不具合対策
-        var ua = navigator.userAgent.toLowerCase();
-        if (ua.indexOf("msie") != -1 && ua.indexOf('msie 6') == -1) {
-            $('#' + select).hide();
-            $('#' + select).show();
-            $('#' + target).hide();
-            $('#' + target).show();
-        }
-    }
+    // タグの追加
+    var proto_tag = '' +
+    '<li class="alert-dismissible">' +
+        '<button type="button" class="close" aria-label="Close" data-dismiss="alert">' +
+            '<svg aria-hidden="true" class="cb cb-close"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use></svg>' +
+        '</button>' +
+        '__value__' +
+        '{{ form_widget(form.tags.vars.prototype) }}' +
+    '</li>';
 
-    // target の子要素を選択状態にする
-    function selectAll(target) {
-        $('#' + target).children().prop('selected', 'selected');
-    }
+    var count = $(".tag_list").children().length;
+    $("#add_tag").on('click', function(){
+        var $tag = $("#{{ form.tag.vars.id }}");
 
-    // 商品種別によってダウンロード商品のフォームの表示非表示を切り替える
-    function toggleDownloadFileForms(value) {
-        if (value == '2') {
-            $('.type-download').show('fast');
-        } else {
-            $('.type-download').hide('fast');
-        }
-    }
+        var new_tag = proto_tag
+            .replace(/__name__/g, count)
+            .replace(/__value__/g, $tag.val());
 
-    $(function(){
-        var form_product_type = $('input[name=product_type_id]');
-        form_product_type.click(function(){
-            toggleDownloadFileForms(form_product_type.filter(':checked').val());
-        });
-        toggleDownloadFileForms(form_product_type.filter(':checked').val());
+        var $new_tag = $(new_tag);
+        $new_tag.find('input').val($tag.val());
+
+        $(".tag_list").append($new_tag);
+
+        // テキストボックスをクリア
+        $tag.val('');
+        count ++;
+
+        return false;
+    });
+
+
+    $('.photo_files').on('drop', function(e){
+        e.preventDefault();
+
+        var files = e.originalEvent.dataTransfer.files;
+
+        uploadFiles(files);
     })
+    .on('dragenter', function(){
+        return false;
+    })
+    .on('dragover', function(){
+        return false;
+    });
+
+    $('#btn').on('click', function() {
+        $('input[type="file"]').click();
+    });
+
+    $('input[type="file"]').on('change', function(){
+        // ファイル情報を取得
+        var files = this.files;
+
+        uploadFiles(files);
+    });
+
+});
+
+function uploadFiles(files) {
+    var fd = new FormData();
+
+    for (var i = 0; i < files.length; i++) {
+        fd.append("files[]", files[i]);
+    }
+
+    $.ajax({
+        url: 'アップロード処理をするファイルのパス',
+        type: 'POST',
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            console.log('ファイルがアップロードされました。');
+        }
+    });
+}
 {% endblock %}
 
 {% block main %}
             <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+            {{ form_widget(form._token) }}
             <div class="row">
                 <div class="col-md-9">
                     <div class="box">
@@ -102,48 +124,84 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="box-body">
 
                             {{ form_row(form.name) }}
-                            {{ form_row(form.product_type, { attr : { class : 'form-inline' } } ) }}
-                            {{ form_row(form.product_image) }}
+                            {% if has_class == false %}
+                                {{ form_row(form.class.product_type, { attr : { class : 'form-inline' } } ) }}
+                            {% endif %}
+
+                            <div class="form-group">
+                                {{ form_label(form.product_image) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    <div class="photo_files">
+                                        <ul class="clearfix">
+                                            {#<li>#}
+                                                {#<img src="http://www.ec-cube.net/user_data/packages/default/img/banner/top_bnr_design_template2_13_3.jpg">#}
+                                                {#<a href="#"><svg class="cb cb-close"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use></svg></a>#}
+                                            {#</li>#}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_widget(form.product_image, { attr : { style : 'display:none;' } } ) }}
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9 col-lg-offset-2 col-lg-10 ">
+                                    <a class="with-icon">
+                                        <svg class="cb cb-plus"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-plus"></use></svg>ファイルをアップロード
+                                    </a>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 {{ form_label(form.description_detail) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {{ form_widget(form.description_detail) }}
                                     <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
-                                        <div class="accpanel form-group">
+                                        <div class="accpanel">
                                             {{ form_widget(form.description_list) }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            {% if has_class == false %}
                             <div class="form-group">
-                                {{ form_label(form.price02) }}
+                                {{ form_label(form.class.price02) }}
                                 <div class="col-sm-9 col-lg-10">
-                                    {{ form_widget(form.price02) }}
+                                    {{ form_widget(form.class.price02) }}
                                     <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
-                                        <div class="accpanel form-group">
-                                            {{ form_widget(form.price01) }}
+                                        <div class="accpanel">
+                                            {{ form_widget(form.class.price01) }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                {{ form_label(form.stock) }}
+                                {{ form_label(form.class.stock) }}
                                 <div class="col-sm-9 col-lg-10">
                                     <div class="row">
                                         <div class="col-xs-12 form-inline">
-                                            {{ form_widget(form.stock) }}
-                                            {{ form_errors(form.stock) }}
-                                            {{ form_widget(form.stock_unlimited) }}
-                                            {{ form_errors(form.stock_unlimited) }}
+                                            {{ form_widget(form.class.stock) }}
+                                            {{ form_errors(form.class.stock) }}
+                                            {{ form_widget(form.class.stock_unlimited) }}
+                                            {{ form_errors(form.class.stock_unlimited) }}
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-                            {{ form_row(form.Category) }}
+                            {% endif %}
+
+                            <div class="form-group">
+                                {{ form_label(form.Category) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    <div class="accordion">
+                                        <a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>カテゴリを選択</a>
+                                        <div class="accpanel form-group">
+                                            {{ form_widget(form.Category) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
@@ -154,12 +212,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div><!-- /.box-header -->
                         <div class="box-body accpanel">
 
-                            {{ form_row(form.code) }}
-                            {{ form_row(form.sale_limit) }}
-                            {{ form_row(form.tag) }}
+                            {% if has_class == false %}
+                                {{ form_row(form.class.code) }}
+                                {{ form_row(form.class.sale_limit) }}
+                            {% endif %}
+
+                            <div class="form-group">
+                                {{ form_label(form.tag) }}
+                                <div class="col-sm-10 form-inline">
+                                    {{ form_widget(form.tag) }}
+                                    <button id="add_tag" class="btn btn-default" onclick="return false;">追加</button>
+                                    <ul class="tag_list">
+                                        {% for tagForm in form.tags %}
+                                            <li class="alert-dismissible">
+                                                <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                                                    <svg aria-hidden="true" class="cb cb-close"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use></svg>
+                                                </button>
+                                                {{ tagForm.vars.value }}
+                                                {{ form_widget(tagForm) }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
                             {{ form_row(form.search_word) }}
                             {{ form_row(form.DeliveryDate) }}
-                            {{ form_row(form.point_rate) }}
+                            {% if has_class == false %}
+                                {{ form_row(form.class.deliv_fee) }}
+                                {{ form_row(form.class.point_rate) }}
+                            {% endif %}
 
                         </div>
                     </div>
@@ -169,7 +250,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <h3 class="box-title">サブ情報<span class="fa fa-chevron-down icon_down"></span></h3>
                         </div><!-- /.box-header -->
                         <div class="box-body accpanel">
-                            {{ form_widget(form.free_area) }}
+                            {{ form_widget(form.free_area, { attr : { id : 'wysiwyg-area' } } ) }}
                         </div>
                     </div>
                     
@@ -183,7 +264,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     
                     <div class="row hidden-xs hidden-sm">
                         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                            <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">商品を登録</button>
                             <p><a href="#">商品一覧に戻る</a></p>
                             <p><a href="{{ url('admin_product') }}">検索画面に戻る</a></p>
                         </div>
@@ -199,27 +279,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <div class="radio">
-                                                {{ form_widget(form.status, { attr : { class : 'form-inline' } }) }}
+                                                {{ form_widget(form.Status, { attr : { class : 'form-inline' } }) }}
+                                                {{ form_errors(form.Status) }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row text-center">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                        <button class="btn btn-primary btn-block btn-lg">商品を登録</button>
+                                        <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">商品を登録</button>
                                     </div>
                                 </div>
                                 <div class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                        <button class="btn btn-default btn-block btn-sm">規格設定</button>
+                                        <button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>規格設定</button>
                                     </div>
                                 </div>
                                 <div class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                         <ul class="col-3">
-                                        <li><button class="btn btn-default btn-block btn-sm" disabled>確認</button></li>
-                                        <li><button class="btn btn-default btn-block btn-sm">複製</button></li>
-                                        <li><button class="btn btn-default btn-block btn-sm">削除</button></li>
+                                            <li><button class="btn btn-default btn-block btn-sm">確認</button></li>
+                                            <li><button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>複製</button></li>
+                                            <li><button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>削除</button></li>
                                         </ul>
                                     </div>
                                 </div>

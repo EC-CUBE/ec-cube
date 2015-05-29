@@ -820,6 +820,16 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $this->ProductClasses;
     }
 
+    public function hasProductClass()
+    {
+        foreach ($this->ProductClasses as $ProductClass) {
+            if (!is_null($ProductClass->getClassCategory1())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Add ProductStatuses
      *
