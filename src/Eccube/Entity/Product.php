@@ -432,6 +432,11 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $class_categories;
     }
 
+    public function getMainListImage() {
+        $ProductImages = $this->getProductImage();
+        return empty($ProductImages) ? null : $ProductImages[0];
+    }
+
     /**
      * @var integer
      */
