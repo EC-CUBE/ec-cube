@@ -66,10 +66,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="slides">
                         {% if Product.ProductImage|length > 0 %}
                             {% for ProductImage in Product.ProductImage %}
-                            <div><img src="{{ app.config.image_save_urlpath }}{{ ProductImage|no_image_main_list }}"/></div>
+                            <div><img src="{{ app.config.image_save_urlpath }}{{ ProductImage|no_image_product }}"/></div>
                             {% endfor %}
                         {% else %}
-                            <div><img src="{{ app.config.image_save_urlpath }}{{ ''|no_image_main_list }}"/></div>
+                            <div><img src="{{ app.config.image_save_urlpath }}{{ ''|no_image_product }}"/></div>
                         {% endif %}
                     </div>
                 </div>
