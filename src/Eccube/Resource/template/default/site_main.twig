@@ -190,7 +190,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.root }}js/bootstrap.min.js"></script>
     <script src="{{ app.config.root }}js/slick.min.js"></script>
     <script src="{{ app.config.root }}js/function.js"></script>
+    <script src="{{ app.config.root }}js/eccube.js"></script>
     <script type="text/javascript">
+        {{ block('javascript') }}
         $(function(){
             $('.main_visual').slick({
               dots: true,
@@ -200,7 +202,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
 
             $("#drawer").append($("#drawer_pc").clone(true).children());
+            {{ block('onload') }}
         });
     </script>
   </body>
-</html
+</html>

@@ -117,14 +117,14 @@ class ProductController
         ));
     }
 
-    public function detail(Application $app, Request $request, $productId)
+    public function detail(Application $app, Request $request, $id)
     {
         if ($app['config']['nostock_hidden']) {
             $app['orm.em']->getFilters()->enable('nostock_hidden');
         }
 
-        /* @var $product \Eccube\Entity\Product */
-        $Product = $app['eccube.repository.product']->get($productId);
+        /* @var $Product \Eccube\Entity\Product */
+        $Product = $app['eccube.repository.product']->get($id);
         if ($Product->getStatus()->getId() !== 1) {
             throw new NotFoundHttpException();
         }
@@ -149,11 +149,11 @@ class ProductController
                         $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
                     }
 
-                    return $app->redirect($app['url_generator']->generate('product_detail', array('productId' => $Product->getId())));
+                    return $app->redirect($app->url('product_detail', array('productId' => $Product->getId())));
                 } else {
                     $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
 
-                    return $app->redirect($app['url_generator']->generate('cart'));
+                    return $app->redirect($app->url('cart'));
                 }
             }
         }
@@ -165,7 +165,7 @@ class ProductController
             $is_favorite = false;
         }
 
-        return $app['twig']->render('Product/detail.twig', array(
+        return $app->render('Product/detail.twig', array(
             'title' => $this->title,
             'form' => $form->createView(),
             'Product' => $Product,
