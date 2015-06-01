@@ -78,8 +78,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     private function newTestProduct($TestCreator)
     {
         $TestProduct = new \Eccube\Entity\Product();
+        $Disp = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Disp')->find(1);
         $TestProduct->setName('テスト商品')
-            ->setStatus(0)
+            ->setStatus($Disp)
             ->setNote('test note')
             ->setDescriptionList('テスト商品 商品説明(リスト)')
             ->setDescriptionDetail('テスト商品 商品説明(詳細)')
