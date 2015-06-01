@@ -61,6 +61,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.constant'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Constant');
         });
+        $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
+        });
+
         $app['eccube.repository.category'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Category');
         });
@@ -83,6 +87,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $productRepository->setConfig($app['config']);
 
             return $productRepository;
+        });
+        $app['eccube.repository.product_image'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductImage');
+        });
+        $app['eccube.repository.product_class'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductClass');
         });
         $app['eccube.repository.maker'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Maker');

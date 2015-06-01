@@ -1041,6 +1041,7 @@ dd.form-group .errormsg {
     border: 1px solid #C4CCCE;
     padding: 16px 16px 0 0;
     text-align: center;
+    min-height: 100px;
 }
 .form-horizontal .photo_files li {
     width: 150px;
@@ -1811,6 +1812,20 @@ dl.accordion {
     margin: 0;
     max-height: 100%;
     padding: 0;
+    width: 46px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: 0 none;
+}
+
+.hideShowPassword-toggle .cb-eye {
+    font-size: 30px;
+    font-size: 3rem;
+    fill: #ccc;
+}
+
+.hideShowPassword-toggle-hide .cb-eye {
+    fill: #666;
     overflow: 'hidden';
     text-indent: -999em;
     width: 46px;

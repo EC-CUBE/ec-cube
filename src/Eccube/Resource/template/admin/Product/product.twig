@@ -26,99 +26,247 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+
+{% block assets %}
+    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload.css" rel="stylesheet">
+    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload-ui.css" rel="stylesheet">
+
+    <script src="{{ app.config.root }}admin/file_upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="{{ app.config.root }}admin/file_upload/js/jquery.iframe-transport.js"></script>
+    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload.js"></script>
+    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-process.js"></script>
+    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-validate.js"></script>
+{% endblock %}
+
+
 {% block javascript %}
-    // 表示非表示切り替え
-    function lfDispSwitch(id){
-        var obj = document.getElementById(id);
-        if (obj.style.display == 'none') {
-            obj.style.display = '';
+$(function(){
+
+    $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function(){
+        if ($(this).prop("checked")) {
+            $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
         } else {
-            obj.style.display = 'none';
+            $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
         }
-    }
+    });
 
-    // セレクトボックスのリストを初期化
-    // ※キャッシュ対策
-    // (移動元セレクトボックス)
-    function fnInitSelect(select) {
-        var selectedOptions = <!--{$tpl_json_category_id}-->;
-        $('#' + select + ' option').attr('selected', false);
-        for(var i=0; i < selectedOptions.length; i++){
-            $('#' + select + ' option[value="' + selectedOptions[i] + '"]')
-                .prop('selected', 'selected');
-        }
-    }
+    var proto_img = '<li><img src="__path__" /><a class="delete-image"><svg class="cb cb-close"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use></svg></a></li>';
+    var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
+    var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
+    var images = new Array();
 
-    // セレクトボックスのリストを移動
-    // (移動元セレクトボックスID, 移動先セレクトボックスID)
-    function fnMoveSelect(select, target) {
-        $('#' + select).children().each(function() {
-            if (this.selected) {
-                $('#' + target).append(this);
-                $(this).attr({selected: false});
+    {% for image in form.images %}
+        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}{{ image.vars.value }}'));
+        var $widget = $('{{ form_widget(image) }}');
+        $widget.val('{{ image.vars.value }}');
+        $("#thumb").append($img.append($widget));
+    {% endfor %}
+
+    {% for add_image in form.add_images %}
+        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}{{ add_image.vars.value }}'));
+        var $widget = $('{{ form_widget(add_image) }}');
+        $widget.val('{{ add_image.vars.value }}');
+        $("#thumb").append($img.append($widget));
+    {% endfor %}
+
+    {% for delete_image in form.delete_images %}
+        $("#thumb").append('{{ form_widget(delete_image) }}');
+    {% endfor %}
+
+    // 画像削除時
+    var count_del = 0;
+    $(".delete-image").on("click", function(){
+        var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
+        var src = $(this).prev().attr('src')
+            .replace('{{ app.config.image_temp_urlpath }}', '')
+            .replace('{{ app.config.image_save_urlpath }}', '');
+        $new_delete_image.val(src);
+        $("#thumb").append($new_delete_image);
+        $(this).parent("li").remove();
+        count_del ++;
+    });
+    var count_add = {{ form.add_images|length|default(0) }};
+    $('#{{ form.product_image.vars.id }}').fileupload({
+        url: "{{ url('admin_product_image_add') }}",
+        type: "post",
+        dataType: 'json',
+        done: function(e, data) {
+            $('#progress').hide();
+            $.each(data.result.files, function(index, file) {
+                var path = '{{ app.config.image_temp_urlpath }}' + file;
+                var $img = $(proto_img.replace(/__path__/g, path));
+                $img.val(file);
+                var $new_img = $(proto_add.replace(/__name__/g, count_add));
+                $new_img.val(file);
+                $child = $('<li></li>')
+                    .append($img)
+                    .append($new_img);
+
+                $('#thumb').append($child);
+                count_add ++;
+            });
+        },
+        fail: function(e, data) {
+            alert('アップロードに失敗しました。');
+        },
+        always: function(e, data) {
+            $('#progress').hide();
+            $('#progress .progress-bar').width('0%');
+        },
+        start: function(e, data) {
+            $('#progress').show();
+        },
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize: 10000000,
+        maxNumberOfFiles: 10,
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        },
+        processalways: function(e, data){
+            if (data.files.error) {
+                alert("画像ファイルサイズが大きいか画像ファイルではありません。");
             }
-        });
-        // IE7再描画不具合対策
-        var ua = navigator.userAgent.toLowerCase();
-        if (ua.indexOf("msie") != -1 && ua.indexOf('msie 6') == -1) {
-            $('#' + select).hide();
-            $('#' + select).show();
-            $('#' + target).hide();
-            $('#' + target).show();
         }
-    }
+    });
 
-    // target の子要素を選択状態にする
-    function selectAll(target) {
-        $('#' + target).children().prop('selected', 'selected');
-    }
+    // 画像アップロード
+    $('#file_upload').on('click', function() {
+        $('#{{ form.product_image.vars.id }}').click();
+    });
+});
 
-    // 商品種別によってダウンロード商品のフォームの表示非表示を切り替える
-    function toggleDownloadFileForms(value) {
-        if (value == '2') {
-            $('.type-download').show('fast');
-        } else {
-            $('.type-download').hide('fast');
-        }
-    }
-
-    $(function(){
-        var form_product_type = $('input[name=product_type_id]');
-        form_product_type.click(function(){
-            toggleDownloadFileForms(form_product_type.filter(':checked').val());
-        });
-        toggleDownloadFileForms(form_product_type.filter(':checked').val());
-    })
 {% endblock %}
 
 {% block main %}
+            <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+            {{ form_widget(form._token) }}
             <div class="row">
                 <div class="col-md-9">
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">基本情報</h3>
                         </div><!-- /.box-header -->
-                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
                         <div class="box-body">
 
-                                {{ form_widget(form) }}
+                            {{ form_row(form.name) }}
+                            {% if has_class == false %}
+                                {{ form_row(form.class.product_type, { attr : { class : 'form-inline' } } ) }}
+                            {% endif %}
 
-                        </div><!-- /.box-body --> 
-                        </form>
+                            <div class="form-group">
+                                {{ form_label(form.product_image) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {#<div class="photo_files" draggable="true">#}
+                                    <div class="photo_files">
+                                        <ul id="thumb" class="clearfix"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9 col-lg-offset-2 col-lg-10 ">
+
+                                    <div id="progress" class="progress progress-striped active" style="display:none;">
+                                        <div class="progress-bar progress-bar-info"></div>
+                                    </div>
+
+                                    {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                    <a id="file_upload" class="with-icon">
+                                        <svg class="cb cb-plus"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-plus"></use></svg>ファイルをアップロード
+                                    </a>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_label(form.description_detail) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.description_detail) }}
+                                    <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
+                                        <div class="accpanel">
+                                            {{ form_widget(form.description_list) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if has_class == false %}
+                            <div class="form-group">
+                                {{ form_label(form.class.price02) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    {{ form_widget(form.class.price02) }}
+                                    {{ form_errors(form.class.price02) }}
+                                    <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
+                                        <div class="accpanel">
+                                            {{ form_widget(form.class.price01) }}
+                                            {{ form_errors(form.class.price01) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_label(form.class.stock) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    <div class="row">
+                                        <div class="col-xs-12 form-inline">
+                                            {{ form_widget(form.class.stock) }}
+                                            {{ form_errors(form.class.stock) }}
+                                            {{ form_widget(form.class.stock_unlimited) }}
+                                            {{ form_errors(form.class.stock_unlimited) }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="form-group">
+                                {{ form_label(form.Category) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    <div class="accordion">
+                                        <a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>カテゴリを選択</a>
+                                        <div class="accpanel form-group">
+                                            {{ form_widget(form.Category) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /.box-body -->
                     </div><!-- /.box -->
 
                     <div class="box accordion">
                         <div class="box-header toggle">
                             <h3 class="box-title">詳細な設定<span class="fa fa-chevron-down icon_down"></span></h3>
                         </div><!-- /.box-header -->
-                        <div class="box-body accpanel"> ああああ </div>
+                        <div class="box-body accpanel">
+
+                            {% if has_class == false %}
+                                {{ form_row(form.class.code) }}
+                                {{ form_row(form.class.sale_limit) }}
+                            {% endif %}
+
+                            {{ form_row(form.search_word) }}
+                            {{ form_row(form.DeliveryDate) }}
+                            {% if has_class == false %}
+                                {{ form_row(form.class.deliv_fee) }}
+                                {{ form_row(form.class.point_rate) }}
+                            {% endif %}
+
+                        </div>
                     </div>
                     
                     <div class="box accordion">
                         <div class="box-header toggle">
                             <h3 class="box-title">サブ情報<span class="fa fa-chevron-down icon_down"></span></h3>
                         </div><!-- /.box-header -->
-                        <div class="box-body accpanel"> ああああ </div>
+                        <div class="box-body accpanel">
+                            {{ form_widget(form.free_area, { attr : { id : 'wysiwyg-area' } } ) }}
+                        </div>
                     </div>
                     
                     <div class="box accordion">
@@ -126,11 +274,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <h3 class="box-title">関連商品<span class="fa fa-chevron-down icon_down"></span></h3>
                         </div><!-- /.box-header -->
                         <div class="box-body accpanel"> ああああ </div>
+
                     </div>
                     
                     <div class="row hidden-xs hidden-sm">
                         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                            <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">商品を登録</button>
                             <p><a href="#">商品一覧に戻る</a></p>
                             <p><a href="{{ url('admin_product') }}">検索画面に戻る</a></p>
                         </div>
@@ -145,27 +293,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
-                                            <div class="radio"><label class="radio-inline"><input type="radio" value="1" name="status">公開</label>
-                                            <label class="radio-inline"><input type="radio" checked="checked" value="2" name="status">非公開</label></div>
+                                            <div class="radio">
+                                                {{ form_widget(form.Status, { attr : { class : 'form-inline' } }) }}
+                                                {{ form_errors(form.Status) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row text-center">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                        <button class="btn btn-primary btn-block btn-lg">商品を登録</button>
+                                        <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">商品を登録</button>
                                     </div>
                                 </div>
                                 <div class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                        <button class="btn btn-default btn-block btn-sm">規格設定</button>
+                                        <button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>規格設定</button>
                                     </div>
                                 </div>
                                 <div class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                         <ul class="col-3">
-                                        <li><button class="btn btn-default btn-block btn-sm" disabled>確認</button></li>
-                                        <li><button class="btn btn-default btn-block btn-sm">複製</button></li>
-                                        <li><button class="btn btn-default btn-block btn-sm">削除</button></li>
+                                            <li><button class="btn btn-default btn-block btn-sm">確認</button></li>
+                                            <li><button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>複製</button></li>
+                                            <li><button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>削除</button></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -175,11 +325,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="box-header">
                                 <h3 class="box-title">ショップ用メモ欄</h3>
                             </div><!-- /.box-header -->
-                            <div class="box-body"><textarea class="form-control" rows="3"></textarea></div>
+                            <div class="box-body">
+                                {{ form_widget(form.note) }}
+                            </div>
                         </div>
                     </div>
                 </div><!-- /.col --> 
-                
+
             </div>
+            </form>
 
 {% endblock %}

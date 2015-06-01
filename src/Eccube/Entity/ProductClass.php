@@ -169,7 +169,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $point_rate;
+    private $point_rate = 0;
 
     /**
      * @var \DateTime
