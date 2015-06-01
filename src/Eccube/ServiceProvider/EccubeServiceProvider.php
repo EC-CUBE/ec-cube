@@ -211,6 +211,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ZipType();
             $types[] = new \Eccube\Form\Type\Master\ProductTypeType();
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
+            $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
             $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
