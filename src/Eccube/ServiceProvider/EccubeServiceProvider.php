@@ -88,6 +88,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $productRepository;
         });
+        $app['eccube.repository.product_image'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductImage');
+        });
+        $app['eccube.repository.product_class'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductClass');
+        });
         $app['eccube.repository.maker'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Maker');
         });
@@ -212,6 +218,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ProductTypeType();
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
             $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
+            $types[] = new \Eccube\Form\Type\Master\PageMaxType();
             $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
@@ -222,7 +229,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
-            $types[] = new \Eccube\Form\Type\ShopMasterType($app);
+            $types[] = new \Eccube\Form\Type\ShopMasterType($app['config']);
             $types[] = new \Eccube\Form\Type\PointType($app);
             $types[] = new \Eccube\Form\Type\TradelawType($app);
             $types[] = new \Eccube\Form\Type\TaxRuleType($app);
@@ -245,11 +252,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ProductType($app);
             $types[] = new \Eccube\Form\Type\Admin\ProductClassType($app);
             $types[] = new \Eccube\Form\Type\Admin\SearchProductType($app);
-            $types[] = new \Eccube\Form\Type\Admin\SearchCustomerType($app);
+            $types[] = new \Eccube\Form\Type\Admin\SearchCustomerType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\CustomerType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\MakerType($app);
             $types[] = new \Eccube\Form\Type\Admin\ClassNameType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app['config']);
-            $types[] = new \Eccube\Form\Type\Admin\CategoryType($app);
+            $types[] = new \Eccube\Form\Type\Admin\CategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\MemberType($app['config']);
 
             return $types;

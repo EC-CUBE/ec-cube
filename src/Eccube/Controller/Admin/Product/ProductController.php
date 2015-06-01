@@ -25,36 +25,116 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController
 {
-    public function index(Application $app, Request $request)
+    public function index(Application $app, Request $request, $page_no = null)
     {
+
+        $session = $request->getSession();
+
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
 
-        $searchForm->handleRequest($request);
-        if ($searchForm->isValid()) {
-            $searchData = $searchForm->getData();
-        } else {
-            $searchData = array();
-        }
+        $pagination = array();
 
-        // paginator
-        $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
-        $pagination = $app['paginator']()->paginate(
-            $qb,
-            !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            10 // TODO
-        );
+        $em = $app['orm.em'];
+        $disps = $em->getRepository('Eccube\Entity\Master\Disp')->findAll();
+        $pageMaxis = $em->getRepository('Eccube\Entity\Master\PageMax')->findAll();
+        $page_count = $app['config']['default_page_count'];
+        $page_status = null;
+
+        if ('POST' === $request->getMethod()) {
+
+            $searchForm->handleRequest($request);
+
+            if ($searchForm->isValid()) {
+                $searchData = $searchForm->getData();
+
+                // paginator
+                $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+                $page_no = 1;
+                $pagination = $app['paginator']()->paginate(
+                    $qb,
+                    $page_no,
+                    $page_count
+                );
+
+                // sessionのデータ保持
+                $session->set('eccube.admin.product.search', $searchData);
+            }
+        } else {
+            if (is_null($page_no)) {
+                // sessionを削除
+                $session->remove('eccube.admin.product.search');
+            } else {
+                // pagingなどの処理
+                $searchData = $session->get('eccube.admin.product.search');
+                if (!is_null($searchData)) {
+
+                    // 公開ステータス
+                    $status = $request->get('status');
+                    if (!empty($status)) {
+                        if ($status != $app['config']['admin_product_stock_status']) {
+                            $searchData['status']->clear();
+                            $searchData['status']->add($status);
+                            $session->set('eccube.admin.product.search', $searchData);
+                        } else {
+                            $searchData['stock_status'] = $app['config']['disabled'];
+                        }
+                        $page_status = $status;
+                    }
+                    // 表示件数
+                    $pcount = $request->get('page_count');
+
+                    $page_count = empty($pcount) ? $page_count : $pcount;
+
+                    $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+                    $pagination = $app['paginator']()->paginate(
+                        $qb,
+                        $page_no,
+                        $page_count
+                    );
+
+//                    $searchForm = $app['form.factory']->createBuilder('admin_search_product', $searchData)->getForm();
+                }
+            }
+        }
 
         return $app['view']->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
+            'disps' => $disps,
+            'pageMaxis' => $pageMaxis,
+            'page_no' => $page_no,
+            'page_status' => $page_status,
+            'page_count' => $page_count,
         ));
+    }
+
+    public function addImage(Application $app, Request $request)
+    {
+        $images = $request->files->get('admin_product');
+        error_log(json_encode($images));
+
+        $files = array();
+        if (count($images) > 0) {
+            foreach ($images as $img) {
+                foreach ($img as $image) {
+                    $extension = $image->guessExtension();
+                    $filename = date('mdHisu') . '.' . $extension;
+                    $image->move($app['config']['image_temp_realdir'], $filename);
+                    $files[] = $filename;
+                }
+            }
+        }
+
+        return $app->json(array('files' => $files), 200);
     }
 
     public function edit(Application $app, Request $request, $id = null)
@@ -100,12 +180,14 @@ class ProductController
         if (!$has_class) {
             $form['class']->setData($ProductClass);
         }
-        $tags = array();
-        $Tags = $Product->getProductTag();
-        foreach ($Tags as $Tag) {
-            $tags[] = $Tag->getTag()->getName();
+
+        // ファイルの登録
+        $images = array();
+        $ProductImages = $Product->getProductImage();
+        foreach ($ProductImages as $ProductImage) {
+            $images[] = $ProductImage->getFileName();
         }
-        $form['tags']->setData($tags);
+        $form['images']->setData($images);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -117,34 +199,34 @@ class ProductController
                 }
 
                 // 画像の登録
-//                $file = $form->get('main_list_image')->getData();
-//                if ($file !== null) {
-//                    $extension = $file->guessExtension();
-//                    if (!$extension) {
-//                        $extension = 'jpg';
-//                    }
-//                    $filename = date('mdHi_' . uniqid('')) . '.' . $extension;
-//                    $file->move($app['config']['image_save_realdir'], $filename);
-//                    $Product->setMainListImage($filename);
-//                }
+                $add_images = $form->get('add_images')->getData();
+                foreach ($add_images as $add_image) {
+                    $ProductImage = new \Eccube\Entity\ProductImage();
+                    $ProductImage
+                        ->setFileName($add_image)
+                        ->setProduct($Product)
+                        ->setRank(1);
+                    $Product->addProductImage($ProductImage);
+                    $app['orm.em']->persist($ProductImage);
 
-                // タグの登録
-                $Tags = $Product->getProductTag();
-                foreach ($Tags as $Tag) {
-                    $Product->removeProductTag($Tag);
+                    // 移動
+                    $file = new File($app['config']['image_temp_realdir'] . $add_image);
+                    $file->move($app['config']['image_save_realdir']);
                 }
 
-                $tags = $form['tags']->getData();
-                foreach ($tags as $tag) {
-                    $Tag = $app['eccube.repository.master.tag']->findOrCreateByTagName($tag);
-                    $ProductTag = new \Eccube\Entity\ProductTag();
-                    $ProductTag
-                        ->setProduct($Product)
-                        ->setTag($Tag);
-                    $Product->addProductTag($ProductTag);
+                // 画像の削除
+                $delete_images = $form->get('delete_images')->getData();
+                foreach ($delete_images as $delete_image) {
+                    var_dump($delete_image);
+                    $ProductImage = $app['eccube.repository.product_image']
+                        ->findOneBy(array('file_name' => $delete_image));
+                    $Product->removeProductImage($ProductImage);
+                    $app['orm.em']->remove($ProductImage);
+                    $app['orm.em']->persist($Product);
 
-                    $app['orm.em']->persist($Tag);
-                    $app['orm.em']->persist($ProductTag);
+                    // 削除
+                    $fs = new Filesystem();
+                    $fs->remove($app['config']['image_save_realdir'] . $delete_image);
                 }
 
                 $app['orm.em']->persist($Product);

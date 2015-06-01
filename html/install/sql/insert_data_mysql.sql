@@ -374,7 +374,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_SIZE', '2000', 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CSV_LINE_MAX', '10000', 128, 'CSVアップロード1行あたりの最大文字数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('FILE_SIZE', '10000', 130, 'ファイル管理画面アップ制限(KB)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TEMPLATE_SIZE', '10000', 131, 'アップできるテンプレートファイル制限(KB)');
-INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('LEVEL_MAX', '5', 132, 'カテゴリの最大階層');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CATEGORY_NEST_LEVEL', '5', 132, 'カテゴリの最大階層');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('CATEGORY_MAX', '1000', 133, '最大カテゴリ登録数');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_TITLE', '"EC-CUBE 管理機能"', 134, '管理機能タイトル');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SELECT_RGB', '"#ffffdf"', 135, '編集時強調表示色');
@@ -546,6 +546,10 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('TAX_RULE_PRIORITY',
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PENDING_ORDER_CANCEL_TIME', '900', 1418, '決済処理中ステータスのロールバックを行う時間の設定(秒) ');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PENDING_ORDER_CANCEL_FLAG', 'true', 1419, '決済処理中ステータスのロールバックをするか(true:する false:しない)');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('API_ENABLE_FLAG', 'false', 1420, 'API機能を有効にする(true:する false:しない)');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DEFAULT_PAGE_COUNT', 10, 1421, null);
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_PRODUCT_STOCK_STATUS', 3, 1422, null);
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENABLED', 1, 1423, null);
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DISABLED', 0, 1424, null);
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
@@ -568,7 +572,7 @@ INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_co
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_kara_mail', 'token', 1, '');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_kara_mail', 'create_date', 1, '');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_kara_mail', 'receive_date', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product_categories', 'category_id', 2, 'カテゴリが多いときに試してみてください。');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product_category', 'category_id', 2, 'カテゴリが多いときに試してみてください。');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('mtb_zip', 'zipcode', 2, '郵便番号検索が遅いときに試してみてください。郵便番号データの更新時には無効にしていることをおすすめします。');
 
 INSERT INTO dtb_tax_rule (tax_rule_id, apply_date, calc_rule, tax_rate, tax_adjust, member_id, del_flg, create_date, update_date) VALUES (1, CURRENT_TIMESTAMP, 1, 8, 0, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -1044,8 +1048,8 @@ INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_da
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (67, 1, '(SELECT comment FROM dtb_recommend_products WHERE prdcls.product_id = dtb_recommend_products.product_id ORDER BY rank DESC, recommend_product_id DESC limit 1 offset 5) AS recommend_comment6', '関連商品コメント(6)', 67, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LLTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (68, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT product_status_id FROM dtb_product_status WHERE dtb_product_status.product_id = prdcls.product_id and del_flg = 0 ORDER BY dtb_product_status.product_status_id), '','')) as product_statuses', '商品ステータス', 68, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'STEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (69, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT name FROM dtb_product_status LEFT JOIN mtb_status ON  dtb_product_status.product_status_id = mtb_status.id  WHERE dtb_product_status.product_id = prdcls.product_id and del_flg = 0 ORDER BY dtb_product_status.product_status_id), '','')) as product_status_names', '商品ステータス名', 69, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (70, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_id FROM dtb_product_categories WHERE dtb_product_categories.product_id = prdcls.product_id ORDER BY dtb_product_categories.rank), '','')) as category_ids', 'カテゴリID', 70, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
-INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (71, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_name FROM dtb_product_categories LEFT JOIN dtb_category ON dtb_product_categories.category_id = dtb_category.category_id WHERE dtb_product_categories.product_id = prdcls.product_id ORDER BY dtb_product_categories.rank), '','')) as category_names', 'カテゴリ名', 71, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (70, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_id FROM dtb_product_category WHERE dtb_product_category.product_id = prdcls.product_id ORDER BY dtb_product_category.rank), '','')) as category_ids', 'カテゴリID', 70, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK,EXIST_CHECK');
+INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, rw_flg, status, create_date, update_date, mb_convert_kana_option, size_const_type, error_check_types) VALUES (71, 1, '(SELECT ARRAY_TO_STRING(ARRAY(SELECT category_name FROM dtb_product_category LEFT JOIN dtb_category ON dtb_product_category.category_id = dtb_category.category_id WHERE dtb_product_category.product_id = prdcls.product_id ORDER BY dtb_product_category.rank), '','')) as category_names', 'カテゴリ名', 71, 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'KVa', 'LTEXT_LEN', 'SPTAB_CHECK,MAX_LENGTH_CHECK');
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (72, 2, 'customer_id', '会員ID', 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (73, 2, 'name01', 'お名前(姓)', 2, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_csv (no, csv_id, col, disp_name, rank, status, create_date, update_date) VALUES (74, 2, 'name02', 'お名前(名)', 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -1337,10 +1341,10 @@ INSERT INTO dtb_products (product_id, name, maker_id, status, note, del_flg, cre
 INSERT INTO dtb_products (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
 INSERT INTO dtb_products (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (1, 5, 1);
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (2, 4, 2);
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (3, 4, 1);
-INSERT INTO dtb_product_categories (product_id, category_id, rank) VALUES (3, 6, 1);
+INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (1, 5, 1);
+INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (2, 4, 2);
+INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (3, 4, 1);
+INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (3, 6, 1);
 
 INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(0, 1, NULL, NULL, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1);
 INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, deliv_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(1, 1, 3, 6, 'ice-01', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);

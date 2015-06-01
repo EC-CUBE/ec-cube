@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row">
                         <div class="col-md-12 accordion">
 
-                            {{ form_widget(searchForm.id, { attr: { placeholder: '商品ID', class : 'input_search' } } ) }}
+                            {{ form_widget(searchForm.id, { attr: { placeholder: '商品名・ID・コード', class : 'input_search' } } ) }}
 
                             <a class="toggle fa-stack" href="#"><span class="fa fa-minus fa-stack-1x"></span> <span class="fa fa-minus fa-stack-1x"></span></a>
                             <div class="search-box-inner accpanel">
@@ -72,7 +72,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                        <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
                                     </div>
                                 </div><!-- /.row --> 
                             </div>
@@ -91,10 +91,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <!--検索条件設定テーブルここまで-->
 
-        {% if pagination.totalItemCount > 0 %}
+        {% if pagination %}
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
+                        {% if pagination|length > 0 %}
                         <div class="box-header with-arrow">
                             <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
                         </div><!-- /.box-header -->
@@ -102,20 +103,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="row">
                                 <div class="col-md-6">
                                     <ul class="link-with-bar">
-                                    <li><a>すべて</a></li>
-                                    <li><a href="#">公開</a></li>
-                                    <li><a href="#">非公開</a></li>
-                                    <li><a href="#">在庫なし</a></li>
+                                    <li>
+                                        {% if page_status is null %}
+                                        <a>すべて</a>
+                                        {% else %}
+                                        <a href="{{ path('admin_product', {'page_no': page_no} ) }}">すべて</a>
+                                        {% endif %}
+                                    </li>
+                                    {% for disp in disps %}
+                                      <li>
+                                      {% if page_status == disp.id %}
+                                      <a>{{ disp.name|e }}</a>
+                                      {% else %}
+                                      <a href="{{ path('admin_product', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                      {% endif %}
+                                      </li>
+                                    {% endfor %}
+                                      <li>
+                                      {% if page_status == app.config.admin_product_stock_status %}
+                                          <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                      {% else %}
+                                          <a href="{{ path('admin_product', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                      {% endif %}
+                                      </li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">
                                     <ul class="sort-dd">
                                     <li class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown">20件<span class="fa fa-chevron-down icon_down"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a>50件</a></li>
-                                            <li><a>100件</a></li>
-                                        </ul>
+                                        {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                                            <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<span class="fa fa-chevron-down icon_down"></span></a>
+                                            <ul class="dropdown-menu">
+                                        {% endfor %}
+                                        {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                                                <li><a href="{{ path('admin_product', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                        {% endfor %}
+                                            </ul>
                                     </li>
                                     <li class="dropdown">
                                         <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
@@ -133,7 +156,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Product in pagination %}
                                         <div class="item_box tr">
                                             <div class="item_photo td">
-                                                <img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_main_list }}" />
+                                                <img src="{{ app.config.image_save_urlpath }}{{ Product.productImage[0].fileName|no_image_main_list }}" />
                                                 {#
                                                     <span class="fa fa-picture-o fa-4x"></span>
                                                 #}
@@ -142,13 +165,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                                     {{ Product.name }}
                                                 </a><br>
-                                                {#
                                                 <span>
                                                     {{ Product.code_min }}
                                                     {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}
                                                     {% endif %}
                                                 </span>
-                                                #}
                                             </div>
                                             <div class="icon_edit td">
                                                 <div class="dropdown">
@@ -159,7 +180,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <li><a href="">複製</a></li>
                                                     <li><a href="">削除</a></li>
                                                     </ul>
-                                                </div>                                        
+                                                </div>
                                             </div>
                                         </div><!-- /.item_box --> 
                                     {% endfor %}
@@ -169,9 +190,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% if pagination.totalItemCount > 0 %}
                             {% include "pager.twig" with { 'pages' : pagination.paginationData } %}
                         {% endif %}
+                        {% else %}
+                        <div class="box-header with-arrow">
+                            <h3 class="box-title">検索条件に該当するデータがありませんでした。</span></h3>
+                        </div><!-- /.box-header -->
+                        {% endif %}
                     </div><!-- /.box --> 
                 </div><!-- /.col --> 
             </div>
+
         {% endif %}
-    </div>
 {% endblock %}

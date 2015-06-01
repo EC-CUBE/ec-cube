@@ -103,9 +103,12 @@ class Product extends \Eccube\Entity\AbstractEntity
                     }
                 }
                 if ($ProductClass->getClassCategory1()) {
-                    $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
-                    if ($ProductClass->getClassCategory2()) {
-                        $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                    $classCategoryId1 = $ProductClass->getClassCategory1()->getId();
+                    if (!empty($classCategoryId1)) {
+                        $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
+                        if ($ProductClass->getClassCategory2()) {
+                            $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                        }
                     }
                 }
                 $i++;

@@ -26,85 +26,93 @@ namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerController
 {
-    public $title;
-
-    public function __construct()
+    public function index(Application $app, Request $request)
     {
-    }
-
-    public function index(Application $app)
-    {
-
-        $Customers = array();
-
-        $form = $app['form.factory']
+        $pagination = null;
+        $searchForm = $app['form.factory']
             ->createBuilder('admin_search_customer')
             ->getForm();
 
-        $showResult = false;
-
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-
-            if ($form->isValid()) {
-                $showResult = true;
-
-                $qb = $app['orm.em']
-                    ->getRepository('Eccube\Entity\Customer')
-                    ->getQueryBuilderBySearchData($form->getData());
-                $query = $qb->getQuery();
-                $Customers = $query->getResult();
-            }
-
+        $searchForm->handleRequest($request);
+        $searchData = array();
+        if ($searchForm->isValid()) {
+            $searchData = $searchForm->getData();
         }
 
-        return $app['view']->render('Customer/index.twig', array(
-            'form' => $form->createView(),
-            'showResult' => $showResult,
-            'Customers' => $Customers,
+        if ('POST' === $request->getMethod()) {
+            $qb = $app['orm.em']
+                ->getRepository('Eccube\Entity\Customer')
+                ->getQueryBuilderBySearchData($searchData);
+
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                empty($searchData['pageno']) ? 1 : $searchData['pageno'],
+                empty($searchData['pagemax']) ? 10 : $searchData['pagemax']->getId()
+            );
+        }
+
+        return $app->render('Customer/index.twig', array(
+            'searchForm' => $searchForm->createView(),
+            'pagination' => $pagination,
         ));
     }
 
-    public function resend(Application $app, $id)
+    public function resend(Application $app, Request $request, $id)
     {
-        $Customer = $app['orm.em']->getRepository('Eccube\Entity\Customer')
+        $Customer = $app['orm.em']
+            ->getRepository('Eccube\Entity\Customer')
             ->find($id);
 
-        if ($Customer) {
-            $message = $app['mail.message']
-                ->setFrom(array('sample@example.com'))
-                ->setTo(array($Customer->getEmail()))
-                ->setBcc($app['config']['mail_cc'])
-                ->setSubject('[EC-CUBE3] 会員登録のご確認')
-                ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
-                    'customer' => $Customer
-                )));
-            $app['mailer']->send($message);
-
-            $app['session']->getFlashBag()->add('admin.customer.complete', 'admin.customer.resend.complete');
+        if (is_null($Customer)) {
+            throw new NotFoundHttpException();
         }
 
-        return $this->index($app);
+        $subject = $app->render('Mail/mail_title.twig', array(
+            'title' => '会員登録のご確認',
+        ));
+
+        $body = $app->render('Mail/entry_confirm.twig', array(
+            'name01' => $Customer->getName01(),
+            'name01' => $Customer->getName01(),
+            'secretKey' => $Customer->getSecretKey(),
+        ));
+
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        $message = $app['mail.message']
+            ->setFrom(array($BaseInfo->getEmail03() => $BaseInfo->getShopName()))
+            ->setTo(array($Customer->getEmail()))
+            ->setBcc($BaseInfo->getEmail01())
+            ->setReplyTo($BaseInfo->getEmail03())
+            ->setReturnPath($BaseInfo->getEmail04())
+            ->setSubject($subject)
+            ->setBody($body);
+        $app['mailer']->send($message);
+
+        $app->addSuccess('admin.customer.resend.complete', 'admin');
+
+        return $this->index($app, $request);
     }
 
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
-        $Customer = $app['orm.em']->getRepository('Eccube\Entity\Customer')
+        $Customer = $app['orm.em']
+            ->getRepository('Eccube\Entity\Customer')
             ->find($id);
 
-        if ($Customer) {
-            $Customer->setDelFlg(1);
-            $app['orm.em']->persist($Customer);
-            $app['orm.em']->flush();
-
-            $app['session']->getFlashBag()->add('admin.customer.complete', 'admin.customer.delete.complete');
+        if (is_null($Customer)) {
+            throw new NotFoundHttpException();
         }
 
-        $url = $app['url_generator']->generate('admin_customer');
+        $Customer->setDelFlg(1);
+        $app['orm.em']->persist($Customer);
+        $app['orm.em']->flush();
+        $app->addSuccess('admin.customer.delete.complete', 'admin');
 
-        return $this->index($app);
+        return $this->index($app, $request);
     }
 }

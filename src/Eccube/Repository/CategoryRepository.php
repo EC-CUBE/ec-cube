@@ -35,6 +35,21 @@ use Doctrine\ORM\EntityRepository;
 class CategoryRepository extends EntityRepository
 {
     /**
+     * @return int
+     */
+    public function getTotalCount()
+    {
+        $qb = $this
+            ->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->where('c.del_flg = 0');
+        $count = $qb->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
+
+    /**
      * @param  \Eccube\Entity\Category|null $Parent
      * @return \Eccube\Entity\Category[]
      */

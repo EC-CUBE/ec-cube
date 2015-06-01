@@ -1800,17 +1800,17 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.6.7",
+            "version": "v2.6.8",
             "target-dir": "Symfony/Component/HttpKernel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "2010194de0a57731af9404c7f97fd300db98b7a3"
+                "reference": "a9a6f595941fce8dddd64f4e9bf47747cf1515fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/2010194de0a57731af9404c7f97fd300db98b7a3",
-                "reference": "2010194de0a57731af9404c7f97fd300db98b7a3",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/a9a6f595941fce8dddd64f4e9bf47747cf1515fc",
+                "reference": "a9a6f595941fce8dddd64f4e9bf47747cf1515fc",
                 "shasum": ""
             },
             "require": {
@@ -1874,7 +1874,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2015-05-11 01:58:49"
+            "time": "2015-05-27 00:17:10"
         },
         {
             "name": "symfony/intl",

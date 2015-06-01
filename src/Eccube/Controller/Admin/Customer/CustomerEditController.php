@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of EC-CUBE
  *
@@ -24,57 +23,44 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
+use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerEditController extends AbstractController
 {
-    private $tpl_maintitle;
-    private $tpl_subtitle;
-
-    public $form;
-
-    public function __construct()
+    public function index(Application $app, Request $request, $id = null)
     {
-    }
-
-    public function index(Application $app, $id = null)
-    {
-
+        // 編集
         if ($id) {
-            $Customer = $app['orm.em']->getRepository('Eccube\\Entity\\Customer')
-                ->findOneBy(array(
-                        'id' => $id,
-                        'del_flg' => 0,
-                    ));
+            $Customer = $app['orm.em']
+                ->getRepository('Eccube\Entity\Customer')
+                ->find($id);
 
-            if ($Customer === null) {
-                throw new HttpException\NotFoundHttpException("※ 会員ID：$id が見つかりません。");
+            if (is_null($Customer)) {
+                throw new NotFoundHttpException();
             }
 
-            if ($app['request']->getMethod() === 'POST') {
+            if ('POST' === $request->getMethod()) {
                 $previous_password = $Customer->getPassword();
             } else {
                 // 編集用にデフォルトパスワードをセット
                 $Customer->setPassword($app['config']['default_password']);
             }
-
+        // 新規登録
         } else {
             $Customer =  $app['eccube.repository.customer']->newCustomer();
         }
 
-        //TODO: 購入処理ができてからちゃんと実装する
-        $Order = $this->getOrder($app, $Customer);
+        // 会員登録フォーム
+        $form = $app['form.factory']
+            ->createBuilder('admin_customer', $Customer)
+            ->getForm();
 
-        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('customer', $Customer);
-
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $builder->getForm();
-
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($Customer->getId() === null) {
                     $Customer->setSalt(
@@ -101,54 +87,18 @@ class CustomerEditController extends AbstractController
 
                 $app['orm.em']->persist($Customer);
                 $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('customer.complete', 'admin.register.complete');
 
-                return $app->redirect($app['url_generator']->generate('admin_customer_edit', array(
+                $app->addSuccess('admin.customer.save.complete', 'admin');
+
+                return $app->redirect($app->url('admin_customer_edit', array(
                     'id' => $Customer->getId(),
                 )));
             }
         }
 
-        return $app['view']->render('Customer/edit.twig', array(
-            'customerId' => $id,
-            'Order' => $Order,
+        return $app->render('Customer/edit.twig', array(
             'form' => $form->createView(),
+            'Customer' => $Customer,
         ));
-    }
-
-    /**
-     * getCustomer
-     *
-     * 新規か編集かにあわせてCustomerObjectを返す
-     *
-     * @param  Application $app
-     * @param $id
-     * @return mixed
-     */
-    private function getCustomer(Application $app, $id)
-    {
-    }
-
-    /**
-     * 購入履歴を取得する
-     * TODO: 購入が実装できてからちゃんと実装する
-     *
-     * @param  Application             $app
-     * @param  \Eccube\Entity\Customer $Customer
-     * @return mixed
-     */
-    private function getOrder(Application $app, \Eccube\Entity\Customer $Customer)
-    {
-        if ($Customer->getId() > 0) {
-            $Order = $app['orm.em']->getRepository('Eccube\\Entity\\Order')
-                ->findBy(array(
-                        'Customer' => $Customer,
-                        'del_flg' => 0,
-                    ));
-
-            return $Order;
-        } else {
-            return null;
-        }
     }
 }

@@ -1799,6 +1799,11 @@ dl.accordion {
 }
 
 .hideShowPassword-toggle {
+    background-color: transparent;
+    background-image: url(../img/wink.png); /* fallback */
+    background-image: url(../img/wink.svg), none;
+    background-position: 0 center;
+    background-repeat: no-repeat;
     border: 2px solid transparent;
     border-radius: 0.25em;
     cursor: pointer;
@@ -1821,6 +1826,15 @@ dl.accordion {
 
 .hideShowPassword-toggle-hide .cb-eye {
     fill: #666;
+    overflow: 'hidden';
+    text-indent: -999em;
+    width: 46px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+.hideShowPassword-toggle-hide {
+    background-position: -44px center;
 }
 
 .hideShowPassword-toggle:hover {

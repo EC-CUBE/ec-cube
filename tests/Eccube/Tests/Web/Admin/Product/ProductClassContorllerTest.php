@@ -33,14 +33,6 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
     }
 
-    public function testRoutingAdminProductProductClassNew()
-    {
-        $this->client->request('GET',
-            $this->app->url('admin_product_product_class_new')
-        );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
     public function testRoutingAdminProductProductClassEdit()
     {
         // before
@@ -50,27 +42,26 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $TestProduct = $this->newTestProduct($TestCreator);
         $this->app['orm.em']->persist($TestProduct);
         $this->app['orm.em']->flush();
+
         $TestClassName = $this->newTestClassName($TestCreator);
         $this->app['orm.em']->persist($TestClassName);
         $this->app['orm.em']->flush();
+
         $TestClassCategory1 = $this->newTestClassCategory($TestCreator, $TestClassName);
         $this->app['orm.em']->persist($TestClassCategory1);
         $this->app['orm.em']->flush();
+
         $TestClassCategory2 = $this->newTestClassCategory($TestCreator, $TestClassName);
         $this->app['orm.em']->persist($TestClassCategory2);
         $this->app['orm.em']->flush();
+
         $TestProductClass = $this->newTestProductClass($TestCreator, $TestProduct, $TestClassCategory1, $TestClassCategory2);
         $this->app['orm.em']->persist($TestProductClass);
         $this->app['orm.em']->flush();
-        $test_product_class = $this->app['eccube.repository.product_class']
-            ->findOneBy(array(
-                'product_code' => $TestProductClass->setProductCode()
-            ))
-            ->getId();
 
         // main
         $this->client->request('GET',
-            $this->app->url('admin_product_product_class_edit', array('id' => $test_product_class))
+            $this->app->url('admin_product_product_class_edit', array('id' => $TestProduct->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -91,8 +82,9 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
     private function newTestProduct($TestCreator)
     {
         $TestProduct = new \Eccube\Entity\Product();
+        $Disp = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Disp')->find(1);
         $TestProduct->setName('テスト商品')
-            ->setStatus(0)
+            ->setStatus($Disp)
             ->setNote('test note')
             ->setDescriptionList('テスト商品 商品説明(リスト)')
             ->setDescriptionDetail('テスト商品 商品説明(詳細)')
@@ -132,11 +124,14 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
     private function newTestProductClass($TestCreator, $TestProduct, $TestClassCategory1, $TestClassCategory2)
     {
         $TestClassCategory = new \Eccube\Entity\ProductClass();
+        $ProductType = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\ProductType')
+            ->find(1);
         $TestClassCategory->setProduct($TestProduct)
             ->setClassCategory1($TestClassCategory1)
             ->setClassCategory2($TestClassCategory2)
-            ->setProductType(1)
-//            ->setProductCode('test code')
+            ->setProductType($ProductType)
+            ->setCode('test code')
             ->setStock(100)
             ->setStockUnlimited(0)
 //            ->setDeliveryDateId(1)
