@@ -59,15 +59,9 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->persist($TestProductClass);
         $this->app['orm.em']->flush();
 
-        $test_product_class = $this->app['eccube.repository.product_class']
-            ->findOneBy(array(
-                'code' => $TestProductClass->getCode()
-            ))
-            ->getId();
-
         // main
         $this->client->request('GET',
-            $this->app->url('admin_product_product_class_edit', array('id' => $test_product_class))
+            $this->app->url('admin_product_product_class_edit', array('id' => $TestProduct->getId()))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
