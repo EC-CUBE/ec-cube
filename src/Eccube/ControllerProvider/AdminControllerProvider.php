@@ -50,7 +50,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
 
         // product
-        $c->match('/product', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
+        $c->match('/product/page/{page_no}', '\Eccube\Controller\Admin\Product\ProductController::index')->value('page_no', null)->assert('page_no', '\d+')->bind('admin_product');
         $c->match('/product/product/new', '\Eccube\Controller\Admin\Product\ProductController::edit')->bind('admin_product_product_new');
         $c->match('/product/product/{id}/edit', '\Eccube\Controller\Admin\Product\ProductController::edit')->assert('id', '\d+')->bind('admin_product_product_edit');
         $c->match('/product/product/class/new', '\Eccube\Controller\Admin\Product\ProductClassController::index')->bind('admin_product_product_class_new');
@@ -86,8 +86,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');
         $c->match('/customer/new', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->bind('admin_customer_new');
         $c->match('/customer/{id}/edit', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->assert('id', '\d+')->bind('admin_customer_edit');
-        $c->match('/customer/{id}/delete', '\Eccube\Controller\Admin\Customer\CustomerController::delete')->assert('id', '\d+')->bind('admin_customer_delete');
-        $c->match('/customer/{id}/resend', '\Eccube\Controller\Admin\Customer\CustomerController::resend')->assert('id', '\d+')->bind('admin_customer_resend');
+        $c->post('/customer/{id}/delete', '\Eccube\Controller\Admin\Customer\CustomerController::delete')->assert('id', '\d+')->bind('admin_customer_delete');
+        $c->post('/customer/{id}/resend', '\Eccube\Controller\Admin\Customer\CustomerController::resend')->assert('id', '\d+')->bind('admin_customer_resend');
 
 
 

@@ -32,12 +32,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $customer_id;
-
-    /**
-     * @var integer
-     */
-    private $product_id;
+    private $id;
 
     /**
      * @var \DateTime
@@ -50,6 +45,11 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var integer
+     */
+    private $del_flg;
+
+    /**
      * @var \Eccube\Entity\Customer
      */
     private $Customer;
@@ -60,23 +60,13 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     private $Product;
 
     /**
-     * Get customer_id
+     * Get id
      *
      * @return integer
      */
-    public function getCustomerId()
+    public function getId ()
     {
-        return $this->customer_id;
-    }
-
-    /**
-     * Get product_id
-     *
-     * @return integer
-     */
-    public function getProductId()
-    {
-        return $this->product_id;
+        return $this->id;
     }
 
     /**
@@ -126,6 +116,29 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set del_lfg
+     *
+     * @param  integer $delFlg
+     * @return CustomerFavoriteProduct
+     */
+    public function setDelFlg($delFlg)
+    {
+        $this->del_flg = $delFlg;
+
+        return $this;
+    }
+
+    /**
+     * Get del_flg
+     *
+     * @return integer
+     */
+    public function getDelFlg()
+    {
+        return $this->del_flg;
+    }
+
+    /**
      * Set Customer
      *
      * @param  \Eccube\Entity\Customer $customer
@@ -134,7 +147,6 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     public function setCustomer(\Eccube\Entity\Customer $customer = null)
     {
         $this->Customer = $customer;
-        $this->customer_id = $customer ? $customer->getId() : null;
 
         return $this;
     }
@@ -158,7 +170,6 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     public function setProduct(\Eccube\Entity\Product $product = null)
     {
         $this->Product = $product;
-        $this->product_id = $product ? $product->getId() : null;
 
         return $this;
     }
@@ -171,31 +182,5 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     public function getProduct()
     {
         return $this->Product;
-    }
-
-    /**
-     * Set customer_id
-     *
-     * @param  integer                 $customerId
-     * @return CustomerFavoriteProduct
-     */
-    public function setCustomerId($customerId)
-    {
-        $this->customer_id = $customerId;
-
-        return $this;
-    }
-
-    /**
-     * Set product_id
-     *
-     * @param  integer                 $productId
-     * @return CustomerFavoriteProduct
-     */
-    public function setProductId($productId)
-    {
-        $this->product_id = $productId;
-
-        return $this;
     }
 }

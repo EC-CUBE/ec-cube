@@ -22,18 +22,22 @@
  */
 
 
-namespace Eccube\Tests\Web;
+namespace Eccube\Tests\Web\Admin\Setting\System;
 
-class TopControllerTest extends AbstractWebTestCase
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+
+class ShopControllerTest extends AbstractAdminWebTestCase
 {
-
-    public function testRoutingCart()
+    public function setUp()
     {
-        self::markTestSkipped();
-
-        $client = $this->createClient();
-        $client->request('GET', '/');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        parent::setUp();
     }
 
+    public function testRoutingAdminSettingSystemShop()
+    {
+        $this->client->request('GET',
+            $this->app->url('admin_setting_shop')
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }

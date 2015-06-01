@@ -1,18 +1,16 @@
 Eccube\Entity\CustomerFavoriteProduct:
     type: entity
-    table: dtb_customer_favorite_products
+    table: dtb_customer_favorite_product
     repositoryClass: Eccube\Repository\CustomerFavoriteProductRepository
     id:
-        customer_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-        product_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            column: favorite_id
+            generator:
+                strategy: AUTO
     fields:
         create_date:
             type: datetime
@@ -21,7 +19,12 @@ Eccube\Entity\CustomerFavoriteProduct:
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
+            default: CURRENT_TIMESTAMP
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: 0
     manyToOne:
         Customer:
             targetEntity: Eccube\Entity\Customer

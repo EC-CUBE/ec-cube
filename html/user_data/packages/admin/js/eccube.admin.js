@@ -483,4 +483,22 @@
             return this;
         });
     };
+
+    $('.search-clear').click(function(){
+        event.preventDefault();
+        $('.search-box-inner input, .search-box-inner select').each(function(){
+            if (this.type == "checkbox" || this.type == "radio") {
+                this.checked = false;
+            } else {
+                if (this.type == "hidden") {
+                    if (!this.name.match(/_token/i)) {
+                        $(this).val("");
+                    }
+                } else {
+                    $(this).val("");
+                }
+            }
+        });
+    });
+
 })(jQuery);

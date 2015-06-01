@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% if app.session.flashBag.has('admin.success') %}
-    {% for message in app.session.flashBag.get('admin.success') %}
+{% if app.session.flashBag.has('eccube.admin.success') %}
+    {% for message in app.session.flashBag.get('eccube.admin.success') %}
         <div class="row">
             <div class="alert alert-success alert-dismissable">
                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% endfor %}
 {% endif %}
 
-{% if app.session.flashBag.has('admin.info') %}
-    {% for message in app.session.flashBag.get('admin.info') %}
+{% if app.session.flashBag.has('eccube.admin.info') %}
+    {% for message in app.session.flashBag.get('eccube.admin.info') %}
         <div class="row">
             <div class="alert alert-info alert-dismissable">
                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -40,8 +40,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     {% endfor %}
 {% endif %}
-{% if app.session.flashBag.has('admin.warning') %}
-    {% for message in app.session.flashBag.get('admin.warning') %}
+{% if app.session.flashBag.has('eccube.admin.warning') %}
+    {% for message in app.session.flashBag.get('eccube.admin.warning') %}
         <div class="row">
             <div class="alert alert-warning alert-dismissable">
                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -50,8 +50,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     {% endfor %}
 {% endif %}
-{% if app.session.flashBag.has('admin.danger') %}
-    {% for message in app.session.flashBag.get('admin.danger') %}
+{% if app.session.flashBag.has('eccube.admin.danger') %}
+    {% for message in app.session.flashBag.get('eccube.admin.danger') %}
         <div class="row">
             <div class="alert alert-danger alert-dismissable">
                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -60,8 +60,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
     {% endfor %}
 {% endif %}
-{% if app.session.flashBag.has('admin.error') %}
-    {% for message in app.session.flashBag.get('admin.error') %}
+{% if app.session.flashBag.has('eccube.admin.error') %}
+    {% for message in app.session.flashBag.get('eccube.admin.error') %}
         <div class="row">
             <div class="alert alert-danger alert-dismissable">
                 <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>

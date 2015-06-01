@@ -55,19 +55,18 @@
         <div class="navbar navbar-static-top">
             <div class="logo" href="./"><img src="{{ app.config.root }}admin/assets/img/logo.png" width="172"></div>
             <!-- Sidebar toggle button-->
-            <div class="bt_toggle"> <a role="button" data-toggle="offcanvas" class="bt_drawermenu" href="#"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> </div>
-            <a href="{{ url('homepage') }}" id="sitename">{{ app.config.shop_name }}<span class="fa fa-external-link"></span></a> 
+
+            <div class="bt_toggle">
+                <a role="button" data-toggle="offcanvas" class="bt_drawermenu" href="#"> <span class="sr-only">Toggle navigation</span> <svg class="cb cb-bars"> <use xlink:href="#cb-bars" /></svg></a>
+            </div>
+            <a href="{{ url('homepage') }}" id="sitename">{{ app.config.shop_name }}<span class="cb cb-external-link"></span></a>
             <!-- Navbar Right Menu -->
             <div class="navbar-menu">
                 <dl class="dropdown">
                     {% if is_granted('ROLE_ADMIN') %}
                         <dt class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa-stack fa-lg"> 
-                                <span class="fa fa-circle fa-stack-2x"></span> 
-                                <span class="fa fa-user fa-stack-1x fa-inverse"></span> 
-                            </span> 
-                                <span class="hidden-xs">{{ app.user.name }} 様</span>
-                                <span class="fa fa-chevron-down icon_down"></span>
+                            <svg class="cb cb-user-circle"> <use xlink:href="#cb-user-circle" /></svg>
+                            <span class="hidden-xs">{{ app.user.name }} 様</span><svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down"></svg>
                         </dt>
                         <dd class="dropdown-menu">
                             最終ログイン<br>
@@ -82,7 +81,11 @@
     <!-- ▼ #side ▼ -->
     <aside id="side">
         <ul class="nav nav-sidebar">
-            <li><a href="./" class="active"><span class="fa fa-home"></span>ホーム<span class="fa fa-chevron-down"></span></a></li>
+            <li>
+                <a href="{{ url('admin_homepage') }}">
+                    <svg class="cb cb-home"> <use xlink:href="#cb-home" /></svg>ホーム<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
+                </a>
+            </li>
             {{ include('Product/subnavi.twig') }}
             {{ include('Order/subnavi.twig') }}
             {{ include('Report/subnavi.twig') }}
@@ -127,6 +130,20 @@
 <script type="text/javascript">//<![CDATA[
     {{ block('javascript') }}
     $(function(){
+        /*
+         * for svg icon
+         */
+        $.ajax({
+            type: 'GET',
+            url: '{{ app.config.root }}admin/assets/img/svg.html',
+            dataType: 'html',
+            success: function(data){
+                $('body').prepend(data);
+            },
+            error: function() {
+                console.log('error');
+            }
+        });
         {{ block('onload') }}
     });
 //]]></script>

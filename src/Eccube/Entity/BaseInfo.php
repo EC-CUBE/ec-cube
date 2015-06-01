@@ -30,21 +30,6 @@ namespace Eccube\Entity;
 class BaseInfo extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * getLawPrefName
-     *
-     * @param  string $default デフォルト
-     * @return string
-     */
-    public function getLawPrefName($default = '')
-    {
-        if ($this->getLawPref()) {
-            return $this->getLawPref()->getName();
-        } else {
-            return $default;
-        }
-    }
-
-    /**
      * @var integer
      */
     private $id;
@@ -122,131 +107,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $law_company;
-
-    /**
-     * @var string
-     */
-    private $law_manager;
-
-    /**
-     * @var string
-     */
-    private $law_zip01;
-
-    /**
-     * @var string
-     */
-    private $law_zip02;
-
-    /**
-     * @var string
-     */
-    private $law_zipcode;
-
-    /**
-     * @var string
-     */
-    private $law_addr01;
-
-    /**
-     * @var string
-     */
-    private $law_addr02;
-
-    /**
-     * @var string
-     */
-    private $law_tel01;
-
-    /**
-     * @var string
-     */
-    private $law_tel02;
-
-    /**
-     * @var string
-     */
-    private $law_tel03;
-
-    /**
-     * @var string
-     */
-    private $law_fax01;
-
-    /**
-     * @var string
-     */
-    private $law_fax02;
-
-    /**
-     * @var string
-     */
-    private $law_fax03;
-
-    /**
-     * @var string
-     */
-    private $law_email;
-
-    /**
-     * @var string
-     */
-    private $law_url;
-
-    /**
-     * @var string
-     */
-    private $law_term01;
-
-    /**
-     * @var string
-     */
-    private $law_term02;
-
-    /**
-     * @var string
-     */
-    private $law_term03;
-
-    /**
-     * @var string
-     */
-    private $law_term04;
-
-    /**
-     * @var string
-     */
-    private $law_term05;
-
-    /**
-     * @var string
-     */
-    private $law_term06;
-
-    /**
-     * @var string
-     */
-    private $law_term07;
-
-    /**
-     * @var string
-     */
-    private $law_term08;
-
-    /**
-     * @var string
-     */
-    private $law_term09;
-
-    /**
-     * @var string
-     */
-    private $law_term10;
-
-    /**
-     * @var string
-     */
     private $email01;
 
     /**
@@ -302,37 +162,12 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $top_tpl;
-
-    /**
-     * @var string
-     */
-    private $product_tpl;
-
-    /**
-     * @var string
-     */
-    private $detail_tpl;
-
-    /**
-     * @var string
-     */
-    private $mypage_tpl;
-
-    /**
-     * @var string
-     */
     private $good_traded;
 
     /**
      * @var string
      */
     private $message;
-
-    /**
-     * @var string
-     */
-    private $regular_holiday_ids;
 
     /**
      * @var string
@@ -365,15 +200,64 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $Pref;
 
     /**
-     * @var \Eccube\Entity\Master\Country
+     * @var integer
      */
-    private $LawCountry;
+    private $deliv_free_amount;
 
     /**
-     * @var \Eccube\Entity\Master\Pref
+     * @var integer
      */
-    private $LawPref;
+    private $use_multiple_shipping;
 
+    /**
+     * @var integer
+     */
+    private $forgot_mail;
+
+    /**
+     * @var integer
+     */
+    private $mypage_order_status_disp_flg;
+
+    /**
+     * @var integer
+     */
+    private $nostock_hidden;
+
+    /**
+     * @var integer
+     */
+    private $option_favorite_product;
+
+    /**
+     * @var integer
+     */
+    private $option_product_deliv_fee;
+
+    /**
+     * @var integer
+     */
+    private $option_product_tax_rule;
+
+    /**
+     * @var integer
+     */
+    private $point_rule;
+
+    /**
+     * @var integer
+     */
+    private $point_value;
+
+    /**
+     * @var integer
+     */
+    private $use_point;
+
+    /**
+     * @var integer
+     */
+    private $option_deliv_fee;
     /**
      * Get id
      *
@@ -707,581 +591,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set law_company
-     *
-     * @param  string   $lawCompany
-     * @return BaseInfo
-     */
-    public function setLawCompany($lawCompany)
-    {
-        $this->law_company = $lawCompany;
-
-        return $this;
-    }
-
-    /**
-     * Get law_company
-     *
-     * @return string
-     */
-    public function getLawCompany()
-    {
-        return $this->law_company;
-    }
-
-    /**
-     * Set law_manager
-     *
-     * @param  string   $lawManager
-     * @return BaseInfo
-     */
-    public function setLawManager($lawManager)
-    {
-        $this->law_manager = $lawManager;
-
-        return $this;
-    }
-
-    /**
-     * Get law_manager
-     *
-     * @return string
-     */
-    public function getLawManager()
-    {
-        return $this->law_manager;
-    }
-
-    /**
-     * Set law_zip01
-     *
-     * @param  string   $lawZip01
-     * @return BaseInfo
-     */
-    public function setLawZip01($lawZip01)
-    {
-        $this->law_zip01 = $lawZip01;
-
-        return $this;
-    }
-
-    /**
-     * Get law_zip01
-     *
-     * @return string
-     */
-    public function getLawZip01()
-    {
-        return $this->law_zip01;
-    }
-
-    /**
-     * Set law_zip02
-     *
-     * @param  string   $lawZip02
-     * @return BaseInfo
-     */
-    public function setLawZip02($lawZip02)
-    {
-        $this->law_zip02 = $lawZip02;
-
-        return $this;
-    }
-
-    /**
-     * Get law_zip02
-     *
-     * @return string
-     */
-    public function getLawZip02()
-    {
-        return $this->law_zip02;
-    }
-
-    /**
-     * Set law_zipcode
-     *
-     * @param  string   $lawZipcode
-     * @return BaseInfo
-     */
-    public function setLawZipcode($lawZipcode)
-    {
-        $this->law_zipcode = $lawZipcode;
-
-        return $this;
-    }
-
-    /**
-     * Get law_zipcode
-     *
-     * @return string
-     */
-    public function getLawZipcode()
-    {
-        return $this->law_zipcode;
-    }
-
-    /**
-     * Set law_addr01
-     *
-     * @param  string   $lawAddr01
-     * @return BaseInfo
-     */
-    public function setLawAddr01($lawAddr01)
-    {
-        $this->law_addr01 = $lawAddr01;
-
-        return $this;
-    }
-
-    /**
-     * Get law_addr01
-     *
-     * @return string
-     */
-    public function getLawAddr01()
-    {
-        return $this->law_addr01;
-    }
-
-    /**
-     * Set law_addr02
-     *
-     * @param  string   $lawAddr02
-     * @return BaseInfo
-     */
-    public function setLawAddr02($lawAddr02)
-    {
-        $this->law_addr02 = $lawAddr02;
-
-        return $this;
-    }
-
-    /**
-     * Get law_addr02
-     *
-     * @return string
-     */
-    public function getLawAddr02()
-    {
-        return $this->law_addr02;
-    }
-
-    /**
-     * Set law_tel01
-     *
-     * @param  string   $lawTel01
-     * @return BaseInfo
-     */
-    public function setLawTel01($lawTel01)
-    {
-        $this->law_tel01 = $lawTel01;
-
-        return $this;
-    }
-
-    /**
-     * Get law_tel01
-     *
-     * @return string
-     */
-    public function getLawTel01()
-    {
-        return $this->law_tel01;
-    }
-
-    /**
-     * Set law_tel02
-     *
-     * @param  string   $lawTel02
-     * @return BaseInfo
-     */
-    public function setLawTel02($lawTel02)
-    {
-        $this->law_tel02 = $lawTel02;
-
-        return $this;
-    }
-
-    /**
-     * Get law_tel02
-     *
-     * @return string
-     */
-    public function getLawTel02()
-    {
-        return $this->law_tel02;
-    }
-
-    /**
-     * Set law_tel03
-     *
-     * @param  string   $lawTel03
-     * @return BaseInfo
-     */
-    public function setLawTel03($lawTel03)
-    {
-        $this->law_tel03 = $lawTel03;
-
-        return $this;
-    }
-
-    /**
-     * Get law_tel03
-     *
-     * @return string
-     */
-    public function getLawTel03()
-    {
-        return $this->law_tel03;
-    }
-
-    /**
-     * Set law_fax01
-     *
-     * @param  string   $lawFax01
-     * @return BaseInfo
-     */
-    public function setLawFax01($lawFax01)
-    {
-        $this->law_fax01 = $lawFax01;
-
-        return $this;
-    }
-
-    /**
-     * Get law_fax01
-     *
-     * @return string
-     */
-    public function getLawFax01()
-    {
-        return $this->law_fax01;
-    }
-
-    /**
-     * Set law_fax02
-     *
-     * @param  string   $lawFax02
-     * @return BaseInfo
-     */
-    public function setLawFax02($lawFax02)
-    {
-        $this->law_fax02 = $lawFax02;
-
-        return $this;
-    }
-
-    /**
-     * Get law_fax02
-     *
-     * @return string
-     */
-    public function getLawFax02()
-    {
-        return $this->law_fax02;
-    }
-
-    /**
-     * Set law_fax03
-     *
-     * @param  string   $lawFax03
-     * @return BaseInfo
-     */
-    public function setLawFax03($lawFax03)
-    {
-        $this->law_fax03 = $lawFax03;
-
-        return $this;
-    }
-
-    /**
-     * Get law_fax03
-     *
-     * @return string
-     */
-    public function getLawFax03()
-    {
-        return $this->law_fax03;
-    }
-
-    /**
-     * Set law_email
-     *
-     * @param  string   $lawEmail
-     * @return BaseInfo
-     */
-    public function setLawEmail($lawEmail)
-    {
-        $this->law_email = $lawEmail;
-
-        return $this;
-    }
-
-    /**
-     * Get law_email
-     *
-     * @return string
-     */
-    public function getLawEmail()
-    {
-        return $this->law_email;
-    }
-
-    /**
-     * Set law_url
-     *
-     * @param  string   $lawUrl
-     * @return BaseInfo
-     */
-    public function setLawUrl($lawUrl)
-    {
-        $this->law_url = $lawUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get law_url
-     *
-     * @return string
-     */
-    public function getLawUrl()
-    {
-        return $this->law_url;
-    }
-
-    /**
-     * Set law_term01
-     *
-     * @param  string   $lawTerm01
-     * @return BaseInfo
-     */
-    public function setLawTerm01($lawTerm01)
-    {
-        $this->law_term01 = $lawTerm01;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term01
-     *
-     * @return string
-     */
-    public function getLawTerm01()
-    {
-        return $this->law_term01;
-    }
-
-    /**
-     * Set law_term02
-     *
-     * @param  string   $lawTerm02
-     * @return BaseInfo
-     */
-    public function setLawTerm02($lawTerm02)
-    {
-        $this->law_term02 = $lawTerm02;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term02
-     *
-     * @return string
-     */
-    public function getLawTerm02()
-    {
-        return $this->law_term02;
-    }
-
-    /**
-     * Set law_term03
-     *
-     * @param  string   $lawTerm03
-     * @return BaseInfo
-     */
-    public function setLawTerm03($lawTerm03)
-    {
-        $this->law_term03 = $lawTerm03;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term03
-     *
-     * @return string
-     */
-    public function getLawTerm03()
-    {
-        return $this->law_term03;
-    }
-
-    /**
-     * Set law_term04
-     *
-     * @param  string   $lawTerm04
-     * @return BaseInfo
-     */
-    public function setLawTerm04($lawTerm04)
-    {
-        $this->law_term04 = $lawTerm04;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term04
-     *
-     * @return string
-     */
-    public function getLawTerm04()
-    {
-        return $this->law_term04;
-    }
-
-    /**
-     * Set law_term05
-     *
-     * @param  string   $lawTerm05
-     * @return BaseInfo
-     */
-    public function setLawTerm05($lawTerm05)
-    {
-        $this->law_term05 = $lawTerm05;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term05
-     *
-     * @return string
-     */
-    public function getLawTerm05()
-    {
-        return $this->law_term05;
-    }
-
-    /**
-     * Set law_term06
-     *
-     * @param  string   $lawTerm06
-     * @return BaseInfo
-     */
-    public function setLawTerm06($lawTerm06)
-    {
-        $this->law_term06 = $lawTerm06;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term06
-     *
-     * @return string
-     */
-    public function getLawTerm06()
-    {
-        return $this->law_term06;
-    }
-
-    /**
-     * Set law_term07
-     *
-     * @param  string   $lawTerm07
-     * @return BaseInfo
-     */
-    public function setLawTerm07($lawTerm07)
-    {
-        $this->law_term07 = $lawTerm07;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term07
-     *
-     * @return string
-     */
-    public function getLawTerm07()
-    {
-        return $this->law_term07;
-    }
-
-    /**
-     * Set law_term08
-     *
-     * @param  string   $lawTerm08
-     * @return BaseInfo
-     */
-    public function setLawTerm08($lawTerm08)
-    {
-        $this->law_term08 = $lawTerm08;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term08
-     *
-     * @return string
-     */
-    public function getLawTerm08()
-    {
-        return $this->law_term08;
-    }
-
-    /**
-     * Set law_term09
-     *
-     * @param  string   $lawTerm09
-     * @return BaseInfo
-     */
-    public function setLawTerm09($lawTerm09)
-    {
-        $this->law_term09 = $lawTerm09;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term09
-     *
-     * @return string
-     */
-    public function getLawTerm09()
-    {
-        return $this->law_term09;
-    }
-
-    /**
-     * Set law_term10
-     *
-     * @param  string   $lawTerm10
-     * @return BaseInfo
-     */
-    public function setLawTerm10($lawTerm10)
-    {
-        $this->law_term10 = $lawTerm10;
-
-        return $this;
-    }
-
-    /**
-     * Get law_term10
-     *
-     * @return string
-     */
-    public function getLawTerm10()
-    {
-        return $this->law_term10;
-    }
-
-    /**
      * Set email01
      *
      * @param  string   $email01
@@ -1535,106 +844,14 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set top_tpl
-     *
-     * @param  string   $topTpl
-     * @return BaseInfo
-     */
-    public function setTopTpl($topTpl)
-    {
-        $this->top_tpl = $topTpl;
-
-        return $this;
-    }
-
-    /**
-     * Get top_tpl
-     *
-     * @return string
-     */
-    public function getTopTpl()
-    {
-        return $this->top_tpl;
-    }
-
-    /**
-     * Set product_tpl
-     *
-     * @param  string   $productTpl
-     * @return BaseInfo
-     */
-    public function setProductTpl($productTpl)
-    {
-        $this->product_tpl = $productTpl;
-
-        return $this;
-    }
-
-    /**
-     * Get product_tpl
-     *
-     * @return string
-     */
-    public function getProductTpl()
-    {
-        return $this->product_tpl;
-    }
-
-    /**
-     * Set detail_tpl
-     *
-     * @param  string   $detailTpl
-     * @return BaseInfo
-     */
-    public function setDetailTpl($detailTpl)
-    {
-        $this->detail_tpl = $detailTpl;
-
-        return $this;
-    }
-
-    /**
-     * Get detail_tpl
-     *
-     * @return string
-     */
-    public function getDetailTpl()
-    {
-        return $this->detail_tpl;
-    }
-
-    /**
-     * Set mypage_tpl
-     *
-     * @param  string   $mypageTpl
-     * @return BaseInfo
-     */
-    public function setMypageTpl($mypageTpl)
-    {
-        $this->mypage_tpl = $mypageTpl;
-
-        return $this;
-    }
-
-    /**
-     * Get mypage_tpl
-     *
-     * @return string
-     */
-    public function getMypageTpl()
-    {
-        return $this->mypage_tpl;
-    }
-
-    /**
      * Set good_traded
      *
-     * @param  string   $goodTraded
+     * @param  string   $good_traded
      * @return BaseInfo
      */
-    public function setGoodTraded($goodTraded)
+    public function setGoodTraded($good_traded)
     {
-        $this->good_traded = $goodTraded;
+        $this->good_traded = $good_traded;
 
         return $this;
     }
@@ -1672,28 +889,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
         return $this->message;
     }
 
-    /**
-     * Set regular_holiday_ids
-     *
-     * @param  string   $regularHolidayIds
-     * @return BaseInfo
-     */
-    public function setRegularHolidayIds($regularHolidayIds)
-    {
-        $this->regular_holiday_ids = $regularHolidayIds;
-
-        return $this;
-    }
-
-    /**
-     * Get regular_holiday_ids
-     *
-     * @return string
-     */
-    public function getRegularHolidayIds()
-    {
-        return $this->regular_holiday_ids;
-    }
 
     /**
      * Set latitude
@@ -1833,49 +1028,147 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
         return $this->Pref;
     }
 
-    /**
-     * Set LawCountry
-     *
-     * @param  \Eccube\Entity\Master\Country $lawCountry
-     * @return BaseInfo
-     */
-    public function setLawCountry(\Eccube\Entity\Master\Country $lawCountry = null)
+    public function setDelivFreeAmount($deliv_free_amount)
     {
-        $this->LawCountry = $lawCountry;
+        $this->deliv_free_amount = $deliv_free_amount;
 
         return $this;
     }
 
-    /**
-     * Get LawCountry
-     *
-     * @return \Eccube\Entity\Master\Country
-     */
-    public function getLawCountry()
+    public function getDelivFreeAmount()
     {
-        return $this->LawCountry;
+        return $this->deliv_free_amount;
     }
 
-    /**
-     * Set LawPref
-     *
-     * @param  \Eccube\Entity\Master\Pref $lawPref
-     * @return BaseInfo
-     */
-    public function setLawPref(\Eccube\Entity\Master\Pref $lawPref = null)
+    public function setUseMultipleShipping($use_multiple_shipping)
     {
-        $this->LawPref = $lawPref;
+        $this->use_multiple_shipping = $use_multiple_shipping;
 
         return $this;
     }
 
-    /**
-     * Get LawPref
-     *
-     * @return \Eccube\Entity\Master\Pref
-     */
-    public function getLawPref()
+    public function getUseMultipleShipping()
     {
-        return $this->LawPref;
+        return $this->use_multiple_shipping;
+    }
+
+    public function setForgotMail($mail)
+    {
+        $this->forgot_mail = $mail;
+
+        return $this;
+    }
+
+    public function getForgotMail()
+    {
+        return $this->forgot_mail;
+    }
+
+    public function setMypageOrderStatusDispFlg($flg)
+    {
+        $this->mypage_order_status_disp_flg = $flg;
+
+        return $this;
+    }
+
+    public function getMypageOrderStatusDispFlg()
+    {
+        return $this->mypage_order_status_disp_flg;
+    }
+
+    public function setNostockHidden($flg)
+    {
+        $this->nostock_hidden = $flg;
+
+        return $this;
+    }
+
+    public function getNostockHidden()
+    {
+        return $this->nostock_hidden;
+    }
+
+    public function setOptionFavoriteProduct($param)
+    {
+        $this->option_favorite_product = $param;
+
+        return $this;
+    }
+
+    public function getOptionFavoriteProduct()
+    {
+        return $this->option_favorite_product;
+    }
+
+    public function setOptionProductDelivFee($fee)
+    {
+        $this->option_product_deliv_fee = $fee;
+
+        return $this;
+    }
+
+    public function getOptionProductDelivFee()
+    {
+        return $this->option_product_deliv_fee;
+    }
+
+    public function setOptionProductTaxRule($rule)
+    {
+        $this->option_product_tax_rule = $rule;
+
+        return $this;
+    }
+
+    public function getOptionProductTaxRule()
+    {
+        return $this->option_product_tax_rule;
+    }
+
+    public function setPointRule($rule)
+    {
+        $this->point_rule = $rule;
+
+        return $this;
+    }
+
+    public function getPointRule()
+    {
+        return $this->point_rule;
+    }
+
+    public function setPointValue($point)
+    {
+        $this->point_value = $point;
+
+        return $this;
+    }
+
+    public function getPointValue()
+    {
+        return $this->point_value;
+    }
+
+    public function setUsePoint($point)
+    {
+        $this->use_point = $point;
+
+        return $this;
+    }
+
+    public function getUsePoint()
+    {
+        return $this->use_point;
+    }
+
+    public function setOptionDelivFee($fee)
+    {
+        $this->option_deliv_fee = $fee;
+
+        return $this;
+    }
+
+    public function getOptionDelivFee()
+    {
+        return $this->option_deliv_fee;
     }
 }
