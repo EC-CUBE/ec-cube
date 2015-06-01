@@ -29,6 +29,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
     public function testRoutingList()
     {
+        self::markTestSkipped();
+
         $client = $this->createClient();
         $client->request('GET', $this->app['url_generator']->generate('product_list'));
         $this->assertTrue($client->getResponse()->isSuccessful());
