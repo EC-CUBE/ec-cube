@@ -30,28 +30,22 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ChangeController extends AbstractController
 {
-    private $title;
-
-    public function __construct()
-    {
-        $this->title = 'MYページ';
-    }
 
     /**
      * Index
      *
-     * @param  Application                                        $app
+     * @param  Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, Request $request)
     {
-        $Customer = $app['user'];
+        $customer = $app['user'];
 
-        $previous_password = $Customer->getPassword();
-        $Customer->setPassword($app['config']['default_password']);
+        $previous_password = $customer->getPassword();
+        $customer->setPassword($app['config']['default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('entry', $Customer);
+        $builder = $app['form.factory']->createBuilder('entry', $customer);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -61,17 +55,17 @@ class ChangeController extends AbstractController
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
                     case 'complete':
-                        if ($Customer->getPassword() === $app['config']['default_password']) {
-                            $Customer->setPassword($previous_password);
+                        if ($customer->getPassword() === $app['config']['default_password']) {
+                            $customer->setPassword($previous_password);
                         } else {
-                            $Customer->setPassword(
+                            $customer->setPassword(
                                 $app['orm.em']
                                     ->getRepository('Eccube\Entity\Customer')
-                                    ->encryptPassword($app, $Customer)
+                                    ->encryptPassword($app, $customer)
                             );
                         }
 
-                        $app['orm.em']->persist($Customer);
+                        $app['orm.em']->persist($customer);
                         $app['orm.em']->flush();
 
                         return $app->redirect($app['url_generator']->generate('mypage_change_complete'));
@@ -81,7 +75,6 @@ class ChangeController extends AbstractController
         }
 
         return $app['twig']->render('Mypage/change.twig', array(
-            'title' => $this->title,
             'subtitle' => '会員登録内容変更(入力ページ)',
             'mypageno' => 'change',
             'form' => $form->createView(),
@@ -97,7 +90,6 @@ class ChangeController extends AbstractController
     public function complete(Application $app, Request $request)
     {
         return $app['view']->render('Mypage/change_complete.twig', array(
-            'title' => $this->title,
             'subtitle' => '会員登録内容変更(完了ページ)',
             'mypageno' => 'change',
         ));
