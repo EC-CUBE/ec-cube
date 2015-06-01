@@ -23,33 +23,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 
-<div id="undercolumn">
-    <h2 class="title">{{ title }}</h2>
-    <div id="undercolumn_contact">
-        <div id="complete_area">
-            <p class="message">会員登録の受付が完了いたしました。</p>
-            <p>現在<span class="attention">仮会員</span>の状態です。<br />
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">新規会員登録（完了）</h1>
+                <div class="container-fluid">
+                    <div id="deliveradd_input" class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="complete_message">
+                                <h2 class="heading01">会員登録ありがとうございます</h2>
+                                            <p>現在<span class="attention">仮会員</span>の状態です。<br />
                 ご入力いただいたメールアドレス宛てに、ご連絡が届いておりますので、本会員登録になった上でお買い物をお楽しみください。<br />
                 今後ともご愛顧賜りますようよろしくお願い申し上げます。
             </p>
-            <div class="shop_information">
-            <p class="name">{{ app.config.shop_name }}<br />
-            <p>TEL：00-0000-0000
-                E-mail：<a href="mailto:sample@example.com">sample@example.com</a></p>
-            </p>
-            </div>
+                            </div>
+                            <div class="row no-padding">
+                                <div class="btn_group col-sm-offset-4 col-sm-4">
+                                    <p>
+                                        <a href="{{ url('index') }}" class="btn btn-info btn-block">トップページへ</a>
+                                    </p>
+                                </div>
+                            </div>
 
-            <div class="btn_area">
-                <ul>
-                <li>
-                    <a href="{{ app.config.root}}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_toppage.jpg" alt="トップページへ" /></a>
-                </li>
-                </ul>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 
 
 {% endblock %}

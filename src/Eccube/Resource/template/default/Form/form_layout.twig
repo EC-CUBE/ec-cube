@@ -216,38 +216,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {%- block tel_widget -%}
     {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
-    {%- for child in form %}
         {{- form_widget(child, {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) -}}
         {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
     {% endfor -%}
 {%- endblock tel_widget -%}
 
 {%- block fax_widget -%}
     {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
-    {%- for child in form %}
         {{- form_widget(child, {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) -}}
         {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
     {% endfor -%}
 {%- endblock fax_widget -%}
 
 {%- block zip_widget -%}
-    {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
     {%- if freeze -%}
         〒&nbsp;{{ form_widget(form[form.vars.zip01_name]) }}&nbsp;-&nbsp;{{- form_widget(form[form.vars.zip02_name]) }}
     {%- else -%}
         <p class="top">
-            〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
-            {{- form_widget(form[form.vars.zip02_name], {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}　
-            <a href="http://search.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a>
+            〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
+            {{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}　
+            <a href="http://www.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a>
         </p>
+        {%- for child in form %}
+            {{- form_errors(child) -}}
+        {% endfor -%}
         <p class="zipimg">
-            <a href="javascript:eccube.getAddress('{{ path('input_zip') }}', 'zip01', 'zip02', 'pref', 'addr01');">
+            <a href="#" id="zip-search">
                 <img src="{{ app.config.tpl }}img/button/btn_address_input.jpg" alt="住所自動入力" /></a>
             <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
         </p>
@@ -255,24 +255,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock zip_widget -%}
 
 {%- block address_widget -%}
-    {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
-    {{- form_widget(form[form.vars.pref_name]) -}}
+    {{- form_widget(form[form.vars.pref_name], {'id': 'pref'}) -}}
     {%- if freeze -%}
         {{- form_widget(form[form.vars.addr01_name]) -}}
         {{- form_widget(form[form.vars.addr02_name]) -}}
     {%- else -%}
         <p>
-            {{- form_widget(form[form.vars.addr01_name], {'attr': {'class': 'box380', 'style': 'ime-mode: active;'}}) -}}<br />
+            {{- form_widget(form[form.vars.addr01_name], {'id': 'addr01', 'attr': {'class': 'box380', 'style': 'ime-mode: active;'}}) -}}<br />
             {{ app.config.sample_address1 }}
         </p>
         <p>
-            {{- form_widget(form[form.vars.addr02_name], {'attr': {'class': 'box380', 'style': 'ime-mode: active;'}}) -}}<br />
+            {{- form_widget(form[form.vars.addr02_name], {'id': 'addr02', 'attr': {'class': 'box380', 'style': 'ime-mode: active;'}}) -}}<br />
             {{ app.config.sample_address2 }}
         </p>
         {%- if help is defined and help is not empty -%}
             <p class="mini"><span class="attention">{{ help|trans({}, translation_domain) }}</span></p>
         {%- endif -%}
+        {%- for child in form %}
+            {{- form_errors(child) -}}
+        {% endfor -%}
     {%- endif -%}
 {%- endblock address_widget -%}

@@ -35,142 +35,127 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endspaceless %}
 {% endblock form_errors %}
 
+{% form_theme form 'Form/bootstrap_3_layout.html.twig' %}
+
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+  $('#zip-search').click(function() {
+    event.preventDefault();
+    AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
+  });
+});
+</script>
+{% endblock javascript %}
 
 {% block main %}
 
-<div id="undercolumn">
-    <div id="undercolumn_entry">
-        <h2 class="title">{{ title }}</h2>
-        {% if app.config.customer_confirm_mail %}
-        <p>
-            ご登録されますと、まずは仮会員となります。<br />
-            入力されたメールアドレスに、ご連絡が届きますので、本会員になった上でお買い物をお楽しみください。
-        </p>
-        {% endif %}
-        <p class="message">【重要】 会員登録をされる前に、下記ご利用規約をよくお読みください。</p>
-        <p>
-            規約には、本サービスを使用するに当たってのあなたの権利と義務が規定されております。<br />
-            「同意して会員登録へ」ボタンをクリックすると、あなたが本規約の全ての条件に同意したことになります。
-        </p>
 
-        <textarea name="textfield" class="kiyaku_text" cols="80" rows="20" readonly="readonly">
-            {%- for child in kiyaku -%}
-            {{- child.title }}{{ "\n" }}
-            {{- child.text }}{{ "\n" }}{{ "\n" }}
-            {%- endfor -%}
-        </textarea>
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">新規会員登録</h1>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <form method="post" action="{{ url('entry') }}">
+                                {{ form_widget(form._token) }}
+                                <div class="dl_table">
+                                    <dl>
+                                        <dt>お名前<span class="required">必須</span></dt>
+                                        <dd class="form-group input_name {% if form.name.name01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.name.name01, {attr: {placeholder: '姓'}}) }}{{ form_widget(form.name.name02, {attr: {placeholder: '名'}}) }}
+                                            {{ form_errors(form.name.name01) }}
+                                            {{ form_errors(form.name.name02) }}
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>お名前(カナ)<span class="required">必須</span></dt>
+                                        <dd class="form-group input_name {% if form.kana.kana01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.kana.kana01, {attr: {placeholder: 'セイ'}}) }}{{ form_widget(form.kana.kana02, {attr: {placeholder: 'メイ'}}) }}
+                                            {{ form_errors(form.kana.kana01) }}
+                                            {{ form_errors(form.kana.kana02) }}
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>住所<span class="required">必須</span></dt>
+                                        <dd>
+                                            <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                            <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty %}has-error{% endif %}">
+                                            {{ form_widget(form.address) }}
+                                            {{ form_errors(form.address) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>電話番号<span class="required">必須</span></dt>
+                                        <dd>
+                                            <div class="form-group form-inline input_tel {% if form.tel.tel01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.tel) }}</div>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>FAX番号</dt>
+                                        <dd>
+                                            <div class="form-group form-inline input_tel {% if form.tel.tel01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.fax) }}</div>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>メールアドレス<span class="required">必須</span></dt>
+                                        <dd>
+                                            <div class="form-group {% if form.email.first.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.first) }}</div>
+                                            <div class="form-group {% if form.email.second.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.second, {attr: {placeholder: '確認のためもう一度入力してください'}}) }}
+                                                {{ form_errors(form.email.first) }}
+                                                {{ form_errors(form.email.second) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>パスワード<span class="required">必須</span></dt>
+                                        <dd>
+                                            <div class="form-group {% if form.password.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.password, {attr: {placeholder: '半角英数字4～50文字（記号不可）'}}) }}
+                                                {{ form_errors(form.password) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="dl_table not_required">
+                                    <dl>
+                                        <dt>生年月日</dt>
+                                        <dd><div class="form-group form-inline {% if form.birth.vars.errors is not empty %}has-error{% endif %}">
+                                            {{ form_widget(form.birth) }}
+                                            {{ form_errors(form.birth) }}
+                                        </div>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>性別</dt>
+                                        <dd><div class="form-group form-inline">
+                                            {{ form_widget(form.sex) }}
+                                        </div>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>職業</dt>
+                                        <dd><div class="form-group form-inline">
+                                                {{ form_widget(form.job) }}
+                                        </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <input type="hidden" name="mode" value="confirm">
+                                <p class="form_terms_link"><a href="#">利用規約</a>に同意してお進みください</p>
+                                <div class="row no-padding">
+                                <div class="btn_group col-sm-offset-4 col-sm-4">
+                                    <p><button type="submit" class="btn btn-primary btn-block">同意する</button></p>
+                                    <p><a href="{{ url('index') }}" class="btn btn-info btn-block">同意しない</a></p>
+                                </div>
+                                </div>
+                            </form>
+                        </div><!-- /.col --> 
+                    </div><!-- /.row --> 
 
-        <form name="form1" id="form1" method="post" action="{{ url('entry') }}">
-            {{ form_widget(form._token) }}
-            <table summary="会員登録フォーム">
-
-                <col width="30%" />
-                <col width="70%" />
-                <tr>
-                    <th>お名前<span class="attention">※</span></th>
-                    <td>
-                        {{ form_widget(form.name) }}
-                        {{ form_errors(form.name) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>お名前(フリガナ)<span class="attention">※</span></th>
-                    <td>
-                        {{ form_widget(form.kana) }}
-                        {{ form_errors(form.kana) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>会社名</th>
-                    <td>
-                        {{ form_widget(form.company_name) }}
-                        {{ form_errors(form.company_name) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>郵便番号<span class="attention">※</span></th>
-                    <td>
-                        {{ form_widget(form.zip) }}<br />
-                        {{ form_errors(form.zip) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>住所<span class="attention">※</span></th>
-                    <td>
-                        {{ form_widget(form.address) }}<br />
-                        {{ form_errors(form.address) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>電話番号</th>
-                    <td>
-                        {{ form_widget(form.tel) }}<br />
-                        {{ form_errors(form.tel) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>FAX</th>
-                    <td>
-                        {{ form_widget(form.fax) }}<br />
-                        {{ form_errors(form.fax) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>メールアドレス<span class="attention">※</span></th>
-                    <td>
-                        {{ form_widget(form.email) }}<br />
-                        {{ form_errors(form.email) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>性別</th>
-                    <td>
-                        {{ form_widget(form.sex) }}<br />
-                        {{ form_errors(form.sex) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>職業</th>
-                    <td>
-                        {{ form_widget(form.job) }}<br />
-                        {{ form_errors(form.job) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>生年月日</th>
-                    <td>
-                        {{ form_widget(form.birth) }}<br />
-                        {{ form_errors(form.birth) }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>希望するパスワード<span class="attention">※</span><br />
-                    </th>
-                    <td>
-                        {{ form_widget(form.password.first, {type: "password"}) }}<br />
-                        {{ form_widget(form.password.second, {type: "password"}) }}
-                        {{ form_errors(form.password.first) }}
-                        <p><span class="attention mini">半角英数字8〜16文字でお願いします。（記号可）</span></p>
-                        <p><span class="attention mini">確認のために2度入力してください。</span></p>
-                    </td>
-                </tr>
-            </table>
-
-
-
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <a href="{{ url('index') }}">
-                            <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_cannot.jpg" alt="同意しない" />
-                        </a>
-                    </li>
-                    <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry_agree.jpg" alt="同意して会員登録へ" name="mode" value="confirm" />
-                    </li>
-                </ul>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+
 {% endblock %}

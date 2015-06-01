@@ -75,29 +75,74 @@ class EntryType extends AbstractType
                 ),
             ))
             ->add('zip', 'zip', array(
-                'required' => false,
+                'zip01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 3, 'max' => 3))
+                    ),
+                ),
+                'zip02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 4, 'max' => 4))
+                    ),
+                ),
             ))
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
-                'required' => false,
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $app['config']['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('tel', 'tel', array(
-                'required' => false,
+                'tel01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 3)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel03_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
             ))
             ->add('fax', 'tel', array(
                 'required' => false,
             ))
-            ->add('email', 'email', array(
+            ->add('email', 'repeated', array(
+                'invalid_message' => 'form.member.email.invalid',
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Email(),
+                    ),
+                ),
+            ))
+            ->add('password', 'password', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
-                )
-            ))
-            ->add('sex', 'sex', array(
-                'required' => false,
-            ))
-            ->add('job', 'job', array(
-                'required' => false,
+                    new Assert\Length(array(
+                        'min' => $app['config']['password_min_len'],
+                        'max' => $app['config']['password_max_len'],
+                    )),
+                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
+                ),
             ))
             ->add('birth', 'birthday', array(
                 'required' => false,
@@ -106,7 +151,12 @@ class EntryType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('password', 'repeated')
+            ->add('sex', 'sex', array(
+                'required' => false,
+            ))
+            ->add('job', 'job', array(
+                'required' => false,
+            ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'));
     }
 

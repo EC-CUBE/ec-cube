@@ -44,19 +44,19 @@ class EntryController extends AbstractController
     /**
      * Index
      *
-     * @param  Application                                        $app
+     * @param  Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, Request $request)
     {
-        $Customer = $app['eccube.repository.customer']->newCustomer();
+        $customer = $app['eccube.repository.customer']->newCustomer();
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('entry', $Customer);
+        $builder = $app['form.factory']->createBuilder('entry', $customer);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -73,28 +73,28 @@ class EntryController extends AbstractController
                         break;
 
                     case 'complete':
-                        $Customer->setSalt(
+                        $customer->setSalt(
                             $app['eccube.repository.customer']
                                 ->createSalt(5)
                         );
 
-                        $Customer->setPassword(
+                        $customer->setPassword(
                             $app['eccube.repository.customer']
-                                ->encryptPassword($app, $Customer)
+                                ->encryptPassword($app, $customer)
                         );
 
-                        $Customer->setSecretKey(
+                        $customer->setSecretKey(
                             $app['orm.em']
                                 ->getRepository('Eccube\Entity\Customer')
                                 ->getUniqueSecretKey($app)
                         );
 
-                        $app['orm.em']->persist($Customer);
+                        $app['orm.em']->persist($customer);
                         $app['orm.em']->flush();
 
                         $activateUrl = $app['url_generator']
                             ->generate('entry_activate', array(
-                                'id' => $Customer->getSecretKey()
+                                'id' => $customer->getSecretKey()
                             ), true);
 
                         if ($app['config']['customer_confirm_mail']) {
@@ -103,12 +103,12 @@ class EntryController extends AbstractController
                             $message = $app['mailer']->createMessage()
                                 ->setSubject('[EC-CUBE3] 会員登録のご確認')
                                 ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
-                                    'Customer' => $Customer,
+                                    'customer' => $customer,
                                     'activateUrl' => $activateUrl,
                                 )))
                                 ->setFrom(array('sample@example.com'))
                                 ->setBcc($app['config']['mail_cc'])
-                                ->setTo(array($Customer->getEmail()));
+                                ->setTo(array($customer->getEmail()));
                             $app['mailer']->send($message);
 
                             return $app->redirect($app['url_generator']->generate('entry_complete'));
