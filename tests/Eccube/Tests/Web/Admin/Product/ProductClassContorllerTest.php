@@ -42,18 +42,23 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $TestProduct = $this->newTestProduct($TestCreator);
         $this->app['orm.em']->persist($TestProduct);
         $this->app['orm.em']->flush();
+
         $TestClassName = $this->newTestClassName($TestCreator);
         $this->app['orm.em']->persist($TestClassName);
         $this->app['orm.em']->flush();
+
         $TestClassCategory1 = $this->newTestClassCategory($TestCreator, $TestClassName);
         $this->app['orm.em']->persist($TestClassCategory1);
         $this->app['orm.em']->flush();
+
         $TestClassCategory2 = $this->newTestClassCategory($TestCreator, $TestClassName);
         $this->app['orm.em']->persist($TestClassCategory2);
         $this->app['orm.em']->flush();
+
         $TestProductClass = $this->newTestProductClass($TestCreator, $TestProduct, $TestClassCategory1, $TestClassCategory2);
         $this->app['orm.em']->persist($TestProductClass);
         $this->app['orm.em']->flush();
+
         $test_product_class = $this->app['eccube.repository.product_class']
             ->findOneBy(array(
                 'code' => $TestProductClass->getCode()
@@ -132,7 +137,7 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
             ->setClassCategory1($TestClassCategory1)
             ->setClassCategory2($TestClassCategory2)
             ->setProductType($ProductType)
-//            ->setProductCode('test code')
+            ->setCode('test code')
             ->setStock(100)
             ->setStockUnlimited(0)
 //            ->setDeliveryDateId(1)
