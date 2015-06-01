@@ -1,20 +1,41 @@
-                {% macro tree(Categories) %}
-                    {% for Category in Categories %}
-                        <li>
-                            <a class="has-toggle" href="{{ url('product_search') }}?mode=search&category_id={{ Category.id }}">{{ Category.name }}<span class="toggle"><span class="fa fa-chevron-down "></span></span></a>
-                            {% if Category.children|length > 0 %}
-                                {% for ChildCategory in Category.children %}
-                                    <ul>
-                                        {{ _self.tree(ChildCategory.children) }}
-                                    </ul>
-                                {% endfor %}
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                {% endmacro %}
+{#
+This file is part of EC-CUBE
 
-                <nav id="category">
-                    <ul class="category-nav">
-                        {{ _self.tree(Categories) }}
-                    </ul> <!-- category-nav -->
-                </nav> 
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% macro tree(Categories) %}
+    {% for Category in Categories %}
+        <li>
+            <a class="has-toggle" href="{{ url('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}<span class="toggle"><span class="fa fa-chevron-down "></span></span></a>
+            {% if Category.children|length > 0 %}
+                {% for ChildCategory in Category.children %}
+                    <ul>
+                        {{ _self.tree(ChildCategory.children) }}
+                    </ul>
+                {% endfor %}
+            {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}
+
+<nav id="category">
+    <ul class="category-nav">
+        {{ _self.tree(Categories) }}
+    </ul> <!-- category-nav -->
+</nav>
