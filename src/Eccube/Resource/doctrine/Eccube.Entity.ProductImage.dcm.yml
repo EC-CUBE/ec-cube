@@ -1,0 +1,41 @@
+Eccube\Entity\ProductImage:
+    type: entity
+    table: dtb_product_image
+    repositoryClass: Eccube\Repository\ProductImageRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: product_image_id
+            generator:
+                strategy: AUTO
+    fields:
+        file_name:
+            type: text
+            nullable: false
+        rank:
+            type: integer
+            nullable: false
+            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: ProductImage
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+                nullable: false
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: ProductImage
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

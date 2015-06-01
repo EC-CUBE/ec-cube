@@ -1,0 +1,27 @@
+Eccube\Entity\Master\Tag:
+    type: entity
+    table: mtb_tag
+    repositoryClass: Eccube\Repository\Master\TagRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: false
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+    oneToMany:
+        ProductTag:
+            targetEntity: Eccube\Entity\ProductTag
+            mappedBy: Tag
+    lifecycleCallbacks: {  }
