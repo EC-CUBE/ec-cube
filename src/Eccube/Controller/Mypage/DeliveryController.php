@@ -30,13 +30,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DeliveryController extends AbstractController
 {
-    private $title;
-
-    public function __construct()
-    {
-        $this->title = 'MYページ';
-    }
-
     /**
      * Index
      *
@@ -47,86 +40,75 @@ class DeliveryController extends AbstractController
     {
         $Customer = $app['user'];
 
-        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('form', $Customer);
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $builder->getForm();
-
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                switch ($request->get('mode')) {
-                    case 'delete':
-                        // 別のお届け先削除
-                        if (!$app['eccube.repository.other_deliv']->deleteByCustomerAndId($Customer, $request->get('other_deliv_id'))) {
-                            $app['session']->getFlashBag()->set('error', '別のお届け先を削除できませんでした。');
-                        }
-
-                        return $app->redirect($app['url_generator']->generate('mypage_delivery'));
-                        break;
-                }
-            }
-        }
-
-        return $app['twig']->render('Mypage/delivery.twig', array(
-            'title' => $this->title,
-            'subtitle' => 'お届け先追加･変更',
-            'mypageno' => 'delivery',
-            'form' => $form->createView(),
+        return $app->render('Mypage/delivery.twig', array(
             'Customer' => $Customer,
         ));
     }
 
     /**
-     * Complete
+     * edit
      *
      * @param  Application $app
+     * @request  Symfony\Component\HttpFoundation\Request $app
      * @return mixed
      */
-    public function address(Application $app, Request $request)
+    public function edit(Application $app, Request $request, $id = null)
     {
         $Customer = $app['user'];
 
-        $OtherDeliv = $app['eccube.repository.other_deliv']->findOrCreateByCustomerAndId($Customer, $request->get('other_deliv_id', null));
+        $CustomerAddress = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($Customer, $id);
 
         $parentPage = $request->get('parent_page', null);
 
         // 正しい遷移かをチェック
         $allowdParents = array(
-            $app['url_generator']->generate('mypage_delivery'),
-            $app['url_generator']->generate('shopping_delivery'),
-            $app['url_generator']->generate('shopping_shipping_multiple'),
+            $app->url('mypage_delivery'),
+            $app->url('shopping_delivery'),
+            $app->url('shopping_shipping_multiple'),
         );
 
         // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
         if (!in_array($parentPage, $allowdParents)) {
-            $parentPage  = $app['url_generator']->generate('mypage_delivery');
+            $parentPage  = $app->url('mypage_delivery');
         }
 
-        /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('other_deliv', $OtherDeliv);
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $builder->getForm();
+        $form = $app['form.factory']
+            ->createBuilder('customer_address', $CustomerAddress)
+            ->getForm();
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $app['orm.em']->persist($OtherDeliv);
+                $app['orm.em']->persist($CustomerAddress);
                 $app['orm.em']->flush();
 
-                $app['session']->getFlashBag()->set('mypage_delivery_address.just_added', $OtherDeliv->getId());
+                $app->addSuccess('mypage.delivery.add.complete');
 
-                return $app->redirect($app['url_generator']->generate('mypage_delivery_address', array('other_deliv_id' => $OtherDeliv->getId())));
+                return $app->redirect($app->url('mypage_delivery'));
             }
         }
 
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
-        return $app['view']->render('Mypage/delivery_address.twig', array(
-            'title' => 'お届け先の追加･変更',
-            'parentPage' => $parentPage,
+        return $app->render('Mypage/delivery_edit.twig', array(
             'form' => $form->createView(),
+            'parentPage' => $parentPage,
             'BaseInfo' => $BaseInfo,
         ));
+    }
+
+    public function delete(Application $app, $id)
+    {
+        $Customer = $app['user'];
+
+        // 別のお届け先削除
+        if ($app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id)) {
+            $app->addError('mypage.address.delete.failed');
+        } else {
+            $app->addSuccess('mypage.address.delete.complete');
+        }
+
+        return $app->redirect($app->url('mypage_delivery'));
     }
 }

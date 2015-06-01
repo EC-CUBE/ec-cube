@@ -29,7 +29,7 @@ use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 
-class OtherDelivType extends AbstractType
+class CustomerAddressType extends AbstractType
 {
     public $config;
 
@@ -94,6 +94,6 @@ class OtherDelivType extends AbstractType
      */
     public function getName()
     {
-        return 'other_deliv';
+        return 'customer_address';
     }
 }
