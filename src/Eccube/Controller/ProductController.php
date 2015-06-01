@@ -95,7 +95,7 @@ class ProductController
             $forms[$Product->getId()] = $addCartForm->createView();
         }
 
-        //
+        // 表示件数
         $builder = $app['form.factory']->createNamedBuilder('disp_number', 'product_list_max', null, array(
             'empty_data' => null,
             'required' => false,
@@ -108,11 +108,25 @@ class ProductController
         $dispNumberForm = $builder->getForm();
         $dispNumberForm->handleRequest($request);
 
+        // ソート順
+        $builder = $app['form.factory']->createNamedBuilder('orderby', 'product_list_order_by', null, array(
+            'empty_data' => null,
+            'required' => false,
+            'label' => '表示順',
+            'allow_extra_fields' => true,
+        ));
+        if ($request->getMethod() === 'GET') {
+            $builder->setMethod('GET');
+        }
+        $orderByForm = $builder->getForm();
+        $orderByForm->handleRequest($request);
+
         return $app['twig']->render('Product/list.twig', array(
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),
             'disp_number_form' => $dispNumberForm->createView(),
+            'order_by_form' => $orderByForm->createView(),
             'forms' => $forms,
         ));
     }
