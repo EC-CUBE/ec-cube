@@ -25,6 +25,8 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -69,15 +71,10 @@ class ProductController
                     $extension = $image->guessExtension();
                     $filename = date('mdHisu') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
-                    $files[] = str_replace(
-                            $request->server->get('DOCUMENT_ROOT'),
-                            '',
-                            $app['config']['image_temp_realdir']
-                        ) . $filename;
+                    $files[] = $filename;
                 }
             }
         }
-
 
         return $app->json(array('files' => $files), 200);
     }
@@ -128,19 +125,11 @@ class ProductController
 
         // ファイルの登録
         $images = array();
-        $Images = $Product->getProductImage();
-        foreach ($Images as $Image) {
-            $images[] = $Image->getFileName();
+        $ProductImages = $Product->getProductImage();
+        foreach ($ProductImages as $ProductImage) {
+            $images[] = $ProductImage->getFileName();
         }
         $form['images']->setData($images);
-
-        // タグの登録
-        $tags = array();
-        $Tags = $Product->getProductTag();
-        foreach ($Tags as $Tag) {
-            $tags[] = $Tag->getTag()->getName();
-        }
-        $form['tags']->setData($tags);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -152,29 +141,34 @@ class ProductController
                 }
 
                 // 画像の登録
-                $files = $form->get('images')->getData();
-                foreach ($files as $file) {
-
-                }
-
-                // タグの登録
-                $Tags = $Product->getProductTag();
-                foreach ($Tags as $Tag) {
-                    $Product->removeProductTag($Tag);
-                    $app['orm.em']->remove($Tag);
-                }
-
-                $tags = $form['tags']->getData();
-                foreach ($tags as $tag) {
-                    $Tag = $app['eccube.repository.master.tag']->findOrCreateByTagName($tag);
-                    $ProductTag = new \Eccube\Entity\ProductTag();
-                    $ProductTag
+                $add_images = $form->get('add_images')->getData();
+                foreach ($add_images as $add_image) {
+                    $ProductImage = new \Eccube\Entity\ProductImage();
+                    $ProductImage
+                        ->setFileName($add_image)
                         ->setProduct($Product)
-                        ->setTag($Tag);
-                    $Product->addProductTag($ProductTag);
+                        ->setRank(1);
+                    $Product->addProductImage($ProductImage);
+                    $app['orm.em']->persist($ProductImage);
 
-                    $app['orm.em']->persist($Tag);
-                    $app['orm.em']->persist($ProductTag);
+                    // 移動
+                    $file = new File($app['config']['image_temp_realdir'] . $add_image);
+                    $file->move($app['config']['image_save_realdir']);
+                }
+
+                // 画像の削除
+                $delete_images = $form->get('delete_images')->getData();
+                foreach ($delete_images as $delete_image) {
+                    var_dump($delete_image);
+                    $ProductImage = $app['eccube.repository.product_image']
+                        ->findOneBy(array('file_name' => $delete_image));
+                    $Product->removeProductImage($ProductImage);
+                    $app['orm.em']->remove($ProductImage);
+                    $app['orm.em']->persist($Product);
+
+                    // 削除
+                    $fs = new Filesystem();
+                    $fs->remove($app['config']['image_save_realdir'] . $delete_image);
                 }
 
                 $app['orm.em']->persist($Product);
