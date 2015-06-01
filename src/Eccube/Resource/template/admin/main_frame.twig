@@ -22,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -124,9 +123,10 @@
 <script src="{{ app.config.root }}admin/dist/js/bootstrap.min.js"></script> 
 <script src="{{ app.config.root }}admin/assets/js/function.js"></script>
 <script type="text/javascript" src="{{ app.config.root }}js/eccube.js"></script>
-<script type="text/javascript" src="{{ app.config.admin_tpl }}js/eccube.admin.js"></script>
+{#<script type="text/javascript" src="{{ app.config.admin_tpl }}js/eccube.admin.js"></script>#}
 <script type="text/javascript" src="{{ app.config.root }}js/jquery.colorbox/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+{{ block('assets') }} %}
 <script type="text/javascript">//<![CDATA[
     {{ block('javascript') }}
     $(function(){

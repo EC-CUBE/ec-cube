@@ -16,156 +16,19 @@ Eccube\Entity\Product:
             type: text
             nullable: false
             length: 65535
-#        maker_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-#        status:
-#            type: smallint
-#            nullable: false
-#            unsigned: false
-#            default: '2'
-        comment1:
-            type: text
-            nullable: true
-            length: 65535
-        comment2:
-            type: text
-            nullable: true
-            length: 65535
-        comment3:
-            type: text
-            nullable: true
-            length: 16777215
-        comment4:
-            type: text
-            nullable: true
-            length: 65535
-        comment5:
-            type: text
-            nullable: true
-            length: 65535
-        comment6:
-            type: text
-            nullable: true
-            length: 65535
         note:
             type: text
             nullable: true
             length: 65535
-        main_list_comment:
+        description_list:
             type: text
             nullable: true
             length: 65535
-        main_list_image:
+        description_detail:
             type: text
             nullable: true
             length: 65535
-        main_comment:
-            type: text
-            nullable: true
-            length: 16777215
-        main_image:
-            type: text
-            nullable: true
-            length: 65535
-        main_large_image:
-            type: text
-            nullable: true
-            length: 65535
-        sub_title1:
-            type: text
-            nullable: true
-            length: 65535
-        sub_comment1:
-            type: text
-            nullable: true
-            length: 16777215
-        sub_image1:
-            type: text
-            nullable: true
-            length: 65535
-        sub_large_image1:
-            type: text
-            nullable: true
-            length: 65535
-        sub_title2:
-            type: text
-            nullable: true
-            length: 65535
-        sub_comment2:
-            type: text
-            nullable: true
-            length: 16777215
-        sub_image2:
-            type: text
-            nullable: true
-            length: 65535
-        sub_large_image2:
-            type: text
-            nullable: true
-            length: 65535
-        sub_title3:
-            type: text
-            nullable: true
-            length: 65535
-        sub_comment3:
-            type: text
-            nullable: true
-            length: 16777215
-        sub_image3:
-            type: text
-            nullable: true
-            length: 65535
-        sub_large_image3:
-            type: text
-            nullable: true
-            length: 65535
-        sub_title4:
-            type: text
-            nullable: true
-            length: 65535
-        sub_comment4:
-            type: text
-            nullable: true
-            length: 16777215
-        sub_image4:
-            type: text
-            nullable: true
-            length: 65535
-        sub_large_image4:
-            type: text
-            nullable: true
-            length: 65535
-        sub_title5:
-            type: text
-            nullable: true
-            length: 65535
-        sub_comment5:
-            type: text
-            nullable: true
-            length: 16777215
-        sub_image5:
-            type: text
-            nullable: true
-            length: 65535
-        sub_large_image5:
-            type: text
-            nullable: true
-            length: 65535
-        sub_title6:
-            type: text
-            nullable: true
-            length: 65535
-        sub_comment6:
-            type: text
-            nullable: true
-            length: 16777215
-        sub_image6:
-            type: text
-            nullable: true
-            length: 65535
-        sub_large_image6:
+        free_area:
             type: text
             nullable: true
             length: 65535
@@ -174,10 +37,6 @@ Eccube\Entity\Product:
             nullable: false
             unsigned: false
             default: '0'
-#        creator_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
         create_date:
             type: datetime
             nullable: false
@@ -186,10 +45,6 @@ Eccube\Entity\Product:
             type: datetime
             nullable: false
             default: '0000-00-00 00:00:00'
-#        deliv_date_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
     manyToOne:
         Maker:
             targetEntity: Eccube\Entity\Maker
@@ -217,12 +72,6 @@ Eccube\Entity\Product:
                 name: status
                 referencedColumnName: id
                 default: 2
-        ProductStatusColor:
-            targetEntity: Eccube\Entity\Master\ProductStatusColor
-            inversedBy: Products
-            joinColumn:
-                name: status
-                referencedColumnName: id
     oneToMany:
         ProductCategories:
             targetEntity: Eccube\Entity\ProductCategory
@@ -237,7 +86,7 @@ Eccube\Entity\Product:
             mappedBy: Product
         RecommendProducts:
             targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: RecommendedProduct
+            mappedBy: Product
             orderBy:
                 rank: ASC
         RecommendedProducts:
@@ -250,6 +99,14 @@ Eccube\Entity\Product:
                 create_date: DESC
         BestProducts:
             targetEntity: Eccube\Entity\BestProduct
+            mappedBy: Product
+        ProductImage:
+            targetEntity: Eccube\Entity\ProductImage
+            mappedBy: Product
+            orderBy:
+                rank: ASC
+        ProductTag:
+            targetEntity: Eccube\Entity\ProductTag
             mappedBy: Product
         CustomerFavoriteProducts:
             targetEntity: Eccube\Entity\CustomerFavoriteProduct

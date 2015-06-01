@@ -46,15 +46,11 @@ class SearchProductType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('id', 'integer', array(
+            ->add('id', 'text', array(
                 'label' => '商品ID',
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Type(array(
-                        'type' => 'integer',
-                    )),
-                ),
             ))
+            /*
             ->add('code', 'text', array(
                 'label' => '商品コード',
                 'required' => false,
@@ -63,6 +59,7 @@ class SearchProductType extends AbstractType
                 'label' => '商品名',
                 'required' => false,
             ))
+             */
             ->add('category_id', 'category', array(
                 'label' => 'カテゴリ',
                 'empty_value' => '選択してください',
@@ -78,23 +75,39 @@ class SearchProductType extends AbstractType
                 'multiple'=> true,
                 'required' => false,
             ))
-            ->add('register_start', 'date', array(
-                'label' => '登録・更新日',
+            ->add('create_date_start', 'date', array(
+                'label' => '登録日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('register_end', 'date', array(
-                'label' => '登録・更新日',
+            ->add('create_date_end', 'date', array(
+                'label' => '登録日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('pageno', 'hidden', array(
+            ->add('update_date_start', 'date', array(
+                'label' => '更新日(FROM)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('update_date_end', 'date', array(
+                'label' => '更新日(TO)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('page_no', 'hidden', array(
             ))
         ;
     }
