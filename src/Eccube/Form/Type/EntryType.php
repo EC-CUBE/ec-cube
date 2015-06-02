@@ -134,7 +134,7 @@ class EntryType extends AbstractType
                     ),
                 ),
             ))
-            ->add('password', 'password', array(
+            ->add('password', 'text', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(

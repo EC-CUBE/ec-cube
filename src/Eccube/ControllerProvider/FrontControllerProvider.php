@@ -88,6 +88,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/help/guide', '\Eccube\Controller\HelpController::guide')->bind('help_guide');
         $c->match('/help/privacy', '\Eccube\Controller\HelpController::privacy')->bind('help_privacy');
         $c->match('/help/tradelaw', '\Eccube\Controller\HelpController::tradelaw')->bind('help_tradelaw');
+        $c->match('/help/agreement', '\Eccube\Controller\HelpController::agreement')->bind('help_agreement');
 
         // mypage
         $c->match('/mypage', '\Eccube\Controller\Mypage\MypageController::index')->bind('mypage');
