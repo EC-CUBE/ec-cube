@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock form_widget_compound -%}
 
 {% block form_row -%}
+    {%- if form.vars.freeze_display_text -%}
     {% set attr = attr|merge({class: attr.class|default('')}) %}
     <dl>
         <dt>{{ form_label(form) }}{% if required %} <span class="required">必須</span>{% endif %}</dt>
@@ -45,6 +46,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {{ form_errors(form) }}
         </dd>
     </dl>
+    {%- else -%}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    {%- endif -%}
 {%- endblock form_row %}
 
 {% block form_errors -%}
