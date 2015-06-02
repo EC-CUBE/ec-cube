@@ -1195,6 +1195,15 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $this->ProductImage;
     }
 
+    public function getMainFileName()
+    {
+        if (count($this->ProductImage) > 0) {
+            return $this->ProductImage[0];
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Add ProductTag
      *

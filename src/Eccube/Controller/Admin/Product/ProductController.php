@@ -101,12 +101,11 @@ class ProductController
                         $page_count
                     );
 
-//                    $searchForm = $app['form.factory']->createBuilder('admin_search_product', $searchData)->getForm();
                 }
             }
         }
 
-        return $app['view']->render('Product/index.twig', array(
+        return $app->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,

@@ -148,14 +148,15 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p')
                 ->select(array('p', 'pi'))
-                ->innerJoin('p.ProductImage', 'pi')
+                ->leftJoin('p.ProductImage', 'pi')
                 ->innerJoin('p.ProductClasses', 'pc');
 
         // id
         if (!empty($searchData['id']) && $searchData['id']) {
+            $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
-                ->setParameter('id', $searchData['id'])
+                ->setParameter('id', $id)
                 ->setParameter('likeid', '%' . $searchData['id'] . '%');
         }
 
