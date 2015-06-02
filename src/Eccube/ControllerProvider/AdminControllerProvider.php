@@ -50,7 +50,8 @@ class AdminControllerProvider implements ControllerProviderInterface
 
 
         // product
-        $c->match('/product/page/{page_no}', '\Eccube\Controller\Admin\Product\ProductController::index')->value('page_no', null)->assert('page_no', '\d+')->bind('admin_product');
+        $c->match('/product', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
+        $c->match('/product/page/{page_no}', '\Eccube\Controller\Admin\Product\ProductController::index')->assert('page_no', '\d+')->bind('admin_product_page');
         $c->match('/product/product/new', '\Eccube\Controller\Admin\Product\ProductController::edit')->bind('admin_product_product_new');
         $c->match('/product/product/{id}/edit', '\Eccube\Controller\Admin\Product\ProductController::edit')->assert('id', '\d+')->bind('admin_product_product_edit');
         $c->match('/product/product/class/edit/{id}', '\Eccube\Controller\Admin\Product\ProductClassController::index')->assert('id', '\d+')->bind('admin_product_product_class_edit');

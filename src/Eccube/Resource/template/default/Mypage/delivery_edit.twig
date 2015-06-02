@@ -21,30 +21,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
+{% set mypageno = 'delivery' %}
+
 {% block main %}
             <div id="main">
                 <h1 class="page-heading">マイページ</h1>
                 <div class="container-fluid">
-                	<nav class="local_nav">
-                    	<ul>
-                        <li><a href="#">ご注文履歴</a></li>
-                        <li><a href="#">お気に入り商品</a></li>
-                        <li><a>会員情報編集</a></li>
-                        <li><a href="#">お届け先編集</a></li>
-                        <li><a href="#">カード情報編集</a></li>
-                        <li><a href="#">退会手続き</a></li>
-                        </ul>
-                    </nav>
-                    <div class="message">
-                        <p>
-                            ようこそ ／ {{ app.user.name01 }} {{ app.user.name02 }} 様
-                        </p>
-                    </div>
+
+                    {{ include('Mypage/navi.twig') }}
 
                     <h2 class="heading01">お届け先編集</h2>
                     <div class="row">
                         <div class="col-sm-10 col-sm-offset-1">
                             <form role="form" action="" method="post">
+                                {{ form_widget(form._token) }}
                             	<div class="dl_table">
 
                                     {{ form_row(form.name, { attr : { class : 'middle'} } ) }}
