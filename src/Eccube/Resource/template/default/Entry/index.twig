@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
+{% block title %}会員登録{% endblock title %}
+
 {# 装飾のカスタマイズ方法 #}
 {% form_theme form _self %}
 {% block form_errors %}
@@ -64,14 +66,14 @@ $(function() {
                                 <div class="dl_table">
                                     <dl>
                                         <dt>お名前<span class="required">必須</span></dt>
-                                        <dd class="form-group input_name {% if form.name.name01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.name.name01, {attr: {placeholder: '姓'}}) }}{{ form_widget(form.name.name02, {attr: {placeholder: '名'}}) }}
+                                        <dd class="form-group input_name {% if form.name.name01.vars.errors is not empty or form.name.name02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.name.name01, {attr: {placeholder: '姓'}}) }}{{ form_widget(form.name.name02, {attr: {placeholder: '名'}}) }}
                                             {{ form_errors(form.name.name01) }}
                                             {{ form_errors(form.name.name02) }}
                                         </dd>
                                     </dl>
                                     <dl>
                                         <dt>お名前(カナ)<span class="required">必須</span></dt>
-                                        <dd class="form-group input_name {% if form.kana.kana01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.kana.kana01, {attr: {placeholder: 'セイ'}}) }}{{ form_widget(form.kana.kana02, {attr: {placeholder: 'メイ'}}) }}
+                                        <dd class="form-group input_name {% if form.kana.kana01.vars.errors is not empty or form.kana.kana02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.kana.kana01, {attr: {placeholder: 'セイ'}}) }}{{ form_widget(form.kana.kana02, {attr: {placeholder: 'メイ'}}) }}
                                             {{ form_errors(form.kana.kana01) }}
                                             {{ form_errors(form.kana.kana02) }}
                                         </dd>
@@ -79,8 +81,8 @@ $(function() {
                                     <dl>
                                         <dt>住所<span class="required">必須</span></dt>
                                         <dd>
-                                            <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                                            <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty %}has-error{% endif %}">
+                                            <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                            <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                                             {{ form_widget(form.address) }}
                                             {{ form_errors(form.address) }}
                                             </div>
@@ -89,13 +91,13 @@ $(function() {
                                     <dl>
                                         <dt>電話番号<span class="required">必須</span></dt>
                                         <dd>
-                                            <div class="form-group form-inline input_tel {% if form.tel.tel01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.tel) }}</div>
+                                            <div class="form-group form-inline input_tel {% if form.tel.tel01.vars.errors is not empty or form.tel.tel02.vars.errors is not empty or form.tel.tel03.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.tel) }}</div>
                                         </dd>
                                     </dl>
                                     <dl>
                                         <dt>FAX番号</dt>
                                         <dd>
-                                            <div class="form-group form-inline input_tel {% if form.tel.tel01.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.fax) }}</div>
+                                            <div class="form-group form-inline input_tel {% if form.fax.fax01.vars.errors is not empty or form.fax.fax02.vars.errors is not empty or form.fax.fax03.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.fax) }}</div>
                                         </dd>
                                     </dl>
                                     <dl>

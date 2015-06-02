@@ -31,15 +31,6 @@ use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class EntryController extends AbstractController
 {
-    private $title;
-
-    public $form;
-
-    public function __construct()
-    {
-        $this->title = '会員登録';
-
-    }
 
     /**
      * Index
@@ -67,7 +58,6 @@ class EntryController extends AbstractController
                         $form->handleRequest($request);
 
                         return $app['twig']->render('Entry/confirm.twig', array(
-                            'title' => $this->title,
                             'form' => $form->createView(),
                         ));
                         break;
@@ -126,7 +116,6 @@ class EntryController extends AbstractController
             ->findAll();
 
         return $app['view']->render('Entry/index.twig', array(
-            'title' => $this->title,
             'kiyaku' => $kiyaku,
             'form' => $form->createView(),
         ));
@@ -141,7 +130,6 @@ class EntryController extends AbstractController
     public function complete(Application $app)
     {
         return $app['view']->render('Entry/complete.twig', array(
-            'title' => $this->title,
         ));
     }
 
@@ -188,7 +176,6 @@ class EntryController extends AbstractController
             $app['mailer']->send($message);
 
             return $app['view']->render('Entry/activate.twig', array(
-                'title' => $this->title,
             ));
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
