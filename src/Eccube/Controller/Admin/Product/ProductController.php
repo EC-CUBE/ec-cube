@@ -202,7 +202,7 @@ class ProductController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
-                    $app['orm.em']->perssit($ProductClass);
+                    $app['orm.em']->persist($ProductClass);
                 }
 
                 // カテゴリの登録
