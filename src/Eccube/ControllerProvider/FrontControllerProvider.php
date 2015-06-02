@@ -94,8 +94,12 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/login', '\Eccube\Controller\Mypage\MypageController::login')->bind('mypage_login');
         $c->match('/mypage/change', '\Eccube\Controller\Mypage\ChangeController::index')->bind('mypage_change');
         $c->match('/mypage/change_complete', '\Eccube\Controller\Mypage\ChangeController::complete')->bind('mypage_change_complete');
+
         $c->match('/mypage/delivery', '\Eccube\Controller\Mypage\DeliveryController::index')->bind('mypage_delivery');
-        $c->match('/mypage/delivery_addr', '\Eccube\Controller\Mypage\DeliveryController::address')->bind('mypage_delivery_address');
+        $c->match('/mypage/delivery/new', '\Eccube\Controller\Mypage\DeliveryController::edit')->bind('mypage_delivery_new');
+        $c->match('/mypage/delivery/{id}/edit', '\Eccube\Controller\Mypage\DeliveryController::edit')->assert('id', '\d+')->bind('mypage_delivery_edit');
+        $c->match('/mypage/delivery/{id}/delete', '\Eccube\Controller\Mypage\DeliveryController::delete')->assert('id', '\d+')->bind('mypage_delivery_delete');
+
         $c->match('/mypage/download', '\Eccube\Page\Mypage\Download')->bind('mypage_download');
         $c->match('/mypage/favorite', '\Eccube\Controller\Mypage\MypageController::favorite')->bind('mypage_favorite');
         $c->match('/mypage/history/{orderId}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('orderId', '\d+');

@@ -20,6 +20,7 @@ form.reminder.empty_value: 選択してください
 
 form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
 form.contact.contents.help: ※ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
+form.member.email.invalid: 同じメールアドレスを入力してください。
 
 cart.over.stock: |-
     ※ 選択された商品の在庫が不足しております。
