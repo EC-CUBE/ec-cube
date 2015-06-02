@@ -215,7 +215,6 @@ class ProductController
                 // 画像の削除
                 $delete_images = $form->get('delete_images')->getData();
                 foreach ($delete_images as $delete_image) {
-                    var_dump($delete_image);
                     $ProductImage = $app['eccube.repository.product_image']
                         ->findOneBy(array('file_name' => $delete_image));
                     $Product->removeProductImage($ProductImage);
