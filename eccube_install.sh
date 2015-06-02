@@ -88,8 +88,6 @@ adjust_directory_permissions()
     chmod go+w "./app/fonts"
     chmod go+w "./app/log"
     chmod go+w "./app/logs"
-    chmod -R go+w "./src/Eccube/page"
-    chmod go+w "./src/smarty_extends"
     chmod go+w "./app/upload"
     chmod go+w "./app/upload/csv"
 }
